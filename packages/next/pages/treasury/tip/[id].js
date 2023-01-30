@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import { TipStateMap } from "utils/viewfuncs";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import { to404 } from "next-common/utils/serverSideUtil";
 
 import DetailItem from "components/detailItem";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -25,12 +24,18 @@ import Loading from "next-common/components/loading";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
 import { hashEllipsis } from "next-common/utils";
-import { PostProvider } from "next-common/context/post";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import useApi from "next-common/utils/hooks/useApi";
+import fetchAndUpdatePost from "next-common/context/post/update";
+import { useDetailType } from "next-common/context/page";
+import CheckUnFinalized from "components/tip/checkUnFinalized";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -57,15 +62,15 @@ const TipCountDown = ({ meta = {}, state }) => {
   );
 };
 
-export default withLoginUserRedux(({ detail: tip, comments }) => {
-  const [detail, setDetail] = useState(tip);
-  useEffect(() => setDetail(tip), [tip]);
-  const isMounted = useIsMounted();
+function TreasuryTipContent({ comments }) {
+  const post = usePost();
+  const postDispatch = usePostDispatch();
+  const type = useDetailType();
   const api = useApi();
 
-  const chainData = detail?.onchainData ?? {};
+  const chainData = post?.onchainData ?? {};
   const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
+    detail: post,
     comments,
   });
   const dispatch = useDispatch();
@@ -79,15 +84,46 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
   }, [api, dispatch]);
 
   const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch(`treasury/tips/${detail._id}`);
-    if (result && isMounted.current) {
-      setDetail(result);
-    }
-  }, [detail, isMounted]);
+    fetchAndUpdatePost(postDispatch, type, post?._id);
+  }, [post, type, postDispatch]);
 
   const onEndorseFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
   const onCloseTipFinalized = useWaitSyncBlock("Tip closed", refreshPageData);
   const onRetractFinalized = useWaitSyncBlock("Tip retracted", refreshPageData);
+
+  return (
+    <>
+      <DetailItem
+        onReply={focusEditor}
+        countDown={
+          <TipCountDown meta={chainData.meta} state={chainData.state?.state} />
+        }
+      />
+      <Tipper
+        chainData={chainData}
+        onEndorseFinalized={onEndorseFinalized}
+        onCloseTipFinalized={onCloseTipFinalized}
+        onRetractFinalized={onRetractFinalized}
+      />
+      <Metadata tip={post?.onchainData} />
+      <Timeline tip={post?.onchainData} />
+      {CommentComponent}
+    </>
+  );
+}
+
+export default withLoginUserRedux(({ id, detail, comments }) => {
+  let breadcrumbItemName = "";
+  let postContent = null;
+
+  if (detail) {
+    breadcrumbItemName = `#${hashEllipsis(detail?.hash)}`;
+    postContent = <TreasuryTipContent comments={comments} />;
+  } else {
+    const hash = id?.split("_").pop();
+    breadcrumbItemName = `#${hashEllipsis(hash)}`;
+    postContent = <CheckUnFinalized id={hash} />;
+  }
 
   const desc = getMetaDesc(detail);
 
@@ -100,7 +136,7 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
       path: "/treasury/tips",
     },
     {
-      content: hashEllipsis(detail?.hash),
+      content: breadcrumbItemName,
     },
   ];
 
@@ -117,24 +153,7 @@ export default withLoginUserRedux(({ detail: tip, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem
-          onReply={focusEditor}
-          countDown={
-            <TipCountDown
-              meta={chainData.meta}
-              state={chainData.state?.state}
-            />
-          }
-        />
-        <Tipper
-          chainData={chainData}
-          onEndorseFinalized={onEndorseFinalized}
-          onCloseTipFinalized={onCloseTipFinalized}
-          onRetractFinalized={onRetractFinalized}
-        />
-        <Metadata tip={detail?.onchainData} />
-        <Timeline tip={detail?.onchainData} />
-        {CommentComponent}
+        {postContent}
       </DetailWithRightLayout>
     </PostProvider>
   );
@@ -144,12 +163,16 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
-  const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`treasury/tips/${id}`),
-  ]);
+  const { result: detail } = await nextApi.fetch(`treasury/tips/${id}`);
 
   if (!detail) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        detail: null,
+        comments: EmptyList,
+      },
+    };
   }
 
   const { result: comments } = await nextApi.fetch(
@@ -162,6 +185,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      id,
       detail,
       comments: comments ?? EmptyList,
     },

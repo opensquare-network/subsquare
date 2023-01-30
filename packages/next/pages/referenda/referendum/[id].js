@@ -1,12 +1,15 @@
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import { PostProvider } from "next-common/context/post";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailItem from "components/detailItem";
 import Gov2Sidebar from "components/gov2/sidebar";
-import nextApi, { ssrNextApi } from "next-common/services/nextApi";
+import { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
 import {
   gov2ReferendumsCommentApi,
@@ -14,23 +17,25 @@ import {
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import { EmptyList } from "next-common/components/emptyList";
+import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import { parseGov2TrackName } from "next-common/utils/gov2";
 import ReferendaBusiness from "../../../components/gov2/business";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
 import BreadcrumbWrapper, {
   BreadcrumbHideOnMobileText,
 } from "next-common/components/detail/common/BreadcrumbWrapper";
+import { useDetailType } from "next-common/context/page";
+import fetchAndUpdatePost from "next-common/context/post/update";
+import CheckUnFinalized from "components/gov2/checkUnFinalized";
+import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
 
-export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
-  const [detail, setDetail] = useState(ssrDetail);
-  useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-  const isMounted = useIsMounted();
+function ReferendumContent({ comments }) {
+  const post = usePost();
+  const type = useDetailType();
+  const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,42 +45,70 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
   }, [dispatch]);
 
   const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
+    detail: post,
     comments,
   });
 
-  const desc = getMetaDesc(detail);
-
   const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch(
-      gov2ReferendumsDetailApi(detail.referendumIndex)
-    );
-    if (result && isMounted.current) {
-      setDetail(result);
-    }
-  }, [detail, isMounted]);
+    fetchAndUpdatePost(postDispatch, type, post?._id);
+  }, [post, type, postDispatch]);
 
   const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
 
-  const { id: trackId, name: trackName } = detail?.onchainData?.trackInfo;
-  const breadcrumbItems = [
-    {
-      path: "/referenda",
-      content: "Referenda",
-    },
-    {
-      path: `/referenda/track/${trackId}`,
-      content: parseGov2TrackName(trackName),
-    },
-    {
-      content: (
-        <>
-          <BreadcrumbHideOnMobileText>Referendum</BreadcrumbHideOnMobileText> #
-          {detail.referendumIndex}
-        </>
-      ),
-    },
-  ];
+  return (
+    <>
+      <DetailItem onReply={focusEditor} />
+
+      <Gov2Sidebar onVoteFinalized={onVoteFinalized} />
+
+      <ReferendaBusiness />
+      <Gov2ReferendumMetadata detail={post} />
+
+      <Timeline trackInfo={post?.onchainData?.trackInfo} />
+
+      {CommentComponent}
+    </>
+  );
+}
+
+function UnFinalizedBreadcrumb({ id }) {
+  return (
+    <BreadcrumbWrapper>
+      <Breadcrumb
+        items={[
+          {
+            path: "/referenda",
+            content: "Referenda",
+          },
+          {
+            content: (
+              <>
+                <BreadcrumbHideOnMobileText>
+                  Referendum
+                </BreadcrumbHideOnMobileText>{" "}
+                {`#${id}`}
+              </>
+            ),
+          },
+        ]}
+      />
+    </BreadcrumbWrapper>
+  );
+}
+
+export default withLoginUserRedux(({ id, detail, comments }) => {
+  let breadcrumb = null;
+  let postContent = null;
+
+  if (detail) {
+    postContent = <ReferendumContent comments={comments} />;
+    breadcrumb = <ReferendaBreadcrumb />;
+  } else {
+    postContent = <CheckUnFinalized id={id} />;
+    breadcrumb = <UnFinalizedBreadcrumb id={id} />;
+  }
+
+  const desc = getMetaDesc(detail);
 
   return (
     <PostProvider post={detail}>
@@ -86,20 +119,8 @@ export default withLoginUserRedux(({ detail: ssrDetail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
-        <DetailItem onReply={focusEditor} />
-
-        <Gov2Sidebar onVoteFinalized={onVoteFinalized} />
-
-        <ReferendaBusiness />
-        <Gov2ReferendumMetadata detail={detail} />
-
-        <Timeline trackInfo={detail?.onchainData?.trackInfo} />
-
-        {CommentComponent}
+        {breadcrumb}
+        {postContent}
       </DetailWithRightLayout>
     </PostProvider>
   );
@@ -114,7 +135,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
   );
 
   if (!detail) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        detail: null,
+        comments: EmptyList,
+      },
+    };
   }
 
   const postId = detail?._id;
@@ -128,6 +155,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      id,
       detail,
       comments: comments ?? EmptyList,
     },
