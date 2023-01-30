@@ -52,7 +52,7 @@ export default function SummaryNextLaunchTime({ nextLaunchTimestamp = 0 }) {
             )}
           >
             <span>
-              <SummaryGreyText>In</SummaryGreyText> {time}
+              <SummaryGreyText>≈ In</SummaryGreyText> {time}
             </span>
           </Tooltip>
         </Content>
