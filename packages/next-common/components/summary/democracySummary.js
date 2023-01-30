@@ -19,7 +19,6 @@ import {
 import { p_14_normal } from "next-common/styles/componentCss";
 import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
-import FlexBetween from "../styled/flexBetween";
 import Chains from "../../utils/consts/chains";
 
 const Wrapper = SummaryCard;
@@ -41,6 +40,11 @@ const SummaryWrapper = styled.div`
 
 const SummaryItem = styled.div`
   flex: 1;
+`;
+
+const LaunchPeriod = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 
 async function referendumsActive(api) {
@@ -151,9 +155,9 @@ export default function DemocracySummary({ footer }) {
           </Content>
         </SummaryItem>
 
-        {
-          !isKintsugi && <SummaryItem>
-            <FlexBetween>
+        {!isKintsugi && (
+          <SummaryItem>
+            <LaunchPeriod>
               <div>
                 <SummaryTitle>Launch Period</SummaryTitle>
                 <Content>
@@ -176,9 +180,9 @@ export default function DemocracySummary({ footer }) {
               <div>
                 <CountDown percent={summary?.progress ?? 0} />
               </div>
-            </FlexBetween>
+            </LaunchPeriod>
           </SummaryItem>
-        }
+        )}
       </SummaryWrapper>
 
       {footer && (
