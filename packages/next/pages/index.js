@@ -151,7 +151,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     <HomeLayout>
       <Overview
         overviewData={filteredOverviewData}
-        summaryData={overview.summary}
+        summaryData={overview?.summary}
       />
     </HomeLayout>
   );
