@@ -3,7 +3,6 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/bounty/timeline";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
@@ -15,6 +14,7 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import CheckUnFinalized from "components/bounty/checkUnFinalized";
 
 /**
  *
@@ -48,11 +48,43 @@ function BountyCountDown({ data = {} }) {
   );
 }
 
-export default withLoginUserRedux(({ detail, childBounties, comments }) => {
+function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
   });
+
+  return (
+    <>
+      <DetailItem
+        onReply={focusEditor}
+        countDown={<BountyCountDown data={detail.onchainData} />}
+      />
+      <Metadata meta={detail.onchainData?.meta} />
+      <ChildBountiesTable {...{ childBounties }} />
+      <Timeline bounty={detail?.onchainData} />
+      {CommentComponent}
+    </>
+  );
+}
+
+export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
+  let breadcrumbItemName = "";
+  let postContent = null;
+
+  if (detail) {
+    breadcrumbItemName = `#${detail?.bountyIndex}`;
+    postContent = (
+      <BountyContent
+        detail={detail}
+        childBounties={childBounties}
+        comments={comments}
+      />
+    );
+  } else {
+    breadcrumbItemName = `#${id}`;
+    postContent = <CheckUnFinalized id={id} />;
+  }
 
   const desc = getMetaDesc(detail);
 
@@ -65,7 +97,7 @@ export default withLoginUserRedux(({ detail, childBounties, comments }) => {
       path: "/treasury/bounties",
     },
     {
-      content: `#${detail?.bountyIndex}`,
+      content: breadcrumbItemName,
     },
   ];
 
@@ -82,14 +114,7 @@ export default withLoginUserRedux(({ detail, childBounties, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <DetailItem
-          onReply={focusEditor}
-          countDown={<BountyCountDown data={detail.onchainData} />}
-        />
-        <Metadata meta={detail.onchainData?.meta} />
-        <ChildBountiesTable {...{ childBounties }} />
-        <Timeline bounty={detail?.onchainData} />
-        {CommentComponent}
+        {postContent}
       </DetailLayout>
     </PostProvider>
   );
@@ -105,7 +130,14 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        detail: null,
+        childBounties: EmptyList,
+        comments: EmptyList,
+      },
+    };
   }
 
   const { result: comments } = await nextApi.fetch(
@@ -118,6 +150,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      id,
       detail,
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,

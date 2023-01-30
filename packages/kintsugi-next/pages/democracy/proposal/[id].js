@@ -5,7 +5,6 @@ import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
 import Metadata from "next-common/components/publicProposal/metadata";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
@@ -13,118 +12,143 @@ import isNil from "lodash.isnil";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
-import { useCallback, useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
+import { useCallback } from "react";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import { useDetailType } from "next-common/context/page";
+import fetchAndUpdatePost from "next-common/context/post/update";
+import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 
-export default withLoginUserRedux(
-  ({ detail: ssrDetail, referendum, comments }) => {
-    const [detail, setDetail] = useState(ssrDetail);
-    useEffect(() => setDetail(ssrDetail), [ssrDetail]);
-    const isMounted = useIsMounted();
+function PublicProposalContent({ referendum, comments }) {
+  const post = usePost();
+  const type = useDetailType();
+  const postDispatch = usePostDispatch();
 
-    const { CommentComponent, focusEditor } = useCommentComponent({
-      detail,
-      comments,
-    });
+  const { CommentComponent, focusEditor } = useCommentComponent({
+    detail: post,
+    comments,
+  });
 
-    const publicProposal = detail?.onchainData;
-    const proposalIndex = publicProposal?.proposalIndex;
-    const state = publicProposal?.state?.state;
-    const isEnded = ["Tabled", "Canceled", "FastTracked", "Cleared"].includes(
-      state
+  const publicProposal = post?.onchainData;
+  const proposalIndex = publicProposal?.proposalIndex;
+  const state = publicProposal?.state?.state;
+  const isEnded = ["Tabled", "Canceled", "FastTracked", "Cleared"].includes(
+    state
+  );
+  const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
+  const hasCanceled = ["Canceled", "Cleared"].includes(state);
+
+  const timeline = publicProposal?.timeline;
+  const lastTimelineBlockHeight =
+    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
+  const secondsAtBlockHeight = isEnded
+    ? lastTimelineBlockHeight - 1
+    : undefined;
+
+  const refreshPageData = useCallback(async () => {
+    fetchAndUpdatePost(postDispatch, type, post?._id);
+  }, [post, type, postDispatch]);
+
+  const onSecondFinalized = useWaitSyncBlock(
+    "Proposal seconded",
+    refreshPageData
+  );
+
+  const treasuryProposals = publicProposal?.treasuryProposals;
+
+  return (
+    <>
+      <DetailItem onReply={focusEditor} />
+      <Second
+        proposalIndex={proposalIndex}
+        hasTurnIntoReferendum={hasTurnIntoReferendum}
+        hasCanceled={hasCanceled}
+        useAddressVotingBalance={useAddressVotingBalance}
+        atBlockHeight={secondsAtBlockHeight}
+        onFinalized={onSecondFinalized}
+      />
+      <Business treasuryProposals={treasuryProposals} />
+      <Metadata publicProposal={post?.onchainData} />
+      <Timeline
+        publicProposalTimeline={post?.onchainData?.timeline}
+        referendumTimeline={referendum?.onchainData?.timeline}
+      />
+      {CommentComponent}
+    </>
+  );
+}
+
+export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
+  let breadcrumbItemName = "";
+  let postContent = null;
+
+  if (detail) {
+    breadcrumbItemName = `#${detail?.proposalIndex}`;
+    postContent = (
+      <PublicProposalContent referendum={referendum} comments={comments} />
     );
-    const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
-    const hasCanceled = ["Canceled", "Cleared"].includes(state);
-
-    const timeline = publicProposal?.timeline;
-    const lastTimelineBlockHeight =
-      timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-    const secondsAtBlockHeight = isEnded
-      ? lastTimelineBlockHeight - 1
-      : undefined;
-
-    const refreshPageData = useCallback(async () => {
-      const { result } = await nextApi.fetch(
-        `democracy/proposals/${detail.proposalIndex}`
-      );
-      if (result && isMounted.current) {
-        setDetail(result);
-      }
-    }, [detail, isMounted]);
-
-    const onSecondFinalized = useWaitSyncBlock(
-      "Proposal seconded",
-      refreshPageData
-    );
-
-    const desc = getMetaDesc(detail);
-
-    const breadcrumbItems = [
-      {
-        content: "Democracy",
-      },
-      {
-        content: "Proposals",
-        path: "/democracy/proposals",
-      },
-      {
-        content: `#${detail?.proposalIndex}`,
-      },
-    ];
-
-    const treasuryProposals = publicProposal?.treasuryProposals;
-
-    return (
-      <PostProvider post={detail}>
-        <DetailWithRightLayout
-          seoInfo={{
-            title: detail?.title,
-            desc,
-            ogImage: getBannerUrl(detail?.bannerCid),
-          }}
-        >
-          <BreadcrumbWrapper>
-            <Breadcrumb items={breadcrumbItems} />
-          </BreadcrumbWrapper>
-
-          <DetailItem onReply={focusEditor} />
-          <Second
-            proposalIndex={proposalIndex}
-            hasTurnIntoReferendum={hasTurnIntoReferendum}
-            hasCanceled={hasCanceled}
-            useAddressVotingBalance={useAddressVotingBalance}
-            atBlockHeight={secondsAtBlockHeight}
-            onFinalized={onSecondFinalized}
-          />
-          <Business treasuryProposals={treasuryProposals} />
-          <Metadata publicProposal={detail?.onchainData} />
-          <Timeline
-            publicProposalTimeline={detail?.onchainData?.timeline}
-            referendumTimeline={referendum?.onchainData?.timeline}
-          />
-          {CommentComponent}
-        </DetailWithRightLayout>
-      </PostProvider>
-    );
+  } else {
+    breadcrumbItemName = `#${id}`;
+    postContent = <CheckUnFinalized id={id} />;
   }
-);
+
+  const desc = getMetaDesc(detail);
+
+  const breadcrumbItems = [
+    {
+      content: "Democracy",
+    },
+    {
+      content: "Proposals",
+      path: "/democracy/proposals",
+    },
+    {
+      content: breadcrumbItemName,
+    },
+  ];
+
+  return (
+    <PostProvider post={detail}>
+      <DetailWithRightLayout
+        seoInfo={{
+          title: detail?.title,
+          desc,
+          ogImage: getBannerUrl(detail?.bannerCid),
+        }}
+      >
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+
+        {postContent}
+      </DetailWithRightLayout>
+    </PostProvider>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
 
-  const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`democracy/proposals/${id}`),
-  ]);
+  const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
 
   if (!detail) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        detail: null,
+        referendum: null,
+        comments: EmptyList,
+      },
+    };
   }
 
-  let referendum = null;
+  let referendum;
   if (!isNil(detail.referendumIndex)) {
     const { result } = await nextApi.fetch(
       `democracy/referendums/${detail.referendumIndex}`
@@ -142,7 +166,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      detail: detail,
+      id,
+      detail: detail ?? null,
       referendum: referendum ?? null,
       comments: comments ?? EmptyList,
     },

@@ -10,25 +10,25 @@ import { usePost } from "../../context/post";
 function getBreadcrumbItems(track = {}, referendumIndex) {
   return [
     {
-      path: "/fellowship",
-      content: "Fellowship",
+      path: "/referenda",
+      content: "Referenda",
     },
     {
-      path: `/fellowship/track/${track.id}`,
+      path: `/referenda/track/${track.id}`,
       content: parseGov2TrackName(track.name),
     },
     {
       content: (
         <>
-          <BreadcrumbHideOnMobileText>Referendum</BreadcrumbHideOnMobileText> #
-          {referendumIndex}
+          <BreadcrumbHideOnMobileText>Referendum</BreadcrumbHideOnMobileText>{" "}
+          {`#${referendumIndex}`}
         </>
       ),
     },
   ];
 }
 
-export default function FellowshipBreadcrumb() {
+export default function ReferendaBreadcrumb() {
   const track = useTrack();
   const post = usePost();
   return (

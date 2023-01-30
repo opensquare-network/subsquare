@@ -2,7 +2,6 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import { to404 } from "next-common/utils/serverSideUtil";
 import { EmptyList } from "next-common/utils/constants";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -11,12 +10,40 @@ import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
+import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 
-export default withLoginUserRedux(({ motion, comments }) => {
+function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail: motion,
     comments,
   });
+
+  return (
+    <>
+      <TechcommMotionDetail motion={motion} onReply={focusEditor} />
+      {CommentComponent}
+    </>
+  );
+}
+
+export default withLoginUserRedux(({ id, motion, comments }) => {
+  let breadcrumbItemName = "";
+  let postContent = null;
+
+  if (motion) {
+    breadcrumbItemName = `#${
+      motion?.motionIndex ?? hashEllipsis(motion?.hash)
+    }`;
+    postContent = <TechCommMotionContent motion={motion} comments={comments} />;
+  } else {
+    if (id?.match(/^[0-9]+$/)) {
+      breadcrumbItemName = `#${id}`;
+    } else {
+      const hash = id?.split("_").pop();
+      breadcrumbItemName = `#${hashEllipsis(hash)}`;
+    }
+    postContent = <CheckUnFinalized id={id} />;
+  }
 
   const desc = getMetaDesc(motion);
 
@@ -29,7 +56,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
       path: "/techcomm/proposals",
     },
     {
-      content: `#${motion?.motionIndex ?? hashEllipsis(motion?.hash)}`,
+      content: breadcrumbItemName,
     },
   ];
 
@@ -46,8 +73,7 @@ export default withLoginUserRedux(({ motion, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        <TechcommMotionDetail motion={motion} onReply={focusEditor} />
-        {CommentComponent}
+        {postContent}
       </DetailLayout>
     </PostProvider>
   );
@@ -56,12 +82,16 @@ export default withLoginUserRedux(({ motion, comments }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size: pageSize } = context.query;
 
-  const [{ result: motion }] = await Promise.all([
-    nextApi.fetch(`tech-comm/motions/${id}`),
-  ]);
+  const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
 
   if (!motion) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        motion: null,
+        comments: EmptyList,
+      },
+    };
   }
 
   const motionId = motion._id;
@@ -76,6 +106,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      id,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
     },
