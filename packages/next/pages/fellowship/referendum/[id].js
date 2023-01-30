@@ -1,12 +1,15 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import nextApi, { ssrNextApi } from "next-common/services/nextApi";
+import { ssrNextApi } from "next-common/services/nextApi";
 import {
   getFellowshipReferendumCommentsUrl,
   getFellowshipReferendumUrl,
 } from "next-common/services/url";
-import { to404 } from "next-common/utils/serverSideUtil";
-import { EmptyList } from "next-common/components/emptyList";
-import { PostProvider } from "next-common/context/post";
+import { EmptyList } from "next-common/utils/constants";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -17,33 +20,85 @@ import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metad
 import Timeline from "../../../components/gov2/timeline";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import { useCallback, useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useCallback } from "react";
+import { useDetailType } from "next-common/context/page";
+import fetchAndUpdatePost from "next-common/context/post/update";
+import CheckUnFinalized from "components/fellowship/checkUnFinalized";
+import BreadcrumbWrapper, {
+  BreadcrumbHideOnMobileText,
+} from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
 
-export default withLoginUserRedux(({ detail: _detail, comments }) => {
-  const [detail, setDetail] = useState(_detail);
-  useEffect(() => setDetail(_detail), [_detail]);
-
-  const isMounted = useIsMounted();
+function FellowshipContent({ comments }) {
+  const post = usePost();
+  const type = useDetailType();
+  const postDispatch = usePostDispatch();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
+    detail: post,
     comments,
   });
 
   const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch(
-      getFellowshipReferendumUrl(detail.referendumIndex)
-    );
-    if (result && isMounted.current) {
-      setDetail(result);
-    }
-  }, [detail, isMounted]);
+    fetchAndUpdatePost(postDispatch, type, post?._id);
+  }, [post, type, postDispatch]);
 
   const onVoteFinalized = useWaitSyncBlock(
     "Fellowship referendum voted",
     refreshPageData
   );
+
+  return (
+    <>
+      <DetailItem onReply={focusEditor} />
+
+      <FellowshipReferendumSideBar onVoteFinalized={onVoteFinalized} />
+
+      <Gov2ReferendumMetadata detail={post} />
+      <Timeline trackInfo={post?.onchainData?.trackInfo} />
+      {CommentComponent}
+    </>
+  );
+}
+
+function UnFinalizedBreadcrumb({ id }) {
+  return (
+    <BreadcrumbWrapper>
+      <Breadcrumb
+        items={[
+          {
+            path: "/fellowship",
+            content: "Fellowship",
+          },
+          {
+            content: (
+              <>
+                <BreadcrumbHideOnMobileText>
+                  Referendum
+                </BreadcrumbHideOnMobileText>{" "}
+                {`#${id}`}
+              </>
+            ),
+          },
+        ]}
+      />
+    </BreadcrumbWrapper>
+  );
+}
+
+export default withLoginUserRedux(({ id, detail, comments }) => {
+  let postContent = null;
+  let breadcrumb = null;
+
+  if (detail) {
+    postContent = <FellowshipContent comments={comments} />;
+    breadcrumb = (
+      <FellowshipBreadcrumb referendumIndex={detail?.referendumIndex} />
+    );
+  } else {
+    postContent = <CheckUnFinalized id={id} />;
+    breadcrumb = <UnFinalizedBreadcrumb id={id} />;
+  }
 
   return (
     <PostProvider post={detail}>
@@ -54,14 +109,8 @@ export default withLoginUserRedux(({ detail: _detail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <FellowshipBreadcrumb />
-        <DetailItem onReply={focusEditor} />
-
-        <FellowshipReferendumSideBar onVoteFinalized={onVoteFinalized} />
-
-        <Gov2ReferendumMetadata detail={detail} />
-        <Timeline trackInfo={detail?.onchainData?.trackInfo} />
-        {CommentComponent}
+        {breadcrumb}
+        {postContent}
       </DetailWithRightLayout>
     </PostProvider>
   );
@@ -75,7 +124,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
     getFellowshipReferendumUrl(id)
   );
   if (!detail) {
-    return to404(context);
+    return {
+      props: {
+        id,
+        detail: null,
+        comments: EmptyList,
+      },
+    };
   }
 
   const postId = detail?._id;
@@ -89,6 +144,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      id,
       detail,
       comments: comments ?? EmptyList,
     },
