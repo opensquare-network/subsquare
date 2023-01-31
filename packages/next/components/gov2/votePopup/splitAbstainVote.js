@@ -12,6 +12,13 @@ export default function SplitAbstainVote({
   return (
     <>
       <VoteValue
+        title="Abstain Vote Value"
+        titleTooltip=""
+        isLoading={isLoading}
+        inputVoteBalance={abstainInputVoteBalance}
+        setInputVoteBalance={setAbstainInputVoteBalance}
+      />
+      <VoteValue
         title="Aye Vote Value"
         titleTooltip=""
         isLoading={isLoading}
@@ -24,13 +31,6 @@ export default function SplitAbstainVote({
         isLoading={isLoading}
         inputVoteBalance={nayInputVoteBalance}
         setInputVoteBalance={setNayInputVoteBalance}
-      />
-      <VoteValue
-        title="Abstain Vote Value"
-        titleTooltip=""
-        isLoading={isLoading}
-        inputVoteBalance={abstainInputVoteBalance}
-        setInputVoteBalance={setAbstainInputVoteBalance}
       />
     </>
   );

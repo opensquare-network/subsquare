@@ -33,6 +33,19 @@ export default function useSplitAbstainVote({
   );
 
   const getSplitAbstainVoteTx = () => {
+    let bnAbstainVoteBalance;
+    try {
+      bnAbstainVoteBalance = checkInputValue(
+        abstainInputVoteBalance,
+        node.decimals,
+        "abstain vote balance",
+        true
+      );
+    } catch (err) {
+      showErrorToast(err.message);
+      return;
+    }
+
     let bnAyeVoteBalance;
     try {
       bnAyeVoteBalance = checkInputValue(
@@ -52,19 +65,6 @@ export default function useSplitAbstainVote({
         nayInputVoteBalance,
         node.decimals,
         "nay vote balance",
-        true
-      );
-    } catch (err) {
-      showErrorToast(err.message);
-      return;
-    }
-
-    let bnAbstainVoteBalance;
-    try {
-      bnAbstainVoteBalance = checkInputValue(
-        abstainInputVoteBalance,
-        node.decimals,
-        "abstain vote balance",
         true
       );
     } catch (err) {
