@@ -123,7 +123,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
               router.replace(router.query?.redirect || "/");
             }}
           >
-            Remind me later
+            Skip
           </GhostButton>
         </ContentCenterWrapper>
       </Wrapper>
