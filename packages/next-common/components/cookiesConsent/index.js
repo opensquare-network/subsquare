@@ -8,11 +8,11 @@ import ClosePanelIconOrigin from "../icons/closePanel";
 import { useEffect, useState } from "react";
 import Flex from "../styled/flex";
 import OutWrapperOrigin from "../styled/outWrapper";
-import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
-import { CACHE_KEY, pageMaxWidth } from "../../utils/constants";
+import { pageMaxWidth } from "../../utils/constants";
 import { smcss } from "../../utils/responsive";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { useScrollbarWidth } from "../../utils/hooks/useScrollbarWidth";
+import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 
 const OutWrapper = styled(OutWrapperOrigin)`
   z-index: 999;
@@ -69,18 +69,15 @@ const Description = styled.p`
 
 export default function CookiesConsent() {
   const [show, setShow] = useState(false);
+  const [isAcceptCookies, setIsAcceptCookies] = useAcceptCookies();
   useEffect(() => {
-    const isAcceptCookies = JSON.parse(
-      getCookie(CACHE_KEY.acceptCookies) ?? "false"
-    );
-
     setShow(!isAcceptCookies);
-  }, []);
+  }, [isAcceptCookies]);
 
   const scrollbarWidth = useScrollbarWidth();
 
   function handleAccept() {
-    setCookie(CACHE_KEY.acceptCookies, true, { expires: 30 });
+    setIsAcceptCookies(true, { expires: 30 });
     handleClose();
   }
   function handleClose() {
