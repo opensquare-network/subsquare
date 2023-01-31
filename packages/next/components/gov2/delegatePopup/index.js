@@ -21,6 +21,7 @@ import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import Track from "next-common/components/popup/fields/trackField";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -131,6 +132,9 @@ function PopupContent({
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
+
+      <Track />
+
       <Target
         extensionAccounts={extensionAccounts}
         setAddress={setTargetAddress}
