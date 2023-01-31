@@ -26,6 +26,7 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useStandardVote from "components/referenda/popup/voteHooks/useStandardVote";
 import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 function PopupContent({
   extensionAccounts,
@@ -93,6 +94,8 @@ function PopupContent({
     voteComponent = SplitAbstainVoteComponent;
     getVoteTx = getSplitAbstainVoteTx;
   }
+
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async () => {
     if (isLoading || referendumIndex == null || !node) {
