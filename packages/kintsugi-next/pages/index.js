@@ -20,18 +20,6 @@ export default withLoginUserRedux(({ overview, chain }) => {
       ),
     },
     {
-      category: "Treasury Proposals",
-      items: (overview?.treasury?.proposals ?? []).map((item) =>
-        toTreasuryProposalListItem(chain, item)
-      ),
-    },
-    {
-      category: "Tech. Comm. Proposals",
-      items: (overview?.techComm?.motions ?? []).map((item) =>
-        toTechCommMotionListItem(chain, item)
-      ),
-    },
-    {
       category: "Referenda",
       items: (overview?.democracy?.referendums ?? []).map((item) =>
         toReferendaListItem(chain, item)
@@ -41,6 +29,18 @@ export default withLoginUserRedux(({ overview, chain }) => {
       category: "Democracy Public Proposals",
       items: (overview?.democracy?.proposals ?? []).map((item) =>
         toPublicProposalListItem(chain, item)
+      ),
+    },
+    {
+      category: "Treasury Proposals",
+      items: (overview?.treasury?.proposals ?? []).map((item) =>
+        toTreasuryProposalListItem(chain, item)
+      ),
+    },
+    {
+      category: "Tech. Comm. Proposals",
+      items: (overview?.techComm?.motions ?? []).map((item) =>
+        toTechCommMotionListItem(chain, item)
       ),
     },
   ];
