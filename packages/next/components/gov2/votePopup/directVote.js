@@ -3,6 +3,7 @@ import VoteValue from "components/referenda/popup/voteValue";
 import VoteLock from "./voteLock";
 
 export default function DirectVote({
+  isAye = true,
   addressVoteDelegations,
   isLoading,
   inputVoteBalance,
@@ -18,6 +19,7 @@ export default function DirectVote({
         <Delegations delegationsVotes={delegationsVotes} />
       ) : null}
       <VoteValue
+        title={isAye ? "Aye Vote Value" : "Nay Vote Value"}
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
