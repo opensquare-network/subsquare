@@ -14,6 +14,8 @@ import GhostButton from "../buttons/ghostButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
 import { CACHE_KEY } from "../../utils/constants";
+import CheckboxIcon from "../../components/icons/checkbox";
+import { useCookieValue } from "../../utils/hooks/useCookieValue";
 
 const Label = styled.div`
   margin-bottom: 8px;
@@ -52,12 +54,28 @@ const BorderRadiusWrapper = styled.div`
   }
 `;
 
+const DontRemindWrapper = styled.span`
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+`;
+const DontRemindText = styled.span`
+  margin-left: 8px;
+  color: ${(p) => p.theme.textSecondary};
+  ${p_14_normal};
+`;
+
 const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
   const address = loginUser?.address;
   const [accountName, setAccountName] = useState("");
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
+  const [dontRemindEmail, setDontRemindEmail] = useCookieValue(
+    CACHE_KEY.dontRemindEmail,
+    false
+  );
 
   const identity = useIdentity(address, chain);
 
@@ -82,6 +100,10 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
       // router.push("/");
     }
   }, [address, loginUser, router]);
+
+  function toggleDontRemindEmail() {
+    setDontRemindEmail(!dontRemindEmail);
+  }
 
   return (
     <BaseLayout>
@@ -125,6 +147,11 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
           >
             Skip
           </GhostButton>
+
+          <DontRemindWrapper onClick={toggleDontRemindEmail}>
+            <CheckboxIcon checked={dontRemindEmail} />
+            <DontRemindText>Dont't remind me next time</DontRemindText>
+          </DontRemindWrapper>
         </ContentCenterWrapper>
       </Wrapper>
     </BaseLayout>
