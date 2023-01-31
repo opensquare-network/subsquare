@@ -44,6 +44,7 @@ export default function ConvictionSelect({
       value={value}
       options={options ?? DEFAULT_OPTIONS}
       onChange={(item) => setValue(item.value)}
+      maxDisplayItem={5}
     />
   );
 }
