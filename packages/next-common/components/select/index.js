@@ -46,7 +46,7 @@ const OptionsWrapper = styled.div`
   ${shadow_200};
   border-radius: 4px;
   padding: 8px 0;
-  width: 100%;
+  width: calc(100% + 2px);
   z-index: 999999;
   color: ${(props) => props.theme.textPrimary};
 
