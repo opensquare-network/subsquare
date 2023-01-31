@@ -16,6 +16,7 @@ import { WALLETS } from "../../utils/consts/connect";
 import { updateUser, useUserDispatch } from "../../context/user";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
+import { useCookieValue } from "../../utils/hooks/useCookieValue";
 
 const Label = styled.div`
   font-weight: bold;
@@ -59,6 +60,7 @@ export default function AddressLogin({ setMailLogin }) {
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const router = useRouter();
+  const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
 
   const doWeb3Login = async () => {
     if (!selectedAccount?.address) {
@@ -91,7 +93,7 @@ export default function AddressLogin({ setMailLogin }) {
             selectedAccount.meta?.source || selectedWallet
           );
 
-          if (loginResult.email) {
+          if (loginResult.email || dontRemindEmail) {
             router.replace(router.query?.redirect || "/");
           } else {
             router.replace({
