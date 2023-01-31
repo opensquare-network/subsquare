@@ -15,7 +15,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
-import Conviction from "./conviction";
+import Conviction from "next-common/components/popup/fields/convictionField";
 import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
 import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
