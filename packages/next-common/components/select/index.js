@@ -3,8 +3,8 @@ import styled, { css } from "styled-components";
 import Option from "./option";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import { pretty_scroll_bar, shadow_200 } from "../../styles/componentCss";
-import { CaretDown } from "../icons";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
+import Caret from "../icons/caret";
 
 const selectorHeight = 40;
 
@@ -87,7 +87,7 @@ function Select({
     <SelectWrapper ref={ref} disabled={disabled} onClick={handleShowOptions}>
       <SelectInner>
         <span>{displayValue}</span>
-        <CaretDown className="select-caret-down" width={14} height={14} />
+        <Caret down={!showOptions} />
       </SelectInner>
 
       {showOptions && (
