@@ -9,9 +9,7 @@ export function useCookieValue(key, defaultValue) {
     let parsed = value;
     const val = getCookie(key);
     if (!isNil(val)) {
-      try {
-        parsed = JSON.parse(val);
-      } catch (_) {}
+      parsed = JSON.parse(val);
     }
 
     setValue(parsed);
