@@ -7,6 +7,7 @@ import { useChainSettings } from "next-common/context/chain";
 import SplitVote from "../splitVote";
 
 export default function useSplitVote({
+  module = "convictionVoting",
   referendumIndex,
   isLoading,
   votingBalance,
@@ -59,7 +60,7 @@ export default function useSplitVote({
       return;
     }
 
-    return api.tx.democracy.vote(referendumIndex, {
+    return api.tx[module].vote(referendumIndex, {
       Split: {
         aye: bnAyeVoteBalance.toString(),
         nay: bnNayVoteBalance.toString(),

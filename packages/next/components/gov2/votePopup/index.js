@@ -23,8 +23,8 @@ import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useStandardVote from "./voteHooks/useStandardVote";
-import useSplitVote from "./voteHooks/useSplitVote";
+import useStandardVote from "components/referenda/popup/voteHooks/useStandardVote";
+import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 
 function PopupContent({
@@ -65,6 +65,7 @@ function PopupContent({
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
   const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
+    module: "convictionVoting",
     referendumIndex,
     isAye: tabIndex === Aye,
     addressVoteDelegations: addressVote?.delegations,
@@ -72,6 +73,7 @@ function PopupContent({
     votingBalance,
   });
   const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
+    module: "convictionVoting",
     referendumIndex,
     isLoading,
     votingBalance,

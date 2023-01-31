@@ -7,6 +7,7 @@ import { useChainSettings } from "next-common/context/chain";
 import DirectVote from "../directVote";
 
 export default function useStandardVote({
+  module = "convictionVoting",
   referendumIndex,
   isAye,
   addressVoteDelegations,
@@ -23,6 +24,7 @@ export default function useStandardVote({
 
   const StandardVoteComponent = (
     <DirectVote
+      module={module}
       isAye={isAye}
       addressVoteDelegations={addressVoteDelegations}
       isLoading={isLoading}
@@ -52,7 +54,7 @@ export default function useStandardVote({
       return;
     }
 
-    return api.tx.democracy.vote(referendumIndex, {
+    return api.tx[module].vote(referendumIndex, {
       Standard: {
         balance: bnVoteBalance.toString(),
         vote: {

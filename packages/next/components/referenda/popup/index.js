@@ -58,6 +58,7 @@ function PopupContent({
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
   const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
+    module: "democracy",
     referendumIndex,
     isAye: tabIndex === Aye,
     addressVoteDelegations: addressVote?.delegations,
@@ -65,6 +66,7 @@ function PopupContent({
     votingBalance,
   });
   const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
+    module: "democracy",
     referendumIndex,
     isLoading,
     votingBalance,
@@ -80,7 +82,7 @@ function PopupContent({
     getVoteTx = getSplitVoteTx;
   }
 
-  const doVote = async (aye) => {
+  const doVote = async () => {
     if (isLoading || referendumIndex == null || !node) {
       return;
     }

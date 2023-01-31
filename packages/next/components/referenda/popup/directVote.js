@@ -3,6 +3,7 @@ import VoteValue from "./voteValue";
 import VoteLock from "./voteLock";
 
 export default function DirectVote({
+  module,
   isAye = true,
   addressVoteDelegations,
   isLoading,
@@ -24,7 +25,7 @@ export default function DirectVote({
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
       />
-      <VoteLock voteLock={voteLock} setVoteLock={setVoteLock} />
+      <VoteLock module={module} voteLock={voteLock} setVoteLock={setVoteLock} />
     </>
   );
 }
