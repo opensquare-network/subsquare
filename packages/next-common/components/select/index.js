@@ -6,7 +6,7 @@ import { shadow_200 } from "../../styles/componentCss";
 import { CaretDown } from "../icons";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 
-const selectorHeight = 38;
+const selectorHeight = 40;
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
@@ -15,7 +15,7 @@ const SelectWrapper = styled(FlexBetweenCenter)`
   border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   height: ${selectorHeight}px;
-  padding: 0 12px;
+  padding: 10px 16px;
   cursor: pointer;
   color: ${(props) => props.theme.textPrimary};
   ${(p) =>
@@ -47,8 +47,6 @@ const OptionsWrapper = styled.div`
   border-radius: 4px;
   padding: 8px 0;
   width: 100%;
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
-  border-color: ${(props) => props.theme.grey300Border};
   z-index: 999999;
   color: ${(props) => props.theme.textPrimary};
 `;
