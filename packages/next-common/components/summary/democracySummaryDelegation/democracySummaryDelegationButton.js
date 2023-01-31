@@ -25,7 +25,7 @@ export default function DemocracySummaryDelegationButton({
   const addDelegationButton = (
     <Button onClick={() => setShowDelegatePopup(true)}>
       <AddSVG />
-      My Delegate
+      New Delegate
     </Button>
   );
 

@@ -25,7 +25,7 @@ export default function DelegationButton({
   const addDelegationButton = (
     <Button onClick={() => setShowDelegatePopup(true)}>
       <AddSVG />
-      My Delegate
+      New Delegate
     </Button>
   );
 
