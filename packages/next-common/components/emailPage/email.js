@@ -150,7 +150,7 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
 
           <DontRemindWrapper onClick={toggleDontRemindEmail}>
             <CheckboxIcon checked={dontRemindEmail} />
-            <DontRemindText>Dont't remind me next time</DontRemindText>
+            <DontRemindText>Don{"'"}t remind me next time</DontRemindText>
           </DontRemindWrapper>
         </ContentCenterWrapper>
       </Wrapper>
