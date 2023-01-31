@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Option from "./option";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
-import { shadow_200 } from "../../styles/componentCss";
+import { pretty_scroll_bar, shadow_200 } from "../../styles/componentCss";
 import { CaretDown } from "../icons";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 
@@ -49,6 +49,14 @@ const OptionsWrapper = styled.div`
   width: 100%;
   z-index: 999999;
   color: ${(props) => props.theme.textPrimary};
+
+  ${(p) =>
+    p.maxDisplayItem &&
+    css`
+      height: ${selectorHeight * p.maxDisplayItem}px;
+      overflow-y: scroll;
+      ${pretty_scroll_bar};
+    `}
 `;
 
 function Select({
@@ -56,6 +64,7 @@ function Select({
   value,
   options = [],
   onChange = () => {},
+  maxDisplayItem,
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
@@ -82,7 +91,7 @@ function Select({
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper>
+        <OptionsWrapper maxDisplayItem={maxDisplayItem}>
           {options.map((option) => (
             <Option
               key={option.value}
