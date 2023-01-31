@@ -36,7 +36,8 @@ export default function useSplitVote({
       bnAyeVoteBalance = checkInputValue(
         ayeInputVoteBalance,
         node.decimals,
-        "aye vote balance"
+        "aye vote balance",
+        true
       );
     } catch (err) {
       showErrorToast(err.message);
@@ -48,7 +49,8 @@ export default function useSplitVote({
       bnNayVoteBalance = checkInputValue(
         nayInputVoteBalance,
         node.decimals,
-        "nay vote balance"
+        "nay vote balance",
+        true
       );
     } catch (err) {
       showErrorToast(err.message);

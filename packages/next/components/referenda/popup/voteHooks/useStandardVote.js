@@ -42,7 +42,8 @@ export default function useStandardVote({
       bnVoteBalance = checkInputValue(
         inputVoteBalance,
         node.decimals,
-        "vote balance"
+        "vote balance",
+        true
       );
     } catch (err) {
       showErrorToast(err.message);
