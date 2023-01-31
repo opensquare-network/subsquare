@@ -86,7 +86,7 @@ export const CACHE_KEY = {
   authToken: "auth-token",
   homeFoldedMenus: "home-folded-menus",
   acceptCookies: "accept-cookies",
-  dontRemindEmail: "dontRemindEmail",
+  dontRemindEmail: "dont-remind-email",
 };
 
 export const chain = process.env.NEXT_PUBLIC_CHAIN;
