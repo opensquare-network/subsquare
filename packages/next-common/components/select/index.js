@@ -2,11 +2,11 @@ import React, { useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Option from "./option";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
-import { shadow_200 } from "../../styles/componentCss";
-import { CaretDown } from "../icons";
+import { pretty_scroll_bar, shadow_200 } from "../../styles/componentCss";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
+import Caret from "../icons/caret";
 
-const selectorHeight = 38;
+const selectorHeight = 40;
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
@@ -15,7 +15,7 @@ const SelectWrapper = styled(FlexBetweenCenter)`
   border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
   height: ${selectorHeight}px;
-  padding: 0 12px;
+  padding: 10px 16px;
   cursor: pointer;
   color: ${(props) => props.theme.textPrimary};
   ${(p) =>
@@ -46,11 +46,17 @@ const OptionsWrapper = styled.div`
   ${shadow_200};
   border-radius: 4px;
   padding: 8px 0;
-  width: 100%;
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)} px;
-  border-color: ${(props) => props.theme.grey300Border};
+  width: calc(100% + 2px);
   z-index: 999999;
   color: ${(props) => props.theme.textPrimary};
+
+  ${(p) =>
+    p.maxDisplayItem &&
+    css`
+      height: ${selectorHeight * p.maxDisplayItem}px;
+      overflow-y: scroll;
+      ${pretty_scroll_bar};
+    `}
 `;
 
 function Select({
@@ -58,6 +64,7 @@ function Select({
   value,
   options = [],
   onChange = () => {},
+  maxDisplayItem,
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
@@ -80,11 +87,11 @@ function Select({
     <SelectWrapper ref={ref} disabled={disabled} onClick={handleShowOptions}>
       <SelectInner>
         <span>{displayValue}</span>
-        <CaretDown className="select-caret-down" width={14} height={14} />
+        <Caret down={!showOptions} />
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper>
+        <OptionsWrapper maxDisplayItem={maxDisplayItem}>
           {options.map((option) => (
             <Option
               key={option.value}

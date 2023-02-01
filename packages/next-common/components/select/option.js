@@ -4,8 +4,8 @@ import styled, { css } from "styled-components";
 const OptionWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  height: 36px;
+  padding: 10px 16px;
+  height: 40px;
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
