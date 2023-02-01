@@ -56,6 +56,7 @@ function PopupContent({
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
+  const [track, setTrack] = useState(0);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -133,7 +134,7 @@ function PopupContent({
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
 
-      <Track />
+      <Track track={track} setTrack={setTrack} />
 
       <Target
         extensionAccounts={extensionAccounts}
