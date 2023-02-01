@@ -59,7 +59,7 @@ export default function CheckUnFinalizedBase({
     }
 
     // Check if server post available
-    let timeout = null;
+    let timeoutId = null;
     const checkAndRefresh = async () => {
       const available = await checkServerPostAvailable();
       if (available) {
@@ -67,12 +67,12 @@ export default function CheckUnFinalizedBase({
         router.replace(router.asPath);
         return;
       }
-      timeout = setTimeout(checkAndRefresh, 6000);
+      timeoutId = setTimeout(checkAndRefresh, 6000);
     };
     checkAndRefresh();
 
     return () => {
-      clearTimeout(timeout);
+      clearTimeout(timeoutId);
     };
   }, [isUnFinalized, checkServerPostAvailable, router]);
 
