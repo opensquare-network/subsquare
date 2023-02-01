@@ -58,6 +58,7 @@ export default function CheckUnFinalizedBase({
       return;
     }
 
+    // Check if server post available
     let timeout = null;
     const checkAndRefresh = async () => {
       const available = await checkServerPostAvailable();
@@ -68,8 +69,6 @@ export default function CheckUnFinalizedBase({
       }
       timeout = setTimeout(checkAndRefresh, 6000);
     };
-
-    // Check if server post available
     checkAndRefresh();
 
     return () => {
