@@ -32,7 +32,6 @@ export default function useStandardVote({
       setInputVoteBalance={setInputVoteBalance}
       voteLock={voteLock}
       setVoteLock={setVoteLock}
-      node={node}
     />
   );
 
