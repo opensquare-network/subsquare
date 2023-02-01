@@ -3,6 +3,8 @@ import VoteValue from "./voteValue";
 import VoteLock from "./voteLock";
 
 export default function DirectVote({
+  module,
+  isAye = true,
   addressVoteDelegations,
   isLoading,
   inputVoteBalance,
@@ -18,11 +20,12 @@ export default function DirectVote({
         <Delegations delegationsVotes={delegationsVotes} />
       ) : null}
       <VoteValue
+        title={isAye ? "Aye Vote Value" : "Nay Vote Value"}
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
       />
-      <VoteLock voteLock={voteLock} setVoteLock={setVoteLock} />
+      <VoteLock module={module} voteLock={voteLock} setVoteLock={setVoteLock} />
     </>
   );
 }

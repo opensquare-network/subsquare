@@ -5,12 +5,14 @@ export default function VoteValue({
   isLoading,
   inputVoteBalance,
   setInputVoteBalance,
+  title = "Value",
+  titleTooltip = "The value is locked for the duration of the vote",
 }) {
   const node = useChainSettings();
   return (
     <BalanceField
-      title="Value"
-      titleTooltip="The value is locked for the duration of the vote"
+      title={title}
+      titleTooltip={titleTooltip}
       isLoading={isLoading}
       inputBalance={inputVoteBalance}
       setInputBalance={setInputVoteBalance}
