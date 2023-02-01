@@ -27,6 +27,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -96,10 +97,12 @@ export default withLoginUserRedux(
     if (detail) {
       breadcrumbItemName = `#${detail?.referendumIndex}`;
       postContent = (
-        <ReferendumContent
-          publicProposal={publicProposal}
-          comments={comments}
-        />
+        <NonNullPost>
+          <ReferendumContent
+            publicProposal={publicProposal}
+            comments={comments}
+          />
+        </NonNullPost>
       );
     } else {
       breadcrumbItemName = `#${id}`;

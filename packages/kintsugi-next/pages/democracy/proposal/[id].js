@@ -24,6 +24,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -91,7 +92,9 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
   if (detail) {
     breadcrumbItemName = `#${detail?.proposalIndex}`;
     postContent = (
-      <PublicProposalContent referendum={referendum} comments={comments} />
+      <NonNullPost>
+        <PublicProposalContent referendum={referendum} comments={comments} />
+      </NonNullPost>
     );
   } else {
     breadcrumbItemName = `#${id}`;

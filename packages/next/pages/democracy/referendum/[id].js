@@ -25,6 +25,7 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -80,7 +81,11 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   if (detail) {
     breadcrumbItemName = `#${detail?.referendumIndex}`;
-    postContent = <ReferendumContent comments={comments} />;
+    postContent = (
+      <NonNullPost>
+        <ReferendumContent comments={comments} />
+      </NonNullPost>
+    );
   } else {
     breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;

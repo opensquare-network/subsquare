@@ -14,6 +14,7 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "components/external/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function DemocracyExternalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -39,7 +40,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
   if (detail) {
     breadcrumbItemName = `#${hashEllipsis(detail?.externalProposalHash)}`;
     postContent = (
-      <DemocracyExternalContent detail={detail} comments={comments} />
+      <NonNullPost>
+        <DemocracyExternalContent detail={detail} comments={comments} />
+      </NonNullPost>
     );
   } else {
     const hash = id?.split("_").pop();

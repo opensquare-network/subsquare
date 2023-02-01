@@ -11,6 +11,7 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -36,7 +37,11 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
     breadcrumbItemName = `#${
       motion?.motionIndex ?? hashEllipsis(motion?.hash)
     }`;
-    postContent = <TechCommMotionContent motion={motion} comments={comments} />;
+    postContent = (
+      <NonNullPost>
+        <TechCommMotionContent motion={motion} comments={comments} />
+      </NonNullPost>
+    );
   } else {
     if (id?.match(/^[0-9]+$/)) {
       breadcrumbItemName = `#${id}`;
