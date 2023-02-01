@@ -15,6 +15,7 @@ import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "components/bounty/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 /**
  *
@@ -75,11 +76,13 @@ export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
   if (detail) {
     breadcrumbItemName = `#${detail?.bountyIndex}`;
     postContent = (
-      <BountyContent
-        detail={detail}
-        childBounties={childBounties}
-        comments={comments}
-      />
+      <NonNullPost>
+        <BountyContent
+          detail={detail}
+          childBounties={childBounties}
+          comments={comments}
+        />
+      </NonNullPost>
     );
   } else {
     breadcrumbItemName = `#${id}`;

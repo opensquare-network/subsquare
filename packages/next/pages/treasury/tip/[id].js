@@ -36,6 +36,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useDetailType } from "next-common/context/page";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 const TipCountDown = ({ meta = {}, state }) => {
   const nowHeight = useSelector(latestHeightSelector);
@@ -118,7 +119,11 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   if (detail) {
     breadcrumbItemName = `#${hashEllipsis(detail?.hash)}`;
-    postContent = <TreasuryTipContent comments={comments} />;
+    postContent = (
+      <NonNullPost>
+        <TreasuryTipContent comments={comments} />
+      </NonNullPost>
+    );
   } else {
     const hash = id?.split("_").pop();
     breadcrumbItemName = `#${hashEllipsis(hash)}`;
