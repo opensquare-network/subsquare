@@ -22,7 +22,6 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import Track from "next-common/components/popup/fields/trackField";
-import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -117,10 +116,7 @@ function PopupContent({
       tx,
       dispatch,
       setLoading: setIsLoading,
-      onInBlock: () => {
-        clearVotingForEntries();
-        onInBlock();
-      },
+      onInBlock,
       onClose,
       signerAddress,
       isMounted,
