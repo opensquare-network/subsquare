@@ -98,13 +98,13 @@ function UnFinalizedBreadcrumb({ id }) {
 }
 
 export default withLoginUserRedux(({ id, detail, comments }) => {
-  let postContent = null;
+  let postContent;
 
   if (detail) {
     postContent = (
       <NonNullPost>
-        <ReferendumContent comments={comments} />
         <ReferendaBreadcrumb />
+        <ReferendumContent comments={comments} />
       </NonNullPost>
     );
   } else {
