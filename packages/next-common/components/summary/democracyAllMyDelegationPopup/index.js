@@ -1,6 +1,6 @@
 import PopupOrigin from "next-common/components/popup/wrapper/Popup";
 import styled from "styled-components";
-import MyDelegationTabList from "./tab";
+import AllMyDelegationTabList from "./tab";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -12,7 +12,7 @@ export default function AllMyDelegationPopup({
 }) {
   return (
     <Popup title="My Delegation" onClose={() => setShow(false)}>
-      <MyDelegationTabList delegations={delegations} />
+      <AllMyDelegationTabList delegations={delegations} />
     </Popup>
   );
 }
