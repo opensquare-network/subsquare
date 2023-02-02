@@ -5,11 +5,22 @@ import {
   useAllDelegationList,
 } from "next-common/utils/hooks/referenda/useDelegations";
 import { Button } from "next-common/components/summary/styled";
-import VStack from "next-common/components/styled/vStack";
+import VStackOrigin from "next-common/components/styled/vStack";
+import AddSVG from "next-common/assets/imgs/icons/add.svg";
+import HStack from "next-common/components/styled/hStack";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
   flex-wrap: wrap;
+`;
+
+const VStack = styled(VStackOrigin)`
+  flex: 1;
+`;
+
+const ButtonWrapper = styled(Flex)`
+  justify-content: flex-end;
 `;
 
 export default function AllDelegation({}) {
@@ -19,10 +30,24 @@ export default function AllDelegation({}) {
   return (
     <Wrapper>
       <VStack space={8}>
-        <Button>New Delegate</Button>
+        <ButtonWrapper>
+          <Button>
+            <AddSVG />
+            New Delegate
+          </Button>
+        </ButtonWrapper>
 
-        <div>My delegation {delegationList?.length}</div>
-        <div>Been delegated {beenDelegatedList?.length}</div>
+        {!!delegationList?.length && (
+          <HStack space={8}>
+            <div>My delegation {delegationList.length}</div>
+          </HStack>
+        )}
+
+        {!!beenDelegatedList?.length && (
+          <HStack space={8}>
+            <div>Been delegated {beenDelegatedList.length}</div>
+          </HStack>
+        )}
       </VStack>
     </Wrapper>
   );
