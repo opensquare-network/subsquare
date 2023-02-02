@@ -5,7 +5,12 @@ import { parseGov2TrackName } from "../../../utils/gov2";
 import Select from "../../select";
 import PopupLabel from "../label";
 
-export default function Track({ track, setTrack = noop }) {
+export default function Track({
+  title = "Track",
+  track,
+  setTrack = noop,
+  hasAll = false,
+}) {
   const { tracks } = usePageProps();
   const options = tracks?.map((track) => {
     return {
@@ -14,9 +19,13 @@ export default function Track({ track, setTrack = noop }) {
     };
   });
 
+  if (hasAll) {
+    options?.unshift?.({ label: "All", value: "all" });
+  }
+
   return (
     <div>
-      <PopupLabel text="Track" />
+      {title && <PopupLabel text={title} />}
       <Select
         value={track}
         options={options}
