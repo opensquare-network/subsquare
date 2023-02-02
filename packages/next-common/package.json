@@ -37,6 +37,7 @@
     "lodash.noop": "^3.0.1",
     "lodash.range": "^3.2.0",
     "lodash.set": "^4.3.2",
+    "lodash.sumby": "^4.6.0",
     "md5": "^2.3.0",
     "micromark": "^3.0.10",
     "micromark-extension-gfm": "^2.0.0",
