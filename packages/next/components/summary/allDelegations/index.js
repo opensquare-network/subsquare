@@ -14,6 +14,7 @@ import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
 import DelegatePopup from "components/gov2/delegatePopup";
 import { useState } from "react";
+import MyDelegationPopup from "next-common/components/summary/democracyMyDelegation/myDelegationListPopup";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -41,6 +42,7 @@ export default function AllDelegation({}) {
   const { beenDelegatedList } = useAllBeenDelegatedList();
 
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
+  const [showMyDelegationPopup, setShowMyDelegationPopup] = useState(false);
 
   return (
     <Wrapper>
@@ -60,19 +62,28 @@ export default function AllDelegation({}) {
         )}
 
         {!!delegationList?.length && (
-          <HStack space={8}>
-            <GreyInfoPanel>
-              My delegation <Count>{delegationList.length}</Count>
-            </GreyInfoPanel>
+          <>
+            <HStack space={8}>
+              <GreyInfoPanel>
+                My delegation <Count>{delegationList.length}</Count>
+              </GreyInfoPanel>
 
-            <Tooltip content="My delegation detail">
-              <div>
-                <ListButton>
-                  <ListSVG />
-                </ListButton>
-              </div>
-            </Tooltip>
-          </HStack>
+              <Tooltip content="My delegation detail">
+                <div>
+                  <ListButton onClick={() => setShowMyDelegationPopup(true)}>
+                    <ListSVG />
+                  </ListButton>
+                </div>
+              </Tooltip>
+            </HStack>
+
+            {showMyDelegationPopup && (
+              <MyDelegationPopup
+                delegations={delegationList}
+                setShow={setShowMyDelegationPopup}
+              />
+            )}
+          </>
         )}
 
         {!!beenDelegatedList?.length && (
