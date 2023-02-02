@@ -12,13 +12,13 @@ import useRealAddress from "../useRealAddress";
 /**
  * @description returns all my delegations/delegatings
  */
-export function useAllDelegationList() {
+export function useAllMyDelegationList() {
   const api = useApi();
   const realAddress = useRealAddress();
   const isMounted = useIsMountedBool();
   const { tracks = [] } = usePageProps();
-  const [delegationList, setDelegationList] = useState(null);
-  const isLoading = useMemo(() => isNil(delegationList), [delegationList]);
+  const [myDelegationList, setMyDelegationList] = useState(null);
+  const isLoading = useMemo(() => isNil(myDelegationList), [myDelegationList]);
 
   async function getAllDelegations() {
     if (!api || !realAddress) {
@@ -38,17 +38,17 @@ export function useAllDelegationList() {
         };
       })
     ).then((list = []) => {
-      setDelegationList(list.filter((item) => item.delegation));
+      setMyDelegationList(list.filter((item) => item.delegation));
     });
   }
 
   useEffect(() => {
-    setDelegationList(null);
+    setMyDelegationList(null);
     getAllDelegations();
   }, [isMounted, api, realAddress]);
 
   return {
-    delegationList,
+    myDelegationList,
     isLoading,
     refresh: getAllDelegations,
   };

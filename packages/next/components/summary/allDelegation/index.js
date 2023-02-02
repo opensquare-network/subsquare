@@ -2,8 +2,8 @@ import flexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import styled from "styled-components";
 import {
   useAllBeenDelegatedList,
-  useAllDelegationList,
-} from "next-common/utils/hooks/referenda/useDelegations";
+  useAllMyDelegationList,
+} from "next-common/utils/hooks/referenda/useDelegation";
 import { Button } from "next-common/components/summary/styled";
 import VStackOrigin from "next-common/components/styled/vStack";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
@@ -14,7 +14,8 @@ import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
 import DelegatePopup from "components/gov2/delegatePopup";
 import { useState } from "react";
-import MyDelegationPopup from "next-common/components/summary/democracyMyDelegation/myDelegationListPopup";
+import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyDelegation/myDelegationListPopup";
+import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegated/beenDelegatedListPopup";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -38,11 +39,14 @@ const ListButton = styled(Button)`
 `;
 
 export default function AllDelegation({}) {
-  const { delegationList } = useAllDelegationList();
+  const { myDelegationList } = useAllMyDelegationList();
   const { beenDelegatedList } = useAllBeenDelegatedList();
 
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
-  const [showMyDelegationPopup, setShowMyDelegationPopup] = useState(false);
+  const [showAllMyDelegationPopup, setShowAllMyDelegationPopup] =
+    useState(false);
+  const [showAllBeenDelegatedPopup, setShowAllBeenDelegatedPopup] =
+    useState(false);
 
   return (
     <Wrapper>
@@ -61,45 +65,56 @@ export default function AllDelegation({}) {
           />
         )}
 
-        {!!delegationList?.length && (
+        {!!myDelegationList?.length && (
           <>
             <HStack space={8}>
               <GreyInfoPanel>
-                My delegation <Count>{delegationList.length}</Count>
+                My delegation <Count>{myDelegationList.length}</Count>
               </GreyInfoPanel>
 
               <Tooltip content="My delegation detail">
                 <div>
-                  <ListButton onClick={() => setShowMyDelegationPopup(true)}>
+                  <ListButton onClick={() => setShowAllMyDelegationPopup(true)}>
                     <ListSVG />
                   </ListButton>
                 </div>
               </Tooltip>
             </HStack>
 
-            {showMyDelegationPopup && (
-              <MyDelegationPopup
-                delegations={delegationList}
-                setShow={setShowMyDelegationPopup}
+            {showAllMyDelegationPopup && (
+              <AllMyDelegationPopup
+                delegations={myDelegationList}
+                setShow={setShowAllMyDelegationPopup}
               />
             )}
           </>
         )}
 
         {!!beenDelegatedList?.length && (
-          <HStack space={8}>
-            <GreyInfoPanel>
-              Been delegated <Count>{beenDelegatedList.length}</Count>
-            </GreyInfoPanel>
+          <>
+            <HStack space={8}>
+              <GreyInfoPanel>
+                Been delegated <Count>{beenDelegatedList.length}</Count>
+              </GreyInfoPanel>
 
-            <Tooltip content="Delegated detail">
-              <div>
-                <ListButton>
-                  <ListSVG />
-                </ListButton>
-              </div>
-            </Tooltip>
-          </HStack>
+              <Tooltip content="Delegated detail">
+                <div>
+                  <ListButton
+                    onClick={() => setShowAllBeenDelegatedPopup(true)}
+                  >
+                    <ListSVG />
+                  </ListButton>
+                </div>
+              </Tooltip>
+            </HStack>
+
+            {showAllBeenDelegatedPopup && (
+              <AllBeenDelegatedListPopup
+                beenDelegatedList={beenDelegatedList}
+                setShow={setShowAllBeenDelegatedPopup}
+              />
+            )}
+          </>
         )}
       </VStack>
     </Wrapper>

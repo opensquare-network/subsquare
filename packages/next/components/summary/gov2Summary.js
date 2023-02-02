@@ -9,7 +9,7 @@ import {
   SummaryItem,
 } from "next-common/components/summary/styled";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import AllDelegation from "./allDelegations";
+import AllDelegation from "./allDelegation";
 
 export default function Gov2Summary({ summary, noDelegation = false }) {
   const { sm } = useScreenSize();
