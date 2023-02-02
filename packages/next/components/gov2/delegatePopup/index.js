@@ -101,7 +101,7 @@ function PopupContent({
     }
 
     let tx = api.tx.convictionVoting.delegate(
-      trackId,
+      track,
       targetAddress,
       conviction,
       bnVoteBalance.toString()
