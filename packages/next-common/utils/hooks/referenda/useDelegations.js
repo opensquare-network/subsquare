@@ -20,29 +20,37 @@ export function useAllDelegationList() {
   const [delegationList, setDelegationList] = useState(null);
   const isLoading = useMemo(() => isNil(delegationList), [delegationList]);
 
-  async function getDelegations() {
+  async function getAllDelegations() {
     if (!api || !realAddress) {
       return;
     }
 
     Promise.all(
-      tracks.map((track) => {
-        return getGov2TrackDelegation(api, track.id, realAddress);
+      tracks.map(async (track) => {
+        const delegation = await getGov2TrackDelegation(
+          api,
+          track.id,
+          realAddress
+        );
+        return {
+          track,
+          delegation,
+        };
       })
     ).then((list = []) => {
-      setDelegationList(list.filter(Boolean));
+      setDelegationList(list.filter((item) => item.delegation));
     });
   }
 
   useEffect(() => {
     setDelegationList(null);
-    getDelegations();
+    getAllDelegations();
   }, [isMounted, api, realAddress]);
 
   return {
     delegationList,
     isLoading,
-    refresh: getDelegations,
+    refresh: getAllDelegations,
   };
 }
 
@@ -66,11 +74,19 @@ export function useAllBeenDelegatedList() {
     }
 
     Promise.all(
-      tracks.map((track) => {
-        return getGov2BeenDelegatedListByAddress(api, track.id, realAddress);
+      tracks.map(async (track) => {
+        const beenDelegated = getGov2BeenDelegatedListByAddress(
+          api,
+          track.id,
+          realAddress
+        );
+        return {
+          track,
+          beenDelegated,
+        };
       })
     ).then((list = []) => {
-      setBeenDelegatedList(list.filter((item) => item?.length));
+      setBeenDelegatedList(list.filter((item) => item.beenDelegated?.length));
     });
   }
 
