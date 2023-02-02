@@ -12,6 +12,8 @@ import Flex from "next-common/components/styled/flex";
 import GreyInfoPanel from "next-common/components/summary/styled/greyInfoPanel";
 import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
+import DelegatePopup from "components/gov2/delegatePopup";
+import { useState } from "react";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -38,15 +40,24 @@ export default function AllDelegation({}) {
   const { delegationList } = useAllDelegationList();
   const { beenDelegatedList } = useAllBeenDelegatedList();
 
+  const [showDelegatePopup, setShowDelegatePopup] = useState(false);
+
   return (
     <Wrapper>
       <VStack space={8}>
         <ButtonWrapper>
-          <Button>
+          <Button onClick={() => setShowDelegatePopup(true)}>
             <AddSVG />
             New Delegate
           </Button>
         </ButtonWrapper>
+
+        {showDelegatePopup && (
+          <DelegatePopup
+            trackId={0}
+            onClose={() => setShowDelegatePopup(false)}
+          />
+        )}
 
         {!!delegationList?.length && (
           <HStack space={8}>
