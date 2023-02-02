@@ -75,7 +75,7 @@ export function useAllBeenDelegatedList() {
 
     Promise.all(
       tracks.map(async (track) => {
-        const beenDelegated = getGov2BeenDelegatedListByAddress(
+        const beenDelegated = await getGov2BeenDelegatedListByAddress(
           api,
           track.id,
           realAddress
