@@ -75,7 +75,7 @@ export async function getGov2AddressVote(
   return null;
 }
 
-let votingForEntries;
+let votingForEntries = null;
 
 export async function getGov2BeenDelegatedListByAddress(api, trackId, address) {
   if (!votingForEntries) {
@@ -98,6 +98,7 @@ export async function getGov2BeenDelegatedListByAddress(api, trackId, address) {
     if (voting.target !== address) {
       continue;
     }
+
     beenDelegated.push({ delegator, ...voting });
   }
 
@@ -121,4 +122,8 @@ export async function getGov2BeenDelegatedByAddress(api, trackId, address) {
   }
 
   return null;
+}
+
+export async function clearVotingForEntries() {
+  votingForEntries = null;
 }
