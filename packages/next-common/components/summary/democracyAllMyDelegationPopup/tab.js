@@ -3,7 +3,7 @@ import Pagination from "next-common/components/pagination";
 import VStack from "../../styled/vStack";
 import AllMyDelegationPopupList from "./list";
 
-export default function AllMyDelegationPopupTabList({ delegations }) {
+export default function AllMyDelegationPopupTabList({ delegationList }) {
   const [page, setPage] = useState(1);
   const pageSize = 50;
 
@@ -15,7 +15,7 @@ export default function AllMyDelegationPopupTabList({ delegations }) {
   const pagination = {
     page,
     pageSize,
-    total: delegations?.length || 0,
+    total: delegationList?.length || 0,
     onPageChange,
   };
 
@@ -24,7 +24,9 @@ export default function AllMyDelegationPopupTabList({ delegations }) {
 
   return (
     <VStack space={16}>
-      <AllMyDelegationPopupList items={delegations.slice(sliceFrom, sliceTo)} />
+      <AllMyDelegationPopupList
+        items={delegationList.slice(sliceFrom, sliceTo)}
+      />
       <Pagination {...pagination} />
     </VStack>
   );

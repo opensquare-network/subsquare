@@ -7,12 +7,12 @@ const Popup = styled(PopupOrigin)`
 `;
 
 export default function AllMyDelegationPopup({
-  delegations,
+  delegationList,
   setShow = () => {},
 }) {
   return (
     <Popup title="My Delegation" onClose={() => setShow(false)}>
-      <AllMyDelegationTabList delegations={delegations} />
+      <AllMyDelegationTabList delegationList={delegationList} />
     </Popup>
   );
 }
