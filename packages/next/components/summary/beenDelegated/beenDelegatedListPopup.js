@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import DelegationTabList from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListPopup/delegationTabList";
 import DelegationSummary from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListPopup/delegationSummary";
-import Track from "next-common/components/popup/fields/trackField";
+import TrackSelect from "next-common/components/trackSelect";
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -49,7 +49,10 @@ export default function BeenDelegatedListPopup({ trackId, setShow }) {
 
   return (
     <Popup title="Been Delegated" onClose={() => setShow(false)}>
-      <Track track={selectedTrackId} setTrack={setSelectedTrackId} />
+      <TrackSelect
+        selectedTrack={selectedTrackId}
+        setSelectedTrack={setSelectedTrackId}
+      />
       <DelegationSummary
         delegations={delegations}
         beenDelegatedList={beenDelegatedList}
