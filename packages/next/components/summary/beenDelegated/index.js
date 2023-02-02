@@ -7,7 +7,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDelegated/beenDelegatedInfo";
-import BeenDelegatedListButton from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListButton";
+import BeenDelegatedListButton from "./beenDelegatedListButton";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 const Wrapper = styled.div`
@@ -56,10 +56,7 @@ export default function BeenDelegated({ trackId }) {
         delegations={delegations}
         addressesCount={beenDelegatedList?.length}
       />
-      <BeenDelegatedListButton
-        delegations={delegations}
-        beenDelegatedList={beenDelegatedList}
-      />
+      <BeenDelegatedListButton trackId={trackId} />
     </Wrapper>
   );
 }

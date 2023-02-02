@@ -3,7 +3,7 @@ import DelegationList from "./delegationList";
 import Pagination from "next-common/components/pagination";
 import VStack from "../../../styled/vStack";
 
-export default function DelegationTabList({ beenDelegatedList }) {
+export default function DelegationTabList({ beenDelegatedList, isLoading }) {
   const [page, setPage] = useState(1);
   const pageSize = 50;
 
@@ -24,7 +24,10 @@ export default function DelegationTabList({ beenDelegatedList }) {
 
   return (
     <VStack space={16}>
-      <DelegationList items={beenDelegatedList.slice(sliceFrom, sliceTo)} />
+      <DelegationList
+        items={beenDelegatedList.slice(sliceFrom, sliceTo)}
+        loading={isLoading}
+      />
       <Pagination {...pagination} />
     </VStack>
   );
