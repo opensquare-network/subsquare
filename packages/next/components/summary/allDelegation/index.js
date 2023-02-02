@@ -14,8 +14,8 @@ import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
 import DelegatePopup from "components/gov2/delegatePopup";
 import { useState } from "react";
-import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyDelegation/myDelegationListPopup";
-import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegated/beenDelegatedListPopup";
+import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyDelegationPopup";
+import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegatedPopup";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;

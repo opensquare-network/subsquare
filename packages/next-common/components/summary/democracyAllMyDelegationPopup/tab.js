@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Pagination from "next-common/components/pagination";
-import VStack from "../../../styled/vStack";
+import VStack from "../../styled/vStack";
 import MyDelegationPopupList from "./list";
 
-export default function MyDelegationPopupTabList({ delegations }) {
+export default function AllMyDelegationPopupTabList({ delegations }) {
   const [page, setPage] = useState(1);
   const pageSize = 50;
 

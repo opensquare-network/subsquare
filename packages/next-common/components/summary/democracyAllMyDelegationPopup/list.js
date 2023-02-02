@@ -1,5 +1,5 @@
 import styled, { useTheme } from "styled-components";
-import PopupListWrapper from "../../../styled/popupListWrapper";
+import PopupListWrapper from "../../styled/popupListWrapper";
 import {
   EmptyTd,
   RowSplitter,
@@ -12,18 +12,21 @@ import { Fragment } from "react";
 import Loading from "next-common/components/loading";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import User from "next-common/components/user";
-import ValueDisplay from "../../../valueDisplay";
-import { useChainSettings } from "../../../../context/chain";
+import ValueDisplay from "../../valueDisplay";
 import { toPrecision } from "next-common/utils";
-import VStack from "../../../styled/vStack";
-import { p_12_normal } from "../../../../styles/componentCss";
+import VStack from "../../styled/vStack";
+import { p_12_normal } from "../../../styles/componentCss";
+import { useChainSettings } from "../../../context/chain";
 
 const ConvictionText = styled.div`
   color: ${(p) => p.theme.textTertiary};
   ${p_12_normal};
 `;
 
-export default function MyDelegationPopupList({ loading = true, items = [] }) {
+export default function AllMyDelegationPopupList({
+  loading = true,
+  items = [],
+}) {
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
 
