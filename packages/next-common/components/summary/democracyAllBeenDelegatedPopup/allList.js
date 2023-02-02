@@ -20,7 +20,7 @@ import Flex from "../../styled/flex";
 
 export default function AllBeenDelegatedPopupAllList({
   items,
-  loading = true,
+  loading = false,
 }) {
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
