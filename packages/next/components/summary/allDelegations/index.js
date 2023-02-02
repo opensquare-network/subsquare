@@ -9,6 +9,9 @@ import VStackOrigin from "next-common/components/styled/vStack";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import HStack from "next-common/components/styled/hStack";
 import Flex from "next-common/components/styled/flex";
+import GreyInfoPanel from "next-common/components/summary/styled/greyInfoPanel";
+import ListSVG from "next-common/assets/imgs/icons/list.svg";
+import Tooltip from "next-common/components/tooltip";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -21,6 +24,14 @@ const VStack = styled(VStackOrigin)`
 
 const ButtonWrapper = styled(Flex)`
   justify-content: flex-end;
+`;
+
+const Count = styled.span`
+  color: ${(p) => p.theme.textSecondary};
+`;
+
+const ListButton = styled(Button)`
+  padding: 7px;
 `;
 
 export default function AllDelegation({}) {
@@ -39,13 +50,33 @@ export default function AllDelegation({}) {
 
         {!!delegationList?.length && (
           <HStack space={8}>
-            <div>My delegation {delegationList.length}</div>
+            <GreyInfoPanel>
+              My delegation <Count>{delegationList.length}</Count>
+            </GreyInfoPanel>
+
+            <Tooltip content="My delegation detail">
+              <div>
+                <ListButton>
+                  <ListSVG />
+                </ListButton>
+              </div>
+            </Tooltip>
           </HStack>
         )}
 
         {!!beenDelegatedList?.length && (
           <HStack space={8}>
-            <div>Been delegated {beenDelegatedList.length}</div>
+            <GreyInfoPanel>
+              Been delegated <Count>{beenDelegatedList.length}</Count>
+            </GreyInfoPanel>
+
+            <Tooltip content="Delegated detail">
+              <div>
+                <ListButton>
+                  <ListSVG />
+                </ListButton>
+              </div>
+            </Tooltip>
           </HStack>
         )}
       </VStack>
