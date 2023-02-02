@@ -56,7 +56,7 @@ function PopupContent({
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
-  const [track, setTrack] = useState(0);
+  const [track, setTrack] = useState(trackId);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
