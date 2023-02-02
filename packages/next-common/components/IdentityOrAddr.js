@@ -46,6 +46,14 @@ function IdentityOrAddr({ address, network }) {
     );
   }
 
+  let encodedAddr = address;
+  try {
+    encodedAddr = encodeAddressToChain(address, network);
+  } catch (e) {
+    console.error(e);
+    // don't crash the page
+  }
+
   return (
     <NameWrapper>
       {identity && identity?.info?.status !== "NO_ID" ? (
@@ -57,7 +65,7 @@ function IdentityOrAddr({ address, network }) {
         <>
           <MentionBox href={`/user/${address}`}>
             <span>@</span>
-            {addressEllipsis(encodeAddressToChain(address, network))}
+            {addressEllipsis(encodedAddr)}
           </MentionBox>
         </>
       )}
