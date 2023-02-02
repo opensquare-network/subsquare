@@ -28,6 +28,9 @@ export function toApiType(type) {
   if (type === detailPageCategory.FELLOWSHIP_REFERENDUM) {
     return "fellowship/referenda";
   }
+  if (type === detailPageCategory.ADVISORY_MOTION) {
+    return "advisory-motions";
+  }
   return `${type}s`;
 }
 

@@ -144,6 +144,17 @@ export const toTechCommMotionListItem = (chain, item) => ({
   isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });
 
+export const toAdvisoryMotionsListItem = (chain, item) => ({
+  ...item,
+  index: item.motionIndex,
+  title: getTitle(item),
+  author: item.author,
+  address: item.proposer,
+  status: item.state ?? "Unknown",
+  detailLink: `/advisory-committee/motion/${item.indexer.blockHeight}_${item.hash}`,
+  time: getPostUpdatedAt(item),
+});
+
 function getTreasuryProposalTitle(item) {
   let title = item.title?.trim();
   if (title) {

@@ -9,6 +9,8 @@ export default function toApiCouncil(chain, type) {
     }
   } else if (type === detailPageCategory.FINANCIAL_MOTION) {
     return "financialCouncil";
+  } else if (type === detailPageCategory.ADVISORY_MOTION) {
+    return "advisoryCommittee";
   } else if (type === detailPageCategory.TECH_COMM_MOTION) {
     return "technicalCommittee";
   }

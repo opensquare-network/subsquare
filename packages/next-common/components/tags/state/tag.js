@@ -28,6 +28,8 @@ const categoryTagMap = {
   [detailPageCategory.COUNCIL_MOTION]: CollectiveTag,
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
+  [businessCategory.advisoryMotions]: CollectiveTag,
+  [detailPageCategory.ADVISORY_MOTION]: CollectiveTag,
   [businessCategory.collective]: CollectiveTag,
 
   [businessCategory.democracyProposals]: DemocracyProposalTag,
