@@ -24,6 +24,13 @@ export default function SplitAbstainVoteStatus({
         status={"SplitAbstain"}
         tooltip={"Vote for both aye, nay and abstain"}
       />
+      <StatusWrapper>
+        <ValueDisplay
+          value={toPrecision(addressVoteSplitAbstain, node.decimals)}
+          symbol={node?.voteSymbol || node?.symbol}
+        />
+        <div className="result">Abstain</div>
+      </StatusWrapper>
       <VoteStatusBox aye={true}>
         <ValueDisplay
           value={toPrecision(addressVoteSplitAye, node.decimals)}
@@ -36,13 +43,6 @@ export default function SplitAbstainVoteStatus({
           symbol={node?.voteSymbol || node?.symbol}
         />
       </VoteStatusBox>
-      <StatusWrapper>
-        <ValueDisplay
-          value={toPrecision(addressVoteSplitAbstain, node.decimals)}
-          symbol={node?.voteSymbol || node?.symbol}
-        />
-        <div className="result">Abstain</div>
-      </StatusWrapper>
     </VotingStatusContent>
   );
 }
