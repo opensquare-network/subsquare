@@ -61,6 +61,7 @@ export default function AllDelegation({}) {
         {showDelegatePopup && (
           <DelegatePopup
             trackId={0}
+            showTrackSelect={true}
             onClose={() => setShowDelegatePopup(false)}
           />
         )}

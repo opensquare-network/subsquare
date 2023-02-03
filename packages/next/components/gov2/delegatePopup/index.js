@@ -32,6 +32,7 @@ function PopupContent({
   extensionAccounts,
   trackId,
   onClose,
+  showTrackSelect = false,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -134,7 +135,7 @@ function PopupContent({
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
 
-      <Track track={track} setTrack={setTrack} />
+      {showTrackSelect && <Track track={track} setTrack={setTrack} />}
 
       <Target
         extensionAccounts={extensionAccounts}
