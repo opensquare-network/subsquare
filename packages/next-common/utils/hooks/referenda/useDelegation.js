@@ -2,6 +2,7 @@ import isNil from "lodash.isnil";
 import { useEffect, useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
 import {
+  getGov2BeenDelegatedByAddress,
   getGov2BeenDelegatedListByAddress,
   getGov2TrackDelegation,
 } from "../../gov2/gov2ReferendumVote";
@@ -100,4 +101,32 @@ export function useAllBeenDelegatedList() {
     isLoading,
     refresh: getAllBeenDelegated,
   };
+}
+
+/**
+ * @param {number} track track id
+ * @returns delegations
+ * @description getGov2BeenDelegatedByAddress hook
+ */
+export function useTrackDelegations(track) {
+  const api = useApi();
+  const realAddress = useRealAddress();
+  const isMounted = useIsMountedBool();
+  const [delegations, setDelegations] = useState(null);
+
+  useEffect(() => {
+    setDelegations(null);
+
+    if (!api || !realAddress) {
+      return;
+    }
+
+    getGov2BeenDelegatedByAddress(api, track, realAddress).then((result) => {
+      if (isMounted) {
+        setDelegations(result);
+      }
+    });
+  }, [track, api, realAddress, isMounted]);
+
+  return delegations;
 }

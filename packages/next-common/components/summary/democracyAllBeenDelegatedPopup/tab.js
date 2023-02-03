@@ -7,7 +7,7 @@ import AllBeenDelegatedPopupTrackList from "./trackList";
 export default function AllBeenDelegatedPopupTabList({ beenDelegatedList }) {
   const [track, setTrack] = useState("all");
 
-  const trackBeenDelegated = useMemo(() => {
+  const trackBeenDelegatedList = useMemo(() => {
     const beenDelegated = beenDelegatedList?.find((item) => {
       return item.track.id === track;
     });
@@ -21,7 +21,11 @@ export default function AllBeenDelegatedPopupTabList({ beenDelegatedList }) {
       {track === "all" ? (
         <AllBeenDelegatedPopupAllList items={beenDelegatedList} />
       ) : (
-        <AllBeenDelegatedPopupTrackList items={trackBeenDelegated} />
+        <AllBeenDelegatedPopupTrackList
+          track={track}
+          beenDelegatedList={beenDelegatedList}
+          trackBeenDelegatedList={trackBeenDelegatedList}
+        />
       )}
     </VStack>
   );
