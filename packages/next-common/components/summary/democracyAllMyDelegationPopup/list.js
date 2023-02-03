@@ -53,7 +53,7 @@ export default function AllMyDelegationPopupList({
 
         <tbody>
           {myDelegationList?.length ? (
-            myDelegationList.map((item) => (
+            myDelegationList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 144 }}>
@@ -82,6 +82,14 @@ export default function AllMyDelegationPopupList({
                     </VStack>
                   </StyledTd>
                 </StyledTr>
+
+                {index !== myDelegationList.length - 1 && (
+                  <RowSplitter
+                    backgroundColor={
+                      theme.isDark ? theme.grey200Border : theme.grey100Bg
+                    }
+                  />
+                )}
               </Fragment>
             ))
           ) : (
