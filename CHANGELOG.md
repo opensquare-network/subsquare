@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.9.0
+date: 02/03/2023
+
+- Support Split/AbstainSplit vote for democracy and OpenGov.
+- Add page view for un-finalized proposals, not redirect users to 404 page.
+- Add ignore checkbox for email setting reminder in the login process.
+- Refactor duplicated popup components.
+
 # 2.8.2
 date: 01/28/2023
 
