@@ -19,7 +19,7 @@ export default function AllBeenDelegatedPopupTabList({ beenDelegatedList }) {
       <Track title="" hasAll track={track} setTrack={setTrack} />
 
       {track === "all" ? (
-        <AllBeenDelegatedPopupAllList items={beenDelegatedList} />
+        <AllBeenDelegatedPopupAllList beenDelegatedList={beenDelegatedList} />
       ) : (
         <AllBeenDelegatedPopupTrackList
           track={track}
