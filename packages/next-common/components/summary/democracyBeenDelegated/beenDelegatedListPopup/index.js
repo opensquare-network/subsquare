@@ -1,7 +1,12 @@
 import React from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
+import PopupOrigin from "next-common/components/popup/wrapper/Popup";
 import DelegationTabList from "./delegationTabList";
 import DelegationSummary from "./delegationSummary";
+import styled from "styled-components";
+
+const Popup = styled(PopupOrigin)`
+  width: 480px;
+`;
 
 export default function BeenDelegatedListPopup({
   delegations,
