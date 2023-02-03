@@ -8,7 +8,7 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import Loading from "next-common/components/loading";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import User from "next-common/components/user";

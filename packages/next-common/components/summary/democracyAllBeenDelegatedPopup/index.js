@@ -1,3 +1,4 @@
+import React from "react";
 import PopupOrigin from "next-common/components/popup/wrapper/Popup";
 import styled from "styled-components";
 import AllBeenDelegatedPopupTabList from "./tab";
