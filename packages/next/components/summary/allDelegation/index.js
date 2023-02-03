@@ -84,7 +84,7 @@ export default function AllDelegation({}) {
 
             {showAllMyDelegationPopup && (
               <AllMyDelegationPopup
-                delegationList={myDelegationList}
+                myDelegationList={myDelegationList}
                 setShow={setShowAllMyDelegationPopup}
               />
             )}

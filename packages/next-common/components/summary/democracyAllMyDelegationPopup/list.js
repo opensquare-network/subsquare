@@ -26,7 +26,7 @@ const ConvictionText = styled.div`
 
 export default function AllMyDelegationPopupList({
   loading = true,
-  items = [],
+  myDelegationList = [],
 }) {
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
@@ -52,8 +52,8 @@ export default function AllMyDelegationPopupList({
         </thead>
 
         <tbody>
-          {items?.length ? (
-            items.map((item) => (
+          {myDelegationList?.length ? (
+            myDelegationList.map((item) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 144 }}>
