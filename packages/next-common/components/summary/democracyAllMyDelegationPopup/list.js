@@ -17,6 +17,7 @@ import { toPrecision } from "next-common/utils";
 import VStack from "../../styled/vStack";
 import { p_12_normal } from "../../../styles/componentCss";
 import { useChainSettings } from "../../../context/chain";
+import { convictionToLockX, Conviction } from "../../../utils/referendumCommon";
 
 const ConvictionText = styled.div`
   color: ${(p) => p.theme.textTertiary};
@@ -74,7 +75,9 @@ export default function AllMyDelegationPopupList({
                         showTooltip={false}
                       />
                       <ConvictionText>
-                        {item.delegation.conviction}
+                        {convictionToLockX(
+                          Conviction[item.delegation.conviction]
+                        )}
                       </ConvictionText>
                     </VStack>
                   </StyledTd>
