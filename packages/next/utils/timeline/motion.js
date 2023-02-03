@@ -115,7 +115,7 @@ export function createMotionTimelineData(
         };
       }
       default: {
-        return getTimelineItemCommonData(item, motion);
+        return getTimelineItemCommonData(item, motion, type);
       }
     }
   });

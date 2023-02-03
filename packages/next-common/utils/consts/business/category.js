@@ -12,6 +12,8 @@ const businessCategory = {
   polkassemblyDiscussions: "Polkassembly Discussions",
   openGovReferenda: "OpenGov Referenda",
   fellowship: "Fellowship",
+  financialMotions: "Financial Motions",
+  advisoryMotions: "Advisory Motions",
 };
 
 export const detailPageCategory = {
@@ -29,6 +31,7 @@ export const detailPageCategory = {
   TREASURY_TIP: "treasury/tip",
   GOV2_REFERENDUM: "referenda/referendum",
   FELLOWSHIP_REFERENDUM: "fellowship/referendum",
+  ADVISORY_MOTION: "advisory-committee/motion",
 };
 
 export default businessCategory;
