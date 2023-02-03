@@ -1,3 +1,4 @@
+import isNil from "lodash.isnil";
 import { Conviction, isAye } from "../referendumCommon";
 import { extractAddressAndTrackId } from "./utils";
 
@@ -77,7 +78,7 @@ export async function getGov2AddressVote(
 
 let votingForEntries = null;
 
-export async function getGov2BeenDelegatedListByAddress(api, trackId, address) {
+export async function getGov2BeenDelegatedListByAddress(api, address, trackId) {
   if (!votingForEntries) {
     votingForEntries = await api.query.convictionVoting.votingFor.entries();
   }
@@ -88,8 +89,10 @@ export async function getGov2BeenDelegatedListByAddress(api, trackId, address) {
       storageKey,
       api
     );
-    if (_trackId !== trackId) {
-      continue;
+    if (!isNil(trackId)) {
+      if (_trackId !== trackId) {
+        continue;
+      }
     }
     if (!votingFor.isDelegating) {
       continue;
@@ -105,7 +108,7 @@ export async function getGov2BeenDelegatedListByAddress(api, trackId, address) {
   return beenDelegated;
 }
 
-export async function getGov2BeenDelegatedByAddress(api, trackId, address) {
+export async function getGov2BeenDelegatedByAddress(api, address, trackId) {
   const voting = await api.query.convictionVoting.votingFor(address, trackId);
 
   const jsonVoting = voting.toJSON();

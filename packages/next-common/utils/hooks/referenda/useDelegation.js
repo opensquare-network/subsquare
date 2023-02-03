@@ -78,8 +78,8 @@ export function useAllBeenDelegatedList() {
       tracks.map(async (track) => {
         const beenDelegated = await getGov2BeenDelegatedListByAddress(
           api,
-          track.id,
-          realAddress
+          realAddress,
+          track.id
         );
         return {
           track,
@@ -117,11 +117,11 @@ export function useTrackDelegations(track) {
   useEffect(() => {
     setDelegations(null);
 
-    if (!api || !realAddress) {
+    if (!api || !realAddress || isNil(track)) {
       return;
     }
 
-    getGov2BeenDelegatedByAddress(api, track, realAddress).then((result) => {
+    getGov2BeenDelegatedByAddress(api, realAddress, track).then((result) => {
       if (isMounted) {
         setDelegations(result);
       }

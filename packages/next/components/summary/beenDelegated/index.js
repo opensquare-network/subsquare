@@ -33,12 +33,12 @@ export default function BeenDelegated({ trackId }) {
     if (!api || !realAddress || isNil(trackId)) {
       return;
     }
-    getGov2BeenDelegatedByAddress(api, trackId, realAddress).then((result) => {
+    getGov2BeenDelegatedByAddress(api, realAddress, trackId).then((result) => {
       if (isMounted.current) {
         setDelegations(result);
       }
     });
-    getGov2BeenDelegatedListByAddress(api, trackId, realAddress).then(
+    getGov2BeenDelegatedListByAddress(api, realAddress, trackId).then(
       (result) => {
         if (isMounted.current) {
           setBeenDelegatedList(result);
