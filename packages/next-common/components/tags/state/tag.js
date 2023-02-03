@@ -30,6 +30,8 @@ const categoryTagMap = {
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
   [businessCategory.advisoryMotions]: CollectiveTag,
   [detailPageCategory.ADVISORY_MOTION]: CollectiveTag,
+  [businessCategory.financialMotions]: CollectiveTag,
+  [detailPageCategory.FINANCIAL_MOTION]: CollectiveTag,
   [businessCategory.collective]: CollectiveTag,
 
   [businessCategory.democracyProposals]: DemocracyProposalTag,
