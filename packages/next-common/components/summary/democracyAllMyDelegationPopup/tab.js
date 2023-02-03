@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Pagination from "next-common/components/pagination";
 import VStack from "../../styled/vStack";
 import AllMyDelegationPopupList from "./list";
