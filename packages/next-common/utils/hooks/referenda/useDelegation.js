@@ -61,9 +61,9 @@ export function useAllMyDelegationList() {
  */
 export function useAllBeenDelegatedList() {
   const api = useApi();
-  const { tracks = [] } = usePageProps();
   const realAddress = useRealAddress();
   const isMounted = useIsMountedBool();
+  const { tracks = [] } = usePageProps();
   const [beenDelegatedList, setBeenDelegatedList] = useState(null);
   const isLoading = useMemo(
     () => isNil(beenDelegatedList),
