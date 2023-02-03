@@ -1,3 +1,4 @@
+import groupBy from "lodash.groupby";
 import isNil from "lodash.isnil";
 import { useEffect, useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
@@ -74,20 +75,15 @@ export function useAllBeenDelegatedList() {
       return;
     }
 
-    Promise.all(
-      tracks.map(async (track) => {
-        const beenDelegated = await getGov2BeenDelegatedListByAddress(
-          api,
-          realAddress,
-          track.id
-        );
-        return {
-          track,
-          beenDelegated,
-        };
-      })
-    ).then((list = []) => {
-      setBeenDelegatedList(list.filter((item) => item.beenDelegated?.length));
+    getGov2BeenDelegatedListByAddress(api, realAddress).then((list) => {
+      const trackGroups = groupBy(list, "trackId");
+      const result = Object.keys(trackGroups).map((k) => {
+        const trackId = parseInt(k);
+        const track = tracks.find((t) => t.id === trackId);
+        const beenDelegated = trackGroups[trackId];
+        return { track, beenDelegated };
+      });
+      setBeenDelegatedList(result);
     });
   }
 

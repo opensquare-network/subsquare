@@ -102,7 +102,7 @@ export async function getGov2BeenDelegatedListByAddress(api, address, trackId) {
       continue;
     }
 
-    beenDelegated.push({ delegator, ...voting });
+    beenDelegated.push({ delegator, trackId: _trackId, ...voting });
   }
 
   return beenDelegated;
