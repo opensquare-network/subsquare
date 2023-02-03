@@ -20,7 +20,7 @@ import { TrackIconMap } from "../../icons/track";
 import Flex from "../../styled/flex";
 
 export default function AllBeenDelegatedPopupAllList({
-  items,
+  beenDelegatedList,
   loading = false,
 }) {
   const { symbol, decimals } = useChainSettings();
@@ -46,8 +46,8 @@ export default function AllBeenDelegatedPopupAllList({
         </thead>
 
         <tbody>
-          {items?.length ? (
-            items.map((item, index) => (
+          {beenDelegatedList?.length ? (
+            beenDelegatedList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 296 }}>
@@ -68,7 +68,7 @@ export default function AllBeenDelegatedPopupAllList({
                   </StyledTd>
                 </StyledTr>
 
-                {index !== items.length - 1 && (
+                {index !== beenDelegatedList.length - 1 && (
                   <RowSplitter
                     backgroundColor={
                       theme.isDark ? theme.grey200Border : theme.grey100Bg
