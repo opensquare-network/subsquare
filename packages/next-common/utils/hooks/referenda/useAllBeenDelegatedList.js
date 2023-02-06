@@ -43,7 +43,7 @@ export function useAllBeenDelegatedList() {
         setBeenDelegatedList(result);
       }
     });
-  }, [api, isMounted, realAddress]);
+  }, [api, isMounted, tracks, realAddress]);
 
   useEffect(() => {
     setBeenDelegatedList(null);
