@@ -9,15 +9,11 @@ const Popup = styled(PopupOrigin)`
 
 export default function AllBeenDelegatedPopup({
   beenDelegatedList,
-  onTrackClick,
   setShow = () => {},
 }) {
   return (
     <Popup title="Been Delegated" onClose={() => setShow(false)}>
-      <AllBeenDelegatedPopupTabList
-        beenDelegatedList={beenDelegatedList}
-        onTrackClick={onTrackClick}
-      />
+      <AllBeenDelegatedPopupTabList beenDelegatedList={beenDelegatedList} />
     </Popup>
   );
 }
