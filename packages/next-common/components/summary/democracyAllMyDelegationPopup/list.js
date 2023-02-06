@@ -18,10 +18,18 @@ import VStack from "../../styled/vStack";
 import { p_12_normal } from "../../../styles/componentCss";
 import { useChainSettings } from "../../../context/chain";
 import { convictionToLockX, Conviction } from "../../../utils/referendumCommon";
+import Tooltip from "../../tooltip";
 
 const ConvictionText = styled.div`
   color: ${(p) => p.theme.textTertiary};
   ${p_12_normal};
+`;
+
+const TrackName = styled.div`
+  max-width: 144px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export default function AllMyDelegationPopupList({
@@ -57,7 +65,11 @@ export default function AllMyDelegationPopupList({
               <Fragment key={item.track.id}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 144 }}>
-                    <span>{parseGov2TrackName(item.track.name)}</span>
+                    <Tooltip content={parseGov2TrackName(item.track.name)}>
+                      <TrackName>
+                        {parseGov2TrackName(item.track.name)}
+                      </TrackName>
+                    </Tooltip>
                   </StyledTd>
                   <StyledTd style={{ textAlign: "left", width: 144 }}>
                     <User
