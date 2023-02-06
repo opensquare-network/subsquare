@@ -40,7 +40,7 @@ function TrackItem({ track, onClick = noop }) {
 export default function AllBeenDelegatedPopupAllList({
   beenDelegatedList,
   loading = false,
-  onTrackClick,
+  onTrackClick = noop,
 }) {
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
