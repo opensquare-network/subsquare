@@ -39,7 +39,7 @@ const SelectInner = styled(FlexBetweenCenter)`
 
 const OptionsWrapper = styled.div`
   position: absolute;
-  left: 0;
+  left: -1px;
   right: 0;
   top: ${selectorHeight + 4}px;
   background: ${(props) => props.theme.neutral};
