@@ -49,7 +49,7 @@ export default function DelegationSummary({ delegations, beenDelegatedList }) {
         <Item>
           <Title>
             <BalanceSVG />
-            Votes
+            Balance
           </Title>
           <Value>
             <ValueDisplay
@@ -63,7 +63,7 @@ export default function DelegationSummary({ delegations, beenDelegatedList }) {
         <Item>
           <Title>
             <SupportSVG />
-            Capital
+            Support
           </Title>
           <Value>
             <ValueDisplay

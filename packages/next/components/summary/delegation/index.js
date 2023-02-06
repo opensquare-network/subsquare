@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelegation";
+import { useTrackDelegating } from "next-common/utils/hooks/referenda/useTrackDelegating";
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DelegationInfo from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
 import DelegationButton from "./delegationButton";
+import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,11 +24,13 @@ export default function Delegation({ trackId }) {
   const { delegating, refresh } = useTrackDelegating(api, trackId, realAddress);
 
   const onDelegateInBlock = useCallback(() => {
+    clearVotingForEntries();
     refresh();
     dispatch(newSuccessToast(`Delegate success`));
   }, [dispatch, refresh]);
 
   const onUndelegateInBlock = useCallback(() => {
+    clearVotingForEntries();
     refresh();
     dispatch(newSuccessToast(`Undelegated`));
   }, [dispatch, refresh]);

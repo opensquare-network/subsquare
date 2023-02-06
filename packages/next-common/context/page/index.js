@@ -22,3 +22,11 @@ export function useDetailType() {
   }
   return type;
 }
+
+/**
+ * @description props from `getServerSideProps`
+ */
+export function usePageProps() {
+  const { props } = usePageProperties();
+  return props;
+}

@@ -51,7 +51,10 @@ export function withLoginUser(getServerSideProps) {
         loginUser: user ?? null,
         themeMode: themeMode ?? "light",
         homeFoldedMenus: homeFoldedMenus || "",
-        pageProperties,
+        pageProperties: {
+          ...pageProperties,
+          props: props.props,
+        },
       },
     };
   };

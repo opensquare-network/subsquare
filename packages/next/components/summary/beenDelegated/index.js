@@ -9,6 +9,7 @@ import styled from "styled-components";
 import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDelegated/beenDelegatedInfo";
 import BeenDelegatedListButton from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListButton";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,15 +30,15 @@ export default function BeenDelegated({ trackId }) {
     setDelegations();
     setBeenDelegatedList([]);
 
-    if (!api || !realAddress) {
+    if (!api || !realAddress || isNil(trackId)) {
       return;
     }
-    getGov2BeenDelegatedByAddress(api, trackId, realAddress).then((result) => {
+    getGov2BeenDelegatedByAddress(api, realAddress, trackId).then((result) => {
       if (isMounted.current) {
         setDelegations(result);
       }
     });
-    getGov2BeenDelegatedListByAddress(api, trackId, realAddress).then(
+    getGov2BeenDelegatedListByAddress(api, realAddress, trackId).then(
       (result) => {
         if (isMounted.current) {
           setBeenDelegatedList(result);

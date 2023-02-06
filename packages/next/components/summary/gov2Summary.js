@@ -9,14 +9,21 @@ import {
   SummaryItem,
 } from "next-common/components/summary/styled";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import AllDelegation from "./allDelegation";
 
-export default function Gov2Summary({ summary }) {
+export default function Gov2Summary({ summary, noDelegation = false }) {
   const { sm } = useScreenSize();
+
+  let footer;
+  if (!noDelegation) {
+    footer = <AllDelegation />;
+  }
 
   return (
     <Summary
       title="Referenda"
       description="All active and history referenda of various tracks."
+      footer={footer}
     >
       <Grid columns={sm ? 2 : 3} gap={16}>
         <SummaryItem>

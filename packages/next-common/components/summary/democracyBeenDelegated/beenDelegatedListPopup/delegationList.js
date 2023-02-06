@@ -19,6 +19,10 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import { Conviction } from "utils/referendumUtil";
 import PopupListWrapper from "../../../styled/popupListWrapper";
 
+const styleAddress = { textAlign: "left", width: 208 };
+const styleLabel = { textAlign: "right", width: 80 };
+const styleSupport = { textAlign: "right" };
+
 function DelegationList({ items, theme, loading = true }) {
   const chain = useChain();
   const node = useChainSettings();
@@ -31,15 +35,9 @@ function DelegationList({ items, theme, loading = true }) {
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: 176 }}>
-              ADDRESS
-            </StyledTh>
-            {hasLabel && (
-              <StyledTh style={{ textAlign: "center", width: 40 }}>
-                LABEL
-              </StyledTh>
-            )}
-            <StyledTh style={{ textAlign: "right" }}>CAPITAL</StyledTh>
+            <StyledTh style={styleAddress}>ADDRESS</StyledTh>
+            {hasLabel && <StyledTh style={styleLabel}>LABEL</StyledTh>}
+            <StyledTh style={styleSupport}>SUPPORT</StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={
@@ -53,7 +51,7 @@ function DelegationList({ items, theme, loading = true }) {
             items.map((item, index) => (
               <Fragment key={index}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: 176 }}>
+                  <StyledTd style={styleAddress}>
                     <User
                       add={item.delegator}
                       fontSize={14}
@@ -62,14 +60,14 @@ function DelegationList({ items, theme, loading = true }) {
                     />
                   </StyledTd>
                   {hasLabel && (
-                    <StyledTd style={{ textAlign: "center", width: 40 }}>
+                    <StyledTd style={styleLabel}>
                       <VoteLabel
                         conviction={Conviction[item.conviction]}
                         isDelegating={item.isDelegating}
                       />
                     </StyledTd>
                   )}
-                  <StyledTd style={{ textAlign: "right" }}>
+                  <StyledTd style={styleSupport}>
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
                       symbol={symbol}

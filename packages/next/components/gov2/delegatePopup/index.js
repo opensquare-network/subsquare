@@ -15,12 +15,13 @@ import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useChainSettings } from "next-common/context/chain";
-import Conviction from "./conviction";
+import Conviction from "next-common/components/popup/fields/convictionField";
 import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
 import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import Track from "next-common/components/popup/fields/trackField";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -31,6 +32,7 @@ function PopupContent({
   extensionAccounts,
   trackId,
   onClose,
+  showTrackSelect = false,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -55,6 +57,7 @@ function PopupContent({
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
+  const [track, setTrack] = useState(trackId);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -99,7 +102,7 @@ function PopupContent({
     }
 
     let tx = api.tx.convictionVoting.delegate(
-      trackId,
+      track,
       targetAddress,
       conviction,
       bnVoteBalance.toString()
@@ -131,6 +134,9 @@ function PopupContent({
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
+
+      {showTrackSelect && <Track track={track} setTrack={setTrack} />}
+
       <Target
         extensionAccounts={extensionAccounts}
         setAddress={setTargetAddress}

@@ -53,7 +53,7 @@ const OptionsWrapper = styled.div`
   ${(p) =>
     p.maxDisplayItem &&
     css`
-      height: ${selectorHeight * p.maxDisplayItem}px;
+      max-height: ${selectorHeight * p.maxDisplayItem}px;
       overflow-y: scroll;
       ${pretty_scroll_bar};
     `}
