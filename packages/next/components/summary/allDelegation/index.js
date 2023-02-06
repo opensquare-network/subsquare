@@ -59,13 +59,6 @@ export default function AllDelegation() {
   return (
     <Wrapper>
       <VStack space={8}>
-        <ButtonWrapper>
-          <Button onClick={() => setShowDelegatePopup(true)}>
-            <AddSVG />
-            New Delegate
-          </Button>
-        </ButtonWrapper>
-
         {showDelegatePopup && (
           <DelegatePopup
             trackId={0}
@@ -126,6 +119,13 @@ export default function AllDelegation() {
             )}
           </>
         )}
+
+        <ButtonWrapper>
+          <Button onClick={() => setShowDelegatePopup(true)}>
+            <AddSVG />
+            New Delegate
+          </Button>
+        </ButtonWrapper>
       </VStack>
     </Wrapper>
   );
