@@ -1,8 +1,8 @@
 import isNil from "lodash.isnil";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
 import useApi from "../useApi";
-import { useIsMountedBool } from "../useIsMounted";
+import useIsMounted from "../useIsMounted";
 import useRealAddress from "../useRealAddress";
 import { extractAddressAndTrackId } from "../../gov2/utils";
 
@@ -24,33 +24,40 @@ export async function getAddressTrackDelegations(api, address) {
 export function useAllMyDelegationList() {
   const api = useApi();
   const realAddress = useRealAddress();
-  const isMounted = useIsMountedBool();
+  const isMounted = useIsMounted();
   const { tracks = [] } = usePageProps();
   const [myDelegationList, setMyDelegationList] = useState(null);
   const isLoading = useMemo(() => isNil(myDelegationList), [myDelegationList]);
 
-  async function getAllDelegations() {
+  const getAllDelegations = useCallback(async () => {
     if (!api || !realAddress) {
       return;
     }
 
-    getAddressTrackDelegations(api, realAddress)
-      .then((delegations = []) => {
-        return delegations.map(({ trackId, delegation }) => {
-          const track = tracks.find((track) => track.id === trackId);
-          return {
-            track,
-            delegation,
-          };
-        });
+    const list = await getAddressTrackDelegations(api, realAddress);
+    const delegations = (list || [])
+      .map(({ trackId, delegation }) => {
+        const track = tracks.find((track) => track.id === trackId);
+        if (!track) {
+          return null;
+        }
+
+        return {
+          track,
+          delegation,
+        };
       })
-      .then((delegations) => setMyDelegationList(delegations));
-  }
+      .filter((v) => v);
+
+    if (isMounted.current) {
+      setMyDelegationList(delegations);
+    }
+  }, [isMounted, api, realAddress, tracks]);
 
   useEffect(() => {
     setMyDelegationList(null);
     getAllDelegations();
-  }, [isMounted, api, realAddress]);
+  }, [getAllDelegations]);
 
   return {
     myDelegationList,

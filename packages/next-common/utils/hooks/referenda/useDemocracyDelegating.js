@@ -1,6 +1,6 @@
 // copied from `useTrackDelegation`
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getDemocracyDelegation } from "../../democracy/getDemocracyDelegation";
 import useIsMounted from "../useIsMounted";
 
@@ -9,27 +9,28 @@ export default function useDemocracyDelegating(api, address) {
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     if (!api || !address) {
       return;
     }
 
     setIsLoading(true);
-    getDemocracyDelegation(api, address)
-      .then((delegating) => {
-        if (isMounted.current) {
-          setDelegating(delegating);
-        }
-      })
-      .finally(() => {
+    try {
+      const delegating = await getDemocracyDelegation(api, address);
+      if (isMounted.current) {
+        setDelegating(delegating);
+      }
+    } finally {
+      if (isMounted.current) {
         setIsLoading(false);
-      });
-  };
+      }
+    }
+  }, [api, isMounted, address]);
 
   useEffect(() => {
     setDelegating(null);
     refresh();
-  }, [api, address]);
+  }, [refresh]);
 
   return { delegating, isLoading, refresh };
 }

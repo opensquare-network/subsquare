@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useIsMounted from "../useIsMounted";
 import { getGov2TrackDelegation } from "../../gov2/gov2ReferendumVote";
 import isNil from "lodash.isnil";
@@ -8,24 +8,23 @@ export function useTrackDelegating(api, trackId, address) {
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     if (!api || !address || isNil(trackId)) {
       return;
     }
 
     setIsLoading(true);
-    getGov2TrackDelegation(api, trackId, address)
-      .then((delegating) => {
-        if (isMounted.current) {
-          setDelegating(delegating);
-        }
-      })
-      .finally(() => {
-        if (isMounted.current) {
-          setIsLoading(false);
-        }
-      });
-  };
+    try {
+      const delegating = await getGov2TrackDelegation(api, trackId, address);
+      if (isMounted.current) {
+        setDelegating(delegating);
+      }
+    } finally {
+      if (isMounted.current) {
+        setIsLoading(false);
+      }
+    }
+  }, [api, trackId, address, isMounted]);
 
   useEffect(() => {
     setDelegating(null);
