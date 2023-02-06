@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "../useIsMounted";
 import { getGov2TrackDelegation } from "../../gov2/gov2ReferendumVote";
+import isNil from "lodash.isnil";
 
-export default function useTrackDelegating(api, trackId, address) {
+export function useTrackDelegating(api, trackId, address) {
   const [delegating, setDelegating] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
 
   const refresh = async () => {
-    if (!api || !address) {
+    if (!api || !address || isNil(trackId)) {
       return;
     }
 

@@ -9,7 +9,7 @@ export default function AllBeenDelegatedPopupTabList({ beenDelegatedList }) {
 
   const trackBeenDelegatedList = useMemo(() => {
     const beenDelegated = beenDelegatedList?.find((item) => {
-      return item.track.id === track;
+      return item.track?.id === track;
     });
     return beenDelegated?.beenDelegated;
   }, [track, beenDelegatedList]);

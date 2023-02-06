@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import useTrackDelegating from "next-common/utils/hooks/referenda/useTrackDelegation";
+import { useTrackDelegating } from "next-common/utils/hooks/referenda/useTrackDelegating";
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";

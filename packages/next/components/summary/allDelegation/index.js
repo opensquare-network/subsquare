@@ -1,9 +1,7 @@
 import flexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import styled from "styled-components";
-import {
-  useAllBeenDelegatedList,
-  useAllMyDelegationList,
-} from "next-common/utils/hooks/referenda/useDelegation";
+import { useAllMyDelegationList } from "next-common/utils/hooks/referenda/useAllMyDelegationList";
+import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import { Button } from "next-common/components/summary/styled";
 import VStackOrigin from "next-common/components/styled/vStack";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
@@ -13,9 +11,12 @@ import GreyInfoPanel from "next-common/components/summary/styled/greyInfoPanel";
 import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
 import DelegatePopup from "components/gov2/delegatePopup";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyDelegationPopup";
 import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegatedPopup";
+import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -38,8 +39,9 @@ const ListButton = styled(Button)`
   padding: 7px;
 `;
 
-export default function AllDelegation({}) {
-  const { myDelegationList } = useAllMyDelegationList();
+export default function AllDelegation() {
+  const dispatch = useDispatch();
+  const { myDelegationList, refresh } = useAllMyDelegationList();
   const { beenDelegatedList } = useAllBeenDelegatedList();
 
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
@@ -47,6 +49,12 @@ export default function AllDelegation({}) {
     useState(false);
   const [showAllBeenDelegatedPopup, setShowAllBeenDelegatedPopup] =
     useState(false);
+
+  const onDelegateInBlock = useCallback(() => {
+    clearVotingForEntries();
+    refresh();
+    dispatch(newSuccessToast(`Delegate success`));
+  }, [dispatch, refresh]);
 
   return (
     <Wrapper>
@@ -62,6 +70,7 @@ export default function AllDelegation({}) {
           <DelegatePopup
             trackId={0}
             showTrackSelect={true}
+            onInBlock={onDelegateInBlock}
             onClose={() => setShowDelegatePopup(false)}
           />
         )}
