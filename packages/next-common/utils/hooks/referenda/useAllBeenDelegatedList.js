@@ -21,7 +21,7 @@ export function useAllBeenDelegatedList() {
     [beenDelegatedList]
   );
 
-  const getAllBeenDelegated = useCallback(() => {
+  const getAllBeenDelegated = useCallback(async () => {
     if (!api || !realAddress) {
       return;
     }
