@@ -62,6 +62,12 @@ export default function MyVote() {
 
   return (
     <Wrapper>
+      {addressVote?.splitAbstain && (
+        <SplitAbstainVoteStatus
+          title={title}
+          addressVoteSplit={addressVote?.splitAbstain}
+        />
+      )}
       {addressVote?.standard && (
         <StandardVoteStatus
           title={title}
@@ -70,12 +76,6 @@ export default function MyVote() {
       )}
       {addressVote?.split && (
         <SplitVoteStatus title={title} addressVoteSplit={addressVote?.split} />
-      )}
-      {addressVote?.splitAbstain && (
-        <SplitAbstainVoteStatus
-          title={title}
-          addressVoteSplit={addressVote?.splitAbstain}
-        />
       )}
       {addressVoteDelegateVoted && (
         <DelegateVoteStatus

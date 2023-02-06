@@ -144,6 +144,8 @@ export default function Post({ data, href, type }) {
     businessCategory.councilMotions,
     businessCategory.collective,
     businessCategory.tcProposals,
+    businessCategory.financialMotions,
+    businessCategory.advisoryMotions,
   ].includes(type);
 
   const isGov2Referendum = [
@@ -164,9 +166,12 @@ export default function Post({ data, href, type }) {
 
   let elapseIcon = null;
   if (
-    ["Council Motions", "Financial Motions", "Tech. Comm. Proposals"].includes(
-      type
-    )
+    [
+      businessCategory.councilMotions,
+      businessCategory.financialMotions,
+      businessCategory.tcProposals,
+      businessCategory.advisoryMotions,
+    ].includes(type)
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
   }

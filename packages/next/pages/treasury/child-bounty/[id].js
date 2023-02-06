@@ -24,6 +24,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "components/childBounty/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 const ChildBountyCountDown = ({ data = {} }) => {
   if (data.state?.state !== "PendingPayout") {
@@ -92,7 +93,11 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   if (detail) {
     breadcrumbItemName = `#${detail?.index}`;
-    postContent = <ChildBountyContent comments={comments} />;
+    postContent = (
+      <NonNullPost>
+        <ChildBountyContent comments={comments} />
+      </NonNullPost>
+    );
   } else {
     breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;

@@ -4,23 +4,23 @@ import { useDispatch } from "react-redux";
 import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { checkInputValue, emptyFunction } from "next-common/utils";
+import { emptyFunction } from "next-common/utils";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
 import NoVoteRecord from "./noVoteRecord";
 import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
-import DirectVote from "./directVote";
-import VoteButton from "next-common/components/popup/voteButton";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import VoteTypeTab, { Aye, Nay, Split } from "./tab";
+import useStandardVote from "./voteHooks/useStandardVote";
+import useSplitVote from "./voteHooks/useSplitVote";
+import SecondaryButton from "next-common/components/buttons/secondaryButton";
 
 function PopupContent({
   extensionAccounts,
@@ -32,13 +32,14 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+  const [tabIndex, setTabIndex] = useState(Aye);
 
   const signerAccount = useSignerAccount(extensionAccounts);
 
   const api = useApi();
   const node = useChainSettings();
 
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
+  const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
     signerAccount?.realAddress
@@ -56,52 +57,48 @@ function PopupContent({
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
-  const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const [voteLock, setVoteLock] = useState(0);
+  const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
+    module: "democracy",
+    referendumIndex,
+    isAye: tabIndex === Aye,
+    addressVoteDelegations: addressVote?.delegations,
+    isLoading,
+    votingBalance,
+  });
+  const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
+    module: "democracy",
+    referendumIndex,
+    isLoading,
+    votingBalance,
+  });
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  let voteComponent = null;
+  let getVoteTx = null;
+  if (tabIndex === Aye || tabIndex === Nay) {
+    voteComponent = StandardVoteComponent;
+    getVoteTx = getStandardVoteTx;
+  } else if (tabIndex === Split) {
+    voteComponent = SplitVoteComponent;
+    getVoteTx = getSplitVoteTx;
+  }
 
-  const doVote = async (aye) => {
-    if (
-      loadingState !== VoteLoadingEnum.None ||
-      referendumIndex == null ||
-      !node
-    ) {
+  const doVote = async () => {
+    if (isLoading || referendumIndex == null || !node) {
       return;
-    }
-
-    let bnVoteBalance;
-    try {
-      bnVoteBalance = checkInputValue(
-        inputVoteBalance,
-        node.decimals,
-        "vote balance"
-      );
-    } catch (err) {
-      return showErrorToast(err.message);
-    }
-
-    if (bnVoteBalance.gt(votingBalance)) {
-      return showErrorToast("Insufficient voting balance");
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
     }
 
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
 
-    let tx = api.tx.democracy.vote(referendumIndex, {
-      Standard: {
-        balance: bnVoteBalance.toString(),
-        vote: {
-          aye,
-          conviction: voteLock,
-        },
-      },
-    });
+    let tx = getVoteTx();
+    if (!tx) {
+      return;
+    }
+
+    if (!signerAccount) {
+      return showErrorToast("Please select an account");
+    }
 
     if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -112,13 +109,7 @@ function PopupContent({
     await sendTx({
       tx,
       dispatch,
-      setLoading: (loading) => {
-        if (loading) {
-          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-        } else {
-          setLoadingState(VoteLoadingEnum.None);
-        }
-      },
+      setLoading: setIsLoading,
       onFinalized,
       onInBlock,
       onSubmitted,
@@ -140,14 +131,10 @@ function PopupContent({
       />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
-        <DirectVote
-          addressVoteDelegations={addressVote?.delegations}
-          isLoading={loadingState !== VoteLoadingEnum.None}
-          inputVoteBalance={inputVoteBalance}
-          setInputVoteBalance={setInputVoteBalance}
-          voteLock={voteLock}
-          setVoteLock={setVoteLock}
-        />
+        <>
+          <VoteTypeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+          {voteComponent}
+        </>
       )}
 
       {addressVote?.delegating && (
@@ -174,7 +161,11 @@ function PopupContent({
 
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
-        <VoteButton loadingState={loadingState} doVote={doVote} />
+        <div style={{ textAlign: "right" }}>
+          <SecondaryButton isLoading={isLoading} onClick={doVote}>
+            Confirm
+          </SecondaryButton>
+        </div>
       )}
     </>
   );

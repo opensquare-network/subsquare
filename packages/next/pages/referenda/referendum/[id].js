@@ -31,6 +31,7 @@ import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -97,15 +98,22 @@ function UnFinalizedBreadcrumb({ id }) {
 }
 
 export default withLoginUserRedux(({ id, detail, comments }) => {
-  let breadcrumb = null;
-  let postContent = null;
+  let postContent;
 
   if (detail) {
-    postContent = <ReferendumContent comments={comments} />;
-    breadcrumb = <ReferendaBreadcrumb />;
+    postContent = (
+      <NonNullPost>
+        <ReferendaBreadcrumb />
+        <ReferendumContent comments={comments} />
+      </NonNullPost>
+    );
   } else {
-    postContent = <CheckUnFinalized id={id} />;
-    breadcrumb = <UnFinalizedBreadcrumb id={id} />;
+    postContent = (
+      <>
+        <UnFinalizedBreadcrumb id={id} />
+        <CheckUnFinalized id={id} />
+      </>
+    );
   }
 
   const desc = getMetaDesc(detail);
@@ -119,7 +127,6 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        {breadcrumb}
         {postContent}
       </DetailWithRightLayout>
     </PostProvider>

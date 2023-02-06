@@ -28,6 +28,7 @@ import BreadcrumbWrapper, {
   BreadcrumbHideOnMobileText,
 } from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -88,14 +89,21 @@ function UnFinalizedBreadcrumb({ id }) {
 
 export default withLoginUserRedux(({ id, detail, comments }) => {
   let postContent = null;
-  let breadcrumb = null;
 
   if (detail) {
-    postContent = <FellowshipContent comments={comments} />;
-    breadcrumb = <FellowshipBreadcrumb />;
+    postContent = (
+      <NonNullPost>
+        <FellowshipBreadcrumb />
+        <FellowshipContent comments={comments} />
+      </NonNullPost>
+    );
   } else {
-    postContent = <CheckUnFinalized id={id} />;
-    breadcrumb = <UnFinalizedBreadcrumb id={id} />;
+    postContent = (
+      <>
+        <UnFinalizedBreadcrumb id={id} />
+        <CheckUnFinalized id={id} />
+      </>
+    );
   }
 
   return (
@@ -107,7 +115,6 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        {breadcrumb}
         {postContent}
       </DetailWithRightLayout>
     </PostProvider>

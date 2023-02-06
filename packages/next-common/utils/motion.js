@@ -1,12 +1,7 @@
-import Chains from "./consts/chains";
 import isNil from "lodash.isnil";
 
-export function getMotionId(motion, chain) {
-  let id;
-  if ([Chains.kusama, Chains.polkadot].includes(chain)) {
-    id = motion.motionIndex === undefined ? motion.index : motion.motionIndex;
-  }
-
+export function getMotionId(motion) {
+  let id = isNil(motion.motionIndex) ? motion.index : motion.motionIndex;
   if (isNil(id)) {
     id = `${motion?.indexer?.blockHeight}_${motion?.hash}`;
   }

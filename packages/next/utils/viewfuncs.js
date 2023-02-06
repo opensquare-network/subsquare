@@ -113,7 +113,7 @@ export const toCouncilMotionListItem = (chain, item) => {
     author: item.author,
     address: item.proposer,
     status: getMotionState(item),
-    detailLink: `/council/motion/${getMotionId(item, chain)}`,
+    detailLink: `/council/motion/${getMotionId(item)}`,
     isTreasury:
       item?.onchainData?.treasuryProposals?.length > 0 ||
       item?.onchainData?.treasuryBounties?.length > 0,
@@ -129,7 +129,7 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
-  detailLink: `/financial-council/motion/${item.indexer.blockHeight}_${item.hash}`,
+  detailLink: `/financial-council/motion/${getMotionId(item)}`,
   time: getPostUpdatedAt(item),
 });
 
@@ -139,9 +139,20 @@ export const toTechCommMotionListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item?.state ?? "Unknown",
-  detailLink: `/techcomm/proposal/${getMotionId(item, chain)}`,
+  detailLink: `/techcomm/proposal/${getMotionId(item)}`,
   time: getPostUpdatedAt(item),
   isDemocracy: item?.onchainData?.externalProposals?.length > 0,
+});
+
+export const toAdvisoryMotionsListItem = (chain, item) => ({
+  ...item,
+  index: item.motionIndex,
+  title: getTitle(item),
+  author: item.author,
+  address: item.proposer,
+  status: item.state ?? "Unknown",
+  detailLink: `/advisory-committee/motion/${getMotionId(item)}`,
+  time: getPostUpdatedAt(item),
 });
 
 function getTreasuryProposalTitle(item) {

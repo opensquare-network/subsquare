@@ -12,6 +12,7 @@ import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
+import NonNullPost from "next-common/components/nonNullPost";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -36,7 +37,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
   if (detail) {
     breadcrumbItemName = `#${detail?.proposalIndex}`;
     postContent = (
-      <TreasuryProposalContent detail={detail} comments={comments} />
+      <NonNullPost>
+        <TreasuryProposalContent detail={detail} comments={comments} />
+      </NonNullPost>
     );
   } else {
     breadcrumbItemName = `#${id}`;
