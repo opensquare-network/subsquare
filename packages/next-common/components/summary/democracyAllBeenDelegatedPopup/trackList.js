@@ -1,5 +1,5 @@
 import React from "react";
-import { useTrackDelegations } from "../../../utils/hooks/referenda/useDelegation";
+import { useTrackDelegations } from "../../../utils/hooks/referenda/useTrackDelegations";
 import DelegationList from "../democracyBeenDelegated/beenDelegatedListPopup/delegationList";
 import DelegationSummary from "../democracyBeenDelegated/beenDelegatedListPopup/delegationSummary";
 
