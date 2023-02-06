@@ -127,6 +127,6 @@ export async function getGov2BeenDelegatedByAddress(api, address, trackId) {
   return null;
 }
 
-export async function clearVotingForEntries() {
+export function clearVotingForEntries() {
   votingForEntries = null;
 }
