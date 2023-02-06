@@ -26,23 +26,23 @@ export function useAllBeenDelegatedList() {
       return;
     }
 
-    getGov2BeenDelegatedListByAddress(api, realAddress).then((list) => {
-      const trackGroups = groupBy(list, "trackId");
-      const result = Object.keys(trackGroups)
-        .map((k) => {
-          const trackId = parseInt(k);
-          const track = tracks.find((t) => t.id === trackId);
-          const beenDelegated = trackGroups[trackId];
-          if (!track) {
-            return null;
-          }
-          return { track, beenDelegated };
-        })
-        .filter((v) => v);
-      if (isMounted.current) {
-        setBeenDelegatedList(result);
-      }
-    });
+    const list = await getGov2BeenDelegatedListByAddress(api, realAddress);
+    const trackGroups = groupBy(list, "trackId");
+    const result = Object.keys(trackGroups)
+      .map((k) => {
+        const trackId = parseInt(k);
+        const track = tracks.find((t) => t.id === trackId);
+        const beenDelegated = trackGroups[trackId];
+        if (!track) {
+          return null;
+        }
+        return { track, beenDelegated };
+      })
+      .filter((v) => v);
+
+    if (isMounted.current) {
+      setBeenDelegatedList(result);
+    }
   }, [api, isMounted, tracks, realAddress]);
 
   useEffect(() => {
