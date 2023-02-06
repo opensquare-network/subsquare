@@ -10,9 +10,10 @@ export default function Track({
   track,
   setTrack = noop,
   hasAll = false,
+  trackList,
 }) {
-  const { tracks } = usePageProps();
-  const options = tracks?.map((track) => {
+  const { tracks: defaultTrackList } = usePageProps();
+  const options = (trackList || defaultTrackList)?.map((track) => {
     return {
       label: parseGov2TrackName(track.name),
       value: track.id,
