@@ -18,20 +18,6 @@ import { useChainSettings } from "../../../context/chain";
 import sumBy from "lodash.sumby";
 import { TrackIconMap } from "../../icons/track";
 import Flex from "../../styled/flex";
-import Link from "next/link";
-
-function TrackItem({ track }) {
-  return (
-    <Link href={`/referenda/track/${track?.id}`} passHref>
-      <a style={{ display: "inline-block" }}>
-        <Flex gap={8}>
-          {TrackIconMap[track?.id]}
-          {parseGov2TrackName(track?.name)}
-        </Flex>
-      </a>
-    </Link>
-  );
-}
 
 export default function AllBeenDelegatedPopupAllList({
   beenDelegatedList,
@@ -65,7 +51,10 @@ export default function AllBeenDelegatedPopupAllList({
               <Fragment key={item.track.id}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 296 }}>
-                    <TrackItem track={item.track} />
+                    <Flex gap={8}>
+                      {TrackIconMap[item.track.id]}
+                      {parseGov2TrackName(item.track.name)}
+                    </Flex>
                   </StyledTd>
                   <StyledTd style={{ textAlign: "right", width: "100%" }}>
                     <ValueDisplay
