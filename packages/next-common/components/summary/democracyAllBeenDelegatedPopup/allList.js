@@ -1,4 +1,6 @@
 import React from "react";
+import noop from "lodash.noop";
+import styled from "styled-components";
 import { useTheme } from "styled-components";
 import PopupListWrapper from "../../styled/popupListWrapper";
 import {
@@ -19,9 +21,26 @@ import sumBy from "lodash.sumby";
 import { TrackIconMap } from "../../icons/track";
 import Flex from "../../styled/flex";
 
+const TrackItemWrapper = styled.div`
+  display: inline-block;
+  cursor: pointer;
+`;
+
+function TrackItem({ track, onClick = noop }) {
+  return (
+    <TrackItemWrapper onClick={onClick}>
+      <Flex gap={8}>
+        {TrackIconMap[track?.id]}
+        {parseGov2TrackName(track?.name)}
+      </Flex>
+    </TrackItemWrapper>
+  );
+}
+
 export default function AllBeenDelegatedPopupAllList({
   beenDelegatedList,
   loading = false,
+  onTrackClick = noop,
 }) {
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
@@ -51,10 +70,10 @@ export default function AllBeenDelegatedPopupAllList({
               <Fragment key={item.track.id}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 296 }}>
-                    <Flex gap={8}>
-                      {TrackIconMap[item.track.id]}
-                      {parseGov2TrackName(item.track.name)}
-                    </Flex>
+                    <TrackItem
+                      track={item.track}
+                      onClick={() => onTrackClick(item.track.id)}
+                    />
                   </StyledTd>
                   <StyledTd style={{ textAlign: "right", width: "100%" }}>
                     <ValueDisplay
