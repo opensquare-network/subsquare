@@ -38,7 +38,6 @@ export const defaultPolkadotNodes = [
 const polkadot = {
   value: name,
   name: capitalize(name),
-  icon: "polkadot.svg",
   identity: name,
   symbol: "DOT",
   decimals: 10,

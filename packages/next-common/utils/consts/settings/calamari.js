@@ -24,7 +24,6 @@ const DEFAULT_CALAMARI_NODES = [
 const calamari = {
   value: Chains.calamari,
   name: capitalize(Chains.calamari),
-  icon: "calamari.svg",
   identity: Chains.kusama,
   symbol: "KMA",
   decimals: 12,

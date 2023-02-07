@@ -24,7 +24,6 @@ const DEFAULT_CRAB_NODES = [
 const crab = {
   value: Chains.crab,
   name: capitalize(Chains.crab),
-  icon: "crab.svg",
   identity: Chains.crab,
   symbol: "CRAB",
   decimals: 9,

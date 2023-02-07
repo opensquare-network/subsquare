@@ -18,7 +18,6 @@ const DEFAULT_INTERLAY_NODES = [
 const interlay = {
   value: "interlay",
   name: "Interlay",
-  icon: "interlay.svg",
   identity: "interlay",
   symbol: "INTR",
   voteSymbol: "vINTR",

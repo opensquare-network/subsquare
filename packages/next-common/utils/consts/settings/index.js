@@ -20,6 +20,7 @@ import altair from "./altair";
 import hydradx from "./hydradx";
 import development from "./development";
 import rococo from "./rococo";
+import litentry from "./litentry";
 
 const settingsMap = {
   polkadot,
@@ -38,6 +39,7 @@ const settingsMap = {
   khala,
   kintsugi,
   litmus,
+  litentry,
   phala,
   polkadex,
   turing,

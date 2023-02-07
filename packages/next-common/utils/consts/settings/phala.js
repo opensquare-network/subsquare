@@ -17,7 +17,6 @@ const DEFAULT_PHALA_NODES = [
 const phala = {
   value: "phala",
   name: "Phala",
-  icon: "khala.svg",
   identity: "phala",
   symbol: "PHA",
   decimals: 12,

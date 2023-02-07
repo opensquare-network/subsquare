@@ -13,6 +13,7 @@ import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
 import litmus from "./consts/settings/litmus";
+import litentry from "./consts/settings/litentry";
 import zeitgeist from "./consts/settings/zeitgeist";
 import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
@@ -46,6 +47,7 @@ export const nodes = [
   crust,
   hydradx,
   interlay,
+  litentry,
   // kabocha,
   karura,
   khala,

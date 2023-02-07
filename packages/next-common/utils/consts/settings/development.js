@@ -18,7 +18,6 @@ export const defaultNodes = [
 const development = {
   value: name,
   name: capitalize(name),
-  icon: "polkadot.svg",
   identity: Chains.kusama,
   symbol: "UNIT",
   decimals: 12,

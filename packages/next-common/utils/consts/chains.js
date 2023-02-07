@@ -23,6 +23,7 @@ const Chains = {
   altair: "altair",
   development: "development",
   rococo: "rococo",
+  litentry: "litentry",
 };
 
 export default Chains;

@@ -34,7 +34,6 @@ const DEFAULT_KUSAMA_NODES = [
 const kusama = {
   value: "kusama",
   name: "Kusama",
-  icon: "kusama.svg",
   identity: "kusama",
   symbol: "KSM",
   decimals: 12,
