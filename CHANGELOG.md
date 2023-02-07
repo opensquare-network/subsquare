@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.9.2
+date: 02/07/2023
+- Show enhanced user delegation/been delegated info for OpenGov referenda.
+- Support litentry.
+
+# 2.9.1
+date: 02/03/2023
+- Support zeitgeist advisory committee.
+
 # 2.9.0
 date: 02/03/2023
 
