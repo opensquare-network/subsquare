@@ -20,7 +20,6 @@ export const DEFAULT_TURING_NODES = [
 const turing = {
   value: Chains.turing,
   name: capitalize(Chains.turing),
-  icon: "turing.svg",
   identity: Chains.turing,
   symbol: "TUR",
   decimals: 10,

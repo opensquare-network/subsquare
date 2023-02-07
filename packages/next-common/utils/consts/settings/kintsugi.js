@@ -25,7 +25,6 @@ const DEFAULT_KINTSUGI_NODES =
 const kintsugi = {
   value: "kintsugi",
   name: "Kintsugi",
-  icon: "kintsugi.png",
   identity: "kintsugi",
   symbol: "KINT",
   voteSymbol: "vKINT",

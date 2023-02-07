@@ -20,7 +20,6 @@ const defaultNodes = [
 const zeitgeist = {
   value: Chains.zeitgeist,
   name: capitalize(Chains.zeitgeist),
-  icon: "zeitgeist.svg",
   identity: Chains.zeitgeist,
   symbol: "ZTG",
   decimals: 10,

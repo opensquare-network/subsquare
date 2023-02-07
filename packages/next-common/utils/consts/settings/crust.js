@@ -29,7 +29,6 @@ const DEFAULT_CRUST_NODES = [
 const crust = {
   value: Chains.crust,
   name: capitalize(Chains.crust),
-  icon: "crust.svg",
   identity: "crust",
   symbol: "CRU",
   decimals: 12,

@@ -22,7 +22,6 @@ const DEFAULT_POLKADEX_NODES = [
 const polkadex = {
   value: "polkadex",
   name: "Polkadex",
-  icon: "polkadex.svg",
   identity: "polkadex",
   symbol: "PDEX",
   decimals: 12,

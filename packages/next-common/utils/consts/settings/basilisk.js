@@ -16,7 +16,6 @@ const DEFAULT_BASILISK_NODES = [
 const basilisk = {
   value: "basilisk",
   name: "Basilisk",
-  icon: "basilisk.svg",
   identity: "basilisk",
   symbol: "BSX",
   decimals: 12,

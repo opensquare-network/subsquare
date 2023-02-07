@@ -15,7 +15,6 @@ const DEFAULT_LITMUS_NODES = [
 const litmus = {
   value: Chains.litmus,
   name: capitalize(Chains.litmus),
-  icon: "litmus.svg",
   identity: Chains.kusama,
   symbol: "LIT",
   decimals: 12,

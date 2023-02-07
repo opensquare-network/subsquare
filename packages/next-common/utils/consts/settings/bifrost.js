@@ -21,7 +21,6 @@ const DEFAULT_BIFROST_NODES = [
 const bifrost = {
   value: "bifrost",
   name: "Bifrost Kusama",
-  icon: "bifrost.svg",
   hideHeight: false,
   identity: "bifrost",
   symbol: "bnc",

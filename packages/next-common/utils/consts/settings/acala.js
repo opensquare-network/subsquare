@@ -37,7 +37,6 @@ const DEFAULT_ACALA_NODES = [
 const acala = {
   value: "acala",
   name: "Acala",
-  icon: "acala.svg",
   identity: "polkadot",
   symbol: "ACA",
   decimals: 12,

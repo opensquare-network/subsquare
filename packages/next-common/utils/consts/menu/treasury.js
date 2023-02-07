@@ -63,6 +63,7 @@ const treasury = {
         Chains.kintsugi,
         Chains.interlay,
         Chains.litmus,
+        Chains.litentry,
         Chains.zeitgeist,
         Chains.centrifuge,
         Chains.altair,
