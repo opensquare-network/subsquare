@@ -32,6 +32,7 @@ const litentry = {
   darkHeaderLogo: Logo,
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
+  hasStatescan: true,
 };
 
 export default litentry;
