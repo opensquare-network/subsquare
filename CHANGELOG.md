@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 date: 02/07/2023
 - Show enhanced user delegation/been delegated info for OpenGov referenda.
 - Support litentry.
+- Fix babel configurations.
+- Fix democracy referendum estimated execution time when passed.
 
 # 2.9.1
 date: 02/03/2023
