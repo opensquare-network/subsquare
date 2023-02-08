@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import { referendumState } from "./consts/referendum";
+import isNil from "lodash.isnil";
 
 export default function getReferendumTime(
   state,
@@ -38,11 +39,14 @@ export default function getReferendumTime(
     oneBlockTime
   ) {
     endTime = endTimelineItem.indexer.blockTime;
-    delayTime = new BigNumber(oneBlockTime)
-      .multipliedBy(delay)
-      .plus(endTime)
-      .toNumber();
-    isDelayEstimated = true;
+    const now = new Date().getTime();
+    if (!isNil(blockHeight)) {
+      const expectedHeight = endTimelineItem.indexer.blockHeight + delay;
+      delayTime = new BigNumber(oneBlockTime).multipliedBy(expectedHeight - blockHeight).plus(now).toNumber();
+      isDelayEstimated = true;
+    } else {
+      isDelayEstimated = false;
+    }
   } else if (
     state?.state === referendumState.Started &&
     oneBlockTime &&
