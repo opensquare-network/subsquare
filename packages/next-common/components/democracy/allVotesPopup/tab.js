@@ -25,7 +25,7 @@ export default function VotesTab({
   if (ayeTab) {
     ayeTab.tabTitle = (
       <TabTitle
-        name="Ayes"
+        name="Aye"
         icon={<AyeIcon />}
         num={ayesCount || 0}
         active={tabIndex === "Aye"}
@@ -37,7 +37,7 @@ export default function VotesTab({
   if (nayTab) {
     nayTab.tabTitle = (
       <TabTitle
-        name="Nays"
+        name="Nay"
         icon={<NayIcon />}
         num={naysCount || 0}
         active={tabIndex === "Nay"}
