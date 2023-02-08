@@ -1,4 +1,3 @@
-import isNil from "lodash.isnil";
 import {
   objectSpread,
   sortVotesWithConviction,
