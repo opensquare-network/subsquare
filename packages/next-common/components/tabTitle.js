@@ -6,16 +6,26 @@ const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  div.icon {
+    display: flex;
+    align-items: center;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
   span.num {
     margin-left: 4px;
     color: ${(p) => (p.active ? p.theme.textSecondary : p.theme.textTertiary)};
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
   }
 `;
 
 export default function TabTitle({ name, icon = null, num, active }) {
   return (
     <TitleWrapper active={active}>
-      {icon}
+      <div className="icon">{icon}</div>
       <div>
         {name}
         {!isNil(num) && <span className="num">({num})</span>}
