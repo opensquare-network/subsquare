@@ -13,6 +13,10 @@ export const tabs = [
     tabId: "Nay",
     tabTitle: "Nay",
   },
+  {
+    tabId: "Abstain",
+    tabTitle: "Abstain",
+  },
 ];
 
 export default function VotesTab({
@@ -20,6 +24,7 @@ export default function VotesTab({
   setTabIndex,
   ayesCount,
   naysCount,
+  abstainsCount,
 }) {
   const ayeTab = tabs.find((tab) => tab.tabId === "Aye");
   if (ayeTab) {
@@ -41,6 +46,17 @@ export default function VotesTab({
         icon={<NayIcon />}
         num={naysCount || 0}
         active={tabIndex === "Nay"}
+      />
+    );
+  }
+
+  const abstainTab = tabs.find((tab) => tab.tabId === "Abstain");
+  if (abstainTab) {
+    abstainTab.tabTitle = (
+      <TabTitle
+        name="Abstains"
+        num={abstainsCount || 0}
+        active={tabIndex === "Abstain"}
       />
     );
   }
