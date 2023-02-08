@@ -96,6 +96,7 @@ function extractSplitAbstainVote(account, vote) {
       },
       {
         balance: abstainBalance,
+        isAbstain: true,
         conviction: 0,
       }
     ),
@@ -181,8 +182,8 @@ export async function getGov2ReferendumVotesFromVotingOf(
   const delegationVotes = extractDelegations(mapped, trackId, directVotes);
   const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);
 
-  const allAye = sorted.filter((v) => v.aye === true);
-  const allNay = sorted.filter((v) => v.aye === false);
-  const allAbstain = sorted.filter((v) => isNil(v.aye));
+  const allAye = sorted.filter((v) => !v.isAbstain && v.aye);
+  const allNay = sorted.filter((v) => !v.isAbstain && !v.aye);
+  const allAbstain = sorted.filter((v) => v.isAbstain);
   return { allAye, allNay, allAbstain };
 }
