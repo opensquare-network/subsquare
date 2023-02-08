@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "./styled";
-import AllVotesPopup from "next-common/components/democracy/allVotesPopup";
+import AllVotesPopup from "./allVotesPopup";
 import { useSelector } from "react-redux";
 import {
   isLoadingVotesSelector,
@@ -10,7 +10,11 @@ import {
 export default function AllVotes() {
   const [showAllVotes, setShowAllVotes] = useState(false);
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
+  const {
+    allAye = [],
+    allNay = [],
+    allAbstain = [],
+  } = useSelector(votesSelector);
 
   return (
     <>
@@ -20,6 +24,7 @@ export default function AllVotes() {
           setShowVoteList={setShowAllVotes}
           allAye={allAye}
           allNay={allNay}
+          allAbstain={allAbstain}
           isLoadingVotes={isLoadingVotes}
         />
       )}

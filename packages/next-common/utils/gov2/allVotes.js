@@ -9,6 +9,99 @@ function normalizeVotingOfEntry([storageKey, voting], blockApi) {
   return { account: address, trackId, voting };
 }
 
+function extractStandardVote(account, vote) {
+  const standard = vote.asStandard;
+  const balance = standard.balance.toBigInt().toString();
+
+  return [
+    objectSpread(
+      {
+        account,
+        isDelegating: false,
+      },
+      {
+        balance,
+        aye: standard.vote.isAye,
+        conviction: standard.vote.conviction.toNumber(),
+      }
+    ),
+  ];
+}
+
+function extractSplitVote(account, vote) {
+  const split = vote.asSplit;
+  const ayeBalance = split.aye.toBigInt().toString();
+  const nayBalance = split.nay.toBigInt().toString();
+
+  return [
+    objectSpread(
+      {
+        account,
+        isDelegating: false,
+      },
+      {
+        balance: ayeBalance,
+        aye: true,
+        conviction: 0,
+      }
+    ),
+    objectSpread(
+      {
+        account,
+        isDelegating: false,
+      },
+      {
+        balance: nayBalance,
+        aye: false,
+        conviction: 0,
+      }
+    ),
+  ];
+}
+
+function extractSplitAbstainVote(account, vote) {
+  const splitAbstain = vote.asSplitAbstain;
+  const ayeBalance = splitAbstain.aye.toBigInt().toString();
+  const nayBalance = splitAbstain.nay.toBigInt().toString();
+  const abstainBalance = splitAbstain.abstain.toBigInt().toString();
+
+  return [
+    objectSpread(
+      {
+        account,
+        isDelegating: false,
+      },
+      {
+        balance: ayeBalance,
+        aye: true,
+        conviction: 0,
+      }
+    ),
+    objectSpread(
+      {
+        account,
+        isDelegating: false,
+      },
+      {
+        balance: nayBalance,
+        aye: false,
+        conviction: 0,
+      }
+    ),
+    objectSpread(
+      {
+        account,
+        isDelegating: false,
+      },
+      {
+        balance: abstainBalance,
+        isAbstain: true,
+        conviction: 0,
+      }
+    ),
+  ];
+}
+
 function extractVotes(mapped, targetReferendumIndex) {
   return mapped
     .filter(({ voting }) => voting.isCasting)
@@ -28,24 +121,16 @@ function extractVotes(mapped, targetReferendumIndex) {
       };
     })
     .reduce((result, { account, vote }) => {
-      // FIXME We are ignoring split votes
       if (vote.isStandard) {
-        const standard = vote.asStandard;
-        const balance = standard.balance.toBigInt().toString();
+        result.push(...extractStandardVote(account, vote));
+      }
 
-        result.push(
-          objectSpread(
-            {
-              account,
-              isDelegating: false,
-            },
-            {
-              balance,
-              aye: standard.vote.isAye,
-              conviction: standard.vote.conviction.toNumber(),
-            }
-          )
-        );
+      if (vote.isSplit) {
+        result.push(...extractSplitVote(account, vote));
+      }
+
+      if (vote.isSplitAbstain) {
+        result.push(...extractSplitAbstainVote(account, vote));
       }
 
       return result;
@@ -96,7 +181,8 @@ export async function getGov2ReferendumVotesFromVotingOf(
   const delegationVotes = extractDelegations(mapped, trackId, directVotes);
   const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);
 
-  const allAye = sorted.filter((v) => v.aye);
-  const allNay = sorted.filter((v) => !v.aye);
-  return { allAye, allNay };
+  const allAye = sorted.filter((v) => !v.isAbstain && v.aye);
+  const allNay = sorted.filter((v) => !v.isAbstain && !v.aye);
+  const allAbstain = sorted.filter((v) => v.isAbstain);
+  return { allAye, allNay, allAbstain };
 }

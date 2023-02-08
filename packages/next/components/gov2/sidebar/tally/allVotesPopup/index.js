@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import Popup from "../../popup/wrapper/Popup";
+import Popup from "next-common/components/popup/wrapper/Popup";
 import VotesTab, { tabs } from "./tab";
-import VotersList from "./votesList";
+import VotersList from "next-common/components/democracy/allVotesPopup/votesList";
 import Pagination from "next-common/components/pagination";
 
 export default function VotesPopup({
   setShowVoteList,
   allAye,
   allNay,
+  allAbstain,
   isLoadingVotes,
 }) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
+  const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
 
   let page = 1;
@@ -20,17 +22,22 @@ export default function VotesPopup({
   if (tabIndex === "Aye") {
     page = ayePage;
     votes = allAye;
-  } else {
+  } else if (tabIndex === "Nay") {
     page = nayPage;
     votes = allNay;
+  } else {
+    page = abstainPage;
+    votes = allAbstain;
   }
 
   function onPageChange(e, target) {
     e.preventDefault();
     if (tabIndex === "Aye") {
       setAyePage(target);
-    } else {
+    } else if (tabIndex === "Nay") {
       setNayPage(target);
+    } else {
+      setAbstainPage(target);
     }
   }
 
@@ -45,12 +52,13 @@ export default function VotesPopup({
   const sliceTo = sliceFrom + pageSize;
 
   return (
-    <Popup title="All Votes" onClose={() => setShowVoteList(false)}>
+    <Popup wide title="All Votes" onClose={() => setShowVoteList(false)}>
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
         ayesCount={allAye?.length || 0}
         naysCount={allNay?.length || 0}
+        abstainsCount={allAbstain?.length || 0}
       />
       <VotersList
         items={votes.slice(sliceFrom, sliceTo)}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Background from "../../styled/backgroundShade";
 import useOnClickOutside from "../../../utils/hooks/useOnClickOutside";
 import ClosePanelIcon from "../../../assets/imgs/icons/close-panel.svg";
@@ -14,6 +14,13 @@ const Wrapper = styled(NeutralPanel)`
   left: 50%;
   margin-top: 0 !important;
   width: 400px;
+  ${(p) =>
+    p.wide &&
+    css`
+      @media screen and (min-width: 768px) {
+        width: 480px;
+      }
+    `}
   padding: 24px;
   transform: translate(-50%, -50%);
   color: ${(props) => props.theme.textPrimary};
@@ -43,6 +50,7 @@ export default function Popup({
   title,
   onClose = emptyFunction,
   className,
+  wide,
 }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
@@ -58,7 +66,7 @@ export default function Popup({
 
   return (
     <Background>
-      <Wrapper ref={ref} className={className}>
+      <Wrapper wide={wide} ref={ref} className={className}>
         {title && (
           <TopWrapper>
             <h3>{title}</h3>

@@ -24,7 +24,7 @@ export default function VotesTab({
   setTabIndex,
   ayesCount,
   naysCount,
-  abstainCount,
+  abstainsCount,
 }) {
   const ayeTab = tabs.find((tab) => tab.tabId === "Aye");
   if (ayeTab) {
@@ -55,7 +55,7 @@ export default function VotesTab({
     abstainTab.tabTitle = (
       <TabTitle
         name="Abstain"
-        num={abstainCount || 0}
+        num={abstainsCount || 0}
         active={tabIndex === "Abstain"}
       />
     );
