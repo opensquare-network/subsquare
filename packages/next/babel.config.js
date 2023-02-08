@@ -1,3 +1,4 @@
 module.exports = {
-  presets: [["@babel/preset-env", { targets: { node: true } }]],
+  presets: ["next/babel"],
+  plugins: [["styled-components", { ssr: true }]],
 };
