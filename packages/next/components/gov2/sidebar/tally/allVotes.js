@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "./styled";
-import AllVotesPopup from "next-common/components/democracy/allVotesPopup";
+import AllVotesPopup from "./allVotesPopup";
 import { useSelector } from "react-redux";
 import {
   isLoadingVotesSelector,
