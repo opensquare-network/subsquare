@@ -16,7 +16,7 @@ import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 
 const OutWrapper = styled(OutWrapperOrigin)`
   z-index: 999;
-  position: fixed;
+  position: fixed !important;
   bottom: 32px;
   ${(p) => css`
     right: max(
