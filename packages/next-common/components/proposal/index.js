@@ -10,6 +10,7 @@ import LargeDataPlaceHolder from "./largeDataPlaceHolder";
 import { hexIsValidUTF8 } from "../../utils/utf8validate";
 import { useChain } from "../../context/chain";
 import getChainSettings from "../../utils/consts/settings";
+import needCheckUtf8 from "./needCheckUtf8";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -147,14 +148,8 @@ function convertProposalForTableView(proposal, chain) {
               return [arg.name, <LongText text={arg.value} key="0" />];
             }
 
-            if (
-              ((proposal.section === "system" &&
-                ["remark", "remarkWithEvent"].includes(proposal.method)) ||
-                (proposal.section === "automationTime" &&
-                  proposal.method === "scheduleNotifyTask" &&
-                  arg.name === "message")) &&
-              hexIsValidUTF8(arg.value)
-            ) {
+            const { section, method } = proposal;
+            if (needCheckUtf8(section, method, arg.name) && hexIsValidUTF8(arg.value)) {
               return [arg.name, hexToString(arg.value)];
             }
 
