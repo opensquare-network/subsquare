@@ -5,8 +5,8 @@ import React from "react";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
-const advisoryCouncil = {
-  name: "ADVISORY COUNCIL",
+const advisoryCommittee = {
+  name: "ADVISORY COMMITTEE",
   items: [
     {
       value: "advisoryMotions",
@@ -32,4 +32,4 @@ const advisoryCouncil = {
   excludeToChains: getExcludeChains([Chains.zeitgeist]),
 };
 
-export default advisoryCouncil;
+export default advisoryCommittee;
