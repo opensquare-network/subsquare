@@ -29,8 +29,8 @@ function AdvisoryCommitteeMotionContent({ motion, comments }) {
 }
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
-  let breadcrumbItemName = "";
-  let postContent = null;
+  let breadcrumbItemName;
+  let postContent;
 
   if (motion) {
     breadcrumbItemName = `#${
