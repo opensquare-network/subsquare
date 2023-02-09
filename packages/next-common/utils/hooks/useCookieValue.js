@@ -1,19 +1,14 @@
 import isNil from "lodash.isnil";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
 
 export function useCookieValue(key, defaultValue) {
-  const [value, setValue] = useState(defaultValue);
+  let cookieValue = getCookie(key);
+  if (!isNil(cookieValue)) {
+    cookieValue = JSON.parse(cookieValue);
+  }
 
-  useEffect(() => {
-    let parsed = value;
-    const val = getCookie(key);
-    if (!isNil(val)) {
-      parsed = JSON.parse(val);
-    }
-
-    setValue(parsed);
-  }, []);
+  const [value, setValue] = useState(cookieValue ?? defaultValue);
 
   function set(val, options) {
     setCookie(key, JSON.stringify(val), options);
