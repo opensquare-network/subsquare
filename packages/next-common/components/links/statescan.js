@@ -22,28 +22,31 @@ export default function Statescan({ indexer, children }) {
   }
 
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
+  if (isNil(extrinsicIndex) && isNil(index) && isNil(eventIndex)) {
+    return null;
+  }
 
-  let url = `https://${statescanDomainMap[chain] || chain}.statescan.io`;
+  let url = `https://${ statescanDomainMap[chain] || chain }.statescan.io/#`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
-    url += `/extrinsic/${blockHeight}-${extrinsicIndex ?? index}`;
+    url += `/extrinsics/${ blockHeight }-${ extrinsicIndex ?? index }`;
   } else {
-    url += `/event/${blockHeight}-${eventIndex}`;
+    url += `/events/${ blockHeight }-${ eventIndex }`;
   }
 
   const isLight = mode === "light";
 
   if (children) {
     return (
-      <a href={url} target="_blank" rel="noreferrer">
-        {children}
+      <a href={ url } target="_blank" rel="noreferrer">
+        { children }
       </a>
     );
   }
 
   return (
-    <StatescanLink href={url} target="_blank" rel="noreferrer">
-      {isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon />}
-      {isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark />}
+    <StatescanLink href={ url } target="_blank" rel="noreferrer">
+      { isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon /> }
+      { isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark /> }
     </StatescanLink>
   );
 }
