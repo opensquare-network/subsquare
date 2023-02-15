@@ -104,14 +104,6 @@ export default function useReferendaReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Referendum canceled</div>
-        <Toggle
-          disabled={disabled}
-          isOn={referendaCancelled}
-          onToggle={changeGuard(setReferendaCancelled)}
-        />
-      </ToggleItem>
-      <ToggleItem>
         <div>Referendum confirm started or aborted</div>
         <Toggle
           disabled={disabled}
@@ -141,11 +133,14 @@ export default function useReferendaReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Referendum executed </div>
+        <div>Referendum executed or canceled</div>
         <Toggle
           disabled={disabled}
-          isOn={referendaExecuted}
-          onToggle={setReferendaExecuted}
+          isOn={referendaExecuted || referendaCancelled}
+          onToggle={(isOn) => {
+            setReferendaExecuted(isOn);
+            setReferendaCancelled(isOn);
+          }}
         />
       </ToggleItem>
     </div>

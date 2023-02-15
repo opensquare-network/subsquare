@@ -104,14 +104,6 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship canceled</div>
-        <Toggle
-          disabled={disabled}
-          isOn={fellowshipCancelled}
-          onToggle={changeGuard(setFellowshipCancelled)}
-        />
-      </ToggleItem>
-      <ToggleItem>
         <div>Fellowship confirm started or aborted</div>
         <Toggle
           disabled={disabled}
@@ -141,11 +133,14 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship executed</div>
+        <div>Fellowship executed or canceled</div>
         <Toggle
           disabled={disabled}
-          isOn={fellowshipExecuted}
-          onToggle={changeGuard(setFellowshipExecuted)}
+          isOn={fellowshipExecuted || fellowshipCancelled}
+          onToggle={changeGuard((isOn) => {
+            setFellowshipExecuted(isOn);
+            setFellowshipCancelled(isOn);
+          })}
         />
       </ToggleItem>
     </div>
