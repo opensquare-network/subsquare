@@ -112,7 +112,7 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship confirm started or confirm aborted</div>
+        <div>Fellowship confirm started or aborted</div>
         <Toggle
           disabled={disabled}
           isOn={fellowshipConfirmStarted || fellowshipConfirmAborted}
@@ -123,38 +123,29 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship confirmed</div>
+        <div>Fellowship confirmed, or rejected, or timed-out, or killed</div>
         <Toggle
           disabled={disabled}
-          isOn={fellowshipConfirmed}
-          onToggle={changeGuard(setFellowshipConfirmed)}
-        />
-      </ToggleItem>
-      <ToggleItem>
-        <div>Fellowship executed or rejected</div>
-        <Toggle
-          disabled={disabled}
-          isOn={fellowshipExecuted || fellowshipRejected}
+          isOn={
+            fellowshipConfirmed ||
+            fellowshipRejected ||
+            fellowshipTimedout ||
+            fellowshipKilled
+          }
           onToggle={changeGuard((isOn) => {
-            setFellowshipExecuted(isOn);
+            setFellowshipConfirmed(isOn);
             setFellowshipRejected(isOn);
+            setFellowshipTimedout(isOn);
+            setFellowshipKilled(isOn);
           })}
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship timed-out</div>
+        <div>Fellowship executed</div>
         <Toggle
           disabled={disabled}
-          isOn={fellowshipTimedout}
-          onToggle={changeGuard(setFellowshipTimedout)}
-        />
-      </ToggleItem>
-      <ToggleItem>
-        <div>Fellowship killed</div>
-        <Toggle
-          disabled={disabled}
-          isOn={fellowshipKilled}
-          onToggle={changeGuard(setFellowshipKilled)}
+          isOn={fellowshipExecuted}
+          onToggle={changeGuard(setFellowshipExecuted)}
         />
       </ToggleItem>
     </div>

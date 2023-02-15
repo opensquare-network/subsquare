@@ -112,7 +112,7 @@ export default function useReferendaReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Referendum confirm started or confirm aborted</div>
+        <div>Referendum confirm started or aborted</div>
         <Toggle
           disabled={disabled}
           isOn={referendaConfirmStarted || referendaConfirmAborted}
@@ -123,38 +123,29 @@ export default function useReferendaReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Referendum confirmed</div>
+        <div>Referendum confirmed, or rejected, or timed-out, or killed</div>
         <Toggle
           disabled={disabled}
-          isOn={referendaConfirmed}
-          onToggle={changeGuard(setReferendaConfirmed)}
-        />
-      </ToggleItem>
-      <ToggleItem>
-        <div>Referendum executed or rejected</div>
-        <Toggle
-          disabled={disabled}
-          isOn={referendaExecuted || referendaRejected}
+          isOn={
+            referendaConfirmed ||
+            referendaRejected ||
+            referendaTimedout ||
+            referendaKilled
+          }
           onToggle={changeGuard((isOn) => {
-            setReferendaExecuted(isOn);
+            setReferendaConfirmed(isOn);
             setReferendaRejected(isOn);
+            setReferendaTimedout(isOn);
+            setReferendaKilled(isOn);
           })}
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Referendum timed-out</div>
+        <div>Referendum executed </div>
         <Toggle
           disabled={disabled}
-          isOn={referendaTimedout}
-          onToggle={changeGuard(setReferendaTimedout)}
-        />
-      </ToggleItem>
-      <ToggleItem>
-        <div>Referendum killed</div>
-        <Toggle
-          disabled={disabled}
-          isOn={referendaKilled}
-          onToggle={changeGuard(setReferendaKilled)}
+          isOn={referendaExecuted}
+          onToggle={setReferendaExecuted}
         />
       </ToggleItem>
     </div>
