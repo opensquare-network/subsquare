@@ -24,6 +24,8 @@ import useTreasuryChildBountyOptions from "next-common/components/setting/notifi
 import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
 import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
 import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
+import useReferendaReferendumOptions from "next-common/components/setting/notification/useReferendaReferendumOptions";
+import useFellowshipReferendumOptions from "next-common/components/setting/notification/useFellowshipReferendumOptions";
 import Cookies from "cookies";
 import {
   CACHE_KEY,
@@ -130,6 +132,8 @@ export default withLoginUserRedux(
       democracyMenu?.items,
       "Referenda"
     );
+
+    const hasOpenGov = ["kusama"].includes(process.env.NEXT_PUBLIC_CHAIN);
 
     const emailVerified =
       loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
@@ -242,6 +246,44 @@ export default withLoginUserRedux(
         subscription?.democracyReferendumNotExecuted,
     });
 
+    const {
+      referendaReferendumOptionsComponent,
+      getReferendaReferendumOptionValues,
+      isChanged: isReferendaReferendumOptionsChanged,
+    } = useReferendaReferendumOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      referendaSubmitted: subscription?.referendaSubmitted,
+      referendaDecisionStarted: subscription?.referendaDecisionStarted,
+      referendaConfirmStarted: subscription?.referendaConfirmStarted,
+      referendaCancelled: subscription?.referendaCancelled,
+      referendaConfirmAborted: subscription?.referendaConfirmAborted,
+      referendaConfirmed: subscription?.referendaConfirmed,
+      referendaExecuted: subscription?.referendaExecuted,
+      referendaKilled: subscription?.referendaKilled,
+      referendaTimedout: subscription?.referendaTimedout,
+      referendaRejected: subscription?.referendaRejected,
+    });
+
+    const {
+      fellowshipReferendumOptionsComponent,
+      getFellowshipReferendumOptionValues,
+      isChanged: isFellowshipReferendumOptionsChanged,
+    } = useFellowshipReferendumOptions({
+      disabled: !isVerifiedUser,
+      saving,
+      fellowshipSubmitted: subscription?.fellowshipSubmitted,
+      fellowshipDecisionStarted: subscription?.fellowshipDecisionStarted,
+      fellowshipConfirmStarted: subscription?.fellowshipConfirmStarted,
+      fellowshipCancelled: subscription?.fellowshipCancelled,
+      fellowshipConfirmAborted: subscription?.fellowshipConfirmAborted,
+      fellowshipConfirmed: subscription?.fellowshipConfirmed,
+      fellowshipExecuted: subscription?.fellowshipExecuted,
+      fellowshipKilled: subscription?.fellowshipKilled,
+      fellowshipTimedout: subscription?.fellowshipTimedout,
+      fellowshipRejected: subscription?.fellowshipRejected,
+    });
+
     const canSave =
       isVerifiedUser &&
       (isTreasuryProposalOptionsChanged ||
@@ -251,7 +293,9 @@ export default withLoginUserRedux(
         isTreasuryChildBountyOptionsChanged ||
         isTechCommMotionOptionsChanged ||
         isDemocracyProposalOptionsChanged ||
-        isDemocracyReferendumOptionsChanged);
+        isDemocracyReferendumOptionsChanged ||
+        isReferendaReferendumOptionsChanged ||
+        isFellowshipReferendumOptionsChanged);
 
     const router = useRouter();
 
@@ -305,6 +349,8 @@ export default withLoginUserRedux(
         ...(hasDemocracy && hasDemocracyReferenda
           ? getDemocracyReferendumOptionValues()
           : {}),
+        ...(hasOpenGov ? getReferendaReferendumOptionValues() : {}),
+        ...(hasOpenGov ? getFellowshipReferendumOptionValues() : {}),
       };
 
       const { result, error } = await nextApi.patch("user/subscription", data);
@@ -363,6 +409,16 @@ export default withLoginUserRedux(
       );
     }
 
+    let openGovOptions = null;
+    if (hasOpenGov) {
+      openGovOptions = (
+        <FoldableSections title="Open Gov">
+          {referendaReferendumOptionsComponent}
+          {fellowshipReferendumOptionsComponent}
+        </FoldableSections>
+      );
+    }
+
     return (
       <SettingsLayout>
         <NextHead title={`Settings`} desc={``} />
@@ -384,6 +440,7 @@ export default withLoginUserRedux(
             )}
 
             <Options>
+              {openGovOptions}
               {treasuryOptions}
               {councilOptions}
               {techCommOptions}
