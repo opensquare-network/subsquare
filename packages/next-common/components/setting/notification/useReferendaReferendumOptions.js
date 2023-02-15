@@ -123,7 +123,7 @@ export default function useReferendaReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Referendum confirmed, or rejected, or timed-out, or killed</div>
+        <div>Referendum confirmed/rejected/timed-out/killed</div>
         <Toggle
           disabled={disabled}
           isOn={

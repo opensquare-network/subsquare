@@ -123,7 +123,7 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship confirmed, or rejected, or timed-out, or killed</div>
+        <div>Fellowship confirmed/rejected/timed-out/killed</div>
         <Toggle
           disabled={disabled}
           isOn={
