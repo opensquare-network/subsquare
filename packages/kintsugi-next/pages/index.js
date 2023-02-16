@@ -15,30 +15,35 @@ export default withLoginUserRedux(({ overview, chain }) => {
   let overviewData = [
     {
       category: "Discussions",
+      link: "/discussions",
       items: (overview?.discussions ?? []).map((item) =>
         toDiscussionListItem(chain, item)
       ),
     },
     {
       category: "Referenda",
+      link: "/democracy/referenda",
       items: (overview?.democracy?.referendums ?? []).map((item) =>
         toReferendaListItem(chain, item)
       ),
     },
     {
       category: "Democracy Public Proposals",
+      link: "/democracy/proposals",
       items: (overview?.democracy?.proposals ?? []).map((item) =>
         toPublicProposalListItem(chain, item)
       ),
     },
     {
       category: "Treasury Proposals",
+      link: "/treasury/proposals",
       items: (overview?.treasury?.proposals ?? []).map((item) =>
         toTreasuryProposalListItem(chain, item)
       ),
     },
     {
       category: "Tech. Comm. Proposals",
+      link: "/techcomm/proposals",
       items: (overview?.techComm?.motions ?? []).map((item) =>
         toTechCommMotionListItem(chain, item)
       ),
