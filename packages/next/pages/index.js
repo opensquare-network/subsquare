@@ -25,17 +25,16 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isKarura = ["karura", "acala"].includes(chain);
   const hasGov2 = ["kusama", "development"].includes(chain);
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
-  const discussions = isCentrifuge
-    ? []
-    : [
-        {
-          category: "Discussions",
-          link: "/discussions",
-          items: (overview?.discussions ?? []).map((item) =>
-            toDiscussionListItem(chain, item)
-          ),
-        },
-      ];
+
+  const discussionsCategory = {
+    category: "Discussions",
+    link: "/discussions",
+    items: (overview?.discussions ?? []).map((item) =>
+      toDiscussionListItem(chain, item)
+    ),
+  };
+
+  const discussions = isCentrifuge ? [] : [discussionsCategory];
 
   let overviewData = [];
 
@@ -138,15 +137,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   );
 
   if (chain === "kabocha") {
-    overviewData = [
-      {
-        category: "Discussions",
-        link: "/discussions",
-        items: (overview?.discussions ?? []).map((item) =>
-          toDiscussionListItem(chain, item)
-        ),
-      },
-    ];
+    overviewData = [discussionsCategory];
   }
 
   const filteredOverviewData = overviewData.filter(
