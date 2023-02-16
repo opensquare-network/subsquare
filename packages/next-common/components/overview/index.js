@@ -82,6 +82,7 @@ export default function Overview({ overviewData, summaryData }) {
             <PostList
               key={index}
               category={item.category}
+              link={item.link}
               items={item.items}
               type={item.type}
               create={item.category === "Discussions" && createDiscussion}
