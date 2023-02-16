@@ -26,15 +26,17 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const hasGov2 = ["kusama", "development"].includes(chain);
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
 
-  const discussionsCategory = {
-    category: "Discussions",
-    link: "/discussions",
-    items: (overview?.discussions ?? []).map((item) =>
-      toDiscussionListItem(chain, item)
-    ),
-  };
+  const discussionsCategory = [
+    {
+      category: "Discussions",
+      link: "/discussions",
+      items: (overview?.discussions ?? []).map((item) =>
+        toDiscussionListItem(chain, item)
+      ),
+    },
+  ];
 
-  const discussions = isCentrifuge ? [] : [discussionsCategory];
+  const discussions = isCentrifuge ? [] : discussionsCategory;
 
   let overviewData = [];
 
@@ -137,7 +139,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   );
 
   if (chain === "kabocha") {
-    overviewData = [discussionsCategory];
+    overviewData = discussionsCategory;
   }
 
   const filteredOverviewData = overviewData.filter(
