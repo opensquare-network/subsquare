@@ -3,10 +3,12 @@ import { usePost } from "./index";
 
 export function useIsThumbUp() {
   const user = useUser();
+  const post = usePost();
   if (!user) {
     return false;
   }
 
-  const post = usePost();
-  return post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+  return (
+    post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1
+  );
 }
