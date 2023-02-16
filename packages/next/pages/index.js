@@ -25,16 +25,18 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isKarura = ["karura", "acala"].includes(chain);
   const hasGov2 = ["kusama", "development"].includes(chain);
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
-  const discussions = isCentrifuge
-    ? []
-    : [
-        {
-          category: "Discussions",
-          items: (overview?.discussions ?? []).map((item) =>
-            toDiscussionListItem(chain, item)
-          ),
-        },
-      ];
+
+  const discussionsCategory = [
+    {
+      category: "Discussions",
+      link: "/discussions",
+      items: (overview?.discussions ?? []).map((item) =>
+        toDiscussionListItem(chain, item)
+      ),
+    },
+  ];
+
+  const discussions = isCentrifuge ? [] : discussionsCategory;
 
   let overviewData = [];
 
@@ -43,12 +45,14 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       ...[
         {
           category: "OpenGov Referenda",
+          link: "/referenda",
           items: (overview?.gov2?.referenda ?? []).map((item) =>
             toGov2ReferendaListItem(item, tracks)
           ),
         },
         {
           category: "Fellowship",
+          link: "/fellowship",
           items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
             toFellowshipReferendaListItem(item, fellowshipTracks)
           ),
@@ -61,18 +65,21 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     ...[
       {
         category: "Referenda",
+        link: "/democracy/referenda",
         items: (overview?.democracy?.referenda ?? []).map((item) =>
           toReferendaListItem(chain, item)
         ),
       },
       {
         category: "Democracy External Proposals",
+        link: "/democracy/externals",
         items: (overview?.democracy?.externals ?? []).map((item) =>
           toExternalProposalListItem(chain, item)
         ),
       },
       {
         category: "Democracy Public Proposals",
+        link: "/democracy/proposals",
         items: (overview?.democracy?.proposals ?? []).map((item) =>
           toPublicProposalListItem(chain, item)
         ),
@@ -80,12 +87,14 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       ...discussions,
       {
         category: "Council Motions",
+        link: "/council/motions",
         items: (overview?.council?.motions ?? []).map((item) =>
           toCouncilMotionListItem(chain, item)
         ),
       },
       {
         category: "Tech. Comm. Proposals",
+        link: "/techcomm/proposals",
         items: (overview?.techComm?.motions ?? []).map((item) =>
           toTechCommMotionListItem(chain, item)
         ),
@@ -96,6 +105,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   if (isKarura) {
     overviewData.push({
       category: "Financial Council Motions",
+      link: "/financial-council/motions",
       items: (overview?.financialCouncil?.motions ?? []).map((item) =>
         toFinancialMotionsListItem(chain, item)
       ),
@@ -106,18 +116,21 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     ...[
       {
         category: "Treasury Proposals",
+        link: "/treasury/proposals",
         items: (overview?.treasury?.proposals ?? []).map((item) =>
           toTreasuryProposalListItem(chain, item)
         ),
       },
       {
         category: "Treasury Bounties",
+        link: "/treasury/bounties",
         items: (overview?.treasury?.bounties ?? []).map((item) =>
           toTreasuryBountyListItem(chain, item)
         ),
       },
       {
         category: "Tips",
+        link: "/treasury/tips",
         items: (overview?.treasury?.tips ?? []).map((item) =>
           toTipListItem(chain, item)
         ),
@@ -126,14 +139,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   );
 
   if (chain === "kabocha") {
-    overviewData = [
-      {
-        category: "Discussions",
-        items: (overview?.discussions ?? []).map((item) =>
-          toDiscussionListItem(chain, item)
-        ),
-      },
-    ];
+    overviewData = discussionsCategory;
   }
 
   const filteredOverviewData = overviewData.filter(

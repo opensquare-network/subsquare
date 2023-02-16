@@ -5,6 +5,7 @@ import Pagination from "next-common/components/pagination/index.js";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import { EmptyList } from "./emptyList";
 import { pageHomeLayoutMainContentWidth } from "../utils/constants";
+import Link from "next/link";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -21,9 +22,16 @@ const Wrapper = styled.div`
   }
 `;
 
+const TitleLink = styled.a`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export default function PostList({
   title,
   category,
+  link,
   items,
   pagination,
   create = null,
@@ -32,7 +40,9 @@ export default function PostList({
   return (
     <Wrapper>
       <TitleContainer>
-        {title ?? category}
+        <Link href={link || ""} passHref>
+          <TitleLink>{title ?? category}</TitleLink>
+        </Link>
         {create}
       </TitleContainer>
       {summary}
