@@ -290,11 +290,8 @@ export const rounded_full = make_rounded(9999);
 export const rounded_none = make_rounded(0);
 
 // border color
-export const border_theme500 = `
-  border-color: ${theme("theme500")};
-`;
-export const border_theme100 = `
-  border-color: ${theme("theme100")};
+export const border_theme_grey200 = css`
+  border-color: ${theme("grey200Border")};
 `;
 
 // border style
