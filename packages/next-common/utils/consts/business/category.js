@@ -14,6 +14,7 @@ const businessCategory = {
   fellowship: "Fellowship",
   financialMotions: "Financial Motions",
   advisoryMotions: "Advisory Motions",
+  allianceMotions: "Alliance Motions",
 };
 
 export const detailPageCategory = {

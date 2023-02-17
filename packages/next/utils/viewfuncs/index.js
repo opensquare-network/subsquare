@@ -3,6 +3,7 @@ import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import { parseGov2TrackName } from "next-common/utils/gov2";
+import { getPostUpdatedAt, getTitle } from "./common";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -12,13 +13,6 @@ export const TipStateMap = {
   TipClosed: "Closed",
 };
 
-export function getPostUpdatedAt(post) {
-  if (post.createdAt === post.lastActivityAt) {
-    return post?.indexer?.blockTime ?? post.createdAt;
-  }
-  return post.lastActivityAt;
-}
-
 export function getTipState(state) {
   if (!state) {
     return "Unknown";
@@ -26,10 +20,6 @@ export function getTipState(state) {
   return TipStateMap[state.state ?? state] === "Tipping"
     ? `Tipping (${state.tipsCount})`
     : TipStateMap[state.state ?? state];
-}
-
-function getTitle(item) {
-  return `${item?.title ?? "--"}`;
 }
 
 export const toDiscussionListItem = (chain, item) => ({
