@@ -1,3 +1,4 @@
+import React from "react";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
