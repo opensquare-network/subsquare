@@ -13,6 +13,7 @@ import {
   useHomeFoldMenus,
   useSettingsDispatch,
 } from "../../context/settings";
+import NavigationCMDK from "../cmdk/navigationCMDK";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -244,6 +245,8 @@ export default function Menu({ menu, foldable = true, foldablePrefix = "" }) {
 
   return (
     <Wrapper>
+      <NavigationCMDK menu={menu} />
+
       {menu.map((menu, index) => {
         if (menu?.excludeToChains?.includes(chain)) {
           return null;
