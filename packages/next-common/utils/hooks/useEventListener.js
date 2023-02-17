@@ -3,6 +3,7 @@ import { useEffect } from "react";
 /**
  *
  * @param {keyof HTMLElementEventMap} type
+ * @param {(e: Event) => void} handler
  * @param {import("react").RefObject<HTMLElement> | Window} target
  */
 export function useEventListener(type, handler, target = window, opts) {
