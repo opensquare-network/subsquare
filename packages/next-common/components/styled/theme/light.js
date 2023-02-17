@@ -7,6 +7,7 @@ const light = {
   textContrast: "#FFFFFF",
   primaryPurple100: "rgba(104, 72, 255, 0.1)",
   primaryPurple300: "rgba(104, 72, 255, 0.4)",
+  primaryPurple500: "#rgba(104, 72, 255, 0.1)",
   primaryPurple500: "#6848FF",
   primaryDarkBlue: "#1E2134",
   secondaryPink100: "rgba(232, 31, 102, 0.1)",
