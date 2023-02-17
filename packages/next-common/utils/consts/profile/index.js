@@ -2,6 +2,8 @@ import {
   toCouncilMotionListItem,
   toDiscussionListItem,
   toExternalProposalListItem,
+  toFellowshipReferendaListItem,
+  toGov2ReferendaListItem,
   toPolkassemblyDiscussionListItem,
   toPublicProposalListItem,
   toReferendaListItem,
@@ -14,6 +16,30 @@ import businessCategory from "../business/category";
 import Chains from "../chains";
 
 export const CATEGORIES = [
+  {
+    id: "openGov",
+    name: "OpenGov",
+    children: [
+      {
+        id: "referenda",
+        name: "Referenda",
+        categoryName: "OpenGov referenda",
+        categoryId: businessCategory.openGovReferenda,
+        routePath: "referenda",
+        apiPath: "gov2/referendums",
+        formatter: (chain, item) => toGov2ReferendaListItem(item),
+      },
+      {
+        id: "fellowship",
+        name: "Fellowship",
+        categoryName: "Fellowship",
+        categoryId: businessCategory.fellowship,
+        routePath: "fellowship",
+        apiPath: "fellowship/referendums",
+        formatter: (chain, item) => toFellowshipReferendaListItem(item),
+      },
+    ],
+  },
   {
     id: "democracy",
     name: "Democracy",
