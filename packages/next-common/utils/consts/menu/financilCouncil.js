@@ -7,6 +7,7 @@ import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const financialCouncil = {
   name: "FINANCIAL COUNCIL",
+  excludeToChains: getExcludeChains([Chains.karura, Chains.acala]),
   items: [
     {
       value: "financialMotions",
@@ -29,7 +30,6 @@ const financialCouncil = {
       ),
     },
   ],
-  excludeToChains: getExcludeChains([Chains.karura, Chains.acala]),
 };
 
 export default financialCouncil;

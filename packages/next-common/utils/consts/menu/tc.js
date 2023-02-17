@@ -11,6 +11,7 @@ const techComm = {
     Chains.centrifuge,
     Chains.altair,
     Chains.development,
+    Chains["westend-collectives"],
   ],
   items: [
     {

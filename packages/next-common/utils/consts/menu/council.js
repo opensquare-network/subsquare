@@ -11,6 +11,7 @@ const council = {
     Chains.kintsugi,
     Chains.interlay,
     Chains.development,
+    Chains["westend-collectives"],
   ],
   items: [
     {

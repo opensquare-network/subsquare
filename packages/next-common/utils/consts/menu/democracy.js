@@ -6,7 +6,7 @@ import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const democracy = {
   name: "DEMOCRACY",
-  excludeToChains: [Chains.kabocha, Chains.development],
+  excludeToChains: [Chains.kabocha, Chains.development, Chains["westend-collectives"]],
   items: [
     {
       value: "referenda",

@@ -7,6 +7,7 @@ import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const advisoryCommittee = {
   name: "ADVISORY COMMITTEE",
+  excludeToChains: getExcludeChains([Chains.zeitgeist]),
   items: [
     {
       value: "advisoryMotions",
@@ -29,7 +30,6 @@ const advisoryCommittee = {
       ),
     },
   ],
-  excludeToChains: getExcludeChains([Chains.zeitgeist]),
 };
 
 export default advisoryCommittee;

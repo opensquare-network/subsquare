@@ -8,7 +8,7 @@ import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 
 const treasury = {
   name: "TREASURY",
-  excludeToChains: [Chains.kabocha],
+  excludeToChains: [Chains.kabocha, Chains["westend-collectives"]],
   items: [
     {
       value: "proposals",

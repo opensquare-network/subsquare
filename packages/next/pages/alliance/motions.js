@@ -3,8 +3,8 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import normalizeAllianceMotion from "../../utils/viewfuncs/allianceMotion";
 import HomeLayout from "next-common/components/layout/HomeLayout";
-// import PostList from "next-common/components/postList";
-// import businessCategory from "next-common/utils/consts/business/category";
+import PostList from "next-common/components/postList";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ motions }) => {
   const items = motions.items.map((item) => normalizeAllianceMotion(item));
@@ -13,11 +13,11 @@ export default withLoginUserRedux(({ motions }) => {
     title: `Alliance motions`,
     desc: `Alliance motions`,
   }}>
-    {/*<PostList*/}
-    {/*  category={businessCategory.allianceMotions}*/}
-    {/*  items={items}*/}
-    {/*  pagination={motions}*/}
-    {/*/>*/}
+    <PostList
+      category={businessCategory.allianceMotions}
+      items={items}
+      pagination={motions}
+    />
   </HomeLayout>
 });
 

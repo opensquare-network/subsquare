@@ -171,6 +171,7 @@ export default function Post({ data, href, type }) {
       businessCategory.financialMotions,
       businessCategory.tcProposals,
       businessCategory.advisoryMotions,
+      businessCategory.allianceMotions,
     ].includes(type)
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
