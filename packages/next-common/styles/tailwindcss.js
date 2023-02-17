@@ -369,11 +369,11 @@ export const truncate = `
 `;
 
 // text color
-export const text_primary = text_theme("fontPrimary");
-export const text_primary_inverse = text_theme("fontPrimaryInverse");
-export const text_secondary = text_theme("fontSecondary");
-export const text_tertiary = text_theme("fontTertiary");
-export const text_quaternary = text_theme("fontQuaternary");
+export const text_primary = text_theme("textPrimary");
+export const text_primary_inverse = text_theme("textPrimaryInverse");
+export const text_secondary = text_theme("textSecondary");
+export const text_tertiary = text_theme("textTertiary");
+export const text_quaternary = text_theme("textQuaternary");
 
 // interactivity
 // ---
