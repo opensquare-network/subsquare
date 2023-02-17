@@ -88,7 +88,7 @@ export default function useFellowshipReferendumOptions({
     <div>
       <SubLabel>Fellowship</SubLabel>
       <ToggleItem>
-        <div>Fellowship submitted</div>
+        <div>Fellowship referendum submitted</div>
         <Toggle
           disabled={disabled}
           isOn={fellowshipSubmitted}
@@ -96,7 +96,7 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship decision started</div>
+        <div>Fellowship referendum decision started</div>
         <Toggle
           disabled={disabled}
           isOn={fellowshipDecisionStarted}
@@ -104,7 +104,7 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship confirm started or aborted</div>
+        <div>Fellowship referendum confirm started or aborted</div>
         <Toggle
           disabled={disabled}
           isOn={fellowshipConfirmStarted || fellowshipConfirmAborted}
@@ -115,7 +115,7 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship confirmed/rejected/timed-out/killed</div>
+        <div>Fellowship referendum confirmed/rejected/timed-out/killed</div>
         <Toggle
           disabled={disabled}
           isOn={
@@ -133,7 +133,7 @@ export default function useFellowshipReferendumOptions({
         />
       </ToggleItem>
       <ToggleItem>
-        <div>Fellowship executed or canceled</div>
+        <div>Fellowship referendum executed or canceled</div>
         <Toggle
           disabled={disabled}
           isOn={fellowshipExecuted || fellowshipCancelled}
