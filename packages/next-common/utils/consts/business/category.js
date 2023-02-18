@@ -33,6 +33,7 @@ export const detailPageCategory = {
   GOV2_REFERENDUM: "referenda/referendum",
   FELLOWSHIP_REFERENDUM: "fellowship/referendum",
   ADVISORY_MOTION: "advisory-committee/motion",
+  ALLIANCE_MOTION: "alliance/motion",
 };
 
 export default businessCategory;

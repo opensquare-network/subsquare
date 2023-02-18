@@ -13,6 +13,8 @@ export default function toApiCouncil(chain, type) {
     return "advisoryCommittee";
   } else if (type === detailPageCategory.TECH_COMM_MOTION) {
     return "technicalCommittee";
+  } else if (type === detailPageCategory.ALLIANCE_MOTION) {
+    return "allianceMotion";
   }
 
   return "council";
