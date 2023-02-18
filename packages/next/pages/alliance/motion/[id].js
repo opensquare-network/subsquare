@@ -7,8 +7,11 @@ import { getBannerUrl } from "next-common/utils/banner";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
+import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
+  const breadcrumbItemName = getMotionBreadcrumbName(id, motion);
+
   const breadcrumbItems = [
     {
       content: "Alliance",
@@ -16,6 +19,9 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
     {
       content: "Motions",
       path: "/alliance/motions",
+    },
+    {
+      content: `#${ breadcrumbItemName }`,
     },
   ];
 

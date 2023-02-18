@@ -9,8 +9,8 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
+import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 
 function AdvisoryCommitteeMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -29,28 +29,16 @@ function AdvisoryCommitteeMotionContent({ motion, comments }) {
 }
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
-  let breadcrumbItemName;
   let postContent;
 
   if (motion) {
-    breadcrumbItemName = `#${
-      motion?.motionIndex ?? hashEllipsis(motion?.hash)
-    }`;
-    postContent = (
-      <AdvisoryCommitteeMotionContent motion={motion} comments={comments} />
-    );
+    postContent = <AdvisoryCommitteeMotionContent motion={motion} comments={comments} />;
   } else {
-    if (id?.match(/^[0-9]+$/)) {
-      breadcrumbItemName = `#${id}`;
-    } else {
-      const hash = id?.split("_").pop();
-      breadcrumbItemName = `#${hashEllipsis(hash)}`;
-    }
     postContent = <CheckUnFinalized id={id} />;
   }
 
   const desc = getMetaDesc(motion);
-
+  const breadcrumbItemName = getMotionBreadcrumbName(id, motion);
   const breadcrumbItems = [
     {
       content: "Advisory Committee",
@@ -60,7 +48,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       path: "/advisory-committee/motions",
     },
     {
-      content: breadcrumbItemName,
+      content: `#${ breadcrumbItemName }`,
     },
   ];
 
