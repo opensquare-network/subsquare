@@ -2,18 +2,16 @@ import React from "react";
 import { useRouter } from "next/router";
 import NextSeo from "./nextSeo";
 import { useChainSettings } from "../context/chain";
+import getIpfsLink from "../utils/env/ipfsEndpoint";
 
 export default function SEO({ title, desc, ogImage }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const route = useRouter();
-  const endpoint =
-    process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT ||
-    "https://subsquare.infura-ipfs.io/ipfs";
 
   const settings = useChainSettings();
   const images = [
     {
-      url: ogImage || `${endpoint}/${settings.snsCoverCid}`,
+      url: ogImage || getIpfsLink(settings.snsCoverCid),
       width: 1200,
       height: 628,
     },

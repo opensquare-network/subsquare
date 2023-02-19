@@ -5,6 +5,7 @@ export default function ExternalLink({
   children,
   title = "",
   className = "",
+  ...props
 }) {
   return (
     <a
@@ -13,6 +14,7 @@ export default function ExternalLink({
       target="_blank"
       rel="noopener noreferrer"
       title={title}
+      {...props}
       onClick={(e) => {
         e.stopPropagation();
       }}
