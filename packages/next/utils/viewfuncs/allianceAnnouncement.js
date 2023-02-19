@@ -1,6 +1,6 @@
 import { getPostUpdatedAt } from "./common";
 
-function getAnnouncementId(cid, height) {
+function getAnnouncementId(height, cid) {
   return `${ height }_${ cid }`;
 }
 
