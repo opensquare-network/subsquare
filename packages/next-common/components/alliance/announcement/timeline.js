@@ -3,15 +3,7 @@ import { useDetailType } from "../../../context/page";
 import sortTimeline from "../../../utils/timeline/sort";
 import Timeline from "../../timeline";
 import { createMotionTimelineData } from "@subsquare/next/utils/timeline/motion";
-import ExternalLink from "../../externalLink";
-import getIpfsLink from "../../../utils/env/ipfsEndpoint";
-
-function IpfsCidWithLink({ cid }) {
-  const text = `${ cid.slice(0, 4) }...${ cid.slice(-4) }`;
-  return <ExternalLink
-    title={ cid }
-    href={ getIpfsLink(cid) }>{ text }</ExternalLink>
-}
+import IpfsCidWithLink from "../ipfsCidWithLink";
 
 function getData(item) {
   const { method, args = {} } = item;
