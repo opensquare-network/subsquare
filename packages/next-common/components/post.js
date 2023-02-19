@@ -14,7 +14,7 @@ import Divider from "./styled/layout/divider";
 import { DemocracyTag, TreasuryTag } from "./tags/business";
 import isNil from "lodash.isnil";
 import { getBannerUrl } from "../utils/banner";
-import businessCategory from "../utils/consts/business/category";
+import businessCategory, { detailPageCategory } from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
@@ -26,6 +26,7 @@ import { gov2State } from "../utils/consts/state";
 import ConfirmCountdown from "./gov2/postList/confirmCountdown";
 import ValueDisplay from "./valueDisplay";
 import ListPostTitle from "./postList/postTitle";
+import IpfsLink from "./alliance/ipfsLink";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -257,6 +258,9 @@ export default function Post({ data, href, type }) {
                 {`${commentsCount}`}
               </MobileHiddenInfo>
             )}
+            {
+              businessCategory.allianceAnnouncements === type && <IpfsLink cid={ data.cid } />
+            }
             {data.parentIndex !== undefined && (
               <MobileHiddenInfo>
                 <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
