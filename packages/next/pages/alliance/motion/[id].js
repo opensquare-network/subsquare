@@ -8,10 +8,10 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
+import MotionContent from "../../../components/motion/motionContent";
+import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
-  const breadcrumbItemName = getMotionBreadcrumbName(id, motion);
-
   const breadcrumbItems = [
     {
       content: "Alliance",
@@ -21,7 +21,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       path: "/alliance/motions",
     },
     {
-      content: `#${ breadcrumbItemName }`,
+      content: `#${ getMotionBreadcrumbName(id, motion) }`,
     },
   ];
 
@@ -36,6 +36,11 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       <BreadcrumbWrapper>
         <Breadcrumb items={breadcrumbItems} />
       </BreadcrumbWrapper>
+      {
+        motion ?
+          <MotionContent motion={motion} comments={comments} /> :
+          <CheckUnFinalized id={id} />
+      }
     </DetailWithRightLayout>
   </PostProvider>
 });

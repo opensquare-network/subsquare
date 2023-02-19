@@ -29,9 +29,10 @@ const categoryTagMap = {
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
   [businessCategory.advisoryMotions]: CollectiveTag,
-  [businessCategory.allianceMotions]: CollectiveTag,
   [detailPageCategory.ADVISORY_MOTION]: CollectiveTag,
+  [businessCategory.allianceMotions]: CollectiveTag,
   [businessCategory.financialMotions]: CollectiveTag,
+  [detailPageCategory.ALLIANCE_MOTION]: CollectiveTag,
   [detailPageCategory.FINANCIAL_MOTION]: CollectiveTag,
   [businessCategory.collective]: CollectiveTag,
 
