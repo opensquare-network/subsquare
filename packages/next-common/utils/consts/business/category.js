@@ -15,6 +15,7 @@ const businessCategory = {
   financialMotions: "Financial Motions",
   advisoryMotions: "Advisory Motions",
   allianceMotions: "Alliance Motions",
+  allianceAnnouncements: "Alliance Announcements",
 };
 
 export const detailPageCategory = {
@@ -34,6 +35,7 @@ export const detailPageCategory = {
   FELLOWSHIP_REFERENDUM: "fellowship/referendum",
   ADVISORY_MOTION: "advisory-committee/motion",
   ALLIANCE_MOTION: "alliance/motion",
+  ALLIANCE_ANNOUNCEMENT: "alliance/announcement",
 };
 
 export default businessCategory;
