@@ -7,6 +7,7 @@ export default function NonNullPost({ children }) {
   const post = usePost();
 
   if (!post) {
+    // fixme: we should show 404 if we can not find post.
     return null;
   }
 

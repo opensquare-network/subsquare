@@ -8,6 +8,23 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import NonNullPost from "next-common/components/nonNullPost";
+import useUniversalComments from "../../../components/universalComments";
+import DetailItem from "../../../components/detailItem";
+
+function AnnouncementContent({ detail, comments }) {
+  const { CommentComponent, focusEditor } = useUniversalComments({
+    detail,
+    comments,
+  });
+
+  return (
+    <>
+      <DetailItem onReply={focusEditor} />
+      {CommentComponent}
+    </>
+  );
+}
 
 export default withLoginUserRedux(({ id, announcement, comments }) => {
   const breadcrumbItems = [
@@ -23,6 +40,12 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
     },
   ];
 
+  const postContent = (
+    <NonNullPost>
+      <AnnouncementContent detail={ announcement } comments={ comments } />
+    </NonNullPost>
+  );
+
   return <PostProvider post={announcement}>
     <DetailLayout
       seoInfo={{
@@ -34,7 +57,7 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
       <BreadcrumbWrapper>
         <Breadcrumb items={breadcrumbItems} />
       </BreadcrumbWrapper>
-
+      { postContent }
     </DetailLayout>
   </PostProvider>
 });
