@@ -128,7 +128,7 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   title: getTitle(item),
   author: item.author,
   address: item.proposer,
-  status: item.state ?? "Unknown",
+  status: item.state?.state ?? "Unknown",
   detailLink: `/financial-council/motion/${getMotionId(item)}`,
   time: getPostUpdatedAt(item),
 });
