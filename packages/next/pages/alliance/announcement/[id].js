@@ -11,6 +11,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import NonNullPost from "next-common/components/nonNullPost";
 import useUniversalComments from "../../../components/universalComments";
 import DetailItem from "../../../components/detailItem";
+import AnnouncementTimeline from "next-common/components/alliance/announcement/timeline";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -21,6 +22,7 @@ function AnnouncementContent({ detail, comments }) {
   return (
     <>
       <DetailItem onReply={focusEditor} />
+      <AnnouncementTimeline data={detail?.onchainData}/>
       {CommentComponent}
     </>
   );
