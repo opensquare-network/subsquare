@@ -1,3 +1,4 @@
+import React from "react";
 import dayjs from "dayjs";
 import { useDetailType } from "../../../context/page";
 import sortTimeline from "../../../utils/timeline/sort";

@@ -1,3 +1,4 @@
+import React from "react";
 import ExternalLink from "../externalLink";
 import getIpfsLink from "../../utils/env/ipfsEndpoint";
 
