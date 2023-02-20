@@ -1,6 +1,6 @@
 import CommandPalette, { filterItems, getItemIndex } from "react-cmdk";
 import styled from "styled-components";
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   bg_theme,
   border,
