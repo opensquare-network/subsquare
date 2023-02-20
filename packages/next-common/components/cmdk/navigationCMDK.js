@@ -13,6 +13,7 @@ import {
   justify_between,
   m_b,
   m_l,
+  outline_none,
   p_x,
   p_y,
   rounded_4,
@@ -51,6 +52,7 @@ const Trigger = styled.button([
     gap_x(8),
     items_center,
     justify_between,
+    outline_none,
   ],
 ]);
 
