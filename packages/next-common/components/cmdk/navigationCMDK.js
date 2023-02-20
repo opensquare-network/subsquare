@@ -159,7 +159,7 @@ export default function NavigationCMDK({ menu = [] }) {
     <div>
       <Trigger onClick={() => setOpen(true)}>
         <span>
-          Navigation <HotKey>{isMacOS ? "⌘" : "Ctrl"} K</HotKey>
+          Navigation <HotKey>{isMacOS ? "⌘" : "Ctrl +"} K</HotKey>
         </span>
         <ClosePanelIcon />
       </Trigger>
