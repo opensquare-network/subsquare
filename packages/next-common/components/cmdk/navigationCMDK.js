@@ -1,7 +1,6 @@
-import { useRouter } from "next/router";
 import CommandPalette, { filterItems, getItemIndex } from "react-cmdk";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   bg_theme,
   border,
@@ -30,7 +29,6 @@ import ClosePanelIcon from "../icons/closePanel";
 import capitalize from "../../utils/capitalize";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
-import { isExternalLink } from "../../utils";
 import { isMacOS } from "../../utils/constants";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 
@@ -69,34 +67,23 @@ const HotKey = styled.span([
 ]);
 
 export default function NavigationCMDK({ menu = [] }) {
-  const router = useRouter();
-
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
 
   const foldedMenu = menu.filter((m) => m.name && m.items?.length);
 
-  const filteredItems = filterItems(
+  const homeFilteredItems = filterItems(
     [
       {
         id: "home",
         items: [
-          ...commonMenus.items.map((m) => {
+          ...commonMenus.items.map((i) => {
             return {
-              id: m.name,
-              children: capitalize(m.name?.toLowerCase()),
-              icon: () => m.icon,
-              onClick() {
-                const url = m.pathname;
-                if (url) {
-                  if (isExternalLink(url)) {
-                    window.open(url, "_blank");
-                  } else {
-                    router.push(url);
-                  }
-                }
-              },
+              id: i.name,
+              children: capitalize(i.name?.toLowerCase()),
+              icon: () => i.icon,
+              href: i.pathname,
             };
           }),
           ...foldedMenu.map((m) => {
@@ -106,6 +93,7 @@ export default function NavigationCMDK({ menu = [] }) {
               icon: () => <MenuIcon />,
               closeOnSelect: false,
               onClick() {
+                setSearch("");
                 setPage(m.name);
               },
             };
@@ -116,12 +104,40 @@ export default function NavigationCMDK({ menu = [] }) {
     search
   );
 
-  const pages = [
-    {
+  const pages = useMemo(() => {
+    const homePageItem = {
       id: "home",
-      filteredItems,
-    },
-  ];
+      filteredItems: homeFilteredItems,
+    };
+
+    const subPageItems = foldedMenu.map((m) => {
+      const filteredItems = filterItems(
+        [
+          {
+            id: m.name,
+            heading: m.name,
+            items: m.items.map((i) => {
+              return {
+                id: i.name,
+                children: i.name,
+                icon: () => i.icon,
+                href: i.pathname,
+              };
+            }),
+          },
+        ],
+        search
+      );
+
+      return {
+        id: m.name,
+        searchPrefix: [m.name.toLowerCase()],
+        filteredItems,
+      };
+    });
+
+    return [homePageItem, ...subPageItems];
+  }, [homeFilteredItems, foldedMenu, search]);
 
   useEventListener("keydown", (e) => {
     const modifierKey = isMacOS ? e.metaKey : e.ctrlKey;
@@ -131,6 +147,14 @@ export default function NavigationCMDK({ menu = [] }) {
       setOpen(true);
     }
   });
+
+  function onPageEscape(page) {
+    if (page.id === "home") {
+      setOpen(false);
+      return;
+    }
+    setPage("home");
+  }
 
   return (
     <div>
@@ -148,15 +172,20 @@ export default function NavigationCMDK({ menu = [] }) {
         onChangeOpen={setOpen}
         search={search}
       >
-        {pages.map((item) => (
-          <CommandPalette.Page id={item.id} key={item.id}>
-            {item.filteredItems.length ? (
-              item.filteredItems.map((list) => (
+        {pages.map((page) => (
+          <CommandPalette.Page
+            id={page.id}
+            key={page.id}
+            onEscape={() => onPageEscape(page)}
+            searchPrefix={page.searchPrefix}
+          >
+            {page.filteredItems.length ? (
+              page.filteredItems.map((list) => (
                 <CommandPalette.List key={list.id} heading={list.heading}>
                   {list.items.map(({ id, ...rest }) => (
                     <CommandPalette.ListItem
                       key={id}
-                      index={getItemIndex(item.filteredItems, id)}
+                      index={getItemIndex(page.filteredItems, id)}
                       {...rest}
                     />
                   ))}
