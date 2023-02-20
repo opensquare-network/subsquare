@@ -73,43 +73,7 @@ export default function NavigationCMDK({ menu = [] }) {
 
   const foldedMenu = menu.filter((m) => m.name && m.items?.length);
 
-  const homeFilteredItems = filterItems(
-    [
-      {
-        id: "home",
-        items: [
-          ...commonMenus.items.map((i) => {
-            return {
-              id: i.name,
-              children: capitalize(i.name?.toLowerCase()),
-              icon: () => i.icon,
-              href: i.pathname,
-            };
-          }),
-          ...foldedMenu.map((m) => {
-            return {
-              id: m.name,
-              children: capitalize(m.name?.toLowerCase()),
-              icon: () => <MenuIcon />,
-              closeOnSelect: false,
-              onClick() {
-                setSearch("");
-                setPage(m.name);
-              },
-            };
-          }),
-        ],
-      },
-    ],
-    search
-  );
-
   const pages = useMemo(() => {
-    const homePageItem = {
-      id: "home",
-      filteredItems: homeFilteredItems,
-    };
-
     const subPageItems = foldedMenu.map((m) => {
       const filteredItems = filterItems(
         [
@@ -118,7 +82,7 @@ export default function NavigationCMDK({ menu = [] }) {
             heading: m.name,
             items: m.items.map((i) => {
               return {
-                id: i.name,
+                id: m.name + "-" + i.name,
                 children: i.name,
                 icon: () => i.icon,
                 href: i.pathname,
@@ -136,8 +100,43 @@ export default function NavigationCMDK({ menu = [] }) {
       };
     });
 
+    const homePageItem = {
+      id: "home",
+      filteredItems: filterItems(
+        [
+          {
+            id: "home",
+            items: [
+              ...commonMenus.items.map((i) => {
+                return {
+                  id: i.name,
+                  children: capitalize(i.name?.toLowerCase()),
+                  icon: () => i.icon,
+                  href: i.pathname,
+                };
+              }),
+              ...foldedMenu.map((m) => {
+                return {
+                  id: m.name,
+                  children: capitalize(m.name?.toLowerCase()),
+                  icon: () => <MenuIcon />,
+                  closeOnSelect: false,
+                  onClick() {
+                    setSearch("");
+                    setPage(m.name);
+                  },
+                };
+              }),
+            ],
+          },
+          ...(search && subPageItems.map((i) => i.filteredItems).flat()),
+        ],
+        search
+      ),
+    };
+
     return [homePageItem, ...subPageItems];
-  }, [homeFilteredItems, foldedMenu, search]);
+  }, [foldedMenu, search]);
 
   useEventListener("keydown", (e) => {
     const modifierKey = isMacOS ? e.metaKey : e.ctrlKey;
