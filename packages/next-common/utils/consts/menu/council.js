@@ -12,6 +12,7 @@ const council = {
     Chains.interlay,
     Chains.development,
     Chains["westend-collectives"],
+    Chains.collectives,
   ],
   items: [
     {

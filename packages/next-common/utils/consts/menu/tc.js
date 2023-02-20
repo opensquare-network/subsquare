@@ -12,6 +12,7 @@ const techComm = {
     Chains.altair,
     Chains.development,
     Chains["westend-collectives"],
+    Chains.collectives,
   ],
   items: [
     {

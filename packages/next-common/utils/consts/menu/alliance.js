@@ -29,7 +29,7 @@ const announcements = {
 
 const alliance = {
   name: "ALLIANCE",
-  excludeToChains: getExcludeChains([Chains["westend-collectives"]]),
+  excludeToChains: getExcludeChains([Chains["westend-collectives"], Chains.collectives]),
   items: [
     announcements,
     motions,
