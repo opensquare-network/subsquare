@@ -24,12 +24,12 @@ function AnnouncementNavigator({ cid, height }) {
 }
 
 export default function AnnouncementNavigate() {
+  const chainData = usePostOnChainData();
   const type = useDetailType();
   if (detailPageCategory.ALLIANCE_MOTION !== type) {
     return null;
   }
 
-  const chainData = usePostOnChainData();
   const { index, announcement: { cid, indexer } = {} } = chainData;
   if (!cid || !indexer) {
     return
