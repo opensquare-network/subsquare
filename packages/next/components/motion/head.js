@@ -13,6 +13,7 @@ import Info from "next-common/components/styled/info";
 import isNil from "lodash.isnil";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import AnnouncementNavigate from "./announcementNavigate";
 
 const MotionEndHeader = styled(GreyPanel)`
   justify-content: center;
@@ -80,6 +81,7 @@ export default function MotionHead({ motion, type }) {
     <div>
       {motionEndHeader}
       <DemocracyNavigate motion={motion.onchainData} />
+      <AnnouncementNavigate />
       <PostTitle />
       <FlexWrapper>
         <DividerWrapper>

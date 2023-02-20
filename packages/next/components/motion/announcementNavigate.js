@@ -3,11 +3,24 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { usePostOnChainData } from "next-common/context/post";
 import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
 import React from "react";
+import Link from "next/link";
+import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
 
 function MotionNavigator({ index }) {
   return <div>
     { `Motion #${ index }` }
   </div>
+}
+
+function AnnouncementNavigator({ cid, height }) {
+  return (
+    <div>
+      <TriangleRight />
+      <Link href={ `/alliance/announcement/${ height }_${ cid }` }>
+        { `Announcement ${ cid.slice(0, 4) }...` }
+      </Link>
+    </div>
+  );
 }
 
 export default function AnnouncementNavigate() {
@@ -17,12 +30,13 @@ export default function AnnouncementNavigate() {
   }
 
   const chainData = usePostOnChainData();
-  const { index, announcements = [] } = chainData;
-  if (announcements.length <= 0) {
+  const { index, announcement: { cid, indexer } = {} } = chainData;
+  if (!cid || !indexer) {
     return
   }
 
   return <NavigationWrapper>
-    <MotionNavigator index={index}/>
+    <MotionNavigator index={ index } />
+    <AnnouncementNavigator cid={ cid} height={indexer.blockHeight} />
   </NavigationWrapper>
 }
