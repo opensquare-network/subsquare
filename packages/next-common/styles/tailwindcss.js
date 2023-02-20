@@ -299,6 +299,12 @@ export const border_hidden = `
   border-style: hidden;
 `;
 
+// outline style
+export const outline_none = `
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+`;
+
 // layout
 // ---
 
