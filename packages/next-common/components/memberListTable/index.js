@@ -77,44 +77,56 @@ function DataRow({ row, columns }) {
   );
 }
 
-function MemberListTable({ columns = [], rows = [], loading = false }) {
+function DataRows({ rows, columns }) {
   const theme = useThemeSetting();
 
+  return rows.map((row, index) => (
+    <Fragment key={index}>
+      <DataRow row={row} columns={columns} />
+      {index !== rows.length - 1 && (
+        <RowSplitter backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"} />
+      )}
+    </Fragment>
+  ));
+}
+
+function Headers({ columns }) {
+  const theme = useThemeSetting();
+
+  return (
+    <thead>
+      <tr>
+        {columns.map((col, index) => (
+          <StyledTh
+            key={index}
+            style={col.style}
+            className={col.className}
+            onClick={col.onClick}
+          >
+            {col.name}
+          </StyledTh>
+        ))}
+      </tr>
+      <RowSplitter
+        backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
+        padding={"16px 0 4px 0"}
+      />
+    </thead>
+  );
+}
+
+function MemberListTable({ columns = [], rows = [], loading = false }) {
   let tableBody = null;
 
   if (rows?.length > 0) {
-    tableBody = rows.map((row, index) => (
-      <Fragment key={index}>
-        <DataRow row={row} columns={columns} />
-        {index !== rows.length - 1 && (
-          <RowSplitter backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"} />
-        )}
-      </Fragment>
-    ));
+    tableBody = <DataRows rows={rows} columns={columns} />;
   } else {
     tableBody = <EmptyOrLoading loading={loading} />;
   }
 
   return (
     <StyledTable>
-      <thead>
-        <tr>
-          {columns.map((col, index) => (
-            <StyledTh
-              key={index}
-              style={col.style}
-              className={col.className}
-              onClick={col.onClick}
-            >
-              {col.name}
-            </StyledTh>
-          ))}
-        </tr>
-        <RowSplitter
-          backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
-          padding={"16px 0 4px 0"}
-        />
-      </thead>
+      <Headers columns={columns} />
       <tbody>{tableBody}</tbody>
     </StyledTable>
   );
