@@ -5,20 +5,12 @@ import {
   toPrecision,
 } from "next-common/utils";
 import User from "next-common/components/user";
-import { Fragment, useState } from "react";
-import Loading from "next-common/components/loading";
+import { useState } from "react";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import {
-  EmptyTd,
-  RowSplitter,
-  StyledTable,
-  StyledTd,
-  StyledTh,
-  StyledTr,
-} from "next-common/components/styled/table";
 import { useChainSettings } from "next-common/context/chain";
 import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
+import MemberListTable from "next-common/components/memberListTable";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -28,6 +20,17 @@ const Wrapper = styled.div`
 
   > :not(:first-child) {
     margin-top: 16px;
+  }
+
+  @media screen and (max-width: 392px) {
+    .autohide {
+      display: none;
+    }
+    th.clickable {
+      color: ${(props) => props.theme.textSecondary};
+      cursor: pointer;
+      pointer-events: auto;
+    }
   }
 `;
 
@@ -67,91 +70,47 @@ function MembersList({
   prime,
   loading = false,
   hasElections = false,
-  theme,
 }) {
   const [hideColumn, setHideColumn] = useState("votes");
+
+  const columns = [{ name: "MEMBERS", style: { textAlign: "left" } }];
+
+  if (hasElections) {
+    columns.push(
+      {
+        name: "BACKING",
+        style: { textAlign: "right" },
+        className: hideColumn === "backing" ? "autohide" : "clickable",
+        onClick: () => setHideColumn("backing"),
+      },
+      {
+        name: "VOTES",
+        style: { textAlign: "right" },
+        className: hideColumn === "votes" ? "autohide" : "clickable",
+        onClick: () => setHideColumn("votes"),
+      }
+    );
+  }
+
+  const rows = items.map((item) => {
+    const row = [
+      <Member key={item.address}>
+        <User add={item.address} fontSize={14} />
+        {item.address === prime && <PrimeAddressMark />}
+      </Member>,
+    ];
+
+    if (hasElections) {
+      row.push(<Balance value={item.backing} />, item.votes ?? "--");
+    }
+
+    return row;
+  });
 
   return (
     <Wrapper>
       <TitleContainer>{category}</TitleContainer>
-      <StyledTable>
-        <thead>
-          <StyledTr>
-            <StyledTh style={{ textAlign: "left" }}>MEMBERS</StyledTh>
-            {hasElections && (
-              <>
-                <StyledTh
-                  className={
-                    hideColumn === "backing" ? "autohide" : "clickable"
-                  }
-                  style={{ textAlign: "right" }}
-                  onClick={() => setHideColumn("backing")}
-                >
-                  BACKING
-                </StyledTh>
-                <StyledTh
-                  className={hideColumn === "votes" ? "autohide" : "clickable"}
-                  style={{ textAlign: "right" }}
-                  onClick={() => setHideColumn("votes")}
-                >
-                  VOTES
-                </StyledTh>
-              </>
-            )}
-          </StyledTr>
-          <RowSplitter
-            backgroundColor={
-              theme.isDark ? theme.grey200Border : theme.grey100Bg
-            }
-            padding={"16px 0 4px 0"}
-          />
-        </thead>
-        <tbody>
-          {items?.length > 0 ? (
-            items.map((item, index) => (
-              <Fragment key={index}>
-                <StyledTr>
-                  <StyledTd style={{ textAlign: "left" }}>
-                    <Member>
-                      <User add={item.address} fontSize={14} />
-                      {item.address === prime && <PrimeAddressMark />}
-                    </Member>
-                  </StyledTd>
-                  {hasElections && (
-                    <>
-                      <StyledTd
-                        className={hideColumn === "backing" ? "autohide" : ""}
-                        style={{ textAlign: "right" }}
-                      >
-                        <Balance value={item.backing} />
-                      </StyledTd>
-                      <StyledTd
-                        className={hideColumn === "votes" ? "autohide" : ""}
-                        style={{ textAlign: "right" }}
-                      >
-                        {item.votes ?? "--"}
-                      </StyledTd>
-                    </>
-                  )}
-                </StyledTr>
-                {index !== items.length - 1 && (
-                  <RowSplitter
-                    backgroundColor={
-                      theme.isDark ? theme.grey200Border : theme.grey100Bg
-                    }
-                  />
-                )}
-              </Fragment>
-            ))
-          ) : (
-            <StyledTr>
-              <EmptyTd colSpan="3">
-                {loading ? <Loading size={16} /> : "No current members"}
-              </EmptyTd>
-            </StyledTr>
-          )}
-        </tbody>
-      </StyledTable>
+      <MemberListTable columns={columns} rows={rows} loading={loading} />
     </Wrapper>
   );
 }
