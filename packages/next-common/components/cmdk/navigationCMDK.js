@@ -10,7 +10,6 @@ import {
   inline_flex,
   items_center,
   justify_between,
-  m_b,
   m_l,
   outline_none,
   p_x,
@@ -36,7 +35,6 @@ const Trigger = styled.button([
   [
     p_x(18),
     p_y(10),
-    m_b(8),
     bg_theme("neutral"),
     shadow_100,
     rounded_4,
@@ -66,10 +64,11 @@ const HotKey = styled.span([
   ],
 ]);
 
-export default function NavigationCMDK({ menu = [] }) {
+export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const [triggerVisible, setTriggerVisible] = useState(true);
 
   const foldedMenu = menu.filter((m) => m.name && m.items?.length);
 
@@ -157,12 +156,19 @@ export default function NavigationCMDK({ menu = [] }) {
 
   return (
     <div>
-      <Trigger onClick={() => setOpen(true)}>
-        <span>
-          Navigation <HotKey>{isMacOS ? "⌘" : "Ctrl +"} K</HotKey>
-        </span>
-        <ClosePanelIcon />
-      </Trigger>
+      {triggerVisible && (
+        <Trigger onClick={() => setOpen(true)} style={triggerButtonStyle}>
+          <span>
+            Navigation <HotKey>{isMacOS ? "⌘ " : "Ctrl +"} K</HotKey>
+          </span>
+          <ClosePanelIcon
+            onClick={(e) => {
+              e.stopPropagation();
+              setTriggerVisible(false);
+            }}
+          />
+        </Trigger>
+      )}
 
       <CommandPalette
         page={page}
