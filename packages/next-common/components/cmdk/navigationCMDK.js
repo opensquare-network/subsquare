@@ -92,15 +92,15 @@ const HotKey = styled.span`
 `;
 
 function renderCommandPaletteLink(props) {
-  const { href, ...restProps } = props ?? {};
+  const { href, children, ...restProps } = props ?? {};
 
   if (isExternalLink(href)) {
     return (
       <a href={href} {...restProps} target="_blank" rel="noreferrer">
         {{
-          ...restProps.children,
+          ...children,
           // unsafe, force change the `type` text to `External Link`
-          props: { ...restProps.children.props, type: "External Link" },
+          props: { ...children.props, type: "External Link" },
         }}
       </a>
     );
@@ -108,7 +108,7 @@ function renderCommandPaletteLink(props) {
 
   return (
     <Link href={href} passHref>
-      <a {...restProps} />
+      <a {...restProps}>{children}</a>
     </Link>
   );
 }
