@@ -268,6 +268,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
       />
     ) : (
       <PostList
+        link={"/" + secondCategory.routePath}
         title={secondCategory.categoryName}
         category={secondCategory.categoryId}
         items={items}
