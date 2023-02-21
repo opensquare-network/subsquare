@@ -41,7 +41,7 @@ import {
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
-import { useChain } from "../../context/chain";
+import { useChain, useMenuHasGov2 } from "../../context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "../../services/url";
 import nextApi from "../../services/nextApi";
 
@@ -99,18 +99,21 @@ const HotKey = styled.span`
 function useGov2Menu() {
   const [tracks, setTracks] = useState([]);
   const [fellowshipTracks, setFellowshipTracks] = useState([]);
+  const hasGov2 = useMenuHasGov2();
 
   useEffect(() => {
-    nextApi.fetch(gov2TracksApi).then(({ result }) => setTracks(result));
-    nextApi
-      .fetch(fellowshipTracksApi)
-      .then(({ result }) => setFellowshipTracks(result));
-  }, []);
+    if (hasGov2) {
+      nextApi.fetch(gov2TracksApi).then(({ result }) => setTracks(result));
+      nextApi
+        .fetch(fellowshipTracksApi)
+        .then(({ result }) => setFellowshipTracks(result));
+    }
+  }, [hasGov2]);
 
-  return useMemo(
-    () => resolveGov2TracksMenu(tracks, fellowshipTracks),
-    [tracks, fellowshipTracks]
-  );
+  return useMemo(() => {
+    if (hasGov2) return resolveGov2TracksMenu(tracks, fellowshipTracks);
+    return [];
+  }, [hasGov2, tracks, fellowshipTracks]);
 }
 
 function renderCommandPaletteLink(props) {
