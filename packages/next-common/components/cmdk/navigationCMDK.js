@@ -37,6 +37,8 @@ import {
   setCmdkTriggerVisible,
 } from "../../store/reducers/cmdkSlice";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
+import { isExternalLink } from "../../utils";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -50,6 +52,11 @@ const CmdkGlobalStyle = createGlobalStyle`
     line-height: 12px !important;
     letter-spacing: 0.16em;
     ${p_y(8)};
+  }
+  .command-palette-list-item {
+    & div:first-child  {
+      width: auto !important;
+    }
   }
 `;
 
@@ -86,6 +93,31 @@ const CommandListItemContent = styled.div`
   ${p_14_medium};
   ${text_capitalize};
 `;
+
+function renderCommandPaletteLink(props) {
+  const { href, ...restProps } = props ?? {};
+
+  if (isExternalLink(href)) {
+    return (
+      <a
+        href={href}
+        {...restProps}
+        children={{
+          ...restProps.children,
+          // unsafe, force change the `type` text to `External Link`
+          props: { ...restProps.children.props, type: "External Link" },
+        }}
+        target="_blank"
+      />
+    );
+  }
+
+  return (
+    <Link href={href} passHref>
+      <a {...restProps} />
+    </Link>
+  );
+}
 
 export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
   const dispatch = useDispatch();
@@ -210,6 +242,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
         isOpen={open}
         onChangeOpen={setOpen}
         search={search}
+        renderLink={renderCommandPaletteLink}
       >
         {pages.map((page) => (
           <CommandPalette.Page
