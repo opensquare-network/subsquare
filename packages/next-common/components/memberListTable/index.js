@@ -51,6 +51,32 @@ const RowSplitter = ({ backgroundColor, padding }) => (
   </tr>
 );
 
+function EmptyOrLoading({ loading }) {
+  return (
+    <tr>
+      <EmptyTd colSpan="3">
+        {loading ? <Loading size={16} /> : "No current members"}
+      </EmptyTd>
+    </tr>
+  );
+}
+
+function DataRow({ row, columns }) {
+  return (
+    <tr>
+      {row?.map((val, i) => (
+        <StyledTd
+          key={i}
+          style={columns[i].style}
+          className={columns[i].className}
+        >
+          {val}
+        </StyledTd>
+      ))}
+    </tr>
+  );
+}
+
 function MemberListTable({ columns = [], rows = [], loading = false }) {
   const theme = useThemeSetting();
 
@@ -59,30 +85,14 @@ function MemberListTable({ columns = [], rows = [], loading = false }) {
   if (rows?.length > 0) {
     tableBody = rows.map((row, index) => (
       <Fragment key={index}>
-        <tr>
-          {row?.map((val, i) => (
-            <StyledTd
-              key={i}
-              style={columns[i].style}
-              className={columns[i].className}
-            >
-              {val}
-            </StyledTd>
-          ))}
-        </tr>
+        <DataRow row={row} columns={columns} />
         {index !== rows.length - 1 && (
           <RowSplitter backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"} />
         )}
       </Fragment>
     ));
   } else {
-    tableBody = (
-      <tr>
-        <EmptyTd colSpan="3">
-          {loading ? <Loading size={16} /> : "No current members"}
-        </EmptyTd>
-      </tr>
-    );
+    tableBody = <EmptyOrLoading />;
   }
 
   return (
