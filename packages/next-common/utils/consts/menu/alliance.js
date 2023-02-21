@@ -4,6 +4,7 @@ import Chains from "../chains";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import AnnouncementIcon from "../../../assets/imgs/icons/type-announcements.svg";
+import MembersIcon from "../../../assets/imgs/icons/members.svg";
 
 const motions = {
   value: "allianceMotions",
@@ -14,7 +15,18 @@ const motions = {
       <MotionIcon />
     </MenuIconWrapper>
   ),
-}
+};
+
+const members = {
+  value: "allianceMembers",
+  name: "Members",
+  pathname: "/alliance/members",
+  icon: (
+    <MenuIconWrapper>
+      <MembersIcon />
+    </MenuIconWrapper>
+  ),
+};
 
 const announcements = {
   value: "allianceAnnouncements",
@@ -25,15 +37,15 @@ const announcements = {
       <AnnouncementIcon />
     </MenuIconWrapper>
   ),
-}
+};
 
 const alliance = {
   name: "ALLIANCE",
-  excludeToChains: getExcludeChains([Chains["westend-collectives"], Chains.collectives]),
-  items: [
-    announcements,
-    motions,
-  ],
-}
+  excludeToChains: getExcludeChains([
+    Chains["westend-collectives"],
+    Chains.collectives,
+  ]),
+  items: [announcements, motions, members],
+};
 
 export default alliance;
