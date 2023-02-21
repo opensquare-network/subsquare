@@ -1,7 +1,7 @@
 import Gov2Layout from "next-common/components/layout/Gov2Layout";
 import PostList from "next-common/components/postList";
-import { toGov2ReferendaListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
+import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 
 export default function Gov2Page({
   posts,
@@ -12,7 +12,7 @@ export default function Gov2Page({
 }) {
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
-    toGov2ReferendaListItem(item, tracks)
+    normalizeGov2ReferendaListItem(item, tracks)
   );
 
   return (

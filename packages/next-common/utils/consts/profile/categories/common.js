@@ -1,12 +1,15 @@
 import businessCategory from "../../business/category";
-// fixme: we should not import dependencies from next page
-import {
-  toCouncilMotionListItem, toDiscussionListItem,
-  toExternalProposalListItem, toPolkassemblyDiscussionListItem,
-  toPublicProposalListItem,
-  toReferendaListItem, toTechCommMotionListItem, toTipListItem, toTreasuryBountyListItem, toTreasuryProposalListItem
-} from "@subsquare/next/utils/viewfuncs";
 import Chains from "../../chains";
+import normalizeTechCommMotionListItem from "../../../viewfuncs/collective/normalizeTechCommMotionListItem";
+import normalizeReferendaListItem from "../../../viewfuncs/democracy/normalizeReferendaListItem";
+import normalizeExternalListItem from "../../../viewfuncs/democracy/normliazeExternalListItem";
+import normalizeProposalListItem from "../../../viewfuncs/democracy/normalizeProposalListItem";
+import normalizeTreasuryProposalListItem from "../../../viewfuncs/treasury/normalizeProposalListItem";
+import normalizeBountyListItem from "../../../viewfuncs/treasury/normalizeBountyListItem";
+import normalizeTipListItem from "../../../viewfuncs/treasury/normalizeTipListItem";
+import normalizeCouncilMotionListItem from "../../../viewfuncs/collective/normalizeCouncilMotionListItem";
+import normalizeDiscussionListItem from "../../../viewfuncs/discussion/normalizeDiscussionListItem";
+import normalizePolkassemblyDiscussionListItem from "../../../viewfuncs/discussion/normalizePaListItem";
 
 const commonCategories = [
   {
@@ -20,7 +23,7 @@ const commonCategories = [
         categoryId: businessCategory.democracyReferenda,
         routePath: "democracy/referenda",
         apiPath: "referendums",
-        formatter: toReferendaListItem,
+        formatter: normalizeReferendaListItem,
       },
       {
         id: "externals",
@@ -29,7 +32,7 @@ const commonCategories = [
         categoryId: businessCategory.democracyExternals,
         routePath: "democracy/externals",
         apiPath: "external-proposals",
-        formatter: toExternalProposalListItem,
+        formatter: normalizeExternalListItem,
         excludeChains: [Chains.kintsugi, Chains.interlay],
       },
       {
@@ -39,7 +42,7 @@ const commonCategories = [
         categoryId: businessCategory.democracyProposals,
         routePath: "democracy/proposals",
         apiPath: "public-proposals",
-        formatter: toPublicProposalListItem,
+        formatter: normalizeProposalListItem,
       },
     ],
   },
@@ -54,7 +57,7 @@ const commonCategories = [
         categoryId: businessCategory.treasuryProposals,
         routePath: "treasury/proposals",
         apiPath: "treasury-proposals",
-        formatter: toTreasuryProposalListItem,
+        formatter: normalizeTreasuryProposalListItem,
       },
       {
         id: "bounties",
@@ -63,7 +66,7 @@ const commonCategories = [
         categoryId: businessCategory.treasuryBounties,
         routePath: "treasury/bounties",
         apiPath: "bounties",
-        formatter: toTreasuryBountyListItem,
+        formatter: normalizeBountyListItem,
         excludeChains: [Chains.kintsugi, Chains.interlay],
       },
       {
@@ -73,7 +76,7 @@ const commonCategories = [
         categoryId: businessCategory.treasuryTips,
         routePath: "treasury/tips",
         apiPath: "tips",
-        formatter: toTipListItem,
+        formatter: normalizeTipListItem,
         excludeChains: [Chains.kintsugi, Chains.interlay],
       },
     ],
@@ -89,7 +92,7 @@ const commonCategories = [
         categoryId: businessCategory.councilMotions,
         routePath: "council/motions",
         apiPath: "council-motions",
-        formatter: toCouncilMotionListItem,
+        formatter: normalizeCouncilMotionListItem,
         excludeChains: [Chains.kintsugi, Chains.interlay],
       },
       {
@@ -99,7 +102,7 @@ const commonCategories = [
         categoryId: businessCategory.tcProposals,
         routePath: "techcomm/proposals",
         apiPath: "techcomm-proposals",
-        formatter: toTechCommMotionListItem,
+        formatter: normalizeTechCommMotionListItem,
       },
     ],
   },
@@ -114,7 +117,7 @@ const commonCategories = [
         categoryId: "Discussions",
         routePath: "discussions",
         apiPath: "posts",
-        formatter: toDiscussionListItem,
+        formatter: normalizeDiscussionListItem,
       },
       {
         id: "comments",
@@ -132,7 +135,7 @@ const commonCategories = [
         categoryId: "Polkassembly Discussions",
         routePath: "polkassembly/discussions",
         apiPath: "polkassembly-discussions",
-        formatter: toPolkassemblyDiscussionListItem,
+        formatter: normalizePolkassemblyDiscussionListItem,
         excludeChains: (() => {
           return Object.values(Chains).filter(
             (v) => ![Chains.kusama, Chains.polkadot].includes(v)

@@ -2,13 +2,13 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toPolkassemblyDiscussionListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import businessCategory from "next-common/utils/consts/business/category";
+import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
 
 export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
-    toPolkassemblyDiscussionListItem(chain, item)
+    normalizePolkassemblyDiscussionListItem(chain, item)
   );
 
   const category = businessCategory.polkassemblyDiscussions;

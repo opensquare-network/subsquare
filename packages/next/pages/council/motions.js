@@ -2,13 +2,13 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toCouncilMotionListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 
 export default withLoginUserRedux(({ motions, chain }) => {
   const items = (motions.items || []).map((item) =>
-    toCouncilMotionListItem(chain, item)
+    normalizeCouncilMotionListItem(chain, item)
   );
   const category = businessCategory.councilMotions;
   const seoInfo = { title: category, desc: category };

@@ -3,7 +3,6 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
-import { toTreasuryProposalListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import dynamic from "next/dynamic";
@@ -11,6 +10,7 @@ import { Create } from "next-common/components/treasury/common/styled";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
@@ -26,7 +26,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   const isMounted = useIsMounted();
 
   const items = (proposals.items || []).map((item) =>
-    toTreasuryProposalListItem(chain, item)
+    normalizeTreasuryProposalListItem(chain, item)
   );
 
   const refreshPageData = useCallback(async () => {

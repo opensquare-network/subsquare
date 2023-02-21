@@ -1,6 +1,6 @@
 import businessCategory from "../../business/category";
-// fixme: we should not import dependencies from next page
-import { toFellowshipReferendaListItem, toGov2ReferendaListItem } from "@subsquare/next/utils/viewfuncs";
+import normalizeGov2ReferendaListItem from "../../../gov2/list/normalizeReferendaListItem";
+import normalizeFellowshipReferendaListItem from "../../../gov2/list/normalizeFellowshipReferendaListItem";
 
 const gov2Category = {
   id: "openGov",
@@ -13,7 +13,7 @@ const gov2Category = {
       categoryId: businessCategory.openGovReferenda,
       routePath: "referenda",
       apiPath: "gov2/referendums",
-      formatter: (chain, item) => toGov2ReferendaListItem(item),
+      formatter: (chain, item) => normalizeGov2ReferendaListItem(item),
     },
     {
       id: "fellowship",
@@ -22,7 +22,7 @@ const gov2Category = {
       categoryId: businessCategory.fellowship,
       routePath: "fellowship",
       apiPath: "fellowship/referendums",
-      formatter: (chain, item) => toFellowshipReferendaListItem(item),
+      formatter: (chain, item) => normalizeFellowshipReferendaListItem(item),
     },
   ],
 };

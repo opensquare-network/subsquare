@@ -2,12 +2,12 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toTechCommMotionListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 
 export default withLoginUserRedux(({ proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
-    toTechCommMotionListItem(chain, item)
+    normalizeTechCommMotionListItem(chain, item)
   );
   const category = `Tech. Comm. Proposals`;
   const seoInfo = {
