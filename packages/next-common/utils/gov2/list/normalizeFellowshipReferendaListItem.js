@@ -16,5 +16,5 @@ export default function normalizeFellowshipReferendaListItem(item, tracks = []) 
     detailLink: `/fellowship/referendum/${ item.referendumIndex }`,
     commentsCount: item.commentsCount,
     trackName: track?.name || item.trackInfo?.name,
-  };
-};
+  }
+}

@@ -16,5 +16,5 @@ export default function normalizeGov2ReferendaListItem(item, tracks = []) {
     detailLink: `/referenda/referendum/${ item.referendumIndex }`,
     commentsCount: item.commentsCount,
     trackName: track?.name || item.trackInfo?.name,
-  };
-};
+  }
+}

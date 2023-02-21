@@ -19,4 +19,4 @@ export default function normalizeTechCommMotionListItem(chain, item) {
     time: getPostLastActivityAt(item),
     isDemocracy,
   }
-};
+}
