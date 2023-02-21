@@ -32,38 +32,34 @@ import commonMenus from "../../utils/consts/menu/common";
 import { isMacOS } from "../../utils/constants";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 
-const Trigger = styled.button([
-  [
-    p_x(18),
-    p_y(10),
-    bg_theme("neutral"),
-    shadow_100,
-    rounded_4,
-    p_14_medium,
-    border,
-    text_tertiary,
-    border_theme_grey200,
-    w_full,
-    cursor_pointer,
-    inline_flex,
-    gap_x(8),
-    items_center,
-    justify_between,
-    outline_none,
-  ],
-]);
+const Trigger = styled.button`
+  ${p_x(18)};
+  ${p_y(10)};
+  ${bg_theme("neutral")};
+  ${shadow_100};
+  ${rounded_4};
+  ${p_14_medium};
+  ${border};
+  ${text_tertiary};
+  ${border_theme_grey200};
+  ${w_full};
+  ${cursor_pointer};
+  ${inline_flex};
+  ${gap_x(8)};
+  ${items_center};
+  ${justify_between};
+  ${outline_none};
+`;
 
-const HotKey = styled.span([
-  [
-    bg_theme("primaryPurple100"),
-    text_theme("primaryPurple500"),
-    rounded_4,
-    p_x(8),
-    p_y(2),
-    p_12_medium,
-    m_l(8),
-  ],
-]);
+const HotKey = styled.span`
+  ${bg_theme("primaryPurple100")};
+  ${text_theme("primaryPurple500")};
+  ${rounded_4};
+  ${p_x(8)};
+  ${p_y(2)};
+  ${p_12_medium};
+  ${m_l(8)};
+`;
 
 const CommandListItemContent = styled.div`
   ${p_14_medium};
