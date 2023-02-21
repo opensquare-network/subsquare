@@ -15,6 +15,8 @@ import {
   p_x,
   p_y,
   rounded_4,
+  text_capitalize,
+  text_primary,
   text_tertiary,
   text_theme,
   w_full,
@@ -25,7 +27,6 @@ import {
   shadow_100,
 } from "../../styles/componentCss";
 import ClosePanelIcon from "../icons/closePanel";
-import capitalize from "../../utils/capitalize";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
 import { isMacOS } from "../../utils/constants";
@@ -64,6 +65,12 @@ const HotKey = styled.span([
   ],
 ]);
 
+const CommandListItemContent = styled.div`
+  ${p_14_medium};
+  ${text_primary};
+  ${text_capitalize};
+`;
+
 export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
@@ -82,7 +89,9 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
             items: m.items.map((i) => {
               return {
                 id: m.name + "-" + i.name,
-                children: i.name,
+                children: (
+                  <CommandListItemContent>{i.name}</CommandListItemContent>
+                ),
                 icon: () => i.icon,
                 href: i.pathname,
               };
@@ -109,7 +118,9 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
               ...commonMenus.items.map((i) => {
                 return {
                   id: i.name,
-                  children: capitalize(i.name?.toLowerCase()),
+                  children: (
+                    <CommandListItemContent>{i.name}</CommandListItemContent>
+                  ),
                   icon: () => i.icon,
                   href: i.pathname,
                 };
@@ -117,7 +128,11 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
               ...foldedMenu.map((m) => {
                 return {
                   id: m.name,
-                  children: capitalize(m.name?.toLowerCase()),
+                  children: (
+                    <CommandListItemContent>
+                      {m.name?.toLowerCase()}
+                    </CommandListItemContent>
+                  ),
                   icon: () => <MenuIcon />,
                   closeOnSelect: false,
                   onClick() {
