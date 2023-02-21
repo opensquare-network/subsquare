@@ -56,6 +56,8 @@ const CmdkGlobalStyle = createGlobalStyle`
   .command-palette-list-item {
     & div:first-child  {
       width: auto !important;
+      ${p_14_medium};
+      ${text_capitalize};
     }
   }
 `;
@@ -87,11 +89,6 @@ const HotKey = styled.span`
   ${p_y(2)};
   ${p_12_medium};
   ${m_l(8)};
-`;
-
-const CommandListItemContent = styled.div`
-  ${p_14_medium};
-  ${text_capitalize};
 `;
 
 function renderCommandPaletteLink(props) {
@@ -138,9 +135,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
             items: m.items.map((i) => {
               return {
                 id: m.name + "-" + i.name,
-                children: (
-                  <CommandListItemContent>{i.name}</CommandListItemContent>
-                ),
+                children: i.name,
                 icon: () => i.icon,
                 href: i.pathname,
               };
@@ -167,9 +162,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
               ...commonMenus.items.map((i) => {
                 return {
                   id: i.name,
-                  children: (
-                    <CommandListItemContent>{i.name}</CommandListItemContent>
-                  ),
+                  children: i.name,
                   icon: () => i.icon,
                   href: i.pathname,
                 };
@@ -177,11 +170,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
               ...foldedMenu.map((m) => {
                 return {
                   id: m.name,
-                  children: (
-                    <CommandListItemContent>
-                      {m.name?.toLowerCase()}
-                    </CommandListItemContent>
-                  ),
+                  children: m.name?.toLowerCase(),
                   icon: () => <MenuIcon />,
                   closeOnSelect: false,
                   onClick() {
