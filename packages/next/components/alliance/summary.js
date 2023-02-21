@@ -35,7 +35,7 @@ const SummaryItem = styled.div`
 export default function AllianceSummary({ fellow, ally, retiring }) {
   return (
     <Wrapper>
-      <Description>Alliance member list.</Description>
+      <Description>Alliance members by role.</Description>
 
       <Divider margin={16} />
 
