@@ -26,6 +26,7 @@ import { gov2State } from "../utils/consts/state";
 import ConfirmCountdown from "./gov2/postList/confirmCountdown";
 import ValueDisplay from "./valueDisplay";
 import ListPostTitle from "./postList/postTitle";
+import IpfsLink from "./alliance/ipfsLink";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -171,6 +172,7 @@ export default function Post({ data, href, type }) {
       businessCategory.financialMotions,
       businessCategory.tcProposals,
       businessCategory.advisoryMotions,
+      businessCategory.allianceMotions,
     ].includes(type)
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
@@ -256,6 +258,9 @@ export default function Post({ data, href, type }) {
                 {`${commentsCount}`}
               </MobileHiddenInfo>
             )}
+            {
+              businessCategory.allianceAnnouncements === type && <IpfsLink cid={ data.cid } />
+            }
             {data.parentIndex !== undefined && (
               <MobileHiddenInfo>
                 <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>

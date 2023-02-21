@@ -5,6 +5,7 @@ import {
   getGov2ReferendumTitle,
   getGov2TreasuryProposalTitle,
 } from "../../utils/gov2/title";
+import getAnnouncementTitle from "../../utils/alliance/title";
 
 const PostContext = createContext(null);
 const PostDispatchContext = createContext(null);
@@ -56,8 +57,10 @@ export function usePostTitle() {
     ].includes(type)
   ) {
     title = getGov2ReferendumTitle(post);
-  } else if (detailPageCategory.TREASURY_PROPOSAL) {
+  } else if (detailPageCategory.TREASURY_PROPOSAL === type) {
     title = getGov2TreasuryProposalTitle(post);
+  } else if (detailPageCategory.ALLIANCE_ANNOUNCEMENT === type) {
+    title = getAnnouncementTitle(post);
   }
 
   return title;

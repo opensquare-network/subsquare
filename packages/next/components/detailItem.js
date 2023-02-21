@@ -13,6 +13,7 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import { useDetailType } from "next-common/context/page";
 import TreasuryProposalNavigation from "next-common/components/detail/navigation/treasuryProposalNavigation";
 import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
+import AnnouncementNavigation from "next-common/components/detail/navigation/announcementNavigation";
 
 export default function DetailItem({
   onReply,
@@ -59,6 +60,7 @@ export default function DetailItem({
       {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
         <ReferendumNavigation post={post} />
       )}
+      <AnnouncementNavigation />
       {countDown}
       <PostTitle />
       <PostMeta />

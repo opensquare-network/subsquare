@@ -21,6 +21,8 @@ import hydradx from "./hydradx";
 import development from "./development";
 import rococo from "./rococo";
 import litentry from "./litentry";
+import westendCollectives from "./westendCollectives";
+import collectives from "./collectives";
 
 const settingsMap = {
   polkadot,
@@ -46,6 +48,8 @@ const settingsMap = {
   zeitgeist,
   rococo,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
+  "westend-collectives": westendCollectives,
+  collectives,
 };
 
 export default function getChainSettings(chain) {

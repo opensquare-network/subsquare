@@ -6,6 +6,7 @@ import techComm from "./tc";
 import financialCouncil from "./financilCouncil";
 import advisoryCommittee from "./advisoryCouncil";
 import { gov2EntryMenu } from "./gov2";
+import alliance from "./alliance";
 
 const homeMenus = [
   commonMenus,
@@ -16,6 +17,7 @@ const homeMenus = [
   techComm,
   financialCouncil,
   advisoryCommittee,
+  alliance,
 ];
 
 export const allHomeMenuNames = homeMenus.reduce((result, menu) => {

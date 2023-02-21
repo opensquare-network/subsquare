@@ -11,6 +11,7 @@ import {
   DemocracyReferendumTag,
 } from "./democracy";
 import { Gov2ReferendaTag } from "./gov2";
+import AnnouncementTag from "./announcement";
 
 const categoryTagMap = {
   [businessCategory.treasuryProposals]: TreasuryTag,
@@ -30,7 +31,9 @@ const categoryTagMap = {
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
   [businessCategory.advisoryMotions]: CollectiveTag,
   [detailPageCategory.ADVISORY_MOTION]: CollectiveTag,
+  [businessCategory.allianceMotions]: CollectiveTag,
   [businessCategory.financialMotions]: CollectiveTag,
+  [detailPageCategory.ALLIANCE_MOTION]: CollectiveTag,
   [detailPageCategory.FINANCIAL_MOTION]: CollectiveTag,
   [businessCategory.collective]: CollectiveTag,
 
@@ -48,6 +51,9 @@ const categoryTagMap = {
 
   [businessCategory.fellowship]: Gov2ReferendaTag,
   [detailPageCategory.FELLOWSHIP_REFERENDUM]: Gov2ReferendaTag,
+
+  [businessCategory.allianceAnnouncements]: AnnouncementTag,
+  [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: AnnouncementTag,
 };
 
 export default function Tag({ category, state, link, args, data }) {

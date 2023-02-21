@@ -24,6 +24,8 @@ const Chains = {
   development: "development",
   rococo: "rococo",
   litentry: "litentry",
+  "westend-collectives": "westend-collectives",
+  collectives: "collectives",
 };
 
 export default Chains;

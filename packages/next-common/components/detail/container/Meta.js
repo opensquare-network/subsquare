@@ -13,6 +13,7 @@ import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { smcss } from "../../../utils/responsive";
 import { useDetailType } from "../../../context/page";
+import IpfsLink from "../../alliance/ipfsLink";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -81,6 +82,9 @@ export default function PostMeta() {
             <Info>{`${commentsCount} Comments`}</Info>
           )}
         </MobileHiddenDividerWrapper>
+        {
+          detailPageCategory.ALLIANCE_ANNOUNCEMENT === detailType && <IpfsLink cid={post.cid} />
+        }
       </DividerWrapper>
 
       <MobileHiddenDividerWrapper>
