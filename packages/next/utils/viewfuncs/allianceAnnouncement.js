@@ -1,7 +1,7 @@
-import { getPostUpdatedAt } from "./common";
+import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 
 function getAnnouncementId(height, cid) {
-  return `${ height }_${ cid }`;
+  return `${height}_${cid}`;
 }
 
 export default function normalizeAllianceAnnouncement(item = {}) {
@@ -11,7 +11,10 @@ export default function normalizeAllianceAnnouncement(item = {}) {
     title: item.title || item.cid,
     address: item.proposer,
     status: onchainData.state?.state ?? "Unknown",
-    detailLink: `/alliance/announcement/${ getAnnouncementId(item.height, item.cid) }`,
-    time: getPostUpdatedAt(item),
+    detailLink: `/alliance/announcement/${getAnnouncementId(
+      item.height,
+      item.cid
+    )}`,
+    time: getPostLastActivityAt(item),
   };
 }
