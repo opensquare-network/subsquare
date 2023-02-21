@@ -96,16 +96,13 @@ function renderCommandPaletteLink(props) {
 
   if (isExternalLink(href)) {
     return (
-      <a
-        href={href}
-        {...restProps}
-        children={{
+      <a href={href} {...restProps} target="_blank" rel="noreferrer">
+        {{
           ...restProps.children,
           // unsafe, force change the `type` text to `External Link`
           props: { ...restProps.children.props, type: "External Link" },
         }}
-        target="_blank"
-      />
+      </a>
     );
   }
 
