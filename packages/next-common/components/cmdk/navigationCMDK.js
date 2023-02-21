@@ -31,6 +31,12 @@ import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
 import { isMacOS } from "../../utils/constants";
 import { useEventListener } from "../../utils/hooks/useEventListener";
+import { useSelector } from "react-redux";
+import {
+  cmdkTriggerVisibleSelector,
+  setCmdkTriggerVisible,
+} from "../../store/reducers/cmdkSlice";
+import { useDispatch } from "react-redux";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -82,10 +88,11 @@ const CommandListItemContent = styled.div`
 `;
 
 export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
+  const dispatch = useDispatch();
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [triggerVisible, setTriggerVisible] = useState(true);
+  const cmdkTriggerVisible = useSelector(cmdkTriggerVisibleSelector);
 
   const foldedMenu = menu.filter((m) => m.name && m.items?.length);
 
@@ -183,7 +190,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
     <div>
       <CmdkGlobalStyle />
 
-      {triggerVisible && (
+      {cmdkTriggerVisible && (
         <Trigger onClick={() => setOpen(true)} style={triggerButtonStyle}>
           <span>
             Navigation <HotKey>{isMacOS ? "⌘ " : "Ctrl +"} K</HotKey>
@@ -191,7 +198,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
           <ClosePanelIcon
             onClick={(e) => {
               e.stopPropagation();
-              setTriggerVisible(false);
+              dispatch(setCmdkTriggerVisible(false));
             }}
           />
         </Trigger>
