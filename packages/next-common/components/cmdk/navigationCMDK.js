@@ -1,6 +1,6 @@
 import CommandPalette, { filterItems, getItemIndex } from "react-cmdk";
 import styled, { createGlobalStyle } from "styled-components";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   bg_theme,
   border,
@@ -29,6 +29,8 @@ import {
 import ClosePanelIcon from "../icons/closePanel";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
+import homeMenus from "../../utils/consts/menu";
+import { resolveGov2TracksMenu } from "../../utils/consts/menu/gov2";
 import { isMacOS } from "../../utils/constants";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import { useSelector } from "react-redux";
@@ -40,6 +42,8 @@ import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
 import { useChain } from "../../context/chain";
+import { fellowshipTracksApi, gov2TracksApi } from "../../services/url";
+import nextApi from "../../services/nextApi";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -92,6 +96,23 @@ const HotKey = styled.span`
   ${m_l(8)};
 `;
 
+function useGov2Menu() {
+  const [tracks, setTracks] = useState([]);
+  const [fellowshipTracks, setFellowshipTracks] = useState([]);
+
+  useEffect(() => {
+    nextApi.fetch(gov2TracksApi).then(({ result }) => setTracks(result));
+    nextApi
+      .fetch(fellowshipTracksApi)
+      .then(({ result }) => setFellowshipTracks(result));
+  }, []);
+
+  return useMemo(
+    () => resolveGov2TracksMenu(tracks, fellowshipTracks),
+    [tracks, fellowshipTracks]
+  );
+}
+
 function renderCommandPaletteLink(props) {
   const { href, children, ...restProps } = props ?? {};
 
@@ -114,15 +135,18 @@ function renderCommandPaletteLink(props) {
   );
 }
 
-export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
+export default function NavigationCMDK({ triggerButtonStyle }) {
   const chain = useChain();
   const dispatch = useDispatch();
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const cmdkTriggerVisible = useSelector(cmdkTriggerVisibleSelector);
+  const gov2Menu = useGov2Menu();
 
-  const foldedMenu = menu.filter((m) => m.name && m.items?.length);
+  const foldedMenu = [...gov2Menu, ...homeMenus].filter(
+    (m) => m.name && m.items?.length
+  );
 
   function filterChain(item) {
     return !item?.excludeToChains?.includes(chain);
