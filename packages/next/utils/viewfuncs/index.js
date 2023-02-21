@@ -3,7 +3,8 @@ import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import { parseGov2TrackName } from "next-common/utils/gov2";
-import { getPostUpdatedAt, getTitle } from "./common";
+import { getTitle } from "./common";
+import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -108,7 +109,7 @@ export const toCouncilMotionListItem = (chain, item) => {
       item?.onchainData?.treasuryProposals?.length > 0 ||
       item?.onchainData?.treasuryBounties?.length > 0,
     isDemocracy: item?.onchainData?.externalProposals?.length > 0,
-    time: getPostUpdatedAt(item),
+    time: getPostLastActivityAt(item),
   };
 };
 
@@ -120,7 +121,7 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   address: item.proposer,
   status: item.state?.state ?? "Unknown",
   detailLink: `/financial-council/motion/${getMotionId(item)}`,
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
 });
 
 export const toTechCommMotionListItem = (chain, item) => ({
@@ -130,7 +131,7 @@ export const toTechCommMotionListItem = (chain, item) => ({
   address: item.proposer,
   status: item?.state ?? "Unknown",
   detailLink: `/techcomm/proposal/${getMotionId(item)}`,
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });
 
@@ -142,7 +143,7 @@ export const toAdvisoryMotionsListItem = (chain, item) => ({
   address: item.proposer,
   status: item.state ?? "Unknown",
   detailLink: `/advisory-committee/motion/${getMotionId(item)}`,
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
 });
 
 function getTreasuryProposalTitle(item) {
@@ -166,7 +167,7 @@ export const toTreasuryProposalListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   detailLink: `/treasury/proposal/${item.proposalIndex}`,
   value: item.onchainData?.value,
   index: item.proposalIndex,
@@ -179,7 +180,7 @@ export const toTreasuryBountyListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   detailLink: `/treasury/bounty/${item.bountyIndex}`,
   value: item.onchainData?.value,
 });
@@ -190,7 +191,7 @@ export const toTreasuryChildBountyListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   value: item.onchainData.value,
   detailLink: `/treasury/child-bounty/${item.index}`,
   parentIndex: item.parentBountyId,
@@ -199,7 +200,7 @@ export const toTreasuryChildBountyListItem = (chain, item) => ({
 export const toReferendaListItem = (chain, item) => ({
   ...item,
   title: getTitle(item),
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   status: item.state ?? "Unknown",
   index: item.referendumIndex,
   author: item.author,
@@ -213,7 +214,7 @@ export const toTipListItem = (chain, item) => ({
   author: item.author,
   address: item.finder,
   status: getTipState(item.state),
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   detailLink: `/treasury/tip/${item.height}_${item.hash}`,
   value:
     getTipState(item.state) === "Retracted"
@@ -228,7 +229,7 @@ export const toPublicProposalListItem = (chain, item) => ({
   address: item.proposer,
   index: item.proposalIndex,
   status: item.state ?? "Unknown",
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   detailLink: `/democracy/proposal/${item.proposalIndex}`,
 });
 
@@ -237,7 +238,7 @@ export const toExternalProposalListItem = (chain, item) => ({
   title: getTitle(item),
   author: item.author,
   address: item.proposer,
-  time: getPostUpdatedAt(item),
+  time: getPostLastActivityAt(item),
   hash: item.externalProposalHash,
   status: item.state ?? "Unknown",
   detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
@@ -251,7 +252,7 @@ export const toGov2ReferendaListItem = (item, tracks = []) => {
   return {
     ...item,
     title: getGov2ReferendumTitle(item),
-    time: getPostUpdatedAt(item),
+    time: getPostLastActivityAt(item),
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
     author: item.author,
@@ -270,7 +271,7 @@ export const toFellowshipReferendaListItem = (item, tracks = []) => {
   return {
     ...item,
     title: getGov2ReferendumTitle(item),
-    time: getPostUpdatedAt(item),
+    time: getPostLastActivityAt(item),
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
     author: item.author,
