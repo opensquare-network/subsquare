@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { withLoginUserRedux } from "../../lib";
 import { isAddress } from "../../utils/viewfuncs";
-import { CATEGORIES } from "../../utils/consts/profile";
+import { getProfileCategories } from "../../utils/consts/profile";
 import nextApi from "next-common/services/nextApi";
 import User from "../user";
 import CommentList from "../commentList";
@@ -182,9 +182,9 @@ const DisplayUserAvatar = ({ address, user }) => {
   );
 };
 
-const getCategoryByRoute = (route) => {
+const getCategoryByRoute = (route, categories = []) => {
   let category;
-  CATEGORIES.forEach((firstCategory) => {
+  categories.forEach((firstCategory) => {
     firstCategory.children.forEach((secondCategory) => {
       if (secondCategory.routePath === route) {
         category = [firstCategory, secondCategory];
@@ -194,7 +194,7 @@ const getCategoryByRoute = (route) => {
   if (category) {
     return category;
   }
-  return [CATEGORIES[0], CATEGORIES[0].children[0]];
+  return [categories[0], categories[0].children[0]];
 };
 
 export default withLoginUserRedux(({ route, summary, user, id }) => {
@@ -204,11 +204,12 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   const [items, setItems] = React.useState([]);
   const [pagination, setPagination] = React.useState(defaultPage);
   const [isLoading, setIsLoading] = React.useState(true);
+  const categories = getProfileCategories(chain);
   const [firstCategory, setFirstCategory] = React.useState(
-    getCategoryByRoute(route)[0]
+    getCategoryByRoute(route, categories)[0]
   );
   const [secondCategory, setSecondCategory] = React.useState(
-    getCategoryByRoute(route)[1]
+    getCategoryByRoute(route, categories)[1]
   );
   const router = useRouter();
 
@@ -288,7 +289,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
         <CategoryWrapper>
           <VStack space={16}>
             <CategoryList>
-              {CATEGORIES.map((c, index) => (
+              {categories.map((c, index) => (
                 <Category
                   onClick={() => {
                     setItems(null);
