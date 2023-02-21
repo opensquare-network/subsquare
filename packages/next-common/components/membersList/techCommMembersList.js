@@ -32,7 +32,7 @@ export default function MembersList({
   const columns = [{ name: "MEMBERS", style: { textAlign: "left" } }];
 
   const rows = items.map((item) => [
-    <Member>
+    <Member key={item}>
       <User add={item} fontSize={14} />
       {item === prime && <PrimeAddressMark />}
     </Member>,

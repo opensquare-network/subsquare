@@ -92,7 +92,7 @@ function MemberListTable({ columns = [], rows = [], loading = false }) {
       </Fragment>
     ));
   } else {
-    tableBody = <EmptyOrLoading />;
+    tableBody = <EmptyOrLoading loading={loading} />;
   }
 
   return (
