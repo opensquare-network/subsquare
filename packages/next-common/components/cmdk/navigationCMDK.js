@@ -39,6 +39,7 @@ import {
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
+import { useChain } from "../../context/chain";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -114,6 +115,7 @@ function renderCommandPaletteLink(props) {
 }
 
 export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
+  const chain = useChain();
   const dispatch = useDispatch();
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
@@ -122,6 +124,10 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
 
   const foldedMenu = menu.filter((m) => m.name && m.items?.length);
 
+  function filterChain(item) {
+    return !item?.excludeToChains?.includes(chain);
+  }
+
   const pages = useMemo(() => {
     const subPageItems = foldedMenu.map((m) => {
       const filteredItems = filterItems(
@@ -129,7 +135,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
           {
             id: m.name,
             heading: m.name,
-            items: m.items.map((i) => {
+            items: m.items.filter(filterChain).map((i) => {
               return {
                 id: m.name + "-" + i.name,
                 children: i.name,
@@ -156,7 +162,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
           {
             id: "home",
             items: [
-              ...commonMenus.items.map((i) => {
+              ...commonMenus.items.filter(filterChain).map((i) => {
                 return {
                   id: i.name,
                   children: i.name,
@@ -164,7 +170,7 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
                   href: i.pathname,
                 };
               }),
-              ...foldedMenu.map((m) => {
+              ...foldedMenu.filter(filterChain).map((m) => {
                 return {
                   id: m.name,
                   children: m.name?.toLowerCase(),
