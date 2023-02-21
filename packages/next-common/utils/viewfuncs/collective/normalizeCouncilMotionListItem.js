@@ -24,7 +24,6 @@ export default function normalizeCouncilMotionListItem (chain, item) {
     ...item,
     index: item.motionIndex,
     title: getTitle(item),
-    author: item.author,
     address: item.proposer,
     status: getMotionState(item),
     detailLink: `/council/motion/${getMotionId(item)}`,

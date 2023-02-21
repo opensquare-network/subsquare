@@ -5,7 +5,6 @@ export default function normalizeTreasuryProposalListItem(chain, item) {
   return {
     ...item,
     title: getTreasuryProposalTitle(item),
-    author: item.author,
     address: item.proposer,
     status: item.state ?? "Unknown",
     time: getPostLastActivityAt(item),

@@ -13,7 +13,6 @@ export default function normalizeTechCommMotionListItem(chain, item) {
   return {
     ...item,
     title: getTitle(item),
-    author: item.author,
     address: item.proposer,
     status: item?.state ?? "Unknown",
     detailLink: `/techcomm/proposal/${ getMotionId(item) }`,

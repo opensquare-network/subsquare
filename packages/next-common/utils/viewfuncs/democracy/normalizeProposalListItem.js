@@ -5,7 +5,6 @@ export default function normalizeProposalListItem(chain, item) {
   return {
     ...item,
     title: getTitle(item),
-    author: item.author,
     address: item.proposer,
     index: item.proposalIndex,
     status: item.state ?? "Unknown",

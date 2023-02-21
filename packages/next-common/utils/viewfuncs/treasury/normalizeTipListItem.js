@@ -22,7 +22,6 @@ export default function normalizeTipListItem(chain, item) {
   return {
     ...item,
     title: getTitle(item),
-    author: item.author,
     address: item.finder,
     status: getTipState(item.state),
     time: getPostLastActivityAt(item),

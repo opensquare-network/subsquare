@@ -8,7 +8,6 @@ export default function normalizeReferendaListItem(chain, item) {
     time: getPostLastActivityAt(item),
     status: item.state ?? "Unknown",
     index: item.referendumIndex,
-    author: item.author,
     address: item.proposer,
     detailLink: `/democracy/referendum/${ item.referendumIndex }`,
   }

@@ -6,7 +6,6 @@ export default function normalizeBountyListItem(chain, item) {
     ...item,
     title: getTitle(item),
     index: item.bountyIndex,
-    author: item.author,
     address: item.proposer,
     status: item.state ?? "Unknown",
     time: getPostLastActivityAt(item),

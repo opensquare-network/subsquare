@@ -12,7 +12,6 @@ export default function normalizeFellowshipReferendaListItem(item, tracks = []) 
     time: getPostLastActivityAt(item),
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
-    author: item.author,
     address: item.proposer,
     detailLink: `/fellowship/referendum/${ item.referendumIndex }`,
     commentsCount: item.commentsCount,
