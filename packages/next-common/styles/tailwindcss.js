@@ -378,6 +378,11 @@ export const text_secondary = text_theme("textSecondary");
 export const text_tertiary = text_theme("textTertiary");
 export const text_quaternary = text_theme("textQuaternary");
 
+// text transform
+export const text_capitalize = `
+  text-transform: capitalize;
+`;
+
 // interactivity
 // ---
 
