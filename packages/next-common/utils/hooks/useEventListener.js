@@ -12,12 +12,12 @@ export function useEventListener(type, handler, target, opts) {
       return;
     }
 
-    if (!target) {
-      return;
-    }
-
     /** @type {HTMLElement} */
     const targetElement = target?.current ?? target ?? window;
+
+    if (!targetElement) {
+      return;
+    }
 
     targetElement.addEventListener(type, handler, opts);
 
