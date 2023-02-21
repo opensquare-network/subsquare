@@ -1,5 +1,5 @@
 import CommandPalette, { filterItems, getItemIndex } from "react-cmdk";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import React, { useState, useMemo } from "react";
 import {
   bg_theme,
@@ -16,12 +16,12 @@ import {
   p_y,
   rounded_4,
   text_capitalize,
-  text_primary,
   text_tertiary,
   text_theme,
   w_full,
 } from "../../styles/tailwindcss";
 import {
+  p_12_bold,
   p_12_medium,
   p_14_medium,
   shadow_100,
@@ -31,6 +31,21 @@ import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
 import { isMacOS } from "../../utils/constants";
 import { useEventListener } from "../../utils/hooks/useEventListener";
+
+// next-common/styles/cmdk.css
+const CmdkGlobalStyle = createGlobalStyle`
+  .command-palette {
+    z-index: 1000;
+  }
+  .command-palette-content h4 {
+    ${p_12_bold};
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 12px !important;
+    letter-spacing: 0.16em;
+    ${p_y(8)};
+  }
+`;
 
 const Trigger = styled.button`
   ${p_x(18)};
@@ -63,7 +78,6 @@ const HotKey = styled.span`
 
 const CommandListItemContent = styled.div`
   ${p_14_medium};
-  ${text_primary};
   ${text_capitalize};
 `;
 
@@ -167,6 +181,8 @@ export default function NavigationCMDK({ menu = [], triggerButtonStyle }) {
 
   return (
     <div>
+      <CmdkGlobalStyle />
+
       {triggerVisible && (
         <Trigger onClick={() => setOpen(true)} style={triggerButtonStyle}>
           <span>

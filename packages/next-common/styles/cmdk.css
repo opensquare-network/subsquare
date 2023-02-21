@@ -1,5 +1,1 @@
 @import "react-cmdk/dist/cmdk.css";
-
-.command-palette {
-  z-index: 1000;
-}
