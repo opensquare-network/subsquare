@@ -5,10 +5,10 @@ import ArticleContent from "./articleContent";
 import { EditablePanel } from "next-common/components/styled/panel";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import Info from "next-common/components/styled/info";
-import { toPolkassemblyDiscussionAuthor } from "utils/viewfuncs";
 import useDuration from "next-common/utils/hooks/useDuration";
 import PostTitle from "next-common/components/detail/common/Title";
 import { usePost } from "next-common/context/post";
+import { toPolkassemblyDiscussionAuthor } from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;

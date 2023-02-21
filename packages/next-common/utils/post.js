@@ -5,6 +5,10 @@ import { nodes } from "./constants";
 import uniqBy from "lodash.uniqby";
 import { isAddress } from "./viewfuncs";
 
+export function getTitle(item) {
+  return `${item?.title ?? "--"}`;
+}
+
 export function getMentionList(comments) {
   return uniqBy(
     comments?.items

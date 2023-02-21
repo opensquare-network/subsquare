@@ -2,15 +2,15 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toPublicProposalListItem } from "utils/viewfuncs";
 import DemocracySummary from "next-common/components/summary/democracySummary";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import DemocracySummaryFooter from "next-common/components/summary/democracySummaryFooter";
+import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 
 export default withLoginUserRedux(({ proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
-    toPublicProposalListItem(chain, item)
+    normalizeProposalListItem(chain, item)
   );
   const category = businessCategory.democracyProposals;
   const seoInfo = { title: category, desc: category };

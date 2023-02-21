@@ -3,7 +3,6 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
-import { toTipListItem } from "utils/viewfuncs";
 import Summary from "next-common/components/summary";
 import { Create } from "next-common/components/treasury/common/styled";
 import dynamic from "next/dynamic";
@@ -12,6 +11,7 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
+import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -36,7 +36,7 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
 
   const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
 
-  const items = (tips.items || []).map((item) => toTipListItem(chain, item));
+  const items = (tips.items || []).map((item) => normalizeTipListItem(chain, item));
   const category = "Tips";
   const seoInfo = { title: `Treasury Tips`, desc: `Treasury Tips` };
 

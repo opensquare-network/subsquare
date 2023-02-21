@@ -1,24 +1,22 @@
 import Overview from "next-common/components/overview";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import {
-  toCouncilMotionListItem,
-  toDiscussionListItem,
-  toExternalProposalListItem,
-  toFinancialMotionsListItem,
-  toPublicProposalListItem,
-  toReferendaListItem,
-  toTechCommMotionListItem,
-  toTipListItem,
-  toTreasuryBountyListItem,
-  toTreasuryProposalListItem,
-} from "utils/viewfuncs";
+import { toFinancialMotionsListItem, } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
-import normalizeReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
+import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
+import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
+import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
+import normalizeExternalListItem from "next-common/utils/viewfuncs/democracy/normliazeExternalListItem";
+import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
+import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
+import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
+import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
+import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
+import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -31,7 +29,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       category: "Discussions",
       link: "/discussions",
       items: (overview?.discussions ?? []).map((item) =>
-        toDiscussionListItem(chain, item)
+        normalizeDiscussionListItem(chain, item)
       ),
     },
   ];
@@ -47,7 +45,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
           category: "OpenGov Referenda",
           link: "/referenda",
           items: (overview?.gov2?.referenda ?? []).map((item) =>
-            normalizeReferendaListItem(item, tracks)
+            normalizeGov2ReferendaListItem(item, tracks)
           ),
         },
         {
@@ -67,21 +65,21 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
         category: "Referenda",
         link: "/democracy/referenda",
         items: (overview?.democracy?.referenda ?? []).map((item) =>
-          toReferendaListItem(chain, item)
+          normalizeReferendaListItem(chain, item)
         ),
       },
       {
         category: "Democracy External Proposals",
         link: "/democracy/externals",
         items: (overview?.democracy?.externals ?? []).map((item) =>
-          toExternalProposalListItem(chain, item)
+          normalizeExternalListItem(chain, item)
         ),
       },
       {
         category: "Democracy Public Proposals",
         link: "/democracy/proposals",
         items: (overview?.democracy?.proposals ?? []).map((item) =>
-          toPublicProposalListItem(chain, item)
+          normalizeProposalListItem(chain, item)
         ),
       },
       ...discussions,
@@ -89,14 +87,14 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
         category: "Council Motions",
         link: "/council/motions",
         items: (overview?.council?.motions ?? []).map((item) =>
-          toCouncilMotionListItem(chain, item)
+          normalizeCouncilMotionListItem(chain, item)
         ),
       },
       {
         category: "Tech. Comm. Proposals",
         link: "/techcomm/proposals",
         items: (overview?.techComm?.motions ?? []).map((item) =>
-          toTechCommMotionListItem(chain, item)
+          normalizeTechCommMotionListItem(chain, item)
         ),
       },
     ]
@@ -118,21 +116,21 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
         category: "Treasury Proposals",
         link: "/treasury/proposals",
         items: (overview?.treasury?.proposals ?? []).map((item) =>
-          toTreasuryProposalListItem(chain, item)
+          normalizeTreasuryProposalListItem(chain, item)
         ),
       },
       {
         category: "Treasury Bounties",
         link: "/treasury/bounties",
         items: (overview?.treasury?.bounties ?? []).map((item) =>
-          toTreasuryBountyListItem(chain, item)
+          normalizeBountyListItem(chain, item)
         ),
       },
       {
         category: "Tips",
         link: "/treasury/tips",
         items: (overview?.treasury?.tips ?? []).map((item) =>
-          toTipListItem(chain, item)
+          normalizeTipListItem(chain, item)
         ),
       },
     ]

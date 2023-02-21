@@ -4,8 +4,8 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import { toDiscussionListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
+import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 
 const Create = styled.a`
   display: flex;
@@ -21,7 +21,7 @@ const Create = styled.a`
 
 export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
-    toDiscussionListItem(chain, item)
+    normalizeDiscussionListItem(chain, item)
   );
 
   const create = (

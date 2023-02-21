@@ -1,32 +1,7 @@
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
-import isNil from "lodash.isnil";
-import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getTitle } from "./common";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
-
-export const TipStateMap = {
-  NewTip: "Tipping",
-  tip: "Tipping",
-  Tipping: "Tipping",
-  TipRetracted: "Retracted",
-  TipClosed: "Closed",
-};
-
-export function getTipState(state) {
-  if (!state) {
-    return "Unknown";
-  }
-  return TipStateMap[state.state ?? state] === "Tipping"
-    ? `Tipping (${state.tipsCount})`
-    : TipStateMap[state.state ?? state];
-}
-
-export const toDiscussionListItem = (chain, item) => ({
-  ...item,
-  time: item.lastActivityAt,
-  detailLink: `/post/${item.postUid}`,
-});
 
 export const convertPolkassemblyUser = (chain, paUser) =>
   paUser?.[`${chain}_default_address`]
@@ -58,59 +33,10 @@ export const convertPolkassemblyComment = (chain, comment) => ({
   author: convertPolkassemblyUser(chain, comment.author),
 });
 
-export const toPolkassemblyDiscussionAuthor = (author) => ({
-  username: addressEllipsis(author?.address) || author?.username,
-  ...(author?.address
-    ? {
-        address: author.address,
-      }
-    : {}),
-});
-
-export const toPolkassemblyDiscussionListItem = (chain, item) => ({
-  ...item,
-  time: item.lastActivityAt,
-  author: toPolkassemblyDiscussionAuthor(item.author),
-  detailLink: `/polkassembly/post/${item.polkassemblyId}`,
-});
-
 export const toPolkassemblyCommentListItem = (chain, item) => ({
   ...convertPolkassemblyComment(chain, item),
   replies: item.replies?.map((r) => convertPolkassemblyComment(chain, r)),
 });
-
-function getMotionState(item = {}) {
-  if (!item.state) {
-    return "Unknown";
-  }
-
-  const voting = "Voting";
-  if (item.state !== voting) {
-    return item.state;
-  }
-
-  const { tally: { yesVotes } = {}, voting: { ayes = [] } = {} } =
-    item.onchainData || {};
-  const ayeCount = isNil(yesVotes) ? ayes.length : yesVotes;
-  return isNil(yesVotes) ? voting : `${voting} (${ayeCount})`;
-}
-
-export const toCouncilMotionListItem = (chain, item) => {
-  return {
-    ...item,
-    index: item.motionIndex,
-    title: getTitle(item),
-    author: item.author,
-    address: item.proposer,
-    status: getMotionState(item),
-    detailLink: `/council/motion/${getMotionId(item)}`,
-    isTreasury:
-      item?.onchainData?.treasuryProposals?.length > 0 ||
-      item?.onchainData?.treasuryBounties?.length > 0,
-    isDemocracy: item?.onchainData?.externalProposals?.length > 0,
-    time: getPostLastActivityAt(item),
-  };
-};
 
 export const toFinancialMotionsListItem = (chain, item) => ({
   ...item,
@@ -121,17 +47,6 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   status: item.state?.state ?? "Unknown",
   detailLink: `/financial-council/motion/${getMotionId(item)}`,
   time: getPostLastActivityAt(item),
-});
-
-export const toTechCommMotionListItem = (chain, item) => ({
-  ...item,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  status: item?.state ?? "Unknown",
-  detailLink: `/techcomm/proposal/${getMotionId(item)}`,
-  time: getPostLastActivityAt(item),
-  isDemocracy: item?.onchainData?.externalProposals?.length > 0,
 });
 
 export const toAdvisoryMotionsListItem = (chain, item) => ({
@@ -145,45 +60,6 @@ export const toAdvisoryMotionsListItem = (chain, item) => ({
   time: getPostLastActivityAt(item),
 });
 
-function getTreasuryProposalTitle(item) {
-  let title = item.title?.trim();
-  if (title) {
-    return title;
-  }
-
-  const trackName = item?.onchainData?.track?.name;
-  if (trackName) {
-    const parsedTrackName = parseGov2TrackName(trackName);
-    return `[${parsedTrackName}] Referendum #${item?.onchainData?.gov2Referendum}`;
-  }
-
-  return "--";
-}
-
-export const toTreasuryProposalListItem = (chain, item) => ({
-  ...item,
-  title: getTreasuryProposalTitle(item),
-  author: item.author,
-  address: item.proposer,
-  status: item.state ?? "Unknown",
-  time: getPostLastActivityAt(item),
-  detailLink: `/treasury/proposal/${item.proposalIndex}`,
-  value: item.onchainData?.value,
-  index: item.proposalIndex,
-});
-
-export const toTreasuryBountyListItem = (chain, item) => ({
-  ...item,
-  title: getTitle(item),
-  index: item.bountyIndex,
-  author: item.author,
-  address: item.proposer,
-  status: item.state ?? "Unknown",
-  time: getPostLastActivityAt(item),
-  detailLink: `/treasury/bounty/${item.bountyIndex}`,
-  value: item.onchainData?.value,
-});
-
 export const toTreasuryChildBountyListItem = (chain, item) => ({
   ...item,
   title: getTitle(item),
@@ -194,51 +70,4 @@ export const toTreasuryChildBountyListItem = (chain, item) => ({
   value: item.onchainData.value,
   detailLink: `/treasury/child-bounty/${item.index}`,
   parentIndex: item.parentBountyId,
-});
-
-export const toReferendaListItem = (chain, item) => ({
-  ...item,
-  title: getTitle(item),
-  time: getPostLastActivityAt(item),
-  status: item.state ?? "Unknown",
-  index: item.referendumIndex,
-  author: item.author,
-  address: item.proposer,
-  detailLink: `/democracy/referendum/${item.referendumIndex}`,
-});
-
-export const toTipListItem = (chain, item) => ({
-  ...item,
-  title: getTitle(item),
-  author: item.author,
-  address: item.finder,
-  status: getTipState(item.state),
-  time: getPostLastActivityAt(item),
-  detailLink: `/treasury/tip/${item.height}_${item.hash}`,
-  value:
-    getTipState(item.state) === "Retracted"
-      ? null
-      : item?.onchainData?.medianValue,
-});
-
-export const toPublicProposalListItem = (chain, item) => ({
-  ...item,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  index: item.proposalIndex,
-  status: item.state ?? "Unknown",
-  time: getPostLastActivityAt(item),
-  detailLink: `/democracy/proposal/${item.proposalIndex}`,
-});
-
-export const toExternalProposalListItem = (chain, item) => ({
-  ...item,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  time: getPostLastActivityAt(item),
-  hash: item.externalProposalHash,
-  status: item.state ?? "Unknown",
-  detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
