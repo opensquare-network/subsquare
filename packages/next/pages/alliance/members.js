@@ -29,7 +29,7 @@ export default withLoginUserRedux(() => {
         const memberRole = role.toJSON();
         const memberList = list.toJSON();
         const currList = memberList.map((address) => ({ address, memberRole }));
-        const currCount = { [memberRole?.toLowerCase()]: memberList.length };
+        const currCount = { [memberRole?.toLowerCase()]: memberList?.length };
         return {
           list: [...prevList, ...currList],
           ...prevOthers,
