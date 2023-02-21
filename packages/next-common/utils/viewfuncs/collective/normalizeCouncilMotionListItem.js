@@ -32,5 +32,5 @@ export default function normalizeCouncilMotionListItem (chain, item) {
       item?.onchainData?.treasuryBounties?.length > 0,
     isDemocracy: item?.onchainData?.externalProposals?.length > 0,
     time: getPostLastActivityAt(item),
-  };
-};
+  }
+}
