@@ -247,7 +247,7 @@ export default function Menu({ menu, foldable = true, foldablePrefix = "" }) {
 
   return (
     <Wrapper>
-      <NavigationCMDK menu={menu} triggerButtonStyle={{ marginBottom: 16 }} />
+      <NavigationCMDK triggerButtonStyle={{ marginBottom: 16 }} />
 
       <MenuWrapper>
         {menu.map((menu, index) => {
