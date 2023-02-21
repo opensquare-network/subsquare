@@ -5,9 +5,7 @@ import {
   toCouncilMotionListItem,
   toDiscussionListItem,
   toExternalProposalListItem,
-  toFellowshipReferendaListItem,
   toFinancialMotionsListItem,
-  toGov2ReferendaListItem,
   toPublicProposalListItem,
   toReferendaListItem,
   toTechCommMotionListItem,
@@ -19,6 +17,8 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
+import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
+import normalizeReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -47,14 +47,14 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
           category: "OpenGov Referenda",
           link: "/referenda",
           items: (overview?.gov2?.referenda ?? []).map((item) =>
-            toGov2ReferendaListItem(item, tracks)
+            normalizeReferendaListItem(item, tracks)
           ),
         },
         {
           category: "Fellowship",
           link: "/fellowship",
           items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
-            toFellowshipReferendaListItem(item, fellowshipTracks)
+            normalizeFellowshipReferendaListItem(item, fellowshipTracks)
           ),
         },
       ]

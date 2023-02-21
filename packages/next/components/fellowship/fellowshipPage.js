@@ -1,7 +1,7 @@
 import Gov2Layout from "next-common/components/layout/Gov2Layout";
 import PostList from "next-common/components/postList";
-import { toFellowshipReferendaListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
+import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 
 export default function FellowshipPage({
   posts,
@@ -12,7 +12,7 @@ export default function FellowshipPage({
 }) {
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
-    toFellowshipReferendaListItem(item, fellowshipTracks)
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks)
   );
 
   return (

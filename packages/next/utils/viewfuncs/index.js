@@ -1,7 +1,6 @@
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import isNil from "lodash.isnil";
-import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import { getTitle } from "./common";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
@@ -243,41 +242,3 @@ export const toExternalProposalListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
 });
-
-export const toGov2ReferendaListItem = (item, tracks = []) => {
-  const track = tracks.find(
-    (trackItem) => trackItem.id === item.onchainData?.track
-  );
-
-  return {
-    ...item,
-    title: getGov2ReferendumTitle(item),
-    time: getPostLastActivityAt(item),
-    status: item.onchainData?.state?.name ?? "Unknown",
-    index: item.referendumIndex,
-    author: item.author,
-    address: item.proposer,
-    detailLink: `/referenda/referendum/${item.referendumIndex}`,
-    commentsCount: item.commentsCount,
-    trackName: track?.name,
-  };
-};
-
-export const toFellowshipReferendaListItem = (item, tracks = []) => {
-  const track = tracks.find(
-    (trackItem) => trackItem.id === item.onchainData.track
-  );
-
-  return {
-    ...item,
-    title: getGov2ReferendumTitle(item),
-    time: getPostLastActivityAt(item),
-    status: item.onchainData?.state?.name ?? "Unknown",
-    index: item.referendumIndex,
-    author: item.author,
-    address: item.proposer,
-    detailLink: `/fellowship/referendum/${item.referendumIndex}`,
-    commentsCount: item.commentsCount,
-    trackName: track?.name,
-  };
-};
