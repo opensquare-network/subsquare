@@ -22,7 +22,7 @@ export default function MembersList({ items, loading = false }) {
   ];
 
   const rows = items.map((item) => [
-    <User add={item.address} fontSize={14} />,
+    <User key={item.address} add={item.address} fontSize={14} />,
     item.role,
   ]);
 

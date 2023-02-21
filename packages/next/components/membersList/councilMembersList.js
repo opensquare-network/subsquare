@@ -95,7 +95,7 @@ function MembersList({
   const rows = items.map((item) => {
     const row = [
       <Member>
-        <User add={item.address} fontSize={14} />
+        <User key={item.address} add={item.address} fontSize={14} />
         {item.address === prime && <PrimeAddressMark />}
       </Member>,
     ];
