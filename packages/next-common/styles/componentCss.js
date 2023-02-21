@@ -2,8 +2,8 @@ import { css } from "styled-components";
 
 export const font_family = css`
   font-family: Inter, -apple-system, "Helvetica Neue", Helvetica, Arial,
-    "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei",
-    "WenQuanYi Micro Hei", sans-serif;
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei",
+    sans-serif;
 `;
 
 export const shadow_100 = css`
