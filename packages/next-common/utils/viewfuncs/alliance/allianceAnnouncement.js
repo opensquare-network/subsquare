@@ -1,4 +1,4 @@
-import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
+import { getPostLastActivityAt } from "../postUpdatedTime";
 
 function getAnnouncementId(height, cid) {
   return `${height}_${cid}`;
