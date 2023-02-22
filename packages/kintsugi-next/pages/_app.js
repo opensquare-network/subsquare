@@ -11,6 +11,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import GlobalProvider from "next-common/context/global";
+import "next-common/styles/cmdk.css";
 
 NProgress.configure({
   minimum: 0.3,

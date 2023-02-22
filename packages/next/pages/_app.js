@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import React, { useEffect } from "react";
 import GlobalProvider from "next-common/context/global";
+import "next-common/styles/cmdk.css";
 
 NProgress.configure({
   minimum: 0.3,

@@ -13,13 +13,16 @@ import {
   useHomeFoldMenus,
   useSettingsDispatch,
 } from "../../context/settings";
+import NavigationCMDK from "../cmdk/navigationCMDK";
+import { space_y } from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   padding-top: 41px;
   padding-bottom: 32px;
-  > :not(:first-child) {
-    margin-top: 8px;
-  }
+`;
+
+const MenuWrapper = styled.div`
+  ${space_y(8)};
   a {
     display: block;
   }
@@ -244,20 +247,24 @@ export default function Menu({ menu, foldable = true, foldablePrefix = "" }) {
 
   return (
     <Wrapper>
-      {menu.map((menu, index) => {
-        if (menu?.excludeToChains?.includes(chain)) {
-          return null;
-        }
+      <NavigationCMDK triggerButtonStyle={{ marginBottom: 16 }} />
 
-        return (
-          <MenuGroup
-            key={index}
-            menu={menu}
-            foldable={foldable}
-            foldablePrefix={foldablePrefix}
-          />
-        );
-      })}
+      <MenuWrapper>
+        {menu.map((menu, index) => {
+          if (menu?.excludeToChains?.includes(chain)) {
+            return null;
+          }
+
+          return (
+            <MenuGroup
+              key={index}
+              menu={menu}
+              foldable={foldable}
+              foldablePrefix={foldablePrefix}
+            />
+          );
+        })}
+      </MenuWrapper>
     </Wrapper>
   );
 }
