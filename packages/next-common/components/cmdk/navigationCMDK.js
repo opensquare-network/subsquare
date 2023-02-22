@@ -1,5 +1,5 @@
-import CommandPalette, { filterItems, getItemIndex } from "react-cmdk";
-import styled, { createGlobalStyle } from "styled-components";
+import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
+import styled, { createGlobalStyle, useTheme } from "styled-components";
 import React, { useState, useMemo, useEffect } from "react";
 import {
   bg_theme,
@@ -16,6 +16,7 @@ import {
   p_y,
   rounded_4,
   text_capitalize,
+  text_primary,
   text_tertiary,
   text_theme,
   w_full,
@@ -49,20 +50,33 @@ import nextApi from "../../services/nextApi";
 const CmdkGlobalStyle = createGlobalStyle`
   .command-palette {
     z-index: 1000;
-  }
-  .command-palette-content h4 {
-    ${p_12_bold};
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    line-height: 12px !important;
-    letter-spacing: 0.16em;
-    ${p_y(8)};
-  }
-  .command-palette-list-item {
-    & div:first-child  {
-      width: auto !important;
-      ${p_14_medium};
-      ${text_capitalize};
+
+    .command-palette-content h4 {
+      ${p_12_bold};
+      letter-spacing: 0.16em;
+      ${p_y(8)};
+    }
+    .command-palette-content-panel {
+      ${bg_theme("neutral")};
+    }
+    .command-palette-list-item {
+      &.bg-gray-200/50 {
+        background-color: ${(p) => p.theme.grey100Bg};
+      }
+      &.bg-gray-800 {
+        background-color: ${(p) => p.theme.grey100Bg};
+      }
+      
+      &:hover {
+        background-color: ${(p) => p.theme.grey100Bg};
+      }
+
+      & div:first-child  {
+        width: auto;
+        ${p_14_medium};
+        ${text_primary};
+        ${text_capitalize};
+      }
     }
   }
 `;
@@ -146,6 +160,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
   const [open, setOpen] = useState(false);
   const cmdkTriggerVisible = useSelector(cmdkTriggerVisibleSelector);
   const gov2Menu = useGov2Menu();
+  const { isDark } = useTheme();
 
   const foldedMenu = [...gov2Menu, ...homeMenus].filter(
     (m) => m.name && m.items?.length
@@ -262,6 +277,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
         onChangeOpen={setOpen}
         search={search}
         renderLink={renderCommandPaletteLink}
+        theme={isDark ? "dark" : "light"}
       >
         {pages.map((page) => (
           <CommandPalette.Page
