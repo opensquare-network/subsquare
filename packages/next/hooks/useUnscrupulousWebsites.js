@@ -8,10 +8,10 @@ export function useUnscrupulousWebsites() {
   const api = useApi();
   const websites = useCall(api?.query?.alliance?.unscrupulousWebsites, []);
   useEffect(() => {
-    if (!websites) {
-      return;
+    if (websites) {
+      setData(websites.toJSON());
     }
-    setData(websites.toJSON());
+
     setIsLoading(false);
   }, [websites]);
 
