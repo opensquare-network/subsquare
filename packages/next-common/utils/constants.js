@@ -20,6 +20,7 @@ import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
+import westendCollectives from "./consts/settings/westendCollectives";
 
 /**
  * left + gap + main content
@@ -59,6 +60,7 @@ export const nodes = [
   zeitgeist,
   rococo,
   ...optionalNodes,
+  westendCollectives,
 ];
 
 export const EmptyList = {

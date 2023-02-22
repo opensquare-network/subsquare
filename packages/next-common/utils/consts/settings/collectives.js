@@ -31,6 +31,8 @@ const collectives = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
+  hasStatescan: true,
+  noSubscan: true,
 }
 
 export default collectives;

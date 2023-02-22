@@ -27,6 +27,8 @@ const westendCollectives = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
+  hasStatescan: true,
+  noSubscan: true,
 }
 
 export default westendCollectives;
