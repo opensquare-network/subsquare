@@ -5,6 +5,7 @@ import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import AnnouncementIcon from "../../../assets/imgs/icons/type-announcements.svg";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
+import GhostIcon from "../../../assets/imgs/icons/ghost.svg";
 
 const motions = {
   value: "allianceMotions",
@@ -28,6 +29,17 @@ const members = {
   ),
 };
 
+const unscrupulous = {
+  value: "allianceUnscrupulous",
+  name: "Unscrupulous",
+  pathname: "/alliance/unscrupulous",
+  icon: (
+    <MenuIconWrapper>
+      <GhostIcon />
+    </MenuIconWrapper>
+  ),
+};
+
 const announcements = {
   value: "allianceAnnouncements",
   name: "Announcements",
@@ -45,7 +57,7 @@ const alliance = {
     Chains["westend-collectives"],
     Chains.collectives,
   ]),
-  items: [announcements, motions, members],
+  items: [announcements, motions, unscrupulous, members],
 };
 
 export default alliance;

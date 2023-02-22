@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { p_12_bold } from "../../../styles/componentCss";
+import { p_12_bold, p_14_normal } from "../../../styles/componentCss";
 import { smcss } from "../../../utils/responsive";
 import { SecondaryCard } from "../../styled/containers/secondaryCard";
 
@@ -78,4 +78,11 @@ export const Button = styled.div`
         p.disabled ? p.theme.textSecondary : p.theme.textPrimary};
     }
   }
+`;
+
+export const SummaryDescription = styled.p`
+  margin: 0;
+  margin-top: 4px;
+  color: ${(p) => p.theme.textTertiary};
+  ${p_14_normal};
 `;
