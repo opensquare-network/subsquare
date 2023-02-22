@@ -9,8 +9,10 @@ export function useAllianceMembers() {
   const members = useCall(api?.query?.alliance?.members.entries, []);
   useEffect(() => {
     if (!members) {
+      setIsLoading(false);
       return;
     }
+
     const data = members.reduce(
       (
         result,
