@@ -169,7 +169,13 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
 
   const foldedMenu = [...gov2Menu, ...homeMenus].filter(
     (m) => m.name && m.items?.length
-  );
+  ).filter(menu => !(menu.excludeToChains || []).includes(chain)).map(menu => {
+    const items = (menu.items || []).filter(item => !(item.excludeToChains || []).includes(chain))
+    return {
+      ...menu,
+      items,
+    }
+  });
 
   function filterChain(item) {
     return !item?.excludeToChains?.includes(chain);
