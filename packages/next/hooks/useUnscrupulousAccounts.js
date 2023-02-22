@@ -8,10 +8,10 @@ export function useUnscrupulousAccounts() {
   const api = useApi();
   const accounts = useCall(api?.query?.alliance?.unscrupulousAccounts, []);
   useEffect(() => {
-    if (!accounts) {
-      return;
+    if (accounts) {
+      setData(accounts.toJSON());
     }
-    setData(accounts.toJSON());
+
     setIsLoading(false);
   }, [accounts]);
 
