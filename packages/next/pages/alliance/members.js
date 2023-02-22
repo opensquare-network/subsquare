@@ -2,7 +2,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import MembersList from "components/alliance/membersList";
-import AllianceSummary from "components/alliance/summary";
+import MemberSummary from "components/alliance/memberSummary";
 import { useAllianceMembers } from "hooks/useAllianceMembers";
 
 export default withLoginUserRedux(() => {
@@ -22,7 +22,7 @@ export default withLoginUserRedux(() => {
   return (
     <HomeLayout seoInfo={seoInfo}>
       <TitleContainer>{category}</TitleContainer>
-      <AllianceSummary
+      <MemberSummary
         fellow={data?.fellow?.length}
         ally={data?.ally?.length}
         retiring={data?.retiring?.length}

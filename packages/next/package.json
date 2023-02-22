@@ -26,6 +26,7 @@
     "lodash.floor": "^4.0.4",
     "lodash.groupby": "^4.6.0",
     "lodash.isnil": "^4.0.0",
+    "lodash.noop": "^3.0.1",
     "lodash.partition": "^4.6.0",
     "lodash.range": "^3.2.0",
     "lodash.uniqby": "^4.7.0",

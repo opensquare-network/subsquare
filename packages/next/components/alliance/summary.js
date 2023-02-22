@@ -1,66 +1,35 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Content from "next-common/components/summary/cardContent";
 import {
   SummaryCard,
+  SummaryDescription,
   SummaryTitle,
 } from "next-common/components/summary/styled";
-import { p_14_normal } from "next-common/styles/componentCss";
-import { smcss } from "next-common/utils/responsive";
 import Divider from "next-common/components/styled/layout/divider";
+import { SummaryItem, SummaryItems } from "./styled";
 
 const Wrapper = styled(SummaryCard)`
   margin: 16px 0px;
 `;
 
-const Description = styled.p`
-  margin: 0;
-  margin-top: 4px;
-  color: ${(p) => p.theme.textTertiary};
-  ${p_14_normal};
-`;
-
-const SummaryWrapper = styled.div`
-  display: flex;
-  ${smcss(css`
-    flex-direction: column;
-    gap: 16px;
-  `)}
-`;
-
-const SummaryItem = styled.div`
-  flex: 1;
-`;
-
-export default function AllianceSummary({ fellow, ally, retiring }) {
+export default function Summary({ description, items = [] }) {
   return (
     <Wrapper>
-      <Description>Alliance members by role.</Description>
+      <SummaryDescription>{description}</SummaryDescription>
 
       <Divider margin={16} />
 
-      <SummaryWrapper>
-        <SummaryItem>
-          <SummaryTitle>Fellow</SummaryTitle>
-          <Content>
-            <span>{fellow || 0}</span>
-          </Content>
-        </SummaryItem>
-
-        <SummaryItem>
-          <SummaryTitle>Ally</SummaryTitle>
-          <Content>
-            <span>{ally || 0}</span>
-          </Content>
-        </SummaryItem>
-
-        <SummaryItem>
-          <SummaryTitle>Retiring</SummaryTitle>
-          <Content>
-            <span>{retiring || 0}</span>
-          </Content>
-        </SummaryItem>
-      </SummaryWrapper>
+      <SummaryItems>
+        {items.map((item, index) => (
+          <SummaryItem key={index}>
+            <SummaryTitle>{item.title}</SummaryTitle>
+            <Content>
+              <span>{item.content}</span>
+            </Content>
+          </SummaryItem>
+        ))}
+      </SummaryItems>
     </Wrapper>
   );
 }
