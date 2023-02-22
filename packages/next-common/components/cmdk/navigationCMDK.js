@@ -162,6 +162,11 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
   const gov2Menu = useGov2Menu();
   const { isDark } = useTheme();
 
+  const [metaKeySymbol, setMetaKeySymbol] = useState("Ctrl +");
+  useEffect(() => {
+    if (isMacOS) setMetaKeySymbol("⌘");
+  }, []);
+
   const foldedMenu = [...gov2Menu, ...homeMenus].filter(
     (m) => m.name && m.items?.length
   );
@@ -259,7 +264,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
       {cmdkTriggerVisible && (
         <Trigger onClick={() => setOpen(true)} style={triggerButtonStyle}>
           <span>
-            Navigation <HotKey>{isMacOS ? "⌘ " : "Ctrl +"} K</HotKey>
+            Navigation <HotKey>{metaKeySymbol} K</HotKey>
           </span>
           <ClosePanelIcon
             onClick={(e) => {
