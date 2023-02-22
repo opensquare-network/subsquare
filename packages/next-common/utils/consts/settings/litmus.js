@@ -28,6 +28,7 @@ const litmus = {
   darkHeaderLogo: Logo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
+  hasStatescan: true,
 };
 
 export default litmus;
