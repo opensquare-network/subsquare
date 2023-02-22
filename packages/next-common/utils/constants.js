@@ -59,8 +59,8 @@ export const nodes = [
   turing,
   zeitgeist,
   rococo,
-  ...optionalNodes,
   westendCollectives,
+  ...optionalNodes,
 ];
 
 export const EmptyList = {
