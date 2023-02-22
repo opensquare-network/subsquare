@@ -6,7 +6,7 @@ import Input from "../input";
 import nextApi from "../../services/nextApi";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
-import FlexBetweenCenter from "../styled/flexBetweenCenter";
+import { Label, LabelWrapper } from "./styled";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
@@ -18,6 +18,7 @@ import { TitleContainer } from "../styled/containers/titleContainer";
 import { useChain } from "../../context/chain";
 import { useUser } from "../../context/user";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
+import PostLabel from "./postLabel";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -46,17 +47,6 @@ const Wrapper = styled(NeutralPanel)`
     border-radius: 0;
     padding: 24px;
   }
-  div {
-    border-color: ${(props) => props.theme.grey300Border} !important;
-  }
-`;
-
-const LabelWrapper = styled(FlexBetweenCenter)`
-  margin: 16px 0 8px;
-`;
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -94,6 +84,7 @@ export default function PostCreate() {
   const [errors, setErrors] = useState();
   const [isAdvanced, setIsAdvanced] = useState(false);
   const isEmpty = content === "" || content === `<p><br></p>`;
+  const [selectedLabels, setSelectedLabels] = useState([]);
 
   const createPost = async () => {
     setCreating(true);
@@ -159,6 +150,11 @@ export default function PostCreate() {
         placeholder="Please fill the title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+      />
+
+      <PostLabel
+        selectedLabels={selectedLabels}
+        setSelectedLabels={setSelectedLabels}
       />
 
       {isSetBanner && (
