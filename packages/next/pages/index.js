@@ -17,17 +17,16 @@ import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalize
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
-import normalizeAllianceMotion from "utils/viewfuncs/allianceMotion";
-import normalizeAllianceAnnouncement from "utils/viewfuncs/allianceAnnouncement";
+import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allianceMotion";
+import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
+import { isCollectivesChain } from "next-common/utils/chain";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
   const isKarura = ["karura", "acala"].includes(chain);
   const hasGov2 = ["kusama", "development"].includes(chain);
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
-  const isCollectives = [Chains.collectives, "westend-collectives"].includes(
-    chain
-  );
+  const isCollectives = isCollectivesChain(chain);
 
   const discussionsCategory = [
     {

@@ -1,6 +1,6 @@
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
-import { getTitle } from "./common";
+import { getTitle } from "next-common/utils/post";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 
 export const convertPolkassemblyUser = (chain, paUser) =>

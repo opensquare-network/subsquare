@@ -1,4 +1,4 @@
-import { getTitle } from "@subsquare/next/utils/viewfuncs/common";
+import { getTitle } from "../../post";
 import { getPostLastActivityAt } from "../postUpdatedTime";
 
 export default function normalizeExternalListItem(chain, item) {
@@ -9,6 +9,6 @@ export default function normalizeExternalListItem(chain, item) {
     time: getPostLastActivityAt(item),
     hash: item.externalProposalHash,
     status: item.state ?? "Unknown",
-    detailLink: `/democracy/external/${ item.indexer.blockHeight }_${ item.externalProposalHash }`,
-  }
+    detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
+  };
 }
