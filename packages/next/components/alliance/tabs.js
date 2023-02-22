@@ -13,8 +13,8 @@ const TabWrapper = styled.div`
 export default function Tabs({ tabs = [], setActiveTab = noop }) {
   return (
     <Wrapper>
-      {tabs.map((tab) => (
-        <TabWrapper onClick={() => setActiveTab(tab.value)}>
+      {tabs.map((tab, index) => (
+        <TabWrapper key={index} onClick={() => setActiveTab(tab.value)}>
           {tab.content}
         </TabWrapper>
       ))}

@@ -21,8 +21,8 @@ export default function Summary({ description, items = [] }) {
       <Divider margin={16} />
 
       <SummaryItems>
-        {items.map((item) => (
-          <SummaryItem>
+        {items.map((item, index) => (
+          <SummaryItem key={index}>
             <SummaryTitle>{item.title}</SummaryTitle>
             <Content>
               <span>{item.content}</span>
