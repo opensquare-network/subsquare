@@ -3,7 +3,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
-import normalizeAllianceAnnouncement from "../../utils/viewfuncs/allianceAnnouncement";
+import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 
 export default withLoginUserRedux(({ announcements }) => {
   const items = announcements.items.map((item) => normalizeAllianceAnnouncement(item));
