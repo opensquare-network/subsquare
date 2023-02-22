@@ -1322,19 +1322,10 @@
   resolved "https://registry.npmjs.org/@osn/provider-options/-/provider-options-1.1.0.tgz#167279731355bb791f0a8c4d3443386ea0d5681b"
   integrity sha512-qayhDWxf/pOYTAobc6asOBA+HgmnAXawwQ8NrUkfUmlH46RoXT1t55zYFDNnQp3Tvg8WBCfMAZgArZq4CWGa9w==
 
-"@osn/react-cmdk@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/@osn/react-cmdk/-/react-cmdk-1.0.2.tgz#a4a1dfabaaecc8c5ba166d5691ffa6ee9546522a"
-  integrity sha512-bnnzYYrSkpHt6Cv/yfmYCvIoNz6HSIayEWgvXxxpHZt63B8A+HG2GP23DCWdFT24OEntP5X8uKF2vF52Phngug==
-  dependencies:
-    "@headlessui/react" "^1.6.4"
-    "@heroicons/react" "^2.0.13"
-    clsx "^1.2.1"
-
-"@osn/react-cmdk@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/@osn/react-cmdk/-/react-cmdk-1.0.3.tgz#e3b48feb92eb9a1c86e3148babcaf88c45363c0d"
-  integrity sha512-vX399mNBVqsFz+tJw62m2UN8GWtWVrWseCmi973+4wNMYQyXuV2o0mbace5kxV/FWvtU/kCCuvnEXSZdY9s4mw==
+"@osn/react-cmdk@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/@osn/react-cmdk/-/react-cmdk-1.1.0.tgz#a744c4b4f1aede1944add5902eae2e7fa89fb76a"
+  integrity sha512-oHFl+bchenGMJv3EXTzu9y7AB4tBktNzYzVG41U1VCKx6abeMTNh9yt1aHzOhPhV09g3lLl9UT0cdpz/m+bDIQ==
   dependencies:
     "@headlessui/react" "^1.6.4"
     "@heroicons/react" "^2.0.13"
@@ -1862,7 +1853,7 @@
     "@osn/polkadot-react-identicon" "^1.0.8"
     "@osn/previewer" "^0.12.3"
     "@osn/provider-options" "1.1.0"
-    "@osn/react-cmdk" "^1.0.2"
+    "@osn/react-cmdk" "^1.1.0"
     "@polkadot/api" "9.7.1"
     "@polkadot/extension-dapp" "0.44.6"
     "@reduxjs/toolkit" "^1.6.1"
