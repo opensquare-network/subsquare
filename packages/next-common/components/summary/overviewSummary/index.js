@@ -2,13 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { p_16_bold } from "../../../styles/componentCss";
 import Flex from "../../styled/flex";
-import Summary from "../new";
-import {
-  SummaryGreyText,
-  SummaryItem,
-  SummaryItemTitle,
-  SummaryItemWrapper,
-} from "../styled";
+import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
 import {
   useMenuHasCouncil,
@@ -19,11 +13,11 @@ import {
   useMenuHasTreasuryChildBounties,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
+import Summary from "../summaryBase";
 
-const Content = styled(Flex)`
-  margin-top: 4px;
+const ContentWrapper = styled.div`
+  display: flex;
 `;
-
 const TypeGroup = styled(Flex)`
   &:not(:last-child) {
     &::after {
@@ -38,6 +32,143 @@ const TypeGroup = styled(Flex)`
 const TypeLabel = styled(SummaryGreyText)`
   ${p_16_bold};
 `;
+
+function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
+  return (
+    <TypeGroup separator={separator}>
+      <TypeLabel>{label}</TypeLabel>
+      <ActiveValue tooltip={tooltip} href={href} value={value} />
+    </TypeGroup>
+  );
+}
+
+function OpenGovGroupContent({
+  activeGov2ReferendaCount,
+  activeFellowshipReferendaCount,
+}) {
+  return (
+    <ContentWrapper>
+      <SummaryTypeGroup
+        label="R"
+        tooltip="Active referenda"
+        href="/referenda"
+        value={activeGov2ReferendaCount}
+      />
+      <SummaryTypeGroup
+        label="F"
+        tooltip="Active fellowship referenda"
+        href="/fellowship"
+        value={activeFellowshipReferendaCount}
+      />
+    </ContentWrapper>
+  );
+}
+
+function DemoracyGroupContent({
+  activeReferendaCount,
+  activePublicProposalsCount,
+  showExternal,
+  activeExternalProposalsCount,
+}) {
+  return (
+    <ContentWrapper>
+      <SummaryTypeGroup
+        label="R"
+        tooltip="Active democracy referenda"
+        href="/democracy/referenda"
+        value={activeReferendaCount}
+      />
+      <SummaryTypeGroup
+        label="P"
+        tooltip="Active public proposals"
+        href="/democracy/proposals"
+        value={activePublicProposalsCount}
+      />
+      {showExternal && (
+        <SummaryTypeGroup
+          label="E"
+          tooltip="Active external proposals"
+          href="/democracy/externals"
+          value={activeExternalProposalsCount}
+        />
+      )}
+    </ContentWrapper>
+  );
+}
+
+function TipGroupContent({
+  activeTreasuryProposalsCount,
+  showTreasuryBounties,
+  activeBountiesCount,
+  showChildBounties,
+  activeChildBountiesCount,
+  showTips,
+  activeTipsCount,
+}) {
+  return (
+    <ContentWrapper>
+      <SummaryTypeGroup
+        label="P"
+        tooltip="Active proposals"
+        href="/treasury/proposals"
+        value={activeTreasuryProposalsCount}
+      />
+      {showTreasuryBounties && (
+        <SummaryTypeGroup
+          label="B"
+          tooltip="Active bounties"
+          href="/treasury/bounties"
+          value={activeBountiesCount}
+        />
+      )}
+      {showChildBounties && (
+        <SummaryTypeGroup
+          label="b"
+          tooltip="Active child bounties"
+          href="/treasury/child-bounties"
+          value={activeChildBountiesCount}
+        />
+      )}
+      {showTips && (
+        <SummaryTypeGroup
+          label="T"
+          tooltip="Active tips"
+          href="/treasury/tips"
+          value={activeTipsCount}
+        />
+      )}
+    </ContentWrapper>
+  );
+}
+
+function CouncilGroupContent({
+  showCouncil,
+  activeMotionsCount,
+  showTc,
+  activeTechCommMotionsCount,
+}) {
+  return (
+    <ContentWrapper>
+      {showCouncil && (
+        <SummaryTypeGroup
+          separator="/"
+          label="M"
+          tooltip="Active council motions"
+          href="/council/motions"
+          value={activeMotionsCount}
+        />
+      )}
+      {showTc && (
+        <SummaryTypeGroup
+          label="P"
+          tooltip="Active T.C. proposals"
+          href="/techcomm/proposals"
+          value={activeTechCommMotionsCount}
+        />
+      )}
+    </ContentWrapper>
+  );
+}
 
 export default function OverviewSummary({ summaryData }) {
   const showTreasuryBounties = useMenuHasTreasuryBounties();
@@ -62,141 +193,62 @@ export default function OverviewSummary({ summaryData }) {
     activeFellowshipReferendaCount,
   } = summaryData ?? {};
 
+  const items = [];
+  if (showOpenGov) {
+    items.push({
+      title: "Open Gov",
+      content: (
+        <OpenGovGroupContent
+          activeGov2ReferendaCount={activeGov2ReferendaCount}
+          activeFellowshipReferendaCount={activeFellowshipReferendaCount}
+        />
+      ),
+    });
+  }
+
+  items.push(
+    {
+      title: "Democracy",
+      content: (
+        <DemoracyGroupContent
+          activeReferendaCount={activeReferendaCount}
+          activePublicProposalsCount={activePublicProposalsCount}
+          showExternal={showExternal}
+          activeExternalProposalsCount={activeExternalProposalsCount}
+        />
+      ),
+    },
+    {
+      title: "Treasury",
+      content: (
+        <TipGroupContent
+          activeTreasuryProposalsCount={activeTreasuryProposalsCount}
+          showTreasuryBounties={showTreasuryBounties}
+          activeBountiesCount={activeBountiesCount}
+          showChildBounties={showChildBounties}
+          activeChildBountiesCount={activeChildBountiesCount}
+          showTips={showTips}
+          activeTipsCount={activeTipsCount}
+        />
+      ),
+    },
+    {
+      title: `${showCouncil && "Council / "}T.C.`,
+      content: (
+        <CouncilGroupContent
+          showCouncil={showCouncil}
+          activeMotionsCount={activeMotionsCount}
+          showTc={showTc}
+          activeTechCommMotionsCount={activeTechCommMotionsCount}
+        />
+      ),
+    }
+  );
+
   return (
-    <Summary description="Active proposal numbers of various governance processes.">
-      <SummaryItemWrapper>
-        {showOpenGov && (
-          <SummaryItem>
-            <SummaryItemTitle>Open Gov</SummaryItemTitle>
-            <Content>
-              <TypeGroup>
-                <TypeLabel>R</TypeLabel>
-                <ActiveValue
-                  tooltip="Active referenda"
-                  href="/referenda"
-                  value={activeGov2ReferendaCount}
-                />
-              </TypeGroup>
-              <TypeGroup>
-                <TypeLabel>F</TypeLabel>
-                <ActiveValue
-                  tooltip="Active fellowship referenda"
-                  href="/fellowship"
-                  value={activeFellowshipReferendaCount}
-                />
-              </TypeGroup>
-            </Content>
-          </SummaryItem>
-        )}
-
-        <SummaryItem>
-          <SummaryItemTitle>Democracy</SummaryItemTitle>
-          <Content>
-            <TypeGroup>
-              <TypeLabel>R</TypeLabel>
-              <ActiveValue
-                tooltip="Active democracy referenda"
-                href="/democracy/referenda"
-                value={activeReferendaCount}
-              />
-            </TypeGroup>
-
-            <TypeGroup>
-              <TypeLabel>P</TypeLabel>
-              <ActiveValue
-                tooltip="Active public proposals"
-                href="/democracy/proposals"
-                value={activePublicProposalsCount}
-              />
-            </TypeGroup>
-
-            {showExternal && (
-              <TypeGroup>
-                <TypeLabel>E</TypeLabel>
-                <ActiveValue
-                  tooltip="Active external proposals"
-                  href="/democracy/externals"
-                  value={activeExternalProposalsCount}
-                />
-              </TypeGroup>
-            )}
-          </Content>
-        </SummaryItem>
-
-        <SummaryItem>
-          <SummaryItemTitle>Treasury</SummaryItemTitle>
-          <Content>
-            <TypeGroup>
-              <TypeLabel>P</TypeLabel>
-              <ActiveValue
-                tooltip="Active proposals"
-                href="/treasury/proposals"
-                value={activeTreasuryProposalsCount}
-              />
-            </TypeGroup>
-
-            {showTreasuryBounties && (
-              <TypeGroup>
-                <TypeLabel>B</TypeLabel>
-                <ActiveValue
-                  tooltip="Active bounties"
-                  href="/treasury/bounties"
-                  value={activeBountiesCount}
-                />
-              </TypeGroup>
-            )}
-
-            {showChildBounties && (
-              <TypeGroup>
-                <TypeLabel>b</TypeLabel>
-                <ActiveValue
-                  tooltip="Active child bounties"
-                  href="/treasury/child-bounties"
-                  value={activeChildBountiesCount}
-                />
-              </TypeGroup>
-            )}
-
-            {showTips && (
-              <TypeGroup>
-                <TypeLabel>T</TypeLabel>
-                <ActiveValue
-                  tooltip="Active tips"
-                  href="/treasury/tips"
-                  value={activeTipsCount}
-                />
-              </TypeGroup>
-            )}
-          </Content>
-        </SummaryItem>
-
-        <SummaryItem>
-          <SummaryItemTitle>{showCouncil && "Council / "}T.C.</SummaryItemTitle>
-          <Content>
-            {showCouncil && (
-              <TypeGroup separator="/">
-                <TypeLabel>M</TypeLabel>
-                <ActiveValue
-                  tooltip="Active council motions"
-                  href="/council/motions"
-                  value={activeMotionsCount}
-                />
-              </TypeGroup>
-            )}
-
-            {showTc && (
-              <TypeGroup>
-                <TypeLabel>P</TypeLabel>
-                <ActiveValue
-                  tooltip="Active T.C. proposals"
-                  href="/techcomm/proposals"
-                  value={activeTechCommMotionsCount}
-                />
-              </TypeGroup>
-            )}
-          </Content>
-        </SummaryItem>
-      </SummaryItemWrapper>
-    </Summary>
+    <Summary
+      description="Active proposal numbers of various governance processes."
+      items={items}
+    />
   );
 }

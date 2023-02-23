@@ -32,9 +32,7 @@ export default function Summary({ description, items = [] }) {
         {items.map((item, index) => (
           <SummaryItem key={index}>
             <SummaryTitle>{item.title}</SummaryTitle>
-            <Content>
-              <span>{item.content}</span>
-            </Content>
+            <Content>{item.content}</Content>
           </SummaryItem>
         ))}
       </SummaryItems>
