@@ -5,6 +5,8 @@ export const PostLabel = {
   TechComm: "Tech.Comm.",
   Financial: "Financial",
   Advisory: "Advisory",
+  Motion: "Motion",
+  Announcement: "Announcement",
 };
 
 export const defaultPostLabel = [
