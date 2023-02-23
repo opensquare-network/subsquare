@@ -21,7 +21,7 @@ const Wrapper = styled(SummaryCard)`
   margin: 16px 0px;
 `;
 
-export default function Summary({ description, items = [] }) {
+export default function Summary({ description, items = [], footer }) {
   return (
     <Wrapper>
       <SummaryDescription>{description}</SummaryDescription>
@@ -31,11 +31,18 @@ export default function Summary({ description, items = [] }) {
       <SummaryItems>
         {items.map((item, index) => (
           <SummaryItem key={index}>
-            <SummaryTitle>{item.title}</SummaryTitle>
+            {item.title && <SummaryTitle>{item.title}</SummaryTitle>}
             <Content>{item.content}</Content>
           </SummaryItem>
         ))}
       </SummaryItems>
+
+      {footer && (
+        <>
+          <Divider margin={16} />
+          {footer}
+        </>
+      )}
     </Wrapper>
   );
 }
