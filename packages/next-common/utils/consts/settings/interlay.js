@@ -3,7 +3,8 @@ import DarkModeLogo from "../../../assets/header-logos/interlay-dark.svg";
 import Avatar from "../../../assets/icons/chain/interlay.png";
 import DarkAvatar from "../../../assets/icons/chain/interlay-dark.png";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel } from "./common";
+import { defaultPostLabel, PostLabel } from "./common";
+import difference from "lodash.difference";
 
 const DEFAULT_INTERLAY_NODES = [
   {
@@ -32,7 +33,7 @@ const interlay = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
-  postLabels: defaultPostLabel,
+  postLabels: difference(defaultPostLabel, PostLabel.Council),
 };
 
 export default interlay;

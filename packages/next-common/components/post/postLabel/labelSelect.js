@@ -1,3 +1,4 @@
+import React from "react";
 import noop from "lodash.noop";
 import styled, { css } from "styled-components";
 import { useCallback } from "react";
@@ -62,6 +63,7 @@ export default function LabelSelect({
     <Wrapper>
       {allLabels.map((item) => (
         <Choice
+          key={item}
           selected={selected?.includes(item)}
           onClick={() => selectChoice(item)}
         >

@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { p_12_normal } from "../styles/componentCss";
@@ -27,7 +28,10 @@ export default function PostLabels({ labels }) {
     <Wrapper>
       <Labels>
         {labels.map((item) => (
-          <Link href={`/discussions?label=${encodeURIComponent(item)}`}>
+          <Link
+            key={item}
+            href={`/discussions?label=${encodeURIComponent(item)}`}
+          >
             <Label>{item}</Label>
           </Link>
         ))}

@@ -6,7 +6,8 @@ import DarkAvatar from "../../../assets/icons/chain/centrifuge-dark.png";
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel } from "./common";
+import { defaultPostLabel, PostLabel } from "./common";
+import difference from "lodash.difference";
 
 const name = Chains.centrifuge;
 
@@ -36,7 +37,7 @@ const centrifuge = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
-  postLabels: defaultPostLabel,
+  postLabels: difference(defaultPostLabel, PostLabel.TechComm),
 };
 
 export default centrifuge;
