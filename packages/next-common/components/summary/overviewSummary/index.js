@@ -42,10 +42,10 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
   );
 }
 
-function OpenGovGroupContent({
-  activeGov2ReferendaCount,
-  activeFellowshipReferendaCount,
-}) {
+function OpenGovGroupContent({ summaryData }) {
+  const { activeGov2ReferendaCount, activeFellowshipReferendaCount } =
+    summaryData ?? {};
+
   return (
     <ContentWrapper>
       <SummaryTypeGroup
@@ -64,12 +64,15 @@ function OpenGovGroupContent({
   );
 }
 
-function DemoracyGroupContent({
-  activeReferendaCount,
-  activePublicProposalsCount,
-  showExternal,
-  activeExternalProposalsCount,
-}) {
+function DemocracyGroupContent({ summaryData }) {
+  const showExternal = useMenuHasDemocracyExternal();
+
+  const {
+    activeExternalProposalsCount,
+    activePublicProposalsCount,
+    activeReferendaCount,
+  } = summaryData ?? {};
+
   return (
     <ContentWrapper>
       <SummaryTypeGroup
@@ -96,15 +99,18 @@ function DemoracyGroupContent({
   );
 }
 
-function TipGroupContent({
-  activeTreasuryProposalsCount,
-  showTreasuryBounties,
-  activeBountiesCount,
-  showChildBounties,
-  activeChildBountiesCount,
-  showTips,
-  activeTipsCount,
-}) {
+function TreasuryGroupContent({ summaryData }) {
+  const showTreasuryBounties = useMenuHasTreasuryBounties();
+  const showChildBounties = useMenuHasTreasuryChildBounties();
+  const showTips = useMenuHasTreasuryTips();
+
+  const {
+    activeBountiesCount,
+    activeChildBountiesCount,
+    activeTipsCount,
+    activeTreasuryProposalsCount,
+  } = summaryData ?? {};
+
   return (
     <ContentWrapper>
       <SummaryTypeGroup
@@ -141,12 +147,12 @@ function TipGroupContent({
   );
 }
 
-function CouncilGroupContent({
-  showCouncil,
-  activeMotionsCount,
-  showTc,
-  activeTechCommMotionsCount,
-}) {
+function CouncilGroupContent({ summaryData }) {
+  const showCouncil = useMenuHasCouncil();
+  const showTc = useMenuHasTechComm();
+
+  const { activeMotionsCount, activeTechCommMotionsCount } = summaryData ?? {};
+
   return (
     <ContentWrapper>
       {showCouncil && (
@@ -171,77 +177,29 @@ function CouncilGroupContent({
 }
 
 export default function OverviewSummary({ summaryData }) {
-  const showTreasuryBounties = useMenuHasTreasuryBounties();
-  const showChildBounties = useMenuHasTreasuryChildBounties();
-  const showTips = useMenuHasTreasuryTips();
-  const showExternal = useMenuHasDemocracyExternal();
   const showCouncil = useMenuHasCouncil();
-  const showTc = useMenuHasTechComm();
   const showOpenGov = useMenuHasGov2();
-
-  const {
-    activeBountiesCount,
-    activeChildBountiesCount,
-    activeExternalProposalsCount,
-    activeMotionsCount,
-    activePublicProposalsCount,
-    activeReferendaCount,
-    activeTechCommMotionsCount,
-    activeTipsCount,
-    activeTreasuryProposalsCount,
-    activeGov2ReferendaCount,
-    activeFellowshipReferendaCount,
-  } = summaryData ?? {};
 
   const items = [];
   if (showOpenGov) {
     items.push({
       title: "Open Gov",
-      content: (
-        <OpenGovGroupContent
-          activeGov2ReferendaCount={activeGov2ReferendaCount}
-          activeFellowshipReferendaCount={activeFellowshipReferendaCount}
-        />
-      ),
+      content: <OpenGovGroupContent summaryData={summaryData} />,
     });
   }
 
   items.push(
     {
       title: "Democracy",
-      content: (
-        <DemoracyGroupContent
-          activeReferendaCount={activeReferendaCount}
-          activePublicProposalsCount={activePublicProposalsCount}
-          showExternal={showExternal}
-          activeExternalProposalsCount={activeExternalProposalsCount}
-        />
-      ),
+      content: <DemocracyGroupContent summaryData={summaryData} />,
     },
     {
       title: "Treasury",
-      content: (
-        <TipGroupContent
-          activeTreasuryProposalsCount={activeTreasuryProposalsCount}
-          showTreasuryBounties={showTreasuryBounties}
-          activeBountiesCount={activeBountiesCount}
-          showChildBounties={showChildBounties}
-          activeChildBountiesCount={activeChildBountiesCount}
-          showTips={showTips}
-          activeTipsCount={activeTipsCount}
-        />
-      ),
+      content: <TreasuryGroupContent summaryData={summaryData} />,
     },
     {
       title: `${showCouncil && "Council / "}T.C.`,
-      content: (
-        <CouncilGroupContent
-          showCouncil={showCouncil}
-          activeMotionsCount={activeMotionsCount}
-          showTc={showTc}
-          activeTechCommMotionsCount={activeTechCommMotionsCount}
-        />
-      ),
+      content: <CouncilGroupContent summaryData={summaryData} />,
     }
   );
 
