@@ -6,6 +6,7 @@ import DarkAvatar from "../../../assets/icons/chain/centrifuge-dark.png";
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabel } from "./common";
 
 const name = Chains.centrifuge;
 
@@ -35,6 +36,7 @@ const centrifuge = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
+  postLabels: defaultPostLabel,
 };
 
 export default centrifuge;

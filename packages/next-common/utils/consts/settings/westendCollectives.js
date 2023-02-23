@@ -27,6 +27,7 @@ const westendCollectives = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
-}
+  postLabels: ["Motion", "Announcement"],
+};
 
 export default westendCollectives;

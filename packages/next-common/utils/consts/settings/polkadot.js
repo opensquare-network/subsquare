@@ -5,6 +5,7 @@ import Avatar from "../../../assets/icons/chain/polkadot.png";
 import capitalize from "../../capitalize";
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabel } from "./common";
 
 const name = Chains.polkadot;
 
@@ -49,6 +50,7 @@ const polkadot = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
+  postLabels: defaultPostLabel,
 };
 
 export default polkadot;

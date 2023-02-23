@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/litmus.png";
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabel } from "./common";
 
 const DEFAULT_LITMUS_NODES = [
   {
@@ -29,6 +30,7 @@ const litmus = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
+  postLabels: defaultPostLabel,
 };
 
 export default litmus;

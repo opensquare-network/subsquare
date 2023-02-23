@@ -3,6 +3,7 @@ import capitalize from "../../capitalize";
 import Logo from "../../../assets/header-logos/altair.svg";
 import Avatar from "../../../assets/icons/chain/altair.png";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabel } from "./common";
 
 const nodes = [
   {
@@ -13,7 +14,7 @@ const nodes = [
     name: "OnFinality",
     url: "wss://altair.api.onfinality.io/public-ws",
   },
-]
+];
 
 const altair = {
   value: Chains.altair,
@@ -31,6 +32,7 @@ const altair = {
   darkHeaderLogo: Logo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
-}
+  postLabels: defaultPostLabel,
+};
 
 export default altair;

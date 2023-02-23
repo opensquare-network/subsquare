@@ -31,6 +31,7 @@ const collectives = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
-}
+  postLabels: ["Motion", "Announcement"],
+};
 
 export default collectives;

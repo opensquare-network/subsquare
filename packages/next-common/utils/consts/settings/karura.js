@@ -2,6 +2,7 @@ import Logo from "../../../assets/header-logos/karura.svg";
 import DarkModeLogo from "../../../assets/header-logos/karura-dark.svg";
 import Avatar from "../../../assets/icons/chain/karura.png";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabel } from "./common";
 
 export const DEFAULT_KARURA_NODES = [
   {
@@ -48,6 +49,7 @@ const karura = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
+  postLabels: defaultPostLabel,
 };
 
 export default karura;
