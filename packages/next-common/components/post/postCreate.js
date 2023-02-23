@@ -97,6 +97,7 @@ export default function PostCreate() {
           content,
           contentType,
           bannerCid,
+          labels: selectedLabels,
           ...formValue,
         },
         { credentials: "include" }
