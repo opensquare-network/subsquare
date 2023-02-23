@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useApi from "../utils/hooks/useApi";
 import { estimateBlocksTime } from "../utils";
 import { useSelector } from "react-redux";
