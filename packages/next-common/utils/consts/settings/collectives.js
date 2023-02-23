@@ -32,6 +32,8 @@ const collectives = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: ["Motion", "Announcement"],
-};
+  hasStatescan: true,
+  noSubscan: true,
+}
 
 export default collectives;

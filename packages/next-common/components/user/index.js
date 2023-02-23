@@ -1,8 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { fetchIdentity } from "../../services/identity";
-import { encodeAddressToChain } from "../../services/address";
-import { nodes } from "../../utils/constants";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Identity from "../Identity";
@@ -12,7 +10,8 @@ import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Link from "next/link";
-import { useChain } from "../../context/chain";
+import { useChainSettings } from "../../context/chain";
+import { encodeAddress } from "@polkadot/keyring";
 
 const Wrapper = styled(Flex)`
   a {
@@ -113,21 +112,18 @@ function User({
   noTooltip = false,
   color,
 }) {
-  const chain = useChain();
+  const settings = useChainSettings();
   const address = add ?? user?.address;
   const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
     if (address) {
-      const identity = nodes.find((n) => n.value === chain)?.identity;
-      if (!identity) return;
-
-      fetchIdentity(identity, encodeAddressToChain(address, identity)).then(
+      fetchIdentity(settings.identity, encodeAddress(address, settings.ss58Format)).then(
         (identity) => isMounted.current && setIdentity(identity)
       );
     }
-  }, [address, chain]);
+  }, [address, settings]);
 
   if (!user && !add) {
     return (

@@ -28,6 +28,8 @@ const westendCollectives = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
   postLabels: ["Motion", "Announcement"],
-};
+  hasStatescan: true,
+  noSubscan: true,
+}
 
 export default westendCollectives;

@@ -1,6 +1,6 @@
-import { getMotionId } from "next-common/utils/motion";
-import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
-import { getTitle } from "./common";
+import { getMotionId } from "../../motion";
+import { getTitle } from "../../post";
+import { getPostLastActivityAt } from "../postUpdatedTime";
 
 export default function normalizeAllianceMotion(item) {
   return {
