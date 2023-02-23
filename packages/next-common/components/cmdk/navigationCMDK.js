@@ -188,9 +188,9 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
           {
             id: m.name,
             heading: m.name,
-            items: m.items.filter(filterChain).map((i) => {
+            items: m.items.filter(filterChain).map((i, idx) => {
               return {
-                id: m.name + "-" + i.name,
+                id: m.name + "-" + i.name + `-${idx}`,
                 children: i.name,
                 icon: () => i.icon,
                 href: i.pathname,
