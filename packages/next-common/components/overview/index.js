@@ -5,9 +5,12 @@ import PostList from "next-common/components/postList";
 import PlusIcon from "../../assets/imgs/icons/plusInCircle.svg";
 import EmptyOverview from "./emptyOverview";
 import OverviewSummary from "../summary/overviewSummary";
+import AllianceOverviewSummary from "../summary/allianceOverviewSummary";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import { mdcss, smcss } from "../../utils/responsive";
 import { TitleContainer as TitleContainerOrigin } from "../styled/containers/titleContainer";
+import { useChain } from "../../context/chain";
+import { isCollectivesChain } from "../../utils/chain";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -42,6 +45,12 @@ const OverviewSummaryWrapper = styled.div`
 `;
 
 export default function Overview({ overviewData, summaryData }) {
+  const chain = useChain();
+
+  const SummaryComponent = isCollectivesChain(chain)
+    ? AllianceOverviewSummary
+    : OverviewSummary;
+
   const allCategoriesCount = (overviewData || []).reduce(
     (result, category) => result + category.items?.length || 0,
     0
@@ -52,8 +61,7 @@ export default function Overview({ overviewData, summaryData }) {
       <Wrapper>
         <OverviewSummaryWrapper>
           <TitleContainer>Overview</TitleContainer>
-
-          <OverviewSummary summaryData={summaryData} />
+          <SummaryComponent summaryData={summaryData} />
         </OverviewSummaryWrapper>
 
         <EmptyOverview />
@@ -72,8 +80,7 @@ export default function Overview({ overviewData, summaryData }) {
     <Wrapper>
       <OverviewSummaryWrapper>
         <TitleContainer>Overview</TitleContainer>
-
-        <OverviewSummary summaryData={summaryData} />
+        <SummaryComponent summaryData={summaryData} />
       </OverviewSummaryWrapper>
 
       {overviewData.map((item, index) => {

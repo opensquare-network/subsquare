@@ -1,13 +1,21 @@
 import React from "react";
-import styled from "styled-components";
-import Content from "next-common/components/summary/cardContent";
-import {
-  SummaryCard,
-  SummaryDescription,
-  SummaryTitle,
-} from "next-common/components/summary/styled";
-import Divider from "next-common/components/styled/layout/divider";
-import { SummaryItem, SummaryItems } from "./styled";
+import styled, { css } from "styled-components";
+import { smcss } from "../../utils/responsive";
+import Content from "./cardContent";
+import { SummaryCard, SummaryDescription, SummaryTitle } from "./styled";
+import Divider from "../styled/layout/divider";
+
+export const SummaryItems = styled.div`
+  display: flex;
+  ${smcss(css`
+    flex-direction: column;
+    gap: 16px;
+  `)}
+`;
+
+export const SummaryItem = styled.div`
+  flex: 1;
+`;
 
 const Wrapper = styled(SummaryCard)`
   margin: 16px 0px;
