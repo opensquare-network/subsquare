@@ -83,11 +83,6 @@ export default function PostEdit({ setIsEdit, updatePost }) {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <PostLabel
-        selectedLabels={selectedLabels}
-        setSelectedLabels={setSelectedLabels}
-      />
-
       {isSetBanner && (
         <UploaderWrapper>
           <Uploader
@@ -97,6 +92,11 @@ export default function PostEdit({ setIsEdit, updatePost }) {
           />
         </UploaderWrapper>
       )}
+
+      <PostLabel
+        selectedLabels={selectedLabels}
+        setSelectedLabels={setSelectedLabels}
+      />
 
       <LabelWrapper>
         <Label>Issue</Label>

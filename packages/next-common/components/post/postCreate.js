@@ -153,11 +153,6 @@ export default function PostCreate() {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <PostLabel
-        selectedLabels={selectedLabels}
-        setSelectedLabels={setSelectedLabels}
-      />
-
       {isSetBanner && (
         <UploaderWrapper>
           <Uploader disabled={creating} onSetImageCid={setBannerCid} />
@@ -167,6 +162,12 @@ export default function PostCreate() {
       {errors?.data?.title?.[0] && (
         <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
       )}
+
+      <PostLabel
+        selectedLabels={selectedLabels}
+        setSelectedLabels={setSelectedLabels}
+      />
+
       <LabelWrapper>
         <Label>Issue</Label>
       </LabelWrapper>
