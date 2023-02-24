@@ -6,11 +6,9 @@ import { p_12_normal } from "../styles/componentCss";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const Labels = styled.div`
-  display: flex;
-  gap: 8px;
+  & > :not(:first-child) {
+    margin-left: 8px;
+  }
 `;
 
 const Label = styled.a`
@@ -26,16 +24,14 @@ const Label = styled.a`
 export default function PostLabels({ labels }) {
   return (
     <Wrapper>
-      <Labels>
-        {labels.map((item) => (
-          <Link
-            key={item}
-            href={`/discussions?label=${encodeURIComponent(item)}`}
-          >
-            <Label>{item}</Label>
-          </Link>
-        ))}
-      </Labels>
+      {labels.map((item) => (
+        <Link
+          key={item}
+          href={`/discussions?label=${encodeURIComponent(item)}`}
+        >
+          <Label>{item}</Label>
+        </Link>
+      ))}
     </Wrapper>
   );
 }

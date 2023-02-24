@@ -10,8 +10,8 @@ export const PostLabel = {
 };
 
 export const defaultPostLabel = [
-  "Treasury",
-  "Council",
-  "Democracy",
-  "Tech.Comm.",
+  PostLabel.Treasury,
+  PostLabel.Council,
+  PostLabel.Democracy,
+  PostLabel.TechComm,
 ];
