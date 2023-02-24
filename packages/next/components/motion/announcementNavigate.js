@@ -7,17 +7,15 @@ import Link from "next/link";
 import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
 
 function MotionNavigator({ index }) {
-  return <div>
-    { `Motion #${ index }` }
-  </div>
+  return <div>{`Motion #${index}`}</div>;
 }
 
 function AnnouncementNavigator({ cid, height }) {
   return (
     <div>
       <TriangleRight />
-      <Link href={ `/alliance/announcement/${ height }_${ cid }` }>
-        { `Announcement ${ cid.slice(0, 4) }...` }
+      <Link href={`/alliance/announcement/${height}_${cid}`}>
+        {`Announcement ${cid.slice(0, 4)}...`}
       </Link>
     </div>
   );
@@ -32,11 +30,13 @@ export default function AnnouncementNavigate() {
 
   const { index, announcement: { cid, indexer } = {} } = chainData;
   if (!cid || !indexer) {
-    return
+    return null;
   }
 
-  return <NavigationWrapper>
-    <MotionNavigator index={ index } />
-    <AnnouncementNavigator cid={ cid} height={indexer.blockHeight} />
-  </NavigationWrapper>
+  return (
+    <NavigationWrapper>
+      <MotionNavigator index={index} />
+      <AnnouncementNavigator cid={cid} height={indexer.blockHeight} />
+    </NavigationWrapper>
+  );
 }
