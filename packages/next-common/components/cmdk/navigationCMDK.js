@@ -31,7 +31,6 @@ import ClosePanelIcon from "../icons/closePanel";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
 import homeMenus from "../../utils/consts/menu";
-import { resolveGov2TracksMenu } from "../../utils/consts/menu/gov2";
 import { isMacOS } from "../../utils/constants";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import { useSelector } from "react-redux";
@@ -42,9 +41,8 @@ import {
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
-import { useChain, useMenuHasGov2 } from "../../context/chain";
-import { fellowshipTracksApi, gov2TracksApi } from "../../services/url";
-import nextApi from "../../services/nextApi";
+import { useChain } from "../../context/chain";
+import { useGov2Menu } from "../../utils/hooks/useGov2Menu";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -109,26 +107,6 @@ const HotKey = styled.span`
   ${p_12_medium};
   ${m_l(8)};
 `;
-
-function useGov2Menu() {
-  const [tracks, setTracks] = useState([]);
-  const [fellowshipTracks, setFellowshipTracks] = useState([]);
-  const hasGov2 = useMenuHasGov2();
-
-  useEffect(() => {
-    if (hasGov2) {
-      nextApi.fetch(gov2TracksApi).then(({ result }) => setTracks(result));
-      nextApi
-        .fetch(fellowshipTracksApi)
-        .then(({ result }) => setFellowshipTracks(result));
-    }
-  }, [hasGov2]);
-
-  return useMemo(() => {
-    if (hasGov2) return resolveGov2TracksMenu(tracks, fellowshipTracks);
-    return [];
-  }, [hasGov2, tracks, fellowshipTracks]);
-}
 
 function renderCommandPaletteLink(props) {
   const { href, children, ...restProps } = props ?? {};
