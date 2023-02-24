@@ -145,17 +145,18 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
     if (isMacOS) setMetaKeySymbol("⌘");
   }, []);
 
-  const foldedMenu = [...gov2Menu, ...homeMenus].filter(
-    (m) => m.name && m.items?.length
-  ).filter(menu => !(menu.excludeToChains || []).includes(chain)).map(menu => {
-    const items = (menu.items || []).filter(item => !(item.excludeToChains || []).includes(chain))
-    return {
-      ...menu,
-      items,
-    }
-  });
+  const foldedMenu = [...gov2Menu, ...homeMenus]
+    .filter((menu) => menu.name && menu.items?.length)
+    .filter(filterExcludeChains)
+    .map((menu) => {
+      const items = (menu.items || []).filter(filterExcludeChains);
+      return {
+        ...menu,
+        items,
+      };
+    });
 
-  function filterChain(item) {
+  function filterExcludeChains(item) {
     return !item?.excludeToChains?.includes(chain);
   }
 
@@ -166,7 +167,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
           {
             id: m.name,
             heading: m.name,
-            items: m.items.filter(filterChain).map((i, idx) => {
+            items: m.items.map((i, idx) => {
               return {
                 id: m.name + "-" + i.name + `-${idx}`,
                 children: i.name,
@@ -193,7 +194,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
           {
             id: "home",
             items: [
-              ...commonMenus.items.filter(filterChain).map((i) => {
+              ...commonMenus.items.filter(filterExcludeChains).map((i) => {
                 return {
                   id: i.name,
                   children: i.name,
@@ -201,7 +202,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
                   href: i.pathname,
                 };
               }),
-              ...foldedMenu.filter(filterChain).map((m) => {
+              ...foldedMenu.map((m) => {
                 return {
                   id: m.name,
                   children: m.name?.toLowerCase(),
