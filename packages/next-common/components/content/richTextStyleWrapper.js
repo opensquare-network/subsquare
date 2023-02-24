@@ -11,7 +11,6 @@ const RichTextStyleWrapper = styled.div`
   div.ql-editor,
   div.html-body,
   div.markdown-body {
-    word-break: break-all;
     hr {
       background-color: ${(props) => props.theme.grey200Border};
     }
@@ -28,6 +27,10 @@ const RichTextStyleWrapper = styled.div`
 
     ol > li[data-list="bullet"]::before {
       content: "•";
+    }
+
+    li {
+      word-break: break-word;
     }
 
     table {
