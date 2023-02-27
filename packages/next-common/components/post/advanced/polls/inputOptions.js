@@ -1,25 +1,20 @@
 import Input from "../../../input";
 import { Trash } from "../../../icons";
 import { PollFormOptionFormItem } from "../elements";
-import React, {
-  forwardRef,
-  useEffect,
-  useState,
-  useImperativeHandle,
-} from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 
 function InputOptions({ disabled, value, onChange = () => {} }, ref) {
-  const [options, setOptions] = useState(value);
+  const options = value;
+  const setOptions = onChange;
 
   const handleAddOption = () => {
-    setOptions((v) => [...v, ""]);
+    setOptions([...options, ""]);
   };
 
   const handleDeleteOption = (idx) => {
-    setOptions((v) => {
-      v.splice(idx, 1);
-      return [...v];
-    });
+    const newOptions = [...options];
+    newOptions.splice(idx, 1);
+    setOptions(newOptions);
   };
 
   const isExtraOption = (idx) => idx >= 2;
@@ -28,8 +23,6 @@ function InputOptions({ disabled, value, onChange = () => {} }, ref) {
     addOption: handleAddOption,
   }));
 
-  useEffect(() => onChange(options), [options]);
-
   return (
     <PollFormOptionFormItem>
       {options.map((v, idx) => (
@@ -37,10 +30,9 @@ function InputOptions({ disabled, value, onChange = () => {} }, ref) {
           disabled={disabled}
           value={v}
           onChange={(event) => {
-            setOptions((v) => {
-              v[idx] = event.target.value?.trimStart();
-              return [...v];
-            });
+            const newOptions = [...options];
+            newOptions[idx] = event.target.value?.trimStart();
+            setOptions(newOptions);
           }}
           key={idx}
           placeholder={`Option${
