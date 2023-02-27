@@ -1331,6 +1331,15 @@
     "@heroicons/react" "^2.0.13"
     clsx "^1.2.1"
 
+"@osn/react-cmdk@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/@osn/react-cmdk/-/react-cmdk-1.1.2.tgz#ab8fd2f2ebcbdf0b2b9b8f92d20ea4512ac296f9"
+  integrity sha512-057tGa1K+Dc3Ev3rqyxcq4QT9NFG0vPK960S8IjbrCWTXFaVN3TIKDOTXGxdBje31v/fblIoT99vkRnSdON8XA==
+  dependencies:
+    "@headlessui/react" "^1.6.4"
+    "@heroicons/react" "^2.0.13"
+    clsx "^1.2.1"
+
 "@osn/rich-text-editor@^0.1.56":
   version "0.1.56"
   resolved "https://registry.yarnpkg.com/@osn/rich-text-editor/-/rich-text-editor-0.1.56.tgz#675bea4c0da7862c5015047992146472a259a7d6"
