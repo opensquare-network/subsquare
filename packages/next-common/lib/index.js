@@ -44,6 +44,8 @@ export function withLoginUser(getServerSideProps) {
       }
     }
 
+    const userAgent = context?.req?.headers?.["user-agent"];
+
     return {
       ...props,
       props: {
@@ -53,6 +55,7 @@ export function withLoginUser(getServerSideProps) {
         homeFoldedMenus: homeFoldedMenus || "",
         pageProperties: {
           ...pageProperties,
+          userAgent,
           props: props.props,
         },
       },
