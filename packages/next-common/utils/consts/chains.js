@@ -24,6 +24,7 @@ const Chains = {
   development: "development",
   rococo: "rococo",
   litentry: "litentry",
+  westend: "westend",
   "westend-collectives": "westend-collectives",
   collectives: "collectives",
 };
