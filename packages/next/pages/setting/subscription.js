@@ -16,28 +16,22 @@ import { PrimaryCard } from "next-common/components/styled/containers/primaryCar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
-import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
-import useTreasuryTipOptions from "next-common/components/setting/notification/useTreasuryTipOptions";
-import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
-import useTreasuryBountyOptions from "next-common/components/setting/notification/useTreasuryBountyOptions";
-import useTreasuryChildBountyOptions from "next-common/components/setting/notification/useTreasuryChildBountyOptions";
-import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
-import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
-import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
-import useReferendaReferendumOptions from "next-common/components/setting/notification/useReferendaReferendumOptions";
-import useFellowshipReferendumOptions from "next-common/components/setting/notification/useFellowshipReferendumOptions";
 import Cookies from "cookies";
 import {
   CACHE_KEY,
   pageHomeLayoutMainContentWidth,
 } from "next-common/utils/constants";
-import homeMenus from "next-common/utils/consts/menu";
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import { Options } from "next-common/components/setting/notification/styled";
 import {
   InfoMessage,
   WarningMessage,
 } from "next-common/components/setting/styled";
+import useAdvisoryCommitteeSubscription from "components/settings/subscription/useAdvisoryCommitteeSubscription";
+import useOpenGovSubscription from "components/settings/subscription/useOpenGovSubscription";
+import useTreasrySubscription from "components/settings/subscription/useTreasurySubscription";
+import useDemocracySubscription from "components/settings/subscription/useDemocracySubscription";
+import useCouncilSubscription from "components/settings/subscription/useCouncilSubscription";
+import useTechCommSubscription from "components/settings/subscription/useTechCommSubscription";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -84,218 +78,48 @@ export default withLoginUserRedux(
     const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
     const [subscription, setSubscription] = useState(_subscription);
 
-    const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(
-      homeMenus,
-      "TREASURY"
-    );
-    const { hasMenu: hasTreasuryProposal } = checkSubMenu(
-      treasuryMenu?.items,
-      "Proposals"
-    );
-    const { hasMenu: hasTreasuryTip } = checkSubMenu(
-      treasuryMenu?.items,
-      "Tips"
-    );
-    const { hasMenu: hasTreasuryBounty } = checkSubMenu(
-      treasuryMenu?.items,
-      "Bounties"
-    );
-    const { hasMenu: hasTreasuryChildBounty } = checkSubMenu(
-      treasuryMenu?.items,
-      "Child Bounties"
-    );
-    const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(
-      homeMenus,
-      "COUNCIL"
-    );
-    const { hasMenu: hasCouncilMotion } = checkSubMenu(
-      councilMenu?.items,
-      "Motions"
-    );
-    const { hasMenu: hasTechComm, menu: techCommMenu } = checkSubMenu(
-      homeMenus,
-      "TECH.COMM."
-    );
-    const { hasMenu: hasTechCommMotion } = checkSubMenu(
-      techCommMenu?.items,
-      "Proposals"
-    );
-    const { hasMenu: hasDemocracy, menu: democracyMenu } = checkSubMenu(
-      homeMenus,
-      "DEMOCRACY"
-    );
-    const { hasMenu: hasDemocracyProposal } = checkSubMenu(
-      democracyMenu?.items,
-      "Proposals"
-    );
-    const { hasMenu: hasDemocracyReferenda } = checkSubMenu(
-      democracyMenu?.items,
-      "Referenda"
-    );
-
-    const hasOpenGov = ["kusama"].includes(process.env.NEXT_PUBLIC_CHAIN);
-
     const emailVerified =
       loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
     const isVerifiedUser = loginUser?.emailVerified;
 
     const {
-      treasuryProposalOptionsComponent,
-      getTreasuryProposalOptionValues,
-      isChanged: isTreasuryProposalOptionsChanged,
-    } = useTreasuryProposalOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      treasuryProposalProposed: subscription?.treasuryProposalProposed,
-      treasuryProposalApproved: subscription?.treasuryProposalApproved,
-      treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
-      treasuryProposalRejected: subscription?.treasuryProposalRejected,
-    });
+      treasuryOptions,
+      isTreasuryOptionsChanged,
+      getTreasuryOptionValues,
+    } = useTreasrySubscription(subscription, saving, isVerifiedUser);
+
+    const { councilOptions, isCouncilOptionsChanged, getCouncilOptionValues } =
+      useCouncilSubscription(subscription, saving, isVerifiedUser);
 
     const {
-      treasuryTipOptionsComponent,
-      getTreasuryTipOptionValues,
-      isChanged: isTreasuryTipOptionsChanged,
-    } = useTreasuryTipOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      treasuryTipNew: subscription?.treasuryTipNew,
-      treasuryTipTip: subscription?.treasuryTipTip,
-      treasuryTipClosed: subscription?.treasuryTipClosed,
-      treasuryTipRetracted: subscription?.treasuryTipRetracted,
-    });
+      techCommOptions,
+      isTechCommOptionsChanged,
+      getTechCommOptionValues,
+    } = useTechCommSubscription(subscription, saving, isVerifiedUser);
 
     const {
-      treasuryBountyOptionsComponent,
-      getTreasuryBountyOptionValues,
-      isChanged: isTreasuryBountyOptionsChanged,
-    } = useTreasuryBountyOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      treasuryBountyProposed: subscription?.treasuryBountyProposed,
-      treasuryBountyAwarded: subscription?.treasuryBountyAwarded,
-      treasuryBountyApproved: subscription?.treasuryBountyApproved,
-      treasuryBountyCanceled: subscription?.treasuryBountyCanceled,
-      treasuryBountyClaimed: subscription?.treasuryBountyClaimed,
-      treasuryBountyRejected: subscription?.treasuryBountyRejected,
-    });
+      democracyOptions,
+      isDemocracyOptionsChanged,
+      getDemocracyOptionValues,
+    } = useDemocracySubscription(subscription, saving, isVerifiedUser);
+
+    const { openGovOptions, isOpenGovOptionsChanged, getOpenGovOptionValues } =
+      useOpenGovSubscription(subscription, saving, isVerifiedUser);
 
     const {
-      treasuryChildBountyOptionsComponent,
-      getTreasuryChildBountyOptionValues,
-      isChanged: isTreasuryChildBountyOptionsChanged,
-    } = useTreasuryChildBountyOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      treasuryChildBountyAdded: subscription?.treasuryChildBountyAdded,
-      treasuryChildBountyAwarded: subscription?.treasuryChildBountyAwarded,
-      treasuryChildBountyCanceled: subscription?.treasuryChildBountyCanceled,
-      treasuryChildBountyClaimed: subscription?.treasuryChildBountyClaimed,
-    });
-
-    const {
-      councilMotionOptionsComponent,
-      getCouncilMotionOptionValues,
-      isChanged: isCouncilMotionOptionsChanged,
-    } = useCouncilMotionOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      councilMotionProposed: subscription?.councilMotionProposed,
-      councilMotionVoted: subscription?.councilMotionVoted,
-      councilMotionApproved: subscription?.councilMotionApproved,
-      councilMotionDisApproved: subscription?.councilMotionDisApproved,
-    });
-
-    const {
-      techCommMotionOptionsComponent,
-      getTechCommMotionOptionValues,
-      isChanged: isTechCommMotionOptionsChanged,
-    } = useTechCommMotionOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      tcMotionProposed: subscription?.tcMotionProposed,
-      tcMotionVoted: subscription?.tcMotionVoted,
-      tcMotionApproved: subscription?.tcMotionApproved,
-      tcMotionDisApproved: subscription?.tcMotionDisApproved,
-    });
-
-    const {
-      democracyProposalOptionsComponent,
-      getDemocracyProposalOptionValues,
-      isChanged: isDemocracyProposalOptionsChanged,
-    } = useDemocracyProposalOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      democracyProposalProposed: subscription?.democracyProposalProposed,
-      democracyProposalCanceled: subscription?.democracyProposalCanceled,
-    });
-
-    const {
-      democracyReferendumOptionsComponent,
-      getDemocracyReferendumOptionValues,
-      isChanged: isDemocracyReferendumOptionsChanged,
-    } = useDemocracyReferendumOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      democracyReferendumStarted: subscription?.democracyReferendumStarted,
-      democracyReferendumPassed: subscription?.democracyReferendumPassed,
-      democracyReferendumNotPassed: subscription?.democracyReferendumNotPassed,
-      democracyReferendumCancelled: subscription?.democracyReferendumCancelled,
-      democracyReferendumExecuted: subscription?.democracyReferendumExecuted,
-      democracyReferendumNotExecuted:
-        subscription?.democracyReferendumNotExecuted,
-    });
-
-    const {
-      referendaReferendumOptionsComponent,
-      getReferendaReferendumOptionValues,
-      isChanged: isReferendaReferendumOptionsChanged,
-    } = useReferendaReferendumOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      referendaSubmitted: subscription?.referendaSubmitted,
-      referendaDecisionStarted: subscription?.referendaDecisionStarted,
-      referendaConfirmStarted: subscription?.referendaConfirmStarted,
-      referendaCancelled: subscription?.referendaCancelled,
-      referendaConfirmAborted: subscription?.referendaConfirmAborted,
-      referendaConfirmed: subscription?.referendaConfirmed,
-      referendaExecuted: subscription?.referendaExecuted,
-      referendaKilled: subscription?.referendaKilled,
-      referendaTimedout: subscription?.referendaTimedout,
-      referendaRejected: subscription?.referendaRejected,
-    });
-
-    const {
-      fellowshipReferendumOptionsComponent,
-      getFellowshipReferendumOptionValues,
-      isChanged: isFellowshipReferendumOptionsChanged,
-    } = useFellowshipReferendumOptions({
-      disabled: !isVerifiedUser,
-      saving,
-      fellowshipSubmitted: subscription?.fellowshipSubmitted,
-      fellowshipDecisionStarted: subscription?.fellowshipDecisionStarted,
-      fellowshipConfirmStarted: subscription?.fellowshipConfirmStarted,
-      fellowshipCancelled: subscription?.fellowshipCancelled,
-      fellowshipConfirmAborted: subscription?.fellowshipConfirmAborted,
-      fellowshipConfirmed: subscription?.fellowshipConfirmed,
-      fellowshipExecuted: subscription?.fellowshipExecuted,
-      fellowshipKilled: subscription?.fellowshipKilled,
-      fellowshipTimedout: subscription?.fellowshipTimedout,
-      fellowshipRejected: subscription?.fellowshipRejected,
-    });
+      advisoryOptions,
+      isAdvisoryCommitteeOptionsChanged,
+      getAdvisoryCommitteeOptionValues,
+    } = useAdvisoryCommitteeSubscription(subscription, saving, isVerifiedUser);
 
     const canSave =
       isVerifiedUser &&
-      (isTreasuryProposalOptionsChanged ||
-        isTreasuryTipOptionsChanged ||
-        isCouncilMotionOptionsChanged ||
-        isTreasuryBountyOptionsChanged ||
-        isTreasuryChildBountyOptionsChanged ||
-        isTechCommMotionOptionsChanged ||
-        isDemocracyProposalOptionsChanged ||
-        isDemocracyReferendumOptionsChanged ||
-        isReferendaReferendumOptionsChanged ||
-        isFellowshipReferendumOptionsChanged);
+      (isTreasuryOptionsChanged ||
+        isCouncilOptionsChanged ||
+        isTechCommOptionsChanged ||
+        isDemocracyOptionsChanged ||
+        isOpenGovOptionsChanged ||
+        isAdvisoryCommitteeOptionsChanged);
 
     const router = useRouter();
 
@@ -327,30 +151,12 @@ export default withLoginUserRedux(
       setSaving(true);
 
       const data = {
-        ...(hasTreasury && hasTreasuryProposal
-          ? getTreasuryProposalOptionValues()
-          : {}),
-        ...(hasTreasury && hasTreasuryTip ? getTreasuryTipOptionValues() : {}),
-        ...(hasTreasury && hasTreasuryBounty
-          ? getTreasuryBountyOptionValues()
-          : {}),
-        ...(hasTreasury && hasTreasuryChildBounty
-          ? getTreasuryChildBountyOptionValues()
-          : {}),
-        ...(hasCouncil && hasCouncilMotion
-          ? getCouncilMotionOptionValues()
-          : {}),
-        ...(hasTechComm && hasTechCommMotion
-          ? getTechCommMotionOptionValues()
-          : {}),
-        ...(hasDemocracy && hasDemocracyProposal
-          ? getDemocracyProposalOptionValues()
-          : {}),
-        ...(hasDemocracy && hasDemocracyReferenda
-          ? getDemocracyReferendumOptionValues()
-          : {}),
-        ...(hasOpenGov ? getReferendaReferendumOptionValues() : {}),
-        ...(hasOpenGov ? getFellowshipReferendumOptionValues() : {}),
+        ...getTechCommOptionValues(),
+        ...getCouncilOptionValues(),
+        ...getDemocracyOptionValues(),
+        ...getTreasuryOptionValues(),
+        ...getOpenGovOptionValues(),
+        ...getAdvisoryCommitteeOptionValues(),
       };
 
       const { result, error } = await nextApi.patch("user/subscription", data);
@@ -362,62 +168,6 @@ export default withLoginUserRedux(
       }
       setSaving(false);
     };
-
-    let treasuryOptions = null;
-    if (
-      hasTreasury &&
-      (hasTreasuryProposal ||
-        hasTreasuryTip ||
-        hasTreasuryBounty ||
-        hasTreasuryChildBounty)
-    ) {
-      treasuryOptions = (
-        <FoldableSections title="Treasury">
-          {hasTreasuryProposal && treasuryProposalOptionsComponent}
-          {hasTreasuryTip && treasuryTipOptionsComponent}
-          {hasTreasuryBounty && treasuryBountyOptionsComponent}
-          {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
-        </FoldableSections>
-      );
-    }
-
-    let councilOptions = null;
-    if (hasCouncil && hasCouncilMotion) {
-      councilOptions = (
-        <FoldableSections title="Council">
-          {hasCouncilMotion && councilMotionOptionsComponent}
-        </FoldableSections>
-      );
-    }
-
-    let techCommOptions = null;
-    if (hasTechComm && hasTechCommMotion) {
-      techCommOptions = (
-        <FoldableSections title="Tech-Comm.">
-          {hasTechCommMotion && techCommMotionOptionsComponent}
-        </FoldableSections>
-      );
-    }
-
-    let democracyOptions = null;
-    if (hasDemocracy && (hasDemocracyProposal || hasDemocracyReferenda)) {
-      democracyOptions = (
-        <FoldableSections title="Democracy">
-          {hasDemocracyProposal && democracyProposalOptionsComponent}
-          {hasDemocracyReferenda && democracyReferendumOptionsComponent}
-        </FoldableSections>
-      );
-    }
-
-    let openGovOptions = null;
-    if (hasOpenGov) {
-      openGovOptions = (
-        <FoldableSections title="Open Gov">
-          {referendaReferendumOptionsComponent}
-          {fellowshipReferendumOptionsComponent}
-        </FoldableSections>
-      );
-    }
 
     return (
       <SettingsLayout>
@@ -445,6 +195,7 @@ export default withLoginUserRedux(
               {councilOptions}
               {techCommOptions}
               {democracyOptions}
+              {advisoryOptions}
             </Options>
 
             <Divider margin={24} />
