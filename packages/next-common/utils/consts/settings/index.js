@@ -22,6 +22,7 @@ import development from "./development";
 import rococo from "./rococo";
 import litentry from "./litentry";
 import westendCollectives from "./westendCollectives";
+import westend from "./westend";
 import collectives from "./collectives";
 
 const settingsMap = {
@@ -48,6 +49,7 @@ const settingsMap = {
   zeitgeist,
   rococo,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
+  westend,
   "westend-collectives": westendCollectives,
   collectives,
 };
