@@ -51,12 +51,13 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
   }, [value, endTime]);
 
   useEffect(() => {
-    setValue(initValue);
     if (!isCreatePoll) {
       setFormValue((v) => {
         delete v.polls;
         return v;
       });
+    } else {
+      setValue(initValue);
     }
   }, [isCreatePoll]);
 
