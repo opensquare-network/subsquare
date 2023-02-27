@@ -1,7 +1,7 @@
-import Logo from "../../../assets/header-logos/collectives.svg";
-import DarkModeLogo from "../../../assets/header-logos/collectives-dark.svg";
-import Avatar from "../../../assets/icons/chain/collectives.png";
-import DarkAvatar from "../../../assets/icons/chain/collectives-dark.png";
+import Logo from "../../../assets/header-logos/westend-collectives.svg";
+import DarkModeLogo from "../../../assets/header-logos/westend-collectives-dark.svg";
+import Avatar from "../../../assets/icons/chain/westend-collectives.png";
+import DarkAvatar from "../../../assets/icons/chain/westend-collectives-dark.png";
 
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
