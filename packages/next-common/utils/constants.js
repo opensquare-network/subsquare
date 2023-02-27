@@ -94,6 +94,3 @@ export const CACHE_KEY = {
 };
 
 export const chain = process.env.NEXT_PUBLIC_CHAIN;
-
-export const isMacOS =
-  process.browser && window.navigator.userAgent.includes("Mac");
