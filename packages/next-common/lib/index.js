@@ -44,7 +44,7 @@ export function withLoginUser(getServerSideProps) {
       }
     }
 
-    const userAgent = context?.req?.headers?.["user-agent"];
+    const userAgent = context?.req?.headers?.["user-agent"] ?? "";
 
     return {
       ...props,
