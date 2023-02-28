@@ -1,6 +1,7 @@
 import React from "react";
 import Chains from "../chains";
 import OverviewIcon from "../../../assets/imgs/icons/overview.svg";
+import CalendarIcon from "../../../assets/imgs/icons/calendar.svg";
 import DiscussionIcon from "../../../assets/imgs/icons/discussions.svg";
 import PolkassemblyIcon from "../../../assets/imgs/icons/polkassembly.svg";
 import ReferendaIcon from "../../../assets/imgs/icons/type-referenda.svg";
@@ -26,6 +27,16 @@ const commonMenus = {
       icon: (
         <MenuIconWrapper>
           <OverviewIcon />
+        </MenuIconWrapper>
+      ),
+    },
+    {
+      value: "calendar",
+      name: "Calendar",
+      pathname: "/calendar",
+      icon: (
+        <MenuIconWrapper>
+          <CalendarIcon />
         </MenuIconWrapper>
       ),
     },
