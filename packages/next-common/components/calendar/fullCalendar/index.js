@@ -46,7 +46,7 @@ export default function FullCalendar({ defaultDate = new Date() }) {
           localizer={localizer}
           components={components}
           defaultDate={defaultDate}
-          view="month"
+          defaultView="month"
           views={["month"]}
           max={max}
         />
