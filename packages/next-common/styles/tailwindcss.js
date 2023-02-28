@@ -147,6 +147,9 @@ export function h(n) {
     height: ${px(n)};
   `;
 }
+export function max_h(n) {
+  return "max-" + h(n).trim();
+}
 export function grid_cols(repeat, min = 0) {
   return `
     grid-template-columns: repeat(${repeat}, minmax(${min}px, 1fr));
