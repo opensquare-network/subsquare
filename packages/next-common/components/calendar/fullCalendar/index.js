@@ -37,17 +37,15 @@ export default function FullCalendar({ defaultDate = new Date() }) {
   };
 
   return (
-    <NeutralPanel>
-      <CalendarNeutralPanel>
-        <Calendar
-          localizer={localizer}
-          components={components}
-          defaultDate={defaultDate}
-          view="month"
-          views={["month"]}
-          max={max}
-        />
-      </CalendarNeutralPanel>
-    </NeutralPanel>
+    <CalendarNeutralPanel>
+      <Calendar
+        localizer={localizer}
+        components={components}
+        defaultDate={defaultDate}
+        view="month"
+        views={["month"]}
+        max={max}
+      />
+    </CalendarNeutralPanel>
   );
 }
