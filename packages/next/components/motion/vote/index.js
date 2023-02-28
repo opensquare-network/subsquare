@@ -12,6 +12,9 @@ import { StatisticTitleContainer } from "next-common/components/styled/container
 import Statistics from "next-common/components/styled/paragraph/statistic";
 import AyeNay from "next-common/components/collective/AyeNay";
 import { emptyFunction } from "next-common/utils";
+import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
+import toApiCouncil from "next-common/utils/toApiCouncil";
+import { useChain } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -81,10 +84,8 @@ const VoterAddr = styled.div`
 
 export default function Vote({
   motionIsFinal = false,
-  userCanVote = false,
   loading = false,
   votes = [],
-  voters = [],
   prime,
   motionHash,
   motionIndex,
@@ -94,8 +95,10 @@ export default function Vote({
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
 }) {
+  const chain = useChain();
   const [showPopup, setShowPopup] = useState(false);
   const ayeVotesCount = votes.filter(([, approval]) => approval).length;
+  const userCanVote = useIsCollectiveMember(toApiCouncil(chain, type));
 
   let voteList;
   if (loading) {
@@ -167,7 +170,6 @@ export default function Vote({
       {showPopup && (
         <Popup
           votes={votes}
-          voters={voters}
           motionHash={motionHash}
           motionIndex={motionIndex}
           type={type}

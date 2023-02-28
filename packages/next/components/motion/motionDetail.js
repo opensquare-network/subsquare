@@ -2,13 +2,12 @@ import cloneDeep from "lodash.clonedeep";
 import ArticleContent from "next-common/components/articleContent";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Vote from "./vote";
-import useCall from "next-common/utils/hooks/useCall";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Business from "./business";
 import Metadata from "./metadata";
 import Timeline from "./timeline";
 import Head from "./head";
-import { isAddressInGroup, isMotionEnded } from "next-common/utils";
+import { isMotionEnded } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useApi";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { EditablePanel } from "next-common/components/styled/panel";
@@ -20,24 +19,18 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
   const chain = useChain();
-  const realAddress = useRealAddress();
   const postDispatch = usePostDispatch();
   const api = useApi();
   const isMounted = useIsMounted();
   const post = usePost();
 
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
-  const membersMethod = api?.query?.[toApiCouncil(chain, type)]?.members;
-  const voters = useCall(membersMethod, [])?.toJSON() || [];
-
   const [isEdit, setIsEdit] = useState(false);
 
-  const userCanVote = isAddressInGroup(realAddress, voters);
   const motionEnd = isMotionEnded(post.onchainData);
 
   const blockHash = motionEnd
@@ -140,9 +133,7 @@ export default function MotionDetail({ onReply }) {
       </EditablePanel>
       <Vote
         votes={votes}
-        voters={voters}
         prime={prime}
-        userCanVote={userCanVote}
         motionIsFinal={motionEnd}
         motionHash={post.hash}
         motionIndex={post.motionIndex}
