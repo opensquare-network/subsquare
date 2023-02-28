@@ -194,8 +194,8 @@ export default withLoginUserRedux(
               {treasuryOptions}
               {councilOptions}
               {techCommOptions}
-              {democracyOptions}
               {advisoryOptions}
+              {democracyOptions}
             </Options>
 
             <Divider margin={24} />
