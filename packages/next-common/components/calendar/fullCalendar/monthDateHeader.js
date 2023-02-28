@@ -46,10 +46,13 @@ const CellWrapper = styled.div`
     ${border_theme_grey400}
   }
 
+  ${(p) => p.isToday && border_theme_grey400}
+
   ${(p) =>
     p.isOffRange &&
     css`
       ${bg_theme("grey100Bg")}
+      ${border_theme_grey200}
 
       ${CellLabel} {
         ${text_placeholder}
@@ -60,8 +63,6 @@ const CellWrapper = styled.div`
         ${border_theme_grey200}
       }
     `}
-
-  ${(p) => p.isToday && border_theme_grey400}
 `;
 
 /**
