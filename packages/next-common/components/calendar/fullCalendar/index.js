@@ -19,14 +19,17 @@ dayjs.extend(timezone);
 
 const localizer = dayjsLocalizer(dayjs);
 
-const CalendarNeutralPanel = styled(NeutralPanel)`
+const Wrapper = styled(NeutralPanel)`
   ${p_x(24)}
   ${p_y(20)} 
   ${shadow_100} 
   ${flex} 
   ${flex_col} 
   ${gap_y(16)}
-  ${h(356)}
+`;
+
+const CalendarWrapper = styled.div`
+  ${h(412)}
 `;
 
 export default function FullCalendar({ defaultDate = new Date() }) {
@@ -37,15 +40,17 @@ export default function FullCalendar({ defaultDate = new Date() }) {
   };
 
   return (
-    <CalendarNeutralPanel>
-      <Calendar
-        localizer={localizer}
-        components={components}
-        defaultDate={defaultDate}
-        view="month"
-        views={["month"]}
-        max={max}
-      />
-    </CalendarNeutralPanel>
+    <Wrapper>
+      <CalendarWrapper>
+        <Calendar
+          localizer={localizer}
+          components={components}
+          defaultDate={defaultDate}
+          view="month"
+          views={["month"]}
+          max={max}
+        />
+      </CalendarWrapper>
+    </Wrapper>
   );
 }
