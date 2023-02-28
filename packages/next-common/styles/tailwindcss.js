@@ -296,7 +296,7 @@ export const rounded_none = make_rounded(0);
 export const border_theme_grey200 = css`
   border-color: ${theme("grey200Border")};
 `;
-export const border_theme_grey_400 = css`
+export const border_theme_grey400 = css`
   border-color: ${theme("grey400Border")};
 `;
 
