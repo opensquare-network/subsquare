@@ -293,6 +293,9 @@ export const rounded_none = make_rounded(0);
 export const border_theme_grey200 = css`
   border-color: ${theme("grey200Border")};
 `;
+export const border_theme_grey_400 = css`
+  border-color: ${theme("grey400Border")};
+`;
 
 // border style
 export const border_hidden = `
@@ -377,10 +380,14 @@ export const text_primary_inverse = text_theme("textPrimaryInverse");
 export const text_secondary = text_theme("textSecondary");
 export const text_tertiary = text_theme("textTertiary");
 export const text_quaternary = text_theme("textQuaternary");
+export const text_placeholder = text_theme("textPlaceholder");
 
 // text transform
 export const text_capitalize = `
   text-transform: capitalize;
+`;
+export const text_uppercase = `
+  text-transform: uppercase;
 `;
 
 // interactivity
@@ -389,6 +396,9 @@ export const text_capitalize = `
 // cursor
 export const cursor_pointer = `
   cursor: pointer;
+`;
+export const cursor_default = `
+  cursor: default;
 `;
 
 // backgrounds
