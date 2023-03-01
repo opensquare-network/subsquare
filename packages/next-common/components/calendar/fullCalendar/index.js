@@ -24,7 +24,7 @@ import timezone from "dayjs/plugin/timezone";
 import FullCalendarToolbar from "./toolbar";
 import FullCalendarMonthDateCell from "./monthDateCell";
 import noop from "lodash.noop";
-import { useCalendarEventsSummary } from "../../../hooks/useCalendarEventsSummary";
+import { useCalendarEventsSummary } from "../../../hooks/calendar";
 import FullCalendarFooter from "./footer";
 dayjs.extend(timezone);
 
