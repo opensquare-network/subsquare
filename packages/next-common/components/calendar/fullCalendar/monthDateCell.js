@@ -5,10 +5,12 @@ import { DateHeaderProps } from "react-big-calendar";
 import styled, { css } from "styled-components";
 import { p_12_bold } from "../../../styles/componentCss";
 import {
+  bg_theme,
   border,
   border_color_theme,
   border_theme_grey200,
   border_theme_grey400,
+  cursor_default,
   cursor_pointer,
   flex,
   flex_col,
@@ -18,6 +20,7 @@ import {
   m,
   p,
   rounded_4,
+  text_placeholder,
   text_secondary,
   text_theme,
   w_full,
@@ -69,6 +72,19 @@ const CellWrapper = styled.div`
         ${border_color_theme("primaryPurple500")}
       }
     `}
+
+  ${(p) =>
+    p.isOffRange &&
+    css`
+      pointer-events: none;
+      ${bg_theme("grey100Bg")}
+      ${border_theme_grey200}
+      ${cursor_default}
+
+      ${CellLabel} {
+        ${text_placeholder}
+      }
+    `}
 `;
 
 /**
@@ -76,6 +92,7 @@ const CellWrapper = styled.div`
  */
 export default function FullCalendarMonthDateCell({
   label,
+  isOffRange,
   date,
   selectedDate,
   setSelectedDate,
@@ -96,11 +113,16 @@ export default function FullCalendarMonthDateCell({
   );
 
   function onCellClick() {
+    if (isOffRange) {
+      return;
+    }
+
     setSelectedDate(date);
   }
 
   return (
     <CellWrapper
+      isOffRange={isOffRange}
       isToday={isToday}
       isSelectedDay={isSelectedDay}
       onClick={onCellClick}
