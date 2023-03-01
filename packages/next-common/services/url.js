@@ -37,4 +37,14 @@ export const fellowshipReferendumsSummaryApi =
   fellowshipReferendumsApi + "/summary";
 
 // calender events
+/**
+ * param `begin_time`, `end_time`
+ * get events
+ */
 export const calendarEventsSummaryApi = "events/summary";
+
+/**
+ * `begin_time` `end_time`
+ * get event detail
+ */
+export const calendarEventsApi = "events";
