@@ -8,6 +8,7 @@ import {
   rounded_full,
   text_secondary,
 } from "../../../styles/tailwindcss";
+import { FULLCALENDAR_CATEGORY_COLORS } from "./consts";
 
 const Wrapper = styled.span`
   ${inline_flex}
@@ -27,15 +28,8 @@ const Label = styled.span`
   ${m_l(8)}
 `;
 
-const CATEGORY_COLOR = {
-  OpenGov: "secondaryBlue500",
-  Democracy: "secondaryPink500",
-  Treasury: "secondaryYellow500",
-  Collectives: "textTertiary",
-};
-
 export default function FullCalendarCategory({ category, onlyDot = false }) {
-  const color = CATEGORY_COLOR[category];
+  const color = FULLCALENDAR_CATEGORY_COLORS[category];
 
   return (
     <Wrapper>
