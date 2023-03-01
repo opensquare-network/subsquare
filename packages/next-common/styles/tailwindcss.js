@@ -23,6 +23,11 @@ export function text_theme(key) {
     color: ${theme(key)};
   `;
 }
+export function border_color_theme(key) {
+  return css`
+    border-color: ${theme(key)};
+  `;
+}
 export function m(n) {
   return `
     margin: ${px(n)};
