@@ -81,7 +81,6 @@ const CalendarWrapper = styled.div`
 `;
 
 export default function FullCalendar({ defaultDate = new Date() }) {
-  const max = dayjs().endOf("day").subtract(1, "hours").toDate();
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const components = {
@@ -108,7 +107,6 @@ export default function FullCalendar({ defaultDate = new Date() }) {
           defaultDate={defaultDate}
           defaultView="month"
           views={["month"]}
-          max={max}
         />
       </CalendarWrapper>
     </Wrapper>
