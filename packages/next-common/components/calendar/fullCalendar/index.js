@@ -25,6 +25,7 @@ import FullCalendarToolbar from "./toolbar";
 import FullCalendarMonthDateCell from "./monthDateCell";
 import noop from "lodash.noop";
 import { useCalendarEvents } from "../../../hooks/useCalendarEvents";
+import FullCalendarFooter from "./footer";
 dayjs.extend(timezone);
 
 const localizer = dayjsLocalizer(dayjs);
@@ -39,7 +40,7 @@ const Wrapper = styled(NeutralPanel)`
 `;
 
 const CalendarWrapper = styled.div`
-  ${h(412)}
+  ${h(347)}
 
   .rbc-month-view {
     border: none;
@@ -122,6 +123,7 @@ export default function FullCalendar({ date, setDate = noop }) {
           views={["month"]}
         />
       </CalendarWrapper>
+      <FullCalendarFooter />
     </Wrapper>
   );
 }
