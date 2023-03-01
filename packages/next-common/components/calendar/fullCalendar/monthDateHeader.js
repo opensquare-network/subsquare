@@ -68,8 +68,7 @@ const CellWrapper = styled.div`
 /**
  * @param {DateHeaderProps} props
  */
-export default function FullCalendarMonthDateCell(props) {
-  const { label, isOffRange, date } = props ?? {};
+export default function FullCalendarMonthDateCell({ label, isOffRange, date }) {
   const isToday = dayjs(date).isToday();
 
   return (
