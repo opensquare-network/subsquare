@@ -5,10 +5,9 @@ import nextApi from "../services/nextApi";
 import dayjs from "dayjs";
 
 /**
- * @description returns events summary
  * @param {dayjs.OpUnitType} unit
  */
-export function useCalendarEventsSummary(date, unit) {
+function useFetchCalendarEvents(endpoint, date, unit) {
   const [events, setEvents] = useState([]);
   const isMounted = useIsMounted().current;
 
@@ -19,15 +18,22 @@ export function useCalendarEventsSummary(date, unit) {
 
   useEffect(() => {
     if (isMounted) {
-      nextApi
-        .fetch(calendarEventsSummaryApi, { begin_time, end_time })
-        .then(({ result }) => {
-          if (result) {
-            setEvents(result);
-          }
-        });
+      nextApi.fetch(endpoint, { begin_time, end_time }).then(({ result }) => {
+        if (result) {
+          setEvents(result);
+        }
+      });
     }
   }, [isMounted, begin_time, end_time]);
 
+  return events;
+}
+
+/**
+ * @description returns events summary
+ * @param {dayjs.OpUnitType} unit
+ */
+export function useCalendarEventsSummary(date, unit) {
+  const events = useFetchCalendarEvents(calendarEventsSummaryApi, date, unit);
   return events;
 }
