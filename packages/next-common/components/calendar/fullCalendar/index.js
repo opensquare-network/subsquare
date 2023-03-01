@@ -22,7 +22,9 @@ import {
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import timezone from "dayjs/plugin/timezone";
 import FullCalendarToolbar from "./toolbar";
-import FullCalendarMonthDateCell from "./monthDateHeader";
+import FullCalendarMonthDateCell from "./monthDateCell";
+import noop from "lodash.noop";
+import { useCalendarEvents } from "../../../hooks/useCalendarEvents";
 dayjs.extend(timezone);
 
 const localizer = dayjsLocalizer(dayjs);
@@ -80,8 +82,13 @@ const CalendarWrapper = styled.div`
   }
 `;
 
-export default function FullCalendar({ defaultDate = new Date() }) {
+export default function FullCalendar({ date, setDate = noop }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const calendarEvents = useCalendarEvents(date);
+
+  function onNavigate(newDate) {
+    setDate(newDate);
+  }
 
   const components = {
     toolbar(props) {
@@ -96,6 +103,7 @@ export default function FullCalendar({ defaultDate = new Date() }) {
             {...props}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            calendarEvents={calendarEvents}
           />
         );
       },
@@ -108,7 +116,8 @@ export default function FullCalendar({ defaultDate = new Date() }) {
         <Calendar
           localizer={localizer}
           components={components}
-          defaultDate={defaultDate}
+          date={date}
+          onNavigate={onNavigate}
           defaultView="month"
           views={["month"]}
         />

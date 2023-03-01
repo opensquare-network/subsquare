@@ -35,3 +35,6 @@ export const fellowshipReferendumsTracksApi = (trackId) =>
 export const fellowshipReferendumsApi = "fellowship/referenda";
 export const fellowshipReferendumsSummaryApi =
   fellowshipReferendumsApi + "/summary";
+
+// calender events
+export const calendarEventsSummaryApi = "events/summary";

@@ -87,6 +87,7 @@ export default function FullCalendarMonthDateCell({
   date,
   selectedDate,
   setSelectedDate,
+  calendarEvents = [],
 }) {
   const day = dayjs(date);
   const isToday = day.isToday();
