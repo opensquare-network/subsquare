@@ -5,12 +5,10 @@ import { DateHeaderProps } from "react-big-calendar";
 import styled, { css } from "styled-components";
 import { p_12_bold } from "../../../styles/componentCss";
 import {
-  bg_theme,
   border,
   border_color_theme,
   border_theme_grey200,
   border_theme_grey400,
-  cursor_default,
   cursor_pointer,
   flex,
   flex_col,
@@ -20,7 +18,6 @@ import {
   m,
   p,
   rounded_4,
-  text_placeholder,
   text_secondary,
   text_theme,
   w_full,
