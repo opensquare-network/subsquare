@@ -66,6 +66,7 @@ const CalendarWrapper = styled.div`
 
     .rbc-month-row {
       border: none;
+      overflow: visible;
       ${max_h(48)}
       .rbc-row-bg {
         ${hidden}
