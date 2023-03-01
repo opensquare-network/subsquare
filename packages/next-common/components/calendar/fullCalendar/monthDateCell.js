@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday";
+import groupBy from "lodash.groupby";
 import { DateHeaderProps } from "react-big-calendar";
 import styled, { css } from "styled-components";
 import { p_12_bold } from "../../../styles/componentCss";
@@ -13,7 +14,9 @@ import {
   cursor_pointer,
   flex,
   flex_col,
+  gap_x,
   h_full,
+  justify_between,
   m,
   p,
   rounded_4,
@@ -22,6 +25,8 @@ import {
   text_theme,
   w_full,
 } from "../../../styles/tailwindcss";
+import FullCalendarCategory from "./category";
+import { FULLCALENDAR_CATEGORIES } from "./consts";
 dayjs.extend(isToday);
 
 const CellLabel = styled.p`
@@ -30,13 +35,17 @@ const CellLabel = styled.p`
   ${text_secondary}
 `;
 
-const CellEventGroup = styled.div``;
+const CellEventGroup = styled.div`
+  ${flex}
+  ${gap_x(4)}
+`;
 
 const CellWrapper = styled.div`
   ${w_full}
   ${h_full}
   ${flex}
   ${flex_col}
+  ${justify_between}
   ${p(8)}
   ${border}
   ${border_theme_grey200}
@@ -93,6 +102,16 @@ export default function FullCalendarMonthDateCell({
   const isToday = day.isToday();
   const isSelectedDay = day.isSame(selectedDate, "day");
 
+  const dayEvents = calendarEvents.filter((event) => {
+    const blockTime = event.indexer.blockTime;
+    return day.isSame(blockTime, "day");
+  });
+
+  const events = groupBy(dayEvents, "category");
+  const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
+    Object.keys(events).includes(category)
+  );
+
   function onCellClick() {
     if (isOffRange) {
       return;
@@ -110,7 +129,11 @@ export default function FullCalendarMonthDateCell({
     >
       <CellLabel>{label}</CellLabel>
 
-      <CellEventGroup></CellEventGroup>
+      <CellEventGroup>
+        {categories.map((category) => (
+          <FullCalendarCategory category={category} onlyDot />
+        ))}
+      </CellEventGroup>
     </CellWrapper>
   );
 }
