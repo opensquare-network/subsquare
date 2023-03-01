@@ -5,7 +5,7 @@ import { Button } from "../../summary/styled";
 import CaretLeft from "../../icons/caretLeft";
 import CaretRight from "../../icons/caretRight";
 import Flex from "../../styled/flex";
-import { Navigate } from "react-big-calendar";
+import { ToolbarProps } from "react-big-calendar";
 import { p_16_bold } from "../../../styles/componentCss";
 import {
   flex,
@@ -46,6 +46,9 @@ const NavigateButton = styled(Button)`
   ${p(4)}
 `;
 
+/**
+ * @param {ToolbarProps} props
+ */
 export default function FullCalendarToolbar({
   onNavigate,
   label,
@@ -57,14 +60,14 @@ export default function FullCalendarToolbar({
         <Flex>
           <ToolbarButtonGroup>
             <NavigateButton
-              onClick={() => onNavigate(Navigate.PREVIOUS)}
+              onClick={() => onNavigate("PREV")}
               arial-label={messages.previous}
             >
               <CaretLeft />
             </NavigateButton>
 
             <NavigateButton
-              onClick={() => onNavigate(Navigate.NEXT)}
+              onClick={() => onNavigate("NEXT")}
               arial-label={messages.next}
             >
               <CaretRight />
@@ -75,7 +78,7 @@ export default function FullCalendarToolbar({
         </Flex>
 
         <Flex>
-          <Button onClick={() => onNavigate(Navigate.TODAY)}>Today</Button>
+          <Button onClick={() => onNavigate("TODAY")}>Today</Button>
         </Flex>
       </ToolbarGroup>
 
