@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { calendarEventsSummaryApi } from "../services/url";
+import { calendarEventsApi, calendarEventsSummaryApi } from "../services/url";
 import useIsMounted from "../utils/hooks/useIsMounted";
 import nextApi from "../services/nextApi";
 import dayjs from "dayjs";
@@ -35,5 +35,14 @@ function useFetchCalendarEvents(endpoint, date, unit) {
  */
 export function useCalendarEventsSummary(date, unit) {
   const events = useFetchCalendarEvents(calendarEventsSummaryApi, date, unit);
+  return events;
+}
+
+/**
+ * @description returns events
+ * @param {dayjs.OpUnitType}
+ */
+export function useCalendarEvents(date, unit) {
+  const events = useFetchCalendarEvents(calendarEventsApi, date, unit);
   return events;
 }
