@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { flex, gap_x, justify_center, p_b } from "../../../styles/tailwindcss";
-import FullCalendarEvent from "./event";
+import FullCalendarCategory from "./category";
 
 const Wrapper = styled.div`
   ${flex}
@@ -15,7 +15,7 @@ export default function FullCalendarFooter() {
   return (
     <Wrapper>
       {categories.map((category) => (
-        <FullCalendarEvent category={category} />
+        <FullCalendarCategory category={category} />
       ))}
     </Wrapper>
   );

@@ -34,7 +34,7 @@ const CATEGORY_COLOR = {
   Collectives: "textTertiary",
 };
 
-export default function FullCalendarEvent({ category, onlyDot = false }) {
+export default function FullCalendarCategory({ category, onlyDot = false }) {
   const color = CATEGORY_COLOR[category];
 
   return (
