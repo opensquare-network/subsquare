@@ -84,7 +84,11 @@ export default function FullCalendar({ defaultDate = new Date() }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const components = {
-    toolbar: FullCalendarToolbar,
+    toolbar(props) {
+      return (
+        <FullCalendarToolbar {...props} setSelectedDate={setSelectedDate} />
+      );
+    },
     month: {
       dateHeader(props) {
         return (

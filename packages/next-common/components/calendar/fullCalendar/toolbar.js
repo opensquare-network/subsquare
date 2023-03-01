@@ -53,7 +53,13 @@ export default function FullCalendarToolbar({
   onNavigate,
   label,
   localizer: { messages },
+  setSelectedDate,
 }) {
+  function gotoToday() {
+    onNavigate("TODAY");
+    setSelectedDate(new Date());
+  }
+
   return (
     <ToolbarWrapper>
       <ToolbarGroup>
@@ -78,7 +84,7 @@ export default function FullCalendarToolbar({
         </Flex>
 
         <Flex>
-          <Button onClick={() => onNavigate("TODAY")}>Today</Button>
+          <Button onClick={gotoToday}>Today</Button>
         </Flex>
       </ToolbarGroup>
 
