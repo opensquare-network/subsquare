@@ -51,19 +51,6 @@ const CellWrapper = styled.div`
   ${(p) => p.isToday && border_theme_grey400}
 
   ${(p) =>
-    p.isOffRange &&
-    css`
-      pointer-events: none;
-      ${bg_theme("grey100Bg")}
-      ${border_theme_grey200}
-      ${cursor_default}
-
-      ${CellLabel} {
-        ${text_placeholder}
-      }
-    `}
-
-  ${(p) =>
     p.isSelectedDay &&
     css`
       ${border_color_theme("primaryPurple500")}
@@ -74,6 +61,19 @@ const CellWrapper = styled.div`
 
       &:hover {
         ${border_color_theme("primaryPurple500")}
+      }
+    `}
+
+  ${(p) =>
+    p.isOffRange &&
+    css`
+      pointer-events: none;
+      ${bg_theme("grey100Bg")}
+      ${border_theme_grey200}
+      ${cursor_default}
+
+      ${CellLabel} {
+        ${text_placeholder}
       }
     `}
 `;
