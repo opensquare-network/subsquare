@@ -72,19 +72,6 @@ const CellWrapper = styled.div`
         ${border_color_theme("primaryPurple500")}
       }
     `}
-
-  ${(p) =>
-    p.isOffRange &&
-    css`
-      pointer-events: none;
-      ${bg_theme("grey100Bg")}
-      ${border_theme_grey200}
-      ${cursor_default}
-
-      ${CellLabel} {
-        ${text_placeholder}
-      }
-    `}
 `;
 
 /**
@@ -98,6 +85,10 @@ export default function FullCalendarMonthDateCell({
   setSelectedDate,
   calendarEvents = [],
 }) {
+  if (isOffRange) {
+    return null;
+  }
+
   const day = dayjs(date);
   const isToday = day.isToday();
   const isSelectedDay = day.isSame(selectedDate, "day");
@@ -113,16 +104,11 @@ export default function FullCalendarMonthDateCell({
   );
 
   function onCellClick() {
-    if (isOffRange) {
-      return;
-    }
-
     setSelectedDate(date);
   }
 
   return (
     <CellWrapper
-      isOffRange={isOffRange}
       isToday={isToday}
       isSelectedDay={isSelectedDay}
       onClick={onCellClick}
