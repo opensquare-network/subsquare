@@ -6,6 +6,7 @@ import { p_12_bold } from "../../../styles/componentCss";
 import {
   bg_theme,
   border,
+  border_color_theme,
   border_theme_grey200,
   border_theme_grey400,
   cursor_default,
@@ -18,6 +19,7 @@ import {
   rounded_4,
   text_placeholder,
   text_secondary,
+  text_theme,
   w_full,
 } from "../../../styles/tailwindcss";
 dayjs.extend(isToday);
@@ -40,9 +42,9 @@ const CellWrapper = styled.div`
   ${border_theme_grey200}
   ${rounded_4}
   text-align: left;
+  ${cursor_pointer}
 
   &:hover {
-    ${cursor_pointer}
     ${border_theme_grey400}
   }
 
@@ -51,16 +53,27 @@ const CellWrapper = styled.div`
   ${(p) =>
     p.isOffRange &&
     css`
+      pointer-events: none;
       ${bg_theme("grey100Bg")}
       ${border_theme_grey200}
+      ${cursor_default}
 
       ${CellLabel} {
         ${text_placeholder}
       }
+    `}
+
+  ${(p) =>
+    p.isSelectedDay &&
+    css`
+      ${border_color_theme("primaryPurple500")}
+
+      ${CellLabel} {
+        ${text_theme("primaryPurple500")}
+      }
 
       &:hover {
-        ${cursor_default}
-        ${border_theme_grey200}
+        ${border_color_theme("primaryPurple500")}
       }
     `}
 `;
@@ -68,11 +81,32 @@ const CellWrapper = styled.div`
 /**
  * @param {DateHeaderProps} props
  */
-export default function FullCalendarMonthDateCell({ label, isOffRange, date }) {
-  const isToday = dayjs(date).isToday();
+export default function FullCalendarMonthDateCell({
+  label,
+  isOffRange,
+  date,
+  selectedDate,
+  setSelectedDate,
+}) {
+  const day = dayjs(date);
+  const isToday = day.isToday();
+  const isSelectedDay = day.isSame(selectedDate, "day");
+
+  function onCellClick() {
+    if (isOffRange) {
+      return;
+    }
+
+    setSelectedDate(date);
+  }
 
   return (
-    <CellWrapper isOffRange={isOffRange} isToday={isToday}>
+    <CellWrapper
+      isOffRange={isOffRange}
+      isToday={isToday}
+      isSelectedDay={isSelectedDay}
+      onClick={onCellClick}
+    >
       <CellLabel>{label}</CellLabel>
 
       <CellEventGroup></CellEventGroup>

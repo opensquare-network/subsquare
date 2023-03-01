@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React from "react";
+import React, { useState } from "react";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import styled from "styled-components";
@@ -82,11 +82,20 @@ const CalendarWrapper = styled.div`
 
 export default function FullCalendar({ defaultDate = new Date() }) {
   const max = dayjs().endOf("day").subtract(1, "hours").toDate();
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const components = {
     toolbar: FullCalendarToolbar,
     month: {
-      dateHeader: FullCalendarMonthDateCell,
+      dateHeader(props) {
+        return (
+          <FullCalendarMonthDateCell
+            {...props}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+          />
+        );
+      },
     },
   };
 
