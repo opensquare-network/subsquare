@@ -21,6 +21,7 @@ import {
 } from "../../../styles/componentCss";
 import Divider from "../../styled/layout/divider";
 import DayEventsTimeline from "./timelines";
+import { useCalendarEvents } from "../../../hooks/calendar";
 dayjs.extend(advancedFormat);
 
 const Wrapper = styled(NeutralPanel)`
@@ -44,6 +45,8 @@ const TitleDate = styled.small`
 `;
 
 export default function DayEvents({ selectedDate }) {
+  const dayEvents = useCalendarEvents(selectedDate, "day");
+
   return (
     <Wrapper>
       <Title>
@@ -53,7 +56,7 @@ export default function DayEvents({ selectedDate }) {
 
       <Divider />
 
-      <DayEventsTimeline />
+      <DayEventsTimeline events={dayEvents} />
     </Wrapper>
   );
 }
