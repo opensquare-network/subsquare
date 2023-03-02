@@ -270,7 +270,9 @@ export default function Post({ data, href, type }) {
               </MobileHiddenInfo>
             )}
             {data.labels && data.labels.length > 0 && (
-              <PostLabels labels={data.labels} />
+              <MobileHiddenInfo>
+                <PostLabels labels={data.labels} />
+              </MobileHiddenInfo>
             )}
           </Footer>
           {data.status && (

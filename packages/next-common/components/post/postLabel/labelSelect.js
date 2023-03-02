@@ -6,6 +6,7 @@ import { p_12_normal } from "../../../styles/componentCss";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 `;
 
