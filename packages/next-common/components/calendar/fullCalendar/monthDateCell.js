@@ -117,11 +117,15 @@ export default function FullCalendarMonthDateCell({
   // FIXME: calendar tooltip content
   const tooltipContent = !!categories.length && (
     <TooltipContentWrapper>
-      {categories.map((category) => (
-        <div key={category}>
-          {category}*{events[category].length}
-        </div>
-      ))}
+      {categories.map((category) => {
+        const count = events[category].length;
+        return (
+          <div key={category}>
+            {category}
+            {count > 1 && `*${count}`}
+          </div>
+        );
+      })}
     </TooltipContentWrapper>
   );
 
