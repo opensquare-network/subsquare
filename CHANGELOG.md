@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.9.6
+date: 02/28/2023
+- Add zeitgeist advisory committee motion events subscription UI.
+- Support discussion post labels.
+- Extract more hooks for collective pallet.
+
+# 2.9.5
+date: 02/17/2023
+- Add OpenGov2 activities to user profile.
+- Support cmdk.
+- Support alliance features for collectives para-chain.
+- Enable child bounties for khala/phala.
+- Refactor
+  - Overview page and backend apis code.
+  - All backend controllers code structure.
+- Fix bugs.
+- Update dependencies.
+
+# 2.9.4
+date: 02/15/2023
+- Add subscription UI for OpenGov.
+- Add a link to list page for overview categories.
+- Improve post body word break.
+- Fix bug: can not create post after canceling polls.
+- Fix bug: financial motion state.
+
+# 2.9.3
+date: 02/08/2023
+- Show split vote for OpenGov.
+- Customize zeitgeist advisory committee call on the motion detail page.
+- Fix statescan url.
+- Fix bugs.
+
 # 2.9.2
 date: 02/07/2023
 - Show enhanced user delegation/been delegated info for OpenGov referenda.
