@@ -8,7 +8,12 @@ const SVG = styled.svg`
   }
 `;
 
-export default function Caret({ isGrey = false, size = 14, down = true }) {
+export default function Caret({
+  isGrey = false,
+  size = 14,
+  down = true,
+  ...props
+}) {
   return (
     <SVG
       width={size}
@@ -18,6 +23,7 @@ export default function Caret({ isGrey = false, size = 14, down = true }) {
       transform={`rotate(${down ? 0 : 180})`}
       xmlns="http://www.w3.org/2000/svg"
       isGrey={isGrey}
+      {...props}
     >
       <path
         d="M10 6L7 9L4 6"
