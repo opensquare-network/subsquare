@@ -5,6 +5,7 @@ import DarkAvatar from "../../../assets/icons/chain/zeitgeist-dark.png";
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabels, PostLabel } from "./common";
 
 const defaultNodes = [
   {
@@ -35,6 +36,7 @@ const zeitgeist = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.KusamaAndParachains,
+  postLabels: [...defaultPostLabels, PostLabel.Advisory],
 };
 
 export default zeitgeist;

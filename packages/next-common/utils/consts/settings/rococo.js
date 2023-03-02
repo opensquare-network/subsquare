@@ -4,6 +4,7 @@ import DarkModeLogo from "../../../assets/header-logos/rococo-dark.svg";
 import Avatar from "../../../assets/icons/chain/rococo.png";
 import MenuGroups from "./menuGroups";
 import Chains from "../chains";
+import { defaultPostLabels } from "./common";
 
 export const defaultRococoNodes = [
   {
@@ -28,6 +29,7 @@ const rococo = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.Solochain,
+  postLabels: defaultPostLabels,
 };
 
 export default rococo;

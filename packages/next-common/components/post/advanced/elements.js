@@ -9,7 +9,7 @@ const notAllowedCss = css`
 `;
 
 export const FormTitleWrapper = styled(FlexBetweenCenter)`
-  margin: 16px 0 8px;
+  margin: 24px 0;
 `;
 
 export const FormTitle = styled.h4`

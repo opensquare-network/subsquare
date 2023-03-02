@@ -27,6 +27,7 @@ import ConfirmCountdown from "./gov2/postList/confirmCountdown";
 import ValueDisplay from "./valueDisplay";
 import ListPostTitle from "./postList/postTitle";
 import IpfsLink from "./alliance/ipfsLink";
+import PostLabels from "./postLabels";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -258,15 +259,18 @@ export default function Post({ data, href, type }) {
                 {`${commentsCount}`}
               </MobileHiddenInfo>
             )}
-            {
-              businessCategory.allianceAnnouncements === type && <IpfsLink cid={ data.cid } />
-            }
+            {businessCategory.allianceAnnouncements === type && (
+              <IpfsLink cid={data.cid} />
+            )}
             {data.parentIndex !== undefined && (
               <MobileHiddenInfo>
                 <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
                   {`Parent #${data.parentIndex}`}
                 </Anchor>
               </MobileHiddenInfo>
+            )}
+            {data.labels && data.labels.length > 0 && (
+              <PostLabels labels={data.labels} />
             )}
           </Footer>
           {data.status && (
