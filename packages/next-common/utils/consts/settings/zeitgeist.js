@@ -36,7 +36,7 @@ const zeitgeist = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.KusamaAndParachains,
-  postLabels: [...defaultPostLabels, PostLabel.Advisory],
+  postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
 };
 
 export default zeitgeist;
