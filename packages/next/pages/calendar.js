@@ -4,6 +4,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { flex, flex_col, gap_y } from "next-common/styles/tailwindcss";
 import styled from "styled-components";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
+import DayEvents from "next-common/components/calendar/dayEvents";
 import { useState } from "react";
 
 const Wrapper = styled.div`
@@ -30,6 +31,7 @@ export default withLoginUserRedux(() => {
         />
 
         {/* events component */}
+        <DayEvents selectedDate={selectedDate} />
       </Wrapper>
     </HomeLayout>
   );
