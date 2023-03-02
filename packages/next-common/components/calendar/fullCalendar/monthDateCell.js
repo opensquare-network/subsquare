@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday";
 import groupBy from "lodash.groupby";
-import { DateHeaderProps } from "react-big-calendar";
 import styled, { css } from "styled-components";
 import { p_12_bold } from "../../../styles/componentCss";
 import {
@@ -72,7 +71,7 @@ const CellWrapper = styled.div`
 `;
 
 /**
- * @param {DateHeaderProps} props
+ * @param {import("react-big-calendar").DateHeaderProps}
  */
 export default function FullCalendarMonthDateCell({
   label,
