@@ -1,9 +1,11 @@
+import React from "react";
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday";
 import groupBy from "lodash.groupby";
 import styled, { css } from "styled-components";
-import { p_12_bold } from "../../../styles/componentCss";
+import { p_12_bold, p_12_normal } from "../../../styles/componentCss";
 import {
+  block,
   border,
   border_color_theme,
   border_theme_grey200,
@@ -21,6 +23,7 @@ import {
   text_theme,
   w_full,
 } from "../../../styles/tailwindcss";
+import TooltipOrigin from "../../tooltip";
 import FullCalendarCategory from "./category";
 import { FULLCALENDAR_CATEGORIES } from "./consts";
 dayjs.extend(isToday);
@@ -70,6 +73,18 @@ const CellWrapper = styled.div`
     `}
 `;
 
+const TooltipContentWrapper = styled.div`
+  ${p_12_normal}
+  text-align: left;
+`;
+const TooltipChildrenWrapper = styled.div`
+  ${h_full}
+`;
+const Tooltip = styled(TooltipOrigin)`
+  ${block}
+  ${h_full}
+`;
+
 /**
  * @param {import("react-big-calendar").DateHeaderProps}
  */
@@ -99,23 +114,42 @@ export default function FullCalendarMonthDateCell({
     Object.keys(events).includes(category)
   );
 
+  // FIXME: calendar tooltip content
+  const tooltipContent = !!categories.length && (
+    <TooltipContentWrapper>
+      {categories.map((category) => (
+        <div key={category}>
+          {category}*{events[category].length}
+        </div>
+      ))}
+    </TooltipContentWrapper>
+  );
+
   function onCellClick() {
     setSelectedDate(date);
   }
 
   return (
-    <CellWrapper
-      isToday={isToday}
-      isSelectedDay={isSelectedDay}
-      onClick={onCellClick}
-    >
-      <CellLabel>{label}</CellLabel>
+    <Tooltip content={tooltipContent}>
+      <TooltipChildrenWrapper>
+        <CellWrapper
+          isToday={isToday}
+          isSelectedDay={isSelectedDay}
+          onClick={onCellClick}
+        >
+          <CellLabel>{label}</CellLabel>
 
-      <CellEventGroup>
-        {categories.map((category) => (
-          <FullCalendarCategory category={category} onlyDot />
-        ))}
-      </CellEventGroup>
-    </CellWrapper>
+          <CellEventGroup>
+            {categories.map((category) => (
+              <FullCalendarCategory
+                key={category}
+                category={category}
+                onlyDot
+              />
+            ))}
+          </CellEventGroup>
+        </CellWrapper>
+      </TooltipChildrenWrapper>
+    </Tooltip>
   );
 }
