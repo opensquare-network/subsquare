@@ -87,6 +87,7 @@ const CalendarWrapper = styled.div`
 export default function FullCalendar({ date, setDate = noop }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const calendarEvents = useCalendarEventsSummary(date, "month");
+  console.log(calendarEvents);
 
   function onNavigate(newDate) {
     setDate(newDate);

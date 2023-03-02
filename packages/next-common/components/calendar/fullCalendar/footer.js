@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { flex, gap_x, justify_center, p_b } from "../../../styles/tailwindcss";
 import FullCalendarCategory from "./category";
@@ -15,7 +16,7 @@ export default function FullCalendarFooter() {
   return (
     <Wrapper>
       {categories.map((category) => (
-        <FullCalendarCategory category={category} />
+        <FullCalendarCategory key={category} category={category} />
       ))}
     </Wrapper>
   );

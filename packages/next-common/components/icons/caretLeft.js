@@ -1,3 +1,4 @@
+import React from "react";
 import Caret from "./caret";
 
 export default function CaretLeft() {

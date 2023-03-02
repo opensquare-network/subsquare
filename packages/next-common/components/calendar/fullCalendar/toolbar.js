@@ -5,7 +5,6 @@ import { Button } from "../../summary/styled";
 import CaretLeft from "../../icons/caretLeft";
 import CaretRight from "../../icons/caretRight";
 import Flex from "../../styled/flex";
-import { ToolbarProps } from "react-big-calendar";
 import { p_16_bold } from "../../../styles/componentCss";
 import {
   flex,
@@ -47,7 +46,7 @@ const NavigateButton = styled(Button)`
 `;
 
 /**
- * @param {ToolbarProps} props
+ * @param {import('react-big-calendar').ToolbarProps} props
  */
 export default function FullCalendarToolbar({
   onNavigate,
