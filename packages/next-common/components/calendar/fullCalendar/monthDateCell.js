@@ -17,7 +17,9 @@ import {
   h_full,
   justify_between,
   m,
+  m_r,
   p,
+  p_l,
   rounded_4,
   text_secondary,
   text_theme,
@@ -73,6 +75,19 @@ const CellWrapper = styled.div`
     `}
 `;
 
+const TooltipSubcategoryWrapper = styled.ul`
+  ${m(0)}
+  ${p(0)}
+  list-style: none;
+
+  li {
+    ${p_l(4)}
+    &::before {
+      content: "•";
+      ${m_r(4)}
+    }
+  }
+`;
 const TooltipContentWrapper = styled.div`
   ${p_12_normal}
   text-align: left;
@@ -109,20 +124,39 @@ export default function FullCalendarMonthDateCell({
     return day.isSame(blockTime, "day");
   });
 
-  const events = groupBy(dayEvents, "category");
+  const eventsGroup = groupBy(dayEvents, "category");
   const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
-    Object.keys(events).includes(category)
+    Object.keys(eventsGroup).includes(category)
   );
 
-  // FIXME: calendar tooltip content
+  // [category]: {[subCategory]: Event[]}
+  const categorySubCategoriesGroup = categories.reduce((value, category) => {
+    value[category] = groupBy(eventsGroup[category], "subCategory");
+    return value;
+  }, {});
+
   const tooltipContent = !!categories.length && (
     <TooltipContentWrapper>
       {categories.map((category) => {
-        const count = events[category].length;
+        const subCategoriesGroup = categorySubCategoriesGroup[category];
+        const subCategories = Object.keys(subCategoriesGroup);
+
         return (
           <div key={category}>
             {category}
-            {count > 1 && `*${count}`}
+            {subCategories?.length && (
+              <TooltipSubcategoryWrapper>
+                {subCategories.map((subCategory) => {
+                  const count = subCategoriesGroup[subCategory]?.length;
+                  return (
+                    <li key={subCategory}>
+                      {subCategory}
+                      {count > 1 && `*${count}`}
+                    </li>
+                  );
+                })}
+              </TooltipSubcategoryWrapper>
+            )}
           </div>
         );
       })}
