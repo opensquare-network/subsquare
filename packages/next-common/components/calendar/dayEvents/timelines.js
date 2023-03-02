@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+import groupBy from "lodash.groupby";
 import React from "react";
 import styled from "styled-components";
 import { p_12_medium } from "../../../styles/componentCss";
@@ -48,13 +50,26 @@ function Time({ children, hour }) {
 
 export default function DayEventsTimeline({ events = [] }) {
   const hrs = Array.from({ length: 25 }).map((_, i) => i);
-  events;
+
+  const eventInHourKey = "eventInHourKey";
+  const eventInHourGrpup = groupBy(
+    events.map((event) => {
+      return {
+        ...event,
+        [eventInHourKey]: dayjs(event.indexer.blockTime).get("hour"),
+      };
+    }),
+    eventInHourKey
+  );
 
   return (
     <div>
       {hrs.map((n) => (
         <Time key={n} hour={n}>
-          {n.toString()}
+          {/* TODO: event card */}
+          {eventInHourGrpup[n]?.map((event) => {
+            return <div key={event._id}>{event.data.postTitle}</div>;
+          })}
         </Time>
       ))}
     </div>
