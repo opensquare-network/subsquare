@@ -14,6 +14,7 @@ const Wrapper = styled.div`
 
 export default withLoginUserRedux(() => {
   const [date, setDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(date);
 
   return (
     <HomeLayout>
@@ -21,7 +22,12 @@ export default withLoginUserRedux(() => {
         <TitleContainer>Calendar</TitleContainer>
 
         {/* calendar component */}
-        <FullCalendar date={date} setDate={setDate} />
+        <FullCalendar
+          date={date}
+          setDate={setDate}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
 
         {/* events component */}
       </Wrapper>
