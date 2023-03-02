@@ -2,7 +2,7 @@ import Logo from "../../../assets/header-logos/phala.svg";
 import DarkModeLogo from "../../../assets/header-logos/phala-dark.svg";
 import Avatar from "../../../assets/icons/chain/phala.png";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel } from "./common";
+import { defaultPostLabels } from "./common";
 
 const DEFAULT_PHALA_NODES = [
   {
@@ -31,7 +31,7 @@ const phala = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
-  postLabels: defaultPostLabel,
+  postLabels: defaultPostLabels,
 };
 
 export default phala;

@@ -3,7 +3,7 @@ import capitalize from "../../capitalize";
 import Logo from "../../../assets/header-logos/altair.svg";
 import Avatar from "../../../assets/icons/chain/altair.png";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel, PostLabel } from "./common";
+import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
 
 const nodes = [
@@ -33,7 +33,7 @@ const altair = {
   darkHeaderLogo: Logo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
-  postLabels: difference(defaultPostLabel, PostLabel.TechComm),
+  postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
 };
 
 export default altair;

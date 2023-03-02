@@ -9,7 +9,7 @@ export const PostLabel = {
   Announcement: "Announcement",
 };
 
-export const defaultPostLabel = [
+export const defaultPostLabels = [
   PostLabel.Treasury,
   PostLabel.Council,
   PostLabel.Democracy,

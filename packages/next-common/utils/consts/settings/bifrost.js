@@ -2,7 +2,7 @@ import Logo from "../../../assets/header-logos/bifrost-kusama.svg";
 import DarkModeLogo from "../../../assets/header-logos/bifrost-dark.svg";
 import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel } from "./common";
+import { defaultPostLabels } from "./common";
 
 const DEFAULT_BIFROST_NODES = [
   {
@@ -37,7 +37,7 @@ const bifrost = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   subscanDomain: "bifrost-kusama",
-  postLabels: defaultPostLabel,
+  postLabels: defaultPostLabels,
 };
 
 export default bifrost;

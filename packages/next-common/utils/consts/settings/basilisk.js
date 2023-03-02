@@ -1,6 +1,6 @@
 import Logo from "../../../assets/header-logos/basilisk.svg";
 import Avatar from "../../../assets/icons/chain/basilisk.png";
-import { defaultPostLabel } from "./common";
+import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 
 const DEFAULT_BASILISK_NODES = [
@@ -30,7 +30,7 @@ const basilisk = {
   avatar: Avatar,
   endpoints: DEFAULT_BASILISK_NODES,
   group: MenuGroups.KusamaAndParachains,
-  postLabels: defaultPostLabel,
+  postLabels: defaultPostLabels,
 };
 
 export default basilisk;

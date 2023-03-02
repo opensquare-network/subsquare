@@ -2,7 +2,7 @@ import Logo from "../../../assets/header-logos/kintsugi.svg";
 import DarkModeLogo from "../../../assets/header-logos/kintsugi-dark.svg";
 import Avatar from "../../../assets/icons/chain/kintsugi.png";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel, PostLabel } from "./common";
+import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
 
 const DEFAULT_KINTSUGI_NODES =
@@ -41,7 +41,7 @@ const kintsugi = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
-  postLabels: difference(defaultPostLabel, PostLabel.Council),
+  postLabels: difference(defaultPostLabels, [PostLabel.Council]),
 };
 
 export default kintsugi;

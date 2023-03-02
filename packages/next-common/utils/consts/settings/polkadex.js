@@ -3,7 +3,7 @@ import DarkModeLogo from "../../../assets/header-logos/polkadex-dark.svg";
 import Avatar from "../../../assets/icons/chain/polkadex.png";
 import DarkAvatar from "../../../assets/icons/chain/polkadex-dark.png";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel } from "./common";
+import { defaultPostLabels } from "./common";
 
 const DEFAULT_POLKADEX_NODES = [
   {
@@ -36,7 +36,7 @@ const polkadex = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
-  postLabels: defaultPostLabel,
+  postLabels: defaultPostLabels,
 };
 
 export default polkadex;

@@ -5,7 +5,7 @@ import Avatar from "../../../assets/icons/chain/crab.png";
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabel } from "./common";
+import { defaultPostLabels } from "./common";
 
 const DEFAULT_CRAB_NODES = [
   {
@@ -37,7 +37,7 @@ const crab = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.Solochain,
-  postLabels: defaultPostLabel,
+  postLabels: defaultPostLabels,
 };
 
 export default crab;
