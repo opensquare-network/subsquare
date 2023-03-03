@@ -1,5 +1,10 @@
-import { Wrapper } from "./styled";
+import { ItemWrapper } from "./styled";
 
 export default function DescriptionItem({ description }) {
-  return <Wrapper>Description: {description}</Wrapper>;
+  return (
+    <ItemWrapper>
+      <span>Description:</span>
+      <span>{description}</span>
+    </ItemWrapper>
+  );
 }

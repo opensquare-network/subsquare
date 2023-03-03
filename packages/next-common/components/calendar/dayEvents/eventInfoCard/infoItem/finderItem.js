@@ -2,13 +2,13 @@ import { useThemeSetting } from "../../../../../context/theme";
 import User from "../../../../user";
 import { ItemWrapper } from "./styled";
 
-export default function BeneficiaryItem({ beneficiary }) {
+export default function FinderItem({ finder }) {
   const theme = useThemeSetting();
   return (
     <ItemWrapper>
-      <span>Beneficiary:</span>
+      <span>Finder:</span>
       <User
-        add={beneficiary}
+        add={finder}
         fontSize={12}
         showAvatar={false}
         color={theme.secondaryBlue500}

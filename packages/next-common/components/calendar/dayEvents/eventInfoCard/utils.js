@@ -1,8 +1,5 @@
 import TreasuryProposalContent from "./treasuryProposalContent";
 import TreasuryTipContent from "./treasuryTipContent";
-import TreasuryBountyContent from "./treasuryBountyContent";
-import CouncilMotionContent from "./councilMotionContent";
-import TechCommMotionContent from "./techCommMotionContent";
 import DemocracyReferendumContent from "./democracyReferendumContent";
 import ReferendaReferendumContent from "./referendaReferendumContent";
 import FellowshipContent from "./fellowshipContent";
@@ -11,9 +8,20 @@ import TreasuryChildBountyAddedContent from "./treasuryChildBountyAddedContent";
 import TreasuryChildBountyAwardedContent from "./treasuryChildBountyAwardedContent";
 import TreasuryChildBountyCanceledContent from "./treasuryChildBountyCanceledContent";
 import TreasuryChildBountyClaimedContent from "./treasuryChildBountyClaimedContent";
-import treasuryProposalAwardedContent from "./treasuryProposalAwardedContent";
+import TreasuryProposalAwardedContent from "./treasuryProposalAwardedContent";
 import DemocracyProposalProposedContent from "./democracyProposalProposedContent";
 import DemocracyProposalCanceledContent from "./democracyProposalCanceledContent";
+import DemocracyReferendumStartedContent from "./democracyReferendumStartedContent";
+import DemocracyReferendumPassedOrNotPassedContent from "./democracyReferendumPassedOrNotPassedContent";
+import TreasuryBountyProposedContent from "./treasuryBountyProposedContent";
+import TreasuryBountyRejectedContent from "./treasuryBountyRejectedContent";
+import TreasuryBountyCanceledContent from "./treasuryBountyCanceledContent";
+import TreasuryBountyClaimedContent from "./treasuryBountyClaimedContent";
+import TreasuryBountyAwardedContent from "./treasuryBountyAwardedContent";
+import MotionContent from "./motionContent";
+import treasuryProposalApprovedContent from "./treasuryProposalApprovedContent";
+import TreasuryProposalRejectedContent from "./treasuryProposalRejectedContent";
+import DemocracyReferendumExecutedContent from "./democracyReferendumExecutedContent";
 
 export const EventType = {
   // Treasury proposal
@@ -97,47 +105,49 @@ export const EventType = {
 
 export const EventTypeToComponent = {
   [EventType.TreasuryProposalProposed]: TreasuryProposalContent,
-  [EventType.TreasuryProposalApproved]: TreasuryProposalContent,
-  [EventType.TreasuryProposalAwarded]: treasuryProposalAwardedContent,
-  [EventType.TreasuryProposalRejected]: TreasuryProposalContent,
+  [EventType.TreasuryProposalApproved]: treasuryProposalApprovedContent,
+  [EventType.TreasuryProposalAwarded]: TreasuryProposalAwardedContent,
+  [EventType.TreasuryProposalRejected]: TreasuryProposalRejectedContent,
 
   [EventType.TreasuryTipNew]: TreasuryTipContent,
   [EventType.TreasuryTipClosed]: TreasuryTipContent,
   [EventType.TreasuryTipRetracted]: TreasuryTipContent,
 
-  [EventType.TreasuryBountyProposed]: TreasuryBountyContent,
-  [EventType.TreasuryBountyAwarded]: TreasuryBountyContent,
-  [EventType.TreasuryBountyClaimed]: TreasuryBountyContent,
-  [EventType.TreasuryBountyRejected]: TreasuryBountyContent,
-  [EventType.TreasuryBountyApproved]: TreasuryBountyContent,
-  [EventType.TreasuryBountyCanceled]: TreasuryBountyContent,
+  [EventType.TreasuryBountyProposed]: TreasuryBountyProposedContent,
+  [EventType.TreasuryBountyAwarded]: TreasuryBountyAwardedContent,
+  [EventType.TreasuryBountyClaimed]: TreasuryBountyClaimedContent,
+  [EventType.TreasuryBountyRejected]: TreasuryBountyRejectedContent,
+  [EventType.TreasuryBountyApproved]: TreasuryBountyProposedContent,
+  [EventType.TreasuryBountyCanceled]: TreasuryBountyCanceledContent,
 
   [EventType.TreasuryChildBountyAdded]: TreasuryChildBountyAddedContent,
   [EventType.TreasuryChildBountyAwarded]: TreasuryChildBountyAwardedContent,
   [EventType.TreasuryChildBountyCanceled]: TreasuryChildBountyCanceledContent,
   [EventType.TreasuryChildBountyClaimed]: TreasuryChildBountyClaimedContent,
 
-  [EventType.CouncilMotionProposed]: CouncilMotionContent,
-  [EventType.CouncilMotionApproved]: CouncilMotionContent,
-  [EventType.CouncilMotionDisApproved]: CouncilMotionContent,
+  [EventType.CouncilMotionProposed]: MotionContent,
+  [EventType.CouncilMotionApproved]: MotionContent,
+  [EventType.CouncilMotionDisApproved]: MotionContent,
 
-  [EventType.TcMotionProposed]: TechCommMotionContent,
-  [EventType.TcMotionApproved]: TechCommMotionContent,
-  [EventType.TcMotionDisApproved]: TechCommMotionContent,
-  [EventType.TcMotionExecuted]: TechCommMotionContent,
+  [EventType.TcMotionProposed]: MotionContent,
+  [EventType.TcMotionApproved]: MotionContent,
+  [EventType.TcMotionDisApproved]: MotionContent,
+  [EventType.TcMotionExecuted]: MotionContent,
 
-  [EventType.AdvisoryCommitteeProposed]: AdvisoryCommitteeContent,
-  [EventType.AdvisoryCommitteeApproved]: AdvisoryCommitteeContent,
-  [EventType.AdvisoryCommitteeDisApproved]: AdvisoryCommitteeContent,
+  [EventType.AdvisoryCommitteeProposed]: MotionContent,
+  [EventType.AdvisoryCommitteeApproved]: MotionContent,
+  [EventType.AdvisoryCommitteeDisApproved]: MotionContent,
 
   [EventType.DemocracyProposalProposed]: DemocracyProposalProposedContent,
   [EventType.DemocracyProposalCanceled]: DemocracyProposalCanceledContent,
 
-  [EventType.DemocracyReferendumStarted]: DemocracyReferendumContent,
-  [EventType.DemocracyReferendumPassed]: DemocracyReferendumContent,
-  [EventType.DemocracyReferendumNotPassed]: DemocracyReferendumContent,
+  [EventType.DemocracyReferendumStarted]: DemocracyReferendumStartedContent,
+  [EventType.DemocracyReferendumPassed]:
+    DemocracyReferendumPassedOrNotPassedContent,
+  [EventType.DemocracyReferendumNotPassed]:
+    DemocracyReferendumPassedOrNotPassedContent,
   [EventType.DemocracyReferendumCancelled]: DemocracyReferendumContent,
-  [EventType.DemocracyReferendumExecuted]: DemocracyReferendumContent,
+  [EventType.DemocracyReferendumExecuted]: DemocracyReferendumExecutedContent,
   [EventType.DemocracyReferendumNotExecuted]: DemocracyReferendumContent,
   [EventType.DemocracyReferendumFastTrack]: DemocracyReferendumContent,
 

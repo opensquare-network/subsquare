@@ -1,7 +1,7 @@
 import { treasuryProposalBaseUrl } from "../../../../utils/postBaseUrl";
 import IndexItem from "./infoItem/indexItem";
 
-export default function treasuryProposalAwardedContent({
+export default function TreasuryProposalApprovedContent({
   proposalIndex,
   data,
 }) {

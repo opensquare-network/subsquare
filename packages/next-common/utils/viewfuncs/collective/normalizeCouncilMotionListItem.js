@@ -2,6 +2,7 @@ import isNil from "lodash.isnil";
 import { getMotionId } from "../../motion";
 import { getPostLastActivityAt } from "../postUpdatedTime";
 import { getTitle } from "../../post";
+import { councilMotionBaseUrl } from "../../postBaseUrl";
 
 function getMotionState(item = {}) {
   if (!item.state) {
@@ -26,7 +27,7 @@ export default function normalizeCouncilMotionListItem(chain, item) {
     title: getTitle(item),
     address: item.proposer,
     status: getMotionState(item),
-    detailLink: `/council/motion/${getMotionId(item)}`,
+    detailLink: `${councilMotionBaseUrl}/${getMotionId(item)}`,
     isTreasury:
       item?.onchainData?.treasuryProposals?.length > 0 ||
       item?.onchainData?.treasuryBounties?.length > 0,

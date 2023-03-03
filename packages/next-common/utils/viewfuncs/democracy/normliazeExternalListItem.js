@@ -1,4 +1,5 @@
 import { getTitle } from "../../post";
+import { democracyExternalBaseUrl } from "../../postBaseUrl";
 import { getPostLastActivityAt } from "../postUpdatedTime";
 
 export default function normalizeExternalListItem(chain, item) {
@@ -9,6 +10,6 @@ export default function normalizeExternalListItem(chain, item) {
     time: getPostLastActivityAt(item),
     hash: item.externalProposalHash,
     status: item.state ?? "Unknown",
-    detailLink: `/democracy/external/${item.indexer.blockHeight}_${item.externalProposalHash}`,
+    detailLink: `${democracyExternalBaseUrl}/${item.indexer.blockHeight}_${item.externalProposalHash}`,
   };
 }

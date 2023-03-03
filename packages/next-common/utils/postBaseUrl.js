@@ -1,0 +1,12 @@
+export const childBountyBaseUrl = "/treasury/child-bounty";
+export const bountyBaseUrl = "/treasury/bounty";
+export const tipBaseUrl = "/treasury/tip";
+export const treasuryProposalBaseUrl = "/treasury/proposal";
+export const democracyReferendumBaseUrl = "/democracy/referendum";
+export const democracyProposalBaseUrl = "/democracy/proposal";
+export const democracyExternalBaseUrl = "/democracy/external";
+export const referendaReferendumBaseUrl = "/referenda/referendum";
+export const fellowshipBaseUrl = "/fellowship/referendum";
+export const councilMotionBaseUrl = "/council/motion";
+export const techCommMotionBaseUrl = "/techcomm/proposal";
+export const advisoryCommitteeBaseUrl = "/advisory-committee/motion";

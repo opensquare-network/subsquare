@@ -1,16 +1,17 @@
-import styled from "styled-components";
+import { referendaReferendumBaseUrl } from "../../../../utils/postBaseUrl";
+import IndexItem from "./infoItem/indexItem";
+import ProposerItem from "./infoItem/proposerItem";
+import { ItemWrapper } from "./infoItem/styled";
 
-const InfoItem = styled.div`
-  display: flex;
-`;
-
-export default function ReferendaReferendumContent({ data }) {
+export default function referendaReferendumContent({ index, data }) {
   return (
     <>
-      <InfoItem>Index: #17</InfoItem>
-      <InfoItem>Beneficiary: OpenSquare</InfoItem>
-      <InfoItem>Payout: 12</InfoItem>
-      <InfoItem>Description: xxxxxxx</InfoItem>
+      <IndexItem index={index} baseUrl={referendaReferendumBaseUrl} />
+      <ProposerItem proposer={data.proposer} />
+      <ItemWrapper>
+        <span>Track:</span>
+        <span>{data?.track}</span>
+      </ItemWrapper>
     </>
   );
 }

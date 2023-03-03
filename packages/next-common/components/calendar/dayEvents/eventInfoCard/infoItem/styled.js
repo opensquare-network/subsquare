@@ -1,5 +1,14 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const ItemWrapper = styled.div`
   display: flex;
+  gap: 6px;
+  margin: 2px 0;
+`;
+
+export const ItemLink = styled.a`
+  color: ${(p) => p.theme.secondaryBlue500};
+  :hover {
+    text-decoration: underline;
+  }
 `;
