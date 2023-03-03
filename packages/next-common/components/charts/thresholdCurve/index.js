@@ -93,14 +93,14 @@ export default function ThresholdCurvesChart({
         displayColors: false,
         callbacks: {
           title() {
-            return ``;
+            return "";
           },
           label(tooltipItem) {
             const { dataIndex, parsed, dataset } = tooltipItem;
 
             // only display one item
             if (dataset.label === "Approval") {
-              return ``;
+              return "";
             }
 
             const hs = parsed.x;

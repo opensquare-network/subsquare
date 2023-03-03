@@ -10,7 +10,7 @@ const Edit = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: ${ (props) => props.theme.textSecondary };
+  color: ${(props) => props.theme.textSecondary};
   display: flex;
   align-items: center;
 
@@ -23,12 +23,12 @@ const Edit = styled.div`
 export default function PostEdit({ setIsEdit = emptyFunction }) {
   return (
     <Edit
-      onClick={ () => {
+      onClick={() => {
         setIsEdit(true);
-      } }
+      }}
     >
       <EditIcon />
       Edit
     </Edit>
-  )
+  );
 }

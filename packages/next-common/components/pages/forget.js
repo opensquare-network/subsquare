@@ -64,7 +64,7 @@ const Forget = withLoginUserRedux(() => {
 
   return (
     <BaseLayout>
-      <NextHead title={`Forget password`} desc={`Forget password`} />
+      <NextHead title={"Forget password"} desc={"Forget password"} />
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>

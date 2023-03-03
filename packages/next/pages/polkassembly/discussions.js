@@ -34,7 +34,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`polkassembly-discussions`, {
+    nextApi.fetch("polkassembly-discussions", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

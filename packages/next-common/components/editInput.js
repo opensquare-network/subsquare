@@ -41,7 +41,7 @@ export default function EditInput({
   const [contentType, setContentType] = useState(editContentType);
   const [errors, setErrors] = useState();
 
-  const isEmpty = content === "" || content === `<p><br></p>`;
+  const isEmpty = content === "" || content === "<p><br></p>";
 
   const onUpdate = async () => {
     try {

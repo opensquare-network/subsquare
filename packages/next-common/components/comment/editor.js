@@ -92,7 +92,7 @@ function Editor(
         setErrors(result.error);
       } else {
         setContent("");
-        await router.replace(`[id]`, {
+        await router.replace("[id]", {
           pathname: `${router.query.id}`,
         });
         setTimeout(() => {
@@ -127,7 +127,7 @@ function Editor(
     }
   };
 
-  const isEmpty = content === "" || content === `<p><br></p>`;
+  const isEmpty = content === "" || content === "<p><br></p>";
 
   const loadSuggestions = (text) => {
     return (users || [])

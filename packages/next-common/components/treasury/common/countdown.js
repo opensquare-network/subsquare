@@ -7,9 +7,15 @@ import Loading from "../../loading";
 import Flex from "../../styled/flex";
 import CountDown from "../../_CountDown";
 
-export default function TreasuryCountDown({ startHeight = 0, targetHeight = 0, prefix = 'End' }) {
+export default function TreasuryCountDown({
+  startHeight = 0,
+  targetHeight = 0,
+  prefix = "End",
+}) {
   const nowHeight = useSelector(latestHeightSelector);
-  const estimatedBlocksTime = useEstimateBlocksTime(Math.abs(targetHeight - nowHeight));
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    Math.abs(targetHeight - nowHeight)
+  );
 
   if (isNil(startHeight) || isNil(targetHeight)) {
     return null;
@@ -23,7 +29,7 @@ export default function TreasuryCountDown({ startHeight = 0, targetHeight = 0, p
   const allBlocks = targetHeight - startHeight;
   const reachedClosableHeight = nowHeight >= targetHeight;
 
-  let text = prefix
+  let text = prefix;
   if (!reachedClosableHeight) {
     text += ` in ${estimatedBlocksTime}`;
   }
@@ -38,7 +44,7 @@ export default function TreasuryCountDown({ startHeight = 0, targetHeight = 0, p
           targetHeight - nowHeight
         )} blocks left`}
       />
-      <span>{ text }</span>
+      <span>{text}</span>
     </Flex>
   );
 }

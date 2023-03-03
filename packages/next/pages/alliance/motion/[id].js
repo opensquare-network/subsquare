@@ -21,40 +21,42 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       path: "/alliance/motions",
     },
     {
-      content: `#${ getMotionBreadcrumbName(id, motion) }`,
+      content: `#${getMotionBreadcrumbName(id, motion)}`,
     },
   ];
 
-  return <PostProvider post={motion}>
-    <DetailWithRightLayout
-      seoInfo={{
-        title: motion?.title,
-        desc: getMetaDesc(motion),
-        ogImage: getBannerUrl(motion?.bannerCid),
-      }}
-    >
-      <BreadcrumbWrapper>
-        <Breadcrumb items={breadcrumbItems} />
-      </BreadcrumbWrapper>
-      {
-        motion ?
-          <MotionContent motion={motion} comments={comments} /> :
+  return (
+    <PostProvider post={motion}>
+      <DetailWithRightLayout
+        seoInfo={{
+          title: motion?.title,
+          desc: getMetaDesc(motion),
+          ogImage: getBannerUrl(motion?.bannerCid),
+        }}
+      >
+        <BreadcrumbWrapper>
+          <Breadcrumb items={breadcrumbItems} />
+        </BreadcrumbWrapper>
+        {motion ? (
+          <MotionContent motion={motion} comments={comments} />
+        ) : (
           <CheckUnFinalized id={id} />
-      }
-    </DetailWithRightLayout>
-  </PostProvider>
+        )}
+      </DetailWithRightLayout>
+    </PostProvider>
+  );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id, page, page_size } = context.query;
-  const { result: motion } = await nextApi.fetch(`alliance/motions/${ id }`);
+  const { result: motion } = await nextApi.fetch(`alliance/motions/${id}`);
   if (!motion) {
     return { props: { id, motion: null, comments: EmptyList } };
   }
 
   const pageSize = Math.min(page_size ?? 50, 100);
   const { result: comments } = await nextApi.fetch(
-    `alliance/motions/${ motion._id }/comments`,
+    `alliance/motions/${motion._id}/comments`,
     {
       page: page ?? "last",
       pageSize,

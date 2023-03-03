@@ -5,8 +5,8 @@ export default function useCommentsAnchor() {
   const router = useRouter();
   const [anchor, setAnchor] = useState({
     hasAnchor: false,
-    anchor: null
-  })
+    anchor: null,
+  });
 
   useEffect(() => {
     if (window?.location?.hash === "") {

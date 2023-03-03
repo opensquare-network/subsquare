@@ -25,7 +25,7 @@ const Login = withLoginUserRedux(() => {
   const [web3, setWeb3] = useState(true);
   return (
     <BaseLayout>
-      <NextHead title={`Login`} desc={`Login`} />
+      <NextHead title={"Login"} desc={"Login"} />
       <Wrapper>
         <ContentCenterWrapper>
           <PageTitleContainer>Login</PageTitleContainer>

@@ -53,7 +53,7 @@ export default function AllDelegation() {
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
     refresh();
-    dispatch(newSuccessToast(`Delegate success`));
+    dispatch(newSuccessToast("Delegate success"));
   }, [dispatch, refresh]);
 
   return (

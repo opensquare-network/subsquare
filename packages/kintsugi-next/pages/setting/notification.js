@@ -123,7 +123,7 @@ export default withLoginUserRedux(({ loginUser, unsubscribe }) => {
 
   return (
     <SettingsLayout>
-      <NextHead title={`Settings`} desc={``} />
+      <NextHead title={"Settings"} desc={""} />
       <Wrapper>
         <TitleContainer>Notification</TitleContainer>
         <ContentWrapper>

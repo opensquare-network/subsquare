@@ -8,7 +8,7 @@ const Link = styled(ExternalLink)`
   display: inline-flex;
   align-items: center;
   font-size: 12px;
-  color: ${ (props) => props.theme.textSecondary };
+  color: ${(props) => props.theme.textSecondary};
 
   span:hover {
     text-decoration: underline;
@@ -17,13 +17,13 @@ const Link = styled(ExternalLink)`
   svg {
     margin-left: 6px;
   }
-`
+`;
 
 export default function IpfsLink({ cid }) {
-  return <Link
-    title={ cid }
-    href={ getIpfsLink(cid) }>
-    <span>IPFS</span>
-    <ExternalLinkIcon />
-  </Link>
+  return (
+    <Link title={cid} href={getIpfsLink(cid)}>
+      <span>IPFS</span>
+      <ExternalLinkIcon />
+    </Link>
+  );
 }

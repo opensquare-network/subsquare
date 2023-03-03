@@ -32,7 +32,7 @@ export default withLoginUserRedux(({ posts }) => {
       New Post
     </Create>
   );
-  const category = `Discussions`;
+  const category = "Discussions";
   const seoInfo = { title: category, desc: category };
 
   return (
@@ -58,7 +58,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   if (label) {
     q = { label, ...q };
   }
-  const { result: posts } = await nextApi.fetch(`posts`, q);
+  const { result: posts } = await nextApi.fetch("posts", q);
 
   return {
     props: {

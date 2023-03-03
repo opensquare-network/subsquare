@@ -41,7 +41,7 @@ export default function useMentionList(post, comments) {
             name,
             value: memberId,
             isKeyRegistered:
-              user.isKeyRegistered ?? user.username.includes(`polkadot-key`),
+              user.isKeyRegistered ?? user.username.includes("polkadot-key"),
           };
         })
       );

@@ -1,8 +1,6 @@
 import React from "react";
 import Input from "../input";
-import {
-  Label,
-} from "./styled";
+import { Label } from "./styled";
 
 export default function Password({ value, error, onChange }) {
   return (
@@ -17,5 +15,5 @@ export default function Password({ value, error, onChange }) {
         error={error}
       />
     </>
-  )
+  );
 }

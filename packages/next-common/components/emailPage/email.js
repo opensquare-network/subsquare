@@ -107,10 +107,10 @@ const EmailPage = withLoginUserRedux(({ loginUser, chain }) => {
 
   return (
     <BaseLayout>
-      <NextHead title={`Set Email`} desc={`Set Email`} />
+      <NextHead title={"Set Email"} desc={"Set Email"} />
       <Wrapper>
         <ContentCenterWrapper>
-          <PageTitleContainer>Login {` with Web3 address`}</PageTitleContainer>
+          <PageTitleContainer>Login {" with Web3 address"}</PageTitleContainer>
           <BorderRadiusWrapper>
             <Hint>Set email for receiving notifications</Hint>
             <Label>Web3 address</Label>

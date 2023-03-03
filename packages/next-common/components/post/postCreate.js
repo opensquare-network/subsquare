@@ -83,14 +83,14 @@ export default function PostCreate() {
   const [formValue, setFormValue] = useState({});
   const [errors, setErrors] = useState();
   const [isAdvanced, setIsAdvanced] = useState(false);
-  const isEmpty = content === "" || content === `<p><br></p>`;
+  const isEmpty = content === "" || content === "<p><br></p>";
   const [selectedLabels, setSelectedLabels] = useState([]);
 
   const createPost = async () => {
     setCreating(true);
     const result = await nextApi
       .post(
-        `posts`,
+        "posts",
         {
           chain,
           title,

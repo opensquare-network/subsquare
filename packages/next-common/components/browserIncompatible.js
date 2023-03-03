@@ -30,8 +30,10 @@ export default function BrowserIncompatible() {
   return (
     <Wrapper>
       <NextHead
-        title={`Browser not Supported`}
-        desc={`Please use Google Chrome, Microsoft Edge or Safari 14.1+ to access for good web experience.`}
+        title={"Browser not Supported"}
+        desc={
+          "Please use Google Chrome, Microsoft Edge or Safari 14.1+ to access for good web experience."
+        }
       />
       <Hint />
       <p>Browser not Supported</p>

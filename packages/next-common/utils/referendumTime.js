@@ -42,7 +42,10 @@ export default function getReferendumTime(
     const now = new Date().getTime();
     if (!isNil(blockHeight)) {
       const expectedHeight = endTimelineItem.indexer.blockHeight + delay;
-      delayTime = new BigNumber(oneBlockTime).multipliedBy(expectedHeight - blockHeight).plus(now).toNumber();
+      delayTime = new BigNumber(oneBlockTime)
+        .multipliedBy(expectedHeight - blockHeight)
+        .plus(now)
+        .toNumber();
       isDelayEstimated = true;
     } else {
       isDelayEstimated = false;

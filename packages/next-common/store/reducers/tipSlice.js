@@ -8,11 +8,12 @@ const tipSlice = createSlice({
   reducers: {
     setCountDownBlockNum(state, { payload }) {
       state.countDownBlockNum = payload;
-    }
+    },
   },
 });
 
-export const tipCountDownBlockNumSelector = state => state.tip.countDownBlockNum;
+export const tipCountDownBlockNumSelector = (state) =>
+  state.tip.countDownBlockNum;
 
 export const { setCountDownBlockNum: setTipCountDownBlockNum } =
   tipSlice.actions;

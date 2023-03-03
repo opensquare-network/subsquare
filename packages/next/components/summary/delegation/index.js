@@ -26,13 +26,13 @@ export default function Delegation({ trackId }) {
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
     refresh();
-    dispatch(newSuccessToast(`Delegate success`));
+    dispatch(newSuccessToast("Delegate success"));
   }, [dispatch, refresh]);
 
   const onUndelegateInBlock = useCallback(() => {
     clearVotingForEntries();
     refresh();
-    dispatch(newSuccessToast(`Undelegated`));
+    dispatch(newSuccessToast("Undelegated"));
   }, [dispatch, refresh]);
 
   return (

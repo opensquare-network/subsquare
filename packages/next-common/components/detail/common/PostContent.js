@@ -6,8 +6,8 @@ export default function PostContent() {
   const post = usePost();
 
   if (post.contentType === "markdown") {
-    return <MarkdownPreviewer content={post.content || ""} />
+    return <MarkdownPreviewer content={post.content || ""} />;
   } else if (post.contentType === "html") {
-    return <HtmlPreviewer content={post.content || ""} />
+    return <HtmlPreviewer content={post.content || ""} />;
   }
 }

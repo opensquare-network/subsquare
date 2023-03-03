@@ -193,7 +193,7 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   return (
     <BaseLayout>
-      <NextHead title={`Signup`} desc={`Signup`} />
+      <NextHead title={"Signup"} desc={"Signup"} />
       <Wrapper>
         {!success && (
           <ContentWrapper>

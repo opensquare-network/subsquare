@@ -75,8 +75,8 @@ export const EmptyList = {
 export const defaultBlockTime = 12000;
 
 export const DEFAULT_SEO_INFO = {
-  title: `SubSquare`,
-  desc: `A platform that scans and normalizes the blockchain governance data. It enables community members to propose, vote proposals and discuss the corresponding topics.`,
+  title: "SubSquare",
+  desc: "A platform that scans and normalizes the blockchain governance data. It enables community members to propose, vote proposals and discuss the corresponding topics.",
 };
 
 export const BalanceDecimals = {

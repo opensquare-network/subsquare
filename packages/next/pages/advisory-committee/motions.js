@@ -12,8 +12,8 @@ export default withLoginUserRedux(({ motions, chain }) => {
   );
   const category = businessCategory.advisoryMotions;
   const seoInfo = {
-    title: `Advisory Committee Motions`,
-    desc: `Advisory Committee Motions`,
+    title: "Advisory Committee Motions",
+    desc: "Advisory Committee Motions",
   };
 
   return (
@@ -37,7 +37,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const { result: motions } = await nextApi.fetch(`advisory-motions`, {
+  const { result: motions } = await nextApi.fetch("advisory-motions", {
     page: page ?? 1,
     pageSize: pageSize ?? 50,
   });

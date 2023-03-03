@@ -9,19 +9,15 @@ import { useChain } from "../../../context/chain";
 import { getMotionId, shortMotionId } from "../../../utils/motion";
 
 export function AnnouncementNavigator({ cid, height, isLink = true }) {
-  let link = `Announcement ${ cid.slice(0, 4) }...`;
+  let link = `Announcement ${cid.slice(0, 4)}...`;
   if (isLink) {
-    link = (
-      <Link href={ `/alliance/announcement/${height}_${ cid }` }>
-        { link }
-      </Link>
-    );
+    link = <Link href={`/alliance/announcement/${height}_${cid}`}>{link}</Link>;
   }
 
   return (
     <div>
       <TriangleRight />
-      { link }
+      {link}
     </div>
   );
 }
@@ -50,8 +46,10 @@ export default function AnnouncementNavigation() {
     return null;
   }
 
-  return <NavigationWrapper>
-    <AllianceMotionNavigator motion={ motion } />
-    <AnnouncementNavigator cid={ cid } height={ height } isLink={false} />
-  </NavigationWrapper>
+  return (
+    <NavigationWrapper>
+      <AllianceMotionNavigator motion={motion} />
+      <AnnouncementNavigator cid={cid} height={height} isLink={false} />
+    </NavigationWrapper>
+  );
 }

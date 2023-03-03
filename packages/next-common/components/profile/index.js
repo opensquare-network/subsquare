@@ -278,7 +278,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
 
   return (
     <DetailLayout>
-      <Back href={`/`} text="Profile" />
+      <Back href={"/"} text="Profile" />
       <Wrapper>
         <BioWrapper>
           <DisplayUserAvatar address={address} user={user} />

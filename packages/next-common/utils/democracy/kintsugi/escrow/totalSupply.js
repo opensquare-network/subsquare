@@ -1,4 +1,4 @@
-import { getFinalizedBlockNumber, } from "./utils";
+import { getFinalizedBlockNumber } from "./utils";
 import isNil from "lodash.isnil";
 
 export async function getTotalSupply(api, blockNumber) {

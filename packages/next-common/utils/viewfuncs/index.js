@@ -90,8 +90,8 @@ export const formatBalance = (x, symbol) => {
 //find a elegant way to do this
 export const prettyHTML = (html) => {
   return html
-    .replaceAll(`data-osn-polka-network`, `osn-polka-network`)
-    .replaceAll(`data-osn-polka-address`, `osn-polka-address`);
+    .replaceAll("data-osn-polka-network", "osn-polka-network")
+    .replaceAll("data-osn-polka-address", "osn-polka-address");
 };
 
 const isBase58 = (value) => /^[A-HJ-NP-Za-km-z1-9]*$/.test(value);

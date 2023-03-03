@@ -149,7 +149,10 @@ function convertProposalForTableView(proposal, chain) {
             }
 
             const { section, method } = proposal;
-            if (needCheckUtf8(section, method, arg.name) && hexIsValidUTF8(arg.value)) {
+            if (
+              needCheckUtf8(section, method, arg.name) &&
+              hexIsValidUTF8(arg.value)
+            ) {
               return [arg.name, hexToString(arg.value)];
             }
 

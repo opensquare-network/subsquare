@@ -15,7 +15,9 @@ export default function AyeNay({ isAye = true }) {
   const text = isAye ? "Aye" : "Nay";
   const icon = isAye ? <Approve /> : <Reject />;
 
-  return <Wrapper>
-    {text} {icon}
-  </Wrapper>
+  return (
+    <Wrapper>
+      {text} {icon}
+    </Wrapper>
+  );
 }

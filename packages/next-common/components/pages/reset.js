@@ -71,7 +71,7 @@ const Reset = withLoginUserRedux(() => {
 
   return (
     <BaseLayout>
-      <NextHead title={`Reset password`} desc={`Reset password`} />
+      <NextHead title={"Reset password"} desc={"Reset password"} />
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>

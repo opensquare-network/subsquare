@@ -2,7 +2,7 @@ import React from "react";
 import Overview from "next-common/components/overview";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toDiscussionListItem, } from "utils/viewfuncs";
+import { toDiscussionListItem } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
@@ -71,7 +71,7 @@ export default withLoginUserRedux(({ overview, chain }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  const { result, error } = await nextApi.fetch(`overview`);
+  const { result, error } = await nextApi.fetch("overview");
 
   return {
     props: {

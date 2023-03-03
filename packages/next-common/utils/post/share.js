@@ -9,7 +9,7 @@ export const getShare2SNStext = (post, type) => {
   } else if (detailPageCategory.DEMOCRACY_REFERENDUM === type) {
     category = `Referendum #${post.referendumIndex}:`;
   } else if (detailPageCategory.DEMOCRACY_EXTERNAL === type) {
-    category = `External proposal:`;
+    category = "External proposal:";
   } else if (detailPageCategory.TREASURY_PROPOSAL === type) {
     category = `Treasury proposal #${post.proposalIndex}:`;
   } else if (detailPageCategory.TREASURY_BOUNTY === type) {

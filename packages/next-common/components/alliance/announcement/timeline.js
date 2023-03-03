@@ -10,8 +10,8 @@ function getData(item) {
   const { method, args = {} } = item;
   if ("Announced" === method) {
     return {
-      cid: <IpfsCidWithLink cid={ args.cid } />
-    }
+      cid: <IpfsCidWithLink cid={args.cid} />,
+    };
   }
 
   return args;
@@ -21,7 +21,7 @@ export default function AnnouncementTimeline({ data }) {
   const type = useDetailType();
 
   const { timeline = [], motion } = data;
-  const timelineData = timeline.map(item => {
+  const timelineData = timeline.map((item) => {
     const { indexer, method } = item;
     return {
       indexer: item.indexer,
@@ -29,9 +29,13 @@ export default function AnnouncementTimeline({ data }) {
       status: { value: method, type },
       data: getData(item),
     };
-  })
-  const motionTimeline = createMotionTimelineData(motion, true, "/alliance/motion");
+  });
+  const motionTimeline = createMotionTimelineData(
+    motion,
+    true,
+    "/alliance/motion"
+  );
   timelineData.push(motionTimeline);
   sortTimeline(timelineData);
-  return <Timeline data={ timelineData } indent={ false } />;
+  return <Timeline data={timelineData} indent={false} />;
 }
