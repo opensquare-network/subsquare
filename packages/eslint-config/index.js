@@ -1,12 +1,12 @@
 module.exports = {
   rules: {
-    semi: ["error", "always"],
-    quotes: ["error", "double"],
-    "comma-dangle": ["error", "always-multiline"],
-    "object-curly-newline": ["error", { multiline: true, consistent: true }],
-    "object-curly-spacing": ["error", "always"],
+    semi: ["warn", "always"],
+    quotes: ["warn", "double"],
+    "comma-dangle": ["warn", "always-multiline"],
+    "object-curly-newline": ["warn", { multiline: true, consistent: true }],
+    "object-curly-spacing": ["warn", "always"],
     "object-property-newline": [
-      "error",
+      "warn",
       { allowMultiplePropertiesPerLine: true },
     ],
   },
