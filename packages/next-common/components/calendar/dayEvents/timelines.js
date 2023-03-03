@@ -13,8 +13,6 @@ import {
   m,
   m_l,
   p_b,
-  p_t,
-  p_y,
   text_tertiary,
   w,
   w_full,
