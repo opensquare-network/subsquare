@@ -7,6 +7,7 @@ date 03/03/2023
 - Enable polkadot collectives.
 - Fix cmdk mask background color.
 - Improve eslint config and fix lint warnings.
+- Add warning bar for scam proposals.
 
 # 2.9.6
 date: 02/28/2023
