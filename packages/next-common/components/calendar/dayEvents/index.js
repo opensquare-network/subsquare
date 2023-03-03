@@ -11,6 +11,7 @@ const Wrapper = styled.div``;
 
 export default function DayEvents({ selectedDate }) {
   const events = useCalendarEvents(selectedDate, "day");
+  console.log(events);
 
   return (
     <Wrapper>

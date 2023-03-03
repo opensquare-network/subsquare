@@ -1,4 +1,6 @@
+import React from "react";
 import styled from "styled-components";
+import { EventTypeToComponent } from "./utils";
 
 const Wrapper = styled.div`
   font-family: "Inter";
@@ -10,17 +12,15 @@ const Wrapper = styled.div`
   color: #1e2134;
 `;
 
-const InfoItem = styled.div`
-  display: flex;
-`;
+export default function Content({ type, ...props }) {
+  const Component = EventTypeToComponent[type];
+  if (!Component) {
+    return null;
+  }
 
-export default function Content() {
   return (
     <Wrapper>
-      <InfoItem>Index: #17</InfoItem>
-      <InfoItem>Beneficiary: OpenSquare</InfoItem>
-      <InfoItem>Payout: 12</InfoItem>
-      <InfoItem>Description: xxxxxxx</InfoItem>
+      <Component {...props} />
     </Wrapper>
   );
 }

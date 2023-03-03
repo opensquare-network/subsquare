@@ -19,12 +19,20 @@ const Wrapper = styled.div`
   border-radius: 4px;
 `;
 
+function getDefaultTitle(event) {
+  return "Untitled";
+}
+
 export default function EventInfoCard({ event }) {
+  if (!event) {
+    return null;
+  }
+
   return (
     <Wrapper>
-      <Title text={event?.data?.postTitle || "Untitled"} />
+      <Title text={event?.data?.postTitle || getDefaultTitle(event)} />
       <Divider style={{ width: "100%" }} />
-      <Content />
+      <Content {...event} />
     </Wrapper>
   );
 }
