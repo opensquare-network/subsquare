@@ -1,3 +1,4 @@
+import React from "react";
 import { ItemLink, ItemWrapper } from "./styled";
 import Link from "next/link";
 

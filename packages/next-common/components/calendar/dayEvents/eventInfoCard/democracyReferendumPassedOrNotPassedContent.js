@@ -1,3 +1,4 @@
+import React from "react";
 import { democracyReferendumBaseUrl } from "../../../../utils/postBaseUrl";
 import AyesItem from "./infoItem/ayesItem";
 import ElectorateItem from "./infoItem/electorateItem";

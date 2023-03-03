@@ -1,3 +1,4 @@
+import React from "react";
 import { ItemWrapper } from "./styled";
 
 export default function CallItem({ proposal }) {

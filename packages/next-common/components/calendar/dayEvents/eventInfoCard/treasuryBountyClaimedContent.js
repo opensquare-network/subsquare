@@ -1,3 +1,4 @@
+import React from "react";
 import { bountyBaseUrl } from "../../../../utils/postBaseUrl";
 import BeneficiaryItem from "./infoItem/beneficiaryItem";
 import DescriptionItem from "./infoItem/descriptionItem";

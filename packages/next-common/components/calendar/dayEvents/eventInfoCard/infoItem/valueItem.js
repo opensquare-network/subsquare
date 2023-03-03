@@ -1,3 +1,4 @@
+import React from "react";
 import { useChainSettings } from "../../../../../context/chain";
 import { toPrecision } from "../../../../../utils";
 import { ItemWrapper } from "./styled";

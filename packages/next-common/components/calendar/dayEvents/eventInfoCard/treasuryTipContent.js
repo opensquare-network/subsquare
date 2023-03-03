@@ -1,3 +1,4 @@
+import React from "react";
 import isNil from "lodash.isnil";
 import BeneficiaryItem from "./infoItem/beneficiaryItem";
 import FinderItem from "./infoItem/finderItem";

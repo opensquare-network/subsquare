@@ -1,3 +1,4 @@
+import React from "react";
 import { councilMotionBaseUrl } from "../../../../utils/postBaseUrl";
 import MotionContent from "./motionContent";
 

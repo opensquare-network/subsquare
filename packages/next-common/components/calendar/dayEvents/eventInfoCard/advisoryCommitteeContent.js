@@ -1,3 +1,4 @@
+import React from "react";
 import { advisoryCommitteeBaseUrl } from "../../../../utils/postBaseUrl";
 import MotionContent from "./motionContent";
 

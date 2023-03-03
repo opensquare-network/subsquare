@@ -5,6 +5,7 @@ import {
 import DescriptionItem from "./infoItem/descriptionItem";
 import IndexItem from "./infoItem/indexItem";
 import ProposerItem from "./infoItem/proposerItem";
+import React from "react";
 import ValueItem from "./infoItem/valueItem";
 
 export default function TreasuryChildBountyAddedContent({

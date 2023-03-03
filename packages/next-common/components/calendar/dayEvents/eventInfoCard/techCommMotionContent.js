@@ -1,3 +1,4 @@
+import React from "react";
 import { techCommMotionBaseUrl } from "../../../../utils/postBaseUrl";
 import MotionContent from "./motionContent";
 

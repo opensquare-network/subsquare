@@ -7,7 +7,7 @@ export default function normalizeFellowshipReferendaListItem(
   tracks = []
 ) {
   const track = tracks.find(
-    (trackItem) => trackItem.id === item.onchainData.track,
+    (trackItem) => trackItem.id === item.onchainData.track
   );
 
   return {

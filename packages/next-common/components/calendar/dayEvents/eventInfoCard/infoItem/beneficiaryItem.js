@@ -1,3 +1,4 @@
+import React from "react";
 import { useThemeSetting } from "../../../../../context/theme";
 import User from "../../../../user";
 import { ItemWrapper } from "./styled";

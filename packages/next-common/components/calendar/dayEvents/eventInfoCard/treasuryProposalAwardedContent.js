@@ -1,3 +1,4 @@
+import React from "react";
 import { treasuryProposalBaseUrl } from "../../../../utils/postBaseUrl";
 import IndexItem from "./infoItem/indexItem";
 

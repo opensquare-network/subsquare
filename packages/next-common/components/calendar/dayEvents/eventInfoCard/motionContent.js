@@ -1,3 +1,4 @@
+import React from "react";
 import CallItem from "./infoItem/callItem";
 import MotionIndexItem from "./infoItem/motionIndexItem";
 import ProposerItem from "./infoItem/proposerItem";

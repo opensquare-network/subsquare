@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Divider from "../../../styled/layout/divider";
 import Title from "./title";

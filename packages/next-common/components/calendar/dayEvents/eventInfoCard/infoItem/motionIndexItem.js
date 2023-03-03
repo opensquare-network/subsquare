@@ -1,3 +1,4 @@
+import React from "react";
 import isNil from "lodash.isnil";
 import HashItem from "./hashItem";
 import IndexItem from "./indexItem";
