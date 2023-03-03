@@ -22,6 +22,7 @@ import {
 import Divider from "../../styled/layout/divider";
 import DayEventsTimeline from "./timelines";
 import { useCalendarEvents } from "../../../hooks/calendar";
+
 dayjs.extend(advancedFormat);
 
 const Wrapper = styled(NeutralPanel)`

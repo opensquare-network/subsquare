@@ -14,6 +14,7 @@ import {
   w,
   w_full,
 } from "../../../styles/tailwindcss";
+import EventInfoCard from "./eventInfoCard";
 
 const TimeLineHour = styled.div`
   ${w(40)}
@@ -66,9 +67,8 @@ export default function DayEventsTimeline({ events = [] }) {
     <div>
       {hrs.map((n) => (
         <Time key={n} hour={n}>
-          {/* TODO: event card */}
           {eventInHourGrpup[n]?.map((event) => {
-            return <div key={event._id}>{event.data.postTitle}</div>;
+            return <EventInfoCard key={event._id} event={event} />;
           })}
         </Time>
       ))}

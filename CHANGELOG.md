@@ -3,13 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 # 2.9.6
+
 date: 02/28/2023
+
 - Add zeitgeist advisory committee motion events subscription UI.
 - Support discussion post labels.
 - Extract more hooks for collective pallet.
 
 # 2.9.5
+
 date: 02/17/2023
+
 - Add OpenGov2 activities to user profile.
 - Support cmdk.
 - Support alliance features for collectives para-chain.
@@ -21,7 +25,9 @@ date: 02/17/2023
 - Update dependencies.
 
 # 2.9.4
+
 date: 02/15/2023
+
 - Add subscription UI for OpenGov.
 - Add a link to list page for overview categories.
 - Improve post body word break.
@@ -29,24 +35,31 @@ date: 02/15/2023
 - Fix bug: financial motion state.
 
 # 2.9.3
+
 date: 02/08/2023
+
 - Show split vote for OpenGov.
 - Customize zeitgeist advisory committee call on the motion detail page.
 - Fix statescan url.
 - Fix bugs.
 
 # 2.9.2
+
 date: 02/07/2023
+
 - Show enhanced user delegation/been delegated info for OpenGov referenda.
 - Support litentry.
 - Fix babel configurations.
 - Fix democracy referendum estimated execution time when passed.
 
 # 2.9.1
+
 date: 02/03/2023
+
 - Support zeitgeist advisory committee.
 
 # 2.9.0
+
 date: 02/03/2023
 
 - Support Split/AbstainSplit vote for democracy and OpenGov.
@@ -55,6 +68,7 @@ date: 02/03/2023
 - Refactor duplicated popup components.
 
 # 2.8.2
+
 date: 01/28/2023
 
 - Hide democracy launch period for kintsugi/interlay.

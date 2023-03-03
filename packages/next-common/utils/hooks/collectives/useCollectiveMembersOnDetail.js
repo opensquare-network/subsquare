@@ -7,7 +7,7 @@ import useCollectiveMembers from "./useCollectiveMembers";
 export default function useCollectiveMembersOnDetail() {
   const type = useDetailType();
   const chain = useChain();
-  const moduleName = toApiCouncil(chain, type)
+  const moduleName = toApiCouncil(chain, type);
 
   return useCollectiveMembers(moduleName);
 }
