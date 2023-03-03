@@ -89,7 +89,7 @@ export default function FullCalendar({
   selectedDate,
   setSelectedDate = noop,
 }) {
-  const calendarEvents = useCalendarEventsSummary(date, "month");
+  const [calendarEvents] = useCalendarEventsSummary(date, "month");
 
   function onNavigate(newDate) {
     setDate(newDate);

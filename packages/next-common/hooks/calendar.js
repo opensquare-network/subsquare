@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 function useFetchCalendarEvents(endpoint, date, unit) {
   const [events, setEvents] = useState([]);
   const isMounted = useIsMounted();
+  const [loading, setLoading] = useState(false);
 
   const [begin_time, end_time] = useMemo(() => {
     const d = dayjs(date);
@@ -18,15 +19,21 @@ function useFetchCalendarEvents(endpoint, date, unit) {
 
   useEffect(() => {
     if (isMounted.current) {
-      nextApi.fetch(endpoint, { begin_time, end_time }).then(({ result }) => {
-        if (result) {
-          setEvents(result);
-        }
-      });
+      setLoading(true);
+      nextApi
+        .fetch(endpoint, { begin_time, end_time })
+        .then(({ result }) => {
+          if (result) {
+            setEvents(result);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }, [isMounted, begin_time, end_time]);
 
-  return events;
+  return [events, loading];
 }
 
 /**
@@ -34,8 +41,12 @@ function useFetchCalendarEvents(endpoint, date, unit) {
  * @param {dayjs.OpUnitType} unit
  */
 export function useCalendarEventsSummary(date, unit) {
-  const events = useFetchCalendarEvents(calendarEventsSummaryApi, date, unit);
-  return events;
+  const [events, loading] = useFetchCalendarEvents(
+    calendarEventsSummaryApi,
+    date,
+    unit
+  );
+  return [events, loading];
 }
 
 /**
@@ -43,6 +54,10 @@ export function useCalendarEventsSummary(date, unit) {
  * @param {dayjs.OpUnitType} unit
  */
 export function useCalendarEvents(date, unit) {
-  const events = useFetchCalendarEvents(calendarEventsApi, date, unit);
-  return events;
+  const [events, loading] = useFetchCalendarEvents(
+    calendarEventsApi,
+    date,
+    unit
+  );
+  return [events, loading];
 }
