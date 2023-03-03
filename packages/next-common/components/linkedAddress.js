@@ -230,7 +230,7 @@ export default function LinkedAddress() {
 
       const { error: confirmError, result: confirmResult } = await nextApi.post(
         `user/linkaddr/${result?.attemptId}`,
-        { challengeAnswer: signature }
+        { challengeAnswer: signature },
       );
 
       await fetchAndUpdateUser(userDispatch);
@@ -252,7 +252,7 @@ export default function LinkedAddress() {
     ...(accounts ?? []),
     ...(user?.address ? [user?.address] : [])
       .filter((item) =>
-        (accounts ?? []).every((acc) => !isSameAddress(acc.address, item))
+        (accounts ?? []).every((acc) => !isSameAddress(acc.address, item)),
       )
       .map((address) => ({
         address,
@@ -267,7 +267,7 @@ export default function LinkedAddress() {
       <ContentWrapper>
         {hasExtension ? (
           <div>
-            <InfoWrapper>{`Associate your account with an on-chain address using the Polkadot{.js} extension.`}</InfoWrapper>
+            <InfoWrapper>{"Associate your account with an on-chain address using the Polkadot{.js} extension."}</InfoWrapper>
             <SecondaryButton onClick={showSelectWalletModal}>
               Select wallet
             </SecondaryButton>
@@ -297,7 +297,7 @@ export default function LinkedAddress() {
               availableAccounts.map((item, index) => {
                 const activeChainAddress = encodeAddressToChain(
                   item.address,
-                  activeChain
+                  activeChain,
                 );
 
                 return (
@@ -325,7 +325,7 @@ export default function LinkedAddress() {
                           linkAddress(
                             activeChain,
                             activeChainAddress,
-                            item.meta?.source
+                            item.meta?.source,
                           );
                         }}
                       >

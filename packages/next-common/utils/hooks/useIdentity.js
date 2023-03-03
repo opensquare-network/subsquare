@@ -14,7 +14,7 @@ export default function useIdentity(address, chain) {
     if (!identityChain) return;
     const identityAddress = encodeAddressToChain(address, identityChain);
     fetch(
-      `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`
+      `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`,
     )
       .then((res) => res.json())
       .then((identity) => {
@@ -22,8 +22,8 @@ export default function useIdentity(address, chain) {
           ([, judgement]) =>
             typeof judgement === "object" &&
             Object.keys(judgement).some((key) =>
-              ["reasonable", "knownGood"].includes(key)
-            )
+              ["reasonable", "knownGood"].includes(key),
+            ),
         );
         setIdentity({ isAuthorized, ...identity });
       })

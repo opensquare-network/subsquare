@@ -32,7 +32,7 @@ export default withLoginUserRedux(({ loginUser, chain }) => {
   return (
     <>
       <SettingsLayout>
-        <NextHead title={`Settings`} desc={``} />
+        <NextHead title={"Settings"} desc={""} />
         <Wrapper>
           <TitleContainer>Account</TitleContainer>
           <ContentWrapper>

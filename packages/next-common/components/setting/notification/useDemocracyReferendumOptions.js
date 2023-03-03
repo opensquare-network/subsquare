@@ -10,10 +10,10 @@ export default function useDemocracyReferendumOptions({
   ...data
 }) {
   const [democracyReferendumStarted, setDemocracyReferendumStarted] = useState(
-    !!data.democracyReferendumStarted?.isOn
+    !!data.democracyReferendumStarted?.isOn,
   );
   const [democracyReferendumPassed, setDemocracyReferendumPassed] = useState(
-    !!data.democracyReferendumPassed?.isOn
+    !!data.democracyReferendumPassed?.isOn,
   );
   const [democracyReferendumNotPassed, setDemocracyReferendumNotPassed] =
     useState(!!data.democracyReferendumNotPassed?.isOn);
@@ -63,7 +63,7 @@ export default function useDemocracyReferendumOptions({
       democracyReferendumExecuted,
       democracyReferendumNotExecuted,
       democracyReferendumFastTrack,
-    ]
+    ],
   );
 
   const democracyReferendumOptionsComponent = (

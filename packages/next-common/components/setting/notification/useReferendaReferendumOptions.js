@@ -9,34 +9,34 @@ export default function useReferendaReferendumOptions({
   ...data
 }) {
   const [referendaSubmitted, setReferendaSubmitted] = useState(
-    !!data.referendaSubmitted?.isOn
+    !!data.referendaSubmitted?.isOn,
   );
   const [referendaDecisionStarted, setReferendaDecisionStarted] = useState(
-    !!data.referendaDecisionStarted?.isOn
+    !!data.referendaDecisionStarted?.isOn,
   );
   const [referendaConfirmStarted, setReferendaConfirmStarted] = useState(
-    !!data.referendaConfirmStarted?.isOn
+    !!data.referendaConfirmStarted?.isOn,
   );
   const [referendaCancelled, setReferendaCancelled] = useState(
-    !!data.referendaCancelled?.isOn
+    !!data.referendaCancelled?.isOn,
   );
   const [referendaConfirmAborted, setReferendaConfirmAborted] = useState(
-    !!data.referendaConfirmAborted?.isOn
+    !!data.referendaConfirmAborted?.isOn,
   );
   const [referendaConfirmed, setReferendaConfirmed] = useState(
-    !!data.referendaConfirmed?.isOn
+    !!data.referendaConfirmed?.isOn,
   );
   const [referendaExecuted, setReferendaExecuted] = useState(
-    !!data.referendaExecuted?.isOn
+    !!data.referendaExecuted?.isOn,
   );
   const [referendaKilled, setReferendaKilled] = useState(
-    !!data.referendaKilled?.isOn
+    !!data.referendaKilled?.isOn,
   );
   const [referendaTimedout, setReferendaTimedout] = useState(
-    !!data.referendaTimedout?.isOn
+    !!data.referendaTimedout?.isOn,
   );
   const [referendaRejected, setReferendaRejected] = useState(
-    !!data.referendaRejected?.isOn
+    !!data.referendaRejected?.isOn,
   );
 
   const isChanged =
@@ -81,7 +81,7 @@ export default function useReferendaReferendumOptions({
       referendaKilled,
       referendaTimedout,
       referendaRejected,
-    ]
+    ],
   );
 
   const referendaReferendumOptionsComponent = (

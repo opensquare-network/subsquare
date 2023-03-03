@@ -18,7 +18,7 @@ const referendumVoteFinishedStatusArray = [
 function extractVoteInfo(timeline = []) {
   const timelineStatuses = timeline.map((item) => item.name);
   const index = timelineStatuses.findIndex((status) =>
-    referendumVoteFinishedStatusArray.includes(status)
+    referendumVoteFinishedStatusArray.includes(status),
   );
   const voteFinished = index >= 0;
   let voteFinishedHeight = null;

@@ -13,7 +13,7 @@ export default withLoginUserRedux(() => {
   return (
     <>
       <SettingsLayout>
-        <NextHead title={`Settings`} desc={``} />
+        <NextHead title={"Settings"} desc={""} />
         <Wrapper>
           <TitleContainer>Proxy</TitleContainer>
           <ContentWrapper>

@@ -16,7 +16,7 @@ export async function getGov2AddressVote(
   api,
   trackId,
   referendumIndex,
-  address
+  address,
 ) {
   const voting = await api.query.convictionVoting.votingFor(address, trackId);
   const jsonVoting = voting?.toJSON();
@@ -27,7 +27,7 @@ export async function getGov2AddressVote(
   // For the direct vote, just return the vote.
   if (jsonVoting.casting) {
     const vote = (jsonVoting.casting.votes || []).find(
-      (vote) => vote[0] === referendumIndex
+      (vote) => vote[0] === referendumIndex,
     )?.[1];
 
     return {
@@ -42,12 +42,12 @@ export async function getGov2AddressVote(
     const { target, conviction } = jsonVoting.delegating;
     const proxyVoting = await api.query.convictionVoting.votingFor(
       target,
-      trackId
+      trackId,
     );
     const jsonProxyVoting = proxyVoting?.toJSON();
 
     const vote = (jsonProxyVoting?.casting?.votes || []).find(
-      (vote) => vote[0] === referendumIndex
+      (vote) => vote[0] === referendumIndex,
     )?.[1];
 
     if (!vote?.standard) {
@@ -87,7 +87,7 @@ export async function getGov2BeenDelegatedListByAddress(api, address, trackId) {
   for (const [storageKey, votingFor] of votingForEntries) {
     const { address: delegator, trackId: _trackId } = extractAddressAndTrackId(
       storageKey,
-      api
+      api,
     );
     if (!isNil(trackId)) {
       if (_trackId !== trackId) {

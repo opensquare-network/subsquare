@@ -28,7 +28,7 @@ export default function ConfirmCountdown({ detail }) {
   const confirmRemaining = getConfirmRemaining(
     latestHeight,
     confirmSince,
-    confirmPeriod
+    confirmPeriod,
   );
 
   const confirmPercentage = useMemo(() => {

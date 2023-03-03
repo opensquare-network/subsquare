@@ -33,7 +33,7 @@ export default function Account({ account }) {
 
       fetchIdentity(
         identity,
-        encodeAddressToChain(account.address, identity)
+        encodeAddressToChain(account.address, identity),
       ).then((identity) => setIdentity(identity));
     }
   }, [account.address, chain]);

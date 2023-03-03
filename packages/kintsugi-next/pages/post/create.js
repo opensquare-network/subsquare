@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   return (
     <BaseLayout>
-      <NextHead title={`Create post`} desc={``} />
+      <NextHead title={"Create post"} desc={""} />
       <Wrapper>
         <BreadcrumbWrapper>
           <Breadcrumb items={breadcrumbItems} />

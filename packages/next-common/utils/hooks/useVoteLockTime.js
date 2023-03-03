@@ -6,7 +6,7 @@ import { estimateBlocksTime } from "..";
 
 export default function useVoteLockTime(
   conviction,
-  module = "convictionVoting"
+  module = "convictionVoting",
 ) {
   const api = useApi();
   const [time, setTime] = useState();

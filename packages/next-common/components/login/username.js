@@ -16,5 +16,5 @@ export default function Username({ value, error, onChange }) {
         error={error}
       />
     </>
-  )
+  );
 }

@@ -18,7 +18,7 @@ const LongText = dynamic(() => import("../longText"), {
 
 const JsonView = dynamic(
   () => import("../jsonView").catch((e) => console.error(e)),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Header = styled.div`
@@ -120,7 +120,7 @@ function convertProposalForTableView(proposal, chain) {
                 Object.keys(arg.value).map((key) => {
                   if (typeof arg.value[key] === "string") {
                     argHexToString[key] = new BigNumber(
-                      arg.value[key]
+                      arg.value[key],
                     ).toString();
                   }
                 });
@@ -167,7 +167,7 @@ function convertProposalForTableView(proposal, chain) {
             return [arg.name, arg.value];
           }
         }
-      })
+      }),
     ),
   };
 }

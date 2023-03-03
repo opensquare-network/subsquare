@@ -18,5 +18,5 @@ export default function normalizeTechCommMotionListItem(chain, item) {
     detailLink: `/techcomm/proposal/${ getMotionId(item) }`,
     time: getPostLastActivityAt(item),
     isDemocracy,
-  }
+  };
 }

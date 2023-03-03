@@ -10,7 +10,7 @@ export default function MotionElapse({ motion }) {
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    latestHeight - motionEndHeight
+    latestHeight - motionEndHeight,
   );
   const motionEnd = isMotionEnded(motion);
 
@@ -29,7 +29,7 @@ export default function MotionElapse({ motion }) {
       numerator={latestHeight - motionStartHeight}
       denominator={motionEndHeight - motionStartHeight}
       tooltipContent={`End in ${estimatedBlocksTime}, #${bigNumber2Locale(
-        motionEndHeight.toString()
+        motionEndHeight.toString(),
       )}`}
     />
   );

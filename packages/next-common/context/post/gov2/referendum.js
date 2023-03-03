@@ -22,7 +22,7 @@ async function queryReferendumInfo(
   api,
   palletName,
   referendumIndex,
-  votingFinishHeight
+  votingFinishHeight,
 ) {
   let blockApi = api;
   if (votingFinishHeight) {
@@ -63,7 +63,7 @@ export function useTally() {
       api,
       palletName,
       referendumIndex,
-      votingFinishHeight
+      votingFinishHeight,
     ).then((optionalInfo) => {
       if (!isMounted.current || !optionalInfo.isSome) {
         return;
@@ -84,7 +84,7 @@ export function useConfirmingStarted() {
   const timeline = useTimelineData();
   const startedItem = findLast(
     timeline,
-    (item) => item.name === "ConfirmStarted"
+    (item) => item.name === "ConfirmStarted",
   );
   return startedItem?.indexer?.blockHeight;
 }
@@ -93,7 +93,7 @@ export function useConfirmTimelineData() {
   const timeline = useTimelineData();
   return timeline.filter((item) => {
     return ["ConfirmStarted", "ConfirmAborted", "Confirmed"].includes(
-      item.name
+      item.name,
     );
   });
 }
@@ -104,12 +104,12 @@ export function useConfirmTimelineFailPairs() {
   const confirms = useConfirmTimelineData();
   const lastAbortedIndex = findLastIndex(
     confirms || [],
-    (confirm) => confirm.name === "ConfirmAborted"
+    (confirm) => confirm.name === "ConfirmAborted",
   );
 
   const arrStartedAndAborted = confirms.slice(
     0,
-    lastAbortedIndex ? lastAbortedIndex + 1 : 0
+    lastAbortedIndex ? lastAbortedIndex + 1 : 0,
   );
 
   pairs = arrStartedAndAborted.reduce((res, _value, idx, arr) => {

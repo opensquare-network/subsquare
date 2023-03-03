@@ -30,5 +30,5 @@ export default function normalizeTipListItem(chain, item) {
       getTipState(item.state) === "Retracted"
         ? null
         : item?.onchainData?.medianValue,
-  }
+  };
 }

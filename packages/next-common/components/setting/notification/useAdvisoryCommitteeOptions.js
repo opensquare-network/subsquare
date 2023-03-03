@@ -9,13 +9,13 @@ export default function useAdvisoryCommitteeOptions({
   ...data
 }) {
   const [advisoryCommitteeProposed, setAdvisoryCommitteeProposed] = useState(
-    !!data.advisoryCommitteeProposed?.isOn
+    !!data.advisoryCommitteeProposed?.isOn,
   );
   const [advisoryCommitteeVoted, setAdvisoryCommitteeVoted] = useState(
-    !!data.advisoryCommitteeVoted?.isOn
+    !!data.advisoryCommitteeVoted?.isOn,
   );
   const [advisoryCommitteeApproved, setAdvisoryCommitteeApproved] = useState(
-    !!data.advisoryCommitteeApproved?.isOn
+    !!data.advisoryCommitteeApproved?.isOn,
   );
   const [advisoryCommitteeDisApproved, setAdvisoryCommitteeDisApproved] =
     useState(!!data.advisoryCommitteeDisApproved?.isOn);
@@ -44,7 +44,7 @@ export default function useAdvisoryCommitteeOptions({
       advisoryCommitteeVoted,
       advisoryCommitteeApproved,
       advisoryCommitteeDisApproved,
-    ]
+    ],
   );
 
   const advisoryCommitteeOptionsComponent = (

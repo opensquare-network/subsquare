@@ -8,13 +8,13 @@ function extractVotes(mapped = [], targetReferendumIndex) {
         result.push({
           account,
           isDelegating: false,
-          ...vote[1].toJSON()
-        })
+          ...vote[1].toJSON(),
+        });
       }
     }
 
     return result;
-  }, [])
+  }, []);
 }
 
 export default async function getKintsugiReferendumVotes(api, referendumIndex, height) {
@@ -32,5 +32,5 @@ export default async function getKintsugiReferendumVotes(api, referendumIndex, h
   const allAye = sorted.filter(v => v.aye);
   const allNay = sorted.filter(v => !v.aye);
 
-  return { allAye, allNay }
+  return { allAye, allNay };
 }

@@ -18,7 +18,7 @@ export async function checkProxy(api, delegator, toCheckDelegate) {
     .map((item) => item.proxyType);
 
   const success = proxyTypes.some((item) =>
-    ["Any", "NonTransfer", "Governance"].includes(item)
+    ["Any", "NonTransfer", "Governance"].includes(item),
   );
 
   return {

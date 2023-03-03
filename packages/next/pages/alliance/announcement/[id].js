@@ -61,7 +61,7 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
       </BreadcrumbWrapper>
       { postContent }
     </DetailLayout>
-  </PostProvider>
+  </PostProvider>;
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {

@@ -26,8 +26,8 @@ export default function useMaybeFetchElectorate(referendum, api) {
         fetchElectorate(
           api,
           voteFinishedHeight || nowHeight,
-          possibleElectorate
-        )
+          possibleElectorate,
+        ),
       );
     }
   }, [api, dispatch, voteFinishedHeight, nowHeight, possibleElectorate]);

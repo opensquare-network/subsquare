@@ -206,7 +206,7 @@ export const estimateBlocksTime = (blocks, blockTime) => {
 
 export function isMotionEnded(motion) {
   return ["Closed", "Approved", "Executed", "Disapproved"].includes(
-    motion?.state?.state
+    motion?.state?.state,
   );
 }
 
@@ -222,7 +222,7 @@ export function checkInputValue(
   inputValue,
   decimals,
   valueName = "value",
-  allowZero = false
+  allowZero = false,
 ) {
   if (!inputValue) {
     throw new Error(`Please input a ${valueName}`);

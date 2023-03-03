@@ -80,7 +80,7 @@ function Select({
 
   const displayValue = useMemo(
     () => options.find((option) => option.value === value)?.label,
-    [value]
+    [value],
   );
 
   return (

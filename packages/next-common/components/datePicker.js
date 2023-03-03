@@ -361,8 +361,8 @@ export default function DatePicker({
     if (!date || !hour || !minute) return "";
     const datetime = new Date(
       Date.parse(
-        `${moment(date ?? new Date()).format("YYYY-MM-DD")} ${hour}:${minute}`
-      )
+        `${moment(date ?? new Date()).format("YYYY-MM-DD")} ${hour}:${minute}`,
+      ),
     );
     return moment(datetime).format("YYYY-MM-DD, HH:mm");
   };
@@ -474,9 +474,9 @@ export default function DatePicker({
                         onSelectDatetime(
                           Date.parse(
                             `${moment(date ?? new Date()).format(
-                              "YYYY-MM-DD"
-                            )} ${hour}:${minute}`
-                          )
+                              "YYYY-MM-DD",
+                            )} ${hour}:${minute}`,
+                          ),
                         );
                         setIsOpen(false);
                       }}

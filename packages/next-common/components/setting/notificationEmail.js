@@ -63,8 +63,8 @@ export default function NotificationEmail({ email, verified }) {
       startCountdown();
       dispatch(
         newSuccessToast(
-          "The verification link has been send to your email, Please check."
-        )
+          "The verification link has been send to your email, Please check.",
+        ),
       );
     } else if (error) {
       setResendErrors(error);

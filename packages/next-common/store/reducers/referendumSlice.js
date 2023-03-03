@@ -74,7 +74,7 @@ export const fetchVotes =
         votes = await getKintsugiReferendumVotes(
           api,
           referendumIndex,
-          passedHeight
+          passedHeight,
         );
       } else {
         votes = await getReferendumVotes(api, referendumIndex, passedHeight);
@@ -112,7 +112,7 @@ export const fetchReferendumStatus =
     dispatch(setIsLoadingReferendumStatus(true));
     try {
       const referendumInfo = await api?.query.democracy.referendumInfoOf(
-        referendumIndex
+        referendumIndex,
       );
       const data = referendumInfo?.toJSON();
       if (data?.ongoing) {

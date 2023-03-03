@@ -17,5 +17,5 @@ export default function Password({ value, error, onChange }) {
         error={error}
       />
     </>
-  )
+  );
 }

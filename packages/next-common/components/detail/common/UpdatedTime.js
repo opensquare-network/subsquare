@@ -7,7 +7,7 @@ import UpdateIcon from "../../../assets/imgs/icons/line-chart.svg";
 export default function UpdatedTime({ post }) {
   const postUpdatedTime = getPostUpdatedAt(post);
   if (!postUpdatedTime) {
-    return null
+    return null;
   }
 
   const duration = useDuration(postUpdatedTime);
@@ -16,5 +16,5 @@ export default function UpdatedTime({ post }) {
       <UpdateIcon />
       <span>{duration}</span>
     </Info>
-  )
+  );
 }

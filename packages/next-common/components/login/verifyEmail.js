@@ -62,8 +62,8 @@ export default function VerifyEmail({ pin, setPin, email, errors, setErrors }) {
         startCountdown();
         dispatch(
           newSuccessToast(
-            "The verification code has been send to your email, Please check."
-          )
+            "The verification code has been send to your email, Please check.",
+          ),
         );
       } else if (error) {
         setErrors(error);

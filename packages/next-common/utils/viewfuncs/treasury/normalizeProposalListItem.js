@@ -11,5 +11,5 @@ export default function normalizeTreasuryProposalListItem(chain, item) {
     detailLink: `/treasury/proposal/${item.proposalIndex}`,
     value: item.onchainData?.value,
     index: item.proposalIndex,
-  }
+  };
 }

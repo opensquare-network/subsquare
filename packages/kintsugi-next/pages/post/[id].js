@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <Back href={`/discussions`} text="Back to Discussions" />
+        <Back href={"/discussions"} text="Back to Discussions" />
         <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
         {CommentComponent}
       </DetailLayout>

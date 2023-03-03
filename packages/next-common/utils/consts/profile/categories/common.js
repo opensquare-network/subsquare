@@ -138,7 +138,7 @@ const commonCategories = [
         formatter: normalizePolkassemblyDiscussionListItem,
         excludeChains: (() => {
           return Object.values(Chains).filter(
-            (v) => ![Chains.kusama, Chains.polkadot].includes(v)
+            (v) => ![Chains.kusama, Chains.polkadot].includes(v),
           );
         })(),
       },

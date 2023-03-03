@@ -13,14 +13,14 @@ export default function useMaybeFetchReferendumStatus(referendum, api) {
   const { voteFinished } = extractVoteInfo(referendum?.timeline);
   const referendumStatus = useSelector(referendumStatusSelector);
   const isLoadingReferendumStatus = useSelector(
-    isLoadingReferendumStatusSelector
+    isLoadingReferendumStatusSelector,
   );
 
   useEffect(() => {
     dispatch(
       setReferendumStatus(
-        referendum?.status || referendum?.info?.ongoing || referendum?.meta
-      )
+        referendum?.status || referendum?.info?.ongoing || referendum?.meta,
+      ),
     );
   }, [referendum]);
 

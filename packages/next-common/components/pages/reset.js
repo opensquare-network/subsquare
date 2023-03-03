@@ -65,13 +65,13 @@ const Reset = withLoginUserRedux(() => {
         setLoading(false);
       }
     },
-    () => setErrors(null)
+    () => setErrors(null),
   );
   const { newPassword } = formData;
 
   return (
     <BaseLayout>
-      <NextHead title={`Reset password`} desc={`Reset password`} />
+      <NextHead title={"Reset password"} desc={"Reset password"} />
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>

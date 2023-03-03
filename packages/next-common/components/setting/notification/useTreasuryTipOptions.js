@@ -5,16 +5,16 @@ import { SubLabel, ToggleItem } from "./styled";
 
 export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
   const [treasuryTipNew, setTreasuryTipNew] = useState(
-    !!data.treasuryTipNew?.isOn
+    !!data.treasuryTipNew?.isOn,
   );
   const [treasuryTipTip, setTreasuryTipTip] = useState(
-    !!data.treasuryTipTip?.isOn
+    !!data.treasuryTipTip?.isOn,
   );
   const [treasuryTipClosed, setTreasuryTipClosed] = useState(
-    !!data.treasuryTipClosed?.isOn
+    !!data.treasuryTipClosed?.isOn,
   );
   const [treasuryTipRetracted, setTreasuryTipRetracted] = useState(
-    !!data.treasuryTipRetracted?.isOn
+    !!data.treasuryTipRetracted?.isOn,
   );
 
   const isChanged =
@@ -36,7 +36,7 @@ export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
       treasuryTipClosed,
       treasuryTipRetracted,
     }),
-    [treasuryTipNew, treasuryTipTip, treasuryTipClosed, treasuryTipRetracted]
+    [treasuryTipNew, treasuryTipTip, treasuryTipClosed, treasuryTipRetracted],
   );
 
   const treasuryTipOptionsComponent = (

@@ -6,5 +6,5 @@ export default function IpfsCidWithLink({ cid }) {
   const text = `${ cid.slice(0, 4) }...${ cid.slice(-4) }`;
   return <ExternalLink
     title={ cid }
-    href={ getIpfsLink(cid) }>{ text }</ExternalLink>
+    href={ getIpfsLink(cid) }>{ text }</ExternalLink>;
 }

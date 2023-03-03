@@ -56,7 +56,7 @@ export default function useWaitSyncBlock(toastMessage, callback) {
         }
       }, 1000);
     },
-    [dispatch, api, refScanHeight, callback, toastMessage]
+    [dispatch, api, refScanHeight, callback, toastMessage],
   );
 
   return fnWaitSync;

@@ -191,7 +191,7 @@ export default function SelectWallet({
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
         const excludeEthExtensionAccounts = extensionAccounts?.filter(
-          (acc) => acc.type !== "ethereum"
+          (acc) => acc.type !== "ethereum",
         );
 
         if (isMounted.current) {
@@ -216,7 +216,7 @@ export default function SelectWallet({
       setWallet,
       onAccessGranted,
       isMounted,
-    ]
+    ],
   );
 
   const onWalletClick = useCallback(
@@ -224,7 +224,7 @@ export default function SelectWallet({
       loadAccounts(wallet.extensionName);
       onSelect && onSelect(wallet.extensionName);
     },
-    [loadAccounts, onSelect]
+    [loadAccounts, onSelect],
   );
 
   return (

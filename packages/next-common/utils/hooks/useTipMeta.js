@@ -4,7 +4,7 @@ import useApi from "./useApi";
 export default function useTipMeta(
   tipHash,
   atBlockHeight,
-  forceToReadLastBlock = false
+  forceToReadLastBlock = false,
 ) {
   const [isLoading, setIsLoading] = useState(true);
   const [tipMeta, setTipMeta] = useState();

@@ -32,7 +32,7 @@ function IdentityOrAddr({ address, network }) {
       if (!identity) return;
 
       fetchIdentity(identity, encodeAddressToChain(address, identity)).then(
-        (identity) => setIdentity(identity)
+        (identity) => setIdentity(identity),
       );
     }
   }, [address, network]);

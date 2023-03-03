@@ -29,7 +29,7 @@ export function EmptyList({ type = "discussions" }) {
 
 export default function MaybeEmpty({ items = [], type, children }) {
   if (items.length <= 0) {
-    return <EmptyList type={type}/>
+    return <EmptyList type={type}/>;
   }
 
   return children;

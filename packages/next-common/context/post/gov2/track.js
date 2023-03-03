@@ -4,7 +4,7 @@ export function useTrack() {
   const { trackInfo } = usePostOnChainData();
   if (!trackInfo) {
     throw new Error(
-      "No track info, make sure track existed before using `useTrack`"
+      "No track info, make sure track existed before using `useTrack`",
     );
   }
 

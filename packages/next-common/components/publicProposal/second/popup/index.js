@@ -33,11 +33,11 @@ function PopupContent({
   const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
   const { deposit, balanceInsufficient } = useDeposit(depositRequired, balance);
 

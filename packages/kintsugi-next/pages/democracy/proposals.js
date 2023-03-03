@@ -13,7 +13,7 @@ export default withLoginUserRedux(({ proposals }) => {
   const items = (proposals.items || []).map((item) =>
     normalizeProposalListItem(chain, item)
   );
-  const category = `Democracy Public Proposals`;
+  const category = "Democracy Public Proposals";
   const seoInfo = { title: category, desc: category };
 
   return (
@@ -37,7 +37,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch(`democracy/proposals`, {
+    nextApi.fetch("democracy/proposals", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

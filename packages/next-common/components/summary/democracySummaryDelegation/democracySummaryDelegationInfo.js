@@ -42,7 +42,7 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
       <ValueDisplay
         value={toPrecision(
           delegating.balance * ConvictionSupport[delegating.conviction],
-          node.decimals
+          node.decimals,
         )}
         symbol={node.symbol}
       />

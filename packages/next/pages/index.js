@@ -179,7 +179,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
 });
 
 export const getServerSideProps = withLoginUser(async () => {
-  const { result } = await nextApi.fetch(`overview`);
+  const { result } = await nextApi.fetch("overview");
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
     nextApi.fetch(gov2TracksApi),

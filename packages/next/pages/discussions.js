@@ -58,7 +58,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   if (label) {
     q = { label, ...q };
   }
-  const { result: posts } = await nextApi.fetch(`posts`, q);
+  const { result: posts } = await nextApi.fetch("posts", q);
 
   return {
     props: {
