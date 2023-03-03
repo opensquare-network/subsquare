@@ -1,5 +1,5 @@
-import { Wrapper } from "./styled";
+import ValueItem from "./valueItem";
 
 export default function PayoutItem({ payout }) {
-  return <Wrapper>Payout: {payout}</Wrapper>;
+  return <ValueItem value={payout} itemName="Payout" />;
 }

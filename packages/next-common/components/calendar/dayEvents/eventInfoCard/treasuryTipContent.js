@@ -1,16 +1,23 @@
-import styled from "styled-components";
+import isNil from "lodash.isnil";
+import BeneficiaryItem from "./infoItem/beneficiaryItem";
+import FinderItem from "./infoItem/finderItem";
+import { ItemWrapper } from "./infoItem/styled";
 
-const InfoItem = styled.div`
-  display: flex;
-`;
-
-export default function TreasuryTipContent({ data }) {
+export default function TreasuryTipContent({ hash, data }) {
   return (
     <>
-      <InfoItem>Index: #17</InfoItem>
-      <InfoItem>Beneficiary: OpenSquare</InfoItem>
-      <InfoItem>Payout: 12</InfoItem>
-      <InfoItem>Description: xxxxxxx</InfoItem>
+      <FinderItem finder={data.proposer} />
+      <BeneficiaryItem beneficiary={data.beneficiary} />
+      {!isNil(data.method) && (
+        <ItemWrapper>
+          <span>Method:</span>
+          <span>{data.method}</span>
+        </ItemWrapper>
+      )}
+      <ItemWrapper>
+        <span>Threshold:</span>
+        <span>{data.threshold}</span>
+      </ItemWrapper>
     </>
   );
 }

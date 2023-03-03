@@ -1,5 +1,6 @@
 import { getPostLastActivityAt } from "../postUpdatedTime";
 import { getTitle } from "../../post";
+import { tipBaseUrl } from "../../postBaseUrl";
 
 export const TipStateMap = {
   NewTip: "Tipping",
@@ -25,10 +26,10 @@ export default function normalizeTipListItem(chain, item) {
     address: item.finder,
     status: getTipState(item.state),
     time: getPostLastActivityAt(item),
-    detailLink: `/treasury/tip/${ item.height }_${ item.hash }`,
+    detailLink: `${tipBaseUrl}/${item.height}_${item.hash}`,
     value:
       getTipState(item.state) === "Retracted"
         ? null
         : item?.onchainData?.medianValue,
-  }
+  };
 }

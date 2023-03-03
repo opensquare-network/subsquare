@@ -1,9 +1,13 @@
-import { Wrapper } from "./styled";
+import { ItemLink, ItemWrapper } from "./styled";
+import Link from "next/link";
 
-export default function IndexItem({ index, indexName = "Index" }) {
+export default function IndexItem({ index, itemName = "Index", baseUrl = "" }) {
   return (
-    <Wrapper>
-      {indexName}: #{index}
-    </Wrapper>
+    <ItemWrapper>
+      <span>{itemName}:</span>
+      <Link href={`${baseUrl}/${index}`} passHref>
+        <ItemLink>#{index}</ItemLink>
+      </Link>
+    </ItemWrapper>
   );
 }

@@ -1,5 +1,18 @@
-import { Wrapper } from "./styled";
+import { useThemeSetting } from "../../../../../context/theme";
+import User from "../../../../user";
+import { ItemWrapper } from "./styled";
 
 export default function ProposerItem({ proposer }) {
-  return <Wrapper>Proposer: {proposer}</Wrapper>;
+  const theme = useThemeSetting();
+  return (
+    <ItemWrapper>
+      <span>Proposer:</span>
+      <User
+        add={proposer}
+        fontSize={12}
+        showAvatar={false}
+        color={theme.secondaryBlue500}
+      />
+    </ItemWrapper>
+  );
 }
