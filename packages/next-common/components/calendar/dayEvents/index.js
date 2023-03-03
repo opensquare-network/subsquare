@@ -46,7 +46,7 @@ const TitleDate = styled.small`
 `;
 
 export default function DayEvents({ selectedDate }) {
-  const dayEvents = useCalendarEvents(selectedDate, "day");
+  const [dayEvents, loading] = useCalendarEvents(selectedDate, "day");
 
   return (
     <Wrapper>
@@ -57,7 +57,7 @@ export default function DayEvents({ selectedDate }) {
 
       <Divider />
 
-      <DayEventTimelines events={dayEvents} />
+      <DayEventTimelines events={dayEvents} loading={loading} />
     </Wrapper>
   );
 }

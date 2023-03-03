@@ -2,13 +2,15 @@ import dayjs from "dayjs";
 import groupBy from "lodash.groupby";
 import React from "react";
 import styled from "styled-components";
-import { p_12_medium } from "../../../styles/componentCss";
+import { p_12_medium, p_14_normal } from "../../../styles/componentCss";
 import {
   bg_theme,
   flex,
   gap_x,
   h,
   items_center,
+  justify_center,
+  m,
   m_l,
   p_b,
   text_tertiary,
@@ -16,6 +18,7 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import EventInfoCard from "./eventInfoCard";
+import Loading from "../../loading";
 
 const TimeLineHour = styled.div`
   ${w(40)}
@@ -40,6 +43,19 @@ const TimelineWrapper = styled.div`
   ${p_b(16)}
 `;
 
+const StatusWrapper = styled.div`
+  ${flex}
+  ${items_center}
+  ${justify_center}
+  ${h(44)}
+`;
+
+const NoData = styled.p`
+  ${p_14_normal}
+  ${text_tertiary}
+  ${m(0)}
+`;
+
 function Timeline({ children, hour }) {
   return (
     <TimelineWrapper>
@@ -52,7 +68,7 @@ function Timeline({ children, hour }) {
   );
 }
 
-export default function DayEventTimelines({ events = [] }) {
+export default function DayEventTimelines({ events = [], loading }) {
   const hrs = Array.from({ length: 25 }).map((_, i) => i);
 
   const eventInHourKey = "eventInHourKey";
@@ -65,6 +81,22 @@ export default function DayEventTimelines({ events = [] }) {
     }),
     eventInHourKey
   );
+
+  if (loading) {
+    return (
+      <StatusWrapper>
+        <Loading />
+      </StatusWrapper>
+    );
+  }
+
+  if (!events.length) {
+    return (
+      <StatusWrapper>
+        <NoData>No current events</NoData>
+      </StatusWrapper>
+    );
+  }
 
   return (
     <div>
