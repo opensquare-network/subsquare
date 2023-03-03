@@ -10,6 +10,7 @@ import {
   h,
   items_center,
   m_l,
+  p_b,
   text_tertiary,
   w,
   w_full,
@@ -30,26 +31,28 @@ const TimeLineSolid = styled.div`
 const TimeLineContent = styled.div`
   ${m_l(48)}
 `;
-const TimeItem = styled.div`
+const TimelineItem = styled.div`
   ${flex}
   ${gap_x(8)}
   ${items_center}
 `;
-const TimeWrapper = styled.div``;
+const TimelineWrapper = styled.div`
+  ${p_b(16)}
+`;
 
-function Time({ children, hour }) {
+function Timeline({ children, hour }) {
   return (
-    <TimeWrapper>
-      <TimeItem>
+    <TimelineWrapper>
+      <TimelineItem>
         <TimeLineHour>{String(hour).padStart(2, "0")}:00</TimeLineHour>
         <TimeLineSolid />
-      </TimeItem>
+      </TimelineItem>
       {children && <TimeLineContent>{children}</TimeLineContent>}
-    </TimeWrapper>
+    </TimelineWrapper>
   );
 }
 
-export default function DayEventsTimeline({ events = [] }) {
+export default function DayEventTimelines({ events = [] }) {
   const hrs = Array.from({ length: 25 }).map((_, i) => i);
 
   const eventInHourKey = "eventInHourKey";
@@ -66,11 +69,11 @@ export default function DayEventsTimeline({ events = [] }) {
   return (
     <div>
       {hrs.map((n) => (
-        <Time key={n} hour={n}>
+        <Timeline key={n} hour={n}>
           {eventInHourGrpup[n]?.map((event) => {
             return <EventInfoCard key={event._id} event={event} />;
           })}
-        </Time>
+        </Timeline>
       ))}
     </div>
   );

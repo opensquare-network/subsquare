@@ -20,7 +20,7 @@ import {
   shadow_100,
 } from "../../../styles/componentCss";
 import Divider from "../../styled/layout/divider";
-import DayEventsTimeline from "./timelines";
+import DayEventTimelines from "./timelines";
 import { useCalendarEvents } from "../../../hooks/calendar";
 
 dayjs.extend(advancedFormat);
@@ -57,7 +57,7 @@ export default function DayEvents({ selectedDate }) {
 
       <Divider />
 
-      <DayEventsTimeline events={dayEvents} />
+      <DayEventTimelines events={dayEvents} />
     </Wrapper>
   );
 }
