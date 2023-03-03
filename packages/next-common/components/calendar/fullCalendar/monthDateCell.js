@@ -28,6 +28,7 @@ import {
 import TooltipOrigin from "../../tooltip";
 import FullCalendarCategory from "./category";
 import { FULLCALENDAR_CATEGORIES } from "./consts";
+import { useIsScreenSize } from "../../../utils/hooks/useIsScreenSize";
 dayjs.extend(isToday);
 
 const CellLabel = styled.p`
@@ -111,6 +112,8 @@ export default function FullCalendarMonthDateCell({
   setSelectedDate,
   calendarEvents = [],
 }) {
+  const { isSmSize } = useIsScreenSize();
+
   if (isOffRange) {
     return null;
   }
@@ -177,15 +180,21 @@ export default function FullCalendarMonthDateCell({
         >
           <CellLabel>{label}</CellLabel>
 
-          <CellEventGroup>
-            {categories.map((category) => (
-              <FullCalendarCategory
-                key={category}
-                category={category}
-                onlyDot
-              />
-            ))}
-          </CellEventGroup>
+          {!!categories.length && (
+            <CellEventGroup>
+              {!isSmSize ? (
+                categories.map((category) => (
+                  <FullCalendarCategory
+                    key={category}
+                    category={category}
+                    onlyDot
+                  />
+                ))
+              ) : (
+                <FullCalendarCategory color="primaryPurple500" />
+              )}
+            </CellEventGroup>
+          )}
         </CellWrapper>
       </TooltipChildrenWrapper>
     </Tooltip>

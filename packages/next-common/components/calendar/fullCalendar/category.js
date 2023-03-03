@@ -29,13 +29,20 @@ const Label = styled.span`
   ${m_l(8)}
 `;
 
-export default function FullCalendarCategory({ category, onlyDot = false }) {
-  const color = FULLCALENDAR_CATEGORY_COLORS[category];
+/**
+ * @param {{color: themeKey}}
+ */
+export default function FullCalendarCategory({
+  category,
+  onlyDot = false,
+  color,
+}) {
+  const categoryColor = color ?? FULLCALENDAR_CATEGORY_COLORS[category];
 
   return (
     <Wrapper>
-      <Dot color={color} />
-      {!onlyDot && <Label>{category}</Label>}
+      <Dot color={categoryColor} />
+      {!onlyDot && category && <Label>{category}</Label>}
     </Wrapper>
   );
 }
