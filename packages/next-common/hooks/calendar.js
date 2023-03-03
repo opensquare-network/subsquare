@@ -9,7 +9,7 @@ import dayjs from "dayjs";
  */
 function useFetchCalendarEvents(endpoint, date, unit) {
   const [events, setEvents] = useState([]);
-  const isMounted = useIsMounted().current;
+  const isMounted = useIsMounted();
 
   const [begin_time, end_time] = useMemo(() => {
     const d = dayjs(date);
@@ -17,7 +17,7 @@ function useFetchCalendarEvents(endpoint, date, unit) {
   }, [date]);
 
   useEffect(() => {
-    if (isMounted) {
+    if (isMounted.current) {
       nextApi.fetch(endpoint, { begin_time, end_time }).then(({ result }) => {
         if (result) {
           setEvents(result);
