@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Divider from "../../../styled/layout/divider";
 import Title from "./title";
 import Content from "./content";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,29 +11,29 @@ const Wrapper = styled.div`
   padding: 12px;
   gap: 8px;
 
-  background: #ffffff;
-  border: 1px solid #ebeef4;
+  background: ${(p) => p.theme.neutral};
+  border: 1px solid ${(p) => p.theme.grey200Border};
 
-  box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
-    0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
-    0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
+  box-shadow: ${(p) => p.theme.shadow100};
   border-radius: 4px;
 `;
 
-function getDefaultTitle(event) {
-  return "Untitled";
-}
-
 export default function EventInfoCard({ event }) {
+  const [isFolded, setIsFolded] = useState(false);
+
   if (!event) {
     return null;
   }
 
   return (
     <Wrapper>
-      <Title text={event?.data?.postTitle || getDefaultTitle(event)} />
-      <Divider style={{ width: "100%" }} />
-      <Content {...event} />
+      <Title event={event} isFolded={isFolded} setIsFolded={setIsFolded} />
+      {!isFolded && (
+        <>
+          <Divider style={{ width: "100%" }} />
+          <Content {...event} />
+        </>
+      )}
     </Wrapper>
   );
 }
