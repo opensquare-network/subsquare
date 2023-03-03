@@ -17,7 +17,9 @@ const Wrapper = styled.div`
 export default function MaliciousHead() {
   return (
     <Wrapper>
-      <WarningIcon />
+      <div>
+        <WarningIcon />
+      </div>
       <span>
         Warning: Malicious proposal! Some of the external links below have been
         flagged as scams.
