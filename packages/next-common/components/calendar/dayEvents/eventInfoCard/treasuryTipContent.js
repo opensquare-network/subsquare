@@ -3,7 +3,7 @@ import BeneficiaryItem from "./infoItem/beneficiaryItem";
 import FinderItem from "./infoItem/finderItem";
 import { ItemWrapper } from "./infoItem/styled";
 
-export default function TreasuryTipContent({ hash, data }) {
+export default function TreasuryTipContent({ data }) {
   return (
     <>
       <FinderItem finder={data.proposer} />

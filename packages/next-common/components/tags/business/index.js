@@ -32,8 +32,8 @@ const OpenGov = styled(Common)`
 `;
 
 const Collectives = styled(Common)`
-  background: ${(props) => props.theme.secondaryGreen100};
-  color: ${(props) => props.theme.secondaryGreen500};
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
 `;
 
 export function TreasuryTag() {

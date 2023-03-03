@@ -3,8 +3,6 @@ import IndexItem from "./infoItem/indexItem";
 
 export default function DemocracyReferendumContent({ referendumIndex }) {
   return (
-    <>
-      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
-    </>
+    <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
   );
 }
