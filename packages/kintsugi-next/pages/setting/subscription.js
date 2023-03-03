@@ -169,7 +169,7 @@ export default withLoginUserRedux(
     }, [loginUser, router, unsubscribe]);
 
     const fetchSubscriptionSetting = async () => {
-      const { result } = await nextApi.fetch(`user/subscription`);
+      const { result } = await nextApi.fetch("user/subscription");
       if (result) {
         setSubscription(result);
       }
@@ -201,7 +201,7 @@ export default withLoginUserRedux(
 
     return (
       <SettingsLayout>
-        <NextHead title={`Settings`} desc={``} />
+        <NextHead title={"Settings"} desc={""} />
         <Wrapper>
           <TitleContainer>Subscription</TitleContainer>
           <ContentWrapper>
@@ -264,7 +264,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: subscription } = await ssrNextApi.fetch(
-    `user/subscription`,
+    "user/subscription",
     {},
     options
   );

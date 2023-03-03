@@ -22,7 +22,7 @@ export default function Items({ total = 0, page, onPageChange = null }) {
           page={group[j]}
           key={key++}
           onPageChange={onPageChange}
-        />
+        />,
       );
     }
 

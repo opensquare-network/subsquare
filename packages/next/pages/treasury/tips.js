@@ -28,7 +28,7 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
   const isMounted = useIsMounted();
 
   const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch(`treasury/tips`);
+    const { result } = await nextApi.fetch("treasury/tips");
     if (result && isMounted.current) {
       setTips(result);
     }
@@ -38,7 +38,7 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
 
   const items = (tips.items || []).map((item) => normalizeTipListItem(chain, item));
   const category = "Tips";
-  const seoInfo = { title: `Treasury Tips`, desc: `Treasury Tips` };
+  const seoInfo = { title: "Treasury Tips", desc: "Treasury Tips" };
 
   const create = (
     <Create onClick={() => setShowPopup(true)}>
@@ -74,7 +74,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: tips }] = await Promise.all([
-    ssrNextApi.fetch(`treasury/tips`, {
+    ssrNextApi.fetch("treasury/tips", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

@@ -12,7 +12,7 @@ export default function useReferendumVotingFinishHeight() {
       gov2State.Cancelled,
       gov2State.Killed,
       "Confirmed",
-    ].includes(item.name)
+    ].includes(item.name),
   );
 
   return finishItem?.indexer?.blockHeight;

@@ -79,7 +79,7 @@ export default function AllBeenDelegatedPopupAllList({
                     <ValueDisplay
                       value={toPrecision(
                         sumBy(item.beenDelegated, "balance"),
-                        decimals
+                        decimals,
                       )}
                       symbol={symbol}
                       showTooltip={false}

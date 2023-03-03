@@ -23,11 +23,11 @@ function PopupContent({
   const signerAccount = useSignerAccount(extensionAccounts);
   const [balance, loadingBalance] = useAddressBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
 
   return (

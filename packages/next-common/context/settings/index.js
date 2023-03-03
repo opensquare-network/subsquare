@@ -23,7 +23,7 @@ export default function SettingsProvider({ homeFoldItems = "", children }) {
         [
           ...allHomeMenuNames,
           ...allGov2HomeMenuNames.map((name) => gov2MenuFoldablePrefix + name),
-        ].includes(item)
+        ].includes(item),
       );
   } catch (e) {
     items = [];

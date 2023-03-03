@@ -9,22 +9,22 @@ export default function useTreasuryBountyOptions({
   ...data
 }) {
   const [treasuryBountyProposed, setTreasuryBountyProposed] = useState(
-    !!data.treasuryBountyProposed?.isOn
+    !!data.treasuryBountyProposed?.isOn,
   );
   const [treasuryBountyAwarded, setTreasuryBountyAwarded] = useState(
-    !!data.treasuryBountyAwarded?.isOn
+    !!data.treasuryBountyAwarded?.isOn,
   );
   const [treasuryBountyApproved, setTreasuryBountyApproved] = useState(
-    !!data.treasuryBountyApproved?.isOn
+    !!data.treasuryBountyApproved?.isOn,
   );
   const [treasuryBountyCanceled, setTreasuryBountyCanceled] = useState(
-    !!data.treasuryBountyCanceled?.isOn
+    !!data.treasuryBountyCanceled?.isOn,
   );
   const [treasuryBountyClaimed, setTreasuryBountyClaimed] = useState(
-    !!data.treasuryBountyClaimed?.isOn
+    !!data.treasuryBountyClaimed?.isOn,
   );
   const [treasuryBountyRejected, setTreasuryBountyRejected] = useState(
-    !!data.treasuryBountyRejected?.isOn
+    !!data.treasuryBountyRejected?.isOn,
   );
 
   const isChanged =
@@ -57,7 +57,7 @@ export default function useTreasuryBountyOptions({
       treasuryBountyCanceled,
       treasuryBountyClaimed,
       treasuryBountyRejected,
-    ]
+    ],
   );
 
   const treasuryBountyOptionsComponent = (

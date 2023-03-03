@@ -13,7 +13,7 @@ export default withLoginUserRedux(({ posts, chain }) => {
     normalizeReferendaListItem(chain, item)
   );
   const category = businessCategory.democracyReferenda;
-  const seoInfo = { title: `Democracy Referenda`, desc: `Democracy Referenda` };
+  const seoInfo = { title: "Democracy Referenda", desc: "Democracy Referenda" };
 
   return (
     <HomeLayout seoInfo={seoInfo}>
@@ -38,7 +38,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`democracy/referendums`, {
+    nextApi.fetch("democracy/referendums", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

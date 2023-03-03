@@ -13,7 +13,7 @@ export function connect() {
     socket.disconnect();
   }
 
-  const socketUrl = new URL(`/`, process.env.NEXT_PUBLIC_API_END_POINT).href;
+  const socketUrl = new URL("/", process.env.NEXT_PUBLIC_API_END_POINT).href;
   socket = io(socketUrl);
   socket.connect();
 

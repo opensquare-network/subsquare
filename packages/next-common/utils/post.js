@@ -14,7 +14,7 @@ export function getMentionList(comments) {
     comments?.items
       ?.map((comment) => comment.author)
       .filter((author) => !!author) ?? [],
-    (item) => item.username
+    (item) => item.username,
   );
 }
 
@@ -77,7 +77,7 @@ export function getOnReply(
   setContent,
   quillRef,
   focusEditor,
-  chain
+  chain,
 ) {
   return (user) => {
     if (!user) {
@@ -94,7 +94,7 @@ export function getOnReply(
         }
         const at = content ? `${reply}` : reply;
         if (content === reply) {
-          setContent(``);
+          setContent("");
         } else {
           setContent(content + at);
         }
@@ -125,7 +125,7 @@ export function getOnReply(
             },
           ],
         };
-        if (JSON.stringify(contents.ops) === `[{"insert":"\\n"}]`) {
+        if (JSON.stringify(contents.ops) === "[{\"insert\":\"\\n\"}]") {
           quillRef.setContents(reply.ops);
         } else {
           quillRef.setContents(contents.ops.concat(reply.ops));

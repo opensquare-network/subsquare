@@ -30,8 +30,8 @@ export default function ConfirmEmail({ pin, email, identity, setErrors }) {
       if (result) {
         dispatch(
           newSuccessToast(
-            "Verification code has been confirmed, you can subscribe for notifications now."
-          )
+            "Verification code has been confirmed, you can subscribe for notifications now.",
+          ),
         );
         router.replace("/");
       } else if (error) {

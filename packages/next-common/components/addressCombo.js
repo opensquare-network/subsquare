@@ -101,7 +101,7 @@ export default function AddressCombo({ accounts, address, setAddress }) {
   const ref = useRef();
 
   const selectedAccount = accounts.find(
-    (item) => encodeAddressToChain(item.address, chain) === address
+    (item) => encodeAddressToChain(item.address, chain) === address,
   );
   const shortAddr = addressEllipsis(address);
 

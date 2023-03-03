@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
           <CheckUnFinalized id={id} />
       }
     </DetailWithRightLayout>
-  </PostProvider>
+  </PostProvider>;
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {

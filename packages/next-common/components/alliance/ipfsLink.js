@@ -17,7 +17,7 @@ const Link = styled(ExternalLink)`
   svg {
     margin-left: 6px;
   }
-`
+`;
 
 export default function IpfsLink({ cid }) {
   return <Link
@@ -25,5 +25,5 @@ export default function IpfsLink({ cid }) {
     href={ getIpfsLink(cid) }>
     <span>IPFS</span>
     <ExternalLinkIcon />
-  </Link>
+  </Link>;
 }

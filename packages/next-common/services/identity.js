@@ -43,7 +43,7 @@ const delayQuery = debounce(() => {
         headers,
         method: "POST",
         body: JSON.stringify({ addresses }),
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => {

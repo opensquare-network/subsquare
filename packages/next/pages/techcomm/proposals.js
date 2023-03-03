@@ -12,8 +12,8 @@ export default withLoginUserRedux(({ proposals, chain }) => {
   );
   const category = businessCategory.tcProposals;
   const seoInfo = {
-    title: `Technical Committee Proposals`,
-    desc: `Technical Committee Proposals`,
+    title: "Technical Committee Proposals",
+    desc: "Technical Committee Proposals",
   };
 
   return (
@@ -38,7 +38,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch(`tech-comm/motions`, {
+    nextApi.fetch("tech-comm/motions", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

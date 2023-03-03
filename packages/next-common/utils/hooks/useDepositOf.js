@@ -9,7 +9,7 @@ export default function useDepositOf(
   api,
   proposalIndex,
   atBlockHeight,
-  triggerUpdate
+  triggerUpdate,
 ) {
   const [seconds, setSeconds] = useState([]);
   const [depositRequired, setDepositRequired] = useState(0);

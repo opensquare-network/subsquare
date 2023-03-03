@@ -51,7 +51,7 @@ const treasury = {
         Chains.kusama,
         Chains.rococo,
         Chains.khala,
-        Chains.phala
+        Chains.phala,
       ]),
       icon: (
         <MenuIconWrapper>

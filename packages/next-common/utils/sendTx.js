@@ -56,7 +56,7 @@ export async function sendTx({
 
   const toastId = newToastId();
   dispatch(
-    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`)
+    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
   );
 
   try {
@@ -109,8 +109,8 @@ export async function sendTx({
             dispatch(
               updatePendingToast(
                 toastId,
-                `(3/${totalSteps}) Inblock, waiting for finalization...`
-              )
+                `(3/${totalSteps}) Inblock, waiting for finalization...`,
+              ),
             );
           }
 
@@ -128,14 +128,14 @@ export async function sendTx({
             onInBlock();
           }
         }
-      }
+      },
     );
 
     dispatch(
       updatePendingToast(
         toastId,
-        `(2/${totalSteps}) Submitted, waiting for wrapping...`
-      )
+        `(2/${totalSteps}) Submitted, waiting for wrapping...`,
+      ),
     );
     onSubmitted(signerAddress);
     onClose();

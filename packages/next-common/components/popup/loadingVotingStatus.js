@@ -17,5 +17,5 @@ export default function LoadingVotingStatus() {
         <Loading size={14} />
       </LoadingWrapper>
     </StatusWrapper>
-  )
+  );
 }

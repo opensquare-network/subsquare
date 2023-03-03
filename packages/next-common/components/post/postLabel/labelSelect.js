@@ -53,7 +53,7 @@ export default function LabelSelect({
         return [...selected, name].slice(-maxSelect);
       });
     },
-    [maxSelect]
+    [maxSelect],
   );
 
   if (allLabels.length === 0) {

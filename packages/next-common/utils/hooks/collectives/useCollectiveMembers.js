@@ -11,7 +11,7 @@ export default function useCollectiveMembers(moduleName = "council") {
 
   useEffect(() => {
     if (!api || !api.query?.[moduleName]?.members) {
-      return
+      return;
     }
 
     if (cache.current[moduleName]) {
@@ -32,7 +32,7 @@ export default function useCollectiveMembers(moduleName = "council") {
       if (isMounted.current) {
         setLoading(false);
       }
-    })
+    });
   }, [api]);
 
   return {

@@ -10,8 +10,8 @@ function getData(item) {
   const { method, args = {} } = item;
   if ("Announced" === method) {
     return {
-      cid: <IpfsCidWithLink cid={ args.cid } />
-    }
+      cid: <IpfsCidWithLink cid={ args.cid } />,
+    };
   }
 
   return args;
@@ -29,7 +29,7 @@ export default function AnnouncementTimeline({ data }) {
       status: { value: method, type },
       data: getData(item),
     };
-  })
+  });
   const motionTimeline = createMotionTimelineData(motion, true, "/alliance/motion");
   timelineData.push(motionTimeline);
   sortTimeline(timelineData);

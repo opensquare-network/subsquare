@@ -13,7 +13,7 @@ export default function normalizeAllianceAnnouncement(item = {}) {
     status: onchainData.state?.state ?? "Unknown",
     detailLink: `/alliance/announcement/${getAnnouncementId(
       item.height,
-      item.cid
+      item.cid,
     )}`,
     time: getPostLastActivityAt(item),
   };

@@ -63,7 +63,7 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   return (
     <BaseLayout>
-      <NextHead title={`Verify email`} desc={`Verify email`} />
+      <NextHead title={"Verify email"} desc={"Verify email"} />
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>

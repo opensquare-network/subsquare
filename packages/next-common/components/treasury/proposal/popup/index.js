@@ -44,7 +44,7 @@ function PopupContent({
   const api = useApi();
 
   const proposalValue = new BigNumber(inputValue).times(
-    Math.pow(10, node.decimals)
+    Math.pow(10, node.decimals),
   );
   const bond = useBond({
     api,
@@ -55,11 +55,11 @@ function PopupContent({
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));

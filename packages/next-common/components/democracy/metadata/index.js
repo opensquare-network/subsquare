@@ -33,7 +33,7 @@ export default function ReferendumMetadata({
       timeline,
       oneBlockTime,
       blockHeight,
-      latestBlockTime
+      latestBlockTime,
     );
 
   let hash = proposalHash;

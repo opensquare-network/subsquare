@@ -19,7 +19,7 @@ export default withLoginUserRedux(({}) => {
       setLoading(false);
     }
   }, [members]);
-  const category = `Technical Committee Members`;
+  const category = "Technical Committee Members";
   const seoInfo = { title: category, desc: category };
 
   return (

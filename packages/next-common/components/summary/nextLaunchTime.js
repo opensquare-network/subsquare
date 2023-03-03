@@ -29,7 +29,7 @@ function useEstimateTime(ms) {
       ]
         .filter(Boolean)
         .slice(0, 2),
-    [ms]
+    [ms],
   );
 }
 
@@ -48,7 +48,7 @@ export default function SummaryNextLaunchTime({ nextLaunchTimestamp = 0 }) {
         <Content>
           <Tooltip
             content={dayjs(nextLaunchTimestampMilliseconds).format(
-              "YYYY-MM-DD HH:MM:ss"
+              "YYYY-MM-DD HH:MM:ss",
             )}
           >
             <span>

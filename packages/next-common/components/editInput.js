@@ -8,7 +8,7 @@ import EditorWrapper from "./editor/editorWrapper";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Wrapper = styled.div`
@@ -41,7 +41,7 @@ export default function EditInput({
   const [contentType, setContentType] = useState(editContentType);
   const [errors, setErrors] = useState();
 
-  const isEmpty = content === "" || content === `<p><br></p>`;
+  const isEmpty = content === "" || content === "<p><br></p>";
 
   const onUpdate = async () => {
     try {

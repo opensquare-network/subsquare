@@ -223,13 +223,13 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
                     {item.itemRender?.(
                       item.icon,
                       item.name,
-                      item.activeCount
+                      item.activeCount,
                     ) ??
                       defaultItemRender(
                         item.icon,
                         item.name,
                         item.activeCount,
-                        isExternalLink
+                        isExternalLink,
                       )}
                   </Item>
                 </a>

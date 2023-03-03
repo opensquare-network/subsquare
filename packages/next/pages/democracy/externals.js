@@ -38,7 +38,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: externals }] = await Promise.all([
-    nextApi.fetch(`democracy/externals`, {
+    nextApi.fetch("democracy/externals", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

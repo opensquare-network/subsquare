@@ -14,7 +14,7 @@ export default function useLatestBlockTime() {
   useEffect(() => {
     if (api) {
       getBlockTimeByHeight(api, blockHeight).then(
-        (blockTime) => isMounted.current && setTime(blockTime)
+        (blockTime) => isMounted.current && setTime(blockTime),
       );
     }
   }, [api, blockHeight]);

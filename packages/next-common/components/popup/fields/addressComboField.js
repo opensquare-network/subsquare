@@ -17,7 +17,7 @@ export default function AddressComboField({
   }));
 
   const [targetAddress, setTargetAddress] = useState(
-    accounts[0]?.address && encodeAddressToChain(accounts[0]?.address, chain)
+    accounts[0]?.address && encodeAddressToChain(accounts[0]?.address, chain),
   );
 
   useEffect(() => {

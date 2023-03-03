@@ -33,7 +33,7 @@ export default function CollectiveMetadata({
   }
   data.push(
     [capitalize(keys.threshold), threshold],
-    [capitalize(keys.hash), hash]
+    [capitalize(keys.hash), hash],
   );
 
   if (call) {

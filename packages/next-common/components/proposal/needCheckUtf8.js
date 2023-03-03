@@ -15,7 +15,7 @@ export default function needCheckUtf8(section, method, argName) {
   // For zeitgeist network
   if ("predictionMarkets" === section) {
     return ("rejectMarket" === method && "rejectReason" === argName) ||
-      ("requestEdit" === method && "editReason" === argName)
+      ("requestEdit" === method && "editReason" === argName);
   }
 
   return false;

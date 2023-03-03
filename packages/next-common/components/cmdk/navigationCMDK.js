@@ -176,7 +176,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
             }),
           },
         ],
-        search
+        search,
       );
 
       return {
@@ -217,7 +217,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
           },
           ...(search && subPageItems.map((i) => i.filteredItems).flat()),
         ],
-        search
+        search,
       ),
     };
 

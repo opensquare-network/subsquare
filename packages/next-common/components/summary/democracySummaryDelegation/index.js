@@ -25,12 +25,12 @@ export default function DemocracySummaryDelegation() {
 
   const onDelegateInBlock = useCallback(() => {
     refresh();
-    dispatch(newSuccessToast(`Delegate success`));
+    dispatch(newSuccessToast("Delegate success"));
   }, [dispatch, refresh]);
 
   const onUndelegateInBlock = useCallback(() => {
     refresh();
-    dispatch(newSuccessToast(`Undelegated`));
+    dispatch(newSuccessToast("Undelegated"));
   }, [dispatch, refresh]);
 
   return (

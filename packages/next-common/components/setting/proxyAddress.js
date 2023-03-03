@@ -39,7 +39,7 @@ export default function ProxyAddress() {
   const dispatch = useDispatch();
   const loginUser = useUser();
   const [inputAddress, setInputAddres] = useState(
-    loginUser?.proxyAddress || ""
+    loginUser?.proxyAddress || "",
   );
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
@@ -62,13 +62,13 @@ export default function ProxyAddress() {
           if (proxyTypes.length > 0 && !success) {
             setErrorMsg(
               `Proxy type: ${proxyTypes.join(
-                ","
-              )}. Proxy type should be Governance, NonTransfer, or Any.`
+                ",",
+              )}. Proxy type should be Governance, NonTransfer, or Any.`,
             );
             return;
           }
           setSuccessMsg(`Proxy type: ${proxyTypes.join(",")}`);
-        }
+        },
       );
     }
   }, [api, loginUser?.proxyAddress]);
@@ -93,7 +93,7 @@ export default function ProxyAddress() {
       const { success, proxyTypes } = await checkProxy(
         api,
         inputAddress,
-        loginUser?.address
+        loginUser?.address,
       );
       if (proxyTypes.length === 0) {
         setErrorMsg("Can't find the proxy setting on-chain.");
@@ -102,8 +102,8 @@ export default function ProxyAddress() {
       if (proxyTypes.length > 0 && !success) {
         setErrorMsg(
           `Proxy type: ${proxyTypes.join(
-            ","
-          )}. Proxy type should be Governance, NonTransfer, or Any.`
+            ",",
+          )}. Proxy type should be Governance, NonTransfer, or Any.`,
         );
         return;
       }

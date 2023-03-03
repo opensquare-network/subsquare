@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ detail }) => {
         }}
       >
         <Back
-          href={`/polkassembly/discussions`}
+          href={"/polkassembly/discussions"}
           text="Back to Polkassembly Discussions"
         />
         <DetailItem postReactions={postReactions} />

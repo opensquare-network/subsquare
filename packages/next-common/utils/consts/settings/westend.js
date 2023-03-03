@@ -10,6 +10,6 @@ const westend = {
   symbol: "DOT",
   decimals: 12,
   ss58Format: 42,
-}
+};
 
 export default westend;

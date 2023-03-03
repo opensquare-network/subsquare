@@ -53,5 +53,5 @@ export default function AnnouncementNavigation() {
   return <NavigationWrapper>
     <AllianceMotionNavigator motion={ motion } />
     <AnnouncementNavigator cid={ cid } height={ height } isLink={false} />
-  </NavigationWrapper>
+  </NavigationWrapper>;
 }

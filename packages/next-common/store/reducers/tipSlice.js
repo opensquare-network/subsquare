@@ -8,7 +8,7 @@ const tipSlice = createSlice({
   reducers: {
     setCountDownBlockNum(state, { payload }) {
       state.countDownBlockNum = payload;
-    }
+    },
   },
 });
 

@@ -17,5 +17,5 @@ export default function AyeNay({ isAye = true }) {
 
   return <Wrapper>
     {text} {icon}
-  </Wrapper>
+  </Wrapper>;
 }

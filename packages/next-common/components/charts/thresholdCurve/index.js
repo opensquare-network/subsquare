@@ -93,22 +93,22 @@ export default function ThresholdCurvesChart({
         displayColors: false,
         callbacks: {
           title() {
-            return ``;
+            return "";
           },
           label(tooltipItem) {
             const { dataIndex, parsed, dataset } = tooltipItem;
 
             // only display one item
             if (dataset.label === "Approval") {
-              return ``;
+              return "";
             }
 
             const hs = parsed.x;
             const supportValue = Number(
-              chartData.datasets[0].data[dataIndex]
+              chartData.datasets[0].data[dataIndex],
             ).toFixed(2);
             const approvalValue = Number(
-              chartData.datasets[1].data[dataIndex]
+              chartData.datasets[1].data[dataIndex],
             ).toFixed(2);
 
             const result = `Time: ${hs}hs Support: ${supportValue}% Approval: ${approvalValue}%`;

@@ -5,16 +5,16 @@ import { SubLabel, ToggleItem } from "./styled";
 
 export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
   const [councilMotionProposed, setCouncilMotionProposed] = useState(
-    !!data.councilMotionProposed?.isOn
+    !!data.councilMotionProposed?.isOn,
   );
   const [councilMotionVoted, setCouncilMotionVoted] = useState(
-    !!data.councilMotionVoted?.isOn
+    !!data.councilMotionVoted?.isOn,
   );
   const [councilMotionApproved, setCouncilMotionApproved] = useState(
-    !!data.councilMotionApproved?.isOn
+    !!data.councilMotionApproved?.isOn,
   );
   const [councilMotionDisApproved, setCouncilMotionDisApproved] = useState(
-    !!data.councilMotionDisApproved?.isOn
+    !!data.councilMotionDisApproved?.isOn,
   );
 
   const isChanged =
@@ -41,7 +41,7 @@ export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
       councilMotionVoted,
       councilMotionApproved,
       councilMotionDisApproved,
-    ]
+    ],
   );
 
   const councilMotionOptionsComponent = (

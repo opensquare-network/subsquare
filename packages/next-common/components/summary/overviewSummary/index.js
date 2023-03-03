@@ -200,7 +200,7 @@ export default function OverviewSummary({ summaryData }) {
     {
       title: `${showCouncil && "Council / "}T.C.`,
       content: <CouncilGroupContent summaryData={summaryData} />,
-    }
+    },
   );
 
   return (

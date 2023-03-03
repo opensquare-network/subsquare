@@ -9,10 +9,10 @@ export default function useDemocracyProposalOptions({
   ...data
 }) {
   const [democracyProposalProposed, setDemocracyProposalProposed] = useState(
-    !!data.democracyProposalProposed?.isOn
+    !!data.democracyProposalProposed?.isOn,
   );
   const [democracyProposalCanceled, setDemocracyProposalCanceled] = useState(
-    !!data.democracyProposalCanceled?.isOn
+    !!data.democracyProposalCanceled?.isOn,
   );
 
   const isChanged =
@@ -30,7 +30,7 @@ export default function useDemocracyProposalOptions({
       democracyProposalProposed,
       democracyProposalCanceled,
     }),
-    [democracyProposalProposed, democracyProposalCanceled]
+    [democracyProposalProposed, democracyProposalCanceled],
   );
 
   const democracyProposalOptionsComponent = (

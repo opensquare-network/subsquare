@@ -14,7 +14,7 @@ const defaults = {
 const buildOpenGraphMediaTags = (
   mediaType,
   media = [],
-  { defaultWidth, defaultHeight } = {}
+  { defaultWidth, defaultHeight } = {},
 ) => {
   return media.reduce((tags, medium, index) => {
     tags.push(
@@ -22,7 +22,7 @@ const buildOpenGraphMediaTags = (
         key={`og:${mediaType}:0${index}`}
         property={`og:${mediaType}`}
         content={medium.url}
-      />
+      />,
     );
 
     if (medium.alt) {
@@ -31,7 +31,7 @@ const buildOpenGraphMediaTags = (
           key={`og:${mediaType}:alt0${index}`}
           property={`og:${mediaType}:alt`}
           content={medium.alt}
-        />
+        />,
       );
     }
 
@@ -41,7 +41,7 @@ const buildOpenGraphMediaTags = (
           key={`og:${mediaType}:secure_url0${index}`}
           property={`og:${mediaType}:secure_url`}
           content={medium.secureUrl.toString()}
-        />
+        />,
       );
     }
 
@@ -51,7 +51,7 @@ const buildOpenGraphMediaTags = (
           key={`og:${mediaType}:type0${index}`}
           property={`og:${mediaType}:type`}
           content={medium.type.toString()}
-        />
+        />,
       );
     }
 
@@ -61,7 +61,7 @@ const buildOpenGraphMediaTags = (
           key={`og:${mediaType}:width0${index}`}
           property={`og:${mediaType}:width`}
           content={medium.width.toString()}
-        />
+        />,
       );
     } else if (defaultWidth) {
       tags.push(
@@ -69,7 +69,7 @@ const buildOpenGraphMediaTags = (
           key={`og:${mediaType}:width0${index}`}
           property={`og:${mediaType}:width`}
           content={defaultWidth.toString()}
-        />
+        />,
       );
     }
 
@@ -79,7 +79,7 @@ const buildOpenGraphMediaTags = (
           key={`og:${mediaType}:height${index}`}
           property={`og:${mediaType}:height`}
           content={medium.height.toString()}
-        />
+        />,
       );
     } else if (defaultHeight) {
       tags.push(
@@ -87,7 +87,7 @@ const buildOpenGraphMediaTags = (
           key={`og:${mediaType}:height${index}`}
           property={`og:${mediaType}:height`}
           content={defaultHeight.toString()}
-        />
+        />,
       );
     }
 
@@ -173,7 +173,7 @@ const buildTags = (config) => {
         content={`${noindex ? "noindex" : "index"},${
           nofollow ? "nofollow" : "follow"
         }${robotsParams}`}
-      />
+      />,
     );
     if (!disableGooglebot) {
       tagsToRender.push(
@@ -183,7 +183,7 @@ const buildTags = (config) => {
           content={`${noindex ? "noindex" : "index"},${
             nofollow ? "nofollow" : "follow"
           }${robotsParams}`}
-        />
+        />,
       );
     }
   } else {
@@ -192,7 +192,7 @@ const buildTags = (config) => {
         key="robots"
         name="robots"
         content={`index,follow${robotsParams}`}
-      />
+      />,
     );
     if (!disableGooglebot) {
       tagsToRender.push(
@@ -200,14 +200,14 @@ const buildTags = (config) => {
           key="googlebot"
           name="googlebot"
           content={`index,follow${robotsParams}`}
-        />
+        />,
       );
     }
   }
 
   if (config.description) {
     tagsToRender.push(
-      <meta key="description" name="description" content={config.description} />
+      <meta key="description" name="description" content={config.description} />,
     );
   }
 
@@ -218,7 +218,7 @@ const buildTags = (config) => {
         key="mobileAlternate"
         media={config.mobileAlternate.media}
         href={config.mobileAlternate.href}
-      />
+      />,
     );
   }
 
@@ -230,7 +230,7 @@ const buildTags = (config) => {
           key={`languageAlternate-${languageAlternate.hrefLang}`}
           hrefLang={languageAlternate.hrefLang}
           href={languageAlternate.href}
-        />
+        />,
       );
     });
   }
@@ -242,7 +242,7 @@ const buildTags = (config) => {
           key="twitter:card"
           name="twitter:card"
           content={config.twitter.cardType}
-        />
+        />,
       );
     }
 
@@ -252,7 +252,7 @@ const buildTags = (config) => {
           key="twitter:site"
           name="twitter:site"
           content={config.twitter.site}
-        />
+        />,
       );
     }
 
@@ -262,7 +262,7 @@ const buildTags = (config) => {
           key="twitter:creator"
           name="twitter:creator"
           content={config.twitter.handle}
-        />
+        />,
       );
     }
   }
@@ -274,7 +274,7 @@ const buildTags = (config) => {
           key="fb:app_id"
           property="fb:app_id"
           content={config.facebook.appId}
-        />
+        />,
       );
     }
   }
@@ -285,7 +285,7 @@ const buildTags = (config) => {
         key="og:title"
         property="og:title"
         content={config.openGraph?.title || updatedTitle}
-      />
+      />,
     );
   }
 
@@ -295,7 +295,7 @@ const buildTags = (config) => {
         key="og:description"
         property="og:description"
         content={config.openGraph?.description || config.description}
-      />
+      />,
     );
   }
 
@@ -306,7 +306,7 @@ const buildTags = (config) => {
           key="og:url"
           property="og:url"
           content={config.openGraph.url || config.canonical}
-        />
+        />,
       );
     }
 
@@ -314,7 +314,7 @@ const buildTags = (config) => {
       const type = config.openGraph.type.toLowerCase();
 
       tagsToRender.push(
-        <meta key="og:type" property="og:type" content={type} />
+        <meta key="og:type" property="og:type" content={type} />,
       );
 
       if (type === "profile" && config.openGraph.profile) {
@@ -324,7 +324,7 @@ const buildTags = (config) => {
               key="profile:first_name"
               property="profile:first_name"
               content={config.openGraph.profile.firstName}
-            />
+            />,
           );
         }
 
@@ -334,7 +334,7 @@ const buildTags = (config) => {
               key="profile:last_name"
               property="profile:last_name"
               content={config.openGraph.profile.lastName}
-            />
+            />,
           );
         }
 
@@ -344,7 +344,7 @@ const buildTags = (config) => {
               key="profile:username"
               property="profile:username"
               content={config.openGraph.profile.username}
-            />
+            />,
           );
         }
 
@@ -354,7 +354,7 @@ const buildTags = (config) => {
               key="profile:gender"
               property="profile:gender"
               content={config.openGraph.profile.gender}
-            />
+            />,
           );
         }
       } else if (type === "book" && config.openGraph.book) {
@@ -368,7 +368,7 @@ const buildTags = (config) => {
                 key={`book:author:0${index}`}
                 property="book:author"
                 content={author}
-              />
+              />,
             );
           });
         }
@@ -379,7 +379,7 @@ const buildTags = (config) => {
               key="book:isbn"
               property="book:isbn"
               content={config.openGraph.book.isbn}
-            />
+            />,
           );
         }
 
@@ -389,7 +389,7 @@ const buildTags = (config) => {
               key="book:release_date"
               property="book:release_date"
               content={config.openGraph.book.releaseDate}
-            />
+            />,
           );
         }
 
@@ -400,7 +400,7 @@ const buildTags = (config) => {
                 key={`book:tag:0${index}`}
                 property="book:tag"
                 content={tag}
-              />
+              />,
             );
           });
         }
@@ -411,7 +411,7 @@ const buildTags = (config) => {
               key="article:published_time"
               property="article:published_time"
               content={config.openGraph.article.publishedTime}
-            />
+            />,
           );
         }
 
@@ -421,7 +421,7 @@ const buildTags = (config) => {
               key="article:modified_time"
               property="article:modified_time"
               content={config.openGraph.article.modifiedTime}
-            />
+            />,
           );
         }
 
@@ -431,7 +431,7 @@ const buildTags = (config) => {
               key="article:expiration_time"
               property="article:expiration_time"
               content={config.openGraph.article.expirationTime}
-            />
+            />,
           );
         }
 
@@ -445,7 +445,7 @@ const buildTags = (config) => {
                 key={`article:author:0${index}`}
                 property="article:author"
                 content={author}
-              />
+              />,
             );
           });
         }
@@ -456,7 +456,7 @@ const buildTags = (config) => {
               key="article:section"
               property="article:section"
               content={config.openGraph.article.section}
-            />
+            />,
           );
         }
 
@@ -470,7 +470,7 @@ const buildTags = (config) => {
                 key={`article:tag:0${index}`}
                 property="article:tag"
                 content={tag}
-              />
+              />,
             );
           });
         }
@@ -492,7 +492,7 @@ const buildTags = (config) => {
                   key={`video:actor:0${index}`}
                   property="video:actor"
                   content={actor.profile}
-                />
+                />,
               );
             }
 
@@ -502,7 +502,7 @@ const buildTags = (config) => {
                   key={`video:actor:role:0${index}`}
                   property="video:actor:role"
                   content={actor.role}
-                />
+                />,
               );
             }
           });
@@ -518,7 +518,7 @@ const buildTags = (config) => {
                 key={`video:director:0${index}`}
                 property="video:director"
                 content={director}
-              />
+              />,
             );
           });
         }
@@ -533,7 +533,7 @@ const buildTags = (config) => {
                 key={`video:writer:0${index}`}
                 property="video:writer"
                 content={writer}
-              />
+              />,
             );
           });
         }
@@ -544,7 +544,7 @@ const buildTags = (config) => {
               key="video:duration"
               property="video:duration"
               content={config.openGraph.video.duration.toString()}
-            />
+            />,
           );
         }
 
@@ -554,7 +554,7 @@ const buildTags = (config) => {
               key="video:release_date"
               property="video:release_date"
               content={config.openGraph.video.releaseDate}
-            />
+            />,
           );
         }
 
@@ -565,7 +565,7 @@ const buildTags = (config) => {
                 key={`video:tag:0${index}`}
                 property="video:tag"
                 content={tag}
-              />
+              />,
             );
           });
         }
@@ -576,7 +576,7 @@ const buildTags = (config) => {
               key="video:series"
               property="video:series"
               content={config.openGraph.video.series}
-            />
+            />,
           );
         }
       }
@@ -596,7 +596,7 @@ const buildTags = (config) => {
         ...buildOpenGraphMediaTags("image", config.openGraph.images, {
           defaultWidth: defaults.defaultOpenGraphImageWidth,
           defaultHeight: defaults.defaultOpenGraphImageHeight,
-        })
+        }),
       );
     }
 
@@ -614,7 +614,7 @@ const buildTags = (config) => {
         ...buildOpenGraphMediaTags("video", config.openGraph.videos, {
           defaultWidth: defaults.defaultOpenGraphVideoWidth,
           defaultHeight: defaults.defaultOpenGraphVideoHeight,
-        })
+        }),
       );
     }
 
@@ -624,7 +624,7 @@ const buildTags = (config) => {
           key="og:locale"
           property="og:locale"
           content={config.openGraph.locale}
-        />
+        />,
       );
     }
 
@@ -634,14 +634,14 @@ const buildTags = (config) => {
           key="og:site_name"
           property="og:site_name"
           content={config.openGraph.site_name}
-        />
+        />,
       );
     }
   }
 
   if (config.canonical) {
     tagsToRender.push(
-      <link rel="canonical" href={config.canonical} key="canonical" />
+      <link rel="canonical" href={config.canonical} key="canonical" />,
     );
   }
 
@@ -653,7 +653,7 @@ const buildTags = (config) => {
             tag.keyOverride ?? tag.name ?? tag.property ?? tag.httpEquiv
           }`}
           {...tag}
-        />
+        />,
       );
     });
   }
@@ -661,7 +661,7 @@ const buildTags = (config) => {
   if (config.additionalLinkTags?.length) {
     config.additionalLinkTags.forEach((tag) => {
       tagsToRender.push(
-        <link key={`link${tag.keyOverride ?? tag.href}${tag.rel}`} {...tag} />
+        <link key={`link${tag.keyOverride ?? tag.href}${tag.rel}`} {...tag} />,
       );
     });
   }

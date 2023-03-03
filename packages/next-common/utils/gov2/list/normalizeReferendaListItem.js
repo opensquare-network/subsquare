@@ -3,7 +3,7 @@ import { getPostLastActivityAt } from "../../viewfuncs/postUpdatedTime";
 
 export default function normalizeGov2ReferendaListItem(item, tracks = []) {
   const track = tracks.find(
-    (trackItem) => trackItem.id === item.onchainData?.track
+    (trackItem) => trackItem.id === item.onchainData?.track,
   );
 
   return {
@@ -16,5 +16,5 @@ export default function normalizeGov2ReferendaListItem(item, tracks = []) {
     detailLink: `/referenda/referendum/${ item.referendumIndex }`,
     commentsCount: item.commentsCount,
     trackName: track?.name || item.trackInfo?.name,
-  }
+  };
 }

@@ -4,7 +4,7 @@ export default async function getElectorate(api, height) {
   let blockHeight = height;
   if (!blockHeight) {
     const issuance = await api.query.balances.totalIssuance();
-    return issuance.toBigInt().toString()
+    return issuance.toBigInt().toString();
   }
 
   if (electorates[blockHeight]) {

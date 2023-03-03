@@ -115,7 +115,7 @@ export default function Second({
     api,
     proposalIndex,
     atBlockHeight,
-    triggerUpdate
+    triggerUpdate,
   );
   const node = useChainSettings();
   const secondsCount = countBy(seconds);

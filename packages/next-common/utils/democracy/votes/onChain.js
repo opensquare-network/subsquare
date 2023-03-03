@@ -27,7 +27,7 @@ function normalizeAndSort(votes = []) {
 export async function getOnChainReferendum(api, referendumIndex) {
   const referendums = await api.derive.democracy.referendums();
   const referendum = referendums.find(
-    (referendum) => referendum.index.toNumber() === parseInt(referendumIndex)
+    (referendum) => referendum.index.toNumber() === parseInt(referendumIndex),
   );
 
   if (!referendum) {

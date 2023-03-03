@@ -11,5 +11,5 @@ export default function normalizeBountyListItem(chain, item) {
     time: getPostLastActivityAt(item),
     detailLink: `/treasury/bounty/${ item.bountyIndex }`,
     value: item.onchainData?.value,
-  }
+  };
 }
