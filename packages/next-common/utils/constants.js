@@ -21,6 +21,7 @@ import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
 import westendCollectives from "./consts/settings/westendCollectives";
+import collectives from "./consts/settings/collectives";
 
 /**
  * left + gap + main content
@@ -44,6 +45,7 @@ export const nodes = [
   bifrost,
   // calamari,
   centrifuge,
+  collectives,
   crab,
   crust,
   hydradx,
@@ -94,6 +96,3 @@ export const CACHE_KEY = {
 };
 
 export const chain = process.env.NEXT_PUBLIC_CHAIN;
-
-export const isMacOS =
-  process.browser && window.navigator.userAgent.includes("Mac");

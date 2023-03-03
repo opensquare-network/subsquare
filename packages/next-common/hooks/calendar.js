@@ -40,7 +40,7 @@ export function useCalendarEventsSummary(date, unit) {
 
 /**
  * @description returns events
- * @param {dayjs.OpUnitType}
+ * @param {dayjs.OpUnitType} unit
  */
 export function useCalendarEvents(date, unit) {
   const events = useFetchCalendarEvents(calendarEventsApi, date, unit);

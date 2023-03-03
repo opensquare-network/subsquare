@@ -2,6 +2,7 @@ import Logo from "../../../assets/header-logos/hydradx.svg";
 import Chains from "../chains";
 import Avatar from "../../../assets/icons/chain/hydradx.png";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabels } from "./common";
 
 const defaultHydradxEndpoints = [
   {
@@ -31,6 +32,7 @@ const hydradx = {
   darkAvatar: Avatar,
   endpoints: defaultHydradxEndpoints,
   group: MenuGroups.PolkadotAndParachains,
+  postLabels: defaultPostLabels,
 };
 
 export default hydradx;

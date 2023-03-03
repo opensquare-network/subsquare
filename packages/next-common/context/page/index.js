@@ -30,3 +30,16 @@ export function usePageProps() {
   const { props } = usePageProperties();
   return props;
 }
+
+/**
+ * @returns {string}
+ */
+export function useUserAgent() {
+  const { userAgent } = usePageProperties();
+  return userAgent ?? "";
+}
+
+export function useIsMacOS() {
+  const userAgent = useUserAgent();
+  return userAgent.includes("Mac OS");
+}

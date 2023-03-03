@@ -5,6 +5,7 @@ import DarkAvatar from "../../../assets/icons/chain/westend-collectives-dark.png
 
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
+import { PostLabel } from "./common";
 
 const westendCollectivesEndpoints = [
   {
@@ -27,8 +28,9 @@ const westendCollectives = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
+  postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   noSubscan: true,
-}
+};
 
 export default westendCollectives;

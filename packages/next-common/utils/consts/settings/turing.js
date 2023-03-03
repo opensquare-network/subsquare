@@ -5,6 +5,7 @@ import Avatar from "../../../assets/icons/chain/turing.png";
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabels } from "./common";
 
 export const DEFAULT_TURING_NODES = [
   {
@@ -31,6 +32,7 @@ const turing = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
+  postLabels: defaultPostLabels,
 };
 
 export default turing;

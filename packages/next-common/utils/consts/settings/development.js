@@ -5,6 +5,7 @@ import DarkModeLogo from "../../../assets/header-logos/development-dark.svg";
 import Avatar from "../../../assets/icons/chain/development.png";
 import MenuGroups from "./menuGroups";
 import DarkAvatar from "../../../assets/icons/chain/development-dark.png";
+import { defaultPostLabels } from "./common";
 
 const name = Chains.development;
 
@@ -33,6 +34,7 @@ const development = {
   noSubscan: true,
   hasStatescan: true,
   blockTime: 3000,
+  postLabels: defaultPostLabels,
 };
 
 export default development;
