@@ -42,6 +42,7 @@
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
+    "@osn/eslint-config": "*",
     "eslint": "7.32.0",
     "eslint-config-next": "^11.1.2",
     "next-transpile-modules": "^9.0.0"

@@ -54,6 +54,9 @@ const CmdkGlobalStyle = createGlobalStyle`
       letter-spacing: 0.16em;
       ${p_y(8)};
     }
+    .command-palette-content .fixed.inset-0 {
+      background-color: rgba(0, 0, 0, 0.25);
+    }
     .command-palette-content-panel {
       ${bg_theme("neutral")};
     }
