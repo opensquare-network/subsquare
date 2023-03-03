@@ -3,7 +3,6 @@ import TreasuryTipContent from "./treasuryTipContent";
 import DemocracyReferendumContent from "./democracyReferendumContent";
 import ReferendaReferendumContent from "./referendaReferendumContent";
 import FellowshipContent from "./fellowshipContent";
-import AdvisoryCommitteeContent from "./advisoryCommitteeContent";
 import TreasuryChildBountyAddedContent from "./treasuryChildBountyAddedContent";
 import TreasuryChildBountyAwardedContent from "./treasuryChildBountyAwardedContent";
 import TreasuryChildBountyCanceledContent from "./treasuryChildBountyCanceledContent";

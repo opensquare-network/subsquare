@@ -47,7 +47,6 @@ const TitleDate = styled.small`
 
 export default function DayEvents({ selectedDate }) {
   const dayEvents = useCalendarEvents(selectedDate, "day");
-  console.log(dayEvents);
 
   return (
     <Wrapper>
