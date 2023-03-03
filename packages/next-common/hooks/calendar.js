@@ -8,7 +8,6 @@ import dayjs from "dayjs";
  * @param {dayjs.OpUnitType} unit
  */
 function useFetchCalendarEvents(endpoint, date, unit) {
-  const [events, setEvents] = useState([]);
   const isMounted = useIsMounted();
   const [loading, setLoading] = useState(false);
 
@@ -17,6 +16,13 @@ function useFetchCalendarEvents(endpoint, date, unit) {
     return [d.startOf(unit).valueOf(), d.endOf(unit).valueOf()];
   }, [date]);
 
+  const cachedKey = useMemo(
+    () => `${begin_time}_${end_time}_${unit}`,
+    [begin_time, end_time, unit]
+  );
+  // {cachedKey: Event[]}
+  const [cachedEvents, setCachedEvents] = useState({});
+
   useEffect(() => {
     if (isMounted.current) {
       setLoading(true);
@@ -24,16 +30,22 @@ function useFetchCalendarEvents(endpoint, date, unit) {
         .fetch(endpoint, { begin_time, end_time })
         .then(({ result }) => {
           if (result) {
-            setEvents(result);
+            setCachedEvents({
+              ...cachedEvents,
+              [cachedKey]: result,
+            });
           }
         })
         .finally(() => {
           setLoading(false);
         });
     }
-  }, [isMounted, begin_time, end_time]);
+  }, [isMounted, begin_time, end_time, cachedKey]);
 
-  return [events, loading];
+  return useMemo(
+    () => [cachedEvents[cachedKey], loading],
+    [cachedKey, cachedEvents, loading]
+  );
 }
 
 /**
