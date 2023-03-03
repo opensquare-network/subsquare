@@ -1,8 +1,8 @@
-import TreasuryProposalContent from "./treasuryProposalContent";
+import TreasuryProposalProposedContent from "./treasuryProposalProposedContent";
 import TreasuryTipContent from "./treasuryTipContent";
 import DemocracyReferendumContent from "./democracyReferendumContent";
 import ReferendaReferendumContent from "./referendaReferendumContent";
-import FellowshipContent from "./fellowshipContent";
+import FellowshipReferendumContent from "./fellowshipReferendumContent";
 import TreasuryChildBountyAddedContent from "./treasuryChildBountyAddedContent";
 import TreasuryChildBountyAwardedContent from "./treasuryChildBountyAwardedContent";
 import TreasuryChildBountyCanceledContent from "./treasuryChildBountyCanceledContent";
@@ -17,10 +17,12 @@ import TreasuryBountyRejectedContent from "./treasuryBountyRejectedContent";
 import TreasuryBountyCanceledContent from "./treasuryBountyCanceledContent";
 import TreasuryBountyClaimedContent from "./treasuryBountyClaimedContent";
 import TreasuryBountyAwardedContent from "./treasuryBountyAwardedContent";
-import MotionContent from "./motionContent";
 import treasuryProposalApprovedContent from "./treasuryProposalApprovedContent";
 import TreasuryProposalRejectedContent from "./treasuryProposalRejectedContent";
 import DemocracyReferendumExecutedContent from "./democracyReferendumExecutedContent";
+import CouncilMotionContent from "./councilMotionContent";
+import TechCommMotionContent from "./techCommMotionContent";
+import AdvisoryCommitteeContent from "./advisoryCommitteeContent";
 
 export const EventType = {
   // Treasury proposal
@@ -103,7 +105,7 @@ export const EventType = {
 };
 
 export const EventTypeToComponent = {
-  [EventType.TreasuryProposalProposed]: TreasuryProposalContent,
+  [EventType.TreasuryProposalProposed]: TreasuryProposalProposedContent,
   [EventType.TreasuryProposalApproved]: treasuryProposalApprovedContent,
   [EventType.TreasuryProposalAwarded]: TreasuryProposalAwardedContent,
   [EventType.TreasuryProposalRejected]: TreasuryProposalRejectedContent,
@@ -124,18 +126,18 @@ export const EventTypeToComponent = {
   [EventType.TreasuryChildBountyCanceled]: TreasuryChildBountyCanceledContent,
   [EventType.TreasuryChildBountyClaimed]: TreasuryChildBountyClaimedContent,
 
-  [EventType.CouncilMotionProposed]: MotionContent,
-  [EventType.CouncilMotionApproved]: MotionContent,
-  [EventType.CouncilMotionDisApproved]: MotionContent,
+  [EventType.CouncilMotionProposed]: CouncilMotionContent,
+  [EventType.CouncilMotionApproved]: CouncilMotionContent,
+  [EventType.CouncilMotionDisApproved]: CouncilMotionContent,
 
-  [EventType.TcMotionProposed]: MotionContent,
-  [EventType.TcMotionApproved]: MotionContent,
-  [EventType.TcMotionDisApproved]: MotionContent,
-  [EventType.TcMotionExecuted]: MotionContent,
+  [EventType.TcMotionProposed]: TechCommMotionContent,
+  [EventType.TcMotionApproved]: TechCommMotionContent,
+  [EventType.TcMotionDisApproved]: TechCommMotionContent,
+  [EventType.TcMotionExecuted]: TechCommMotionContent,
 
-  [EventType.AdvisoryCommitteeProposed]: MotionContent,
-  [EventType.AdvisoryCommitteeApproved]: MotionContent,
-  [EventType.AdvisoryCommitteeDisApproved]: MotionContent,
+  [EventType.AdvisoryCommitteeProposed]: AdvisoryCommitteeContent,
+  [EventType.AdvisoryCommitteeApproved]: AdvisoryCommitteeContent,
+  [EventType.AdvisoryCommitteeDisApproved]: AdvisoryCommitteeContent,
 
   [EventType.DemocracyProposalProposed]: DemocracyProposalProposedContent,
   [EventType.DemocracyProposalCanceled]: DemocracyProposalCanceledContent,
@@ -161,14 +163,14 @@ export const EventTypeToComponent = {
   [EventType.ReferendaRejected]: ReferendaReferendumContent,
   [EventType.ReferendaExecuted]: ReferendaReferendumContent,
 
-  [EventType.FellowshipSubmitted]: FellowshipContent,
-  [EventType.FellowshipDecisionStarted]: FellowshipContent,
-  [EventType.FellowshipConfirmStarted]: FellowshipContent,
-  [EventType.FellowshipConfirmAborted]: FellowshipContent,
-  [EventType.FellowshipConfirmed]: FellowshipContent,
-  [EventType.FellowshipCancelled]: FellowshipContent,
-  [EventType.FellowshipKilled]: FellowshipContent,
-  [EventType.FellowshipTimedout]: FellowshipContent,
-  [EventType.FellowshipRejected]: FellowshipContent,
-  [EventType.FellowshipExecuted]: FellowshipContent,
+  [EventType.FellowshipSubmitted]: FellowshipReferendumContent,
+  [EventType.FellowshipDecisionStarted]: FellowshipReferendumContent,
+  [EventType.FellowshipConfirmStarted]: FellowshipReferendumContent,
+  [EventType.FellowshipConfirmAborted]: FellowshipReferendumContent,
+  [EventType.FellowshipConfirmed]: FellowshipReferendumContent,
+  [EventType.FellowshipCancelled]: FellowshipReferendumContent,
+  [EventType.FellowshipKilled]: FellowshipReferendumContent,
+  [EventType.FellowshipTimedout]: FellowshipReferendumContent,
+  [EventType.FellowshipRejected]: FellowshipReferendumContent,
+  [EventType.FellowshipExecuted]: FellowshipReferendumContent,
 };

@@ -4,7 +4,10 @@ import IndexItem from "./infoItem/indexItem";
 import ProposerItem from "./infoItem/proposerItem";
 import ValueItem from "./infoItem/valueItem";
 
-export default function treasuryProposalContent({ proposalIndex, data }) {
+export default function TreasuryProposalProposedContent({
+  proposalIndex,
+  data,
+}) {
   return (
     <>
       <IndexItem index={proposalIndex} baseUrl={treasuryProposalBaseUrl} />

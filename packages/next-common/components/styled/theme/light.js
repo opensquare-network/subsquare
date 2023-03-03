@@ -24,6 +24,8 @@ const light = {
   secondaryAzure500: "#2196F3",
   secondarySapphire100: "rgba(31, 112, 199, 0.07)",
   secondarySapphire500: "#1F70C7",
+  secondaryGray100: "rgba(80, 97, 118, 0.1)",
+  secondaryGray500: "#506176",
   neutral: "#FFFFFF",
   grey100Bg: "#F6F7FA",
   grey200Border: "#EBEEF4",

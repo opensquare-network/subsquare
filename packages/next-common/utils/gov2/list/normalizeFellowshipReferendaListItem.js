@@ -1,6 +1,6 @@
 import { getGov2ReferendumTitle } from "../title";
 import { getPostLastActivityAt } from "../../viewfuncs/postUpdatedTime";
-import { fellowshipBaseUrl } from "../../postBaseUrl";
+import { fellowshipReferendumBaseUrl } from "../../postBaseUrl";
 
 export default function normalizeFellowshipReferendaListItem(
   item,
@@ -17,7 +17,7 @@ export default function normalizeFellowshipReferendaListItem(
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
     address: item.proposer,
-    detailLink: `${fellowshipBaseUrl}/${item.referendumIndex}`,
+    detailLink: `${fellowshipReferendumBaseUrl}/${item.referendumIndex}`,
     commentsCount: item.commentsCount,
     trackName: track?.name || item.trackInfo?.name,
   };

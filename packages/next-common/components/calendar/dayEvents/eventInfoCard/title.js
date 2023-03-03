@@ -1,7 +1,9 @@
 import noop from "lodash.noop";
+import dayjs from "dayjs";
 import styled from "styled-components";
 import EventTag from "./eventTag";
 import FoldButton from "./foldButton";
+import { stringUpperFirst } from "@polkadot/util";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,14 +26,18 @@ const Right = styled.div`
   gap: 8px;
 `;
 
-function getDefaultTitle(event) {
-  return "Untitled";
+function getTitle(event) {
+  const timeText = dayjs(event?.indexer?.blockTime).format("hh:mm");
+  const status = event?.type?.split("_").pop();
+  return `[${timeText}] [${stringUpperFirst(status)}] ${
+    event.data?.postTitle || "Untitled"
+  }`;
 }
 
 export default function Title({ event, isFolded, setIsFolded = noop }) {
   return (
     <Wrapper>
-      <Left>{event.data?.postTitle || getDefaultTitle(event)}</Left>
+      <Left>{getTitle(event)}</Left>
       <Right>
         <div>
           <EventTag event={event} />
