@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import GlobalProvider from "next-common/context/global";
 import "next-common/styles/cmdk.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 NProgress.configure({
   minimum: 0.3,

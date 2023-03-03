@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import React from "react";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import styled from "styled-components";
 import { p_12_bold, shadow_100 } from "../../../styles/componentCss";
 import {
