@@ -4,7 +4,7 @@ import { referendaReferendumBaseUrl } from "../../postBaseUrl";
 
 export default function normalizeGov2ReferendaListItem(item, tracks = []) {
   const track = tracks.find(
-    (trackItem) => trackItem.id === item.onchainData?.track
+    (trackItem) => trackItem.id === item.onchainData?.track,
   );
 
   return {

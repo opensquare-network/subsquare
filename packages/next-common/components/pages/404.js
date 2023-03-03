@@ -62,7 +62,7 @@ const Page404 = function Custom404() {
   return (
     <ThemeProvider theme={theme}>
       <Wrapper>
-        <NextHead title={`Not Found`} desc={``} />
+        <NextHead title={"Not Found"} desc={""} />
         <svg
           width="150"
           height="60"

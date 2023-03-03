@@ -31,7 +31,7 @@ export default function CheckUnFinalized({ id }) {
         return await councilApi.proposalOf(id);
       }
     },
-    [id, chain, type]
+    [id, chain, type],
   );
 
   return (

@@ -22,7 +22,7 @@ import PostLabel from "./postLabel";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Wrapper = styled(NeutralPanel)`
@@ -77,20 +77,20 @@ export default function PostCreate() {
   const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
+    loginUser?.preference.editor || "markdown",
   );
   const [bannerCid, setBannerCid] = useState(null);
   const [formValue, setFormValue] = useState({});
   const [errors, setErrors] = useState();
   const [isAdvanced, setIsAdvanced] = useState(false);
-  const isEmpty = content === "" || content === `<p><br></p>`;
+  const isEmpty = content === "" || content === "<p><br></p>";
   const [selectedLabels, setSelectedLabels] = useState([]);
 
   const createPost = async () => {
     setCreating(true);
     const result = await nextApi
       .post(
-        `posts`,
+        "posts",
         {
           chain,
           title,
@@ -100,7 +100,7 @@ export default function PostCreate() {
           labels: selectedLabels,
           ...formValue,
         },
-        { credentials: "include" }
+        { credentials: "include" },
       )
       .finally(() => {
         setCreating(false);

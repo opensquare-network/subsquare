@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.9.7
+date 03/03/2023
+- Enable polkadot collectives.
+- Fix cmdk mask background color.
+- Improve eslint config and fix lint warnings.
+
 # 2.9.6
 
 date: 02/28/2023

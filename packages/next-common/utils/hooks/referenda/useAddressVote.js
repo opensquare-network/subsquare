@@ -7,7 +7,7 @@ export default function useAddressVote(
   trackId,
   referendumIndex,
   address,
-  updateTime
+  updateTime,
 ) {
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

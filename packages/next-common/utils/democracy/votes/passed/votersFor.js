@@ -19,13 +19,13 @@ async function getBalance(blockHash, blockApi, account) {
 export async function getReferendumVotesFromVotersFor(
   blockApi,
   blockHash,
-  referendumIndex
+  referendumIndex,
 ) {
   const votersFor = await blockApi.query.democracy.votersFor(referendumIndex);
   let votes = [];
   if (votersFor.length > 0) {
     votes = await blockApi.query.democracy.voteOf.multi(
-      votersFor.map((addr) => [referendumIndex, addr])
+      votersFor.map((addr) => [referendumIndex, addr]),
     );
   }
 

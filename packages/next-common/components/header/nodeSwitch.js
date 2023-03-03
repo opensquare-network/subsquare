@@ -136,7 +136,7 @@ export default function NodeSwitch({ small }) {
   const currentNode = useSelector(currentNodeSelector);
   const nodes = useSelector(nodesSelector);
   const [currentNodeSetting, setCurrentNodeSetting] = useState(
-    chainSettings.endpoints[0]
+    chainSettings.endpoints[0],
   );
   const dispatch = useDispatch();
   const mode = useThemeMode();

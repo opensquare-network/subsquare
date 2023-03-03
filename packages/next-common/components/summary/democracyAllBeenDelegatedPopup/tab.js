@@ -19,7 +19,7 @@ export default function AllBeenDelegatedPopupTabList({ beenDelegatedList }) {
 
   const trackList = useMemo(() => {
     const uniqTrackIds = uniq(
-      (beenDelegatedList || []).map((item) => item.track?.id)
+      (beenDelegatedList || []).map((item) => item.track?.id),
     );
     return (tracks || []).filter((track) => uniqTrackIds.includes(track.id));
   }, [tracks, beenDelegatedList]);

@@ -10,7 +10,7 @@ export function useGov2Menu() {
   const hasGov2 = useMenuHasGov2();
   const [tracks, setTracks] = useState(props.tracks ?? []);
   const [fellowshipTracks, setFellowshipTracks] = useState(
-    props.fellowshipTracks ?? []
+    props.fellowshipTracks ?? [],
   );
 
   useEffect(() => {

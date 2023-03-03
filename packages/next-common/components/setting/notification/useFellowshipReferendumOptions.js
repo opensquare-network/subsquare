@@ -9,34 +9,34 @@ export default function useFellowshipReferendumOptions({
   ...data
 }) {
   const [fellowshipSubmitted, setFellowshipSubmitted] = useState(
-    !!data.fellowshipSubmitted?.isOn
+    !!data.fellowshipSubmitted?.isOn,
   );
   const [fellowshipDecisionStarted, setFellowshipDecisionStarted] = useState(
-    !!data.fellowshipDecisionStarted?.isOn
+    !!data.fellowshipDecisionStarted?.isOn,
   );
   const [fellowshipConfirmStarted, setFellowshipConfirmStarted] = useState(
-    !!data.fellowshipConfirmStarted?.isOn
+    !!data.fellowshipConfirmStarted?.isOn,
   );
   const [fellowshipCancelled, setFellowshipCancelled] = useState(
-    !!data.fellowshipCancelled?.isOn
+    !!data.fellowshipCancelled?.isOn,
   );
   const [fellowshipConfirmAborted, setFellowshipConfirmAborted] = useState(
-    !!data.fellowshipConfirmAborted?.isOn
+    !!data.fellowshipConfirmAborted?.isOn,
   );
   const [fellowshipConfirmed, setFellowshipConfirmed] = useState(
-    !!data.fellowshipConfirmed?.isOn
+    !!data.fellowshipConfirmed?.isOn,
   );
   const [fellowshipExecuted, setFellowshipExecuted] = useState(
-    !!data.fellowshipExecuted?.isOn
+    !!data.fellowshipExecuted?.isOn,
   );
   const [fellowshipKilled, setFellowshipKilled] = useState(
-    !!data.fellowshipKilled?.isOn
+    !!data.fellowshipKilled?.isOn,
   );
   const [fellowshipTimedout, setFellowshipTimedout] = useState(
-    !!data.fellowshipTimedout?.isOn
+    !!data.fellowshipTimedout?.isOn,
   );
   const [fellowshipRejected, setFellowshipRejected] = useState(
-    !!data.fellowshipRejected?.isOn
+    !!data.fellowshipRejected?.isOn,
   );
 
   const isChanged =
@@ -81,7 +81,7 @@ export default function useFellowshipReferendumOptions({
       fellowshipKilled,
       fellowshipTimedout,
       fellowshipRejected,
-    ]
+    ],
   );
 
   const fellowshipReferendumOptionsComponent = (

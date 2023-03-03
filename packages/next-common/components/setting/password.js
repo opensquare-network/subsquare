@@ -28,7 +28,7 @@ export default function Password() {
         setChangeErrors(res.error);
       }
       setChangLoading(false);
-    }
+    },
   );
   const { oldPassword, newPassword } = formData;
 

@@ -102,7 +102,7 @@ const ToastItem = ({ type, message, id, sticky, timeout }) => {
       </IconWrapper>
       <div>{message}</div>
       <img
-        src={`/imgs/icons/toast-reject.svg`}
+        src={"/imgs/icons/toast-reject.svg"}
         onClick={() => {
           dispatch(removeToast(id));
         }}

@@ -15,8 +15,8 @@ function makeSingleExternalTimelineData(args, method) {
           votingPeriod:
             args.find((arg) =>
               ["voting_period", "votingPeriod"].includes(arg.name)
-            ).value + ` blocks`,
-          delay: args.find((arg) => arg.name === "delay").value + ` blocks`,
+            ).value + " blocks",
+          delay: args.find((arg) => arg.name === "delay").value + " blocks",
         };
       }
   }

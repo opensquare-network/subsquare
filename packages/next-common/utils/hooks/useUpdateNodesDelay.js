@@ -56,7 +56,7 @@ const useUpdateNodesDelay = () => {
 
     const intervalId = setInterval(async () => {
       const updateNodes = (nodesSetting || []).filter(
-        (item) => item.url === currentNode || item.update
+        (item) => item.url === currentNode || item.update,
       );
 
       if (updateNodes && updateNodes.length > 0) {

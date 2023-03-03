@@ -36,7 +36,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: bounties }] = await Promise.all([
-    nextApi.fetch(`treasury/bounties`, {
+    nextApi.fetch("treasury/bounties", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

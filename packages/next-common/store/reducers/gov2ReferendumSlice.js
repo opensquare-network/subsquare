@@ -71,7 +71,7 @@ export const fetchVotes =
       const votes = await getGov2ReferendumVotesFromVotingOf(
         blockApi,
         trackId,
-        referendumIndex
+        referendumIndex,
       );
 
       dispatch(setVotes(votes));
@@ -116,7 +116,7 @@ function extractVoteElementsFromOneExtrinsic(voteExtrinsic) {
     const nay = normalizeExtrinsic(voteExtrinsic, voteExtrinsic.vote.nay);
     const abstain = normalizeExtrinsic(
       voteExtrinsic,
-      voteExtrinsic.vote.abstain
+      voteExtrinsic.vote.abstain,
     );
     return { aye, nay, abstain };
   }
@@ -145,7 +145,7 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
   dispatch(setIsLoadingVoteExtrinsics(true));
   try {
     const { result } = await nextApi.fetch(
-      gov2ReferendumsVoteExtrinsicsApi(referendumIndex)
+      gov2ReferendumsVoteExtrinsicsApi(referendumIndex),
     );
 
     const { allAye, allNay, allAbstain } = classifyVoteExtrinsics(result);

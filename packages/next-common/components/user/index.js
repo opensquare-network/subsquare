@@ -127,10 +127,9 @@ function User({
   useEffect(() => {
     setIdentity(null);
     if (address) {
-      fetchIdentity(
-        settings.identity,
-        encodeAddress(address, settings.ss58Format)
-      ).then((identity) => isMounted.current && setIdentity(identity));
+      fetchIdentity(settings.identity, encodeAddress(address, settings.ss58Format)).then(
+        (identity) => isMounted.current && setIdentity(identity),
+      );
     }
   }, [address, settings]);
 

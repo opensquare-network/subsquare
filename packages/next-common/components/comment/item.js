@@ -107,7 +107,7 @@ export default function Item({ data, onReply }) {
 
   const updateComment = async () => {
     const { result: updatedComment } = await nextApi.fetch(
-      `comments/${comment._id}`
+      `comments/${comment._id}`,
     );
     if (updatedComment) {
       setComment(updatedComment);
@@ -122,12 +122,12 @@ export default function Item({ data, onReply }) {
 
         if (thumbUp) {
           ({ result, error } = await nextApi.delete(
-            `comments/${comment._id}/reaction`
+            `comments/${comment._id}/reaction`,
           ));
         } else {
           ({ result, error } = await nextApi.put(
             `comments/${comment._id}/reaction`,
-            { reaction: 1 }
+            { reaction: 1 },
           ));
         }
 
@@ -196,7 +196,7 @@ export default function Item({ data, onReply }) {
               copy
               onCopy={() => {
                 copy(
-                  `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`
+                  `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`,
                 );
               }}
             />

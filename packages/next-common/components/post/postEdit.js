@@ -61,7 +61,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
         labels: selectedLabels,
       });
     },
-    [type, post, bannerCid, title, selectedLabels]
+    [type, post, bannerCid, title, selectedLabels],
   );
 
   const isMounted = useIsMountedBool();

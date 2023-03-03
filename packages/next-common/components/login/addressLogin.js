@@ -43,7 +43,7 @@ function rememberLoginAddress(address) {
 
 function rememberAccountName(account, chain) {
   const accountMap = JSON.parse(
-    localStorage.getItem(CACHE_KEY.accountMap) ?? "{}"
+    localStorage.getItem(CACHE_KEY.accountMap) ?? "{}",
   );
   accountMap[encodeAddressToChain(account.address, chain)] = account.name;
   localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
@@ -83,14 +83,14 @@ export default function AddressLogin({ setMailLogin }) {
 
         const { result: loginResult, error: loginError } = await nextApi.post(
           `auth/login/${result?.attemptId}`,
-          { challengeAnswer: signature }
+          { challengeAnswer: signature },
         );
         if (loginResult) {
           updateUser(loginResult, userDispatch);
 
           rememberLoginAddress(selectedAccount.address);
           rememberLoginExtension(
-            selectedAccount.meta?.source || selectedWallet
+            selectedAccount.meta?.source || selectedWallet,
           );
 
           if (loginResult.email || dontRemindEmail) {
@@ -142,7 +142,7 @@ export default function AddressLogin({ setMailLogin }) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");
         const injector = await extensionDapp.web3FromSource(
-          account.meta?.source
+          account.meta?.source,
         );
         setWallet(injector);
       }
@@ -150,7 +150,7 @@ export default function AddressLogin({ setMailLogin }) {
       // Save account name for Email page
       rememberAccountName(account, chain);
     },
-    [selectedWallet, chain]
+    [selectedWallet, chain],
   );
 
   return (

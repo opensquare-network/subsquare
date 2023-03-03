@@ -86,10 +86,10 @@ const EmptyPanel = styled(NeutralPanel)`
 export default function EmptyOverview() {
   const chain = useChain();
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
-  const normalText = `Latest events will be displayed on this page. Any ideas? Start a discussion.`;
+  const normalText = "Latest events will be displayed on this page. Any ideas? Start a discussion.";
 
   // Centrifuge request not show discussions on subsquare while they will use self deployed discourse forum.
-  const textForCfg = `Latest events will be displayed on this page.`;
+  const textForCfg = "Latest events will be displayed on this page.";
   const text = isCentrifuge ? textForCfg : normalText;
 
   return (

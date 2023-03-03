@@ -206,10 +206,10 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const categories = getProfileCategories(chain);
   const [firstCategory, setFirstCategory] = React.useState(
-    getCategoryByRoute(route, categories)[0]
+    getCategoryByRoute(route, categories)[0],
   );
   const [secondCategory, setSecondCategory] = React.useState(
-    getCategoryByRoute(route, categories)[1]
+    getCategoryByRoute(route, categories)[1],
   );
   const router = useRouter();
 
@@ -235,7 +235,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
         pathname: `/user/${id}/${secondCategory.routePath}`,
       },
       undefined,
-      { shallow: true }
+      { shallow: true },
     );
     nextApi
       .fetch(`users/${id}/${secondCategory.apiPath}`, {
@@ -278,7 +278,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
 
   return (
     <DetailLayout>
-      <Back href={`/`} text="Profile" />
+      <Back href={"/"} text="Profile" />
       <Wrapper>
         <BioWrapper>
           <DisplayUserAvatar address={address} user={user} />
@@ -297,8 +297,8 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
                     setFirstCategory(c);
                     setSecondCategory(
                       c.children.find(
-                        (child) => !child?.excludeChains?.includes(chain)
-                      )
+                        (child) => !child?.excludeChains?.includes(chain),
+                      ),
                     );
                     resetPage();
                   }}
@@ -326,7 +326,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
                     count={getSecondCategoryCount(
                       firstCategory.id,
                       c.id,
-                      overview
+                      overview,
                     )}
                     selected={c.id === secondCategory.id}
                   />

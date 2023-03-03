@@ -18,12 +18,12 @@ export default function useGov2ThresholdCurveData(track) {
 
   const supportCalculator = getTrackSupportCurve(track);
   const supportData = labels.map((i) =>
-    supportCalculator ? supportCalculator(i / decisionPeriodHrs) * 100 : 0
+    supportCalculator ? supportCalculator(i / decisionPeriodHrs) * 100 : 0,
   );
 
   const approvalCalculator = getTrackApprovalCurve(track);
   const approvalData = labels.map((i) =>
-    approvalCalculator ? approvalCalculator(i / decisionPeriodHrs) * 100 : 0
+    approvalCalculator ? approvalCalculator(i / decisionPeriodHrs) * 100 : 0,
   );
 
   return {

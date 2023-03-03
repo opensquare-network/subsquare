@@ -10,7 +10,7 @@ export default function MotionEnd({ motion, type = "full" }) {
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    blockHeight - motionEndHeight
+    blockHeight - motionEndHeight,
   );
   const motionEnd = isMotionEnded(motion);
 
@@ -25,7 +25,7 @@ export default function MotionEnd({ motion, type = "full" }) {
   }
 
   const tooltipContent = `End in ${estimatedBlocksTime}, #${bigNumber2Locale(
-    motionEndHeight.toString()
+    motionEndHeight.toString(),
   )}`;
 
   return (

@@ -101,7 +101,7 @@ export default function useThumbsUp({
         onClick={() => toggleThumbUp && toggleThumbUp()}
       >
         {thumbUpLoading ? <Loading size={14} /> : disabled ? <DisabledThumbUp /> : <ThumbUpIcon />}
-        <div>Up{count > 0 ? ` ${count}` : ``}</div>
+        <div>Up{count > 0 ? ` ${count}` : ""}</div>
       </ActionItem>
       {count > 0 && (
         <UnfoldWrapper onClick={() => setShowThumbsUpList(!showThumbsUpList)}>

@@ -17,7 +17,7 @@ export default function useDiscussionOptions({ saving, disabled, ...data }) {
 
   const getDiscussionOptionValues = useCallback(
     () => ({ reply, mention }),
-    [reply, mention]
+    [reply, mention],
   );
 
   const discussionOptionsComponent = (

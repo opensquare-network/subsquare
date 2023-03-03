@@ -15,5 +15,5 @@ export default function  normalizePolkassemblyDiscussionListItem (chain, item) {
     time: item.lastActivityAt,
     author: toPolkassemblyDiscussionAuthor(item.author),
     detailLink: `/polkassembly/post/${item.polkassemblyId}`,
-  }
+  };
 }

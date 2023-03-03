@@ -23,7 +23,7 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   return (
     <SettingsLayout>
-      <NextHead title={`Settings`} desc={``} />
+      <NextHead title={"Settings"} desc={""} />
       <LinkedAddressComp />
     </SettingsLayout>
   );

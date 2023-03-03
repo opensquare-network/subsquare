@@ -11,7 +11,7 @@ export default function CheckUnFinalized({ id }) {
       }
       return proposals.find(([index]) => index.toNumber() === parseInt(id));
     },
-    [id]
+    [id],
   );
 
   return (

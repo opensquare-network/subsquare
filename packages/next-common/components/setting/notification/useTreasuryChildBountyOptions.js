@@ -9,15 +9,15 @@ export default function useTreasuryChildBountyOptions({
   ...data
 }) {
   const [treasuryChildBountyAdded, setTreasuryChildBountyAdded] = useState(
-    !!data.treasuryChildBountyAdded?.isOn
+    !!data.treasuryChildBountyAdded?.isOn,
   );
   const [treasuryChildBountyAwarded, setTreasuryChildBountyAwarded] = useState(
-    !!data.treasuryChildBountyAwarded?.isOn
+    !!data.treasuryChildBountyAwarded?.isOn,
   );
   const [treasuryChildBountyCanceled, setTreasuryChildBountyCanceled] =
     useState(!!data.treasuryChildBountyCanceled?.isOn);
   const [treasuryChildBountyClaimed, setTreasuryChildBountyClaimed] = useState(
-    !!data.treasuryChildBountyClaimed?.isOn
+    !!data.treasuryChildBountyClaimed?.isOn,
   );
 
   const isChanged =
@@ -44,7 +44,7 @@ export default function useTreasuryChildBountyOptions({
       treasuryChildBountyAwarded,
       treasuryChildBountyCanceled,
       treasuryChildBountyClaimed,
-    ]
+    ],
   );
 
   const treasuryChildBountyOptionsComponent = (

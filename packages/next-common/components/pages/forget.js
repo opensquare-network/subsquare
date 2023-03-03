@@ -58,13 +58,13 @@ const Forget = withLoginUserRedux(() => {
         setLoading(false);
       }
     },
-    () => setErrors(null)
+    () => setErrors(null),
   );
   const { email } = formData;
 
   return (
     <BaseLayout>
-      <NextHead title={`Forget password`} desc={`Forget password`} />
+      <NextHead title={"Forget password"} desc={"Forget password"} />
       <Wrapper>
         {!success && (
           <ContentCenterWrapper>

@@ -20,11 +20,11 @@ export default function useSignerAccount(extensionAccounts) {
     let account = extensionAccounts?.find(
       (item) =>
         isSameAddress(item.address, address) &&
-        item.meta?.source === extensionName
+        item.meta?.source === extensionName,
     );
     if (!account) {
       account = extensionAccounts?.find((item) =>
-        isSameAddress(item.address, address)
+        isSameAddress(item.address, address),
       );
     }
 

@@ -170,7 +170,7 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
                     <div>{item[0]}</div>
                     <div>
                       {["boolean", "number", "string"].includes(
-                        typeof item[1]
+                        typeof item[1],
                       ) || React.isValidElement(item[1])
                         ? item[1]
                         : JSON.stringify(item[1])}

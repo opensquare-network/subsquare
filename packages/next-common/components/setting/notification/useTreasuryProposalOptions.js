@@ -9,16 +9,16 @@ export default function useTreasuryProposalOptions({
   ...data
 }) {
   const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(
-    !!data.treasuryProposalProposed?.isOn
+    !!data.treasuryProposalProposed?.isOn,
   );
   const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(
-    !!data.treasuryProposalApproved?.isOn
+    !!data.treasuryProposalApproved?.isOn,
   );
   const [treasuryProposalAwarded, setTreasuryProposalAwarded] = useState(
-    !!data.treasuryProposalAwarded?.isOn
+    !!data.treasuryProposalAwarded?.isOn,
   );
   const [treasuryProposalRejected, setTreasuryProposalRejected] = useState(
-    !!data.treasuryProposalRejected?.isOn
+    !!data.treasuryProposalRejected?.isOn,
   );
 
   const isChanged =
@@ -45,7 +45,7 @@ export default function useTreasuryProposalOptions({
       treasuryProposalApproved,
       treasuryProposalAwarded,
       treasuryProposalRejected,
-    ]
+    ],
   );
 
   const treasuryProposalOptionsComponent = (

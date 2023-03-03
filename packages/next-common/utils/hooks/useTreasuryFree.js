@@ -20,7 +20,7 @@ export function useTreasuryAccount(api) {
       api?.consts.treasury && api.consts.treasury.palletId
         ? api.consts.treasury.palletId.toU8a(true)
         : "py/trsry",
-      EMPTY_U8A_32
+      EMPTY_U8A_32,
     ).subarray(0, 32);
     setAccount(treasuryAccount);
   }, [api]);

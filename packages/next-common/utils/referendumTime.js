@@ -8,7 +8,7 @@ export default function getReferendumTime(
   timeline,
   oneBlockTime,
   blockHeight = 0,
-  latestBlockTime
+  latestBlockTime,
 ) {
   let delayTime, endTime;
   let isEndEstimated = false;
@@ -17,7 +17,7 @@ export default function getReferendumTime(
   const { delay = 0, end = 0 } = status;
 
   const endTimelineItem = timeline.find((item) =>
-    [referendumState.Passed, referendumState.NotPassed].includes(item.method)
+    [referendumState.Passed, referendumState.NotPassed].includes(item.method),
   );
 
   if (
@@ -28,13 +28,13 @@ export default function getReferendumTime(
     ].includes(state?.state)
   ) {
     const executedTimelineItem = timeline.find(
-      (item) => item.method === referendumState.Executed
+      (item) => item.method === referendumState.Executed,
     );
     endTime = endTimelineItem.indexer.blockTime;
     delayTime = executedTimelineItem?.indexer.blockTime;
   } else if (
     [referendumState.Passed, referendumState.NotPassed].includes(
-      state?.state
+      state?.state,
     ) &&
     oneBlockTime
   ) {

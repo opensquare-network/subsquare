@@ -30,7 +30,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   );
 
   const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch(`treasury/proposals`);
+    const { result } = await nextApi.fetch("treasury/proposals");
     if (result && isMounted.current) {
       setProposals(result);
     }
@@ -80,7 +80,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
-    ssrNextApi.fetch(`treasury/proposals`, {
+    ssrNextApi.fetch("treasury/proposals", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),

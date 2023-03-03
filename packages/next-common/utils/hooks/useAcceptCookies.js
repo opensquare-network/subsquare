@@ -4,7 +4,7 @@ import { useCookieValue } from "./useCookieValue";
 export function useAcceptCookies() {
   const [accepted, setAccepted] = useCookieValue(
     CACHE_KEY.acceptCookies,
-    false
+    false,
   );
 
   return [accepted, setAccepted];

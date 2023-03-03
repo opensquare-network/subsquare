@@ -88,7 +88,7 @@ export default function AllMyDelegationPopupList({
                       />
                       <ConvictionText>
                         {convictionToLockX(
-                          Conviction[item.delegation.conviction]
+                          Conviction[item.delegation.conviction],
                         )}
                       </ConvictionText>
                     </VStack>

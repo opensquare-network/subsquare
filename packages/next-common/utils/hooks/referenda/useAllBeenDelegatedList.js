@@ -18,7 +18,7 @@ export function useAllBeenDelegatedList() {
   const [beenDelegatedList, setBeenDelegatedList] = useState(null);
   const isLoading = useMemo(
     () => isNil(beenDelegatedList),
-    [beenDelegatedList]
+    [beenDelegatedList],
   );
 
   const getAllBeenDelegated = useCallback(async () => {

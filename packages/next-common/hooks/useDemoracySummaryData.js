@@ -40,7 +40,7 @@ export function useDemocracySummaryData() {
         .toNumber();
       const TimeArray = estimateBlocksTime(
         launchPeriod - goneBlocks,
-        blockTime
+        blockTime,
       );
       return {
         progress,
@@ -79,7 +79,7 @@ export function useDemocracySummaryData() {
           ...period,
           nextLaunchTimestamp: nextLaunchTimestampResponse?.toJSON?.(),
         });
-      }
+      },
     );
   }, [chain, api, blockTime, blockHeight]);
 

@@ -60,44 +60,44 @@ export default function ThresholdCurvesGov2TallyPopup({
   const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
   const [supportOuterPoint, supportInnerPoint] = useSupportPoints(
     xValue,
-    supportThreshold
+    supportThreshold,
   );
   const [approvalOuterPoint, approvalInnerPoint] = useApprovalPoints(
     xValue,
-    approvalThreshold
+    approvalThreshold,
   );
 
   function beforeDrawOptions(options) {
     set(
       options,
       "plugins.annotation.annotations.lineSupportThreshold",
-      supportThresholdLine
+      supportThresholdLine,
     );
     set(
       options,
       "plugins.annotation.annotations.lineApprovalThreshold",
-      approvalThresholdLine
+      approvalThresholdLine,
     );
 
     set(
       options,
       "plugins.annotation.annotations.pointSupportOuter",
-      supportOuterPoint
+      supportOuterPoint,
     );
     set(
       options,
       "plugins.annotation.annotations.pointSupportInner",
-      supportInnerPoint
+      supportInnerPoint,
     );
     set(
       options,
       "plugins.annotation.annotations.pointApprovalOuter",
-      approvalOuterPoint
+      approvalOuterPoint,
     );
     set(
       options,
       "plugins.annotation.annotations.pointApprovalInner",
-      approvalInnerPoint
+      approvalInnerPoint,
     );
   }
 

@@ -3,8 +3,8 @@ import { createContext, useContext, useReducer } from "react";
 import nextApi from "../../services/nextApi";
 import { emptyFunction } from "../../utils";
 
-export const USER_UPDATE_ACTION = 'UPDATE';
-export const USER_LOGOUT_ACTION = 'LOGOUT';
+export const USER_UPDATE_ACTION = "UPDATE";
+export const USER_LOGOUT_ACTION = "LOGOUT";
 
 const UserContext = createContext(null);
 const UserDispatchContext = createContext(emptyFunction);
@@ -15,7 +15,7 @@ export default function UserProvider({ user, children }) {
     <UserDispatchContext.Provider value={ dispatch }>
       { children }
     </UserDispatchContext.Provider>
-  </UserContext.Provider>
+  </UserContext.Provider>;
 }
 
 export function useUser() {
@@ -35,10 +35,10 @@ function userReducer(post, action) {
   if (action.type === USER_UPDATE_ACTION) {
     return action.user;
   } else if (action.type === USER_LOGOUT_ACTION) {
-    return null
+    return null;
   }
 
-  throw new Error(`Unknown user action: ${ action.type }`)
+  throw new Error(`Unknown user action: ${ action.type }`);
 }
 
 export function updateUser(user, dispatch) {
@@ -56,7 +56,7 @@ export async function fetchAndUpdateUser(dispatch) {
       method: "GET",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
-    }
+    },
   );
 
   if (result) {

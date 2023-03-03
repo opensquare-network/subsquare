@@ -26,7 +26,7 @@ export default function useMaxVoters() {
 
   if (detailPageCategory.FELLOWSHIP_REFERENDUM !== pageType) {
     throw new Error(
-      "useMaxVoters should be only be used on fellowship referendum detail page"
+      "useMaxVoters should be only be used on fellowship referendum detail page",
     );
   }
 
@@ -36,7 +36,7 @@ export default function useMaxVoters() {
     }
 
     queryMaxVoters(api, trackId, votingFinishHeight).then((count) =>
-      setMaxVoters(count)
+      setMaxVoters(count),
     );
   }, [api, trackId, votingFinishHeight]);
 

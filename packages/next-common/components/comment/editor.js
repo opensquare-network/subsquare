@@ -17,7 +17,7 @@ import { useDetailType } from "../../context/page";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Wrapper = styled.div`
@@ -59,7 +59,7 @@ function Editor(
     setQuillRef = () => {},
     users = [],
   },
-  ref
+  ref,
 ) {
   const chain = useChain();
   const type = useDetailType();
@@ -81,7 +81,7 @@ function Editor(
           content: contentType === "html" ? prettyHTML(content) : content,
           contentType,
         },
-        { credentials: "include" }
+        { credentials: "include" },
       );
 
       if (!isMounted()) {
@@ -92,7 +92,7 @@ function Editor(
         setErrors(result.error);
       } else {
         setContent("");
-        await router.replace(`[id]`, {
+        await router.replace("[id]", {
           pathname: `${router.query.id}`,
         });
         setTimeout(() => {
@@ -127,7 +127,7 @@ function Editor(
     }
   };
 
-  const isEmpty = content === "" || content === `<p><br></p>`;
+  const isEmpty = content === "" || content === "<p><br></p>";
 
   const loadSuggestions = (text) => {
     return (users || [])

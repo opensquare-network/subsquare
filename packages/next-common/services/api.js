@@ -23,9 +23,9 @@ class Api {
                     message: data.message,
                     data: data.data,
                   },
-                })
+                }),
               )
-            : resp.json().then((result) => resolve({ result }))
+            : resp.json().then((result) => resolve({ result })),
         )
         .catch((e) =>
           resolve({
@@ -33,8 +33,8 @@ class Api {
               status: 500,
               message: e.message,
             },
-          })
-        )
+          }),
+        ),
     );
   }
 
@@ -48,7 +48,7 @@ class Api {
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
         ...options,
-      }
+      },
     );
     return result;
   }
@@ -63,7 +63,7 @@ class Api {
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
         ...(options ?? {}),
-      }
+      },
     );
     return result;
   }
@@ -77,7 +77,7 @@ class Api {
         credentials: "same-origin",
         body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
     return result;
   }
@@ -90,7 +90,7 @@ class Api {
         method: "DELETE",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
     return result;
   }
@@ -104,7 +104,7 @@ class Api {
         credentials: "same-origin",
         body: formData,
         redirect: "follow",
-      }
+      },
     );
 
     return result;

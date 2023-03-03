@@ -33,11 +33,11 @@ export default function useReferendaIssuance() {
 
     if (detailPageCategory.GOV2_REFERENDUM === pageType) {
       queryActiveBalance(api, votingFinishHeight).then((issuance) =>
-        setIssuance(issuance)
+        setIssuance(issuance),
       );
     } else if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
       queryMaxVoters(api, trackId, votingFinishHeight).then((maxVotersCount) =>
-        setIssuance(maxVotersCount)
+        setIssuance(maxVotersCount),
       );
     }
   }, [api, pageType, votingFinishHeight]);

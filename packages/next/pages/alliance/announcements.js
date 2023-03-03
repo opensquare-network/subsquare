@@ -9,20 +9,20 @@ export default withLoginUserRedux(({ announcements }) => {
   const items = announcements.items.map((item) => normalizeAllianceAnnouncement(item));
 
   return <HomeLayout seoInfo={{
-    title: `Alliance announcements`,
-    desc: `Alliance announcements`,
+    title: "Alliance announcements",
+    desc: "Alliance announcements",
   }}>
     <PostList
       category={businessCategory.allianceAnnouncements}
       items={items}
       pagination={announcements}
     />
-  </HomeLayout>
+  </HomeLayout>;
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
-  const { result: announcements } = await nextApi.fetch(`alliance/announcements`, {
+  const { result: announcements } = await nextApi.fetch("alliance/announcements", {
     page: page ?? 1,
     pageSize: pageSize ?? 50,
   });

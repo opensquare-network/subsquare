@@ -21,14 +21,14 @@ export default function useMentionList(post, comments) {
     //combine post author(s) and comment authors but exclude current user
     const users = uniqBy(
       [...(post.author ? [post.author] : []), ...getMentionList(comments)],
-      (item) => item.username
+      (item) => item.username,
     )
       .concat(
         (post.authors ?? []).map((address) => ({
           username: address,
           address,
           isKeyRegistered: true,
-        }))
+        })),
       )
       .filter((item) => item.username !== currentUser?.username);
 
@@ -41,9 +41,9 @@ export default function useMentionList(post, comments) {
             name,
             value: memberId,
             isKeyRegistered:
-              user.isKeyRegistered ?? user.username.includes(`polkadot-key`),
+              user.isKeyRegistered ?? user.username.includes("polkadot-key"),
           };
-        })
+        }),
       );
     };
 

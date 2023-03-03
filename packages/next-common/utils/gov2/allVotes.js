@@ -23,7 +23,7 @@ function extractStandardVote(account, vote) {
         balance,
         aye: standard.vote.isAye,
         conviction: standard.vote.conviction.toNumber(),
-      }
+      },
     ),
   ];
 }
@@ -43,7 +43,7 @@ function extractSplitVote(account, vote) {
         balance: ayeBalance,
         aye: true,
         conviction: 0,
-      }
+      },
     ),
     objectSpread(
       {
@@ -54,7 +54,7 @@ function extractSplitVote(account, vote) {
         balance: nayBalance,
         aye: false,
         conviction: 0,
-      }
+      },
     ),
   ];
 }
@@ -75,7 +75,7 @@ function extractSplitAbstainVote(account, vote) {
         balance: ayeBalance,
         aye: true,
         conviction: 0,
-      }
+      },
     ),
     objectSpread(
       {
@@ -86,7 +86,7 @@ function extractSplitAbstainVote(account, vote) {
         balance: nayBalance,
         aye: false,
         conviction: 0,
-      }
+      },
     ),
     objectSpread(
       {
@@ -97,7 +97,7 @@ function extractSplitAbstainVote(account, vote) {
         balance: abstainBalance,
         isAbstain: true,
         conviction: 0,
-      }
+      },
     ),
   ];
 }
@@ -109,7 +109,7 @@ function extractVotes(mapped, targetReferendumIndex) {
       return {
         account,
         votes: voting.asCasting.votes.filter(([idx]) =>
-          idx.eq(targetReferendumIndex)
+          idx.eq(targetReferendumIndex),
         ),
       };
     })
@@ -151,7 +151,7 @@ function extractDelegations(mapped, track, directVotes = []) {
   delegations.forEach(
     ({ account, delegating: { balance, conviction, target } }) => {
       const to = directVotes.find(
-        ({ account }) => account === target.toString()
+        ({ account }) => account === target.toString(),
       );
 
       if (to) {
@@ -163,7 +163,7 @@ function extractDelegations(mapped, track, directVotes = []) {
           conviction: conviction.toNumber(),
         });
       }
-    }
+    },
   );
 
   return delegationVotes;
@@ -172,7 +172,7 @@ function extractDelegations(mapped, track, directVotes = []) {
 export async function getGov2ReferendumVotesFromVotingOf(
   blockApi,
   trackId,
-  referendumIndex
+  referendumIndex,
 ) {
   const voting = await blockApi.query.convictionVoting.votingFor.entries();
   const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));

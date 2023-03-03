@@ -36,13 +36,13 @@ export default function MailLogin({ setAddressLogin }) {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         updateUser(res.result, userDispatch);
-        router.replace(redirect || `/`);
+        router.replace(redirect || "/");
       } else if (res.error) {
         setErrors(res.error);
       }
       setLoading(false);
     },
-    () => setErrors(null)
+    () => setErrors(null),
   );
   const { usernameOrEmail, password } = formData;
 

@@ -30,5 +30,5 @@ export default function PostEdit({ setIsEdit = emptyFunction }) {
       <EditIcon />
       Edit
     </Edit>
-  )
+  );
 }

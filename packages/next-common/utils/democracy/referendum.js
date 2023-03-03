@@ -11,11 +11,11 @@ export default function extractVoteInfo(timeline = []) {
   const voteFinished = index >= 0;
   let voteFinishedHeight = null;
   if (voteFinished) {
-    voteFinishedHeight = timeline[index].indexer.blockHeight
+    voteFinishedHeight = timeline[index].indexer.blockHeight;
   }
 
   return {
     voteFinished,
     voteFinishedHeight,
-  }
+  };
 }

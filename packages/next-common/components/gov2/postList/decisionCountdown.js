@@ -31,7 +31,7 @@ export default function DecisionCountdown({ detail }) {
   const decisionRemaining = getDecisoinRemaining(
     latestHeight,
     decisionSince,
-    decisionPeriod
+    decisionPeriod,
   );
 
   const decisionPercentage = useMemo(() => {

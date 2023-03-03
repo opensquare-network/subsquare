@@ -29,7 +29,7 @@ export function useBlockTime(api) {
           ? // default guess for a parachain
             DEFAULT_TIME.mul(BN_TWO)
           : // default guess for others
-            DEFAULT_TIME)
+            DEFAULT_TIME),
     );
   }, [api]);
   return blockTime;

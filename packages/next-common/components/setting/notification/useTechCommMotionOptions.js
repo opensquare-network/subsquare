@@ -10,20 +10,20 @@ export default function useTechCommMotionOptions({
   ...data
 }) {
   const [tcMotionProposed, setTcMotionProposed] = useState(
-    !!data.tcMotionProposed?.isOn
+    !!data.tcMotionProposed?.isOn,
   );
   const [tcMotionVoted, setTcMotionVoted] = useState(
-    !!data.tcMotionVoted?.isOn
+    !!data.tcMotionVoted?.isOn,
   );
   const [tcMotionApproved, setTcMotionApproved] = useState(
-    !!data.tcMotionApproved?.isOn
+    !!data.tcMotionApproved?.isOn,
   );
   const [tcMotionDisApproved, setTcMotionDisApproved] = useState(
-    !!data.tcMotionDisApproved?.isOn
+    !!data.tcMotionDisApproved?.isOn,
   );
   // for kintsugi/interlay only
   const [tcMotionExecuted, setTcMotionExecuted] = useState(
-    !!data.tcMotionExecuted?.isOn
+    !!data.tcMotionExecuted?.isOn,
   );
 
   const isChanged =

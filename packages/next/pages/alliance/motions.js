@@ -12,8 +12,8 @@ export default withLoginUserRedux(({ motions }) => {
   return (
     <HomeLayout
       seoInfo={{
-        title: `Alliance motions`,
-        desc: `Alliance motions`,
+        title: "Alliance motions",
+        desc: "Alliance motions",
       }}
     >
       <PostList
@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ motions }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
-  const { result: motions } = await nextApi.fetch(`alliance/motions`, {
+  const { result: motions } = await nextApi.fetch("alliance/motions", {
     page: page ?? 1,
     pageSize: pageSize ?? 50,
   });

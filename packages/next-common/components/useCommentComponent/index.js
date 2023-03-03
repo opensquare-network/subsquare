@@ -16,7 +16,7 @@ export default function useCommentComponent({ detail, comments, tabs = null }) {
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown"
+    loginUser?.preference.editor || "markdown",
   );
 
   const users = useMentionList(detail, comments);
@@ -29,7 +29,7 @@ export default function useCommentComponent({ detail, comments, tabs = null }) {
     setContent,
     quillRef,
     focusEditor,
-    chain
+    chain,
   );
 
   const CommentComponent = (

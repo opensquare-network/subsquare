@@ -9,6 +9,6 @@ export function useKey(key, handler, target, opts) {
       }
     },
     target,
-    opts
+    opts,
   );
 }

@@ -11,7 +11,7 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
       return {
         account,
         votes: voting.asDirect.votes.filter(([idx]) =>
-          idx.eq(targetReferendumIndex)
+          idx.eq(targetReferendumIndex),
         ),
       };
     })
@@ -38,8 +38,8 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
               balance,
               aye: standard.vote.isAye,
               conviction: standard.vote.conviction.toNumber(),
-            }
-          )
+            },
+          ),
         );
       }
 
@@ -60,11 +60,11 @@ function addDelegations(mapped, votes = []) {
   delegations.forEach(
     ({ account, delegating: { balance, conviction, target } }) => {
       const toDelegator = delegations.find(
-        ({ account }) => account === target.toString()
+        ({ account }) => account === target.toString(),
       );
       const to = votes.find(
         ({ account }) =>
-          account === (toDelegator ? toDelegator.account : target.toString())
+          account === (toDelegator ? toDelegator.account : target.toString()),
       );
 
       if (to) {
@@ -76,7 +76,7 @@ function addDelegations(mapped, votes = []) {
           conviction: conviction.toNumber(),
         });
       }
-    }
+    },
   );
 
   return votes;
@@ -84,7 +84,7 @@ function addDelegations(mapped, votes = []) {
 
 export async function getReferendumVotesFromVotingOf(
   blockApi,
-  referendumIndex
+  referendumIndex,
 ) {
   const voting = await blockApi.query.democracy.votingOf.entries();
   const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));

@@ -18,7 +18,7 @@ export default function useApi() {
 
 export function getLastApi() {
   if (!api) {
-    throw new Error(`Use getLastApi after api initialized`);
+    throw new Error("Use getLastApi after api initialized");
   }
 
   return api;

@@ -22,20 +22,17 @@ export default function useCollectiveMembers(moduleName = "council") {
     }
 
     setLoading(true);
-    api.query[moduleName]
-      .members()
-      .then((members) => {
-        if (isMounted.current) {
-          const normalized = members.toJSON();
-          setMembers(normalized);
-          cache.current[moduleName] = normalized;
-        }
-      })
-      .finally(() => {
-        if (isMounted.current) {
-          setLoading(false);
-        }
-      });
+    api.query[moduleName].members().then((members) => {
+      if (isMounted.current) {
+        const normalized = members.toJSON();
+        setMembers(normalized);
+        cache.current[moduleName] = normalized;
+      }
+    }).finally(() => {
+      if (isMounted.current) {
+        setLoading(false);
+      }
+    });
   }, [api]);
 
   return {
