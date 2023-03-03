@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import styled from "styled-components";
-import { p_12_bold, shadow_100 } from "../../../styles/componentCss";
+import { shadow_100 } from "../../../styles/componentCss";
 import {
   flex,
   flex_col,
@@ -15,8 +15,6 @@ import {
   p,
   p_x,
   p_y,
-  text_tertiary,
-  text_uppercase,
 } from "../../../styles/tailwindcss";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import timezone from "dayjs/plugin/timezone";
@@ -25,6 +23,7 @@ import FullCalendarMonthDateCell from "./monthDateCell";
 import noop from "lodash.noop";
 import { useCalendarEventsSummary } from "../../../hooks/calendar";
 import FullCalendarFooter from "./footer";
+import FullCalendarMonthHeader from "./monthHeader";
 dayjs.extend(timezone);
 
 const localizer = dayjsLocalizer(dayjs);
@@ -55,11 +54,7 @@ const CalendarWrapper = styled.div`
 
       .rbc-header {
         border: none;
-        text-align: left;
         ${p_x(8)}
-        ${p_12_bold}
-        ${text_tertiary}
-        ${text_uppercase}
       }
     }
 
@@ -95,6 +90,7 @@ export default function FullCalendar({
     setDate(newDate);
   }
 
+  /** @type {import("react-big-calendar").Components} */
   const components = {
     toolbar(props) {
       return (
@@ -102,6 +98,7 @@ export default function FullCalendar({
       );
     },
     month: {
+      header: FullCalendarMonthHeader,
       dateHeader(props) {
         return (
           <FullCalendarMonthDateCell
