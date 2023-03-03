@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/litentry.png";
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
+import { defaultPostLabels } from "./common";
 
 const DEFAULT_LITENTRY_NODES = [
   {
@@ -12,7 +13,7 @@ const DEFAULT_LITENTRY_NODES = [
   },
   {
     name: "Dwellir",
-    url: "wss://litentry-rpc.dwellir.com/"
+    url: "wss://litentry-rpc.dwellir.com/",
   },
 ];
 
@@ -34,6 +35,7 @@ const litentry = {
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,
   noSubscan: true,
+  postLabels: defaultPostLabels,
 };
 
 export default litentry;

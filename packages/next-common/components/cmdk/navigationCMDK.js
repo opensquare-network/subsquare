@@ -1,6 +1,6 @@
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
 import styled, { createGlobalStyle, useTheme } from "styled-components";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import {
   bg_theme,
   border,
@@ -31,7 +31,6 @@ import ClosePanelIcon from "../icons/closePanel";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
 import homeMenus from "../../utils/consts/menu";
-import { isMacOS } from "../../utils/constants";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import { useSelector } from "react-redux";
 import {
@@ -43,6 +42,7 @@ import Link from "next/link";
 import { isExternalLink } from "../../utils";
 import { useChain } from "../../context/chain";
 import { useGov2Menu } from "../../utils/hooks/useGov2Menu";
+import { useIsMacOS } from "../../context/page";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -139,11 +139,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
   const cmdkTriggerVisible = useSelector(cmdkTriggerVisibleSelector);
   const gov2Menu = useGov2Menu();
   const { isDark } = useTheme();
-
-  const [metaKeySymbol, setMetaKeySymbol] = useState("Ctrl +");
-  useEffect(() => {
-    if (isMacOS) setMetaKeySymbol("⌘");
-  }, []);
+  const isMacOS = useIsMacOS();
 
   const foldedMenu = [...gov2Menu, ...homeMenus]
     .filter((menu) => menu.name && menu.items?.length)
@@ -249,7 +245,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
       {cmdkTriggerVisible && (
         <Trigger onClick={() => setOpen(true)} style={triggerButtonStyle}>
           <span>
-            Navigation <HotKey>{metaKeySymbol} K</HotKey>
+            Navigation <HotKey>{isMacOS ? "⌘" : "Ctrl +"} K</HotKey>
           </span>
           <ClosePanelIcon
             onClick={(e) => {

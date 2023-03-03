@@ -18,6 +18,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
+import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -29,7 +30,6 @@ function PopupContent({
   extensionAccounts,
   votes,
   isLoadingVotes,
-  voters,
   motionHash,
   motionIndex,
   onClose,
@@ -53,7 +53,7 @@ function PopupContent({
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
-  const canVote = voters.includes(signerAccount?.realAddress);
+  const canVote = useIsCollectiveMember(toApiCouncil(chain, type));
   const currentVote = votes.find(
     (item) => item[0] === signerAccount?.realAddress
   );

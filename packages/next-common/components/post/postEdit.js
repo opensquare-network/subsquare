@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Input from "../input";
 import EditInput from "../editInput";
@@ -12,6 +12,7 @@ import { TitleContainer } from "../styled/containers/titleContainer";
 import { EditablePanel } from "../styled/panel";
 import { usePost, usePostTitle } from "../../context/post";
 import { useDetailType } from "../../context/page";
+import PostLabel from "./postLabel";
 
 const Wrapper = styled(EditablePanel)`
   textarea:read-only,
@@ -39,16 +40,8 @@ export default function PostEdit({ setIsEdit, updatePost }) {
   const defaultTitle = usePostTitle();
   const [title, setTitle] = useState(defaultTitle);
   const [updating, setUpdating] = useState(false);
-  const editPost = async (content, contentType) => {
-    const url = `${toApiType(type)}/${post._id}`;
-    return await nextApi.patch(url, {
-      title,
-      content,
-      contentType,
-      bannerCid,
-    });
-  };
   const [bannerCid, setBannerCid] = useState(post.bannerCid);
+  const [selectedLabels, setSelectedLabels] = useState(post.labels);
 
   const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
   useEffect(() => {
@@ -56,6 +49,20 @@ export default function PostEdit({ setIsEdit, updatePost }) {
       setBannerCid(null);
     }
   }, [isSetBanner]);
+
+  const editPost = useCallback(
+    async (content, contentType) => {
+      const url = `${toApiType(type)}/${post._id}`;
+      return await nextApi.patch(url, {
+        title,
+        content,
+        contentType,
+        bannerCid,
+        labels: selectedLabels,
+      });
+    },
+    [type, post, bannerCid, title, selectedLabels]
+  );
 
   const isMounted = useIsMountedBool();
 
@@ -85,6 +92,11 @@ export default function PostEdit({ setIsEdit, updatePost }) {
           />
         </UploaderWrapper>
       )}
+
+      <PostLabel
+        selectedLabels={selectedLabels}
+        setSelectedLabels={setSelectedLabels}
+      />
 
       <LabelWrapper>
         <Label>Issue</Label>

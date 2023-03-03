@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { grey_400 } from "next-common/styles/colors";
-import { p_12_normal } from "next-common/styles/componentCss";
+import { p_12_normal, p_14_normal } from "next-common/styles/componentCss";
 import Flex from "next-common/components/styled/flex";
 import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import DeleteIcon from "next-common/assets/imgs/icons/delete.svg";
-import LinkIcon from "next-common/assets/imgs/icons/link.svg";
+import UploadIcon from "next-common/assets/imgs/icons/upload.svg";
 import { getBannerUrl } from "../../utils/banner";
 
 const Wrapper = styled.div`
@@ -46,23 +46,31 @@ const Tips = styled.ul`
     }
   }
 `;
+
 const Hint = styled.span`
+  ${p_14_normal}
   color: ${(props) => props.theme.textTertiary};
   line-height: 19.6px;
 `;
 
-const SelectFile = styled.span`
+const SelectFile = styled.div`
+  display: flex;
+  align-items: center;
+  ${p_14_normal}
   color: ${(props) => props.theme.textSecondary};
   margin-left: 8px;
   line-height: 19.6px;
   display: flex;
   align-items: center;
   cursor: pointer;
+  gap: 4px;
 `;
+
 const UploadTip = styled.p`
   display: flex;
   align-items: center;
 `;
+
 const BannerPreview = styled(Flex)`
   justify-content: space-between;
   width: 100%;
@@ -79,6 +87,7 @@ const BannerPreview = styled(Flex)`
     height: 100%;
   }
 `;
+
 const RemoveBannerButton = styled.div`
   cursor: pointer;
 `;
@@ -191,7 +200,7 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
               <UploadTip>
                 <Hint>Drag and drop image or </Hint>
                 <SelectFile onClick={handleSelectFile}>
-                  <LinkIcon />
+                  <UploadIcon />
                   Upload
                 </SelectFile>
               </UploadTip>

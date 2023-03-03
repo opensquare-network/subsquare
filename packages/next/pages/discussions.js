@@ -52,11 +52,13 @@ export default withLoginUserRedux(({ posts }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page, page_size: pageSize } = context.query;
+  const { page, page_size: pageSize, label } = context.query;
 
-  const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`posts`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
-  ]);
+  let q = { page: page ?? 1, pageSize: pageSize ?? 50 };
+  if (label) {
+    q = { label, ...q };
+  }
+  const { result: posts } = await nextApi.fetch(`posts`, q);
 
   return {
     props: {

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
+import { useChain } from "next-common/context/chain";
 
 const Create = styled.a`
   display: flex;
@@ -19,7 +20,8 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({ posts, chain }) => {
+export default withLoginUserRedux(({ posts }) => {
+  const chain = useChain();
   const items = (posts.items || []).map((item) =>
     normalizeDiscussionListItem(chain, item)
   );
@@ -50,15 +52,16 @@ export default withLoginUserRedux(({ posts, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-  const { page, page_size: pageSize } = context.query;
-  const [{ result: posts }] = await Promise.all([
-    nextApi.fetch(`posts`, { page: page ?? 1, pageSize: pageSize ?? 50 }),
-  ]);
+  const { page, page_size: pageSize, label } = context.query;
+
+  let q = { page: page ?? 1, pageSize: pageSize ?? 50 };
+  if (label) {
+    q = { label, ...q };
+  }
+  const { result: posts } = await nextApi.fetch(`posts`, q);
 
   return {
     props: {
-      chain,
       posts: posts ?? EmptyList,
     },
   };
