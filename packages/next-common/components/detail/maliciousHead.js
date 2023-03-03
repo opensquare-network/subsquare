@@ -9,21 +9,31 @@ const Wrapper = styled.div`
   color: ${(p) => p.theme.secondaryYellow500};
   background-color: ${(p) => p.theme.secondaryYellow100};
   border-radius: 4px;
-  gap: 8px;
   padding: 10px;
   margin-bottom: 16px;
+`;
+
+const WarningText = styled.div`
+  line-height: 18px;
+`;
+
+const IconWrapper = styled.div`
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  margin-right: 8px;
 `;
 
 export default function MaliciousHead() {
   return (
     <Wrapper>
-      <div>
-        <WarningIcon />
-      </div>
-      <span>
+      <WarningText>
+        <IconWrapper>
+          <WarningIcon />
+        </IconWrapper>
         Warning: Malicious proposal! Some of the external links below have been
         flagged as scams.
-      </span>
+      </WarningText>
     </Wrapper>
   );
 }
