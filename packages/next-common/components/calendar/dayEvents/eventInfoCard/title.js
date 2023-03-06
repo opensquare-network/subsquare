@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 
 const Left = styled.div`
   flex: 1;
-  word-break: break-all;
+  word-break: break-word;
 `;
 const Right = styled.div`
   display: flex;
