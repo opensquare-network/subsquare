@@ -30,7 +30,7 @@ export default function FullCalendarFooter() {
         FULLCALENDAR_CATEGORY_TREASURY,
         FULLCALENDAR_CATEGORY_COLLECTIVES,
       ].filter(Boolean),
-    [hasGov2]
+    [hasGov2],
   );
 
   if (isSmSize) {
