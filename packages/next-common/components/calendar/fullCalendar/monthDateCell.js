@@ -132,6 +132,11 @@ export default function FullCalendarMonthDateCell({
     Object.keys(eventsGroup).includes(category)
   );
 
+  label = Number(label);
+  if (label === 1) {
+    label = `${day.format("MMM")} ${label}`;
+  }
+
   // [category]: {[subCategory]: Event[]}
   const categorySubCategoriesGroup = categories.reduce((value, category) => {
     value[category] = groupBy(eventsGroup[category], "subCategory");
