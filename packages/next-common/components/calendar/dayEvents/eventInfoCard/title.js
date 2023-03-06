@@ -14,16 +14,22 @@ const Wrapper = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
+  gap: 8px;
 
   color: ${(p) => p.theme.textPrimary};
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Left = styled.div`
   flex: 1;
+  word-break: break-all;
 `;
 const Right = styled.div`
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
   gap: 8px;
 `;
 
