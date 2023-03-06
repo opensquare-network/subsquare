@@ -7,7 +7,7 @@ export const ItemWrapper = styled.div`
 `;
 
 export const ItemValue = styled.span`
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 export const ItemLink = styled.a`
