@@ -16,4 +16,6 @@ export default function EventTag({ event }) {
   } else if (event.category === "Collectives") {
     return <CollectivesTag />;
   }
+
+  return null;
 }
