@@ -7,6 +7,7 @@
   "repository": "git@github.com:opensquare-network/subsquare.git",
   "author": "OpenSquare <https://www.opensquare.network/>",
   "scripts": {
+    "prepare": "husky install",
     "scan": "yarn workspace @subsquare/scan scan",
     "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint",
     "postinstall": "patch-package"
