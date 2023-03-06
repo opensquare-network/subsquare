@@ -33,6 +33,9 @@ const TimeLineSolid = styled.div`
 `;
 const TimeLineContent = styled.div`
   ${m_l(48)}
+  & > :not(:first-child) {
+    margin-top: 8px;
+  }
 `;
 const TimelineItem = styled.div`
   ${flex}

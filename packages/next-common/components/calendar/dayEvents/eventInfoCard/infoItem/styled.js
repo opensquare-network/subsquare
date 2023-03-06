@@ -4,6 +4,7 @@ export const ItemWrapper = styled.div`
   display: flex;
   gap: 6px;
   margin: 2px 0;
+  word-break: break-all;
 `;
 
 export const ItemLink = styled.a`
