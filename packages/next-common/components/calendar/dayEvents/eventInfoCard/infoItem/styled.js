@@ -4,6 +4,9 @@ export const ItemWrapper = styled.div`
   display: flex;
   gap: 6px;
   margin: 2px 0;
+`;
+
+export const ItemValue = styled.span`
   word-break: break-all;
 `;
 
