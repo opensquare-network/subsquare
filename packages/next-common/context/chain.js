@@ -43,7 +43,7 @@ export function useVoteSymbol() {
 export function useMenuHasTreasuryBounties() {
   const chain = useChain();
   const bountiesConfig = treasury.items.find(
-    ({ value }) => value === "bounties",
+    ({ value }) => value === "bounties"
   );
   return !bountiesConfig.excludeToChains.includes(chain);
 }
@@ -51,7 +51,7 @@ export function useMenuHasTreasuryBounties() {
 export function useMenuHasTreasuryChildBounties() {
   const chain = useChain();
   const childBountiesConfig = treasury.items.find(
-    ({ value }) => value === "child-bounties",
+    ({ value }) => value === "child-bounties"
   );
   return !childBountiesConfig.excludeToChains.includes(chain);
 }
@@ -65,7 +65,7 @@ export function useMenuHasTreasuryTips() {
 export function useMenuHasDemocracyExternal() {
   const chain = useChain();
   const tipsConfig = democracy.items.find(
-    ({ value }) => value === "democracyExternals",
+    ({ value }) => value === "democracyExternals"
   );
   return !tipsConfig.excludeToChains.includes(chain);
 }
@@ -80,7 +80,10 @@ export function useMenuHasTechComm() {
   return !techComm.excludeToChains.includes(chain);
 }
 
+/**
+ * @alias useHasGov2
+ */
 export function useMenuHasGov2() {
   const chain = useChain();
-  return [Chains.kusama].includes(chain);
+  return [Chains.kusama, Chains.development].includes(chain);
 }
