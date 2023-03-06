@@ -12,17 +12,17 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "husky": "^4.3.5",
-    "pretty-quick": "^3.1.0"
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
+  "lint-staged": {
+    "**/*.{js}": [
+      "eslint --fix"
+    ]
   },
   "dependencies": {
-    "prettier": "^2.2.1",
     "patch-package": "^6.5.0",
-    "postinstall-postinstall": "^2.1.0"
+    "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.2.1"
   }
 }

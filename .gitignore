@@ -9,4 +9,3 @@ log
 *.deploy.sh
 
 *-image.sh
-.husky
