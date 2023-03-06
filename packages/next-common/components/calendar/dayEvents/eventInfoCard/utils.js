@@ -20,6 +20,7 @@ import TreasuryBountyAwardedContent from "./treasuryBountyAwardedContent";
 import treasuryProposalApprovedContent from "./treasuryProposalApprovedContent";
 import TreasuryProposalRejectedContent from "./treasuryProposalRejectedContent";
 import DemocracyReferendumExecutedContent from "./democracyReferendumExecutedContent";
+import DemocracyReferendumNotExecutedContent from "./democracyReferendumNoExecutedContent";
 import CouncilMotionContent from "./councilMotionContent";
 import TechCommMotionContent from "./techCommMotionContent";
 import AdvisoryCommitteeContent from "./advisoryCommitteeContent";
@@ -149,7 +150,8 @@ export const EventTypeToComponent = {
     DemocracyReferendumPassedOrNotPassedContent,
   [EventType.DemocracyReferendumCancelled]: DemocracyReferendumContent,
   [EventType.DemocracyReferendumExecuted]: DemocracyReferendumExecutedContent,
-  [EventType.DemocracyReferendumNotExecuted]: DemocracyReferendumContent,
+  [EventType.DemocracyReferendumNotExecuted]:
+    DemocracyReferendumNotExecutedContent,
   [EventType.DemocracyReferendumFastTrack]: DemocracyReferendumContent,
 
   [EventType.ReferendaSubmitted]: ReferendaReferendumContent,
