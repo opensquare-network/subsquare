@@ -134,7 +134,9 @@ export default function FullCalendarMonthDateCell({
 
   label = Number(label);
   if (label === 1) {
-    label = `${day.format("MMM")} ${label}`;
+    if (!isSmSize) {
+      label = `${day.format("MMM")} ${label}`;
+    }
   }
 
   // [category]: {[subCategory]: Event[]}
