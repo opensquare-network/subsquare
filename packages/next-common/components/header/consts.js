@@ -14,6 +14,7 @@ const profileSetting = {
   name: "Profile",
   icon: <Profile />,
   pathname: "/user/profile",
+  isShow: (user) => user.address,
 };
 
 export const accountMenu = [

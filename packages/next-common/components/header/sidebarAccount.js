@@ -97,12 +97,17 @@ export default function SidebarAccount() {
           <UserWrapper>
             <User user={user} noEvent />
           </UserWrapper>
-          {accountMenu.map((item, index) => (
-            <Item key={index} onClick={() => handleAccountMenu(item)}>
-              {item.icon}
-              <div>{item.name}</div>
-            </Item>
-          ))}
+          {accountMenu.map((item, index) => {
+            const isShowMenuItem = !item.isShow || item.isShow(user);
+            if (!isShowMenuItem) return null;
+
+            return (
+              <Item key={index} onClick={() => handleAccountMenu(item)}>
+                {item.icon}
+                <div>{item.name}</div>
+              </Item>
+            );
+          })}
         </div>
       )}
     </Wrapper>

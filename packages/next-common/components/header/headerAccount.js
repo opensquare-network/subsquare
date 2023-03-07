@@ -108,14 +108,19 @@ export default function HeaderAccount() {
       </AccountButton>
       {show && (
         <Menu>
-          {menu.map((item, index) => (
-            <Fragment key={index}>
-              <Item onClick={() => handleAccountMenu(item)}>
-                {item.icon}
-                <div>{item.name}</div>
-              </Item>
-            </Fragment>
-          ))}
+          {menu.map((item, index) => {
+            const isShowMenuItem = !item.isShow || item.isShow(user);
+            if (!isShowMenuItem) return null;
+
+            return (
+              <Fragment key={index}>
+                <Item onClick={() => handleAccountMenu(item)}>
+                  {item.icon}
+                  <div>{item.name}</div>
+                </Item>
+              </Fragment>
+            );
+          })}
         </Menu>
       )}
     </Wrapper>
