@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { p_12_bold } from "../../../styles/componentCss";
-import { text_tertiary, text_uppercase } from "../../../styles/tailwindcss";
-import { useIsScreenSize } from "../../../utils/hooks/useIsScreenSize";
+import {
+  hidden,
+  text_tertiary,
+  text_uppercase,
+} from "../../../styles/tailwindcss";
+import { smcss } from "../../../utils/responsive";
 
 const Label = styled.div`
   ${p_12_bold}
@@ -10,16 +14,20 @@ const Label = styled.div`
   ${text_uppercase}
   text-align: left;
 `;
+const Rest = styled.span`
+  ${smcss(hidden)}
+`;
 
 /**
  * @param {import("react-big-calendar").HeaderProps}
  */
 export default function FullCalendarMonthHeader({ label }) {
-  const { isSmSize } = useIsScreenSize();
+  const [first, ...rest] = label;
 
-  if (isSmSize) {
-    label = label.slice(0, 1);
-  }
-
-  return <Label>{label}</Label>;
+  return (
+    <Label>
+      {first}
+      <Rest>{rest.join("")}</Rest>
+    </Label>
+  );
 }

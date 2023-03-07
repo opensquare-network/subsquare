@@ -14,6 +14,7 @@ import {
   flex,
   flex_col,
   gap_x,
+  hidden,
   h_full,
   justify_between,
   m,
@@ -28,7 +29,7 @@ import {
 import TooltipOrigin from "../../tooltip";
 import FullCalendarCategory from "./category";
 import { FULLCALENDAR_CATEGORIES } from "./consts";
-import { useIsScreenSize } from "../../../utils/hooks/useIsScreenSize";
+import { smcss } from "../../../utils/responsive";
 dayjs.extend(isToday);
 
 const CellLabel = styled.p`
@@ -36,10 +37,19 @@ const CellLabel = styled.p`
   ${m(0)}
   ${text_secondary}
 `;
+const CellLabelMonth = styled.span`
+  ${smcss(hidden)}
+`;
 
 const CellEventGroup = styled.div`
   ${flex}
   ${gap_x(4)}
+
+  ${smcss(hidden)}
+`;
+const CellEventGroupSmSize = styled(CellEventGroup)`
+  ${hidden}
+  ${smcss(block)}
 `;
 
 const CellWrapper = styled.div`
@@ -112,7 +122,7 @@ export default function FullCalendarMonthDateCell({
   setSelectedDate,
   calendarEvents = [],
 }) {
-  const { isSmSize } = useIsScreenSize();
+  label = Number(label);
 
   if (isOffRange) {
     return null;
@@ -131,13 +141,6 @@ export default function FullCalendarMonthDateCell({
   const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
     Object.keys(eventsGroup).includes(category),
   );
-
-  label = Number(label);
-  if (label === 1) {
-    if (!isSmSize) {
-      label = `${day.format("MMM")} ${label}`;
-    }
-  }
 
   // [category]: {[subCategory]: Event[]}
   const categorySubCategoriesGroup = categories.reduce((value, category) => {
@@ -185,22 +188,28 @@ export default function FullCalendarMonthDateCell({
           isSelectedDay={isSelectedDay}
           onClick={onCellClick}
         >
-          <CellLabel>{label}</CellLabel>
+          <CellLabel>
+            {label === 1 && (
+              <CellLabelMonth>{day.format("MMM")}</CellLabelMonth>
+            )}
+            {label}
+          </CellLabel>
 
           {!!categories.length && (
-            <CellEventGroup>
-              {!isSmSize ? (
-                categories.map((category) => (
+            <>
+              <CellEventGroup>
+                {categories.map((category) => (
                   <FullCalendarCategory
                     key={category}
                     category={category}
                     onlyDot
                   />
-                ))
-              ) : (
+                ))}
+              </CellEventGroup>
+              <CellEventGroupSmSize>
                 <FullCalendarCategory color="primaryPurple500" />
-              )}
-            </CellEventGroup>
+              </CellEventGroupSmSize>
+            </>
           )}
         </CellWrapper>
       </TooltipChildrenWrapper>
