@@ -24,6 +24,19 @@ import DemocracyReferendumNotExecutedContent from "./democracyReferendumNoExecut
 import CouncilMotionContent from "./councilMotionContent";
 import TechCommMotionContent from "./techCommMotionContent";
 import AdvisoryCommitteeContent from "./advisoryCommitteeContent";
+import {
+  advisoryCommitteeBaseUrl,
+  bountyBaseUrl,
+  childBountyBaseUrl,
+  councilMotionBaseUrl,
+  democracyProposalBaseUrl,
+  democracyReferendumBaseUrl,
+  fellowshipReferendumBaseUrl,
+  referendaReferendumBaseUrl,
+  techCommMotionBaseUrl,
+  tipBaseUrl,
+  treasuryProposalBaseUrl,
+} from "../../../../utils/postBaseUrl";
 
 export const EventType = {
   // Treasury proposal
@@ -176,3 +189,162 @@ export const EventTypeToComponent = {
   [EventType.FellowshipRejected]: FellowshipReferendumContent,
   [EventType.FellowshipExecuted]: FellowshipReferendumContent,
 };
+
+export const EventTypePostBaseUrl = {
+  [EventType.TreasuryProposalProposed]: treasuryProposalBaseUrl,
+  [EventType.TreasuryProposalApproved]: treasuryProposalBaseUrl,
+  [EventType.TreasuryProposalAwarded]: treasuryProposalBaseUrl,
+  [EventType.TreasuryProposalRejected]: treasuryProposalBaseUrl,
+
+  [EventType.TreasuryTipNew]: tipBaseUrl,
+  [EventType.TreasuryTipClosed]: tipBaseUrl,
+  [EventType.TreasuryTipRetracted]: tipBaseUrl,
+
+  [EventType.TreasuryBountyProposed]: bountyBaseUrl,
+  [EventType.TreasuryBountyAwarded]: bountyBaseUrl,
+  [EventType.TreasuryBountyClaimed]: bountyBaseUrl,
+  [EventType.TreasuryBountyRejected]: bountyBaseUrl,
+  [EventType.TreasuryBountyApproved]: bountyBaseUrl,
+  [EventType.TreasuryBountyCanceled]: bountyBaseUrl,
+
+  [EventType.TreasuryChildBountyAdded]: childBountyBaseUrl,
+  [EventType.TreasuryChildBountyAwarded]: childBountyBaseUrl,
+  [EventType.TreasuryChildBountyCanceled]: childBountyBaseUrl,
+  [EventType.TreasuryChildBountyClaimed]: childBountyBaseUrl,
+
+  [EventType.CouncilMotionProposed]: councilMotionBaseUrl,
+  [EventType.CouncilMotionApproved]: councilMotionBaseUrl,
+  [EventType.CouncilMotionDisApproved]: councilMotionBaseUrl,
+
+  [EventType.TcMotionProposed]: techCommMotionBaseUrl,
+  [EventType.TcMotionApproved]: techCommMotionBaseUrl,
+  [EventType.TcMotionDisApproved]: techCommMotionBaseUrl,
+  [EventType.TcMotionExecuted]: techCommMotionBaseUrl,
+
+  [EventType.AdvisoryCommitteeProposed]: advisoryCommitteeBaseUrl,
+  [EventType.AdvisoryCommitteeApproved]: advisoryCommitteeBaseUrl,
+  [EventType.AdvisoryCommitteeDisApproved]: advisoryCommitteeBaseUrl,
+
+  [EventType.DemocracyProposalProposed]: democracyProposalBaseUrl,
+  [EventType.DemocracyProposalCanceled]: democracyProposalBaseUrl,
+
+  [EventType.DemocracyReferendumStarted]: democracyReferendumBaseUrl,
+  [EventType.DemocracyReferendumPassed]: democracyReferendumBaseUrl,
+  [EventType.DemocracyReferendumNotPassed]: democracyReferendumBaseUrl,
+  [EventType.DemocracyReferendumCancelled]: democracyReferendumBaseUrl,
+  [EventType.DemocracyReferendumExecuted]: democracyReferendumBaseUrl,
+  [EventType.DemocracyReferendumNotExecuted]: democracyReferendumBaseUrl,
+  [EventType.DemocracyReferendumFastTrack]: democracyReferendumBaseUrl,
+
+  [EventType.ReferendaSubmitted]: referendaReferendumBaseUrl,
+  [EventType.ReferendaDecisionStarted]: referendaReferendumBaseUrl,
+  [EventType.ReferendaConfirmStarted]: referendaReferendumBaseUrl,
+  [EventType.ReferendaConfirmAborted]: referendaReferendumBaseUrl,
+  [EventType.ReferendaConfirmed]: referendaReferendumBaseUrl,
+  [EventType.ReferendaCancelled]: referendaReferendumBaseUrl,
+  [EventType.ReferendaKilled]: referendaReferendumBaseUrl,
+  [EventType.ReferendaTimedout]: referendaReferendumBaseUrl,
+  [EventType.ReferendaRejected]: referendaReferendumBaseUrl,
+  [EventType.ReferendaExecuted]: referendaReferendumBaseUrl,
+
+  [EventType.FellowshipSubmitted]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipDecisionStarted]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipConfirmStarted]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipConfirmAborted]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipConfirmed]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipCancelled]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipKilled]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipTimedout]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipRejected]: fellowshipReferendumBaseUrl,
+  [EventType.FellowshipExecuted]: fellowshipReferendumBaseUrl,
+};
+
+export function getPostUrlsByEvent(event = {}) {
+  const treasuryProposalPostUrl =
+    treasuryProposalBaseUrl + `/${event?.proposalIndex}`;
+  const tipPostUrl = tipBaseUrl+`/${event?.indexer?.blockHeight}_${event?.hash}`;
+  const bountyPostUrl = bountyBaseUrl + `/${event?.bountyIndex}`;
+  const childBountyPostUrl = childBountyBaseUrl + `/${event?.childBountyIndex}`;
+  const motionTargetUrl = event?.data?.motion?.index || event?.motionHash;
+  const councilMotionPostUrl = councilMotionBaseUrl + `/${motionTargetUrl}`;
+  const techCommMotionPostUrl = techCommMotionBaseUrl + `/${motionTargetUrl}`;
+  const advisoryCommitteePostUrl =
+    advisoryCommitteeBaseUrl + `/${motionTargetUrl}`;
+  const democracyProposalPostUrl =
+    democracyProposalBaseUrl + `/${event?.proposalIndex}`;
+  const democracyReferendumPostUrl =
+    democracyReferendumBaseUrl + `/${event?.referendumIndex}`;
+  const referendaReferendumPostUrl =
+    referendaReferendumBaseUrl + `/${event?.index}`;
+  const fellowshipReferendumPostUrl =
+    fellowshipReferendumBaseUrl + `/${event?.index}`;
+
+  return {
+    [EventType.TreasuryProposalProposed]: treasuryProposalPostUrl,
+    [EventType.TreasuryProposalApproved]: treasuryProposalPostUrl,
+    [EventType.TreasuryProposalAwarded]: treasuryProposalPostUrl,
+    [EventType.TreasuryProposalRejected]: treasuryProposalPostUrl,
+
+    [EventType.TreasuryTipNew]: tipPostUrl,
+    [EventType.TreasuryTipClosed]: tipPostUrl,
+    [EventType.TreasuryTipRetracted]: tipPostUrl,
+
+    [EventType.TreasuryBountyProposed]: bountyPostUrl,
+    [EventType.TreasuryBountyAwarded]: bountyPostUrl,
+    [EventType.TreasuryBountyClaimed]: bountyPostUrl,
+    [EventType.TreasuryBountyRejected]: bountyPostUrl,
+    [EventType.TreasuryBountyApproved]: bountyPostUrl,
+    [EventType.TreasuryBountyCanceled]: bountyPostUrl,
+
+    [EventType.TreasuryChildBountyAdded]: childBountyPostUrl,
+    [EventType.TreasuryChildBountyAwarded]: childBountyPostUrl,
+    [EventType.TreasuryChildBountyCanceled]: childBountyPostUrl,
+    [EventType.TreasuryChildBountyClaimed]: childBountyPostUrl,
+
+    [EventType.CouncilMotionProposed]: councilMotionPostUrl,
+    [EventType.CouncilMotionApproved]: councilMotionPostUrl,
+    [EventType.CouncilMotionDisApproved]: councilMotionPostUrl,
+
+    [EventType.TcMotionProposed]: techCommMotionPostUrl,
+    [EventType.TcMotionApproved]: techCommMotionPostUrl,
+    [EventType.TcMotionDisApproved]: techCommMotionPostUrl,
+    [EventType.TcMotionExecuted]: techCommMotionPostUrl,
+
+    [EventType.AdvisoryCommitteeProposed]: advisoryCommitteePostUrl,
+    [EventType.AdvisoryCommitteeApproved]: advisoryCommitteePostUrl,
+    [EventType.AdvisoryCommitteeDisApproved]: advisoryCommitteePostUrl,
+
+    [EventType.DemocracyProposalProposed]: democracyProposalPostUrl,
+    [EventType.DemocracyProposalCanceled]: democracyProposalPostUrl,
+
+    [EventType.DemocracyReferendumStarted]: democracyReferendumPostUrl,
+    [EventType.DemocracyReferendumPassed]: democracyReferendumPostUrl,
+    [EventType.DemocracyReferendumNotPassed]: democracyReferendumPostUrl,
+    [EventType.DemocracyReferendumCancelled]: democracyReferendumPostUrl,
+    [EventType.DemocracyReferendumExecuted]: democracyReferendumPostUrl,
+    [EventType.DemocracyReferendumNotExecuted]: democracyReferendumPostUrl,
+    [EventType.DemocracyReferendumFastTrack]: democracyReferendumPostUrl,
+
+    [EventType.ReferendaSubmitted]: referendaReferendumPostUrl,
+    [EventType.ReferendaDecisionStarted]: referendaReferendumPostUrl,
+    [EventType.ReferendaConfirmStarted]: referendaReferendumPostUrl,
+    [EventType.ReferendaConfirmAborted]: referendaReferendumPostUrl,
+    [EventType.ReferendaConfirmed]: referendaReferendumPostUrl,
+    [EventType.ReferendaCancelled]: referendaReferendumPostUrl,
+    [EventType.ReferendaKilled]: referendaReferendumPostUrl,
+    [EventType.ReferendaTimedout]: referendaReferendumPostUrl,
+    [EventType.ReferendaRejected]: referendaReferendumPostUrl,
+    [EventType.ReferendaExecuted]: referendaReferendumPostUrl,
+
+    [EventType.FellowshipSubmitted]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipDecisionStarted]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipConfirmStarted]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipConfirmAborted]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipConfirmed]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipCancelled]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipKilled]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipTimedout]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipRejected]: fellowshipReferendumPostUrl,
+    [EventType.FellowshipExecuted]: fellowshipReferendumPostUrl,
+  };
+}
