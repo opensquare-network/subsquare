@@ -5,6 +5,7 @@ import {
 } from "../../../../utils/postBaseUrl";
 import DescriptionItem from "./infoItem/descriptionItem";
 import IndexItem from "./infoItem/indexItem";
+import TitleItem from "./infoItem/titleItem";
 
 export default function TreasuryChildBountyCanceledContent({
   childBountyIndex,
@@ -18,6 +19,7 @@ export default function TreasuryChildBountyCanceledContent({
         itemName="Parent bounty index"
         baseUrl={bountyBaseUrl}
       />
+      <TitleItem title={data?.postTitle} />
       <DescriptionItem description={data.description} />
     </>
   );

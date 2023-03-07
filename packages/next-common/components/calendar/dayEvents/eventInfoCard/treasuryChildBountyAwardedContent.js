@@ -6,6 +6,7 @@ import {
 import BeneficiaryItem from "./infoItem/beneficiaryItem";
 import DescriptionItem from "./infoItem/descriptionItem";
 import IndexItem from "./infoItem/indexItem";
+import TitleItem from "./infoItem/titleItem";
 import ValueItem from "./infoItem/valueItem";
 
 export default function TreasuryChildBountyAwardedContent({
@@ -20,6 +21,7 @@ export default function TreasuryChildBountyAwardedContent({
         itemName="Parent bounty index"
         baseUrl={bountyBaseUrl}
       />
+      <TitleItem title={data?.postTitle} />
       <BeneficiaryItem beneficiary={data.beneficiary} />
       <ValueItem value={data.value} />
       <DescriptionItem description={data.description} />

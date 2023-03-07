@@ -2,10 +2,10 @@ import React from "react";
 import { advisoryCommitteeBaseUrl } from "../../../../utils/postBaseUrl";
 import MotionContent from "./motionContent";
 
-export default function AdvisoryCommitteeContent({ motionHash, data }) {
+export default function AdvisoryCommitteeContent({ hash, data }) {
   return (
     <MotionContent
-      motionHash={motionHash}
+      motionHash={hash}
       data={data}
       baseUrl={advisoryCommitteeBaseUrl}
     />

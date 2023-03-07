@@ -4,6 +4,7 @@ import IndexItem from "./infoItem/indexItem";
 import ValueItem from "./infoItem/valueItem";
 import BeneficiaryItem from "./infoItem/beneficiaryItem";
 import ProposerItem from "./infoItem/proposerItem";
+import TitleItem from "./infoItem/titleItem";
 
 export default function TreasuryProposalApprovedContent({
   proposalIndex,
@@ -12,6 +13,7 @@ export default function TreasuryProposalApprovedContent({
   return (
     <>
       <IndexItem index={proposalIndex} baseUrl={treasuryProposalBaseUrl} />
+      <TitleItem title={data?.postTitle} />
       <ValueItem value={data.value} />
       <BeneficiaryItem beneficiary={data.beneficiary} />
       <ProposerItem proposer={data.proposer} />

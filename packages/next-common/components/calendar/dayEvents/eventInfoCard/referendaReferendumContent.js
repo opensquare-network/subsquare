@@ -7,6 +7,7 @@ import BeneficiaryItem from "./infoItem/beneficiaryItem";
 import CallItem from "./infoItem/callItem";
 import IndexItem from "./infoItem/indexItem";
 import ProposerItem from "./infoItem/proposerItem";
+import TitleItem from "./infoItem/titleItem";
 import TrackItem from "./infoItem/trackItem";
 import ValueItem from "./infoItem/valueItem";
 
@@ -14,6 +15,7 @@ export default function referendaReferendumContent({ index, data }) {
   return (
     <>
       <IndexItem index={index} baseUrl={referendaReferendumBaseUrl} />
+      <TitleItem title={data?.postTitle} />
       <ProposerItem proposer={data.proposer} />
       <TrackItem
         track={data?.track}

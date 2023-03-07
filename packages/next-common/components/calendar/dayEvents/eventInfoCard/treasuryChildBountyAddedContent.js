@@ -7,6 +7,7 @@ import IndexItem from "./infoItem/indexItem";
 import ProposerItem from "./infoItem/proposerItem";
 import React from "react";
 import ValueItem from "./infoItem/valueItem";
+import TitleItem from "./infoItem/titleItem";
 
 export default function TreasuryChildBountyAddedContent({
   childBountyIndex,
@@ -20,6 +21,7 @@ export default function TreasuryChildBountyAddedContent({
         itemName="Parent bounty index"
         baseUrl={bountyBaseUrl}
       />
+      <TitleItem title={data?.postTitle} />
       <ProposerItem proposer={data.proposer} />
       <ValueItem value={data.value} />
       <DescriptionItem description={data.description} />
