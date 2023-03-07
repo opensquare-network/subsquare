@@ -10,6 +10,7 @@ import GhostButton from "../buttons/ghostButton";
 import SecondaryButton from "../buttons/secondaryButton";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
+import Profile from "../../assets/imgs/icons/profile.svg";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -61,6 +62,15 @@ const UserWrapper = styled(Flex)`
   }
 `;
 
+function ProfileMenuItem({ onClick }) {
+  return (
+    <Item onClick={onClick}>
+      <Profile />
+      <div>Profile</div>
+    </Item>
+  );
+}
+
 export default function SidebarAccount() {
   const user = useUser();
   const router = useRouter();
@@ -73,6 +83,10 @@ export default function SidebarAccount() {
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
+  };
+
+  const openUserProfile = () => {
+    router.push(`/user/${user.address}`);
   };
 
   return (
@@ -97,17 +111,13 @@ export default function SidebarAccount() {
           <UserWrapper>
             <User user={user} noEvent />
           </UserWrapper>
-          {accountMenu.map((item, index) => {
-            const isShowMenuItem = !item.isShow || item.isShow(user);
-            if (!isShowMenuItem) return null;
-
-            return (
-              <Item key={index} onClick={() => handleAccountMenu(item)}>
-                {item.icon}
-                <div>{item.name}</div>
-              </Item>
-            );
-          })}
+          {user.address && <ProfileMenuItem onClick={openUserProfile} />}
+          {accountMenu.map((item, index) => (
+            <Item key={index} onClick={() => handleAccountMenu(item)}>
+              {item.icon}
+              <div>{item.name}</div>
+            </Item>
+          ))}
         </div>
       )}
     </Wrapper>

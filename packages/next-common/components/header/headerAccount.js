@@ -12,6 +12,7 @@ import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
+import Profile from "../../assets/imgs/icons/profile.svg";
 
 const Wrapper = Relative;
 
@@ -63,6 +64,15 @@ const Item = styled(Flex)`
   }
 `;
 
+function ProfileMenuItem({ onClick }) {
+  return (
+    <Item onClick={onClick}>
+      <Profile />
+      <div>Profile</div>
+    </Item>
+  );
+}
+
 export default function HeaderAccount() {
   const user = useUser();
   const router = useRouter();
@@ -101,6 +111,10 @@ export default function HeaderAccount() {
     }
   };
 
+  const openUserProfile = () => {
+    router.push(`/user/${user.address}`);
+  };
+
   return (
     <Wrapper ref={ref}>
       <AccountButton onClick={() => setShow(!show)}>
@@ -108,19 +122,15 @@ export default function HeaderAccount() {
       </AccountButton>
       {show && (
         <Menu>
-          {menu.map((item, index) => {
-            const isShowMenuItem = !item.isShow || item.isShow(user);
-            if (!isShowMenuItem) return null;
-
-            return (
-              <Fragment key={index}>
-                <Item onClick={() => handleAccountMenu(item)}>
-                  {item.icon}
-                  <div>{item.name}</div>
-                </Item>
-              </Fragment>
-            );
-          })}
+          {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
+          {menu.map((item, index) => (
+            <Fragment key={index}>
+              <Item onClick={() => handleAccountMenu(item)}>
+                {item.icon}
+                <div>{item.name}</div>
+              </Item>
+            </Fragment>
+          ))}
         </Menu>
       )}
     </Wrapper>
