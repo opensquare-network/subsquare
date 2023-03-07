@@ -190,7 +190,7 @@ export default function FullCalendarMonthDateCell({
         >
           <CellLabel>
             {label === 1 && (
-              <CellLabelMonth>{day.format("MMM")}</CellLabelMonth>
+              <CellLabelMonth>{day.format("MMM")} </CellLabelMonth>
             )}
             {label}
           </CellLabel>
