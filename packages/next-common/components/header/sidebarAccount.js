@@ -66,7 +66,7 @@ function ProfileMenuItem({ onClick }) {
   return (
     <Item onClick={onClick}>
       <Profile />
-      <div>Profile</div>
+      <span>Profile</span>
     </Item>
   );
 }
@@ -115,7 +115,7 @@ export default function SidebarAccount() {
           {accountMenu.map((item, index) => (
             <Item key={index} onClick={() => handleAccountMenu(item)}>
               {item.icon}
-              <div>{item.name}</div>
+              <span>{item.name}</span>
             </Item>
           ))}
         </div>

@@ -68,7 +68,7 @@ function ProfileMenuItem({ onClick }) {
   return (
     <Item onClick={onClick}>
       <Profile />
-      <div>Profile</div>
+      <span>Profile</span>
     </Item>
   );
 }
@@ -127,7 +127,7 @@ export default function HeaderAccount() {
             <Fragment key={index}>
               <Item onClick={() => handleAccountMenu(item)}>
                 {item.icon}
-                <div>{item.name}</div>
+                <span>{item.name}</span>
               </Item>
             </Fragment>
           ))}
