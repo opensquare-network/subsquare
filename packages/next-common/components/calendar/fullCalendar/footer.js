@@ -1,8 +1,14 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useMenuHasGov2 } from "../../../context/chain";
-import { flex, gap_x, justify_center, p_b } from "../../../styles/tailwindcss";
-import { useIsScreenSize } from "../../../utils/hooks/useIsScreenSize";
+import {
+  flex,
+  gap_x,
+  hidden,
+  justify_center,
+  p_b,
+} from "../../../styles/tailwindcss";
+import { smcss } from "../../../utils/responsive";
 import FullCalendarCategory from "./category";
 import {
   FULLCALENDAR_CATEGORY_COLLECTIVES,
@@ -16,10 +22,11 @@ const Wrapper = styled.div`
   ${justify_center}
   ${gap_x(16)}
   ${p_b(8)}
+
+  ${smcss(hidden)}
 `;
 
 export default function FullCalendarFooter() {
-  const { isSmSize } = useIsScreenSize();
   const hasGov2 = useMenuHasGov2();
 
   const categories = useMemo(
@@ -32,10 +39,6 @@ export default function FullCalendarFooter() {
       ].filter(Boolean),
     [hasGov2],
   );
-
-  if (isSmSize) {
-    return null;
-  }
 
   return (
     <Wrapper>
