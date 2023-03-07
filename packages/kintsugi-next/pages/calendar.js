@@ -1,16 +1,18 @@
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { flex, flex_col, gap_y } from "next-common/styles/tailwindcss";
+import { flex, flex_col, gap_y, m_x } from "next-common/styles/tailwindcss";
 import styled from "styled-components";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
 import { useState } from "react";
+import { smcss } from "next-common/utils/responsive";
 
 const Wrapper = styled.div`
   ${flex}
   ${flex_col}
   ${gap_y(16)}
+  ${smcss(m_x(16))}
 `;
 
 export default withLoginUserRedux(() => {
