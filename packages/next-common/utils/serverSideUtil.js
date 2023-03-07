@@ -1,14 +1,11 @@
 export const EMPTY_SERVER_PROPS = { props: {} };
 
-export function to404(context) {
-  const { res } = context;
-  res.statusCode = 302;
-  res.setHeader("Location", "/404");
-  res.end();
-  return EMPTY_SERVER_PROPS;
+// redirect to 404 page
+export function to404() {
+  return redirect("/404");
 }
 
-export function checkBrowserCompatibility(context) {
+export function isBrowserCompatible(context) {
   const userAgent = context?.req?.headers["user-agent"] ?? "";
   const isSafari =
     userAgent.includes("Safari") && !userAgent.includes("Chrome");
@@ -16,14 +13,28 @@ export function checkBrowserCompatibility(context) {
     const regex = /\bVersion\/(\d+?\.\d+)/;
     const version = regex.exec(userAgent)?.[1];
     if (parseFloat(version) < 14) {
-      toBrowserCompatibleError(context);
+      return false;
     }
   }
+
+  return true;
 }
 
-export function toBrowserCompatibleError(context) {
-  const { res } = context;
-  res.statusCode = 302;
-  res.setHeader("Location", "/incompatible");
-  res.end();
+// redirect to browser incompatible page
+export function toBrowserIncompatible() {
+  return redirect("/incompatible");
+}
+
+export function toLogin(context) {
+  return redirect(`/login?redirect=${context.resolvedUrl}`);
+}
+
+export function redirect(url) {
+  return {
+    redirect: {
+      permanent: false,
+      destination: url,
+    },
+    props: {},
+  };
 }

@@ -48,7 +48,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return to404(context);
+    return to404();
   }
 
   return {
