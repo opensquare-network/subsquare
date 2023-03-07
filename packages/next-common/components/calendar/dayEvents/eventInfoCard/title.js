@@ -78,7 +78,6 @@ function getTitle(event) {
 }
 
 export default function Title({ event, isFolded, setIsFolded = noop }) {
-  console.log(event);
   return (
     <Wrapper>
       <Left>{getTitle(event)}</Left>
