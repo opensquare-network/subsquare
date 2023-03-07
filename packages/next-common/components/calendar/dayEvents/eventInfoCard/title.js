@@ -5,6 +5,16 @@ import styled from "styled-components";
 import EventTag from "./eventTag";
 import FoldButton from "./foldButton";
 import { stringUpperFirst } from "@polkadot/util";
+import {
+  flex,
+  gap_x,
+  hover,
+  no_underline,
+  underline,
+} from "../../../../styles/tailwindcss";
+import Link from "next/link";
+import TooltipOrigin from "../../../tooltip";
+import { getPostUrlsByEvent } from "./utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,6 +36,8 @@ const Wrapper = styled.div`
 const Left = styled.div`
   flex: 1;
   word-break: break-word;
+  ${flex}
+  ${gap_x(4)}
 `;
 const Right = styled.div`
   display: flex;
@@ -33,12 +45,36 @@ const Right = styled.div`
   gap: 8px;
 `;
 
+const TitleTime = styled.div`
+  ${hover(underline)}
+`;
+const TitleLink = styled.a`
+  flex: 1;
+  ${hover(underline)}
+`;
+const TitleStatus = styled.span`
+  ${no_underline}
+`;
+
+const Tooltip = styled(TooltipOrigin)``;
+
 function getTitle(event) {
   const timeText = dayjs(event?.indexer?.blockTime).format("hh:mm");
   const status = event?.type?.split("_").pop();
-  return `[${timeText}] [${stringUpperFirst(status)}] ${
-    event.data?.postTitle || "Untitled"
-  }`;
+  const postUrls = getPostUrlsByEvent(event);
+  const postUrl = postUrls[event.type];
+
+  return (
+    <span>
+      <Tooltip content={"#" + event?.indexer?.blockHeight?.toLocaleString()}>
+        <TitleTime>[{timeText}]</TitleTime>
+      </Tooltip>{" "}
+      <TitleStatus>[{stringUpperFirst(status)}]</TitleStatus>{" "}
+      <Link href={postUrl} passHref>
+        <TitleLink>{event.data?.postTitle || "untitled"}</TitleLink>
+      </Link>
+    </span>
+  );
 }
 
 export default function Title({ event, isFolded, setIsFolded = noop }) {

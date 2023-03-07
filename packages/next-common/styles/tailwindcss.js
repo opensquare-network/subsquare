@@ -398,6 +398,14 @@ export const text_uppercase = `
   text-transform: uppercase;
 `;
 
+// text decoration
+export const underline = `
+  text-decoration-line: underline;
+`;
+export const no_underline = `
+  text-decoration-line: none;
+`;
+
 // interactivity
 // ---
 
