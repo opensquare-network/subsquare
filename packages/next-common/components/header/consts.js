@@ -1,5 +1,6 @@
 import React from "react";
 import Settings from "../../assets/imgs/icons/settings.svg";
+import Profile from "../../assets/imgs/icons/profile.svg";
 import Logout from "../../assets/imgs/icons/logout.svg";
 
 const logoutSetting = {
@@ -8,7 +9,15 @@ const logoutSetting = {
   icon: <Logout />,
 };
 
+const profileSetting = {
+  value: "profile",
+  name: "Profile",
+  icon: <Profile />,
+  pathname: "/user/profile",
+};
+
 export const accountMenu = [
+  profileSetting,
   {
     value: "settings",
     name: "Settings",
@@ -19,6 +28,7 @@ export const accountMenu = [
 ];
 
 export const accountMenuForKeyAccount = [
+  profileSetting,
   {
     value: "settings",
     name: "Settings",

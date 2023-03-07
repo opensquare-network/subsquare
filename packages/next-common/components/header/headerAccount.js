@@ -10,7 +10,6 @@ import { shadow_200 } from "../../styles/componentCss";
 import LoginButton from "./loginButton";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
-import Divider from "../styled/layout/divider";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 
@@ -111,7 +110,6 @@ export default function HeaderAccount() {
         <Menu>
           {menu.map((item, index) => (
             <Fragment key={index}>
-              {index === menu.length - 1 && <Divider margin={8} />}
               <Item onClick={() => handleAccountMenu(item)}>
                 {item.icon}
                 <div>{item.name}</div>
