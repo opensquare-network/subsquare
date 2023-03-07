@@ -44,7 +44,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     track = tracks.find((item) => item.name === id);
   }
   if (!track) {
-    return to404(context);
+    return to404();
   }
 
   const [{ result: posts }, { result: summary }, { result: period }] =
