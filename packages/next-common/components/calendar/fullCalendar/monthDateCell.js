@@ -129,7 +129,7 @@ export default function FullCalendarMonthDateCell({
 
   const eventsGroup = groupBy(dayEvents, "category");
   const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
-    Object.keys(eventsGroup).includes(category)
+    Object.keys(eventsGroup).includes(category),
   );
 
   label = Number(label);
