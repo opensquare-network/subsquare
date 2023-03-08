@@ -31,16 +31,6 @@ const commonMenus = {
       ),
     },
     {
-      value: "calendar",
-      name: "Calendar",
-      pathname: "/calendar",
-      icon: (
-        <MenuIconWrapper>
-          <CalendarIcon />
-        </MenuIconWrapper>
-      ),
-    },
-    {
       value: "discussions",
       name: "Discussions",
       pathname: "/discussions",
@@ -57,6 +47,17 @@ const commonMenus = {
 if ([Chains.polkadot, Chains.kusama].includes(process.env.NEXT_PUBLIC_CHAIN)) {
   commonMenus.items.push(polkassemblyMenu);
 }
+
+commonMenus.items.push({
+  value: "calendar",
+  name: "Calendar",
+  pathname: "/calendar",
+  icon: (
+    <MenuIconWrapper>
+      <CalendarIcon />
+    </MenuIconWrapper>
+  ),
+});
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 if (space) {
