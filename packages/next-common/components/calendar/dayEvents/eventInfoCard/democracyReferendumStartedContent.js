@@ -3,6 +3,7 @@ import { democracyReferendumBaseUrl } from "../../../../utils/postBaseUrl";
 import IndexItem from "./infoItem/indexItem";
 import ProposerItem from "./infoItem/proposerItem";
 import { ItemWrapper } from "./infoItem/styled";
+import TitleItem from "./infoItem/titleItem";
 
 export default function DemocracyReferendumStartedContent({
   referendumIndex,
@@ -11,6 +12,7 @@ export default function DemocracyReferendumStartedContent({
   return (
     <>
       <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
+      <TitleItem title={data?.postTitle} />
       <ProposerItem proposer={data.proposer} />
       <ItemWrapper>
         <span>Threshold:</span>

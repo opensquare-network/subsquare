@@ -4,6 +4,7 @@ import AyesItem from "./infoItem/ayesItem";
 import ElectorateItem from "./infoItem/electorateItem";
 import IndexItem from "./infoItem/indexItem";
 import NaysItem from "./infoItem/naysItem";
+import TitleItem from "./infoItem/titleItem";
 import TurnoutItem from "./infoItem/turnoutItem";
 
 export default function DemocracyReferendumPassedOrNotPassedContent({
@@ -13,6 +14,7 @@ export default function DemocracyReferendumPassedOrNotPassedContent({
   return (
     <>
       <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
+      <TitleItem title={data?.postTitle} />
       <AyesItem ayes={data?.tally?.ayes} />
       <NaysItem nays={data?.tally?.nays} />
       <TurnoutItem turnout={data?.tally?.turnout} />
