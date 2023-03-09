@@ -20,7 +20,7 @@ const Section = styled.div`
   gap: 8px;
 `;
 
-const SectionTitle = styled.div`
+const SectionTitle = styled.span`
   ${p_12_bold}
   color: #1E2134;
 `;

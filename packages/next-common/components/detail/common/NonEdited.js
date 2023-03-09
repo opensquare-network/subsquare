@@ -60,14 +60,16 @@ export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
   return (
     <>
       <PlaceHolder>
-        {`The ${type} has not been edited by creator.`}
-        {isAuthor && (
-          <>
-            <PostEdit setIsEdit={setIsEdit} />
-            {", or link a post"}
-            <PostLink onClick={() => setShowLinkPopup(true)} />
-          </>
-        )}
+        <span>
+          {`The ${type} has not been edited by creator.`}
+          {isAuthor && (
+            <>
+              <PostEdit setIsEdit={setIsEdit} />
+              {", or link a post"}
+              <PostLink onClick={() => setShowLinkPopup(true)} />
+            </>
+          )}
+        </span>
       </PlaceHolder>
       <WhoCanEdit authors={authors} />
     </>
