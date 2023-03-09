@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { p_12_bold, p_14_normal } from "../../styles/componentCss";
 import Popup from "../popup/wrapper/Popup";
 import nextApi from "../../services/nextApi";
@@ -10,6 +10,7 @@ import { postTypeToApi } from "../../utils/viewfuncs";
 import { usePost } from "../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
+import SecondaryButton from "../buttons/secondaryButton";
 
 const Info = styled.div`
   padding: 10px 16px;
@@ -35,7 +36,12 @@ const Discussion = styled.div`
   display: flex;
   cursor: pointer;
   padding: 10px 16px;
-  background: #ebeef4;
+  background: #f6f7fa;
+  ${(p) =>
+    p.selected &&
+    css`
+      background: #ebeef4;
+    `}
   border-radius: 4px;
 `;
 
@@ -48,8 +54,16 @@ const NoDiscussion = styled.div`
   color: #9DA9BB;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export default function PostLinkPopup({ setShow = noop }) {
   const [myDiscussions, setMyDiscussions] = useState([]);
+  const [selectedDiscussion, setSelectedDiscussion] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingList, setIsLoadingList] = useState(false);
   const user = useUser();
   const dispatch = useDispatch();
   const post = usePost();
@@ -60,8 +74,55 @@ export default function PostLinkPopup({ setShow = noop }) {
     if (!user?.address) {
       return;
     }
+
+    setMyDiscussions([]);
+
     //TODO: should load all discussions
-    nextApi.fetch(`users/${user?.address}/posts`).then(({ result, error }) => {
+    setIsLoadingList(true);
+    nextApi
+      .fetch(`users/${user?.address}/posts`)
+      .then(({ result, error }) => {
+        if (error) {
+          dispatch(
+            addToast({
+              type: "error",
+              message: error.message,
+            })
+          );
+          return;
+        }
+
+        setMyDiscussions(result.items);
+      })
+      .finally(() => {
+        setIsLoadingList(false);
+      });
+  }, [dispatch, user]);
+
+  const bindDiscussion = useCallback(async () => {
+    if (!post?.rootPost) {
+      return;
+    }
+
+    if (!selectedDiscussion) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please select a post",
+        })
+      );
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { error } = await nextApi.post(
+        `${postTypeToApi(rootPostType)}/${rootPostId}/bind`,
+        {
+          discussionId: selectedDiscussion._id,
+        }
+      );
+
       if (error) {
         dispatch(
           addToast({
@@ -71,45 +132,21 @@ export default function PostLinkPopup({ setShow = noop }) {
         );
         return;
       }
-      setMyDiscussions(result.items);
-    });
-    setMyDiscussions([]);
-  }, [dispatch, user]);
 
-  const bindDiscussion = useCallback(
-    async (discussion) => {
-      if (!post?.rootPost) {
-        return;
-      }
-      nextApi
-        .post(`${postTypeToApi(rootPostType)}/${rootPostId}/bind`, {
-          discussionId: discussion._id,
+      dispatch(
+        addToast({
+          type: "success",
+          message: "Post linked",
         })
-        .then(({ error }) => {
-          if (error) {
-            dispatch(
-              addToast({
-                type: "error",
-                message: error.message,
-              })
-            );
-            return;
-          }
+      );
+      setShow(false);
 
-          dispatch(
-            addToast({
-              type: "success",
-              message: "Post linked",
-            })
-          );
-          setShow(false);
-
-          // reload server prop
-          router.replace(router.asPath);
-        });
-    },
-    [dispatch, rootPostType, rootPostId, router]
-  );
+      // reload server prop
+      router.replace(router.asPath);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch, rootPostType, rootPostId, router, selectedDiscussion]);
 
   return (
     <Popup title="Link post" onClose={() => setShow(false)}>
@@ -123,12 +160,21 @@ export default function PostLinkPopup({ setShow = noop }) {
           <NoDiscussion>No posts</NoDiscussion>
         ) : (
           myDiscussions.map((discussion, index) => (
-            <Discussion key={index} onClick={() => bindDiscussion(discussion)}>
+            <Discussion
+              key={index}
+              selected={selectedDiscussion === discussion}
+              onClick={() => setSelectedDiscussion(discussion)}
+            >
               {discussion.title}
             </Discussion>
           ))
         )}
       </Section>
+      <ButtonWrapper>
+        <SecondaryButton isLoading={isLoading} onClick={bindDiscussion}>
+          Confirm
+        </SecondaryButton>
+      </ButtonWrapper>
     </Popup>
   );
 }
