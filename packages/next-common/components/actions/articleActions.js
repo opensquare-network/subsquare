@@ -15,6 +15,7 @@ export default function ArticleActions({
   toggleThumbUp,
   thumbUpLoading,
   setIsEdit,
+  setShowLinkPopup,
 }) {
   const isLogin = useIsLogin();
   const post = usePost();
@@ -34,7 +35,14 @@ export default function ArticleActions({
         <ReplyButton onReply={onReply} noHover={!isLogin || isAuthor} />
         {ThumbsUpComponent}
         <Share />
-        {isAuthor && <ContentMenu edit={isAuthor} setIsEdit={setIsEdit} alwaysShow />}
+        {isAuthor && (
+          <ContentMenu
+            edit={isAuthor}
+            setIsEdit={setIsEdit}
+            setShowLinkPopup={setShowLinkPopup}
+            alwaysShow
+          />
+        )}
       </Wrapper>
 
       <ThumbUpList

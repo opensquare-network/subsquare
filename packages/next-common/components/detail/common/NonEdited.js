@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import PostEdit from "./PostEdit";
+import PostLink from "./PostLink";
 import User from "../../user";
 import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 import { useDetailType } from "../../../context/page";
@@ -53,14 +54,20 @@ function WhoCanEdit({ authors = [] }) {
   );
 }
 
-export default function NonEdited({ setIsEdit, authors }) {
+export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
   const type = useDetailType();
   const isAuthor = useIsPostAuthor();
   return (
     <>
       <PlaceHolder>
         {`The ${type} has not been edited by creator.`}
-        {isAuthor && <PostEdit setIsEdit={setIsEdit} />}
+        {isAuthor && (
+          <>
+            <PostEdit setIsEdit={setIsEdit} />
+            {", or link a post"}
+            <PostLink onClick={() => setShowLinkPopup(true)} />
+          </>
+        )}
       </PlaceHolder>
       <WhoCanEdit authors={authors} />
     </>
