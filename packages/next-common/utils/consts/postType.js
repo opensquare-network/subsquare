@@ -1,0 +1,16 @@
+export const PostCollections = Object.freeze({
+  post: "post",
+  tip: "tip",
+  treasuryProposal: "treasuryProposal",
+  bounty: "bounty",
+  childBounty: "childBounty",
+  motion: "motion",
+  techCommMotion: "techCommMotion",
+  financialMotion: "financialMotion",
+  advisoryCommitteeMotion: "advisoryCommitteeMotion",
+  democracy: "democracy",
+  referendaReferendum: "referendaReferendum",
+  fellowshipReferendum: "fellowshipReferendum",
+  allianceMotion: "allianceMotion",
+  allianceAnnouncement: "allianceAnnouncement",
+});
