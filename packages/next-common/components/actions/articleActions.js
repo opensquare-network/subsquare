@@ -16,6 +16,7 @@ export default function ArticleActions({
   thumbUpLoading,
   setIsEdit,
   setShowLinkPopup,
+  setShowUnlinkPopup,
 }) {
   const isLogin = useIsLogin();
   const post = usePost();
@@ -40,6 +41,7 @@ export default function ArticleActions({
             edit={isAuthor}
             setIsEdit={setIsEdit}
             setShowLinkPopup={setShowLinkPopup}
+            setShowUnlinkPopup={setShowUnlinkPopup}
             alwaysShow
           />
         )}

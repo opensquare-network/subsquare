@@ -11,6 +11,7 @@ import { usePost } from "../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
 import SecondaryButton from "../buttons/secondaryButton";
+import Loading from "../loading";
 
 const Info = styled.div`
   padding: 10px 16px;
@@ -100,7 +101,7 @@ export default function PostLinkPopup({ setShow = noop }) {
   }, [dispatch, user]);
 
   const bindDiscussion = useCallback(async () => {
-    if (!post?.rootPost) {
+    if (!rootPostId) {
       return;
     }
 
@@ -148,6 +149,24 @@ export default function PostLinkPopup({ setShow = noop }) {
     }
   }, [dispatch, rootPostType, rootPostId, router, selectedDiscussion]);
 
+  let discussionList = (
+    <NoDiscussion>
+      {isLoadingList ? <Loading size={16} /> : "No posts"}
+    </NoDiscussion>
+  );
+
+  if (myDiscussions?.length) {
+    discussionList = myDiscussions.map((discussion, index) => (
+      <Discussion
+        key={index}
+        selected={selectedDiscussion === discussion}
+        onClick={() => setSelectedDiscussion(discussion)}
+      >
+        {discussion.title}
+      </Discussion>
+    ));
+  }
+
   return (
     <Popup title="Link post" onClose={() => setShow(false)}>
       <Info>
@@ -156,22 +175,14 @@ export default function PostLinkPopup({ setShow = noop }) {
       </Info>
       <Section>
         <SectionTitle>Link to a post</SectionTitle>
-        {myDiscussions.length === 0 ? (
-          <NoDiscussion>No posts</NoDiscussion>
-        ) : (
-          myDiscussions.map((discussion, index) => (
-            <Discussion
-              key={index}
-              selected={selectedDiscussion === discussion}
-              onClick={() => setSelectedDiscussion(discussion)}
-            >
-              {discussion.title}
-            </Discussion>
-          ))
-        )}
+        {discussionList}
       </Section>
       <ButtonWrapper>
-        <SecondaryButton isLoading={isLoading} onClick={bindDiscussion}>
+        <SecondaryButton
+          isLoading={isLoading}
+          disabled={isLoadingList}
+          onClick={bindDiscussion}
+        >
           Confirm
         </SecondaryButton>
       </ButtonWrapper>

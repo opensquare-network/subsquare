@@ -19,6 +19,7 @@ import nextApi from "next-common/services/nextApi";
 import fetchAndUpdatePost from "../context/post/update";
 import { useDetailType } from "../context/page";
 import PostLinkPopup from "./postLinkPopup";
+import PostUnlinkPopup from "./postUnlinkPopup";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -46,6 +47,7 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
   const post = usePost();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showLinkPopup, setShowLinkPopup] = useState(false);
+  const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
 
   const isLogin = useIsLogin();
   const type = useDetailType();
@@ -112,8 +114,10 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
         thumbUpLoading={thumbUpLoading}
         onReply={onReply}
         setShowLinkPopup={setShowLinkPopup}
+        setShowUnlinkPopup={setShowUnlinkPopup}
       />
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
+      {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
     </Wrapper>
   );
 }

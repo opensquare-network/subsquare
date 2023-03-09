@@ -31,6 +31,7 @@ export default function ContentMenu({
   edit,
   setIsEdit,
   setShowLinkPopup,
+  setShowUnlinkPopup,
   copy = false,
   onCopy,
   alwaysShow,
@@ -39,8 +40,6 @@ export default function ContentMenu({
   const [show, setShow] = useState(false);
   const [copyState, setCopyState] = useState(false);
   const ref = useRef();
-  const dispatch = useDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     if (copyState) {
@@ -51,23 +50,6 @@ export default function ContentMenu({
   }, [copyState]);
 
   useOnClickOutside(ref, () => setShow(false));
-
-  const { postType: rootPostType, postId: rootPostId } = post?.rootPost || {};
-  const unlinkDiscussion = useCallback(async () => {
-    setShow(false);
-
-    const { error, result } = await nextApi.post(
-      `${postTypeToApi(rootPostType)}/${rootPostId}/unbind`
-    );
-    if (error) {
-      dispatch(addToast({ message: error.message, type: "error" }));
-    }
-    if (result) {
-      dispatch(addToast({ message: "Unlinked", type: "success" }));
-      // reload the server data
-      router.replace(router.asPath);
-    }
-  }, [dispatch, rootPostType, rootPostId, router]);
 
   let linkOrUnlinkMenuItem = (
     <OptionItem
@@ -81,7 +63,14 @@ export default function ContentMenu({
   );
   if (post?.isBoundDiscussion) {
     linkOrUnlinkMenuItem = (
-      <OptionItem onClick={unlinkDiscussion}>Unlink</OptionItem>
+      <OptionItem
+        onClick={() => {
+          setShowUnlinkPopup(true);
+          setShow(false);
+        }}
+      >
+        Unlink
+      </OptionItem>
     );
   }
 
