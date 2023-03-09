@@ -1,26 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { p_12_bold, p_14_normal } from "../../styles/componentCss";
-import Popup from "../popup/wrapper/Popup";
-import nextApi from "../../services/nextApi";
+import { p_12_bold, p_14_normal } from "../../../styles/componentCss";
+import Popup from "../../popup/wrapper/Popup";
+import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import { useUser } from "../../context/user";
-import { addToast } from "../../store/reducers/toastSlice";
-import { postTypeToApi } from "../../utils/viewfuncs";
-import { usePost } from "../../context/post";
+import { useUser } from "../../../context/user";
+import { addToast } from "../../../store/reducers/toastSlice";
+import { postTypeToApi } from "../../../utils/viewfuncs";
+import { usePost } from "../../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
-import SecondaryButton from "../buttons/secondaryButton";
-import Loading from "../loading";
-
-const Info = styled.div`
-  padding: 10px 16px;
-  background: #f6f7fa;
-  border-radius: 4px;
-
-  ${p_14_normal}
-  color: #506176;
-`;
+import SecondaryButton from "../../buttons/secondaryButton";
+import Loading from "../../loading";
+import { Info, ButtonWrapper } from "../styled";
 
 const Section = styled.div`
   display: flex;
@@ -53,11 +45,6 @@ const NoDiscussion = styled.div`
 
   ${p_14_normal}
   color: #9DA9BB;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;
 
 export default function PostLinkPopup({ setShow = noop }) {

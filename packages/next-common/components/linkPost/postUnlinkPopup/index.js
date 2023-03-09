@@ -1,29 +1,14 @@
 import React, { useCallback, useState } from "react";
-import styled from "styled-components";
-import { p_14_normal } from "../../styles/componentCss";
-import Popup from "../popup/wrapper/Popup";
-import nextApi from "../../services/nextApi";
+import Popup from "../../popup/wrapper/Popup";
+import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import { addToast } from "../../store/reducers/toastSlice";
-import { postTypeToApi } from "../../utils/viewfuncs";
-import { usePost } from "../../context/post";
+import { addToast } from "../../../store/reducers/toastSlice";
+import { postTypeToApi } from "../../../utils/viewfuncs";
+import { usePost } from "../../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
-import SecondaryButton from "../buttons/secondaryButton";
-
-const Info = styled.div`
-  padding: 10px 16px;
-  background: #f6f7fa;
-  border-radius: 4px;
-
-  ${p_14_normal}
-  color: #506176;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import SecondaryButton from "../../buttons/secondaryButton";
+import { Info, ButtonWrapper } from "../styled";
 
 export default function PostUnlinkPopup({ setShow = noop }) {
   const [isLoading, setIsLoading] = useState(false);

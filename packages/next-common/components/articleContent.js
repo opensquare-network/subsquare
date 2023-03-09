@@ -18,8 +18,8 @@ import { useIsLogin } from "../context/user";
 import nextApi from "next-common/services/nextApi";
 import fetchAndUpdatePost from "../context/post/update";
 import { useDetailType } from "../context/page";
-import PostLinkPopup from "./postLinkPopup";
-import PostUnlinkPopup from "./postUnlinkPopup";
+import PostLinkPopup from "./linkPost/postLinkPopup";
+import PostUnlinkPopup from "./linkPost/postUnlinkPopup";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
