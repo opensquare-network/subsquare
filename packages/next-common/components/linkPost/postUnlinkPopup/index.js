@@ -3,30 +3,30 @@ import Popup from "../../popup/wrapper/Popup";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
 import { addToast } from "../../../store/reducers/toastSlice";
-import { postTypeToApi } from "../../../utils/viewfuncs";
+import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
 import SecondaryButton from "../../buttons/secondaryButton";
 import { Info, ButtonWrapper } from "../styled";
+import { useDetailType } from "../../../context/page";
 
 export default function PostUnlinkPopup({ setShow = noop }) {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const post = usePost();
+  const postType = useDetailType();
   const router = useRouter();
 
-  const { postType: rootPostType, postId: rootPostId } = post.rootPost || {};
-
   const unbindDiscussion = useCallback(async () => {
-    if (!rootPostId) {
+    if (!post?.postIndexId) {
       return;
     }
 
     setIsLoading(true);
     try {
       const { error } = await nextApi.post(
-        `${postTypeToApi(rootPostType)}/${rootPostId}/unbind`
+        `${toApiType(postType)}/${post?.postIndexId}/unbind`
       );
 
       if (error) {
@@ -52,7 +52,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, rootPostType, rootPostId, router]);
+  }, [dispatch, postType, post?.postIndexId, router]);
 
   return (
     <Popup title="Unlink post" onClose={() => setShow(false)}>

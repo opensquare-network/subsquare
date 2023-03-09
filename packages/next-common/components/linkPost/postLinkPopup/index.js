@@ -6,13 +6,14 @@ import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
 import { useUser } from "../../../context/user";
 import { addToast } from "../../../store/reducers/toastSlice";
-import { postTypeToApi } from "../../../utils/viewfuncs";
+import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
 import SecondaryButton from "../../buttons/secondaryButton";
 import Loading from "../../loading";
 import { Info, ButtonWrapper } from "../styled";
+import { useDetailType } from "../../../context/page";
 
 const Section = styled.div`
   display: flex;
@@ -55,8 +56,8 @@ export default function PostLinkPopup({ setShow = noop }) {
   const user = useUser();
   const dispatch = useDispatch();
   const post = usePost();
+  const postType = useDetailType();
   const router = useRouter();
-  const { postType: rootPostType, postId: rootPostId } = post.rootPost || {};
 
   useEffect(() => {
     if (!user?.address) {
@@ -88,7 +89,7 @@ export default function PostLinkPopup({ setShow = noop }) {
   }, [dispatch, user]);
 
   const bindDiscussion = useCallback(async () => {
-    if (!rootPostId) {
+    if (!post?.postIndexId) {
       return;
     }
 
@@ -105,7 +106,7 @@ export default function PostLinkPopup({ setShow = noop }) {
     setIsLoading(true);
     try {
       const { error } = await nextApi.post(
-        `${postTypeToApi(rootPostType)}/${rootPostId}/bind`,
+        `${toApiType(postType)}/${post?.postIndexId}/bind`,
         {
           discussionId: selectedDiscussion._id,
         }
@@ -134,7 +135,7 @@ export default function PostLinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, rootPostType, rootPostId, router, selectedDiscussion]);
+  }, [dispatch, postType, post?.postIndexId, router, selectedDiscussion]);
 
   let discussionList = (
     <NoDiscussion>

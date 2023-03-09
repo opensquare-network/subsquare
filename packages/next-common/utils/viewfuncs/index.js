@@ -35,34 +35,6 @@ export function toApiType(type) {
   return `${type}s`;
 }
 
-export function postTypeToApi(type) {
-  if (type === PostCollections.bounty) {
-    return "treasury/bounties";
-  }
-  if (type === PostCollections.childBounty) {
-    return "treasury/child-bounties";
-  }
-  if (type === PostCollections.financialMotion) {
-    return "financial-motions";
-  }
-  if (type === PostCollections.techCommMotion) {
-    return "tech-comm/motions";
-  }
-  if (type === PostCollections.motion) {
-    return "motions";
-  }
-  if (type === PostCollections.referendaReferendum) {
-    return "gov2/referendums";
-  }
-  if (type === PostCollections.fellowshipReferendum) {
-    return "fellowship/referenda";
-  }
-  if (type === PostCollections.advisoryCommitteeMotion) {
-    return "advisory-motions";
-  }
-  return `${type}s`;
-}
-
 export function getEffectiveNumbers(n) {
   const result = [];
   let flag = false;

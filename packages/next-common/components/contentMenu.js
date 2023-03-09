@@ -1,13 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { usePost } from "../context/post";
-import nextApi from "../services/nextApi";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
-import { postTypeToApi } from "../utils/viewfuncs";
 import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
-import { addToast } from "../store/reducers/toastSlice";
-import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   margin-left: auto;
