@@ -42,7 +42,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
   const [title, setTitle] = useState(defaultTitle);
   const [updating, setUpdating] = useState(false);
   const [bannerCid, setBannerCid] = useState(post.bannerCid);
-  const [selectedLabels, setSelectedLabels] = useState(post.labels);
+  const [selectedLabels, setSelectedLabels] = useState(post.labels || []);
   const postType = useDetailType();
 
   const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
