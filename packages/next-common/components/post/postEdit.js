@@ -13,6 +13,7 @@ import { EditablePanel } from "../styled/panel";
 import { usePost, usePostTitle } from "../../context/post";
 import { useDetailType } from "../../context/page";
 import PostLabel from "./postLabel";
+import { detailPageCategory } from "../../utils/consts/business/category";
 
 const Wrapper = styled(EditablePanel)`
   textarea:read-only,
@@ -42,6 +43,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
   const [updating, setUpdating] = useState(false);
   const [bannerCid, setBannerCid] = useState(post.bannerCid);
   const [selectedLabels, setSelectedLabels] = useState(post.labels || []);
+  const postType = useDetailType();
 
   const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
         labels: selectedLabels,
       });
     },
-    [type, post, bannerCid, title, selectedLabels],
+    [type, post, bannerCid, title, selectedLabels]
   );
 
   const isMounted = useIsMountedBool();
@@ -93,10 +95,12 @@ export default function PostEdit({ setIsEdit, updatePost }) {
         </UploaderWrapper>
       )}
 
-      <PostLabel
-        selectedLabels={selectedLabels}
-        setSelectedLabels={setSelectedLabels}
-      />
+      {postType === detailPageCategory.POST && (
+        <PostLabel
+          selectedLabels={selectedLabels}
+          setSelectedLabels={setSelectedLabels}
+        />
+      )}
 
       <LabelWrapper>
         <Label>Issue</Label>
