@@ -14,6 +14,8 @@ export default function Metadata() {
       threshold={motion?.threshold}
       hash={motion?.hash}
       call={motion.proposal}
+      marketId={motion?.marketId}
+      marketMetadata={motion?.marketMetadata}
     />
   );
 }
