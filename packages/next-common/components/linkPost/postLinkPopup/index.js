@@ -89,7 +89,7 @@ export default function PostLinkPopup({ setShow = noop }) {
   }, [dispatch, user]);
 
   const bindDiscussion = useCallback(async () => {
-    if (!post?.postIndexId) {
+    if (!post?._id) {
       return;
     }
 
@@ -106,7 +106,7 @@ export default function PostLinkPopup({ setShow = noop }) {
     setIsLoading(true);
     try {
       const { error } = await nextApi.post(
-        `${toApiType(postType)}/${post?.postIndexId}/bind`,
+        `${toApiType(postType)}/${post?._id}/bind`,
         {
           discussionId: selectedDiscussion._id,
         }
@@ -135,7 +135,7 @@ export default function PostLinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, postType, post?.postIndexId, router, selectedDiscussion]);
+  }, [dispatch, postType, post?._id, router, selectedDiscussion]);
 
   let discussionList = (
     <NoDiscussion>

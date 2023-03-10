@@ -19,14 +19,14 @@ export default function PostUnlinkPopup({ setShow = noop }) {
   const router = useRouter();
 
   const unbindDiscussion = useCallback(async () => {
-    if (!post?.postIndexId) {
+    if (!post?._id) {
       return;
     }
 
     setIsLoading(true);
     try {
       const { error } = await nextApi.post(
-        `${toApiType(postType)}/${post?.postIndexId}/unbind`
+        `${toApiType(postType)}/${post?._id}/unbind`
       );
 
       if (error) {
@@ -52,7 +52,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, postType, post?.postIndexId, router]);
+  }, [dispatch, postType, post?._id, router]);
 
   return (
     <Popup title="Unlink post" onClose={() => setShow(false)}>
