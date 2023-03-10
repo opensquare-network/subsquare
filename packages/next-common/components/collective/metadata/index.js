@@ -5,6 +5,7 @@ import KVList from "../../listInfo/kvList";
 import User from "../../user";
 import { useChain } from "../../../context/chain";
 import MarketMetadata from "./marketMetadata";
+import Chains from "../../../utils/consts/chains";
 
 const keys = {
   proposer: "proposer",
@@ -46,7 +47,7 @@ export default function CollectiveMetadata({
     data.push([<Proposal call={call} key="proposal" />]);
   }
 
-  if (chain === "zeitgeist") {
+  if (chain === Chains.zeitgeist) {
     data.push([
       <MarketMetadata
         key={"marketMetadata"}
