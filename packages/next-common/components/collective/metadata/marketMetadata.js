@@ -99,7 +99,6 @@ const UnavailableText = styled.p`
 `;
 
 export default function MarketMetadata({ id, metadata }) {
-  console.log(id, metadata);
   const [view, setView] = useState("metadata");
 
   const questionLink = `https://app.zeitgeist.pm/markets/${id}`;
