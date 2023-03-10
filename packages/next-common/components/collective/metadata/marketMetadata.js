@@ -84,13 +84,19 @@ const ViewWrapper = styled.div`
 `;
 
 const DataTableViewDescription = styled.div`
+  ${p_14_normal};
   a {
     ${text_theme("secondarySapphire500")};
   }
 `;
 
-const QuestionLink = styled(ExternalLink)`
+const DataTableViewQuestionLink = styled(ExternalLink)`
+  ${p_14_normal};
   ${text_theme("secondarySapphire500")};
+`;
+
+const DataTableViewTags = styled.div`
+  ${p_14_normal};
 `;
 
 const UnavailableText = styled.p`
@@ -105,14 +111,16 @@ export default function MarketMetadata({ id, metadata }) {
 
   const dataTableViewData = {
     Question: (
-      <QuestionLink href={questionLink}>{metadata?.question}</QuestionLink>
+      <DataTableViewQuestionLink href={questionLink}>
+        {metadata?.question}
+      </DataTableViewQuestionLink>
     ),
     Description: (
       <DataTableViewDescription
         dangerouslySetInnerHTML={{ __html: metadata?.description }}
       />
     ),
-    Tags: metadata?.tags?.join("/"),
+    Tags: <DataTableViewTags>{metadata?.tags?.join("/")}</DataTableViewTags>,
   };
 
   return (
