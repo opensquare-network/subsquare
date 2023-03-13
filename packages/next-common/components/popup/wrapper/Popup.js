@@ -7,6 +7,8 @@ import { emptyFunction } from "../../../utils";
 import { useScrollLock } from "../../../utils/hooks/useScrollLock";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import { useKey } from "../../../utils/hooks/useKey";
+import { breakpoint } from "../../../utils/responsive";
+import { w_full } from "../../../styles/tailwindcss";
 
 const Wrapper = styled(NeutralPanel)`
   position: fixed;
@@ -24,6 +26,8 @@ const Wrapper = styled(NeutralPanel)`
   padding: 24px;
   transform: translate(-50%, -50%);
   color: ${(props) => props.theme.textPrimary};
+
+  ${breakpoint(400, w_full)};
 
   > :not(:first-child) {
     margin-top: 16px;

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
@@ -18,10 +18,8 @@ import Chains from "next-common/utils/consts/chains";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { Conviction } from "utils/referendumUtil";
 import PopupListWrapper from "../../../styled/popupListWrapper";
+import { useScreenSize } from "../../../../utils/hooks/useScreenSize";
 
-const styleAddress = { textAlign: "left", width: 208 };
-const styleLabel = { textAlign: "right", width: 80 };
-const styleSupport = { textAlign: "right" };
 
 function DelegationList({ items, theme, loading = true }) {
   const chain = useChain();
@@ -30,14 +28,29 @@ function DelegationList({ items, theme, loading = true }) {
   const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
   const symbol = node.voteSymbol || node.symbol;
 
+  const { sm } = useScreenSize();
+  const colWidths = useMemo(() => {
+    let widths = {
+      address: "100%",
+      label: 80,
+      support: 128,
+    };
+
+    if (sm && hasLabel) {
+      widths.address = 124;
+    }
+
+    return widths;
+  }, [sm]);
+
   return (
     <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={styleAddress}>ADDRESS</StyledTh>
-            {hasLabel && <StyledTh style={styleLabel}>LABEL</StyledTh>}
-            <StyledTh style={styleSupport}>SUPPORT</StyledTh>
+            <StyledTh style={{ textAlign: "left", width: colWidths.address }}>ADDRESS</StyledTh>
+            {hasLabel && <StyledTh style={{ textAlign: "right", width: colWidths.label }}>LABEL</StyledTh>}
+            <StyledTh style={{ textAlign: "right", width: colWidths.support }}>SUPPORT</StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={
@@ -51,23 +64,23 @@ function DelegationList({ items, theme, loading = true }) {
             items.map((item, index) => (
               <Fragment key={index}>
                 <StyledTr>
-                  <StyledTd style={styleAddress}>
+                  <StyledTd style={{ textAlign: "left", width: colWidths.address }}>
                     <User
                       add={item.delegator}
                       fontSize={14}
-                      maxWidth={132}
+                      maxWidth={colWidths.address-30}
                       noTooltip={true}
                     />
                   </StyledTd>
                   {hasLabel && (
-                    <StyledTd style={styleLabel}>
+                    <StyledTd style={{ textAlign: "right", width: colWidths.label }}>
                       <VoteLabel
                         conviction={Conviction[item.conviction]}
                         isDelegating={item.isDelegating}
                       />
                     </StyledTd>
                   )}
-                  <StyledTd style={styleSupport}>
+                  <StyledTd style={{ textAlign: "right", width: colWidths.support }}>
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
                       symbol={symbol}
