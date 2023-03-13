@@ -45,13 +45,18 @@ export default function AllBeenDelegatedPopupAllList({
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
 
+  const colWidths = {
+    track: "100%",
+    support: 128,
+  };
+
   return (
     <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: "100%" }}>TRACK</StyledTh>
-            <StyledTh style={{ textAlign: "right", width: "100%" }}>
+            <StyledTh style={{ textAlign: "left", width: colWidths.track }}>TRACK</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: colWidths.support }}>
               SUPPORT
             </StyledTh>
           </StyledTr>
@@ -69,13 +74,13 @@ export default function AllBeenDelegatedPopupAllList({
             beenDelegatedList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: "100%" }}>
+                  <StyledTd style={{ textAlign: "left", width: colWidths.track }}>
                     <TrackItem
                       track={item.track}
                       onClick={() => onTrackClick(item.track.id)}
                     />
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "right", width: "100%" }}>
+                  <StyledTd style={{ textAlign: "right", width: colWidths.support }}>
                     <ValueDisplay
                       value={toPrecision(
                         sumBy(item.beenDelegated, "balance"),
