@@ -11,22 +11,27 @@ export const LG_SIZE = 1280;
  * @param {import("styled-components").ThemedCssFunction} css
  * @description less than 768
  */
-export const smcss = (css) => makeResponsive(css, SM_SIZE);
+export const smcss = (css) => breakpoint(SM_SIZE, css);
 
 /**
  * @param {import("styled-components").ThemedCssFunction} css
  * @description less than 1024
  */
-export const mdcss = (css) => makeResponsive(css, MD_SIZE);
+export const mdcss = (css) => breakpoint(MD_SIZE, css);
 
 /**
  * @param {import("styled-components").ThemedCssFunction} css
  * @description less than 1280
  */
-export const lgcss = (css) => makeResponsive(css, LG_SIZE);
+export const lgcss = (css) => breakpoint(LG_SIZE, css);
 
-function makeResponsive(css, breakpoint) {
-  return `@media (max-width: ${breakpoint}px) {
+/**
+ * @param {number} size
+ * @param {string} css
+ * @description less than `size`
+ */
+export function breakpoint(size, css) {
+  return `@media (max-width: ${size}px) {
     ${css}
   }`;
 }
