@@ -50,7 +50,7 @@ export default function AllBeenDelegatedPopupAllList({
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: 296 }}>TRACK</StyledTh>
+            <StyledTh style={{ textAlign: "left", width: "100%" }}>TRACK</StyledTh>
             <StyledTh style={{ textAlign: "right", width: "100%" }}>
               SUPPORT
             </StyledTh>
@@ -69,7 +69,7 @@ export default function AllBeenDelegatedPopupAllList({
             beenDelegatedList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: 296 }}>
+                  <StyledTd style={{ textAlign: "left", width: "100%" }}>
                     <TrackItem
                       track={item.track}
                       onClick={() => onTrackClick(item.track.id)}
