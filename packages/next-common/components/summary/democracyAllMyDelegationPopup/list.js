@@ -8,7 +8,7 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import Loading from "next-common/components/loading";
 import { parseGov2TrackName } from "next-common/utils/gov2";
 import User from "next-common/components/user";
@@ -18,7 +18,9 @@ import VStack from "../../styled/vStack";
 import { p_12_normal } from "../../../styles/componentCss";
 import { useChainSettings } from "../../../context/chain";
 import { convictionToLockX, Conviction } from "../../../utils/referendumCommon";
-import Tooltip from "../../tooltip";
+import TooltipOrigin from "../../tooltip";
+import { useScreenSize } from "../../../utils/hooks/useScreenSize";
+import { w_full } from "../../../styles/tailwindcss";
 
 const ConvictionText = styled.div`
   color: ${(p) => p.theme.textTertiary};
@@ -26,10 +28,13 @@ const ConvictionText = styled.div`
 `;
 
 const TrackName = styled.div`
-  max-width: 144px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const Tooltip = styled(TooltipOrigin)`
+  ${w_full};
 `;
 
 export default function AllMyDelegationPopupList({
@@ -38,17 +43,35 @@ export default function AllMyDelegationPopupList({
 }) {
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
+  const { sm } = useScreenSize();
+
+  const colWidths = useMemo(() => {
+    let widths = {
+      track: 144,
+      delegatingTo: 144,
+    };
+
+    if (sm) {
+      widths = {
+        track: "100%",
+        delegatingTo: 124,
+      };
+    }
+
+
+    return widths;
+  }, [sm]);
 
   return (
     <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: 144 }}>TRACK</StyledTh>
-            <StyledTh style={{ textAlign: "left", width: 144 }}>
+            <StyledTh style={{ textAlign: "left", width: colWidths.track }}>TRACK</StyledTh>
+            <StyledTh style={{ textAlign: "left", width: colWidths.delegatingTo }}>
               DELEGATING TO
             </StyledTh>
-            <StyledTh style={{ textAlign: "right" }}>INFO</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: "100%" }}>INFO</StyledTh>
           </StyledTr>
 
           <RowSplitter
@@ -64,22 +87,22 @@ export default function AllMyDelegationPopupList({
             myDelegationList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: 144 }}>
+                  <StyledTd style={{ textAlign: "left", width: colWidths.track }}>
                     <Tooltip content={parseGov2TrackName(item.track.name)}>
-                      <TrackName>
+                      <TrackName style={{ maxWidth: colWidths.track }}>
                         {parseGov2TrackName(item.track.name)}
                       </TrackName>
                     </Tooltip>
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "left", width: 144 }}>
+                  <StyledTd style={{ textAlign: "left", width: colWidths.delegatingTo }}>
                     <User
                       add={item.delegation.target}
                       fontSize={14}
-                      maxWidth={144}
+                      maxWidth={colWidths.delegatingTo}
                       noTooltip
                     />
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "right" }}>
+                  <StyledTd style={{ textAlign: "right", width: "100%" }}>
                     <VStack space={2}>
                       <ValueDisplay
                         value={toPrecision(item.delegation.balance, decimals)}
