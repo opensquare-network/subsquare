@@ -7,24 +7,40 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import User from "next-common/components/user";
 import { Conviction, ConvictionSupport } from "../../../utils/referendumCommon";
 import GreyInfoPanel from "../styled/greyInfoPanel";
+import {
+  flex,
+  flex_nowrap,
+  gap_x,
+  items_center,
+  overflow_x_scroll,
+  text_secondary,
+  whitespace_nowrap,
+} from "../../../styles/tailwindcss";
+import { p_12_normal } from "../../../styles/componentCss";
+import { smcss } from "../../../utils/responsive";
 
 const Wrapper = styled(GreyInfoPanel)`
-  > :nth-child(3) {
-    color: ${(p) => p.theme.textSecondary};
-  }
+  ${flex_nowrap};
+  ${whitespace_nowrap};
 
-  > :nth-child(4),
-  > :nth-child(5) {
-    ::before {
+  ${smcss(overflow_x_scroll)};
+`;
+
+const Item = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(8)};
+  ${p_12_normal};
+
+  &:not(:first-child) {
+    &::before {
       content: "·";
-      margin-right: 8px;
-    }
-    display: inline-flex;
-    > :last-child {
-      margin-left: 4px;
-      color: ${(p) => p.theme.textSecondary};
     }
   }
+`;
+
+const TextSecondary = styled.span`
+  ${text_secondary};
 `;
 
 export default function DemocracySummaryDelegationInfo({ delegating }) {
@@ -37,28 +53,40 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
 
   return (
     <Wrapper>
-      <span>Delegating to</span>
-      <User add={delegating.target} />
-      <ValueDisplay
-        value={toPrecision(
-          delegating.balance * ConvictionSupport[delegating.conviction],
-          node.decimals,
-        )}
-        symbol={node.symbol}
-      />
-      <div>
+      <Item>
+        <span>Delegating to</span>
+        <User add={delegating.target} fontSize="inherit" />
+        <ValueDisplay
+          value={
+            <TextSecondary>
+              {toPrecision(
+                delegating.balance * ConvictionSupport[delegating.conviction],
+                node.decimals,
+              )}
+            </TextSecondary>
+          }
+          symbol={<TextSecondary>{node.symbol}</TextSecondary>}
+        />
+      </Item>
+
+      <Item>
         <span>Conviction</span>
-        <span>
+        <TextSecondary>
           <VoteLabel conviction={conviction} />
-        </span>
-      </div>
-      <div>
+        </TextSecondary>
+      </Item>
+
+      <Item>
         <span>Capital</span>
         <ValueDisplay
-          value={toPrecision(delegating.balance, node.decimals)}
-          symbol={node.symbol}
+          value={
+            <TextSecondary>
+              {toPrecision(delegating.balance, node.decimals)}
+            </TextSecondary>
+          }
+          symbol={<TextSecondary>{node.symbol}</TextSecondary>}
         />
-      </div>
+      </Item>
     </Wrapper>
   );
 }
