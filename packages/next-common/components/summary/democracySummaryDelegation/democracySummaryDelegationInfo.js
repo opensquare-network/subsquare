@@ -60,7 +60,7 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
   return (
     <Wrapper>
       <DelegatingItem>
-      <span>Delegating to</span>
+        <span>Delegating to</span>
       <User add={delegating.target} fontSize="inherit" />
         <ValueDisplayWrapper>
 
