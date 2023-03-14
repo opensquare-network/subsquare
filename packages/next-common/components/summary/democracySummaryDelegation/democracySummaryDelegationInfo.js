@@ -9,15 +9,22 @@ import { Conviction, ConvictionSupport } from "../../../utils/referendumCommon";
 import GreyInfoPanel from "../styled/greyInfoPanel";
 import {
   flex,
+  flex_nowrap,
   gap_x,
-  hidden,
   items_center,
+  overflow_x_scroll,
   text_secondary,
+  whitespace_nowrap,
 } from "../../../styles/tailwindcss";
 import { p_12_normal } from "../../../styles/componentCss";
 import { smcss } from "../../../utils/responsive";
 
-const Wrapper = styled(GreyInfoPanel)``;
+const Wrapper = styled(GreyInfoPanel)`
+  ${flex_nowrap};
+  ${whitespace_nowrap};
+
+  ${smcss(overflow_x_scroll)};
+`;
 
 const Item = styled.div`
   ${flex};
@@ -36,25 +43,6 @@ const TextSecondary = styled.span`
   ${text_secondary};
 `;
 
-const ValueDisplayWrapper = styled.span`
-  ${smcss(hidden)};
-`;
-const DelegatingItem = styled(Item)`
-  ${ValueDisplay} {
-    ${smcss(hidden)};
-  }
-`;
-
-const CapitalItem = styled(Item)`
-  ${smcss(hidden)};
-`;
-
-const ConvictionItem = styled(Item)`
-  *:first-child {
-    ${smcss(hidden)};
-  }
-`;
-
 export default function DemocracySummaryDelegationInfo({ delegating }) {
   const node = useChainSettings();
   if (!delegating) {
@@ -65,30 +53,30 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
 
   return (
     <Wrapper>
-      <DelegatingItem>
+      <Item>
         <span>Delegating to</span>
         <User add={delegating.target} fontSize="inherit" />
-        <ValueDisplayWrapper>
-          <ValueDisplay
-            value={
-              <TextSecondary>
-                {toPrecision(
-                  delegating.balance * ConvictionSupport[delegating.conviction],
-                  node.decimals,
-                )}
-              </TextSecondary>
-            }
-            symbol={<TextSecondary>{node.symbol}</TextSecondary>}
-          />
-        </ValueDisplayWrapper>
-      </DelegatingItem>
-      <ConvictionItem>
+        <ValueDisplay
+          value={
+            <TextSecondary>
+              {toPrecision(
+                delegating.balance * ConvictionSupport[delegating.conviction],
+                node.decimals,
+              )}
+            </TextSecondary>
+          }
+          symbol={<TextSecondary>{node.symbol}</TextSecondary>}
+        />
+      </Item>
+
+      <Item>
         <span>Conviction</span>
         <TextSecondary>
           <VoteLabel conviction={conviction} />
         </TextSecondary>
-      </ConvictionItem>
-      <CapitalItem>
+      </Item>
+
+      <Item>
         <span>Capital</span>
         <ValueDisplay
           value={
@@ -98,7 +86,7 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
           }
           symbol={<TextSecondary>{node.symbol}</TextSecondary>}
         />
-      </CapitalItem>
+      </Item>
     </Wrapper>
   );
 }
