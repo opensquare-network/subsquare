@@ -9,18 +9,20 @@ import {
   gap_x,
   inline_flex,
   items_center,
-  overflow_x_scroll,
   text_secondary,
   whitespace_nowrap,
 } from "../../../styles/tailwindcss";
-import { smcss } from "../../../utils/responsive";
-import { p_12_normal } from "../../../styles/componentCss";
+import { no_scroll_bar, p_12_normal } from "../../../styles/componentCss";
+import { SM_SIZE } from "../../../utils/responsive";
 
 const Wrapper = styled(GreyInfoPanel)`
   ${flex_nowrap};
   ${whitespace_nowrap};
+  overflow-x: auto;
 
-  ${smcss(overflow_x_scroll)};
+  @media (min-width: ${SM_SIZE + 1}px) {
+    ${no_scroll_bar};
+  }
 `;
 
 const Item = styled.div`
