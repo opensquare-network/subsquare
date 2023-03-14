@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
+import { useDetailType } from "../context/page";
 import { usePost } from "../context/post";
+import { detailPageCategory } from "../utils/consts/business/category";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
 
@@ -35,6 +37,11 @@ export default function ContentMenu({
   const [show, setShow] = useState(false);
   const [copyState, setCopyState] = useState(false);
   const ref = useRef();
+  const postType = useDetailType();
+  const hasLinkMenu =
+    postType !== detailPageCategory.POST &&
+    setShowLinkPopup &&
+    setShowUnlinkPopup;
 
   useEffect(() => {
     if (copyState) {
@@ -90,7 +97,7 @@ export default function ContentMenu({
               >
                 Edit
               </OptionItem>
-              {linkOrUnlinkMenuItem}
+              {hasLinkMenu && linkOrUnlinkMenuItem}
             </>
           )}
           {copy && (
