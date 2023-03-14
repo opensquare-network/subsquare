@@ -5,19 +5,26 @@ import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import GreyInfoPanel from "../styled/greyInfoPanel";
 import {
-  flex,
+  flex_nowrap,
   gap_x,
-  hidden,
+  inline_flex,
   items_center,
+  overflow_x_scroll,
   text_secondary,
+  whitespace_nowrap,
 } from "../../../styles/tailwindcss";
 import { smcss } from "../../../utils/responsive";
 import { p_12_normal } from "../../../styles/componentCss";
 
-const Wrapper = styled(GreyInfoPanel)``;
+const Wrapper = styled(GreyInfoPanel)`
+  ${flex_nowrap};
+  ${whitespace_nowrap};
+
+  ${smcss(overflow_x_scroll)};
+`;
 
 const Item = styled.div`
-  ${flex};
+  ${inline_flex};
   ${items_center};
   ${gap_x(8)};
   ${p_12_normal};
@@ -31,14 +38,6 @@ const Item = styled.div`
 
 const TextSecondary = styled.span`
   ${text_secondary};
-`;
-
-const CapitalItem = styled(Item)`
-  ${smcss(hidden)};
-`;
-
-const ByItem = styled(Item)`
-  ${smcss(hidden)};
 `;
 
 export default function BeenDelegatedInfo({ delegations, addressesCount }) {
@@ -57,7 +56,7 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
           symbol={<TextSecondary>{symbol}</TextSecondary>}
         />
       </Item>
-      <CapitalItem>
+      <Item>
         <span>Capital</span>
         <ValueDisplay
           value={
@@ -67,13 +66,13 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
           }
           symbol={<TextSecondary>{symbol}</TextSecondary>}
         />
-      </CapitalItem>
-      <ByItem>
+      </Item>
+      <Item>
         <span>By</span>
         <TextSecondary>
           {addressesCount} {addressesCount === 1 ? "Address" : "Addresses"}
         </TextSecondary>
-      </ByItem>
+      </Item>
     </Wrapper>
   );
 }
