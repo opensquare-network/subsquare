@@ -7,6 +7,8 @@ date: 03/13/2023
 - Add login user profile link to the dropdown menu.
 - Customize zeitgeist advisory committee motion market info.
 - Improve popup responsive style.
+- Fix delegation items responsive scroll style.
+- Improve husky hooks for eslint.
 
 # 2.9.7
 date: 03/03/2023
