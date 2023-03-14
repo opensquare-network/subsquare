@@ -7,7 +7,13 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import User from "next-common/components/user";
 import { Conviction, ConvictionSupport } from "../../../utils/referendumCommon";
 import GreyInfoPanel from "../styled/greyInfoPanel";
-import { flex, gap_x, hidden, items_center, text_secondary } from "../../../styles/tailwindcss";
+import {
+  flex,
+  gap_x,
+  hidden,
+  items_center,
+  text_secondary,
+} from "../../../styles/tailwindcss";
 import { p_12_normal } from "../../../styles/componentCss";
 import { smcss } from "../../../utils/responsive";
 
@@ -21,7 +27,7 @@ const Item = styled.div`
 
   &:not(:first-child) {
     &::before {
-      content: '·';
+      content: "·";
     }
   }
 `;
@@ -63,14 +69,17 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
         <span>Delegating to</span>
         <User add={delegating.target} fontSize="inherit" />
         <ValueDisplayWrapper>
-
-      <ValueDisplay
-        value={<TextSecondary>{toPrecision(
-          delegating.balance * ConvictionSupport[delegating.conviction],
-          node.decimals,
-        )}</TextSecondary>}
-        symbol={<TextSecondary>{node.symbol}</TextSecondary>}
-      />
+          <ValueDisplay
+            value={
+              <TextSecondary>
+                {toPrecision(
+                  delegating.balance * ConvictionSupport[delegating.conviction],
+                  node.decimals,
+                )}
+              </TextSecondary>
+            }
+            symbol={<TextSecondary>{node.symbol}</TextSecondary>}
+          />
         </ValueDisplayWrapper>
       </DelegatingItem>
       <ConvictionItem>
@@ -82,8 +91,12 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
       <CapitalItem>
         <span>Capital</span>
         <ValueDisplay
-          value={<TextSecondary>{toPrecision(delegating.balance, node.decimals)}</TextSecondary>}
-        symbol={<TextSecondary>{node.symbol}</TextSecondary>}
+          value={
+            <TextSecondary>
+              {toPrecision(delegating.balance, node.decimals)}
+            </TextSecondary>
+          }
+          symbol={<TextSecondary>{node.symbol}</TextSecondary>}
         />
       </CapitalItem>
     </Wrapper>
