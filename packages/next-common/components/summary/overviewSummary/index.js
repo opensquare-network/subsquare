@@ -198,7 +198,7 @@ export default function OverviewSummary({ summaryData }) {
       content: <TreasuryGroupContent summaryData={summaryData} />,
     },
     {
-      title: `${showCouncil && "Council / "}T.C.`,
+      title: `${ showCouncil ? "Council / " : "" }T.C.`,
       content: <CouncilGroupContent summaryData={summaryData} />,
     },
   );
