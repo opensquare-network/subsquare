@@ -13,6 +13,7 @@ import { smcss } from "../../utils/responsive";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { useScrollbarWidth } from "../../utils/hooks/useScrollbarWidth";
 import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
+import isNil from "lodash.isnil";
 
 const OutWrapper = styled(OutWrapperOrigin)`
   z-index: 999;
@@ -71,13 +72,17 @@ export default function CookiesConsent() {
   const [show, setShow] = useState(false);
   const [isAcceptCookies, setIsAcceptCookies] = useAcceptCookies();
   useEffect(() => {
-    setShow(!isAcceptCookies);
+    setShow(isNil(isAcceptCookies));
   }, [isAcceptCookies]);
 
   const scrollbarWidth = useScrollbarWidth();
 
   function handleAccept() {
     setIsAcceptCookies(true, { expires: 30 });
+    handleClose();
+  }
+  function handleIgnore() {
+    setIsAcceptCookies(false, { expires: 15 });
     handleClose();
   }
   function handleClose() {
@@ -95,7 +100,7 @@ export default function CookiesConsent() {
           <VStack space={8}>
             <FlexBetweenCenter>
               <Title>We Use Cookies!</Title>
-              <ClosePanelIcon role="button" onClick={handleClose} />
+              <ClosePanelIcon role="button" onClick={handleIgnore} />
             </FlexBetweenCenter>
 
             <Description>
