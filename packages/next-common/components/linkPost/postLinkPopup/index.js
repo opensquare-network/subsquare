@@ -14,6 +14,7 @@ import SecondaryButton from "../../buttons/secondaryButton";
 import Loading from "../../loading";
 import { Info, ButtonWrapper } from "../styled";
 import { useDetailType } from "../../../context/page";
+import Input from "../../input";
 
 const Section = styled.div`
   display: flex;
@@ -48,11 +49,19 @@ const NoDiscussion = styled.div`
   color: #9DA9BB;
 `;
 
+function getDiscussionUrl(discussion) {
+  if (!discussion) {
+    return "";
+  }
+  return `${process.env.NEXT_PUBLIC_SITE_URL}/post/${discussion.postUid}`;
+}
+
 export default function PostLinkPopup({ setShow = noop }) {
   const [myDiscussions, setMyDiscussions] = useState([]);
   const [selectedDiscussion, setSelectedDiscussion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingList, setIsLoadingList] = useState(false);
+  const [postUrl, setPostUrl] = useState("");
   const user = useUser();
   const dispatch = useDispatch();
   const post = usePost();
@@ -66,10 +75,9 @@ export default function PostLinkPopup({ setShow = noop }) {
 
     setMyDiscussions([]);
 
-    //TODO: should load all discussions
     setIsLoadingList(true);
     nextApi
-      .fetch(`users/${user?.address}/posts`)
+      .fetch(`users/${user?.address}/all-posts`)
       .then(({ result, error }) => {
         if (error) {
           dispatch(
@@ -81,7 +89,7 @@ export default function PostLinkPopup({ setShow = noop }) {
           return;
         }
 
-        setMyDiscussions(result.items);
+        setMyDiscussions(result);
       })
       .finally(() => {
         setIsLoadingList(false);
@@ -137,6 +145,19 @@ export default function PostLinkPopup({ setShow = noop }) {
     }
   }, [dispatch, postType, post?._id, router, selectedDiscussion]);
 
+  const onSelectDiscussion = useCallback((discussion) => {
+    setSelectedDiscussion(discussion);
+    const discussionUrl = getDiscussionUrl(discussion);
+    setPostUrl(discussionUrl);
+  }, []);
+
+  useEffect(() => {
+    const item = (myDiscussions || []).find(
+      (item) => getDiscussionUrl(item) === postUrl
+    );
+    setSelectedDiscussion(item);
+  }, [postUrl]);
+
   let discussionList = (
     <NoDiscussion>
       {isLoadingList ? <Loading size={16} /> : "No posts"}
@@ -148,7 +169,7 @@ export default function PostLinkPopup({ setShow = noop }) {
       <Discussion
         key={index}
         selected={selectedDiscussion === discussion}
-        onClick={() => setSelectedDiscussion(discussion)}
+        onClick={() => onSelectDiscussion(discussion)}
       >
         {discussion.title}
       </Discussion>
@@ -161,6 +182,14 @@ export default function PostLinkPopup({ setShow = noop }) {
         Linking a post will use the linked content and comments, existing
         comments will be hidden.
       </Info>
+      <Section>
+        <SectionTitle>Paste URL</SectionTitle>
+        <Input
+          value={postUrl || ""}
+          placeholder="Please fill available URL..."
+          onChange={(e) => setPostUrl(e.target.value)}
+        />
+      </Section>
       <Section>
         <SectionTitle>Link to a post</SectionTitle>
         {discussionList}

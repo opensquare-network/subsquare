@@ -89,6 +89,7 @@ export default function ContentMenu({
         <OptionWrapper>
           {edit && (
             <>
+              {hasLinkMenu && linkOrUnlinkMenuItem}
               <OptionItem
                 onClick={() => {
                   setIsEdit(true);
@@ -97,7 +98,6 @@ export default function ContentMenu({
               >
                 Edit
               </OptionItem>
-              {hasLinkMenu && linkOrUnlinkMenuItem}
             </>
           )}
           {copy && (
