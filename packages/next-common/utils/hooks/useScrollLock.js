@@ -1,28 +1,25 @@
 import { useEffect, useState } from "react";
 
-export function useScrollLock(element = document.body) {
+export function useScrollLock(element) {
   const [isLocked, setIsLocked] = useState(false);
 
   let initialOverflow;
 
-  function lock() {
-    if (element) {
-      initialOverflow = element.style.overflow;
+  useEffect(() => {
+    const elm = element || document.body;
+    if (elm) {
+      initialOverflow = elm.style.overflow;
 
       if (isLocked) {
-        element.style.overflow = "hidden";
+        elm.style.overflow = "hidden";
       }
     }
-  }
 
-  function unlock() {
-    element.style.overflow = initialOverflow;
-  }
-
-  useEffect(() => {
-    lock();
-
-    return unlock;
+    return () => {
+      if (elm) {
+        elm.style.overflow = initialOverflow;
+      }
+    };
   }, [isLocked]);
 
   return [isLocked, setIsLocked];
