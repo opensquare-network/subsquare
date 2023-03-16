@@ -6,6 +6,8 @@ import User from "../../user";
 import { useChain } from "../../../context/chain";
 import MarketMetadata from "./marketMetadata";
 import Chains from "../../../utils/consts/chains";
+import { useDetailType } from "../../../context/page";
+import { detailPageCategory } from "../../../utils/consts/business/category";
 
 const keys = {
   proposer: "proposer",
@@ -25,6 +27,7 @@ export default function CollectiveMetadata({
   marketMetadata,
 }) {
   const chain = useChain();
+  const detailType = useDetailType();
 
   const proposerItem = [
     capitalize(keys.proposer),
@@ -47,7 +50,7 @@ export default function CollectiveMetadata({
     data.push([<Proposal call={call} key="proposal" />]);
   }
 
-  if (chain === Chains.zeitgeist) {
+  if (chain === Chains.zeitgeist && detailPageCategory.ADVISORY_MOTION === detailType) {
     data.push([
       <MarketMetadata
         key={"marketMetadata"}
