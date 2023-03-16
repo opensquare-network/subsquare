@@ -18,8 +18,6 @@ import { useIsLogin } from "../context/user";
 import nextApi from "next-common/services/nextApi";
 import fetchAndUpdatePost from "../context/post/update";
 import { useDetailType } from "../context/page";
-import PostLinkPopup from "./linkPost/postLinkPopup";
-import PostUnlinkPopup from "./linkPost/postUnlinkPopup";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -46,8 +44,6 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
   const dispatch = useDispatch();
   const post = usePost();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
-  const [showLinkPopup, setShowLinkPopup] = useState(false);
-  const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
 
   const isLogin = useIsLogin();
   const type = useDetailType();
@@ -65,13 +61,13 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
 
       if (thumbUp) {
         ({ result, error } = await nextApi.delete(
-          `${toApiType(type)}/${post._id}/reaction`
+          `${toApiType(type)}/${post._id}/reaction`,
         ));
       } else {
         ({ result, error } = await nextApi.put(
           `${toApiType(type)}/${post._id}/reaction`,
           { reaction: 1 },
-          { credentials: "include" }
+          { credentials: "include" },
         ));
       }
 
@@ -92,11 +88,7 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
     <Wrapper>
       <Divider margin={16} />
       {!post.content && (
-        <NonEdited
-          setIsEdit={setIsEdit}
-          authors={post.authors}
-          setShowLinkPopup={setShowLinkPopup}
-        />
+        <NonEdited setIsEdit={setIsEdit} authors={post.authors} />
       )}
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
       <PostContent />
@@ -113,11 +105,7 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
         toggleThumbUp={toggleThumbUp}
         thumbUpLoading={thumbUpLoading}
         onReply={onReply}
-        setShowLinkPopup={setShowLinkPopup}
-        setShowUnlinkPopup={setShowUnlinkPopup}
       />
-      {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
-      {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
     </Wrapper>
   );
 }
