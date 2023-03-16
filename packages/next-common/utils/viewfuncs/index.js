@@ -2,7 +2,6 @@ import BigNumber from "bignumber.js";
 import Chains from "../consts/chains";
 import { BalanceDecimals } from "../constants";
 import { detailPageCategory } from "../consts/business/category";
-import { PostCollections } from "../consts/postType";
 
 export function toApiType(type) {
   if (type === detailPageCategory.TREASURY_BOUNTY) {
