@@ -18,7 +18,7 @@ function useFetchCalendarEvents(endpoint, date, unit) {
 
   const cachedKey = useMemo(
     () => `${begin_time}_${end_time}_${unit}`,
-    [begin_time, end_time, unit]
+    [begin_time, end_time, unit],
   );
   // {cachedKey: Event[]}
   const [cachedEvents, setCachedEvents] = useState({});
@@ -44,7 +44,7 @@ function useFetchCalendarEvents(endpoint, date, unit) {
 
   return useMemo(
     () => [cachedEvents[cachedKey], loading],
-    [cachedKey, cachedEvents, loading]
+    [cachedKey, cachedEvents, loading],
   );
 }
 
@@ -56,7 +56,7 @@ export function useCalendarEventsSummary(date, unit) {
   const [events, loading] = useFetchCalendarEvents(
     calendarEventsSummaryApi,
     date,
-    unit
+    unit,
   );
   return [events, loading];
 }
@@ -69,7 +69,7 @@ export function useCalendarEvents(date, unit) {
   const [events, loading] = useFetchCalendarEvents(
     calendarEventsApi,
     date,
-    unit
+    unit,
   );
   return [events, loading];
 }

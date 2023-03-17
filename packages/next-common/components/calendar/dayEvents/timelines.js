@@ -82,7 +82,7 @@ export default function DayEventTimelines({ events = [], loading }) {
         [eventInHourKey]: dayjs(event.indexer.blockTime).get("hour"),
       };
     }),
-    eventInHourKey
+    eventInHourKey,
   );
 
   if (loading) {
