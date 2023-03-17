@@ -15,8 +15,8 @@ export default function VotesPopup({
   const [nayPage, setNayPage] = useState(1);
   const pageSize = 50;
 
-  let page = 1;
-  let votes = [];
+  let page;
+  let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
     votes = allAye;

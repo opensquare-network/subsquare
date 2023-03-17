@@ -1,8 +1,4 @@
-import {
-  normalizeVotingOfEntry,
-  objectSpread,
-  sortVotesWithConviction,
-} from "./common";
+import { normalizeVotingOfEntry, objectSpread, sortVotesWithConviction } from "../common";
 
 function extractDirectVotes(mapped, targetReferendumIndex) {
   return mapped
@@ -33,11 +29,40 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
             {
               account,
               isDelegating: false,
+              isStandard: true,
             },
             {
               balance,
               aye: standard.vote.isAye,
               conviction: standard.vote.conviction.toNumber(),
+            },
+          ),
+        );
+      } else if (vote.isSplit) {
+        const split = vote.asSplit;
+        const ayeBalance = split.aye.toBigInt().toString();
+        const nayBalance = split.nay.toBigInt().toString();
+        const commonObj = {
+          account,
+          isDelegating: false,
+          isStandard: false,
+          isSplit: true,
+        };
+        result.push(
+          objectSpread(
+            { ...commonObj },
+            {
+              balance: ayeBalance,
+              aye: true,
+              conviction: 0,
+            },
+          ),
+          objectSpread(
+            { ...commonObj },
+            {
+              balance: nayBalance,
+              aye: false,
+              conviction: 0,
             },
           ),
         );
@@ -67,7 +92,7 @@ function addDelegations(mapped, votes = []) {
           account === (toDelegator ? toDelegator.account : target.toString()),
       );
 
-      if (to) {
+      if (to && !to.isSplit) {
         votes.push({
           account,
           balance: balance.toBigInt().toString(),
@@ -88,7 +113,7 @@ export async function getReferendumVotesFromVotingOf(
 ) {
   const voting = await blockApi.query.democracy.votingOf.entries();
   const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));
-  const directVotes = extractDirectVotes(mapped, referendumIndex, blockApi);
+  const directVotes = extractDirectVotes(mapped, referendumIndex);
   const votesDirectAndDelegating = addDelegations(mapped, directVotes);
   const sorted = sortVotesWithConviction(votesDirectAndDelegating);
 
