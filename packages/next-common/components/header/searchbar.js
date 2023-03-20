@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import InputOrigin from "../input";
-import { bg_theme, border_hidden } from "../../styles/tailwindcss";
+import { bg_theme, theme } from "../../styles/tailwindcss";
 import { useChain } from "../../context/chain";
 import MagnifyingIcon from "../icons/magnifying";
 
 const Wrapper = styled.div``;
 
 const Input = styled(InputOrigin)`
-  ${bg_theme("grey100Bg")}
-  ${border_hidden}
+  ${bg_theme("grey100Bg")};
+  border-color: ${theme("grey100Bg")};
+
+  &[data-focus="true"] {
+    ${bg_theme("neutral")}
+    border-color: ${theme("grey400Border")};
+  }
 `;
 
 const googleq = "https://google.com/search?q=";
