@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import EyeIcon from "../assets/imgs/icons/eye.svg";
@@ -6,10 +6,8 @@ import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
 import { emptyFunction } from "../utils";
 import FlexBetweenCenter from "./styled/flexBetweenCenter";
 import noop from "lodash.noop";
-import { m_r } from "../styles/tailwindcss";
 
 const Wrapper = styled.div`
-  padding: 10px 16px;
   position: relative;
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -52,12 +50,14 @@ const Wrapper = styled.div`
   display:flex;
   align-items: center;
   overflow: hidden;
+  cursor: text;
 `;
 
 const InputWrapper = styled.input`
   all: unset;
   flex-grow: 1;
   display: block;
+  padding: 10px 16px;
   font-size: 14px;
   color: ${(props) => props.theme.textPrimary};
   background: transparent !important;
@@ -109,7 +109,7 @@ const SymbolWrapper = styled.div`
 const OuterWrapper = styled.div``;
 
 const Prefix = styled(FlexBetweenCenter)`
-  ${m_r(8)};
+  margin-left: 8px;
 `;
 
 const Suffix = styled(FlexBetweenCenter)`
@@ -130,17 +130,30 @@ export default function Input({
 }) {
   const [show, setShow] = useState(false);
   const [focus, setFocus] = useState(false);
+  const input = useRef();
 
   return (
     <OuterWrapper>
-      <Wrapper focus={focus} {...props}>
+      <Wrapper
+        focus={focus}
+        data-focus={focus}
+        onClick={() => {
+          input.current?.focus?.();
+          setFocus(true);
+        }}
+        {...props}
+      >
         {prefix && <Prefix>{prefix}</Prefix>}
 
         <InputWrapper
+          ref={input}
           {...props}
           type={
             props.type === "password" && show ? "text" : props.type ?? "auto"
           }
+          style={{
+            paddingLeft: prefix ? 8 : null,
+          }}
           autocomplete="off"
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
