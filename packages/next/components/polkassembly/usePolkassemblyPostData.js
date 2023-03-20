@@ -27,13 +27,11 @@ export default function usePolkassemblyPostData({ polkassemblyId, polkassemblyPo
 
     if (dataCache[cacheKey]) {
       const data = dataCache[cacheKey];
-      console.log("got cached data", data);
       setComments(data.comments);
       setPostReactions(data.postReactions);
       setCommentsCount(data.commentsCount);
       return;
     }
-    console.log("useEffect3");
 
     setLoadingComments(true);
     nextApi.fetch("polkassembly-comments", {
