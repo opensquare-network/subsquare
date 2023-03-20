@@ -3,9 +3,10 @@ import PolkassemblyComments from "components/polkassembly/comment";
 
 export default function PolkassemblyCommentsWithData({ detail, btnRef, tabs }) {
   const polkassemblyId = detail?.polkassemblyId;
+  const polkassemblyPostType = detail?.polkassemblyPostType;
 
   const { comments, loadingComments } = usePolkassemblyPostData({
-    polkassemblyId,
+    polkassemblyId, polkassemblyPostType,
   });
 
   return (
