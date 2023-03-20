@@ -5,8 +5,11 @@ import EyeIcon from "../assets/imgs/icons/eye.svg";
 import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
 import { emptyFunction } from "../utils";
 import FlexBetweenCenter from "./styled/flexBetweenCenter";
+import noop from "lodash.noop";
+import { m_r } from "../styles/tailwindcss";
 
 const Wrapper = styled.div`
+  padding: 10px 16px;
   position: relative;
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -55,7 +58,6 @@ const InputWrapper = styled.input`
   all: unset;
   flex-grow: 1;
   display: block;
-  padding: 10px 16px;
   font-size: 14px;
   color: ${(props) => props.theme.textPrimary};
   background: transparent !important;
@@ -106,18 +108,34 @@ const SymbolWrapper = styled.div`
 `;
 const OuterWrapper = styled.div``;
 
+const Prefix = styled(FlexBetweenCenter)`
+  ${m_r(8)};
+`;
+
 const Suffix = styled(FlexBetweenCenter)`
   position: absolute;
   right: 13px;
 `;
 
-export default function Input({ onChange = emptyFunction, suffix, ...props }) {
+/**
+ * @param {Object} props
+ * @param {import("react").KeyboardEventHandler<HTMLInputElement>} props.onKeyDown
+ */
+export default function Input({
+  onChange = emptyFunction,
+  prefix,
+  suffix,
+  onKeyDown = noop,
+  ...props
+}) {
   const [show, setShow] = useState(false);
   const [focus, setFocus] = useState(false);
 
   return (
     <OuterWrapper>
       <Wrapper focus={focus} {...props}>
+        {prefix && <Prefix>{prefix}</Prefix>}
+
         <InputWrapper
           {...props}
           type={
@@ -127,6 +145,7 @@ export default function Input({ onChange = emptyFunction, suffix, ...props }) {
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
           onChange={onChange}
+          onKeyDown={onKeyDown}
         />
 
         {suffix && <Suffix>{suffix}</Suffix>}
