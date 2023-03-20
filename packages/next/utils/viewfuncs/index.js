@@ -1,3 +1,4 @@
+import flatten from "lodash.flatten";
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
@@ -15,22 +16,24 @@ export const convertPolkassemblyUser = (chain, paUser) =>
         username: paUser?.username,
       };
 
-export const convertPolkassemblyReaction = (chain, paReaction) => ({
-  user: convertPolkassemblyUser(chain, paReaction?.reacting_user),
-  reaction: paReaction.reaction === "👍" ? 1 : 0,
-  createdAt: paReaction.created_at,
-  updatedAt: paReaction.updated_at,
-});
+export const convertPolkassemblyReaction = (chain, paReactions) =>
+  flatten(
+    Object.entries(paReactions || {}).map(([r, { usernames } = {}]) => usernames?.map(u => [r, u]))
+  ).map(([r, u]) => ({
+    reaction: r === "👍" ? 1 : 0,
+    user: u,
+  }));
 
 export const convertPolkassemblyComment = (chain, comment) => ({
-  reactions: comment.comment_reactions?.map((r) =>
-    convertPolkassemblyReaction(chain, r)
-  ),
+  reactions: convertPolkassemblyReaction(comment.comment_reactions),
   id: comment.id,
   content: comment.content,
   createdAt: comment.created_at,
   updatedAt: comment.updated_at,
-  author: convertPolkassemblyUser(chain, comment.author),
+  author: {
+    username: comment.username,
+    address: comment.proposer,
+  },
 });
 
 export const toPolkassemblyCommentListItem = (chain, item) => ({
