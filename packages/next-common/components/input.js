@@ -115,6 +115,7 @@ const Prefix = styled(FlexBetweenCenter)`
 const Suffix = styled(FlexBetweenCenter)`
   position: absolute;
   right: 13px;
+  background-color: inherit;
 `;
 
 /**
