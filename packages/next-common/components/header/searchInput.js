@@ -4,7 +4,7 @@ import InputOrigin from "../input";
 import { bg_theme, theme } from "../../styles/tailwindcss";
 import { useChain } from "../../context/chain";
 import MagnifyingIcon from "../icons/magnifying";
-import SearchBarShortcut from "./searchBarShortcut";
+import SearchInputShortcut from "./searchInputShortcut";
 
 const Wrapper = styled.div``;
 
@@ -20,7 +20,7 @@ const Input = styled(InputOrigin)`
 
 const googleq = "https://google.com/search?q=";
 
-export default function HeaderSearchBar({ shortcut = true, inputType }) {
+export default function SearchInput({ shortcut = true, inputType }) {
   const chain = useChain();
   const [value, setValue] = useState("");
   const inputRef = useRef();
@@ -51,7 +51,7 @@ export default function HeaderSearchBar({ shortcut = true, inputType }) {
         onBlur={() => setFocus(false)}
         prefix={<MagnifyingIcon />}
         suffix={
-          shortcut && <SearchBarShortcut focus={focus} inputRef={inputRef} />
+          shortcut && <SearchInputShortcut focus={focus} inputRef={inputRef} />
         }
         inputType={inputType}
       />

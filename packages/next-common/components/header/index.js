@@ -9,7 +9,7 @@ import ChainLogo from "next-common/components/header/left/chainLogo";
 import ChainIcon from "next-common/components/header/chainIcon";
 import MenuLine from "../../assets/imgs/icons/menu-line.svg";
 import { useChain } from "../../context/chain";
-import HeaderSearchBar from "./searchbar";
+import SearchInput from "./searchInput";
 import { hidden, m_l, m_r, w_full } from "../../styles/tailwindcss";
 import { mdcss } from "../../utils/responsive";
 
@@ -26,7 +26,7 @@ const Left = styled(Flex)`
   }
 `;
 
-const HeaderSearchBarWrapper = styled.div`
+const HeaderSearchInputWrapper = styled.div`
   ${w_full};
   ${m_r(12)};
   ${m_l(35)};
@@ -99,10 +99,9 @@ export default function Header({ left }) {
             </NodeButton>
           </Left>
 
-          {/* TODO: search bar */}
-          <HeaderSearchBarWrapper>
-            <HeaderSearchBar />
-          </HeaderSearchBarWrapper>
+          <HeaderSearchInputWrapper>
+            <SearchInput />
+          </HeaderSearchInputWrapper>
 
           <HeaderRight />
         </FlexWrapper>
