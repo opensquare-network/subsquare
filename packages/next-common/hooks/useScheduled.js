@@ -5,6 +5,7 @@ import useApi from "../utils/hooks/useApi";
 import useCall from "../utils/hooks/useCall";
 import { useBlockTime } from "../utils/hooks";
 import { useLeaseRangeMax } from "./useLeaseRanges";
+import { useChain } from "../context/chain";
 
 function newDate(blocks, blockTime) {
   const date = new Date(
@@ -272,6 +273,26 @@ function addFiltered(state, types) {
   }, state);
 }
 
+function useReferendums(api) {
+  const chain = useChain();
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    if (!["kintsugi", "interlay"].includes(chain)) {
+      return;
+    }
+    if (!api) {
+      return;
+    }
+
+    api.derive.democracy
+      .referendums()
+      .then((referendums) => setData(referendums));
+  }, [api, chain]);
+
+  return data;
+}
+
 // TODO council votes, tips closing
 function useScheduled() {
   const api = useApi();
@@ -281,7 +302,7 @@ function useScheduled() {
   const auctionInfo = useCall(api?.query.auctions?.auctionInfo);
   const councilMotions = useCall(api?.derive.council?.proposals);
   const dispatches = useCall(api?.derive.democracy?.dispatchQueue);
-  const referendums = useCall(api?.derive.democracy?.referendums);
+  const referendums = useReferendums(api);
   const scheduled = useCall(api?.query.scheduler?.agenda?.entries);
   const sessionInfo = useCall(api?.derive.session?.progress);
   const slashes = useCall(api?.query.staking?.unappliedSlashes.entries);
