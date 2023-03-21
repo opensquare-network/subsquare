@@ -296,7 +296,6 @@ function useReferendums(api) {
   return data;
 }
 
-// TODO council votes, tips closing
 function useScheduled() {
   const api = useApi();
   const blockTime = useBlockTime(api);

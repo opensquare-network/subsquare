@@ -5,7 +5,7 @@ export default function BlockHeightItem({ blockHeight }) {
   return (
     <ItemWrapper>
       <span>Block height:</span>
-      <span>#{blockHeight}</span>
+      <span>#{blockHeight?.toLocaleString()}</span>
     </ItemWrapper>
   );
 }

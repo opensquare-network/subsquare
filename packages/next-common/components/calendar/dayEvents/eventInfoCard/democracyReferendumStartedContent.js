@@ -20,11 +20,11 @@ export default function DemocracyReferendumStartedContent({
       </ItemWrapper>
       <ItemWrapper>
         <span>End:</span>
-        <span>Block #{data?.meta?.end}</span>
+        <span>Block #{data?.meta?.end?.toLocaleString()}</span>
       </ItemWrapper>
       <ItemWrapper>
         <span>Delay:</span>
-        <span>{data?.meta?.delay} blocks</span>
+        <span>{data?.meta?.delay?.toLocaleString()} blocks</span>
       </ItemWrapper>
     </>
   );
