@@ -54,6 +54,7 @@ export default function SearchInput({ shortcut = true, inputType }) {
           shortcut && <SearchInputShortcut focus={focus} inputRef={inputRef} />
         }
         inputType={inputType}
+        enterkeyhint="Search"
       />
     </Wrapper>
   );
