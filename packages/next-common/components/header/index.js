@@ -10,7 +10,8 @@ import ChainIcon from "next-common/components/header/chainIcon";
 import MenuLine from "../../assets/imgs/icons/menu-line.svg";
 import { useChain } from "../../context/chain";
 import HeaderSearchBar from "./searchbar";
-import { m_l, m_r, w_full } from "../../styles/tailwindcss";
+import { hidden, m_l, m_r, w_full } from "../../styles/tailwindcss";
+import { mdcss } from "../../utils/responsive";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1184px;
@@ -29,6 +30,8 @@ const HeaderSearchBarWrapper = styled.div`
   ${w_full};
   ${m_r(12)};
   ${m_l(35)};
+
+  ${mdcss(hidden)};
 `;
 
 const MenuButton = styled(Flex)`

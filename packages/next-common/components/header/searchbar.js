@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import InputOrigin from "../input";
 import { bg_theme, theme } from "../../styles/tailwindcss";
 import { useChain } from "../../context/chain";
 import MagnifyingIcon from "../icons/magnifying";
+import SlashShortIcon from "../icons/slashShortcut";
+import { useKey } from "../../utils/hooks/useKey";
 
 const Wrapper = styled.div``;
 
@@ -22,6 +24,8 @@ const googleq = "https://google.com/search?q=";
 export default function HeaderSearchBar() {
   const chain = useChain();
   const [value, setValue] = useState("");
+  const input = useRef();
+  const [focus, setFocus] = useState(false);
 
   const website = `https://${chain}.subsquare.io`;
 
@@ -31,9 +35,26 @@ export default function HeaderSearchBar() {
     window.open(url, "_blank");
   }
 
+  useKey(
+    "/",
+    (event) => {
+      if (!focus) {
+        event.preventDefault();
+        input.current?.focus();
+      }
+    },
+    null,
+    null,
+    focus,
+  );
+  useKey("Escape", () => {
+    input.current?.blur();
+  });
+
   return (
     <Wrapper>
       <Input
+        ref={input}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search for referenda, proposals..."
@@ -43,7 +64,10 @@ export default function HeaderSearchBar() {
             handleSearch();
           }
         }}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         prefix={<MagnifyingIcon />}
+        suffix={!focus && <SlashShortIcon />}
       />
     </Wrapper>
   );
