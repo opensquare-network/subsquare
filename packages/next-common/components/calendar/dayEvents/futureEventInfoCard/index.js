@@ -4,6 +4,9 @@ import Divider from "../../../styled/layout/divider";
 import Title from "./title";
 import { useState } from "react";
 import BlockHeightItem from "./infoItem/blockHeight";
+import CouncilMotionContent from "./councilMotionContent";
+import DemocracyReferendumContent from "./democracyReferendumContent";
+import { FutureEventTypes } from "./futureEventType";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,15 +39,26 @@ export default function FutureEventInfoCard({ event }) {
     return null;
   }
 
+  let content = <BlockHeightItem blockHeight={event?.indexer?.blockHeight} />;
+
+  if ([FutureEventTypes.councilMotion].includes(event?.type)) {
+    content = <CouncilMotionContent event={event} />;
+  } else if (
+    [
+      FutureEventTypes.referendumDispatch,
+      FutureEventTypes.referendumVote,
+    ].includes(event?.type)
+  ) {
+    content = <DemocracyReferendumContent event={event} />;
+  }
+
   return (
     <Wrapper>
       <Title event={event} isFolded={isFolded} setIsFolded={setIsFolded} />
       {!isFolded && (
         <>
           <Divider style={{ width: "100%" }} />
-          <Content>
-            <BlockHeightItem blockHeight={event?.indexer?.blockHeight} />
-          </Content>
+          <Content>{content}</Content>
         </>
       )}
     </Wrapper>

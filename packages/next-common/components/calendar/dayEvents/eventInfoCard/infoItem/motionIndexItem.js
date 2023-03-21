@@ -5,7 +5,7 @@ import IndexItem from "./indexItem";
 
 export default function MotionIndexItem({ motionHash, data, baseUrl }) {
   if (isNil(data?.motion?.index)) {
-    return <HashItem hash={motionHash} />;
+    return <HashItem hash={motionHash} baseUrl={baseUrl} />;
   } else {
     return <IndexItem index={data?.motion?.index} baseUrl={baseUrl} />;
   }

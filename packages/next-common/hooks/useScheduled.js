@@ -60,6 +60,7 @@ function createCouncilMotions(bestNumber, blockTime, motions) {
             blockNumber: votes.end,
             blocks,
             info: `${hashStr.slice(0, 6)}…${hashStr.slice(-4)}`,
+            index: hashStr,
             category: "Collectives",
             subCategory: "Council Motion",
           };
@@ -102,6 +103,7 @@ function createReferendums(bestNumber, blockTime, referendums) {
           blockNumber: bestNumber.add(voteBlocks),
           blocks: voteBlocks,
           info: index,
+          index: index.toNumber(),
           category: "Democracy",
           subCategory: "Referendum Vote",
         },
@@ -115,6 +117,7 @@ function createReferendums(bestNumber, blockTime, referendums) {
           blockNumber: bestNumber.add(enactBlocks),
           blocks: enactBlocks,
           info: index,
+          index: index.toNumber(),
           isPending: true,
           category: "Democracy",
           subCategory: "Referendum Dispatch",
@@ -423,6 +426,7 @@ function useScheduled() {
     category: item.category,
     subCategory: item.subCategory,
     info: item.info?.toString(),
+    index: item.index,
     indexer: {
       blockTime: item.dateTime,
       blockHeight: item.blockNumber.toNumber(),
