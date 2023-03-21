@@ -4,8 +4,7 @@ import InputOrigin from "../input";
 import { bg_theme, theme } from "../../styles/tailwindcss";
 import { useChain } from "../../context/chain";
 import MagnifyingIcon from "../icons/magnifying";
-import SlashShortIcon from "../icons/slashShortcut";
-import { useKey } from "../../utils/hooks/useKey";
+import SearchBarShortcut from "./searchBarShortcut";
 
 const Wrapper = styled.div``;
 
@@ -21,10 +20,10 @@ const Input = styled(InputOrigin)`
 
 const googleq = "https://google.com/search?q=";
 
-export default function HeaderSearchBar() {
+export default function HeaderSearchBar({ shortcut = true, inputType }) {
   const chain = useChain();
   const [value, setValue] = useState("");
-  const input = useRef();
+  const inputRef = useRef();
   const [focus, setFocus] = useState(false);
 
   const website = `https://${chain}.subsquare.io`;
@@ -35,25 +34,13 @@ export default function HeaderSearchBar() {
     window.open(url, "_blank");
   }
 
-  function handleFocusSearchInput(event) {
-    if (!focus) {
-      event.preventDefault();
-      input.current?.focus();
-    }
-  }
-
-  useKey("/", handleFocusSearchInput, null, null, focus);
-  useKey("Escape", () => {
-    input.current?.blur();
-  });
-
   return (
     <Wrapper>
       <Input
-        ref={input}
+        ref={inputRef}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Search for referenda, proposals..."
+        placeholder="Search on SubSquare"
         onKeyDown={(event) => {
           if (event.code === "Enter") {
             event.preventDefault();
@@ -63,7 +50,10 @@ export default function HeaderSearchBar() {
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         prefix={<MagnifyingIcon />}
-        suffix={!focus && <SlashShortIcon />}
+        suffix={
+          shortcut && <SearchBarShortcut focus={focus} inputRef={inputRef} />
+        }
+        inputType={inputType}
       />
     </Wrapper>
   );
