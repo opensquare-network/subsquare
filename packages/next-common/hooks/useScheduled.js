@@ -281,7 +281,7 @@ function useReferendums(api) {
   const [data, setData] = useState();
 
   useEffect(() => {
-    if (!["kintsugi", "interlay"].includes(chain)) {
+    if (["kintsugi", "interlay"].includes(chain)) {
       return;
     }
     if (!api) {
