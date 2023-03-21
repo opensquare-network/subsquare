@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import EyeIcon from "../assets/imgs/icons/eye.svg";
@@ -121,16 +121,30 @@ const Suffix = styled(FlexBetweenCenter)`
 /**
  * @param {import("react").HTMLAttributes<HTMLInputElement>} props
  */
-export default function Input({
-  onChange = emptyFunction,
-  prefix,
-  suffix,
-  onKeyDown = noop,
-  ...props
-}) {
+function Input(
+  {
+    onChange = emptyFunction,
+    prefix,
+    suffix,
+    onKeyDown = noop,
+    onFocus,
+    onBlur,
+    ...props
+  },
+  ref,
+) {
   const [show, setShow] = useState(false);
   const [focus, setFocus] = useState(false);
   const input = useRef();
+
+  function handleOnFocus(event) {
+    setFocus(true);
+    onFocus(event);
+  }
+  function handleOnBlur(event) {
+    setFocus(false);
+    onBlur(event);
+  }
 
   return (
     <OuterWrapper>
@@ -146,7 +160,10 @@ export default function Input({
         {prefix && <Prefix>{prefix}</Prefix>}
 
         <InputWrapper
-          ref={input}
+          ref={(el) => {
+            input.current = el;
+            ref.current = el;
+          }}
           {...props}
           type={
             props.type === "password" && show ? "text" : props.type ?? "auto"
@@ -155,8 +172,8 @@ export default function Input({
             paddingLeft: prefix ? 8 : null,
           }}
           autocomplete="off"
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
           onChange={onChange}
           onKeyDown={onKeyDown}
         />
@@ -175,3 +192,5 @@ export default function Input({
     </OuterWrapper>
   );
 }
+
+export default forwardRef(Input);
