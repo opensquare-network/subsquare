@@ -67,23 +67,25 @@ function createCouncilMotions(bestNumber, blockTime, motions) {
   ];
 }
 
-// function createDispatches(bestNumber, blockTime, dispatches) {
-//   return dispatches.map(({ at, index }) => {
-//     const blocks = at.sub(bestNumber);
+function createDispatches(bestNumber, blockTime, dispatches) {
+  return dispatches.map(({ at, index }) => {
+    const blocks = at.sub(bestNumber);
 
-//     return [
-//       "democracyDispatch",
-//       [
-//         {
-//           ...newDate(blocks, blockTime),
-//           blockNumber: at,
-//           blocks,
-//           info: index,
-//         },
-//       ],
-//     ];
-//   });
-// }
+    return [
+      "democracyDispatch",
+      [
+        {
+          ...newDate(blocks, blockTime),
+          blockNumber: at,
+          blocks,
+          info: index,
+          category: "Democracy",
+          subCategory: "Democracy Dispatch",
+        },
+      ],
+    ];
+  });
+}
 
 function createReferendums(bestNumber, blockTime, referendums) {
   return referendums.reduce((result, { index, status }) => {
@@ -277,18 +279,18 @@ function useScheduled() {
   const bestNumber = useCall(api?.derive.chain.bestNumber);
   const auctionInfo = useCall(api?.query.auctions?.auctionInfo);
   const councilMotions = useCall(api?.derive.council?.proposals);
-  // const dispatches = useCall(api?.derive.democracy?.dispatchQueue);
+  const dispatches = useCall(api?.derive.democracy?.dispatchQueue);
   const referendums = useCall(api?.derive.democracy?.referendums);
   const scheduled = useCall(api?.query.scheduler?.agenda?.entries);
   const sessionInfo = useCall(api?.derive.session?.progress);
   const slashes = useCall(api?.query.staking?.unappliedSlashes.entries);
   const [state, setState] = useState([]);
 
-  // useEffect(() => {
-  //   bestNumber && dispatches && setState((state) =>
-  //     addFiltered(state, createDispatches(bestNumber, blockTime, dispatches))
-  //   );
-  // }, [bestNumber, blockTime, dispatches]);
+  useEffect(() => {
+    bestNumber && dispatches && setState((state) =>
+      addFiltered(state, createDispatches(bestNumber, blockTime, dispatches)),
+    );
+  }, [bestNumber, blockTime, dispatches]);
 
   useEffect(() => {
     bestNumber &&
