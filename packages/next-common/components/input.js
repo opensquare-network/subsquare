@@ -135,7 +135,7 @@ function Input(
 ) {
   const [show, setShow] = useState(false);
   const [focus, setFocus] = useState(false);
-  const input = useRef();
+  const inputRef = useRef();
 
   function handleOnFocus(event) {
     setFocus(true);
@@ -152,7 +152,7 @@ function Input(
         focus={focus}
         data-focus={focus}
         onClick={() => {
-          input.current?.focus?.();
+          inputRef.current?.focus?.();
           setFocus(true);
         }}
         {...props}
@@ -161,7 +161,7 @@ function Input(
 
         <InputWrapper
           ref={(el) => {
-            input.current = el;
+            inputRef.current = el;
             ref.current = el;
           }}
           {...props}
