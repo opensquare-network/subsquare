@@ -6,7 +6,7 @@ import { useEffect } from "react";
  * @param {(e: Event) => void} handler
  * @param {import("react").RefObject<HTMLElement> | Window} target
  */
-export function useEventListener(type, handler, target, opts) {
+export function useEventListener(type, handler, target, opts, ...deps) {
   useEffect(() => {
     if (!handler) {
       return;
@@ -24,5 +24,5 @@ export function useEventListener(type, handler, target, opts) {
     return () => {
       targetElement.removeEventListener(type, handler, opts);
     };
-  }, [type, target, opts]);
+  }, [type, target, opts, ...deps]);
 }
