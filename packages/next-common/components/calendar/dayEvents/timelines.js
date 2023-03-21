@@ -18,6 +18,7 @@ import {
   w_full,
 } from "../../../styles/tailwindcss";
 import EventInfoCard from "./eventInfoCard";
+import FutureEventInfoCard from "./futureEventInfoCard";
 import Loading from "../../loading";
 
 const TimeLineHour = styled.div`
@@ -71,12 +72,26 @@ function Timeline({ children, hour }) {
   );
 }
 
-export default function DayEventTimelines({ events = [], loading }) {
+export default function DayEventTimelines({
+  events = [],
+  futureEvents = [],
+  loading,
+}) {
   const hrs = Array.from({ length: 25 }).map((_, i) => i);
 
   const eventInHourKey = "eventInHourKey";
   const eventInHourGrpup = groupBy(
     events.map((event) => {
+      return {
+        ...event,
+        [eventInHourKey]: dayjs(event.indexer.blockTime).get("hour"),
+      };
+    }),
+    eventInHourKey,
+  );
+
+  const futureEventInHourGrpup = groupBy(
+    futureEvents.map((event) => {
       return {
         ...event,
         [eventInHourKey]: dayjs(event.indexer.blockTime).get("hour"),
@@ -93,7 +108,7 @@ export default function DayEventTimelines({ events = [], loading }) {
     );
   }
 
-  if (!events.length) {
+  if (!events.length && !futureEvents.length) {
     return (
       <StatusWrapper>
         <NoData>No current events</NoData>
@@ -107,6 +122,9 @@ export default function DayEventTimelines({ events = [], loading }) {
         <Timeline key={n} hour={n}>
           {eventInHourGrpup[n]?.map((event) => {
             return <EventInfoCard key={event._id} event={event} />;
+          })}
+          {futureEventInHourGrpup[n]?.map((event, index) => {
+            return <FutureEventInfoCard key={index} event={event} />;
           })}
         </Timeline>
       ))}

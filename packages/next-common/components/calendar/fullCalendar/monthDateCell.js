@@ -121,6 +121,7 @@ export default function FullCalendarMonthDateCell({
   selectedDate,
   setSelectedDate,
   calendarEvents = [],
+  futureEvents = [],
 }) {
   label = Number(label);
 
@@ -137,7 +138,12 @@ export default function FullCalendarMonthDateCell({
     return day.isSame(blockTime, "day");
   });
 
-  const eventsGroup = groupBy(dayEvents, "category");
+  const dayFutureEvents = futureEvents.filter((event) => {
+    const blockTime = event.indexer.blockTime;
+    return day.isSame(blockTime, "day");
+  });
+
+  const eventsGroup = groupBy([...dayEvents, ...dayFutureEvents], "category");
   const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
     Object.keys(eventsGroup).includes(category),
   );

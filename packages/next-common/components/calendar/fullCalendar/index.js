@@ -31,7 +31,7 @@ const localizer = dayjsLocalizer(dayjs);
 const Wrapper = styled(NeutralPanel)`
   ${p_x(24)}
   ${p_y(20)} 
-  ${shadow_100} 
+  ${shadow_100}
   ${flex} 
   ${flex_col} 
   ${gap_y(16)}
@@ -83,6 +83,7 @@ export default function FullCalendar({
   setDate = noop,
   selectedDate,
   setSelectedDate = noop,
+  futureEvents = [],
 }) {
   const [calendarEvents] = useCalendarEventsSummary(date, "month");
 
@@ -106,6 +107,7 @@ export default function FullCalendar({
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             calendarEvents={calendarEvents}
+            futureEvents={futureEvents}
           />
         );
       },

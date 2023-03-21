@@ -36,6 +36,21 @@ const Collectives = styled(Common)`
   color: ${(props) => props.theme.secondaryGray500};
 `;
 
+const Staking = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
+const Scheduler = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
+const Society = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
 export function TreasuryTag() {
   return <Treasury>Treasury</Treasury>;
 }
@@ -50,4 +65,16 @@ export function OpenGovTag() {
 
 export function CollectivesTag() {
   return <Collectives>Collectives</Collectives>;
+}
+
+export function StakingTag() {
+  return <Staking>Staking</Staking>;
+}
+
+export function SchedulerTag() {
+  return <Scheduler>Scheduler</Scheduler>;
+}
+
+export function SocietyTag() {
+  return <Society>Society</Society>;
 }

@@ -20,7 +20,6 @@ export default withLoginUserRedux(() => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
   const futureEvents = useScheduled();
-  console.log({futureEvents});
 
   return (
     <HomeLayout>
@@ -33,10 +32,11 @@ export default withLoginUserRedux(() => {
           setDate={setDate}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          futureEvents={futureEvents}
         />
 
         {/* events component */}
-        <DayEvents selectedDate={selectedDate} />
+        <DayEvents selectedDate={selectedDate} futureEvents={futureEvents} />
       </Wrapper>
     </HomeLayout>
   );

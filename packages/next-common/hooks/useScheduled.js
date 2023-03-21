@@ -15,7 +15,7 @@ function newDate(blocks, blockTime) {
 
 function createConstDurations(bestNumber, blockTime, items) {
   return items.map(
-    ([type, duration, additional = BN_ZERO, offset = BN_ZERO]) => {
+    ([category, type, duration, additional = BN_ZERO, offset = BN_ZERO]) => {
       if (!duration) {
         return [type, []];
       }
@@ -31,6 +31,8 @@ function createConstDurations(bestNumber, blockTime, items) {
             blockNumber: startNumber.add(blocks),
             blocks,
             info: startNumber.div(duration).iadd(additional),
+            category,
+            subCategory: type,
           },
         ],
       ];
@@ -56,6 +58,8 @@ function createCouncilMotions(bestNumber, blockTime, motions) {
             blockNumber: votes.end,
             blocks,
             info: `${hashStr.slice(0, 6)}…${hashStr.slice(-4)}`,
+            category: "Collectives",
+            subCategory: "Council Motion",
           };
         })
         .filter((item) => !!item),
@@ -94,6 +98,8 @@ function createReferendums(bestNumber, blockTime, referendums) {
           blockNumber: bestNumber.add(voteBlocks),
           blocks: voteBlocks,
           info: index,
+          category: "Democracy",
+          subCategory: "Referendum",
         },
       ],
     ]);
@@ -106,6 +112,8 @@ function createReferendums(bestNumber, blockTime, referendums) {
           blocks: enactBlocks,
           info: index,
           isPending: true,
+          category: "Democracy",
+          subCategory: "Referendum",
         },
       ],
     ]);
@@ -154,6 +162,8 @@ function createStakingInfo(
           blockNumber: bestNumber.add(blocksSes),
           blocks: blocksSes,
           info: sessionInfo.currentIndex.add(BN_ONE),
+          category: "Staking",
+          subCategory: "Epoch",
         },
       ],
     ],
@@ -165,10 +175,19 @@ function createStakingInfo(
           blockNumber: bestNumber.add(blocksEra),
           blocks: blocksEra,
           info: sessionInfo.activeEra.add(BN_ONE),
+          category: "Staking",
+          subCategory: "Era",
         },
       ],
     ],
-    ["stakingSlash", slashEras],
+    [
+      "stakingSlash",
+      slashEras.map((item) => ({
+        ...item,
+        category: "Staking",
+        subCategory: "Slash",
+      })),
+    ],
   ];
 }
 
@@ -199,6 +218,8 @@ function createScheduled(bestNumber, blockTime, scheduled) {
                     ? idOrNull.toUtf8()
                     : idOrNull.toHex()
                   : null,
+                category: "Scheduler",
+                subCategory: "scheduler",
               });
 
               return items;
@@ -227,6 +248,7 @@ function createAuctionInfo(
           info: `${leasePeriod.toString()} - ${leasePeriod
             .add(rangeMax)
             .toString()}`,
+          category: "Parachain",
         },
       ],
     ],
@@ -338,6 +360,7 @@ function useScheduled() {
           state,
           createConstDurations(bestNumber, blockTime, [
             [
+              "Collectives",
               "councilElection",
               (
                 api?.consts.elections ||
@@ -345,22 +368,40 @@ function useScheduled() {
                 api?.consts.electionsPhragmen
               )?.termDuration,
             ],
-            ["democracyLaunch", api?.consts.democracy?.launchPeriod],
             [
+              "Democracy",
+              "democracyLaunch",
+              api?.consts.democracy?.launchPeriod,
+            ],
+            [
+              "Parachain",
               "parachainLease",
               api?.consts.slots?.leasePeriod,
               BN_ONE,
               api?.consts.slots?.leaseOffset,
             ],
-            ["societyChallenge", api?.consts.society?.challengePeriod],
-            ["societyRotate", api?.consts.society?.rotationPeriod],
-            ["treasurySpend", api?.consts.treasury?.spendPeriod],
+            [
+              "Society",
+              "societyChallenge",
+              api?.consts.society?.challengePeriod,
+            ],
+            ["Society", "societyRotate", api?.consts.society?.rotationPeriod],
+            ["Treasury", "treasurySpend", api?.consts.treasury?.spendPeriod],
           ]),
         ),
       );
   }, [api, bestNumber, blockTime]);
 
-  return state;
+  return state.map((item) => ({
+    type: item.type,
+    category: item.category,
+    subCategory: item.subCategory,
+    info: item.info?.toString(),
+    indexer: {
+      blockTime: item.dateTime,
+      blockHeight: item.blockNumber.toNumber(),
+    },
+  }));
 }
 
 export default useScheduled;
