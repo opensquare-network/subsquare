@@ -51,6 +51,11 @@ const Society = styled(Common)`
   color: ${(props) => props.theme.secondaryGray500};
 `;
 
+const Parachain = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
 export function TreasuryTag() {
   return <Treasury>Treasury</Treasury>;
 }
@@ -77,4 +82,8 @@ export function SchedulerTag() {
 
 export function SocietyTag() {
   return <Society>Society</Society>;
+}
+
+export function ParachainTag() {
+  return <Parachain>Parachain</Parachain>;
 }

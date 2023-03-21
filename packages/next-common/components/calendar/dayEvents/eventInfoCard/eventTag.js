@@ -7,6 +7,7 @@ import {
   StakingTag,
   TreasuryTag,
   SocietyTag,
+  ParachainTag,
 } from "../../../tags/business";
 import {
   FULLCALENDAR_CATEGORY_COLLECTIVES,
@@ -16,6 +17,7 @@ import {
   FULLCALENDAR_CATEGORY_STAKING,
   FULLCALENDAR_CATEGORY_TREASURY,
   FULLCALENDAR_CATEGORY_SOCIETY,
+  FULLCALENDAR_CATEGORY_PARACHAIN,
 } from "../../fullCalendar/consts";
 
 export default function EventTag({ event }) {
@@ -33,6 +35,8 @@ export default function EventTag({ event }) {
     return <SchedulerTag />;
   } else if (event.category === FULLCALENDAR_CATEGORY_SOCIETY) {
     return <SocietyTag />;
+  } else if (event.category === FULLCALENDAR_CATEGORY_PARACHAIN) {
+    return <ParachainTag />;
   }
 
   return null;
