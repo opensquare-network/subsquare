@@ -11,7 +11,7 @@ import MenuLine from "../../assets/imgs/icons/menu-line.svg";
 import { useChain } from "../../context/chain";
 import SearchInput from "./searchInput";
 import { hidden, m_l, m_r, w_full } from "../../styles/tailwindcss";
-import { mdcss } from "../../utils/responsive";
+import { breakpoint } from "../../utils/responsive";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1184px;
@@ -31,7 +31,7 @@ const HeaderSearchInputWrapper = styled.div`
   ${m_r(12)};
   ${m_l(35)};
 
-  ${mdcss(hidden)};
+  ${breakpoint(1005, hidden)};
 `;
 
 const MenuButton = styled(Flex)`
