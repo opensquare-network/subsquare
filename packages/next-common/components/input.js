@@ -119,8 +119,7 @@ const Suffix = styled(FlexBetweenCenter)`
 `;
 
 /**
- * @param {Object} props
- * @param {import("react").KeyboardEventHandler<HTMLInputElement>} props.onKeyDown
+ * @param {import("react").HTMLAttributes<HTMLInputElement>} props
  */
 export default function Input({
   onChange = emptyFunction,
