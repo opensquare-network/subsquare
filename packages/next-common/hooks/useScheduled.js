@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BN_ONE, BN_ZERO } from "@polkadot/util";
+import startCase from "lodash.startcase";
 import useApi from "../utils/hooks/useApi";
 import useCall from "../utils/hooks/useCall";
 import { useBlockTime } from "../utils/hooks";
@@ -32,7 +33,7 @@ function createConstDurations(bestNumber, blockTime, items) {
             blocks,
             info: startNumber.div(duration).iadd(additional),
             category,
-            subCategory: type,
+            subCategory: startCase(type),
           },
         ],
       ];
@@ -101,7 +102,7 @@ function createReferendums(bestNumber, blockTime, referendums) {
           blocks: voteBlocks,
           info: index,
           category: "Democracy",
-          subCategory: "Referendum",
+          subCategory: "Referendum Vote",
         },
       ],
     ]);
@@ -115,7 +116,7 @@ function createReferendums(bestNumber, blockTime, referendums) {
           info: index,
           isPending: true,
           category: "Democracy",
-          subCategory: "Referendum",
+          subCategory: "Referendum Dispatch",
         },
       ],
     ]);
@@ -165,7 +166,7 @@ function createStakingInfo(
           blocks: blocksSes,
           info: sessionInfo.currentIndex.add(BN_ONE),
           category: "Staking",
-          subCategory: "Epoch",
+          subCategory: "Staking Epoch",
         },
       ],
     ],
@@ -178,7 +179,7 @@ function createStakingInfo(
           blocks: blocksEra,
           info: sessionInfo.activeEra.add(BN_ONE),
           category: "Staking",
-          subCategory: "Era",
+          subCategory: "Staking Era",
         },
       ],
     ],
@@ -187,7 +188,7 @@ function createStakingInfo(
       slashEras.map((item) => ({
         ...item,
         category: "Staking",
-        subCategory: "Slash",
+        subCategory: "Staking Slash",
       })),
     ],
   ];
@@ -221,7 +222,7 @@ function createScheduled(bestNumber, blockTime, scheduled) {
                     : idOrNull.toHex()
                   : null,
                 category: "Scheduler",
-                subCategory: "scheduler",
+                subCategory: "Scheduler",
               });
 
               return items;
@@ -250,7 +251,7 @@ function createAuctionInfo(
           info: `${leasePeriod.toString()} - ${leasePeriod
             .add(rangeMax)
             .toString()}`,
-          category: "Parachain",
+          category: "Parachain Auction",
         },
       ],
     ],
@@ -287,9 +288,11 @@ function useScheduled() {
   const [state, setState] = useState([]);
 
   useEffect(() => {
-    bestNumber && dispatches && setState((state) =>
-      addFiltered(state, createDispatches(bestNumber, blockTime, dispatches)),
-    );
+    bestNumber &&
+      dispatches &&
+      setState((state) =>
+        addFiltered(state, createDispatches(bestNumber, blockTime, dispatches)),
+      );
   }, [bestNumber, blockTime, dispatches]);
 
   useEffect(() => {
