@@ -4,10 +4,10 @@ import { fellowshipReferendumBaseUrl } from "../../postBaseUrl";
 
 export default function normalizeFellowshipReferendaListItem(
   item,
-  tracks = []
+  tracks = [],
 ) {
   const track = tracks.find(
-    (trackItem) => trackItem.id === item.onchainData.track
+    (trackItem) => trackItem.id === item.onchainData.track,
   );
 
   return {

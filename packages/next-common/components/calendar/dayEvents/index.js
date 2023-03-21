@@ -45,8 +45,11 @@ const TitleDate = styled.small`
   ${text_tertiary}
 `;
 
-export default function DayEvents({ selectedDate }) {
+export default function DayEvents({ selectedDate, futureEvents = [] }) {
   const [dayEvents, loading] = useCalendarEvents(selectedDate, "day");
+  const dayFutureEvents = futureEvents.filter((event) => {
+    return dayjs(event.indexer.blockTime).isSame(selectedDate, "day");
+  });
 
   return (
     <Wrapper>
@@ -57,7 +60,11 @@ export default function DayEvents({ selectedDate }) {
 
       <Divider />
 
-      <DayEventTimelines events={dayEvents} loading={loading} />
+      <DayEventTimelines
+        events={dayEvents}
+        loading={loading}
+        futureEvents={dayFutureEvents}
+      />
     </Wrapper>
   );
 }

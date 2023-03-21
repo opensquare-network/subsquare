@@ -28,7 +28,13 @@ import {
 } from "../../../styles/tailwindcss";
 import TooltipOrigin from "../../tooltip";
 import FullCalendarCategory from "./category";
-import { FULLCALENDAR_CATEGORIES } from "./consts";
+import {
+  FULLCALENDAR_CATEGORIES,
+  FULLCALENDAR_CATEGORY_PARACHAIN,
+  FULLCALENDAR_CATEGORY_SCHEDULER,
+  FULLCALENDAR_CATEGORY_SOCIETY,
+  FULLCALENDAR_CATEGORY_STAKING,
+} from "./consts";
 import { smcss } from "../../../utils/responsive";
 dayjs.extend(isToday);
 
@@ -121,6 +127,7 @@ export default function FullCalendarMonthDateCell({
   selectedDate,
   setSelectedDate,
   calendarEvents = [],
+  futureEvents = [],
 }) {
   label = Number(label);
 
@@ -137,7 +144,30 @@ export default function FullCalendarMonthDateCell({
     return day.isSame(blockTime, "day");
   });
 
-  const eventsGroup = groupBy(dayEvents, "category");
+  const dayFutureEvents = futureEvents
+    .filter((event) => {
+      const blockTime = event.indexer.blockTime;
+      return day.isSame(blockTime, "day");
+    })
+    .map((item) => {
+      if (
+        ![
+          FULLCALENDAR_CATEGORY_PARACHAIN,
+          FULLCALENDAR_CATEGORY_SCHEDULER,
+          FULLCALENDAR_CATEGORY_STAKING,
+          FULLCALENDAR_CATEGORY_SOCIETY,
+        ].includes(item.category)
+      ) {
+        return item;
+      }
+      return {
+        ...item,
+        category: "Others",
+        subCategory: item.category,
+      };
+    });
+
+  const eventsGroup = groupBy([...dayEvents, ...dayFutureEvents], "category");
   const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
     Object.keys(eventsGroup).includes(category),
   );

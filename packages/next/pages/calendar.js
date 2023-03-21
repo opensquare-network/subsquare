@@ -7,6 +7,8 @@ import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
 import { useState } from "react";
 import { smcss } from "next-common/utils/responsive";
+import useScheduled from "next-common/hooks/useScheduled";
+
 const Wrapper = styled.div`
   ${flex}
   ${flex_col}
@@ -17,6 +19,7 @@ const Wrapper = styled.div`
 export default withLoginUserRedux(() => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
+  const futureEvents = useScheduled();
 
   return (
     <HomeLayout>
@@ -29,10 +32,11 @@ export default withLoginUserRedux(() => {
           setDate={setDate}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          futureEvents={futureEvents}
         />
 
         {/* events component */}
-        <DayEvents selectedDate={selectedDate} />
+        <DayEvents selectedDate={selectedDate} futureEvents={futureEvents} />
       </Wrapper>
     </HomeLayout>
   );

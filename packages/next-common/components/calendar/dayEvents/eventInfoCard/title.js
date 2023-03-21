@@ -118,22 +118,22 @@ function getEventTitle(event) {
     }
     case EventType.TcMotionProposed: {
       return `Technical committee motion ${hashEllipsis(
-        event.motionHash
+        event.motionHash,
       )} proposed`;
     }
     case EventType.TcMotionApproved: {
       return `Technical committee motion ${hashEllipsis(
-        event.motionHash
+        event.motionHash,
       )} approved`;
     }
     case EventType.TcMotionDisApproved: {
       return `Technical committee motion ${hashEllipsis(
-        event.motionHash
+        event.motionHash,
       )} disapproved`;
     }
     case EventType.TcMotionExecuted: {
       return `Technical committee motion ${hashEllipsis(
-        event.motionHash
+        event.motionHash,
       )} executed`;
     }
     case EventType.AdvisoryCommitteeProposed: {
@@ -144,7 +144,7 @@ function getEventTitle(event) {
     }
     case EventType.AdvisoryCommitteeDisApproved: {
       return `Advisory committee motion ${hashEllipsis(
-        event.hash
+        event.hash,
       )} disapproved`;
     }
     case EventType.DemocracyProposalProposed: {

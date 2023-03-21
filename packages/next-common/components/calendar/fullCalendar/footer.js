@@ -9,11 +9,17 @@ import {
   p_b,
 } from "../../../styles/tailwindcss";
 import { smcss } from "../../../utils/responsive";
+import Tooltip from "../../tooltip";
 import FullCalendarCategory from "./category";
 import {
   FULLCALENDAR_CATEGORY_COLLECTIVES,
   FULLCALENDAR_CATEGORY_DEMOCRACY,
   FULLCALENDAR_CATEGORY_OPEN_GOV,
+  FULLCALENDAR_CATEGORY_OTHERS,
+  FULLCALENDAR_CATEGORY_PARACHAIN,
+  FULLCALENDAR_CATEGORY_SCHEDULER,
+  FULLCALENDAR_CATEGORY_SOCIETY,
+  FULLCALENDAR_CATEGORY_STAKING,
   FULLCALENDAR_CATEGORY_TREASURY,
 } from "./consts";
 
@@ -24,6 +30,12 @@ const Wrapper = styled.div`
   ${p_b(8)}
 
   ${smcss(hidden)}
+  z-index: 4;
+`;
+
+const OthersCategory = styled.div`
+  ${flex}
+  gap: 4px;
 `;
 
 export default function FullCalendarFooter() {
@@ -40,11 +52,32 @@ export default function FullCalendarFooter() {
     [hasGov2],
   );
 
+  const othersTooltip = (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }}
+    >
+      <span>{FULLCALENDAR_CATEGORY_PARACHAIN}</span>
+      <span>{FULLCALENDAR_CATEGORY_SCHEDULER}</span>
+      <span>{FULLCALENDAR_CATEGORY_STAKING}</span>
+      <span>{FULLCALENDAR_CATEGORY_SOCIETY}</span>
+    </div>
+  );
+
   return (
     <Wrapper>
       {categories.map((category) => (
         <FullCalendarCategory key={category} category={category} />
       ))}
+      <OthersCategory>
+        <FullCalendarCategory category={FULLCALENDAR_CATEGORY_OTHERS} />
+        <div>
+          <Tooltip content={othersTooltip} />
+        </div>
+      </OthersCategory>
     </Wrapper>
   );
 }
