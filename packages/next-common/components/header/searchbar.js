@@ -35,18 +35,14 @@ export default function HeaderSearchBar() {
     window.open(url, "_blank");
   }
 
-  useKey(
-    "/",
-    (event) => {
-      if (!focus) {
-        event.preventDefault();
-        input.current?.focus();
-      }
-    },
-    null,
-    null,
-    focus,
-  );
+  function handleFocusSearchInput(event) {
+    if (!focus) {
+      event.preventDefault();
+      input.current?.focus();
+    }
+  }
+
+  useKey("/", handleFocusSearchInput, null, null, focus);
   useKey("Escape", () => {
     input.current?.blur();
   });
