@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   convertPolkassemblyReaction,
+  convertPolkassemblyReactionV2,
   toPolkassemblyCommentListItem,
+  toPolkassemblyCommentListItemV2,
 } from "utils/viewfuncs";
-import { queryPostComments } from "utils/polkassembly";
 import { useChain } from "next-common/context/chain";
+import isNil from "lodash.isnil";
+import nextApi from "next-common/services/nextApi";
+import { queryPostComments } from "utils/polkassembly";
 
 const dataCache = {};
 
-export default function usePolkassemblyPostData({ polkassemblyId }) {
+export default function usePolkassemblyPostData({ polkassemblyId, polkassemblyPostType = "discussion" }) {
   const chain = useChain();
   const isMounted = useIsMounted();
   const [comments, setComments] = useState([]);
@@ -17,7 +21,7 @@ export default function usePolkassemblyPostData({ polkassemblyId }) {
   const [loadingComments, setLoadingComments] = useState(false);
   const [commentsCount, setCommentsCount] = useState(0);
 
-  useEffect(() => {
+  const loadComments = useCallback(() => {
     if (polkassemblyId === undefined) {
       return;
     }
@@ -60,6 +64,61 @@ export default function usePolkassemblyPostData({ polkassemblyId }) {
         }
       });
   }, [polkassemblyId, chain, isMounted]);
+
+  const loadCommentsV2 = useCallback(() => {
+    if (isNil(polkassemblyId) || isNil(polkassemblyPostType)) {
+      return;
+    }
+
+    const cacheKey = `${polkassemblyPostType}:${polkassemblyId}`;
+
+    if (dataCache[cacheKey]) {
+      const data = dataCache[cacheKey];
+      setComments(data.comments);
+      setPostReactions(data.postReactions);
+      setCommentsCount(data.commentsCount);
+      return;
+    }
+
+    setLoadingComments(true);
+    nextApi.fetch("polkassembly-comments", {
+      postId: polkassemblyId,
+      postType: polkassemblyPostType,
+    }).then(({ result }) => {
+      if (isMounted.current) {
+        const comments = result?.comments?.map((item) =>
+          toPolkassemblyCommentListItemV2(chain, item)
+        );
+        comments?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        const postReactions = convertPolkassemblyReactionV2(result?.post_reactions);
+        const commentsCount = result?.comments?.length;
+
+        const data = {
+          comments,
+          postReactions,
+          commentsCount,
+        };
+        dataCache[cacheKey] = data;
+
+        setComments(comments);
+        setPostReactions(postReactions);
+        setCommentsCount(commentsCount);
+      }
+    })
+    .finally(() => {
+      if (isMounted.current) {
+        setLoadingComments(false);
+      }
+    });
+  }, [polkassemblyId, polkassemblyPostType, chain, isMounted]);
+
+  useEffect(() => {
+    if (chain === "kusama") {
+      loadCommentsV2();
+    } else {
+      loadComments();
+    }
+  }, [chain, loadComments, loadCommentsV2]);
 
   return {
     comments,

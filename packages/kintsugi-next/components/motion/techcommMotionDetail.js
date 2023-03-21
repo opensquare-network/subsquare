@@ -24,6 +24,7 @@ import { useChain } from "next-common/context/chain";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useDetailType } from "next-common/context/page";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import MaliciousHead from "next-common/components/detail/maliciousHead";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -213,6 +214,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
     <div>
       <EditablePanel>
         <div>
+          {post?.isMalicious && <MaliciousHead />}
           <TechCommNavigation motion={motion} />
           {motionEndHeader}
           <PostTitle />

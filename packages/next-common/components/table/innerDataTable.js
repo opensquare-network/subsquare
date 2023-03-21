@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 const BreakText = styled.span`
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 const StyledTable = styled.table`

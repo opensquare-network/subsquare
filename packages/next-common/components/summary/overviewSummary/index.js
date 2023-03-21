@@ -179,6 +179,7 @@ function CouncilGroupContent({ summaryData }) {
 export default function OverviewSummary({ summaryData }) {
   const showCouncil = useMenuHasCouncil();
   const showOpenGov = useMenuHasGov2();
+  const showTC = useMenuHasTechComm();
 
   const items = [];
   if (showOpenGov) {
@@ -198,8 +199,8 @@ export default function OverviewSummary({ summaryData }) {
       content: <TreasuryGroupContent summaryData={summaryData} />,
     },
     {
-      title: `${showCouncil && "Council / "}T.C.`,
-      content: <CouncilGroupContent summaryData={summaryData} />,
+      title: `${ showCouncil ? "Council" : "" }${ showTC && showCouncil ? " / " : "" }${ showTC ? "T.C." : "" }`,
+      content: <CouncilGroupContent summaryData={ summaryData } />,
     },
   );
 

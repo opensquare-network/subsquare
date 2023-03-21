@@ -65,6 +65,7 @@ function VotesList({ items, theme, loading = true }) {
                       <VoteLabel
                         conviction={item.conviction}
                         isDelegating={item.isDelegating}
+                        isSplit={item.isSplit}
                       />
                     </StyledTd>
                   )}

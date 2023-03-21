@@ -287,9 +287,11 @@ export default function Post({ data, href, type }) {
       </ContentWrapper>
 
       {bannerUrl && (
-        <BannerWrapper>
-          <img src={bannerUrl} alt="banner image" />
-        </BannerWrapper>
+        <MobileHiddenInfo>
+          <BannerWrapper>
+            <img src={bannerUrl} alt="banner image" />
+          </BannerWrapper>
+        </MobileHiddenInfo>
       )}
     </Wrapper>
   );

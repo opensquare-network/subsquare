@@ -18,6 +18,8 @@ import { useIsLogin } from "../context/user";
 import nextApi from "next-common/services/nextApi";
 import fetchAndUpdatePost from "../context/post/update";
 import { useDetailType } from "../context/page";
+import PostLinkPopup from "./linkPost/postLinkPopup";
+import PostUnlinkPopup from "./linkPost/postUnlinkPopup";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -44,6 +46,8 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
   const dispatch = useDispatch();
   const post = usePost();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
+  const [showLinkPopup, setShowLinkPopup] = useState(false);
+  const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
 
   const isLogin = useIsLogin();
   const type = useDetailType();
@@ -88,7 +92,11 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
     <Wrapper>
       <Divider margin={16} />
       {!post.content && (
-        <NonEdited setIsEdit={setIsEdit} authors={post.authors} />
+        <NonEdited
+          setIsEdit={setIsEdit}
+          authors={post.authors}
+          setShowLinkPopup={setShowLinkPopup}
+        />
       )}
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
       <PostContent />
@@ -105,7 +113,11 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
         toggleThumbUp={toggleThumbUp}
         thumbUpLoading={thumbUpLoading}
         onReply={onReply}
+        setShowLinkPopup={setShowLinkPopup}
+        setShowUnlinkPopup={setShowUnlinkPopup}
       />
+      {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
+      {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
     </Wrapper>
   );
 }

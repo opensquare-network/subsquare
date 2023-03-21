@@ -1,6 +1,7 @@
 async function fetchGraphql(query) {
   try {
     const controller = new AbortController();
+    setTimeout(() => controller.abort(), 10000);
     const resp = await fetch(
       `https://${process.env.NEXT_PUBLIC_CHAIN}.polkassembly.io/v1/graphql`,
       {
@@ -10,7 +11,6 @@ async function fetchGraphql(query) {
         signal: controller.signal,
       }
     );
-    setTimeout(() => controller.abort(), 10000);
 
     if (!resp.ok) {
       return null;

@@ -14,6 +14,7 @@ import { useDetailType } from "next-common/context/page";
 import TreasuryProposalNavigation from "next-common/components/detail/navigation/treasuryProposalNavigation";
 import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
 import AnnouncementNavigation from "next-common/components/detail/navigation/announcementNavigation";
+import MaliciousHead from "next-common/components/detail/maliciousHead";
 
 export default function DetailItem({
   onReply,
@@ -40,6 +41,7 @@ export default function DetailItem({
 
   return (
     <EditablePanel>
+      {post?.isMalicious && <MaliciousHead />}
       {type === detailPageCategory.GOV2_REFERENDUM && (
         <ReferendaReferendumNavigation />
       )}

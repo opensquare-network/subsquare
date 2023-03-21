@@ -4,23 +4,42 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import GreyInfoPanel from "../styled/greyInfoPanel";
+import {
+  flex_nowrap,
+  gap_x,
+  inline_flex,
+  items_center,
+  text_secondary,
+  whitespace_nowrap,
+} from "../../../styles/tailwindcss";
+import { no_scroll_bar, p_12_normal } from "../../../styles/componentCss";
+import { SM_SIZE } from "../../../utils/responsive";
 
 const Wrapper = styled(GreyInfoPanel)`
-  > div {
-    display: inline-flex;
-    & > :last-child {
-      margin-left: 4px;
-      color: ${(p) => p.theme.textSecondary};
-    }
-  }
+  ${flex_nowrap};
+  ${whitespace_nowrap};
+  overflow-x: auto;
 
-  > :nth-child(2),
-  > :nth-child(3) {
-    ::before {
+  @media (min-width: ${SM_SIZE + 1}px) {
+    ${no_scroll_bar};
+  }
+`;
+
+const Item = styled.div`
+  ${inline_flex};
+  ${items_center};
+  ${gap_x(8)};
+  ${p_12_normal};
+
+  &:not(:first-child) {
+    &::before {
       content: "·";
-      margin-right: 8px;
     }
   }
+`;
+
+const TextSecondary = styled.span`
+  ${text_secondary};
 `;
 
 export default function BeenDelegatedInfo({ delegations, addressesCount }) {
@@ -28,26 +47,34 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
 
   return (
     <Wrapper>
-      <div>
+      <Item>
         <span>Been delegated</span>
         <ValueDisplay
-          value={toPrecision(delegations?.votes || 0, decimals)}
-          symbol={symbol}
+          value={
+            <TextSecondary>
+              {toPrecision(delegations?.votes || 0, decimals)}
+            </TextSecondary>
+          }
+          symbol={<TextSecondary>{symbol}</TextSecondary>}
         />
-      </div>
-      <div>
+      </Item>
+      <Item>
         <span>Capital</span>
         <ValueDisplay
-          value={toPrecision(delegations?.capital || 0, decimals)}
-          symbol={symbol}
+          value={
+            <TextSecondary>
+              {toPrecision(delegations?.capital || 0, decimals)}
+            </TextSecondary>
+          }
+          symbol={<TextSecondary>{symbol}</TextSecondary>}
         />
-      </div>
-      <div>
+      </Item>
+      <Item>
         <span>By</span>
-        <div className="value">
+        <TextSecondary>
           {addressesCount} {addressesCount === 1 ? "Address" : "Addresses"}
-        </div>
-      </div>
+        </TextSecondary>
+      </Item>
     </Wrapper>
   );
 }
