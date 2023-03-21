@@ -2,11 +2,11 @@ import React, { useMemo } from "react";
 import noop from "lodash.noop";
 import dayjs from "dayjs";
 import styled from "styled-components";
+import { formatNumber, isString } from "@polkadot/util";
 import EventTag from "../eventInfoCard/eventTag";
 import FoldButton from "../eventInfoCard/foldButton";
 import { flex, gap_x, hover, underline } from "../../../../styles/tailwindcss";
 import TooltipOrigin from "../../../tooltip";
-import { formatNumber, isString } from "@polkadot/util";
 
 const Wrapper = styled.div`
   display: flex;
@@ -66,70 +66,71 @@ export default function Title({ event, isFolded, setIsFolded = noop }) {
     let s = "";
 
     switch (type) {
-      case "councilElection":
+      case "councilElection": {
         s = "Election of new council candidates";
         break;
-
-      case "councilMotion":
+      }
+      case "councilMotion": {
         s = `Voting ends on council motion ${id}`;
         break;
-
-      case "democracyDispatch":
+      }
+      case "democracyDispatch": {
         s = `Enactment of the result of referendum ${id}`;
         break;
-
-      case "democracyLaunch":
+      }
+      case "democracyLaunch": {
         s = "Start of the next referendum voting period";
         break;
-
-      case "parachainAuction":
+      }
+      case "parachainAuction": {
         s = `End of the current parachain auction ${id}`;
         break;
-
-      case "parachainLease":
+      }
+      case "parachainLease": {
         s = `Start of the next parachain lease period ${id}`;
         break;
-
-      case "referendumDispatch":
+      }
+      case "referendumDispatch": {
         s = `Potential dispatch of referendum ${id} (if passed)`;
         break;
-
-      case "referendumVote":
+      }
+      case "referendumVote": {
         s = `Voting ends for referendum ${id}`;
         break;
-
-      case "scheduler":
+      }
+      case "scheduler": {
         s = id
           ? `Execute named scheduled task ${id}`
           : "Execute anonymous scheduled task";
         break;
-
-      case "stakingEpoch":
+      }
+      case "stakingEpoch": {
         s = `Start of a new staking session ${id}`;
         break;
-
-      case "stakingEra":
+      }
+      case "stakingEra": {
         s = `Start of a new staking era ${id}`;
         break;
-
-      case "stakingSlash":
+      }
+      case "stakingSlash": {
         s = `Application of slashes from era ${id}`;
         break;
-
-      case "treasurySpend":
+      }
+      case "treasurySpend": {
         s = "Start of next spending period";
         break;
-
-      case "societyChallenge":
+      }
+      case "societyChallenge": {
         s = "Start of next membership challenge period";
         break;
-
-      case "societyRotate":
+      }
+      case "societyRotate": {
         s = "Acceptance of new members and bids";
         break;
-
-      default:
+      }
+      default: {
         return "";
+      }
     }
 
     return s;

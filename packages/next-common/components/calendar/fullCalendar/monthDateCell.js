@@ -138,10 +138,18 @@ export default function FullCalendarMonthDateCell({
     return day.isSame(blockTime, "day");
   });
 
-  const dayFutureEvents = futureEvents.filter((event) => {
-    const blockTime = event.indexer.blockTime;
-    return day.isSame(blockTime, "day");
-  });
+  const dayFutureEvents = futureEvents
+    .filter((event) => {
+      const blockTime = event.indexer.blockTime;
+      return day.isSame(blockTime, "day");
+    })
+    .map((item) => {
+      return {
+        ...item,
+        category: "Others",
+        subCategory: item.category,
+      };
+    });
 
   const eventsGroup = groupBy([...dayEvents, ...dayFutureEvents], "category");
   const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
