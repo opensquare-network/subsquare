@@ -7,6 +7,7 @@ import EventTag from "../eventInfoCard/eventTag";
 import FoldButton from "../eventInfoCard/foldButton";
 import { flex, gap_x, hover, underline } from "../../../../styles/tailwindcss";
 import TooltipOrigin from "../../../tooltip";
+import { FutureEventTypes } from "./futureEventType";
 
 const Wrapper = styled.div`
   display: flex;
@@ -66,65 +67,65 @@ export default function Title({ event, isFolded, setIsFolded = noop }) {
     let s = "";
 
     switch (type) {
-      case "councilElection": {
+      case FutureEventTypes.councilElection: {
         s = "Election of new council candidates";
         break;
       }
-      case "councilMotion": {
+      case FutureEventTypes.councilMotion: {
         s = `Voting ends on council motion ${id}`;
         break;
       }
-      case "democracyDispatch": {
+      case FutureEventTypes.democracyDispatch: {
         s = `Enactment of the result of referendum ${id}`;
         break;
       }
-      case "democracyLaunch": {
+      case FutureEventTypes.democracyLaunch: {
         s = "Start of the next referendum voting period";
         break;
       }
-      case "parachainAuction": {
+      case FutureEventTypes.parachainAuction: {
         s = `End of the current parachain auction ${id}`;
         break;
       }
-      case "parachainLease": {
+      case FutureEventTypes.parachainLease: {
         s = `Start of the next parachain lease period ${id}`;
         break;
       }
-      case "referendumDispatch": {
+      case FutureEventTypes.referendumDispatch: {
         s = `Potential dispatch of referendum ${id} (if passed)`;
         break;
       }
-      case "referendumVote": {
+      case FutureEventTypes.referendumVote: {
         s = `Voting ends for referendum ${id}`;
         break;
       }
-      case "scheduler": {
+      case FutureEventTypes.scheduler: {
         s = id
           ? `Execute named scheduled task ${id}`
           : "Execute anonymous scheduled task";
         break;
       }
-      case "stakingEpoch": {
+      case FutureEventTypes.stakingEpoch: {
         s = `Start of a new staking session ${id}`;
         break;
       }
-      case "stakingEra": {
+      case FutureEventTypes.stakingEra: {
         s = `Start of a new staking era ${id}`;
         break;
       }
-      case "stakingSlash": {
+      case FutureEventTypes.stakingSlash: {
         s = `Application of slashes from era ${id}`;
         break;
       }
-      case "treasurySpend": {
+      case FutureEventTypes.treasurySpend: {
         s = "Start of next spending period";
         break;
       }
-      case "societyChallenge": {
+      case FutureEventTypes.societyChallenge: {
         s = "Start of next membership challenge period";
         break;
       }
-      case "societyRotate": {
+      case FutureEventTypes.societyRotate: {
         s = "Acceptance of new members and bids";
         break;
       }

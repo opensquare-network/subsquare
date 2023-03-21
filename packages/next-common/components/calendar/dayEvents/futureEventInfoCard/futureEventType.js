@@ -1,0 +1,17 @@
+export const FutureEventTypes = {
+  councilElection: "councilElection",
+  councilMotion: "councilMotion",
+  democracyDispatch: "democracyDispatch",
+  democracyLaunch: "democracyLaunch",
+  parachainAuction: "parachainAuction",
+  parachainLease: "parachainLease",
+  referendumDispatch: "referendumDispatch",
+  referendumVote: "referendumVote",
+  scheduler: "scheduler",
+  stakingEpoch: "stakingEpoch",
+  stakingEra: "stakingEra",
+  stakingSlash: "stakingSlash",
+  treasurySpend: "treasurySpend",
+  societyChallenge: "societyChallenge",
+  societyRotate: "societyRotate",
+};
