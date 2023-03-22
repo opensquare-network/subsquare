@@ -23,7 +23,6 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
-  headerBackgroundColor: "#000000",
   loginButtonPrimary: true,
   headerLogo: Logo,
   darkHeaderLogo: Logo,

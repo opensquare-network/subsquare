@@ -28,7 +28,6 @@ const litentry = {
   snsCoverCid: "bafybeiej7his75nmaf2yhm6n3sqxf3ew2kvkyb7q37pbt37b72jwvs5cu4",
   endpoints: DEFAULT_LITENTRY_NODES,
   loginButtonPrimary: true,
-  headerBackgroundColor: "#000000",
   headerLogo: Logo,
   darkHeaderLogo: Logo,
   avatar: Avatar,

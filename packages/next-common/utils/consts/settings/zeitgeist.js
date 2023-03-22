@@ -30,7 +30,6 @@ const zeitgeist = {
   snsCoverCid: "bafybeifwpcjcbym2df3zuh63p4nowvh53d6hgludiwvlsnusxckyke5sri",
   loginButtonPrimary: true,
   endpoints: defaultNodes,
-  headerBackgroundColor: "#000000",
   headerLogo: Logo,
   darkHeaderLogo: Logo,
   avatar: Avatar,
