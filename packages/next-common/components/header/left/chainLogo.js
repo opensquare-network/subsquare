@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import useWindowSize from "../../../utils/hooks/useWindowSize";
-import SubSquare from "../../../assets/header-logos/logo.svg";
+import SubSquare from "../../../assets/header-logos/subsquare.svg";
 import SubSquareDark from "../../../assets/header-logos/subsquare-dark.svg";
 import { withTheme } from "styled-components";
 import { useChainSettings } from "../../../context/chain";

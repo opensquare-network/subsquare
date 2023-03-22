@@ -1,4 +1,5 @@
 import Logo from "../../../assets/header-logos/basilisk.svg";
+import DarkModeLogo from "../../../assets/header-logos/basilisk-dark.svg";
 import Avatar from "../../../assets/icons/chain/basilisk.png";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
@@ -25,7 +26,7 @@ const basilisk = {
   snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
   loginButtonPrimary: true,
   headerLogo: Logo,
-  darkHeaderLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   endpoints: DEFAULT_BASILISK_NODES,
   group: MenuGroups.KusamaAndParachains,

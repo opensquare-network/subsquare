@@ -1,4 +1,5 @@
 import Logo from "../../../assets/header-logos/hydradx.svg";
+import DarkModeLogo from "../../../assets/header-logos/hydradx-dark.svg";
 import Chains from "../chains";
 import Avatar from "../../../assets/icons/chain/hydradx.png";
 import MenuGroups from "./menuGroups";
@@ -26,7 +27,7 @@ const hydradx = {
   snsCoverCid: "bafybeieqf3lmi5e4e3yqvujn7dd26dsvhy66u55g6gjzgvw2ogjzu2pt4e",
   loginButtonPrimary: true,
   headerLogo: Logo,
-  darkHeaderLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: Avatar,
   endpoints: defaultHydradxEndpoints,

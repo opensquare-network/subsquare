@@ -1,4 +1,5 @@
 import Logo from "../../../assets/header-logos/litentry.svg";
+import DarkModeLogo from "../../../assets/header-logos/litentry-dark.svg";
 import Avatar from "../../../assets/icons/chain/litentry.png";
 
 import Chains from "../chains";
@@ -29,7 +30,7 @@ const litentry = {
   endpoints: DEFAULT_LITENTRY_NODES,
   loginButtonPrimary: true,
   headerLogo: Logo,
-  darkHeaderLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,

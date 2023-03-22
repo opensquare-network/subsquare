@@ -1,6 +1,7 @@
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import Logo from "../../../assets/header-logos/altair.svg";
+import DarkModeLogo from "../../../assets/header-logos/altair-dark.svg";
 import Avatar from "../../../assets/icons/chain/altair.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
@@ -29,7 +30,7 @@ const altair = {
   endpoints: nodes,
   loginButtonPrimary: true,
   headerLogo: Logo,
-  darkHeaderLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),

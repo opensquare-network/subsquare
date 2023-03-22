@@ -1,4 +1,5 @@
 import Logo from "../../../assets/header-logos/litmus.svg";
+import DarkModeLogo from "../../../assets/header-logos/litmus-dark.svg";
 import Avatar from "../../../assets/icons/chain/litmus.png";
 
 import Chains from "../chains";
@@ -25,7 +26,7 @@ const litmus = {
   endpoints: DEFAULT_LITMUS_NODES,
   loginButtonPrimary: true,
   headerLogo: Logo,
-  darkHeaderLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
