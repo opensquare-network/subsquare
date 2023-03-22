@@ -14,6 +14,7 @@ import {
   flex,
   flex_col,
   gap_x,
+  h,
   hidden,
   h_full,
   justify_between,
@@ -60,7 +61,7 @@ const CellEventGroupSmSize = styled(CellEventGroup)`
 
 const CellWrapper = styled.div`
   ${w_full}
-  ${h_full}
+  ${h(48)}
   ${flex}
   ${flex_col}
   ${justify_between}

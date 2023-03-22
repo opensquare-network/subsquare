@@ -8,7 +8,6 @@ import {
   flex_col,
   gap_x,
   gap_y,
-  h,
   hidden,
   h_full,
   max_h,
@@ -30,16 +29,14 @@ const localizer = dayjsLocalizer(dayjs);
 
 const Wrapper = styled(NeutralPanel)`
   ${p_x(24)}
-  ${p_y(20)} 
+  ${p_y(20)}
   ${shadow_100}
-  ${flex} 
-  ${flex_col} 
+  ${flex}
+  ${flex_col}
   ${gap_y(16)}
 `;
 
 const CalendarWrapper = styled.div`
-  ${h(347)}
-
   .rbc-month-view {
     border: none;
     ${gap_y(4)}
