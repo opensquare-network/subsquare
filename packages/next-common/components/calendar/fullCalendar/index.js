@@ -70,6 +70,10 @@ const CalendarWrapper = styled.div`
         .rbc-date-cell {
           ${p(0)}
         }
+        /* events row, hide it */
+        .rbc-row .rbc-row-segment {
+          ${hidden};
+        }
       }
     }
   }
