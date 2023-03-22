@@ -127,8 +127,8 @@ function Input(
     prefix,
     suffix,
     onKeyDown = noop,
-    onFocus,
-    onBlur,
+    onFocus = noop,
+    onBlur = noop,
     ...props
   },
   ref,
