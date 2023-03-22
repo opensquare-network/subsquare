@@ -9,8 +9,8 @@ import ValueItem from "./infoItem/valueItem";
 export default function TreasuryBountyAwardedContent({ bountyIndex, data }) {
   return (
     <>
-      <IndexItem index={bountyIndex} baseUrl={bountyBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={bountyIndex} baseUrl={bountyBaseUrl} />
       <BeneficiaryItem beneficiary={data.beneficiary} />
       <ValueItem value={data.value} />
       <DescriptionItem description={data.description} />

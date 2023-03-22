@@ -10,8 +10,8 @@ export default function DemocracyProposalProposedContent({
 }) {
   return (
     <>
-      <IndexItem index={proposalIndex} baseUrl={democracyProposalBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={proposalIndex} baseUrl={democracyProposalBaseUrl} />
       <ProposerItem proposer={data.proposer} />
     </>
   );

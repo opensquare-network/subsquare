@@ -12,8 +12,8 @@ export default function TreasuryProposalProposedContent({
 }) {
   return (
     <>
-      <IndexItem index={proposalIndex} baseUrl={treasuryProposalBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={proposalIndex} baseUrl={treasuryProposalBaseUrl} />
       <ValueItem value={data.value} />
       <BeneficiaryItem beneficiary={data.beneficiary} />
       <ProposerItem proposer={data.proposer} />

@@ -10,8 +10,8 @@ export default function DemocracyReferendumExecutedContent({
 }) {
   return (
     <>
-      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
       <ItemWrapper>
         <span>Success:</span>
         <span>{data?.isOk ? "Yes" : "No"}</span>

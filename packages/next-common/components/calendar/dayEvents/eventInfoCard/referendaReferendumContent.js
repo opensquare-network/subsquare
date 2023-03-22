@@ -14,8 +14,8 @@ import ValueItem from "./infoItem/valueItem";
 export default function referendaReferendumContent({ index, data }) {
   return (
     <>
-      <IndexItem index={index} baseUrl={referendaReferendumBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={index} baseUrl={referendaReferendumBaseUrl} />
       <ProposerItem proposer={data.proposer} />
       <TrackItem
         track={data?.track}

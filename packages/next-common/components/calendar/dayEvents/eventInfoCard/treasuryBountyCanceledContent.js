@@ -7,8 +7,8 @@ import TitleItem from "./infoItem/titleItem";
 export default function TreasuryBountyCanceledContent({ bountyIndex, data }) {
   return (
     <>
-      <IndexItem index={bountyIndex} baseUrl={bountyBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={bountyIndex} baseUrl={bountyBaseUrl} />
       <DescriptionItem description={data.description} />
     </>
   );

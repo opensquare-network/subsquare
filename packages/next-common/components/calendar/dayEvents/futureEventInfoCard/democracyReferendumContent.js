@@ -9,9 +9,9 @@ export default function DemocracyReferendumContent({ event }) {
   const title = useReferendumTitle(event?.index);
   return (
     <>
+      <TitleItem title={title} />
       <IndexItem index={event?.index} baseUrl={democracyReferendumBaseUrl} />
       <BlockHeightItem blockHeight={event?.indexer.blockHeight} />
-      <TitleItem title={title} />
     </>
   );
 }

@@ -11,8 +11,8 @@ export default function DemocracyReferendumStartedContent({
 }) {
   return (
     <>
-      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
       <ProposerItem proposer={data.proposer} />
       <ItemWrapper>
         <span>Threshold:</span>

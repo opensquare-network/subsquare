@@ -6,8 +6,8 @@ import TitleItem from "./infoItem/titleItem";
 export default function treasuryProposalAwardedContent({ proposalIndex, data }) {
   return (
     <>
-      <IndexItem index={proposalIndex} baseUrl={treasuryProposalBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={proposalIndex} baseUrl={treasuryProposalBaseUrl} />
     </>
   );
 }

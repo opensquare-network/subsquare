@@ -9,12 +9,12 @@ export default function CouncilMotionContent({ event }) {
   const title = useCouncilMotionTitle(event?.index);
   return (
     <>
+      <TitleItem title={title} />
       <MotionIndexItem
         motionHash={event?.index}
         baseUrl={councilMotionBaseUrl}
       />
       <BlockHeightItem blockHeight={event?.indexer.blockHeight} />
-      <TitleItem title={title} />
     </>
   );
 }

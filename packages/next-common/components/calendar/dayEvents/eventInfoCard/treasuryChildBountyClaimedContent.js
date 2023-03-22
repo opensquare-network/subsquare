@@ -15,13 +15,13 @@ export default function TreasuryChildBountyClaimedContent({
 }) {
   return (
     <>
+      <TitleItem title={data?.postTitle} />
       <IndexItem index={childBountyIndex} baseUrl={childBountyBaseUrl} />
       <IndexItem
         index={data.parentBountyIndex}
         itemName="Parent bounty index"
         baseUrl={bountyBaseUrl}
       />
-      <TitleItem title={data?.postTitle} />
       <BeneficiaryItem beneficiary={data.beneficiary} />
       <PayoutItem payout={data.payout} />
       <DescriptionItem description={data.description} />

@@ -8,8 +8,8 @@ import TitleItem from "./infoItem/titleItem";
 export default function TreasuryBountyRejectedContent({ bountyIndex, data }) {
   return (
     <>
-      <IndexItem index={bountyIndex} baseUrl={bountyBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={bountyIndex} baseUrl={bountyBaseUrl} />
       <ProposerItem proposer={data.proposer} />
       <DescriptionItem description={data.description} />
     </>

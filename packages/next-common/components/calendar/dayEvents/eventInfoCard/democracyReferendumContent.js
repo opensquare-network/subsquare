@@ -6,8 +6,8 @@ import TitleItem from "./infoItem/titleItem";
 export default function DemocracyReferendumContent({ referendumIndex, data }) {
   return (
     <>
-      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
     </>
   );
 }

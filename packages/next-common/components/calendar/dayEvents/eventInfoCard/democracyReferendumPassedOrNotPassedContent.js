@@ -13,8 +13,8 @@ export default function DemocracyReferendumPassedOrNotPassedContent({
 }) {
   return (
     <>
-      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={referendumIndex} baseUrl={democracyReferendumBaseUrl} />
       <AyesItem ayes={data?.tally?.ayes} />
       <NaysItem nays={data?.tally?.nays} />
       <TurnoutItem turnout={data?.tally?.turnout} />

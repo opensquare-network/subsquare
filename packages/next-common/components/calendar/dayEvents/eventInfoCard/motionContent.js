@@ -8,8 +8,8 @@ import TitleItem from "./infoItem/titleItem";
 export default function MotionContent({ motionHash, data, baseUrl }) {
   return (
     <>
-      <MotionIndexItem motionHash={motionHash} data={data} baseUrl={baseUrl} />
       <TitleItem title={data?.postTitle} />
+      <MotionIndexItem motionHash={motionHash} data={data} baseUrl={baseUrl} />
       <ProposerItem proposer={data?.motion?.proposer} />
       <ItemWrapper>
         <span>Threshold:</span>
