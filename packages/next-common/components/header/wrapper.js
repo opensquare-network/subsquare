@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import styled from "styled-components";
-import useWindowSize from "../../utils/hooks/useWindowSize";
-import { useChainSettings } from "../../context/chain";
+import { bg_theme } from "../../styles/tailwindcss";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -15,29 +14,17 @@ const Wrapper = styled.header`
   left: 0;
   right: 0;
   z-index: 100;
-  background: ${(props) =>
-    props?.theme.isDark
-      ? props.theme.neutral
-      : props?.background || props.theme.neutral};
   box-shadow: ${(props) => props.theme.shadow100};
   height: 64px;
   border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+  ${bg_theme("neutral")};
+  ${(p) => p.theme.isDark && bg_theme("neutralBg")};
 `;
 
 function HeaderWrapper({ children }) {
-  const setting = useChainSettings();
   let ChainWrapper = Wrapper;
 
-  const { width } = useWindowSize();
-  if (parseInt(width) <= 768) {
-    return <ChainWrapper>{children}</ChainWrapper>;
-  }
-
-  return (
-    <ChainWrapper background={setting.headerBackgroundColor}>
-      {children}
-    </ChainWrapper>
-  );
+  return <ChainWrapper>{children}</ChainWrapper>;
 }
 
 export default memo(HeaderWrapper);

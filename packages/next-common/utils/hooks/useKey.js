@@ -1,14 +1,15 @@
 import { useEventListener } from "./useEventListener";
 
-export function useKey(key, handler, target, opts) {
+export function useKey(key, handler, target, opts, ...deps) {
   useEventListener(
     "keydown",
     (event) => {
       if (event.key === key) {
-        handler();
+        handler(event);
       }
     },
     target,
     opts,
+    ...deps,
   );
 }
