@@ -28,7 +28,6 @@ const altair = {
   ss58Format: 136,
   snsCoverCid: "bafybeidmyuzahzhhsxk5yeofehqj3y2yhj5wn5n4xqblx3j4kczytvnvs4",
   endpoints: nodes,
-  loginButtonPrimary: true,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,

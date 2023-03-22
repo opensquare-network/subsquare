@@ -24,7 +24,6 @@ const litmus = {
   ss58Format: 131,
   snsCoverCid: "bafybeiexfrkdte6eruqghlc66xpnfoyadkgq5we3ql5elqjwgdzbxmez6q",
   endpoints: DEFAULT_LITMUS_NODES,
-  loginButtonPrimary: true,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,

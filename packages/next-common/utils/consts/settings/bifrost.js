@@ -30,7 +30,6 @@ const bifrost = {
   ss58Format: 6,
   snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
   endpoints: DEFAULT_BIFROST_NODES,
-  loginButtonPrimary: true,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,

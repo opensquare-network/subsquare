@@ -24,7 +24,6 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
-  loginButtonPrimary: true,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,

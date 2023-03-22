@@ -29,7 +29,6 @@ const zeitgeist = {
   ss58Format: 73,
   blockTime: 12000,
   snsCoverCid: "bafybeifwpcjcbym2df3zuh63p4nowvh53d6hgludiwvlsnusxckyke5sri",
-  loginButtonPrimary: true,
   endpoints: defaultNodes,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
