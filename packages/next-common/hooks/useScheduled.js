@@ -92,6 +92,7 @@ function createDispatches(bestNumber, blockTime, dispatches) {
 
 function createReferendums(bestNumber, blockTime, referendums) {
   return referendums.reduce((result, { index, status }) => {
+    console.log({ index, status });
     const enactBlocks = status.end.add(status.delay).isub(bestNumber);
     const voteBlocks = status.end.sub(bestNumber).isub(BN_ONE);
 
@@ -281,10 +282,28 @@ function useReferendums(api) {
   const [data, setData] = useState();
 
   useEffect(() => {
-    if (["kintsugi", "interlay"].includes(chain)) {
+    if (!api) {
       return;
     }
-    if (!api) {
+
+    if (["kintsugi", "interlay"].includes(chain)) {
+      api.query.democracy.referendumInfoOf.entries().then((referendums) => {
+        const ongoingReferendums = referendums.filter(
+          (item) => item[1].value.isOngoing,
+        );
+        const data = ongoingReferendums.map(
+          ([
+            {
+              args: [id],
+            },
+            status,
+          ]) => ({
+            index: id,
+            status: status.value.asOngoing,
+          }),
+        );
+        setData(data);
+      });
       return;
     }
 
