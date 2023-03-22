@@ -12,7 +12,7 @@ export default function BeneficiaryItem({ beneficiary }) {
         add={beneficiary}
         fontSize={12}
         showAvatar={false}
-        color={theme.secondaryBlue500}
+        color={theme.secondarySapphire500}
       />
     </ItemWrapper>
   );
