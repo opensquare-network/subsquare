@@ -1,5 +1,5 @@
 import Logo from "../../../assets/header-logos/bifrost-kusama.svg";
-import DarkModeLogo from "../../../assets/header-logos/bifrost-dark.svg";
+import DarkModeLogo from "../../../assets/header-logos/bifrost-kusama-dark.svg";
 import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
