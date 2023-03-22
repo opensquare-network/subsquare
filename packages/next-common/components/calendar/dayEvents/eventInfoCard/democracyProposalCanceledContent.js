@@ -6,8 +6,8 @@ import TitleItem from "./infoItem/titleItem";
 export default function DemocracyProposalCanceledContent({ proposalIndex, data }) {
   return (
     <>
-      <IndexItem index={proposalIndex} baseUrl={democracyProposalBaseUrl} />
       <TitleItem title={data?.postTitle} />
+      <IndexItem index={proposalIndex} baseUrl={democracyProposalBaseUrl} />
     </>
   );
 }
