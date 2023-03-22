@@ -9,6 +9,9 @@ import ChainLogo from "next-common/components/header/left/chainLogo";
 import ChainIcon from "next-common/components/header/chainIcon";
 import MenuLine from "../../assets/imgs/icons/menu-line.svg";
 import { useChain } from "../../context/chain";
+import SearchInput from "./searchInput";
+import { hidden, m_l, m_r, w_full } from "../../styles/tailwindcss";
+import { breakpoint } from "../../utils/responsive";
 
 const FlexWrapper = styled(Flex)`
   max-width: 1184px;
@@ -21,6 +24,14 @@ const Left = styled(Flex)`
     flex-grow: 1;
     justify-content: space-between;
   }
+`;
+
+const HeaderSearchInputWrapper = styled.div`
+  ${w_full};
+  ${m_r(12)};
+  ${m_l(35)};
+
+  ${breakpoint(1005, hidden)};
 `;
 
 const MenuButton = styled(Flex)`
@@ -87,6 +98,11 @@ export default function Header({ left }) {
               <ChainIcon chain={chain} />
             </NodeButton>
           </Left>
+
+          <HeaderSearchInputWrapper>
+            <SearchInput />
+          </HeaderSearchInputWrapper>
+
           <HeaderRight />
         </FlexWrapper>
       </div>
