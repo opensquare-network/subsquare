@@ -46,7 +46,7 @@ const TitleTime = styled.div`
 const Tooltip = styled(TooltipOrigin)``;
 
 function getTitle(event, title) {
-  const timeText = dayjs(event?.indexer?.blockTime).format("hh:mm");
+  const timeText = dayjs(event?.indexer?.blockTime).format("HH:mm");
 
   return (
     <span>
