@@ -162,7 +162,9 @@ function Input(
         <InputWrapper
           ref={(el) => {
             inputRef.current = el;
-            ref.current = el;
+            if (ref) {
+              ref.current = el;
+            }
           }}
           {...props}
           type={
