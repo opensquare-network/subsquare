@@ -29,7 +29,7 @@ const Left = styled(Flex)`
 const HeaderSearchInputWrapper = styled.div`
   ${w_full};
   ${m_r(12)};
-  ${m_l(35)};
+  ${m_l(32)};
 
   ${breakpoint(1005, hidden)};
 `;
