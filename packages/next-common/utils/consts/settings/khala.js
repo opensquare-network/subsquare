@@ -30,7 +30,6 @@ const khala = {
   snsCoverCid: "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4",
   endpoints: DEFAULT_KHALA_NODES,
   loginButtonPrimary: true,
-  headerBackgroundColor: "#000000",
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,

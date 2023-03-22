@@ -1,4 +1,5 @@
 import Logo from "../../../assets/header-logos/zeitgeist.svg";
+import DarkModeLogo from "../../../assets/header-logos/zeitgeist-dark.svg";
 import Avatar from "../../../assets/icons/chain/zeitgeist.png";
 import DarkAvatar from "../../../assets/icons/chain/zeitgeist-dark.png";
 
@@ -30,9 +31,8 @@ const zeitgeist = {
   snsCoverCid: "bafybeifwpcjcbym2df3zuh63p4nowvh53d6hgludiwvlsnusxckyke5sri",
   loginButtonPrimary: true,
   endpoints: defaultNodes,
-  headerBackgroundColor: "#000000",
   headerLogo: Logo,
-  darkHeaderLogo: Logo,
+  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
