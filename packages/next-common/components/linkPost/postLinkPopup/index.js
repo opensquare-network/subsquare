@@ -84,7 +84,7 @@ export default function PostLinkPopup({ setShow = noop }) {
             addToast({
               type: "error",
               message: error.message,
-            })
+            }),
           );
           return;
         }
@@ -106,7 +106,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         addToast({
           type: "error",
           message: "Please select a post",
-        })
+        }),
       );
       return;
     }
@@ -117,7 +117,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         `${toApiType(postType)}/${post?._id}/bind`,
         {
           discussionId: selectedDiscussion._id,
-        }
+        },
       );
 
       if (error) {
@@ -125,7 +125,7 @@ export default function PostLinkPopup({ setShow = noop }) {
           addToast({
             type: "error",
             message: error.message,
-          })
+          }),
         );
         return;
       }
@@ -134,7 +134,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         addToast({
           type: "success",
           message: "Post linked",
-        })
+        }),
       );
       setShow(false);
 
@@ -153,7 +153,7 @@ export default function PostLinkPopup({ setShow = noop }) {
 
   useEffect(() => {
     const item = (myDiscussions || []).find(
-      (item) => getDiscussionUrl(item) === postUrl
+      (item) => getDiscussionUrl(item) === postUrl,
     );
     setSelectedDiscussion(item);
   }, [postUrl]);
@@ -197,7 +197,7 @@ export default function PostLinkPopup({ setShow = noop }) {
       <ButtonWrapper>
         <SecondaryButton
           isLoading={isLoading}
-          disabled={isLoadingList}
+          disabled={isLoadingList || !selectedDiscussion}
           onClick={bindDiscussion}
         >
           Confirm
