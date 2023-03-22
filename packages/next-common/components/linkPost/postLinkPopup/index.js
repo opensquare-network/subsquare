@@ -197,7 +197,7 @@ export default function PostLinkPopup({ setShow = noop }) {
       <ButtonWrapper>
         <SecondaryButton
           isLoading={isLoading}
-          disabled={isLoadingList}
+          disabled={isLoadingList || !selectedDiscussion}
           onClick={bindDiscussion}
         >
           Confirm
