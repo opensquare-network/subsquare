@@ -1,15 +1,30 @@
 import React from "react";
 import Link from "next/link";
-import useWindowSize from "../../../utils/hooks/useWindowSize";
 import SubSquare from "../../../assets/header-logos/subsquare.svg";
 import SubSquareMobile from "../../../assets/header-logos/subsquare-mobile.svg";
 import SubSquareDark from "../../../assets/header-logos/subsquare-dark.svg";
 import SubSquareMobileDark from "../../../assets/header-logos/subsquare-mobile-dark.svg";
-import { withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 import { useChainSettings } from "../../../context/chain";
 import { useRouter } from "next/router";
+import { flex, hidden } from "../../../styles/tailwindcss";
+import { smcss } from "../../../utils/responsive";
 
 const gov2Paths = ["/referenda", "/fellowship"];
+
+const Wrapper = styled.div`
+  ${flex};
+`;
+
+const Desktop = styled.div`
+  ${flex};
+  ${smcss(hidden)};
+`;
+
+const Mobile = styled.div`
+  ${hidden};
+  ${smcss(flex)};
+`;
 
 function useHeaderUrl() {
   const router = useRouter();
@@ -25,33 +40,33 @@ function useHeaderUrl() {
 }
 
 function ChainLogo({ theme }) {
-  const { width } = useWindowSize();
   const chainSetting = useChainSettings();
   const headerUrl = useHeaderUrl();
 
   const Element = chainSetting.headerLogo ?? SubSquare;
   let logo = <Element />;
+  let mobileLogo = <SubSquareMobile />;
+
   if (theme.isDark) {
     const DarkElement = chainSetting.darkHeaderLogo ?? SubSquareDark;
     logo = <DarkElement />;
-  }
-
-  if (width <= 768) {
-    logo = theme.isDark ? <SubSquareMobileDark /> : <SubSquareMobile />;
+    mobileLogo = <SubSquareMobileDark />;
   }
 
   return (
-    <Link href={headerUrl}>
-      <a
-        style={{
-          height: 63,
-          display: "inline-flex",
-          alignItems: "center",
-        }}
-      >
-        {logo}
-      </a>
-    </Link>
+    <Wrapper>
+      <Link href={headerUrl}>
+        <a
+          style={{
+            height: "100%",
+            display: "flex",
+          }}
+        >
+          <Desktop>{logo}</Desktop>
+          <Mobile>{mobileLogo}</Mobile>
+        </a>
+      </Link>
+    </Wrapper>
   );
 }
 
