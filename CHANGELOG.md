@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# 2.9.9
+date: 03/22/2023
+- Support binding a discussion post for proposals.
+- Add a search box to header, google in site search for this release.
+- Improve and normalize various chain header logos.
+
 # 2.9.8
 date: 03/13/2023
 - Add login user profile link to the dropdown menu.

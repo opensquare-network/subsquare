@@ -92,6 +92,7 @@ const DeleteAccount = styled(Flex)`
 `;
 
 const LinkWrapper = styled.a`
+  width: max-content;
   ${(p) =>
     p.color
       ? css`

@@ -11,6 +11,7 @@ import SecondaryButton from "../buttons/secondaryButton";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
+import SearchInput from "./searchInput";
 
 const Wrapper = styled.div`
   padding: 32px 0 0;
@@ -91,6 +92,8 @@ export default function SidebarAccount() {
 
   return (
     <Wrapper>
+      <SearchInput shortcut={false} inputType="search" />
+
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />
       {node?.hideHeight ? null : <Title>NODE</Title>}

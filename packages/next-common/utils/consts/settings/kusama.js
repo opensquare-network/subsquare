@@ -44,7 +44,6 @@ const kusama = {
   snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
   endpoints: DEFAULT_KUSAMA_NODES,
   loginButtonPrimary: true,
-  headerBackgroundColor: "#000000",
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
