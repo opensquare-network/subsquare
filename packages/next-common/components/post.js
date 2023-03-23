@@ -28,6 +28,7 @@ import ValueDisplay from "./valueDisplay";
 import ListPostTitle from "./postList/postTitle";
 import IpfsLink from "./alliance/ipfsLink";
 import PostLabels from "./postLabels";
+import { useScreenSize } from "../utils/hooks/useScreenSize";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -200,6 +201,8 @@ export default function Post({ data, href, type }) {
     }
   }
 
+  const { sm } = useScreenSize();
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -228,6 +231,8 @@ export default function Post({ data, href, type }) {
               add={data.address}
               fontSize={12}
               noEvent={userNoClickEvent}
+              // text max width = design width - address icon - margin - identity icon
+              maxWidth={sm && 211 - 20 - 8 - 16}
             />
 
             {data.trackName && (

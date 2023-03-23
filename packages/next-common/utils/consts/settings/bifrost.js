@@ -1,5 +1,5 @@
 import Logo from "../../../assets/header-logos/bifrost-kusama.svg";
-import DarkModeLogo from "../../../assets/header-logos/bifrost-dark.svg";
+import DarkModeLogo from "../../../assets/header-logos/bifrost-kusama-dark.svg";
 import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
@@ -30,7 +30,6 @@ const bifrost = {
   ss58Format: 6,
   snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
   endpoints: DEFAULT_BIFROST_NODES,
-  loginButtonPrimary: true,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,

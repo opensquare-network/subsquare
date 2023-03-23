@@ -127,8 +127,8 @@ function Input(
     prefix,
     suffix,
     onKeyDown = noop,
-    onFocus,
-    onBlur,
+    onFocus = noop,
+    onBlur = noop,
     ...props
   },
   ref,
@@ -162,7 +162,9 @@ function Input(
         <InputWrapper
           ref={(el) => {
             inputRef.current = el;
-            ref.current = el;
+            if (ref) {
+              ref.current = el;
+            }
           }}
           {...props}
           type={
