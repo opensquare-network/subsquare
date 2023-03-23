@@ -63,7 +63,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "Referenda " + parseGov2TrackName(track.name),
+      title: "Fellowship " + parseGov2TrackName(track.name),
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},
