@@ -4,6 +4,7 @@ import startCase from "lodash.startcase";
 import useApi from "../utils/hooks/useApi";
 import useCall from "../utils/hooks/useCall";
 import { useBlockTime } from "../utils/hooks";
+import Chains from "../utils/consts/chains";
 import { useLeaseRangeMax } from "./useLeaseRanges";
 import { useChain } from "../context/chain";
 
@@ -286,7 +287,11 @@ function useReferendums(api) {
       return;
     }
 
-    if (["kintsugi", "interlay"].includes(chain)) {
+    if ([Chains.collectives, Chains["westend-collectives"]].includes(chain)) {
+      return;
+    }
+
+    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
       api.query.democracy.referendumInfoOf.entries().then((referendums) => {
         const ongoingReferendums = referendums.filter(
           (item) => item[1].value.isOngoing,
