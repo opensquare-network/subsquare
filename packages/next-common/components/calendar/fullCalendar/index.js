@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useMemo } from "react";
+import React from "react";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import styled from "styled-components";
 import { shadow_100 } from "../../../styles/componentCss";
@@ -93,29 +93,27 @@ export default function FullCalendar({
   }
 
   /** @type {import("react-big-calendar").Components} */
-  const components = useMemo(() => {
-    return {
-      toolbar(props) {
+  const components ={
+    toolbar(props) {
+      return (
+        <FullCalendarToolbar {...props} setSelectedDate={setSelectedDate} />
+      );
+    },
+    month: {
+      header: FullCalendarMonthHeader,
+      dateHeader(props) {
         return (
-          <FullCalendarToolbar {...props} setSelectedDate={setSelectedDate} />
+          <FullCalendarMonthDateCell
+            {...props}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            calendarEvents={calendarEvents}
+            futureEvents={futureEvents}
+          />
         );
       },
-      month: {
-        header: FullCalendarMonthHeader,
-        dateHeader(props) {
-          return (
-            <FullCalendarMonthDateCell
-              {...props}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              calendarEvents={calendarEvents}
-              futureEvents={futureEvents}
-            />
-          );
-        },
-      },
-    };
-  }, []);
+    },
+  };
 
   return (
     <Wrapper>
