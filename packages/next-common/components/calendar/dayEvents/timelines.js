@@ -80,7 +80,7 @@ export default function DayEventTimelines({
   const hrs = Array.from({ length: 25 }).map((_, i) => i);
 
   const eventInHourKey = "eventInHourKey";
-  const eventInHourGrpup = groupBy(
+  const eventInHourGroup = groupBy(
     events.map((event) => {
       return {
         ...event,
@@ -90,7 +90,7 @@ export default function DayEventTimelines({
     eventInHourKey,
   );
 
-  const futureEventInHourGrpup = groupBy(
+  const futureEventInHourGroup = groupBy(
     futureEvents.map((event) => {
       return {
         ...event,
@@ -120,10 +120,10 @@ export default function DayEventTimelines({
     <div>
       {hrs.map((n) => (
         <Timeline key={n} hour={n}>
-          {eventInHourGrpup[n]?.map((event) => {
+          {eventInHourGroup[n]?.map((event) => {
             return <EventInfoCard key={event._id} event={event} />;
           })}
-          {futureEventInHourGrpup[n]?.map((event, index) => {
+          {futureEventInHourGroup[n]?.map((event, index) => {
             return <FutureEventInfoCard key={index} event={event} />;
           })}
         </Timeline>
