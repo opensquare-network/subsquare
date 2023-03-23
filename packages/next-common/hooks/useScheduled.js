@@ -287,10 +287,6 @@ function useReferendums(api) {
       return;
     }
 
-    if ([Chains.collectives, Chains["westend-collectives"]].includes(chain)) {
-      return;
-    }
-
     if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
       api.query.democracy.referendumInfoOf.entries().then((referendums) => {
         const ongoingReferendums = referendums.filter(
@@ -312,8 +308,7 @@ function useReferendums(api) {
       return;
     }
 
-    api.derive.democracy
-      .referendums()
+    api.derive.democracy?.referendums()
       .then((referendums) => setData(referendums));
   }, [api, chain]);
 
