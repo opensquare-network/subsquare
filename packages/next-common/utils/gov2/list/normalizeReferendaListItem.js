@@ -1,5 +1,6 @@
 import { getGov2ReferendumTitle } from "../title";
 import { getPostLastActivityAt } from "../../viewfuncs/postUpdatedTime";
+import { referendaReferendumBaseUrl } from "../../postBaseUrl";
 
 export default function normalizeGov2ReferendaListItem(item, tracks = []) {
   const track = tracks.find(
@@ -13,7 +14,7 @@ export default function normalizeGov2ReferendaListItem(item, tracks = []) {
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
     address: item.proposer,
-    detailLink: `/referenda/referendum/${ item.referendumIndex }`,
+    detailLink: `${referendaReferendumBaseUrl}/${item.referendumIndex}`,
     commentsCount: item.commentsCount,
     trackName: track?.name || item.trackInfo?.name,
   };

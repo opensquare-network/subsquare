@@ -26,7 +26,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
     setIsLoading(true);
     try {
       const { error } = await nextApi.post(
-        `${toApiType(postType)}/${post?._id}/unbind`
+        `${toApiType(postType)}/${post?._id}/unbind`,
       );
 
       if (error) {
@@ -34,7 +34,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
           addToast({
             type: "error",
             message: error.message,
-          })
+          }),
         );
         return;
       }
@@ -43,7 +43,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
         addToast({
           type: "success",
           message: "Unlinked",
-        })
+        }),
       );
       setShow(false);
 

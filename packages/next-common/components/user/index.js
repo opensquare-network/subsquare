@@ -22,7 +22,14 @@ const Wrapper = styled(Flex)`
 
   a,
   div {
-    color: ${(props) => props.theme.textPrimary};
+    ${(p) =>
+      p.color
+        ? css`
+            color: ${p.color};
+          `
+        : css`
+            color: ${(props) => props.theme.textPrimary};
+          `}
   }
 
   ${(p) =>
@@ -78,7 +85,8 @@ const DeleteAccount = styled(Flex)`
     circle:last-child {
       fill: ${(props) => props.theme.grey300Border};
     }
-    circle:first-child {fill: ${(props) => props.theme.grey100Bg}}
+    circle:first-child {
+      fill: ${(props) => props.theme.grey100Bg};
     }
   }
 `;
@@ -165,7 +173,7 @@ function User({
   );
 
   return (
-    <Wrapper noEvent={noEvent}>
+    <Wrapper noEvent={noEvent} color={color}>
       {showAvatar && (
         <AvatarWrapper>
           {address ? (

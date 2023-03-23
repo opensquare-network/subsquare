@@ -80,7 +80,10 @@ export function useMenuHasTechComm() {
   return !techComm.excludeToChains.includes(chain);
 }
 
+/**
+ * @alias useHasGov2
+ */
 export function useMenuHasGov2() {
   const chain = useChain();
-  return [Chains.kusama].includes(chain);
+  return [Chains.kusama, Chains.development].includes(chain);
 }

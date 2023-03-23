@@ -1,4 +1,5 @@
 import { getTitle } from "../../post";
+import { democracyProposalBaseUrl } from "../../postBaseUrl";
 import { getPostLastActivityAt } from "../postUpdatedTime";
 
 export default function normalizeProposalListItem(chain, item) {
@@ -9,6 +10,6 @@ export default function normalizeProposalListItem(chain, item) {
     index: item.proposalIndex,
     status: item.state ?? "Unknown",
     time: getPostLastActivityAt(item),
-    detailLink: `/democracy/proposal/${item.proposalIndex}`,
+    detailLink: `${democracyProposalBaseUrl}/${item.proposalIndex}`,
   };
 }

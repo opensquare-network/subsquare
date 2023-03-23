@@ -1,6 +1,7 @@
 import React from "react";
 import Chains from "../chains";
 import OverviewIcon from "../../../assets/imgs/icons/overview.svg";
+import CalendarIcon from "../../../assets/imgs/icons/calendar.svg";
 import DiscussionIcon from "../../../assets/imgs/icons/discussions.svg";
 import PolkassemblyIcon from "../../../assets/imgs/icons/polkassembly.svg";
 import ReferendaIcon from "../../../assets/imgs/icons/type-referenda.svg";
@@ -46,6 +47,17 @@ const commonMenus = {
 if ([Chains.polkadot, Chains.kusama].includes(process.env.NEXT_PUBLIC_CHAIN)) {
   commonMenus.items.push(polkassemblyMenu);
 }
+
+commonMenus.items.push({
+  value: "calendar",
+  name: "Calendar",
+  pathname: "/calendar",
+  icon: (
+    <MenuIconWrapper>
+      <CalendarIcon />
+    </MenuIconWrapper>
+  ),
+});
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 if (space) {

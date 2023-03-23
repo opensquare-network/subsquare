@@ -26,6 +26,8 @@ const dark = {
   secondaryAzure500: light.secondaryAzure500,
   secondarySapphire100: light.secondarySapphire100,
   secondarySapphire500: light.secondarySapphire500,
+  secondaryGray100: light.secondaryGray100,
+  secondaryGray500: light.secondaryGray500,
   neutral: "#212433",
   grey100Bg: "#1D1E2C",
   grey200Border: "#272A3A",

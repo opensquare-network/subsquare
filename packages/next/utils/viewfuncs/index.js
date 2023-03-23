@@ -2,6 +2,10 @@ import flatten from "lodash.flatten";
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
+import {
+  advisoryCommitteeBaseUrl,
+  childBountyBaseUrl,
+} from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 
 export const convertPolkassemblyReactionV2 = (chain, paReactions) =>
@@ -82,7 +86,7 @@ export const toAdvisoryMotionsListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
-  detailLink: `/advisory-committee/motion/${getMotionId(item)}`,
+  detailLink: `${advisoryCommitteeBaseUrl}/${getMotionId(item)}`,
   time: getPostLastActivityAt(item),
 });
 
@@ -94,6 +98,6 @@ export const toTreasuryChildBountyListItem = (chain, item) => ({
   status: item.state ?? "Unknown",
   time: getPostLastActivityAt(item),
   value: item.onchainData.value,
-  detailLink: `/treasury/child-bounty/${item.index}`,
+  detailLink: `${childBountyBaseUrl}/${item.index}`,
   parentIndex: item.parentBountyId,
 });

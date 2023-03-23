@@ -65,13 +65,13 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
 
       if (thumbUp) {
         ({ result, error } = await nextApi.delete(
-          `${toApiType(type)}/${post._id}/reaction`
+          `${toApiType(type)}/${post._id}/reaction`,
         ));
       } else {
         ({ result, error } = await nextApi.put(
           `${toApiType(type)}/${post._id}/reaction`,
           { reaction: 1 },
-          { credentials: "include" }
+          { credentials: "include" },
         ));
       }
 

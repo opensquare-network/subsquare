@@ -26,10 +26,64 @@ const Democracy = styled(Common)`
   color: ${(props) => props.theme.secondaryPink500};
 `;
 
+const OpenGov = styled(Common)`
+  background: ${(props) => props.theme.secondaryBlue100};
+  color: ${(props) => props.theme.secondaryBlue500};
+`;
+
+const Collectives = styled(Common)`
+  background: ${(props) => props.theme.secondaryGreen100};
+  color: ${(props) => props.theme.secondaryGreen500};
+`;
+
+const Staking = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
+const Scheduler = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
+const Society = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
+const Parachain = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
 export function TreasuryTag() {
   return <Treasury>Treasury</Treasury>;
 }
 
 export function DemocracyTag() {
   return <Democracy>Democracy</Democracy>;
+}
+
+export function OpenGovTag() {
+  return <OpenGov>OpenGov</OpenGov>;
+}
+
+export function CollectivesTag() {
+  return <Collectives>Collectives</Collectives>;
+}
+
+export function StakingTag() {
+  return <Staking>Staking</Staking>;
+}
+
+export function SchedulerTag() {
+  return <Scheduler>Scheduler</Scheduler>;
+}
+
+export function SocietyTag() {
+  return <Society>Society</Society>;
+}
+
+export function ParachainTag() {
+  return <Parachain>Parachain</Parachain>;
 }

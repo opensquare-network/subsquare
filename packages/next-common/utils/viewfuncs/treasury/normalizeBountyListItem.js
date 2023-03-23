@@ -1,5 +1,6 @@
 import { getPostLastActivityAt } from "../postUpdatedTime";
 import { getTitle } from "../../post";
+import { bountyBaseUrl } from "../../postBaseUrl";
 
 export default function normalizeBountyListItem(chain, item) {
   return {
@@ -9,7 +10,7 @@ export default function normalizeBountyListItem(chain, item) {
     address: item.proposer,
     status: item.state ?? "Unknown",
     time: getPostLastActivityAt(item),
-    detailLink: `/treasury/bounty/${ item.bountyIndex }`,
+    detailLink: `${bountyBaseUrl}/${item.bountyIndex}`,
     value: item.onchainData?.value,
   };
 }

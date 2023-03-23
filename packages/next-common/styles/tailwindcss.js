@@ -23,6 +23,11 @@ export function text_theme(key) {
     color: ${theme(key)};
   `;
 }
+export function border_color_theme(key) {
+  return css`
+    border-color: ${theme(key)};
+  `;
+}
 export function m(n) {
   return `
     margin: ${px(n)};
@@ -146,6 +151,9 @@ export function h(n) {
   return `
     height: ${px(n)};
   `;
+}
+export function max_h(n) {
+  return "max-" + h(n).trim();
 }
 export function grid_cols(repeat, min = 0) {
   return `
@@ -293,6 +301,9 @@ export const rounded_none = make_rounded(0);
 export const border_theme_grey200 = css`
   border-color: ${theme("grey200Border")};
 `;
+export const border_theme_grey400 = css`
+  border-color: ${theme("grey400Border")};
+`;
 
 // border style
 export const border_hidden = `
@@ -377,10 +388,22 @@ export const text_primary_inverse = text_theme("textPrimaryInverse");
 export const text_secondary = text_theme("textSecondary");
 export const text_tertiary = text_theme("textTertiary");
 export const text_quaternary = text_theme("textQuaternary");
+export const text_placeholder = text_theme("textPlaceholder");
 
 // text transform
 export const text_capitalize = `
   text-transform: capitalize;
+`;
+export const text_uppercase = `
+  text-transform: uppercase;
+`;
+
+// text decoration
+export const underline = `
+  text-decoration-line: underline;
+`;
+export const no_underline = `
+  text-decoration-line: none;
 `;
 
 // interactivity
@@ -389,6 +412,9 @@ export const text_capitalize = `
 // cursor
 export const cursor_pointer = `
   cursor: pointer;
+`;
+export const cursor_default = `
+  cursor: default;
 `;
 
 // backgrounds
