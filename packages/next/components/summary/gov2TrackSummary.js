@@ -83,6 +83,8 @@ export default function Gov2TrackSummary({
   summary,
   period,
   noDelegation = false,
+  title = null,
+  titleExtra = null,
 }) {
   const {
     origin,
@@ -94,6 +96,9 @@ export default function Gov2TrackSummary({
     id,
     decisionDeposit,
   } = period ?? {};
+
+  title = title ?? `Origin: ${origin}`;
+  titleExtra = titleExtra ?? `${id}`;
 
   const {
     labels: chartLabels,
@@ -127,8 +132,8 @@ export default function Gov2TrackSummary({
 
   return (
     <Summary
-      title={`Origin: ${origin}`}
-      titleExtra={`#${id}`}
+      title={title}
+      titleExtra={titleExtra}
       description={description}
       footer={footer}
     >

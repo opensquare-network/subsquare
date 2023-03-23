@@ -16,7 +16,11 @@ import { to404 } from "next-common/utils/serverSideUtil";
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary, period }) => {
     const summaryComponent = (
-      <Gov2TrackSummary summary={summary} period={period} />
+      <Gov2TrackSummary
+        summary={summary}
+        period={period}
+        titleExtra={`#${period.id}`}
+      />
     );
 
     return (

@@ -15,7 +15,7 @@ function getBreadcrumbItems(track = {}, referendumIndex) {
     },
     {
       path: `/fellowship/track/${track.id}`,
-      content: parseGov2TrackName(track.name),
+      content: `[${track.id}] ` + parseGov2TrackName(track.name),
     },
     {
       content: (

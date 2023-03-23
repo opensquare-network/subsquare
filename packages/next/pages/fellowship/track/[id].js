@@ -16,7 +16,12 @@ import { to404 } from "next-common/utils/serverSideUtil";
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary, period }) => {
     const summaryComponent = (
-      <Gov2TrackSummary summary={summary} period={period} noDelegation={true} />
+      <Gov2TrackSummary
+        summary={summary}
+        period={period}
+        noDelegation={true}
+        titleExtra={`[${period.id}]`}
+      />
     );
 
     return (
@@ -63,7 +68,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "Referenda " + parseGov2TrackName(track.name),
+      title: "Fellowship " + parseGov2TrackName(track.name),
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},
