@@ -127,7 +127,6 @@ export default function FullCalendar({
           onNavigate={onNavigate}
           defaultView="month"
           views={["month"]}
-          events={[]}
         />
       </CalendarWrapper>
       <FullCalendarFooter />
