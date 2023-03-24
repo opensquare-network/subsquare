@@ -3,8 +3,8 @@ import {
   Header,
   Value,
 } from "next-common/components/referenda/tally/styled";
-import ElectorateIcon from "../../../../../public/imgs/icons/electorate.svg";
 import { useTally } from "next-common/context/post/gov2/referendum";
+import ElectorateIcon from "next-common/assets/imgs/icons/electorate.svg";
 
 export default function BareAye() {
   const tally = useTally();
