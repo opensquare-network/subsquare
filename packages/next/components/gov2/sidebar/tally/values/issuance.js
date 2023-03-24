@@ -1,4 +1,4 @@
-import TurnoutIcon from "../../../../../public/imgs/icons/turnout.svg";
+import TurnoutIcon from "next-common/assets/imgs/icons/turnout.svg";
 import SymbolValue from "./symbolValue";
 import { Row, Header } from "next-common/components/referenda/tally/styled";
 

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { votesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
-import AyeIcon from "../../../../../public/imgs/icons/aye.svg";
+import AyeIcon from "next-common/assets/imgs/icons/aye.svg";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import LoadingCount from "./loadingCount";
 import SymbolValue from "./symbolValue";

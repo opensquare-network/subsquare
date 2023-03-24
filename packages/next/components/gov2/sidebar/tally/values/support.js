@@ -1,4 +1,4 @@
-import ElectorateIcon from "../../../../../public/imgs/icons/electorate.svg";
+import ElectorateIcon from "next-common/assets/imgs/icons/electorate.svg";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import SymbolValue from "./symbolValue";
 import {

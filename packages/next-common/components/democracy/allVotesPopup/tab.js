@@ -1,8 +1,8 @@
 import React from "react";
 import Tab from "../../tab";
 import TabTitle from "next-common/components/tabTitle";
-import AyeIcon from "public/imgs/icons/aye.svg";
-import NayIcon from "public/imgs/icons/nay.svg";
+import AyeIcon from "next-common/assets/imgs/icons/aye.svg";
+import NayIcon from "next-common/assets/imgs/icons/nay.svg";
 
 export const tabs = [
   {
