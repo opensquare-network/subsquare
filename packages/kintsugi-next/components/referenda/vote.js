@@ -12,14 +12,9 @@ import {
 } from "utils/referendumUtil";
 import useApi from "next-common/utils/hooks/useApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
-import AyeIcon from "public/imgs/icons/aye.svg";
-import NayIcon from "public/imgs/icons/nay.svg";
-import TurnoutIcon from "public/imgs/icons/turnout.svg";
-import ElectorateIcon from "public/imgs/icons/electorate.svg";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
-import ValueDisplay from "next-common/components/valueDisplay";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -34,7 +29,6 @@ import {
   setIsLoadingReferendumStatus,
   votesSelector,
 } from "next-common/store/reducers/referendumSlice";
-import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
