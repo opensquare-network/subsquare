@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "next-common/*": ["../next-common/*"]
+    }
   },
   "include": ["./"]
 }
