@@ -1,14 +1,15 @@
+import React from "react";
 import styled from "styled-components";
-import { toPrecision } from "next-common/utils";
-import Flex from "next-common/components/styled/flex";
-import AyeIcon from "public/imgs/icons/aye.svg";
-import NayIcon from "public/imgs/icons/nay.svg";
+import { toPrecision } from "../../../utils";
+import Flex from "../../../components/styled/flex";
+import AyeIcon from "../../../assets/imgs/icons/aye.svg";
+import NayIcon from "../../../assets/imgs/icons/nay.svg";
 import TurnoutIcon from "public/imgs/icons/turnout.svg";
 import ElectorateIcon from "public/imgs/icons/electorate.svg";
-import ValueDisplay from "next-common/components/valueDisplay";
-import VotesCount from "next-common/components/democracy/referendum/votesCount";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import { useChainSettings } from "next-common/context/chain";
+import ValueDisplay from "../../../components/valueDisplay";
+import VotesCount from "../../../components/democracy/referendum/votesCount";
+import useWindowSize from "../../../utils/hooks/useWindowSize";
+import { useChainSettings } from "../../../context/chain";
 
 const Row = styled(Flex)`
   height: 44px;
@@ -33,7 +34,7 @@ const BorderedRow = styled(Flex)`
 `;
 
 const Header = styled.span`
-  width: 120px;
+  width: 146px;
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -70,6 +71,11 @@ export default function TallyInfo({
   const nTurnout = toPrecision(tally?.turnout ?? 0, decimals);
   const nElectorate = toPrecision(electorate ?? 0, decimals);
 
+  const nTurnoutPercent = (nTurnout / nElectorate) * 100;
+  const nTurnoutPercentDisplay = (
+    Math.floor(nTurnoutPercent * 100) / 100
+  ).toFixed(2);
+
   return (
     <div>
       <BorderedRow>
@@ -96,6 +102,9 @@ export default function TallyInfo({
         <Header>
           <TurnoutIcon />
           Turnout
+          {!isLoadingVotes && (
+            <VotesCount>{nTurnoutPercentDisplay}%</VotesCount>
+          )}
         </Header>
         <Value>
           <ValueDisplay

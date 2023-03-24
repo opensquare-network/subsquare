@@ -20,7 +20,7 @@ import {
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "./voteBar";
-import TallyInfo from "./tallyInfo";
+import TallyInfo from "next-common/components/referenda/tally/info";
 import { emptyFunction } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import MyVote from "./myVote";

@@ -38,6 +38,7 @@ import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
+import TallyInfo from "next-common/components/referenda/tally/info";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -304,66 +305,14 @@ function Vote({
           <span>{referendumStatus?.threshold}</span>
           <span style={{ width: 40 }}>{nNaysPercent}%</span>
         </Contents>
-        <div>
-          <BorderedRow>
-            <Header>
-              <AyeIcon />
-              Aye
-              {!isLoadingVotes ? (
-                <VotesCount>{allAye.length}</VotesCount>
-              ) : null}
-            </Header>
-            <Value>
-              <ValueDisplay
-                value={nAyes}
-                symbol={symbol}
-                noWrap={width <= 1024}
-              />
-            </Value>
-          </BorderedRow>
-          <BorderedRow>
-            <Header>
-              <NayIcon />
-              Nay
-              {!isLoadingVotes ? (
-                <VotesCount>{allNay.length}</VotesCount>
-              ) : null}
-            </Header>
-            <Value>
-              <ValueDisplay
-                value={nNays}
-                symbol={symbol}
-                noWrap={width <= 1024}
-              />
-            </Value>
-          </BorderedRow>
-          <BorderedRow>
-            <Header>
-              <TurnoutIcon />
-              Turnout
-            </Header>
-            <Value>
-              <ValueDisplay
-                value={nTurnout}
-                symbol={symbol}
-                noWrap={width <= 1024}
-              />
-            </Value>
-          </BorderedRow>
-          <Row>
-            <Header>
-              <ElectorateIcon />
-              Electorate
-            </Header>
-            <Value>
-              <ValueDisplay
-                value={BigNumber.max(nTurnout, nElectorate).toNumber()}
-                symbol={symbol}
-                noWrap={width <= 1024}
-              />
-            </Value>
-          </Row>
-        </div>
+
+        <TallyInfo
+          tally={referendumStatus?.tally}
+          electorate={electorate}
+          isLoadingVotes={isLoadingVotes}
+          allAye={allAye}
+          allNay={allNay}
+        />
 
         {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
         {referendumInfo?.finished?.approved === false && (
