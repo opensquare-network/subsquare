@@ -33,7 +33,7 @@ const BorderedRow = styled(Flex)`
 `;
 
 const Header = styled.span`
-  width: 120px;
+  width: 146px;
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -70,6 +70,11 @@ export default function TallyInfo({
   const nTurnout = toPrecision(tally?.turnout ?? 0, decimals);
   const nElectorate = toPrecision(electorate ?? 0, decimals);
 
+  const nTurnoutPercent = (nTurnout / nElectorate) * 100;
+  const nTurnoutPercentDisplay = (
+    Math.floor(nTurnoutPercent * 100) / 100
+  ).toFixed(2);
+
   return (
     <div>
       <BorderedRow>
@@ -96,6 +101,9 @@ export default function TallyInfo({
         <Header>
           <TurnoutIcon />
           Turnout
+          {!isLoadingVotes && (
+            <VotesCount>{nTurnoutPercentDisplay}%</VotesCount>
+          )}
         </Header>
         <Value>
           <ValueDisplay
