@@ -169,7 +169,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   );
 
   return (
-    <HomeLayout>
+    <HomeLayout tracks={tracks} fellowshipTracks={fellowshipTracks}>
       <Overview
         overviewData={filteredOverviewData}
         summaryData={overview?.summary}
