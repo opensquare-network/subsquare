@@ -7,6 +7,7 @@ import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 const Create = styled.a`
   display: flex;
@@ -20,7 +21,7 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({ posts }) => {
+export default withLoginUserRedux(({ posts, tracks, fellowshipTracks }) => {
   const chain = useChain();
   const items = (posts.items || []).map((item) =>
     normalizeDiscussionListItem(chain, item)
@@ -36,7 +37,11 @@ export default withLoginUserRedux(({ posts }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
+    <HomeLayout
+      seoInfo={seoInfo}
+      tracks={tracks}
+      fellowshipTracks={fellowshipTracks}
+    >
       <PostList
         category={category}
         create={create}
@@ -60,9 +65,16 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
   const { result: posts } = await nextApi.fetch("posts", q);
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       posts: posts ?? EmptyList,
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });
