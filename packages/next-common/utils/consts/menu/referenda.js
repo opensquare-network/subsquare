@@ -36,5 +36,5 @@ export function resolveReferendaMenu(tracks = []) {
     menu.items.push(resolveTrackItem(track));
   }
 
-  return [];
+  return menu;
 }
