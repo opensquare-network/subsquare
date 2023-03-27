@@ -29,7 +29,7 @@ export const allHomeMenuNames = homeMenus.reduce((result, menu) => {
   return result;
 }, []);
 
-export function resolveHomeMenu({ tracks = [], fellowshipTracks = [] }) {
+export function resolveHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
   const homeMenus = [
     commonMenus,
     resolveReferendaMenu(tracks),
