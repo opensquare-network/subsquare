@@ -30,7 +30,7 @@ import {
 import ClosePanelIcon from "../icons/closePanel";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
-import homeMenus from "../../utils/consts/menu";
+import { resolveHomeMenu } from "../../utils/consts/menu";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import { useSelector } from "react-redux";
 import {
@@ -41,8 +41,7 @@ import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
 import { useChain } from "../../context/chain";
-import { useGov2Menu } from "../../utils/hooks/useGov2Menu";
-import { useIsMacOS } from "../../context/page";
+import { useIsMacOS, usePageProps } from "../../context/page";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -140,11 +139,15 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const cmdkTriggerVisible = useSelector(cmdkTriggerVisibleSelector);
-  const gov2Menu = useGov2Menu();
   const { isDark } = useTheme();
   const isMacOS = useIsMacOS();
+  const { tracks, fellowshipTracks } = usePageProps();
+  const { homeMenus } = resolveHomeMenu({
+    tracks,
+    fellowshipTracks,
+  });
 
-  const foldedMenu = [...gov2Menu, ...homeMenus]
+  const foldedMenu = homeMenus
     .filter((menu) => menu.name && menu.items?.length)
     .filter(filterExcludeChains)
     .map((menu) => {
