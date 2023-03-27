@@ -6,26 +6,8 @@ import techComm from "./tc";
 import financialCouncil from "./financilCouncil";
 import advisoryCommittee from "./advisoryCouncil";
 import alliance from "./alliance";
-import { getReferendaMenu, name as referendaMenuName } from "./referenda";
-import { getFellowshipMenu, name as fellowshipMenuName } from "./fellowship";
-
-export const allHomeMenuNames = [
-  commonMenus,
-  democracy,
-  treasury,
-  council,
-  techComm,
-  financialCouncil,
-  advisoryCommittee,
-  alliance,
-  { name: referendaMenuName },
-  { name: fellowshipMenuName },
-].reduce((result, menu) => {
-  if (menu.name) {
-    return [...result, menu.name];
-  }
-  return result;
-}, []);
+import { getReferendaMenu } from "./referenda";
+import { getFellowshipMenu } from "./fellowship";
 
 export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
   const homeMenus = [
@@ -41,13 +23,7 @@ export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
     alliance,
   ];
 
-  const allHomeMenuNames = homeMenus.reduce((result, item) => {
-    if (item.name) {
-      return [...result, item.name];
-    }
-
-    return result;
-  }, []);
+  const allHomeMenuNames = homeMenus.map((menu) => menu.name).filter(Boolean);
 
   return {
     homeMenus,
