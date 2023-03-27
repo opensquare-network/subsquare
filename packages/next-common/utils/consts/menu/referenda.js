@@ -10,6 +10,7 @@ export function resolveReferendaMenu(tracks = []) {
   const menu = {
     name: "REFERENDA",
     excludeToChains: getExcludeChains([Chains.development, Chains.kusama]),
+    activeCount: totalActiveCount,
     items: [
       {
         value: "all",
