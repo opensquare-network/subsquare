@@ -1,7 +1,7 @@
 import React from "react";
 import BaseLayout from "./baseLayout";
 import Menu from "../menu";
-import { resolveHomeMenu } from "../../utils/consts/menu";
+import { getHomeMenu } from "../../utils/consts/menu";
 
 export default function HomeLayout({
   children,
@@ -9,7 +9,7 @@ export default function HomeLayout({
   tracks,
   fellowshipTracks,
 }) {
-  const { homeMenus } = resolveHomeMenu({ tracks, fellowshipTracks });
+  const { homeMenus } = getHomeMenu({ tracks, fellowshipTracks });
 
   return (
     <BaseLayout seoInfo={seoInfo} left={<Menu menu={homeMenus} />}>

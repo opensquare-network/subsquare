@@ -30,7 +30,7 @@ export const allHomeMenuNames = [
   return result;
 }, []);
 
-export function resolveHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
+export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
   const homeMenus = [
     commonMenus,
     resolveReferendaMenu(tracks),

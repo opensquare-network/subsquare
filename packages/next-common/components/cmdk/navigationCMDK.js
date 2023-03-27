@@ -30,7 +30,7 @@ import {
 import ClosePanelIcon from "../icons/closePanel";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
-import { resolveHomeMenu } from "../../utils/consts/menu";
+import { getHomeMenu } from "../../utils/consts/menu";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import { useSelector } from "react-redux";
 import {
@@ -142,10 +142,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
   const { isDark } = useTheme();
   const isMacOS = useIsMacOS();
   const { tracks, fellowshipTracks } = usePageProps();
-  const { homeMenus } = resolveHomeMenu({
-    tracks,
-    fellowshipTracks,
-  });
+  const { homeMenus } = getHomeMenu({ tracks, fellowshipTracks });
 
   const foldedMenu = homeMenus
     .filter((menu) => menu.name && menu.items?.length)
