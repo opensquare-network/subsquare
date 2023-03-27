@@ -8,6 +8,8 @@ import DayEvents from "next-common/components/calendar/dayEvents";
 import { useState } from "react";
 import { smcss } from "next-common/utils/responsive";
 import useScheduled from "next-common/hooks/useScheduled";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 const Wrapper = styled.div`
   ${flex}
@@ -16,13 +18,13 @@ const Wrapper = styled.div`
   ${smcss(m_x(16))}
 `;
 
-export default withLoginUserRedux(() => {
+export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
   const futureEvents = useScheduled();
 
   return (
-    <HomeLayout>
+    <HomeLayout tracks={tracks} fellowshipTracks={fellowshipTracks}>
       <Wrapper>
         <TitleContainer>Calendar</TitleContainer>
 
@@ -43,7 +45,15 @@ export default withLoginUserRedux(() => {
 });
 
 export const getServerSideProps = withLoginUser(async () => {
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
-    props: {},
+    props: {
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
+    },
   };
 });
