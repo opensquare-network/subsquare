@@ -1,8 +1,8 @@
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { TrackIconMap } from "../../../components/icons/track";
-import { parseGov2TrackName } from "../../gov2";
 import sumBy from "lodash.sumby";
+import startCase from "lodash.startcase";
 
 export function resolveReferendaMenu(tracks = []) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
@@ -24,7 +24,7 @@ export function resolveReferendaMenu(tracks = []) {
   const resolveTrackItem = (track) => {
     return {
       value: track.id,
-      name: parseGov2TrackName(track.name),
+      name: startCase(track.name),
       pathname: `/referenda/track/${track.id}`,
       activeCount: track.activeCount,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,

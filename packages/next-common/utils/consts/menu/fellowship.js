@@ -7,7 +7,7 @@ import {
   TrackIconMap,
 } from "../../../components/icons/track";
 import Divider from "../../../components/styled/layout/divider";
-import { parseGov2TrackName } from "../../gov2";
+import startCase from "lodash.startcase";
 
 export function resolveFellowshipMenu(fellowshipTracks = []) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
@@ -47,7 +47,7 @@ export function resolveFellowshipMenu(fellowshipTracks = []) {
   const resolveFellowshipTrackItem = (track) => {
     return {
       value: track.id,
-      name: parseGov2TrackName(track.name),
+      name: startCase(track.name),
       pathname: `/fellowship/track/${track.id}`,
       activeCount: track.activeCount,
       icon: FellowshipTrackIconMap[track.id] ?? FellowshipTrackIconMap.Default,
