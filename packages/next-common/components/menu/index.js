@@ -172,19 +172,17 @@ function defaultItemRender(icon, name, activeCount, isExternalLink) {
   );
 }
 
-function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
+function MenuGroup({ menu, foldable }) {
   const chain = useChain();
   const router = useRouter();
   const dispatch = useSettingsDispatch();
   const foldedMenus = useHomeFoldMenus();
   const hasMenuItems = !!menu?.items?.length;
 
-  const resolvedMenuName = foldablePrefix + menu.name;
-
-  const [folded, setFolded] = useState(foldedMenus.includes(resolvedMenuName));
+  const [folded, setFolded] = useState(foldedMenus.includes(menu.name));
   useEffect(() => {
     if (hasMenuItems) {
-      setFolded(foldedMenus.includes(resolvedMenuName));
+      setFolded(foldedMenus.includes(menu.name));
     } else {
       setFolded(true);
     }
@@ -193,7 +191,7 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
   function handleFoldMenu() {
     const v = !folded;
     setFolded(v);
-    updateHomeFoldItems(resolvedMenuName, v, dispatch);
+    updateHomeFoldItems(menu.name, v, dispatch);
   }
 
   return (
@@ -260,7 +258,7 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
   );
 }
 
-export default function Menu({ menu, foldable = true, foldablePrefix = "" }) {
+export default function Menu({ menu, foldable = true }) {
   const chain = useChain();
 
   return (
@@ -273,14 +271,7 @@ export default function Menu({ menu, foldable = true, foldablePrefix = "" }) {
             return null;
           }
 
-          return (
-            <MenuGroup
-              key={index}
-              menu={menu}
-              foldable={foldable}
-              foldablePrefix={foldablePrefix}
-            />
-          );
+          return <MenuGroup key={index} menu={menu} foldable={foldable} />;
         })}
       </MenuWrapper>
     </Wrapper>
