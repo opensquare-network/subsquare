@@ -11,10 +11,12 @@ import Flex from "next-common/components/styled/flex";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
 import AyeNay from "next-common/components/collective/AyeNay";
-import { emptyFunction } from "next-common/utils";
+import { emptyFunction, isMotionEnded } from "next-common/utils";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { useChain } from "next-common/context/chain";
+import { useDetailType } from "next-common/context/page";
+import { usePostOnChainData } from "next-common/context/post";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -83,22 +85,24 @@ const VoterAddr = styled.div`
 `;
 
 export default function Vote({
-  motionIsFinal = false,
   loading = false,
   votes = [],
   prime,
   motionHash,
   motionIndex,
   onChainData,
-  type,
   isLoadingVote = false,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
 }) {
+  const type = useDetailType();
   const chain = useChain();
   const [showPopup, setShowPopup] = useState(false);
   const ayeVotesCount = votes.filter(([, approval]) => approval).length;
   const userCanVote = useIsCollectiveMember(toApiCouncil(chain, type));
+
+  const onchainData = usePostOnChainData();
+  const motionIsFinal = isMotionEnded(onchainData);
 
   let voteList;
   if (loading) {
@@ -163,7 +167,7 @@ export default function Vote({
             <div>{isLoadingVote && <Loading size={16} />}</div>
           </StatisticTitleContainer>
           {voteList}
-          <MemberLinks type={type} />
+          <MemberLinks />
         </GhostCard>
         {!loading && action}
       </Wrapper>

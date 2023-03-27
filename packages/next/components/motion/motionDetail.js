@@ -134,14 +134,12 @@ export default function MotionDetail({ onReply }) {
       <Vote
         votes={votes}
         prime={prime}
-        motionIsFinal={motionEnd}
         motionHash={post.hash}
         motionIndex={post.motionIndex}
         onInBlock={updateVotes}
         onFinalized={onVoteFinalized}
         isLoadingVote={isLoadingVote}
         onChainData={post.onchainData}
-        type={type}
       />
       <Business motion={post?.onchainData} />
       <Metadata />
