@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.0
+date: 03/27/2023
+- Add calendar feature which show history governance events and future events.
+- Fix fellowship section header, previously mistaken with referenda.
+- Show vote turnout percentage for democracy referenda.
+- Refactor to avoid duplicated image assets.
+- Improve project config to avoid annoying LSP diagnostics.
+
 # 2.9.9
 date: 03/22/2023
 - Support binding a discussion post for proposals.
