@@ -4,11 +4,13 @@ import { TrackIconMap } from "../../../components/icons/track";
 import sumBy from "lodash.sumby";
 import startCase from "lodash.startcase";
 
+export const name = "REFERENDA";
+
 export function resolveReferendaMenu(tracks = []) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
 
   const menu = {
-    name: "REFERENDA",
+    name,
     excludeToChains: getExcludeChains([Chains.development, Chains.kusama]),
     activeCount: totalActiveCount,
     items: [

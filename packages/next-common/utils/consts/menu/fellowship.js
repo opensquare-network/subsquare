@@ -9,11 +9,13 @@ import {
 import Divider from "../../../components/styled/layout/divider";
 import startCase from "lodash.startcase";
 
+export const name = "FELLOWSHIP";
+
 export function resolveFellowshipMenu(fellowshipTracks = []) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
   const menu = {
-    name: "FELLOWSHIP",
+    name,
     activeCount: totalActiveCount,
     items: [
       {
