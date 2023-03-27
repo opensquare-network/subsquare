@@ -5,32 +5,39 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
-export default withLoginUserRedux(({ proposals, chain }) => {
-  const items = (proposals.items || []).map((item) =>
-    normalizeTechCommMotionListItem(chain, item)
-  );
-  const category = businessCategory.tcProposals;
-  const seoInfo = {
-    title: "Technical Committee Proposals",
-    desc: "Technical Committee Proposals",
-  };
+export default withLoginUserRedux(
+  ({ proposals, chain, tracks, fellowshipTracks }) => {
+    const items = (proposals.items || []).map((item) =>
+      normalizeTechCommMotionListItem(chain, item)
+    );
+    const category = businessCategory.tcProposals;
+    const seoInfo = {
+      title: "Technical Committee Proposals",
+      desc: "Technical Committee Proposals",
+    };
 
-  return (
-    <HomeLayout seoInfo={seoInfo}>
-      <PostList
-        category={category}
-        create={null}
-        items={items}
-        pagination={{
-          page: proposals.page,
-          pageSize: proposals.pageSize,
-          total: proposals.total,
-        }}
-      />
-    </HomeLayout>
-  );
-});
+    return (
+      <HomeLayout
+        seoInfo={seoInfo}
+        tracks={tracks}
+        fellowshipTracks={fellowshipTracks}
+      >
+        <PostList
+          category={category}
+          create={null}
+          items={items}
+          pagination={{
+            page: proposals.page,
+            pageSize: proposals.pageSize,
+            total: proposals.total,
+          }}
+        />
+      </HomeLayout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
@@ -44,10 +51,17 @@ export const getServerSideProps = withLoginUser(async (context) => {
     }),
   ]);
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       chain,
       proposals: proposals ?? EmptyList,
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });
