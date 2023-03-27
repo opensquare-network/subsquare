@@ -11,7 +11,7 @@ import startCase from "lodash.startcase";
 
 export const name = "FELLOWSHIP";
 
-export function resolveFellowshipMenu(fellowshipTracks = []) {
+export function getFellowshipMenu(fellowshipTracks = []) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
   const menu = {

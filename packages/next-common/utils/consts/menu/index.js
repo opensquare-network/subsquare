@@ -6,11 +6,8 @@ import techComm from "./tc";
 import financialCouncil from "./financilCouncil";
 import advisoryCommittee from "./advisoryCouncil";
 import alliance from "./alliance";
-import { resolveReferendaMenu, name as referendaMenuName } from "./referenda";
-import {
-  resolveFellowshipMenu,
-  name as fellowshipMenuName,
-} from "./fellowship";
+import { getReferendaMenu, name as referendaMenuName } from "./referenda";
+import { getFellowshipMenu, name as fellowshipMenuName } from "./fellowship";
 
 export const allHomeMenuNames = [
   commonMenus,
@@ -33,8 +30,8 @@ export const allHomeMenuNames = [
 export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
   const homeMenus = [
     commonMenus,
-    resolveReferendaMenu(tracks),
-    resolveFellowshipMenu(fellowshipTracks),
+    getReferendaMenu(tracks),
+    getFellowshipMenu(fellowshipTracks),
     democracy,
     treasury,
     council,

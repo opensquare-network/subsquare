@@ -6,7 +6,7 @@ import startCase from "lodash.startcase";
 
 export const name = "REFERENDA";
 
-export function resolveReferendaMenu(tracks = []) {
+export function getReferendaMenu(tracks = []) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
 
   const menu = {
