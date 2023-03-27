@@ -5,14 +5,15 @@ import council from "./council";
 import techComm from "./tc";
 import financialCouncil from "./financilCouncil";
 import advisoryCommittee from "./advisoryCouncil";
-import { gov2EntryMenu } from "./gov2";
 import alliance from "./alliance";
-import { resolveReferendaMenu } from "./referenda";
-import { resolveFellowshipMenu } from "./fellowship";
+import { resolveReferendaMenu, name as referendaMenuName } from "./referenda";
+import {
+  resolveFellowshipMenu,
+  name as fellowshipMenuName,
+} from "./fellowship";
 
-const homeMenus = [
+export const allHomeMenuNames = [
   commonMenus,
-  gov2EntryMenu,
   democracy,
   treasury,
   council,
@@ -20,9 +21,9 @@ const homeMenus = [
   financialCouncil,
   advisoryCommittee,
   alliance,
-];
-
-export const allHomeMenuNames = homeMenus.reduce((result, menu) => {
+  { name: referendaMenuName },
+  { name: fellowshipMenuName },
+].reduce((result, menu) => {
   if (menu.name) {
     return [...result, menu.name];
   }
@@ -56,5 +57,3 @@ export function resolveHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
     allHomeMenuNames,
   };
 }
-
-export default homeMenus;
