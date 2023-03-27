@@ -1,22 +1,14 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import User from "next-common/components/user";
-import Loading from "next-common/components/loading";
-import PrimeAddressMark from "next-common/components/primeAddressMark";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import { GhostCard } from "next-common/components/styled/containers/ghostCard";
-import MemberLinks from "./memberLinks";
-import Flex from "next-common/components/styled/flex";
-import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Statistics from "next-common/components/styled/paragraph/statistic";
-import AyeNay from "next-common/components/collective/AyeNay";
 import { emptyFunction, isMotionEnded } from "next-common/utils";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
 import { usePostOnChainData } from "next-common/context/post";
+import Voters from "./voters";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -38,13 +30,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const NoTippers = styled.div`
-  text-align: center;
-  font-size: 12px;
-  line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
-`;
-
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
@@ -55,42 +40,11 @@ const Description = styled.div`
   }
 `;
 
-const TipperList = styled.div`
-  margin-top: 16px;
-  padding: 8px 0;
-  > :not(:first-child) {
-    margin-top: 8px;
-  }
-`;
-
-const TipperItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
-`;
-
-const LoadingDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const VoterAddr = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
 export default function Vote({
-  loading = false,
   votes = [],
   prime,
   motionHash,
   motionIndex,
-  onChainData,
   isLoadingVote = false,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
@@ -98,42 +52,10 @@ export default function Vote({
   const type = useDetailType();
   const chain = useChain();
   const [showPopup, setShowPopup] = useState(false);
-  const ayeVotesCount = votes.filter(([, approval]) => approval).length;
   const userCanVote = useIsCollectiveMember(toApiCouncil(chain, type));
 
   const onchainData = usePostOnChainData();
   const motionIsFinal = isMotionEnded(onchainData);
-
-  let voteList;
-  if (loading) {
-    voteList = (
-      <TipperList>
-        <LoadingDiv>
-          <Loading size={16} />
-        </LoadingDiv>
-      </TipperList>
-    );
-  } else if (votes.length === 0) {
-    voteList = (
-      <TipperList>
-        <NoTippers>No Vote</NoTippers>
-      </TipperList>
-    );
-  } else {
-    voteList = (
-      <TipperList>
-        {votes.map(([voter, approve], index) => (
-          <TipperItem key={index}>
-            <VoterAddr>
-              <User add={voter} fontSize={12} />
-              {voter === prime && <PrimeAddressMark />}
-            </VoterAddr>
-            <AyeNay isAye={approve} />
-          </TipperItem>
-        ))}
-      </TipperList>
-    );
-  }
 
   let action;
   if (motionIsFinal) {
@@ -156,20 +78,8 @@ export default function Vote({
   return (
     <>
       <Wrapper>
-        <GhostCard>
-          <StatisticTitleContainer>
-            <Flex>
-              <span>Votes</span>
-              <Statistics>
-                {ayeVotesCount}/{onChainData?.threshold}
-              </Statistics>
-            </Flex>
-            <div>{isLoadingVote && <Loading size={16} />}</div>
-          </StatisticTitleContainer>
-          {voteList}
-          <MemberLinks />
-        </GhostCard>
-        {!loading && action}
+        <Voters votes={votes} isLoadingVote={isLoadingVote} prime={prime} />
+        { action }
       </Wrapper>
       {showPopup && (
         <Popup

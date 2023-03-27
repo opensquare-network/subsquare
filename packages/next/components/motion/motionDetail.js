@@ -139,7 +139,6 @@ export default function MotionDetail({ onReply }) {
         onInBlock={updateVotes}
         onFinalized={onVoteFinalized}
         isLoadingVote={isLoadingVote}
-        onChainData={post.onchainData}
       />
       <Business motion={post?.onchainData} />
       <Metadata />
