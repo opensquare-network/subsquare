@@ -14,7 +14,16 @@ import {
   useSettingsDispatch,
 } from "../../context/settings";
 import NavigationCMDK from "../cmdk/navigationCMDK";
-import { space_y } from "../../styles/tailwindcss";
+import {
+  cursor_pointer,
+  inline_flex,
+  items_center,
+  m_r,
+  space_y,
+  text_secondary,
+  text_tertiary,
+  theme,
+} from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -38,12 +47,32 @@ const TitleActiveCount = styled.span`
 `;
 
 const Title = styled.div`
-  color: ${(props) => props.theme.textTertiary};
   letter-spacing: 0.16em;
   ${p_12_bold};
 `;
 const TitleGroup = styled(Flex)`
   padding: 12px 0;
+  ${cursor_pointer};
+  ${text_tertiary};
+
+  &:hover {
+    ${text_secondary};
+  }
+
+  ${MenuFoldIcon},
+  ${MenuUnFoldIcon} {
+    path {
+      stroke: ${theme("textTertiary")};
+    }
+  }
+  &:hover {
+    ${MenuFoldIcon},
+    ${MenuUnFoldIcon} {
+      path {
+        stroke: ${theme("textSecondary")};
+      }
+    }
+  }
 `;
 
 const ItemActiveCount = styled.span`
@@ -122,20 +151,10 @@ const ItemGroup = styled.div`
     `}
 `;
 
-const FoldableButton = styled.button`
-  background: none;
-  margin-right: 8px;
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 0;
-
-  ${(p) =>
-    p.disabled &&
-    css`
-      pointer-events: none;
-    `}
+const FoldableIconWrapper = styled.span`
+  ${m_r(8)};
+  ${inline_flex};
+  ${items_center};
 `;
 
 function defaultItemRender(icon, name, activeCount, isExternalLink) {
@@ -171,23 +190,20 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
     }
   }, []);
 
-  function handleFoldMenu(name) {
+  function handleFoldMenu() {
     const v = !folded;
     setFolded(v);
-    updateHomeFoldItems(name, v, dispatch);
+    updateHomeFoldItems(resolvedMenuName, v, dispatch);
   }
 
   return (
     <div>
       {menu.name && (
-        <TitleGroup>
+        <TitleGroup role="button" onClick={handleFoldMenu} foldable={foldable}>
           {foldable && (
-            <FoldableButton
-              disabled={!menu?.items?.length}
-              onClick={() => handleFoldMenu(resolvedMenuName)}
-            >
+            <FoldableIconWrapper>
               {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
-            </FoldableButton>
+            </FoldableIconWrapper>
           )}
 
           <Title>
