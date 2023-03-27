@@ -30,9 +30,11 @@ const MenuWrapper = styled.div`
 
 const TitleActiveCount = styled.span`
   letter-spacing: 0;
-  margin-left: 8px;
-  ${p_12_medium};
-  line-height: 12px;
+  margin-left: 4px;
+  &::before {
+    content: "·";
+    margin-right: 4px;
+  }
 `;
 
 const Title = styled.div`
