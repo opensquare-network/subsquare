@@ -2,11 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import { emptyFunction } from "../../utils";
 import { setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY } from "../../utils/constants";
-import { allHomeMenuNames } from "../../utils/consts/menu";
-import {
-  allGov2HomeMenuNames,
-  gov2MenuFoldablePrefix,
-} from "../../utils/consts/menu/gov2";
+import { getHomeMenu } from "../../utils/consts/menu";
 
 export const FOLD_ITEMS_UPDATE_ACTION = "UPDATE";
 
@@ -14,17 +10,14 @@ const HomeFoldItemsContext = createContext(null);
 const SettingsDispatchContext = createContext(emptyFunction);
 
 export default function SettingsProvider({ homeFoldItems = "", children }) {
+  const { allHomeMenuNames } = getHomeMenu();
+
   let items;
   try {
     items = homeFoldItems
       .split("|")
       .map(decodeURIComponent)
-      .filter((item) =>
-        [
-          ...allHomeMenuNames,
-          ...allGov2HomeMenuNames.map((name) => gov2MenuFoldablePrefix + name),
-        ].includes(item),
-      );
+      .filter((item) => allHomeMenuNames.includes(item));
   } catch (e) {
     items = [];
   }
