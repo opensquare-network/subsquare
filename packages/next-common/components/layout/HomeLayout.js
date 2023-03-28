@@ -9,7 +9,7 @@ export default function HomeLayout({
   tracks,
   fellowshipTracks,
 }) {
-  const { homeMenus } = getHomeMenu({ tracks, fellowshipTracks });
+  const homeMenus = getHomeMenu({ tracks, fellowshipTracks });
 
   return (
     <BaseLayout seoInfo={seoInfo} left={<Menu menu={homeMenus} />}>

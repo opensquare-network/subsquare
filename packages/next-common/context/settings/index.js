@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import { emptyFunction } from "../../utils";
 import { setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY } from "../../utils/constants";
-import { getHomeMenu } from "../../utils/consts/menu";
+import { allHomeMenuNames } from "../../utils/consts/menu";
 
 export const EXPANDED_MENUS_UPDATE_ACTION = "UPDATE";
 
@@ -10,8 +10,6 @@ const HomeExpandedMenusContext = createContext(null);
 const SettingsDispatchContext = createContext(emptyFunction);
 
 export default function SettingsProvider({ homeExpandedMenus = "", children }) {
-  const { allHomeMenuNames } = getHomeMenu();
-
   let items;
   try {
     items = homeExpandedMenus

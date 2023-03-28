@@ -142,7 +142,7 @@ export default function NavigationCMDK({ triggerButtonStyle }) {
   const { isDark } = useTheme();
   const isMacOS = useIsMacOS();
   const { tracks, fellowshipTracks } = usePageProps();
-  const { homeMenus } = getHomeMenu({ tracks, fellowshipTracks });
+  const homeMenus = getHomeMenu({ tracks, fellowshipTracks });
 
   const foldedMenu = homeMenus
     .filter((menu) => menu.name && menu.items?.length)

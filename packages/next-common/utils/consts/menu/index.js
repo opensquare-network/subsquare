@@ -10,7 +10,7 @@ import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
 
 export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
-  const homeMenus = [
+  return [
     commonMenus,
     getReferendaMenu(tracks),
     getFellowshipMenu(fellowshipTracks),
@@ -22,11 +22,8 @@ export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
     advisoryCommittee,
     alliance,
   ];
-
-  const allHomeMenuNames = homeMenus.map((menu) => menu.name).filter(Boolean);
-
-  return {
-    homeMenus,
-    allHomeMenuNames,
-  };
 }
+
+export const allHomeMenuNames = getHomeMenu()
+  .map((menu) => menu.name)
+  .filter(Boolean);
