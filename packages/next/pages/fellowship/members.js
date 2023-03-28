@@ -3,9 +3,9 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
-import Gov2Layout from "next-common/components/layout/Gov2Layout";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const [data, setData] = useState([]);
@@ -43,13 +43,13 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <Gov2Layout
+    <HomeLayout
       seoInfo={seoInfo}
       tracks={tracks}
       fellowshipTracks={fellowshipTracks}
     >
       <MembersList category={category} items={data} loading={loading} />
-    </Gov2Layout>
+    </HomeLayout>
   );
 });
 

@@ -1,4 +1,4 @@
-import Gov2Layout from "next-common/components/layout/Gov2Layout";
+import HomeLayout from "next-common/components/layout/HomeLayout";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
@@ -16,7 +16,7 @@ export default function FellowshipPage({
   );
 
   return (
-    <Gov2Layout
+    <HomeLayout
       seoInfo={seoInfo}
       tracks={tracks}
       fellowshipTracks={fellowshipTracks}
@@ -33,6 +33,6 @@ export default function FellowshipPage({
         }}
         summary={summary}
       />
-    </Gov2Layout>
+    </HomeLayout>
   );
 }
