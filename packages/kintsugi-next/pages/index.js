@@ -21,7 +21,7 @@ export default withLoginUserRedux(({ overview, chain }) => {
     {
       category: "Referenda",
       link: "/democracy/referenda",
-      items: (overview?.democracy?.referendums ?? []).map((item) =>
+      items: (overview?.democracy?.referenda ?? []).map((item) =>
         normalizeReferendaListItem(chain, item)
       ),
     },
