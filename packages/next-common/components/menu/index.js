@@ -1,5 +1,5 @@
 import styled, { css, useTheme } from "styled-components";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
@@ -9,8 +9,8 @@ import { useChain } from "../../context/chain";
 import MenuUnFoldIcon from "../icons/menuUnFold";
 import MenuFoldIcon from "../icons/menuFold";
 import {
-  updateHomeFoldItems,
-  useHomeFoldMenus,
+  updateHomeExpandedMenus,
+  useHomeExpandedMenus,
   useSettingsDispatch,
 } from "../../context/settings";
 import NavigationCMDK from "../cmdk/navigationCMDK";
@@ -145,13 +145,13 @@ const Item = styled.div`
 
 const ItemGroup = styled.div`
   ${(p) =>
-    p.folded &&
+    p.collapsed &&
     css`
       display: none;
     `}
 `;
 
-const FoldableIconWrapper = styled.span`
+const MenuExpandOrCollapseIconWrapper = styled.span`
   ${m_r(8)};
   ${inline_flex};
   ${items_center};
@@ -172,48 +172,48 @@ function defaultItemRender(icon, name, activeCount, isExternalLink) {
   );
 }
 
-function MenuGroup({ menu, foldable }) {
+function MenuGroup({ menu }) {
   const chain = useChain();
   const router = useRouter();
   const dispatch = useSettingsDispatch();
-  const foldedMenus = useHomeFoldMenus();
+  const expandedMenus = useHomeExpandedMenus();
   const hasMenuItems = !!menu?.items?.length;
 
-  const [folded, setFolded] = useState(foldedMenus.includes(menu.name));
+  const [expanded, setExpanded] = useState(expandedMenus.includes(menu.name));
+  const collapsed = useMemo(() => !expanded, [expanded]);
+
   useEffect(() => {
     if (hasMenuItems) {
-      setFolded(foldedMenus.includes(menu.name));
+      setExpanded(expandedMenus.includes(menu.name));
     } else {
-      setFolded(true);
+      setExpanded(false);
     }
   }, []);
 
-  function handleFoldMenu() {
-    const v = !folded;
-    setFolded(v);
-    updateHomeFoldItems(menu.name, v, dispatch);
+  function toggleExpandMenu() {
+    const v = collapsed;
+    setExpanded(v);
+    updateHomeExpandedMenus(menu.name, v, dispatch);
   }
 
   return (
     <div>
       {menu.name && (
-        <TitleGroup role="button" onClick={handleFoldMenu} foldable={foldable}>
-          {foldable && (
-            <FoldableIconWrapper>
-              {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
-            </FoldableIconWrapper>
-          )}
+        <TitleGroup role="button" onClick={toggleExpandMenu}>
+          <MenuExpandOrCollapseIconWrapper>
+            {collapsed ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
+          </MenuExpandOrCollapseIconWrapper>
 
           <Title>
             {menu.name}
-            {folded && !!menu.activeCount && (
+            {collapsed && !!menu.activeCount && (
               <TitleActiveCount>{menu.activeCount}</TitleActiveCount>
             )}
           </Title>
         </TitleGroup>
       )}
 
-      <ItemGroup folded={menu.name && folded}>
+      <ItemGroup collapsed={menu.name && collapsed}>
         {menu.items.map((item, index) => {
           const isExternalLink = (item.pathname || "").startsWith("http");
 
@@ -258,7 +258,7 @@ function MenuGroup({ menu, foldable }) {
   );
 }
 
-export default function Menu({ menu, foldable = true }) {
+export default function Menu({ menu }) {
   const chain = useChain();
 
   return (
@@ -271,7 +271,7 @@ export default function Menu({ menu, foldable = true }) {
             return null;
           }
 
-          return <MenuGroup key={index} menu={menu} foldable={foldable} />;
+          return <MenuGroup key={index} menu={menu} />;
         })}
       </MenuWrapper>
     </Wrapper>

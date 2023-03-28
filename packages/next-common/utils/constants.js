@@ -90,7 +90,7 @@ export const CACHE_KEY = {
   accountMap: "accountMap",
   themeMode: "theme-mode",
   authToken: "auth-token",
-  homeFoldedMenus: "home-folded-menus",
+  homeExpandedMenus: "home-expanded-menus",
   acceptCookies: "accept-cookies",
   dontRemindEmail: "dont-remind-email",
 };

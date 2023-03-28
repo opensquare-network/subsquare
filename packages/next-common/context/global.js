@@ -8,7 +8,7 @@ import PageProvider from "./page";
 export default function GlobalProvider({
   user,
   chain,
-  homeFoldedMenus,
+  homeExpandedMenus,
   themeMode,
   children,
   pageProperties,
@@ -17,7 +17,7 @@ export default function GlobalProvider({
     <ThemeModeProvider defaultThemeMode={themeMode}>
       <ChainProvider chain={chain}>
         <UserProvider user={user}>
-          <SettingsProvider homeFoldItems={homeFoldedMenus}>
+          <SettingsProvider homeExpandedMenus={homeExpandedMenus}>
             <PageProvider pageProperties={pageProperties}>
               {children}
             </PageProvider>
