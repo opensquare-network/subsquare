@@ -64,7 +64,7 @@ export default function MotionDetail({ onReply }) {
   }, [post, chain, singleApprovalMotion]);
 
   const [votes, setVotes] = useState(dbVotes);
-  const [readOnchainVotes, setReadOnchainVotes] = useState(0);
+  const [readOnchainVotes, setReadOnchainVotes] = useState(Date.now());
   const [isLoadingVote, setIsLoadingVote] = useState(false);
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function MotionDetail({ onReply }) {
 
   const refreshPageData = () =>
     fetchAndUpdatePost(postDispatch, type, post._id);
-  const onVoteFinalized = useWaitSyncBlock("Motion voted", refreshPageData);
+  const onVoteFinalized = useWaitSyncBlock("Extrinsic submitted", refreshPageData);
 
   if (isEdit) {
     return <PostEdit setIsEdit={setIsEdit} updatePost={refreshPageData} />;
@@ -134,14 +134,11 @@ export default function MotionDetail({ onReply }) {
       <Vote
         votes={votes}
         prime={prime}
-        motionIsFinal={motionEnd}
         motionHash={post.hash}
         motionIndex={post.motionIndex}
         onInBlock={updateVotes}
         onFinalized={onVoteFinalized}
         isLoadingVote={isLoadingVote}
-        onChainData={post.onchainData}
-        type={type}
       />
       <Business motion={post?.onchainData} />
       <Metadata />

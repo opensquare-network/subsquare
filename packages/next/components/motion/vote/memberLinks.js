@@ -3,12 +3,14 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import Link from "next/link";
 import styled from "styled-components";
 import SubLink from "next-common/components/styled/subLink";
+import { useDetailType } from "next-common/context/page";
 
 const Anchor = styled(SubLink)`
   margin-top: 16px !important;
 `;
 
-function MemberLinks({ type }) {
+function MemberLinks() {
+  const type = useDetailType();
   let obj = null;
   if (detailPageCategory.COUNCIL_MOTION === type) {
     obj = {
