@@ -1,14 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import { emptyFunction, isMotionEnded } from "next-common/utils";
-import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
-import toApiCouncil from "next-common/utils/toApiCouncil";
-import { useChain } from "next-common/context/chain";
+import { emptyFunction } from "next-common/utils";
 import { useDetailType } from "next-common/context/page";
-import { usePostOnChainData } from "next-common/context/post";
 import Voters from "./voters";
+import Action from "./action";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -30,16 +26,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Description = styled.div`
-  font-size: 12px;
-  line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
-  > span {
-    color: ${(props) => props.theme.primaryPurple500};
-    cursor: pointer;
-  }
-`;
-
 export default function Vote({
   votes = [],
   prime,
@@ -50,36 +36,13 @@ export default function Vote({
   onFinalized = emptyFunction,
 }) {
   const type = useDetailType();
-  const chain = useChain();
   const [showPopup, setShowPopup] = useState(false);
-  const userCanVote = useIsCollectiveMember(toApiCouncil(chain, type));
-
-  const onchainData = usePostOnChainData();
-  const motionIsFinal = isMotionEnded(onchainData);
-
-  let action;
-  if (motionIsFinal) {
-    action = <Description>This vote has been closed.</Description>;
-  } else if (userCanVote) {
-    action = (
-      <SecondaryButton secondary isFill onClick={() => setShowPopup(true)}>
-        Vote
-      </SecondaryButton>
-    );
-  } else {
-    action = (
-      <Description>
-        Only council members can vote, no account found from the council.{" "}
-        <span onClick={() => setShowPopup(true)}>Still vote</span>
-      </Description>
-    );
-  }
 
   return (
     <>
       <Wrapper>
         <Voters votes={votes} isLoadingVote={isLoadingVote} prime={prime} />
-        { action }
+        <Action refreshData={onFinalized} setShowPopup={setShowPopup} />
       </Wrapper>
       {showPopup && (
         <Popup
