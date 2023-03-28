@@ -44,6 +44,7 @@ const CellLabel = styled.p`
   ${m(0)}
   ${text_secondary}
 `;
+
 const CellLabelMonth = styled.span`
   ${smcss(hidden)}
 `;

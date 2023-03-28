@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React from "react";
+import React, { useState } from "react";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import styled from "styled-components";
 import { shadow_100 } from "../../../styles/componentCss";
@@ -23,6 +23,7 @@ import noop from "lodash.noop";
 import { useCalendarEventsSummary } from "../../../hooks/calendar";
 import FullCalendarFooter from "./footer";
 import FullCalendarMonthHeader from "./monthHeader";
+import CreateEventModal from "../createEventModal";
 dayjs.extend(timezone);
 
 const localizer = dayjsLocalizer(dayjs);
@@ -87,16 +88,21 @@ export default function FullCalendar({
   futureEvents = [],
 }) {
   const [calendarEvents] = useCalendarEventsSummary(date, "month");
+  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
 
   function onNavigate(newDate) {
     setDate(newDate);
   }
 
   /** @type {import("react-big-calendar").Components} */
-  const components ={
+  const components = {
     toolbar(props) {
       return (
-        <FullCalendarToolbar {...props} setSelectedDate={setSelectedDate} />
+        <FullCalendarToolbar
+          {...props}
+          setSelectedDate={setSelectedDate}
+          onCreateEvent={() => setShowCreateEventModal(true)}
+        />
       );
     },
     month: {
@@ -128,6 +134,9 @@ export default function FullCalendar({
         />
       </CalendarWrapper>
       <FullCalendarFooter />
+      {showCreateEventModal && (
+        <CreateEventModal onClose={() => setShowCreateEventModal(false)} />
+      )}
     </Wrapper>
   );
 }

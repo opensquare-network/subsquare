@@ -80,6 +80,14 @@ export const Button = styled.div`
   }
 `;
 
+export const PrimaryButton = styled(Button)`
+  background: ${(props) => props.theme.primaryPurple500};
+  color: ${(props) => props.theme.textContrast};
+  > svg path {
+    stroke: ${(props) => props.theme.textContrast};
+  }
+`;
+
 export const SummaryDescription = styled.p`
   margin: 0;
   margin-top: 4px;

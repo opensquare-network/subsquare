@@ -17,6 +17,10 @@ import {
   space_x,
   text_primary,
 } from "../../../styles/tailwindcss";
+import CreateEventButton from "./createEventButton";
+import noop from "lodash.noop";
+import { useUser } from "../../../context/user";
+import { OnlyDesktop } from "../../styled/responsive";
 
 const ToolbarWrapper = styled.div`
   ${flex}
@@ -53,7 +57,11 @@ export default function FullCalendarToolbar({
   label,
   localizer: { messages },
   setSelectedDate,
+  onCreateEvent = noop,
 }) {
+  const user = useUser();
+  const address = user?.address;
+
   function gotoToday() {
     onNavigate("TODAY");
     setSelectedDate(new Date());
@@ -82,8 +90,11 @@ export default function FullCalendarToolbar({
           <ToolbarDateLabel>{label}</ToolbarDateLabel>
         </Flex>
 
-        <Flex>
-          <Button onClick={gotoToday}>Today</Button>
+        <Flex style={{ gap: "8px" }}>
+          <OnlyDesktop>
+            <Button onClick={gotoToday}>Today</Button>
+          </OnlyDesktop>
+          {address && <CreateEventButton onClick={onCreateEvent} />}
         </Flex>
       </ToolbarGroup>
 
