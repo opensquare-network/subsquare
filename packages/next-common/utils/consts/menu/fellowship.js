@@ -8,6 +8,8 @@ import {
 } from "../../../components/icons/track";
 import Divider from "../../../components/styled/layout/divider";
 import startCase from "lodash.startcase";
+import { getExcludeChains } from "../../viewfuncs";
+import Chains from "../chains";
 
 export const name = "FELLOWSHIP";
 
@@ -16,6 +18,7 @@ export function getFellowshipMenu(fellowshipTracks = []) {
 
   const menu = {
     name,
+    excludeToChains: getExcludeChains([Chains.development, Chains.kusama]),
     activeCount: totalActiveCount,
     items: [
       {
