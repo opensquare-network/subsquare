@@ -1,4 +1,4 @@
-import homeMenus from "next-common/utils/consts/menu";
+import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useTreasuryChildBountyOptions from "next-common/components/setting/notification/useTreasuryChildBountyOptions";
@@ -11,6 +11,8 @@ export default function useTreasrySubscription(
   saving,
   isVerifiedUser
 ) {
+  const homeMenus = getHomeMenu();
+
   const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(
     homeMenus,
     "TREASURY"

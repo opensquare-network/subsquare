@@ -1,4 +1,4 @@
-import homeMenus from "next-common/utils/consts/menu";
+import { getHomeMenu } from "next-common/utils/consts/menu";
 import useAdvisoryCommitteeOptions from "next-common/components/setting/notification/useAdvisoryCommitteeOptions";
 import { checkSubMenu } from "./common";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
@@ -8,6 +8,8 @@ export default function useAdvisoryCommitteeSubscription(
   saving,
   isVerifiedUser
 ) {
+  const homeMenus = getHomeMenu();
+
   const { hasMenu: hasAdvisoryCommittee } = checkSubMenu(
     homeMenus,
     "ADVISORY COMMITTEE"
