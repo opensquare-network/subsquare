@@ -1,4 +1,4 @@
-import homeMenus from "next-common/utils/consts/menu";
+import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
@@ -8,6 +8,8 @@ export default function useCouncilSubscription(
   saving,
   isVerifiedUser
 ) {
+  const homeMenus = getHomeMenu();
+
   const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(
     homeMenus,
     "COUNCIL"

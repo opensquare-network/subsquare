@@ -1,4 +1,4 @@
-import homeMenus from "next-common/utils/consts/menu";
+import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
@@ -9,6 +9,8 @@ export default function useDemocracySubscription(
   saving,
   isVerifiedUser
 ) {
+  const homeMenus = getHomeMenu();
+
   const { hasMenu: hasDemocracy, menu: democracyMenu } = checkSubMenu(
     homeMenus,
     "DEMOCRACY"
