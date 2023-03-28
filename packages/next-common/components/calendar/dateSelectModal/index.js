@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import styled from "styled-components";
@@ -17,11 +17,23 @@ const ButtonWrapper = styled.div`
 
 function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
   const [date, setDate] = useState(defaultSelectedDate || new Date());
+  const hour = dayjs(date).hour();
+  const minute = dayjs(date).minute();
+
+  const onTimeChange = useCallback((hour, minute) => {
+    setDate((date) => {
+      const newDate = dayjs(date)
+        .set("hour", hour)
+        .set("minute", minute)
+        .toDate();
+      return newDate;
+    });
+  }, []);
 
   return (
     <>
       <Day date={date} setDate={setDate} />
-      <Time />
+      <Time defaultHour={hour} defaultMinute={minute} onChange={onTimeChange} />
 
       <ButtonWrapper>
         <SecondaryButton
