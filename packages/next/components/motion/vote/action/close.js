@@ -72,8 +72,12 @@ export default function Close({ refreshData }) {
       setLoading: (loading) => {
         setLoading(!!loading);
       },
-      onFinalized: refreshData,
-      onInBlock: refreshData,
+      onFinalized: async () => {
+        await refreshData();
+        window.setTimeout(() => {
+          window.location.reload();
+        }, 12000);
+      },
       signerAddress: signerAccount.address,
       isMounted,
     });
@@ -82,6 +86,6 @@ export default function Close({ refreshData }) {
   return <GhostButton
     isFill
     isLoading={ loading }
-    disabled={ !proposal }
+    disabled={ !proposal || !signerAccount }
     onClick={ doClose }>Close</GhostButton>;
 }
