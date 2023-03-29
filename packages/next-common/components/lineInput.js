@@ -1,42 +1,43 @@
+import noop from "lodash.noop";
 import React from "react";
 import styled, { css } from "styled-components";
 import { p_14_normal } from "../styles/componentCss";
 
 const Wrapper = styled.div`
+  flex-grow: 1;
   border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
-  display: flex;
   overflow: hidden;
 
-  ${p_14_normal}
-  line-height: 100%;
   color: ${(props) => props.theme.textPlaceholder};
 `;
 
-const Input = styled.textarea`
+const Input = styled.input`
+  ${p_14_normal}
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 12px 16px;
   ${(p) =>
     p.disabled &&
     css`
-      background: ${(props) => props.theme.grey100Bg}; !important;
+      background: ${(props) => props.theme.grey100Bg} !important;
     `}
-  all: unset;
-  padding: 12px 16px;
-  flex-grow: 1;
+  background-color: rgba(0,0,0,0);
   color: ${(props) => props.theme.textPrimary};
-
-  height: 40px;
-  ${p_14_normal}
 `;
 
-export default function TextInput({
+export default function LineInput({
   disabled = false,
   value,
-  setValue = () => {},
-  placeholder = "Please fill the reason...",
+  setValue = noop,
+  placeholder = "",
+  style = {},
 }) {
   return (
     <Wrapper>
       <Input
+        style={style}
         disabled={disabled}
         type="text"
         placeholder={placeholder}

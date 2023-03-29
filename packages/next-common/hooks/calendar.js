@@ -1,5 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { calendarEventsApi, calendarEventsSummaryApi } from "../services/url";
+import { useCallback, useEffect, useState } from "react";
+import {
+  calendarEventsApi,
+  calendarEventsSummaryApi,
+  calendarUserEventsApi,
+  calendarUserEventsSummaryApi,
+} from "../services/url";
 import useIsMounted from "../utils/hooks/useIsMounted";
 import nextApi from "../services/nextApi";
 import dayjs from "dayjs";
@@ -10,42 +15,33 @@ import dayjs from "dayjs";
 function useFetchCalendarEvents(endpoint, date, unit) {
   const isMounted = useIsMounted();
   const [loading, setLoading] = useState(false);
-
-  const [begin_time, end_time] = useMemo(() => {
-    const d = dayjs(date);
-    return [d.startOf(unit).valueOf(), d.endOf(unit).valueOf()];
-  }, [date]);
-
-  const cachedKey = useMemo(
-    () => `${begin_time}_${end_time}_${unit}`,
-    [begin_time, end_time, unit],
-  );
-  // {cachedKey: Event[]}
   const [cachedEvents, setCachedEvents] = useState({});
+
+  const d = dayjs(date);
+  const begin_time = d.startOf(unit).valueOf();
+  const end_time = d.endOf(unit).valueOf();
+  const cachedKey = `${endpoint}_${begin_time}_${end_time}_${unit}`;
+
+  const refresh = useCallback(async () => {
+    const { result } = await nextApi.fetch(endpoint, { begin_time, end_time });
+    if (result) {
+      setCachedEvents({
+        ...cachedEvents,
+        [cachedKey]: result,
+      });
+    }
+  }, [begin_time, end_time, cachedKey]);
 
   useEffect(() => {
     if (isMounted.current) {
       setLoading(true);
-      nextApi
-        .fetch(endpoint, { begin_time, end_time })
-        .then(({ result }) => {
-          if (result) {
-            setCachedEvents({
-              ...cachedEvents,
-              [cachedKey]: result,
-            });
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      refresh().finally(() => {
+        setLoading(false);
+      });
     }
-  }, [isMounted, begin_time, end_time, cachedKey]);
+  }, [isMounted, refresh]);
 
-  return useMemo(
-    () => [cachedEvents[cachedKey], loading],
-    [cachedKey, cachedEvents, loading],
-  );
+  return [cachedEvents[cachedKey], loading, refresh];
 }
 
 /**
@@ -53,12 +49,7 @@ function useFetchCalendarEvents(endpoint, date, unit) {
  * @param {dayjs.OpUnitType} unit
  */
 export function useCalendarEventsSummary(date, unit) {
-  const [events, loading] = useFetchCalendarEvents(
-    calendarEventsSummaryApi,
-    date,
-    unit,
-  );
-  return [events, loading];
+  return useFetchCalendarEvents(calendarEventsSummaryApi, date, unit);
 }
 
 /**
@@ -66,10 +57,13 @@ export function useCalendarEventsSummary(date, unit) {
  * @param {dayjs.OpUnitType} unit
  */
 export function useCalendarEvents(date, unit) {
-  const [events, loading] = useFetchCalendarEvents(
-    calendarEventsApi,
-    date,
-    unit,
-  );
-  return [events, loading];
+  return useFetchCalendarEvents(calendarEventsApi, date, unit);
+}
+
+export function useCalendarUserEventsSummary(date, unit) {
+  return useFetchCalendarEvents(calendarUserEventsSummaryApi, date, unit);
+}
+
+export function useCalendarUserEvents(date, unit) {
+  return useFetchCalendarEvents(calendarUserEventsApi, date, unit);
 }

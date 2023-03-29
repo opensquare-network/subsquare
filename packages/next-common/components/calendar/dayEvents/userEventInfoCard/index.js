@@ -3,10 +3,10 @@ import styled from "styled-components";
 import Divider from "../../../styled/layout/divider";
 import Title from "./title";
 import { useState } from "react";
-import BlockHeightItem from "./infoItem/blockHeight";
-import CouncilMotionContent from "./councilMotionContent";
-import DemocracyReferendumContent from "./democracyReferendumContent";
-import { FutureEventType } from "./futureEventType";
+import TitleItem from "../eventInfoCard/infoItem/titleItem";
+import ProposerItem from "../eventInfoCard/infoItem/proposerItem";
+import DescriptionItem from "../eventInfoCard/infoItem/descriptionItem";
+import LinkItem from "./infoItem/linkItem";
 
 const Wrapper = styled.div`
   display: flex;
@@ -32,24 +32,11 @@ const Content = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function FutureEventInfoCard({ event }) {
+export default function UserEventInfoCard({ event }) {
   const [isFolded, setIsFolded] = useState(false);
 
   if (!event) {
     return null;
-  }
-
-  let content = <BlockHeightItem blockHeight={event?.indexer?.blockHeight} />;
-
-  if ([FutureEventType.councilMotion].includes(event?.type)) {
-    content = <CouncilMotionContent event={event} />;
-  } else if (
-    [
-      FutureEventType.referendumDispatch,
-      FutureEventType.referendumVote,
-    ].includes(event?.type)
-  ) {
-    content = <DemocracyReferendumContent event={event} />;
   }
 
   return (
@@ -58,7 +45,14 @@ export default function FutureEventInfoCard({ event }) {
       {!isFolded && (
         <>
           <Divider style={{ width: "100%" }} />
-          <Content>{content}</Content>
+          <Content>
+            <TitleItem title={event.title} />
+            <ProposerItem proposer={event.proposer} />
+            {event.description && (
+              <DescriptionItem description={event.description} />
+            )}
+            {event.link && <LinkItem link={event.link} />}
+          </Content>
         </>
       )}
     </Wrapper>

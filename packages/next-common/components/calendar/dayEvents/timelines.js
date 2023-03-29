@@ -20,6 +20,9 @@ import {
 import EventInfoCard from "./eventInfoCard";
 import FutureEventInfoCard from "./futureEventInfoCard";
 import Loading from "../../loading";
+import { EventType } from "./eventInfoCard/utils";
+import { FutureEventType } from "./futureEventInfoCard/futureEventType";
+import UserEventInfoCard from "./userEventInfoCard";
 
 const TimeLineHour = styled.div`
   ${w(40)}
@@ -60,6 +63,16 @@ const NoData = styled.p`
   ${m(0)}
 `;
 
+function joinSortedEvents(events, userEvents, futureEvents) {
+  const allEvents = [...events, ...userEvents, ...futureEvents];
+  const sortedEvents = allEvents.sort((a, b) => {
+    const aTime = a.indexer?.blockTime || a.timestamp;
+    const bTime = b.indexer?.blockTime || b.timestamp;
+    return aTime - bTime;
+  });
+  return sortedEvents;
+}
+
 function Timeline({ children, hour }) {
   return (
     <TimelineWrapper>
@@ -74,6 +87,7 @@ function Timeline({ children, hour }) {
 
 export default function DayEventTimelines({
   events = [],
+  userEvents = [],
   futureEvents = [],
   loading,
 }) {
@@ -85,6 +99,18 @@ export default function DayEventTimelines({
       return {
         ...event,
         [eventInHourKey]: dayjs(event.indexer.blockTime).get("hour"),
+      };
+    }),
+    eventInHourKey,
+  );
+
+  const userEventInHourGroup = groupBy(
+    userEvents.map((event) => {
+      return {
+        ...event,
+        category: "User Event",
+        type: "userEvent",
+        [eventInHourKey]: dayjs(event.timestamp).get("hour"),
       };
     }),
     eventInHourKey,
@@ -108,7 +134,7 @@ export default function DayEventTimelines({
     );
   }
 
-  if (!events.length && !futureEvents.length) {
+  if (!events.length && !futureEvents.length && !userEvents.length) {
     return (
       <StatusWrapper>
         <NoData>No current events</NoData>
@@ -120,11 +146,18 @@ export default function DayEventTimelines({
     <div>
       {hrs.map((n) => (
         <Timeline key={n} hour={n}>
-          {eventInHourGroup[n]?.map((event) => {
-            return <EventInfoCard key={event._id} event={event} />;
-          })}
-          {futureEventInHourGroup[n]?.map((event, index) => {
-            return <FutureEventInfoCard key={index} event={event} />;
+          {joinSortedEvents(
+            eventInHourGroup[n] || [],
+            userEventInHourGroup[n] || [],
+            futureEventInHourGroup[n] || [],
+          ).map((event, index) => {
+            if (Object.values(EventType).includes(event.type)) {
+              return <EventInfoCard key={event._id} event={event} />;
+            }
+            if (Object.values(FutureEventType).includes(event.type)) {
+              return <FutureEventInfoCard key={index} event={event} />;
+            }
+            return <UserEventInfoCard key={event._id} event={event} />;
           })}
         </Timeline>
       ))}

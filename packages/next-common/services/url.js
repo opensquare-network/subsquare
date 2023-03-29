@@ -43,8 +43,12 @@ export const fellowshipReferendumsSummaryApi =
  */
 export const calendarEventsSummaryApi = "events/summary";
 
+export const calendarUserEventsSummaryApi = "events/user-events/summary";
+
 /**
  * `begin_time` `end_time`
  * get event detail
  */
 export const calendarEventsApi = "events";
+
+export const calendarUserEventsApi = "events/user-events";
