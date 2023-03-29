@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import styled from "styled-components";
-import PopupWithAddress from "../../../components/popupWithAddress";
+import Popup from "../../../components/popup/wrapper/Popup";
 import SecondaryButton from "../../buttons/secondaryButton";
 import noop from "lodash.noop";
 import Day from "./day";
@@ -62,6 +62,8 @@ function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
 
 export default function DateSelectModal(props) {
   return (
-    <PopupWithAddress title="Select Time" Component={PopupContent} {...props} />
+    <Popup title="Select Time" {...props}>
+      <PopupContent {...props} />
+    </Popup>
   );
 }
