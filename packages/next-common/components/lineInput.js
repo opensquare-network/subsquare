@@ -23,6 +23,7 @@ const Input = styled.input`
     css`
       background: ${(props) => props.theme.grey100Bg} !important;
     `}
+  background-color: rgba(0,0,0,0);
   color: ${(props) => props.theme.textPrimary};
 `;
 

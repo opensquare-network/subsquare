@@ -13,7 +13,7 @@ const Icon = styled(Flex)`
   min-height: 16px;
 
   > svg path {
-    stroke: ${(p) => p.theme.neutral};
+    stroke: ${(p) => p.theme.textContrast};
   }
 `;
 

@@ -23,7 +23,7 @@ const localizer = dayjsLocalizer(dayjs);
 
 const CalendarWrapper = styled.div`
   padding: 12px;
-  border: 1px solid #E0E4EB;
+  border: 1px solid ${p => p.theme.grey300Border};
   border-radius: 4px;
 
   .rbc-month-view {

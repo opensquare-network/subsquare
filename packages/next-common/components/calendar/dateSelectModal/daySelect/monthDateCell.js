@@ -26,12 +26,12 @@ const CellLabel = styled.span`
   ${(p) =>
     !p.isSameMonth &&
     css`
-      color: #9da9bb;
+      color: ${p => p.theme.textTertiary};
     `}
   ${(p) =>
     p.isPast &&
     css`
-      color: #d7dee8;
+      color: ${p => p.theme.textPlaceholder};
     `}
 `;
 
@@ -46,20 +46,20 @@ const CellWrapper = styled.div`
   ${cursor_pointer}
 
   &:hover {
-    background-color: #f6f7fa;
+    background-color: ${p => p.theme.grey100Bg};
   }
 
   ${(p) =>
     p.isToday &&
     css`
-      border: 1px solid #c2c8d5;
+      border: 1px solid ${p => p.theme.grey400Border};
       border-radius: 4px;
     `}
 
   ${(p) =>
     p.isSelectedDay &&
     css`
-      background-color: #ebeef4;
+      background-color: ${p => p.theme.grey200Border};
     `}
 `;
 
