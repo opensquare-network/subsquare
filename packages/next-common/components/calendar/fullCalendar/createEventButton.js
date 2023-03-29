@@ -17,9 +17,9 @@ const Icon = styled(Flex)`
   }
 `;
 
-export default function CreateEventButton({ onClick = noop }) {
+export default function CreateEventButton({ disabled, onClick = noop }) {
   return (
-    <PrimaryButton onClick={onClick}>
+    <PrimaryButton disabled={disabled} onClick={onClick}>
       <Icon>
         <AddSvg />
       </Icon>

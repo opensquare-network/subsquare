@@ -55,6 +55,7 @@ export default function Popup({
   onClose = emptyFunction,
   className,
   wide,
+  zIndex = 999,
 }) {
   const ref = useRef();
   useOnClickOutside(ref, () => onClose());
@@ -69,7 +70,7 @@ export default function Popup({
   });
 
   return (
-    <Background>
+    <Background zIndex={zIndex}>
       <Wrapper wide={wide} ref={ref} className={className}>
         {title && (
           <TopWrapper>

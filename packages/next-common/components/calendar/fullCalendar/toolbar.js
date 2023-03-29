@@ -21,6 +21,7 @@ import CreateEventButton from "./createEventButton";
 import noop from "lodash.noop";
 import { useUser } from "../../../context/user";
 import { OnlyDesktop } from "../../styled/responsive";
+import useAdmins from "../../../hooks/useAdmins";
 
 const ToolbarWrapper = styled.div`
   ${flex}
@@ -60,7 +61,9 @@ export default function FullCalendarToolbar({
   onCreateEvent = noop,
 }) {
   const user = useUser();
+  const admins = useAdmins();
   const address = user?.address;
+  const isAdmin = admins.includes(address);
 
   function gotoToday() {
     onNavigate("TODAY");
@@ -94,7 +97,7 @@ export default function FullCalendarToolbar({
           <OnlyDesktop>
             <Button onClick={gotoToday}>Today</Button>
           </OnlyDesktop>
-          {address && <CreateEventButton onClick={onCreateEvent} />}
+          {address && <CreateEventButton onClick={onCreateEvent} disabled={!isAdmin} />}
         </Flex>
       </ToolbarGroup>
 
