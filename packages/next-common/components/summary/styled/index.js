@@ -27,7 +27,7 @@ export const SummaryTitle = styled.div`
 `;
 
 export const SummaryGreyText = styled.span`
-  color: ${(props) => props.theme.textTertiary}; !important;
+  color: ${(props) => props.theme.textTertiary} !important;
 `;
 
 export const SummaryItemWrapper = styled.div`
@@ -52,6 +52,7 @@ export const Button = styled.div`
     p.disabled &&
     css`
       pointer-events: none;
+      opacity: 0.3;
     `}
 
   font-style: normal;
