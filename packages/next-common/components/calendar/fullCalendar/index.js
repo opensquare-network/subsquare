@@ -20,7 +20,10 @@ import timezone from "dayjs/plugin/timezone";
 import FullCalendarToolbar from "./toolbar";
 import FullCalendarMonthDateCell from "./monthDateCell";
 import noop from "lodash.noop";
-import { useCalendarEventsSummary } from "../../../hooks/calendar";
+import {
+  useCalendarEventsSummary,
+  useCalendarUserEventsSummary,
+} from "../../../hooks/calendar";
 import FullCalendarFooter from "./footer";
 import FullCalendarMonthHeader from "./monthHeader";
 import CreateEventModal from "../createEventModal";
@@ -88,6 +91,7 @@ export default function FullCalendar({
   futureEvents = [],
 }) {
   const [calendarEvents] = useCalendarEventsSummary(date, "month");
+  const [calendarUserEvents] = useCalendarUserEventsSummary(date, "month");
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
 
   function onNavigate(newDate) {
@@ -114,6 +118,7 @@ export default function FullCalendar({
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             calendarEvents={calendarEvents}
+            calendarUserEvents={calendarUserEvents}
             futureEvents={futureEvents}
           />
         );

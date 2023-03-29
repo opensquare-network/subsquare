@@ -129,6 +129,7 @@ export default function FullCalendarMonthDateCell({
   selectedDate,
   setSelectedDate,
   calendarEvents = [],
+  calendarUserEvents = [],
   futureEvents = [],
 }) {
   label = Number(label);
@@ -145,6 +146,20 @@ export default function FullCalendarMonthDateCell({
     const blockTime = event.indexer.blockTime;
     return day.isSame(blockTime, "day");
   });
+
+  const dayUserEvents = calendarUserEvents
+    .filter((event) => {
+      const timestamp = event.timestamp;
+      return day.isSame(timestamp, "day");
+    })
+    .map((item) => {
+      return {
+        ...item,
+        type: "userEvent",
+        category: "Others",
+        subCategory: "User Event",
+      };
+    });
 
   const dayFutureEvents = futureEvents
     .filter((event) => {
@@ -169,7 +184,10 @@ export default function FullCalendarMonthDateCell({
       };
     });
 
-  const eventsGroup = groupBy([...dayEvents, ...dayFutureEvents], "category");
+  const eventsGroup = groupBy(
+    [...dayEvents, ...dayUserEvents, ...dayFutureEvents],
+    "category",
+  );
   const categories = FULLCALENDAR_CATEGORIES.filter((category) =>
     Object.keys(eventsGroup).includes(category),
   );

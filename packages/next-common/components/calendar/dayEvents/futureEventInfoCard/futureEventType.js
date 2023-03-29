@@ -1,4 +1,4 @@
-export const FutureEventTypes = {
+export const FutureEventType = {
   councilElection: "councilElection",
   councilMotion: "councilMotion",
   democracyDispatch: "democracyDispatch",

@@ -56,6 +56,11 @@ const Parachain = styled(Common)`
   color: ${(props) => props.theme.secondaryGray500};
 `;
 
+const UserEvent = styled(Common)`
+  background: ${(props) => props.theme.secondaryGray100};
+  color: ${(props) => props.theme.secondaryGray500};
+`;
+
 export function TreasuryTag() {
   return <Treasury>Treasury</Treasury>;
 }
@@ -86,4 +91,8 @@ export function SocietyTag() {
 
 export function ParachainTag() {
   return <Parachain>Parachain</Parachain>;
+}
+
+export function UserEventTag() {
+  return <UserEvent>User Event</UserEvent>;
 }

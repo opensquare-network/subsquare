@@ -21,6 +21,7 @@ import {
   FULLCALENDAR_CATEGORY_SOCIETY,
   FULLCALENDAR_CATEGORY_STAKING,
   FULLCALENDAR_CATEGORY_TREASURY,
+  FULLCALENDAR_CATEGORY_USER,
 } from "./consts";
 
 const Wrapper = styled.div`
@@ -64,6 +65,7 @@ export default function FullCalendarFooter() {
       <span>{FULLCALENDAR_CATEGORY_SCHEDULER}</span>
       <span>{FULLCALENDAR_CATEGORY_STAKING}</span>
       <span>{FULLCALENDAR_CATEGORY_SOCIETY}</span>
+      <span>{FULLCALENDAR_CATEGORY_USER}</span>
     </div>
   );
 
