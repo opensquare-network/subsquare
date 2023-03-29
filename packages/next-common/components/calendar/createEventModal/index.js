@@ -9,10 +9,11 @@ import Description from "./description";
 import SecondaryButton from "../../buttons/secondaryButton";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import { newErrorToast } from "../../../store/reducers/toastSlice";
+import { newErrorToast, newSuccessToast } from "../../../store/reducers/toastSlice";
 import StartDate from "./startDate";
 import DateSelectModal from "../dateSelectModal";
 import noop from "lodash.noop";
+import { calendarUserEventsApi } from "../../../services/url";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
   const [showDateSelectModal, setShowDateSelectModal] = useState(false);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showSuccessToast = (message) => dispatch(newSuccessToast(message));
 
   const submit = useCallback(async () => {
     if (!title) {
@@ -55,7 +57,7 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
     setIsLoading(true);
     try {
       const { result, error } = await nextApi.post(
-        "events",
+        calendarUserEventsApi,
         {
           title,
           link,
@@ -74,6 +76,7 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
       }
 
       if (result) {
+        showSuccessToast("Event created.");
         onClose();
         refresh();
       }

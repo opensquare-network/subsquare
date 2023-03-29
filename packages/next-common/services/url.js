@@ -43,7 +43,7 @@ export const fellowshipReferendumsSummaryApi =
  */
 export const calendarEventsSummaryApi = "events/summary";
 
-export const calendarUserEventsSummaryApi = "events/byuser/summary";
+export const calendarUserEventsSummaryApi = "events/user-events/summary";
 
 /**
  * `begin_time` `end_time`
@@ -51,4 +51,4 @@ export const calendarUserEventsSummaryApi = "events/byuser/summary";
  */
 export const calendarEventsApi = "events";
 
-export const calendarUserEventsApi = "events/byuser";
+export const calendarUserEventsApi = "events/user-events";
