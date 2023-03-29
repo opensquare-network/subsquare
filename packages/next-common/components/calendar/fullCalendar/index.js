@@ -90,6 +90,7 @@ export default function FullCalendar({
   setSelectedDate = noop,
   futureEvents = [],
   refreshDayUserEvents = noop,
+  admins,
 }) {
   const [calendarEvents] = useCalendarEventsSummary(date, "month");
   const [calendarUserEvents, , refreshUserEvents] =
@@ -108,6 +109,7 @@ export default function FullCalendar({
           {...props}
           setSelectedDate={setSelectedDate}
           onCreateEvent={() => setShowCreateEventModal(true)}
+          admins={admins}
         />
       );
     },

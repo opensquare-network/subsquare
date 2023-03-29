@@ -5,6 +5,7 @@ import AddSvg from "./add.svg";
 import styled from "styled-components";
 import { OnlyDesktop } from "../../styled/responsive";
 import Flex from "../../styled/flex";
+import Tooltip from "next-common/components/tooltip";
 
 const Icon = styled(Flex)`
   display: flex;
@@ -19,13 +20,17 @@ const Icon = styled(Flex)`
 
 export default function CreateEventButton({ disabled, onClick = noop }) {
   return (
-    <PrimaryButton disabled={disabled} onClick={onClick}>
-      <Icon>
-        <AddSvg />
-      </Icon>
-      <OnlyDesktop>
-        <span>Create Event</span>
-      </OnlyDesktop>
-    </PrimaryButton>
+    <Tooltip content={disabled ? "Only admins can create events" : ""}>
+      <div>
+        <PrimaryButton disabled={disabled} onClick={onClick}>
+          <Icon>
+            <AddSvg />
+          </Icon>
+          <OnlyDesktop>
+            <span>Create Event</span>
+          </OnlyDesktop>
+        </PrimaryButton>
+      </div>
+    </Tooltip>
   );
 }

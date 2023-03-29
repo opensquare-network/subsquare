@@ -52,3 +52,5 @@ export const calendarUserEventsSummaryApi = "events/user-events/summary";
 export const calendarEventsApi = "events";
 
 export const calendarUserEventsApi = "events/user-events";
+
+export const adminsApi = "admins";
