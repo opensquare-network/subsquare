@@ -1,4 +1,4 @@
-import { parseGov2TrackName } from "../../gov2";
+import startCase from "lodash.startcase";
 
 export default function getTreasuryProposalTitle(item) {
   let title = item.title?.trim();
@@ -8,7 +8,7 @@ export default function getTreasuryProposalTitle(item) {
 
   const trackName = item?.onchainData?.track?.name;
   if (trackName) {
-    const parsedTrackName = parseGov2TrackName(trackName);
+    const parsedTrackName = startCase(trackName);
     return `[${parsedTrackName}] Referendum #${item?.onchainData?.gov2Referendum}`;
   }
 

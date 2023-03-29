@@ -8,7 +8,7 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
-import { parseGov2TrackName } from "next-common/utils/gov2";
+import startCase from "lodash.startcase";
 import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 import { to404 } from "next-common/utils/serverSideUtil";
@@ -64,7 +64,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "Referenda " + parseGov2TrackName(track.name),
+      title: "Referenda " + startCase(track.name),
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},

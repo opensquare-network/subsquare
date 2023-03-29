@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { p_12_medium } from "../../styles/componentCss";
-import { parseGov2TrackName } from "../../utils/gov2";
+import startCase from "lodash.startcase";
 
 const Tag = styled.span`
   padding: 2px 8px;
@@ -21,7 +21,7 @@ export default function Gov2TrackTag({ name = "" }) {
 
   return (
     <Tag fg={trackColor[name]?.fg} bg={trackColor[name]?.bg}>
-      {parseGov2TrackName(name)}
+      {startCase(name)}
     </Tag>
   );
 }

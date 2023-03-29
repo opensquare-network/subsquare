@@ -13,7 +13,7 @@ import {
 } from "next-common/components/styled/table";
 import { Fragment } from "react";
 import Loading from "next-common/components/loading";
-import { parseGov2TrackName } from "next-common/utils/gov2";
+import startCase from "lodash.startcase";
 import ValueDisplay from "../../valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
@@ -31,7 +31,7 @@ function TrackItem({ track, onClick = noop }) {
     <TrackItemWrapper onClick={onClick}>
       <Flex gap={8}>
         {TrackIconMap[track?.id]}
-        {parseGov2TrackName(track?.name)}
+        {startCase(track?.name)}
       </Flex>
     </TrackItemWrapper>
   );

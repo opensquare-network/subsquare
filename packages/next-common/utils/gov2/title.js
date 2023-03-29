@@ -1,4 +1,4 @@
-import { parseGov2TrackName } from ".";
+import startCase from "lodash.startcase";
 
 export function getGov2ReferendumTitle(detail) {
   const title = detail?.title?.trim();
@@ -7,7 +7,7 @@ export function getGov2ReferendumTitle(detail) {
   }
 
   const trackName = detail?.onchainData?.trackInfo?.name;
-  const parsedTrackName = parseGov2TrackName(trackName);
+  const parsedTrackName = startCase(trackName);
   return `[${parsedTrackName}] Referendum #${detail?.referendumIndex}`;
 }
 
@@ -18,6 +18,6 @@ export function getGov2TreasuryProposalTitle(detail) {
   }
 
   const trackName = detail?.onchainData?.track?.name;
-  const parsedTrackName = parseGov2TrackName(trackName);
+  const parsedTrackName = startCase(trackName);
   return `[${parsedTrackName}] Referendum #${detail?.onchainData?.gov2Referendum}`;
 }

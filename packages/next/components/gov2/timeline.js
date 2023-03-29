@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import User from "next-common/components/user";
-import { parseGov2TrackName } from "next-common/utils/gov2";
+import startCase from "lodash.startcase";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
@@ -12,7 +12,7 @@ const getTimelineData = (args, method, trackInfo) => {
     case "Submitted": {
       return {
         Proposer: <User add={args.proposer} />,
-        Track: parseGov2TrackName(trackInfo.name),
+        Track: startCase(trackInfo.name),
         "Proposal Hash":
           args.proposal?.legacy?.hash || args.proposal?.lookup?.hash || args.proposalHash,
       };

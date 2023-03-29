@@ -3,7 +3,7 @@ import Breadcrumb from "../_Breadcrumb";
 import BreadcrumbWrapper, {
   BreadcrumbHideOnMobileText,
 } from "../detail/common/BreadcrumbWrapper";
-import { parseGov2TrackName } from "../../utils/gov2";
+import startCase from "lodash.startcase";
 import { useTrack } from "../../context/post/gov2/track";
 import { usePost } from "../../context/post";
 
@@ -15,7 +15,7 @@ function getBreadcrumbItems(track = {}, referendumIndex) {
     },
     {
       path: `/referenda/track/${track.id}`,
-      content: parseGov2TrackName(track.name),
+      content: startCase(track.name),
     },
     {
       content: (
