@@ -181,16 +181,16 @@ function MenuGroup({ menu, defaultExpanded }) {
   const expandedMenus = useHomeExpandedMenus();
   const hasMenuItems = !!menu?.items?.length;
 
-  const initExpandedValue = !isNil(expandedMenus[menu.name])
+  const expandedValue = !isNil(expandedMenus[menu.name])
     ? expandedMenus[menu.name]
     : defaultExpanded;
 
-  const [expanded, setExpanded] = useState(initExpandedValue);
+  const [expanded, setExpanded] = useState(expandedValue);
   const collapsed = useMemo(() => !expanded, [expanded]);
 
   useEffect(() => {
     if (hasMenuItems) {
-      setExpanded(initExpandedValue);
+      setExpanded(expandedValue);
     } else {
       setExpanded(false);
     }
