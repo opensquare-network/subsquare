@@ -10,7 +10,11 @@ import { smcss } from "next-common/utils/responsive";
 import useScheduled from "next-common/hooks/useScheduled";
 import { useCalendarUserEvents } from "next-common/hooks/calendar";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import {
+  adminsApi,
+  fellowshipTracksApi,
+  gov2TracksApi,
+} from "next-common/services/url";
 
 const Wrapper = styled.div`
   ${flex}
@@ -19,7 +23,7 @@ const Wrapper = styled.div`
   ${smcss(m_x(16))}
 `;
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
+export default withLoginUserRedux(({ tracks, fellowshipTracks, admins }) => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
   const futureEvents = useScheduled();
@@ -39,6 +43,7 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
           setSelectedDate={setSelectedDate}
           futureEvents={futureEvents}
           refreshDayUserEvents={refreshDayUserEvents}
+          admins={admins}
         />
 
         {/* events component */}
@@ -59,10 +64,13 @@ export const getServerSideProps = withLoginUser(async () => {
     nextApi.fetch(fellowshipTracksApi),
   ]);
 
+  const { result: admins } = await nextApi.fetch(adminsApi);
+
   return {
     props: {
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
+      admins: admins ?? [],
     },
   };
 });
