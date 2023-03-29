@@ -2,7 +2,6 @@ import React, { createContext, useContext, useReducer } from "react";
 import { emptyFunction } from "../../utils";
 import { setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY } from "../../utils/constants";
-import { allHomeMenuNames } from "../../utils/consts/menu";
 
 export const EXPANDED_MENUS_UPDATE_ACTION = "UPDATE";
 
@@ -10,17 +9,17 @@ const HomeExpandedMenusContext = createContext(null);
 const SettingsDispatchContext = createContext(emptyFunction);
 
 export default function SettingsProvider({ homeExpandedMenus = "", children }) {
-  let items;
+  let expandedMenus = {};
   try {
-    items = homeExpandedMenus
-      .split("|")
-      .map(decodeURIComponent)
-      .filter((item) => allHomeMenuNames.includes(item));
-  } catch (e) {
-    items = [];
+    expandedMenus = JSON.parse(decodeURIComponent(homeExpandedMenus));
+  } catch (_) {
+    /* empty */
   }
 
-  const [initialItems, dispatch] = useReducer(expandedMenusReducer, items);
+  const [initialItems, dispatch] = useReducer(
+    expandedMenusReducer,
+    expandedMenus,
+  );
 
   return (
     <HomeExpandedMenusContext.Provider value={initialItems}>
@@ -39,16 +38,16 @@ export function useSettingsDispatch() {
   return useContext(SettingsDispatchContext);
 }
 
-function expandedMenusReducer(items = [], action) {
+function expandedMenusReducer(expandedMenus = {}, action) {
   if (action.type === EXPANDED_MENUS_UPDATE_ACTION) {
-    const { item, expanded } = action.payload;
-    let result;
-    if (expanded) {
-      result = [...items, item];
-    } else {
-      result = items.filter((i) => i !== item);
-    }
-    setCookie(CACHE_KEY.homeExpandedMenus, result.join("|"));
+    const { menu, expanded } = action.payload;
+
+    const result = {
+      ...expandedMenus,
+      [menu]: expanded,
+    };
+
+    setCookie(CACHE_KEY.homeExpandedMenus, JSON.stringify(result));
 
     return result;
   }
@@ -56,11 +55,11 @@ function expandedMenusReducer(items = [], action) {
   throw new Error(`Unknown expand menus action: ${action.type}`);
 }
 
-export function updateHomeExpandedMenus(item, expanded = true, dispatch) {
+export function updateHomeExpandedMenus(menu, expanded = true, dispatch) {
   dispatch({
     type: EXPANDED_MENUS_UPDATE_ACTION,
     payload: {
-      item,
+      menu,
       expanded,
     },
   });
