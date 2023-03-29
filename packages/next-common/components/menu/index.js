@@ -24,6 +24,8 @@ import {
   text_tertiary,
   theme,
 } from "../../styles/tailwindcss";
+import { getHomeMenuGroupDefaultBehaviorByCounts } from "../../utils/consts/menu";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -172,19 +174,23 @@ function defaultItemRender(icon, name, activeCount, isExternalLink) {
   );
 }
 
-function MenuGroup({ menu }) {
+function MenuGroup({ menu, defaultExpand }) {
   const chain = useChain();
   const router = useRouter();
   const dispatch = useSettingsDispatch();
   const expandedMenus = useHomeExpandedMenus();
   const hasMenuItems = !!menu?.items?.length;
 
-  const [expanded, setExpanded] = useState(expandedMenus.includes(menu.name));
+  const initExpandedValue = !isNil(expandedMenus[menu.name])
+    ? expandedMenus[menu.name]
+    : defaultExpand;
+
+  const [expanded, setExpanded] = useState(initExpandedValue);
   const collapsed = useMemo(() => !expanded, [expanded]);
 
   useEffect(() => {
     if (hasMenuItems) {
-      setExpanded(expandedMenus.includes(menu.name));
+      setExpanded(initExpandedValue);
     } else {
       setExpanded(false);
     }
@@ -258,8 +264,17 @@ function MenuGroup({ menu }) {
   );
 }
 
-export default function Menu({ menu }) {
+export default function Menu({ menu = [] }) {
   const chain = useChain();
+
+  const excludedChainsMenu = menu.filter(
+    (m) => !m?.excludeToChains?.includes(chain),
+  );
+
+  const defaultExpand =
+    getHomeMenuGroupDefaultBehaviorByCounts(
+      excludedChainsMenu.filter((m) => m.name && m.items?.length).length,
+    ) === "expand";
 
   return (
     <Wrapper>
@@ -271,7 +286,9 @@ export default function Menu({ menu }) {
             return null;
           }
 
-          return <MenuGroup key={index} menu={menu} />;
+          return (
+            <MenuGroup key={index} menu={menu} defaultExpand={defaultExpand} />
+          );
         })}
       </MenuWrapper>
     </Wrapper>
