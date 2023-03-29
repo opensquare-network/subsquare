@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "release-*"]
+  pull_request:
+    branches: ["main", "release-*"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Yarn install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+
+      - name: Run lint
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: lint
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Yarn install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+
+      - name: Build next
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: workspace @subsquare/next build
+
+      - name: Build kintsugi next
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: workspace @subsquare/kintsugi-next build
