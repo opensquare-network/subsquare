@@ -174,7 +174,7 @@ function defaultItemRender(icon, name, activeCount, isExternalLink) {
   );
 }
 
-function MenuGroup({ menu, defaultExpand }) {
+function MenuGroup({ menu, defaultExpanded }) {
   const chain = useChain();
   const router = useRouter();
   const dispatch = useSettingsDispatch();
@@ -183,7 +183,7 @@ function MenuGroup({ menu, defaultExpand }) {
 
   const initExpandedValue = !isNil(expandedMenus[menu.name])
     ? expandedMenus[menu.name]
-    : defaultExpand;
+    : defaultExpanded;
 
   const [expanded, setExpanded] = useState(initExpandedValue);
   const collapsed = useMemo(() => !expanded, [expanded]);
@@ -271,7 +271,7 @@ export default function Menu({ menu = [] }) {
     (m) => !m?.excludeToChains?.includes(chain),
   );
 
-  const defaultExpand =
+  const defaultExpanded =
     getHomeMenuGroupDefaultBehaviorByCounts(
       excludedChainsMenu.filter((m) => m.name && m.items?.length).length,
     ) === "expand";
@@ -287,7 +287,11 @@ export default function Menu({ menu = [] }) {
           }
 
           return (
-            <MenuGroup key={index} menu={menu} defaultExpand={defaultExpand} />
+            <MenuGroup
+              key={index}
+              menu={menu}
+              defaultExpanded={defaultExpanded}
+            />
           );
         })}
       </MenuWrapper>
