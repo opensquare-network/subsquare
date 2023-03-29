@@ -33,6 +33,6 @@ export const allHomeMenuNames = getHomeMenu()
  * @returns {'collapse' | 'expand'}
  * @description gt 3 collapse, otherwise expand
  */
-export function getHomeMenuDefaultBehaviorByGroupCounts(counts = 0) {
+export function getHomeMenuGroupDefaultBehaviorByCounts(counts = 3) {
   return counts > 3 ? "collapse" : "expand";
 }
