@@ -30,9 +30,20 @@ function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
     });
   }, []);
 
+  const onDayChange = useCallback((selectedDate) => {
+    setDate((date) => {
+      const oldDate = dayjs(date);
+      const newDate = dayjs(selectedDate)
+        .set("hour", oldDate.hour())
+        .set("minute", oldDate.minute())
+        .toDate();
+      return newDate;
+    });
+  }, []);
+
   return (
     <>
-      <Day date={date} setDate={setDate} />
+      <Day date={date} setDate={onDayChange} />
       <Time defaultHour={hour} defaultMinute={minute} onChange={onTimeChange} />
 
       <ButtonWrapper>

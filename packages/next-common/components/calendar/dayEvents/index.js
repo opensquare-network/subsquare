@@ -21,10 +21,7 @@ import {
 } from "../../../styles/componentCss";
 import Divider from "../../styled/layout/divider";
 import DayEventTimelines from "./timelines";
-import {
-  useCalendarEvents,
-  useCalendarUserEvents,
-} from "../../../hooks/calendar";
+import { useCalendarEvents } from "../../../hooks/calendar";
 
 dayjs.extend(advancedFormat);
 
@@ -48,12 +45,13 @@ const TitleDate = styled.small`
   ${text_tertiary}
 `;
 
-export default function DayEvents({ selectedDate, futureEvents = [] }) {
+export default function DayEvents({
+  selectedDate,
+  futureEvents = [],
+  dayUserEvents = [],
+  loadingDayUserEvents,
+}) {
   const [dayEvents, loading] = useCalendarEvents(selectedDate, "day");
-  const [dayUserEvents, loadingUserEvents] = useCalendarUserEvents(
-    selectedDate,
-    "day",
-  );
   const dayFutureEvents = futureEvents.filter((event) => {
     return dayjs(event.indexer.blockTime).isSame(selectedDate, "day");
   });
@@ -70,8 +68,8 @@ export default function DayEvents({ selectedDate, futureEvents = [] }) {
       <DayEventTimelines
         events={dayEvents}
         userEvents={dayUserEvents}
-        loading={loading || loadingUserEvents}
         futureEvents={dayFutureEvents}
+        loading={loading || loadingDayUserEvents}
       />
     </Wrapper>
   );

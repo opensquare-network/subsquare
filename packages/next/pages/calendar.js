@@ -8,6 +8,7 @@ import DayEvents from "next-common/components/calendar/dayEvents";
 import { useState } from "react";
 import { smcss } from "next-common/utils/responsive";
 import useScheduled from "next-common/hooks/useScheduled";
+import { useCalendarUserEvents } from "next-common/hooks/calendar";
 
 const Wrapper = styled.div`
   ${flex}
@@ -20,6 +21,8 @@ export default withLoginUserRedux(() => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
   const futureEvents = useScheduled();
+  const [dayUserEvents, loadingDayUserEvents, refreshDayUserEvents] =
+    useCalendarUserEvents(selectedDate, "day");
 
   return (
     <HomeLayout>
@@ -33,10 +36,16 @@ export default withLoginUserRedux(() => {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           futureEvents={futureEvents}
+          refreshDayUserEvents={refreshDayUserEvents}
         />
 
         {/* events component */}
-        <DayEvents selectedDate={selectedDate} futureEvents={futureEvents} />
+        <DayEvents
+          selectedDate={selectedDate}
+          futureEvents={futureEvents}
+          dayUserEvents={dayUserEvents}
+          loadingDayUserEvents={loadingDayUserEvents}
+        />
       </Wrapper>
     </HomeLayout>
   );

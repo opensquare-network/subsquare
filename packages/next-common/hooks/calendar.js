@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   calendarEventsApi,
   calendarEventsSummaryApi,
@@ -22,26 +22,26 @@ function useFetchCalendarEvents(endpoint, date, unit) {
   const end_time = d.endOf(unit).valueOf();
   const cachedKey = `${endpoint}_${begin_time}_${end_time}_${unit}`;
 
+  const refresh = useCallback(async () => {
+    const { result } = await nextApi.fetch(endpoint, { begin_time, end_time });
+    if (result) {
+      setCachedEvents({
+        ...cachedEvents,
+        [cachedKey]: result,
+      });
+    }
+  }, [begin_time, end_time, cachedKey]);
+
   useEffect(() => {
     if (isMounted.current) {
       setLoading(true);
-      nextApi
-        .fetch(endpoint, { begin_time, end_time })
-        .then(({ result }) => {
-          if (result) {
-            setCachedEvents({
-              ...cachedEvents,
-              [cachedKey]: result,
-            });
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      refresh().finally(() => {
+        setLoading(false);
+      });
     }
-  }, [isMounted, begin_time, end_time, cachedKey]);
+  }, [isMounted, refresh]);
 
-  return [cachedEvents[cachedKey], loading];
+  return [cachedEvents[cachedKey], loading, refresh];
 }
 
 /**
@@ -49,12 +49,7 @@ function useFetchCalendarEvents(endpoint, date, unit) {
  * @param {dayjs.OpUnitType} unit
  */
 export function useCalendarEventsSummary(date, unit) {
-  const [events, loading] = useFetchCalendarEvents(
-    calendarEventsSummaryApi,
-    date,
-    unit,
-  );
-  return [events, loading];
+  return useFetchCalendarEvents(calendarEventsSummaryApi, date, unit);
 }
 
 /**
@@ -62,28 +57,13 @@ export function useCalendarEventsSummary(date, unit) {
  * @param {dayjs.OpUnitType} unit
  */
 export function useCalendarEvents(date, unit) {
-  const [events, loading] = useFetchCalendarEvents(
-    calendarEventsApi,
-    date,
-    unit,
-  );
-  return [events, loading];
+  return useFetchCalendarEvents(calendarEventsApi, date, unit);
 }
 
 export function useCalendarUserEventsSummary(date, unit) {
-  const [events, loading] = useFetchCalendarEvents(
-    calendarUserEventsSummaryApi,
-    date,
-    unit,
-  );
-  return [events, loading];
+  return useFetchCalendarEvents(calendarUserEventsSummaryApi, date, unit);
 }
 
 export function useCalendarUserEvents(date, unit) {
-  const [events, loading] = useFetchCalendarEvents(
-    calendarUserEventsApi,
-    date,
-    unit,
-  );
-  return [events, loading];
+  return useFetchCalendarEvents(calendarUserEventsApi, date, unit);
 }

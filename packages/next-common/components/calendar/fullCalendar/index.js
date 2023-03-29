@@ -89,9 +89,11 @@ export default function FullCalendar({
   selectedDate,
   setSelectedDate = noop,
   futureEvents = [],
+  refreshDayUserEvents = noop,
 }) {
   const [calendarEvents] = useCalendarEventsSummary(date, "month");
-  const [calendarUserEvents] = useCalendarUserEventsSummary(date, "month");
+  const [calendarUserEvents, , refreshUserEvents] =
+    useCalendarUserEventsSummary(date, "month");
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
 
   function onNavigate(newDate) {
@@ -140,7 +142,13 @@ export default function FullCalendar({
       </CalendarWrapper>
       <FullCalendarFooter />
       {showCreateEventModal && (
-        <CreateEventModal onClose={() => setShowCreateEventModal(false)} />
+        <CreateEventModal
+          onClose={() => setShowCreateEventModal(false)}
+          refresh={() => {
+            refreshUserEvents();
+            refreshDayUserEvents();
+          }}
+        />
       )}
     </Wrapper>
   );

@@ -12,13 +12,14 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../../store/reducers/toastSlice";
 import StartDate from "./startDate";
 import DateSelectModal from "../dateSelectModal";
+import noop from "lodash.noop";
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
 
-function PopupContent({ extensionAccounts, onClose }) {
+function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount(extensionAccounts);
   const [title, setTitle] = useState("");
@@ -74,6 +75,7 @@ function PopupContent({ extensionAccounts, onClose }) {
 
       if (result) {
         onClose();
+        refresh();
       }
     } finally {
       setIsLoading(false);
