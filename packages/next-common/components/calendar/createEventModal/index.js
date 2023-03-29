@@ -38,10 +38,6 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
       return showErrorToast("Please fill the title.");
     }
 
-    if (!link) {
-      return showErrorToast("Please fill the link.");
-    }
-
     if (!description) {
       return showErrorToast("Please fill the description.");
     }
