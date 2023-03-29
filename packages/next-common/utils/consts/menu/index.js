@@ -27,3 +27,12 @@ export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
 export const allHomeMenuNames = getHomeMenu()
   .map((menu) => menu.name)
   .filter(Boolean);
+
+/**
+ * @param {number} counts
+ * @returns {'collapse' | 'expand'}
+ * @description gt 3 collapse, otherwise expand
+ */
+export function getHomeMenuDefaultBehaviorByGroupCounts(counts = 0) {
+  return counts > 3 ? "collapse" : "expand";
+}
