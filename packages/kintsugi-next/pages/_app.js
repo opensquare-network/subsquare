@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }) {
 
   const {
     loginUser,
-    homeFoldedMenus,
+    homeExpandedMenus,
     themeMode,
     pageProperties,
     ...otherProps
@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }) {
       <GlobalProvider
         user={loginUser}
         chain={process.env.NEXT_PUBLIC_CHAIN}
-        homeFoldedMenus={homeFoldedMenus}
+        homeExpandedMenus={homeExpandedMenus}
         themeMode={themeMode}
         pageProperties={pageProperties}
       >

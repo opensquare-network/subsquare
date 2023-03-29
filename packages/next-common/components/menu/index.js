@@ -1,5 +1,5 @@
 import styled, { css, useTheme } from "styled-components";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ExternalLink from "../icons/externalLink";
@@ -9,12 +9,21 @@ import { useChain } from "../../context/chain";
 import MenuUnFoldIcon from "../icons/menuUnFold";
 import MenuFoldIcon from "../icons/menuFold";
 import {
-  updateHomeFoldItems,
-  useHomeFoldMenus,
+  updateHomeExpandedMenus,
+  useHomeExpandedMenus,
   useSettingsDispatch,
 } from "../../context/settings";
 import NavigationCMDK from "../cmdk/navigationCMDK";
-import { space_y } from "../../styles/tailwindcss";
+import {
+  cursor_pointer,
+  inline_flex,
+  items_center,
+  m_r,
+  space_y,
+  text_secondary,
+  text_tertiary,
+  theme,
+} from "../../styles/tailwindcss";
 
 const Wrapper = styled.div`
   padding-top: 41px;
@@ -30,18 +39,40 @@ const MenuWrapper = styled.div`
 
 const TitleActiveCount = styled.span`
   letter-spacing: 0;
-  margin-left: 8px;
-  ${p_12_medium};
-  line-height: 12px;
+  margin-left: 4px;
+  &::before {
+    content: "·";
+    margin-right: 4px;
+  }
 `;
 
 const Title = styled.div`
-  color: ${(props) => props.theme.textTertiary};
   letter-spacing: 0.16em;
   ${p_12_bold};
 `;
 const TitleGroup = styled(Flex)`
   padding: 12px 0;
+  ${cursor_pointer};
+  ${text_tertiary};
+
+  &:hover {
+    ${text_secondary};
+  }
+
+  ${MenuFoldIcon},
+  ${MenuUnFoldIcon} {
+    path {
+      stroke: ${theme("textTertiary")};
+    }
+  }
+  &:hover {
+    ${MenuFoldIcon},
+    ${MenuUnFoldIcon} {
+      path {
+        stroke: ${theme("textSecondary")};
+      }
+    }
+  }
 `;
 
 const ItemActiveCount = styled.span`
@@ -114,26 +145,16 @@ const Item = styled.div`
 
 const ItemGroup = styled.div`
   ${(p) =>
-    p.folded &&
+    p.collapsed &&
     css`
       display: none;
     `}
 `;
 
-const FoldableButton = styled.button`
-  background: none;
-  margin-right: 8px;
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 0;
-
-  ${(p) =>
-    p.disabled &&
-    css`
-      pointer-events: none;
-    `}
+const MenuExpandOrCollapseIconWrapper = styled.span`
+  ${m_r(8)};
+  ${inline_flex};
+  ${items_center};
 `;
 
 function defaultItemRender(icon, name, activeCount, isExternalLink) {
@@ -151,53 +172,48 @@ function defaultItemRender(icon, name, activeCount, isExternalLink) {
   );
 }
 
-function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
+function MenuGroup({ menu }) {
   const chain = useChain();
   const router = useRouter();
   const dispatch = useSettingsDispatch();
-  const foldedMenus = useHomeFoldMenus();
+  const expandedMenus = useHomeExpandedMenus();
   const hasMenuItems = !!menu?.items?.length;
 
-  const resolvedMenuName = foldablePrefix + menu.name;
+  const [expanded, setExpanded] = useState(expandedMenus.includes(menu.name));
+  const collapsed = useMemo(() => !expanded, [expanded]);
 
-  const [folded, setFolded] = useState(foldedMenus.includes(resolvedMenuName));
   useEffect(() => {
     if (hasMenuItems) {
-      setFolded(foldedMenus.includes(resolvedMenuName));
+      setExpanded(expandedMenus.includes(menu.name));
     } else {
-      setFolded(true);
+      setExpanded(false);
     }
   }, []);
 
-  function handleFoldMenu(name) {
-    const v = !folded;
-    setFolded(v);
-    updateHomeFoldItems(name, v, dispatch);
+  function toggleExpandMenu() {
+    const v = collapsed;
+    setExpanded(v);
+    updateHomeExpandedMenus(menu.name, v, dispatch);
   }
 
   return (
     <div>
       {menu.name && (
-        <TitleGroup>
-          {foldable && (
-            <FoldableButton
-              disabled={!menu?.items?.length}
-              onClick={() => handleFoldMenu(resolvedMenuName)}
-            >
-              {folded ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
-            </FoldableButton>
-          )}
+        <TitleGroup role="button" onClick={toggleExpandMenu}>
+          <MenuExpandOrCollapseIconWrapper>
+            {collapsed ? <MenuFoldIcon /> : <MenuUnFoldIcon />}
+          </MenuExpandOrCollapseIconWrapper>
 
           <Title>
             {menu.name}
-            {folded && !!menu.activeCount && (
+            {collapsed && !!menu.activeCount && (
               <TitleActiveCount>{menu.activeCount}</TitleActiveCount>
             )}
           </Title>
         </TitleGroup>
       )}
 
-      <ItemGroup folded={menu.name && folded}>
+      <ItemGroup collapsed={menu.name && collapsed}>
         {menu.items.map((item, index) => {
           const isExternalLink = (item.pathname || "").startsWith("http");
 
@@ -242,7 +258,7 @@ function MenuGroup({ menu, foldable, foldablePrefix = "" }) {
   );
 }
 
-export default function Menu({ menu, foldable = true, foldablePrefix = "" }) {
+export default function Menu({ menu }) {
   const chain = useChain();
 
   return (
@@ -255,14 +271,7 @@ export default function Menu({ menu, foldable = true, foldablePrefix = "" }) {
             return null;
           }
 
-          return (
-            <MenuGroup
-              key={index}
-              menu={menu}
-              foldable={foldable}
-              foldablePrefix={foldablePrefix}
-            />
-          );
+          return <MenuGroup key={index} menu={menu} />;
         })}
       </MenuWrapper>
     </Wrapper>

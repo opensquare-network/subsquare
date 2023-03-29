@@ -5,26 +5,25 @@ import council from "./council";
 import techComm from "./tc";
 import financialCouncil from "./financilCouncil";
 import advisoryCommittee from "./advisoryCouncil";
-import { gov2EntryMenu } from "./gov2";
 import alliance from "./alliance";
+import { getReferendaMenu } from "./referenda";
+import { getFellowshipMenu } from "./fellowship";
 
-const homeMenus = [
-  commonMenus,
-  gov2EntryMenu,
-  democracy,
-  treasury,
-  council,
-  techComm,
-  financialCouncil,
-  advisoryCommittee,
-  alliance,
-];
+export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
+  return [
+    commonMenus,
+    getReferendaMenu(tracks),
+    getFellowshipMenu(fellowshipTracks),
+    democracy,
+    treasury,
+    council,
+    techComm,
+    financialCouncil,
+    advisoryCommittee,
+    alliance,
+  ];
+}
 
-export const allHomeMenuNames = homeMenus.reduce((result, menu) => {
-  if (menu.name) {
-    return [...result, menu.name];
-  }
-  return result;
-}, []);
-
-export default homeMenus;
+export const allHomeMenuNames = getHomeMenu()
+  .map((menu) => menu.name)
+  .filter(Boolean);

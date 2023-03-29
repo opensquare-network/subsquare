@@ -3,74 +3,65 @@ import { emptyFunction } from "../../utils";
 import { setCookie } from "../../utils/viewfuncs/cookies";
 import { CACHE_KEY } from "../../utils/constants";
 import { allHomeMenuNames } from "../../utils/consts/menu";
-import {
-  allGov2HomeMenuNames,
-  gov2MenuFoldablePrefix,
-} from "../../utils/consts/menu/gov2";
 
-export const FOLD_ITEMS_UPDATE_ACTION = "UPDATE";
+export const EXPANDED_MENUS_UPDATE_ACTION = "UPDATE";
 
-const HomeFoldItemsContext = createContext(null);
+const HomeExpandedMenusContext = createContext(null);
 const SettingsDispatchContext = createContext(emptyFunction);
 
-export default function SettingsProvider({ homeFoldItems = "", children }) {
+export default function SettingsProvider({ homeExpandedMenus = "", children }) {
   let items;
   try {
-    items = homeFoldItems
+    items = homeExpandedMenus
       .split("|")
       .map(decodeURIComponent)
-      .filter((item) =>
-        [
-          ...allHomeMenuNames,
-          ...allGov2HomeMenuNames.map((name) => gov2MenuFoldablePrefix + name),
-        ].includes(item),
-      );
+      .filter((item) => allHomeMenuNames.includes(item));
   } catch (e) {
     items = [];
   }
 
-  const [initialItems, dispatch] = useReducer(foldItemsReducer, items);
+  const [initialItems, dispatch] = useReducer(expandedMenusReducer, items);
 
   return (
-    <HomeFoldItemsContext.Provider value={initialItems}>
+    <HomeExpandedMenusContext.Provider value={initialItems}>
       <SettingsDispatchContext.Provider value={dispatch}>
         {children}
       </SettingsDispatchContext.Provider>
-    </HomeFoldItemsContext.Provider>
+    </HomeExpandedMenusContext.Provider>
   );
 }
 
-export function useHomeFoldMenus() {
-  return useContext(HomeFoldItemsContext);
+export function useHomeExpandedMenus() {
+  return useContext(HomeExpandedMenusContext);
 }
 
 export function useSettingsDispatch() {
   return useContext(SettingsDispatchContext);
 }
 
-function foldItemsReducer(items = [], action) {
-  if (action.type === FOLD_ITEMS_UPDATE_ACTION) {
-    const { item, isFold } = action.payload;
+function expandedMenusReducer(items = [], action) {
+  if (action.type === EXPANDED_MENUS_UPDATE_ACTION) {
+    const { item, expanded } = action.payload;
     let result;
-    if (isFold) {
+    if (expanded) {
       result = [...items, item];
     } else {
       result = items.filter((i) => i !== item);
     }
-    setCookie(CACHE_KEY.homeFoldedMenus, result.join("|"));
+    setCookie(CACHE_KEY.homeExpandedMenus, result.join("|"));
 
     return result;
   }
 
-  throw new Error(`Unknown fold items action: ${action.type}`);
+  throw new Error(`Unknown expand menus action: ${action.type}`);
 }
 
-export function updateHomeFoldItems(item, isFold = true, dispatch) {
+export function updateHomeExpandedMenus(item, expanded = true, dispatch) {
   dispatch({
-    type: FOLD_ITEMS_UPDATE_ACTION,
+    type: EXPANDED_MENUS_UPDATE_ACTION,
     payload: {
       item,
-      isFold,
+      expanded,
     },
   });
 }

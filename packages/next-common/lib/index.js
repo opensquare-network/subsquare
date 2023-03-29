@@ -20,7 +20,7 @@ export function withLoginUser(getServerSideProps) {
     let options = {};
     const cookies = new Cookies(context.req, context.res);
     const themeMode = cookies.get(CACHE_KEY.themeMode);
-    const homeFoldedMenus = cookies.get(CACHE_KEY.homeFoldedMenus);
+    const homeExpandedMenus = cookies.get(CACHE_KEY.homeExpandedMenus);
     const authToken = cookies.get(CACHE_KEY.authToken);
     const pageProperties = getDetailPageProperties(context.resolvedUrl);
     if (authToken) {
@@ -52,7 +52,7 @@ export function withLoginUser(getServerSideProps) {
         ...props.props,
         loginUser: user ?? null,
         themeMode: themeMode ?? "light",
-        homeFoldedMenus: homeFoldedMenus || "",
+        homeExpandedMenus: homeExpandedMenus || "",
         pageProperties: {
           ...pageProperties,
           userAgent,

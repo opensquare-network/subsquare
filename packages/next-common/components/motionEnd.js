@@ -10,7 +10,7 @@ export default function MotionEnd({ motion, type = "full" }) {
   const motionEndHeight = motion?.voting?.end;
   const motionStartHeight = motion?.indexer?.blockHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    blockHeight - motionEndHeight,
+    motionEndHeight - blockHeight,
   );
   const motionEnd = isMotionEnded(motion);
 
@@ -18,15 +18,22 @@ export default function MotionEnd({ motion, type = "full" }) {
     motionEnd ||
     !motionEndHeight ||
     !blockHeight ||
-    blockHeight >= motionEndHeight ||
     !estimatedBlocksTime
   ) {
     return null;
   }
 
-  const tooltipContent = `End in ${estimatedBlocksTime}, #${bigNumber2Locale(
-    motionEndHeight.toString(),
-  )}`;
+  let tooltipContent;
+  let simpleTooltipContent;
+  if (blockHeight >= motionEndHeight) {
+    tooltipContent = "Closeable";
+    simpleTooltipContent = tooltipContent;
+  } else {
+    tooltipContent = `End in ${estimatedBlocksTime}, #${bigNumber2Locale(
+      motionEndHeight.toString(),
+    )}`;
+    simpleTooltipContent = `End in ${ estimatedBlocksTime }`;
+  }
 
   return (
     <>
@@ -38,7 +45,7 @@ export default function MotionEnd({ motion, type = "full" }) {
       {type === "full" ? (
         <span>{tooltipContent}</span>
       ) : type === "simple" ? (
-        <span>{`End in ${estimatedBlocksTime}`}</span>
+        <span>{simpleTooltipContent}</span>
       ) : null}
     </>
   );

@@ -1,4 +1,4 @@
-import homeMenus from "next-common/utils/consts/menu";
+import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
@@ -8,6 +8,8 @@ export default function useTechCommSubscription(
   saving,
   isVerifiedUser
 ) {
+  const homeMenus = getHomeMenu();
+
   const { hasMenu: hasTechComm, menu: techCommMenu } = checkSubMenu(
     homeMenus,
     "TECH.COMM."

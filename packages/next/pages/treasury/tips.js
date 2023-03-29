@@ -12,6 +12,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -20,55 +21,63 @@ const Popup = dynamic(
   }
 );
 
-export default withLoginUserRedux(({ tips: ssrTips }) => {
-  const chain = useChain();
-  const [showPopup, setShowPopup] = useState(false);
-  const [tips, setTips] = useState(ssrTips);
-  useEffect(() => setTips(ssrTips), [ssrTips]);
-  const isMounted = useIsMounted();
+export default withLoginUserRedux(
+  ({ tips: ssrTips, tracks, fellowshipTracks }) => {
+    const chain = useChain();
+    const [showPopup, setShowPopup] = useState(false);
+    const [tips, setTips] = useState(ssrTips);
+    useEffect(() => setTips(ssrTips), [ssrTips]);
+    const isMounted = useIsMounted();
 
-  const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch("treasury/tips");
-    if (result && isMounted.current) {
-      setTips(result);
-    }
-  }, [isMounted]);
+    const refreshPageData = useCallback(async () => {
+      const { result } = await nextApi.fetch("treasury/tips");
+      if (result && isMounted.current) {
+        setTips(result);
+      }
+    }, [isMounted]);
 
-  const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
+    const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
 
-  const items = (tips.items || []).map((item) => normalizeTipListItem(chain, item));
-  const category = "Tips";
-  const seoInfo = { title: "Treasury Tips", desc: "Treasury Tips" };
+    const items = (tips.items || []).map((item) =>
+      normalizeTipListItem(chain, item)
+    );
+    const category = "Tips";
+    const seoInfo = { title: "Treasury Tips", desc: "Treasury Tips" };
 
-  const create = (
-    <Create onClick={() => setShowPopup(true)}>
-      <PlusIcon />
-      New Tip
-    </Create>
-  );
+    const create = (
+      <Create onClick={() => setShowPopup(true)}>
+        <PlusIcon />
+        New Tip
+      </Create>
+    );
 
-  return (
-    <HomeLayout seoInfo={seoInfo}>
-      <PostList
-        category={category}
-        create={create}
-        items={items}
-        summary={<Summary />}
-        pagination={{
-          page: tips.page,
-          pageSize: tips.pageSize,
-          total: tips.total,
-        }}
-      />
-      {showPopup && (
-        <Popup
-          onClose={() => setShowPopup(false)}
-          onFinalized={onNewTipFinalized}
+    return (
+      <HomeLayout
+        seoInfo={seoInfo}
+        tracks={tracks}
+        fellowshipTracks={fellowshipTracks}
+      >
+        <PostList
+          category={category}
+          create={create}
+          items={items}
+          summary={<Summary />}
+          pagination={{
+            page: tips.page,
+            pageSize: tips.pageSize,
+            total: tips.total,
+          }}
         />
-      )}
-    </HomeLayout>
-  );
-});
+        {showPopup && (
+          <Popup
+            onClose={() => setShowPopup(false)}
+            onFinalized={onNewTipFinalized}
+          />
+        )}
+      </HomeLayout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
@@ -80,9 +89,16 @@ export const getServerSideProps = withLoginUser(async (context) => {
     }),
   ]);
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       tips: tips ?? EmptyList,
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });

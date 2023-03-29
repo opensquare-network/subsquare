@@ -7,8 +7,10 @@ import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChainSettings } from "next-common/context/chain";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
-export default withLoginUserRedux(({}) => {
+export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
@@ -43,7 +45,11 @@ export default withLoginUserRedux(({}) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
+    <HomeLayout
+      seoInfo={seoInfo}
+      tracks={tracks}
+      fellowshipTracks={fellowshipTracks}
+    >
       <MembersList
         category={category}
         items={data}
@@ -56,7 +62,15 @@ export default withLoginUserRedux(({}) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
-    props: {},
+    props: {
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
+    },
   };
 });
