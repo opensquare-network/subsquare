@@ -10,7 +10,7 @@ import {
 } from "next-common/components/styled/table";
 import React, { Fragment, useMemo } from "react";
 import Loading from "next-common/components/loading";
-import { parseGov2TrackName } from "next-common/utils/gov2";
+import startCase from "lodash.startcase";
 import User from "next-common/components/user";
 import ValueDisplay from "../../valueDisplay";
 import { toPrecision } from "next-common/utils";
@@ -88,9 +88,9 @@ export default function AllMyDelegationPopupList({
               <Fragment key={item.track.id}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: colWidths.track }}>
-                    <Tooltip content={parseGov2TrackName(item.track.name)}>
+                    <Tooltip content={startCase(item.track.name)}>
                       <TrackName style={{ maxWidth: colWidths.track }}>
-                        {parseGov2TrackName(item.track.name)}
+                        {startCase(item.track.name)}
                       </TrackName>
                     </Tooltip>
                   </StyledTd>

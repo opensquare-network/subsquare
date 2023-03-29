@@ -1,7 +1,7 @@
 import React from "react";
 import noop from "lodash.noop";
 import { usePageProps } from "../../../context/page";
-import { parseGov2TrackName } from "../../../utils/gov2";
+import startCase from "lodash.startcase";
 import Select from "../../select";
 import PopupLabel from "../label";
 
@@ -15,7 +15,7 @@ export default function Track({
   const { tracks: defaultTrackList } = usePageProps();
   const options = (trackList || defaultTrackList)?.map((track) => {
     return {
-      label: parseGov2TrackName(track.name),
+      label: startCase(track.name),
       value: track.id,
     };
   });
