@@ -10,6 +10,7 @@ const businessCategory = {
   democracyReferenda: "Referenda",
   collective: "collective",
   polkassemblyDiscussions: "Polkassembly Discussions",
+  discussions: "Discussions",
   openGovReferenda: "OpenGov Referenda",
   fellowship: "Fellowship",
   financialMotions: "Financial Motions",
