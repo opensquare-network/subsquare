@@ -5,11 +5,12 @@ import { flex, flex_col, gap_y, m_x } from "next-common/styles/tailwindcss";
 import styled from "styled-components";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { smcss } from "next-common/utils/responsive";
 import useScheduled from "next-common/hooks/useScheduled";
-import { useCalendarUserEvents } from "next-common/hooks/calendar";
+import { useCalendarUserEvents, useCalendarUserEventsSummary } from "next-common/hooks/calendar";
 import { adminsApi } from "next-common/services/url";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 
 const Wrapper = styled.div`
   ${flex}
