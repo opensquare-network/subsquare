@@ -24,18 +24,18 @@ const Section = styled.div`
 
 const SectionTitle = styled.span`
   ${p_12_bold}
-  color: #1E2134;
+  color: ${(p) => p.theme.textPrimary};
 `;
 
 const Discussion = styled.div`
   display: flex;
   cursor: pointer;
   padding: 10px 16px;
-  background: #f6f7fa;
+  background: ${(p) => p.theme.grey100Bg};
   ${(p) =>
     p.selected &&
     css`
-      background: #ebeef4;
+      background: ${(p) => p.theme.grey200Border};
     `}
   border-radius: 4px;
 `;
@@ -46,7 +46,7 @@ const NoDiscussion = styled.div`
   align-items: center;
 
   ${p_14_normal}
-  color: #9DA9BB;
+  color: ${(p) => p.theme.textTertiary};
 `;
 
 function getDiscussionUrl(discussion) {
