@@ -1,7 +1,10 @@
 import Overview from "next-common/components/overview";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toFinancialMotionsListItem } from "utils/viewfuncs";
+import {
+  toFinancialMotionsListItem,
+  toAdvisoryMotionsListItem,
+} from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
@@ -27,6 +30,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const hasGov2 = ["kusama", "development"].includes(chain);
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
   const isCollectives = isCollectivesChain(chain);
+  const isZeitgeist = chain === Chains.zeitgeist;
 
   const discussionsCategory = [
     {
@@ -152,6 +156,16 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       ),
     }
   );
+
+  if (isZeitgeist) {
+    overviewData.push({
+      category: "Advisory Committee Motions",
+      link: "/advisory-committee/motions",
+      items: (overview?.advisoryCommittee?.motions ?? []).map((item) =>
+        toAdvisoryMotionsListItem(chain, item)
+      ),
+    });
+  }
 
   if (chain === "kabocha") {
     overviewData = discussionsCategory;
