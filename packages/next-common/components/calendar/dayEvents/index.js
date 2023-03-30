@@ -50,6 +50,7 @@ export default function DayEvents({
   futureEvents = [],
   dayUserEvents = [],
   loadingDayUserEvents,
+  refresh,
 }) {
   const [dayEvents, loading] = useCalendarEvents(selectedDate, "day");
   const dayFutureEvents = futureEvents.filter((event) => {
@@ -70,6 +71,7 @@ export default function DayEvents({
         userEvents={dayUserEvents}
         futureEvents={dayFutureEvents}
         loading={loading || loadingDayUserEvents}
+        refresh={refresh}
       />
     </Wrapper>
   );

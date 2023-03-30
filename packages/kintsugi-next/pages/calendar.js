@@ -5,10 +5,12 @@ import { flex, flex_col, gap_y, m_x } from "next-common/styles/tailwindcss";
 import styled from "styled-components";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { smcss } from "next-common/utils/responsive";
 import useScheduled from "next-common/hooks/useScheduled";
-import { useCalendarUserEvents } from "next-common/hooks/calendar";
+import { useCalendarUserEvents, useCalendarUserEventsSummary } from "next-common/hooks/calendar";
+import { adminsApi } from "next-common/services/url";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 
 const Wrapper = styled.div`
   ${flex}
@@ -23,6 +25,13 @@ export default withLoginUserRedux(() => {
   const futureEvents = useScheduled();
   const [dayUserEvents, loadingDayUserEvents, refreshDayUserEvents] =
     useCalendarUserEvents(selectedDate, "day");
+  const [monthUserEvents, , refreshMonthUserEvents] =
+    useCalendarUserEventsSummary(selectedDate, "month");
+
+  const refresh = useCallback(() => {
+    refreshDayUserEvents();
+    refreshMonthUserEvents();
+  }, [refreshDayUserEvents, refreshMonthUserEvents]);
 
   return (
     <HomeLayout>
@@ -36,7 +45,8 @@ export default withLoginUserRedux(() => {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           futureEvents={futureEvents}
-          refreshDayUserEvents={refreshDayUserEvents}
+          monthUserEvents={monthUserEvents}
+          refresh={refresh}
         />
 
         {/* events component */}
@@ -45,6 +55,7 @@ export default withLoginUserRedux(() => {
           futureEvents={futureEvents}
           dayUserEvents={dayUserEvents}
           loadingDayUserEvents={loadingDayUserEvents}
+          refresh={refresh}
         />
       </Wrapper>
     </HomeLayout>
@@ -52,7 +63,11 @@ export default withLoginUserRedux(() => {
 });
 
 export const getServerSideProps = withLoginUser(async () => {
+  const { result: admins } = await nextApi.fetch(adminsApi);
+
   return {
-    props: {},
+    props: {
+      admins: admins ?? [],
+    },
   };
 });

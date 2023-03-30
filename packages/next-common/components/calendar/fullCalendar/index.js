@@ -20,10 +20,7 @@ import timezone from "dayjs/plugin/timezone";
 import FullCalendarToolbar from "./toolbar";
 import FullCalendarMonthDateCell from "./monthDateCell";
 import noop from "lodash.noop";
-import {
-  useCalendarEventsSummary,
-  useCalendarUserEventsSummary,
-} from "../../../hooks/calendar";
+import { useCalendarEventsSummary } from "../../../hooks/calendar";
 import FullCalendarFooter from "./footer";
 import FullCalendarMonthHeader from "./monthHeader";
 import CreateEventModal from "../createEventModal";
@@ -89,12 +86,10 @@ export default function FullCalendar({
   selectedDate,
   setSelectedDate = noop,
   futureEvents = [],
-  refreshDayUserEvents = noop,
-  admins,
+  monthUserEvents = [],
+  refresh = noop,
 }) {
   const [calendarEvents] = useCalendarEventsSummary(date, "month");
-  const [calendarUserEvents, , refreshUserEvents] =
-    useCalendarUserEventsSummary(date, "month");
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
 
   function onNavigate(newDate) {
@@ -109,7 +104,6 @@ export default function FullCalendar({
           {...props}
           setSelectedDate={setSelectedDate}
           onCreateEvent={() => setShowCreateEventModal(true)}
-          admins={admins}
         />
       );
     },
@@ -122,7 +116,7 @@ export default function FullCalendar({
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             calendarEvents={calendarEvents}
-            calendarUserEvents={calendarUserEvents}
+            calendarUserEvents={monthUserEvents}
             futureEvents={futureEvents}
           />
         );
@@ -146,10 +140,7 @@ export default function FullCalendar({
       {showCreateEventModal && (
         <CreateEventModal
           onClose={() => setShowCreateEventModal(false)}
-          refresh={() => {
-            refreshUserEvents();
-            refreshDayUserEvents();
-          }}
+          refresh={refresh}
         />
       )}
     </Wrapper>

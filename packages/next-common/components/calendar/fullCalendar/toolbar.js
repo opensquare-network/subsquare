@@ -21,6 +21,7 @@ import CreateEventButton from "./createEventButton";
 import noop from "lodash.noop";
 import { useUser } from "../../../context/user";
 import { OnlyDesktop } from "../../styled/responsive";
+import { usePageProps } from "next-common/context/page";
 
 const ToolbarWrapper = styled.div`
   ${flex}
@@ -58,9 +59,9 @@ export default function FullCalendarToolbar({
   localizer: { messages },
   setSelectedDate,
   onCreateEvent = noop,
-  admins = [],
 }) {
   const user = useUser();
+  const { admins } = usePageProps();
   const address = user?.address;
   const isAdmin = admins.includes(address);
 
