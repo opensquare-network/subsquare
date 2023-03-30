@@ -29,6 +29,8 @@ import ListPostTitle from "./postList/postTitle";
 import IpfsLink from "./alliance/ipfsLink";
 import PostLabels from "./postLabels";
 import { useScreenSize } from "../utils/hooks/useScreenSize";
+import LinkInfo from "./styled/linkInfo";
+import Link from "next/link";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -201,6 +203,11 @@ export default function Post({ data, href, type }) {
     }
   }
 
+  const trackTagLink =
+    type === businessCategory.openGovReferenda
+      ? `/referenda/track/${data.track}`
+      : `/fellowship/track/${data.track}`;
+
   const { sm } = useScreenSize();
 
   return (
@@ -237,7 +244,11 @@ export default function Post({ data, href, type }) {
 
             {data.trackName && (
               <MobileHiddenInfo>
-                <Gov2TrackTag name={data.trackName} />
+                <Link href={trackTagLink} passHref>
+                  <LinkInfo>
+                    <Gov2TrackTag name={data.trackName} />
+                  </LinkInfo>
+                </Link>
               </MobileHiddenInfo>
             )}
 
