@@ -30,19 +30,23 @@ const Wrapper = styled.div`
     margin: 0;
   }
 
-  :not(:last-child)::after {
-    content: "";
-    height: 1px;
-    position: absolute;
-    bottom: 0;
-    left: 76px;
-    width: calc(100% - 124px);
-    @media screen and (max-width: 768px) {
-      left: 28px;
-      width: calc(100% - 28px);
-    }
-    background-color: ${(props) => props.theme.grey200Border};
-  }
+  ${(p) =>
+    !p.isSecondLevel &&
+    css`
+      :not(:last-child)::after {
+        content: "";
+        height: 1px;
+        position: absolute;
+        bottom: 0;
+        left: 76px;
+        width: calc(100% - 124px);
+        @media screen and (max-width: 768px) {
+          left: 28px;
+          width: calc(100% - 28px);
+        }
+        background-color: ${(props) => props.theme.grey200Border};
+      }
+    `}
 
   :hover {
     .edit {
@@ -80,7 +84,28 @@ const EditedLabel = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function Item({ data, onReply }) {
+const IndentWrapper = styled.div`
+  margin: 16px 0 0 28px;
+  ${(p) =>
+    p.quoted &&
+    css`
+      padding-left: 16px;
+      border-left: 3px solid ${(props) => props.theme.grey200Border};
+    `};
+`;
+
+const FoldButton = styled.button`
+  all: unset;
+  line-height: 20px;
+  height: 28px;
+  color: ${(props) => props.theme.textTertiary};
+  &:hover {
+    color: ${(props) => props.theme.textPrimary};
+    cursor: pointer;
+  }
+`;
+
+export default function Item({ data, onReply, isSecondLevel }) {
   const user = useUser();
   const dispatch = useDispatch();
   const ref = useRef();
@@ -92,6 +117,7 @@ export default function Item({ data, onReply }) {
   const isMounted = useIsMountedBool();
   const duration = useDuration(comment.createdAt);
   const { hasAnchor, anchor } = useCommentsAnchor();
+  const [folded, setFolded] = useState(true);
 
   useEffect(() => {
     setHighlight(hasAnchor && anchor === comment.height);
@@ -151,7 +177,11 @@ export default function Item({ data, onReply }) {
   };
 
   return (
-    <Wrapper id={comment.height} highlight={highlight}>
+    <Wrapper
+      id={comment.height}
+      highlight={highlight}
+      isSecondLevel={isSecondLevel}
+    >
       <InfoWrapper>
         <User user={comment.author} />
         <div>{duration}</div>
@@ -181,6 +211,7 @@ export default function Item({ data, onReply }) {
           </ContentWrapper>
           <div style={{ margin: "8px 0 0 28px" }}>
             <CommentActions
+              comment={comment}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
               edit={ownComment}
@@ -219,6 +250,23 @@ export default function Item({ data, onReply }) {
           loading={loading}
           setLoading={setLoading}
         />
+      )}
+      {comment.replies?.length > 0 && (
+        <IndentWrapper quoted>
+          <FoldButton
+            onClick={() => {
+              setFolded(!folded);
+            }}
+          >
+            {folded ? `${comment.replies?.length} Replies` : "Hide Replies"}
+          </FoldButton>
+
+          {!folded
+            ? (comment.replies || []).map((item) => (
+                <Item key={item.id} data={item} isSecondLevel={true} />
+              ))
+            : null}
+        </IndentWrapper>
       )}
     </Wrapper>
   );

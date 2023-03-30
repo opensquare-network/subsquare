@@ -23,7 +23,7 @@ const UniverseEditor = dynamic(
 const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
-    p.isEdit &&
+    (p.isEdit || p.isReply) &&
     css`
       margin-top: 8px;
     `}
@@ -50,6 +50,7 @@ function Editor(
   {
     postId,
     isEdit,
+    isReply,
     onFinishedEdit,
     commentId,
     content,
@@ -75,8 +76,13 @@ function Editor(
 
     try {
       setLoading(true);
+
+      const url = commentId
+        ? `${toApiType(type)}/${postId}/comments/${commentId}/replies`
+        : `${toApiType(type)}/${postId}/comments`;
+
       const result = await nextApi.post(
-        `${toApiType(type)}/${postId}/comments`,
+        url,
         {
           content: contentType === "html" ? prettyHTML(content) : content,
           contentType,
@@ -144,7 +150,7 @@ function Editor(
   };
 
   return (
-    <Wrapper>
+    <Wrapper isEdit={isEdit} isReply={isReply}>
       <Relative ref={ref}>
         <UniverseEditor
           value={content}
@@ -160,7 +166,7 @@ function Editor(
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
-        {isEdit && (
+        {(isEdit || isReply) && (
           <GhostButton onClick={() => onFinishedEdit(false)}>
             Cancel
           </GhostButton>
@@ -171,7 +177,7 @@ function Editor(
           disabled={isEmpty}
           title={isEmpty ? "cannot submit empty content" : ""}
         >
-          {isEdit ? "Update" : "Comment"}
+          {isEdit ? "Update" : isReply ? "Reply" : "Comment"}
         </SecondaryButton>
       </ButtonWrapper>
     </Wrapper>
