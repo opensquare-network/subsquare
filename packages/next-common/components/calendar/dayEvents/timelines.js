@@ -90,6 +90,7 @@ export default function DayEventTimelines({
   userEvents = [],
   futureEvents = [],
   loading,
+  refresh,
 }) {
   const hrs = Array.from({ length: 25 }).map((_, i) => i);
 
@@ -157,7 +158,7 @@ export default function DayEventTimelines({
             if (Object.values(FutureEventType).includes(event.type)) {
               return <FutureEventInfoCard key={index} event={event} />;
             }
-            return <UserEventInfoCard key={event._id} event={event} />;
+            return <UserEventInfoCard key={event._id} event={event} refresh={refresh} />;
           })}
         </Timeline>
       ))}

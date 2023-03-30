@@ -32,7 +32,7 @@ const Content = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function UserEventInfoCard({ event }) {
+export default function UserEventInfoCard({ event, refresh }) {
   const [isFolded, setIsFolded] = useState(false);
 
   if (!event) {
@@ -41,7 +41,7 @@ export default function UserEventInfoCard({ event }) {
 
   return (
     <Wrapper>
-      <Title event={event} isFolded={isFolded} setIsFolded={setIsFolded} />
+      <Title event={event} isFolded={isFolded} setIsFolded={setIsFolded} refresh={refresh} />
       {!isFolded && (
         <>
           <Divider style={{ width: "100%" }} />

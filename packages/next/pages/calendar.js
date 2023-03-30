@@ -5,10 +5,10 @@ import { flex, flex_col, gap_y, m_x } from "next-common/styles/tailwindcss";
 import styled from "styled-components";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { smcss } from "next-common/utils/responsive";
 import useScheduled from "next-common/hooks/useScheduled";
-import { useCalendarUserEvents } from "next-common/hooks/calendar";
+import { useCalendarUserEvents, useCalendarUserEventsSummary } from "next-common/hooks/calendar";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   adminsApi,
@@ -23,12 +23,19 @@ const Wrapper = styled.div`
   ${smcss(m_x(16))}
 `;
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks, admins }) => {
+export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
   const futureEvents = useScheduled();
   const [dayUserEvents, loadingDayUserEvents, refreshDayUserEvents] =
     useCalendarUserEvents(selectedDate, "day");
+  const [monthUserEvents, , refreshMonthUserEvents] =
+    useCalendarUserEventsSummary(selectedDate, "month");
+
+  const refresh = useCallback(() => {
+    refreshDayUserEvents();
+    refreshMonthUserEvents();
+  }, [refreshDayUserEvents, refreshMonthUserEvents]);
 
   return (
     <HomeLayout tracks={tracks} fellowshipTracks={fellowshipTracks}>
@@ -42,8 +49,8 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks, admins }) => {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           futureEvents={futureEvents}
-          refreshDayUserEvents={refreshDayUserEvents}
-          admins={admins}
+          monthUserEvents={monthUserEvents}
+          refresh={refresh}
         />
 
         {/* events component */}
@@ -52,6 +59,7 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks, admins }) => {
           futureEvents={futureEvents}
           dayUserEvents={dayUserEvents}
           loadingDayUserEvents={loadingDayUserEvents}
+          refresh={refresh}
         />
       </Wrapper>
     </HomeLayout>
