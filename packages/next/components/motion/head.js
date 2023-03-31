@@ -21,6 +21,8 @@ import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import AnnouncementNavigate from "./announcementNavigate";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
+import { smcss } from "next-common/utils/responsive";
+import { hidden } from "next-common/styles/tailwindcss";
 
 const MotionEndHeader = styled(GreyPanel)`
   justify-content: center;
@@ -44,6 +46,8 @@ const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
 
   > :not(:first-child) {
+    ${smcss(hidden)};
+
     ::before {
       content: "·";
       font-size: 12px;
