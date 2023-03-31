@@ -15,6 +15,8 @@ import noop from "lodash.noop";
 
 export default function CommentActions({
   updateComment = noop,
+  scrollToNewReplyComment = noop,
+  setFolded = noop,
   replyToCommentId,
   author,
   noHover,
@@ -94,10 +96,12 @@ export default function CommentActions({
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
-          onFinishedEdit={(reload) => {
+          onFinishedEdit={async (reload) => {
             setIsReply(false);
             if (reload) {
-              updateComment();
+              setFolded(false);
+              await updateComment();
+              scrollToNewReplyComment();
             }
           }}
           {...{ contentType, setContentType, content, setContent, users }}

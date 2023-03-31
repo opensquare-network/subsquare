@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
@@ -110,10 +110,12 @@ export default function Item({
   replyToCommentId,
   isSecondLevel,
   updateTopLevelComment,
+  scrollToTopLevelCommentBottom,
 }) {
   const user = useUser();
   const dispatch = useDispatch();
   const ref = useRef();
+  const refCommentTree = useRef();
   const [comment, setComment] = useState(data);
   useEffect(() => setComment(data), [data]);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -137,14 +139,20 @@ export default function Item({
     comment?.reactions?.findIndex((r) => r.user?.username === user.username) >
       -1;
 
-  const updateComment = async () => {
+  const updateComment = useCallback(async () => {
     const { result: updatedComment } = await nextApi.fetch(
       `comments/${comment._id}`,
     );
     if (updatedComment) {
       setComment(updatedComment);
     }
-  };
+  }, []);
+
+  const scrollToCommentBottom = useCallback(() => {
+    if (refCommentTree.current) {
+      refCommentTree.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [refCommentTree]);
 
   const toggleThumbUp = async () => {
     if (isLoggedIn && !ownComment && !thumbUpLoading) {
@@ -184,6 +192,7 @@ export default function Item({
 
   return (
     <Wrapper
+      ref={refCommentTree}
       id={comment.height}
       highlight={highlight}
       isSecondLevel={isSecondLevel}
@@ -217,7 +226,9 @@ export default function Item({
           </ContentWrapper>
           <div style={{ margin: "8px 0 0 28px" }}>
             <CommentActions
+              setFolded={setFolded}
               updateComment={updateTopLevelComment || updateComment}
+              scrollToNewReplyComment={scrollToTopLevelCommentBottom || scrollToCommentBottom}
               replyToCommentId={replyToCommentId}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
@@ -272,6 +283,7 @@ export default function Item({
                   replyToCommentId={replyToCommentId}
                   isSecondLevel={true}
                   updateTopLevelComment={updateTopLevelComment || updateComment}
+                  scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom || scrollToCommentBottom}
                 />
               ))
             : null}

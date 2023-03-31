@@ -27,7 +27,6 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
         quillRef.setSelection(99999, 0, "api"); //always put caret to the end
       }, 4);
     }
-    editorWrapperRef.current?.scrollIntoView();
   };
 }
 
@@ -125,7 +124,7 @@ export function getOnReply(
             },
           ],
         };
-        if (JSON.stringify(contents.ops) === "[{\"insert\":\"\\n\"}]") {
+        if (JSON.stringify(contents.ops) === JSON.stringify([{ insert: "\n" }])) {
           quillRef.setContents(reply.ops);
         } else {
           quillRef.setContents(contents.ops.concat(reply.ops));
