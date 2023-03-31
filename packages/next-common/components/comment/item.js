@@ -105,6 +105,21 @@ const FoldButton = styled.button`
   }
 `;
 
+function jumpToAnchor(anchorId) {
+  var anchorElement = document.getElementById(anchorId);
+  if (!anchorElement) {
+    return;
+  }
+  var bodyRect = document.body.getBoundingClientRect();
+  var elementRect = anchorElement.getBoundingClientRect();
+  var offset = elementRect.top - bodyRect.top;
+  var scrollPosition = offset - window.innerHeight / 2;
+  window.scrollTo({
+    top: scrollPosition,
+    behavior: "smooth",
+  });
+}
+
 export default function Item({
   data,
   replyToCommentId,
@@ -127,8 +142,15 @@ export default function Item({
   const { hasAnchor, anchor } = useCommentsAnchor();
   const [folded, setFolded] = useState(true);
 
+  // Jump to comment when anchor is set
   useEffect(() => {
-    setHighlight(hasAnchor && anchor === comment.height);
+    setFolded(false);
+    if (hasAnchor && anchor === comment.height) {
+      setHighlight(true);
+      setTimeout(() => {
+        jumpToAnchor(anchor);
+      }, 100);
+    }
   }, [hasAnchor, anchor]);
 
   const commentId = comment._id;
@@ -150,7 +172,10 @@ export default function Item({
 
   const scrollToCommentBottom = useCallback(() => {
     if (refCommentTree.current) {
-      refCommentTree.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      refCommentTree.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
     }
   }, [refCommentTree]);
 
@@ -228,7 +253,9 @@ export default function Item({
             <CommentActions
               setFolded={setFolded}
               updateComment={updateTopLevelComment || updateComment}
-              scrollToNewReplyComment={scrollToTopLevelCommentBottom || scrollToCommentBottom}
+              scrollToNewReplyComment={
+                scrollToTopLevelCommentBottom || scrollToCommentBottom
+              }
               replyToCommentId={replyToCommentId}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
@@ -278,12 +305,14 @@ export default function Item({
           {!folded
             ? (comment.replies || []).map((item) => (
                 <Item
-                  key={item.id}
+                  key={item._id}
                   data={item}
                   replyToCommentId={replyToCommentId}
                   isSecondLevel={true}
                   updateTopLevelComment={updateTopLevelComment || updateComment}
-                  scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom || scrollToCommentBottom}
+                  scrollToTopLevelCommentBottom={
+                    scrollToTopLevelCommentBottom || scrollToCommentBottom
+                  }
                 />
               ))
             : null}
