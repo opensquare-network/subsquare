@@ -19,7 +19,7 @@ const TitleWrapper = styled.div`
 
 const Title = styled.div`
   max-width: 750px;
-  word-break: break-all;
+  word-break: break-word;
   font-weight: 500;
   font-size: 20px;
   line-height: 140%;
