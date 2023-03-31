@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Flex from "../../styled/flex";
 import User from "../../user";
 import TypeTag from "../common/TypeTag";
@@ -12,6 +12,7 @@ import { getMotionStateArgs } from "../../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { smcss } from "../../../utils/responsive";
+import { hidden } from "../../../styles/tailwindcss";
 import { useDetailType } from "../../../context/page";
 import IpfsLink from "../../alliance/ipfsLink";
 import PostLabels from "../../postLabels";
@@ -25,6 +26,8 @@ const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
 
   > :not(:first-child) {
+    ${smcss(hidden)};
+
     ::before {
       content: "·";
       font-size: 12px;
@@ -32,12 +35,6 @@ const DividerWrapper = styled(Flex)`
       margin: 0 8px;
     }
   }
-`;
-
-const MobileHiddenDividerWrapper = styled(DividerWrapper)`
-  ${smcss(css`
-    display: none;
-  `)}
 `;
 
 export default function PostMeta() {
@@ -76,28 +73,22 @@ export default function PostMeta() {
           add={post.proposer || post.finder}
           fontSize={12}
         />
-        <MobileHiddenDividerWrapper>
-          <TypeTag type={detailType} />
-          <UpdatedTime post={post} />
-          {!noCommentsCount && commentsCount > -1 && (
-            <Info>{`${commentsCount} Comments`}</Info>
-          )}
-        </MobileHiddenDividerWrapper>
+        <TypeTag type={detailType} />
+        <UpdatedTime post={post} />
+        {!noCommentsCount && commentsCount > -1 && (
+          <Info>{`${commentsCount} Comments`}</Info>
+        )}
         {detailPageCategory.ALLIANCE_ANNOUNCEMENT === detailType && (
           <IpfsLink cid={post.cid} />
         )}
         {post.labels && post.labels.length > 0 && (
-          <MobileHiddenDividerWrapper>
-            <PostLabels labels={post.labels} />
-          </MobileHiddenDividerWrapper>
+          <PostLabels labels={post.labels} />
         )}
       </DividerWrapper>
 
-      <MobileHiddenDividerWrapper>
-        {postState && (
-          <Tag state={postState} category={detailType} args={stateArgs} />
-        )}
-      </MobileHiddenDividerWrapper>
+      {postState && (
+        <Tag state={postState} category={detailType} args={stateArgs} />
+      )}
     </FlexWrapper>
   );
 }
