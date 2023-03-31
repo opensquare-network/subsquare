@@ -14,6 +14,7 @@ import GhostButton from "../buttons/ghostButton";
 import EditorWrapper from "../editor/editorWrapper";
 import { useChain } from "../../context/chain";
 import { useDetailType } from "../../context/page";
+import noop from "lodash.noop";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -23,7 +24,7 @@ const UniverseEditor = dynamic(
 const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
-    p.isEdit &&
+    (p.isEdit || p.isReply) &&
     css`
       margin-top: 8px;
     `}
@@ -50,7 +51,8 @@ function Editor(
   {
     postId,
     isEdit,
-    onFinishedEdit,
+    isReply,
+    onFinishedEdit = noop,
     commentId,
     content,
     setContent,
@@ -75,8 +77,13 @@ function Editor(
 
     try {
       setLoading(true);
+
+      const url = commentId
+        ? `${toApiType(type)}/${postId}/comments/${commentId}/replies`
+        : `${toApiType(type)}/${postId}/comments`;
+
       const result = await nextApi.post(
-        `${toApiType(type)}/${postId}/comments`,
+        url,
         {
           content: contentType === "html" ? prettyHTML(content) : content,
           contentType,
@@ -92,14 +99,16 @@ function Editor(
         setErrors(result.error);
       } else {
         setContent("");
-        await router.replace("[id]", {
-          pathname: `${router.query.id}`,
-        });
-        setTimeout(() => {
-          if (isMounted()) {
-            window && window.scrollTo(0, document.body.scrollHeight);
-          }
-        }, 4);
+        if (isReply) {
+          onFinishedEdit(true);
+        } else {
+          await router.replace(router.asPath);
+          setTimeout(() => {
+            if (isMounted()) {
+              window && window.scrollTo(0, document.body.scrollHeight);
+            }
+          }, 4);
+        }
       }
     } finally {
       if (isMounted()) {
@@ -144,7 +153,7 @@ function Editor(
   };
 
   return (
-    <Wrapper>
+    <Wrapper isEdit={isEdit} isReply={isReply}>
       <Relative ref={ref}>
         <UniverseEditor
           value={content}
@@ -160,8 +169,11 @@ function Editor(
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
-        {isEdit && (
-          <GhostButton onClick={() => onFinishedEdit(false)}>
+        {(isEdit || isReply) && (
+          <GhostButton onClick={() => {
+            setContent("");
+            onFinishedEdit(false);
+          }}>
             Cancel
           </GhostButton>
         )}
@@ -171,7 +183,7 @@ function Editor(
           disabled={isEmpty}
           title={isEmpty ? "cannot submit empty content" : ""}
         >
-          {isEdit ? "Update" : "Comment"}
+          {isEdit ? "Update" : isReply ? "Reply" : "Comment"}
         </SecondaryButton>
       </ButtonWrapper>
     </Wrapper>

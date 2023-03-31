@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
@@ -30,19 +30,23 @@ const Wrapper = styled.div`
     margin: 0;
   }
 
-  :not(:last-child)::after {
-    content: "";
-    height: 1px;
-    position: absolute;
-    bottom: 0;
-    left: 76px;
-    width: calc(100% - 124px);
-    @media screen and (max-width: 768px) {
-      left: 28px;
-      width: calc(100% - 28px);
-    }
-    background-color: ${(props) => props.theme.grey200Border};
-  }
+  ${(p) =>
+    !p.isSecondLevel &&
+    css`
+      :not(:last-child)::after {
+        content: "";
+        height: 1px;
+        position: absolute;
+        bottom: 0;
+        left: 76px;
+        width: calc(100% - 124px);
+        @media screen and (max-width: 768px) {
+          left: 28px;
+          width: calc(100% - 28px);
+        }
+        background-color: ${(props) => props.theme.grey200Border};
+      }
+    `}
 
   :hover {
     .edit {
@@ -80,11 +84,40 @@ const EditedLabel = styled.div`
   color: ${(props) => props.theme.textTertiary};
 `;
 
-export default function Item({ data, onReply }) {
+const IndentWrapper = styled.div`
+  margin: 16px 0 0 28px;
+  ${(p) =>
+    p.quoted &&
+    css`
+      padding-left: 16px;
+      border-left: 3px solid ${(props) => props.theme.grey200Border};
+    `};
+`;
+
+const FoldButton = styled.button`
+  all: unset;
+  line-height: 20px;
+  height: 28px;
+  color: ${(props) => props.theme.textTertiary};
+  &:hover {
+    color: ${(props) => props.theme.textPrimary};
+    cursor: pointer;
+  }
+`;
+
+export default function Item({
+  data,
+  replyToCommentId,
+  isSecondLevel,
+  updateTopLevelComment,
+  scrollToTopLevelCommentBottom,
+}) {
   const user = useUser();
   const dispatch = useDispatch();
   const ref = useRef();
+  const refCommentTree = useRef();
   const [comment, setComment] = useState(data);
+  useEffect(() => setComment(data), [data]);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -92,6 +125,7 @@ export default function Item({ data, onReply }) {
   const isMounted = useIsMountedBool();
   const duration = useDuration(comment.createdAt);
   const { hasAnchor, anchor } = useCommentsAnchor();
+  const [folded, setFolded] = useState(true);
 
   useEffect(() => {
     setHighlight(hasAnchor && anchor === comment.height);
@@ -105,14 +139,20 @@ export default function Item({ data, onReply }) {
     comment?.reactions?.findIndex((r) => r.user?.username === user.username) >
       -1;
 
-  const updateComment = async () => {
+  const updateComment = useCallback(async () => {
     const { result: updatedComment } = await nextApi.fetch(
       `comments/${comment._id}`,
     );
     if (updatedComment) {
       setComment(updatedComment);
     }
-  };
+  }, []);
+
+  const scrollToCommentBottom = useCallback(() => {
+    if (refCommentTree.current) {
+      refCommentTree.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [refCommentTree]);
 
   const toggleThumbUp = async () => {
     if (isLoggedIn && !ownComment && !thumbUpLoading) {
@@ -151,7 +191,12 @@ export default function Item({ data, onReply }) {
   };
 
   return (
-    <Wrapper id={comment.height} highlight={highlight}>
+    <Wrapper
+      ref={refCommentTree}
+      id={comment.height}
+      highlight={highlight}
+      isSecondLevel={isSecondLevel}
+    >
       <InfoWrapper>
         <User user={comment.author} />
         <div>{duration}</div>
@@ -181,6 +226,10 @@ export default function Item({ data, onReply }) {
           </ContentWrapper>
           <div style={{ margin: "8px 0 0 28px" }}>
             <CommentActions
+              setFolded={setFolded}
+              updateComment={updateTopLevelComment || updateComment}
+              scrollToNewReplyComment={scrollToTopLevelCommentBottom || scrollToCommentBottom}
+              replyToCommentId={replyToCommentId}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
               edit={ownComment}
@@ -188,11 +237,7 @@ export default function Item({ data, onReply }) {
               toggleThumbUp={toggleThumbUp}
               thumbUpLoading={thumbUpLoading}
               reactions={comment.reactions}
-              onReply={() => {
-                if (isLoggedIn && !ownComment) {
-                  onReply(comment.author);
-                }
-              }}
+              author={comment.author}
               copy
               onCopy={() => {
                 copy(
@@ -219,6 +264,30 @@ export default function Item({ data, onReply }) {
           loading={loading}
           setLoading={setLoading}
         />
+      )}
+      {comment.replies?.length > 0 && (
+        <IndentWrapper quoted>
+          <FoldButton
+            onClick={() => {
+              setFolded(!folded);
+            }}
+          >
+            {folded ? `${comment.replies?.length} Replies` : "Hide Replies"}
+          </FoldButton>
+
+          {!folded
+            ? (comment.replies || []).map((item) => (
+                <Item
+                  key={item.id}
+                  data={item}
+                  replyToCommentId={replyToCommentId}
+                  isSecondLevel={true}
+                  updateTopLevelComment={updateTopLevelComment || updateComment}
+                  scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom || scrollToCommentBottom}
+                />
+              ))
+            : null}
+        </IndentWrapper>
       )}
     </Wrapper>
   );

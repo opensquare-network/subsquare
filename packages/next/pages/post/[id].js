@@ -6,7 +6,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
-import { getFocusEditor, getOnReply } from "next-common/utils/post";
+import { getFocusEditor } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
@@ -17,7 +17,7 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 
 export default withLoginUserRedux(
-  ({ loginUser, detail, comments, votes, myVote, chain }) => {
+  ({ loginUser, detail, comments, votes, myVote }) => {
     const postId = detail._id;
     const editorWrapperRef = useRef(null);
     const [quillRef, setQuillRef] = useState(null);
@@ -28,15 +28,6 @@ export default withLoginUserRedux(
     const users = useMentionList(detail, comments);
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-
-    const onReply = getOnReply(
-      contentType,
-      content,
-      setContent,
-      quillRef,
-      focusEditor,
-      chain
-    );
 
     const desc = getMetaDesc(detail);
     return (
@@ -51,7 +42,7 @@ export default withLoginUserRedux(
           <Back href={"/discussions"} text="Back to Discussions" />
           <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
           <CommentsWrapper>
-            <Comments data={comments} onReply={onReply} />
+            <Comments data={comments} />
             {loginUser && (
               <Editor
                 postId={postId}

@@ -1,3 +1,4 @@
+import flatten from "lodash.flatten";
 import { fetchIdentity } from "../services/identity";
 import { addressEllipsis } from ".";
 import { encodeAddressToChain } from "../services/address";
@@ -10,10 +11,12 @@ export function getTitle(item) {
 }
 
 export function getMentionList(comments) {
+  const items = [
+    ...(comments?.items ?? []),
+    ...flatten((comments?.items ?? []).map((item) => item.replies)),
+  ];
   return uniqBy(
-    comments?.items
-      ?.map((comment) => comment.author)
-      .filter((author) => !!author) ?? [],
+    items?.map((comment) => comment.author).filter((author) => !!author) ?? [],
     (item) => item.username,
   );
 }
@@ -27,7 +30,6 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
         quillRef.setSelection(99999, 0, "api"); //always put caret to the end
       }, 4);
     }
-    editorWrapperRef.current?.scrollIntoView();
   };
 }
 
@@ -125,7 +127,9 @@ export function getOnReply(
             },
           ],
         };
-        if (JSON.stringify(contents.ops) === "[{\"insert\":\"\\n\"}]") {
+        if (
+          JSON.stringify(contents.ops) === JSON.stringify([{ insert: "\n" }])
+        ) {
           quillRef.setContents(reply.ops);
         } else {
           quillRef.setContents(contents.ops.concat(reply.ops));

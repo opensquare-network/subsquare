@@ -10,7 +10,6 @@ import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import Actions from "../actions";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import useDuration from "next-common/utils/hooks/useDuration";
-import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled.div`
   position: relative;
