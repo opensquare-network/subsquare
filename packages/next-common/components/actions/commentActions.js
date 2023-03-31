@@ -44,7 +44,6 @@ export default function CommentActions({
 
   const postId = post?._id;
 
-  //TODO: fix nested comment users
   const users = useMentionList(post, comments);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
