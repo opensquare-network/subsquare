@@ -105,11 +105,17 @@ const FoldButton = styled.button`
   }
 `;
 
-export default function Item({ data, onReply, isSecondLevel }) {
+export default function Item({
+  data,
+  replyToCommentId,
+  isSecondLevel,
+  updateTopLevelComment,
+}) {
   const user = useUser();
   const dispatch = useDispatch();
   const ref = useRef();
   const [comment, setComment] = useState(data);
+  useEffect(() => setComment(data), [data]);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -211,7 +217,8 @@ export default function Item({ data, onReply, isSecondLevel }) {
           </ContentWrapper>
           <div style={{ margin: "8px 0 0 28px" }}>
             <CommentActions
-              comment={comment}
+              updateComment={updateTopLevelComment || updateComment}
+              replyToCommentId={replyToCommentId}
               highlight={isLoggedIn && thumbUp}
               noHover={!isLoggedIn || ownComment}
               edit={ownComment}
@@ -219,11 +226,7 @@ export default function Item({ data, onReply, isSecondLevel }) {
               toggleThumbUp={toggleThumbUp}
               thumbUpLoading={thumbUpLoading}
               reactions={comment.reactions}
-              onReply={() => {
-                if (isLoggedIn && !ownComment) {
-                  onReply(comment.author);
-                }
-              }}
+              author={comment.author}
               copy
               onCopy={() => {
                 copy(
@@ -263,7 +266,13 @@ export default function Item({ data, onReply, isSecondLevel }) {
 
           {!folded
             ? (comment.replies || []).map((item) => (
-                <Item key={item.id} data={item} isSecondLevel={true} />
+                <Item
+                  key={item.id}
+                  data={item}
+                  replyToCommentId={replyToCommentId}
+                  isSecondLevel={true}
+                  updateTopLevelComment={updateTopLevelComment || updateComment}
+                />
               ))
             : null}
         </IndentWrapper>

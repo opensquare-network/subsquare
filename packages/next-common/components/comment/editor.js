@@ -14,6 +14,7 @@ import GhostButton from "../buttons/ghostButton";
 import EditorWrapper from "../editor/editorWrapper";
 import { useChain } from "../../context/chain";
 import { useDetailType } from "../../context/page";
+import noop from "lodash.noop";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -51,7 +52,7 @@ function Editor(
     postId,
     isEdit,
     isReply,
-    onFinishedEdit,
+    onFinishedEdit = noop,
     commentId,
     content,
     setContent,
@@ -98,14 +99,16 @@ function Editor(
         setErrors(result.error);
       } else {
         setContent("");
-        await router.replace("[id]", {
-          pathname: `${router.query.id}`,
-        });
-        setTimeout(() => {
-          if (isMounted()) {
-            window && window.scrollTo(0, document.body.scrollHeight);
-          }
-        }, 4);
+        if (isReply) {
+          onFinishedEdit(true);
+        } else {
+          await router.replace(router.asPath);
+          setTimeout(() => {
+            if (isMounted()) {
+              window && window.scrollTo(0, document.body.scrollHeight);
+            }
+          }, 4);
+        }
       }
     } finally {
       if (isMounted()) {
@@ -167,7 +170,10 @@ function Editor(
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {(isEdit || isReply) && (
-          <GhostButton onClick={() => onFinishedEdit(false)}>
+          <GhostButton onClick={() => {
+            setContent("");
+            onFinishedEdit(false);
+          }}>
             Cancel
           </GhostButton>
         )}

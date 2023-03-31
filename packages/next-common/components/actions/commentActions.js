@@ -7,13 +7,16 @@ import { Wrapper } from "./styled";
 import Editor from "../comment/editor";
 import { usePost } from "next-common/context/post";
 import { useUser } from "next-common/context/user";
-// import useMentionList from "next-common/utils/hooks/useMentionList";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
+import { usePageProps } from "next-common/context/page";
+import noop from "lodash.noop";
 
 export default function CommentActions({
-  comment,
-  // onReply,
+  updateComment = noop,
+  replyToCommentId,
+  author,
   noHover,
   highlight,
   toggleThumbUp,
@@ -35,12 +38,12 @@ export default function CommentActions({
     loginUser?.preference.editor || "markdown",
   );
   const [isReply, setIsReply] = useState(false);
+  const { comments } = usePageProps();
 
   const postId = post?._id;
-  const commentId = comment?._id;
 
-  //TODO: fix dead loop
-  const users = []; //useMentionList(post, { items: [], page: 1, pageSize: 10, total: 0 }/*comments*/);
+  //TODO: fix nested comment users
+  const users = useMentionList(post, comments);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -56,7 +59,7 @@ export default function CommentActions({
   const startReply = () => {
     setIsReply(true);
     setTimeout(() => {
-      onReply();
+      onReply(author);
     }, 100);
   };
 
@@ -87,11 +90,16 @@ export default function CommentActions({
       {isReply && (
         <Editor
           postId={postId}
-          commentId={commentId}
+          commentId={replyToCommentId}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
-          onFinishedEdit={() => setIsReply(false)}
+          onFinishedEdit={(reload) => {
+            setIsReply(false);
+            if (reload) {
+              updateComment();
+            }
+          }}
           {...{ contentType, setContentType, content, setContent, users }}
         />
       )}
