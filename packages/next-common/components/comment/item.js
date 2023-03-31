@@ -144,8 +144,13 @@ export default function Item({
 
   // Jump to comment when anchor is set
   useEffect(() => {
+    if (!hasAnchor) {
+      return;
+    }
+
     setFolded(false);
-    if (hasAnchor && anchor === comment.height) {
+
+    if (anchor === comment.height) {
       setHighlight(true);
       setTimeout(() => {
         jumpToAnchor(anchor);
