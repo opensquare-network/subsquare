@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.1
+date: 03/31/2023
+- Support closing collective motion.
+- Flatten menu, remove the separation of gov2 from gov1.
+- Improve CI build and style prettier.
+- Add zeitgeist advisory committee motions to overview page.
+- Set default page size on list page to 25.
+- Fix style issues.
+
 # 3.0.0
 date: 03/27/2023
 - Add calendar feature which show history governance events and future events.
