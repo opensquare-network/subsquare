@@ -12,7 +12,7 @@ import { getMotionStateArgs } from "../../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../../utils/gov2/result";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { smcss } from "../../../utils/responsive";
-import { hidden } from "../../../styles/tailwindcss";
+import { hidden, inline_flex, items_center } from "../../../styles/tailwindcss";
 import { useDetailType } from "../../../context/page";
 import IpfsLink from "../../alliance/ipfsLink";
 import PostLabels from "../../postLabels";
@@ -27,6 +27,8 @@ const DividerWrapper = styled(Flex)`
 
   > :not(:first-child) {
     ${smcss(hidden)};
+    ${inline_flex};
+    ${items_center};
 
     ::before {
       content: "·";
