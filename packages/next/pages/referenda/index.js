@@ -1,5 +1,5 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { EmptyList } from "next-common/utils/constants";
+import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   fellowshipTracksApi,
@@ -27,7 +27,7 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page = 1, page_size: pageSize = 50 } = context.query;
+  const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
 
   const [
     { result: tracks },

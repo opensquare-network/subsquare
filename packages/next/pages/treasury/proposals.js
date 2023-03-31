@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
-import { EmptyList } from "next-common/utils/constants";
+import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import Summary from "next-common/components/summary";
@@ -89,7 +89,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: proposals }] = await Promise.all([
     ssrNextApi.fetch("treasury/proposals", {
       page: page ?? 1,
-      pageSize: pageSize ?? 50,
+      pageSize: pageSize ?? defaultPageSize,
     }),
   ]);
 

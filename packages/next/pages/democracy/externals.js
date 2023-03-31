@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { EmptyList } from "next-common/utils/constants";
+import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import DemocracySummary from "next-common/components/summary/democracySummary";
@@ -47,7 +47,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: externals }] = await Promise.all([
     nextApi.fetch("democracy/externals", {
       page: page ?? 1,
-      pageSize: pageSize ?? 50,
+      pageSize: pageSize ?? defaultPageSize,
     }),
   ]);
 

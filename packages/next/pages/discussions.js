@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { EmptyList } from "next-common/utils/constants";
+import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import styled from "styled-components";
@@ -59,7 +59,7 @@ export default withLoginUserRedux(({ posts, tracks, fellowshipTracks }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize, label } = context.query;
 
-  let q = { page: page ?? 1, pageSize: pageSize ?? 50 };
+  let q = { page: page ?? 1, pageSize: pageSize ?? defaultPageSize };
   if (label) {
     q = { label, ...q };
   }
