@@ -1,5 +1,5 @@
 import * as monetary from "@interlay/monetary-js";
-import BN from "bn.js";
+import BigNumber from "bignumber.js";
 
 export async function getFinalizedBlockNumber(api) {
   const head = await api.rpc.chain.getFinalizedHead();
@@ -20,5 +20,5 @@ export function newMonetaryAmount(amount, currency, base = false) {
 }
 
 export function saturatingSub(x, y) {
-  return BN.max(x.sub(y), new BN(0));
+  return BigNumber.max(x.sub(y), BigNumber(0));
 }
