@@ -15,7 +15,6 @@
     "@subsquare/next-common": "file:../next-common",
     "@svgr/webpack": "^5.5.0",
     "bignumber.js": "^9.0.2",
-    "bn.js": "^5.2.0",
     "cookies": "^0.8.0",
     "dayjs": "^1.10.7",
     "http-proxy": "^1.18.1",
