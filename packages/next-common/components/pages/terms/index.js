@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import termsMd from "./terms-of-service.md";
-import Markdown from "next-common/components/micromarkMd";
 import BaseLayout from "../../layout/baseLayout";
 import Back from "../../back";
+import { MarkdownPreviewer } from "@osn/previewer";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -44,7 +44,7 @@ const Terms = withLoginUserRedux(() => {
         <Back text="Back" href="signup" />
         <Content>
           <Title>Terms of Service</Title>
-          <Markdown md={termsMd} />
+          <MarkdownPreviewer content={termsMd} />
         </Content>
       </Wrapper>
     </BaseLayout>
