@@ -34,6 +34,7 @@
     "babel-loader": "^8.2.3",
     "eslint": "7.32.0",
     "eslint-config-next": "^11.1.2",
-    "next-transpile-modules": "^9.0.0"
+    "next-transpile-modules": "^9.0.0",
+    "raw-loader": "^4.0.2"
   }
 }
