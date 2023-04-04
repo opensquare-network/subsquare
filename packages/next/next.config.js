@@ -11,7 +11,7 @@ module.exports = {
     ];
   },
   ...withTM(),
-  webpack(config, { webpack }) {
+  webpack(config) {
     config.module.rules.push(
       {
         test: /\.svg$/,
@@ -21,11 +21,6 @@ module.exports = {
         test: /\.md$/,
         use: "raw-loader",
       }
-    );
-    config.plugins.push(
-      new webpack.ProvidePlugin({
-        "window.Quill": "quill",
-      })
     );
     return config;
   },
