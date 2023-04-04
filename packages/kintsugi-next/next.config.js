@@ -8,7 +8,7 @@ module.exports = {
       },
     ];
   },
-  webpack(config, { webpack }) {
+  webpack(config) {
     config.module.rules.push(
       {
         test: /\.svg$/,
@@ -22,11 +22,6 @@ module.exports = {
         test: /\/next-common\/.*\.js/,
         use: "babel-loader",
       }
-    );
-    config.plugins.push(
-      new webpack.ProvidePlugin({
-        "window.Quill": "quill",
-      })
     );
     return config;
   },

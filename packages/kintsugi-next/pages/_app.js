@@ -7,7 +7,6 @@ import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/richTextStyles.scss";
 import "next-common/styles/prism.min.css";
-import "react-mde/lib/styles/css/react-mde-all.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import GlobalProvider from "next-common/context/global";

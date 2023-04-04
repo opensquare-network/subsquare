@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import privacyMd from "./privacy-policy.md";
-import Markdown from "next-common/components/micromarkMd";
 import BaseLayout from "../../layout/baseLayout";
 import Back from "../../back";
+import { MarkdownPreviewer } from "@osn/previewer";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -44,7 +44,7 @@ const Privacy = withLoginUserRedux(() => {
         <Back text="Back" href="signup" />
         <Content>
           <Title>Privacy Policy</Title>
-          <Markdown md={privacyMd} />
+          <MarkdownPreviewer content={privacyMd} />
         </Content>
       </Wrapper>
     </BaseLayout>
