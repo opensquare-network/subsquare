@@ -25,7 +25,6 @@
     "nprogress": "^0.2.0",
     "quill-mention": "^3.0.4",
     "react": "17.0.2",
-    "react-mde": "^11.5.0",
     "react-quill": "^1.3.5",
     "react-redux": "^7.2.4",
     "sass": "^1.38.0",

@@ -7,7 +7,6 @@ import "next-common/styles/globals.css";
 import { store } from "next-common/store";
 import "next-common/styles/richTextStyles.scss";
 // import "react-quill/dist/quill.snow.css";
-import "react-mde/lib/styles/css/react-mde-all.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import React, { useEffect } from "react";
