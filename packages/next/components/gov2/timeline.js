@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import User from "next-common/components/user";
 import startCase from "lodash.startcase";
@@ -6,6 +5,7 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 const getTimelineData = (args, method, trackInfo) => {
   switch (method) {
@@ -52,7 +52,7 @@ const getTimelineData = (args, method, trackInfo) => {
 export function makeReferendumTimelineData(timeline, trackInfo) {
   return (timeline || []).map((item) => {
     return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(item.indexer.blockTime),
       indexer: item.indexer,
       status: {
         value: item.method ?? item.name,

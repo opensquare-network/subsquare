@@ -1,5 +1,5 @@
-import dayjs from "dayjs";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 export function createMotionTimelineData(motion = {}) {
   const { proposer, proposal, voting, timeline = [] } = motion;
@@ -11,7 +11,7 @@ export function createMotionTimelineData(motion = {}) {
         return {
           indexer: item.indexer,
           hash: motion.hash,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          time: formatTime(item.indexer.blockTime),
           status: { value: `Motion #${motion.index}`, type },
           voting: {
             proposer: proposer,
@@ -28,7 +28,7 @@ export function createMotionTimelineData(motion = {}) {
         return {
           indexer: item.indexer,
           hash: motion.hash,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          time: formatTime(item.indexer.blockTime),
           status: { value: "Vote", type },
           voteResult: {
             name: item.args.voter,
@@ -46,7 +46,7 @@ export function createMotionTimelineData(motion = {}) {
         return {
           indexer: item.indexer,
           hash: motion.hash,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          time: formatTime(item.indexer.blockTime),
           status: { value: method, type },
           method,
         };

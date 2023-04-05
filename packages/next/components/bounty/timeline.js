@@ -1,11 +1,11 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 export default function BountyTimeline({ bounty }) {
   const getTimelineData = (args, method) => {
@@ -52,7 +52,7 @@ export default function BountyTimeline({ bounty }) {
     const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
       indexer,
-      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(indexer?.blockTime),
       status: getTimelineStatus(
         detailPageCategory.TREASURY_BOUNTY,
         item.method ?? item.name

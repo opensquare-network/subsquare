@@ -2,10 +2,10 @@ import styled from "styled-components";
 import findLastIndex from "lodash.findlastindex";
 import { getTimelineStatus } from "utils";
 import Timeline from "next-common/components/timeline";
-import dayjs from "dayjs";
 import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -83,7 +83,7 @@ export default function TipTimeline({ tip }) {
 
   let timeline = (tip?.timeline || []).map((item) => {
     return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(item.indexer.blockTime),
       indexer: item.indexer,
       status: getTimelineStatus(detailPageCategory.TREASURY_TIP, item.method),
       data: getTimelineData(item.args, item.method),

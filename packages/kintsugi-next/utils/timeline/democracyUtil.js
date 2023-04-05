@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import dayjs from "dayjs";
 import { getTimelineStatus } from "utils";
 import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 const DepositorsWrapper = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ export function getDemocracyTimelineData(
   type = detailPageCategory.DEMOCRACY_PROPOSAL
 ) {
   return timeline.map((item) => ({
-    time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+    time: formatTime(item.indexer.blockTime),
     indexer: item.indexer,
     status: getTimelineStatus(type, item.method ?? item.name),
     data: getTimelineData(item.args, item.method ?? item.name),
