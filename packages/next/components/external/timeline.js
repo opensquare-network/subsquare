@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
 import { getTimelineStatus } from "utils/index";
 import Timeline from "next-common/components/timeline";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 function makeSingleExternalTimelineData(args, method) {
   switch (method) {
@@ -26,7 +26,7 @@ function makeSingleExternalTimelineData(args, method) {
 export function makeExternalTimelineData(timeline) {
   return (timeline || []).map((item) => {
     return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(item.indexer.blockTime),
       indexer: item.indexer,
       status: getTimelineStatus(
         detailPageCategory.DEMOCRACY_EXTERNAL,

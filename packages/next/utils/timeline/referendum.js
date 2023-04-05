@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
 import businessCategory from "next-common/utils/consts/business/category";
 import TimelineReferendumVote from "components/timelineReferendumVote";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 // used in treasury proposal timeline
 export function createReferendumTimelineData(
@@ -22,7 +22,7 @@ export function createReferendumTimelineData(
         return {
           indexer: item.indexer,
           referendumIndex: referendumIndex,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          time: formatTime(item.indexer.blockTime),
           status: {
             value: linkable ? `Referendum #${referendumIndex}` : "Started",
             link,
@@ -36,7 +36,7 @@ export function createReferendumTimelineData(
         return {
           indexer: item.indexer,
           referendumIndex: referendum.referendumIndex,
-          time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+          time: formatTime(item.indexer.blockTime),
           status: {
             value: item.method,
             type: businessCategory.democracyReferenda,

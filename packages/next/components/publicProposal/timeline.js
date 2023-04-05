@@ -1,10 +1,10 @@
-import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { getTimelineStatus } from "utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 export function makePublicProposalTimelineData(timeline) {
   const getTimelineData = (args, method) => {
@@ -25,7 +25,7 @@ export function makePublicProposalTimelineData(timeline) {
 
   const timelineData = (timeline || []).map((item) => {
     return {
-      time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(item.indexer.blockTime),
       indexer: item.indexer,
       status: getTimelineStatus(
         detailPageCategory.DEMOCRACY_PROPOSAL,

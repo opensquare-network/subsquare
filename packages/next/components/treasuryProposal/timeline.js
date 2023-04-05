@@ -1,5 +1,4 @@
 import { getTimelineStatus } from "utils";
-import dayjs from "dayjs";
 import flatten from "lodash.flatten";
 import User from "next-common/components/user";
 import Timeline from "next-common/components/timeline";
@@ -8,6 +7,7 @@ import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createReferendumTimelineData } from "utils/timeline/referendum";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 function getTimelineData(args, method) {
   switch (method) {
@@ -30,7 +30,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
   return [
     {
       indexer,
-      time: dayjs(indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(indexer?.blockTime),
       status: {
         value: `Referenda #${treasuryProposal.gov2Referendum}`,
         link: `/referenda/referendum/${treasuryProposal.gov2Referendum}`,
@@ -38,7 +38,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
     },
     {
       indexer,
-      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(indexer?.blockTime),
       status: getTimelineStatus(
         detailPageCategory.TREASURY_PROPOSAL,
         "Approved"
@@ -61,7 +61,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
 
       return {
         indexer,
-        time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        time: formatTime(indexer?.blockTime),
         status: getTimelineStatus(detailPageCategory.TREASURY_PROPOSAL, method),
         data: getTimelineData(item.args, item.method ?? item.name),
       };

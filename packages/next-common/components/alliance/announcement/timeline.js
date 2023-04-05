@@ -1,10 +1,10 @@
 import React from "react";
-import dayjs from "dayjs";
 import { useDetailType } from "../../../context/page";
 import sortTimeline from "../../../utils/timeline/sort";
 import Timeline from "../../timeline";
 import { createMotionTimelineData } from "@subsquare/next/utils/timeline/motion";
 import IpfsCidWithLink from "../ipfsCidWithLink";
+import formatTime from "../../../utils/viewfuncs/formatDate";
 
 function getData(item) {
   const { method, args = {} } = item;
@@ -25,7 +25,7 @@ export default function AnnouncementTimeline({ data }) {
     const { indexer, method } = item;
     return {
       indexer: item.indexer,
-      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(indexer?.blockTime),
       status: { value: method, type },
       data: getData(item),
     };
