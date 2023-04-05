@@ -16,6 +16,14 @@ const collectivesEndpoints = [
     name: "Parity",
     url: "wss://polkadot-collectives-rpc.polkadot.io/",
   },
+  {
+    name: "IBP-GeoDNS1",
+    url: "wss://sys.ibp.network/collectives-polkadot",
+  },
+  {
+    name: "IBP-GeoDNS2",
+    url: "wss://sys.dotters.network/collectives-polkadot",
+  },
 ];
 
 const collectives = {

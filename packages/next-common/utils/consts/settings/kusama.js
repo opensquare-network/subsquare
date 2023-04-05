@@ -19,16 +19,24 @@ const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama-rpc.dwellir.com",
   },
   {
-    name: "RadiumBlock",
-    url: "wss://kusama.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "Pinknode",
-    url: "wss://public-rpc.pinknode.io/kusama",
+    name: "Dwellir Tunisia",
+    url: "wss://kusama-rpc-tn.dwellir.com",
   },
   {
     name: "Automata 1RPC",
     url: "wss://1rpc.io/ksm",
+  },
+  {
+    name: "IBP-GeoDNS1",
+    url: "wss://rpc.ibp.network/kusama",
+  },
+  {
+    name: "IBP-GeoDNS2",
+    url: "wss://rpc.dotters.network/kusama",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
 ];
 

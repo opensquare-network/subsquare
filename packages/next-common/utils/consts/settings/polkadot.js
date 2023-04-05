@@ -23,16 +23,24 @@ export const defaultPolkadotNodes = [
     url: "wss://polkadot-rpc.dwellir.com",
   },
   {
-    name: "Pinknode",
-    url: "wss://public-rpc.pinknode.io/polkadot",
-  },
-  {
-    name: "RadiumBlock",
-    url: "wss://polkadot.public.curie.radiumblock.co/ws",
+    name: "Dwellir Tunisia",
+    url: "wss://polkadot-rpc-tn.dwellir.com",
   },
   {
     name: "Automata 1RPC",
     url: "wss://1rpc.io/dot",
+  },
+  {
+    name: "IBP-GeoDNS1",
+    url: "wss://rpc.ibp.network/polkadot",
+  },
+  {
+    name: "IBP-GeoDNS2",
+    url: "wss://rpc.dotters.network/polkadot",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://polkadot.public.curie.radiumblock.co/ws",
   },
 ];
 
