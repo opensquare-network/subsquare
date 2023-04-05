@@ -4,20 +4,13 @@ import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 
-import {
-  EmptyTd,
-  RowSplitter,
-  StyledTable,
-  StyledTd,
-  StyledTh,
-  StyledTr,
-} from "next-common/components/styled/table";
+import { EmptyTd, RowSplitter, StyledTable, StyledTd, StyledTh, StyledTr } from "next-common/components/styled/table";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
-import dayjs from "dayjs";
 import ExternalLinks from "next-common/components/links";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 const VoteInfoWrapper = styled.div`
   display: flex;
@@ -59,7 +52,7 @@ function VoteInfo({ item }) {
       </VoteInfoValue>
       <VoteTime>
         <ExternalLinks indexer={item.indexer}>
-          {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
+          { formatTime(item.indexer.blockTime) }
         </ExternalLinks>
       </VoteTime>
     </VoteInfoWrapper>

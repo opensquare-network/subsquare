@@ -1,13 +1,11 @@
-import dayjs from "dayjs";
 import User from "next-common/components/user";
 import Voting from "next-common/components/timelineMotionVoting";
 import businessCategory from "next-common/utils/consts/business/category";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import AyeNay from "next-common/components/collective/AyeNay";
-import getMotionExecutedResult, {
-  isMotionExecutedSucceed,
-} from "next-common/utils/collective/result";
+import getMotionExecutedResult, { isMotionExecutedSucceed } from "next-common/utils/collective/result";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
@@ -37,7 +35,7 @@ function getTimelineItemCommonData(item, motion, type) {
   return {
     indexer: item.indexer,
     hash: motion.hash,
-    time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+    time: formatTime(item.indexer.blockTime),
     method: item.method,
     status: { value: item.method, type },
   };

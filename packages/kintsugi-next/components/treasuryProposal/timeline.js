@@ -1,11 +1,11 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const getTimelineData = (args, method) => {
@@ -27,7 +27,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
     const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
       indexer,
-      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(indexer?.blockTime),
       status: getTimelineStatus(
         detailPageCategory.TREASURY_PROPOSAL,
         item.method ?? item.name
@@ -45,7 +45,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
       ...completeTimeline.slice(0, 1).map((item) => ({
         indexer: item.indexer,
         index: item.args.index,
-        time: dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+        time: formatTime(item.indexer.blockTime),
         status: {
           value: `Public proposal #${item.args.index}`,
           link: `/democracy/proposal/${item.args.index}`,

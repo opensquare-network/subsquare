@@ -1,12 +1,12 @@
 import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
-import dayjs from "dayjs";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 export default function ChildBountyTimeline({ onchainData }) {
   const getTimelineData = (args, method, indexer) => {
@@ -69,7 +69,7 @@ export default function ChildBountyTimeline({ onchainData }) {
     const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
       indexer,
-      time: dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss"),
+      time: formatTime(indexer?.blockTime),
       status: getTimelineStatus(
         detailPageCategory.TREASURY_CHILD_BOUNTY,
         item.method ?? item.name
