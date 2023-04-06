@@ -59,7 +59,8 @@ export default function InputNumber({
   step = 1,
 }) {
   function handleChange(e) {
-    const v = Number(e.target.value);
+    let v = Number(e.target.value);
+    v = min > v ? min : v;
     if (typeof v === "number" && !isNaN(v)) {
       setValue(v);
     }
