@@ -2493,7 +2493,7 @@ __metadata:
 
 "@subsquare/next-common@file:../next-common::locator=%40subsquare%2Fkintsugi-next%40workspace%3Apackages%2Fkintsugi-next":
   version: 1.0.0
-  resolution: "@subsquare/next-common@file:../next-common#../next-common::hash=8fddd1&locator=%40subsquare%2Fkintsugi-next%40workspace%3Apackages%2Fkintsugi-next"
+  resolution: "@subsquare/next-common@file:../next-common#../next-common::hash=d16d5a&locator=%40subsquare%2Fkintsugi-next%40workspace%3Apackages%2Fkintsugi-next"
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/polkadot-react-identicon": ^1.0.8
@@ -2538,13 +2538,13 @@ __metadata:
     react-redux: ^7.2.4
     socket.io-client: ^4.3.2
     styled-components: ^5.3.3
-  checksum: 499db851e34c549060304931975d80f987b02319b8482c882586fa13c723bd51c9d36cc26570f3ccdf254179b3ddbb529f0a6984193957491f25de71e0d73577
+  checksum: 68b976056cb328cb78e8e9beb7eb0fcae3da87e99b98be42034289e16977a5256fc649e6c400f5bf03ff276695a84b8377f32e9e030f03630b85e512203904ff
   languageName: node
   linkType: hard
 
 "@subsquare/next-common@file:../next-common::locator=%40subsquare%2Fnext%40workspace%3Apackages%2Fnext":
   version: 1.0.0
-  resolution: "@subsquare/next-common@file:../next-common#../next-common::hash=8fddd1&locator=%40subsquare%2Fnext%40workspace%3Apackages%2Fnext"
+  resolution: "@subsquare/next-common@file:../next-common#../next-common::hash=d16d5a&locator=%40subsquare%2Fnext%40workspace%3Apackages%2Fnext"
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/polkadot-react-identicon": ^1.0.8
@@ -2589,7 +2589,7 @@ __metadata:
     react-redux: ^7.2.4
     socket.io-client: ^4.3.2
     styled-components: ^5.3.3
-  checksum: 499db851e34c549060304931975d80f987b02319b8482c882586fa13c723bd51c9d36cc26570f3ccdf254179b3ddbb529f0a6984193957491f25de71e0d73577
+  checksum: 68b976056cb328cb78e8e9beb7eb0fcae3da87e99b98be42034289e16977a5256fc649e6c400f5bf03ff276695a84b8377f32e9e030f03630b85e512203904ff
   languageName: node
   linkType: hard
 
