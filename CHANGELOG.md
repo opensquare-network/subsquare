@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.2
+date: 04/06/2023
+- Support nest comments.
+- Support democracy public proposals batch seconds action.
+
 # 3.0.1
 date: 03/31/2023
 - Support closing collective motion.
