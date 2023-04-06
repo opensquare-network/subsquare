@@ -111,6 +111,7 @@ function PopupContent({
       <SecondPopupInputTimes
         times={times}
         setTimes={setTimes}
+        currentTimes={depositorUpperBound}
         setSubmitDisabled={setSubmitDisabled}
       />
       <SubmitButton
