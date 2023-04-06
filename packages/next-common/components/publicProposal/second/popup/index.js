@@ -13,6 +13,7 @@ import { emptyFunction } from "../../../../utils";
 import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
+import SecondPopupInputTimes from "./inputTimes";
 
 function PopupContent({
   extensionAccounts,
@@ -30,6 +31,7 @@ function PopupContent({
   const signerAccount = useSignerAccount(extensionAccounts);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
   const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
     api,
@@ -40,6 +42,7 @@ function PopupContent({
     signerAccount?.address,
   );
   const { deposit, balanceInsufficient } = useDeposit(depositRequired, balance);
+  const [times, setTimes] = useState(1);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -100,10 +103,16 @@ function PopupContent({
         deposit={deposit}
         balanceInsufficient={balanceInsufficient}
       />
+      <SecondPopupInputTimes
+        times={times}
+        setTimes={setTimes}
+        setSubmitDisabled={setSubmitDisabled}
+      />
       <SubmitButton
         onClick={submit}
         balanceInsufficient={balanceInsufficient}
         isSubmitting={isSubmitting}
+        disabled={submitDisabled}
       />
     </>
   );
