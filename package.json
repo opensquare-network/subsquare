@@ -26,5 +26,6 @@
     "patch-package": "^6.5.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.2.1"
-  }
+  },
+  "packageManager": "yarn@3.5.0"
 }
