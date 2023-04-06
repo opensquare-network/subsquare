@@ -126,6 +126,7 @@ function Input(
     onChange = emptyFunction,
     prefix,
     suffix,
+    suffixStyle,
     onKeyDown = noop,
     onFocus = noop,
     onBlur = noop,
@@ -180,7 +181,7 @@ function Input(
           onKeyDown={onKeyDown}
         />
 
-        {suffix && <Suffix>{suffix}</Suffix>}
+        {suffix && <Suffix style={suffixStyle}>{suffix}</Suffix>}
 
         {props.type === "password" && (
           <ShowButton onClick={() => setShow(!show)}>

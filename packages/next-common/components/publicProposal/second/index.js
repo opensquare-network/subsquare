@@ -14,6 +14,7 @@ import { GhostCard } from "../../styled/containers/ghostCard";
 import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
+import useMaxDeposits from "./useMaxDeposits";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -108,6 +109,7 @@ export default function Second({
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
+  const maxDeposits = useMaxDeposits();
 
   const api = useApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
@@ -117,6 +119,8 @@ export default function Second({
     atBlockHeight,
     triggerUpdate,
   );
+  const reachedMaxDeposits = maxDeposits <= seconds.length;
+
   const node = useChainSettings();
   const secondsCount = countBy(seconds);
   const secondsAddress = Object.keys(secondsCount);
@@ -165,6 +169,10 @@ export default function Second({
   if (hasTurnIntoReferendum) {
     action = (
       <Description>This proposal has been turned into referendum.</Description>
+    );
+  } else if (reachedMaxDeposits) {
+    action = (
+      <Description>Has reached max deposits.</Description>
     );
   } else if (hasCanceled) {
     action = <Description>This proposal has been canceled.</Description>;
