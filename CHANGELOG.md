@@ -7,6 +7,8 @@ date: 03/31/2023
 - Support closing collective motion.
 - Flatten menu, remove the separation of gov2 from gov1.
 - Improve CI build and style prettier.
+- Show OpenGov referenda vote extrinsic time with local time.
+- Update polkadot/kusama/collectives endpoints.
 - Add zeitgeist advisory committee motions to overview page.
 - Set default page size on list page to 25.
 - Fix style issues.
