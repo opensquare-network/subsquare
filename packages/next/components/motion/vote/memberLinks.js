@@ -29,7 +29,7 @@ function MemberLinks() {
   }
 
   return (
-    <Link href={obj.url} passHref>
+    <Link href={obj.url} passHref legacyBehavior>
       <Anchor>Check all {obj.name}</Anchor>
     </Link>
   );

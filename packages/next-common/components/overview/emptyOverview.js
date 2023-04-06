@@ -99,12 +99,12 @@ export default function EmptyOverview() {
         <div className="title">Welcome to SubSquare</div>
         <div className="desc">{text}</div>
         {!isCentrifuge && (
-          <Link href={"/post/create"}>
-            <a className="button">
-              <Icon />
-              <span>New Discussion</span>
-            </a>
-          </Link>
+          (<Link href={"/post/create"} className="button">
+
+            <Icon />
+            <span>New Discussion</span>
+
+          </Link>)
         )}
       </EmptyPanel>
     </Wrapper>

@@ -248,7 +248,7 @@ function getTitle(event) {
       <Tooltip content={"#" + event?.indexer?.blockHeight?.toLocaleString()}>
         <TitleTime>[{timeText}]</TitleTime>
       </Tooltip>{" "}
-      <Link href={postUrl} passHref>
+      <Link href={postUrl} passHref legacyBehavior>
         <TitleLink>{title}</TitleLink>
       </Link>
     </span>

@@ -7,7 +7,7 @@ export default function HashItem({ hash, itemName = "Hash", baseUrl = "" }) {
   return (
     <ItemWrapper>
       <span>{itemName}:</span>
-      <Link href={`${baseUrl}/${hash}`} passHref>
+      <Link href={`${baseUrl}/${hash}`} passHref legacyBehavior>
         <ItemLink>#{hashEllipsis(hash)}</ItemLink>
       </Link>
     </ItemWrapper>

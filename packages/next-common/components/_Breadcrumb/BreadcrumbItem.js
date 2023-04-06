@@ -50,7 +50,7 @@ function BreadcrumbItem(props) {
 
   let content = children;
   if (path) {
-    content = <Link href={path}>{content}</Link>;
+    content = <Link href={path} legacyBehavior>{content}</Link>;
   }
 
   if (children) {

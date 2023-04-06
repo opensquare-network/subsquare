@@ -29,7 +29,7 @@ const Wrapper = styled(Flex)`
 
 export default function Back({ href, text }) {
   return (
-    <Link href={href} passHref>
+    <Link href={href} passHref legacyBehavior>
       <Wrapper>
         <ArrowLeft />
         <span>{text}</span>

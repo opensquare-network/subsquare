@@ -42,7 +42,7 @@ export default function PageItem({ page, now, onPageChange = null }) {
         page: page + 1,
       })}`}
       passHref
-    >
+      legacyBehavior>
       <Item
         active={now === page + 1}
         onClick={(e) => {

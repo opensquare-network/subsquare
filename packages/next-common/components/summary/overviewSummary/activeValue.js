@@ -16,7 +16,7 @@ const TypeValue = styled.a`
 export default function ActiveValue({ tooltip, href, value }) {
   return (
     <Tooltip content={tooltip}>
-      <Link passHref href={href}>
+      <Link passHref href={href} legacyBehavior>
         <TypeValue>{value}</TypeValue>
       </Link>
     </Tooltip>

@@ -28,7 +28,7 @@ export default function PostLabels({ labels }) {
         <Link
           key={item}
           href={`/discussions?label=${encodeURIComponent(item)}`}
-        >
+          legacyBehavior>
           <Label>{item}</Label>
         </Link>
       ))}

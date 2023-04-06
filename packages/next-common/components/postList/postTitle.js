@@ -43,7 +43,7 @@ export default function ListPostTitle({ data = {}, href }) {
     <TitleWrapper>
       {!isNil(data?.index) && <Index>{`#${data.index}`}</Index>}
 
-      <Link href={href} passHref>
+      <Link href={href} passHref legacyBehavior>
         <Title>{title}</Title>
       </Link>
       <ReasonLink text={data.title} hideText={true} />

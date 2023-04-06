@@ -54,7 +54,7 @@ function createMotionBusinessData(motion) {
       <Link
         key="link-to"
         href={`/democracy/external/${height}_${motion.proposalHash}`}
-      >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
+        legacyBehavior>{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
     ],
   ];
 }
@@ -161,7 +161,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
         <Link
           key="treasury-link-to"
           href={`/treasury/proposal/${motion.treasuryProposalIndex}`}
-        >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
+          legacyBehavior>{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
       ],
       [
         "Beneficiary",
@@ -187,7 +187,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
           <Link
             key="link-to"
             href={`/democracy/proposal/${proposal?.proposalIndex}`}
-          >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
+            legacyBehavior>{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
         ["Hash", proposal.hash],
         [

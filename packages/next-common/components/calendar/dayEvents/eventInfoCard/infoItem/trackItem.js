@@ -6,7 +6,7 @@ export default function TrackItem({ track, trackName, baseUrl = "" }) {
   return (
     <ItemWrapper>
       <span>Track:</span>
-      <Link href={`${baseUrl}/${track}`} passHref>
+      <Link href={`${baseUrl}/${track}`} passHref legacyBehavior>
         <ItemLink>{trackName}</ItemLink>
       </Link>
     </ItemWrapper>

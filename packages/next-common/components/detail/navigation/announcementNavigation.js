@@ -12,7 +12,7 @@ export function AnnouncementNavigator({ cid, height, isLink = true }) {
   let link = `Announcement ${ cid.slice(0, 4) }...`;
   if (isLink) {
     link = (
-      <Link href={ `/alliance/announcement/${height}_${ cid }` }>
+      <Link href={ `/alliance/announcement/${height}_${ cid }` } legacyBehavior>
         { link }
       </Link>
     );
@@ -31,7 +31,7 @@ export function AllianceMotionNavigator({ motion }) {
 
   return (
     <div>
-      <Link href={`/alliance/motion/${getMotionId(motion, chain)}`}>
+      <Link href={`/alliance/motion/${getMotionId(motion, chain)}`} legacyBehavior>
         {`Motion #${shortMotionId(motion)}`}
       </Link>
     </div>

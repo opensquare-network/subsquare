@@ -6,7 +6,7 @@ export default function LinkItem({ link }) {
   return (
     <ItemWrapper>
       <span>Link:</span>
-      <Link href={link} passHref>
+      <Link href={link} passHref legacyBehavior>
         <ItemLink>{link}</ItemLink>
       </Link>
     </ItemWrapper>

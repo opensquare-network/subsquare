@@ -19,7 +19,7 @@ export default function Business({ treasuryProposals }) {
           <Link
             key={idx}
             href={`/treasury/proposal/${item.proposalIndex}`}
-          >{`Treasury Proposal #${item.proposalIndex}`}</Link>
+            legacyBehavior>{`Treasury Proposal #${item.proposalIndex}`}</Link>
         ))}
       </LinkItems>,
     ]);

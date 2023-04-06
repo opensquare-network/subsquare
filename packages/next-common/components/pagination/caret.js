@@ -21,7 +21,7 @@ export default function PageCaret({ isPre = true, page, onPageChange = null }) {
         page,
       })}`}
       passHref
-    >
+      legacyBehavior>
       <LinkInnerWrapper
         onClick={(e) => {
           onPageChange && onPageChange(e, page);

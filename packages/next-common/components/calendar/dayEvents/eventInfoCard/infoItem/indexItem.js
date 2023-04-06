@@ -6,7 +6,7 @@ export default function IndexItem({ index, itemName = "Index", baseUrl = "" }) {
   return (
     <ItemWrapper>
       <span>{itemName}:</span>
-      <Link href={`${baseUrl}/${index}`} passHref>
+      <Link href={`${baseUrl}/${index}`} passHref legacyBehavior>
         <ItemLink>#{index}</ItemLink>
       </Link>
     </ItemWrapper>
