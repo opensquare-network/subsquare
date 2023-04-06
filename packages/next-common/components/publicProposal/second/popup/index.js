@@ -70,6 +70,11 @@ function PopupContent({
       return showErrorToast(e.message);
     }
 
+    if (times > 1) {
+      const txs = Array.from({ length: times }).fill(tx);
+      tx = api.tx.utility.batch(txs);
+    }
+
     if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
