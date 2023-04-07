@@ -8,7 +8,6 @@ import TurnoutIcon from "../../../assets/imgs/icons/turnout.svg";
 import ElectorateIcon from "../../../assets/imgs/icons/electorate.svg";
 import ValueDisplay from "../../../components/valueDisplay";
 import VotesCount from "../../../components/democracy/referendum/votesCount";
-import useWindowSize from "../../../utils/hooks/useWindowSize";
 import { useChainSettings } from "../../../context/chain";
 
 const Row = styled(Flex)`
@@ -17,19 +16,9 @@ const Row = styled(Flex)`
   justify-content: space-between;
   white-space: nowrap;
   font-size: 14px;
-  @media screen and (max-width: 1024px) {
-    justify-content: flex-start;
-  }
-`;
 
-const BorderedRow = styled(Flex)`
-  height: 44px;
-  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
-  justify-content: space-between;
-  white-space: nowrap;
-  font-size: 14px;
-  @media screen and (max-width: 1024px) {
-    justify-content: flex-start;
+  & + & {
+    border-top: 1px solid ${(props) => props.theme.grey200Border};
   }
 `;
 
@@ -57,8 +46,6 @@ export default function TallyInfo({
   allAye,
   allNay,
 }) {
-  const { width } = useWindowSize();
-
   const node = useChainSettings();
   if (!node) {
     return null;
@@ -78,27 +65,27 @@ export default function TallyInfo({
 
   return (
     <div>
-      <BorderedRow>
+      <Row>
         <Header>
           <AyeIcon />
           Aye
           {!isLoadingVotes ? <VotesCount>{allAye.length}</VotesCount> : null}
         </Header>
         <Value>
-          <ValueDisplay value={nAyes} symbol={symbol} noWrap={width <= 1024} />
+          <ValueDisplay value={nAyes} symbol={symbol} />
         </Value>
-      </BorderedRow>
-      <BorderedRow>
+      </Row>
+      <Row>
         <Header>
           <NayIcon />
           Nay
           {!isLoadingVotes ? <VotesCount>{allNay.length}</VotesCount> : null}
         </Header>
         <Value>
-          <ValueDisplay value={nNays} symbol={symbol} noWrap={width <= 1024} />
+          <ValueDisplay value={nNays} symbol={symbol} />
         </Value>
-      </BorderedRow>
-      <BorderedRow>
+      </Row>
+      <Row>
         <Header>
           <TurnoutIcon />
           Turnout
@@ -107,24 +94,16 @@ export default function TallyInfo({
           )}
         </Header>
         <Value>
-          <ValueDisplay
-            value={nTurnout}
-            symbol={symbol}
-            noWrap={width <= 1024}
-          />
+          <ValueDisplay value={nTurnout} symbol={symbol} />
         </Value>
-      </BorderedRow>
+      </Row>
       <Row>
         <Header>
           <ElectorateIcon />
           Electorate
         </Header>
         <Value>
-          <ValueDisplay
-            value={nElectorate}
-            symbol={symbol}
-            noWrap={width <= 1024}
-          />
+          <ValueDisplay value={nElectorate} symbol={symbol} />
         </Value>
       </Row>
     </div>
