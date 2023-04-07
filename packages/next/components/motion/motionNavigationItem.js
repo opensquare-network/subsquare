@@ -28,5 +28,5 @@ export default function MotionNavigationItem({ motion, pageMotionId, type }) {
   const link = isTechComm
     ? `/techcomm/proposal/${linkId}`
     : `/council/motion/${linkId}`;
-  return <Link href={link}>{text}</Link>;
+  return <Link href={link} legacyBehavior>{text}</Link>;
 }

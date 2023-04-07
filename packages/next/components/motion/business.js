@@ -23,7 +23,7 @@ export default function Business({ motion }) {
           <Link
             key="proposal-link"
             href={`/treasury/proposal/${proposal.proposalIndex}`}
-          >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
+            legacyBehavior>{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
         ],
         [
           "Beneficiary",
@@ -50,7 +50,7 @@ export default function Business({ motion }) {
         <Link
           key="bounty-link"
           href={`/treasury/bounty/${bounty.bountyIndex}`}
-        >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
+          legacyBehavior>{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
       ]);
 
       const metadata = bounty.meta ? Object.entries(bounty.meta) : [];
@@ -89,7 +89,7 @@ export default function Business({ motion }) {
           <Link
             key="external-link"
             href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-          >{`Democracy External #${external?.proposalHash?.slice(
+            legacyBehavior>{`Democracy External #${external?.proposalHash?.slice(
             0,
             6
           )}`}</Link>,
@@ -108,7 +108,7 @@ export default function Business({ motion }) {
           <Link
             key="external-link"
             href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-          >{`Democracy External #${external?.proposalHash?.slice(
+            legacyBehavior>{`Democracy External #${external?.proposalHash?.slice(
             0,
             6
           )}`}</Link>,

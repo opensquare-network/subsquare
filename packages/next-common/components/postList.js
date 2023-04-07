@@ -40,7 +40,7 @@ export default function PostList({
   return (
     <Wrapper>
       <TitleContainer>
-        <Link href={link || ""} passHref>
+        <Link href={link || ""} passHref legacyBehavior>
           <TitleLink>{title ?? category}</TitleLink>
         </Link>
         {create}

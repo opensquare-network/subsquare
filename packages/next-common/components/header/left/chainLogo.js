@@ -55,16 +55,16 @@ function ChainLogo({ theme }) {
 
   return (
     <Wrapper>
-      <Link href={headerUrl}>
-        <a
-          style={{
-            height: "100%",
-            display: "flex",
-          }}
-        >
-          <Desktop>{logo}</Desktop>
-          <Mobile>{mobileLogo}</Mobile>
-        </a>
+      <Link
+        href={headerUrl}
+        style={{
+          height: "100%",
+          display: "flex",
+        }}>
+
+        <Desktop>{logo}</Desktop>
+        <Mobile>{mobileLogo}</Mobile>
+
       </Link>
     </Wrapper>
   );

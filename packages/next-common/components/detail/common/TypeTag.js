@@ -40,7 +40,7 @@ export default function TypeTag({ type }) {
         ? `/referenda/track/${trackId}`
         : `/fellowship/track/${trackId}`;
     tag = (
-      <Link href={href} passHref>
+      <Link href={href} passHref legacyBehavior>
         <LinkInfo>
           <Gov2TrackTag name={trackName} />
         </LinkInfo>

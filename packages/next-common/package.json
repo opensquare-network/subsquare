@@ -18,7 +18,7 @@
     "@osn/react-cmdk": "^1.1.2",
     "@polkadot/api": "^10.1.4",
     "@polkadot/extension-dapp": "^0.45.3",
-    "@reduxjs/toolkit": "^1.6.1",
+    "@reduxjs/toolkit": "^1.9.3",
     "bignumber.js": "^9.0.2",
     "chart.js": "^4.1.1",
     "chartjs-plugin-annotation": "^2.1.0",
@@ -45,15 +45,15 @@
     "lodash.uniq": "^4.5.0",
     "md5": "^2.3.0",
     "moment": "^2.29.4",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-big-calendar": "^1.6.8",
     "react-chartjs-2": "^5.1.0",
     "react-datepicker": "^4.8.0",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",
-    "react-redux": "^7.2.4",
+    "react-redux": "^8.0.5",
     "socket.io-client": "^4.3.2",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.9"
   },
   "devDependencies": {
     "@osn/eslint-config": "*",

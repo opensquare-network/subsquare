@@ -233,28 +233,31 @@ function MenuGroup({ menu, defaultExpanded }) {
 
           return (
             <Fragment key={index}>
-              <Link href={item?.pathname} passHref>
-                <a target={isExternalLink ? "_blank" : "_self"}>
-                  <Item
-                    active={
-                      router.pathname === item.pathname ||
-                      router.asPath === item.pathname ||
-                      (router.pathname === "/[chain]" && item.pathname === "/")
-                    }
-                  >
-                    {item.itemRender?.(
+              <Link
+                href={item?.pathname}
+                passHref
+                target={isExternalLink ? "_blank" : "_self"}>
+
+                <Item
+                  active={
+                    router.pathname === item.pathname ||
+                    router.asPath === item.pathname ||
+                    (router.pathname === "/[chain]" && item.pathname === "/")
+                  }
+                >
+                  {item.itemRender?.(
+                    item.icon,
+                    item.name,
+                    item.activeCount,
+                  ) ??
+                    defaultItemRender(
                       item.icon,
                       item.name,
                       item.activeCount,
-                    ) ??
-                      defaultItemRender(
-                        item.icon,
-                        item.name,
-                        item.activeCount,
-                        isExternalLink,
-                      )}
-                  </Item>
-                </a>
+                      isExternalLink,
+                    )}
+                </Item>
+
               </Link>
             </Fragment>
           );

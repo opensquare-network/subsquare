@@ -126,8 +126,8 @@ function renderCommandPaletteLink(props) {
   }
 
   return (
-    <Link href={href} passHref>
-      <a {...restProps}>{children}</a>
+    <Link href={href} passHref {...restProps}>
+      {children}
     </Link>
   );
 }

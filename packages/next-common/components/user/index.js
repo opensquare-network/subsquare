@@ -183,7 +183,7 @@ function User({
           )}
         </AvatarWrapper>
       )}
-      <Link href={`/user/${address ?? user?.username}`} passHref>
+      <Link href={`/user/${address ?? user?.username}`} passHref legacyBehavior>
         <LinkWrapper color={color}>
           {address ? (
             identity && identity?.info?.status !== "NO_ID" ? (

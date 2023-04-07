@@ -1,6 +1,11 @@
-const withTM = require("next-transpile-modules")(["@subsquare/next-common"]);
-
+/** @type {import('next').NextConfig} */
 module.exports = {
+  transpilePackages: ["next-common"],
+  compiler: {
+    styledComponents: {
+      ssr: true,
+    },
+  },
   async redirects() {
     return [
       {
@@ -10,7 +15,6 @@ module.exports = {
       },
     ];
   },
-  ...withTM(),
   webpack(config) {
     config.module.rules.push(
       {
@@ -20,7 +24,7 @@ module.exports = {
       {
         test: /\.md$/,
         use: "raw-loader",
-      }
+      },
     );
     return config;
   },
