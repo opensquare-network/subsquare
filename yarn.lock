@@ -2441,7 +2441,6 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^12.1.0
     "@osn/eslint-config": "*"
-    "@subsquare/next-common": "file:../next-common"
     "@svgr/webpack": ^5.5.0
     babel-loader: ^8.2.3
     bignumber.js: ^9.0.2
@@ -2454,6 +2453,7 @@ __metadata:
     lodash.isnil: ^4.0.0
     lodash.uniqby: ^4.7.0
     next: ^13.2.4
+    next-common: "workspace:*"
     next-transpile-modules: ^9.0.0
     nprogress: ^0.2.0
     raw-loader: ^4.0.2
@@ -2465,57 +2465,6 @@ __metadata:
     use-deep-compare-effect: ^1.8.1
   languageName: unknown
   linkType: soft
-
-"@subsquare/next-common@file:../next-common::locator=%40subsquare%2Fkintsugi-next%40workspace%3Apackages%2Fkintsugi-next":
-  version: 1.0.0
-  resolution: "@subsquare/next-common@file:../next-common#../next-common::hash=50b920&locator=%40subsquare%2Fkintsugi-next%40workspace%3Apackages%2Fkintsugi-next"
-  dependencies:
-    "@interlay/monetary-js": 0.5.4
-    "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^0.12.3
-    "@osn/provider-options": 1.1.0
-    "@osn/react-cmdk": ^1.1.2
-    "@polkadot/api": ^10.1.4
-    "@polkadot/extension-dapp": ^0.45.3
-    "@reduxjs/toolkit": ^1.9.3
-    bignumber.js: ^9.0.2
-    chart.js: ^4.1.1
-    chartjs-plugin-annotation: ^2.1.0
-    copy-to-clipboard: ^3.3.2
-    d3-selection: ^3.0.0
-    d3-shape: ^3.1.0
-    dayjs: ^1.10.7
-    is-ipfs: ^8.0.1
-    is-utf8: ^0.2.1
-    lodash.countby: ^4.6.0
-    lodash.debounce: ^4.0.8
-    lodash.difference: ^4.5.0
-    lodash.findlast: ^4.6.0
-    lodash.findlastindex: ^4.6.0
-    lodash.flatten: ^4.4.0
-    lodash.groupby: ^4.6.0
-    lodash.isempty: ^4.4.0
-    lodash.isnil: ^4.0.0
-    lodash.noop: ^3.0.1
-    lodash.range: ^3.2.0
-    lodash.set: ^4.3.2
-    lodash.startcase: ^4.4.0
-    lodash.sumby: ^4.6.0
-    lodash.uniq: ^4.5.0
-    md5: ^2.3.0
-    moment: ^2.29.4
-    react: ^18.2.0
-    react-big-calendar: ^1.6.8
-    react-chartjs-2: ^5.1.0
-    react-datepicker: ^4.8.0
-    react-dom: ^18.2.0
-    react-json-view: ^1.21.3
-    react-redux: ^8.0.5
-    socket.io-client: ^4.3.2
-    styled-components: ^5.3.9
-  checksum: 386e59c9ad85e493302cec189716c41809c1ca81db0e32990a31891838c18df83ace804367d45611a36a665de2467c5eed7e116db51d9b7d94c2c50fe7e19448
-  languageName: node
-  linkType: hard
 
 "@subsquare/next@workspace:packages/next":
   version: 0.0.0-use.local
