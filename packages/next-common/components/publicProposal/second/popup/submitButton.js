@@ -11,10 +11,13 @@ export default function SubmitButton({
   onClick,
   balanceInsufficient,
   isSubmitting,
+  disabled: _disabled,
 }) {
+  const disabled = balanceInsufficient || _disabled;
+
   return (
     <ButtonWrapper>
-      {balanceInsufficient ? (
+      {balanceInsufficient || disabled ? (
         <SecondaryButton disabled>Submit</SecondaryButton>
       ) : (
         <SecondaryButton isLoading={isSubmitting} onClick={onClick}>

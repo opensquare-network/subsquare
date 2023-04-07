@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.2
+date: 04/06/2023
+- Support nest comments.
+- Support democracy public proposals batch seconds action.
+- Fix treasury bounty approve/reject voting state tag color.
+
 # 3.0.1
 date: 03/31/2023
 - Support closing collective motion.
 - Flatten menu, remove the separation of gov2 from gov1.
 - Improve CI build and style prettier.
+- Show OpenGov referenda vote extrinsic time with local time.
+- Update polkadot/kusama/collectives endpoints.
 - Add zeitgeist advisory committee motions to overview page.
 - Set default page size on list page to 25.
 - Fix style issues.
