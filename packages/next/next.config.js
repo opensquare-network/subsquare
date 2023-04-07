@@ -2,7 +2,9 @@
 module.exports = {
   transpilePackages: ["next-common"],
   compiler: {
-    styledComponents: true,
+    styledComponents: {
+      ssr: true,
+    },
   },
   async redirects() {
     return [
