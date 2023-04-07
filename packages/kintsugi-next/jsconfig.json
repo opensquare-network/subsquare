@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "next-common/*": ["../next-common/*"]
+      "next-common/*": ["../next-common/*"],
+      "@subsquare/next/*": ["../next/*"]
     }
   },
   "include": ["./"]
