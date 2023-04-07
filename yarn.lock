@@ -2446,7 +2446,6 @@ __metadata:
     lodash.uniqby: ^4.7.0
     next: ^13.3.0
     next-common: "workspace:*"
-    next-transpile-modules: ^9.0.0
     nprogress: ^0.2.0
     raw-loader: ^4.0.2
     react: ^18.2.0
@@ -2487,7 +2486,6 @@ __metadata:
     moment: ^2.29.4
     next: ^13.3.0
     next-common: "workspace:*"
-    next-transpile-modules: ^9.0.0
     nprogress: ^0.2.0
     raw-loader: ^4.0.2
     react: ^18.2.0
@@ -4391,7 +4389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.10.0, enhanced-resolve@npm:^5.12.0":
+"enhanced-resolve@npm:^5.12.0":
   version: 5.12.0
   resolution: "enhanced-resolve@npm:5.12.0"
   dependencies:
@@ -7085,16 +7083,6 @@ __metadata:
     styled-components: ^5.3.9
   languageName: unknown
   linkType: soft
-
-"next-transpile-modules@npm:^9.0.0":
-  version: 9.1.0
-  resolution: "next-transpile-modules@npm:9.1.0"
-  dependencies:
-    enhanced-resolve: ^5.10.0
-    escalade: ^3.1.1
-  checksum: 8cc46196db3c2d2063fb29fe5b4d03c21065ab08130085b24d61e4ed512d99c12083d28179771cf02f70f8bf5970db0781a228aacf6cc61662dbdcabaddfc472
-  languageName: node
-  linkType: hard
 
 "next@npm:^13.3.0":
   version: 13.3.0
