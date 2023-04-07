@@ -48,6 +48,8 @@ const bountyStateTagMap = {
 
   // in timeline
   CloseVoting: NegativeTag,
+  ApproveVoting: PositiveTag,
+  RejectVoting: NegativeTag,
 };
 
 const childBountyStateTagMap = {
