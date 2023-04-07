@@ -9,7 +9,7 @@
     "lint": "next lint --dir ."
   },
   "dependencies": {
-    "@next/env": "^12.1.0",
+    "@next/env": "^13.3.0",
     "@osn/previewer": "^0.12.3",
     "@osn/rich-text-editor": "^0.1.56",
     "@svgr/webpack": "^5.5.0",
@@ -29,7 +29,7 @@
     "lodash.range": "^3.2.0",
     "lodash.uniqby": "^4.7.0",
     "moment": "^2.29.4",
-    "next": "^13.2.4",
+    "next": "^13.3.0",
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
     "react": "^18.2.0",
@@ -42,7 +42,7 @@
   "devDependencies": {
     "@osn/eslint-config": "*",
     "eslint": "7.32.0",
-    "eslint-config-next": "^13.2.4",
+    "eslint-config-next": "^13.3.0",
     "next-transpile-modules": "^9.0.0",
     "raw-loader": "^4.0.2"
   }
