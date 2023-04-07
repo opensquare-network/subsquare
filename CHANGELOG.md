@@ -7,6 +7,7 @@ date: 04/06/2023
 - Support nest comments.
 - Support democracy public proposals batch seconds action.
 - Fix treasury bounty approve/reject voting state tag color.
+- Improve tally numbers' view on mobile page.
 
 # 3.0.1
 date: 03/31/2023
