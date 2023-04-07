@@ -59,10 +59,16 @@ export default function InputNumber({
   step = 1,
 }) {
   function handleChange(e) {
-    let v = Number(e.target.value);
-    v = min > v ? min : v;
-    if (typeof v === "number" && !isNaN(v)) {
-      setValue(v);
+    const raw = e.target.value;
+    const n = Number(raw);
+
+    // allow empty
+    if (raw === "") {
+      setValue(raw);
+    } else {
+      if (!isNaN(n)) {
+        setValue(n);
+      }
     }
   }
 
@@ -74,6 +80,10 @@ export default function InputNumber({
   function handleDown() {
     if (value <= min) return;
     setValue((v) => v - step);
+  }
+
+  function onBlur() {
+    if (Number(value) < min) setValue(min);
   }
 
   return (
@@ -93,6 +103,7 @@ export default function InputNumber({
         </NumberController>
       }
       suffixStyle={{ right: 0, height: "100%" }}
+      onBlur={onBlur}
     />
   );
 }
