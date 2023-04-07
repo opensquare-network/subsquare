@@ -24,8 +24,8 @@ export default function Action({ setShowPopup, refreshData }) {
   const motionIsFinal = isMotionEnded(onchainData);
   const chain = useChain();
   const type = useDetailType();
-  const module = toApiCouncil(chain, type);
-  const userCanVote = useIsCollectiveMember(module);
+  const mod = toApiCouncil(chain, type);
+  const userCanVote = useIsCollectiveMember(mod);
 
   if (motionIsFinal) {
     return <Description>This vote has been closed.</Description>;

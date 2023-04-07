@@ -26,11 +26,11 @@ export default function Close({ refreshData }) {
   const dispatch = useDispatch();
   const { hash, motionIndex } = usePost();
   const isMounted = useIsMounted();
-  const module = toApiCouncil(chain, type);
-  const { proposal } = useCollectiveProposal(module, onchainData.hash);
+  const mod = toApiCouncil(chain, type);
+  const { proposal } = useCollectiveProposal(mod, onchainData.hash);
   const { encodedCallLength, weight } = useWeight(proposal);
   const { voting: { nays = [], threshold } = {} } = onchainData;
-  const { members } = useCollectiveMembers(module);
+  const { members } = useCollectiveMembers(mod);
   const hasFailed = threshold > Math.abs(members.length - nays.length);
 
   const [loading, setLoading] = useState(false);
