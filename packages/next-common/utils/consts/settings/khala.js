@@ -14,8 +14,8 @@ const DEFAULT_KHALA_NODES = [
     url: "wss://khala-rpc.dwellir.com",
   },
   {
-    name: "Pinknode",
-    url: "wss://public-rpc.pinknode.io/khala",
+    name: "Phala",
+    url: "wss://khala-api.phala.network/ws",
   },
 ];
 

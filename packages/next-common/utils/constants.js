@@ -1,6 +1,6 @@
 import polkadot from "./consts/settings/polkadot";
 import kusama from "./consts/settings/kusama";
-import crab from "./consts/settings/crab";
+// import crab from "./consts/settings/crab";
 import karura from "./consts/settings/karura";
 import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
@@ -46,7 +46,7 @@ export const nodes = [
   // calamari,
   centrifuge,
   collectives,
-  crab,
+  // crab,
   crust,
   hydradx,
   interlay,
