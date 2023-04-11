@@ -22,6 +22,7 @@ export const Header = styled.span`
   color: ${(props) => props.theme.textPrimary};
 
   svg {
+    min-width: 14px;
     margin-right: 8px;
   }
 `;
