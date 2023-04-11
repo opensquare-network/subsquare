@@ -88,7 +88,7 @@ export default function Gov2Tally() {
 
       <SupportBar supportPerbill={supportPerbill} />
 
-      <Support />
+      <Support supportPerbill={supportPerbill} />
       <Issuance issuance={issuance} />
 
       <Footer>
