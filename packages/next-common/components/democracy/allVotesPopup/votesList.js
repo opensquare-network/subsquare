@@ -18,7 +18,7 @@ import Chains from "../../../utils/consts/chains";
 import { useChain, useChainSettings } from "../../../context/chain";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
-function VotesList({ items, theme, loading = true }) {
+function VotesList({ items, theme, loading = true, tab }) {
   const chain = useChain();
   const node = useChainSettings();
 
@@ -66,6 +66,8 @@ function VotesList({ items, theme, loading = true }) {
                         conviction={item.conviction}
                         isDelegating={item.isDelegating}
                         isSplit={item.isSplit}
+                        isSplitAbstain={item.isSplitAbstain}
+                        tab={tab}
                       />
                     </StyledTd>
                   )}

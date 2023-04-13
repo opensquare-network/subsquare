@@ -63,6 +63,7 @@ export default function VotesPopup({
       <VotersList
         items={votes.slice(sliceFrom, sliceTo)}
         loading={isLoadingVotes}
+        tab={tabIndex}
       />
       <Pagination {...pagination} />
     </Popup>
