@@ -18,6 +18,7 @@ function extractStandardVote(account, vote) {
       {
         account,
         isDelegating: false,
+        isStandard: true,
       },
       {
         balance,
@@ -38,6 +39,7 @@ function extractSplitVote(account, vote) {
       {
         account,
         isDelegating: false,
+        isSplit: true,
       },
       {
         balance: ayeBalance,
@@ -49,6 +51,7 @@ function extractSplitVote(account, vote) {
       {
         account,
         isDelegating: false,
+        isSplit: true,
       },
       {
         balance: nayBalance,
@@ -64,36 +67,29 @@ function extractSplitAbstainVote(account, vote) {
   const ayeBalance = splitAbstain.aye.toBigInt().toString();
   const nayBalance = splitAbstain.nay.toBigInt().toString();
   const abstainBalance = splitAbstain.abstain.toBigInt().toString();
+  const common = {
+    account,
+    isDelegating: false,
+    isSplitAbstain: true,
+  };
 
   return [
     objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
+      { ...common }, {
         balance: ayeBalance,
         aye: true,
         conviction: 0,
       },
     ),
     objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
+      { ...common }, {
         balance: nayBalance,
         aye: false,
         conviction: 0,
       },
     ),
     objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
+      { ...common }, {
         balance: abstainBalance,
         isAbstain: true,
         conviction: 0,
@@ -123,13 +119,9 @@ function extractVotes(mapped, targetReferendumIndex) {
     .reduce((result, { account, vote }) => {
       if (vote.isStandard) {
         result.push(...extractStandardVote(account, vote));
-      }
-
-      if (vote.isSplit) {
+      } else if (vote.isSplit) {
         result.push(...extractSplitVote(account, vote));
-      }
-
-      if (vote.isSplitAbstain) {
+      } else if (vote.isSplitAbstain) {
         result.push(...extractSplitAbstainVote(account, vote));
       }
 
@@ -147,26 +139,23 @@ function extractDelegations(mapped, track, directVotes = []) {
       };
     });
 
-  const delegationVotes = [];
-  delegations.forEach(
-    ({ account, delegating: { balance, conviction, target } }) => {
-      const to = directVotes.find(
-        ({ account }) => account === target.toString(),
-      );
+  return delegations.reduce((result, { account, delegating: { balance, conviction, target } }) => {
+      const to = directVotes.find(({ account, isStandard }) => account === target.toString() && isStandard);
+      if (!to) {
+        return result;
+      }
 
-      if (to) {
-        delegationVotes.push({
+      return [
+        ...result,
+        {
           account,
           balance: balance.toBigInt().toString(),
           isDelegating: true,
           aye: to.aye,
           conviction: conviction.toNumber(),
-        });
-      }
-    },
-  );
-
-  return delegationVotes;
+        },
+      ];
+    }, []);
 }
 
 export async function getGov2ReferendumVotesFromVotingOf(
