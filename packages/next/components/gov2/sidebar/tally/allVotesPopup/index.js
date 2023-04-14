@@ -64,6 +64,7 @@ export default function VotesPopup({
         items={votes.slice(sliceFrom, sliceTo)}
         loading={isLoadingVotes}
         tab={tabIndex}
+        isOpenGov={true}
       />
       <Pagination {...pagination} />
     </Popup>
