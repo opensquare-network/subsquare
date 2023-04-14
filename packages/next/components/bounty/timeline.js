@@ -68,5 +68,5 @@ export default function BountyTimeline({ bounty }) {
   timelineData.push(...motions);
   sortTimeline(timelineData);
 
-  return <Timeline data={timelineData} />;
+  return <Timeline data={timelineData.filter((d) => !Array.isArray(d))} />;
 }
