@@ -33,33 +33,31 @@ function extractSplitVote(account, vote) {
   const split = vote.asSplit;
   const ayeBalance = split.aye.toBigInt().toString();
   const nayBalance = split.nay.toBigInt().toString();
+  const common = {
+    account,
+    isDelegating: false,
+    isSplit: true,
+  };
 
-  return [
-    objectSpread(
-      {
-        account,
-        isDelegating: false,
-        isSplit: true,
-      },
-      {
-        balance: ayeBalance,
-        aye: true,
-        conviction: 0,
-      },
-    ),
-    objectSpread(
-      {
-        account,
-        isDelegating: false,
-        isSplit: true,
-      },
-      {
-        balance: nayBalance,
-        aye: false,
-        conviction: 0,
-      },
-    ),
-  ];
+  const result = [];
+  if (split.aye.toBigInt() > 0) {
+    result.push({
+      ...common,
+      balance: ayeBalance,
+      aye: true,
+      conviction: 0,
+    });
+  }
+  if (split.nay.toBigInt() > 0) {
+    result.push({
+      ...common,
+      balance: nayBalance,
+      aye: false,
+      conviction: 0,
+    });
+  }
+
+  return result;
 }
 
 function extractSplitAbstainVote(account, vote) {
@@ -73,21 +71,7 @@ function extractSplitAbstainVote(account, vote) {
     isSplitAbstain: true,
   };
 
-  return [
-    objectSpread(
-      { ...common }, {
-        balance: ayeBalance,
-        aye: true,
-        conviction: 0,
-      },
-    ),
-    objectSpread(
-      { ...common }, {
-        balance: nayBalance,
-        aye: false,
-        conviction: 0,
-      },
-    ),
+  const result = [
     objectSpread(
       { ...common }, {
         balance: abstainBalance,
@@ -96,6 +80,26 @@ function extractSplitAbstainVote(account, vote) {
       },
     ),
   ];
+  if (splitAbstain.aye.toBigInt() > 0) {
+    result.push(objectSpread(
+      { ...common }, {
+        balance: ayeBalance,
+        aye: true,
+        conviction: 0,
+      }),
+    );
+  }
+
+  if (splitAbstain.nay.toBigInt() > 0) {
+    result.push(objectSpread(
+      { ...common }, {
+        balance: nayBalance,
+        aye: false,
+        conviction: 0,
+      }));
+  }
+
+  return result;
 }
 
 function extractVotes(mapped, targetReferendumIndex) {

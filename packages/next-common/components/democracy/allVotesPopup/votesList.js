@@ -98,7 +98,7 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
           )}
         </tbody>
       </StyledTable>
-      <Annotation isOpenGov={isOpenGov} />
+      { !loading && <Annotation isOpenGov={ isOpenGov } /> }
     </PopupListWrapper>
   );
 }

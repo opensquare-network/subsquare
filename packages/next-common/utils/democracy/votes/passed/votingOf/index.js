@@ -47,24 +47,26 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
           isStandard: false,
           isSplit: true,
         };
-        result.push(
-          objectSpread(
+        if (split.aye.toBigInt() > 0) {
+          result.push(objectSpread(
             { ...commonObj },
             {
               balance: ayeBalance,
               aye: true,
               conviction: 0,
-            },
-          ),
-          objectSpread(
+            }),
+          );
+        }
+        if (split.nay.toBigInt() > 0) {
+          result.push(objectSpread(
             { ...commonObj },
             {
               balance: nayBalance,
               aye: false,
               conviction: 0,
-            },
-          ),
-        );
+            }),
+          );
+        }
       }
 
       return result;
