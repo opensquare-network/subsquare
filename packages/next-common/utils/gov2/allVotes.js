@@ -18,6 +18,7 @@ function extractStandardVote(account, vote) {
       {
         account,
         isDelegating: false,
+        isStandard: true,
       },
       {
         balance,
@@ -32,31 +33,31 @@ function extractSplitVote(account, vote) {
   const split = vote.asSplit;
   const ayeBalance = split.aye.toBigInt().toString();
   const nayBalance = split.nay.toBigInt().toString();
+  const common = {
+    account,
+    isDelegating: false,
+    isSplit: true,
+  };
 
-  return [
-    objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
-        balance: ayeBalance,
-        aye: true,
-        conviction: 0,
-      },
-    ),
-    objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
-        balance: nayBalance,
-        aye: false,
-        conviction: 0,
-      },
-    ),
-  ];
+  const result = [];
+  if (split.aye.toBigInt() > 0) {
+    result.push({
+      ...common,
+      balance: ayeBalance,
+      aye: true,
+      conviction: 0,
+    });
+  }
+  if (split.nay.toBigInt() > 0) {
+    result.push({
+      ...common,
+      balance: nayBalance,
+      aye: false,
+      conviction: 0,
+    });
+  }
+
+  return result;
 }
 
 function extractSplitAbstainVote(account, vote) {
@@ -64,42 +65,41 @@ function extractSplitAbstainVote(account, vote) {
   const ayeBalance = splitAbstain.aye.toBigInt().toString();
   const nayBalance = splitAbstain.nay.toBigInt().toString();
   const abstainBalance = splitAbstain.abstain.toBigInt().toString();
+  const common = {
+    account,
+    isDelegating: false,
+    isSplitAbstain: true,
+  };
 
-  return [
+  const result = [
     objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
-        balance: ayeBalance,
-        aye: true,
-        conviction: 0,
-      },
-    ),
-    objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
-        balance: nayBalance,
-        aye: false,
-        conviction: 0,
-      },
-    ),
-    objectSpread(
-      {
-        account,
-        isDelegating: false,
-      },
-      {
+      { ...common }, {
         balance: abstainBalance,
         isAbstain: true,
         conviction: 0,
       },
     ),
   ];
+  if (splitAbstain.aye.toBigInt() > 0) {
+    result.push(objectSpread(
+      { ...common }, {
+        balance: ayeBalance,
+        aye: true,
+        conviction: 0,
+      }),
+    );
+  }
+
+  if (splitAbstain.nay.toBigInt() > 0) {
+    result.push(objectSpread(
+      { ...common }, {
+        balance: nayBalance,
+        aye: false,
+        conviction: 0,
+      }));
+  }
+
+  return result;
 }
 
 function extractVotes(mapped, targetReferendumIndex) {
@@ -123,13 +123,9 @@ function extractVotes(mapped, targetReferendumIndex) {
     .reduce((result, { account, vote }) => {
       if (vote.isStandard) {
         result.push(...extractStandardVote(account, vote));
-      }
-
-      if (vote.isSplit) {
+      } else if (vote.isSplit) {
         result.push(...extractSplitVote(account, vote));
-      }
-
-      if (vote.isSplitAbstain) {
+      } else if (vote.isSplitAbstain) {
         result.push(...extractSplitAbstainVote(account, vote));
       }
 
@@ -147,26 +143,23 @@ function extractDelegations(mapped, track, directVotes = []) {
       };
     });
 
-  const delegationVotes = [];
-  delegations.forEach(
-    ({ account, delegating: { balance, conviction, target } }) => {
-      const to = directVotes.find(
-        ({ account }) => account === target.toString(),
-      );
+  return delegations.reduce((result, { account, delegating: { balance, conviction, target } }) => {
+      const to = directVotes.find(({ account, isStandard }) => account === target.toString() && isStandard);
+      if (!to) {
+        return result;
+      }
 
-      if (to) {
-        delegationVotes.push({
+      return [
+        ...result,
+        {
           account,
           balance: balance.toBigInt().toString(),
           isDelegating: true,
           aye: to.aye,
           conviction: conviction.toNumber(),
-        });
-      }
-    },
-  );
-
-  return delegationVotes;
+        },
+      ];
+    }, []);
 }
 
 export async function getGov2ReferendumVotesFromVotingOf(

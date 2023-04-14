@@ -8,7 +8,7 @@ const PopupListWrapper = styled.div`
     max-width: 960px;
   }
   margin: auto;
-  > :not(:first-child) {
+  > div :not(:first-child) {
     margin-top: 16px;
   }
   table {
