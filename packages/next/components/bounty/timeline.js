@@ -9,7 +9,6 @@ import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 export default function BountyTimeline({ bounty }) {
   const getTimelineData = (args, method) => {
-    return args;
     switch (method) {
       case "BountyExtended":
         return {
