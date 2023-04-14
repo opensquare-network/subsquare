@@ -49,29 +49,27 @@ export default function BountyTimeline({ bounty }) {
     return args;
   };
 
-  // const timelineData = useMemo(() => {
-  //   const data = (bounty?.timeline || []).map((item) => {
-  //     const indexer = item.extrinsicIndexer ?? item.indexer;
-  //     return {
-  //       indexer,
-  //       time: formatTime(indexer?.blockTime),
-  //       status: getTimelineStatus(
-  //         detailPageCategory.TREASURY_BOUNTY,
-  //         item.method ?? item.name,
-  //       ),
-  //       data: getTimelineData(item.args, item.method ?? item.name),
-  //     };
-  //   });
-  //
-  //   const motions = bounty?.motions?.map((motion) => {
-  //     return createMotionTimelineData(motion, true, "/council/motion");
-  //   });
-  //
-  //   sortTimeline(data);
-  //   return sortTimeline([...data, ...motions]);
-  // }, [bounty]);
+  const timelineData = useMemo(() => {
+    const data = (bounty?.timeline || []).map((item) => {
+      const indexer = item.extrinsicIndexer ?? item.indexer;
+      return {
+        indexer,
+        time: formatTime(indexer?.blockTime),
+        status: getTimelineStatus(
+          detailPageCategory.TREASURY_BOUNTY,
+          item.method ?? item.name,
+        ),
+        data: getTimelineData(item.args, item.method ?? item.name),
+      };
+    });
 
-  const timelineData = [];
+    const motions = bounty?.motions?.map((motion) => {
+      return createMotionTimelineData(motion, true, "/council/motion");
+    });
+
+    sortTimeline(data);
+    return sortTimeline([...data, ...motions]);
+  }, [bounty]);
 
   return <Timeline data={timelineData} />;
 }
