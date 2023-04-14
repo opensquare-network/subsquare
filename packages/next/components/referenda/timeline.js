@@ -2,6 +2,7 @@ import Timeline from "next-common/components/timeline";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useEffect, useState } from "react";
 
 const getTimelineData = (args, method) => {
   switch (method) {
@@ -38,7 +39,11 @@ export function makeReferendumTimelineData(timeline) {
 
 export default function ReferendumTimeline() {
   const timeline = useTimelineData();
-  const timelineData = makeReferendumTimelineData(timeline);
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(
+    () => setTimelineData(makeReferendumTimelineData(timeline)),
+    [timeline],
+  );
 
   return <Timeline data={timelineData} />;
 }
