@@ -24,6 +24,7 @@ import useUpdateNodesDelay from "../../utils/hooks/useUpdateNodesDelay";
 import { useChain } from "../../context/chain";
 import { useThemeSetting } from "../../context/theme";
 import CookiesConsent from "../../components/cookiesConsent";
+import CMDKPalette from "../cmdk/cmdkPalette";
 
 const Wrapper = styled.div`
   display: flex;
@@ -91,6 +92,7 @@ export default function BaseLayout({ left, children, seoInfo }) {
       </Wrapper>
 
       <CookiesConsent />
+      <CMDKPalette />
     </ThemeProvider>
   );
 }
