@@ -63,7 +63,7 @@ function BountyContent({ detail, childBounties, comments }) {
       />
       <Metadata meta={detail.onchainData?.meta} />
       <ChildBountiesTable {...{ childBounties }} />
-      {/* <Timeline bounty={detail?.onchainData} /> */}
+      <Timeline bounty={detail?.onchainData} />
       {CommentComponent}
     </>
   );
