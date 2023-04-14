@@ -6,6 +6,7 @@ import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useMemo } from "react";
 
 export default function BountyTimeline({ bounty }) {
   const getTimelineData = (args, method) => {
@@ -48,24 +49,27 @@ export default function BountyTimeline({ bounty }) {
     return args;
   };
 
-  const timelineData = (bounty?.timeline || []).map((item) => {
-    const indexer = item.extrinsicIndexer ?? item.indexer;
-    return {
-      indexer,
-      time: formatTime(indexer?.blockTime),
-      status: getTimelineStatus(
-        detailPageCategory.TREASURY_BOUNTY,
-        item.method ?? item.name
-      ),
-      data: getTimelineData(item.args, item.method ?? item.name),
-    };
-  });
+  const timelineData = useMemo(() => {
+    const data = (bounty?.timeline || []).map((item) => {
+      const indexer = item.extrinsicIndexer ?? item.indexer;
+      return {
+        indexer,
+        time: formatTime(indexer?.blockTime),
+        status: getTimelineStatus(
+          detailPageCategory.TREASURY_BOUNTY,
+          item.method ?? item.name,
+        ),
+        data: getTimelineData(item.args, item.method ?? item.name),
+      };
+    });
 
-  const motions = bounty?.motions?.map((motion) => {
-    return createMotionTimelineData(motion, true, "/council/motion");
-  });
-  timelineData.push(...motions);
-  sortTimeline(timelineData);
+    const motions = bounty?.motions?.map((motion) => {
+      return createMotionTimelineData(motion, true, "/council/motion");
+    });
+
+    sortTimeline(data);
+    return sortTimeline([...data, ...motions]);
+  }, [bounty]);
 
   return <Timeline data={timelineData} />;
 }
