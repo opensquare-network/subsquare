@@ -61,10 +61,10 @@ export default function BountyTimeline({ bounty }) {
     };
   });
 
-  const motions = bounty?.motions?.map((motion) => {
-    return createMotionTimelineData(motion, true, "/council/motion");
-  });
-  timelineData.push(...motions);
+  // const motions = bounty?.motions?.map((motion) => {
+  //   return createMotionTimelineData(motion, true, "/council/motion");
+  // });
+  // timelineData.push(...motions);
   sortTimeline(timelineData);
 
   return <Timeline data={timelineData} />;
