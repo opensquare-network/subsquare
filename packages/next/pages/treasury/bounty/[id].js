@@ -117,7 +117,7 @@ export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        {postContent}
+        {/* {postContent} */}
       </DetailLayout>
     </PostProvider>
   );
@@ -148,7 +148,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {
