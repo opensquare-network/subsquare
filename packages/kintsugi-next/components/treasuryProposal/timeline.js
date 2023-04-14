@@ -6,6 +6,7 @@ import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useEffect, useState } from "react";
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const getTimelineData = (args, method) => {
@@ -23,50 +24,54 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
     return args;
   };
 
-  const timelineData = (treasuryProposal?.timeline || []).map((item) => {
-    const indexer = item.extrinsicIndexer ?? item.indexer;
-    return {
-      indexer,
-      time: formatTime(indexer?.blockTime),
-      status: getTimelineStatus(
-        detailPageCategory.TREASURY_PROPOSAL,
-        item.method ?? item.name
-      ),
-      data: getTimelineData(item.args, item.method ?? item.name),
-    };
-  });
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(() => {
+    const data = (treasuryProposal?.timeline || []).map((item) => {
+      const indexer = item.extrinsicIndexer ?? item.indexer;
+      return {
+        indexer,
+        time: formatTime(indexer?.blockTime),
+        status: getTimelineStatus(
+          detailPageCategory.TREASURY_PROPOSAL,
+          item.method ?? item.name,
+        ),
+        data: getTimelineData(item.args, item.method ?? item.name),
+      };
+    });
 
-  treasuryProposal?.publicProposals?.forEach((publicProposal) => {
-    const completeTimeline = (publicProposal.timeline || []).concat(
-      publicProposal.democracyReferendum?.timeline || []
-    );
+    const publicProposalTimelines =
+      treasuryProposal?.publicProposals?.map((publicProposal) => {
+        const completeTimeline = (publicProposal.timeline || []).concat(
+          publicProposal.democracyReferendum?.timeline || [],
+        );
 
-    const publicProposalTimelineData = [
-      ...completeTimeline.slice(0, 1).map((item) => ({
-        indexer: item.indexer,
-        index: item.args.index,
-        time: formatTime(item.indexer.blockTime),
-        status: {
-          value: `Public proposal #${item.args.index}`,
-          link: `/democracy/proposal/${item.args.index}`,
-          type: detailPageCategory.DEMOCRACY_PROPOSAL,
-        },
-        voting: {
-          proposer: publicProposal.proposer,
-          method: publicProposal.preImage?.call.method,
-          args: publicProposal.preImage?.call.args,
-        },
-        method: item.method,
-        link: `/democracy/proposal/${item.args.index}`,
-      })),
-      ...getDemocracyTimelineData(
-        completeTimeline.slice(1),
-        detailPageCategory.DEMOCRACY_REFERENDUM
-      ),
-    ];
-    timelineData.push(publicProposalTimelineData);
-  });
-  sortTimeline(timelineData);
+        return [
+          ...completeTimeline.slice(0, 1).map((item) => ({
+            indexer: item.indexer,
+            index: item.args.index,
+            time: formatTime(item.indexer.blockTime),
+            status: {
+              value: `Public proposal #${item.args.index}`,
+              link: `/democracy/proposal/${item.args.index}`,
+              type: detailPageCategory.DEMOCRACY_PROPOSAL,
+            },
+            voting: {
+              proposer: publicProposal.proposer,
+              method: publicProposal.preImage?.call.method,
+              args: publicProposal.preImage?.call.args,
+            },
+            method: item.method,
+            link: `/democracy/proposal/${item.args.index}`,
+          })),
+          ...getDemocracyTimelineData(
+            completeTimeline.slice(1),
+            detailPageCategory.DEMOCRACY_REFERENDUM,
+          ),
+        ];
+      }) ?? [];
+
+    setTimelineData(sortTimeline([...data, publicProposalTimelines]));
+  }, [treasuryProposal]);
 
   return <Timeline data={timelineData} indent={false} />;
 }
