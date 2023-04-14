@@ -89,10 +89,10 @@ export default function BaseLayout({ left, children, seoInfo }) {
         <Header left={left} />
         <Content left={left}>{children}</Content>
         <Toast />
+        <CMDKPalette />
       </Wrapper>
 
       <CookiesConsent />
-      <CMDKPalette />
     </ThemeProvider>
   );
 }
