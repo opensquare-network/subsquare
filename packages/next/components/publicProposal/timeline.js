@@ -5,6 +5,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useEffect, useState } from "react";
 
 export function makePublicProposalTimelineData(timeline) {
   const getTimelineData = (args, method) => {
@@ -29,7 +30,7 @@ export function makePublicProposalTimelineData(timeline) {
       indexer: item.indexer,
       status: getTimelineStatus(
         detailPageCategory.DEMOCRACY_PROPOSAL,
-        item.method ?? item.name
+        item.method ?? item.name,
       ),
       data: getTimelineData(item.args, item.method ?? item.name),
     };
@@ -41,7 +42,11 @@ export function makePublicProposalTimelineData(timeline) {
 
 export default function PublicProposalTimeline() {
   const timeline = useTimelineData();
-  const timelineData = makePublicProposalTimelineData(timeline);
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(
+    () => setTimelineData(makePublicProposalTimelineData(timeline)),
+    [timeline],
+  );
 
   return <Timeline data={timelineData} />;
 }
