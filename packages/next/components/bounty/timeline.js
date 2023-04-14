@@ -14,12 +14,14 @@ export default function BountyTimeline({ bounty }) {
       case "BountyExtended":
         return {
           ...args,
-          caller: <User add={args.caller} fontSize={14} />,
+          // caller: <User add={args.caller} fontSize={14} />,
+          caller: null,
         };
       case "acceptCurator":
         return {
           ...args,
-          curator: <User add={args.curator.id ?? args.curator} fontSize={14} />,
+          // curator: <User add={args.curator.id ?? args.curator} fontSize={14} />,
+          caller: null,
         };
       case "proposeBounty":
         return {
@@ -37,13 +39,15 @@ export default function BountyTimeline({ bounty }) {
         };
       case "BountyClaimed":
         return {
-          Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+          // Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+          Beneficiary: null,
           Payout: <SymbolBalance value={args.payout} />,
         };
       case "Awarded":
       case "BountyAwarded":
         return {
-          Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+          // Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+          Beneficiary: null,
         };
     }
     return args;
