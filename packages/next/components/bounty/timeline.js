@@ -49,24 +49,6 @@ export default function BountyTimeline({ bounty }) {
     return args;
   };
 
-  // const timelineData = (bounty?.timeline || []).map((item) => {
-  //   const indexer = item.extrinsicIndexer ?? item.indexer;
-  //   return {
-  //     indexer,
-  //     time: formatTime(indexer?.blockTime),
-  //     status: getTimelineStatus(
-  //       detailPageCategory.TREASURY_BOUNTY,
-  //       item.method ?? item.name,
-  //     ),
-  //     data: getTimelineData(item.args, item.method ?? item.name),
-  //   };
-  // });
-  //
-  // const motions = bounty?.motions?.map((motion) => {
-  //   return createMotionTimelineData(motion, true, "/council/motion");
-  // });
-  // timelineData.push(...motions);
-  // sortTimeline(timelineData);
   const [timelineData, setTimelineData] = useState([]);
   useEffect(() => {
     const data = (bounty?.timeline || []).map((item) => {
