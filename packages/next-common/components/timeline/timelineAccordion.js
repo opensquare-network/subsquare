@@ -46,9 +46,9 @@ function TimelineAccordion({
       <TitleWrapper>
         <div className="title">
           <span>Timeline</span>
-          {lastActivityTime && (
-            <span>{motionEndInfo || `Latest activity ${duration}`}</span>
-          )}
+          {/* {lastActivityTime && ( */}
+          {/*   <span>{motionEndInfo || `Latest activity ${duration}`}</span> */}
+          {/* )} */}
         </div>
         <span onClick={() => setFold(!fold)}>
           <Caret size={16} isGrey={true} down={fold} />
