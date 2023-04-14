@@ -52,8 +52,7 @@ export default function BountyTimeline({ bounty }) {
     const indexer = item.extrinsicIndexer ?? item.indexer;
     return {
       indexer,
-      // time: formatTime(indexer?.blockTime),
-      time: Date.now(),
+      time: formatTime(indexer?.blockTime),
       status: getTimelineStatus(
         detailPageCategory.TREASURY_BOUNTY,
         item.method ?? item.name,
