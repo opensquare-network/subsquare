@@ -1,26 +1,47 @@
-import React, { useState, useMemo } from "react";
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
-import { createGlobalStyle, useTheme } from "styled-components";
+import styled, { createGlobalStyle, useTheme } from "styled-components";
+import React, { useState, useMemo } from "react";
 import {
   bg_theme,
+  border,
+  border_theme_grey200,
+  cursor_pointer,
+  gap_x,
+  inline_flex,
+  items_center,
+  justify_between,
+  m_l,
+  outline_none,
+  p_x,
   p_y,
+  rounded_4,
   text_capitalize,
   text_primary,
+  text_tertiary,
+  text_theme,
+  w_full,
 } from "../../styles/tailwindcss";
-import { p_12_bold, p_14_medium } from "../../styles/componentCss";
-import { useEventListener } from "../../utils/hooks/useEventListener";
-import Link from "next/link";
-import { isExternalLink } from "../../utils";
+import {
+  p_12_bold,
+  p_12_medium,
+  p_14_medium,
+  shadow_100,
+} from "../../styles/componentCss";
+import ClosePanelIcon from "../icons/closePanel";
 import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
-import { useIsMacOS, usePageProps } from "next-common/context/page";
-import { getHomeMenu } from "next-common/utils/consts/menu";
-import { useChain } from "next-common/context/chain";
+import { getHomeMenu } from "../../utils/consts/menu";
+import { useEventListener } from "../../utils/hooks/useEventListener";
+import { useSelector } from "react-redux";
 import {
-  cmdkPaletteVisibleSelector,
-  setCmdkPaletteVisible,
-} from "next-common/store/reducers/cmdkSlice";
-import { useSelector, useDispatch } from "react-redux";
+  cmdkTriggerVisibleSelector,
+  setCmdkTriggerVisible,
+} from "../../store/reducers/cmdkSlice";
+import { useDispatch } from "react-redux";
+import Link from "next/link";
+import { isExternalLink } from "../../utils";
+import { useChain } from "../../context/chain";
+import { useIsMacOS, usePageProps } from "../../context/page";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -60,6 +81,35 @@ const CmdkGlobalStyle = createGlobalStyle`
   }
 `;
 
+const Trigger = styled.button`
+  ${p_x(18)};
+  ${p_y(10)};
+  ${bg_theme("neutral")};
+  ${shadow_100};
+  ${rounded_4};
+  ${p_14_medium};
+  ${border};
+  ${text_tertiary};
+  ${border_theme_grey200};
+  ${w_full};
+  ${cursor_pointer};
+  ${inline_flex};
+  ${gap_x(8)};
+  ${items_center};
+  ${justify_between};
+  ${outline_none};
+`;
+
+const HotKey = styled.span`
+  ${bg_theme("primaryPurple100")};
+  ${text_theme("primaryPurple500")};
+  ${rounded_4};
+  ${p_x(8)};
+  ${p_y(2)};
+  ${p_12_medium};
+  ${m_l(8)};
+`;
+
 function renderCommandPaletteLink(props) {
   const { href, children, ...restProps } = props ?? {};
 
@@ -82,20 +132,17 @@ function renderCommandPaletteLink(props) {
   );
 }
 
-export default function CMDKPalette() {
+export default function NavigationCMDK({ triggerButtonStyle }) {
   const chain = useChain();
-  const { isDark } = useTheme();
-  const isMacOS = useIsMacOS();
+  const dispatch = useDispatch();
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
-  const cmdkPaletteVisible = useSelector(cmdkPaletteVisibleSelector);
-  const dispatch = useDispatch();
-
+  const [open, setOpen] = useState(false);
+  const cmdkTriggerVisible = useSelector(cmdkTriggerVisibleSelector);
+  const { isDark } = useTheme();
+  const isMacOS = useIsMacOS();
   const { tracks, fellowshipTracks } = usePageProps();
   const homeMenus = getHomeMenu({ tracks, fellowshipTracks });
-  function filterExcludeChains(item) {
-    return !item?.excludeToChains?.includes(chain);
-  }
 
   const foldedMenu = homeMenus
     .filter((menu) => menu.name && menu.items?.length)
@@ -107,6 +154,11 @@ export default function CMDKPalette() {
         items,
       };
     });
+
+  function filterExcludeChains(item) {
+    return !item?.excludeToChains?.includes(chain);
+  }
+
   const pages = useMemo(() => {
     const subPageItems = foldedMenu.map((m) => {
       const filteredItems = filterItems(
@@ -172,32 +224,46 @@ export default function CMDKPalette() {
     return [homePageItem, ...subPageItems];
   }, [foldedMenu, search]);
 
-  function onPageEscape(page) {
-    if (page.id === "home") {
-      dispatch(setCmdkPaletteVisible(false));
-      return;
-    }
-    setPage("home");
-  }
-
   useEventListener("keydown", (e) => {
     const modifierKey = isMacOS ? e.metaKey : e.ctrlKey;
     if (modifierKey && e.key === "k") {
       e.preventDefault();
       e.stopPropagation();
-      dispatch(setCmdkPaletteVisible(true));
+      setOpen(true);
     }
   });
 
+  function onPageEscape(page) {
+    if (page.id === "home") {
+      setOpen(false);
+      return;
+    }
+    setPage("home");
+  }
+
   return (
-    <>
+    <div>
       <CmdkGlobalStyle />
+
+      {cmdkTriggerVisible && (
+        <Trigger onClick={() => setOpen(true)} style={triggerButtonStyle}>
+          <span>
+            Navigation <HotKey>{isMacOS ? "⌘" : "Ctrl +"} K</HotKey>
+          </span>
+          <ClosePanelIcon
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(setCmdkTriggerVisible(false));
+            }}
+          />
+        </Trigger>
+      )}
 
       <CommandPalette
         page={page}
         onChangeSearch={setSearch}
-        isOpen={cmdkPaletteVisible}
-        onChangeOpen={(v) => dispatch(setCmdkPaletteVisible(v))}
+        isOpen={open}
+        onChangeOpen={setOpen}
         search={search}
         renderLink={renderCommandPaletteLink}
         theme={isDark ? "dark" : "light"}
@@ -227,6 +293,6 @@ export default function CMDKPalette() {
           </CommandPalette.Page>
         ))}
       </CommandPalette>
-    </>
+    </div>
   );
 }
