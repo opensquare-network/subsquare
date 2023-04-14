@@ -117,7 +117,7 @@ export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
           <Breadcrumb items={breadcrumbItems} />
         </BreadcrumbWrapper>
 
-        {/* {postContent} */}
+        {postContent}
       </DetailLayout>
     </PostProvider>
   );
