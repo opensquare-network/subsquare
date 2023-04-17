@@ -61,13 +61,13 @@ function ReferendumContent({ comments }) {
         onFinalized={onVoteFinalized}
       />
 
-      {/* <ReferendumMetadata */}
-      {/*   proposer={post?.proposer} */}
-      {/*   status={referendumStatus ?? {}} */}
-      {/*   call={post?.onchainData?.preImage?.call || post?.onchainData?.call} */}
-      {/*   shorten={post?.onchainData?.preImage?.shorten} */}
-      {/*   onchainData={post?.onchainData} */}
-      {/* /> */}
+      <ReferendumMetadata
+        proposer={post?.proposer}
+        status={referendumStatus ?? {}}
+        call={post?.onchainData?.preImage?.call || post?.onchainData?.call}
+        shorten={post?.onchainData?.preImage?.shorten}
+        onchainData={post?.onchainData}
+      />
 
       <Timeline />
       {CommentComponent}
