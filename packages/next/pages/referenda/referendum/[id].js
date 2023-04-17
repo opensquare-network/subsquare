@@ -138,7 +138,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const pageSize = Math.min(page_size ?? 50, 100);
 
   const { result: detail } = await ssrNextApi.fetch(
-    gov2ReferendumsDetailApi(id)
+    gov2ReferendumsDetailApi(id),
   );
 
   if (!detail) {
@@ -157,7 +157,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {
