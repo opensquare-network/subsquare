@@ -2488,8 +2488,8 @@ __metadata:
     next-common: "workspace:*"
     nprogress: ^0.2.0
     raw-loader: ^4.0.2
-    react: next
-    react-dom: next
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-redux: ^8.0.5
     sass: ^1.38.0
     styled-components: ^5.3.9
@@ -7072,11 +7072,11 @@ __metadata:
     lodash.uniq: ^4.5.0
     md5: ^2.3.0
     moment: ^2.29.4
-    react: next
+    react: ^18.2.0
     react-big-calendar: ^1.6.8
     react-chartjs-2: ^5.1.0
     react-datepicker: ^4.8.0
-    react-dom: next
+    react-dom: ^18.2.0
     react-json-view: ^1.21.3
     react-redux: ^8.0.5
     socket.io-client: ^4.3.2
@@ -7959,18 +7959,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:next":
-  version: 18.3.0-next-7b0642bb9-20230412
-  resolution: "react-dom@npm:18.3.0-next-7b0642bb9-20230412"
-  dependencies:
-    loose-envify: ^1.1.0
-    scheduler: 0.24.0-next-7b0642bb9-20230412
-  peerDependencies:
-    react: 18.3.0-next-7b0642bb9-20230412
-  checksum: ea5085423ff166388c254bcc82ce77e150d4287ab6d7fcf4b1bbc3950bfa4f6694b4d45ed5312f8d8d6c21cbc611dfe3c207d3604bd8972f16fdc0c252f796e3
-  languageName: node
-  linkType: hard
-
 "react-fast-compare@npm:^3.0.1":
   version: 3.2.1
   resolution: "react-fast-compare@npm:3.2.1"
@@ -8125,15 +8113,6 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: 88e38092da8839b830cda6feef2e8505dec8ace60579e46aa5490fc3dc9bba0bd50336507dc166f43e3afc1c42939c09fe33b25fae889d6f402721dcd78fca1b
-  languageName: node
-  linkType: hard
-
-"react@npm:next":
-  version: 18.3.0-next-7b0642bb9-20230412
-  resolution: "react@npm:18.3.0-next-7b0642bb9-20230412"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: 83c0d14f8ed64768f62c297209e1459f3b3cab77b5590a792281e0cc98508b1c2a02db3e055b26406ccfe4110675c2ff332ed63bfdea72dad794986f28f081ed
   languageName: node
   linkType: hard
 
@@ -8476,15 +8455,6 @@ __metadata:
   version: 1.2.4
   resolution: "sax@npm:1.2.4"
   checksum: d3df7d32b897a2c2f28e941f732c71ba90e27c24f62ee918bd4d9a8cfb3553f2f81e5493c7f0be94a11c1911b643a9108f231dd6f60df3fa9586b5d2e3e9e1fe
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:0.24.0-next-7b0642bb9-20230412":
-  version: 0.24.0-next-7b0642bb9-20230412
-  resolution: "scheduler@npm:0.24.0-next-7b0642bb9-20230412"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: 0d0074f63499059b9ab3140a2e255382b7e7b8c9e4dd8396dd1a0699588f0c298c208c24ba5de62dbead962c167f43b6eaa9540be8c4b4c5f7511f406c3ca129
   languageName: node
   linkType: hard
 
