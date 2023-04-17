@@ -3,6 +3,7 @@ import Timeline from "next-common/components/timeline";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useEffect, useState } from "react";
 
 function makeSingleExternalTimelineData(args, method) {
   switch (method) {
@@ -10,11 +11,11 @@ function makeSingleExternalTimelineData(args, method) {
       if (Array.isArray(args)) {
         return {
           proposalHash: args.find((arg) =>
-            ["proposal_hash", "proposalHash"].includes(arg.name)
+            ["proposal_hash", "proposalHash"].includes(arg.name),
           ).value,
           votingPeriod:
             args.find((arg) =>
-              ["voting_period", "votingPeriod"].includes(arg.name)
+              ["voting_period", "votingPeriod"].includes(arg.name),
             ).value + " blocks",
           delay: args.find((arg) => arg.name === "delay").value + " blocks",
         };
@@ -30,7 +31,7 @@ export function makeExternalTimelineData(timeline) {
       indexer: item.indexer,
       status: getTimelineStatus(
         detailPageCategory.DEMOCRACY_EXTERNAL,
-        item.method ?? item.name
+        item.method ?? item.name,
       ),
       data: makeSingleExternalTimelineData(item.args, item.method ?? item.name),
     };
@@ -39,7 +40,11 @@ export function makeExternalTimelineData(timeline) {
 
 export default function ExternalTimeline() {
   const timeline = useTimelineData();
-  const timelineData = makeExternalTimelineData(timeline);
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(
+    () => setTimelineData(makeExternalTimelineData(timeline)),
+    [timeline],
+  );
 
   return <Timeline data={timelineData} />;
 }

@@ -5,7 +5,7 @@ import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import Timeline from "next-common/components/timeline";
 import { usePostOnChainData } from "next-common/context/post";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ const getClosedTimelineData = (timeline = []) => {
   let firstFoldIndex = timeline.findIndex((item) => item?.method === "Voted");
   const lastFoldIndex = findLastIndex(
     timeline,
-    (item) => item?.method === "Voted"
+    (item) => item?.method === "Voted",
   );
   if (firstFoldIndex > 0) {
     firstFoldIndex--;
@@ -34,10 +34,10 @@ const getClosedTimelineData = (timeline = []) => {
   }
 
   const foldItems = timeline.filter(
-    (item, idx) => idx >= firstFoldIndex && idx <= lastFoldIndex
+    (item, idx) => idx >= firstFoldIndex && idx <= lastFoldIndex,
   );
   const notFoldItems = timeline.filter(
-    (item, idx) => idx < firstFoldIndex || idx > lastFoldIndex
+    (item, idx) => idx < firstFoldIndex || idx > lastFoldIndex,
   );
   return [foldItems, ...notFoldItems];
 };
@@ -60,7 +60,9 @@ export function makeMotionTimelineData(motion) {
 export default function MotionTimeline() {
   const motion = usePostOnChainData();
   const showMotionEnd = useShowMotionEnd(motion);
-  const timelineData = useMemo(() => makeMotionTimelineData(motion), [motion]);
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(() => setTimelineData(makeMotionTimelineData(motion)), [motion]);
+
   if (!motion) {
     return null;
   }

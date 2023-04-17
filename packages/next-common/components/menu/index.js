@@ -13,7 +13,7 @@ import {
   useHomeExpandedMenus,
   useSettingsDispatch,
 } from "../../context/settings";
-import NavigationCMDK from "../cmdk/navigationCMDK";
+import MenuCMDKButton from "../menu/menuCMDKButton";
 import {
   cursor_pointer,
   inline_flex,
@@ -281,7 +281,7 @@ export default function Menu({ menu = [] }) {
 
   return (
     <Wrapper>
-      <NavigationCMDK triggerButtonStyle={{ marginBottom: 16 }} />
+      <MenuCMDKButton buttonStyle={{ marginBottom: 16 }} />
 
       <MenuWrapper>
         {menu.map((menu, index) => {

@@ -6,6 +6,7 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useEffect, useState } from "react";
 
 const getTimelineData = (args, method, trackInfo) => {
   switch (method) {
@@ -14,7 +15,9 @@ const getTimelineData = (args, method, trackInfo) => {
         Proposer: <User add={args.proposer} />,
         Track: startCase(trackInfo.name),
         "Proposal Hash":
-          args.proposal?.legacy?.hash || args.proposal?.lookup?.hash || args.proposalHash,
+          args.proposal?.legacy?.hash ||
+          args.proposal?.lookup?.hash ||
+          args.proposalHash,
       };
     }
     case "DecisionDepositPlaced": {
@@ -66,10 +69,20 @@ export function makeReferendumTimelineData(timeline, trackInfo) {
 
 export default function ReferendumTimeline({ trackInfo }) {
   const timeline = useTimelineData();
-  const filtered = timeline.filter(
-    ({ name }) => name !== "DecisionDepositPlaced"
+  const [filtered, setFiltered] = useState([]);
+  useEffect(
+    () =>
+      setFiltered(
+        timeline.filter(({ name }) => name !== "DecisionDepositPlaced"),
+      ),
+    [timeline],
   );
-  const timelineData = makeReferendumTimelineData(filtered, trackInfo);
+
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(
+    () => setTimelineData(makeReferendumTimelineData(filtered, trackInfo)),
+    [filtered, trackInfo],
+  );
 
   return <Timeline data={timelineData} />;
 }

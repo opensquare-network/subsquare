@@ -1,5 +1,5 @@
 import KVList from "../../listInfo/kvList";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
 import getReferendumTime from "../../../utils/referendumTime";
 import BlockValue from "./blockValue";
@@ -26,58 +26,86 @@ export default function ReferendumMetadata({
   const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
   const { state, timeline = [] } = onchainData;
 
-  const { endTime, delayTime, isEndEstimated, isDelayEstimated } =
-    getReferendumTime(
-      state,
-      status,
-      timeline,
-      oneBlockTime,
-      blockHeight,
-      latestBlockTime,
+  const [referendumTime, setReferendumTime] = useState({});
+  useEffect(() => {
+    setReferendumTime(
+      getReferendumTime(
+        state,
+        status,
+        timeline,
+        oneBlockTime,
+        blockHeight,
+        latestBlockTime,
+      ),
     );
+  }, [state, status, timeline, oneBlockTime, blockHeight, latestBlockTime]);
+  const { endTime, delayTime, isEndEstimated, isDelayEstimated } = useMemo(
+    () => referendumTime,
+    [referendumTime],
+  );
 
-  let hash = proposalHash;
   // todo: we should handle proposal inline type
-  if (!hash && proposal?.lookup?.hash) {
-    hash = proposal?.lookup?.hash;
-  } else if (proposal?.legacy?.hash) {
-    hash = proposal?.legacy?.hash;
-  }
+  const [hash, setHash] = useState(proposalHash);
+  useEffect(() => {
+    if (!hash && proposal?.lookup?.hash) {
+      setHash(proposal?.lookup?.hash);
+    } else if (proposal?.legacy?.hash) {
+      setHash(proposal?.legacy?.hash);
+    }
+  }, [proposal]);
 
-  const metadata = [
-    ["Proposer", <User add={proposer} fontSize={14} key="user" />],
-    ["Hash", hash],
-    [
-      "Delay",
-      <BlockValue
-        key="delay"
-        height={delay}
-        time={delayTime}
-        isEstimated={isDelayEstimated}
-      />,
-    ],
-    [
-      "End",
-      <BlockValue
-        key="end"
-        height={end}
-        time={endTime}
-        isEstimated={isEndEstimated}
-      />,
-    ],
-    ["Threshold", <Threshold threshold={threshold} key="threshold" />],
-  ];
+  const [metadata, setMetadata] = useState([]);
+  useEffect(() => {
+    const data = [
+      ["Proposer", <User add={proposer} fontSize={14} key="user" />],
+      ["Hash", hash],
+      [
+        "Delay",
+        <BlockValue
+          key="delay"
+          height={delay}
+          time={delayTime}
+          isEstimated={isDelayEstimated}
+        />,
+      ],
+      [
+        "End",
+        <BlockValue
+          key="end"
+          height={end}
+          time={endTime}
+          isEstimated={isEndEstimated}
+        />,
+      ],
+      ["Threshold", <Threshold threshold={threshold} key="threshold" />],
+    ];
 
-  if (call) {
-    metadata.push([
-      <Proposal
-        key="preimage"
-        call={call}
-        shorten={shorten}
-        referendumIndex={onchainData.referendumIndex}
-      />,
-    ]);
-  }
+    if (call) {
+      data.push([
+        <Proposal
+          key="preimage"
+          call={call}
+          shorten={shorten}
+          referendumIndex={onchainData.referendumIndex}
+        />,
+      ]);
+    }
+
+    setMetadata(data);
+  }, [
+    proposer,
+    hash,
+    delay,
+    delayTime,
+    isDelayEstimated,
+    end,
+    endTime,
+    isEndEstimated,
+    threshold,
+    call,
+    shorten,
+    onchainData,
+  ]);
 
   return <KVList title={"Metadata"} data={metadata} showFold={true} />;
 }

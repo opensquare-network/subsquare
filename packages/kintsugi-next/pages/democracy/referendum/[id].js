@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -41,20 +41,24 @@ function ReferendumContent({ publicProposal, comments }) {
   const api = useApi();
   const { referendumStatus } = useMaybeFetchReferendumStatus(
     post?.onchainData,
-    api
+    api,
   );
   useMaybeFetchElectorate(post?.onchainData, api);
   useFetchVotes(post?.onchainData);
 
   const proposalData = getDemocracyTimelineData(
     publicProposal?.onchainData?.timeline || [],
-    detailPageCategory.DEMOCRACY_PROPOSAL
+    detailPageCategory.DEMOCRACY_PROPOSAL,
   );
   const referendumData = getDemocracyTimelineData(
     post?.onchainData?.timeline || [],
-    detailPageCategory.DEMOCRACY_REFERENDUM
+    detailPageCategory.DEMOCRACY_REFERENDUM,
   );
-  const timelineData = proposalData.concat(referendumData);
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(
+    () => setTimelineData([...proposalData, ...referendumData]),
+    [proposalData, referendumData],
+  );
 
   const refreshPageData = useCallback(async () => {
     const referendumIndex = post?.onchainData.referendumIndex;
@@ -141,7 +145,7 @@ export default withLoginUserRedux(
         </DetailWithRightLayout>
       </PostProvider>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
@@ -163,7 +167,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   let publicProposal;
   if (!isNil(detail.proposalIndex)) {
     const { result } = await nextApi.fetch(
-      `democracy/proposals/${detail.proposalIndex}`
+      `democracy/proposals/${detail.proposalIndex}`,
     );
     publicProposal = result;
   }
@@ -173,7 +177,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
-    }
+    },
   );
 
   return {

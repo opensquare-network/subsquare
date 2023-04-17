@@ -40,7 +40,7 @@ function ReferendumContent({ comments }) {
   const api = useApi();
   const { referendumStatus } = useMaybeFetchReferendumStatus(
     post?.onchainData,
-    api
+    api,
   );
   useMaybeFetchElectorate(post?.onchainData, api);
   useFetchVotes(post?.onchainData, api);
@@ -146,7 +146,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {

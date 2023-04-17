@@ -17,11 +17,11 @@ const VerticalWrapper = styled.div`
 `;
 
 export default function BlockValue({ height, time, isEstimated = false }) {
+  const windowSize = useWindowSize();
+
   if (!time) {
     return <Wrapper>{height}</Wrapper>;
   }
-
-  const windowSize = useWindowSize();
   const children = (
     <>
       {height}
