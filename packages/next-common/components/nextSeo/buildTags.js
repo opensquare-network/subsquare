@@ -265,6 +265,16 @@ const buildTags = (config) => {
         />,
       );
     }
+
+    if (config.twitter.image) {
+      tagsToRender.push(
+        <meta
+          key="twitter:image"
+          name="twitter:image"
+          content={config.twitter.image}
+        />,
+      );
+    }
   }
 
   if (config.facebook) {
