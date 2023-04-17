@@ -1,5 +1,5 @@
 import KVList from "../../listInfo/kvList";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useLatestBlockTime from "../../../utils/hooks/useBlockTime";
 import getReferendumTime from "../../../utils/referendumTime";
 import BlockValue from "./blockValue";
@@ -26,23 +26,34 @@ export default function ReferendumMetadata({
   const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
   const { state, timeline = [] } = onchainData;
 
-  const { endTime, delayTime, isEndEstimated, isDelayEstimated } =
-    getReferendumTime(
-      state,
-      status,
-      timeline,
-      oneBlockTime,
-      blockHeight,
-      latestBlockTime,
+  const [referendumTime, setReferendumTime] = useState({});
+  useEffect(() => {
+    setReferendumTime(
+      getReferendumTime(
+        state,
+        status,
+        timeline,
+        oneBlockTime,
+        blockHeight,
+        latestBlockTime,
+      ),
     );
+  }, [state, status, timeline, oneBlockTime, blockHeight, latestBlockTime]);
+  const { endTime, delayTime, isEndEstimated, isDelayEstimated } = useMemo(
+    () => referendumTime,
+    [referendumTime],
+  );
+  console.log(endTime);
 
-  let hash = proposalHash;
   // todo: we should handle proposal inline type
-  if (!hash && proposal?.lookup?.hash) {
-    hash = proposal?.lookup?.hash;
-  } else if (proposal?.legacy?.hash) {
-    hash = proposal?.legacy?.hash;
-  }
+  const [hash, setHash] = useState(proposalHash);
+  useEffect(() => {
+    if (!hash && proposal?.lookup?.hash) {
+      setHash(proposal?.lookup?.hash);
+    } else if (proposal?.legacy?.hash) {
+      setHash(proposal?.legacy?.hash);
+    }
+  }, [proposal]);
 
   const [metadata, setMetadata] = useState([]);
   useEffect(() => {
