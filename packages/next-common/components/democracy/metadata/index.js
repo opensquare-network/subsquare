@@ -43,7 +43,6 @@ export default function ReferendumMetadata({
     () => referendumTime,
     [referendumTime],
   );
-  console.log(endTime);
 
   // todo: we should handle proposal inline type
   const [hash, setHash] = useState(proposalHash);
