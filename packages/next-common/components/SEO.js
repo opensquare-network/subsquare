@@ -31,6 +31,7 @@ export default function SEO({ title, desc, ogImage }) {
         handle: "@handle",
         site: "@site",
         cardType: "summary_large_image",
+        image: images[0],
       }}
     />
   );
