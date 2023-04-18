@@ -70,7 +70,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
         ];
       }) ?? [];
 
-    setTimelineData(sortTimeline([...data, publicProposalTimelines]));
+    setTimelineData(sortTimeline([...data, ...publicProposalTimelines]));
   }, [treasuryProposal]);
 
   return <Timeline data={timelineData} indent={false} />;
