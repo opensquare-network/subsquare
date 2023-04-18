@@ -6,6 +6,7 @@ import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useEffect, useState } from "react";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -81,19 +82,24 @@ export default function TipTimeline({ tip }) {
     return args;
   };
 
-  let timeline = (tip?.timeline || []).map((item) => {
-    return {
-      time: formatTime(item.indexer.blockTime),
-      indexer: item.indexer,
-      status: getTimelineStatus(detailPageCategory.TREASURY_TIP, item.method),
-      data: getTimelineData(item.args, item.method),
-      method: item.method,
-    };
-  });
+  const [timelineData, setTimelineData] = useState([]);
+  useEffect(() => {
+    let data = (tip?.timeline || []).map((item) => {
+      return {
+        time: formatTime(item.indexer.blockTime),
+        indexer: item.indexer,
+        status: getTimelineStatus(detailPageCategory.TREASURY_TIP, item.method),
+        data: getTimelineData(item.args, item.method),
+        method: item.method,
+      };
+    });
 
-  if (isClosed(timeline)) {
-    timeline = getClosedTimelineData(timeline);
-  }
+    if (isClosed(data)) {
+      data = getClosedTimelineData(data);
+    }
 
-  return <Timeline data={timeline} indent={false} />;
+    setTimelineData(data);
+  }, [tip]);
+
+  return <Timeline data={timelineData} indent={false} />;
 }
