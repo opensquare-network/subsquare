@@ -1,9 +1,10 @@
 import User from "next-common/components/user";
 import KVList from "next-common/components/listInfo/kvList";
 import ReasonLink from "next-common/components/reasonLink";
+import { useState } from "react";
 
 export default function TipMetadata({ tip }) {
-  const metadata = [
+  const [metadata] = useState([
     [
       "Reason",
       <div key="reason">
@@ -23,7 +24,7 @@ export default function TipMetadata({ tip }) {
         <User add={tip?.meta?.who} fontSize={14} />
       </>,
     ],
-  ];
+  ]);
 
   return <KVList title="Metadata" data={metadata} showFold />;
 }
