@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.3
+date: 04/17/2023
+- Upgrade to next.js v13, check [#2809](https://github.com/opensquare-network/subsquare/pull/2809).
+- Fix react hydration error, found after next.js v13 upgrade.
+- Fix cmd+k shortcut, currently we can use it on every page.
+- Add vote type annotation, so we can know the meaning of `/d`, `/s`, `/sa` of vote records.
+- Enhance number input component. Now it supports max/min value.
+
 # 3.0.2
 date: 04/06/2023
 - Support nest comments.
