@@ -1,4 +1,12 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import isNil from "lodash.isnil";
+import { usePreferredColorScheme } from "next-common/utils/hooks/usePreferredColorScheme";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import dark from "../../components/styled/theme/dark";
 import light from "../../components/styled/theme/light";
 import { CACHE_KEY } from "../../utils/constants";
@@ -8,6 +16,14 @@ const ThemeModeContext = createContext(null);
 
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
   const [themeMode, setThemeMode] = useState(defaultThemeMode);
+  const preferred = usePreferredColorScheme();
+
+  useEffect(() => {
+    if (!isNil(defaultThemeMode)) {
+      return;
+    }
+    setThemeMode(preferred);
+  }, [preferred]);
 
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
