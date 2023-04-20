@@ -51,7 +51,7 @@ export function withLoginUser(getServerSideProps) {
       props: {
         ...props.props,
         loginUser: user ?? null,
-        themeMode: themeMode ?? "light",
+        themeMode: themeMode ?? null,
         homeExpandedMenus: homeExpandedMenus || "",
         pageProperties: {
           ...pageProperties,
