@@ -59,6 +59,7 @@ const polkadot = {
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
+  hasStatescan: true,
 };
 
 export default polkadot;

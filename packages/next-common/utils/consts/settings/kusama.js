@@ -57,6 +57,7 @@ const kusama = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.KusamaAndParachains,
   hasGov2: true,
+  hasStatescan: true,
   postLabels: defaultPostLabels,
 };
 
