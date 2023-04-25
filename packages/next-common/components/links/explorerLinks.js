@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
-import DotreasuryAccountLink from "./dotreasuryLink";
-import SubScanLink, { SubScanAccountLink } from "./subscanLink";
+import SubScanLink from "./subscanLink";
 import isEmpty from "lodash.isempty";
 import Statescan from "./statescan";
 
@@ -14,7 +13,7 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function ExternalLinks({ indexer = {}, style = {}, children }) {
+export default function ExplorerLinks({ indexer = {}, style = {}, children }) {
   if (isEmpty(indexer)) {
     return null;
   }
@@ -23,19 +22,6 @@ export default function ExternalLinks({ indexer = {}, style = {}, children }) {
     <Wrapper style={style}>
       <SubScanLink indexer={indexer}>{children}</SubScanLink>
       <Statescan indexer={indexer}>{children}</Statescan>
-    </Wrapper>
-  );
-}
-
-export function AccountLinks({ address }) {
-  if (!address) {
-    throw new Error("No address provided");
-  }
-
-  return (
-    <Wrapper>
-      <SubScanAccountLink address={address} />
-      <DotreasuryAccountLink address={address} />
     </Wrapper>
   );
 }

@@ -8,7 +8,7 @@ import { EmptyTd, RowSplitter, StyledTable, StyledTd, StyledTh, StyledTr } from 
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
-import ExternalLinks from "next-common/components/links";
+import ExplorerLink from "next-common/components/links/explorerLink";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 
@@ -51,9 +51,9 @@ function VoteInfo({ item }) {
         />
       </VoteInfoValue>
       <VoteTime>
-        <ExternalLinks indexer={item.indexer}>
+        <ExplorerLink indexer={item.indexer}>
           { formatTime(item.indexer.blockTime) }
-        </ExternalLinks>
+        </ExplorerLink>
       </VoteTime>
     </VoteInfoWrapper>
   );
