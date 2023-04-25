@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "sass": "^1.38.0",
+    "sharp": "^0.32.0",
     "styled-components": "^5.3.9",
     "use-deep-compare-effect": "^1.8.1"
   },
