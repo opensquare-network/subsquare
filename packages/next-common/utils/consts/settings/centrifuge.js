@@ -16,10 +16,6 @@ export const defaultNodes = [
     name: "OnFinality",
     url: "wss://centrifuge-parachain.api.onfinality.io/public-ws",
   },
-  {
-    name: "Centrifuge",
-    url: "wss://fullnode.parachain.centrifuge.io",
-  },
 ];
 
 const centrifuge = {
