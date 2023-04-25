@@ -9,8 +9,7 @@
   "scripts": {
     "prepare": "husky install",
     "scan": "yarn workspace @subsquare/scan scan",
-    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint",
-    "postinstall": "patch-package"
+    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint"
   },
   "devDependencies": {
     "husky": "^8.0.3",
@@ -23,7 +22,6 @@
     ]
   },
   "dependencies": {
-    "patch-package": "^6.5.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.2.1"
   },
