@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Flex from "../styled/flex";
 import DotreasuryAccountLink from "./dotreasuryLink";
 import { SubScanAccountLink } from "./subscanLink";
+import { StatescanAccountLink } from "./statescan";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -21,6 +22,7 @@ export default function AccountLinks({ address }) {
     <Wrapper>
       <SubScanAccountLink address={address} />
       <DotreasuryAccountLink address={address} />
+      <StatescanAccountLink address={address} />
     </Wrapper>
   );
 }

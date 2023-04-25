@@ -50,3 +50,25 @@ export default function Statescan({ indexer, children }) {
     </StatescanLink>
   );
 }
+
+export function StatescanAccountLink({ address }) {
+  const mode = useThemeMode();
+  const chain = useChain();
+  const { hasStatescan } = useChainSettings();
+  if (!hasStatescan) {
+    return null;
+  }
+
+  const isLight = mode === "light";
+
+  return (
+    <StatescanLink
+      href={`https://${ statescanDomainMap[chain] || chain }.statescan.io//#/accounts/${address}`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      { isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon /> }
+      { isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark /> }
+    </StatescanLink>
+  );
+}
