@@ -7,6 +7,7 @@ import TitleItem from "../eventInfoCard/infoItem/titleItem";
 import ProposerItem from "../eventInfoCard/infoItem/proposerItem";
 import DescriptionItem from "../eventInfoCard/infoItem/descriptionItem";
 import LinkItem from "./infoItem/linkItem";
+import EndDateItem from "./infoItem/endDateItem";
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,6 +53,7 @@ export default function UserEventInfoCard({ event, refresh }) {
               <DescriptionItem description={event.description} />
             )}
             {event.link && <LinkItem link={event.link} />}
+            {event.endTimestamp && <EndDateItem timestamp={event.endTimestamp} />}
           </Content>
         </>
       )}
