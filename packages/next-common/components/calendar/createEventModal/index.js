@@ -9,8 +9,11 @@ import Description from "./description";
 import SecondaryButton from "../../buttons/secondaryButton";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import { newErrorToast, newSuccessToast } from "../../../store/reducers/toastSlice";
-import StartDate from "./startDate";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "../../../store/reducers/toastSlice";
+import DateField from "./dateField";
 import DateSelectModal from "../dateSelectModal";
 import noop from "lodash.noop";
 import { calendarUserEventsApi } from "../../../services/url";
@@ -27,8 +30,11 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [showDateSelectModal, setShowDateSelectModal] = useState(false);
+  const [showStartDateSelectModal, setShowStartDateSelectModal] =
+    useState(false);
+  const [showEndDateSelectModal, setShowEndDateSelectModal] = useState(false);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
   const showSuccessToast = (message) => dispatch(newSuccessToast(message));
@@ -50,6 +56,10 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
       return showErrorToast("Start date must be in the future.");
     }
 
+    if (endDate && endDate.getTime() < startDate.getTime()) {
+      return showErrorToast("End date must be after start date.");
+    }
+
     setIsLoading(true);
     try {
       const { result, error } = await nextApi.post(
@@ -59,6 +69,7 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
           link,
           description,
           timestamp: startDate.getTime(),
+          endTimestamp: endDate?.getTime(),
         },
         {
           headers: {
@@ -79,10 +90,14 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [title, link, description, startDate]);
+  }, [title, link, description, startDate, endDate]);
 
-  const onSelectDate = useCallback((date) => {
+  const onSelectStartDate = useCallback((date) => {
     setStartDate(date);
+  }, []);
+
+  const onSelectEndDate = useCallback((date) => {
+    setEndDate(date);
   }, []);
 
   return (
@@ -90,9 +105,16 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
       <Signer signerAccount={signerAccount} balanceName="Balance" />
       <Title setValue={setTitle} />
       <Description setValue={setDescription} />
-      <StartDate
+      <DateField
+        title="Start date"
         value={startDate}
-        onClick={() => setShowDateSelectModal(true)}
+        onClick={() => setShowStartDateSelectModal(true)}
+      />
+      <DateField
+        title="End date"
+        optional
+        value={endDate}
+        onClick={() => setShowEndDateSelectModal(true)}
       />
       <Link setValue={setLink} />
       <ButtonWrapper>
@@ -100,11 +122,18 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
           Submit
         </SecondaryButton>
       </ButtonWrapper>
-      {showDateSelectModal && (
+      {showStartDateSelectModal && (
         <DateSelectModal
-          onClose={() => setShowDateSelectModal(false)}
+          onClose={() => setShowStartDateSelectModal(false)}
           defaultSelectedDate={startDate}
-          onSelect={onSelectDate}
+          onSelect={onSelectStartDate}
+        />
+      )}
+      {showEndDateSelectModal && (
+        <DateSelectModal
+          onClose={() => setShowEndDateSelectModal(false)}
+          defaultSelectedDate={endDate}
+          onSelect={onSelectEndDate}
         />
       )}
     </>

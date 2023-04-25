@@ -9,7 +9,7 @@ import RightSVG from "./right.svg";
 
 const DateWrapper = styled.div`
   display: flex;
-  border: 1px solid ${p => p.theme.grey300Border};
+  border: 1px solid ${(p) => p.theme.grey300Border};
   border-radius: 4px;
   overflow: hidden;
 
@@ -45,11 +45,16 @@ const Icon = styled(Flex)`
   }
 `;
 
-export default function StartDate({ value, onClick = noop }) {
+export default function DateField({
+  title = "Date",
+  optional,
+  value,
+  onClick = noop,
+}) {
   return (
-    <Labeled text={"Date"}>
+    <Labeled text={title} status={optional && "Optional"}>
       <DateWrapper>
-        <DateLabel>Start date</DateLabel>
+        <DateLabel>{title}</DateLabel>
         <Flex style={{ flex: 1, cursor: "pointer" }} onClick={onClick}>
           <Time>
             {value
