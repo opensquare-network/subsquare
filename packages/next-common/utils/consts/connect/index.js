@@ -24,11 +24,4 @@ export const WALLETS = [
       "https://chrome.google.com/webstore/detail/talisman-wallet/fijngjgcjhjmmpcmkeiomlglpeiijkld",
     logo: TalismanLogo,
   },
-  {
-    extensionName: "polkagate",
-    title: "PolkaGate",
-    installUrl:
-      "https://chrome.google.com/webstore/detail/polkagate-the-gateway-to/ginchbkmljhldofnbjabmeophlhdldgp",
-    logo: TalismanLogo,
-  },
 ];
