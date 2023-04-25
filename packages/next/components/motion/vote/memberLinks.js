@@ -22,6 +22,11 @@ function MemberLinks() {
       url: "/techcomm/members",
       name: "members",
     };
+  } else if (detailPageCategory.TREASURY_TIP === type) {
+    obj = {
+      url: "/council/members",
+      name: "tippers",
+    };
   }
 
   if (!obj) {
