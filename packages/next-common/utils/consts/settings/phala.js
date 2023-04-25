@@ -30,6 +30,7 @@ const phala = {
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default phala;

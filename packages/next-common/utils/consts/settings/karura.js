@@ -50,6 +50,7 @@ const karura = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
+  hasSubscan: true,
 };
 
 export default karura;

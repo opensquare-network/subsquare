@@ -37,6 +37,7 @@ const polkadex = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default polkadex;

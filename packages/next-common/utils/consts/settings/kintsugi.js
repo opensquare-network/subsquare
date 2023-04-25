@@ -40,6 +40,7 @@ const kintsugi = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
+  hasSubscan: true,
 };
 
 export default kintsugi;

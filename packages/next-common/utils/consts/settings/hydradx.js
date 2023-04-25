@@ -32,6 +32,7 @@ const hydradx = {
   endpoints: defaultHydradxEndpoints,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default hydradx;

@@ -36,6 +36,7 @@ const bifrost = {
   group: MenuGroups.KusamaAndParachains,
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default bifrost;

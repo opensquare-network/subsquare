@@ -60,6 +60,7 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasStatescan: true,
+  hasSubscan: true,
 };
 
 export default polkadot;

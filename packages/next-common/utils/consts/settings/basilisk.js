@@ -30,6 +30,7 @@ const basilisk = {
   endpoints: DEFAULT_BASILISK_NODES,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default basilisk;

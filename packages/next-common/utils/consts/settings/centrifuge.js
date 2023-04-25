@@ -34,6 +34,7 @@ const centrifuge = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
+  hasSubscan: true,
 };
 
 export default centrifuge;

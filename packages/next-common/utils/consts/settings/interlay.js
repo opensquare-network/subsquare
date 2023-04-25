@@ -34,6 +34,7 @@ const interlay = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
+  hasSubscan: true,
 };
 
 export default interlay;

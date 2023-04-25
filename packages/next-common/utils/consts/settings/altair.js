@@ -29,6 +29,7 @@ const altair = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
+  hasSubscan: true,
 };
 
 export default altair;

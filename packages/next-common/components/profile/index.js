@@ -11,7 +11,7 @@ import Back from "../back";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Flex from "../styled/flex";
-import { AccountLinks } from "../links";
+import AccountLinks from "../links/accountLinks";
 import Loading from "../loading";
 import styled, { css } from "styled-components";
 import { SecondaryCard } from "../styled/containers/secondaryCard";

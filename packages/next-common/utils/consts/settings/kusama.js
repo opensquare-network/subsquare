@@ -58,6 +58,7 @@ const kusama = {
   group: MenuGroups.KusamaAndParachains,
   hasGov2: true,
   hasStatescan: true,
+  hasSubscan: true,
   postLabels: defaultPostLabels,
 };
 

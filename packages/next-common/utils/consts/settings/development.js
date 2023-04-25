@@ -31,7 +31,6 @@ const development = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
-  noSubscan: true,
   hasStatescan: true,
   blockTime: 3000,
   postLabels: defaultPostLabels,

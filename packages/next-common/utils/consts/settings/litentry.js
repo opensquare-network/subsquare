@@ -33,7 +33,6 @@ const litentry = {
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,
-  noSubscan: true,
   postLabels: defaultPostLabels,
 };
 

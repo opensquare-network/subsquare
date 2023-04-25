@@ -21,7 +21,7 @@ export default function LargeDataPlaceHolder({
   proposalIndex,
 }) {
   const chain = useChain();
-  const { noSubscan, subscanDomain } = useChainSettings();
+  const { hasSubscan, subscanDomain } = useChainSettings();
   const domain = subscanDomain || chain;
   let subscanLink =
     referendumIndex !== undefined
@@ -33,7 +33,7 @@ export default function LargeDataPlaceHolder({
   return (
     <LargeData>
       Large data, please check it on subscan
-      {!isNil(referendumIndex) && !noSubscan && (
+      {!isNil(referendumIndex) && hasSubscan && (
         <a
           target="_blank"
           rel="noreferrer"

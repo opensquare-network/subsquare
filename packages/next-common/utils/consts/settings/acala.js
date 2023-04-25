@@ -50,6 +50,7 @@ const acala = {
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
+  hasSubscan: true,
 };
 
 export default acala;
