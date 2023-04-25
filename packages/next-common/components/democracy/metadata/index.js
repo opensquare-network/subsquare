@@ -24,7 +24,7 @@ export default function ReferendumMetadata({
   const latestBlockTime = useLatestBlockTime();
 
   const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
-  const { state, timeline = [] } = onchainData;
+  const { state, timeline = [], preImage } = onchainData;
 
   const [referendumTime, setReferendumTime] = useState({});
   useEffect(() => {
@@ -51,6 +51,8 @@ export default function ReferendumMetadata({
       setHash(proposal?.lookup?.hash);
     } else if (proposal?.legacy?.hash) {
       setHash(proposal?.legacy?.hash);
+    } else if (preImage?.hash) {
+      setHash(preImage?.hash);
     }
   }, [proposal]);
 
