@@ -17,16 +17,16 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
     return null;
   }
 
-  let ExplorerLinkWrapper = Fragment;
+  let LinkComponent = Fragment;
   if (!noSubscan) {
-    ExplorerLinkWrapper = SubScanLink;
+    LinkComponent = SubScanLink;
   } else if (hasStatescan) {
-    ExplorerLinkWrapper = Statescan;
+    LinkComponent = Statescan;
   }
 
   return (
     <Wrapper style={style}>
-      <ExplorerLinkWrapper indexer={indexer}>{children}</ExplorerLinkWrapper>
+      <LinkComponent indexer={indexer}>{children}</LinkComponent>
     </Wrapper>
   );
 }
