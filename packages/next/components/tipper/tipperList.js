@@ -10,6 +10,7 @@ import Statistics from "next-common/components/styled/paragraph/statistic";
 import Loading from "next-common/components/loading";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import useTipMeta from "next-common/utils/hooks/useTipMeta";
+import MemberLinks from "components/motion/vote/memberLinks";
 
 const NoTippers = styled.div`
   text-align: center;
@@ -107,6 +108,7 @@ export default function TipperList({ tipHash, tipIsFinal, atBlockHeight }) {
         <div>{isLoading && <Loading size={16} />}</div>
       </StatisticTitleContainer>
       <Items isLoading={isLoading} tips={tips} windowWidth={windowWidth} />
+      <MemberLinks />
     </GhostCard>
   );
 }
