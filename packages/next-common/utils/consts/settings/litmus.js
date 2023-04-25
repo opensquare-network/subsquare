@@ -29,6 +29,7 @@ const litmus = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
+  hasSubscan: true,
   postLabels: defaultPostLabels,
 };
 

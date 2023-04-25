@@ -30,6 +30,7 @@ const rococo = {
   avatar: Avatar,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default rococo;

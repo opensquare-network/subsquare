@@ -38,7 +38,6 @@ const westendCollectives = {
   group: MenuGroups.Solochain,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
-  noSubscan: true,
 };
 
 export default westendCollectives;

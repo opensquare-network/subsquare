@@ -7,8 +7,8 @@ import isNil from "lodash.isnil";
 
 function SubScanLink({ indexer = {}, children }) {
   const chain = useChain();
-  const { noSubscan, subscanDomain } = useChainSettings();
-  if (noSubscan) {
+  const { hasSubscan, subscanDomain } = useChainSettings();
+  if (!hasSubscan) {
     return null;
   }
 
@@ -40,8 +40,8 @@ export default SubScanLink;
 
 export function SubScanAccountLink({ address }) {
   const chain = useChain();
-  const { noSubscan, subscanDomain } = useChainSettings();
-  if (noSubscan) {
+  const { hasSubscan, subscanDomain } = useChainSettings();
+  if (!hasSubscan) {
     return null;
   }
 

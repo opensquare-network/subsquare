@@ -34,6 +34,7 @@ const khala = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default khala;

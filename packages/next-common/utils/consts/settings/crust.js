@@ -44,6 +44,7 @@ const crust = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
+  hasSubscan: true,
 };
 
 export default crust;

@@ -40,6 +40,7 @@ const zeitgeist = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
+  hasSubscan: true,
 };
 
 export default zeitgeist;

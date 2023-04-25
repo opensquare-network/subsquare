@@ -11,14 +11,14 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function ExplorerLink({ indexer = {}, style = {}, children }) {
-  const { noSubscan, hasStatescan } = useChainSettings();
+  const { hasSubscan, hasStatescan } = useChainSettings();
 
   if (isEmpty(indexer)) {
     return null;
   }
 
   let LinkComponent = Fragment;
-  if (!noSubscan) {
+  if (hasSubscan) {
     LinkComponent = SubScanLink;
   } else if (hasStatescan) {
     LinkComponent = Statescan;
