@@ -13,6 +13,16 @@ export function useDecidingSince() {
   return onchain.info?.deciding?.since;
 }
 
+export function useDecisionDeposit() {
+  const onchain = useOnchainData();
+  return onchain.info?.decisionDeposit;
+}
+
+export function useSubmittedAt() {
+  const onchain = useOnchainData();
+  return onchain.info?.submitted;
+}
+
 export function useConfirming() {
   const onchain = useOnchainData();
   return onchain.info?.deciding?.confirming;

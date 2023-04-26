@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { gov2State } from "next-common/utils/consts/state";
 import { useMemo } from "react";
 import { usePostState } from "next-common/context/post";
+import { useDecisionDeposit } from "next-common/context/post/gov2/referendum";
 
 const StatusBase = styled.div`
   margin-top: 8px !important;
@@ -24,6 +25,14 @@ const PositiveStatus = styled(StatusBase)`
   color: ${(props) => props.theme.secondaryGreen500};
   background: ${(props) => props.theme.secondaryGreen100};
 `;
+
+export function PrepareStatus() {
+  const deposit = useDecisionDeposit();
+
+  return <DecidingStatus>
+    { deposit ? gov2State.Preparing : "Waiting for Decision Deposit" }
+  </DecidingStatus>;
+}
 
 export default function Status() {
   const state = usePostState();
