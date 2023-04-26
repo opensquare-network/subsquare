@@ -69,19 +69,10 @@ export function makeReferendumTimelineData(timeline, trackInfo) {
 
 export default function ReferendumTimeline({ trackInfo }) {
   const timeline = useTimelineData();
-  const [filtered, setFiltered] = useState([]);
-  useEffect(
-    () =>
-      setFiltered(
-        timeline.filter(({ name }) => name !== "DecisionDepositPlaced"),
-      ),
-    [timeline],
-  );
-
   const [timelineData, setTimelineData] = useState([]);
   useEffect(
-    () => setTimelineData(makeReferendumTimelineData(filtered, trackInfo)),
-    [filtered, trackInfo],
+    () => setTimelineData(makeReferendumTimelineData(timeline, trackInfo)),
+    [timeline, trackInfo],
   );
 
   return <Timeline data={timelineData} />;

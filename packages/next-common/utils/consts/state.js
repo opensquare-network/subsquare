@@ -2,6 +2,7 @@
 
 export const gov2State = {
   Submitted: "Submitted",
+  Preparing: "Preparing",
   Queueing: "Queueing",
   Deciding: "Deciding",
   Confirming: "Confirming",

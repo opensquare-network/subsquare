@@ -11,6 +11,12 @@ export function useTrack() {
   return trackInfo;
 }
 
+// return detail page track preparation blocks
+export function usePreparation() {
+  const track = useTrack();
+  return track.preparePeriod;
+}
+
 // return detail page track decision blocks
 export function useDecision() {
   const track = useTrack();

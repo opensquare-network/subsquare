@@ -1,18 +1,12 @@
 import React from "react";
-import isNil from "lodash.isnil";
-import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import styled, { useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { latestHeightSelector } from "../../../store/reducers/chainSlice";
-import Flex from "../../styled/flex";
 import TimeDuration from "../../TimeDuration";
 import CountDown from "../../_CountDown";
-
-const Wrapper = styled(Flex)`
-  svg {
-    margin-right: 0;
-  }
-`;
+import Wrapper from "./wrapper";
+import getRemaining from "./common";
+import usePercentage from "./usePercentage";
 
 export default function ConfirmCountdown({ detail }) {
   const { secondaryGreen500, secondaryGreen100 } = useTheme();
@@ -25,24 +19,8 @@ export default function ConfirmCountdown({ detail }) {
   const confirmSince = onchain?.lastConfirmStartedAt?.blockHeight;
   const confirmEnd = confirmSince + confirmPeriod;
 
-  const confirmRemaining = getConfirmRemaining(
-    latestHeight,
-    confirmSince,
-    confirmPeriod,
-  );
-
-  const confirmPercentage = useMemo(() => {
-    if (isNil(latestHeight) || latestHeight <= confirmSince) {
-      return 0;
-    }
-
-    if (latestHeight >= confirmEnd) {
-      return 100;
-    }
-
-    const gone = latestHeight - confirmSince;
-    return Number((gone / confirmPeriod) * 100).toFixed(2);
-  }, [latestHeight]);
+  const confirmRemaining = getRemaining(latestHeight, confirmSince, confirmPeriod);
+  const confirmPercentage = usePercentage(confirmSince, confirmPeriod);
 
   return (
     <Wrapper>
@@ -62,17 +40,4 @@ export default function ConfirmCountdown({ detail }) {
       />
     </Wrapper>
   );
-}
-
-function getConfirmRemaining(latestHeight, confirmSince, confirmPeriod) {
-  if (isNil(latestHeight) || latestHeight <= confirmSince) {
-    return 0;
-  }
-
-  const gone = latestHeight - confirmSince;
-  if (gone > confirmPeriod) {
-    return 0;
-  } else {
-    return confirmPeriod - gone;
-  }
 }
