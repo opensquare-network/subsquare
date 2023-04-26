@@ -183,6 +183,7 @@ export default function Post({ data, href, type }) {
   }
 
   if (isGov2Referendum) {
+    // todo: add preparing count down component
     if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     }
