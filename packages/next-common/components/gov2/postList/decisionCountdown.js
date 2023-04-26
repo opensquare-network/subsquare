@@ -1,18 +1,12 @@
 import React from "react";
-import isNil from "lodash.isnil";
 import CountDown from "next-common/components/_CountDown";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import styled, { useTheme } from "styled-components";
-import Flex from "../../styled/flex";
+import { useTheme } from "styled-components";
 import TimeDuration from "../../TimeDuration";
-
-const Wrapper = styled(Flex)`
-  svg {
-    margin-right: 0;
-  }
-`;
+import Wrapper from "./wrapper";
+import getRemaining from "./common";
+import usePercentage from "./usePercentage";
 
 export default function DecisionCountdown({ detail }) {
   const { secondaryBlue500, secondaryBlue100 } = useTheme();
@@ -28,23 +22,8 @@ export default function DecisionCountdown({ detail }) {
   const decisionSince = info?.deciding?.since;
   const decisionEnd = Math.max(decisionSince + decisionPeriod, confirming || 0);
 
-  const decisionRemaining = getDecisoinRemaining(
-    latestHeight,
-    decisionSince,
-    decisionPeriod,
-  );
-
-  const decisionPercentage = useMemo(() => {
-    if (isNil(latestHeight)) {
-      return 0;
-    }
-    if (latestHeight >= decisionEnd) {
-      return 100;
-    }
-
-    const gone = latestHeight - decisionSince;
-    return Number((gone / decisionPeriod) * 100).toFixed(2);
-  }, [latestHeight]);
+  const decisionRemaining = getRemaining(latestHeight, decisionSince, decisionPeriod);
+  const decisionPercentage = usePercentage(decisionSince, decisionPeriod);
 
   return (
     <Wrapper>
@@ -64,17 +43,4 @@ export default function DecisionCountdown({ detail }) {
       />
     </Wrapper>
   );
-}
-
-function getDecisoinRemaining(latestHeight, decidingSince, decisionPeriod) {
-  if (isNil(latestHeight)) {
-    return 0;
-  }
-
-  const gone = latestHeight - decidingSince;
-  if (gone > decisionPeriod) {
-    return 0;
-  } else {
-    return decisionPeriod - gone;
-  }
 }
