@@ -50,7 +50,7 @@ function Row({ item, colWidths }) {
 }
 
 function Rows({ items, colWidths, theme, loading }) {
-  if (items?.length > 0) {
+  if (!loading && items?.length > 0) {
     return (
       items.map((item, index) => (
         <Fragment key={index}>

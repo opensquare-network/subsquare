@@ -48,7 +48,6 @@ export default function DemocracyStatistics({ delegatee, delegators }) {
     },
   ];
 
-
   return (
     <Wrapper>
       <Header>Delegation</Header>
