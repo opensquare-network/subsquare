@@ -29,7 +29,7 @@ function DataRow({ row, columns }) {
 export default function DataRows({ rows, columns }) {
   const theme = useThemeSetting();
 
-  return rows.map((row, index) => (
+  return (rows || []).map((row, index) => (
     <Fragment key={index}>
       <DataRow row={row} columns={columns} />
       {index !== rows.length - 1 && (

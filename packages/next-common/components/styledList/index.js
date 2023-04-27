@@ -8,7 +8,7 @@ import DataRows from "./dataRows";
 function EmptyOrLoading({ loading }) {
   return (
     <tr>
-      <EmptyTd colSpan="3">
+      <EmptyTd colSpan="100%">
         {loading ? <Loading size={16} /> : "No current members"}
       </EmptyTd>
     </tr>
@@ -18,7 +18,7 @@ function EmptyOrLoading({ loading }) {
 function StyledList({ columns = [], rows = [], loading = false }) {
   let tableBody = null;
 
-  if (rows?.length > 0) {
+  if (!loading) {
     tableBody = <DataRows rows={rows} columns={columns} />;
   } else {
     tableBody = <EmptyOrLoading loading={loading} />;

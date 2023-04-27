@@ -74,6 +74,7 @@ export default function DemocracyDelegatee({ delegatee }) {
   const [delegateeList, setDelegateeList] = useState(delegatee);
   const [showPopup, setShowPopup] = useState(false);
   const [delegateeData, setDelegateeData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
   const { sortedColumn, columns } = useColumns(
@@ -94,7 +95,7 @@ export default function DemocracyDelegatee({ delegatee }) {
         style: { textAlign: "right", width: "100px", minWidth: "100px" },
         sortable: true,
       },
-      { name: "", style: { textAlign: "right" } },
+      { name: "", style: { textAlign: "right", width: "40px", minWidth: "40px" } },
     ],
     "VOTES",
   );
@@ -103,6 +104,7 @@ export default function DemocracyDelegatee({ delegatee }) {
 
   const fetchData = useCallback(
     (page, pageSize) => {
+      setIsLoading(true);
       nextApi
         .fetch("statistics/democracy/delegatee", {
           ...getSortParams(sortedColumn),
@@ -113,6 +115,9 @@ export default function DemocracyDelegatee({ delegatee }) {
           if (result) {
             setDelegateeList(result);
           }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     },
     [sortedColumn],
@@ -166,7 +171,7 @@ export default function DemocracyDelegatee({ delegatee }) {
       <Divider />
       <Header>Delegatee</Header>
       <ListWrapper>
-        <StyledList columns={columns} rows={rows} />
+        <StyledList columns={columns} rows={rows} loading={isLoading} />
       </ListWrapper>
       <Pagination
         {...delegateeList}

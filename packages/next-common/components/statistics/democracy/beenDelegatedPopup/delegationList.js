@@ -14,19 +14,69 @@ import {
   StyledTr,
 } from "next-common/components/styled/table";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
-import Chains from "next-common/utils/consts/chains";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
-
-function DelegationList({ items, theme, loading = true }) {
-  const chain = useChain();
+function Row({ item, colWidths }) {
   const node = useChainSettings();
-
-  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
   const symbol = node.voteSymbol || node.symbol;
 
+  return (
+    <StyledTr>
+      <StyledTd style={{ textAlign: "left", width: colWidths.address }}>
+        <User
+          add={item.account}
+          fontSize={14}
+          maxWidth={colWidths.address-30}
+          noTooltip={true}
+        />
+      </StyledTd>
+      <StyledTd style={{ textAlign: "right", width: colWidths.label }}>
+        <VoteLabel
+          conviction={item.conviction}
+          isDelegating={item.isDelegating}
+        />
+      </StyledTd>
+      <StyledTd style={{ textAlign: "right", width: colWidths.support }}>
+        <ValueDisplay
+          value={toPrecision(item.balance, node.decimals)}
+          symbol={symbol}
+          showTooltip={false}
+        />
+      </StyledTd>
+    </StyledTr>
+  );
+}
+
+function Rows({ items, colWidths, theme, loading }) {
+  if (items?.length > 0) {
+    return (
+      items.map((item, index) => (
+        <Fragment key={index}>
+          <Row item={item} colWidths={colWidths} />
+          {index !== items.length - 1 && (
+            <RowSplitter
+              backgroundColor={
+                theme.isDark ? theme.grey200Border : theme.grey100Bg
+              }
+            />
+          )}
+        </Fragment>
+      ))
+    );
+  }
+
+  return (
+    <StyledTr>
+      <EmptyTd colSpan="100%">
+        {loading ? <Loading size={16} /> : "No current delegations"}
+      </EmptyTd>
+    </StyledTr>
+  );
+}
+
+function DelegationList({ items, theme, loading = true }) {
   const { sm } = useScreenSize();
   const colWidths = useMemo(() => {
     let widths = {
@@ -35,7 +85,7 @@ function DelegationList({ items, theme, loading = true }) {
       support: 100,
     };
 
-    if (sm && hasLabel) {
+    if (sm) {
       widths.address = 124;
     }
 
@@ -48,7 +98,7 @@ function DelegationList({ items, theme, loading = true }) {
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left", width: colWidths.address }}>ADDRESS</StyledTh>
-            {hasLabel && <StyledTh style={{ textAlign: "right", width: colWidths.label }}>LABEL</StyledTh>}
+            <StyledTh style={{ textAlign: "right", width: colWidths.label }}>LABEL</StyledTh>
             <StyledTh style={{ textAlign: "right", width: colWidths.support }}>SUPPORT</StyledTh>
           </StyledTr>
           <RowSplitter
@@ -59,50 +109,7 @@ function DelegationList({ items, theme, loading = true }) {
           />
         </thead>
         <tbody>
-          {items?.length > 0 ? (
-            items.map((item, index) => (
-              <Fragment key={index}>
-                <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: colWidths.address }}>
-                    <User
-                      add={item.account}
-                      fontSize={14}
-                      maxWidth={colWidths.address-30}
-                      noTooltip={true}
-                    />
-                  </StyledTd>
-                  {hasLabel && (
-                    <StyledTd style={{ textAlign: "right", width: colWidths.label }}>
-                      <VoteLabel
-                        conviction={item.conviction}
-                        isDelegating={item.isDelegating}
-                      />
-                    </StyledTd>
-                  )}
-                  <StyledTd style={{ textAlign: "right", width: colWidths.support }}>
-                    <ValueDisplay
-                      value={toPrecision(item.balance, node.decimals)}
-                      symbol={symbol}
-                      showTooltip={false}
-                    />
-                  </StyledTd>
-                </StyledTr>
-                {index !== items.length - 1 && (
-                  <RowSplitter
-                    backgroundColor={
-                      theme.isDark ? theme.grey200Border : theme.grey100Bg
-                    }
-                  />
-                )}
-              </Fragment>
-            ))
-          ) : (
-            <StyledTr>
-              <EmptyTd colSpan="3">
-                {loading ? <Loading size={16} /> : "No current delegations"}
-              </EmptyTd>
-            </StyledTr>
-          )}
+          <Rows items={items} colWidths={colWidths} theme={theme} loading={loading} />
         </tbody>
       </StyledTable>
     </PopupListWrapper>
