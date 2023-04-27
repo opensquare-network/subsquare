@@ -7,9 +7,7 @@ import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
-import EnterSVG from "./enter.svg";
 import Flex from "next-common/components/styled/flex";
-import BeenDelegatedListPopup from "../beenDelegatedPopup";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -29,14 +27,11 @@ function getSortParams(sortedColumn) {
 
   let colName;
   switch (sortedColumn) {
-    case "COUNT":
-      colName = "delegatorsCount";
-      break;
     case "CAPITAL":
-      colName = "delegatedCapital";
+      colName = "balance";
       break;
     case "VOTES":
-      colName = "delegatedVotes";
+      colName = "votes";
       break;
     default:
       colName = "account";
@@ -45,21 +40,15 @@ function getSortParams(sortedColumn) {
   return { sort: JSON.stringify([colName, "desc"]) };
 }
 
-export default function DemocracyDelegatee({ delegatee }) {
-  const [delegateeList, setDelegateeList] = useState(delegatee);
-  const [showPopup, setShowPopup] = useState(false);
-  const [delegateeData, setDelegateeData] = useState();
+export default function Delegator({ delegators }) {
+  const [delegatorsList, setDelegatorsList] = useState(delegators);
   const [isLoading, setIsLoading] = useState(false);
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
   const { sortedColumn, columns } = useColumns(
     [
       { name: "ADDRESS", style: { textAlign: "left", minWidth: "260px" } },
-      {
-        name: "COUNT",
-        style: { textAlign: "right", width: "128px", minWidth: "128px" },
-        sortable: true,
-      },
+      { name: "TARGET", style: { textAlign: "left", minWidth: "260px" } },
       {
         name: "CAPITAL",
         style: { textAlign: "right", width: "128px", minWidth: "128px" },
@@ -70,7 +59,6 @@ export default function DemocracyDelegatee({ delegatee }) {
         style: { textAlign: "right", width: "128px", minWidth: "128px" },
         sortable: true,
       },
-      { name: "", style: { textAlign: "right", width: "40px", minWidth: "40px" } },
     ],
     "VOTES",
   );
@@ -81,14 +69,14 @@ export default function DemocracyDelegatee({ delegatee }) {
     (page, pageSize) => {
       setIsLoading(true);
       nextApi
-        .fetch("statistics/democracy/delegatee", {
+        .fetch("statistics/democracy/delegators", {
           ...getSortParams(sortedColumn),
           page,
           pageSize,
         })
         .then(({ result }) => {
           if (result) {
-            setDelegateeList(result);
+            setDelegatorsList(result);
           }
         })
         .finally(() => {
@@ -103,39 +91,33 @@ export default function DemocracyDelegatee({ delegatee }) {
       return;
     }
 
-    fetchData(delegateeList?.page, delegateeList?.pageSize);
+    fetchData(delegatorsList?.page, delegatorsList?.pageSize);
   }, [
     sortedColumnChanged,
     fetchData,
-    delegateeList?.page,
-    delegateeList?.pageSize,
+    delegatorsList?.page,
+    delegatorsList?.pageSize,
   ]);
 
-  const rows = (delegateeList.items || []).map((item) => {
+  const rows = (delegatorsList.items || []).map((item) => {
     const row = [
       <Flex key="account" style={{ maxWidth: "260px", overflow: "hidden" }}>
         <User add={item.account} fontSize={14} />
       </Flex>,
-      item.delegatorsCount,
-      <ValueDisplay
-        key="delegatedCapital"
-        value={toPrecision(item.delegatedCapital || 0, decimals)}
-        symbol={voteSymbol || symbol}
-      />,
-      <ValueDisplay
-        key="delegatedVotes"
-        value={toPrecision(item.delegatedVotes || 0, decimals)}
-        symbol={voteSymbol || symbol}
-      />,
-      <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
-        <EnterSVG />
+      <Flex key="delegatee" style={{ maxWidth: "260px", overflow: "hidden" }}>
+        <User add={item.delegatee} fontSize={14} />
       </Flex>,
+      <ValueDisplay
+        key="capital"
+        value={toPrecision(item.balance || 0, decimals)}
+        symbol={voteSymbol || symbol}
+      />,
+      <ValueDisplay
+        key="votes"
+        value={toPrecision(item.votes || 0, decimals)}
+        symbol={voteSymbol || symbol}
+      />,
     ];
-
-    row.onClick = () => {
-      setDelegateeData(item);
-      setShowPopup(true);
-    };
 
     return row;
   });
@@ -146,23 +128,14 @@ export default function DemocracyDelegatee({ delegatee }) {
         <StyledList columns={columns} rows={rows} loading={isLoading} />
       </ListWrapper>
       <Pagination
-        {...delegateeList}
+        {...delegatorsList}
         onPageChange={(e, page) => {
           e.stopPropagation();
           e.preventDefault();
-          fetchData(page, delegateeList?.pageSize);
+          fetchData(page, delegatorsList?.pageSize);
           window.scrollTo(0, 0);
         }}
       />
-      {showPopup && (
-        <BeenDelegatedListPopup
-          setShow={setShowPopup}
-          delegatee={delegateeData?.account}
-          delegatedCapital={delegateeData?.delegatedCapital}
-          delegatedVotes={delegateeData?.delegatedVotes}
-          delegatorsCount={delegateeData?.delegatorsCount}
-        />
-      )}
     </Wrapper>
   );
 }

@@ -1,16 +1,17 @@
+import React from "react";
 import noop from "lodash.noop";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 24px;
 `;
 
 const TabWrapper = styled.div`
   cursor: pointer;
 `;
 
-export default function Tabs({ tabs = [], setActiveTab = noop }) {
+export default function TabHeaders({ tabs = [], setActiveTab = noop }) {
   return (
     <Wrapper>
       {tabs.map((tab, index) => (
