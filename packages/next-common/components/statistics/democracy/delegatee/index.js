@@ -174,6 +174,7 @@ export default function DemocracyDelegatee({ delegatee }) {
           e.stopPropagation();
           e.preventDefault();
           fetchData(page, delegateeList?.pageSize);
+          window.scrollTo(0, 0);
         }}
       />
       {showPopup && (
