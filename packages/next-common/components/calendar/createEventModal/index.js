@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import styled from "styled-components";
 import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithAddress from "../../../components/popupWithAddress";
 import useSignerAccount from "../../../utils/hooks/useSignerAccount";
@@ -9,19 +8,12 @@ import Description from "./description";
 import SecondaryButton from "../../buttons/secondaryButton";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "../../../store/reducers/toastSlice";
+import { newErrorToast, newSuccessToast } from "../../../store/reducers/toastSlice";
 import DateField from "./dateField";
 import DateSelectModal from "../dateSelectModal";
 import noop from "lodash.noop";
 import { calendarUserEventsApi } from "../../../services/url";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "../../popup/wrapper";
 
 function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
   const dispatch = useDispatch();
@@ -117,11 +109,11 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
         onClick={() => setShowEndDateSelectModal(true)}
       />
       <Link setValue={setLink} />
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton isLoading={isLoading} onClick={submit}>
           Submit
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
       {showStartDateSelectModal && (
         <DateSelectModal
           onClose={() => setShowStartDateSelectModal(false)}

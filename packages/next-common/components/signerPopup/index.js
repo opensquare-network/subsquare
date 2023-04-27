@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import useApi from "next-common/utils/hooks/useApi";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
@@ -7,11 +6,7 @@ import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { emptyFunction } from "../../utils";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "../popup/wrapper";
 
 function PopupContent({
   extensionAccounts,
@@ -39,14 +34,14 @@ function PopupContent({
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton
           isLoading={isLoading}
           onClick={() => actionCallback(api, signerAccount)}
         >
           {confirmText}
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </>
   );
 }

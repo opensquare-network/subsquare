@@ -8,8 +8,9 @@ import { usePost } from "../../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
 import SecondaryButton from "../../buttons/secondaryButton";
-import { Info, ButtonWrapper } from "../styled";
+import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
+import { PopupButtonWrapper } from "../../popup/wrapper";
 
 export default function PostUnlinkPopup({ setShow = noop }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,11 +61,11 @@ export default function PostUnlinkPopup({ setShow = noop }) {
         Unlinking will reset the content and comments of the currently linked
         post.
       </Info>
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton isLoading={isLoading} onClick={unbindDiscussion}>
           Confirm
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </Popup>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
 
@@ -20,11 +19,7 @@ import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "../../../popup/wrapper";
 
 function PopupContent({
   extensionAccounts,
@@ -131,7 +126,7 @@ function PopupContent({
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton
           disabled={disabled}
           isLoading={loading}
@@ -139,7 +134,7 @@ function PopupContent({
         >
           Submit
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </>
   );
 }

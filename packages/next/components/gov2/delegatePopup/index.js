@@ -5,11 +5,7 @@ import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import {
-  checkInputValue,
-  emptyFunction,
-  isSameAddress,
-} from "next-common/utils";
+import { checkInputValue, emptyFunction, isSameAddress } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
@@ -19,14 +15,9 @@ import Conviction from "next-common/components/popup/fields/convictionField";
 import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
 import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import Track from "next-common/components/popup/fields/trackField";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 
 function PopupContent({
   extensionAccounts,
@@ -148,11 +139,11 @@ function PopupContent({
         node={node}
       />
       <Conviction conviction={conviction} setConviction={setConviction} />
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
           Confirm
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </>
   );
 }

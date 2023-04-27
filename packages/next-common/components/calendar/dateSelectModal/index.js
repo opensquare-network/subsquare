@@ -1,19 +1,14 @@
 import React, { useCallback, useState } from "react";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
-import styled from "styled-components";
 import Popup from "../../../components/popup/wrapper/Popup";
 import SecondaryButton from "../../buttons/secondaryButton";
 import noop from "lodash.noop";
 import Day from "./day";
 import Time from "./time";
+import { PopupButtonWrapper } from "../../popup/wrapper";
 
 dayjs.extend(timezone);
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
 
 function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
   const [date, setDate] = useState(defaultSelectedDate || new Date());
@@ -46,7 +41,7 @@ function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
       <Day date={date} setDate={onDayChange} />
       <Time defaultHour={hour} defaultMinute={minute} onChange={onTimeChange} />
 
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton
           onClick={() => {
             onSelect(date);
@@ -55,7 +50,7 @@ function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
         >
           Confirm
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </>
   );
 }

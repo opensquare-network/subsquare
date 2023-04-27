@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -6,11 +5,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-import {
-  checkInputValue,
-  emptyFunction,
-  isAddressInGroup,
-} from "next-common/utils";
+import { checkInputValue, emptyFunction, isAddressInGroup } from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
@@ -21,11 +16,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 
 function PopupContent({
   extensionAccounts,
@@ -116,11 +107,11 @@ function PopupContent({
         inputBalance={inputTipValue}
         setInputBalance={setInputTipValue}
       />
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton isLoading={tipping} onClick={doEndorse}>
           Endorse
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </>
   );
 }

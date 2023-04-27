@@ -12,9 +12,10 @@ import noop from "lodash.noop";
 import { useRouter } from "next/router";
 import SecondaryButton from "../../buttons/secondaryButton";
 import Loading from "../../loading";
-import { Info, ButtonWrapper } from "../styled";
+import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
 import Input from "../../input";
+import { PopupButtonWrapper } from "../../popup/wrapper";
 
 const Section = styled.div`
   display: flex;
@@ -194,7 +195,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         <SectionTitle>Link to a post</SectionTitle>
         {discussionList}
       </Section>
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton
           isLoading={isLoading}
           disabled={isLoadingList || !selectedDiscussion}
@@ -202,7 +203,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         >
           Confirm
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </Popup>
   );
 }

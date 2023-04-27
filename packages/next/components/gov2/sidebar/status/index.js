@@ -5,16 +5,18 @@ import { usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
 import StatusWrapper from "./wrapper";
 import PreparationProgress from "./preparation";
+import PlaceDecisionDeposit from "./preparation/decisionDeposit";
+import { emptyFunction } from "next-common/utils";
 
-export default function Gov2Status() {
+export default function Gov2Status({ onDecisionDepositFinalized = emptyFunction }) {
   const state = usePostState();
 
   if (gov2State.Preparing === state) {
-    // todo: show preparing status component
     return (
       <StatusWrapper>
         <PreparationProgress />
         <PrepareStatus />
+        <PlaceDecisionDeposit onDecisionDepositFinalized={onDecisionDepositFinalized} />
       </StatusWrapper>
     );
   }
