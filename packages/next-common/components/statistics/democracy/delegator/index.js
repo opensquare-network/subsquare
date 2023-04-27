@@ -57,7 +57,7 @@ export default function Delegator({ delegators }) {
       { name: "TARGET", style: { textAlign: "left", minWidth: "230px" } },
       {
         name: "CAPITAL",
-        style: { textAlign: "right", width: "128px", minWidth: "168px" },
+        style: { textAlign: "right", width: "168px", minWidth: "168px" },
         sortable: true,
       },
       {
@@ -105,7 +105,7 @@ export default function Delegator({ delegators }) {
     delegatorsList?.pageSize,
   ]);
 
-  const rows = (delegatorsList.items || []).map((item) => {
+  const rows = (delegatorsList?.items || []).map((item) => {
     const row = [
       <Flex key="account" style={{ maxWidth: "230px", overflow: "hidden" }}>
         <User add={item.account} fontSize={14} />
