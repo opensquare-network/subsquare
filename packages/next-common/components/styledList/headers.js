@@ -14,7 +14,6 @@ export function Headers({ columns }) {
             key={index}
             style={col.style}
             className={col.className}
-            onClick={col.onClick}
           >
             {col.name}
           </StyledTh>

@@ -6,11 +6,12 @@ const Wrapper = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  cursor: pointer;
 `;
 
-export default function SortableColumn({ name, sorted = true }) {
+export default function SortableColumn({ name, sorted = true, onClick }) {
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       {sorted && <SortedSVG />}
       <span>{name}</span>
     </Wrapper>

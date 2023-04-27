@@ -12,10 +12,13 @@ export default function useColumns(columnsData, defaultSortedColumn) {
 
     return {
       name: (
-        <SortableColumn name={col.name} sorted={sortedColumn === col.name} />
+        <SortableColumn
+          name={col.name}
+          sorted={sortedColumn === col.name}
+          onClick={() => setSortedColumn(col.name)}
+        />
       ),
       style: col.style,
-      onClick: () => setSortedColumn(col.name),
     };
   });
 

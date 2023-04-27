@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const StyledTable = styled.table`
   width: 100%;
@@ -13,11 +13,6 @@ export const StyledTh = styled.th`
   line-height: 11px;
   letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
-  ${(onClick) =>
-    onClick &&
-    css`
-      cursor: pointer;
-    `}
 `;
 
 export const StyledTd = styled.td`
