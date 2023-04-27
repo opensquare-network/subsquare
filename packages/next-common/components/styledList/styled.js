@@ -10,7 +10,7 @@ export const StyledTh = styled.th`
   font-style: normal;
   font-weight: bold;
   font-size: 12px;
-  line-height: 100%;
+  line-height: 11px;
   letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
   ${(onClick) =>

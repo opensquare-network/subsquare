@@ -82,17 +82,17 @@ export default function DemocracyDelegatee({ delegatee }) {
       { name: "ADDRESS", style: { textAlign: "left", minWidth: "260px" } },
       {
         name: "COUNT",
-        style: { textAlign: "right", width: "100px", minWidth: "100px" },
+        style: { textAlign: "right", width: "128px", minWidth: "128px" },
         sortable: true,
       },
       {
         name: "CAPITAL",
-        style: { textAlign: "right", width: "100px", minWidth: "100px" },
+        style: { textAlign: "right", width: "128px", minWidth: "128px" },
         sortable: true,
       },
       {
         name: "VOTES",
-        style: { textAlign: "right", width: "100px", minWidth: "100px" },
+        style: { textAlign: "right", width: "128px", minWidth: "128px" },
         sortable: true,
       },
       { name: "", style: { textAlign: "right", width: "40px", minWidth: "40px" } },
