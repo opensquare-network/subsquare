@@ -1,9 +1,10 @@
+import React from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import User from "next-common/components/user";
 import styled from "styled-components";
-import StyledList from "components/styledList";
+import StyledList from "next-common/components/styledList";
 import { useCallback, useEffect, useState } from "react";
-import useColumns from "components/styledList/useColumns";
+import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
@@ -41,6 +42,11 @@ const Header = styled.div`
   color: #1e2134;
 `;
 
+const ListWrapper = styled.div`
+  display: flex;
+  overflow-x: auto;
+`;
+
 function getSortParams(sortedColumn) {
   if (!sortedColumn) {
     return {};
@@ -72,9 +78,9 @@ export default function DemocracyDelegatee({ delegatee }) {
 
   const { sortedColumn, columns } = useColumns([
     { name: "ADDRESS", style: { textAlign: "left" } },
-    { name: "COUNT", style: { textAlign: "right" }, sortable: true },
-    { name: "CAPITAL", style: { textAlign: "right" }, sortable: true },
-    { name: "VOTES", style: { textAlign: "right" }, sortable: true },
+    { name: "COUNT", style: { textAlign: "right", minWidth: "100px" }, sortable: true },
+    { name: "CAPITAL", style: { textAlign: "right", minWidth: "100px" }, sortable: true },
+    { name: "VOTES", style: { textAlign: "right", minWidth: "100px" }, sortable: true },
     { name: "", style: { textAlign: "right" } },
   ]);
 
@@ -94,7 +100,7 @@ export default function DemocracyDelegatee({ delegatee }) {
           }
         });
     },
-    [sortedColumn]
+    [sortedColumn],
   );
 
   useEffect(() => {
@@ -142,7 +148,9 @@ export default function DemocracyDelegatee({ delegatee }) {
       <Header>Delegation</Header>
       <Divider />
       <Header>Delegatee</Header>
-      <StyledList columns={columns} rows={rows} />
+      <ListWrapper>
+        <StyledList columns={columns} rows={rows} />
+      </ListWrapper>
       <Pagination
         {...delegateeList}
         onPageChange={(e, page) => {

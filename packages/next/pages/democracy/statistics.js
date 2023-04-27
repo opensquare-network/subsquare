@@ -3,7 +3,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import DemocracyDelegatee from "components/statistics/democracy/delegatee";
+import DemocracyDelegatee from "next-common/components/statistics/democracy/delegatee";
 
 export default withLoginUserRedux(({ delegatee }) => {
   const seoInfo = {

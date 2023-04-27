@@ -16,7 +16,6 @@ import {
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import Chains from "next-common/utils/consts/chains";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { Conviction } from "utils/referendumUtil";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
@@ -32,8 +31,8 @@ function DelegationList({ items, theme, loading = true }) {
   const colWidths = useMemo(() => {
     let widths = {
       address: "100%",
-      label: 80,
-      support: 128,
+      label: 60,
+      support: 100,
     };
 
     if (sm && hasLabel) {

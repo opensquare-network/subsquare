@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import DelegationList from "./delegationList";
 import Pagination from "next-common/components/pagination";
 import VStack from "next-common/components/styled/vStack";
+import styled from "styled-components";
+
+const ListWrapper = styled.div`
+  display: flex;
+  overflow-x: auto;
+`;
 
 export default function DelegationTabList({ beenDelegatedList }) {
   const [page, setPage] = useState(1);
@@ -24,7 +30,9 @@ export default function DelegationTabList({ beenDelegatedList }) {
 
   return (
     <VStack space={16}>
-      <DelegationList items={beenDelegatedList?.slice(sliceFrom, sliceTo)} />
+      <ListWrapper>
+        <DelegationList items={beenDelegatedList?.slice(sliceFrom, sliceTo)} />
+      </ListWrapper>
       <Pagination {...pagination} />
     </VStack>
   );

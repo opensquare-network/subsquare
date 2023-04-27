@@ -1,3 +1,4 @@
+import React from "react";
 import { useThemeSetting } from "next-common/context/theme";
 import RowSplitter from "./rowSplitter";
 import { StyledTh } from "./styled";
