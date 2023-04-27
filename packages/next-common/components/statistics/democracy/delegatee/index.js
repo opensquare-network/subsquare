@@ -76,13 +76,28 @@ export default function DemocracyDelegatee({ delegatee }) {
   const [delegateeData, setDelegateeData] = useState();
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
-  const { sortedColumn, columns } = useColumns([
-    { name: "ADDRESS", style: { textAlign: "left" } },
-    { name: "COUNT", style: { textAlign: "right", minWidth: "100px" }, sortable: true },
-    { name: "CAPITAL", style: { textAlign: "right", minWidth: "100px" }, sortable: true },
-    { name: "VOTES", style: { textAlign: "right", minWidth: "100px" }, sortable: true },
-    { name: "", style: { textAlign: "right" } },
-  ]);
+  const { sortedColumn, columns } = useColumns(
+    [
+      { name: "ADDRESS", style: { textAlign: "left", minWidth: "260px" } },
+      {
+        name: "COUNT",
+        style: { textAlign: "right", width: "100px", minWidth: "100px" },
+        sortable: true,
+      },
+      {
+        name: "CAPITAL",
+        style: { textAlign: "right", width: "100px", minWidth: "100px" },
+        sortable: true,
+      },
+      {
+        name: "VOTES",
+        style: { textAlign: "right", width: "100px", minWidth: "100px" },
+        sortable: true,
+      },
+      { name: "", style: { textAlign: "right" } },
+    ],
+    "VOTES",
+  );
 
   const sortedColumnChanged = useStateChanged(sortedColumn);
 
@@ -118,7 +133,9 @@ export default function DemocracyDelegatee({ delegatee }) {
 
   const rows = (delegateeList.items || []).map((item) => {
     const row = [
-      <User key="account" add={item.account} fontSize={14} />,
+      <Flex key="account" style={{ maxWidth: "260px", overflow: "hidden" }}>
+        <User add={item.account} fontSize={14} />
+      </Flex>,
       item.delegatorsCount,
       <ValueDisplay
         key="delegatedCapital"
@@ -130,7 +147,7 @@ export default function DemocracyDelegatee({ delegatee }) {
         value={toPrecision(item.delegatedVotes || 0, decimals)}
         symbol={voteSymbol || symbol}
       />,
-      <Flex key="enter" style={{ padding: "12px 0px 12px 24px" }}>
+      <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
         <EnterSVG />
       </Flex>,
     ];

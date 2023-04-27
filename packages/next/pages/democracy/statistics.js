@@ -23,6 +23,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: delegatee } = await nextApi.fetch(
     "statistics/democracy/delegatee",
     {
+      sort: JSON.stringify(["delegatedVotes", "desc"]),
       pageSize: 50,
     }
   );

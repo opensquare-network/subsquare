@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import SortableColumn from "./sortableColumn";
 
-export default function useColumns(columnsData) {
-  const [sortedColumn, setSortedColumn] = useState();
+export default function useColumns(columnsData, defaultSortedColumn) {
+  const [sortedColumn, setSortedColumn] = useState(defaultSortedColumn);
 
   const columns = (columnsData || []).map((col) => {
     if (!col.sortable) {
