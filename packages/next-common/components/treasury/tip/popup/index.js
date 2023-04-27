@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
 import useApi from "../../../../utils/hooks/useApi";
@@ -18,11 +17,7 @@ import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import SecondaryButton from "../../../buttons/secondaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "../../../popup/wrapper";
 
 function PopupContent({
   extensionAccounts,
@@ -128,11 +123,11 @@ function PopupContent({
       />
       <TipReason setValue={setReason} />
       {tabIndex === NewTip && <TipValue setValue={setInputValue} />}
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton isLoading={loading} onClick={submit}>
           Submit
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </>
   );
 }

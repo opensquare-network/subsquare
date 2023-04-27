@@ -1,15 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import SecondaryButton from "../buttons/secondaryButton";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "../popup/wrapper";
 
 export default function VoteButton({ onClick, disabled, isSubmitting }) {
   return (
-    <ButtonWrapper>
+    <PopupButtonWrapper>
       {disabled ? (
         <SecondaryButton disabled>Vote</SecondaryButton>
       ) : (
@@ -21,6 +16,6 @@ export default function VoteButton({ onClick, disabled, isSubmitting }) {
           Vote
         </SecondaryButton>
       )}
-    </ButtonWrapper>
+    </PopupButtonWrapper>
   );
 }

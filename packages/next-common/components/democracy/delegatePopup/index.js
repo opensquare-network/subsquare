@@ -1,16 +1,11 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import {
-  checkInputValue,
-  emptyFunction,
-  isSameAddress,
-} from "next-common/utils";
+import { checkInputValue, emptyFunction, isSameAddress } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
@@ -20,13 +15,8 @@ import Conviction from "./conviction";
 import VoteValue from "./voteValue";
 import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import styled from "styled-components";
 import useSignerAccount from "../../../utils/hooks/useSignerAccount";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "../../popup/wrapper";
 
 function PopupContent({
   extensionAccounts,
@@ -142,11 +132,11 @@ function PopupContent({
         node={node}
       />
       <Conviction conviction={conviction} setConviction={setConviction} />
-      <ButtonWrapper>
+      <PopupButtonWrapper>
         <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
           Confirm
         </SecondaryButton>
-      </ButtonWrapper>
+      </PopupButtonWrapper>
     </>
   );
 }

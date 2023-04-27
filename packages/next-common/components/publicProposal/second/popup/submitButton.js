@@ -1,11 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 import SecondaryButton from "../../../buttons/secondaryButton";
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PopupButtonWrapper } from "../../../popup/wrapper";
 
 export default function SubmitButton({
   onClick,
@@ -16,7 +11,7 @@ export default function SubmitButton({
   const disabled = balanceInsufficient || _disabled;
 
   return (
-    <ButtonWrapper>
+    <PopupButtonWrapper>
       {balanceInsufficient || disabled ? (
         <SecondaryButton disabled>Submit</SecondaryButton>
       ) : (
@@ -24,6 +19,6 @@ export default function SubmitButton({
           Submit
         </SecondaryButton>
       )}
-    </ButtonWrapper>
+    </PopupButtonWrapper>
   );
 }
