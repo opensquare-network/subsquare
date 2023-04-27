@@ -24,7 +24,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     "statistics/democracy/delegatee",
     {
       sort: JSON.stringify(["delegatedVotes", "desc"]),
-      pageSize: 50,
+      pageSize: 25,
     }
   );
 
