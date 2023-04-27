@@ -1,5 +1,5 @@
 import React, { Fragment, useMemo } from "react";
-import { withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -13,10 +13,16 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import Flex from "next-common/components/styled/flex";
+import { convictionToLockX } from "next-common/utils/referendumCommon";
+
+const ConvictionText = styled.span`
+  width: 40px;
+  color: ${p => p.theme.textTertiary};
+`;
 
 function Row({ item, colWidths }) {
   const node = useChainSettings();
@@ -32,15 +38,19 @@ function Row({ item, colWidths }) {
           noTooltip={true}
         />
       </StyledTd>
-      <StyledTd style={{ textAlign: "right", width: colWidths.label }}>
-        <VoteLabel
-          conviction={item.conviction}
-          isDelegating={item.isDelegating}
-        />
+      <StyledTd style={{ textAlign: "right", width: colWidths.capital }}>
+        <Flex style={{ justifyContent: "right" }}>
+          <ValueDisplay
+            value={toPrecision(item.balance, node.decimals)}
+            symbol={symbol}
+            showTooltip={false}
+          />
+          <ConvictionText>{convictionToLockX(item.conviction)}</ConvictionText>
+        </Flex>
       </StyledTd>
-      <StyledTd style={{ textAlign: "right", width: colWidths.support }}>
+      <StyledTd style={{ textAlign: "right", width: colWidths.votes }}>
         <ValueDisplay
-          value={toPrecision(item.balance, node.decimals)}
+          value={toPrecision(item.votes, node.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
@@ -81,8 +91,8 @@ function DelegationList({ items, theme, loading = true }) {
   const colWidths = useMemo(() => {
     let widths = {
       address: "100%",
-      label: 60,
-      support: 100,
+      capital: 168,
+      votes: 128,
     };
 
     if (sm) {
@@ -98,8 +108,8 @@ function DelegationList({ items, theme, loading = true }) {
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left", width: colWidths.address }}>ADDRESS</StyledTh>
-            <StyledTh style={{ textAlign: "right", width: colWidths.label }}>LABEL</StyledTh>
-            <StyledTh style={{ textAlign: "right", width: colWidths.support }}>SUPPORT</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: colWidths.capital }}>CAPITAL</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: colWidths.votes }}>VOTES</StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={

@@ -11,6 +11,7 @@ import Flex from "next-common/components/styled/flex";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { convictionToLockX } from "next-common/utils/referendumCommon";
 
 const Wrapper = styled.div`
 `;
@@ -18,6 +19,11 @@ const Wrapper = styled.div`
 const ListWrapper = styled.div`
   display: flex;
   overflow-x: auto;
+`;
+
+const ConvictionText = styled.span`
+  width: 40px;
+  color: ${p => p.theme.textTertiary};
 `;
 
 function getSortParams(sortedColumn) {
@@ -47,11 +53,11 @@ export default function Delegator({ delegators }) {
 
   const { sortedColumn, columns } = useColumns(
     [
-      { name: "ADDRESS", style: { textAlign: "left", minWidth: "260px" } },
-      { name: "TARGET", style: { textAlign: "left", minWidth: "260px" } },
+      { name: "ADDRESS", style: { textAlign: "left", minWidth: "230px" } },
+      { name: "TARGET", style: { textAlign: "left", minWidth: "230px" } },
       {
         name: "CAPITAL",
-        style: { textAlign: "right", width: "128px", minWidth: "128px" },
+        style: { textAlign: "right", width: "128px", minWidth: "168px" },
         sortable: true,
       },
       {
@@ -101,17 +107,19 @@ export default function Delegator({ delegators }) {
 
   const rows = (delegatorsList.items || []).map((item) => {
     const row = [
-      <Flex key="account" style={{ maxWidth: "260px", overflow: "hidden" }}>
+      <Flex key="account" style={{ maxWidth: "230px", overflow: "hidden" }}>
         <User add={item.account} fontSize={14} />
       </Flex>,
-      <Flex key="delegatee" style={{ maxWidth: "260px", overflow: "hidden" }}>
+      <Flex key="delegatee" style={{ maxWidth: "230px", overflow: "hidden" }}>
         <User add={item.delegatee} fontSize={14} />
       </Flex>,
-      <ValueDisplay
-        key="capital"
-        value={toPrecision(item.balance || 0, decimals)}
-        symbol={voteSymbol || symbol}
-      />,
+      <Flex key="capital" style={{ justifyContent: "right" }}>
+        <ValueDisplay
+          value={toPrecision(item.balance || 0, decimals)}
+          symbol={voteSymbol || symbol}
+        />
+        <ConvictionText>{convictionToLockX(item.conviction)}</ConvictionText>
+      </Flex>,
       <ValueDisplay
         key="votes"
         value={toPrecision(item.votes || 0, decimals)}
