@@ -93,7 +93,6 @@ function createDispatches(bestNumber, blockTime, dispatches) {
 
 function createReferendums(bestNumber, blockTime, referendums) {
   return referendums.reduce((result, { index, status }) => {
-    console.log({ index, status });
     const enactBlocks = status.end.add(status.delay).isub(bestNumber);
     const voteBlocks = status.end.sub(bestNumber).isub(BN_ONE);
 

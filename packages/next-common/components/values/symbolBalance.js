@@ -15,5 +15,5 @@ export default function SymbolBalance({ value = 0, fixed, isVote = false }) {
     normalizedValue = new BigNumber(normalizedValue).toFixed(fixed, 1);
   }
 
-  return `${normalizedValue} ${isVote ? voteSymbol : symbol}`;
+  return `${normalizedValue} ${isVote ? voteSymbol || symbol : symbol}`;
 }
