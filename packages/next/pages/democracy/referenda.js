@@ -29,7 +29,7 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
-          topRightCorner={<StatisticLinkButton />}
+          // topRightCorner={<StatisticLinkButton />}
           items={items}
           pagination={{
             page: posts.page,
