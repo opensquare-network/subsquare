@@ -19,7 +19,6 @@ export default withLoginUserRedux(({ motions }) => {
     <HomeLayout seoInfo={seoInfo}>
       <PostList
         category={category}
-        create={null}
         items={items}
         pagination={{
           page: motions.page,

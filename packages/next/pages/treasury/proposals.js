@@ -61,7 +61,7 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
-          create={create}
+          topRightCorner={create}
           items={items}
           summary={<Summary />}
           pagination={{

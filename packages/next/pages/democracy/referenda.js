@@ -8,6 +8,7 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 import DemocracySummaryFooter from "next-common/components/summary/democracySummaryFooter";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import StatisticLinkButton from "components/statisticsLinkButton";
 
 export default withLoginUserRedux(
   ({ posts, chain, tracks, fellowshipTracks }) => {
@@ -28,7 +29,7 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
-          create={null}
+          topRightCorner={<StatisticLinkButton />}
           items={items}
           pagination={{
             page: posts.page,

@@ -34,7 +34,7 @@ export default function PostList({
   link,
   items,
   pagination,
-  create = null,
+  topRightCorner = null,
   summary,
 }) {
   return (
@@ -43,7 +43,7 @@ export default function PostList({
         <Link href={link || ""} passHref legacyBehavior>
           <TitleLink>{title ?? category}</TitleLink>
         </Link>
-        {create}
+        {topRightCorner}
       </TitleContainer>
       {summary}
       {items?.length > 0 ? (

@@ -23,7 +23,6 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
-          create={null}
           items={items}
           pagination={{
             page: motions.page,

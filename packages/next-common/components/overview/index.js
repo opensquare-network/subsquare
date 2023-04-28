@@ -92,7 +92,7 @@ export default function Overview({ overviewData, summaryData }) {
               link={item.link}
               items={item.items}
               type={item.type}
-              create={item.category === "Discussions" && createDiscussion}
+              topRightCorner={item.category === "Discussions" && createDiscussion}
             />
           );
         }

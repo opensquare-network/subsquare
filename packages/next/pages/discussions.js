@@ -44,7 +44,7 @@ export default withLoginUserRedux(({ posts, tracks, fellowshipTracks }) => {
     >
       <PostList
         category={category}
-        create={create}
+        topRightCorner={create}
         items={items}
         pagination={{
           page: posts.page,
