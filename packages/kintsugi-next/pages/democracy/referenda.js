@@ -18,7 +18,6 @@ export default withLoginUserRedux(({ posts, chain }) => {
     <HomeLayout seoInfo={seoInfo}>
       <PostList
         category={category}
-        create={null}
         items={items}
         pagination={{
           page: posts.page,

@@ -98,6 +98,7 @@ export const no_scroll_bar = css`
 export const pretty_scroll_bar = css`
   ::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
   }
 
   ::-webkit-scrollbar-thumb {

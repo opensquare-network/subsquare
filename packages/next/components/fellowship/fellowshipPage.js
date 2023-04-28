@@ -24,7 +24,6 @@ export default function FellowshipPage({
       <PostList
         title={title}
         category={businessCategory.fellowship}
-        create={null}
         items={items}
         pagination={{
           page: posts.page,

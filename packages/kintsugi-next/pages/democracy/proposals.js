@@ -20,7 +20,6 @@ export default withLoginUserRedux(({ proposals }) => {
     <HomeLayout seoInfo={seoInfo}>
       <PostList
         category={category}
-        create={null}
         items={items}
         pagination={{
           page: proposals.page,

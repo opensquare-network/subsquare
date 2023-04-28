@@ -39,7 +39,7 @@ export default withLoginUserRedux(({ posts }) => {
     <HomeLayout seoInfo={seoInfo}>
       <PostList
         category={"Discussions"}
-        create={create}
+        topRightCorner={create}
         items={items}
         pagination={{
           page: posts.page,

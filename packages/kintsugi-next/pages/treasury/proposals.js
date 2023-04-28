@@ -56,7 +56,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
     <HomeLayout seoInfo={seoInfo}>
       <PostList
         category={category}
-        create={create}
+        topRightCorner={create}
         items={items}
         summary={<Summary />}
         pagination={{

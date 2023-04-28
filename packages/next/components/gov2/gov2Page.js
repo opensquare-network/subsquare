@@ -27,7 +27,6 @@ export default function Gov2Page({
       <PostList
         title={title}
         category={businessCategory.openGovReferenda}
-        create={null}
         items={items}
         pagination={{
           page: posts.page,
