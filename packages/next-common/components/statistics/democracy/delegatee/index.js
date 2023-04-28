@@ -14,8 +14,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -49,12 +48,11 @@ export default function DemocracyDelegatee({ delegatee }) {
   const [delegateeList, setDelegateeList] = useState(delegatee);
   const [showPopup, setShowPopup] = useState(false);
   const [delegateeData, setDelegateeData] = useState();
-  const [isLoading, setIsLoading] = useState(false);
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
   const { sortedColumn, columns } = useColumns(
     [
-      { name: "ADDRESS", style: { textAlign: "left", minWidth: "260px" } },
+      { name: "ADDRESS", style: { textAlign: "left", minWidth: "230px" } },
       {
         name: "COUNT",
         style: { textAlign: "right", width: "128px", minWidth: "128px" },
@@ -70,7 +68,10 @@ export default function DemocracyDelegatee({ delegatee }) {
         style: { textAlign: "right", width: "128px", minWidth: "128px" },
         sortable: true,
       },
-      { name: "", style: { textAlign: "right", width: "40px", minWidth: "40px" } },
+      {
+        name: "",
+        style: { textAlign: "right", width: "40px", minWidth: "40px" },
+      },
     ],
     "VOTES",
   );
@@ -79,7 +80,6 @@ export default function DemocracyDelegatee({ delegatee }) {
 
   const fetchData = useCallback(
     (page, pageSize) => {
-      setIsLoading(true);
       nextApi
         .fetch("statistics/democracy/delegatee", {
           ...getSortParams(sortedColumn),
@@ -90,9 +90,6 @@ export default function DemocracyDelegatee({ delegatee }) {
           if (result) {
             setDelegateeList(result);
           }
-        })
-        .finally(() => {
-          setIsLoading(false);
         });
     },
     [sortedColumn],
@@ -113,8 +110,8 @@ export default function DemocracyDelegatee({ delegatee }) {
 
   const rows = (delegateeList.items || []).map((item) => {
     const row = [
-      <Flex key="account" style={{ maxWidth: "260px", overflow: "hidden" }}>
-        <User add={item.account} fontSize={14} />
+      <Flex key="account" style={{ maxWidth: "230px", overflow: "hidden" }}>
+        <User add={item.account} fontSize={14} maxWidth={230} />
       </Flex>,
       item.delegatorsCount,
       <ValueDisplay
@@ -143,7 +140,7 @@ export default function DemocracyDelegatee({ delegatee }) {
   return (
     <Wrapper>
       <ListWrapper>
-        <StyledList columns={columns} rows={rows} loading={isLoading} />
+        <StyledList columns={columns} rows={rows} />
       </ListWrapper>
       <Pagination
         {...delegateeList}

@@ -13,8 +13,7 @@ import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -23,7 +22,7 @@ const ListWrapper = styled.div`
 
 const ConvictionText = styled.span`
   width: 40px;
-  color: ${p => p.theme.textTertiary};
+  color: ${(p) => p.theme.textTertiary};
 `;
 
 function getSortParams(sortedColumn) {
@@ -48,7 +47,6 @@ function getSortParams(sortedColumn) {
 
 export default function Delegator({ delegators }) {
   const [delegatorsList, setDelegatorsList] = useState(delegators);
-  const [isLoading, setIsLoading] = useState(false);
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
   const { sortedColumn, columns } = useColumns(
@@ -73,7 +71,6 @@ export default function Delegator({ delegators }) {
 
   const fetchData = useCallback(
     (page, pageSize) => {
-      setIsLoading(true);
       nextApi
         .fetch("statistics/democracy/delegators", {
           ...getSortParams(sortedColumn),
@@ -84,9 +81,6 @@ export default function Delegator({ delegators }) {
           if (result) {
             setDelegatorsList(result);
           }
-        })
-        .finally(() => {
-          setIsLoading(false);
         });
     },
     [sortedColumn],
@@ -108,10 +102,10 @@ export default function Delegator({ delegators }) {
   const rows = (delegatorsList?.items || []).map((item) => {
     const row = [
       <Flex key="account" style={{ maxWidth: "230px", overflow: "hidden" }}>
-        <User add={item.account} fontSize={14} />
+        <User add={item.account} fontSize={14} maxWidth={230} />
       </Flex>,
       <Flex key="delegatee" style={{ maxWidth: "230px", overflow: "hidden" }}>
-        <User add={item.delegatee} fontSize={14} />
+        <User add={item.delegatee} fontSize={14} maxWidth={230} />
       </Flex>,
       <Flex key="capital" style={{ justifyContent: "right" }}>
         <ValueDisplay
@@ -133,7 +127,7 @@ export default function Delegator({ delegators }) {
   return (
     <Wrapper>
       <ListWrapper>
-        <StyledList columns={columns} rows={rows} loading={isLoading} />
+        <StyledList columns={columns} rows={rows} />
       </ListWrapper>
       <Pagination
         {...delegatorsList}

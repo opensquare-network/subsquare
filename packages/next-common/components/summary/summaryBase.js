@@ -1,8 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { smcss } from "../../utils/responsive";
-import Content from "./cardContent";
-import { SummaryCard, SummaryDescription, SummaryTitle } from "./styled";
+import { SummaryCard, SummaryDescription } from "./styled";
 import Divider from "../styled/layout/divider";
 
 export const SummaryItems = styled.div`
@@ -25,18 +24,8 @@ export default function Summary({ description, items = [], footer }) {
   return (
     <Wrapper>
       <SummaryDescription>{description}</SummaryDescription>
-
       <Divider margin={16} />
-
-      <SummaryItems>
-        {items.map((item, index) => (
-          <SummaryItem key={index}>
-            {item.title && <SummaryTitle>{item.title}</SummaryTitle>}
-            <Content>{item.content}</Content>
-          </SummaryItem>
-        ))}
-      </SummaryItems>
-
+      <SummaryItems items={items} />
       {footer && (
         <>
           <Divider margin={16} />

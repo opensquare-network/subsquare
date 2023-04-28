@@ -22,7 +22,7 @@ const ListWrapper = styled.div`
 
 const ConvictionText = styled.span`
   width: 40px;
-  color: ${p => p.theme.textTertiary};
+  color: ${(p) => p.theme.textTertiary};
 `;
 
 function getSortParams(sortedColumn) {
@@ -47,7 +47,6 @@ function getSortParams(sortedColumn) {
 
 export default function DelegationTabList({ delegatee }) {
   const [beenDelegatedList, setBeenDelegatedList] = useState(EmptyList);
-  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const pageSize = 50;
   const { decimals, voteSymbol, symbol } = useChainSettings();
@@ -82,43 +81,39 @@ export default function DelegationTabList({ delegatee }) {
   );
 
   useEffect(() => {
-    setIsLoading(true);
-    nextApi.fetch(
-      `statistics/democracy/delegatee/${delegatee}/delegators`,
-      {
+    nextApi
+      .fetch(`statistics/democracy/delegatee/${delegatee}/delegators`, {
         ...getSortParams(sortedColumn),
         page,
         pageSize,
-      },
-    ).then(({ result }) => {
-      setBeenDelegatedList(result);
-    }).finally(() => {
-      setIsLoading(false);
-    });
+      })
+      .then(({ result }) => {
+        setBeenDelegatedList(result);
+      });
   }, [delegatee, page, sortedColumn]);
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
-      <Flex key="account" style={{ maxWidth: "124px", overflow: "hidden" }}>
-        <User add={item.account} fontSize={14} />
-      </Flex>,
-      <Flex key="capital" style={{ justifyContent: "right" }}>
-        <ValueDisplay
-          value={toPrecision(item.balance || 0, decimals)}
-          symbol={voteSymbol || symbol}
-        />
-        <ConvictionText>{convictionToLockX(item.conviction)}</ConvictionText>
-      </Flex>,
+    <Flex key="account" style={{ maxWidth: "124px", overflow: "hidden" }}>
+      <User add={item.account} fontSize={14} maxWidth={124} />
+    </Flex>,
+    <Flex key="capital" style={{ justifyContent: "right" }}>
       <ValueDisplay
-        key="votes"
-        value={toPrecision(item.votes || 0, decimals)}
+        value={toPrecision(item.balance || 0, decimals)}
         symbol={voteSymbol || symbol}
-      />,
-    ]);
+      />
+      <ConvictionText>{convictionToLockX(item.conviction)}</ConvictionText>
+    </Flex>,
+    <ValueDisplay
+      key="votes"
+      value={toPrecision(item.votes || 0, decimals)}
+      symbol={voteSymbol || symbol}
+    />,
+  ]);
 
   return (
     <VStack space={16}>
       <ListWrapper>
-        <StyledList columns={columns} rows={rows} loading={isLoading} />
+        <StyledList columns={columns} rows={rows} />
       </ListWrapper>
       <Pagination {...pagination} />
     </VStack>
