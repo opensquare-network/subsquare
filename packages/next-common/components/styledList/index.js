@@ -7,7 +7,7 @@ import DataRows from "./dataRows";
 
 function EmptyOrLoading({ loading }) {
   return (
-    <tr>
+    <tr className="empty-tr">
       <EmptyTd colSpan="100%">
         {loading ? <Loading size={16} /> : "No current members"}
       </EmptyTd>

@@ -12,16 +12,27 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import { pretty_scroll_bar } from "next-common/styles/componentCss";
 
 const ListWrapper = styled.div`
   display: flex;
-  max-height: 400px;
-  overflow: auto;
+  overflow-x: auto;
+  ${pretty_scroll_bar};
 `;
 
 const ConvictionText = styled.span`
   width: 40px;
   color: ${(p) => p.theme.textTertiary};
+`;
+
+const MyPopupListWrapper = styled(PopupListWrapper)`
+  thead, tr {
+    width: unset !important;
+  }
+  tr.empty-tr {
+    width: 100% !important;
+  }
 `;
 
 function getSortParams(sortedColumn) {
@@ -47,6 +58,7 @@ function getSortParams(sortedColumn) {
 export default function DelegationTabList({ delegatee }) {
   const [beenDelegatedList, setBeenDelegatedList] = useState(EmptyList);
   const [page, setPage] = useState(1);
+  const [isLoaded, setIsLoaded] = useState(false);
   const pageSize = 50;
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
@@ -64,7 +76,7 @@ export default function DelegationTabList({ delegatee }) {
 
   const { sortedColumn, columns } = useColumns(
     [
-      { name: "ADDRESS", style: { textAlign: "left", minWidth: "124px" } },
+      { name: "ADDRESS", style: { textAlign: "left", width: "129px", minWidth: "129px" } },
       {
         name: "CAPITAL",
         style: { textAlign: "right", width: "158px", minWidth: "158px" },
@@ -88,6 +100,9 @@ export default function DelegationTabList({ delegatee }) {
       })
       .then(({ result }) => {
         setBeenDelegatedList(result);
+      })
+      .finally(() => {
+        setIsLoaded(true);
       });
   }, [delegatee, page, sortedColumn]);
 
@@ -112,7 +127,9 @@ export default function DelegationTabList({ delegatee }) {
   return (
     <VStack space={16}>
       <ListWrapper>
-        <StyledList columns={columns} rows={rows} />
+        <MyPopupListWrapper>
+          <StyledList columns={columns} rows={rows} loading={!isLoaded} />
+        </MyPopupListWrapper>
       </ListWrapper>
       <Pagination {...pagination} />
     </VStack>
