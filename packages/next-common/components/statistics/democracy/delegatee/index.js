@@ -110,7 +110,7 @@ export default function DemocracyDelegatee({ delegatee }) {
 
   const rows = (delegateeList.items || []).map((item) => {
     const row = [
-      <Flex key="account" style={{ maxWidth: "230px", overflow: "hidden" }}>
+      <Flex key="account">
         <User add={item.account} fontSize={14} maxWidth={230} />
       </Flex>,
       item.delegatorsCount,

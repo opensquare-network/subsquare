@@ -101,10 +101,10 @@ export default function Delegator({ delegators }) {
 
   const rows = (delegatorsList?.items || []).map((item) => {
     const row = [
-      <Flex key="account" style={{ maxWidth: "230px", overflow: "hidden" }}>
+      <Flex key="account">
         <User add={item.account} fontSize={14} maxWidth={230} />
       </Flex>,
-      <Flex key="delegatee" style={{ maxWidth: "230px", overflow: "hidden" }}>
+      <Flex key="delegatee">
         <User add={item.delegatee} fontSize={14} maxWidth={230} />
       </Flex>,
       <Flex key="capital" style={{ justifyContent: "right" }}>

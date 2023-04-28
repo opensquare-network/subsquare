@@ -93,7 +93,7 @@ export default function DelegationTabList({ delegatee }) {
   }, [delegatee, page, sortedColumn]);
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
-    <Flex key="account" style={{ maxWidth: "124px", overflow: "hidden" }}>
+    <Flex key="account">
       <User add={item.account} fontSize={14} maxWidth={124} />
     </Flex>,
     <Flex key="capital" style={{ justifyContent: "right" }}>
