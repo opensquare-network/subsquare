@@ -16,8 +16,7 @@ import { convictionToLockX } from "next-common/utils/referendumCommon";
 const ListWrapper = styled.div`
   display: flex;
   max-height: 400px;
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: auto;
 `;
 
 const ConvictionText = styled.span`
@@ -94,7 +93,7 @@ export default function DelegationTabList({ delegatee }) {
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
     <Flex key="account">
-      <User add={item.account} fontSize={14} maxWidth={124} />
+      <User add={item.account} fontSize={14} maxWidth={85} />
     </Flex>,
     <Flex key="capital" style={{ justifyContent: "right" }}>
       <ValueDisplay

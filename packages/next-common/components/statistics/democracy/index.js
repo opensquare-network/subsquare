@@ -10,6 +10,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 48px;
+  @media screen and (max-width: 768px) {
+    padding: 24px;
+  }
   gap: 16px;
 
   background: ${(p) => p.theme.neutral};

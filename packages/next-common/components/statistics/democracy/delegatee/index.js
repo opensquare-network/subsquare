@@ -18,7 +18,9 @@ const Wrapper = styled.div``;
 
 const ListWrapper = styled.div`
   display: flex;
-  overflow-x: auto;
+  @media screen and (max-width: 768px) {
+    overflow-x: auto;
+  }
 `;
 
 function getSortParams(sortedColumn) {
