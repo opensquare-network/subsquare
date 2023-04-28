@@ -31,19 +31,19 @@ export default function DemocracySummary({ summary }) {
   const items = [
     {
       title: "DELEGATEE",
-      content: <CountSummaryContent count={summary?.address.delegatee} />,
+      content: <CountSummaryContent count={summary?.address?.delegatee} />,
     },
     {
       title: "DELEGATOR",
-      content: <CountSummaryContent count={summary?.address.delegator} />,
+      content: <CountSummaryContent count={summary?.address?.delegator} />,
     },
     {
       title: "TOTAL CAPITAL",
-      content: <ValueSummaryContent value={summary?.votes.capital} />,
+      content: <ValueSummaryContent value={summary?.votes?.capital} />,
     },
     {
       title: "TOTAL VOTES",
-      content: <ValueSummaryContent value={summary?.votes.votes} />,
+      content: <ValueSummaryContent value={summary?.votes?.votes} />,
     },
   ];
 
