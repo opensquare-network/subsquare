@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 export default function PlaceDecisionDeposit({ onDecisionDepositFinalized = emptyFunction }) {
   const deposit = useDecisionDeposit();
-  const [showDepositPopup, setShowDepositPopup] = useState(true);
+  const [showDepositPopup, setShowDepositPopup] = useState(false);
 
   return (
     <>
