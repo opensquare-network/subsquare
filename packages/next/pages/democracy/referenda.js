@@ -9,7 +9,6 @@ import DemocracySummaryFooter from "next-common/components/summary/democracySumm
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import StatisticLinkButton from "components/statisticsLinkButton";
-import { useChainSettings } from "next-common/context/chain";
 
 export default withLoginUserRedux(
   ({ posts, chain, tracks, fellowshipTracks }) => {
@@ -21,7 +20,6 @@ export default withLoginUserRedux(
       title: "Democracy Referenda",
       desc: "Democracy Referenda",
     };
-    const node = useChainSettings();
 
     return (
       <HomeLayout
@@ -31,7 +29,7 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
-          topRightCorner={node.showDemocracyStatistics ? <StatisticLinkButton /> : null}
+          topRightCorner={<StatisticLinkButton />}
           items={items}
           pagination={{
             page: posts.page,

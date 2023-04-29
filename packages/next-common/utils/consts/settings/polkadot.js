@@ -61,7 +61,6 @@ const polkadot = {
   postLabels: defaultPostLabels,
   hasStatescan: true,
   hasSubscan: true,
-  showDemocracyStatistics: true,
 };
 
 export default polkadot;
