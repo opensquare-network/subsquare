@@ -18,7 +18,7 @@ const Link = styled(ExternalLink)`
 export default function LearnGov2Link({ anchor = "" }) {
   const { primaryPurple500 } = useTheme();
 
-  let link = "https://wiki.polkadot.network/docs/learn-gov2";
+  let link = "https://wiki.polkadot.network/docs/maintain-guides-opengov";
   if (anchor) {
     link += `#${anchor}`;
   }
