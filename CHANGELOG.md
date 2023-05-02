@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.4
+date 04/29/2023
+- Show delegation statistics for democracy.
+- Add components for OpenGov referendum preparing phase visualization.
+- Support users to place OpenGov referendum decision deposit.
+- Add sharp to dependencies to improve next build image optimization.
+- Add statescan link for polkadot/kusama.
+- Add link of all tippers on tip detail page.
+- Remove unused patch-package dependency and upgrade other dependencies.
+- Follow system's appearance setting when a user has no theme setting.
+- Support end date setting to calendar user event.
+
 # 3.0.3
 date: 04/17/2023
 - Upgrade to next.js v13, check [#2809](https://github.com/opensquare-network/subsquare/pull/2809).
