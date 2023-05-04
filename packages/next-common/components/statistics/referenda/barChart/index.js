@@ -4,7 +4,7 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  // Title,
+  Title,
   Tooltip,
   Legend,
 } from "chart.js";
@@ -14,7 +14,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  // Title,
+  Title,
   Tooltip,
   Legend,
 );
@@ -35,6 +35,22 @@ export const options = {
     //   display: true,
     //   text: "Chart.js Horizontal Bar Chart",
     // },
+  },
+  scales: {
+    x: {
+      ticks: {
+        font: {
+          size: 14,
+        },
+      },
+    },
+    y: {
+      ticks: {
+        font: {
+          size: 14,
+        },
+      },
+    },
   },
 };
 

@@ -2,8 +2,9 @@ import React from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import styled from "styled-components";
 import PageTabs from "next-common/components/pageTabs";
-import TrackDelegation from "./trackDelegation";
-import AddressCount from "./addressCount";
+import TrackDelegationChart from "./trackDelegationChart";
+import AddressCountChart from "./addressCountChart";
+import ReferendaDelegatee from "./referendaDelegatee";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,15 +34,22 @@ const Header = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function ReferendaStatistics({ tracks }) {
-  const tabs = [
+export default function ReferendaStatistics({ tracks, delegatee }) {
+  const charts = [
     {
       name: "Track Delegation",
-      content: <TrackDelegation tracks={tracks} />,
+      content: <TrackDelegationChart tracks={tracks} />,
     },
     {
       name: "Addr Count",
-      content: <AddressCount tracks={tracks} />,
+      content: <AddressCountChart tracks={tracks} />,
+    },
+  ];
+
+  const lists = [
+    {
+      name: "Delegatee",
+      content: <ReferendaDelegatee delegatee={delegatee} />,
     },
   ];
 
@@ -49,7 +57,9 @@ export default function ReferendaStatistics({ tracks }) {
     <Wrapper>
       <Header>Delegation</Header>
       <Divider />
-      <PageTabs tabs={tabs} />
+      <PageTabs tabs={charts} />
+      <Divider />
+      <PageTabs tabs={lists} />
     </Wrapper>
   );
 }

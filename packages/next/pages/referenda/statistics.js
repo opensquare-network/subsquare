@@ -5,7 +5,7 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ReferendaStatistics from "next-common/components/statistics/referenda";
 
-export default withLoginUserRedux(({ tracks }) => {
+export default withLoginUserRedux(({ tracks, delegatee }) => {
   const seoInfo = {
     title: "OpenGov Statistics",
     desc: "OpenGov Statistics",
@@ -14,19 +14,21 @@ export default withLoginUserRedux(({ tracks }) => {
   return (
     <HomeLayout seoInfo={seoInfo}>
       <TitleContainer>OpenGov Statistics</TitleContainer>
-      <ReferendaStatistics tracks={tracks} />
+      <ReferendaStatistics tracks={tracks} delegatee={delegatee} />
     </HomeLayout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const [{ result: tracks }] = await Promise.all([
+  const [{ result: tracks }, { result: delegatee }] = await Promise.all([
     nextApi.fetch("statistics/referenda/tracks"),
+    nextApi.fetch("statistics/referenda/delegatee"),
   ]);
 
   return {
     props: {
       tracks: tracks ?? [],
+      delegatee: delegatee ?? EmptyList,
     },
   };
 });
