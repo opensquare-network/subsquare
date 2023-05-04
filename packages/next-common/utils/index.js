@@ -109,6 +109,10 @@ export function toPrecision(value, decimals = 0) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }
 
+export function toPrecisionNumber(value, decimals = 0) {
+  return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toNumber();
+}
+
 export function decimalPlaces(value, n) {
   return new BigNumber(value).dp(n).toString();
 }

@@ -5,13 +5,13 @@ import Link from "next/link";
 const Wrapper = styled.a`
   display: flex;
   align-items: center;
-  color: ${p => p.theme.primaryPurple500};
+  color: ${(p) => p.theme.primaryPurple500};
   gap: 8px;
 `;
 
-export default function StatisticLinkButton() {
+export default function StatisticLinkButton({ href }) {
   return (
-    <Link href="/democracy/statistics" passHref>
+    <Link href={href} passHref>
       <Wrapper>
         <StatisticsSVG />
         <span>Statistics</span>
