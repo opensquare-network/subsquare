@@ -15,6 +15,7 @@ import { convictionToLockX } from "next-common/utils/referendumCommon";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import startCase from "lodash.startcase";
+import { p_12_medium } from "next-common/styles/componentCss";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -29,27 +30,23 @@ const ConvictionText = styled.span`
 
 const TrackNameText = styled.div`
   display: inline-flex;
-  justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
   white-space: nowrap;
   padding: 2px 8px;
 
-  background: #F6F7FA;
+  background: ${(p) => p.theme.grey100Bg};
   border-radius: 10px;
 
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
+  ${p_12_medium}
 
   text-align: center;
-  color: #506176;
+  color: ${(p) => p.theme.textSecondary};
 `;
 
 const MyPopupListWrapper = styled(PopupListWrapper)`
-  thead, tr {
+  thead,
+  tr {
     width: unset !important;
   }
   tr.empty-tr {
@@ -101,8 +98,15 @@ export default function DelegationTabList({ delegatee }) {
 
   const { sortedColumn, columns } = useColumns(
     [
-      { name: "ADDRESS", style: { textAlign: "left", width: "129px", minWidth: "129px" } },
-      { name: "TRACK", style: { textAlign: "left", width: "136px", minWidth: "136px" }, sortable: true },
+      {
+        name: "ADDRESS",
+        style: { textAlign: "left", width: "129px", minWidth: "129px" },
+      },
+      {
+        name: "TRACK",
+        style: { textAlign: "left", width: "144px", minWidth: "144px" },
+        sortable: true,
+      },
       {
         name: "CAPITAL",
         style: { textAlign: "right", width: "158px", minWidth: "158px" },
