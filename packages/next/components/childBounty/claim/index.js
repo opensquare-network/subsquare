@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
@@ -21,11 +21,13 @@ const Popup = dynamic(() => import("./popup"), {
   ssr: false,
 });
 
+const WRAPPER_WIDTH = 300;
+
 const Wrapper = styled.div`
   position: absolute;
   right: 0;
   top: 40px;
-  width: 300px;
+  width: ${WRAPPER_WIDTH}px;
   margin-top: 0 !important;
   > :not(:first-child) {
     margin-top: 16px;
@@ -108,7 +110,13 @@ export default function Claim({
   const isMounted = useIsMounted();
 
   const api = useApi();
-  const { lg } = useScreenSize();
+
+  const { lg, sm } = useScreenSize();
+  const beneficiaryUserMaxWidth = useMemo(() => {
+    if (sm) return WRAPPER_WIDTH / 2 - 30;
+    else if (lg) return 80;
+    else return null;
+  }, [lg, sm]);
 
   const updateChildBountyStatus = useCallback(() => {
     setIsLoading(true);
@@ -195,7 +203,7 @@ export default function Claim({
                 <User
                   add={childBounty.beneficiary}
                   fontSize={14}
-                  maxWidth={lg && 80}
+                  maxWidth={beneficiaryUserMaxWidth}
                 />
               </InfoItemValue>
             </InfoItem>
