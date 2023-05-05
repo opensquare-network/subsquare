@@ -80,7 +80,6 @@ export default function ReferendaDelegatee({ delegatee }) {
       {
         name: "TRACKS",
         style: { textAlign: "right", width: "128px", minWidth: "128px" },
-        sortable: true,
       },
       {
         name: "COUNT",
