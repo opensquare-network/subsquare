@@ -80,6 +80,11 @@ export function usePostState() {
   return post?.onchainData?.state?.state || post?.onchainData?.state?.name;
 }
 
+export function usePostStateInfo() {
+  const post = useContext(PostContext);
+  return post?.onchainData?.state;
+}
+
 export function useOnchainData() {
   const post = useContext(PostContext);
   if (!post.onchainData) {

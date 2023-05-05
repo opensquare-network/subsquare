@@ -23,10 +23,9 @@ const TitleExtra = styled.span`
 `;
 
 const Description = styled.p`
-  margin: 0;
-  margin-top: 4px;
-  color: ${(p) => p.theme.textTertiary};
-  ${p_14_normal};
+  margin: 4px 0 0;
+  color: ${ (p) => p.theme.textTertiary };
+  ${ p_14_normal };
 `;
 
 export default function Summary({

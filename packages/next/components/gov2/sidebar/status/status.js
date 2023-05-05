@@ -26,6 +26,11 @@ const PositiveStatus = styled(StatusBase)`
   background: ${(props) => props.theme.secondaryGreen100};
 `;
 
+const NegativeStatus = styled(StatusBase)`
+  color: ${(props) => props.theme.secondaryRed500};
+  background: ${(props) => props.theme.secondaryRed100};
+`;
+
 export function PrepareStatus() {
   const deposit = useDecisionDeposit();
 
@@ -38,10 +43,11 @@ export default function Status() {
   const state = usePostState();
   // same logic: `show confirming period`
   const isPositiveState = useMemo(
-    () =>
-      [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(
-        state
-      ),
+    () => [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(state),
+    [state]
+  );
+  const isNegativeState = useMemo(() =>
+      [gov2State.Rejected, gov2State.Killed, gov2State.TimedOut, gov2State.Cancelled].includes(state),
     [state]
   );
 
@@ -52,7 +58,12 @@ export default function Status() {
     return state;
   }, [state]);
 
-  const Component = isPositiveState ? PositiveStatus : DecidingStatus;
+  let Component = DecidingStatus;
+  if (isPositiveState) {
+    Component = PositiveStatus;
+  } else if (isNegativeState) {
+    Component = NegativeStatus;
+  }
 
   return <Component>{showState}</Component>;
 }
