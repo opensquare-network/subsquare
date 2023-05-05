@@ -2,8 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.5
+date: 05/05/2023
+- Show min enact period on OpenGov track panel.
+- Show OpenGov enactment status on referendum detail page.
+
 # 3.0.4
-date 04/29/2023
+date: 04/29/2023
 - Show delegation statistics for democracy.
 - Add components for OpenGov referendum preparing phase visualization.
 - Support users to place OpenGov referendum decision deposit.
