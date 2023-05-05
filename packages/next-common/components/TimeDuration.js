@@ -16,6 +16,9 @@ export default function TimeDuration({
     const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
     const time = extractTime(Math.abs(value));
     const { days, hours, minutes } = time;
+    if (days > 30) {
+      return `${days}days`;
+    }
 
     return [
       showDays && days ? `${days}d` : null,
