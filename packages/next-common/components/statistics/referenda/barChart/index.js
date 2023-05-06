@@ -19,6 +19,7 @@ ChartJS.register(
   Legend,
 );
 
+/** @type {import("react-chartjs-2").ChartProps} */
 export const options = {
   indexAxis: "y",
   elements: {
@@ -38,17 +39,27 @@ export const options = {
   },
   scales: {
     x: {
+      border: {
+        display: false,
+      },
+      ticks: {
+        display: false,
+      },
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      border: {
+        display: false,
+      },
       ticks: {
         font: {
           size: 14,
         },
       },
-    },
-    y: {
-      ticks: {
-        font: {
-          size: 14,
-        },
+      grid: {
+        display: false,
       },
     },
   },
