@@ -22,11 +22,6 @@ ChartJS.register(
 /** @type {import("react-chartjs-2").ChartProps} */
 export const options = {
   indexAxis: "y",
-  elements: {
-    bar: {
-      borderWidth: 2,
-    },
-  },
   responsive: true,
   plugins: {
     legend: {
