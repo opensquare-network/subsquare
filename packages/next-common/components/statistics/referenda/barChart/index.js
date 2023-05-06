@@ -1,23 +1,21 @@
 import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { Bar } from "react-chartjs-2";
+import "../../../charts/globalConfig";
+import styled from "styled-components";
+import LegendItem from "../../../charts/legend/item";
+import {
+  flex,
+  items_center,
+  justify_center,
+} from "next-common/styles/tailwindcss";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+const Wrapper = styled.div``;
+
+const Legend = styled.div`
+  ${flex};
+  ${items_center};
+  ${justify_center};
+`;
 
 /** @type {import("react-chartjs-2").ChartProps} */
 export const options = {
@@ -25,7 +23,7 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "bottom",
+      display: false,
     },
     // title: {
     //   display: true,
@@ -61,5 +59,17 @@ export const options = {
 };
 
 export default function BarChart({ data }) {
-  return <Bar data={data} options={options} />;
+  return (
+    <Wrapper>
+      <Bar data={data} options={options} />
+
+      <Legend>
+        {data?.datasets?.map?.((item) => (
+          <LegendItem key={item.label} color={item.backgroundColor}>
+            {item.label}
+          </LegendItem>
+        ))}
+      </Legend>
+    </Wrapper>
+  );
 }
