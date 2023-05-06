@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import BarChart from "../barChart";
 import { useChainSettings } from "next-common/context/chain";
@@ -16,8 +18,7 @@ export default function TrackDelegationChart({ tracks }) {
       data: tracks.map((track) =>
         toPrecisionNumber(track.statistics?.votes?.capital, decimals),
       ),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
+      backgroundColor: "rgba(15, 111, 255, 0.4)",
     },
     {
       categoryPercentage: 0.8,
@@ -26,8 +27,7 @@ export default function TrackDelegationChart({ tracks }) {
       data: tracks.map((track) =>
         toPrecisionNumber(track.statistics?.votes?.votes, decimals),
       ),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
+      backgroundColor: "rgba(255, 152, 0, 0.4)",
     },
   ];
 
