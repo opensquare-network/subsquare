@@ -7,6 +7,7 @@ import {
   flex,
   items_center,
   justify_center,
+  m_t,
 } from "next-common/styles/tailwindcss";
 
 const Wrapper = styled.div``;
@@ -15,6 +16,7 @@ const Legend = styled.div`
   ${flex};
   ${items_center};
   ${justify_center};
+  ${m_t(16)};
 `;
 
 /** @type {import("react-chartjs-2").ChartProps} */
