@@ -53,8 +53,10 @@ export default function ReferendumMetadata({
       setHash(proposal?.legacy?.hash);
     } else if (preImage?.hash) {
       setHash(preImage?.hash);
+    } else {
+      setHash(proposalHash);
     }
-  }, [proposal]);
+  }, [proposal, proposalHash]);
 
   const [metadata, setMetadata] = useState([]);
   useEffect(() => {
