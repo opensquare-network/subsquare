@@ -1,7 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 4px;
+  width: max-content;
+  padding: 6px 12px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
+`;
 
 const Title = styled.div``;
 

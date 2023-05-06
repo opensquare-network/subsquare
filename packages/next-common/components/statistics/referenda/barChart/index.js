@@ -34,6 +34,7 @@ export const options = {
       position: "bottom",
     },
     tooltip: {
+      enabled: false,
       external: (context) => {
         const { chart, tooltip } = context;
         let tooltipEl = document.getElementById("chartjs-tooltip");
@@ -55,9 +56,14 @@ export const options = {
         );
         tooltipEl.innerHTML = htmlString;
 
-        const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
-        const chartWidth = chart.width;
-        const chartHeight = chart.height;
+        let positionX = 0;
+        let positionY = 0;
+        let currElm = chart.canvas;
+        while (currElm) {
+          positionX += currElm.offsetLeft;
+          positionY += currElm.offsetTop;
+          currElm = currElm.offsetParent;
+        }
 
         tooltipEl.style.opacity = 1;
         tooltipEl.style.position = "absolute";
@@ -66,13 +72,6 @@ export const options = {
         tooltipEl.style.pointerEvents = "none";
         tooltipEl.style.transform = "translate(-50%, 0)";
         tooltipEl.style.width = "max-content";
-        tooltipEl.style.maxWidth = `${
-          chartWidth - positionX - tooltip.caretX
-        }px`;
-        tooltipEl.style.maxHeight = `${
-          chartHeight - positionY - tooltip.caretY
-        }px`;
-        tooltipEl.style.overflow = "hidden";
       },
     },
   },
