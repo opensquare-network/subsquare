@@ -18,7 +18,10 @@ export default function PlaceDecisionDeposit({ onDecisionDepositFinalized = empt
   return (
     <>
       <Wrapper>
-        <SubLink disabled={ !!deposit }>+ Decision Deposit</SubLink>
+        <SubLink
+          disabled={ !!deposit }
+          onClick={() => setShowDepositPopup(true)}
+        >+ Decision Deposit</SubLink>
       </Wrapper>
       {
         showDepositPopup && (
