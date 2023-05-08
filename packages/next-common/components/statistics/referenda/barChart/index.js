@@ -77,7 +77,10 @@ function useOptions(userOptions) {
         },
         ticks: {
           font: {
-            size: 14,
+            size: 12,
+            weight: 500,
+            style: "normal",
+            lineHeight: "16px",
           },
           color: theme.textPrimary,
         },
