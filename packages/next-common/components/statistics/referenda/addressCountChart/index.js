@@ -26,5 +26,20 @@ export default function AddressCountChart({ tracks }) {
     datasets,
   };
 
-  return <BarChart data={data} />;
+  return (
+    <BarChart
+      data={data}
+      options={{
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label(item) {
+                return `${item.dataset.label} count: ${item.formattedValue}`;
+              },
+            },
+          },
+        },
+      }}
+    />
+  );
 }

@@ -7085,6 +7085,7 @@ __metadata:
     d3-selection: ^3.0.0
     d3-shape: ^3.1.0
     dayjs: ^1.10.7
+    deepmerge: ^4.3.1
     eslint: ^8.28.0
     eslint-plugin-react: ^7.31.11
     is-ipfs: ^8.0.1
