@@ -9,6 +9,24 @@ import {
   justify_center,
   m_t,
 } from "next-common/styles/tailwindcss";
+import { Tooltip } from "chart.js";
+import deepmerge from "deepmerge";
+
+Tooltip.positioners.barChartCustomPositioner = function (
+  elements,
+  eventPosition,
+) {
+  const pos = Tooltip.positioners.average(elements);
+
+  if (pos === false) {
+    return false;
+  }
+
+  return {
+    x: eventPosition.x,
+    y: pos.y,
+  };
+};
 
 const Wrapper = styled.div``;
 
@@ -19,7 +37,7 @@ const Legend = styled.div`
   ${m_t(16)};
 `;
 
-function useOptions() {
+function useOptions(userOptions) {
   const theme = useTheme();
 
   /**
@@ -32,10 +50,10 @@ function useOptions() {
       legend: {
         display: false,
       },
-      // title: {
-      //   display: true,
-      //   text: "Chart.js Horizontal Bar Chart",
-      // },
+      tooltip: {
+        position: "barChartCustomPositioner",
+        displayColors: false,
+      },
     },
     scales: {
       x: {
@@ -66,11 +84,15 @@ function useOptions() {
     },
   };
 
-  return options;
+  return deepmerge(options, userOptions);
 }
 
-export default function BarChart({ data }) {
-  const options = useOptions();
+/**
+ * @param {Object} props
+ * @param {import("react-chartjs-2").ChartProps} props.options
+ */
+export default function BarChart({ data, options: userOptions = {} }) {
+  const options = useOptions(userOptions);
 
   return (
     <Wrapper>
