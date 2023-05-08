@@ -19,13 +19,13 @@ const Legend = styled.div`
   ${m_t(16)};
 `;
 
-/**
- * @returns {import("react-chartjs-2").ChartProps}
- */
 function useOptions() {
   const theme = useTheme();
 
-  return {
+  /**
+   * @type {import("react-chartjs-2").ChartProps}
+   */
+  const options = {
     indexAxis: "y",
     responsive: true,
     plugins: {
@@ -65,6 +65,8 @@ function useOptions() {
       },
     },
   };
+
+  return options;
 }
 
 export default function BarChart({ data }) {
