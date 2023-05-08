@@ -30,7 +30,7 @@ Tooltip.positioners.barChartCustomPositioner = function (
 
 const Wrapper = styled.div``;
 const ChartWrapper = styled.div`
-  height: 424px;
+  height: 484px;
 `;
 
 const Legend = styled.div`
