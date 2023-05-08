@@ -3,11 +3,11 @@
 import React from "react";
 import BarChart from "../barChart";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecisionNumber } from "next-common/utils";
+import { abbreviateBigNumber, toPrecisionNumber } from "next-common/utils";
 import startCase from "lodash.startcase";
 
 export default function TrackDelegationChart({ tracks }) {
-  const { decimals } = useChainSettings();
+  const { decimals, symbol } = useChainSettings();
 
   const labels = tracks.map((track) => startCase(track.trackName));
   const datasets = [
@@ -36,5 +36,23 @@ export default function TrackDelegationChart({ tracks }) {
     datasets,
   };
 
-  return <BarChart data={data} />;
+  return (
+    <BarChart
+      data={data}
+      options={{
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label(item) {
+                const raw = item.raw;
+                return `${item.dataset.label}: ${abbreviateBigNumber(
+                  raw,
+                )} ${symbol}`;
+              },
+            },
+          },
+        },
+      }}
+    />
+  );
 }
