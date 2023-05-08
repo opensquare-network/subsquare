@@ -29,6 +29,9 @@ Tooltip.positioners.barChartCustomPositioner = function (
 };
 
 const Wrapper = styled.div``;
+const ChartWrapper = styled.div`
+  height: 424px;
+`;
 
 const Legend = styled.div`
   ${flex};
@@ -46,6 +49,7 @@ function useOptions(userOptions) {
   const options = {
     indexAxis: "y",
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -96,7 +100,9 @@ export default function BarChart({ data, options: userOptions = {} }) {
 
   return (
     <Wrapper>
-      <Bar data={data} options={options} />
+      <ChartWrapper>
+        <Bar data={data} options={options} />
+      </ChartWrapper>
 
       <Legend>
         {data?.datasets?.map?.((item) => (
