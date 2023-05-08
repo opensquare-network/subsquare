@@ -184,8 +184,8 @@ export function abbreviateBigNumber(x, fixed = 2) {
       fmt.suffix = data.abbr;
     }
   });
-  BigNumber.config({ FORMAT: fmt });
-  return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
+
+  return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat(fmt);
 }
 
 export const estimateBlocksTime = (blocks, blockTime) => {
