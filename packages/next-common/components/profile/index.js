@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { useChain } from "../../context/chain";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import VStack from "../styled/vStack";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -169,13 +170,13 @@ const DisplayUserAddress = ({ address }) => {
   return (
     <AddressWrapper>
       <Tertiary>{address}</Tertiary>
-      <AccountLinks address={address} />
+      {!isEthereumAddress(address) && <AccountLinks address={address} />}
     </AddressWrapper>
   );
 };
 
 const DisplayUserAvatar = ({ address, user }) => {
-  return address ? (
+  return address && !isEthereumAddress(address) ? (
     <Avatar address={address} size={48} />
   ) : (
     <Gravatar emailMd5={user?.emmailMd5} size={48} />

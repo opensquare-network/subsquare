@@ -14,6 +14,7 @@ import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
 import { useChain } from "../context/chain";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const Wrapper = Relative;
 
@@ -108,9 +109,11 @@ const Item = styled(Flex)`
 function Account({ account }) {
   const chain = useChain();
   const [identity, setIdentity] = useState(null);
+  const isEthAddr = account?.address && isEthereumAddress(account.address);
+
   useEffect(() => {
     setIdentity(null);
-    if (account.address) {
+    if (account.address && !isEthAddr) {
       const identity = nodes.find((n) => n.value === chain)?.identity;
       if (!identity) return;
 
@@ -119,7 +122,18 @@ function Account({ account }) {
         encodeAddressToChain(account.address, identity),
       ).then((identity) => setIdentity(identity));
     }
-  }, [account.address, chain]);
+  }, [account.address, isEthAddr, chain]);
+
+  if (isEthAddr) {
+    return (
+      <NameWrapper>
+        <>
+          <div>{account?.name}</div>
+          <div>{addressEllipsis(account.address) ?? "--"}</div>
+        </>
+      </NameWrapper>
+    );
+  }
 
   return (
     <>

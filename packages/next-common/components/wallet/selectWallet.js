@@ -190,14 +190,11 @@ export default function SelectWallet({
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
-        const excludeEthExtensionAccounts = extensionAccounts?.filter(
-          (acc) => acc.type !== "ethereum",
-        );
 
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
           setWallet(wallet);
-          setAccounts(excludeEthExtensionAccounts);
+          setAccounts(extensionAccounts);
         }
 
         onAccessGranted && onAccessGranted();
