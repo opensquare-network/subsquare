@@ -10,7 +10,7 @@ import SecondaryButton from "./buttons/secondaryButton";
 import { stringToHex } from "@polkadot/util";
 import SelectWallet from "./wallet/selectWallet";
 import { CACHE_KEY } from "../utils/constants";
-import { WALLETS } from "../utils/consts/connect";
+import { getWallets } from "../utils/consts/connect";
 import { updateUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
 import Popup from "./popup/wrapper/Popup";
@@ -148,7 +148,7 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
       setSelectedAccount(account);
 
       if (
-        !WALLETS.some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");

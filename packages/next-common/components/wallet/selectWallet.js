@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { WALLETS } from "../../utils/consts/connect";
+import { getWallets } from "../../utils/consts/connect";
 import styled, { css } from "styled-components";
 import Flex from "../styled/flex";
 import useIsMounted from "../../utils/hooks/useIsMounted";
@@ -146,7 +146,7 @@ export default function SelectWallet({
       return;
     }
 
-    for (let wallet of WALLETS) {
+    for (let wallet of getWallets()) {
       if (injectedWeb3[wallet.extensionName]) {
         return;
       }
@@ -234,7 +234,7 @@ export default function SelectWallet({
 
   return (
     <WalletOptions>
-      {WALLETS.map((wallet, index) => {
+      {getWallets().map((wallet, index) => {
         return (
           <Wallet
             key={index}

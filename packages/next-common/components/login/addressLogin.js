@@ -12,7 +12,7 @@ import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
-import { WALLETS } from "../../utils/consts/connect";
+import { getWallets } from "../../utils/consts/connect";
 import { updateUser, useUserDispatch } from "../../context/user";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
@@ -143,7 +143,7 @@ export default function AddressLogin({ setMailLogin }) {
       setSelectedAccount(account);
 
       if (
-        !WALLETS.some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");

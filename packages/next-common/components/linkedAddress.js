@@ -23,7 +23,7 @@ import { TitleContainer } from "./styled/containers/titleContainer";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
-import { WALLETS } from "../utils/consts/connect";
+import { getWallets } from "../utils/consts/connect";
 import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
@@ -207,7 +207,7 @@ export default function LinkedAddress() {
 
       let injector = wallet;
       if (
-        !WALLETS.some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         if (source) {

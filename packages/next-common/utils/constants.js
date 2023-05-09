@@ -49,6 +49,7 @@ export const nodes = [
   collectives,
   // crab,
   crust,
+  darwinia2,
   hydradx,
   interlay,
   litentry,
@@ -63,7 +64,6 @@ export const nodes = [
   zeitgeist,
   rococo,
   westendCollectives,
-  darwinia2,
   ...optionalNodes,
 ];
 

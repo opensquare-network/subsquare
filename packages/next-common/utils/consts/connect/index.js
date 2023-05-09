@@ -1,6 +1,7 @@
 import PolkadotLogo from "../../../assets/icons/wallet/polkadot.svg";
 import SubWalletLogo from "../../../assets/icons/wallet/subWallet.svg";
 import TalismanLogo from "../../../assets/icons/wallet/talisman.svg";
+import Chains from "../chains";
 
 export const WALLETS = [
   {
@@ -25,3 +26,10 @@ export const WALLETS = [
     logo: TalismanLogo,
   },
 ];
+
+export function getWallets() {
+  if (process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2) {
+    return WALLETS.filter((wallet) => wallet.extensionName !== "polkadot-js");
+  }
+  return WALLETS;
+}

@@ -36,8 +36,10 @@ const settingsMap = {
   bifrost,
   calamari,
   centrifuge,
+  collectives,
   crab,
   crust,
+  darwinia2,
   interlay,
   karura,
   khala,
@@ -52,8 +54,6 @@ const settingsMap = {
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
   westend,
   "westend-collectives": westendCollectives,
-  collectives,
-  darwinia2,
 };
 
 export default function getChainSettings(chain) {
