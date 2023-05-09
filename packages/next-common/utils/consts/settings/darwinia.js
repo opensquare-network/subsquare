@@ -23,7 +23,7 @@ const darwinia = {
   name: capitalize(Chains.darwinia),
   identity: Chains.darwinia,
   symbol: "RING",
-  decimals: 9,
+  decimals: 18,
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",

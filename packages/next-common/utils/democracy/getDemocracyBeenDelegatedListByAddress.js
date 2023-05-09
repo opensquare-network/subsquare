@@ -9,7 +9,7 @@ export async function getDemocracyBeenDelegatedListByAddress(api, address) {
 
   const beenDelegated = [];
   for (const entry of votingOfEntries) {
-    const { account, voting } = normalizeVotingOfEntry(entry, api);
+    const { account, voting } = normalizeVotingOfEntry(entry);
     if (!voting.isDelegating) {
       continue;
     }

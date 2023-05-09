@@ -108,7 +108,7 @@ export async function getReferendumVotesFromVotingOf(
   referendumIndex,
 ) {
   const voting = await blockApi.query.democracy.votingOf.entries();
-  const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));
+  const mapped = voting.map((item) => normalizeVotingOfEntry(item));
   const directVotes = extractDirectVotes(mapped, referendumIndex);
   const delegationVotes = extractDelegations(mapped, directVotes);
   const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);

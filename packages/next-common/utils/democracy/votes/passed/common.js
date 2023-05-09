@@ -36,16 +36,8 @@ export function sortVotesWithConviction(votes = []) {
   });
 }
 
-export function normalizeVotingOfEntry([storageKey, voting], blockApi) {
-  let pubKeyU8a;
-  if (storageKey.length === 72) {
-    pubKeyU8a = storageKey.slice(40);
-  }
-  if (!pubKeyU8a) {
-    throw new Error(`Unexpected storage key length ${storageKey.length}`);
-  }
-
-  const accountId = blockApi.registry.createType("AccountId", pubKeyU8a);
+export function normalizeVotingOfEntry([storageKey, voting]) {
+  const { args: [accountId] } = storageKey;
   const account = accountId.toString();
   return { account, voting };
 }
