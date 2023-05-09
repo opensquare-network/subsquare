@@ -19,7 +19,6 @@ export default function TrackDelegationChart({ tracks }) {
         toPrecisionNumber(track.statistics?.votes?.capital, decimals),
       ),
       backgroundColor: "rgba(15, 111, 255, 0.4)",
-      inactiveBackgroundColor: "rgba(15, 111, 255, 0.1)",
     },
     {
       categoryPercentage: 0.8,
@@ -29,7 +28,6 @@ export default function TrackDelegationChart({ tracks }) {
         toPrecisionNumber(track.statistics?.votes?.votes, decimals),
       ),
       backgroundColor: "rgba(255, 152, 0, 0.4)",
-      inactiveBackgroundColor: "rgba(255, 152, 0, 0.1)",
     },
   ];
 
