@@ -24,6 +24,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch("statistics/referenda/tracks"),
     nextApi.fetch("statistics/referenda/delegatee", {
       sort: JSON.stringify(["votes", "desc"]),
+      pageSize: 25,
     }),
   ]);
 
