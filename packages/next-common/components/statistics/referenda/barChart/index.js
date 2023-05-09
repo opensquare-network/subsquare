@@ -33,6 +33,9 @@ function useOptions(userOptions) {
     indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: "index",
+    },
     plugins: {
       legend: {
         display: false,
