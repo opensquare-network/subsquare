@@ -1,3 +1,4 @@
+import { p_12_bold } from "next-common/styles/componentCss";
 import styled from "styled-components";
 
 export const StyledTable = styled.table`
@@ -7,12 +8,12 @@ export const StyledTable = styled.table`
 `;
 
 export const StyledTh = styled.th`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 11px;
+  ${p_12_bold};
   letter-spacing: 0.16em;
   color: ${(props) => props.theme.textTertiary};
+  padding-top: 8px;
+  padding-bottom: 16px;
+  height: 12px;
 `;
 
 export const StyledTd = styled.td`

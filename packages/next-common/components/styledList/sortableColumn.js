@@ -5,7 +5,7 @@ import SortedSVG from "./sorted.svg";
 const Wrapper = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   cursor: pointer;
 `;
 
