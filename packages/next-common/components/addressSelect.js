@@ -126,12 +126,15 @@ function Account({ account }) {
 
   if (isEthAddr) {
     return (
-      <NameWrapper>
-        <>
-          <div>{account?.name}</div>
-          <div>{addressEllipsis(account.address) ?? "--"}</div>
-        </>
-      </NameWrapper>
+      <>
+        <Avatar address={account.address} />
+        <NameWrapper>
+          <>
+            <div>{account?.name}</div>
+            <div>{addressEllipsis(account.address) ?? "--"}</div>
+          </>
+        </NameWrapper>
+      </>
     );
   }
 

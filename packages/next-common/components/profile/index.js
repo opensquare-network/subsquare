@@ -176,7 +176,7 @@ const DisplayUserAddress = ({ address }) => {
 };
 
 const DisplayUserAvatar = ({ address, user }) => {
-  return address && !isEthereumAddress(address) ? (
+  return address ? (
     <Avatar address={address} size={48} />
   ) : (
     <Gravatar emailMd5={user?.emmailMd5} size={48} />

@@ -180,7 +180,7 @@ function User({
     <Wrapper noEvent={noEvent} color={color}>
       {showAvatar && (
         <AvatarWrapper>
-          {isPolkadotAddress ? (
+          {address ? (
             <Avatar address={address} size={20} />
           ) : (
             <Gravatar email={user?.email} emailMd5={user?.emailMd5} size={20} />
@@ -190,9 +190,7 @@ function User({
       <Link href={`/user/${address ?? user?.username}`} passHref legacyBehavior>
         <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
           {address ? (
-            isPolkadotAddress &&
-            identity &&
-            identity?.info?.status !== "NO_ID" ? (
+            identity && identity?.info?.status !== "NO_ID" ? (
               <Identity
                 identity={identity}
                 fontSize={fontSize}
