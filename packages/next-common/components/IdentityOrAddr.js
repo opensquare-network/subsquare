@@ -6,6 +6,7 @@ import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
 import { isAddress } from "../utils/viewfuncs";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const NameWrapper = styled.div`
   font-size: 14px;
@@ -36,6 +37,15 @@ function IdentityOrAddr({ address, network }) {
       );
     }
   }, [address, network]);
+
+  if (isEthereumAddress(address)) {
+    return (
+      <MentionBox href={`/user/${address}`}>
+        <span>@</span>
+        {addressEllipsis(address)}
+      </MentionBox>
+    );
+  }
 
   if (!isAddress(address)) {
     return (
