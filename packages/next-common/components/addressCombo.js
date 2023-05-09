@@ -128,7 +128,7 @@ export default function AddressCombo({ accounts, address, setAddress }) {
   if (edit) {
     selectContent = (
       <>
-        {/* <Avatar address={inputAddress} /> */}
+        <Avatar address={inputAddress} />
         <Input
           value={inputAddress}
           onChange={(e) => setInputAddress(e.target.value)}

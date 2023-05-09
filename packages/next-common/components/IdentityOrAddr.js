@@ -5,7 +5,7 @@ import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
-import { isAddress } from "../utils/viewfuncs";
+import { isPolkadotAddress } from "../utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const NameWrapper = styled.div`
@@ -28,7 +28,7 @@ function IdentityOrAddr({ address, network }) {
 
   useEffect(() => {
     setIdentity(null);
-    if (isAddress(address)) {
+    if (isPolkadotAddress(address)) {
       const identity = nodes.find((n) => n.value === network)?.identity;
       if (!identity) return;
 
@@ -47,7 +47,7 @@ function IdentityOrAddr({ address, network }) {
     );
   }
 
-  if (!isAddress(address)) {
+  if (!isPolkadotAddress(address)) {
     return (
       <MentionBox href={`/user/${address}`}>
         <span>@</span>
