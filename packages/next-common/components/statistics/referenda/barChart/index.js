@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import "../../../charts/globalConfig";
 import styled, { useTheme } from "styled-components";
@@ -40,7 +40,7 @@ const Legend = styled.div`
   ${m_t(16)};
 `;
 
-function useOptions(userOptions) {
+function useOptions({ data, userOptions, chartRef }) {
   const theme = useTheme();
 
   /**
@@ -89,6 +89,30 @@ function useOptions(userOptions) {
         },
       },
     },
+    onHover(_event, items) {
+      const chart = chartRef.current;
+      const item = items[0];
+      const datasetIndex = item?.datasetIndex;
+      const dataset = data.datasets[datasetIndex];
+
+      if (chart && dataset) {
+        chart.data.datasets.forEach((item) => {
+          if (item.label !== dataset.label) {
+            if (item.inactiveBackgroundColor) {
+              item.backgroundColor = item.inactiveBackgroundColor;
+            }
+          }
+        });
+      }
+      // set color back
+      else {
+        chart.data.datasets.forEach((item, idx) => {
+          item.backgroundColor = data.datasets?.[idx]?.backgroundColor;
+        });
+      }
+
+      chart.update();
+    },
   };
 
   return deepmerge(options, userOptions);
@@ -99,12 +123,13 @@ function useOptions(userOptions) {
  * @param {import("react-chartjs-2").ChartProps} props.options
  */
 export default function BarChart({ data, options: userOptions = {} }) {
-  const options = useOptions(userOptions);
+  const chartRef = useRef(null);
+  const options = useOptions({ data, userOptions, chartRef });
 
   return (
     <Wrapper>
       <ChartWrapper>
-        <Bar data={data} options={options} />
+        <Bar ref={chartRef} data={data} options={options} />
       </ChartWrapper>
 
       <Legend>
