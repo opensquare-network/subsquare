@@ -92,6 +92,18 @@ export const settingMenuOfKeyAccount = [
   },
 ];
 
+export const settingMenuOfEthereumKeyAccount = [
+  back,
+  {
+    name: "SETTING",
+    items: [
+      keyAccountSetting,
+      notificationSetting,
+      subscriptionSetting,
+    ],
+  },
+];
+
 export const settingMenu = [
   back,
   {

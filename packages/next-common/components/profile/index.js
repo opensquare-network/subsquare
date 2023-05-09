@@ -156,7 +156,7 @@ const Category = ({ type, count, selected, onClick }) => {
 };
 
 const DisplayUser = ({ id }) => {
-  if (isAddress(id)) {
+  if (isAddress(id) || isEthereumAddress(id)) {
     return <User add={id} showAvatar={false} fontSize={16} />;
   }
 

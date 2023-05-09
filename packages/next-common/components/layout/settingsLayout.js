@@ -3,16 +3,21 @@ import BaseLayout from "./baseLayout";
 import Menu from "../menu";
 import {
   settingMenu,
+  settingMenuOfEthereumKeyAccount,
   settingMenuOfKeyAccount,
 } from "../../utils/consts/menu/settings";
-import { isKeyRegisteredUser } from "../../utils";
+import { isEthereumKeyRegisteredUser, isPolkadotKeyRegisteredUser } from "../../utils";
 import { useUser } from "../../context/user";
 
 export default function SettingsLayout({ children, seoInfo }) {
   const user = useUser();
-  const menu = isKeyRegisteredUser(user)
-    ? settingMenuOfKeyAccount
-    : settingMenu;
+
+  let menu = settingMenu;
+  if (isPolkadotKeyRegisteredUser(user)) {
+    menu = settingMenuOfKeyAccount;
+  } else if (isEthereumKeyRegisteredUser(user)) {
+    menu = settingMenuOfEthereumKeyAccount;
+  }
 
   return (
     <BaseLayout seoInfo={seoInfo} left={<Menu menu={menu} />}>
