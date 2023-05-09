@@ -12,7 +12,8 @@ export default function TrackDelegationChart({ tracks }) {
   const labels = tracks.map((track) => startCase(track.trackName));
   const datasets = [
     {
-      categoryPercentage: 0.6,
+      categoryPercentage: 0.8,
+      barPercentage: 0.6,
       label: "Capital",
       data: tracks.map((track) =>
         toPrecisionNumber(track.statistics?.votes?.capital, decimals),
@@ -20,7 +21,8 @@ export default function TrackDelegationChart({ tracks }) {
       backgroundColor: "rgba(15, 111, 255, 0.4)",
     },
     {
-      categoryPercentage: 0.6,
+      categoryPercentage: 0.8,
+      barPercentage: 0.6,
       label: "Votes",
       data: tracks.map((track) =>
         toPrecisionNumber(track.statistics?.votes?.votes, decimals),
