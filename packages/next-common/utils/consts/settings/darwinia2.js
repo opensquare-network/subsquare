@@ -1,6 +1,6 @@
-import Logo from "../../../assets/header-logos/darwinia.svg";
-import DarkModeLogo from "../../../assets/header-logos/darwinia-dark.svg";
-import Avatar from "../../../assets/icons/chain/darwinia.png";
+import Logo from "../../../assets/header-logos/darwinia2.svg";
+import DarkModeLogo from "../../../assets/header-logos/darwinia2-dark.svg";
+import Avatar from "../../../assets/icons/chain/darwinia2.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
@@ -18,10 +18,10 @@ export const DEFAULT_DARWINIA_NODES = [
   },
 ];
 
-const darwinia = {
-  value: Chains.darwinia,
-  name: capitalize(Chains.darwinia),
-  identity: Chains.darwinia,
+const darwinia2 = {
+  value: Chains.darwinia2,
+  name: capitalize(Chains.darwinia2),
+  identity: Chains.darwinia2,
   symbol: "RING",
   decimals: 18,
   hasElections: false,
@@ -37,4 +37,4 @@ const darwinia = {
   chainType: "ethereum",
 };
 
-export default darwinia;
+export default darwinia2;
