@@ -26,6 +26,7 @@ import { stringToHex } from "@polkadot/util";
 import { WALLETS } from "../utils/consts/connect";
 import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
+import { isAddress } from "next-common/utils/viewfuncs";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -295,10 +296,13 @@ export default function LinkedAddress() {
             )}
             {availableAccounts.length > 0 &&
               availableAccounts.map((item, index) => {
-                const activeChainAddress = encodeAddressToChain(
-                  item.address,
-                  activeChain,
-                );
+                let activeChainAddress = item.address;
+                if (isAddress(item.address)) {
+                  activeChainAddress = encodeAddressToChain(
+                    item.address,
+                    activeChain,
+                  );
+                }
 
                 return (
                   <AddressItem
