@@ -11,6 +11,7 @@ export default function AddressCountChart({ tracks }) {
       label: "Delegator",
       data: tracks.map((track) => track.statistics?.addresses?.delegator),
       backgroundColor: "rgba(31, 112, 199, 0.4)",
+      inactiveBackgroundColor: "rgba(33, 150, 243, 0.1)",
     },
     {
       categoryPercentage: 0.8,
@@ -18,6 +19,7 @@ export default function AddressCountChart({ tracks }) {
       label: "Delegatee",
       data: tracks.map((track) => track.statistics?.addresses?.delegatee),
       backgroundColor: "rgba(232, 31, 102, 0.4)",
+      inactiveBackgroundColor: "rgba(232, 31, 102, 0.1)",
     },
   ];
 
