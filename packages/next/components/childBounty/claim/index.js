@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
@@ -15,16 +15,19 @@ import { shadow_100 } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
 });
 
+const WRAPPER_WIDTH = 300;
+
 const Wrapper = styled.div`
   position: absolute;
   right: 0;
-  top: 32px;
-  width: 300px;
+  top: 40px;
+  width: ${WRAPPER_WIDTH}px;
   margin-top: 0 !important;
   > :not(:first-child) {
     margin-top: 16px;
@@ -102,11 +105,18 @@ export default function Claim({
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isClaimed, setIsClaimed] = useState(
-    childBounty.state?.state === "Claimed"
+    childBounty.state?.state === "Claimed",
   );
   const isMounted = useIsMounted();
 
   const api = useApi();
+
+  const { lg, sm } = useScreenSize();
+  const beneficiaryUserMaxWidth = useMemo(() => {
+    if (sm) return WRAPPER_WIDTH / 2 - 30;
+    else if (lg) return 80;
+    else return null;
+  }, [lg, sm]);
 
   const updateChildBountyStatus = useCallback(() => {
     setIsLoading(true);
@@ -190,7 +200,11 @@ export default function Claim({
             <InfoItem>
               <InfoItemName>Beneficiary</InfoItemName>
               <InfoItemValue>
-                <User add={childBounty.beneficiary} fontSize={14} />
+                <User
+                  add={childBounty.beneficiary}
+                  fontSize={14}
+                  maxWidth={beneficiaryUserMaxWidth}
+                />
               </InfoItemValue>
             </InfoItem>
             <InfoItem>

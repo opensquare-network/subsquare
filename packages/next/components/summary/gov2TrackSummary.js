@@ -25,6 +25,8 @@ import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdC
 import FlexCenter from "next-common/components/styled/flexCenter";
 import Grid from "next-common/components/styled/grid";
 import VStack from "next-common/components/styled/vStack";
+import TextTertiary from "next-common/components/styled/paragraph/textTertiary";
+import Flex from "next-common/components/styled/flex";
 
 // used in `Divider` and `ThresholdCurvesChart`
 const THRESHOLD_CURVE_PADDING = 8;
@@ -79,6 +81,12 @@ const Divider = styled(DividerOrigin)`
   `)}
 `;
 
+const TitleWrapper = styled(Flex)`
+  > span {
+    margin-left: 8px;
+  }
+`;
+
 export default function Gov2TrackSummary({
   summary,
   period,
@@ -95,9 +103,16 @@ export default function Gov2TrackSummary({
     confirmPeriod,
     id,
     decisionDeposit,
+    minEnactmentPeriod,
   } = period ?? {};
 
-  title = title ?? `Origin: ${origin}`;
+  let summaryTitle = title;
+  if (!summaryTitle) {
+    summaryTitle = <TitleWrapper>
+      Origin: {origin}
+      <TextTertiary title="Total referenda">{summary.total}</TextTertiary>
+    </TitleWrapper>;
+  }
   titleExtra = titleExtra ?? `${id}`;
 
   const {
@@ -115,6 +130,7 @@ export default function Gov2TrackSummary({
   const preparePeriodBlockTime = estimateBlocksTime(preparePeriod, blockTime);
   const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
   const confirmPeriodBlockTime = estimateBlocksTime(confirmPeriod, blockTime);
+  const minEnactPeriodBlockTime = estimateBlocksTime(minEnactmentPeriod, blockTime);
 
   let footer = null;
   if (!noDelegation) {
@@ -132,7 +148,7 @@ export default function Gov2TrackSummary({
 
   return (
     <Summary
-      title={title}
+      title={summaryTitle}
       titleExtra={titleExtra}
       description={description}
       footer={footer}
@@ -151,7 +167,7 @@ export default function Gov2TrackSummary({
             </SummaryItem>
 
             <SummaryItem>
-              <SummaryItemTitle>Confirm</SummaryItemTitle>
+              <SummaryItemTitle>Confirm Period</SummaryItemTitle>
               <Content>
                 <span>
                   {confirmPeriodBlockTime[0] || 0}
@@ -177,7 +193,7 @@ export default function Gov2TrackSummary({
             </SummaryItem>
 
             <SummaryItem>
-              <SummaryItemTitle>Decision</SummaryItemTitle>
+              <SummaryItemTitle>Decision period</SummaryItemTitle>
               <Content>
                 <span>
                   {decisionPeriodBlockTime[0] || 0}
@@ -190,9 +206,15 @@ export default function Gov2TrackSummary({
             </SummaryItem>
 
             <SummaryItem>
-              <SummaryItemTitle>Total</SummaryItemTitle>
+              <SummaryItemTitle>Min Enact Period</SummaryItemTitle>
               <Content>
-                <span>{summary.total}</span>
+                <span>
+                  { minEnactPeriodBlockTime[0] || 0 }
+                  <SummaryGreyText>
+                    { " " }
+                    { minEnactPeriodBlockTime[1] }
+                  </SummaryGreyText>
+                </span>
               </Content>
             </SummaryItem>
 

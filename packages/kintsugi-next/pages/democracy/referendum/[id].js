@@ -46,19 +46,15 @@ function ReferendumContent({ publicProposal, comments }) {
   useMaybeFetchElectorate(post?.onchainData, api);
   useFetchVotes(post?.onchainData);
 
-  const proposalData = getDemocracyTimelineData(
-    publicProposal?.onchainData?.timeline || [],
-    detailPageCategory.DEMOCRACY_PROPOSAL,
-  );
-  const referendumData = getDemocracyTimelineData(
-    post?.onchainData?.timeline || [],
-    detailPageCategory.DEMOCRACY_REFERENDUM,
-  );
   const [timelineData, setTimelineData] = useState([]);
-  useEffect(
-    () => setTimelineData([...proposalData, ...referendumData]),
-    [proposalData, referendumData],
-  );
+  useEffect(() => {
+    const proposalTimeline = publicProposal?.onchainData?.timeline || [];
+    const referendumTimeline = post?.onchainData?.timeline || [];
+    setTimelineData([
+      ...getDemocracyTimelineData(proposalTimeline, detailPageCategory.DEMOCRACY_PROPOSAL),
+      ...getDemocracyTimelineData(referendumTimeline, detailPageCategory.DEMOCRACY_REFERENDUM),
+    ]);
+  }, [publicProposal, post]);
 
   const refreshPageData = useCallback(async () => {
     const referendumIndex = post?.onchainData.referendumIndex;

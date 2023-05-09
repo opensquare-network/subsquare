@@ -2,8 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.0.5
+date: 05/05/2023
+- Show min enact period on OpenGov track panel.
+- Show OpenGov enactment status on referendum detail page.
+- Fix proposal hash is not shown on democracy referendum metadata.
+- Fix OpenGov referendum decision deposit popup can not be opened.
+
 # 3.0.4
-date 04/29/2023
+date: 04/29/2023
 - Show delegation statistics for democracy.
 - Add components for OpenGov referendum preparing phase visualization.
 - Support users to place OpenGov referendum decision deposit.
