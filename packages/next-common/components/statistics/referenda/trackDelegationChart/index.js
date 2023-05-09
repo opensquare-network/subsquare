@@ -9,11 +9,14 @@ import startCase from "lodash.startcase";
 export default function TrackDelegationChart({ tracks }) {
   const { decimals, symbol } = useChainSettings();
 
+  const categoryPercentage = 0.6;
+  const barPercentage = 1;
+
   const labels = tracks.map((track) => startCase(track.trackName));
   const datasets = [
     {
-      categoryPercentage: 0.8,
-      barPercentage: 0.6,
+      categoryPercentage,
+      barPercentage,
       label: "Capital",
       data: tracks.map((track) =>
         toPrecisionNumber(track.statistics?.votes?.capital, decimals),
@@ -21,8 +24,17 @@ export default function TrackDelegationChart({ tracks }) {
       backgroundColor: "rgba(15, 111, 255, 0.4)",
     },
     {
-      categoryPercentage: 0.8,
-      barPercentage: 0.6,
+      categoryPercentage,
+      barPercentage,
+      label: "placeholder",
+      data: tracks.map((track) =>
+        toPrecisionNumber(track.statistics?.votes?.capital, decimals),
+      ),
+      backgroundColor: "transparent",
+    },
+    {
+      categoryPercentage,
+      barPercentage,
       label: "Votes",
       data: tracks.map((track) =>
         toPrecisionNumber(track.statistics?.votes?.votes, decimals),
@@ -44,8 +56,12 @@ export default function TrackDelegationChart({ tracks }) {
           tooltip: {
             callbacks: {
               label(item) {
+                if (item.dataset.label === "placeholder") {
+                  return "";
+                }
+
                 const raw = item.raw;
-                return `${item.dataset.label}: ${abbreviateBigNumber(
+                return `${item.dataset.label}: ≈${abbreviateBigNumber(
                   raw,
                 )} ${symbol}`;
               },

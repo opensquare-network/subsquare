@@ -41,8 +41,9 @@ function useOptions(userOptions) {
         display: false,
       },
       tooltip: {
-        position: "nearest",
+        position: "average",
         displayColors: false,
+        xAlign: "left",
       },
     },
     scales: {
