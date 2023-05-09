@@ -22,7 +22,9 @@ export default withLoginUserRedux(({ tracks, delegatee }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: tracks }, { result: delegatee }] = await Promise.all([
     nextApi.fetch("statistics/referenda/tracks"),
-    nextApi.fetch("statistics/referenda/delegatee"),
+    nextApi.fetch("statistics/referenda/delegatee", {
+      sort: JSON.stringify(["votes", "desc"]),
+    }),
   ]);
 
   return {
