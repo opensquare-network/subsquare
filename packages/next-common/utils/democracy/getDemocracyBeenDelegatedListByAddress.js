@@ -1,3 +1,4 @@
+import { isSameAddress } from "..";
 import { normalizeVotingOfEntry } from "./votes/passed/common";
 
 let votingOfEntries;
@@ -15,7 +16,7 @@ export async function getDemocracyBeenDelegatedListByAddress(api, address) {
     }
 
     const delegating = voting.asDelegating.toJSON();
-    if (delegating.target === address) {
+    if (isSameAddress(delegating.target, address)) {
       beenDelegated.push({ delegator: account, ...delegating });
     }
   }

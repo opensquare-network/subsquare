@@ -265,6 +265,10 @@ export function isSameAddress(addr1, addr2) {
     return false;
   }
 
+  if (addr1 === addr2) {
+    return true;
+  }
+
   if (isEthereumAddress(addr1) && isEthereumAddress(addr2)) {
     return addr1.toLowerCase() === addr2.toLowerCase();
   }
