@@ -38,7 +38,7 @@ function useOptions(userOptions) {
         display: false,
       },
       tooltip: {
-        position: "barChartCustomPositioner",
+        position: "nearest",
         displayColors: false,
       },
     },
