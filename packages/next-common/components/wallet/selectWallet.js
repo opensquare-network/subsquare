@@ -7,6 +7,7 @@ import Loading from "../loading";
 import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
+import { useChainSettings } from "next-common/context/chain";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -138,6 +139,7 @@ export default function SelectWallet({
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
+  const { chainType } = useChainSettings();
 
   useEffect(() => {
     if (!injectedWeb3) {
@@ -159,7 +161,7 @@ export default function SelectWallet({
       const polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
 
       await web3Enable("subsquare");
-      const extensionAccounts = await polkadotWeb3Accounts();
+      const extensionAccounts = await polkadotWeb3Accounts(chainType);
       const accounts = extensionAccounts.map((item) => {
         return {
           ...item,
@@ -176,7 +178,7 @@ export default function SelectWallet({
         }
       }
     })();
-  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, isMounted]);
+  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, isMounted, chainType]);
 
   const loadAccounts = useCallback(
     async (selectedWallet) => {
@@ -189,7 +191,12 @@ export default function SelectWallet({
       try {
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
-        const extensionAccounts = await wallet.accounts?.get();
+        let extensionAccounts = await wallet.accounts?.get();
+        if (chainType === "ethereum") {
+          extensionAccounts = extensionAccounts.filter((acc) => acc.type === "ethereum");
+        } else {
+          extensionAccounts = extensionAccounts.filter((acc) => acc.type !== "ethereum");
+        }
 
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
@@ -213,6 +220,7 @@ export default function SelectWallet({
       setWallet,
       onAccessGranted,
       isMounted,
+      chainType,
     ],
   );
 

@@ -22,6 +22,7 @@ import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
 import westendCollectives from "./consts/settings/westendCollectives";
 import collectives from "./consts/settings/collectives";
+import darwinia from "./consts/settings/darwinia";
 
 /**
  * left + gap + main content
@@ -62,6 +63,7 @@ export const nodes = [
   zeitgeist,
   rococo,
   westendCollectives,
+  darwinia,
   ...optionalNodes,
 ];
 

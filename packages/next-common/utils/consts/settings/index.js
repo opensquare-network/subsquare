@@ -24,6 +24,7 @@ import litentry from "./litentry";
 import westendCollectives from "./westendCollectives";
 import westend from "./westend";
 import collectives from "./collectives";
+import darwinia from "./darwinia";
 
 const settingsMap = {
   polkadot,
@@ -52,6 +53,7 @@ const settingsMap = {
   westend,
   "westend-collectives": westendCollectives,
   collectives,
+  darwinia,
 };
 
 export default function getChainSettings(chain) {

@@ -27,6 +27,7 @@ const Chains = {
   westend: "westend",
   "westend-collectives": "westend-collectives",
   collectives: "collectives",
+  darwinia: "darwinia",
 };
 
 export default Chains;
