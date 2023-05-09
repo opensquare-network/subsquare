@@ -15,6 +15,7 @@ import { updateUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
 import Popup from "./popup/wrapper/Popup";
 import ErrorMessage from "./styled/errorMessage";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const Title = styled.div`
   text-align: center;
@@ -81,7 +82,12 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
       return;
     }
     setLoading(true);
-    const address = encodeAddressToChain(selectedAccount.address, chain);
+
+    let address = selectedAccount.address;
+    if (!isEthereumAddress(address)) {
+      address = encodeAddressToChain(selectedAccount.address, chain);
+    }
+
     const { result, error } = await nextApi.fetch(`auth/login/${address}`);
     if (error) {
       setWeb3Error(error.message);
