@@ -18,6 +18,7 @@ import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { isEthereumAddress } from "@polkadot/util-crypto";
+import { personalSign } from "next-common/utils/metamask";
 
 const Label = styled.div`
   font-weight: bold;
@@ -63,63 +64,84 @@ export default function AddressLogin({ setMailLogin }) {
   const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
 
+  async function signWith(message, address, selectedWallet) {
+    if (selectedWallet === "metamask") {
+      const msg = "0x" + Buffer.from(message).toString("hex");
+      return await personalSign(msg, address);
+    }
+
+    const { signature } = await wallet.signer.signRaw({
+      type: "bytes",
+      data: stringToHex(message),
+      address,
+    });
+
+    return signature;
+  }
+
   const doWeb3Login = async () => {
     if (!selectedAccount?.address) {
       dispatch(newErrorToast("Please select an account"));
       return;
     }
+
     setLoading(true);
+    try {
+      let address = selectedAccount.address;
+      if (!isEthereumAddress(address)) {
+        address = encodeAddressToChain(selectedAccount.address, chain);
+      }
 
-    let address = selectedAccount.address;
-    if (!isEthereumAddress(address)) {
-      address = encodeAddressToChain(selectedAccount.address, chain);
-    }
-
-    const { result, error } = await nextApi.fetch(`auth/login/${address}`);
-    if (error) {
-      setWeb3Error(error.message);
-    }
-    if (result?.challenge) {
-      try {
-        const { signature } = await wallet.signer.signRaw({
-          type: "bytes",
-          data: stringToHex(result?.challenge),
-          address: selectedAccount.address,
-        });
-
-        const { result: loginResult, error: loginError } = await nextApi.post(
-          `auth/login/${result?.attemptId}`,
-          { challengeAnswer: signature },
-        );
-        if (loginResult) {
-          updateUser(loginResult, userDispatch);
-
-          rememberLoginAddress(selectedAccount.address);
-          rememberLoginExtension(
-            selectedAccount.meta?.source || selectedWallet,
-          );
-
-          if (loginResult.email || dontRemindEmail) {
-            router.replace(router.query?.redirect || "/");
-          } else {
-            router.replace({
-              pathname: "/email",
-              query: {
-                redirect: router.query?.redirect,
-              },
-            });
+      const { result, error } = await nextApi.fetch(`auth/login/${address}`);
+      if (error) {
+        setWeb3Error(error.message);
+      }
+      if (result?.challenge) {
+        let challengeAnswer;
+        try {
+          challengeAnswer = await signWith(result.challenge, selectedAccount.address, selectedWallet);
+        } catch (e) {
+          if (e.message !== "Cancelled") {
+            dispatch(newErrorToast(e.message));
           }
+          return;
         }
-        if (loginError) {
-          setWeb3Error(loginError.message);
-        }
-      } catch (e) {
-        if (e.message !== "Cancelled") {
+
+        try {
+          const { result: loginResult, error: loginError } = await nextApi.post(
+            `auth/login/${result?.attemptId}`,
+            { challengeAnswer, signer: selectedWallet },
+          );
+          if (loginResult) {
+            updateUser(loginResult, userDispatch);
+
+            rememberLoginAddress(selectedAccount.address);
+            rememberLoginExtension(
+              selectedAccount.meta?.source || selectedWallet,
+            );
+
+            if (loginResult.email || dontRemindEmail) {
+              router.replace(router.query?.redirect || "/");
+            } else {
+              router.replace({
+                pathname: "/email",
+                query: {
+                  redirect: router.query?.redirect,
+                },
+              });
+            }
+          }
+          if (loginError) {
+            setWeb3Error(loginError.message);
+          }
+        } catch (e) {
           dispatch(newErrorToast(e.message));
         }
       }
+    } finally {
+      setLoading(false);
+
     }
-    setLoading(false);
   };
 
   useEffect(() => {
