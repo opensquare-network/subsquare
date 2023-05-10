@@ -47,7 +47,11 @@ export default function ReferendumMetadata({
   // todo: we should handle proposal inline type
   const [hash, setHash] = useState(proposalHash);
   useEffect(() => {
-    if (!hash && proposal?.lookup?.hash) {
+    if (hash) {
+      return;
+    }
+
+    if (proposal?.lookup?.hash) {
       setHash(proposal?.lookup?.hash);
     } else if (proposal?.legacy?.hash) {
       setHash(proposal?.legacy?.hash);
