@@ -201,7 +201,8 @@ const getCategoryByRoute = (route, categories = []) => {
 export default withLoginUserRedux(({ route, summary, user, id }) => {
   const chain = useChain();
   const defaultPage = { page: 1, pageSize: 10, total: 0 };
-  const address = isPolkadotAddress(id) ? id : user?.address;
+  const address =
+    isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
   const [items, setItems] = React.useState([]);
   const [pagination, setPagination] = React.useState(defaultPage);
   const [isLoading, setIsLoading] = React.useState(true);
