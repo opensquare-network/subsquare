@@ -12,6 +12,7 @@ export default function Gov2Page({
   tracks,
   fellowshipTracks,
   summary,
+  topRightCorner,
 }) {
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
@@ -27,6 +28,7 @@ export default function Gov2Page({
       <PostList
         title={title}
         category={businessCategory.openGovReferenda}
+        topRightCorner={topRightCorner}
         items={items}
         pagination={{
           page: posts.page,
