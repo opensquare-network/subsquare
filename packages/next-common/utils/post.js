@@ -7,8 +7,8 @@ import {
   isPolkadotKeyRegisteredUser,
 } from ".";
 import { encodeAddressToChain } from "../services/address";
-import { nodes } from "./constants";
 import uniqBy from "lodash.uniqby";
+import getChainSettings from "./consts/settings";
 
 export function getTitle(item) {
   return `${item?.title ?? "--"}`;
@@ -63,14 +63,14 @@ export async function getMentionName(user, chain) {
 
   let displayName;
 
-  const identityChain = nodes.find((n) => n.value === chain)?.identity;
-  if (identityChain) {
-    const identityAddress = encodeAddressToChain(address, identityChain);
-    const identity = await fetchIdentity(identityChain, identityAddress);
-    displayName = identity?.info?.displayParent
-      ? `${identity?.info?.displayParent}/${identity?.info?.display}`
-      : identity?.info?.display;
-  }
+  const setting = getChainSettings(chain);
+  const identityChain = setting.identity;
+
+  const identityAddress = encodeAddressToChain(address, identityChain);
+  const identity = await fetchIdentity(identityChain, identityAddress);
+  displayName = identity?.info?.displayParent
+    ? `${identity?.info?.displayParent}/${identity?.info?.display}`
+    : identity?.info?.display;
 
   return displayName || mentionName;
 }

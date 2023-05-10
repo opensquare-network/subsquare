@@ -7,9 +7,13 @@ export function addressToPublicKey(address) {
 }
 
 export function normalizeAddress(address) {
-  if (!isEthereumAddress(address)) {
-    return encodeAddressToChain(address, process.env.NEXT_PUBLIC_CHAIN);
+  if (!address) {
+    return address;
   }
 
-  return address;
+  if (isEthereumAddress(address)) {
+    return address;
+  }
+
+  return encodeAddressToChain(address, process.env.NEXT_PUBLIC_CHAIN);
 }

@@ -11,8 +11,7 @@ import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Link from "next/link";
 import { useChainSettings } from "../../context/chain";
-import { encodeAddress } from "@polkadot/keyring";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import { encodeAddressToChain } from "next-common/services/address";
 
 const Wrapper = styled(Flex)`
   a {
@@ -124,19 +123,18 @@ function User({
 }) {
   const settings = useChainSettings();
   const address = add ?? user?.address;
-  const isPolkadotAddress = address && !isEthereumAddress(address);
   const isKeyUser = isKeyRegisteredUser(user);
   const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
-    if (isPolkadotAddress) {
+    if (address) {
       fetchIdentity(
         settings.identity,
-        encodeAddress(address, settings.ss58Format),
+        encodeAddressToChain(address, settings.identity),
       ).then((identity) => isMounted.current && setIdentity(identity));
     }
-  }, [address, isPolkadotAddress, settings]);
+  }, [address, settings]);
 
   if (!user && !add) {
     return (

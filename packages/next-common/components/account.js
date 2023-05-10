@@ -3,12 +3,10 @@ import styled from "styled-components";
 import { useState } from "react";
 import Avatar from "./avatar";
 import { encodeAddressToChain } from "../services/address";
-import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import { addressEllipsis } from "../utils";
-import { useChain } from "../context/chain";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 
 const NameWrapper = styled.div`
@@ -25,24 +23,20 @@ const NameWrapper = styled.div`
 `;
 
 export default function Account({ account }) {
-  const chain = useChain();
+  const settings = useChainSettings();
   const [identity, setIdentity] = useState(null);
 
   const address = normalizeAddress(account?.address);
-  const isPolkadotAddress = address && !isEthereumAddress(address);
 
   useEffect(() => {
     setIdentity(null);
-    if (isPolkadotAddress) {
-      const identity = nodes.find((n) => n.value === chain)?.identity;
-      if (!identity) return;
-
+    if (account?.address) {
       fetchIdentity(
-        identity,
-        encodeAddressToChain(address, identity),
+        settings.identity,
+        encodeAddressToChain(account.address, settings.identity),
       ).then((identity) => setIdentity(identity));
     }
-  }, [address, isPolkadotAddress, chain]);
+  }, [account?.address, settings]);
 
   return (
     <>
