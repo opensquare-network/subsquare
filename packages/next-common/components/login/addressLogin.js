@@ -17,7 +17,6 @@ import { updateUser, useUserDispatch } from "../../context/user";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
-import { isEthereumAddress } from "@polkadot/util-crypto";
 import { personalSign } from "next-common/utils/metamask";
 
 const Label = styled.div`
@@ -87,10 +86,7 @@ export default function AddressLogin({ setMailLogin }) {
 
     setLoading(true);
     try {
-      let address = selectedAccount.address;
-      if (!isEthereumAddress(address)) {
-        address = encodeAddressToChain(selectedAccount.address, chain);
-      }
+      const address = encodeAddressToChain(selectedAccount.address, chain);
 
       const { result, error } = await nextApi.fetch(`auth/login/${address}`);
       if (error) {

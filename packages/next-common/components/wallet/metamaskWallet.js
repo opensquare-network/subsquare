@@ -17,7 +17,7 @@ export function MetaMaskWallet({
   useEffect(() => {
     setTimeout(() => {
       if (isMounted.current) {
-        if (window.ethereum) {
+        if (window.ethereum && !window.ethereum.isTalisman) {
           setInstalled(true);
         } else {
           setInstalled(false);
