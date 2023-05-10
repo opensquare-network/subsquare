@@ -29,7 +29,10 @@ export const WALLETS = [
 
 export function getWallets() {
   if (process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2) {
-    return WALLETS.filter((wallet) => wallet.extensionName !== "polkadot-js");
+    return WALLETS.filter(
+      (wallet) =>
+        !["polkadot-js", "subwallet-js"].includes(wallet.extensionName),
+    );
   }
   return WALLETS;
 }
