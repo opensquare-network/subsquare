@@ -65,8 +65,7 @@ export default function AddressLogin({ setMailLogin }) {
 
   async function signWith(message, address, selectedWallet) {
     if (selectedWallet === "metamask") {
-      const msg = "0x" + Buffer.from(message).toString("hex");
-      return await personalSign(msg, address);
+      return await personalSign(stringToHex(message), address);
     }
 
     const { signature } = await wallet.signer.signRaw({
