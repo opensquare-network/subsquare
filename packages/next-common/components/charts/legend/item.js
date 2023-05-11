@@ -1,8 +1,8 @@
-import Flex from "../../../styled/flex";
-import { p_12_medium } from "../../../../styles/componentCss";
+import Flex from "../../styled/flex";
+import { p_12_medium } from "../../../styles/componentCss";
 import styled, { css } from "styled-components";
 
-const Item = styled(Flex)`
+const LegendItem = styled(Flex)`
   color: ${(p) => p.theme.textSecondary};
   ${p_12_medium};
 
@@ -34,4 +34,4 @@ const Item = styled(Flex)`
   }
 `;
 
-export default Item;
+export default LegendItem;

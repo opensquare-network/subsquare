@@ -14,6 +14,8 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import Tooltip from "next-common/components/tooltip";
+import startCase from "lodash.startcase";
 
 const Wrapper = styled.div``;
 
@@ -33,13 +35,13 @@ function getSortParams(sortedColumn) {
   let colName;
   switch (sortedColumn) {
     case "COUNT":
-      colName = "delegatorsCount";
+      colName = "count";
       break;
     case "CAPITAL":
-      colName = "delegatedCapital";
+      colName = "capital";
       break;
     case "VOTES":
-      colName = "delegatedVotes";
+      colName = "votes";
       break;
     default:
       colName = "account";
@@ -48,7 +50,25 @@ function getSortParams(sortedColumn) {
   return { sort: JSON.stringify([colName, "desc"]) };
 }
 
-export default function DemocracyDelegatee({ delegatee }) {
+function TrackNameList({ tracks }) {
+  return (
+    <Flex
+      style={{
+        flexDirection: "column",
+        alignItems: "flex-start",
+        lineHeight: "16px",
+        fontSize: "12px",
+      }}
+    >
+      <span style={{ fontWeight: "700" }}>Tracks</span>
+      {tracks.map((track, index) => (
+        <span key={index}>{startCase(track.name)}</span>
+      ))}
+    </Flex>
+  );
+}
+
+export default function ReferendaDelegatee({ delegatee }) {
   const [delegateeList, setDelegateeList] = useState(delegatee);
   const [showPopup, setShowPopup] = useState(false);
   const [delegateeData, setDelegateeData] = useState();
@@ -57,6 +77,10 @@ export default function DemocracyDelegatee({ delegatee }) {
   const { sortedColumn, columns } = useColumns(
     [
       { name: "ADDRESS", style: { textAlign: "left", minWidth: "230px" } },
+      {
+        name: "TRACKS",
+        style: { textAlign: "right", width: "128px", minWidth: "128px" },
+      },
       {
         name: "COUNT",
         style: { textAlign: "right", width: "128px", minWidth: "128px" },
@@ -85,7 +109,7 @@ export default function DemocracyDelegatee({ delegatee }) {
   const fetchData = useCallback(
     (page, pageSize) => {
       nextApi
-        .fetch("statistics/democracy/delegatee", {
+        .fetch("statistics/referenda/delegatee", {
           ...getSortParams(sortedColumn),
           page,
           pageSize,
@@ -117,15 +141,20 @@ export default function DemocracyDelegatee({ delegatee }) {
       <Flex key="account">
         <User add={item.account} fontSize={14} maxWidth={230} />
       </Flex>,
-      item.delegatorsCount,
+      <div key="tracks">
+        <Tooltip content={<TrackNameList tracks={item.tracks} />}>
+          <span>{item.trackIdCount}</span>
+        </Tooltip>
+      </div>,
+      item.count,
       <ValueDisplay
-        key="delegatedCapital"
-        value={toPrecision(item.delegatedCapital || 0, decimals)}
+        key="capital"
+        value={toPrecision(item.capital || 0, decimals)}
         symbol={voteSymbol || symbol}
       />,
       <ValueDisplay
-        key="delegatedVotes"
-        value={toPrecision(item.delegatedVotes || 0, decimals)}
+        key="votes"
+        value={toPrecision(item.votes || 0, decimals)}
         symbol={voteSymbol || symbol}
       />,
       <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
@@ -152,16 +181,16 @@ export default function DemocracyDelegatee({ delegatee }) {
           e.stopPropagation();
           e.preventDefault();
           fetchData(page, delegateeList?.pageSize);
-          window.scrollTo(0, 0);
         }}
       />
       {showPopup && (
         <BeenDelegatedListPopup
           setShow={setShowPopup}
           delegatee={delegateeData?.account}
-          delegatedCapital={delegateeData?.delegatedCapital}
-          delegatedVotes={delegateeData?.delegatedVotes}
-          delegatorsCount={delegateeData?.delegatorsCount}
+          delegatedCapital={delegateeData?.capital}
+          delegatedVotes={delegateeData?.votes}
+          delegatorsCount={delegateeData?.count}
+          tracksCount={delegateeData?.trackIdCount}
         />
       )}
     </Wrapper>

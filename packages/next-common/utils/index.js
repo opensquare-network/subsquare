@@ -113,6 +113,10 @@ export function toPrecision(value, decimals = 0) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
 }
 
+export function toPrecisionNumber(value, decimals = 0) {
+  return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toNumber();
+}
+
 export function decimalPlaces(value, n) {
   return new BigNumber(value).dp(n).toString();
 }
@@ -184,8 +188,8 @@ export function abbreviateBigNumber(x, fixed = 2) {
       fmt.suffix = data.abbr;
     }
   });
-  BigNumber.config({ FORMAT: fmt });
-  return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat();
+
+  return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat(fmt);
 }
 
 export const estimateBlocksTime = (blocks, blockTime) => {
