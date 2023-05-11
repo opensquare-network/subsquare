@@ -11,6 +11,7 @@ import {
   latestHeightSelector,
 } from "../../../store/reducers/chainSlice";
 import User from "../../user";
+import useInlineCall from "./useInlineCall";
 
 export default function ReferendumMetadata({
   proposer,
@@ -22,9 +23,10 @@ export default function ReferendumMetadata({
   const oneBlockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
   const latestBlockTime = useLatestBlockTime();
-
-  const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
   const { state, timeline = [], preImage } = onchainData;
+  const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
+
+  const { hash: inlineHash, call: inlineCall } = useInlineCall(timeline, proposal);
 
   const [referendumTime, setReferendumTime] = useState({});
   useEffect(() => {
@@ -55,12 +57,14 @@ export default function ReferendumMetadata({
       setHash(proposal?.lookup?.hash);
     } else if (proposal?.legacy?.hash) {
       setHash(proposal?.legacy?.hash);
+    } else if (proposal?.inline && inlineHash) {
+      setHash(inlineHash);
     } else if (preImage?.hash) {
       setHash(preImage?.hash);
     } else {
       setHash(proposalHash);
     }
-  }, [proposal, proposalHash]);
+  }, [proposal, proposalHash, inlineHash]);
 
   const [metadata, setMetadata] = useState([]);
   useEffect(() => {
@@ -88,11 +92,11 @@ export default function ReferendumMetadata({
       ["Threshold", <Threshold threshold={threshold} key="threshold" />],
     ];
 
-    if (call) {
+    if (call || inlineCall) {
       data.push([
         <Proposal
           key="preimage"
-          call={call}
+          call={call || inlineCall}
           shorten={shorten}
           referendumIndex={onchainData.referendumIndex}
         />,
