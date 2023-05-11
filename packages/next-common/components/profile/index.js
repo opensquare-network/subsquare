@@ -170,7 +170,7 @@ const DisplayUserAddress = ({ address }) => {
   return (
     <AddressWrapper>
       <Tertiary>{address}</Tertiary>
-      {!isEthereumAddress(address) && <AccountLinks address={address} />}
+      <AccountLinks address={address} />
     </AddressWrapper>
   );
 };
