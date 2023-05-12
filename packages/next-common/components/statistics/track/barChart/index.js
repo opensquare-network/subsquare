@@ -79,10 +79,12 @@ function useOptions(userOptions) {
  */
 export default function BarChart({
   data,
+  customLegend,
   noLegend,
   options: userOptions = {},
 }) {
   const options = useOptions(userOptions);
+  const legendItems = customLegend || data?.datasets?.filter(item => item.legend !== false);
 
   return (
     <Wrapper>
@@ -92,10 +94,7 @@ export default function BarChart({
 
       {!noLegend && (
         <Legend>
-          {data?.datasets?.map?.((item) => {
-            if (item.legend === false) {
-              return;
-            }
+          {legendItems?.map?.((item) => {
             return (
               <LegendItem key={item.label} color={item.backgroundColor}>
                 {item.label}

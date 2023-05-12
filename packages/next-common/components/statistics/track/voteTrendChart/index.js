@@ -11,6 +11,10 @@ export default function VoteTrendChart({ turnout, delegated }) {
   const categoryPercentage = 0.5;
   const barPercentage = 0.7;
 
+  const capitalColor = "rgba(15, 111, 255, 0.4)";
+  const votesColor = "rgba(255, 152, 0, 0.4)";
+  const delegatedColor = "rgba(232, 31, 102, 0.4)";
+
   const labels = turnout.map((item) => item.referendumIndex);
   let datasets = [
     {
@@ -18,7 +22,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
       barPercentage,
       label: "Capital",
       data: turnout.map((item) => toPrecisionNumber(item.totalCapital, decimals)),
-      backgroundColor: "rgba(15, 111, 255, 0.4)",
+      backgroundColor: capitalColor,
       stack: "Capital",
     },
     {
@@ -26,27 +30,28 @@ export default function VoteTrendChart({ turnout, delegated }) {
       barPercentage,
       label: "Votes",
       data: turnout.map((item) => toPrecisionNumber(item.votes, decimals)),
-      backgroundColor: "rgba(255, 152, 0, 0.4)",
+      backgroundColor: votesColor,
       stack: "Votes",
     },
   ];
+  let customLegend = null;
 
   if (delegated) {
     datasets = [
       {
         categoryPercentage,
         barPercentage,
-        label: "Capital",
+        label: "Direct Capital",
         data: turnout.map((item) => toPrecisionNumber(item.directCapital, decimals)),
-        backgroundColor: "rgba(15, 111, 255, 0.4)",
+        backgroundColor: capitalColor,
         stack: "Capital",
       },
       {
         categoryPercentage,
         barPercentage,
-        label: "Votes",
+        label: "Direct Votes",
         data: turnout.map((item) => toPrecisionNumber(item.votes, decimals) - toPrecisionNumber(item.delegationVotes, decimals)),
-        backgroundColor: "rgba(255, 152, 0, 0.4)",
+        backgroundColor: votesColor,
         stack: "Votes",
       },
       {
@@ -54,7 +59,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
         barPercentage,
         label: "Delegation Capital",
         data: turnout.map((item) => toPrecisionNumber(item.delegationCapital, decimals)),
-        backgroundColor: "rgba(232, 31, 102, 0.4)",
+        backgroundColor: delegatedColor,
         stack: "Capital",
         legend: false,
       },
@@ -63,10 +68,16 @@ export default function VoteTrendChart({ turnout, delegated }) {
         barPercentage,
         label: "Delegation Votes",
         data: turnout.map((item) => toPrecisionNumber(item.delegationVotes, decimals)),
-        backgroundColor: "rgba(232, 31, 102, 0.4)",
+        backgroundColor: delegatedColor,
         stack: "Votes",
         legend: false,
       },
+    ];
+
+    customLegend = [
+      { label: "Capital", backgroundColor: capitalColor },
+      { label: "Votes", backgroundColor: votesColor },
+      { label: "Delegated", backgroundColor: delegatedColor },
     ];
   }
 
@@ -78,6 +89,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
   return (
     <BarChart
       data={data}
+      customLegend={customLegend}
       options={{
         scales: {
           x: {
