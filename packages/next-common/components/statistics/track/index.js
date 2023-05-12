@@ -70,15 +70,19 @@ export default function TrackStatistics({ turnout }) {
   };
 
   return (
-    <Wrapper>
-      <Header>All Vote</Header>
-      <Divider />
-      <TrackReferendumSummary summary={summary} />
-      <Divider />
-      <PageTabs tabs={voteCharts} />
-      <Header>Turnout</Header>
-      <Divider />
-      <PageTabs tabs={charts} />
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Header>All Vote</Header>
+        <Divider />
+        <TrackReferendumSummary summary={summary} />
+        <Divider />
+        <PageTabs tabs={voteCharts} />
+      </Wrapper>
+      <Wrapper>
+        <Header>Turnout</Header>
+        <Divider />
+        <PageTabs tabs={charts} />
+      </Wrapper>
+    </>
   );
 }
