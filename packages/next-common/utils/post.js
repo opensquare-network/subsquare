@@ -1,10 +1,14 @@
 import flatten from "lodash.flatten";
 import { fetchIdentity } from "../services/identity";
-import { addressEllipsis } from ".";
+import {
+  addressEllipsis,
+  isEthereumKeyRegisteredUser,
+  isKeyRegisteredUser,
+  isPolkadotKeyRegisteredUser,
+} from ".";
 import { encodeAddressToChain } from "../services/address";
-import { nodes } from "./constants";
 import uniqBy from "lodash.uniqby";
-import { isAddress } from "./viewfuncs";
+import getChainSettings from "./consts/settings";
 
 export function getTitle(item) {
   return `${item?.title ?? "--"}`;
@@ -34,10 +38,10 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
 }
 
 export function getMemberId(user, chain) {
-  if (user.username.startsWith("polkadot-key-0x")) {
-    const publicKey = user.username.substr(15);
-    const address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
-    return address;
+  if (isEthereumKeyRegisteredUser(user)) {
+    return user.address;
+  } else if (isPolkadotKeyRegisteredUser(user)) {
+    return encodeAddressToChain(Buffer.from(user.publicKey, "hex"), chain);
   } else {
     return user.address || user.username;
   }
@@ -46,29 +50,27 @@ export function getMemberId(user, chain) {
 export async function getMentionName(user, chain) {
   let address;
   let mentionName;
-  if (user.username.startsWith("polkadot-key-0x")) {
-    const publicKey = user.username.substr(15);
-    address = encodeAddressToChain(Buffer.from(publicKey, "hex"), chain);
-    mentionName = address;
+  if (isEthereumKeyRegisteredUser(user)) {
+    address = user.address;
+    mentionName = addressEllipsis(address);
+  } else if (isPolkadotKeyRegisteredUser(user)) {
+    address = encodeAddressToChain(Buffer.from(user.publicKey, "hex"), chain);
+    mentionName = addressEllipsis(address);
   } else {
     address = user.address;
     mentionName = user.username;
   }
 
-  if (isAddress(mentionName)) {
-    mentionName = addressEllipsis(mentionName);
-  }
-
   let displayName;
 
-  const identityChain = nodes.find((n) => n.value === chain)?.identity;
-  if (identityChain) {
-    const identityAddress = encodeAddressToChain(address, identityChain);
-    const identity = await fetchIdentity(identityChain, identityAddress);
-    displayName = identity?.info?.displayParent
-      ? `${identity?.info?.displayParent}/${identity?.info?.display}`
-      : identity?.info?.display;
-  }
+  const setting = getChainSettings(chain);
+  const identityChain = setting.identity;
+
+  const identityAddress = encodeAddressToChain(address, identityChain);
+  const identity = await fetchIdentity(identityChain, identityAddress);
+  displayName = identity?.info?.displayParent
+    ? `${identity?.info?.displayParent}/${identity?.info?.display}`
+    : identity?.info?.display;
 
   return displayName || mentionName;
 }
@@ -91,7 +93,7 @@ export function getOnReply(
       const memberId = getMemberId(user, chain);
       if (contentType === "markdown") {
         reply = `[@${name}](/user/${memberId}) `;
-        if (user.username.startsWith("polkadot-key-0x")) {
+        if (isKeyRegisteredUser(user)) {
           reply = `[@${name}](${memberId}-${chain}) `;
         }
         const at = content ? `${reply}` : reply;
@@ -102,7 +104,7 @@ export function getOnReply(
         }
       } else if (contentType === "html") {
         const contents = quillRef.getContents();
-        const isKeyRegistered = user.username.startsWith("polkadot-key-0x");
+        const isKeyRegistered = isKeyRegisteredUser(user);
         const address = user.address ?? "";
         reply = {
           ops: [

@@ -1,7 +1,7 @@
 import moment from "moment";
 import BigNumber from "bignumber.js";
 import { extractTime } from "@polkadot/util";
-import { encodeAddress } from "@polkadot/util-crypto";
+import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -22,12 +22,16 @@ export function hexEllipsis(hex, start = 6, end = 4) {
   return textEllipsis(hex, start, end);
 }
 
-export function addressEllipsis(address, start = 4, end = 4) {
+export function addressEllipsis(address, start, end) {
   if (typeof address !== "string") {
     return address;
   }
 
-  return textEllipsis(address, start, end);
+  if (isEthereumAddress(address)) {
+    return textEllipsis(address, start || 6, end || 4);
+  }
+
+  return textEllipsis(address, start || 4, end || 4);
 }
 
 export function hashEllipsis(hash = "") {
@@ -214,8 +218,16 @@ export function isMotionEnded(motion) {
   );
 }
 
+export function isPolkadotKeyRegisteredUser(user) {
+  return user?.username.startsWith("polkadot-key-0x");
+}
+
+export function isEthereumKeyRegisteredUser(user) {
+  return user?.username.startsWith("ethereum-key-0x");
+}
+
 export function isKeyRegisteredUser(user) {
-  return !!user?.publicKey;
+  return isPolkadotKeyRegisteredUser(user) || isEthereumKeyRegisteredUser(user);
 }
 
 export function emptyFunction() {}
@@ -255,6 +267,14 @@ export function checkInputValue(
 export function isSameAddress(addr1, addr2) {
   if (!addr1 || !addr2) {
     return false;
+  }
+
+  if (addr1 === addr2) {
+    return true;
+  }
+
+  if (isEthereumAddress(addr1) && isEthereumAddress(addr2)) {
+    return addr1.toLowerCase() === addr2.toLowerCase();
   }
 
   try {

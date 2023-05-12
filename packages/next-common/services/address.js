@@ -1,7 +1,16 @@
 import { encodeAddress } from "@polkadot/keyring";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 import getChainSettings from "../utils/consts/settings";
 
 export const encodeAddressToChain = (address, chain) => {
+  if (!address) {
+    return address;
+  }
+
+  if (isEthereumAddress(address)) {
+    return address;
+  }
+
   let ss58Prefix;
   if (process.env.NEXT_PUBLIC_SS58_PREFIX) {
     ss58Prefix = parseInt(process.env.NEXT_PUBLIC_SS58_PREFIX);

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
-import { isAddress } from "../utils/viewfuncs";
+import { isPolkadotAddress } from "../utils/viewfuncs";
+import { isEthereumAddress } from "@polkadot/util-crypto";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const NameWrapper = styled.div`
   font-size: 14px;
@@ -27,17 +28,15 @@ function IdentityOrAddr({ address, network }) {
 
   useEffect(() => {
     setIdentity(null);
-    if (isAddress(address)) {
-      const identity = nodes.find((n) => n.value === network)?.identity;
-      if (!identity) return;
-
-      fetchIdentity(identity, encodeAddressToChain(address, identity)).then(
+    if (address) {
+      const settings = getChainSettings(network);
+      fetchIdentity(settings.identity, encodeAddressToChain(address, settings.identity)).then(
         (identity) => setIdentity(identity),
       );
     }
   }, [address, network]);
 
-  if (!isAddress(address)) {
+  if (!isPolkadotAddress(address) && !isEthereumAddress(address)) {
     return (
       <MentionBox href={`/user/${address}`}>
         <span>@</span>

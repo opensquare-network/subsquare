@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useIsMounted from "./useIsMounted";
 import { polkadotWeb3Accounts } from "../extensionAccount";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useExtensionAccounts(appName) {
   const isMounted = useIsMounted();
@@ -8,6 +9,7 @@ export default function useExtensionAccounts(appName) {
   const [accounts, setAccounts] = useState([]);
   const [accessible, seAccessible] = useState(false);
   const [detecting, setDetecting] = useState(true);
+  const { chainType } = useChainSettings();
 
   useEffect(() => {
     (async () => {
@@ -37,13 +39,13 @@ export default function useExtensionAccounts(appName) {
         return;
       }
 
-      const extensionAccounts = await polkadotWeb3Accounts();
+      const extensionAccounts = await polkadotWeb3Accounts(chainType);
       if (isMounted.current) {
         setAccounts(extensionAccounts);
         setDetecting(false);
       }
     })();
-  }, [isMounted]);
+  }, [isMounted, chainType]);
 
   return { accounts, hasExtension, accessible, detecting };
 }

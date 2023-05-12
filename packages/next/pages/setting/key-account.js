@@ -4,7 +4,6 @@ import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
 import NotificationEmail from "next-common/components/setting/notificationEmail";
 import Logout from "next-common/components/setting/logout";
-import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
@@ -12,11 +11,9 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Divider from "next-common/components/styled/layout/divider";
 import SettingsLayout from "next-common/components/layout/settingsLayout";
 
-export default withLoginUserRedux(({ loginUser, chain }) => {
+export default withLoginUserRedux(({ loginUser }) => {
   const user = loginUser;
-  const address = user?.publicKey
-    ? encodeAddressToChain(Buffer.from(user?.publicKey, "hex"), chain)
-    : "";
+  const address = user?.address || "";
 
   const router = useRouter();
 

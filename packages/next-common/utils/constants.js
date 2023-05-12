@@ -22,6 +22,7 @@ import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
 import westendCollectives from "./consts/settings/westendCollectives";
 import collectives from "./consts/settings/collectives";
+import darwinia2 from "./consts/settings/darwinia2";
 
 /**
  * left + gap + main content
@@ -48,13 +49,14 @@ export const nodes = [
   collectives,
   // crab,
   crust,
+  darwinia2,
   hydradx,
   interlay,
-  litentry,
   // kabocha,
   karura,
   khala,
   kintsugi,
+  litentry,
   litmus,
   phala,
   // polkadex,

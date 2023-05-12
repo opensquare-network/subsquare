@@ -7,6 +7,7 @@ import {
 import uniqBy from "lodash.uniqby";
 import { useUser } from "../../context/user";
 import { useChain } from "../../context/chain";
+import { isKeyRegisteredUser } from "..";
 
 export default function useMentionList(post, comments) {
   const chain = useChain();
@@ -37,11 +38,11 @@ export default function useMentionList(post, comments) {
         (users || []).map(async (user) => {
           const name = await getMentionName(user, chain);
           const memberId = getMemberId(user, chain);
+
           return {
             name,
             value: memberId,
-            isKeyRegistered:
-              user.isKeyRegistered ?? user.username.includes("polkadot-key"),
+            isKeyRegistered: user.isKeyRegistered ?? isKeyRegisteredUser(user),
           };
         }),
       );

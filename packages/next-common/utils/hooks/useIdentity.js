@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { nodes } from "../constants";
 import { encodeAddressToChain } from "../../services/address";
+import getChainSettings from "../consts/settings";
 
 export default function useIdentity(address, chain) {
   const [identity, setIdentity] = useState();
@@ -10,8 +10,8 @@ export default function useIdentity(address, chain) {
       return;
     }
 
-    const identityChain = nodes.find((n) => n.value === chain)?.identity;
-    if (!identityChain) return;
+    const setting = getChainSettings(chain);
+    const identityChain = setting.identity;
     const identityAddress = encodeAddressToChain(address, identityChain);
     fetch(
       `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`,
