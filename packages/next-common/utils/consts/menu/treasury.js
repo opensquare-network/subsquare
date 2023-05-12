@@ -53,7 +53,6 @@ const treasury = {
         Chains.rococo,
         Chains.khala,
         Chains.phala,
-        Chains.darwinia2,
       ]),
       icon: (
         <MenuIconWrapper>
