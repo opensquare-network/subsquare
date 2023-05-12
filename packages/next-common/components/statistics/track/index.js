@@ -5,6 +5,7 @@ import PageTabs from "next-common/components/pageTabs";
 import TurnoutPercentageChart from "./turnoutPercentageChart";
 import VoteTrendChart from "./voteTrendChart";
 import TrackReferendumSummary from "./summary";
+import AddressTrendChart from "./addressTrendChart";
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,7 +43,7 @@ export default function TrackStatistics({ turnout }) {
     },
     {
       name: "Addr Trend",
-      content: <VoteTrendChart turnout={turnout} />,
+      content: <AddressTrendChart turnout={turnout} />,
     },
   ];
 
