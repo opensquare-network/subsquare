@@ -31,6 +31,8 @@ export default function TrackDelegationChart({ tracks }) {
         toPrecisionNumber(track.statistics?.votes?.capital, decimals),
       ),
       backgroundColor: "transparent",
+      legend: false,
+      tooltip: false,
     },
     {
       categoryPercentage,
@@ -56,7 +58,7 @@ export default function TrackDelegationChart({ tracks }) {
           tooltip: {
             callbacks: {
               label(item) {
-                if (item.dataset.label === "placeholder") {
+                if (item.dataset.tooltip === false) {
                   return "";
                 }
 

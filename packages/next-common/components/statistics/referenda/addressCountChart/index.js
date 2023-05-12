@@ -21,6 +21,8 @@ export default function AddressCountChart({ tracks }) {
       label: "placeholder",
       data: tracks.map((track) => track.statistics?.addresses?.delegator),
       backgroundColor: "transparent",
+      legend: false,
+      tooltip: false,
     },
     {
       categoryPercentage,
@@ -44,10 +46,9 @@ export default function AddressCountChart({ tracks }) {
           tooltip: {
             callbacks: {
               label(item) {
-                if (item.dataset.label === "placeholder") {
+                if (item.dataset.tooltip === false) {
                   return "";
                 }
-
                 return `${item.dataset.label} count: ${item.formattedValue}`;
               },
             },

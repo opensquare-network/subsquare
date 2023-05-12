@@ -37,7 +37,7 @@ const Header = styled.div`
 `;
 
 export default function TrackStatistics({ turnout }) {
-  const [delegatedChecked, setDelegatedChecked] = React.useState(false);
+  const [delegatedChecked, setDelegatedChecked] = React.useState(true);
 
   const voteCharts = [
     {

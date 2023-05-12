@@ -95,11 +95,16 @@ export default function BarChart({ data, options: userOptions = {} }) {
       </ChartWrapper>
 
       <Legend>
-        {data?.datasets?.map?.((item) => (
-          <LegendItem key={item.label} color={item.backgroundColor}>
-            {item.label}
-          </LegendItem>
-        ))}
+        {data?.datasets?.map?.((item) => {
+          if (item.legend === false) {
+            return;
+          }
+          return (
+            <LegendItem key={item.label} color={item.backgroundColor}>
+              {item.label}
+            </LegendItem>
+          );
+        })}
       </Legend>
     </Wrapper>
   );
