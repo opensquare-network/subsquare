@@ -100,7 +100,7 @@ export default function DelegationTabList({ delegatee }) {
     [
       {
         name: "ADDRESS",
-        style: { textAlign: "left", width: "129px", minWidth: "129px" },
+        style: { textAlign: "left", width: "232px", minWidth: "232px" },
       },
       {
         name: "TRACK",
