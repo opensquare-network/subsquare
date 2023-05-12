@@ -17,7 +17,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
       categoryPercentage,
       barPercentage,
       label: "Capital",
-      data: turnout.map((item) => toPrecisionNumber(item.support, decimals)),
+      data: turnout.map((item) => toPrecisionNumber(item.totalCapital, decimals)),
       backgroundColor: "rgba(15, 111, 255, 0.4)",
       stack: "Capital",
     },
@@ -33,7 +33,22 @@ export default function VoteTrendChart({ turnout, delegated }) {
 
   if (delegated) {
     datasets = [
-      ...datasets,
+      {
+        categoryPercentage,
+        barPercentage,
+        label: "Capital",
+        data: turnout.map((item) => toPrecisionNumber(item.directCapital, decimals)),
+        backgroundColor: "rgba(15, 111, 255, 0.4)",
+        stack: "Capital",
+      },
+      {
+        categoryPercentage,
+        barPercentage,
+        label: "Votes",
+        data: turnout.map((item) => toPrecisionNumber(item.votes, decimals) - toPrecisionNumber(item.delegationVotes, decimals)),
+        backgroundColor: "rgba(255, 152, 0, 0.4)",
+        stack: "Votes",
+      },
       {
         categoryPercentage,
         barPercentage,

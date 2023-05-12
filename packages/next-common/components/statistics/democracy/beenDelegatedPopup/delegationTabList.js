@@ -27,7 +27,8 @@ const ConvictionText = styled.span`
 `;
 
 const MyPopupListWrapper = styled(PopupListWrapper)`
-  thead, tr {
+  thead,
+  tr {
     width: unset !important;
   }
   tr.empty-tr {
@@ -55,7 +56,10 @@ function getSortParams(sortedColumn) {
   return { sort: JSON.stringify([colName, "desc"]) };
 }
 
-export default function DelegationTabList({ delegatee }) {
+export default function DelegationTabList({
+  apiRoot = "statistics/democracy",
+  delegatee,
+}) {
   const [beenDelegatedList, setBeenDelegatedList] = useState(EmptyList);
   const [page, setPage] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -76,7 +80,10 @@ export default function DelegationTabList({ delegatee }) {
 
   const { sortedColumn, columns } = useColumns(
     [
-      { name: "ADDRESS", style: { textAlign: "left", width: "129px", minWidth: "129px" } },
+      {
+        name: "ADDRESS",
+        style: { textAlign: "left", width: "129px", minWidth: "129px" },
+      },
       {
         name: "CAPITAL",
         style: { textAlign: "right", width: "158px", minWidth: "158px" },
@@ -93,7 +100,7 @@ export default function DelegationTabList({ delegatee }) {
 
   useEffect(() => {
     nextApi
-      .fetch(`statistics/democracy/delegatee/${delegatee}/delegators`, {
+      .fetch(`${apiRoot}/delegatee/${delegatee}/delegators`, {
         ...getSortParams(sortedColumn),
         page,
         pageSize,
@@ -104,7 +111,7 @@ export default function DelegationTabList({ delegatee }) {
       .finally(() => {
         setIsLoaded(true);
       });
-  }, [delegatee, page, sortedColumn]);
+  }, [delegatee, page, sortedColumn, apiRoot]);
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
     <Flex key="account">

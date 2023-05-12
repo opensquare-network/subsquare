@@ -4,6 +4,7 @@ import DelegationSummary from "./delegationSummary";
 import DelegationTabList from "./delegationTabList";
 
 export default function BeenDelegatedListPopup({
+  apiRoot = "statistics/democracy",
   delegatee,
   delegatorsCount,
   delegatedCapital,
@@ -18,7 +19,7 @@ export default function BeenDelegatedListPopup({
         delegatedCapital={delegatedCapital}
         delegatedVotes={delegatedVotes}
       />
-      <DelegationTabList delegatee={delegatee} />
+      <DelegationTabList apiRoot={apiRoot} delegatee={delegatee} />
     </Popup>
   );
 }
