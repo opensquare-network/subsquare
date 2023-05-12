@@ -188,7 +188,7 @@ function convertProposalForJsonView(proposal, chain) {
 
   return {
     ...proposal,
-    args: proposal.args.map((arg) => ({
+    args: (proposal.args || []).map((arg) => ({
       ...arg,
       value: (() => {
         switch (arg.type) {
