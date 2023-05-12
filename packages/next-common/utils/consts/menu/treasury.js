@@ -35,6 +35,7 @@ const treasury = {
         Chains.zeitgeist,
         Chains.centrifuge,
         Chains.altair,
+        Chains.darwinia2,
       ],
       icon: (
         <MenuIconWrapper>
@@ -52,6 +53,7 @@ const treasury = {
         Chains.rococo,
         Chains.khala,
         Chains.phala,
+        Chains.darwinia2,
       ]),
       icon: (
         <MenuIconWrapper>
