@@ -1,10 +1,8 @@
 import React from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import styled from "styled-components";
-import DemocracyDelegatee from "./delegatee";
-import DemocracyDelegator from "./delegator";
 import PageTabs from "next-common/components/pageTabs";
-import DemocracySummary from "./summary";
+import TurnoutPercentageChart from "./turnoutPercentageChart";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,30 +32,19 @@ const Header = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function DemocracyStatistics({
-  apiRoot,
-  delegatee,
-  delegators,
-  summary,
-}) {
-  const tabs = [
+export default function TurnoutStatistics({ turnout }) {
+  const charts = [
     {
-      name: "Delegatee",
-      content: <DemocracyDelegatee apiRoot={apiRoot} delegatee={delegatee} />,
-    },
-    {
-      name: "Delegator",
-      content: <DemocracyDelegator apiRoot={apiRoot} delegators={delegators} />,
+      name: "Turnout Pct.",
+      content: <TurnoutPercentageChart turnout={turnout} />,
     },
   ];
 
   return (
     <Wrapper>
-      <Header>Delegation</Header>
+      <Header>Turnout</Header>
       <Divider />
-      <DemocracySummary summary={summary} />
-      <Divider />
-      <PageTabs tabs={tabs} />
+      <PageTabs tabs={charts} />
     </Wrapper>
   );
 }

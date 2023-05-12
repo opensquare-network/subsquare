@@ -6,9 +6,18 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
 import startCase from "lodash.startcase";
 import TrackStatistics from "next-common/components/statistics/track";
+import { EmptyList } from "next-common/utils/constants";
 
 export default withLoginUserRedux(
-  ({ track, turnout, tracks, fellowshipTracks }) => {
+  ({
+    track,
+    turnout,
+    tracks,
+    fellowshipTracks,
+    delegatee,
+    delegators,
+    summary,
+  }) => {
     const seoInfo = {
       title: "OpenGov Statistics",
       desc: "OpenGov Statistics",
@@ -37,7 +46,13 @@ export default withLoginUserRedux(
             ]}
           />
         </BreadcrumbWrapper>
-        <TrackStatistics track={track} turnout={turnout} />
+        <TrackStatistics
+          track={track}
+          turnout={turnout}
+          delegatee={delegatee}
+          delegators={delegators}
+          summary={summary}
+        />
       </HomeLayout>
     );
   }
@@ -59,9 +74,23 @@ export const getServerSideProps = withLoginUser(async (context) => {
     return to404();
   }
 
-  const { result: turnout } = await ssrNextApi.fetch(
-    `statistics/referenda/tracks/${id}/turnout`
-  );
+  const [
+    { result: turnout },
+    { result: delegatee },
+    { result: delegators },
+    { result: summary },
+  ] = await Promise.all([
+    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/turnout`),
+    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/delegatee`, {
+      sort: JSON.stringify(["delegatedVotes", "desc"]),
+      pageSize: 25,
+    }),
+    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/delegators`, {
+      sort: JSON.stringify(["votes", "desc"]),
+      pageSize: 25,
+    }),
+    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/summary`),
+  ]);
 
   return {
     props: {
@@ -69,6 +98,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       turnout: turnout ?? [],
+      delegatee: delegatee ?? EmptyList,
+      delegators: delegators ?? EmptyList,
+      summary: summary ?? {},
     },
   };
 });

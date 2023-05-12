@@ -31,11 +31,11 @@ export default function DemocracySummary({ summary }) {
   const items = [
     {
       title: "DELEGATEE",
-      content: <CountSummaryContent count={summary?.address?.delegatee} />,
+      content: <CountSummaryContent count={(summary?.address || summary?.addresses)?.delegatee} />,
     },
     {
       title: "DELEGATOR",
-      content: <CountSummaryContent count={summary?.address?.delegator} />,
+      content: <CountSummaryContent count={(summary?.address || summary?.addresses)?.delegator} />,
     },
     {
       title: "TOTAL CAPITAL",

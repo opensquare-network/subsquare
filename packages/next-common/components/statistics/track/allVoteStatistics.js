@@ -1,10 +1,11 @@
 import React from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import styled from "styled-components";
-import DemocracyDelegatee from "./delegatee";
-import DemocracyDelegator from "./delegator";
 import PageTabs from "next-common/components/pageTabs";
-import DemocracySummary from "./summary";
+import VoteTrendChart from "./voteTrendChart";
+import TrackReferendumSummary from "./summary";
+import AddressTrendChart from "./addressTrendChart";
+import DelegatedCheckBox from "./delegatedCheckBox";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,30 +35,39 @@ const Header = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function DemocracyStatistics({
-  apiRoot,
-  delegatee,
-  delegators,
-  summary,
-}) {
-  const tabs = [
+export default function AllVotesStatistics({ turnout }) {
+  const [delegatedChecked, setDelegatedChecked] = React.useState(true);
+
+  const voteCharts = [
     {
-      name: "Delegatee",
-      content: <DemocracyDelegatee apiRoot={apiRoot} delegatee={delegatee} />,
+      name: "Vote Trend",
+      content: (
+        <VoteTrendChart turnout={turnout} delegated={delegatedChecked} />
+      ),
+      extra: (
+        <DelegatedCheckBox
+          checked={delegatedChecked}
+          setChecked={setDelegatedChecked}
+        />
+      ),
     },
     {
-      name: "Delegator",
-      content: <DemocracyDelegator apiRoot={apiRoot} delegators={delegators} />,
+      name: "Addr Trend",
+      content: <AddressTrendChart turnout={turnout} />,
     },
   ];
 
+  const summary = {
+    referendumCount: turnout?.length || 0,
+  };
+
   return (
     <Wrapper>
-      <Header>Delegation</Header>
+      <Header>All Vote</Header>
       <Divider />
-      <DemocracySummary summary={summary} />
+      <TrackReferendumSummary summary={summary} />
       <Divider />
-      <PageTabs tabs={tabs} />
+      <PageTabs tabs={voteCharts} />
     </Wrapper>
   );
 }
