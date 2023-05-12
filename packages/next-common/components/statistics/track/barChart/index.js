@@ -13,7 +13,7 @@ import deepmerge from "deepmerge";
 
 const Wrapper = styled.div``;
 const ChartWrapper = styled.div`
-  height: 484px;
+  height: 256px;
 `;
 
 const Legend = styled.div`
