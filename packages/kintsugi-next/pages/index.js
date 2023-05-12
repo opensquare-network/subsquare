@@ -63,7 +63,7 @@ export default withLoginUserRedux(({ overview, chain }) => {
     <HomeLayout>
       <Overview
         overviewData={filteredOverviewData}
-        summaryData={overview.summary}
+        summaryData={overview?.summary}
       />
     </HomeLayout>
   );
