@@ -8,7 +8,7 @@ import { w_full, overflow_y_scroll } from "next-common/styles/tailwindcss";
 
 const StyledPopup = styled(Popup)`
   width: 720px;
-  max-height: 80vh;
+  max-height: 100vh;
   ${overflow_y_scroll};
 
   ${smcss(w_full)};
