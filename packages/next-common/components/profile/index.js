@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { withLoginUserRedux } from "../../lib";
-import { isAddress } from "../../utils/viewfuncs";
+import { isPolkadotAddress } from "../../utils/viewfuncs";
 import { getProfileCategories } from "../../utils/consts/profile";
 import nextApi from "next-common/services/nextApi";
 import User from "../user";
@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { useChain } from "../../context/chain";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import VStack from "../styled/vStack";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -155,7 +156,7 @@ const Category = ({ type, count, selected, onClick }) => {
 };
 
 const DisplayUser = ({ id }) => {
-  if (isAddress(id)) {
+  if (isPolkadotAddress(id) || isEthereumAddress(id)) {
     return <User add={id} showAvatar={false} fontSize={16} />;
   }
 
@@ -200,7 +201,8 @@ const getCategoryByRoute = (route, categories = []) => {
 export default withLoginUserRedux(({ route, summary, user, id }) => {
   const chain = useChain();
   const defaultPage = { page: 1, pageSize: 10, total: 0 };
-  const address = isAddress(id) ? id : user?.address;
+  const address =
+    isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
   const [items, setItems] = React.useState([]);
   const [pagination, setPagination] = React.useState(defaultPage);
   const [isLoading, setIsLoading] = React.useState(true);

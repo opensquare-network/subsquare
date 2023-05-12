@@ -13,5 +13,5 @@ export default function Gravatar({ email = null, emailMd5 = null, size = 24 }) {
       emailMd5 ?? md5(email.trim().toLocaleLowerCase())
     }?d=retro&s=${size}&date=${new Date().toISOString().split("T")[0]}`;
   }
-  return <AvatarImg src={src} />;
+  return <AvatarImg src={src} style={{ width: size, height: size }} />;
 }

@@ -1,5 +1,9 @@
-export async function polkadotWeb3Accounts() {
+export async function polkadotWeb3Accounts(chainType) {
   const { web3Accounts } = await import("@polkadot/extension-dapp");
-  const extensionAccounts = await web3Accounts();
-  return extensionAccounts.filter((acc) => acc.type !== "ethereum");
+  const allAccounts = await web3Accounts();
+  if (chainType === "ethereum") {
+    return allAccounts.filter((acc) => acc.type === "ethereum");
+  }
+
+  return allAccounts.filter((acc) => acc.type !== "ethereum");
 }

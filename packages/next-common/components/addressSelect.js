@@ -7,13 +7,13 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { pretty_scroll_bar, shadow_200 } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
-import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
-import { useChain } from "../context/chain";
+import { useChainSettings } from "../context/chain";
+import { normalizeAddress } from "next-common/utils/address.js";
 
 const Wrapper = Relative;
 
@@ -106,39 +106,37 @@ const Item = styled(Flex)`
 `;
 
 function Account({ account }) {
-  const chain = useChain();
+  const settings = useChainSettings();
   const [identity, setIdentity] = useState(null);
+  const normalizedAddr = normalizeAddress(account?.address);
+
   useEffect(() => {
     setIdentity(null);
-    if (account.address) {
-      const identity = nodes.find((n) => n.value === chain)?.identity;
-      if (!identity) return;
-
+    if (account?.address) {
       fetchIdentity(
-        identity,
-        encodeAddressToChain(account.address, identity),
+        settings.identity,
+        encodeAddressToChain(account.address, settings.identity),
       ).then((identity) => setIdentity(identity));
     }
-  }, [account.address, chain]);
+  }, [account?.address, settings]);
 
   return (
     <>
-      <Avatar address={account.address} />
+      <Avatar address={normalizedAddr} />
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
             <div>
-              {addressEllipsis(encodeAddressToChain(account.address, chain))}
+              {addressEllipsis(normalizedAddr)}
             </div>
           </>
         ) : (
           <>
             <div>{account?.name}</div>
             <div>
-              {addressEllipsis(encodeAddressToChain(account.address, chain)) ??
-                "--"}
+              {addressEllipsis(normalizedAddr) ?? "--"}
             </div>
           </>
         )}

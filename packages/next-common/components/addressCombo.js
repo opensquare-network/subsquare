@@ -6,11 +6,10 @@ import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { pretty_scroll_bar, shadow_200 } from "../styles/componentCss";
-import { encodeAddressToChain } from "../services/address";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
-import { useChain } from "../context/chain";
+import { normalizeAddress } from "next-common/utils/address.js";
 
 const Wrapper = Relative;
 
@@ -94,21 +93,24 @@ const Input = styled.input`
 `;
 
 export default function AddressCombo({ accounts, address, setAddress }) {
-  const chain = useChain();
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(address);
   const ref = useRef();
 
   const selectedAccount = accounts.find(
-    (item) => encodeAddressToChain(item.address, chain) === address,
+    (item) => normalizeAddress(item.address) === address,
   );
   const shortAddr = addressEllipsis(address);
 
   const onBlur = () => {
     const isAddr = isAddress(inputAddress);
     if (isAddr) {
-      const ss58Addr = encodeAddressToChain(inputAddress, chain);
+      const ss58Addr = normalizeAddress(inputAddress);
+      if (!ss58Addr) {
+        setAddress();
+        return;
+      }
       setAddress(ss58Addr);
       setInputAddress(ss58Addr);
       setEdit(false);
@@ -159,7 +161,7 @@ export default function AddressCombo({ accounts, address, setAddress }) {
   const listOptions = (
     <Options>
       {(accounts || []).map((item, index) => {
-        const ss58Address = encodeAddressToChain(item.address, chain);
+        const ss58Address = normalizeAddress(item.address);
         return (
           <Item
             key={index}

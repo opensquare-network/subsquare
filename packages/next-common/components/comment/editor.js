@@ -8,7 +8,6 @@ import { prettyHTML, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
-import { addressEllipsis } from "../../utils";
 import SecondaryButton from "../buttons/secondaryButton";
 import GhostButton from "../buttons/ghostButton";
 import EditorWrapper from "../editor/editorWrapper";
@@ -143,7 +142,7 @@ function Editor(
       .map((user) => ({
         preview: user.name,
         value: user.isKeyRegistered
-          ? `[@${addressEllipsis(user.name)}](${user.value}-${chain}) `
+          ? `[@${user.name}](${user.value}-${chain}) `
           : `[@${escapeLinkText(user.name)}](/user/${user.value}) `,
         address: user.value,
         isKeyRegistered: user.isKeyRegistered,

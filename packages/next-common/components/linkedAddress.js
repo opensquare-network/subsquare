@@ -23,9 +23,10 @@ import { TitleContainer } from "./styled/containers/titleContainer";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
-import { WALLETS } from "../utils/consts/connect";
+import { getWallets } from "../utils/consts/connect";
 import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
+import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -206,7 +207,7 @@ export default function LinkedAddress() {
 
       let injector = wallet;
       if (
-        !WALLETS.some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         if (source) {
@@ -295,10 +296,13 @@ export default function LinkedAddress() {
             )}
             {availableAccounts.length > 0 &&
               availableAccounts.map((item, index) => {
-                const activeChainAddress = encodeAddressToChain(
-                  item.address,
-                  activeChain,
-                );
+                let activeChainAddress = item.address;
+                if (isPolkadotAddress(item.address)) {
+                  activeChainAddress = encodeAddressToChain(
+                    item.address,
+                    activeChain,
+                  );
+                }
 
                 return (
                   <AddressItem

@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { useState } from "react";
 import Avatar from "./avatar";
 import { encodeAddressToChain } from "../services/address";
-import { nodes } from "../utils/constants";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import { addressEllipsis } from "../utils";
-import { useChain } from "../context/chain";
+import { useChainSettings } from "../context/chain";
+import { normalizeAddress } from "next-common/utils/address";
 
 const NameWrapper = styled.div`
   flex-grow: 1;
@@ -23,39 +23,38 @@ const NameWrapper = styled.div`
 `;
 
 export default function Account({ account }) {
-  const chain = useChain();
+  const settings = useChainSettings();
   const [identity, setIdentity] = useState(null);
+
+  const address = normalizeAddress(account?.address);
+
   useEffect(() => {
     setIdentity(null);
-    if (account.address) {
-      const identity = nodes.find((n) => n.value === chain)?.identity;
-      if (!identity) return;
-
+    if (account?.address) {
       fetchIdentity(
-        identity,
-        encodeAddressToChain(account.address, identity),
+        settings.identity,
+        encodeAddressToChain(account.address, settings.identity),
       ).then((identity) => setIdentity(identity));
     }
-  }, [account.address, chain]);
+  }, [account?.address, settings]);
 
   return (
     <>
-      <Avatar address={account.address} />
+      <Avatar address={address} />
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
             <div>
-              {addressEllipsis(encodeAddressToChain(account.address, chain))}
+              {addressEllipsis(address)}
             </div>
           </>
         ) : (
           <>
             <div>{account?.name}</div>
             <div>
-              {addressEllipsis(encodeAddressToChain(account.address, chain)) ??
-                "--"}
+              {addressEllipsis(address) ?? "--"}
             </div>
           </>
         )}

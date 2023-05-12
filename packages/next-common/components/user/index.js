@@ -4,14 +4,14 @@ import { fetchIdentity } from "../../services/identity";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Identity from "../Identity";
-import { addressEllipsis } from "../../utils";
+import { addressEllipsis, isKeyRegisteredUser } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Link from "next/link";
 import { useChainSettings } from "../../context/chain";
-import { encodeAddress } from "@polkadot/keyring";
+import { encodeAddressToChain } from "next-common/services/address";
 
 const Wrapper = styled(Flex)`
   a {
@@ -123,14 +123,16 @@ function User({
 }) {
   const settings = useChainSettings();
   const address = add ?? user?.address;
+  const isKeyUser = isKeyRegisteredUser(user);
   const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     setIdentity(null);
     if (address) {
-      fetchIdentity(settings.identity, encodeAddress(address, settings.ss58Format)).then(
-        (identity) => isMounted.current && setIdentity(identity),
-      );
+      fetchIdentity(
+        settings.identity,
+        encodeAddressToChain(address, settings.identity),
+      ).then((identity) => isMounted.current && setIdentity(identity));
     }
   }, [address, settings]);
 
@@ -145,13 +147,13 @@ function User({
 
   const elmUsernameOrAddr = (
     <Username fontSize={fontSize} color={color}>
-      {(!user?.publicKey && user?.username) || addressEllipsis(address)}
+      {(!isKeyUser && user?.username) || addressEllipsis(address)}
     </Username>
   );
 
   const addressWithoutIdentity =
     maxWidth && !noTooltip ? (
-      <Tooltip content={(!user?.publicKey && user?.username) || address}>
+      <Tooltip content={(!isKeyUser && user?.username) || address}>
         <div>{elmUsernameOrAddr}</div>
       </Tooltip>
     ) : (
@@ -184,7 +186,7 @@ function User({
         </AvatarWrapper>
       )}
       <Link href={`/user/${address ?? user?.username}`} passHref legacyBehavior>
-        <LinkWrapper color={color} onClick={e => e.stopPropagation()}>
+        <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
           {address ? (
             identity && identity?.info?.status !== "NO_ID" ? (
               <Identity

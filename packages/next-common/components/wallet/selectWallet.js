@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { WALLETS } from "../../utils/consts/connect";
+import { getWallets } from "../../utils/consts/connect";
 import styled, { css } from "styled-components";
 import Flex from "../styled/flex";
 import useIsMounted from "../../utils/hooks/useIsMounted";
@@ -7,6 +7,7 @@ import Loading from "../loading";
 import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
+import { useChainSettings } from "next-common/context/chain";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -138,13 +139,14 @@ export default function SelectWallet({
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
+  const { chainType } = useChainSettings();
 
   useEffect(() => {
     if (!injectedWeb3) {
       return;
     }
 
-    for (let wallet of WALLETS) {
+    for (let wallet of getWallets()) {
       if (injectedWeb3[wallet.extensionName]) {
         return;
       }
@@ -159,7 +161,7 @@ export default function SelectWallet({
       const polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
 
       await web3Enable("subsquare");
-      const extensionAccounts = await polkadotWeb3Accounts();
+      const extensionAccounts = await polkadotWeb3Accounts(chainType);
       const accounts = extensionAccounts.map((item) => {
         return {
           ...item,
@@ -176,7 +178,7 @@ export default function SelectWallet({
         }
       }
     })();
-  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, isMounted]);
+  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, isMounted, chainType]);
 
   const loadAccounts = useCallback(
     async (selectedWallet) => {
@@ -189,15 +191,17 @@ export default function SelectWallet({
       try {
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
-        const extensionAccounts = await wallet.accounts?.get();
-        const excludeEthExtensionAccounts = extensionAccounts?.filter(
-          (acc) => acc.type !== "ethereum",
-        );
+        let extensionAccounts = await wallet.accounts?.get();
+        if (chainType === "ethereum") {
+          extensionAccounts = extensionAccounts.filter((acc) => acc.type === "ethereum");
+        } else {
+          extensionAccounts = extensionAccounts.filter((acc) => acc.type !== "ethereum");
+        }
 
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
           setWallet(wallet);
-          setAccounts(excludeEthExtensionAccounts);
+          setAccounts(extensionAccounts);
         }
 
         onAccessGranted && onAccessGranted();
@@ -216,6 +220,7 @@ export default function SelectWallet({
       setWallet,
       onAccessGranted,
       isMounted,
+      chainType,
     ],
   );
 
@@ -229,7 +234,7 @@ export default function SelectWallet({
 
   return (
     <WalletOptions>
-      {WALLETS.map((wallet, index) => {
+      {getWallets().map((wallet, index) => {
         return (
           <Wallet
             key={index}

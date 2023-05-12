@@ -10,9 +10,11 @@ import { useUser } from "../../context/user";
 
 export default function SettingsLayout({ children, seoInfo }) {
   const user = useUser();
-  const menu = isKeyRegisteredUser(user)
-    ? settingMenuOfKeyAccount
-    : settingMenu;
+
+  let menu = settingMenu;
+  if (isKeyRegisteredUser(user)) {
+    menu = settingMenuOfKeyAccount;
+  }
 
   return (
     <BaseLayout seoInfo={seoInfo} left={<Menu menu={menu} />}>

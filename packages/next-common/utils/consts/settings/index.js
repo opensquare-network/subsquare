@@ -24,6 +24,7 @@ import litentry from "./litentry";
 import westendCollectives from "./westendCollectives";
 import westend from "./westend";
 import collectives from "./collectives";
+import darwinia2 from "./darwinia2";
 
 const settingsMap = {
   polkadot,
@@ -31,27 +32,28 @@ const settingsMap = {
   acala,
   altair,
   basilisk,
-  hydradx,
   bifrost,
   calamari,
   centrifuge,
+  collectives,
   crab,
   crust,
+  darwinia2,
+  hydradx,
   interlay,
   karura,
   khala,
   kintsugi,
-  litmus,
   litentry,
+  litmus,
   phala,
   polkadex,
   turing,
   zeitgeist,
   rococo,
-  ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
   westend,
   "westend-collectives": westendCollectives,
-  collectives,
+  ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
 export default function getChainSettings(chain) {
