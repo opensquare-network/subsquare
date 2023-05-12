@@ -45,7 +45,7 @@ export default function AddressTrendChart({ turnout }) {
               },
               label(item) {
                 const raw = item.raw;
-                return `${item.dataset.label}: ≈${abbreviateBigNumber(
+                return `${item.dataset.label}: ${abbreviateBigNumber(
                   raw,
                 )}`;
               },
