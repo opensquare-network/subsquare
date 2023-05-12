@@ -32,6 +32,7 @@ import { useScreenSize } from "../utils/hooks/useScreenSize";
 import LinkInfo from "./styled/linkInfo";
 import Link from "next/link";
 import PreparingCountdown from "./gov2/postList/preparingCountdown";
+import { getDemocracyStateArgs } from "../utils/democracy/result";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -164,6 +165,8 @@ export default function Post({ data, href, type }) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
   } else if (isGov2Referendum) {
     stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
+  } else if (businessCategory.democracyReferenda === type) {
+    stateArgs = getDemocracyStateArgs(data.onchainData.state, data.onchainData.timeline);
   }
 
   const duration = useDuration(data.time);

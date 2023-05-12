@@ -35,6 +35,7 @@ const treasury = {
         Chains.zeitgeist,
         Chains.centrifuge,
         Chains.altair,
+        Chains.darwinia2,
       ],
       icon: (
         <MenuIconWrapper>
