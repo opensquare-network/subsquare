@@ -87,6 +87,9 @@ function useOptions(userOptions) {
  */
 export default function BarChart({ data, options: userOptions = {} }) {
   const options = useOptions(userOptions);
+  const legendItems = data?.datasets?.filter?.(
+    (i) => i.label !== "placeholder" || i.backgroundColor !== "transparent",
+  );
 
   return (
     <Wrapper>
@@ -95,7 +98,7 @@ export default function BarChart({ data, options: userOptions = {} }) {
       </ChartWrapper>
 
       <Legend>
-        {data?.datasets?.map?.((item) => (
+        {legendItems.map?.((item) => (
           <LegendItem key={item.label} color={item.backgroundColor}>
             {item.label}
           </LegendItem>
