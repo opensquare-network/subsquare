@@ -49,19 +49,19 @@ export default function VoteTrendChart({ turnout, delegated }) {
       {
         categoryPercentage,
         barPercentage,
-        label: "Direct Votes",
-        data: turnout.map((item) => toPrecisionNumber(item.votes, decimals) - toPrecisionNumber(item.delegationVotes, decimals)),
-        backgroundColor: votesColor,
-        stack: "Votes",
-      },
-      {
-        categoryPercentage,
-        barPercentage,
         label: "Delegation Capital",
         data: turnout.map((item) => toPrecisionNumber(item.delegationCapital, decimals)),
         backgroundColor: delegatedColor,
         stack: "Capital",
         legend: false,
+      },
+      {
+        categoryPercentage,
+        barPercentage,
+        label: "Direct Votes",
+        data: turnout.map((item) => toPrecisionNumber(item.votes, decimals) - toPrecisionNumber(item.delegationVotes, decimals)),
+        backgroundColor: votesColor,
+        stack: "Votes",
       },
       {
         categoryPercentage,
@@ -91,6 +91,9 @@ export default function VoteTrendChart({ turnout, delegated }) {
       data={data}
       customLegend={customLegend}
       options={{
+        interaction: {
+          mode: "x",
+        },
         scales: {
           x: {
             stacked: true,

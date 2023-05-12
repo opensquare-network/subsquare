@@ -13,7 +13,7 @@ export default function TurnoutPercentageChartChart({ turnout }) {
       categoryPercentage,
       barPercentage,
       label: "Turnout Percentage",
-      data: turnout.map((item) => item.percentage),
+      data: turnout.map((item) => item.percentage * 100),
       backgroundColor: "rgba(104, 72, 255, 0.4)",
     },
   ];
@@ -44,7 +44,7 @@ export default function TurnoutPercentageChartChart({ turnout }) {
               },
               label(item) {
                 const raw = item.raw;
-                return `${item.dataset.label}: ${raw}%`;
+                return `${item.dataset.label}: ${raw.toFixed(2)}%`;
               },
             },
           },
