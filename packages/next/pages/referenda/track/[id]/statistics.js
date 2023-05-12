@@ -7,33 +7,41 @@ import { ssrNextApi } from "next-common/services/nextApi";
 import startCase from "lodash.startcase";
 import TrackStatistics from "next-common/components/statistics/track";
 
-export default withLoginUserRedux(({ track, turnout }) => {
-  const seoInfo = {
-    title: "OpenGov Statistics",
-    desc: "OpenGov Statistics",
-  };
+export default withLoginUserRedux(
+  ({ track, turnout, tracks, fellowshipTracks }) => {
+    const seoInfo = {
+      title: "OpenGov Statistics",
+      desc: "OpenGov Statistics",
+    };
 
-  return (
-    <HomeLayout seoInfo={seoInfo}>
-      <BreadcrumbWrapper>
-        <Breadcrumb items={[
-          {
-            path: "/referenda",
-            content: "Referenda",
-          },
-          {
-            path: `/referenda/track/${track.id}`,
-            content: `#${track.id} ${startCase(track.name)}`,
-          },
-          {
-            content: "Statistics",
-          },
-        ]} />
-      </BreadcrumbWrapper>
-      <TrackStatistics track={track} turnout={turnout} />
-    </HomeLayout>
-  );
-});
+    return (
+      <HomeLayout
+        seoInfo={seoInfo}
+        tracks={tracks}
+        fellowshipTracks={fellowshipTracks}
+      >
+        <BreadcrumbWrapper>
+          <Breadcrumb
+            items={[
+              {
+                path: "/referenda",
+                content: "Referenda",
+              },
+              {
+                path: `/referenda/track/${track.id}`,
+                content: `#${track.id} ${startCase(track.name)}`,
+              },
+              {
+                content: "Statistics",
+              },
+            ]}
+          />
+        </BreadcrumbWrapper>
+        <TrackStatistics track={track} turnout={turnout} />
+      </HomeLayout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
@@ -51,7 +59,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
     return to404();
   }
 
-  const { result: turnout } = await ssrNextApi.fetch(`statistics/referenda/tracks/${id}/turnout`);
+  const { result: turnout } = await ssrNextApi.fetch(
+    `statistics/referenda/tracks/${id}/turnout`
+  );
 
   return {
     props: {
