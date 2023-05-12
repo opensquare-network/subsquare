@@ -6,6 +6,7 @@ import TurnoutPercentageChart from "./turnoutPercentageChart";
 import VoteTrendChart from "./voteTrendChart";
 import TrackReferendumSummary from "./summary";
 import AddressTrendChart from "./addressTrendChart";
+import DelegatedCheckBox from "./delegatedCheckBox";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,10 +37,20 @@ const Header = styled.div`
 `;
 
 export default function TrackStatistics({ turnout }) {
+  const [delegatedChecked, setDelegatedChecked] = React.useState(false);
+
   const voteCharts = [
     {
       name: "Vote Trend",
-      content: <VoteTrendChart turnout={turnout} />,
+      content: (
+        <VoteTrendChart turnout={turnout} delegated={delegatedChecked} />
+      ),
+      extra: (
+        <DelegatedCheckBox
+          checked={delegatedChecked}
+          setChecked={setDelegatedChecked}
+        />
+      ),
     },
     {
       name: "Addr Trend",

@@ -42,7 +42,6 @@ function useOptions(userOptions) {
       tooltip: {
         position: "average",
         displayColors: false,
-        xAlign: "left",
       },
     },
     scales: {
@@ -78,7 +77,11 @@ function useOptions(userOptions) {
  * @param {Object} props
  * @param {import("react-chartjs-2").ChartProps} props.options
  */
-export default function BarChart({ data, options: userOptions = {} }) {
+export default function BarChart({
+  data,
+  noLegend,
+  options: userOptions = {},
+}) {
   const options = useOptions(userOptions);
 
   return (
@@ -87,13 +90,15 @@ export default function BarChart({ data, options: userOptions = {} }) {
         <Bar data={data} options={options} />
       </ChartWrapper>
 
-      <Legend>
-        {data?.datasets?.map?.((item) => (
-          <LegendItem key={item.label} color={item.backgroundColor}>
-            {item.label}
-          </LegendItem>
-        ))}
-      </Legend>
+      {!noLegend && (
+        <Legend>
+          {data?.datasets?.map?.((item) => (
+            <LegendItem key={item.label} color={item.backgroundColor}>
+              {item.label}
+            </LegendItem>
+          ))}
+        </Legend>
+      )}
     </Wrapper>
   );
 }

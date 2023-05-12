@@ -23,11 +23,10 @@ const TabTitle = styled(TitleContainer)`
 
 export default function PageTabs({ tabs }) {
   const [activeTab, setActiveTab] = useState(tabs?.[0]?.name);
-  const tabHeaders = (tabs || []).map(tab => ({
+  const tabHeaders = (tabs || []).map((tab) => ({
     value: tab.name,
-    content: (
-      <TabTitle active={activeTab === tab.name}>{tab.name}</TabTitle>
-    ),
+    content: <TabTitle active={activeTab === tab.name}>{tab.name}</TabTitle>,
+    extra: tab.extra,
   }));
 
   let list = null;
@@ -40,7 +39,11 @@ export default function PageTabs({ tabs }) {
 
   return (
     <Wrapper>
-      <TabHeaders tabs={tabHeaders} setActiveTab={setActiveTab} />
+      <TabHeaders
+        tabs={tabHeaders}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
       <ListWrapper>{list}</ListWrapper>
     </Wrapper>
   );

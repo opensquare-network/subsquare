@@ -8,14 +8,21 @@ import { useChainSettings } from "next-common/context/chain";
 export default function VoteTrendChart({ turnout }) {
   const { decimals, symbol } = useChainSettings();
 
+  const categoryPercentage = 0.5;
+  const barPercentage = 0.7;
+
   const labels = turnout.map((item) => item.referendumIndex);
   const datasets = [
     {
+      categoryPercentage,
+      barPercentage,
       label: "Capital",
       data: turnout.map((item) => toPrecisionNumber(item.support, decimals)),
       backgroundColor: "rgba(15, 111, 255, 0.4)",
     },
     {
+      categoryPercentage,
+      barPercentage,
       label: "Votes",
       data: turnout.map((item) => toPrecisionNumber(item.votes, decimals)),
       backgroundColor: "rgba(255, 152, 0, 0.4)",
