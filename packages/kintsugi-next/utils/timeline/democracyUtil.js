@@ -56,7 +56,7 @@ export function getDemocracyTimelineData(
   return timeline.map((item) => ({
     time: formatTime(item.indexer.blockTime),
     indexer: item.indexer,
-    status: getTimelineStatus(type, item.method ?? item.name),
+    status: getTimelineStatus(type, item.method ?? item.name, item.args),
     data: getTimelineData(item.args, item.method ?? item.name),
   }));
 }
