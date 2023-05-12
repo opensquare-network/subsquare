@@ -30,7 +30,6 @@ function useOptions(userOptions) {
    * @type {import("react-chartjs-2").ChartProps}
    */
   const options = {
-    indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
@@ -43,7 +42,6 @@ function useOptions(userOptions) {
       tooltip: {
         position: "average",
         displayColors: false,
-        xAlign: "left",
       },
     },
     scales: {
@@ -51,28 +49,22 @@ function useOptions(userOptions) {
         border: {
           display: false,
         },
-        ticks: {
-          display: false,
-        },
         grid: {
           display: false,
+        },
+        ticks: {
+          color: theme.textTertiary,
         },
       },
       y: {
         border: {
           display: false,
         },
-        ticks: {
-          font: {
-            size: 12,
-            weight: 500,
-            style: "normal",
-            lineHeight: "16px",
-          },
-          color: theme.textPrimary,
-        },
         grid: {
           display: false,
+        },
+        ticks: {
+          color: theme.textTertiary,
         },
       },
     },
@@ -85,7 +77,11 @@ function useOptions(userOptions) {
  * @param {Object} props
  * @param {import("react-chartjs-2").ChartProps} props.options
  */
-export default function BarChart({ data, options: userOptions = {} }) {
+export default function BarChart({
+  data,
+  noLegend,
+  options: userOptions = {},
+}) {
   const options = useOptions(userOptions);
 
   return (
@@ -94,18 +90,20 @@ export default function BarChart({ data, options: userOptions = {} }) {
         <Bar data={data} options={options} />
       </ChartWrapper>
 
-      <Legend>
-        {data?.datasets?.map?.((item) => {
-          if (item.legend === false) {
-            return;
-          }
-          return (
-            <LegendItem key={item.label} color={item.backgroundColor}>
-              {item.label}
-            </LegendItem>
-          );
-        })}
-      </Legend>
+      {!noLegend && (
+        <Legend>
+          {data?.datasets?.map?.((item) => {
+            if (item.legend === false) {
+              return;
+            }
+            return (
+              <LegendItem key={item.label} color={item.backgroundColor}>
+                {item.label}
+              </LegendItem>
+            );
+          })}
+        </Legend>
+      )}
     </Wrapper>
   );
 }
