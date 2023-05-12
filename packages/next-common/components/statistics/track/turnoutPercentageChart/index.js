@@ -28,6 +28,13 @@ export default function TurnoutPercentageChartChart({ turnout }) {
       data={data}
       noLegend={true}
       options={{
+        scales: {
+          y: {
+            ticks: {
+              callback: (val) => `${val}%`,
+            },
+          },
+        },
         plugins: {
           tooltip: {
             callbacks: {
@@ -37,7 +44,7 @@ export default function TurnoutPercentageChartChart({ turnout }) {
               },
               label(item) {
                 const raw = item.raw;
-                return `${item.dataset.label}: ${raw * 100}%`;
+                return `${item.dataset.label}: ${raw}%`;
               },
             },
           },

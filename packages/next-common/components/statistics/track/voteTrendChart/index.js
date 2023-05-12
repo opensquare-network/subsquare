@@ -70,6 +70,9 @@ export default function VoteTrendChart({ turnout, delegated }) {
           },
           y: {
             stacked: true,
+            ticks: {
+              callback: (val) => abbreviateBigNumber(val),
+            },
           },
         },
         plugins: {
