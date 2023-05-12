@@ -12,9 +12,10 @@ import startCase from "lodash.startcase";
 import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 import { to404 } from "next-common/utils/serverSideUtil";
+import StatisticLinkButton from "components/statisticsLinkButton";
 
 export default withLoginUserRedux(
-  ({ posts, title, tracks, fellowshipTracks, summary, period }) => {
+  ({ track, posts, title, tracks, fellowshipTracks, summary, period }) => {
     const summaryComponent = (
       <Gov2TrackSummary
         summary={summary}
@@ -30,6 +31,7 @@ export default withLoginUserRedux(
         tracks={tracks}
         fellowshipTracks={fellowshipTracks}
         summary={summaryComponent}
+        topRightCorner={<StatisticLinkButton href={`/referenda/track/${track.id}/statistics`} />}
       />
     );
   }
@@ -63,6 +65,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
+      track: track ?? null,
       posts: posts ?? EmptyList,
       title: "Referenda " + startCase(track.name),
       tracks: tracks ?? [],
