@@ -13,13 +13,13 @@ export default function TrackStatistics({
   return (
     <>
       <AllVotesStatistics turnout={turnout} />
+      <TurnoutStatistics turnout={turnout} />
       <DemocracyStatistics
         apiRoot={`statistics/referenda/tracks/${track.id}`}
         delegatee={delegatee}
         delegators={delegators}
         summary={summary}
       />
-      <TurnoutStatistics turnout={turnout} />
     </>
   );
 }
