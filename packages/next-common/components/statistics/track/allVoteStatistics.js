@@ -6,6 +6,8 @@ import VoteTrendChart from "./voteTrendChart";
 import TrackReferendumSummary from "./summary";
 import AddressTrendChart from "./addressTrendChart";
 import DelegatedCheckBox from "./delegatedCheckBox";
+import CheckAllCheckBox from "./checkAllCheckBox";
+import Flex from "next-common/components/styled/flex";
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,6 +39,20 @@ const Header = styled.div`
 
 export default function AllVotesStatistics({ turnout, minWidth }) {
   const [delegatedChecked, setDelegatedChecked] = React.useState(true);
+  const [checkAll, setCheckAll] = React.useState(true);
+
+  const extra = (
+    <Flex style={{ gap: 16 }}>
+      <CheckAllCheckBox
+        checked={checkAll}
+        setChecked={setCheckAll}
+      />
+      <DelegatedCheckBox
+        checked={delegatedChecked}
+        setChecked={setDelegatedChecked}
+      />
+    </Flex>
+  );
 
   const voteCharts = [
     {
@@ -45,19 +61,15 @@ export default function AllVotesStatistics({ turnout, minWidth }) {
         <VoteTrendChart
           turnout={turnout}
           delegated={delegatedChecked}
-          minWidth={minWidth}
+          minWidth={checkAll ? 0 : minWidth}
         />
       ),
-      extra: (
-        <DelegatedCheckBox
-          checked={delegatedChecked}
-          setChecked={setDelegatedChecked}
-        />
-      ),
+      extra,
     },
     {
       name: "Addr Trend",
-      content: <AddressTrendChart turnout={turnout} minWidth={minWidth} />,
+      content: <AddressTrendChart turnout={turnout} delegated={delegatedChecked} minWidth={checkAll ? 0 : minWidth} />,
+      extra,
     },
   ];
 

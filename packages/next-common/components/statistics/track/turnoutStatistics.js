@@ -3,6 +3,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import styled from "styled-components";
 import PageTabs from "next-common/components/pageTabs";
 import TurnoutPercentageChart from "./turnoutPercentageChart";
+import CheckAllCheckBox from "./checkAllCheckBox";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,10 +34,19 @@ const Header = styled.div`
 `;
 
 export default function TurnoutStatistics({ turnout, minWidth }) {
+  const [checkAll, setCheckAll] = React.useState(true);
+  const extra = (
+    <CheckAllCheckBox
+      checked={checkAll}
+      setChecked={setCheckAll}
+    />
+  );
+
   const charts = [
     {
       name: "Turnout Pct.",
-      content: <TurnoutPercentageChart turnout={turnout} minWidth={minWidth} />,
+      content: <TurnoutPercentageChart turnout={turnout} minWidth={checkAll ? 0 : minWidth} />,
+      extra,
     },
   ];
 

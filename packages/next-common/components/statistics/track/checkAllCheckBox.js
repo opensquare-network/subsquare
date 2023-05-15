@@ -14,11 +14,11 @@ const Text = styled.span`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function DelegatedCheckBox({ setChecked, checked }) {
+export default function CheckAllCheckBox({ setChecked, checked }) {
   return (
     <Wrapper onClick={() => setChecked(!checked)}>
       <CheckBox checked={checked} />
-      <Text>Delegated</Text>
+      <Text>Check all</Text>
     </Wrapper>
   );
 }
