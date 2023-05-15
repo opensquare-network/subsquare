@@ -32,11 +32,11 @@ const Header = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function TurnoutStatistics({ turnout }) {
+export default function TurnoutStatistics({ turnout, minWidth }) {
   const charts = [
     {
       name: "Turnout Pct.",
-      content: <TurnoutPercentageChart turnout={turnout} />,
+      content: <TurnoutPercentageChart turnout={turnout} minWidth={minWidth} />,
     },
   ];
 
