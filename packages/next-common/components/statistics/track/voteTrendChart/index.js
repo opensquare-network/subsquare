@@ -5,7 +5,7 @@ import BarChart from "../barChart";
 import { abbreviateBigNumber, toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function VoteTrendChart({ turnout, delegated }) {
+export default function VoteTrendChart({ turnout, delegated, minWidth }) {
   const { decimals, symbol } = useChainSettings();
 
   const categoryPercentage = 0.5;
@@ -21,7 +21,9 @@ export default function VoteTrendChart({ turnout, delegated }) {
       categoryPercentage,
       barPercentage,
       label: "Capital",
-      data: turnout.map((item) => toPrecisionNumber(item.totalCapital, decimals)),
+      data: turnout.map((item) =>
+        toPrecisionNumber(item.totalCapital, decimals),
+      ),
       backgroundColor: capitalColor,
       stack: "Capital",
     },
@@ -42,7 +44,9 @@ export default function VoteTrendChart({ turnout, delegated }) {
         categoryPercentage,
         barPercentage,
         label: "Direct Capital",
-        data: turnout.map((item) => toPrecisionNumber(item.directCapital, decimals)),
+        data: turnout.map((item) =>
+          toPrecisionNumber(item.directCapital, decimals),
+        ),
         backgroundColor: capitalColor,
         stack: "Capital",
       },
@@ -50,7 +54,9 @@ export default function VoteTrendChart({ turnout, delegated }) {
         categoryPercentage,
         barPercentage,
         label: "Delegation Capital",
-        data: turnout.map((item) => toPrecisionNumber(item.delegationCapital, decimals)),
+        data: turnout.map((item) =>
+          toPrecisionNumber(item.delegationCapital, decimals),
+        ),
         backgroundColor: delegatedColor,
         stack: "Capital",
         legend: false,
@@ -59,7 +65,11 @@ export default function VoteTrendChart({ turnout, delegated }) {
         categoryPercentage,
         barPercentage,
         label: "Direct Votes",
-        data: turnout.map((item) => toPrecisionNumber(item.votes, decimals) - toPrecisionNumber(item.delegationVotes, decimals)),
+        data: turnout.map(
+          (item) =>
+            toPrecisionNumber(item.votes, decimals) -
+            toPrecisionNumber(item.delegationVotes, decimals),
+        ),
         backgroundColor: votesColor,
         stack: "Votes",
       },
@@ -67,7 +77,9 @@ export default function VoteTrendChart({ turnout, delegated }) {
         categoryPercentage,
         barPercentage,
         label: "Delegation Votes",
-        data: turnout.map((item) => toPrecisionNumber(item.delegationVotes, decimals)),
+        data: turnout.map((item) =>
+          toPrecisionNumber(item.delegationVotes, decimals),
+        ),
         backgroundColor: delegatedColor,
         stack: "Votes",
         legend: false,
@@ -88,6 +100,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
 
   return (
     <BarChart
+      minWidth={minWidth}
       data={data}
       customLegend={customLegend}
       options={{

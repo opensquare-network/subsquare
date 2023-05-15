@@ -4,7 +4,7 @@ import React from "react";
 import BarChart from "../barChart";
 import { abbreviateBigNumber } from "next-common/utils";
 
-export default function AddressTrendChart({ turnout }) {
+export default function AddressTrendChart({ turnout, minWidth }) {
   const categoryPercentage = 0.5;
   const barPercentage = 0.4;
 
@@ -33,6 +33,7 @@ export default function AddressTrendChart({ turnout }) {
 
   return (
     <BarChart
+      minWidth={minWidth}
       data={data}
       options={{
         scales: {

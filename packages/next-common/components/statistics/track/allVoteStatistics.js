@@ -35,14 +35,18 @@ const Header = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function AllVotesStatistics({ turnout }) {
+export default function AllVotesStatistics({ turnout, minWidth }) {
   const [delegatedChecked, setDelegatedChecked] = React.useState(true);
 
   const voteCharts = [
     {
       name: "Vote Trend",
       content: (
-        <VoteTrendChart turnout={turnout} delegated={delegatedChecked} />
+        <VoteTrendChart
+          turnout={turnout}
+          delegated={delegatedChecked}
+          minWidth={minWidth}
+        />
       ),
       extra: (
         <DelegatedCheckBox
@@ -53,7 +57,7 @@ export default function AllVotesStatistics({ turnout }) {
     },
     {
       name: "Addr Trend",
-      content: <AddressTrendChart turnout={turnout} />,
+      content: <AddressTrendChart turnout={turnout} minWidth={minWidth} />,
     },
   ];
 

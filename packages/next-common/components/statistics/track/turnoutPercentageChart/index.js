@@ -3,7 +3,7 @@
 import React from "react";
 import BarChart from "../barChart";
 
-export default function TurnoutPercentageChartChart({ turnout }) {
+export default function TurnoutPercentageChartChart({ turnout, minWidth }) {
   const categoryPercentage = 0.5;
   const barPercentage = 0.4;
 
@@ -25,6 +25,7 @@ export default function TurnoutPercentageChartChart({ turnout }) {
 
   return (
     <BarChart
+      minWidth={minWidth}
       data={data}
       noLegend={true}
       options={{
