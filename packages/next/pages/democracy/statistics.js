@@ -16,8 +16,6 @@ export default withLoginUserRedux(
       desc: "Democracy Statistics",
     };
 
-    const minWidth = (turnout.length || 0) * 10;
-
     return (
       <HomeLayout
         seoInfo={seoInfo}
@@ -25,8 +23,8 @@ export default withLoginUserRedux(
         fellowshipTracks={fellowshipTracks}
       >
         <TitleContainer>Democracy Statistics</TitleContainer>
-        <AllVotesStatistics turnout={turnout} minWidth={`${minWidth}px`} />
-        <TurnoutStatistics turnout={turnout} minWidth={`${minWidth}px`} />
+        <AllVotesStatistics turnout={turnout} />
+        <TurnoutStatistics turnout={turnout} />
         <DemocracyStatistics
           delegatee={delegatee}
           delegators={delegators}

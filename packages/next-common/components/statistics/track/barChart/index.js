@@ -25,7 +25,7 @@ const ChartWrapper = styled.div`
   ${(p) =>
     p.minWidth &&
     css`
-      min-width: ${p.minWidth};
+      min-width: ${p.minWidth}px;
     `}
 `;
 

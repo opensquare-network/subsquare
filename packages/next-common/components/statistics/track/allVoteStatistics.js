@@ -37,9 +37,12 @@ const Header = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function AllVotesStatistics({ turnout, minWidth }) {
+export default function AllVotesStatistics({ turnout }) {
   const [delegatedChecked, setDelegatedChecked] = React.useState(true);
   const [checkAll, setCheckAll] = React.useState(true);
+
+  const voteTrendChartWidth = (turnout?.length || 0) * 18;
+  const addressTrendChartWidth = (turnout?.length || 0) * 10;
 
   const extra = (
     <Flex style={{ gap: 16 }}>
@@ -61,14 +64,14 @@ export default function AllVotesStatistics({ turnout, minWidth }) {
         <VoteTrendChart
           turnout={turnout}
           delegated={delegatedChecked}
-          minWidth={checkAll ? 0 : minWidth}
+          minWidth={checkAll ? 0 : voteTrendChartWidth}
         />
       ),
       extra,
     },
     {
       name: "Addr Trend",
-      content: <AddressTrendChart turnout={turnout} delegated={delegatedChecked} minWidth={checkAll ? 0 : minWidth} />,
+      content: <AddressTrendChart turnout={turnout} delegated={delegatedChecked} minWidth={checkAll ? 0 : addressTrendChartWidth} />,
       extra,
     },
   ];

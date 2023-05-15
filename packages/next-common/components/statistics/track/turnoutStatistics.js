@@ -33,7 +33,7 @@ const Header = styled.div`
   color: ${(p) => p.theme.textPrimary};
 `;
 
-export default function TurnoutStatistics({ turnout, minWidth }) {
+export default function TurnoutStatistics({ turnout }) {
   const [checkAll, setCheckAll] = React.useState(true);
   const extra = (
     <CheckAllCheckBox
@@ -41,6 +41,7 @@ export default function TurnoutStatistics({ turnout, minWidth }) {
       setChecked={setCheckAll}
     />
   );
+  const minWidth = (turnout.length || 0) * 10;
 
   const charts = [
     {
