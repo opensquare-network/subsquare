@@ -6,24 +6,30 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import ReferendaStatistics from "next-common/components/statistics/referenda";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks, tracksStats, delegatee }) => {
-  const seoInfo = {
-    title: "OpenGov Statistics",
-    desc: "OpenGov Statistics",
-  };
+export default withLoginUserRedux(
+  ({ tracks, fellowshipTracks, tracksStats, delegatee }) => {
+    const seoInfo = {
+      title: "OpenGov Statistics",
+      desc: "OpenGov Statistics",
+    };
 
-  return (
-    <HomeLayout seoInfo={seoInfo} tracks={tracks} fellowshipTracks={fellowshipTracks}>
-      <TitleContainer>OpenGov Statistics</TitleContainer>
-      <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
-    </HomeLayout>
-  );
-});
+    return (
+      <HomeLayout
+        seoInfo={seoInfo}
+        tracks={tracks}
+        fellowshipTracks={fellowshipTracks}
+      >
+        <TitleContainer>OpenGov Statistics</TitleContainer>
+        <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
+      </HomeLayout>
+    );
+  }
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: tracksStats }, { result: delegatee }] = await Promise.all([
-    ssrNextApi.fetch("statistics/referenda/tracks"),
-    ssrNextApi.fetch("statistics/referenda/delegatee", {
+    ssrNextApi.fetch("referenda/tracks"),
+    ssrNextApi.fetch("referenda/delegatee", {
       sort: JSON.stringify(["votes", "desc"]),
       pageSize: 25,
     }),

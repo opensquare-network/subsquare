@@ -49,10 +49,7 @@ function getSortParams(sortedColumn) {
   return { sort: JSON.stringify([colName, "desc"]) };
 }
 
-export default function Delegator({
-  delegators,
-  apiRoot = "statistics/democracy",
-}) {
+export default function Delegator({ delegators, apiRoot = "democracy" }) {
   const [delegatorsList, setDelegatorsList] = useState(delegators);
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
@@ -143,9 +140,7 @@ export default function Delegator({
           e.stopPropagation();
           e.preventDefault();
           fetchData(page, delegatorsList?.pageSize);
-          document
-            .getElementById("header")
-            .scrollIntoView({ block: "center" });
+          document.getElementById("header").scrollIntoView({ block: "center" });
         }}
       />
     </Wrapper>

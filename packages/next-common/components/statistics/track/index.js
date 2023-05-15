@@ -15,7 +15,7 @@ export default function TrackStatistics({
       <AllVotesStatistics turnout={turnout} />
       <TurnoutStatistics turnout={turnout} />
       <DemocracyStatistics
-        apiRoot={`statistics/referenda/tracks/${track.id}`}
+        apiRoot={`referenda/tracks/${track.id}`}
         delegatee={delegatee}
         delegators={delegators}
         summary={summary}

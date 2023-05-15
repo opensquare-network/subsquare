@@ -123,7 +123,7 @@ export default function DelegationTabList({ delegatee }) {
 
   useEffect(() => {
     nextApi
-      .fetch(`statistics/referenda/delegatee/${delegatee}/delegators`, {
+      .fetch(`referenda/delegatee/${delegatee}/delegators`, {
         ...getSortParams(sortedColumn),
         page,
         pageSize,
