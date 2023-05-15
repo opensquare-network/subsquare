@@ -50,7 +50,7 @@ function getSortParams(sortedColumn) {
 
 export default function DemocracyDelegatee({
   delegatee,
-  apiRoot = "statistics/democracy",
+  apiRoot = "democracy",
 }) {
   const [delegateeList, setDelegateeList] = useState(delegatee);
   const [showPopup, setShowPopup] = useState(false);
@@ -156,9 +156,7 @@ export default function DemocracyDelegatee({
           e.stopPropagation();
           e.preventDefault();
           fetchData(page, delegateeList?.pageSize);
-          document
-            .getElementById("header")
-            .scrollIntoView({ block: "center" });
+          document.getElementById("header").scrollIntoView({ block: "center" });
         }}
       />
       {showPopup && (

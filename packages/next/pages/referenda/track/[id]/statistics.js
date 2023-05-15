@@ -80,16 +80,16 @@ export const getServerSideProps = withLoginUser(async (context) => {
     { result: delegators },
     { result: summary },
   ] = await Promise.all([
-    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/turnout`),
-    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/delegatee`, {
+    ssrNextApi.fetch(`referenda/tracks/${id}/turnout`),
+    ssrNextApi.fetch(`referenda/tracks/${id}/delegatee`, {
       sort: JSON.stringify(["delegatedVotes", "desc"]),
       pageSize: 25,
     }),
-    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/delegators`, {
+    ssrNextApi.fetch(`referenda/tracks/${id}/delegators`, {
       sort: JSON.stringify(["votes", "desc"]),
       pageSize: 25,
     }),
-    ssrNextApi.fetch(`statistics/referenda/tracks/${id}/summary`),
+    ssrNextApi.fetch(`referenda/tracks/${id}/summary`),
   ]);
 
   return {

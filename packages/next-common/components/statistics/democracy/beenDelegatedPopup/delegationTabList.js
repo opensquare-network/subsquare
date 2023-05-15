@@ -57,7 +57,7 @@ function getSortParams(sortedColumn) {
 }
 
 export default function DelegationTabList({
-  apiRoot = "statistics/democracy",
+  apiRoot = "democracy",
   delegatee,
 }) {
   const [beenDelegatedList, setBeenDelegatedList] = useState(EmptyList);

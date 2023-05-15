@@ -109,7 +109,7 @@ export default function ReferendaDelegatee({ delegatee }) {
   const fetchData = useCallback(
     (page, pageSize) => {
       nextApi
-        .fetch("statistics/referenda/delegatee", {
+        .fetch("referenda/delegatee", {
           ...getSortParams(sortedColumn),
           page,
           pageSize,
