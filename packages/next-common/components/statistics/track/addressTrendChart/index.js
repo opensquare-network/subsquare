@@ -1,20 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useState } from "react";
 import BarChart from "../barChart";
 import { abbreviateBigNumber } from "next-common/utils";
+import ReferendaSlider from "../../RefereundaSlider";
 
-export default function AddressTrendChart({ turnout, delegated, minWidth }) {
+export default function AddressTrendChart({ turnout, delegated }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
+  const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
+  const [rangeFrom, setRangeFrom] = useState(Math.max(0, rangeTo - 100));
 
-  const labels = turnout.map((item) => item.referendumIndex);
+  const onSliderChange = useCallback(([from, to]) => {
+    setRangeFrom(from);
+    setRangeTo(to);
+  }, []);
+
+  const partialTurnout = turnout.slice(rangeFrom, rangeTo + 1);
+  const labels = partialTurnout.map((item) => item.referendumIndex);
   let datasets = [
     {
       categoryPercentage,
       barPercentage,
       label: "Direct",
-      data: turnout.map((item) => item.directAddresses),
+      data: partialTurnout.map((item) => item.directAddresses),
       backgroundColor: "rgba(76, 175, 80, 0.4)",
     },
   ];
@@ -25,7 +34,7 @@ export default function AddressTrendChart({ turnout, delegated, minWidth }) {
         categoryPercentage,
         barPercentage,
         label: "Delegated",
-        data: turnout.map((item) => item.delegationAddresses),
+        data: partialTurnout.map((item) => item.delegationAddresses),
         backgroundColor: "rgba(232, 31, 102, 0.4)",
       },
     ];
@@ -36,11 +45,23 @@ export default function AddressTrendChart({ turnout, delegated, minWidth }) {
     datasets,
   };
 
+  const slider = (
+    <ReferendaSlider
+      marginLeft={45}
+      turnout={turnout}
+      onSliderChange={onSliderChange}
+      defaultRange={[rangeFrom, rangeTo]}
+    />
+  );
+
   return (
     <BarChart
-      minWidth={minWidth}
+      slider={slider}
       data={data}
       options={{
+        animation: {
+          duration: 0,
+        },
         scales: {
           x: {
             stacked: true,
