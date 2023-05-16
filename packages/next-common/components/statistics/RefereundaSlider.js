@@ -5,6 +5,7 @@ export default function ReferendaSlider({
   marginLeft,
   turnout,
   onSliderChange,
+  defaultRange,
 }) {
   if (!turnout || turnout.length < 10) {
     return null;
@@ -17,6 +18,7 @@ export default function ReferendaSlider({
         max={turnout ? turnout.length - 1 : 0}
         onChange={onSliderChange}
         formatValue={(val) => turnout?.[val]?.referendumIndex}
+        defaultValue={defaultRange}
       />
     </div>
   );

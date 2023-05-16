@@ -8,8 +8,8 @@ import ReferendaSlider from "../../RefereundaSlider";
 
 export default function VoteTrendChart({ turnout, delegated }) {
   const { decimals, symbol } = useChainSettings();
-  const [rangeFrom, setRangeFrom] = useState(0);
-  const [rangeTo, setRangeTo] = useState(turnout?.length || 0);
+  const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
+  const [rangeFrom, setRangeFrom] = useState(Math.max(0, rangeTo - 100));
 
   const onSliderChange = useCallback(([from, to]) => {
     setRangeFrom(from);
@@ -114,6 +114,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
       marginLeft={45}
       turnout={turnout}
       onSliderChange={onSliderChange}
+      defaultRange={[rangeFrom, rangeTo]}
     />
   );
 
