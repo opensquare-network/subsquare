@@ -28,6 +28,9 @@ const StyledThumb = styled.div`
   &:focus-visible {
     outline: none;
   }
+  svg path {
+    stroke: ${p => p.theme.grey400Border};
+  }
 `;
 
 const StyledThumbValue = styled.div`
