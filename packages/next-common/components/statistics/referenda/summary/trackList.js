@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { p_12_normal } from "next-common/styles/componentCss";
 import { TrackColors } from "./colors";
 import startCase from "lodash.startcase";
+import Link from "next/link";
 
 const Box = styled.div`
   width: 10px;
@@ -27,6 +28,9 @@ const TrackItem = styled.div`
 const Name = styled.span`
   ${p_12_normal}
   color: ${(p) => p.theme.textPrimary};
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 const Count = styled.span`
@@ -49,7 +53,9 @@ export default function TrackList({ trackReferendaCounts }) {
         <TrackItem key={index}>
           <TrackName>
             <Box color={TrackColors[item.name]} />
-            <Name>{startCase(item.name)}</Name>
+            <Link href={`/referenda/track/${item.id}`}>
+              <Name>{startCase(item.name)}</Name>
+            </Link>
             {item.percent > 0 && <Count>{item.count}</Count>}
           </TrackName>
           {item.percent > 0 && <Count>{(item.percent * 100).toFixed(2)}%</Count>}
