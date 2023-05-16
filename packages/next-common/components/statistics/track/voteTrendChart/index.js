@@ -1,12 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useState } from "react";
 import BarChart from "../barChart";
 import { abbreviateBigNumber, toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
+import ReferendaSlider from "../../RefereundaSlider";
 
-export default function VoteTrendChart({ turnout, delegated, minWidth }) {
+export default function VoteTrendChart({ turnout, delegated }) {
   const { decimals, symbol } = useChainSettings();
+  const [rangeFrom, setRangeFrom] = useState(0);
+  const [rangeTo, setRangeTo] = useState(turnout?.length || 0);
+
+  const onSliderChange = useCallback(([from, to]) => {
+    setRangeFrom(from);
+    setRangeTo(to);
+  }, []);
 
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
@@ -15,13 +23,14 @@ export default function VoteTrendChart({ turnout, delegated, minWidth }) {
   const votesColor = "rgba(255, 152, 0, 0.4)";
   const delegatedColor = "rgba(232, 31, 102, 0.4)";
 
-  const labels = turnout.map((item) => item.referendumIndex);
+  const partialTurnout = turnout.slice(rangeFrom, rangeTo + 1);
+  const labels = partialTurnout.map((item) => item.referendumIndex);
   let datasets = [
     {
       categoryPercentage,
       barPercentage,
       label: "Capital",
-      data: turnout.map((item) =>
+      data: partialTurnout.map((item) =>
         toPrecisionNumber(item.totalCapital, decimals),
       ),
       backgroundColor: capitalColor,
@@ -31,7 +40,9 @@ export default function VoteTrendChart({ turnout, delegated, minWidth }) {
       categoryPercentage,
       barPercentage,
       label: "Votes",
-      data: turnout.map((item) => toPrecisionNumber(item.votes, decimals)),
+      data: partialTurnout.map((item) =>
+        toPrecisionNumber(item.votes, decimals),
+      ),
       backgroundColor: votesColor,
       stack: "Votes",
     },
@@ -44,7 +55,7 @@ export default function VoteTrendChart({ turnout, delegated, minWidth }) {
         categoryPercentage,
         barPercentage,
         label: "Direct Capital",
-        data: turnout.map((item) =>
+        data: partialTurnout.map((item) =>
           toPrecisionNumber(item.directCapital, decimals),
         ),
         backgroundColor: capitalColor,
@@ -54,7 +65,7 @@ export default function VoteTrendChart({ turnout, delegated, minWidth }) {
         categoryPercentage,
         barPercentage,
         label: "Delegation Capital",
-        data: turnout.map((item) =>
+        data: partialTurnout.map((item) =>
           toPrecisionNumber(item.delegationCapital, decimals),
         ),
         backgroundColor: delegatedColor,
@@ -65,7 +76,7 @@ export default function VoteTrendChart({ turnout, delegated, minWidth }) {
         categoryPercentage,
         barPercentage,
         label: "Direct Votes",
-        data: turnout.map(
+        data: partialTurnout.map(
           (item) =>
             toPrecisionNumber(item.votes, decimals) -
             toPrecisionNumber(item.delegationVotes, decimals),
@@ -77,7 +88,7 @@ export default function VoteTrendChart({ turnout, delegated, minWidth }) {
         categoryPercentage,
         barPercentage,
         label: "Delegation Votes",
-        data: turnout.map((item) =>
+        data: partialTurnout.map((item) =>
           toPrecisionNumber(item.delegationVotes, decimals),
         ),
         backgroundColor: delegatedColor,
@@ -98,43 +109,56 @@ export default function VoteTrendChart({ turnout, delegated, minWidth }) {
     datasets,
   };
 
-  return (
-    <BarChart
-      minWidth={minWidth}
-      data={data}
-      customLegend={customLegend}
-      options={{
-        interaction: {
-          mode: "x",
-        },
-        scales: {
-          x: {
-            stacked: true,
-          },
-          y: {
-            stacked: true,
-            ticks: {
-              callback: (val) => abbreviateBigNumber(val),
-            },
-          },
-        },
-        plugins: {
-          tooltip: {
-            callbacks: {
-              title(item) {
-                const index = item[0].dataIndex;
-                return `Referendum #${labels[index]}`;
-              },
-              label(item) {
-                const raw = item.raw;
-                return `${item.dataset.label}: ≈${abbreviateBigNumber(
-                  raw,
-                )} ${symbol}`;
-              },
-            },
-          },
-        },
-      }}
+  const slider = (
+    <ReferendaSlider
+      marginLeft={45}
+      turnout={turnout}
+      onSliderChange={onSliderChange}
     />
+  );
+
+  return (
+    <>
+      <BarChart
+        slider={slider}
+        data={data}
+        customLegend={customLegend}
+        options={{
+          animation: {
+            duration: 0,
+          },
+          interaction: {
+            mode: "x",
+          },
+          scales: {
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                callback: (val) => abbreviateBigNumber(val),
+              },
+            },
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                title(item) {
+                  const index = item[0].dataIndex;
+                  return `Referendum #${labels[index]}`;
+                },
+                label(item) {
+                  const raw = item.raw;
+                  return `${item.dataset.label}: ≈${abbreviateBigNumber(
+                    raw,
+                  )} ${symbol}`;
+                },
+              },
+            },
+          },
+        }}
+      />
+    </>
   );
 }

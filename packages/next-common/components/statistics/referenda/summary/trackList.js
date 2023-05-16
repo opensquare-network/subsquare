@@ -53,12 +53,14 @@ export default function TrackList({ trackReferendaCounts }) {
         <TrackItem key={index}>
           <TrackName>
             <Box color={TrackColors[item.name]} />
-            <Link href={`/referenda/track/${item.id}`}>
+            <Link href={`/referenda/track/${item.id}/statistics`}>
               <Name>{startCase(item.name)}</Name>
             </Link>
             {item.percent > 0 && <Count>{item.count}</Count>}
           </TrackName>
-          {item.percent > 0 && <Count>{(item.percent * 100).toFixed(2)}%</Count>}
+          {item.percent > 0 && (
+            <Count>{(item.percent * 100).toFixed(2)}%</Count>
+          )}
         </TrackItem>
       ))}
     </Wrapper>

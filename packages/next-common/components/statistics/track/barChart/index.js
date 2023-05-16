@@ -96,6 +96,7 @@ export default function BarChart({
   noLegend,
   options: userOptions = {},
   minWidth,
+  slider,
 }) {
   const options = useOptions(userOptions);
   const legendItems =
@@ -108,7 +109,7 @@ export default function BarChart({
           <Bar data={data} options={options} />
         </ChartWrapper>
       </ChartScrollWrapper>
-
+      {slider}
       {!noLegend && (
         <Legend>
           {legendItems?.map?.((item) => {

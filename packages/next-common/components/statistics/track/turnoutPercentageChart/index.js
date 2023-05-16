@@ -1,19 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useState } from "react";
 import BarChart from "../barChart";
+import ReferendaSlider from "../../RefereundaSlider";
 
-export default function TurnoutPercentageChartChart({ turnout, minWidth }) {
+export default function TurnoutPercentageChartChart({ turnout }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
+  const [rangeFrom, setRangeFrom] = useState(0);
+  const [rangeTo, setRangeTo] = useState(turnout?.length || 0);
 
-  const labels = turnout.map((item) => item.referendumIndex);
+  const onSliderChange = useCallback(([from, to]) => {
+    setRangeFrom(from);
+    setRangeTo(to);
+  }, []);
+
+  const partialTurnout = turnout.slice(rangeFrom, rangeTo + 1);
+  const labels = partialTurnout.map((item) => item.referendumIndex);
   const datasets = [
     {
       categoryPercentage,
       barPercentage,
       label: "Turnout Percentage",
-      data: turnout.map((item) => item.percentage * 100),
+      data: partialTurnout.map((item) => item.percentage * 100),
       backgroundColor: "rgba(104, 72, 255, 0.4)",
     },
   ];
@@ -23,12 +32,23 @@ export default function TurnoutPercentageChartChart({ turnout, minWidth }) {
     datasets,
   };
 
+  const slider = (
+    <ReferendaSlider
+      marginLeft={32}
+      turnout={turnout}
+      onSliderChange={onSliderChange}
+    />
+  );
+
   return (
     <BarChart
-      minWidth={minWidth}
+      slider={slider}
       data={data}
       noLegend={true}
       options={{
+        animation: {
+          duration: 0,
+        },
         scales: {
           y: {
             ticks: {
