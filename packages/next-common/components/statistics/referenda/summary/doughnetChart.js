@@ -50,7 +50,7 @@ export function DoughnutChart({ trackReferendaCounts }) {
         data: trackReferendaCounts.map(item => item.count),
         backgroundColor: trackReferendaCounts.map(item => TrackColors[item.name]),
         borderColor: trackReferendaCounts.map(item => TrackColors[item.name]),
-        borderWidth: 1,
+        borderWidth: 0,
         name: trackReferendaCounts.map(item => startCase(item.name)),
         percentage: trackReferendaCounts.map(item => `${(item.percent * 100).toFixed(2)}%`),
       },
