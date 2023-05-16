@@ -4,8 +4,8 @@ import React from "react";
 import BarChart from "../barChart";
 
 export default function TurnoutPercentageChartChart({ turnout, minWidth }) {
-  const categoryPercentage = 0.5;
-  const barPercentage = 0.4;
+  const categoryPercentage = 0.7;
+  const barPercentage = 0.7;
 
   const labels = turnout.map((item) => item.referendumIndex);
   const datasets = [

@@ -4,12 +4,12 @@ import React from "react";
 import BarChart from "../barChart";
 import { abbreviateBigNumber } from "next-common/utils";
 
-export default function AddressTrendChart({ turnout, minWidth }) {
-  const categoryPercentage = 0.5;
-  const barPercentage = 0.4;
+export default function AddressTrendChart({ turnout, delegated, minWidth }) {
+  const categoryPercentage = 0.7;
+  const barPercentage = 0.7;
 
   const labels = turnout.map((item) => item.referendumIndex);
-  const datasets = [
+  let datasets = [
     {
       categoryPercentage,
       barPercentage,
@@ -17,14 +17,19 @@ export default function AddressTrendChart({ turnout, minWidth }) {
       data: turnout.map((item) => item.directAddresses),
       backgroundColor: "rgba(76, 175, 80, 0.4)",
     },
-    {
-      categoryPercentage,
-      barPercentage,
-      label: "Delegated",
-      data: turnout.map((item) => item.delegationAddresses),
-      backgroundColor: "rgba(232, 31, 102, 0.4)",
-    },
   ];
+  if (delegated) {
+    datasets = [
+      ...datasets,
+      {
+        categoryPercentage,
+        barPercentage,
+        label: "Delegated",
+        data: turnout.map((item) => item.delegationAddresses),
+        backgroundColor: "rgba(232, 31, 102, 0.4)",
+      },
+    ];
+  }
 
   const data = {
     labels,

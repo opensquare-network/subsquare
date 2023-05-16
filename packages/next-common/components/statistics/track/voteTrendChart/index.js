@@ -8,7 +8,7 @@ import { useChainSettings } from "next-common/context/chain";
 export default function VoteTrendChart({ turnout, delegated, minWidth }) {
   const { decimals, symbol } = useChainSettings();
 
-  const categoryPercentage = 0.5;
+  const categoryPercentage = 0.7;
   const barPercentage = 0.7;
 
   const capitalColor = "rgba(15, 111, 255, 0.4)";
