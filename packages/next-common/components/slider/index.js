@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ReactSlider from "react-slider";
 import styled from "styled-components";
 import ThumbSVG from "./thumb.svg";
@@ -77,6 +77,11 @@ export default function Slider({
   defaultValue,
 }) {
   const Thumb = useThumb({ formatValue });
+  const [show, setShow] = useState(false);
+  useEffect(() => setShow(true), []);
+  if (!show) {
+    return null;
+  }
   return (
     <StyledSlider
       min={min}
