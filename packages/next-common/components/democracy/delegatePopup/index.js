@@ -5,7 +5,11 @@ import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { checkInputValue, emptyFunction, isSameAddress } from "next-common/utils";
+import {
+  checkInputValue,
+  emptyFunction,
+  isSameAddress,
+} from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
@@ -17,42 +21,6 @@ import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSignerAccount from "../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../popup/wrapper";
-import { isNumber, objectSpread } from "@polkadot/util";
-
-function makeSignOptions (api, partialOptions, extras) {
-  return objectSpread(
-    { blockHash: api.genesisHash, genesisHash: api.genesisHash },
-    partialOptions,
-    extras,
-    { runtimeVersion: api.runtimeVersion, signedExtensions: api.registry.signedExtensions, version: api.extrinsicType },
-  );
-}
-
-function makeEraOptions (api, registry, partialOptions, { header, mortalLength, nonce }) {
-  if (!header) {
-    if (partialOptions.era && !partialOptions.blockHash) {
-      throw new Error("Expected blockHash to be passed alongside non-immortal era options");
-    }
-
-    if (isNumber(partialOptions.era)) {
-      // since we have no header, it is immortal, remove any option overrides
-      // so we only supply the genesisHash and no era to the construction
-      delete partialOptions.era;
-      delete partialOptions.blockHash;
-    }
-
-    return makeSignOptions(api, partialOptions, { nonce });
-  }
-
-  return makeSignOptions(api, partialOptions, {
-    blockHash: header.hash,
-    era: registry.createTypeUnsafe("ExtrinsicEra", [{
-      current: header.number,
-      period: partialOptions.era || mortalLength,
-    }]),
-    nonce,
-  });
-}
 
 function PopupContent({
   extensionAccounts,
@@ -130,42 +98,20 @@ function PopupContent({
       bnVoteBalance.toString(),
     );
 
-    // Test sign tx
-    //----------------------------
-    const info = await api.derive.tx.signingInfo(signerAddress);
-    const header = info.header;
-    const eraOptions = makeEraOptions(api, api.registry, {}, info);
-    const payload = api.registry.createTypeUnsafe("SignerPayload", [objectSpread({}, eraOptions, {
-      address: signerAddress,
-      blockNumber: header ? header.number : 0,
-      method: tx.method,
-      version: tx.version,
-    })]);
-
-    const { web3FromSource } = await import("@polkadot/extension-dapp");
-    const wallet = await web3FromSource("polkadot-js");
-    console.log(payload.toPayload());
-    const { signature } = await wallet.signer.signPayload(payload.toPayload());
-    console.log({ signature });
-    //----------------------------
-
-    // eslint-disable-next-line no-constant-condition
-    if (false) {
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      setIsLoading(true);
-      await sendTx({
-        tx,
-        dispatch,
-        setLoading: setIsLoading,
-        onInBlock,
-        onClose,
-        signerAddress,
-        isMounted,
-      });
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
+
+    setIsLoading(true);
+    await sendTx({
+      tx,
+      dispatch,
+      setLoading: setIsLoading,
+      onInBlock,
+      onClose,
+      signerAddress,
+      isMounted,
+    });
   };
 
   return (
