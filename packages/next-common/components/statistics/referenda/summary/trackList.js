@@ -25,7 +25,7 @@ const TrackItem = styled.div`
   justify-content: space-between;
 `;
 
-const Name = styled.span`
+const Name = styled(Link)`
   ${p_12_normal}
   color: ${(p) => p.theme.textPrimary};
   :hover {
@@ -53,9 +53,9 @@ export default function TrackList({ trackReferendaCounts }) {
         <TrackItem key={index}>
           <TrackName>
             <Box color={TrackColors[item.name]} />
-            <Link href={`/referenda/track/${item.id}/statistics`}>
-              <Name>{startCase(item.name)}</Name>
-            </Link>
+            <Name href={`/referenda/track/${item.id}/statistics`}>
+              {startCase(item.name)}
+            </Name>
             {item.percent > 0 && <Count>{item.count}</Count>}
           </TrackName>
           {item.percent > 0 && (
