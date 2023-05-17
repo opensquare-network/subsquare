@@ -49,7 +49,7 @@ function getSortParams(sortedColumn) {
   return { sort: JSON.stringify([colName, "desc"]) };
 }
 
-export default function Delegator({ delegators }) {
+export default function Delegator({ delegators, apiRoot = "democracy" }) {
   const [delegatorsList, setDelegatorsList] = useState(delegators);
   const { decimals, voteSymbol, symbol } = useChainSettings();
 
@@ -76,7 +76,7 @@ export default function Delegator({ delegators }) {
   const fetchData = useCallback(
     (page, pageSize) => {
       nextApi
-        .fetch("statistics/democracy/delegators", {
+        .fetch(`${apiRoot}/delegators`, {
           ...getSortParams(sortedColumn),
           page,
           pageSize,
@@ -87,7 +87,7 @@ export default function Delegator({ delegators }) {
           }
         });
     },
-    [sortedColumn],
+    [sortedColumn, apiRoot],
   );
 
   useEffect(() => {
@@ -130,6 +130,7 @@ export default function Delegator({ delegators }) {
 
   return (
     <Wrapper>
+      <div id="header"></div>
       <ListWrapper>
         <StyledList columns={columns} rows={rows} />
       </ListWrapper>
@@ -139,7 +140,7 @@ export default function Delegator({ delegators }) {
           e.stopPropagation();
           e.preventDefault();
           fetchData(page, delegatorsList?.pageSize);
-          window.scrollTo(0, 0);
+          document.getElementById("header").scrollIntoView({ block: "center" });
         }}
       />
     </Wrapper>

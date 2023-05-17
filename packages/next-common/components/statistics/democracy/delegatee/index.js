@@ -7,7 +7,7 @@ import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
-import EnterSVG from "./enter.svg";
+import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
 import BeenDelegatedListPopup from "../beenDelegatedPopup";
 import { useChainSettings } from "next-common/context/chain";
@@ -48,7 +48,10 @@ function getSortParams(sortedColumn) {
   return { sort: JSON.stringify([colName, "desc"]) };
 }
 
-export default function DemocracyDelegatee({ delegatee }) {
+export default function DemocracyDelegatee({
+  delegatee,
+  apiRoot = "democracy",
+}) {
   const [delegateeList, setDelegateeList] = useState(delegatee);
   const [showPopup, setShowPopup] = useState(false);
   const [delegateeData, setDelegateeData] = useState();
@@ -85,7 +88,7 @@ export default function DemocracyDelegatee({ delegatee }) {
   const fetchData = useCallback(
     (page, pageSize) => {
       nextApi
-        .fetch("statistics/democracy/delegatee", {
+        .fetch(`${apiRoot}/delegatee`, {
           ...getSortParams(sortedColumn),
           page,
           pageSize,
@@ -96,7 +99,7 @@ export default function DemocracyDelegatee({ delegatee }) {
           }
         });
     },
-    [sortedColumn],
+    [sortedColumn, apiRoot],
   );
 
   useEffect(() => {
@@ -143,6 +146,7 @@ export default function DemocracyDelegatee({ delegatee }) {
 
   return (
     <Wrapper>
+      <div id="header"></div>
       <ListWrapper>
         <StyledList columns={columns} rows={rows} />
       </ListWrapper>
@@ -152,11 +156,12 @@ export default function DemocracyDelegatee({ delegatee }) {
           e.stopPropagation();
           e.preventDefault();
           fetchData(page, delegateeList?.pageSize);
-          window.scrollTo(0, 0);
+          document.getElementById("header").scrollIntoView({ block: "center" });
         }}
       />
       {showPopup && (
         <BeenDelegatedListPopup
+          apiRoot={apiRoot}
           setShow={setShowPopup}
           delegatee={delegateeData?.account}
           delegatedCapital={delegateeData?.delegatedCapital}

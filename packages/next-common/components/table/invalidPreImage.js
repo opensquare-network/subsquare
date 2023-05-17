@@ -10,7 +10,7 @@ const Wrapper = styled(Flex)`
   font-size: 14px;
   line-height: 140%;
   color: ${(props) => props.theme.textPrimary};
-  background-color: white;
+  background-color: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey200Border};
 `;
 

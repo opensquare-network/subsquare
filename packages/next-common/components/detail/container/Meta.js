@@ -16,6 +16,7 @@ import { hidden, inline_flex, items_center } from "../../../styles/tailwindcss";
 import { useDetailType } from "../../../context/page";
 import IpfsLink from "../../alliance/ipfsLink";
 import PostLabels from "../../postLabels";
+import { getDemocracyStateArgs } from "../../../utils/democracy/result";
 
 const FlexWrapper = styled(Flex)`
   justify-content: space-between;
@@ -54,7 +55,6 @@ export default function PostMeta() {
     [
       detailPageCategory.COUNCIL_MOTION,
       detailPageCategory.TECH_COMM_MOTION,
-      detailPageCategory.DEMOCRACY_REFERENDUM,
     ].includes(detailType)
   ) {
     stateArgs = getMotionStateArgs(post.onchainData.state);
@@ -65,6 +65,8 @@ export default function PostMeta() {
     ].includes(detailType)
   ) {
     stateArgs = getGov2ReferendumStateArgs(post.onchainData.state);
+  } else if (detailPageCategory.DEMOCRACY_REFERENDUM === detailType) {
+    stateArgs = getDemocracyStateArgs(post.onchainData.state, post.onchainData.timeline);
   }
 
   return (

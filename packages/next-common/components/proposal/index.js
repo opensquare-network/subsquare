@@ -101,10 +101,14 @@ function convertProposalForTableView(proposal, chain) {
   const { section, method } = proposal;
   const isTreasurySpend = "treasury" === section && "spend" === method;
 
+  if (!section || !method) {
+    return {};
+  }
+
   return {
     ...proposal,
     args: Object.fromEntries(
-      proposal.args.map((arg) => {
+      (proposal.args || []).map((arg) => {
         if (isTreasurySpend && arg.name === "amount") {
           return [arg.name, `${toPrecision(arg.value, decimals)} ${symbol}`];
         }
@@ -176,9 +180,15 @@ function convertProposalForJsonView(proposal, chain) {
   if (!proposal) {
     return {};
   }
+
+  const { section, method } = proposal;
+  if (!section || !method) {
+    return {};
+  }
+
   return {
     ...proposal,
-    args: proposal.args.map((arg) => ({
+    args: (proposal.args || []).map((arg) => ({
       ...arg,
       value: (() => {
         switch (arg.type) {

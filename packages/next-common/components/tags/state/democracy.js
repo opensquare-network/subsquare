@@ -51,7 +51,11 @@ const referendumTagMap = {
   PreimageInvalid: NegativeTag,
 };
 
-export function DemocracyReferendumTag({ state }) {
-  const Tag = referendumTagMap[state] || ClosedTag;
+export function DemocracyReferendumTag({ state, args }) {
+  let Tag = referendumTagMap[state] || ClosedTag;
+  if ("Executed" === state && args?.isOk === false) {
+    Tag = NegativeTag;
+  }
+
   return <Tag>{state}</Tag>;
 }
