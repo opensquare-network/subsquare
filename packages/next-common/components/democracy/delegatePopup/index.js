@@ -102,7 +102,6 @@ function PopupContent({
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    setIsLoading(true);
     await sendTx({
       tx,
       dispatch,

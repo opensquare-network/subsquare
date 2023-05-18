@@ -7,6 +7,7 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
+import { getLastApi } from "./hooks/useApi";
 
 export async function sendTxDarwinia2({
   tx,
@@ -96,8 +97,22 @@ async function dispatchCall({
   onSubmitted();
   let receipt = await sentTx.wait();
   onInBlock(receipt);
-  receipt = await sentTx.wait(6);
-  onFinalized(receipt);
+
+  if (onFinalized !== emptyFunction) {
+    const api = getLastApi();
+    const unsub = await api?.rpc.chain.subscribeFinalizedHeads(
+      async ({ number }) => {
+        if (number.toNumber() < receipt.blockNumber) {
+          return;
+        }
+        if (unsub) {
+          unsub();
+        }
+        onFinalized(receipt);
+      },
+    );
+  }
+
   return receipt;
 }
 
