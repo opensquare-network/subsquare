@@ -39,7 +39,9 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
                 LABEL
               </StyledTh>
             )}
-            <StyledTh style={{ textAlign: "right" }}>VOTES</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: 128 }}>
+              VOTES
+            </StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={
@@ -67,7 +69,7 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
                       />
                     </StyledTd>
                   )}
-                  <StyledTd style={{ textAlign: "right" }}>
+                  <StyledTd style={{ textAlign: "right", width: 128 }}>
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
                       symbol={symbol}
