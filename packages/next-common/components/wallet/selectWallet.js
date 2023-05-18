@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { getWallets } from "../../utils/consts/connect";
 import styled from "styled-components";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import { addressEllipsis, emptyFunction } from "../../utils";
+import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { useChain, useChainSettings } from "next-common/context/chain";
@@ -10,7 +10,12 @@ import Chains from "next-common/utils/consts/chains";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import PolkadotWallet from "./polkadotWallet";
 import { MetaMaskWallet } from "./metamaskWallet";
-import { getChainId, requestAccounts } from "next-common/utils/metamask";
+import {
+  getChainId,
+  normalizedMetaMaskAccounts,
+  requestAccounts,
+  useMetaMaskAccounts,
+} from "next-common/utils/metamask";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -38,6 +43,13 @@ export default function SelectWallet({
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType } = useChainSettings();
   const chain = useChain();
+  const metamaskAccounts = useMetaMaskAccounts();
+
+  useEffect(() => {
+    if (selectedWallet === "metamask") {
+      setAccounts(metamaskAccounts);
+    }
+  }, [metamaskAccounts, selectedWallet, setAccounts]);
 
   useEffect(() => {
     if (!injectedWeb3) {
@@ -159,19 +171,13 @@ export default function SelectWallet({
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
           setWallet();
-          setAccounts(
-            accounts.map((item) => ({
-              name: addressEllipsis(item),
-              address: item,
-              type: "ethereum",
-            })),
-          );
+          setAccounts(normalizedMetaMaskAccounts(accounts));
         }
       } catch (e) {
         dispatch(newErrorToast(e.message));
       }
     },
-    [dispatch, isMounted],
+    [dispatch, isMounted, setWallet, setSelectWallet, setAccounts],
   );
 
   const onPolkadotWalletClick = useCallback(
@@ -187,7 +193,7 @@ export default function SelectWallet({
       loadMetaMaskAccounts(wallet.extensionName);
       onSelect && onSelect(wallet.extensionName);
     },
-    [loadAccounts, onSelect],
+    [loadMetaMaskAccounts, onSelect],
   );
 
   return (
