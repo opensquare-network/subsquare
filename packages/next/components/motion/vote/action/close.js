@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { usePost, usePostOnChainData } from "next-common/context/post";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import useApi from "next-common/utils/hooks/useApi";
@@ -19,7 +19,7 @@ import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollect
 export default function Close({ refreshData }) {
   const latestHeight = useSelector(latestHeightSelector);
   const onchainData = usePostOnChainData();
-  const { voting: { end } = {} } = onchainData || {};
+  const { voting: { end, nays = [], ayes = [], threshold } = {} } = onchainData || {};
   const api = useApi();
   const chain = useChain();
   const type = useDetailType();
@@ -29,7 +29,6 @@ export default function Close({ refreshData }) {
   const mod = toApiCouncil(chain, type);
   const { proposal } = useCollectiveProposal(mod, onchainData.hash);
   const { encodedCallLength, weight } = useWeight(proposal);
-  const { voting: { nays = [], threshold } = {} } = onchainData;
   const { members } = useCollectiveMembers(mod);
   const hasFailed = threshold > Math.abs(members.length - nays.length);
 
@@ -37,9 +36,14 @@ export default function Close({ refreshData }) {
   const { accounts: extensionAccounts } = useExtensionAccounts("subsquare");
   const signerAccount = useSignerAccount(extensionAccounts);
 
-  if (latestHeight < end) {
-    return null;
-  }
+  const [canClose, setCanClose] = useState(false);
+  useEffect(() => {
+    if (threshold > Math.abs(members.length - nays.length) || ayes.length >= threshold) { // failed or approved
+      setCanClose(true);
+    } else if (latestHeight >= end) { // reach end block number
+      setCanClose(true);
+    }
+  }, [members, ayes, nays, threshold, latestHeight, end]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -86,6 +90,6 @@ export default function Close({ refreshData }) {
   return <GhostButton
     isFill
     isLoading={ loading }
-    disabled={ !proposal || !signerAccount }
+    disabled={ !proposal || !signerAccount || !canClose }
     onClick={ doClose }>Close</GhostButton>;
 }
