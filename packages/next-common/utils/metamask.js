@@ -37,6 +37,10 @@ export function normalizedMetaMaskAccounts(accounts) {
     name: addressEllipsis(item),
     address: item,
     type: "ethereum",
+    meta: {
+      source: "metamask",
+      name: addressEllipsis(item),
+    },
   }));
 }
 

@@ -29,11 +29,13 @@ export default function useSignerAccount(extensionAccounts) {
     }
 
     if (account) {
-      import("@polkadot/extension-dapp").then(({ web3FromSource }) => {
-        web3FromSource(account.meta?.source).then((injector) => {
-          api?.setSigner(injector.signer);
+      if (account.meta?.source !== "metamask") {
+        import("@polkadot/extension-dapp").then(({ web3FromSource }) => {
+          web3FromSource(account.meta?.source).then((injector) => {
+            api?.setSigner(injector.signer);
+          });
         });
-      });
+      }
 
       setSignerAccount({
         ...account,
