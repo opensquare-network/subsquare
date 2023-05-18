@@ -25,7 +25,6 @@ const PopupListWrapper = styled.div`
     tbody tr {
       display: table;
       width: 100%;
-      table-layout: fixed;
     }
     box-shadow: none;
   }
