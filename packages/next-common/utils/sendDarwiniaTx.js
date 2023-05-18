@@ -4,6 +4,7 @@ import {
   newErrorToast,
   newPendingToast,
   newToastId,
+  newWarningToast,
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
@@ -68,7 +69,11 @@ export async function sendTxDarwinia2({
     });
   } catch (e) {
     dispatch(removeToast(toastId));
-    dispatch(newErrorToast(e.message));
+    if (e.info?.error?.code === 4001) {
+      dispatch(newWarningToast(e.info?.error?.message));
+    } else {
+      dispatch(newErrorToast(e.info?.error?.message || e.message));
+    }
   } finally {
     if (isMounted.current) {
       setLoading(false);
