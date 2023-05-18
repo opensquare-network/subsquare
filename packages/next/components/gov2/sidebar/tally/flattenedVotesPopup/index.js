@@ -52,7 +52,7 @@ export default function VotesPopup({
   const sliceTo = sliceFrom + pageSize;
 
   return (
-    <Popup wide title="All Votes" onClose={() => setShowVoteList(false)}>
+    <Popup wide title="Flattened Votes" onClose={() => setShowVoteList(false)}>
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}

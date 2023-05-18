@@ -7,7 +7,7 @@ import VoteBar from "components/referenda/voteBar";
 import Aye from "./values/aye";
 import Nay from "./values/nay";
 import Support from "./values/support";
-import AllVotes from "./allVotes";
+import FlattenedVotes from "./flattenedVotes";
 import VoteExtrinsics from "./voteExtrinsics";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
@@ -26,6 +26,13 @@ import {
   useApprovalPercentage,
   useSupportPercentage,
 } from "next-common/context/post/gov2/percentage";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+} from "next-common/styles/tailwindcss";
+import { p_12_medium } from "next-common/styles/componentCss";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -41,12 +48,19 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
-const Footer = styled.div`
-  display: flex;
-  > :not(:first-child) {
-    margin-left: 16px;
-  }
+const VotesGroup = styled.div`
+  ${flex};
+  ${items_center};
+  ${justify_between};
   margin-top: 16px;
+`;
+const VotesGroupLabel = styled.div`
+  ${p_12_medium};
+`;
+const VotesGroupItems = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(12)};
 `;
 
 export default function Gov2Tally() {
@@ -91,10 +105,13 @@ export default function Gov2Tally() {
       <Support supportPerbill={supportPerbill} />
       <Issuance issuance={issuance} />
 
-      <Footer>
-        <AllVotes />
-        <VoteExtrinsics />
-      </Footer>
+      <VotesGroup>
+        <VotesGroupLabel>Votes</VotesGroupLabel>
+        <VotesGroupItems>
+          <FlattenedVotes />
+          <VoteExtrinsics />
+        </VotesGroupItems>
+      </VotesGroup>
 
       <MyVote />
 
