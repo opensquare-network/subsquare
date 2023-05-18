@@ -33,6 +33,7 @@ import {
   justify_between,
 } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
+import NestedVotes from "./nestedVotes";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -109,6 +110,7 @@ export default function Gov2Tally() {
         <VotesGroupLabel>Votes</VotesGroupLabel>
         <VotesGroupItems>
           <FlattenedVotes />
+          <NestedVotes />
           <VoteExtrinsics />
         </VotesGroupItems>
       </VotesGroup>
