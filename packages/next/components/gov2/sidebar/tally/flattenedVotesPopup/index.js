@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
+import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import VotersList from "next-common/components/democracy/allVotesPopup/votesList";
 import Pagination from "next-common/components/pagination";
@@ -52,7 +52,11 @@ export default function VotesPopup({
   const sliceTo = sliceFrom + pageSize;
 
   return (
-    <Popup wide title="Flattened Votes" onClose={() => setShowVoteList(false)}>
+    <BaseVotesPopup
+      wide
+      title="Flattened Votes"
+      onClose={() => setShowVoteList(false)}
+    >
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
@@ -67,6 +71,6 @@ export default function VotesPopup({
         isOpenGov={true}
       />
       <Pagination {...pagination} />
-    </Popup>
+    </BaseVotesPopup>
   );
 }
