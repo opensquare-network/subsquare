@@ -38,7 +38,7 @@ export default withLoginUserRedux(
               },
               {
                 path: `/referenda/track/${track.id}`,
-                content: `#${track.id} ${startCase(track.name)}`,
+                content: `[${track.id}] ${startCase(track.name)}`,
               },
               {
                 content: "Statistics",
