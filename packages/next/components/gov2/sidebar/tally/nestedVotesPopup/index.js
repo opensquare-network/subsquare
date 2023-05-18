@@ -25,8 +25,6 @@ export default function NestedVotesPopup({
   const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
 
-  const [showDetail, setShowDetail] = useState();
-
   let page = 1;
   let votes = [];
   if (tabIndex === "Aye") {
