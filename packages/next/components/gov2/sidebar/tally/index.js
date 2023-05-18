@@ -31,6 +31,7 @@ import {
   gap_x,
   items_center,
   justify_between,
+  text_primary,
 } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import NestedVotes from "./nestedVotes";
@@ -57,6 +58,7 @@ const VotesGroup = styled.div`
 `;
 const VotesGroupLabel = styled.div`
   ${p_12_medium};
+  ${text_primary};
 `;
 const VotesGroupItems = styled.div`
   ${flex};
