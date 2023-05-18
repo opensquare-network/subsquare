@@ -140,6 +140,7 @@ export default function AddressLogin({ setMailLogin }) {
   };
 
   useEffect(() => {
+    setSelectedAccount();
     if (accounts?.length > 0) {
       const address = localStorage.getItem(CACHE_KEY.lastLoginAddress);
       if (address) {

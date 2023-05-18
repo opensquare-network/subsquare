@@ -29,7 +29,8 @@ const ContentWrapper = styled.div`
     all: unset;
   }
   > :nth-child(3),
-  > :nth-child(4) {
+  > :nth-child(4),
+  > :nth-child(5) {
     margin-top: 24px;
   }
 `;
@@ -144,6 +145,7 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
   };
 
   useEffect(() => {
+    setSelectedAccount();
     if (accounts?.length > 0) {
       const address = localStorage.getItem(CACHE_KEY.lastLoginAddress);
       if (address) {
