@@ -12,6 +12,7 @@ import PolkadotWallet from "./polkadotWallet";
 import { MetaMaskWallet } from "./metamaskWallet";
 import {
   getChainId,
+  getMetaMaskEthereum,
   normalizedMetaMaskAccounts,
   requestAccounts,
   useMetaMaskAccounts,
@@ -152,7 +153,8 @@ export default function SelectWallet({
 
   const loadMetaMaskAccounts = useCallback(
     async (selectedWallet) => {
-      if (!window.ethereum || window.ethereum.isTalisman) {
+      const ethereum = getMetaMaskEthereum();
+      if (!ethereum) {
         dispatch(newErrorToast("Please install MetaMask"));
         return;
       }

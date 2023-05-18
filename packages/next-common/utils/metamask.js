@@ -1,33 +1,44 @@
 import { useEffect, useState } from "react";
 import { addressEllipsis } from ".";
 
+export function getMetaMaskEthereum() {
+  if (window.ethereum && window.ethereum.isMetaMask && !window.ethereum.isTalisman) {
+    return window.ethereum;
+  }
+
+  return null;
+}
+
 export async function personalSign(message, address) {
-  if (!window.ethereum || window.ethereum.isTalisman) {
+  const ethereum = getMetaMaskEthereum();
+  if (!ethereum) {
     throw new Error("No ethereum provider found");
   }
 
-  return await window.ethereum.request({
+  return await ethereum.request({
     method: "personal_sign",
     params: [message, address],
   });
 }
 
 export async function getChainId() {
-  if (!window.ethereum || window.ethereum.isTalisman) {
+  const ethereum = getMetaMaskEthereum();
+  if (!ethereum) {
     throw new Error("No ethereum provider found");
   }
 
-  return await window.ethereum.request({
+  return await ethereum.request({
     method: "eth_chainId",
   });
 }
 
 export async function requestAccounts() {
-  if (!window.ethereum || window.ethereum.isTalisman) {
+  const ethereum = getMetaMaskEthereum();
+  if (!ethereum) {
     throw new Error("No ethereum provider found");
   }
 
-  return await window.ethereum.request({
+  return await ethereum.request({
     method: "eth_requestAccounts",
   });
 }
@@ -48,7 +59,8 @@ export function useMetaMaskAccounts() {
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    if (!window.ethereum || window.ethereum.isTalisman) {
+    const ethereum = getMetaMaskEthereum();
+    if (!ethereum) {
       return;
     }
 
@@ -56,7 +68,7 @@ export function useMetaMaskAccounts() {
       setAccounts(normalizedMetaMaskAccounts(accounts));
     });
 
-    window.ethereum.on("accountsChanged", (accounts = []) => {
+    ethereum.on("accountsChanged", (accounts = []) => {
       setAccounts(normalizedMetaMaskAccounts(accounts));
     });
   }, []);

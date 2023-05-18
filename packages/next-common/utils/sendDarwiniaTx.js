@@ -9,6 +9,7 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 import { getLastApi } from "./hooks/useApi";
+import { getMetaMaskEthereum } from "./metamask";
 
 export async function sendTxDarwinia2({
   tx,
@@ -21,6 +22,12 @@ export async function sendTxDarwinia2({
   signerAddress,
   isMounted,
 }) {
+  const ethereum = getMetaMaskEthereum();
+  if (!ethereum) {
+    dispatch(newErrorToast("Please install MetaMask"));
+    return;
+  }
+
   const noWaitForFinalized = onFinalized === emptyFunction;
   const totalSteps = noWaitForFinalized ? 2 : 3;
 
@@ -32,7 +39,7 @@ export async function sendTxDarwinia2({
   try {
     setLoading(true);
 
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = new ethers.BrowserProvider(ethereum);
     const signer = await provider.getSigner();
     await dispatchCall({
       provider,

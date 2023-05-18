@@ -3,6 +3,7 @@ import Flex from "../styled/flex";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
 import { WalletOption } from "./styled";
+import { getMetaMaskEthereum } from "next-common/utils/metamask";
 
 export function MetaMaskWallet({
   wallet,
@@ -17,7 +18,8 @@ export function MetaMaskWallet({
   useEffect(() => {
     setTimeout(() => {
       if (isMounted.current) {
-        if (window.ethereum && !window.ethereum.isTalisman) {
+        const ethereum = getMetaMaskEthereum();
+        if (ethereum) {
           setInstalled(true);
         } else {
           setInstalled(false);
