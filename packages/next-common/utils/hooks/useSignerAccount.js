@@ -17,6 +17,7 @@ export default function useSignerAccount(extensionAccounts) {
     }
 
     const extensionName = localStorage.getItem(CACHE_KEY.lastLoginExtension);
+
     let account = extensionAccounts?.find(
       (item) =>
         isSameAddress(item.address, address) &&

@@ -152,7 +152,7 @@ export default function SelectWallet({
 
   const loadMetaMaskAccounts = useCallback(
     async (selectedWallet) => {
-      if (!window.ethereum) {
+      if (!window.ethereum || window.ethereum.isTalisman) {
         dispatch(newErrorToast("Please install MetaMask"));
         return;
       }

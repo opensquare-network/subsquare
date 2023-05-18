@@ -5,16 +5,25 @@ import { emptyFunction, isSameAddress } from "../../utils/index.js";
 
 export default function MaybeLogin({
   children,
-  extensionAccounts,
+  polkadotAccounts,
+  metamaskAccounts,
   onClose,
   autoCloseAfterLogin,
 }) {
   const loginUser = useUser();
+  const lastLoginExtension = localStorage.lastLoginExtension;
 
   if (
     !loginUser?.address ||
-    !extensionAccounts?.find((acc) =>
-      isSameAddress(acc.address, loginUser.address),
+    !(
+      (lastLoginExtension !== "metamask" &&
+        polkadotAccounts?.find((acc) =>
+          isSameAddress(acc.address, loginUser.address),
+        )) ||
+      (lastLoginExtension === "metamask" &&
+        metamaskAccounts?.find((acc) =>
+          isSameAddress(acc.address, loginUser.address),
+        ))
     )
   ) {
     return (

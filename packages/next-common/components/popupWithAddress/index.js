@@ -27,7 +27,8 @@ export default function PopupWithAddress({
 
   return (
     <MaybeLogin
-      extensionAccounts={extensionAccounts}
+      polkadotAccounts={polkadotAccounts}
+      metamaskAccounts={metamaskAccounts}
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
     >

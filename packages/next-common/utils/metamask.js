@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { addressEllipsis } from ".";
 
 export async function personalSign(message, address) {
-  if (!window.ethereum) {
+  if (!window.ethereum || window.ethereum.isTalisman) {
     throw new Error("No ethereum provider found");
   }
 
@@ -13,7 +13,7 @@ export async function personalSign(message, address) {
 }
 
 export async function getChainId() {
-  if (!window.ethereum) {
+  if (!window.ethereum || window.ethereum.isTalisman) {
     throw new Error("No ethereum provider found");
   }
 
@@ -23,7 +23,7 @@ export async function getChainId() {
 }
 
 export async function requestAccounts() {
-  if (!window.ethereum) {
+  if (!window.ethereum || window.ethereum.isTalisman) {
     throw new Error("No ethereum provider found");
   }
 
@@ -48,7 +48,7 @@ export function useMetaMaskAccounts() {
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    if (!window.ethereum) {
+    if (!window.ethereum || window.ethereum.isTalisman) {
       return;
     }
 
