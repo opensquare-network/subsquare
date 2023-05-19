@@ -99,6 +99,16 @@ export function useConfirmingStarted() {
   return startedItem?.indexer?.blockHeight;
 }
 
+// last confirm aborted height
+export function userConfirmingAborted() {
+  const timeline = useTimelineData();
+  const abortedItem = findLast(
+    timeline,
+    (item) => item.name === "ConfirmAborted",
+  );
+  return abortedItem?.indexer?.blockHeight;
+}
+
 export function useConfirmTimelineData() {
   const timeline = useTimelineData();
   return timeline.filter((item) => {
