@@ -3,7 +3,7 @@ import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import StyledList from "next-common/components/styledList";
 import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import React, { useState } from "react";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
@@ -15,6 +15,7 @@ import styled from "styled-components";
 import {
   flex,
   gap_x,
+  inline_flex,
   items_center,
   justify_between,
   text_primary,
@@ -31,6 +32,8 @@ import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
 import ConvictionSVG from "next-common/assets/imgs/icons/conviction.svg";
 import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import SupportSVG from "next-common/assets/imgs/icons/support.svg";
+import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
+import Chains from "next-common/utils/consts/chains";
 
 const DescriptionsWrapper = styled.div``;
 const DescriptionsTitle = styled.h3`
@@ -78,6 +81,15 @@ const DetailDescriptionLabel = styled.div`
   ${gap_x(8)};
 `;
 const DetailSelfVotesAnnotation = styled.span`
+  ${text_tertiary};
+`;
+
+const Capital = styled.div`
+  ${inline_flex};
+  ${p_14_normal};
+`;
+const CapitalConvictionLabel = styled.span`
+  width: 60px;
   ${text_tertiary};
 `;
 
@@ -290,7 +302,67 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
     <BaseVotesPopup title="Delegated Detail" onClose={onClose}>
       <Descriptions title="Self Votes" items={selfVotesItems} />
       <Descriptions title="Delegation" items={delegationItems} />
+
+      {/* FIXME: #2866, nested detail delegator list props and display */}
+      <DetailDelegatorList />
     </BaseVotesPopup>
+  );
+}
+
+function DetailDelegatorList({ items = [] }) {
+  const chain = useChain();
+  const chainSettings = useChainSettings();
+  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
+
+  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
+
+  const columns = [
+    {
+      name: "DELEGATOR",
+      style: { minWidth: 376, textAlign: "left" },
+    },
+    {
+      name: "CAPITAL",
+      style: { minWidth: 168, textAlign: "right" },
+    },
+    {
+      name: "VOTES",
+      style: { minWidth: 128, textAlign: "right" },
+    },
+  ];
+
+  const rows = items?.map((item) => {
+    const row = [
+      <User key="user" add={item.account} fontSize={14} noTooltip />,
+      <Capital key="capital">
+        {/* FIXME: #2866, nested detail capital */}
+        <ValueDisplay
+          key="value"
+          value={toPrecision(item.balance, chainSettings.decimals)}
+          symbol={symbol}
+          showTooltip={false}
+        />
+        {hasLabel && (
+          <CapitalConvictionLabel>
+            <VoteLabel {...item} />
+          </CapitalConvictionLabel>
+        )}
+      </Capital>,
+      <ValueDisplay
+        key="value"
+        value={toPrecision(item.balance, chainSettings.decimals)}
+        symbol={symbol}
+        showTooltip={false}
+      />,
+    ];
+
+    return row;
+  });
+
+  return (
+    <PopupListWrapper>
+      <StyledList columns={columns} rows={rows} />
+    </PopupListWrapper>
   );
 }
 
