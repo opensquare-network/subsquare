@@ -258,7 +258,7 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
           <span>Conviction</span>
         </DetailDescriptionLabel>
       ),
-      value: data.conviction,
+      value: <VoteLabel {...data} />,
     },
     {
       label: (
