@@ -16,7 +16,7 @@ export default function AddressTrendChart({ turnout, delegated }) {
     setRangeTo(to);
   }, []);
 
-  const partialTurnout = turnout.slice(rangeFrom, rangeTo + 1);
+  const partialTurnout = turnout?.slice(rangeFrom, rangeTo + 1) || [];
   const labels = partialTurnout.map((item) => item.referendumIndex);
   let datasets = [
     {
