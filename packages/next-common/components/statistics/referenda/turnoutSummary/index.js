@@ -8,7 +8,7 @@ export default function OpenGovTurnoutSummary({ summary }) {
     <Wrapper>
       <Header>Turnout</Header>
       <Divider />
-      <Header>Turnout Pct.</Header>
+      <Header>Average Turnout Pct.</Header>
       <TurnoutChart turnouts={summary?.trackTurnouts} />
     </Wrapper>
   );
