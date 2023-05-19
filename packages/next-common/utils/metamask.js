@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { addressEllipsis } from ".";
 import ChainTypes from "./consts/chainTypes";
 import WalletTypes from "./consts/walletTypes";
@@ -73,23 +73,31 @@ export function normalizedMetaMaskAccounts(accounts) {
   }));
 }
 
-export function useMetaMaskAccounts() {
+export function useMetaMaskAccounts(active) {
   const [accounts, setAccounts] = useState([]);
 
+  const updateAccounts = useCallback((accounts = []) => {
+    setAccounts(normalizedMetaMaskAccounts(accounts));
+  }, []);
+
   useEffect(() => {
+    if (!active) {
+      return;
+    }
+
     const ethereum = getMetaMaskEthereum();
     if (!ethereum) {
       return;
     }
 
-    requestAccounts().then((accounts) => {
-      setAccounts(normalizedMetaMaskAccounts(accounts));
-    });
+    requestAccounts().then(updateAccounts);
 
-    ethereum.on("accountsChanged", (accounts = []) => {
-      setAccounts(normalizedMetaMaskAccounts(accounts));
-    });
-  }, []);
+    ethereum.on("accountsChanged", updateAccounts);
+
+    return () => {
+      ethereum.removeListener("accountsChanged", updateAccounts);
+    };
+  }, [updateAccounts, active]);
 
   return accounts;
 }
