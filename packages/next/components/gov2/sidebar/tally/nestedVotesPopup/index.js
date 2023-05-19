@@ -198,8 +198,8 @@ function VotesList({ items = [], loading }) {
 
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
-      // FIXME: #2866, nested delegators, is conviction equal to delegator?
-      item.conviction,
+      // FIXME: #2866, nested delegators
+      "FIXME delegators",
       <ValueDisplay
         key="value"
         value={toPrecision(votes, chainSettings.decimals)}
