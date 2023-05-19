@@ -122,7 +122,7 @@ function VotesList({ items = [], loading, tab }) {
   const rows = items?.map((item) => {
     // NOTE: #2866, flattened capital votes
     const capital = item.balance;
-    const votes = capital * item.conviction.toString() || item.balance;
+    const votes = capital * item.conviction || item.balance;
 
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
