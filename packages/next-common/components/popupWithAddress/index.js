@@ -2,6 +2,7 @@ import React from "react";
 import useExtensionAccounts from "../../utils/hooks/useExtensionAccounts";
 import Popup from "../popup/wrapper/Popup";
 import MaybeLogin from "../maybeLogin";
+import { useMetaMaskAccounts } from "next-common/utils/metamask";
 
 export default function PopupWithAddress({
   Component,
@@ -10,8 +11,15 @@ export default function PopupWithAddress({
   autoCloseAfterLogin,
   ...props
 }) {
-  const { accounts: extensionAccounts, detecting: extensionDetecting } =
+  const { accounts: polkadotExtensionAccounts, detecting: extensionDetecting } =
     useExtensionAccounts("subsquare");
+  const polkadotAccounts = polkadotExtensionAccounts.map((item) => ({
+    ...item,
+    name: item.meta.name,
+  }));
+
+  const metamaskAccounts = useMetaMaskAccounts();
+  const extensionAccounts = [...polkadotAccounts, ...metamaskAccounts];
 
   if (extensionDetecting) {
     return null;
@@ -19,7 +27,8 @@ export default function PopupWithAddress({
 
   return (
     <MaybeLogin
-      extensionAccounts={extensionAccounts}
+      polkadotAccounts={polkadotAccounts}
+      metamaskAccounts={metamaskAccounts}
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
     >

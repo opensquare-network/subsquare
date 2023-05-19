@@ -17,7 +17,8 @@ import { updateUser, useUserDispatch } from "../../context/user";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import { personalSign } from "next-common/utils/metamask";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const Label = styled.div`
   font-weight: bold;
@@ -63,66 +64,87 @@ export default function AddressLogin({ setMailLogin }) {
   const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
 
+  async function signWith(message, address, selectedWallet) {
+    if (selectedWallet === WalletTypes.METAMASK) {
+      return await personalSign(stringToHex(message), address);
+    }
+
+    const { signature } = await wallet.signer.signRaw({
+      type: "bytes",
+      data: stringToHex(message),
+      address,
+    });
+
+    return signature;
+  }
+
   const doWeb3Login = async () => {
     if (!selectedAccount?.address) {
       dispatch(newErrorToast("Please select an account"));
       return;
     }
+
     setLoading(true);
+    try {
+      const address = encodeAddressToChain(selectedAccount.address, chain);
 
-    let address = selectedAccount.address;
-    if (!isEthereumAddress(address)) {
-      address = encodeAddressToChain(selectedAccount.address, chain);
-    }
-
-    const { result, error } = await nextApi.fetch(`auth/login/${address}`);
-    if (error) {
-      setWeb3Error(error.message);
-    }
-    if (result?.challenge) {
-      try {
-        const { signature } = await wallet.signer.signRaw({
-          type: "bytes",
-          data: stringToHex(result?.challenge),
-          address: selectedAccount.address,
-        });
-
-        const { result: loginResult, error: loginError } = await nextApi.post(
-          `auth/login/${result?.attemptId}`,
-          { challengeAnswer: signature },
-        );
-        if (loginResult) {
-          updateUser(loginResult, userDispatch);
-
-          rememberLoginAddress(selectedAccount.address);
-          rememberLoginExtension(
-            selectedAccount.meta?.source || selectedWallet,
+      const { result, error } = await nextApi.fetch(`auth/login/${address}`);
+      if (error) {
+        setWeb3Error(error.message);
+      }
+      if (result?.challenge) {
+        let challengeAnswer;
+        try {
+          challengeAnswer = await signWith(
+            result.challenge,
+            selectedAccount.address,
+            selectedWallet,
           );
-
-          if (loginResult.email || dontRemindEmail) {
-            router.replace(router.query?.redirect || "/");
-          } else {
-            router.replace({
-              pathname: "/email",
-              query: {
-                redirect: router.query?.redirect,
-              },
-            });
+        } catch (e) {
+          if (e.message !== "Cancelled") {
+            dispatch(newErrorToast(e.message));
           }
+          return;
         }
-        if (loginError) {
-          setWeb3Error(loginError.message);
-        }
-      } catch (e) {
-        if (e.message !== "Cancelled") {
+
+        try {
+          const { result: loginResult, error: loginError } = await nextApi.post(
+            `auth/login/${result?.attemptId}`,
+            { challengeAnswer, signer: selectedWallet },
+          );
+          if (loginResult) {
+            updateUser(loginResult, userDispatch);
+
+            rememberLoginAddress(selectedAccount.address);
+            rememberLoginExtension(
+              selectedAccount.meta?.source || selectedWallet,
+            );
+
+            if (loginResult.email || dontRemindEmail) {
+              router.replace(router.query?.redirect || "/");
+            } else {
+              router.replace({
+                pathname: "/email",
+                query: {
+                  redirect: router.query?.redirect,
+                },
+              });
+            }
+          }
+          if (loginError) {
+            setWeb3Error(loginError.message);
+          }
+        } catch (e) {
           dispatch(newErrorToast(e.message));
         }
       }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
+    setSelectedAccount();
     if (accounts?.length > 0) {
       const address = localStorage.getItem(CACHE_KEY.lastLoginAddress);
       if (address) {
@@ -143,7 +165,9 @@ export default function AddressLogin({ setMailLogin }) {
       setSelectedAccount(account);
 
       if (
-        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(
+          ({ extensionName }) => extensionName === selectedWallet,
+        )
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");

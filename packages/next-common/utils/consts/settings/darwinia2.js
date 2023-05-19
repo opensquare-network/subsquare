@@ -6,6 +6,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import ChainTypes from "../chainTypes";
 
 export const DEFAULT_DARWINIA_NODES = [
   {
@@ -35,7 +36,17 @@ const darwinia2 = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   subscanDomain: "darwinia",
-  chainType: "ethereum",
+  chainType: ChainTypes.ETHEREUM,
+  ethereumNetwork: {
+    chainId: "0x2e",
+    chainName: "Darwinia2",
+    rpcUrls: ["https://rpc.darwinia.network"],
+    blockExplorerUrls: ["https://darwinia.subscan.io/"],
+    nativeCurrency: {
+      symbol: "RING",
+      decimals: 18,
+    },
+  },
 };
 
 export default darwinia2;
