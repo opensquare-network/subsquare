@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import {
@@ -8,8 +7,9 @@ import {
 } from "next-common/store/reducers/gov2ReferendumSlice";
 import Pagination from "next-common/components/pagination";
 import VoteExtrinsicList from "./voteExtrinsicList";
+import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 
-export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
+export default function CallsVotesPopup({ setShowVoteList }) {
   const {
     allAye = [],
     allNay = [],
@@ -57,7 +57,7 @@ export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
   const sliceTo = sliceFrom + pageSize;
 
   return (
-    <Popup wide title="Vote Extrinsics" onClose={() => setShowVoteList(false)}>
+    <BaseVotesPopup wide title="Calls" onClose={() => setShowVoteList(false)}>
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
@@ -70,6 +70,6 @@ export default function AllVoteExtrinsicsPopup({ setShowVoteList }) {
         loading={isLoading}
       />
       <Pagination {...pagination} />
-    </Popup>
+    </BaseVotesPopup>
   );
 }

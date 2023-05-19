@@ -8,7 +8,7 @@ import Aye from "./values/aye";
 import Nay from "./values/nay";
 import Support from "./values/support";
 import FlattenedVotes from "./flattenedVotes";
-import VoteExtrinsics from "./voteExtrinsics";
+import CallsVotes from "./callsVotes";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import useIssuance from "next-common/utils/gov2/useIssuance";
@@ -113,7 +113,7 @@ export default function Gov2Tally() {
         <VotesGroupItems>
           <FlattenedVotes />
           <NestedVotes />
-          <VoteExtrinsics />
+          <CallsVotes />
         </VotesGroupItems>
       </VotesGroup>
 
