@@ -18,6 +18,7 @@ import {
   items_center,
   justify_between,
   text_primary,
+  text_tertiary,
   theme,
 } from "next-common/styles/tailwindcss";
 import {
@@ -75,6 +76,9 @@ const DetailDescriptionLabel = styled.div`
   ${flex};
   ${items_center};
   ${gap_x(8)};
+`;
+const DetailSelfVotesAnnotation = styled.span`
+  ${text_tertiary};
 `;
 
 export default function NestedVotesPopup({
@@ -223,7 +227,11 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
       label: (
         <DetailDescriptionLabel>
           <StyledAccountSVG />
-          <span>Self Votes</span>
+          <span>
+            Self Votes
+            {/* FIXME: #2866, by data `isSplit`? */}
+            <DetailSelfVotesAnnotation>/splitabstain</DetailSelfVotesAnnotation>
+          </span>
         </DetailDescriptionLabel>
       ),
       value: "FIXME",
