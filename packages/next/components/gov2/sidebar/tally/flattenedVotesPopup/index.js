@@ -120,13 +120,16 @@ function VotesList({ items = [], loading, tab }) {
   ];
 
   const rows = items?.map((item) => {
+    // NOTE: #2866, flattened capital votes
+    const capital = item.balance;
+    const votes = capital * item.conviction.toString() || item.balance;
+
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
       <Capital key="capital">
-        {/* FIXME: #2866, flattened capital */}
         <ValueDisplay
           key="value"
-          value={toPrecision(item.balance, chainSettings.decimals)}
+          value={toPrecision(capital, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
@@ -138,7 +141,7 @@ function VotesList({ items = [], loading, tab }) {
       </Capital>,
       <ValueDisplay
         key="value"
-        value={toPrecision(item.balance, chainSettings.decimals)}
+        value={toPrecision(votes, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,
