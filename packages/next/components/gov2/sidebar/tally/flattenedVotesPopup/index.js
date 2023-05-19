@@ -1,8 +1,31 @@
 import React, { useState } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
-import VotersList from "next-common/components/democracy/allVotesPopup/votesList";
 import Pagination from "next-common/components/pagination";
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import StyledList from "next-common/components/styledList";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
+import User from "next-common/components/user";
+import styled from "styled-components";
+import { inline_flex, text_tertiary } from "next-common/styles/tailwindcss";
+import { p_12_medium, p_14_normal } from "next-common/styles/componentCss";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { toPrecision } from "next-common/utils";
+import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
+
+const Capital = styled.div`
+  ${inline_flex};
+  ${p_14_normal};
+`;
+const CapitalConvictionLabel = styled.span`
+  width: 60px;
+  ${text_tertiary};
+`;
+const Annotation = styled.p`
+  ${p_12_medium};
+  ${text_tertiary};
+`;
 
 export default function VotesPopup({
   setShowVoteList,
@@ -64,13 +87,73 @@ export default function VotesPopup({
         naysCount={allNay?.length || 0}
         abstainsCount={allAbstain?.length || 0}
       />
-      <VotersList
+      <VotesList
         items={votes.slice(sliceFrom, sliceTo)}
         loading={isLoadingVotes}
         tab={tabIndex}
-        isOpenGov={true}
       />
       <Pagination {...pagination} />
     </BaseVotesPopup>
+  );
+}
+
+function VotesList({ items = [], loading, tab }) {
+  const chain = useChain();
+  const chainSettings = useChainSettings();
+  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
+
+  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
+
+  const columns = [
+    {
+      name: "VOTERS",
+      style: { minWidth: 356, textAlign: "left" },
+    },
+    {
+      name: "CAPITAL",
+      style: { minWidth: 188, textAlign: "right" },
+    },
+    {
+      name: "VOTES",
+      style: { minWidth: 128, textAlign: "right" },
+    },
+  ];
+
+  const rows = items?.map((item) => {
+    const row = [
+      <User key="user" add={item.account} fontSize={14} noTooltip />,
+      <Capital key="capital">
+        {/* FIXME: #2866, flattened capital */}
+        <ValueDisplay
+          key="value"
+          value={toPrecision(item.balance, chainSettings.decimals)}
+          symbol={symbol}
+          showTooltip={false}
+        />
+        {hasLabel && (
+          <CapitalConvictionLabel>
+            <VoteLabel {...item} tab={tab} />
+          </CapitalConvictionLabel>
+        )}
+      </Capital>,
+      <ValueDisplay
+        key="value"
+        value={toPrecision(item.balance, chainSettings.decimals)}
+        symbol={symbol}
+        showTooltip={false}
+      />,
+    ];
+
+    return row;
+  });
+
+  return (
+    <PopupListWrapper>
+      <StyledList columns={columns} rows={rows} loading={loading} />
+
+      {!loading && (
+        <Annotation>d: Delegation s: Split sa: SplitAbstain</Annotation>
+      )}
+    </PopupListWrapper>
   );
 }
