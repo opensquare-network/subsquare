@@ -3,6 +3,7 @@ import { isSameAddress } from "..";
 import { CACHE_KEY } from "../constants";
 import { useUser } from "../../context/user";
 import useApi from "./useApi";
+import WalletTypes from "../consts/walletTypes";
 
 export default function useSignerAccount(extensionAccounts) {
   const [signerAccount, setSignerAccount] = useState();
@@ -30,7 +31,7 @@ export default function useSignerAccount(extensionAccounts) {
     }
 
     if (account) {
-      if (account.meta?.source !== "metamask") {
+      if (account.meta?.source !== WalletTypes.METAMASK) {
         import("@polkadot/extension-dapp").then(({ web3FromSource }) => {
           web3FromSource(account.meta?.source).then((injector) => {
             api?.setSigner(injector.signer);
