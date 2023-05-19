@@ -11,6 +11,71 @@ import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import noop from "lodash.noop";
+import styled from "styled-components";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+  text_primary,
+  theme,
+} from "next-common/styles/tailwindcss";
+import {
+  p_14_bold,
+  p_14_medium,
+  p_14_normal,
+} from "next-common/styles/componentCss";
+import AccountSVG from "next-common/assets/imgs/icons/account.svg";
+import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
+import ConvictionSVG from "next-common/assets/imgs/icons/conviction.svg";
+import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
+import SupportSVG from "next-common/assets/imgs/icons/support.svg";
+
+const DescriptionsWrapper = styled.div``;
+const DescriptionsTitle = styled.h3`
+  margin: 0;
+  margin-bottom: 8px;
+  ${p_14_bold};
+  ${text_primary};
+`;
+const DescriptionItem = styled.div`
+  height: 44px;
+  ${flex};
+  ${justify_between};
+  ${items_center};
+  ${text_primary};
+
+  & + & {
+    border-top: 1px solid ${theme("grey200Border")};
+  }
+`;
+const DescriptionItemLabel = styled.div`
+  ${p_14_medium};
+`;
+const DescriptionItemValue = styled.div`
+  ${p_14_normal};
+`;
+
+const StyledAccountSVG = styled(AccountSVG)`
+  fill: ${(p) => p.theme.textTertiary};
+`;
+const StyledConvictionSVG = styled(ConvictionSVG)`
+  stroke: ${(p) => p.theme.textTertiary};
+`;
+const StyledCapitalSVG = styled(BalanceSVG)`
+  stroke: ${(p) => p.theme.textTertiary};
+`;
+const StyledDelegatorsSVG = styled(AddressesSVG)`
+  stroke: ${(p) => p.theme.textTertiary};
+`;
+const StyledTotalDelegationSvg = styled(SupportSVG)`
+  stroke: ${(p) => p.theme.textTertiary};
+`;
+const DetailDescriptionLabel = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(8)};
+`;
 
 export default function NestedVotesPopup({
   setShowVoteList,
@@ -153,7 +218,89 @@ function VotesList({ items = [], loading }) {
 
 // FIXME: #2866, nested detail, fulfill content
 function DelegatedDetailPopup({ data, onClose = noop }) {
+  const selfVotesItems = [
+    {
+      label: (
+        <DetailDescriptionLabel>
+          <StyledAccountSVG />
+          <span>Self Votes</span>
+        </DetailDescriptionLabel>
+      ),
+      value: "FIXME",
+    },
+    {
+      label: (
+        <DetailDescriptionLabel>
+          <StyledConvictionSVG />
+          <span>Conviction</span>
+        </DetailDescriptionLabel>
+      ),
+      value: data.conviction,
+    },
+    {
+      label: (
+        <DetailDescriptionLabel>
+          <StyledCapitalSVG />
+          <span>Capital</span>
+        </DetailDescriptionLabel>
+      ),
+      value: "FIXME",
+    },
+  ];
+
+  const delegationItems = [
+    {
+      label: (
+        <DetailDescriptionLabel>
+          <StyledTotalDelegationSvg />
+          <span>Total Delegation</span>
+        </DetailDescriptionLabel>
+      ),
+      value: "FIXME",
+    },
+    {
+      label: (
+        <DetailDescriptionLabel>
+          <StyledDelegatorsSVG />
+          <span>Delegators</span>
+        </DetailDescriptionLabel>
+      ),
+      value: "FIXME",
+    },
+    {
+      label: (
+        <DetailDescriptionLabel>
+          <StyledCapitalSVG />
+          <span>Capital</span>
+        </DetailDescriptionLabel>
+      ),
+      value: "FIXME",
+    },
+  ];
+
   return (
-    <BaseVotesPopup title="Delegated Detail" onClose={onClose}></BaseVotesPopup>
+    <BaseVotesPopup title="Delegated Detail" onClose={onClose}>
+      <Descriptions title="Self Votes" items={selfVotesItems} />
+      <Descriptions title="Delegation" items={delegationItems} />
+    </BaseVotesPopup>
+  );
+}
+
+// TODO: make this as `Descriptions` component
+// similar to https://ant.design/components/descriptions, Display multiple read-only fields in groups.
+// can use in Been Delegated, sidebar tally aye nay etc.
+function Descriptions({ title = "", items = [] }) {
+  return (
+    <DescriptionsWrapper>
+      {title && <DescriptionsTitle>{title}</DescriptionsTitle>}
+
+      {items?.length &&
+        items.map((item, idx) => (
+          <DescriptionItem key={idx}>
+            <DescriptionItemLabel>{item.label}</DescriptionItemLabel>
+            <DescriptionItemValue>{item.value}</DescriptionItemValue>
+          </DescriptionItem>
+        ))}
+    </DescriptionsWrapper>
   );
 }
