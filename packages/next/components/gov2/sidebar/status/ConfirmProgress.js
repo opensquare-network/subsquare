@@ -91,7 +91,7 @@ function ConfirmationStarted() {
 
     const gone = latestHeight - confirmStart;
     return Number((gone / confirmPeriod) * 100).toFixed(2);
-  }, [latestHeight, confirmStart, confirmPeriod]);
+  }, [latestHeight, confirmAbortedHeight, confirmStart, confirmPeriod]);
 
   const progressItems = useMemo(() => {
     const items = confirmFailPairs.map((pair) => {
