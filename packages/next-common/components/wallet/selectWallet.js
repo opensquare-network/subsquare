@@ -11,6 +11,7 @@ import useInjectedWeb3 from "./useInjectedWeb3";
 import PolkadotWallet from "./polkadotWallet";
 import { MetaMaskWallet } from "./metamaskWallet";
 import {
+  addNetwork,
   getChainId,
   getMetaMaskEthereum,
   normalizedMetaMaskAccounts,
@@ -42,7 +43,7 @@ export default function SelectWallet({
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
-  const { chainType } = useChainSettings();
+  const { chainType, ethereumNetwork } = useChainSettings();
   const chain = useChain();
   const metamaskAccounts = useMetaMaskAccounts();
 
@@ -159,14 +160,10 @@ export default function SelectWallet({
         return;
       }
 
-      //TODO: currently support Darwinia Network only
       try {
         const chainId = await getChainId();
-        if (chainId !== "0x2e") {
-          dispatch(
-            newErrorToast("Please switch MetaMask wallet to Darwinia Network"),
-          );
-          return;
+        if (chainId !== ethereumNetwork.chainId) {
+          await addNetwork(ethereumNetwork);
         }
 
         const accounts = await requestAccounts();
@@ -179,7 +176,14 @@ export default function SelectWallet({
         dispatch(newErrorToast(e.message));
       }
     },
-    [dispatch, isMounted, setWallet, setSelectWallet, setAccounts],
+    [
+      dispatch,
+      isMounted,
+      setWallet,
+      setSelectWallet,
+      setAccounts,
+      ethereumNetwork,
+    ],
   );
 
   const onPolkadotWalletClick = useCallback(

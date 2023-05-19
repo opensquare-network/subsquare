@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { addressEllipsis } from ".";
 
 export function getMetaMaskEthereum() {
-  if (window.ethereum && window.ethereum.isMetaMask && !window.ethereum.isTalisman) {
+  if (
+    window.ethereum &&
+    window.ethereum.isMetaMask &&
+    !window.ethereum.isTalisman
+  ) {
     return window.ethereum;
   }
 
@@ -12,7 +16,7 @@ export function getMetaMaskEthereum() {
 export async function personalSign(message, address) {
   const ethereum = getMetaMaskEthereum();
   if (!ethereum) {
-    throw new Error("No ethereum provider found");
+    throw new Error("Please install MetaMask");
   }
 
   return await ethereum.request({
@@ -24,7 +28,7 @@ export async function personalSign(message, address) {
 export async function getChainId() {
   const ethereum = getMetaMaskEthereum();
   if (!ethereum) {
-    throw new Error("No ethereum provider found");
+    throw new Error("Please install MetaMask");
   }
 
   return await ethereum.request({
@@ -35,11 +39,23 @@ export async function getChainId() {
 export async function requestAccounts() {
   const ethereum = getMetaMaskEthereum();
   if (!ethereum) {
-    throw new Error("No ethereum provider found");
+    throw new Error("Please install MetaMask");
   }
 
   return await ethereum.request({
     method: "eth_requestAccounts",
+  });
+}
+
+export async function addNetwork(ethereumNetwork) {
+  const ethereum = getMetaMaskEthereum();
+  if (!ethereum) {
+    throw new Error("Please install MetaMask");
+  }
+
+  return await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [ethereumNetwork],
   });
 }
 
