@@ -65,6 +65,7 @@ export default function SelectWallet({
     }
 
     if (chain === Chains.darwinia2) {
+      // For Darwinia2, we only due with the known supported wallets
       return;
     }
 
