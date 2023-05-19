@@ -4,7 +4,14 @@ import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 
-import { EmptyTd, RowSplitter, StyledTable, StyledTd, StyledTh, StyledTr } from "next-common/components/styled/table";
+import {
+  EmptyTd,
+  RowSplitter,
+  StyledTable,
+  StyledTd,
+  StyledTh,
+  StyledTr,
+} from "next-common/components/styled/table";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
@@ -52,7 +59,7 @@ function VoteInfo({ item }) {
       </VoteInfoValue>
       <VoteTime>
         <ExplorerLink indexer={item.indexer}>
-          { formatTime(item.indexer.blockTime) }
+          {formatTime(item.indexer.blockTime)}
         </ExplorerLink>
       </VoteTime>
     </VoteInfoWrapper>
@@ -85,12 +92,7 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
               <Fragment key={index}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 176 }}>
-                    <User
-                      add={item.voter}
-                      fontSize={14}
-                      maxWidth={132}
-                      noTooltip={true}
-                    />
+                    <User add={item.voter} fontSize={14} noTooltip={true} />
                   </StyledTd>
                   <StyledTd style={{ textAlign: "right" }}>
                     <VoteInfo item={item} />
