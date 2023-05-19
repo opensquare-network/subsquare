@@ -4,6 +4,7 @@ import Loading from "next-common/components/loading";
 import { EmptyTd, StyledTable } from "./styled";
 import { Headers } from "./headers";
 import DataRows from "./dataRows";
+import { StyledTr } from "../styled/table";
 
 function EmptyOrLoading({ loading }) {
   return (
@@ -18,10 +19,16 @@ function EmptyOrLoading({ loading }) {
 function StyledList({ columns = [], rows = [], loading = false }) {
   let tableBody = null;
 
-  if (!loading) {
-    tableBody = <DataRows rows={rows} columns={columns} />;
-  } else {
+  if (loading) {
     tableBody = <EmptyOrLoading loading={loading} />;
+  } else if (!rows?.length) {
+    tableBody = (
+      <StyledTr>
+        <EmptyTd>No current votes</EmptyTd>
+      </StyledTr>
+    );
+  } else {
+    tableBody = <DataRows rows={rows} columns={columns} />;
   }
 
   return (
