@@ -193,13 +193,16 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items.map((item) => {
+    // NOTE: #2866, nested votes
+    const votes = item.balance * item.conviction || item.balance;
+
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
-      // FIXME: #2866, nested delegators
-      "FIXME",
+      // FIXME: #2866, nested delegators, is conviction equal to delegator?
+      item.conviction,
       <ValueDisplay
         key="value"
-        value={toPrecision(item.balance, chainSettings.decimals)}
+        value={toPrecision(votes, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,
@@ -332,13 +335,16 @@ function DetailDelegatorList({ items = [] }) {
   ];
 
   const rows = items?.map((item) => {
+    // NOTE: #2866, nested detail capital votes
+    const capital = item.balance;
+    const votes = capital * item.conviction || item.balance;
+
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
       <Capital key="capital">
-        {/* FIXME: #2866, nested detail capital */}
         <ValueDisplay
           key="value"
-          value={toPrecision(item.balance, chainSettings.decimals)}
+          value={toPrecision(capital, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
@@ -350,7 +356,7 @@ function DetailDelegatorList({ items = [] }) {
       </Capital>,
       <ValueDisplay
         key="value"
-        value={toPrecision(item.balance, chainSettings.decimals)}
+        value={toPrecision(votes, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,
