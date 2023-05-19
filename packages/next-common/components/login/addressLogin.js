@@ -18,6 +18,7 @@ import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { personalSign } from "next-common/utils/metamask";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const Label = styled.div`
   font-weight: bold;
@@ -64,7 +65,7 @@ export default function AddressLogin({ setMailLogin }) {
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
 
   async function signWith(message, address, selectedWallet) {
-    if (selectedWallet === "metamask") {
+    if (selectedWallet === WalletTypes.METAMASK) {
       return await personalSign(stringToHex(message), address);
     }
 
@@ -94,7 +95,11 @@ export default function AddressLogin({ setMailLogin }) {
       if (result?.challenge) {
         let challengeAnswer;
         try {
-          challengeAnswer = await signWith(result.challenge, selectedAccount.address, selectedWallet);
+          challengeAnswer = await signWith(
+            result.challenge,
+            selectedAccount.address,
+            selectedWallet,
+          );
         } catch (e) {
           if (e.message !== "Cancelled") {
             dispatch(newErrorToast(e.message));
@@ -135,7 +140,6 @@ export default function AddressLogin({ setMailLogin }) {
       }
     } finally {
       setLoading(false);
-
     }
   };
 
@@ -161,7 +165,9 @@ export default function AddressLogin({ setMailLogin }) {
       setSelectedAccount(account);
 
       if (
-        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(
+          ({ extensionName }) => extensionName === selectedWallet,
+        )
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");

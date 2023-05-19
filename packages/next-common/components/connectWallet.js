@@ -16,6 +16,7 @@ import { useChain } from "../context/chain";
 import Popup from "./popup/wrapper/Popup";
 import ErrorMessage from "./styled/errorMessage";
 import { personalSign } from "next-common/utils/metamask";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const Title = styled.div`
   text-align: center;
@@ -78,7 +79,7 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
   const userDispatch = useUserDispatch();
 
   async function signWith(message, address, selectedWallet) {
-    if (selectedWallet === "metamask") {
+    if (selectedWallet === WalletTypes.METAMASK) {
       return await personalSign(stringToHex(message), address);
     }
 
@@ -108,7 +109,11 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
       if (result?.challenge) {
         let challengeAnswer;
         try {
-          challengeAnswer = await signWith(result.challenge, selectedAccount.address, selectedWallet);
+          challengeAnswer = await signWith(
+            result.challenge,
+            selectedAccount.address,
+            selectedWallet,
+          );
         } catch (e) {
           if (e.message !== "Cancelled") {
             dispatch(newErrorToast(e.message));
@@ -166,7 +171,9 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
       setSelectedAccount(account);
 
       if (
-        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(
+          ({ extensionName }) => extensionName === selectedWallet,
+        )
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");

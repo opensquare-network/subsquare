@@ -8,6 +8,7 @@ import {
   updatePendingToast,
 } from "../store/reducers/toastSlice";
 import Chains from "./consts/chains";
+import WalletTypes from "./consts/walletTypes";
 import { getLastApi } from "./hooks/useApi";
 import { sendTxDarwinia2 } from "./sendDarwiniaTx";
 
@@ -55,7 +56,7 @@ export async function sendTx({
 }) {
   if (
     process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2 &&
-    localStorage.lastLoginExtension === "metamask"
+    localStorage.lastLoginExtension === WalletTypes.METAMASK
   ) {
     await sendTxDarwinia2({
       tx,

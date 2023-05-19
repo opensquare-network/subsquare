@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { addressEllipsis } from ".";
+import ChainTypes from "./consts/chainTypes";
+import WalletTypes from "./consts/walletTypes";
 
 export function getMetaMaskEthereum() {
   if (
@@ -63,9 +65,9 @@ export function normalizedMetaMaskAccounts(accounts) {
   return accounts.map((item) => ({
     name: addressEllipsis(item),
     address: item,
-    type: "ethereum",
+    type: ChainTypes.ETHEREUM,
     meta: {
-      source: "metamask",
+      source: WalletTypes.METAMASK,
       name: addressEllipsis(item),
     },
   }));

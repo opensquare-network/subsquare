@@ -1,3 +1,4 @@
+import ChainTypes from "./consts/chainTypes";
 import { getWallets } from "./consts/connect";
 
 export async function polkadotWeb3Accounts(chainType) {
@@ -8,11 +9,13 @@ export async function polkadotWeb3Accounts(chainType) {
     wallets.includes(item.meta.source),
   );
 
-  if (chainType === "ethereum") {
+  if (chainType === ChainTypes.ETHEREUM) {
     return accountsBySupportedExtension.filter(
-      (acc) => acc.type === "ethereum",
+      (acc) => acc.type === ChainTypes.ETHEREUM,
     );
   }
 
-  return accountsBySupportedExtension.filter((acc) => acc.type !== "ethereum");
+  return accountsBySupportedExtension.filter(
+    (acc) => acc.type !== ChainTypes.ETHEREUM,
+  );
 }

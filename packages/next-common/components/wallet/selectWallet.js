@@ -6,7 +6,6 @@ import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import PolkadotWallet from "./polkadotWallet";
 import { MetaMaskWallet } from "./metamaskWallet";
@@ -18,6 +17,8 @@ import {
   requestAccounts,
   useMetaMaskAccounts,
 } from "next-common/utils/metamask";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -48,7 +49,7 @@ export default function SelectWallet({
   const metamaskAccounts = useMetaMaskAccounts();
 
   useEffect(() => {
-    if (selectedWallet === "metamask") {
+    if (selectedWallet === WalletTypes.METAMASK) {
       setAccounts(metamaskAccounts);
     }
   }, [metamaskAccounts, selectedWallet, setAccounts]);
@@ -64,8 +65,8 @@ export default function SelectWallet({
       }
     }
 
-    if (chain === Chains.darwinia2) {
-      // For Darwinia2, we only due with the known supported wallets
+    if (chainType === ChainTypes.ETHEREUM) {
+      // For ethereum chains, we only due with the known supported wallets
       return;
     }
 
@@ -117,13 +118,13 @@ export default function SelectWallet({
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
         let extensionAccounts = await wallet.accounts?.get();
-        if (chainType === "ethereum") {
+        if (chainType === ChainTypes.ETHEREUM) {
           extensionAccounts = extensionAccounts.filter(
-            (acc) => acc.type === "ethereum",
+            (acc) => acc.type === ChainTypes.ETHEREUM,
           );
         } else {
           extensionAccounts = extensionAccounts.filter(
-            (acc) => acc.type !== "ethereum",
+            (acc) => acc.type !== ChainTypes.ETHEREUM,
           );
         }
 
@@ -206,7 +207,7 @@ export default function SelectWallet({
   return (
     <WalletOptions>
       {getWallets().map((wallet, index) => {
-        if (wallet.extensionName === "metamask") {
+        if (wallet.extensionName === WalletTypes.METAMASK) {
           return (
             <MetaMaskWallet
               key={index}

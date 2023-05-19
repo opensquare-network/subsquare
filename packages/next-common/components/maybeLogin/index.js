@@ -2,6 +2,7 @@ import React from "react";
 import { useUser } from "../../context/user/index.js";
 import ConnectWallet from "../connectWallet";
 import { emptyFunction, isSameAddress } from "../../utils/index.js";
+import WalletTypes from "next-common/utils/consts/walletTypes.js";
 
 export default function MaybeLogin({
   children,
@@ -16,11 +17,11 @@ export default function MaybeLogin({
   if (
     !loginUser?.address ||
     !(
-      (lastLoginExtension !== "metamask" &&
+      (lastLoginExtension !== WalletTypes.METAMASK &&
         polkadotAccounts?.find((acc) =>
           isSameAddress(acc.address, loginUser.address),
         )) ||
-      (lastLoginExtension === "metamask" &&
+      (lastLoginExtension === WalletTypes.METAMASK &&
         metamaskAccounts?.find((acc) =>
           isSameAddress(acc.address, loginUser.address),
         ))

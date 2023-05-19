@@ -3,9 +3,10 @@ import SubWalletLogo from "../../../assets/icons/wallet/subWallet.svg";
 import TalismanLogo from "../../../assets/icons/wallet/talisman.svg";
 import MetaMaskLogo from "../../../assets/icons/wallet/metamask.svg";
 import Chains from "../chains";
+import WalletTypes from "../walletTypes";
 
 const polkadotJs = {
-  extensionName: "polkadot-js",
+  extensionName: WalletTypes.POLKADOT_JS,
   title: "Polkadot.js",
   installUrl:
     "https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd",
@@ -13,7 +14,7 @@ const polkadotJs = {
 };
 
 const subWalletJs = {
-  extensionName: "subwallet-js",
+  extensionName: WalletTypes.SUBWALLET_JS,
   title: "SubWallet",
   installUrl:
     "https://chrome.google.com/webstore/detail/subwallet/onhogfjeacnfoofkfgppdlbmlmnplgbn",
@@ -21,7 +22,7 @@ const subWalletJs = {
 };
 
 const talisman = {
-  extensionName: "talisman",
+  extensionName: WalletTypes.TALISMAN,
   title: "Talisman",
   installUrl:
     "https://chrome.google.com/webstore/detail/talisman-wallet/fijngjgcjhjmmpcmkeiomlglpeiijkld",
@@ -29,7 +30,7 @@ const talisman = {
 };
 
 const metamask = {
-  extensionName: "metamask",
+  extensionName: WalletTypes.METAMASK,
   title: "MetaMask",
   installUrl:
     "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
