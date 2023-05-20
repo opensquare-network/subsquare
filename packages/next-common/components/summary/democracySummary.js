@@ -84,6 +84,7 @@ export default function DemocracySummary({ footer }) {
     items.push({
       content: (
         <SummaryNextLaunchTime
+          key="next-launch-time"
           nextLaunchTimestamp={summary.nextLaunchTimestamp}
         />
       ),
