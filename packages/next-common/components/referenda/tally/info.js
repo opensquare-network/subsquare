@@ -89,7 +89,7 @@ export default function TallyInfo({
         <Header>
           <TurnoutIcon />
           Turnout
-          {!isLoadingVotes && (
+          {!isLoadingVotes && electorate > 0 && (
             <VotesCount>{nTurnoutPercentDisplay}%</VotesCount>
           )}
         </Header>
