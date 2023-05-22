@@ -87,7 +87,7 @@ function Vote({
   const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
-  const [showVoteList, setShowVoteList] = useState(false);
+  const [showFlattenedVotesList, setShowFlattenedVotesList] = useState(false);
   const api = useApi();
   const blockHeight = useSelector(latestHeightSelector);
 
@@ -163,7 +163,7 @@ function Vote({
 
         <SubLink
           style={{ marginTop: 16 }}
-          onClick={() => setShowVoteList(true)}
+          onClick={() => setShowFlattenedVotesList(true)}
         >
           Check all votes
         </SubLink>
@@ -188,9 +188,9 @@ function Vote({
           onFinalized={onFinalized}
         />
       )}
-      {showVoteList && (
+      {showFlattenedVotesList && (
         <FlattenedVotesPopup
-          setShowVoteList={setShowVoteList}
+          setShowVoteList={setShowFlattenedVotesList}
           allAye={allAye}
           allNay={allNay}
           isLoadingVotes={isLoadingVotes}

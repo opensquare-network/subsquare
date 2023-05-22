@@ -1,10 +1,13 @@
 import React from "react";
 import { withTheme } from "styled-components";
 import Loading from "next-common/components/loading";
-import { EmptyTd, StyledTable } from "./styled";
 import { Headers } from "./headers";
 import DataRows from "./dataRows";
-import { StyledTr } from "../styled/table";
+import {
+  EmptyTd,
+  StyledTable,
+  StyledTr,
+} from "next-common/components/styled/table";
 
 function EmptyOrLoading({ loading }) {
   return (
