@@ -29,7 +29,7 @@ export default function Close({ refreshData }) {
   const mod = toApiCouncil(chain, type);
   const { proposal } = useCollectiveProposal(mod, onchainData.hash);
   const { encodedCallLength, weight } = useWeight(proposal);
-  const { members } = useCollectiveMembers(mod);
+  const { members, loading: membersLoading } = useCollectiveMembers(mod);
   const hasFailed = threshold > Math.abs(members.length - nays.length);
 
   const [loading, setLoading] = useState(false);
@@ -38,12 +38,18 @@ export default function Close({ refreshData }) {
 
   const [canClose, setCanClose] = useState(false);
   useEffect(() => {
+    if (membersLoading) {
+      return;
+    }
+
     if (threshold > Math.abs(members.length - nays.length) || ayes.length >= threshold) { // failed or approved
       setCanClose(true);
     } else if (latestHeight >= end) { // reach end block number
       setCanClose(true);
+    } else {
+      setCanClose(false);
     }
-  }, [members, ayes, nays, threshold, latestHeight, end]);
+  }, [membersLoading, members, ayes, nays, threshold, latestHeight, end]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
