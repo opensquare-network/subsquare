@@ -9,7 +9,7 @@ import {
 } from "next-common/services/url";
 import Gov2Summary from "components/summary/gov2Summary";
 import Gov2Page from "components/gov2/gov2Page";
-import StatisticLinkButton from "components/statisticsLinkButton";
+import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary }) => {
