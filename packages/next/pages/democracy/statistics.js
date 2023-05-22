@@ -21,11 +21,8 @@ export default withLoginUserRedux(
         <BreadcrumbWrapper>
           <Breadcrumb items={[
               {
-                content: "Democracy",
-              },
-              {
                 path: "/democracy/referenda",
-                content: "Referenda",
+                content: "Democracy",
               },
               {
                 content: "Statistics",
