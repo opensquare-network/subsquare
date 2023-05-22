@@ -6,17 +6,10 @@ import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
 import { useChainSettings } from "next-common/context/chain";
 import User from "next-common/components/user";
-import styled from "styled-components";
-import { text_tertiary } from "next-common/styles/tailwindcss";
-import { p_12_medium } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
-
-const Annotation = styled.p`
-  ${p_12_medium};
-  ${text_tertiary};
-`;
+import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -135,9 +128,7 @@ function VotesList({ items = [], loading, tab }) {
     <PopupListWrapper>
       <StyledList columns={columns} rows={rows} loading={loading} />
 
-      {!loading && (
-        <Annotation>d: Delegation s: Split sa: SplitAbstain</Annotation>
-      )}
+      {!loading && <Annotation isOpenGov />}
     </PopupListWrapper>
   );
 }
