@@ -73,7 +73,7 @@ export function normalizedMetaMaskAccounts(accounts) {
   }));
 }
 
-export function useMetaMaskAccounts(active = true) {
+export function useMetaMaskAccounts(active) {
   const [accounts, setAccounts] = useState([]);
 
   const updateAccounts = useCallback((accounts = []) => {
