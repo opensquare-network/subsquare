@@ -6,7 +6,7 @@ import {
   voteExtrinsicsSelector,
 } from "next-common/store/reducers/gov2ReferendumSlice";
 import Pagination from "next-common/components/pagination";
-import VoteExtrinsicList from "./voteExtrinsicList";
+import CallsVotesList from "./callsVotesList";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 
 export default function CallsVotesPopup({ setShowVoteList }) {
@@ -65,7 +65,7 @@ export default function CallsVotesPopup({ setShowVoteList }) {
         naysCount={allNay?.length || 0}
         abstainCount={allAbstain?.length || 0}
       />
-      <VoteExtrinsicList
+      <CallsVotesList
         items={votes.slice(sliceFrom, sliceTo)}
         loading={isLoading}
       />

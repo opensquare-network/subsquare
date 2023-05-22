@@ -66,7 +66,7 @@ function VoteInfo({ item }) {
   );
 }
 
-function VoteExtrinsicsList({ items, theme, loading = true }) {
+function CallsVotesList({ items, theme, loading = true }) {
   return (
     <PopupListWrapper>
       <StyledTable>
@@ -120,4 +120,4 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
   );
 }
 
-export default withTheme(VoteExtrinsicsList);
+export default withTheme(CallsVotesList);
