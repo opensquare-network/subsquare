@@ -4,24 +4,15 @@ import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
-import { useChain, useChainSettings } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
+import { useChainSettings } from "next-common/context/chain";
 import User from "next-common/components/user";
 import styled from "styled-components";
-import { inline_flex, text_tertiary } from "next-common/styles/tailwindcss";
-import { p_12_medium, p_14_normal } from "next-common/styles/componentCss";
+import { text_tertiary } from "next-common/styles/tailwindcss";
+import { p_12_medium } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
+import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 
-const Capital = styled.div`
-  ${inline_flex};
-  ${p_14_normal};
-`;
-const CapitalConvictionLabel = styled.span`
-  width: 60px;
-  ${text_tertiary};
-`;
 const Annotation = styled.p`
   ${p_12_medium};
   ${text_tertiary};
@@ -98,11 +89,8 @@ export default function VotesPopup({
 }
 
 function VotesList({ items = [], loading, tab }) {
-  const chain = useChain();
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
-
-  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
 
   const columns = [
     {
@@ -126,19 +114,12 @@ function VotesList({ items = [], loading, tab }) {
 
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
-      <Capital key="capital">
-        <ValueDisplay
-          key="value"
-          value={toPrecision(capital, chainSettings.decimals)}
-          symbol={symbol}
-          showTooltip={false}
-        />
-        {hasLabel && (
-          <CapitalConvictionLabel>
-            <VoteLabel {...item} tab={tab} />
-          </CapitalConvictionLabel>
-        )}
-      </Capital>,
+      <CapitalTableItem
+        key="capital"
+        item={item}
+        capital={toPrecision(capital, chainSettings.decimals)}
+        tab={tab}
+      />,
       <ValueDisplay
         key="value"
         value={toPrecision(votes, chainSettings.decimals)}
