@@ -29,9 +29,9 @@ export default function VoteTrendChart({ turnout, delegated }) {
     {
       categoryPercentage,
       barPercentage,
-      label: "Capital",
+      label: "Direct Capital",
       data: partialTurnout.map((item) =>
-        toPrecisionNumber(item.totalCapital, decimals),
+        toPrecisionNumber(item.directCapital, decimals),
       ),
       backgroundColor: capitalColor,
       stack: "Capital",
@@ -39,9 +39,11 @@ export default function VoteTrendChart({ turnout, delegated }) {
     {
       categoryPercentage,
       barPercentage,
-      label: "Votes",
-      data: partialTurnout.map((item) =>
-        toPrecisionNumber(item.votes, decimals),
+      label: "Direct Votes",
+      data: partialTurnout.map(
+        (item) =>
+          toPrecisionNumber(item.votes, decimals) -
+          toPrecisionNumber(item.delegationVotes, decimals),
       ),
       backgroundColor: votesColor,
       stack: "Votes",
@@ -51,16 +53,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
 
   if (delegated) {
     datasets = [
-      {
-        categoryPercentage,
-        barPercentage,
-        label: "Direct Capital",
-        data: partialTurnout.map((item) =>
-          toPrecisionNumber(item.directCapital, decimals),
-        ),
-        backgroundColor: capitalColor,
-        stack: "Capital",
-      },
+      ...datasets,
       {
         categoryPercentage,
         barPercentage,
@@ -71,18 +64,6 @@ export default function VoteTrendChart({ turnout, delegated }) {
         backgroundColor: delegatedColor,
         stack: "Capital",
         legend: false,
-      },
-      {
-        categoryPercentage,
-        barPercentage,
-        label: "Direct Votes",
-        data: partialTurnout.map(
-          (item) =>
-            toPrecisionNumber(item.votes, decimals) -
-            toPrecisionNumber(item.delegationVotes, decimals),
-        ),
-        backgroundColor: votesColor,
-        stack: "Votes",
       },
       {
         categoryPercentage,
@@ -98,8 +79,8 @@ export default function VoteTrendChart({ turnout, delegated }) {
     ];
 
     customLegend = [
-      { label: "Capital", backgroundColor: capitalColor },
-      { label: "Votes", backgroundColor: votesColor },
+      { label: "Direct Capital", backgroundColor: capitalColor },
+      { label: "Direct Votes", backgroundColor: votesColor },
       { label: "Delegated", backgroundColor: delegatedColor },
     ];
   }

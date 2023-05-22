@@ -6,18 +6,19 @@ import ReferendaSummary from "next-common/components/statistics/referenda/summar
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
+import OpenGovTurnoutSummary from "next-common/components/statistics/referenda/turnoutSummary";
 
-export default withLoginUserRedux(
-  ({ tracksStats, delegatee, summary }) => {
-    return (
-      <DetailLayout
-        seoInfo={{
-          title: "OpenGov Statistics",
-          desc: "OpenGov Statistics",
-        }}
-      >
+export default withLoginUserRedux(({ tracksStats, delegatee, summary }) => {
+  return (
+    <DetailLayout
+      seoInfo={{
+        title: "OpenGov Statistics",
+        desc: "OpenGov Statistics",
+      }}
+    >
       <BreadcrumbWrapper>
-        <Breadcrumb items={[
+        <Breadcrumb
+          items={[
             {
               path: "/referenda",
               content: "Referenda",
@@ -25,14 +26,15 @@ export default withLoginUserRedux(
             {
               content: "Statistics",
             },
-          ]} />
+          ]}
+        />
       </BreadcrumbWrapper>
       <ReferendaSummary summary={summary} />
+      <OpenGovTurnoutSummary summary={summary} />
       <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
     </DetailLayout>
-    );
-  }
-);
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: tracksStats }, { result: delegatee }, { result: summary }] =

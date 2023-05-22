@@ -85,7 +85,11 @@ function useOptions(userOptions) {
  * @param {Object} props
  * @param {import("react-chartjs-2").ChartProps} props.options
  */
-export default function BarChart({ data, options: userOptions = {} }) {
+export default function BarChart({
+  data,
+  options: userOptions = {},
+  noLegend,
+}) {
   const options = useOptions(userOptions);
 
   return (
@@ -94,18 +98,20 @@ export default function BarChart({ data, options: userOptions = {} }) {
         <Bar data={data} options={options} />
       </ChartWrapper>
 
-      <Legend>
-        {data?.datasets?.map?.((item) => {
-          if (item.legend === false) {
-            return;
-          }
-          return (
-            <LegendItem key={item.label} color={item.backgroundColor}>
-              {item.label}
-            </LegendItem>
-          );
-        })}
-      </Legend>
+      {!noLegend && (
+        <Legend>
+          {data?.datasets?.map?.((item) => {
+            if (item.legend === false) {
+              return;
+            }
+            return (
+              <LegendItem key={item.label} color={item.backgroundColor}>
+                {item.label}
+              </LegendItem>
+            );
+          })}
+        </Legend>
+      )}
     </Wrapper>
   );
 }
