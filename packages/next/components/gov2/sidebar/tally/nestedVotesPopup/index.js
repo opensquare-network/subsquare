@@ -3,7 +3,7 @@ import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import StyledList from "next-common/components/styledList";
 import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import React, { useState } from "react";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
@@ -15,7 +15,6 @@ import styled from "styled-components";
 import {
   flex,
   gap_x,
-  inline_flex,
   items_center,
   justify_between,
   text_primary,
@@ -33,7 +32,7 @@ import ConvictionSVG from "next-common/assets/imgs/icons/conviction.svg";
 import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import SupportSVG from "next-common/assets/imgs/icons/support.svg";
 import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
-import Chains from "next-common/utils/consts/chains";
+import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 
 const DescriptionsWrapper = styled.div``;
 const DescriptionsTitle = styled.h3`
@@ -81,15 +80,6 @@ const DetailDescriptionLabel = styled.div`
   ${gap_x(8)};
 `;
 const DetailSelfVotesAnnotation = styled.span`
-  ${text_tertiary};
-`;
-
-const Capital = styled.div`
-  ${inline_flex};
-  ${p_14_normal};
-`;
-const CapitalConvictionLabel = styled.span`
-  width: 60px;
   ${text_tertiary};
 `;
 
@@ -313,11 +303,8 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
 }
 
 function DetailDelegatorList({ items = [] }) {
-  const chain = useChain();
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
-
-  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
 
   const columns = [
     {
@@ -341,19 +328,11 @@ function DetailDelegatorList({ items = [] }) {
 
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
-      <Capital key="capital">
-        <ValueDisplay
-          key="value"
-          value={toPrecision(capital, chainSettings.decimals)}
-          symbol={symbol}
-          showTooltip={false}
-        />
-        {hasLabel && (
-          <CapitalConvictionLabel>
-            <VoteLabel {...item} />
-          </CapitalConvictionLabel>
-        )}
-      </Capital>,
+      <CapitalTableItem
+        key="capital"
+        item={item}
+        capital={toPrecision(capital, chainSettings.decimals)}
+      />,
       <ValueDisplay
         key="value"
         value={toPrecision(votes, chainSettings.decimals)}
