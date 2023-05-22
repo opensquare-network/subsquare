@@ -2,7 +2,7 @@ import React from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import PageTabs from "next-common/components/pageTabs";
 import VoteTrendChart from "./voteTrendChart";
-import TrackReferendumSummary from "./summary";
+import ReferendumSummary from "next-common/components/statistics/track/summary";
 import AddressTrendChart from "./addressTrendChart";
 import { Header, Wrapper } from "next-common/components/statistics/styled";
 
@@ -30,7 +30,7 @@ export default function AllVotesStatistics({ turnout }) {
     <Wrapper>
       <Header>All Vote</Header>
       <Divider />
-      <TrackReferendumSummary summary={summary} />
+      <ReferendumSummary summary={summary} />
       <Divider />
       <PageTabs tabs={voteCharts} />
     </Wrapper>
