@@ -31,7 +31,7 @@ import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
 import ConvictionSVG from "next-common/assets/imgs/icons/conviction.svg";
 import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import SupportSVG from "next-common/assets/imgs/icons/support.svg";
-import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
+import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 
 const DescriptionsWrapper = styled.div``;

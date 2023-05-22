@@ -1,5 +1,5 @@
 import React from "react";
-import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
+import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { p_14_normal } from "next-common/styles/componentCss";
 import { inline_flex, text_tertiary } from "next-common/styles/tailwindcss";

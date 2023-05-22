@@ -30,11 +30,11 @@ const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
-const AllVotesPopup = dynamic(
-  () => import("next-common/components/democracy/allVotesPopup"),
+const FlattenedVotesPopup = dynamic(
+  () => import("next-common/components/democracy/flattenedVotesPopup"),
   {
     ssr: false,
-  }
+  },
 );
 
 const Wrapper = styled.div`
@@ -189,7 +189,7 @@ function Vote({
         />
       )}
       {showVoteList && (
-        <AllVotesPopup
+        <FlattenedVotesPopup
           setShowVoteList={setShowVoteList}
           allAye={allAye}
           allNay={allNay}
