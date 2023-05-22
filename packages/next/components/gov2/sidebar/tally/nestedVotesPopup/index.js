@@ -187,7 +187,13 @@ function VotesList({ items = [], loading }) {
     const votes = item.balance * item.conviction || item.balance;
 
     const row = [
-      <User key="user" add={item.account} fontSize={14} noTooltip />,
+      <User
+        key="user"
+        add={item.account}
+        fontSize={14}
+        noTooltip
+        maxWidth={326}
+      />,
       // FIXME: #2866, nested delegators
       "FIXME delegators",
       <ValueDisplay
@@ -344,7 +350,13 @@ function DetailDelegatorList({ items = [] }) {
     const votes = capital * item.conviction || item.balance;
 
     const row = [
-      <User key="user" add={item.account} fontSize={14} noTooltip />,
+      <User
+        key="user"
+        add={item.account}
+        fontSize={14}
+        noTooltip
+        maxWidth={326}
+      />,
       <CapitalTableItem
         key="capital"
         item={item}

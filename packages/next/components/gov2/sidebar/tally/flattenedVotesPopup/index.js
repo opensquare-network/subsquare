@@ -106,7 +106,13 @@ function VotesList({ items = [], loading, tab }) {
     const votes = capital * item.conviction || item.balance;
 
     const row = [
-      <User key="user" add={item.account} fontSize={14} noTooltip />,
+      <User
+        key="user"
+        add={item.account}
+        fontSize={14}
+        noTooltip
+        maxWidth={306}
+      />,
       <CapitalTableItem
         key="capital"
         item={item}
