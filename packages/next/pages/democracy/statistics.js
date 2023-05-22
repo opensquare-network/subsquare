@@ -22,7 +22,7 @@ export default withLoginUserRedux(
           <Breadcrumb items={[
               {
                 path: "/democracy/referenda",
-                content: "Democracy Referenda",
+                content: "Democracy",
               },
               {
                 content: "Statistics",
