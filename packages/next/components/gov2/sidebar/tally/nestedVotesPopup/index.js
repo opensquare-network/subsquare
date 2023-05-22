@@ -225,8 +225,22 @@ function VotesList({ items = [], loading }) {
   );
 }
 
+function getAnnotation(data = {}) {
+  const { isDelegating, isSplit, isSplitAbstain } = data;
+
+  if (isDelegating) {
+    return "Delegating";
+  } else if (isSplit) {
+    return "Split";
+  } else if (isSplitAbstain) {
+    return "SplitAbstain";
+  }
+}
+
 // FIXME: #2866, nested detail, fulfill content
 function DelegatedDetailPopup({ data, onClose = noop }) {
+  const annotation = getAnnotation(data);
+
   const selfVotesItems = [
     {
       label: (
@@ -234,8 +248,11 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
           <StyledAccountSVG />
           <span>
             Self Votes
-            {/* FIXME: #2866, by data `isSplit`? */}
-            <DetailSelfVotesAnnotation>/splitabstain</DetailSelfVotesAnnotation>
+            {annotation && (
+              <DetailSelfVotesAnnotation>
+                /{annotation}
+              </DetailSelfVotesAnnotation>
+            )}
           </span>
         </DetailDescriptionLabel>
       ),
