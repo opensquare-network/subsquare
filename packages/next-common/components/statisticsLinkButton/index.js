@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import StatisticsSVG from "./statistics.svg";
 import Link from "next/link";
