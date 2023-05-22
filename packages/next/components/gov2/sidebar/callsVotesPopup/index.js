@@ -6,8 +6,28 @@ import {
   voteExtrinsicsSelector,
 } from "next-common/store/reducers/gov2ReferendumSlice";
 import Pagination from "next-common/components/pagination";
-import CallsVotesList from "./callsVotesList";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import StyledList from "next-common/components/styledList";
+import User from "next-common/components/user";
+import ExplorerLink from "next-common/components/links/explorerLink";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
+import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import { toPrecision } from "next-common/utils";
+import styled from "styled-components";
+import { text_tertiary } from "next-common/styles/tailwindcss";
+import { useChainSettings } from "next-common/context/chain";
+
+const VoteTime = styled.div`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  ${text_tertiary};
+  :hover {
+    text-decoration: underline;
+  }
+`;
 
 export default function CallsVotesPopup({ setShowVoteList }) {
   const {
@@ -65,11 +85,58 @@ export default function CallsVotesPopup({ setShowVoteList }) {
         naysCount={allNay?.length || 0}
         abstainCount={allAbstain?.length || 0}
       />
-      <CallsVotesList
-        items={votes.slice(sliceFrom, sliceTo)}
-        loading={isLoading}
-      />
+      <VotesList items={votes.slice(sliceFrom, sliceTo)} loading={isLoading} />
       <Pagination {...pagination} />
     </BaseVotesPopup>
+  );
+}
+
+function VotesList({ items = [], loading }) {
+  const chainSettings = useChainSettings();
+
+  const columns = [
+    {
+      name: "VOTES",
+      style: { minWidth: 344, textAlign: "left" },
+    },
+    {
+      name: "DATE",
+      style: { minWidth: 160, textAlign: "left" },
+    },
+    {
+      name: "CAPITAL",
+      style: { minWidth: 168, textAlign: "right" },
+    },
+  ];
+
+  const rows = items?.map((item) => {
+    const row = [
+      <User
+        key="user"
+        add={item.voter}
+        fontSize={14}
+        noTooltip={true}
+        maxWidth={294}
+      />,
+      <VoteTime key="date">
+        <ExplorerLink indexer={item.indexer}>
+          {formatTime(item.indexer.blockTime)}
+        </ExplorerLink>
+      </VoteTime>,
+      <CapitalTableItem
+        key="capital"
+        item={item}
+        capital={toPrecision(item.vote.balance, chainSettings.decimals)}
+        conviction={item.vote.vote.conviction}
+      />,
+    ];
+
+    return row;
+  });
+
+  return (
+    <PopupListWrapper>
+      <StyledList loading={loading} columns={columns} rows={rows} />
+    </PopupListWrapper>
   );
 }
