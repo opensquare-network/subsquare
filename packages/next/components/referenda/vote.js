@@ -25,6 +25,30 @@ import { emptyFunction } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+  text_primary,
+} from "next-common/styles/tailwindcss";
+import { p_12_medium } from "next-common/styles/componentCss";
+
+const VotesGroup = styled.div`
+  ${flex};
+  ${items_center};
+  ${justify_between};
+  margin-top: 16px;
+`;
+const VotesGroupLabel = styled.div`
+  ${p_12_medium};
+  ${text_primary};
+`;
+const VotesGroupItems = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(12)};
+`;
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -97,7 +121,7 @@ function Vote({
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
   const isLoadingReferendumStatus = useSelector(
-    isLoadingReferendumStatusSelector
+    isLoadingReferendumStatusSelector,
   );
 
   const [updateTime, setUpdateTime] = useState(0);
@@ -161,12 +185,14 @@ function Vote({
             <RejectStatus>Failing</RejectStatus>
           ))}
 
-        <SubLink
-          style={{ marginTop: 16 }}
-          onClick={() => setShowFlattenedVotesList(true)}
-        >
-          Check all votes
-        </SubLink>
+        <VotesGroup>
+          <VotesGroupLabel>Votes</VotesGroupLabel>
+          <VotesGroupItems>
+            <SubLink onClick={() => setShowFlattenedVotesList(true)}>
+              Flattened
+            </SubLink>
+          </VotesGroupItems>
+        </VotesGroup>
 
         <MyVote updateTime={updateTime} />
       </SecondaryCardDetail>
