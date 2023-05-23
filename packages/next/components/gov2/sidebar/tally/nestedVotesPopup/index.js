@@ -33,6 +33,7 @@ import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import SupportSVG from "next-common/assets/imgs/icons/support.svg";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import sumBy from "lodash.sumby";
 
 const DescriptionsWrapper = styled.div``;
 const DescriptionsTitle = styled.h3`
@@ -194,8 +195,7 @@ function VotesList({ items = [], loading }) {
         noTooltip
         maxWidth={326}
       />,
-      // FIXME: #2866, nested delegators
-      "FIXME delegators",
+      item.directVoterDelegations?.length,
       <ValueDisplay
         key="value"
         value={toPrecision(votes, chainSettings.decimals)}
@@ -245,7 +245,34 @@ function getAnnotation(data = {}) {
 
 // FIXME: #2866, nested detail, fulfill content
 function DelegatedDetailPopup({ data, onClose = noop }) {
+  const chainSettings = useChainSettings();
+  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
   const annotation = getAnnotation(data);
+  const directVoterDelegations = data.directVoterDelegations;
+
+  const [detailListPage, setDetailListPage] = useState(1);
+
+  const selfVotesTotalvalue = toPrecision(
+    data.balance * (data.conviction || 1),
+    chainSettings.decimals,
+  );
+  const selfVotesCapitalValue = toPrecision(
+    data.balance,
+    chainSettings.decimals,
+  );
+
+  const delegationTotalDelegationValue = toPrecision(
+    sumBy(directVoterDelegations, (item) => {
+      return Number(item.balance) * (item.conviction || 1);
+    }),
+    chainSettings.decimals,
+  );
+  const delegationCapitalValue = toPrecision(
+    sumBy(directVoterDelegations, (item) => {
+      return Number(item.balance);
+    }),
+    chainSettings.decimals,
+  );
 
   const selfVotesItems = [
     {
@@ -262,7 +289,13 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
           </span>
         </DetailDescriptionLabel>
       ),
-      value: "FIXME",
+      value: (
+        <ValueDisplay
+          value={selfVotesTotalvalue}
+          symbol={symbol}
+          showTooltip={false}
+        />
+      ),
     },
     {
       label: (
@@ -280,7 +313,13 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
           <span>Capital</span>
         </DetailDescriptionLabel>
       ),
-      value: "FIXME",
+      value: (
+        <ValueDisplay
+          value={selfVotesCapitalValue}
+          symbol={symbol}
+          showTooltip={false}
+        />
+      ),
     },
   ];
 
@@ -292,7 +331,13 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
           <span>Total Delegation</span>
         </DetailDescriptionLabel>
       ),
-      value: "FIXME",
+      value: (
+        <ValueDisplay
+          value={delegationTotalDelegationValue}
+          symbol={symbol}
+          showTooltip={false}
+        />
+      ),
     },
     {
       label: (
@@ -301,7 +346,7 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
           <span>Delegators</span>
         </DetailDescriptionLabel>
       ),
-      value: "FIXME",
+      value: directVoterDelegations?.length || 0,
     },
     {
       label: (
@@ -310,9 +355,30 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
           <span>Capital</span>
         </DetailDescriptionLabel>
       ),
-      value: "FIXME",
+      // FIXME: #2866, nested detail, delegation capital correct?
+      value: (
+        <ValueDisplay
+          value={delegationCapitalValue}
+          symbol={symbol}
+          showTooltip={false}
+        />
+      ),
     },
   ];
+
+  const pageSize = 3;
+  function onPageChange(e, newPage) {
+    e.preventDefault();
+    setDetailListPage(newPage);
+  }
+  const pagination = {
+    page: detailListPage,
+    pageSize,
+    total: directVoterDelegations?.length || 0,
+    onPageChange,
+  };
+  const sliceFrom = (pagination.page - 1) * pageSize;
+  const sliceTo = sliceFrom + pageSize;
 
   return (
     <BaseVotesPopup title="Delegated Detail" onClose={onClose}>
@@ -320,7 +386,15 @@ function DelegatedDetailPopup({ data, onClose = noop }) {
       <Descriptions title="Delegation" items={delegationItems} />
 
       {/* FIXME: #2866, nested detail delegator list props and display */}
-      <DetailDelegatorList />
+      {!!directVoterDelegations?.length && (
+        <>
+          <DetailDelegatorList
+            items={directVoterDelegations.slice(sliceFrom, sliceTo)}
+          />
+
+          <Pagination {...pagination} />
+        </>
+      )}
     </BaseVotesPopup>
   );
 }
