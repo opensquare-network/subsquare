@@ -1,11 +1,8 @@
-"use client";
-
 import React, { useCallback, useState } from "react";
-import BarChart from "../barChart";
-import { abbreviateBigNumber } from "next-common/utils";
-import ReferendaSlider from "../../RefereundaSlider";
+import ReferendaSlider from "next-common/components/statistics/RefereundaSlider";
+import BarChart from "next-common/components/statistics/track/barChart";
 
-export default function AddressTrendChart({ turnout, delegated }) {
+export default function TurnoutPercentageChartChart({ turnout }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
   const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
@@ -16,29 +13,17 @@ export default function AddressTrendChart({ turnout, delegated }) {
     setRangeTo(to);
   }, []);
 
-  const partialTurnout = turnout?.slice(rangeFrom, rangeTo + 1) || [];
+  const partialTurnout = turnout.slice(rangeFrom, rangeTo + 1);
   const labels = partialTurnout.map((item) => item.referendumIndex);
-  let datasets = [
+  const datasets = [
     {
       categoryPercentage,
       barPercentage,
-      label: "Direct",
-      data: partialTurnout.map((item) => item.directAddresses),
-      backgroundColor: "rgba(76, 175, 80, 0.4)",
+      label: "Turnout Percentage",
+      data: partialTurnout.map((item) => item.percentage * 100),
+      backgroundColor: "rgba(104, 72, 255, 0.4)",
     },
   ];
-  if (delegated) {
-    datasets = [
-      ...datasets,
-      {
-        categoryPercentage,
-        barPercentage,
-        label: "Delegated",
-        data: partialTurnout.map((item) => item.delegationAddresses),
-        backgroundColor: "rgba(232, 31, 102, 0.4)",
-      },
-    ];
-  }
 
   const data = {
     labels,
@@ -47,7 +32,7 @@ export default function AddressTrendChart({ turnout, delegated }) {
 
   const slider = (
     <ReferendaSlider
-      marginLeft={45}
+      marginLeft={32}
       turnout={turnout}
       onSliderChange={onSliderChange}
       defaultRange={[rangeFrom, rangeTo]}
@@ -58,16 +43,16 @@ export default function AddressTrendChart({ turnout, delegated }) {
     <BarChart
       slider={slider}
       data={data}
+      noLegend={true}
       options={{
         animation: {
           duration: 0,
         },
         scales: {
-          x: {
-            stacked: true,
-          },
           y: {
-            stacked: true,
+            ticks: {
+              callback: (val) => `${val}%`,
+            },
           },
         },
         plugins: {
@@ -79,7 +64,7 @@ export default function AddressTrendChart({ turnout, delegated }) {
               },
               label(item) {
                 const raw = item.raw;
-                return `${item.dataset.label}: ${abbreviateBigNumber(raw)}`;
+                return `${item.dataset.label}: ${raw.toFixed(2)}%`;
               },
             },
           },

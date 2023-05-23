@@ -12,7 +12,7 @@ import startCase from "lodash.startcase";
 import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 import { to404 } from "next-common/utils/serverSideUtil";
-import StatisticLinkButton from "components/statisticsLinkButton";
+import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 
 export default withLoginUserRedux(
   ({ track, posts, title, tracks, fellowshipTracks, summary, period }) => {

@@ -1,28 +1,34 @@
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import HomeLayout from "next-common/components/layout/HomeLayout";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import DemocracyStatistics from "next-common/components/statistics/democracy";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import AllVotesStatistics from "next-common/components/statistics/track/allVoteStatistics";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
 import BigNumber from "bignumber.js";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(
-  ({ tracks, fellowshipTracks, delegatee, delegators, summary, turnout }) => {
-    const seoInfo = {
-      title: "Democracy Statistics",
-      desc: "Democracy Statistics",
-    };
-
+  ({ delegatee, delegators, summary, turnout }) => {
     return (
-      <HomeLayout
-        seoInfo={seoInfo}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
+      <DetailLayout
+        seoInfo={{
+          title: "Democracy Statistics",
+          desc: "Democracy Statistics",
+        }}
       >
-        <TitleContainer>Democracy Statistics</TitleContainer>
+        <BreadcrumbWrapper>
+          <Breadcrumb items={[
+              {
+                path: "/democracy/referenda",
+                content: "Democracy",
+              },
+              {
+                content: "Statistics",
+              },
+            ]} />
+        </BreadcrumbWrapper>
         <AllVotesStatistics turnout={turnout} />
         <TurnoutStatistics turnout={turnout} />
         <DemocracyStatistics
@@ -30,7 +36,7 @@ export default withLoginUserRedux(
           delegators={delegators}
           summary={summary}
         />
-      </HomeLayout>
+      </DetailLayout>
     );
   }
 );
@@ -54,7 +60,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     nextApi.fetch("democracy/referenda/turnout"),
   ]);
 
-  const normailizedTurnout = turnout.map((item) => ({
+  const normailizedTurnout = turnout?.map((item) => ({
     ...item,
     totalCapital: item.turnout,
     directCapital: new BigNumber(item.turnout)
@@ -62,19 +68,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
       .toString(),
   }));
 
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
-
   return {
     props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,
       summary: summary ?? {},
-      turnout: normailizedTurnout ?? {},
+      turnout: normailizedTurnout ?? [],
     },
   };
 });

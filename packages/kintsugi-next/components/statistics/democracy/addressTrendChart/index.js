@@ -1,11 +1,9 @@
-"use client";
-
 import React, { useCallback, useState } from "react";
-import BarChart from "../barChart";
 import { abbreviateBigNumber } from "next-common/utils";
-import ReferendaSlider from "../../RefereundaSlider";
+import ReferendaSlider from "next-common/components/statistics/RefereundaSlider";
+import BarChart from "next-common/components/statistics/track/barChart";
 
-export default function AddressTrendChart({ turnout, delegated }) {
+export default function AddressTrendChart({ turnout }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
   const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
@@ -22,23 +20,11 @@ export default function AddressTrendChart({ turnout, delegated }) {
     {
       categoryPercentage,
       barPercentage,
-      label: "Direct",
+      label: "Addresses",
       data: partialTurnout.map((item) => item.directAddresses),
       backgroundColor: "rgba(76, 175, 80, 0.4)",
     },
   ];
-  if (delegated) {
-    datasets = [
-      ...datasets,
-      {
-        categoryPercentage,
-        barPercentage,
-        label: "Delegated",
-        data: partialTurnout.map((item) => item.delegationAddresses),
-        backgroundColor: "rgba(232, 31, 102, 0.4)",
-      },
-    ];
-  }
 
   const data = {
     labels,
@@ -56,6 +42,7 @@ export default function AddressTrendChart({ turnout, delegated }) {
 
   return (
     <BarChart
+      noLegend={true}
       slider={slider}
       data={data}
       options={{

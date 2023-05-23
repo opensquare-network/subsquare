@@ -6,6 +6,7 @@ import DemocracySummary from "next-common/components/summary/democracySummary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
+import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 
 export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
@@ -18,6 +19,7 @@ export default withLoginUserRedux(({ posts, chain }) => {
     <HomeLayout seoInfo={seoInfo}>
       <PostList
         category={category}
+        topRightCorner={<StatisticLinkButton href="/democracy/statistics" />}
         items={items}
         pagination={{
           page: posts.page,

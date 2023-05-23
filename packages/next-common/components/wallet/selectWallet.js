@@ -1,13 +1,24 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { getWallets } from "../../utils/consts/connect";
-import styled, { css } from "styled-components";
-import Flex from "../styled/flex";
+import styled from "styled-components";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import Loading from "../loading";
 import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import useInjectedWeb3 from "./useInjectedWeb3";
+import PolkadotWallet from "./polkadotWallet";
+import { MetaMaskWallet } from "./metamaskWallet";
+import {
+  addNetwork,
+  getChainId,
+  getMetaMaskEthereum,
+  normalizedMetaMaskAccounts,
+  requestAccounts,
+  useMetaMaskAccounts,
+} from "next-common/utils/metamask";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -21,112 +32,6 @@ const WalletOptions = styled.ul`
   }
 `;
 
-const WalletOption = styled.li`
-  all: unset;
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  > div {
-    gap: 16px;
-  }
-
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-  color: ${(props) => props.theme.textPrimary};
-  background: ${(props) => props.theme.grey100Bg};
-
-  ${(props) =>
-    props.installed === true &&
-    css`
-      &:hover {
-        background: ${(props) => props.theme.grey200Border};
-      }
-    `}
-
-  ${(props) =>
-    props.selected &&
-    css`
-      background: ${(props) => props.theme.grey200Border};
-    `}
-
-  border-radius: 4px;
-  cursor: pointer;
-
-  svg.SubWallet {
-    border-radius: 16px;
-  }
-
-  ${(props) =>
-    props.installed === false &&
-    css`
-      color: ${props.theme.textTertiary};
-      cursor: not-allowed;
-      pointer-events: none;
-      user-select: none;
-    `}
-  span.wallet-not-installed {
-    font-size: 12px;
-    font-weight: 400;
-  }
-`;
-
-const useInjectedWeb3 = () => {
-  const isMounted = useIsMounted();
-  const [injectedWeb3, setInjectedWeb3] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setTimeout(() => {
-        if (isMounted.current) {
-          setLoading(false);
-          setInjectedWeb3(window.injectedWeb3);
-        }
-      }, 1000);
-    }
-  }, []);
-
-  return { loading, injectedWeb3 };
-};
-
-const Wallet = ({ wallet, onClick, selected = false, loading = false }) => {
-  const [installed, setInstalled] = useState(null);
-  const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
-  const isMounted = useIsMounted();
-  const Logo = wallet.logo;
-
-  useEffect(() => {
-    // update if installed changes
-    if (loadingInjectedWeb3) {
-      return;
-    }
-
-    if (isMounted.current) {
-      setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
-    }
-  }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
-
-  return (
-    <WalletOption
-      selected={selected}
-      onClick={() => onClick(wallet)}
-      installed={installed}
-    >
-      <Flex>
-        <Logo className={wallet.title} alt={wallet.title} />
-        <span className="wallet-title">{wallet.title}</span>
-      </Flex>
-      {installed === false && (
-        <span className="wallet-not-installed">Not installed</span>
-      )}
-      {(loading || installed === null) && <Loading />}
-    </WalletOption>
-  );
-};
-
 export default function SelectWallet({
   selectedWallet,
   setSelectWallet,
@@ -139,7 +44,15 @@ export default function SelectWallet({
   const isMounted = useIsMounted();
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
-  const { chainType } = useChainSettings();
+  const { chainType, ethereumNetwork } = useChainSettings();
+  const chain = useChain();
+  const metamaskAccounts = useMetaMaskAccounts(selectedWallet === WalletTypes.METAMASK);
+
+  useEffect(() => {
+    if (selectedWallet === WalletTypes.METAMASK) {
+      setAccounts(metamaskAccounts);
+    }
+  }, [metamaskAccounts, selectedWallet, setAccounts]);
 
   useEffect(() => {
     if (!injectedWeb3) {
@@ -150,6 +63,11 @@ export default function SelectWallet({
       if (injectedWeb3[wallet.extensionName]) {
         return;
       }
+    }
+
+    if (chainType === ChainTypes.ETHEREUM) {
+      // For ethereum chains, we only due with the known supported wallets
+      return;
     }
 
     // For unknown wallet extensions
@@ -178,7 +96,15 @@ export default function SelectWallet({
         }
       }
     })();
-  }, [injectedWeb3, setAccounts, setSelectWallet, setWallet, isMounted, chainType]);
+  }, [
+    injectedWeb3,
+    setAccounts,
+    setSelectWallet,
+    setWallet,
+    isMounted,
+    chainType,
+    chain,
+  ]);
 
   const loadAccounts = useCallback(
     async (selectedWallet) => {
@@ -192,10 +118,14 @@ export default function SelectWallet({
         setWaitingPermissionWallet(selectedWallet);
         const wallet = await extension.enable("subsquare");
         let extensionAccounts = await wallet.accounts?.get();
-        if (chainType === "ethereum") {
-          extensionAccounts = extensionAccounts.filter((acc) => acc.type === "ethereum");
+        if (chainType === ChainTypes.ETHEREUM) {
+          extensionAccounts = extensionAccounts.filter(
+            (acc) => acc.type === ChainTypes.ETHEREUM,
+          );
         } else {
-          extensionAccounts = extensionAccounts.filter((acc) => acc.type !== "ethereum");
+          extensionAccounts = extensionAccounts.filter(
+            (acc) => acc.type !== ChainTypes.ETHEREUM,
+          );
         }
 
         if (isMounted.current) {
@@ -224,7 +154,41 @@ export default function SelectWallet({
     ],
   );
 
-  const onWalletClick = useCallback(
+  const loadMetaMaskAccounts = useCallback(
+    async (selectedWallet) => {
+      const ethereum = getMetaMaskEthereum();
+      if (!ethereum) {
+        dispatch(newErrorToast("Please install MetaMask"));
+        return;
+      }
+
+      try {
+        const chainId = await getChainId();
+        if (chainId !== ethereumNetwork.chainId) {
+          await addNetwork(ethereumNetwork);
+        }
+
+        const accounts = await requestAccounts();
+        if (isMounted.current) {
+          setSelectWallet(selectedWallet);
+          setWallet();
+          setAccounts(normalizedMetaMaskAccounts(accounts));
+        }
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
+      }
+    },
+    [
+      dispatch,
+      isMounted,
+      setWallet,
+      setSelectWallet,
+      setAccounts,
+      ethereumNetwork,
+    ],
+  );
+
+  const onPolkadotWalletClick = useCallback(
     (wallet) => {
       loadAccounts(wallet.extensionName);
       onSelect && onSelect(wallet.extensionName);
@@ -232,14 +196,34 @@ export default function SelectWallet({
     [loadAccounts, onSelect],
   );
 
+  const onMetaMaskWalletClick = useCallback(
+    (wallet) => {
+      loadMetaMaskAccounts(wallet.extensionName);
+      onSelect && onSelect(wallet.extensionName);
+    },
+    [loadMetaMaskAccounts, onSelect],
+  );
+
   return (
     <WalletOptions>
       {getWallets().map((wallet, index) => {
+        if (wallet.extensionName === WalletTypes.METAMASK) {
+          return (
+            <MetaMaskWallet
+              key={index}
+              wallet={wallet}
+              onClick={onMetaMaskWalletClick}
+              selected={wallet.extensionName === selectedWallet}
+              loading={wallet.extensionName === waitingPermissionWallet}
+            />
+          );
+        }
+
         return (
-          <Wallet
+          <PolkadotWallet
             key={index}
             wallet={wallet}
-            onClick={onWalletClick}
+            onClick={onPolkadotWalletClick}
             selected={wallet.extensionName === selectedWallet}
             loading={wallet.extensionName === waitingPermissionWallet}
           />

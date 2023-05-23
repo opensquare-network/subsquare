@@ -12,7 +12,7 @@ export default function SummaryHeaderContent({ summary }) {
       content: <CountSummaryContent count={summary?.trackReferendaCounts?.length || 0} />,
     },
     {
-      title: "REFERENDUM",
+      title: "REFERENDA",
       content: <CountSummaryContent count={summary?.totalReferendaCount || 0} />,
     },
   ];

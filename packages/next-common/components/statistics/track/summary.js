@@ -8,7 +8,7 @@ function CountSummaryContent({ count }) {
 export default function TrackReferendumSummary({ summary }) {
   const items = [
     {
-      title: "REFERENDUM",
+      title: "REFERENDA",
       content: <CountSummaryContent count={summary?.referendumCount} />,
     },
   ];

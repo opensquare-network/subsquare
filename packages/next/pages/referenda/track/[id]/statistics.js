@@ -1,33 +1,27 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { gov2TracksApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
 import startCase from "lodash.startcase";
 import TrackStatistics from "next-common/components/statistics/track";
 import { EmptyList } from "next-common/utils/constants";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(
   ({
     track,
     turnout,
-    tracks,
-    fellowshipTracks,
     delegatee,
     delegators,
     summary,
   }) => {
-    const seoInfo = {
-      title: "OpenGov Statistics",
-      desc: "OpenGov Statistics",
-    };
-
     return (
-      <HomeLayout
-        seoInfo={seoInfo}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
+      <DetailLayout
+        seoInfo={{
+          title: "OpenGov Statistics",
+          desc: "OpenGov Statistics",
+        }}
       >
         <BreadcrumbWrapper>
           <Breadcrumb
@@ -38,7 +32,7 @@ export default withLoginUserRedux(
               },
               {
                 path: `/referenda/track/${track.id}`,
-                content: `#${track.id} ${startCase(track.name)}`,
+                content: `[${track.id}] ${startCase(track.name)}`,
               },
               {
                 content: "Statistics",
@@ -53,7 +47,7 @@ export default withLoginUserRedux(
           delegators={delegators}
           summary={summary}
         />
-      </HomeLayout>
+      </DetailLayout>
     );
   }
 );
@@ -62,10 +56,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
 
   const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
-  const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(
-    fellowshipTracksApi
-  );
-
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -95,8 +85,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       track: track ?? {},
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
       turnout: turnout ?? [],
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,

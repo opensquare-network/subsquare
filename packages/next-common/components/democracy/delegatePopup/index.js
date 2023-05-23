@@ -5,7 +5,11 @@ import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { checkInputValue, emptyFunction, isSameAddress } from "next-common/utils";
+import {
+  checkInputValue,
+  emptyFunction,
+  isSameAddress,
+} from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
@@ -98,7 +102,6 @@ function PopupContent({
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    setIsLoading(true);
     await sendTx({
       tx,
       dispatch,

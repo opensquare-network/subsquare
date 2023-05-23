@@ -7,7 +7,10 @@ import {
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
+import Chains from "./consts/chains";
+import WalletTypes from "./consts/walletTypes";
 import { getLastApi } from "./hooks/useApi";
+import { sendTxDarwinia2 } from "./sendDarwiniaTx";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -51,6 +54,26 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
+  if (
+    process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2 &&
+    localStorage.lastLoginExtension === WalletTypes.METAMASK
+  ) {
+    await sendTxDarwinia2({
+      tx,
+      dispatch,
+      setLoading,
+      onFinalized,
+      onInBlock,
+      onSubmitted,
+      onClose,
+      signerAddress,
+      isMounted,
+      section: sectionName,
+      method: methodName,
+    });
+    return;
+  }
+
   const noWaitForFinalized = onFinalized === emptyFunction;
   const totalSteps = noWaitForFinalized ? 2 : 3;
 

@@ -21,7 +21,7 @@ import { useMemo } from "react";
 import {
   useConfirmingStarted,
   useConfirmTimelineFailPairs,
-  useDecidingSince,
+  useDecidingSince, userConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import isNil from "lodash.isnil";
 import { useTheme } from "styled-components";
@@ -68,6 +68,7 @@ function ConfirmationStarted() {
   const confirmPeriod = useConfirm();
   const confirmRemaining = useConfirmRemaining();
   const confirmStart = useConfirmingStarted();
+  const confirmAbortedHeight = userConfirmingAborted();
   const confirmStartPercentage = useConfirmStartPercentage();
   const confirmEndPercentage = useConfirmEndPercentage();
   const decisionBlocks = useDecisionBlocks();
@@ -76,7 +77,10 @@ function ConfirmationStarted() {
   const confirmFailPairs = useConfirmTimelineFailPairs();
 
   const confirmPercentage = useMemo(() => {
-    if (isNil(latestHeight) || latestHeight <= confirmStart) {
+    if (
+      isNil(latestHeight) || latestHeight <= confirmStart ||
+      !isNil(confirmAbortedHeight) && confirmAbortedHeight > confirmStart
+    ) {
       return 0;
     }
 
@@ -87,7 +91,7 @@ function ConfirmationStarted() {
 
     const gone = latestHeight - confirmStart;
     return Number((gone / confirmPeriod) * 100).toFixed(2);
-  }, [latestHeight, confirmStart, confirmPeriod]);
+  }, [latestHeight, confirmAbortedHeight, confirmStart, confirmPeriod]);
 
   const progressItems = useMemo(() => {
     const items = confirmFailPairs.map((pair) => {
@@ -125,19 +129,26 @@ function ConfirmationStarted() {
       };
     });
 
-    items.push({
-      percentage: confirmPercentage,
-      start: confirmStartPercentage,
-      end: confirmEndPercentage < 1 ? 1 : confirmEndPercentage,
-      fg: secondaryGreen500,
-      bg: secondaryGreen300,
-      tooltipContent: confirmRemaining > 0 && (
-        <Remaining blocks={confirmRemaining} />
-      ),
-    });
+    if (
+      isNil(confirmAbortedHeight) || // means no aborted records
+      confirmAbortedHeight < confirmStart // mean has aborted records but not last confirmation aborted
+    ) {
+      items.push({
+        percentage: confirmPercentage,
+        start: confirmStartPercentage,
+        end: confirmEndPercentage < 1 ? 1 : confirmEndPercentage,
+        fg: secondaryGreen500,
+        bg: secondaryGreen300,
+        tooltipContent: confirmRemaining > 0 && (
+          <Remaining blocks={ confirmRemaining } />
+        ),
+      });
+    }
 
     return items;
   }, [
+    confirmStart,
+    confirmAbortedHeight,
     confirmPercentage,
     confirmEndPercentage,
     confirmFailPairs,
@@ -157,7 +168,7 @@ function ConfirmationStarted() {
   return (
     <ProgressGroup>
       <ProgressBarWrapper>
-        <MultiProgress progressItems={progressItems} />
+        <MultiProgress progressItems={progressItems.slice(0, 1)} />
       </ProgressBarWrapper>
 
       <ConfirmationInfo />

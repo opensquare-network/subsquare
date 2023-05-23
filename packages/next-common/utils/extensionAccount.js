@@ -1,9 +1,21 @@
+import ChainTypes from "./consts/chainTypes";
+import { getWallets } from "./consts/connect";
+
 export async function polkadotWeb3Accounts(chainType) {
   const { web3Accounts } = await import("@polkadot/extension-dapp");
   const allAccounts = await web3Accounts();
-  if (chainType === "ethereum") {
-    return allAccounts.filter((acc) => acc.type === "ethereum");
+  const wallets = getWallets()?.map((w) => w.extensionName);
+  const accountsBySupportedExtension = allAccounts.filter((item) =>
+    wallets.includes(item.meta.source),
+  );
+
+  if (chainType === ChainTypes.ETHEREUM) {
+    return accountsBySupportedExtension.filter(
+      (acc) => acc.type === ChainTypes.ETHEREUM,
+    );
   }
 
-  return allAccounts.filter((acc) => acc.type !== "ethereum");
+  return accountsBySupportedExtension.filter(
+    (acc) => acc.type !== ChainTypes.ETHEREUM,
+  );
 }

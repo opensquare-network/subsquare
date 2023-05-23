@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.1.0
+date: 05/22/2023
+- Support OpenGov referenda tracks comparison statistics.
+- Support OpenGov statistics for each track.
+- Add democracy statistics for votes trend.
+- Correct council close button disable state.
+- Support evm compatible chains, like darwinia2.
+
+
 # 3.0.5
 date: 05/05/2023
 - Show min enact period on OpenGov track panel.
