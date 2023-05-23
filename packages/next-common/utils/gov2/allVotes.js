@@ -153,6 +153,7 @@ function extractDelegations(mapped, track, directVotes = []) {
         ...result,
         {
           account,
+          target: target.toString(),
           balance: balance.toBigInt().toString(),
           isDelegating: true,
           aye: to.aye,
