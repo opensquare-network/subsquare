@@ -1,3 +1,5 @@
+"use clinet";
+
 import React, { useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import styled from "styled-components";
