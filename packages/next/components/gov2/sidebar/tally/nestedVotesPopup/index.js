@@ -16,16 +16,9 @@ import {
   flex,
   gap_x,
   items_center,
-  justify_between,
-  text_primary,
   text_tertiary,
-  theme,
 } from "next-common/styles/tailwindcss";
-import {
-  p_14_bold,
-  p_14_medium,
-  p_14_normal,
-} from "next-common/styles/componentCss";
+import Descriptions from "next-common/components/Descroptions";
 import AccountSVG from "next-common/assets/imgs/icons/account.svg";
 import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
 import ConvictionSVG from "next-common/assets/imgs/icons/conviction.svg";
@@ -34,31 +27,6 @@ import SupportSVG from "next-common/assets/imgs/icons/support.svg";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import sumBy from "lodash.sumby";
-
-const DescriptionsWrapper = styled.div``;
-const DescriptionsTitle = styled.h3`
-  margin: 0;
-  margin-bottom: 8px;
-  ${p_14_bold};
-  ${text_primary};
-`;
-const DescriptionItem = styled.div`
-  height: 44px;
-  ${flex};
-  ${justify_between};
-  ${items_center};
-  ${text_primary};
-
-  & + & {
-    border-top: 1px solid ${theme("grey200Border")};
-  }
-`;
-const DescriptionItemLabel = styled.div`
-  ${p_14_medium};
-`;
-const DescriptionItemValue = styled.div`
-  ${p_14_normal};
-`;
 
 const StyledAccountSVG = styled(AccountSVG)`
   fill: ${(p) => p.theme.textTertiary};
@@ -451,24 +419,5 @@ function DetailDelegatorList({ items = [] }) {
     <PopupListWrapper>
       <StyledList columns={columns} rows={rows} />
     </PopupListWrapper>
-  );
-}
-
-// TODO: make this as `Descriptions` component
-// similar to https://ant.design/components/descriptions, Display multiple read-only fields in groups.
-// can use in Been Delegated, sidebar tally aye nay etc.
-function Descriptions({ title = "", items = [] }) {
-  return (
-    <DescriptionsWrapper>
-      {title && <DescriptionsTitle>{title}</DescriptionsTitle>}
-
-      {items?.length &&
-        items.map((item, idx) => (
-          <DescriptionItem key={idx}>
-            <DescriptionItemLabel>{item.label}</DescriptionItemLabel>
-            <DescriptionItemValue>{item.value}</DescriptionItemValue>
-          </DescriptionItem>
-        ))}
-    </DescriptionsWrapper>
   );
 }
