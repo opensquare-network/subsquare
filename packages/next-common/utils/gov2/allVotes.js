@@ -170,7 +170,9 @@ function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
       return delegationVote.target === vote.account;
     });
 
-    vote.directVoterDelegations = directVoterDelegations;
+    vote.directVoterDelegations = sortVotesWithConviction(
+      directVoterDelegations,
+    );
     return vote;
   });
 }
