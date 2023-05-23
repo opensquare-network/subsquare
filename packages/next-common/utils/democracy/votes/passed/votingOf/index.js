@@ -94,6 +94,7 @@ function extractDelegations(mapped, directVotes = []) {
       ...result,
       {
         account,
+        target: target.toString(),
         balance: balance.toBigInt().toString(),
         isDelegating: true,
         aye: to.aye,
@@ -101,6 +102,20 @@ function extractDelegations(mapped, directVotes = []) {
       },
     ];
   }, []);
+}
+
+// NOTE: #2866, nested detail
+function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
+    return votes.map((vote) => {
+    const directVoterDelegations = delegationVotes.filter((delegationVote) => {
+      return delegationVote.target === vote.account;
+    });
+
+    vote.directVoterDelegations = sortVotesWithConviction(
+      directVoterDelegations,
+    );
+    return vote;
+  });
 }
 
 export async function getReferendumVotesFromVotingOf(
@@ -113,7 +128,11 @@ export async function getReferendumVotesFromVotingOf(
   const delegationVotes = extractDelegations(mapped, directVotes);
   const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);
 
-  const allAye = sorted.filter((v) => v.aye);
-  const allNay = sorted.filter((v) => !v.aye);
+  let allAye = sorted.filter((v) => v.aye);
+  let allNay = sorted.filter((v) => !v.aye);
+
+  allAye = extractDirectVoterDelegations(allAye, delegationVotes);
+  allNay = extractDirectVoterDelegations(allNay, delegationVotes);
+
   return { allAye, allNay };
 }
