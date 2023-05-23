@@ -27,6 +27,7 @@
     "lodash.noop": "^3.0.1",
     "lodash.partition": "^4.6.0",
     "lodash.range": "^3.2.0",
+    "lodash.sumby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
     "moment": "^2.29.4",
     "next": "^13.3.0",
