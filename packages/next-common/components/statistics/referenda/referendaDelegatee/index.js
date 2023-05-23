@@ -76,29 +76,32 @@ export default function ReferendaDelegatee({ delegatee }) {
 
   const { sortedColumn, columns } = useColumns(
     [
-      { name: "ADDRESS", style: { textAlign: "left", minWidth: "230px" } },
+      {
+        name: "ADDRESS",
+        style: { textAlign: "left", maxWidth: "268px", minWidth: "268px" },
+      },
       {
         name: "TRACKS",
-        style: { textAlign: "right", width: "128px", minWidth: "128px" },
+        style: { textAlign: "right", maxWidth: "96px", minWidth: "96px" },
       },
       {
         name: "COUNT",
-        style: { textAlign: "right", width: "128px", minWidth: "128px" },
+        style: { textAlign: "right", maxWidth: "96px", minWidth: "96px" },
         sortable: true,
       },
       {
         name: "CAPITAL",
-        style: { textAlign: "right", width: "128px", minWidth: "128px" },
+        style: { textAlign: "right", maxWidth: "128px", minWidth: "128px" },
         sortable: true,
       },
       {
         name: "VOTES",
-        style: { textAlign: "right", width: "128px", minWidth: "128px" },
+        style: { textAlign: "right", maxWidth: "128px", minWidth: "128px" },
         sortable: true,
       },
       {
         name: "",
-        style: { textAlign: "right", width: "40px", minWidth: "40px" },
+        style: { textAlign: "right", maxWidth: "40px", minWidth: "40px" },
       },
     ],
     "VOTES",
