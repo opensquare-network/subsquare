@@ -28,6 +28,18 @@ const PopupListWrapper = styled.div`
     }
     box-shadow: none;
   }
+
+  /* reset */
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td {
+    border-collapse: inherit;
+    border-spacing: 0;
+  }
 `;
 
 export default PopupListWrapper;
