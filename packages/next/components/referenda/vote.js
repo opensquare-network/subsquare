@@ -34,6 +34,7 @@ import {
 } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import CallsVotesPopup from "next-common/components/democracy/callsVotesPopup";
+import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 
 const VotesGroup = styled.div`
   ${flex};
@@ -113,6 +114,7 @@ function Vote({
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showFlattenedVotesList, setShowFlattenedVotesList] = useState(false);
+  const [showNestedVotesList, setShowNestedVotesList] = useState(false);
   const [showCallsVotesList, setShowCallsVotesList] = useState(false);
   const api = useApi();
   const blockHeight = useSelector(latestHeightSelector);
@@ -193,6 +195,9 @@ function Vote({
             <SubLink onClick={() => setShowFlattenedVotesList(true)}>
               Flattened
             </SubLink>
+            <SubLink onClick={() => setShowNestedVotesList(true)}>
+              Nested
+            </SubLink>
             {/* FIXME: #2866, democracy calls */}
             {/* <SubLink onClick={() => setShowCallsVotesList(true)}>Calls</SubLink> */}
           </VotesGroupItems>
@@ -221,6 +226,14 @@ function Vote({
       {showFlattenedVotesList && (
         <FlattenedVotesPopup
           setShowVoteList={setShowFlattenedVotesList}
+          allAye={allAye}
+          allNay={allNay}
+          isLoadingVotes={isLoadingVotes}
+        />
+      )}
+      {showNestedVotesList && (
+        <NestedVotesPopup
+          setShowVoteList={setShowNestedVotesList}
           allAye={allAye}
           allNay={allNay}
           isLoadingVotes={isLoadingVotes}
