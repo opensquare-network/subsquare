@@ -10,7 +10,7 @@ import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import NestedPopupDelegatedDetailPopup from "./delegatedDetailPopup";
+import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 
 export default function NestedVotesPopup({
   setShowVoteList,
