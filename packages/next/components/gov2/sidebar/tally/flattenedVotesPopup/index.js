@@ -131,10 +131,12 @@ function VotesList({ items = [], loading, tab }) {
   });
 
   return (
-    <PopupListWrapper>
-      <StyledList columns={columns} rows={rows} loading={loading} />
+    <>
+      <PopupListWrapper>
+        <StyledList columns={columns} rows={rows} loading={loading} />
+      </PopupListWrapper>
 
       {!loading && <Annotation isOpenGov />}
-    </PopupListWrapper>
+    </>
   );
 }

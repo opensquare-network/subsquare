@@ -115,10 +115,12 @@ function VotesList({ loading, items = [] }) {
   });
 
   return (
-    <PopupListWrapper>
-      <StyledList columns={columns} rows={rows} loading={loading} />
+    <>
+      <PopupListWrapper>
+        <StyledList columns={columns} rows={rows} loading={loading} />
+      </PopupListWrapper>
 
       {!loading && <Annotation />}
-    </PopupListWrapper>
+    </>
   );
 }
