@@ -50,8 +50,8 @@ export default function PolkassemblyComments({
         ) : comments?.length > 0 ? (
           <>
             <div>
-              {(comments || []).map((item) => (
-                <Item key={item.id} data={item} />
+              {(comments || []).map((item, idx) => (
+                <Item key={idx} data={item} />
               ))}
             </div>
           </>
