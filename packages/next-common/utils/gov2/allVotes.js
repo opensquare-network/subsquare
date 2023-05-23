@@ -163,6 +163,18 @@ function extractDelegations(mapped, track, directVotes = []) {
     }, []);
 }
 
+// NOTE: #2866, nested detail
+function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
+  return votes.map((vote) => {
+    const directVoterDelegations = delegationVotes.filter((delegationVote) => {
+      return delegationVote.target === vote.account;
+    });
+
+    vote.directVoterDelegations = directVoterDelegations;
+    return vote;
+  });
+}
+
 export async function getGov2ReferendumVotesFromVotingOf(
   blockApi,
   trackId,
@@ -175,8 +187,13 @@ export async function getGov2ReferendumVotesFromVotingOf(
   const delegationVotes = extractDelegations(mapped, trackId, directVotes);
   const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);
 
-  const allAye = sorted.filter((v) => !v.isAbstain && v.aye);
-  const allNay = sorted.filter((v) => !v.isAbstain && !v.aye);
-  const allAbstain = sorted.filter((v) => v.isAbstain);
+  let allAye = sorted.filter((v) => !v.isAbstain && v.aye);
+  let allNay = sorted.filter((v) => !v.isAbstain && !v.aye);
+  let allAbstain = sorted.filter((v) => v.isAbstain);
+
+  allAye = extractDirectVoterDelegations(allAye, delegationVotes);
+  allNay = extractDirectVoterDelegations(allNay, delegationVotes);
+  allAbstain = extractDirectVoterDelegations(allAbstain, delegationVotes);
+
   return { allAye, allNay, allAbstain };
 }
