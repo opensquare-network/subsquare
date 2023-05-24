@@ -31,7 +31,7 @@ export default function ReferendumVoteEndCountDown() {
     return null;
   }
 
-  if (end > blockHeight) {
+  if (blockHeight > end) {
     return null;
   }
 
