@@ -37,6 +37,10 @@ export default function ReferendumElapse({ detail }) {
     return null;
   }
 
+  if (blockHeight > meta.end) {
+    return null;
+  }
+
   return <CountDown
       numerator={blockHeight - startHeight}
       denominator={meta.end - startHeight}

@@ -31,6 +31,10 @@ export default function ReferendumVoteEndCountDown() {
     return null;
   }
 
+  if (end > blockHeight) {
+    return null;
+  }
+
   const tooltipContent = `End in ${estimatedBlocksTime}, #${bigNumber2Locale(end.toString())}`;
   return <Wrapper>
     <CountDown
