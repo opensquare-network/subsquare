@@ -23,8 +23,8 @@ import User from "next-common/components/user";
 import { useChain } from "next-common/context/chain";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useDetailType } from "next-common/context/page";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -34,16 +34,11 @@ const TimelineMotionEnd = styled.div`
   }
 `;
 
-const MotionEndHeader = styled(GreyPanel)`
-  justify-content: center;
-  padding: 12px;
-  gap: 8px;
-
+const MotionEndHeader = styled(NoticeWrapper)`
   position: static;
   height: 38px;
 
-  margin-bottom: 16px;
-  color: ${(props) => props.theme.textSecondary};
+  gap: 8px;
 `;
 
 function createMotionBusinessData(motion) {
