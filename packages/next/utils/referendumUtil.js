@@ -80,6 +80,9 @@ export async function getAddressVotingBalance(api, address) {
 }
 
 export async function getAddressVote(api, referendumIndex, address) {
+  if (!api.query.democracy.votingOf) {
+    return null;
+  }
   const voting = await api.query.democracy.votingOf(address);
   const jsonVoting = voting?.toJSON();
   if (!jsonVoting) {

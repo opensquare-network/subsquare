@@ -56,7 +56,6 @@ function ReferendumContent({ comments }) {
       <DetailItem onReply={focusEditor} />
 
       <Vote
-        referendumInfo={post?.onchainData?.info}
         referendumIndex={post?.referendumIndex}
         onFinalized={onVoteFinalized}
       />

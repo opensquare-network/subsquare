@@ -1,30 +1,29 @@
 import { memo, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
-import { calcPassing } from "utils/referendumUtil";
 import useApi from "next-common/utils/hooks/useApi";
 import Loading from "next-common/components/loading";
-import Chains from "next-common/utils/consts/chains";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import {
-  electorateSelector,
   fetchReferendumStatus,
   isLoadingElectorateSelector,
   isLoadingReferendumStatusSelector,
   isLoadingVotesSelector,
-  referendumStatusSelector,
   votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "./voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import { emptyFunction } from "next-common/utils";
-import { useChain } from "next-common/context/chain";
 import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import useDemocracyTally from "next-common/context/post/democracy/referendum/tally";
+import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
+import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
+import useDemocracyThreshold from "next-common/context/post/democracy/referendum/threshold";
+import useIsDemocracyPassed from "next-common/context/post/democracy/referendum/result";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -80,25 +79,25 @@ const RejectStatus = styled(Status)`
 `;
 
 function Vote({
-  referendumInfo,
   referendumIndex,
   onFinalized = emptyFunction,
 }) {
-  const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
-  const blockHeight = useSelector(latestHeightSelector);
+  const tally = useDemocracyTally();
+  const isPassing = useIsDemocracyPassing();
+  const threshold = useDemocracyThreshold();
+  const isPassed = useIsDemocracyPassed();
 
-  const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
-  const referendumStatus = useSelector(referendumStatusSelector);
   const isLoadingReferendumStatus = useSelector(
     isLoadingReferendumStatusSelector
   );
+  const isVoteFinished = useIsDemocracyVoteFinished();
 
   const [updateTime, setUpdateTime] = useState(0);
 
@@ -107,23 +106,13 @@ function Vote({
     setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
-  const isPassing = calcPassing(referendumStatus, electorate);
-
-  const isKsm = Chains.kusama === chain;
-  const finished =
-    referendumInfo?.finished ||
-    (isKsm && referendumIndex < 198) ||
-    blockHeight > referendumStatus?.end;
-
   let finishedResult;
-  if (referendumInfo?.finished) {
-    finishedResult = referendumInfo?.finished?.approved ? (
+  if (isVoteFinished) {
+    finishedResult = isPassed ? (
       <PassStatus>Passed</PassStatus>
     ) : (
       <RejectStatus>Failed</RejectStatus>
     );
-  } else if (isKsm && referendumIndex < 5) {
-    finishedResult = <PassStatus>Passed</PassStatus>;
   }
 
   return (
@@ -139,27 +128,26 @@ function Vote({
         </Title>
 
         <VoteBar
-          tally={referendumStatus?.tally}
-          electorate={electorate}
-          threshold={referendumStatus?.threshold}
+          tally={tally}
+          electorate={tally.electorate}
+          threshold={threshold}
         />
 
         <TallyInfo
-          tally={referendumStatus?.tally}
-          electorate={electorate}
           isLoadingVotes={isLoadingVotes}
           allAye={allAye}
           allNay={allNay}
         />
 
         {finishedResult}
-        {referendumInfo &&
-          !finished &&
+        {
+          !isVoteFinished &&
           (isPassing ? (
             <PassStatus>Passing</PassStatus>
           ) : (
             <RejectStatus>Failing</RejectStatus>
-          ))}
+          ))
+        }
 
         <SubLink
           style={{ marginTop: 16 }}
@@ -171,7 +159,7 @@ function Vote({
         <MyVote updateTime={updateTime} />
       </SecondaryCardDetail>
 
-      {!finished && (
+      {!isVoteFinished && (
         <SecondaryButton
           onClick={() => {
             setShowVote(true);

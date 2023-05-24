@@ -12,6 +12,7 @@ import {
 } from "../../../store/reducers/chainSlice";
 import User from "../../user";
 import useInlineCall from "./useInlineCall";
+import useDemocracyThreshold from "../../../context/post/democracy/referendum/threshold";
 
 export default function ReferendumMetadata({
   proposer,
@@ -24,7 +25,8 @@ export default function ReferendumMetadata({
   const blockHeight = useSelector(latestHeightSelector);
   const latestBlockTime = useLatestBlockTime();
   const { state, timeline = [], preImage } = onchainData;
-  const { delay = 0, end = 0, threshold, proposalHash, proposal } = status;
+  const { delay = 0, end = 0, proposalHash, proposal } = status;
+  const threshold = useDemocracyThreshold();
 
   const { hash: inlineHash, call: inlineCall } = useInlineCall(timeline, proposal);
 
