@@ -33,6 +33,7 @@ import LinkInfo from "./styled/linkInfo";
 import Link from "next/link";
 import PreparingCountdown from "./gov2/postList/preparingCountdown";
 import { getDemocracyStateArgs } from "../utils/democracy/result";
+import ReferendumElapse from "./democracy/referendum/referendumElapse";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -187,7 +188,6 @@ export default function Post({ data, href, type }) {
   }
 
   if (isGov2Referendum) {
-    // todo: add preparing count down component
     if (data?.status === gov2State.Preparing) {
       elapseIcon = <PreparingCountdown detail={ data } />;
     } else if (data?.status === gov2State.Deciding) {
@@ -195,6 +195,10 @@ export default function Post({ data, href, type }) {
     } else if (data?.status === gov2State.Confirming) {
       elapseIcon = <ConfirmCountdown detail={ data } />;
     }
+  }
+
+  if (businessCategory.democracyReferenda === type) {
+    elapseIcon = <ReferendumElapse detail={ data } />;
   }
 
   const commentsCount =
