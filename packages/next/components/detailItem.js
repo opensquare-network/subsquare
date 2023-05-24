@@ -15,6 +15,7 @@ import TreasuryProposalNavigation from "next-common/components/detail/navigation
 import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
 import AnnouncementNavigation from "next-common/components/detail/navigation/announcementNavigation";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
+import ReferendumVoteEndCountDown from "next-common/components/democracy/referendum/voteEndCountDown";
 
 export default function DetailItem({
   onReply,
@@ -42,6 +43,10 @@ export default function DetailItem({
   return (
     <EditablePanel>
       {post?.isMalicious && <MaliciousHead />}
+      {
+        type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumVoteEndCountDown />
+      }
+
       {type === detailPageCategory.GOV2_REFERENDUM && (
         <ReferendaReferendumNavigation />
       )}

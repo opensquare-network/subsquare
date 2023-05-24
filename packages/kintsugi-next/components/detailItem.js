@@ -11,6 +11,7 @@ import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useDetailType } from "next-common/context/page";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
+import ReferendumVoteEndCountDown from "next-common/components/democracy/referendum/voteEndCountDown";
 
 export default function DetailItem({ onReply, votes, myVote }) {
   const type = useDetailType();
@@ -30,6 +31,9 @@ export default function DetailItem({ onReply, votes, myVote }) {
   return (
     <EditablePanel>
       {post?.isMalicious && <MaliciousHead />}
+      {
+        type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumVoteEndCountDown />
+      }
       {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
         <KintsugiDemocracyProposalNavigation post={post} />
       )}
