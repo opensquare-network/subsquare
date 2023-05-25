@@ -103,7 +103,6 @@ function VotesList({ items = [], loading, tab }) {
   ];
 
   const rows = items?.map((item) => {
-    // TODO: #2866, flattened capital votes, check formula
     const capital = item.balance;
     const votes = item.votes;
 
