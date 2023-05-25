@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useApi from "./useApi";
+import usePostTipMeta from "../../context/post/treasury/tip/tipMeta";
 
 export default function useTipMeta(
   tipHash,
@@ -7,7 +8,8 @@ export default function useTipMeta(
   forceToReadLastBlock = false,
 ) {
   const [isLoading, setIsLoading] = useState(true);
-  const [tipMeta, setTipMeta] = useState();
+  const postTipMeta = usePostTipMeta();
+  const [tipMeta, setTipMeta] = useState(postTipMeta);
   const api = useApi();
 
   useEffect(() => {
@@ -26,7 +28,13 @@ export default function useTipMeta(
         }
         return api;
       })
-      .then((api) => api.query.tips.tips(tipHash))
+      .then((api) => {
+        if (api.query.tips) {
+          return api.query.tips.tips(tipHash);
+        } else if (api.query.treasury?.tips) {
+          return api.query.treasury.tips(tipHash);
+        }
+      })
       .then((tip) => {
         setTipMeta(tip.toJSON());
       })
