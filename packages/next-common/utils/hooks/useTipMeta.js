@@ -23,7 +23,9 @@ export default function useTipMeta(tipHash) {
         return api.query.treasury.tips(tipHash);
       }
     }).then((tip) => {
-      setTipMeta(tip.toJSON());
+      if (tip) {
+        setTipMeta(tip.toJSON());
+      }
     }).finally(() => {
       setIsLoading(false);
     });

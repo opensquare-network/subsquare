@@ -79,7 +79,7 @@ function TreasuryTipContent({ comments }) {
   useEffect(() => {
     if (api) {
       dispatch(
-        setTipCountDownBlockNum(api.consts.tips.tipCountdown.toNumber())
+        setTipCountDownBlockNum(api.consts.tips?.tipCountdown.toNumber())
       );
     }
   }, [api, dispatch]);
