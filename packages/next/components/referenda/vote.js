@@ -182,7 +182,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
             <SubLink onClick={() => setShowNestedVotesList(true)}>
               Nested
             </SubLink>
-            {/* FIXME: #2866, democracy calls */}
+            {/* TODO: #2866, democracy calls */}
             {/* <SubLink onClick={() => setShowCallsVotesList(true)}>Calls</SubLink> */}
           </VotesGroupItems>
         </VotesGroup>
@@ -224,7 +224,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
         />
       )}
 
-      {/* FIXME: #2866, democracy calls */}
+      {/* TODO: #2866, democracy calls */}
       {false && showCallsVotesList && (
         <CallsVotesPopup
           setShowVoteList={setShowCallsVotesList}

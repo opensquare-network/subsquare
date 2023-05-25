@@ -101,7 +101,7 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items.map((item) => {
-    // NOTE: #2866, nested votes
+    // TODO: #2866, nested votes check formula
     const votes = item.balance * item.conviction || item.balance;
 
     const row = [

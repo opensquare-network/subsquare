@@ -104,7 +104,7 @@ function extractDelegations(mapped, directVotes = []) {
   }, []);
 }
 
-// NOTE: #2866, nested detail
+// TODO: #2866, nested detail, delegation list
 function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
     return votes.map((vote) => {
     const directVoterDelegations = delegationVotes.filter((delegationVote) => {

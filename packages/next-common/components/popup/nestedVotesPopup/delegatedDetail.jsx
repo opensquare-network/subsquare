@@ -208,7 +208,6 @@ export default function NestedPopupDelegatedDetailPopup({
       <Descriptions title="Self Votes" items={selfVotesItems} />
       <Descriptions title="Delegation" items={delegationItems} />
 
-      {/* FIXME: #2866, nested detail delegator list props and display */}
       {!!directVoterDelegations?.length && (
         <>
           <DetailDelegatorList
@@ -242,7 +241,7 @@ function DetailDelegatorList({ items = [] }) {
   ];
 
   const rows = items?.map((item) => {
-    // NOTE: #2866, nested detail capital votes
+    // TODO: #2866, nested detail capital votes, check formula
     const capital = item.balance;
     const votes = capital * item.conviction || item.balance;
 
