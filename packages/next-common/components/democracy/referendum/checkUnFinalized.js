@@ -5,7 +5,7 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
-      onChainDataFetcher={(api) => api.query.democracy.referendumInfoOf(id)}
+      onChainDataFetcher={(api) => api.query.democracy?.referendumInfoOf(id)}
       serverPostFetcher={() => nextApi.fetch(`democracy/referendums/${id}`)}
     />
   );

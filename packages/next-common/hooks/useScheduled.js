@@ -287,7 +287,7 @@ function useReferendums(api) {
     }
 
     if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      api.query.democracy.referendumInfoOf.entries().then((referendums) => {
+      api.query.democracy?.referendumInfoOf.entries().then((referendums) => {
         const ongoingReferendums = referendums.filter(
           (item) => item[1].value.isOngoing,
         );

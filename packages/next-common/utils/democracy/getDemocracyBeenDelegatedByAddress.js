@@ -1,7 +1,7 @@
 export async function getDemocracyBeenDelegatedByAddress(api, address) {
-  const voting = await api.query.democracy.votingOf(address);
+  const voting = await api.query.democracy?.votingOf(address);
 
-  const jsonVoting = voting.toJSON();
+  const jsonVoting = voting?.toJSON();
   if (!jsonVoting) {
     return null;
   }
