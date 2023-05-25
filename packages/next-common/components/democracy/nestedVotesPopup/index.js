@@ -27,8 +27,8 @@ export default function NestedVotesPopup({
   const [nayPage, setNayPage] = useState(1);
   const pageSize = 50;
 
-  const allDirectAyes = sortTotalVotes(allAye.filter(v => !v.isDelegating));
-  const allDirectNays = sortTotalVotes(allNay.filter(v => !v.isDelegating));
+  const allDirectAyes = sortTotalVotes(allAye.filter((v) => !v.isDelegating));
+  const allDirectNays = sortTotalVotes(allNay.filter((v) => !v.isDelegating));
 
   let page;
   let votes;
@@ -104,7 +104,6 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items.map((item) => {
-
     const row = [
       <User
         key="user"

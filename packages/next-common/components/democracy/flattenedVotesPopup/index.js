@@ -93,7 +93,6 @@ function VotesList({ loading, items = [] }) {
 
   const rows = items?.map((item) => {
     const capital = item.balance;
-    const votes = capital * item.conviction || item.balance;
 
     const row = [
       <User key="user" add={item.account} fontSize={14} noTooltip />,
@@ -104,7 +103,7 @@ function VotesList({ loading, items = [] }) {
       />,
       <ValueDisplay
         key="value"
-        value={toPrecision(votes, chainSettings.decimals)}
+        value={toPrecision(item.totalVotes, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,

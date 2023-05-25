@@ -26,6 +26,7 @@ import {
 } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
 import sumBy from "lodash.sumby";
+import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 
 const StyledPopupListWrapper = styled(PopupListWrapper)`
   table tbody {
@@ -81,28 +82,6 @@ export default function NestedPopupDelegatedDetailPopup({
 
   const [detailListPage, setDetailListPage] = useState(1);
 
-  const selfVotesTotalvalue = toPrecision(
-    data.balance * (data.conviction || 1),
-    chainSettings.decimals,
-  );
-  const selfVotesCapitalValue = toPrecision(
-    data.balance,
-    chainSettings.decimals,
-  );
-
-  const delegationTotalDelegationValue = toPrecision(
-    sumBy(directVoterDelegations, (item) => {
-      return Number(item.balance) * (item.conviction || 1);
-    }),
-    chainSettings.decimals,
-  );
-  const delegationCapitalValue = toPrecision(
-    sumBy(directVoterDelegations, (item) => {
-      return Number(item.balance);
-    }),
-    chainSettings.decimals,
-  );
-
   const selfVotesItems = [
     {
       label: (
@@ -120,7 +99,7 @@ export default function NestedPopupDelegatedDetailPopup({
       ),
       value: (
         <ValueDisplay
-          value={selfVotesTotalvalue}
+          value={toPrecision(data.totalVotes, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
@@ -144,7 +123,7 @@ export default function NestedPopupDelegatedDetailPopup({
       ),
       value: (
         <ValueDisplay
-          value={selfVotesCapitalValue}
+          value={toPrecision(data.balance, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
@@ -152,6 +131,9 @@ export default function NestedPopupDelegatedDetailPopup({
     },
   ];
 
+  const totalDelegationVotes = sumBy(data.directVoterDelegations, (i) => {
+    return Number(calcVotes(i.balance, i.conviction));
+  });
   const delegationItems = [
     {
       label: (
@@ -160,12 +142,14 @@ export default function NestedPopupDelegatedDetailPopup({
           <span>Total Delegation</span>
         </DetailDescriptionLabel>
       ),
-      value: (
+      value: data.directVoterDelegations?.length ? (
         <ValueDisplay
-          value={delegationTotalDelegationValue}
+          value={toPrecision(totalDelegationVotes, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
+      ) : (
+        0
       ),
     },
     {
@@ -184,15 +168,19 @@ export default function NestedPopupDelegatedDetailPopup({
           <span>Capital</span>
         </DetailDescriptionLabel>
       ),
-      value: (
+      // FIXME: #2866 how delegation `capital` calc
+      value: data.directVoterDelegations?.length ? (
         <ValueDisplay
-          value={delegationCapitalValue}
+          value={toPrecision(data.balance, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
+      ) : (
+        0
       ),
     },
   ];
+  console.log(data);
 
   const pageSize = 30;
   function onPageChange(e, newPage) {
@@ -249,7 +237,6 @@ function DetailDelegatorList({ items = [] }) {
 
   const rows = items?.map((item) => {
     const capital = item.balance;
-    const votes = capital * item.conviction || item.balance;
 
     const row = [
       <User
@@ -266,7 +253,7 @@ function DetailDelegatorList({ items = [] }) {
       />,
       <ValueDisplay
         key="value"
-        value={toPrecision(votes, chainSettings.decimals)}
+        value={toPrecision(item.totalVotes, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,
