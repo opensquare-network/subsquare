@@ -55,8 +55,6 @@ export function useDemocracySummaryData() {
       return;
     }
 
-    console.log("api", api);
-
     Promise.all([
       api.query.democracy?.publicProps(),
       referendumsActive(api),
