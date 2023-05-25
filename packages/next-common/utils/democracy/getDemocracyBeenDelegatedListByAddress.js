@@ -5,11 +5,11 @@ let votingOfEntries;
 
 export async function getDemocracyBeenDelegatedListByAddress(api, address) {
   if (!votingOfEntries) {
-    votingOfEntries = await api.query.democracy.votingOf.entries();
+    votingOfEntries = await api.query.democracy?.votingOf.entries();
   }
 
   const beenDelegated = [];
-  for (const entry of votingOfEntries) {
+  for (const entry of (votingOfEntries || [])) {
     const { account, voting } = normalizeVotingOfEntry(entry);
     if (!voting.isDelegating) {
       continue;

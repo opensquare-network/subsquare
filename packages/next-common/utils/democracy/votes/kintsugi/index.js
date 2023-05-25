@@ -24,8 +24,8 @@ export default async function getKintsugiReferendumVotes(api, referendumIndex, h
     blockApi = await api.at(blockHash);
   }
 
-  const voting = await blockApi.query.democracy.votingOf.entries();
-  const mapped = voting.map(item => normalizeVotingOfEntry(item));
+  const voting = await blockApi.query.democracy?.votingOf.entries();
+  const mapped = (voting || []).map(item => normalizeVotingOfEntry(item));
   const filtered = extractVotes(mapped, referendumIndex);
   const sorted = sortVotesByBalance(filtered);
 

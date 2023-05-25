@@ -74,7 +74,6 @@ export default function NestedVotesPopup({
 }
 
 function VotesList({ items = [], loading }) {
-  console.log(items);
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
@@ -135,7 +134,12 @@ function VotesList({ items = [], loading }) {
   return (
     <>
       <PopupListWrapper>
-        <StyledList columns={columns} rows={rows} loading={loading} />
+        <StyledList
+          items={items}
+          columns={columns}
+          rows={rows}
+          loading={loading}
+        />
       </PopupListWrapper>
 
       {showDetail && (

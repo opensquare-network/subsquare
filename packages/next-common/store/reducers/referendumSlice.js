@@ -111,7 +111,7 @@ export const fetchReferendumStatus =
   (api, referendumIndex) => async (dispatch) => {
     dispatch(setIsLoadingReferendumStatus(true));
     try {
-      const referendumInfo = await api?.query.democracy.referendumInfoOf(
+      const referendumInfo = await api?.query.democracy?.referendumInfoOf(
         referendumIndex,
       );
       const data = referendumInfo?.toJSON();

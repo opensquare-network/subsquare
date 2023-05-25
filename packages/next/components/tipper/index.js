@@ -11,6 +11,7 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import CloseTipPopup from "./closeTipPopup";
 import RetractTipPopup from "./retractTipPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 
 const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
@@ -55,15 +56,9 @@ export default function Tipper({
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
   const [showCloseTipPopup, setShowCloseTipPopup] = useState(false);
   const [showRetractTipPopup, setShowRetractTipPopup] = useState(false);
-
+  const tipIsFinal = useTipIsFinished();
   const userIsTipper = useIsCouncilMember();
   const scanHeight = useSelector(nodesHeightSelector);
-
-  const tipIsFinal = chainData.isFinal;
-  const timeline = chainData.timeline;
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const atBlockHeight = lastTimelineBlockHeight - 1;
 
   const closeFromHeight = chainData.meta?.closes;
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
@@ -91,7 +86,7 @@ export default function Tipper({
     );
   }
 
-  let action = null;
+  let action;
   if (tipIsFinal) {
     action = <Description>This tip has been closed.</Description>;
   } else if (userIsTipper) {
@@ -121,11 +116,7 @@ export default function Tipper({
   return (
     <>
       <Wrapper>
-        <TipperList
-          tipHash={tipHash}
-          tipIsFinal={tipIsFinal}
-          atBlockHeight={atBlockHeight}
-        />
+        <TipperList tipHash={tipHash} />
         {action}
       </Wrapper>
       {showEndorsePopup && (

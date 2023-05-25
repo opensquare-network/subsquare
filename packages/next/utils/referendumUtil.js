@@ -83,7 +83,7 @@ export async function getAddressVote(api, referendumIndex, address) {
   if (!api.query.democracy.votingOf) {
     return null;
   }
-  const voting = await api.query.democracy.votingOf(address);
+  const voting = await api.query.democracy?.votingOf(address);
   const jsonVoting = voting?.toJSON();
   if (!jsonVoting) {
     return null;
@@ -105,7 +105,7 @@ export async function getAddressVote(api, referendumIndex, address) {
   if (jsonVoting.delegating) {
     // Then, look into the votes of the delegating target address.
     const { target, conviction } = jsonVoting.delegating;
-    const proxyVoting = await api.query.democracy.votingOf(target);
+    const proxyVoting = await api.query.democracy?.votingOf(target);
     const jsonProxyVoting = proxyVoting?.toJSON();
 
     const vote = (jsonProxyVoting?.direct?.votes || []).find(

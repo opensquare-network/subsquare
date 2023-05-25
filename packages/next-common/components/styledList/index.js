@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { withTheme } from "styled-components";
 import Loading from "next-common/components/loading";
 import { Headers } from "./headers";
@@ -19,7 +19,15 @@ function EmptyOrLoading({ loading }) {
   );
 }
 
-function StyledList({ columns = [], rows = [], loading = false }) {
+function StyledList({
+  columns = [],
+  rows = [],
+  loading = false,
+  scrollToFirstRowOnChange = true,
+  // FIXME: data source, use to scroll to first row
+  items = [],
+}) {
+  const tableBodyRef = useRef();
   let tableBody = null;
 
   if (loading) {
@@ -34,10 +42,18 @@ function StyledList({ columns = [], rows = [], loading = false }) {
     tableBody = <DataRows rows={rows} columns={columns} />;
   }
 
+  useEffect(() => {
+    if (scrollToFirstRowOnChange) {
+      if (tableBodyRef.current) {
+        tableBodyRef.current.scrollTo(0, 0);
+      }
+    }
+  }, [items]);
+
   return (
     <StyledTable>
       <Headers columns={columns} />
-      <tbody>{tableBody}</tbody>
+      <tbody ref={tableBodyRef}>{tableBody}</tbody>
     </StyledTable>
   );
 }

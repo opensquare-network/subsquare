@@ -117,7 +117,12 @@ function VotesList({ loading, items = [] }) {
   return (
     <>
       <PopupListWrapper>
-        <StyledList columns={columns} rows={rows} loading={loading} />
+        <StyledList
+          items={items}
+          columns={columns}
+          rows={rows}
+          loading={loading}
+        />
       </PopupListWrapper>
 
       {!loading && <Annotation />}

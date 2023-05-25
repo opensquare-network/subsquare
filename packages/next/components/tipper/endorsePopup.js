@@ -44,8 +44,7 @@ function PopupContent({
     signerAccount?.address
   );
   const councilTippers = useCouncilMembers();
-
-  const isTipper = isAddressInGroup(signerAccount?.realAddress, councilTippers);
+  const isTipper = isAddressInGroup(signerAccount?.realAddress, councilTippers || []);
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doEndorse = async () => {

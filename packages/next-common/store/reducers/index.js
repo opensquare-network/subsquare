@@ -7,6 +7,7 @@ import tipReducer from "./tipSlice";
 import referendumReducer from "./referendumSlice";
 import gov2ReferendumReducer from "./gov2ReferendumSlice";
 import cmdkReducer from "./cmdkSlice";
+import userReducer from "./userSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   referendum: referendumReducer,
   gov2Referendum: gov2ReferendumReducer,
   cmdk: cmdkReducer,
+  user: userReducer,
 });
