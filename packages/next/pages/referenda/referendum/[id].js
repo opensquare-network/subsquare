@@ -1,20 +1,12 @@
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import {
-  PostProvider,
-  usePost,
-  usePostDispatch,
-} from "next-common/context/post";
+import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import DetailItem from "components/detailItem";
 import Gov2Sidebar from "components/gov2/sidebar";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
-import {
-  gov2ReferendumsCommentApi,
-  gov2ReferendumsDetailApi,
-} from "next-common/services/url";
+import { gov2ReferendumsCommentApi, gov2ReferendumsDetailApi } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import { useCallback, useEffect } from "react";
@@ -24,14 +16,13 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import ReferendaBusiness from "../../../components/gov2/business";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
-import BreadcrumbWrapper, {
-  BreadcrumbHideOnMobileText,
-} from "next-common/components/detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper, { BreadcrumbHideOnMobileText } from "next-common/components/detail/common/BreadcrumbWrapper";
 import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
 import NonNullPost from "next-common/components/nonNullPost";
+import ReferendaDetail from "next-common/components/detail/referenda";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -59,7 +50,7 @@ function ReferendumContent({ comments }) {
 
   return (
     <>
-      <DetailItem onReply={focusEditor} />
+      <ReferendaDetail onReply={focusEditor} />
 
       <Gov2Sidebar
         onVoteFinalized={onVoteFinalized}
