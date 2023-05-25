@@ -122,7 +122,7 @@ function VotesList({ items = [], loading }) {
         noTooltip
         maxWidth={326}
       />,
-      item.directVoterDelegations?.length,
+      (item.directVoterDelegations || []).length,
       <ValueDisplay
         key="value"
         value={toPrecision(item.totalVotes, chainSettings.decimals)}

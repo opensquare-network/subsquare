@@ -1,4 +1,5 @@
-import { normalizeVotingOfEntry, objectSpread, sortVotesWithConviction } from "../common";
+import { calcVotes, normalizeVotingOfEntry, objectSpread, sortVotes } from "../common";
+import BigNumber from "bignumber.js";
 
 function extractDirectVotes(mapped, targetReferendumIndex) {
   return mapped
@@ -22,6 +23,7 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
       if (vote.isStandard) {
         const standard = vote.asStandard;
         const balance = standard.balance.toBigInt().toString();
+        const conviction = standard.vote.conviction.toNumber();
 
         result.push(
           objectSpread(
@@ -33,7 +35,8 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
             {
               balance,
               aye: standard.vote.isAye,
-              conviction: standard.vote.conviction.toNumber(),
+              conviction,
+              votes: calcVotes(balance, conviction),
             },
           ),
         );
@@ -54,6 +57,7 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
               balance: ayeBalance,
               aye: true,
               conviction: 0,
+              votes: calcVotes(ayeBalance, 0),
             }),
           );
         }
@@ -64,6 +68,7 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
               balance: nayBalance,
               aye: false,
               conviction: 0,
+              votes: calcVotes(nayBalance, 0),
             }),
           );
         }
@@ -99,21 +104,24 @@ function extractDelegations(mapped, directVotes = []) {
         isDelegating: true,
         aye: to.aye,
         conviction: conviction.toNumber(),
+        votes: calcVotes(balance.toBigInt().toString(), conviction.toNumber()),
       },
     ];
   }, []);
 }
 
-// TODO: #2866, nested detail, delegation list
 function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
-    return votes.map((vote) => {
+  return votes.map((vote) => {
     const directVoterDelegations = delegationVotes.filter((delegationVote) => {
       return delegationVote.target === vote.account;
     });
 
-    vote.directVoterDelegations = sortVotesWithConviction(
-      directVoterDelegations,
-    );
+    sortVotes(directVoterDelegations);
+    const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
+      return new BigNumber(result).plus(d.votes).toString();
+    }, 0);
+    const totalVotes = new BigNumber(vote.votes).plus(allDelegationVotes).toString();
+    Object.assign(vote, { directVoterDelegations, totalVotes });
     return vote;
   });
 }
@@ -126,7 +134,7 @@ export async function getReferendumVotesFromVotingOf(
   const mapped = (voting || []).map((item) => normalizeVotingOfEntry(item));
   const directVotes = extractDirectVotes(mapped, referendumIndex);
   const delegationVotes = extractDelegations(mapped, directVotes);
-  const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);
+  const sorted = sortVotes([...directVotes, ...delegationVotes]);
 
   let allAye = sorted.filter((v) => v.aye);
   let allNay = sorted.filter((v) => !v.aye);
