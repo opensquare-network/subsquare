@@ -44,7 +44,6 @@ export default function PostMeta() {
   const postState = usePostState();
   const detailType = useDetailType();
   const post = usePost();
-  // fixme: kintsugi post has no commentsCount field
   const noCommentsCount =
     isNil(post.commentsCount) && isNil(post.polkassemblyCommentsCount);
   const commentsCount =
