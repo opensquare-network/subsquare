@@ -12,6 +12,7 @@ import CloseTipPopup from "./closeTipPopup";
 import RetractTipPopup from "./retractTipPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
+import { useOnchainData } from "next-common/context/post";
 
 const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
@@ -47,11 +48,11 @@ const Description = styled.div`
 `;
 
 export default function Tipper({
-  chainData,
   onEndorseFinalized = emptyFunction,
   onCloseTipFinalized = emptyFunction,
   onRetractFinalized = emptyFunction,
 }) {
+  const chainData = useOnchainData();
   const realAddress = useRealAddress();
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
   const [showCloseTipPopup, setShowCloseTipPopup] = useState(false);

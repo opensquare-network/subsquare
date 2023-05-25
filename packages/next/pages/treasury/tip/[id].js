@@ -26,7 +26,6 @@ function TreasuryTipContent({ comments }) {
   const postDispatch = usePostDispatch();
   const type = useDetailType();
 
-  const chainData = post?.onchainData ?? {};
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
     comments,
@@ -44,7 +43,6 @@ function TreasuryTipContent({ comments }) {
     <>
       <TipDetail onReply={focusEditor} />
       <Tipper
-        chainData={chainData}
         onEndorseFinalized={onEndorseFinalized}
         onCloseTipFinalized={onCloseTipFinalized}
         onRetractFinalized={onRetractFinalized}
