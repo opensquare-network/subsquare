@@ -30,21 +30,6 @@ import { p_12_medium } from "next-common/styles/componentCss";
 import CallsVotesPopup from "next-common/components/democracy/callsVotesPopup";
 import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 
-const VotesGroup = styled.div`
-  ${flex};
-  ${items_center};
-  ${justify_between};
-  margin-top: 16px;
-`;
-const VotesGroupLabel = styled.div`
-  ${p_12_medium};
-  ${text_primary};
-`;
-const VotesGroupItems = styled.div`
-  ${flex};
-  ${items_center};
-  ${gap_x(12)};
-`;
 import useDemocracyTally from "next-common/context/post/democracy/referendum/tally";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
@@ -61,6 +46,22 @@ const FlattenedVotesPopup = dynamic(
     ssr: false,
   },
 );
+
+const VotesGroup = styled.div`
+  ${flex};
+  ${items_center};
+  ${justify_between};
+  margin-top: 16px;
+`;
+const VotesGroupLabel = styled.div`
+  ${p_12_medium};
+  ${text_primary};
+`;
+const VotesGroupItems = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(12)};
+`;
 
 const Wrapper = styled.div`
   display: flex;
