@@ -90,6 +90,7 @@ export default function NestedPopupDelegatedDetailPopup({
     }),
     chainSettings.decimals,
   );
+  // FIXME: #2866, nested detail, how delegation capital calculate?
   const delegationCapitalValue = toPrecision(
     sumBy(directVoterDelegations, (item) => {
       return Number(item.balance);
@@ -178,7 +179,6 @@ export default function NestedPopupDelegatedDetailPopup({
           <span>Capital</span>
         </DetailDescriptionLabel>
       ),
-      // FIXME: #2866, nested detail, delegation capital correct?
       value: (
         <ValueDisplay
           value={delegationCapitalValue}
