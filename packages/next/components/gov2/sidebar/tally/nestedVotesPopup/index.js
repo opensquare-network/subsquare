@@ -4,7 +4,7 @@ import StyledList from "next-common/components/styledList";
 import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
@@ -24,19 +24,21 @@ export default function NestedVotesPopup({
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
+  const [votes, setVotes] = useState([]);
+  const [page, setPage] = useState(1);
 
-  let page = 1;
-  let votes = [];
-  if (tabIndex === "Aye") {
-    page = ayePage;
-    votes = allAye;
-  } else if (tabIndex === "Nay") {
-    page = nayPage;
-    votes = allNay;
-  } else {
-    page = abstainPage;
-    votes = allAbstain;
-  }
+  useEffect(() => {
+    if (tabIndex === "Aye") {
+      setPage(ayePage);
+      setVotes(allAye);
+    } else if (tabIndex === "Nay") {
+      setPage(nayPage);
+      setVotes(allNay);
+    } else {
+      setPage(abstainPage);
+      setVotes(allAbstain);
+    }
+  }, [tabIndex, ayePage, nayPage, abstainPage, allAye, allNay, allAbstain]);
 
   function onPageChange(e, target) {
     e.preventDefault();
@@ -59,6 +61,10 @@ export default function NestedVotesPopup({
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
+  const items = useMemo(() => {
+    return votes.slice(sliceFrom, sliceTo);
+  }, [votes, sliceFrom, sliceTo]);
+
   return (
     <>
       <BaseVotesPopup
@@ -73,11 +79,7 @@ export default function NestedVotesPopup({
           abstainsCount={allAbstain?.length || 0}
         />
 
-        <VotesList
-          items={votes?.slice(sliceFrom, sliceTo)}
-          loading={isLoadingVotes}
-          tab={tabIndex}
-        />
+        <VotesList items={items} loading={isLoadingVotes} tab={tabIndex} />
 
         <Pagination {...pagination} />
       </BaseVotesPopup>
@@ -146,7 +148,12 @@ function VotesList({ items = [], loading }) {
   return (
     <>
       <PopupListWrapper>
-        <StyledList columns={columns} rows={rows} loading={loading} />
+        <StyledList
+          items={items}
+          columns={columns}
+          rows={rows}
+          loading={loading}
+        />
       </PopupListWrapper>
 
       {showDetail && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import {
@@ -41,6 +41,21 @@ export default function CallsVotesPopup({ setShowVoteList }) {
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
+  const [votes, setVotes] = useState([]);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (tabIndex === "Aye") {
+      setPage(ayePage);
+      setVotes(allAye);
+    } else if (tabIndex === "Nay") {
+      setPage(nayPage);
+      setVotes(allNay);
+    } else {
+      setPage(abstainPage);
+      setVotes(allAbstain);
+    }
+  }, [tabIndex, ayePage, nayPage, abstainPage, allAye, allNay, allAbstain]);
 
   const onPageChange = (e, target) => {
     e.preventDefault();
@@ -53,19 +68,6 @@ export default function CallsVotesPopup({ setShowVoteList }) {
     }
   };
 
-  let votes = [];
-  let page = 1;
-  if (tabIndex === "Aye") {
-    votes = allAye;
-    page = ayePage;
-  } else if (tabIndex === "Nay") {
-    votes = allNay;
-    page = nayPage;
-  } else if (tabIndex === "Abstain") {
-    votes = allAbstain;
-    page = abstainPage;
-  }
-
   const pagination = {
     page,
     pageSize,
@@ -76,6 +78,10 @@ export default function CallsVotesPopup({ setShowVoteList }) {
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
+  const items = useMemo(() => {
+    return votes.slice(sliceFrom, sliceTo);
+  }, [votes, sliceFrom, sliceTo]);
+
   return (
     <BaseVotesPopup wide title="Calls" onClose={() => setShowVoteList(false)}>
       <VotesTab
@@ -85,7 +91,7 @@ export default function CallsVotesPopup({ setShowVoteList }) {
         naysCount={allNay?.length || 0}
         abstainCount={allAbstain?.length || 0}
       />
-      <VotesList items={votes.slice(sliceFrom, sliceTo)} loading={isLoading} />
+      <VotesList items={items} loading={isLoading} />
       <Pagination {...pagination} />
     </BaseVotesPopup>
   );
@@ -136,7 +142,12 @@ function VotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <StyledList loading={loading} columns={columns} rows={rows} />
+      <StyledList
+        items={items}
+        loading={loading}
+        columns={columns}
+        rows={rows}
+      />
     </PopupListWrapper>
   );
 }
