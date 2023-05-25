@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.1.2
+date: 05/22/2023
+- Populate OpenGov referendum title by parity tip bot automatically.
+- Show voting countdown component for democracy referendum.
+- Refactor democracy referendum tally with hooks. 
+
+# 3.1.1
+date: 05/23/2023
+- Support kintsugi democracy referenda statistics.
+- Update democracy statistics breadcrumb text.
+- Fix incorrect metamask interaction. 
+
 # 3.1.0
 date: 05/22/2023
 - Support OpenGov referenda tracks comparison statistics.

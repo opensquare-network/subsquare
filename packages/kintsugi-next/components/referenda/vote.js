@@ -11,7 +11,6 @@ import {
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
 import useApi from "next-common/utils/hooks/useApi";
-import useWindowSize from "next-common/utils/hooks/useWindowSize.js";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
@@ -33,6 +32,7 @@ import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
 import TallyInfo from "next-common/components/referenda/tally/info";
+import useDemocracyTally from "next-common/context/post/democracy/referendum/tally";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -109,45 +109,6 @@ const RejectStatus = styled(Status)`
   background: ${(props) => props.theme.secondaryRed100};
 `;
 
-const Row = styled(Flex)`
-  height: 44px;
-  margin-top: 0 !important;
-  justify-content: space-between;
-  white-space: nowrap;
-  font-size: 14px;
-  @media screen and (max-width: 1024px) {
-    justify-content: flex-start;
-  }
-`;
-
-const BorderedRow = styled(Flex)`
-  height: 44px;
-  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
-  justify-content: space-between;
-  white-space: nowrap;
-  font-size: 14px;
-  @media screen and (max-width: 1024px) {
-    justify-content: flex-start;
-  }
-`;
-
-const Header = styled.span`
-  width: 120px;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 500;
-  color: ${(props) => props.theme.textPrimary};
-
-  svg {
-    margin-right: 8px;
-  }
-`;
-
-const Value = styled.span`
-  color: ${(props) => props.theme.textPrimary};
-`;
-
 const BarWrapper = styled.div`
   position: relative;
 `;
@@ -203,6 +164,7 @@ function Vote({
   const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
   const [updateTime, setUpdateTime] = useState(0);
+  const tally = useDemocracyTally();
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
@@ -218,26 +180,20 @@ function Vote({
     setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
-  const { width } = useWindowSize();
   const node = useChainSettings(chain);
   const decimals = node.decimals;
-  const symbol = node.voteSymbol ?? node.symbol;
 
-  const isPassing = calcPassing(referendumStatus, electorate);
+  const isPassing = calcPassing(referendumStatus, tally.electorate);
 
-  const nAyes = toPrecision(referendumStatus?.tally?.ayes ?? 0, decimals);
-  const nNays = toPrecision(referendumStatus?.tally?.nays ?? 0, decimals);
-  const nTurnout = toPrecision(referendumStatus?.tally?.turnout ?? 0, decimals);
-  const nElectorate = toPrecision(electorate ?? 0, decimals);
+  const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
+  const nNays = toPrecision(tally?.nays ?? 0, decimals);
 
   let nAyesPercent = 50;
   let nNaysPercent = 50;
   let gap = 2;
   const nTotal = new BigNumber(nAyes).plus(nNays);
   if (nTotal.gt(0)) {
-    nAyesPercent = Math.round(
-      new BigNumber(nAyes).div(nTotal).toNumber() * 100
-    );
+    nAyesPercent = Math.round(new BigNumber(nAyes).div(nTotal).toNumber() * 100);
     nNaysPercent = 100 - nAyesPercent;
     if (nAyesPercent === 100 || nNaysPercent === 100) {
       gap = 0;
@@ -270,7 +226,7 @@ function Vote({
               "supermajorityapprove" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityApprove(
-                  referendumStatus?.tally?.turnout ?? 0,
+                  tally?.turnout ?? 0,
                   electorate
                 )}
               />
@@ -280,7 +236,7 @@ function Vote({
               "supermajorityagainst" && (
               <Threshold
                 threshold={getThresholdOfSuperMajorityAgainst(
-                  referendumStatus?.tally?.turnout ?? 0,
+                  tally?.turnout ?? 0,
                   electorate
                 )}
               />
@@ -301,8 +257,6 @@ function Vote({
         </Contents>
 
         <TallyInfo
-          tally={referendumStatus?.tally}
-          electorate={electorate}
           isLoadingVotes={isLoadingVotes}
           allAye={allAye}
           allNay={allNay}

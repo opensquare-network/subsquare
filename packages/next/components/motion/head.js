@@ -5,35 +5,24 @@ import MotionEnd from "next-common/components/motionEnd";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import DemocracyNavigate from "./democracyNavigate";
-import {
-  DemocracyTag,
-  TreasuryTag,
-} from "next-common/components/tags/business";
+import { DemocracyTag, TreasuryTag } from "next-common/components/tags/business";
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import PostTitle from "next-common/components/detail/common/Title";
-import {
-  isDemocracyMotion,
-  isTreasuryMotion,
-} from "next-common/utils/viewfuncs/motion";
+import { isDemocracyMotion, isTreasuryMotion } from "next-common/utils/viewfuncs/motion";
 import Info from "next-common/components/styled/info";
 import isNil from "lodash.isnil";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import AnnouncementNavigate from "./announcementNavigate";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
 import { smcss } from "next-common/utils/responsive";
 import { hidden } from "next-common/styles/tailwindcss";
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
-const MotionEndHeader = styled(GreyPanel)`
-  justify-content: center;
-  padding: 12px;
-  gap: 8px;
-
+const MotionEndHeader = styled(NoticeWrapper)`
   position: static;
   height: 38px;
 
-  margin-bottom: 16px;
-  color: ${(props) => props.theme.textSecondary};
+  gap: 8px;
 `;
 
 const FlexWrapper = styled.div`

@@ -9,6 +9,7 @@ import ElectorateIcon from "../../../assets/imgs/icons/electorate.svg";
 import ValueDisplay from "../../../components/valueDisplay";
 import VotesCount from "../../../components/democracy/referendum/votesCount";
 import { useChainSettings } from "../../../context/chain";
+import useDemocracyTally from "../../../context/post/democracy/referendum/tally";
 
 const Row = styled(Flex)`
   height: 44px;
@@ -40,13 +41,13 @@ const Value = styled.span`
 `;
 
 export default function TallyInfo({
-  tally,
-  electorate,
   isLoadingVotes,
   allAye,
   allNay,
 }) {
   const node = useChainSettings();
+  const tally = useDemocracyTally();
+
   if (!node) {
     return null;
   }
@@ -56,7 +57,7 @@ export default function TallyInfo({
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(tally?.turnout ?? 0, decimals);
-  const nElectorate = toPrecision(electorate ?? 0, decimals);
+  const nElectorate = toPrecision(tally?.electorate ?? 0, decimals);
 
   const nTurnoutPercent = (nTurnout / nElectorate) * 100;
   const nTurnoutPercentDisplay = (
@@ -89,7 +90,7 @@ export default function TallyInfo({
         <Header>
           <TurnoutIcon />
           Turnout
-          {!isLoadingVotes && electorate > 0 && (
+          {!isLoadingVotes && tally?.electorate > 0 && (
             <VotesCount>{nTurnoutPercentDisplay}%</VotesCount>
           )}
         </Header>
