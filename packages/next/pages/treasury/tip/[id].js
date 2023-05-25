@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
@@ -9,15 +9,12 @@ import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
-import { useDispatch } from "react-redux";
-import { setTipCountDownBlockNum } from "next-common/store/reducers/tipSlice";
 import { getBannerUrl } from "next-common/utils/banner";
 import { hashEllipsis } from "next-common/utils";
 import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import useApi from "next-common/utils/hooks/useApi";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useDetailType } from "next-common/context/page";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
@@ -28,22 +25,12 @@ function TreasuryTipContent({ comments }) {
   const post = usePost();
   const postDispatch = usePostDispatch();
   const type = useDetailType();
-  const api = useApi();
 
   const chainData = post?.onchainData ?? {};
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
     comments,
   });
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (api) {
-      dispatch(
-        setTipCountDownBlockNum(api.consts.tips?.tipCountdown.toNumber())
-      );
-    }
-  }, [api, dispatch]);
 
   const refreshPageData = useCallback(async () => {
     fetchAndUpdatePost(postDispatch, type, post?._id);
