@@ -13,8 +13,8 @@ async function referendumsActive(api) {
   if (!api) {
     return [];
   }
-  const ids = await api.derive.democracy.referendumIds();
-  const referendumInfos = await api.query.democracy.referendumInfoOf.multi(ids);
+  const ids = await api.derive.democracy?.referendumIds();
+  const referendumInfos = await api.query.democracy?.referendumInfoOf.multi(ids);
   return (referendumInfos || []).filter((referendumInfo) => {
     const info = referendumInfo.toJSON();
     return info?.ongoing;
@@ -29,7 +29,7 @@ export function useDemocracySummaryData() {
   const blockHeight = useSelector(latestHeightSelector);
 
   const getLaunchPeriod = async function () {
-    if (api && blockHeight && api.consts.democracy.launchPeriod) {
+    if (api && blockHeight && api.consts.democracy?.launchPeriod) {
       const launchPeriod = api.consts.democracy.launchPeriod.toNumber();
       const goneBlocks = new BigNumber(blockHeight)
         .mod(launchPeriod)
@@ -54,11 +54,12 @@ export function useDemocracySummaryData() {
     if (!api) {
       return;
     }
+
     Promise.all([
-      api.query.democracy.publicProps(),
+      api.query.democracy?.publicProps(),
       referendumsActive(api),
-      api?.query.democracy.publicPropCount(),
-      api?.query.democracy.referendumCount(),
+      api?.query.democracy?.publicPropCount(),
+      api?.query.democracy?.referendumCount(),
       getLaunchPeriod(),
       api?.query.democracy?.nextLaunchTimestamp?.(),
     ]).then(
@@ -74,8 +75,8 @@ export function useDemocracySummaryData() {
           ...summary,
           activeProposalsCount: activeProposals?.length,
           referendumCount: (activeReferendums || []).length,
-          publicPropCount: publicPropCountResponse.toJSON(),
-          referendumTotal: referendumCountResponse.toJSON(),
+          publicPropCount: publicPropCountResponse?.toJSON() || 0,
+          referendumTotal: referendumCountResponse?.toJSON() || 0,
           ...period,
           nextLaunchTimestamp: nextLaunchTimestampResponse?.toJSON?.(),
         });
