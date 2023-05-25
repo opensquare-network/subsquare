@@ -6,6 +6,12 @@ export const emptyVotes = {
   allNay: [],
 };
 
+export function calcVotes(capital = 0, conviction = 0) {
+  return new BigNumber(capital)
+    .multipliedBy(LOCKS[conviction])
+    .div(10).toFixed(0, 1);
+}
+
 export function objectSpread(dest, ...sources) {
   for (let i = 0; i < sources.length; i++) {
     const src = sources[i];
@@ -18,9 +24,21 @@ export function objectSpread(dest, ...sources) {
   return dest;
 }
 
-export function sortVotes(votes = []) {
+export function sortVotesByBalance(votes = []) {
   return votes.sort((a, b) => {
     return new BigNumber(a.balance).gt(b.balance) ? -1 : 1;
+  });
+}
+
+export function sortVotes(votes = []) {
+  return votes.sort((a, b) => {
+    return new BigNumber(a.votes).gt(b.votes) ? -1 : 1;
+  });
+}
+
+export function sortTotalVotes(votes = []) {
+  return votes.sort((a, b) => {
+    return new BigNumber(a.totalVotes || 0).gt(b.totalVotes || 0) ? -1 : 1;
   });
 }
 

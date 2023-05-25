@@ -14,6 +14,7 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
+import { sortTotalVotes } from "../../../utils/democracy/votes/passed/common";
 
 export default function NestedVotesPopup({
   setShowVoteList = noop,
@@ -26,14 +27,17 @@ export default function NestedVotesPopup({
   const [nayPage, setNayPage] = useState(1);
   const pageSize = 50;
 
-  let page = 1;
-  let votes = [];
+  const allDirectAyes = sortTotalVotes(allAye.filter(v => !v.isDelegating));
+  const allDirectNays = sortTotalVotes(allNay.filter(v => !v.isDelegating));
+
+  let page;
+  let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = allDirectAyes;
   } else {
     page = nayPage;
-    votes = allNay;
+    votes = allDirectNays;
   }
 
   function onPageChange(e, target) {
@@ -59,8 +63,8 @@ export default function NestedVotesPopup({
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        ayesCount={allAye?.length || 0}
-        naysCount={allNay?.length || 0}
+        ayesCount={allDirectAyes?.length || 0}
+        naysCount={allDirectNays?.length || 0}
       />
 
       <VotesList
@@ -100,8 +104,6 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items.map((item) => {
-    // TODO: #2866, nested votes check formula
-    const votes = item.balance * item.conviction || item.balance;
 
     const row = [
       <User
@@ -111,10 +113,10 @@ function VotesList({ items = [], loading }) {
         noTooltip
         maxWidth={326}
       />,
-      item.directVoterDelegations?.length,
+      (item.directVoterDelegations || []).length,
       <ValueDisplay
         key="value"
-        value={toPrecision(votes, chainSettings.decimals)}
+        value={toPrecision(item.totalVotes, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,

@@ -1,4 +1,4 @@
-import { sortVotesWithConviction } from "./common";
+import { calcVotes, sortVotes } from "./common";
 
 async function getBalance(blockHash, blockApi, account) {
   if (blockApi.query.system?.account) {
@@ -37,16 +37,22 @@ export async function getReferendumVotesFromVotersFor(
 
   const normalizedVotes = votersFor.map((voter, index) => {
     const vote = votes[index] || blockApi.registry.createType("Vote");
+    const balance = balances[index] || 0;
+    const conviction = vote.conviction.toNumber();
+    const finalVotes = calcVotes(balance, conviction);
+
     return {
       account: voter.toString(),
       isDelegating: false,
       aye: vote.isAye,
-      conviction: vote.conviction.toNumber(),
-      balance: balances[index] || 0,
+      conviction,
+      balance,
+      votes: finalVotes,
+      totalVotes: finalVotes,
     };
   });
 
-  const sorted = sortVotesWithConviction(normalizedVotes);
+  const sorted = sortVotes(normalizedVotes);
   const allAye = sorted.filter((v) => v.aye);
   const allNay = sorted.filter((v) => !v.aye);
   return { allAye, allNay };
