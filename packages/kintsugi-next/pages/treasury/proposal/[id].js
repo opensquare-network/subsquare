@@ -1,4 +1,3 @@
-import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -13,6 +12,7 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
+import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -22,7 +22,7 @@ function TreasuryProposalContent({ detail, comments }) {
 
   return (
     <>
-      <DetailItem onReply={focusEditor} />
+      <TreasuryProposalDetail onReply={focusEditor} />
       <Metadata treasuryProposal={detail?.onchainData} />
       <Timeline treasuryProposal={detail?.onchainData} />
       {CommentComponent}
