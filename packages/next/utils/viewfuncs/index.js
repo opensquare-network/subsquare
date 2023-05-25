@@ -1,4 +1,6 @@
 import flatten from "lodash.flatten";
+import { encodeAddressToChain } from "next-common/services/address";
+import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
 import {
@@ -15,17 +17,20 @@ export const convertPolkassemblyReaction = (chain, paReactions) =>
     user: u,
   }));
 
-export const convertPolkassemblyComment = (chain, comment) => ({
-  reactions: convertPolkassemblyReaction(comment.comment_reactions),
-  id: comment.id,
-  content: comment.content,
-  createdAt: comment.created_at,
-  updatedAt: comment.updated_at,
-  author: {
-    username: comment.username,
-    address: comment.proposer,
-  },
-});
+export const convertPolkassemblyComment = (chain, comment) => {
+  const address = comment.proposer && encodeAddressToChain(comment.proposer, chain);
+  return ({
+    reactions: convertPolkassemblyReaction(comment.comment_reactions),
+    id: comment.id,
+    content: comment.content,
+    createdAt: comment.created_at,
+    updatedAt: comment.updated_at,
+    author: {
+      username: address ? addressEllipsis(address) : comment.username,
+      address,
+    },
+  });
+};
 
 export const toPolkassemblyCommentListItem = (chain, item) => ({
   ...convertPolkassemblyComment(chain, item),
