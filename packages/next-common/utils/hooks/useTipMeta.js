@@ -3,10 +3,7 @@ import useApi from "./useApi";
 import usePostTipMeta from "../../context/post/treasury/tip/tipMeta";
 import useTipIsFinished from "../../context/post/treasury/tip/isFinished";
 
-export default function useTipMeta(
-  tipHash,
-  atBlockHeight,
-) {
+export default function useTipMeta(tipHash) {
   const [isLoading, setIsLoading] = useState(true);
   const postTipMeta = usePostTipMeta();
   const [tipMeta, setTipMeta] = useState(postTipMeta);
@@ -19,30 +16,18 @@ export default function useTipMeta(
     }
 
     setIsLoading(true);
-
-    Promise.resolve(api)
-      .then((api) => {
-        if (atBlockHeight) {
-          return api.rpc.chain
-            .getBlockHash(atBlockHeight)
-            .then((blockHash) => api.at(blockHash));
-        }
-        return api;
-      })
-      .then((api) => {
-        if (api.query.tips) {
-          return api.query.tips.tips(tipHash);
-        } else if (api.query.treasury?.tips) {
-          return api.query.treasury.tips(tipHash);
-        }
-      })
-      .then((tip) => {
-        setTipMeta(tip.toJSON());
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api, tipHash, atBlockHeight, isFinished]);
+    Promise.resolve(api).then((api) => {
+      if (api.query.tips) {
+        return api.query.tips.tips(tipHash);
+      } else if (api.query.treasury?.tips) {
+        return api.query.treasury.tips(tipHash);
+      }
+    }).then((tip) => {
+      setTipMeta(tip.toJSON());
+    }).finally(() => {
+      setIsLoading(false);
+    });
+  }, [api, tipHash, isFinished]);
 
   return { isLoading, tipMeta };
 }

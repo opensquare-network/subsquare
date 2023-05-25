@@ -12,7 +12,6 @@ import CloseTipPopup from "./closeTipPopup";
 import RetractTipPopup from "./retractTipPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
-import { useTimelineData } from "next-common/context/post";
 
 const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
@@ -60,11 +59,6 @@ export default function Tipper({
   const tipIsFinal = useTipIsFinished();
   const userIsTipper = useIsCouncilMember();
   const scanHeight = useSelector(nodesHeightSelector);
-
-  const timeline = useTimelineData();
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const atBlockHeight = lastTimelineBlockHeight - 1;
 
   const closeFromHeight = chainData.meta?.closes;
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
@@ -122,10 +116,7 @@ export default function Tipper({
   return (
     <>
       <Wrapper>
-        <TipperList
-          tipHash={tipHash}
-          atBlockHeight={atBlockHeight}
-        />
+        <TipperList tipHash={tipHash} />
         {action}
       </Wrapper>
       {showEndorsePopup && (

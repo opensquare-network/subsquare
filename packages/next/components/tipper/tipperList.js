@@ -39,23 +39,7 @@ const TipperItem = styled.div`
   }
 `;
 
-const LoadingDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-function Items({ isLoading, tips, windowWidth }) {
-  if (isLoading) {
-    return (
-      <ItemsWrapper>
-        <LoadingDiv>
-          <Loading size={16} />
-        </LoadingDiv>
-      </ItemsWrapper>
-    );
-  }
-
+function Items({ tips, windowWidth }) {
   if (tips.length === 0) {
     return (
       <ItemsWrapper>
@@ -82,14 +66,11 @@ function Items({ isLoading, tips, windowWidth }) {
   );
 }
 
-export default function TipperList({ tipHash, atBlockHeight }) {
+export default function TipperList({ tipHash }) {
   const { width: windowWidth } = useWindowSize();
   const isFinished = useTipIsFinished();
   const tipThreshold = useTipThreshold();
-  const { isLoading, tipMeta } = useTipMeta(
-    tipHash,
-    atBlockHeight,
-  );
+  const { isLoading, tipMeta } = useTipMeta(tipHash);
   const tips = tipMeta?.tips || [];
 
   return (
