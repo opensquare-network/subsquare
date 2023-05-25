@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import useApi from "./useApi";
 import usePostTipMeta from "../../context/post/treasury/tip/tipMeta";
+import useTipIsFinished from "../../context/post/treasury/tip/isFinished";
 
 export default function useTipMeta(
   tipHash,
   atBlockHeight,
-  forceToReadLastBlock = false,
 ) {
   const [isLoading, setIsLoading] = useState(true);
   const postTipMeta = usePostTipMeta();
   const [tipMeta, setTipMeta] = useState(postTipMeta);
   const api = useApi();
+  const isFinished = useTipIsFinished();
 
   useEffect(() => {
-    if (!api) {
+    if (!api || isFinished) {
       return;
     }
 
@@ -21,7 +22,7 @@ export default function useTipMeta(
 
     Promise.resolve(api)
       .then((api) => {
-        if (!forceToReadLastBlock && atBlockHeight) {
+        if (atBlockHeight) {
           return api.rpc.chain
             .getBlockHash(atBlockHeight)
             .then((blockHash) => api.at(blockHash));
@@ -41,7 +42,7 @@ export default function useTipMeta(
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, tipHash, atBlockHeight, forceToReadLastBlock]);
+  }, [api, tipHash, atBlockHeight, isFinished]);
 
   return { isLoading, tipMeta };
 }
