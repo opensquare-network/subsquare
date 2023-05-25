@@ -74,7 +74,6 @@ export default function NestedVotesPopup({
 }
 
 function VotesList({ items = [], loading }) {
-  console.log(items);
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
