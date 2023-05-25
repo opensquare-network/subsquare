@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import NestedVotesPopup from "./nestedVotesPopup";
 import { Button } from "./styled";
+import { sortTotalVotes } from "next-common/utils/democracy/votes/passed/common";
 
 export default function NestedVotes() {
   const [showNestedVotes, setShowNestedVotes] = useState(false);
@@ -15,6 +16,10 @@ export default function NestedVotes() {
     allNay = [],
     allAbstain = [],
   } = useSelector(votesSelector);
+  const directAyes = allAye.filter(v => !v.isDelegating);
+  sortTotalVotes(directAyes);
+  const directNays = allNay.filter(v => !v.isDelegating);
+  sortTotalVotes(directNays);
 
   return (
     <>
@@ -22,8 +27,8 @@ export default function NestedVotes() {
 
       {showNestedVotes && (
         <NestedVotesPopup
-          allAye={allAye}
-          allNay={allNay}
+          allAye={directAyes}
+          allNay={directNays}
           allAbstain={allAbstain}
           setShowVoteList={setShowNestedVotes}
           isLoadingVotes={isLoadingVotes}

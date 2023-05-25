@@ -112,9 +112,6 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items.map((item) => {
-    // TODO: #2866, nested votes, check formula
-    const votes = item.balance * item.conviction || item.balance;
-
     const row = [
       <User
         key="user"
@@ -126,7 +123,7 @@ function VotesList({ items = [], loading }) {
       item.directVoterDelegations?.length,
       <ValueDisplay
         key="value"
-        value={toPrecision(votes, chainSettings.decimals)}
+        value={toPrecision(item.totalVotes, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,

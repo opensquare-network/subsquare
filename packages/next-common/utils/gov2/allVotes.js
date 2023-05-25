@@ -1,8 +1,6 @@
-import {
-  objectSpread,
-  sortVotesWithConviction,
-} from "../democracy/votes/passed/common";
+import { calcVotes, objectSpread, sortVotes } from "../democracy/votes/passed/common";
 import { extractAddressAndTrackId } from "./utils";
+import BigNumber from "bignumber.js";
 
 function normalizeVotingOfEntry([storageKey, voting], blockApi) {
   const { address, trackId } = extractAddressAndTrackId(storageKey, blockApi);
@@ -12,20 +10,18 @@ function normalizeVotingOfEntry([storageKey, voting], blockApi) {
 function extractStandardVote(account, vote) {
   const standard = vote.asStandard;
   const balance = standard.balance.toBigInt().toString();
+  const conviction = standard.vote.conviction.toNumber();
 
   return [
-    objectSpread(
-      {
-        account,
-        isDelegating: false,
-        isStandard: true,
-      },
-      {
-        balance,
-        aye: standard.vote.isAye,
-        conviction: standard.vote.conviction.toNumber(),
-      },
-    ),
+    {
+      account,
+      isDelegating: false,
+      isStandard: true,
+      balance,
+      aye: standard.vote.isAye,
+      conviction: standard.vote.conviction.toNumber(),
+      votes: calcVotes(balance, conviction),
+    },
   ];
 }
 
@@ -46,6 +42,7 @@ function extractSplitVote(account, vote) {
       balance: ayeBalance,
       aye: true,
       conviction: 0,
+      votes: calcVotes(ayeBalance, 0),
     });
   }
   if (split.nay.toBigInt() > 0) {
@@ -54,6 +51,7 @@ function extractSplitVote(account, vote) {
       balance: nayBalance,
       aye: false,
       conviction: 0,
+      votes: calcVotes(nayBalance, 0),
     });
   }
 
@@ -77,6 +75,7 @@ function extractSplitAbstainVote(account, vote) {
         balance: abstainBalance,
         isAbstain: true,
         conviction: 0,
+        votes: calcVotes(abstainBalance, 0),
       },
     ),
   ];
@@ -86,6 +85,7 @@ function extractSplitAbstainVote(account, vote) {
         balance: ayeBalance,
         aye: true,
         conviction: 0,
+        votes: calcVotes(ayeBalance, 0),
       }),
     );
   }
@@ -96,6 +96,7 @@ function extractSplitAbstainVote(account, vote) {
         balance: nayBalance,
         aye: false,
         conviction: 0,
+        votes: calcVotes(nayBalance, 0),
       }));
   }
 
@@ -158,6 +159,7 @@ function extractDelegations(mapped, track, directVotes = []) {
           isDelegating: true,
           aye: to.aye,
           conviction: conviction.toNumber(),
+          votes: calcVotes(balance.toBigInt().toString(), conviction.toNumber()),
         },
       ];
     }, []);
@@ -166,13 +168,16 @@ function extractDelegations(mapped, track, directVotes = []) {
 // TODO: #2866, nested detail, delegation list
 function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
   return votes.map((vote) => {
-    const directVoterDelegations = delegationVotes.filter((delegationVote) => {
+    let directVoterDelegations = delegationVotes.filter((delegationVote) => {
       return delegationVote.target === vote.account;
     });
 
-    vote.directVoterDelegations = sortVotesWithConviction(
-      directVoterDelegations,
-    );
+    sortVotes(directVoterDelegations);
+    const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
+      return new BigNumber(result).plus(d.votes).toString();
+    }, 0);
+    const totalVotes = new BigNumber(vote.votes).plus(allDelegationVotes).toString();
+    Object.assign(vote, { directVoterDelegations, totalVotes });
     return vote;
   });
 }
@@ -187,7 +192,7 @@ export async function getGov2ReferendumVotesFromVotingOf(
 
   const directVotes = extractVotes(mapped, referendumIndex, blockApi);
   const delegationVotes = extractDelegations(mapped, trackId, directVotes);
-  const sorted = sortVotesWithConviction([...directVotes, ...delegationVotes]);
+  const sorted = sortVotes([...directVotes, ...delegationVotes]);
 
   let allAye = sorted.filter((v) => !v.isAbstain && v.aye);
   let allNay = sorted.filter((v) => !v.isAbstain && !v.aye);
