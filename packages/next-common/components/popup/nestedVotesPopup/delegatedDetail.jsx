@@ -1,6 +1,6 @@
 "use clinet";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import styled from "styled-components";
 import AccountSVG from "next-common/assets/imgs/icons/account.svg";
@@ -209,6 +209,10 @@ export default function NestedPopupDelegatedDetailPopup({
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
+  const items = useMemo(() => {
+    return directVoterDelegations.slice(sliceFrom, sliceTo);
+  }, [directVoterDelegations, sliceFrom, sliceTo]);
+
   return (
     <BaseVotesPopup title="Delegated Detail" onClose={onClose}>
       <Descriptions title="Self Votes" items={selfVotesItems} />
@@ -216,9 +220,7 @@ export default function NestedPopupDelegatedDetailPopup({
 
       {!!directVoterDelegations?.length && (
         <>
-          <DetailDelegatorList
-            items={directVoterDelegations.slice(sliceFrom, sliceTo)}
-          />
+          <DetailDelegatorList items={items} />
 
           <Pagination {...pagination} />
         </>
@@ -277,7 +279,7 @@ function DetailDelegatorList({ items = [] }) {
 
   return (
     <StyledPopupListWrapper>
-      <StyledList columns={columns} rows={rows} />
+      <StyledList items={items} columns={columns} rows={rows} />
     </StyledPopupListWrapper>
   );
 }

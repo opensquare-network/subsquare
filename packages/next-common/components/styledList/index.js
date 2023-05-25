@@ -43,7 +43,7 @@ function StyledList({
   }
 
   useEffect(() => {
-    if (scrollToFirstRowOnChange) {
+    if (scrollToFirstRowOnChange && items.length) {
       if (tableBodyRef.current) {
         tableBodyRef.current.scrollTo(0, 0);
       }
