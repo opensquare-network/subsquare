@@ -27,6 +27,12 @@ import {
 import { toPrecision } from "next-common/utils";
 import sumBy from "lodash.sumby";
 
+const StyledPopupListWrapper = styled(PopupListWrapper)`
+  table tbody {
+    max-height: 200px;
+  }
+`;
+
 const StyledAccountSVG = styled(AccountSVG)`
   fill: ${(p) => p.theme.textTertiary};
 `;
@@ -189,7 +195,7 @@ export default function NestedPopupDelegatedDetailPopup({
     },
   ];
 
-  const pageSize = 3;
+  const pageSize = 30;
   function onPageChange(e, newPage) {
     e.preventDefault();
     setDetailListPage(newPage);
@@ -270,8 +276,8 @@ function DetailDelegatorList({ items = [] }) {
   });
 
   return (
-    <PopupListWrapper>
+    <StyledPopupListWrapper>
       <StyledList columns={columns} rows={rows} />
-    </PopupListWrapper>
+    </StyledPopupListWrapper>
   );
 }
