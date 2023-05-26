@@ -62,7 +62,7 @@ const Tooltip = styled(TooltipOrigin)`
 `;
 
 const ProgressBarWrapper = styled.div`
-  padding: 8px 0;
+  margin: 8px 0;
 `;
 
 export default function SupportBar({ supportPerbill }) {
