@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import {
@@ -41,21 +41,19 @@ export default function CallsVotesPopup({ setShowVoteList }) {
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
-  const [votes, setVotes] = useState([]);
-  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    if (tabIndex === "Aye") {
-      setPage(ayePage);
-      setVotes(allAye);
-    } else if (tabIndex === "Nay") {
-      setPage(nayPage);
-      setVotes(allNay);
-    } else {
-      setPage(abstainPage);
-      setVotes(allAbstain);
-    }
-  }, [tabIndex, ayePage, nayPage, abstainPage, allAye, allNay, allAbstain]);
+  let page;
+  let votes;
+  if (tabIndex === "Aye") {
+    page = ayePage;
+    votes = allAye;
+  } else if (tabIndex === "Nay") {
+    page = nayPage;
+    votes = allNay;
+  } else {
+    page = abstainPage;
+    votes = allAbstain;
+  }
 
   const onPageChange = (e, target) => {
     e.preventDefault();
