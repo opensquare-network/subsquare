@@ -175,8 +175,22 @@ function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
     const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
       return new BigNumber(result).plus(d.votes).toString();
     }, 0);
-    const totalVotes = new BigNumber(vote.votes).plus(allDelegationVotes).toString();
-    Object.assign(vote, { directVoterDelegations, totalVotes });
+    const totalVotes = new BigNumber(vote.votes)
+      .plus(allDelegationVotes)
+      .toString();
+    const totalDelegatedVotes = directVoterDelegations.reduce((result, d) => {
+      return BigNumber(result).plus(d.votes).toString();
+    }, 0);
+    const totalDelegatedCapital = directVoterDelegations.reduce((result, d) => {
+      return BigNumber(result).plus(d.balance).toString();
+    }, 0);
+
+    Object.assign(vote, {
+      directVoterDelegations,
+      totalVotes,
+      totalDelegatedVotes,
+      totalDelegatedCapital,
+    });
     return vote;
   });
 }

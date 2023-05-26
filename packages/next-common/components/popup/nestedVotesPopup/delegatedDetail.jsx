@@ -25,8 +25,6 @@ import {
   text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
-import sumBy from "lodash.sumby";
-import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 
 const StyledPopupListWrapper = styled(PopupListWrapper)`
   table tbody {
@@ -131,9 +129,6 @@ export default function NestedPopupDelegatedDetailPopup({
     },
   ];
 
-  const totalDelegationVotes = sumBy(data.directVoterDelegations, (i) => {
-    return Number(calcVotes(i.balance, i.conviction));
-  });
   const delegationItems = [
     {
       label: (
@@ -144,7 +139,7 @@ export default function NestedPopupDelegatedDetailPopup({
       ),
       value: data.directVoterDelegations?.length ? (
         <ValueDisplay
-          value={toPrecision(totalDelegationVotes, chainSettings.decimals)}
+          value={toPrecision(data.totalDelegatedVotes, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
@@ -168,10 +163,12 @@ export default function NestedPopupDelegatedDetailPopup({
           <span>Capital</span>
         </DetailDescriptionLabel>
       ),
-      // FIXME: #2866 how delegation `capital` calc
       value: data.directVoterDelegations?.length ? (
         <ValueDisplay
-          value={toPrecision(data.balance, chainSettings.decimals)}
+          value={toPrecision(
+            data.totalDelegatedCapital,
+            chainSettings.decimals,
+          )}
           symbol={symbol}
           showTooltip={false}
         />
