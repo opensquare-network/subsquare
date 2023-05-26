@@ -99,7 +99,7 @@ export default function NestedPopupDelegatedDetailPopup({
       ),
       value: (
         <ValueDisplay
-          value={toPrecision(data.totalVotes, chainSettings.decimals)}
+          value={toPrecision(data.votes, chainSettings.decimals)}
           symbol={symbol}
           showTooltip={false}
         />
