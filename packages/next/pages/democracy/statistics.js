@@ -8,13 +8,11 @@ import BigNumber from "bignumber.js";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import { useChain } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
+import { useChainSettings } from "next-common/context/chain";
 
 export default withLoginUserRedux(
   ({ delegatee, delegators, summary, turnout }) => {
-    const chain = useChain();
-    const isKusama = chain === Chains.kusama;
+    const { hasDemocracy } = useChainSettings();
 
     return (
       <DetailLayout
@@ -38,7 +36,7 @@ export default withLoginUserRedux(
         </BreadcrumbWrapper>
         <AllVotesStatistics turnout={turnout} />
         <TurnoutStatistics turnout={turnout} />
-        {!isKusama && (
+        {hasDemocracy !== false && (
           <DemocracyStatistics
             delegatee={delegatee}
             delegators={delegators}
