@@ -1,16 +1,14 @@
 import React from "react";
-import { useChain } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
+import { useChainSettings } from "next-common/context/chain";
 import DemocracySummaryFooter from "./summary/democracySummaryFooter";
 import DemocracySummaryKusama from "./summary/democracySummaryKusama";
 import DemocracySummary from "./summary/democracySummary";
 
 export default function MaybeNoDemocracySummary({ summary }) {
-  const chain = useChain();
-  const isKusama = chain === Chains.kusama;
+  const { hasDemocracy } = useChainSettings();
 
   let summaryPanel = <DemocracySummary footer={<DemocracySummaryFooter />} />;
-  if (isKusama) {
+  if (hasDemocracy === false) {
     summaryPanel = <DemocracySummaryKusama summary={summary} />;
   }
 
