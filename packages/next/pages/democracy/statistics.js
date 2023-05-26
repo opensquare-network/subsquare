@@ -8,9 +8,14 @@ import BigNumber from "bignumber.js";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 export default withLoginUserRedux(
   ({ delegatee, delegators, summary, turnout }) => {
+    const chain = useChain();
+    const isKusama = chain === Chains.kusama;
+
     return (
       <DetailLayout
         seoInfo={{
@@ -19,7 +24,8 @@ export default withLoginUserRedux(
         }}
       >
         <BreadcrumbWrapper>
-          <Breadcrumb items={[
+          <Breadcrumb
+            items={[
               {
                 path: "/democracy/referenda",
                 content: "Democracy",
@@ -27,15 +33,18 @@ export default withLoginUserRedux(
               {
                 content: "Statistics",
               },
-            ]} />
+            ]}
+          />
         </BreadcrumbWrapper>
         <AllVotesStatistics turnout={turnout} />
         <TurnoutStatistics turnout={turnout} />
-        <DemocracyStatistics
-          delegatee={delegatee}
-          delegators={delegators}
-          summary={summary}
-        />
+        {!isKusama && (
+          <DemocracyStatistics
+            delegatee={delegatee}
+            delegators={delegators}
+            summary={summary}
+          />
+        )}
       </DetailLayout>
     );
   }

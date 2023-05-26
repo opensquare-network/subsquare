@@ -2,16 +2,15 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import DemocracySummary from "next-common/components/summary/democracySummary";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
-import DemocracySummaryFooter from "next-common/components/summary/democracySummaryFooter";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import StatisticLinkButton from "next-common/components/statisticsLinkButton";
+import MaybeNoDemocracySummary from "next-common/components/maybeNoDemocracySummary";
 
 export default withLoginUserRedux(
-  ({ posts, chain, tracks, fellowshipTracks }) => {
+  ({ posts, chain, tracks, fellowshipTracks, summary }) => {
     const items = (posts.items || []).map((item) =>
       normalizeReferendaListItem(chain, item)
     );
@@ -36,7 +35,7 @@ export default withLoginUserRedux(
             pageSize: posts.pageSize,
             total: posts.total,
           }}
-          summary={<DemocracySummary footer={<DemocracySummaryFooter />} />}
+          summary={<MaybeNoDemocracySummary summary={summary} />}
         />
       </HomeLayout>
     );
@@ -48,11 +47,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const [{ result: posts }] = await Promise.all([
+  const [{ result: posts }, { result: summary }] = await Promise.all([
     nextApi.fetch("democracy/referendums", {
       page: page ?? 1,
       pageSize: pageSize ?? defaultPageSize,
     }),
+    nextApi.fetch("summary"),
   ]);
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
@@ -66,6 +66,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       posts: posts ?? EmptyList,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
+      summary: summary ?? {},
     },
   };
 });
