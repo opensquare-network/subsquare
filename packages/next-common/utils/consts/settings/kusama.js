@@ -60,6 +60,7 @@ const kusama = {
   hasStatescan: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
+  hasDemocracy: false,
 };
 
 export default kusama;
