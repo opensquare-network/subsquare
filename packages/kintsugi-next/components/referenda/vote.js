@@ -39,13 +39,6 @@ const Popup = dynamic(() => import("./popup"), {
   ssr: false,
 });
 
-const FlattenedVotesPopup = dynamic(
-  () => import("next-common/components/democracy/flattenedVotesPopup"),
-  {
-    ssr: false,
-  },
-);
-
 const Wrapper = styled.div`
   position: absolute;
   right: 0;
