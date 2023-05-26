@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import * as RadixTooltip from "@radix-ui/react-tooltip";
 
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
+import { p_12_normal } from "next-common/styles/componentCss";
 
 const QuestionIcon = styled(Icon)`
   path {
@@ -76,7 +78,47 @@ const ChildrenWrapper = styled.div`
   }
 `;
 
+const TooltipContent = styled(RadixTooltip.Content)`
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 4px;
+  padding: 6px 12px;
+  color: ${(props) => props.theme.textContrast} !important;
+  word-wrap: break-word;
+  ${p_12_normal};
+`;
+
+const TooltipArrow = styled(RadixTooltip.Arrow)`
+  fill: rgba(0, 0, 0, 0.65);
+`;
+
 export default function Tooltip({ content, children, label, className }) {
+  return (
+    <RadixTooltip.Provider>
+      <RadixTooltip.Root delayDuration={0}>
+        {children ? (
+          <>
+            <RadixTooltip.Trigger asChild>
+              <div>{children}</div>
+            </RadixTooltip.Trigger>
+
+            {content && (
+              <RadixTooltip.Portal>
+                <TooltipContent sideOffset={5}>
+                  {content}
+                  <TooltipArrow />
+                </TooltipContent>
+              </RadixTooltip.Portal>
+            )}
+          </>
+        ) : (
+          ""
+        )}
+      </RadixTooltip.Root>
+    </RadixTooltip.Provider>
+  );
+
+  // eslint-disable-next-line no-unreachable
   return (
     <>
       {children ? (
