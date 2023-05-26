@@ -180,7 +180,6 @@ export default function NestedPopupDelegatedDetailPopup({
       ),
     },
   ];
-  console.log(data);
 
   const pageSize = 30;
   function onPageChange(e, newPage) {
