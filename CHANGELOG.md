@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.1.3
+date: 05/26/2023
+- Add nested votes view for democracy and OpenGov referenda.
+- Extract dedicated detail container components for treasury proposal, tip and OpenGov referendum.
+- Fix pages crash due to kusama drops democracy and tips pallet from metadata.
+
 # 3.1.2
 date: 05/22/2023
 - Populate OpenGov referendum title by parity tip bot automatically.
