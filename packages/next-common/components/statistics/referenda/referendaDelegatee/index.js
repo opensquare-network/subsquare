@@ -1,7 +1,7 @@
 import React from "react";
 import User from "next-common/components/user";
 import styled from "styled-components";
-import StyledList from "next-common/components/styledList";
+import StyledListOrigin from "next-common/components/styledList";
 import { useCallback, useEffect, useState } from "react";
 import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
@@ -25,6 +25,12 @@ const ListWrapper = styled.div`
     overflow-x: auto;
     ${pretty_scroll_bar};
   }
+`;
+
+const StyledList = styled(StyledListOrigin)`
+  border: none;
+  box-shadow: none;
+  padding: 0;
 `;
 
 function getSortParams(sortedColumn) {
