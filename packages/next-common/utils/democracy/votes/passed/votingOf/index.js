@@ -112,6 +112,16 @@ function extractDelegations(mapped, directVotes = []) {
 
 function extractDirectVoterDelegations(votes = [], delegationVotes = []) {
   return votes.map((vote) => {
+    if (!vote.isStandard) {
+      Object.assign(vote, {
+        directVoterDelegations: [],
+        totalVotes: vote.votes,
+        totalDelegatedVotes: 0,
+        totalDelegatedCapital: 0,
+      });
+      return vote;
+    }
+
     const directVoterDelegations = delegationVotes.filter((delegationVote) => {
       return delegationVote.target === vote.account;
     });
