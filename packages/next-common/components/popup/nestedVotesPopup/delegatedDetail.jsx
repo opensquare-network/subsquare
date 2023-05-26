@@ -99,7 +99,6 @@ export default function NestedPopupDelegatedDetailPopup({
         <ValueDisplay
           value={toPrecision(data.votes, chainSettings.decimals)}
           symbol={symbol}
-          showTooltip={false}
         />
       ),
     },
@@ -123,7 +122,6 @@ export default function NestedPopupDelegatedDetailPopup({
         <ValueDisplay
           value={toPrecision(data.balance, chainSettings.decimals)}
           symbol={symbol}
-          showTooltip={false}
         />
       ),
     },
@@ -141,7 +139,6 @@ export default function NestedPopupDelegatedDetailPopup({
         <ValueDisplay
           value={toPrecision(data.totalDelegatedVotes, chainSettings.decimals)}
           symbol={symbol}
-          showTooltip={false}
         />
       ) : (
         0
@@ -170,7 +167,6 @@ export default function NestedPopupDelegatedDetailPopup({
             chainSettings.decimals,
           )}
           symbol={symbol}
-          showTooltip={false}
         />
       ) : (
         0
@@ -251,7 +247,6 @@ function DetailDelegatorList({ items = [] }) {
         key="value"
         value={toPrecision(item.totalVotes, chainSettings.decimals)}
         symbol={symbol}
-        showTooltip={false}
       />,
     ];
 

@@ -24,7 +24,7 @@ export default function CapitalTableItem({ capital, item, tab, conviction }) {
 
   return (
     <Capital>
-      <ValueDisplay value={capital} symbol={symbol} showTooltip={false} />
+      <ValueDisplay value={capital} symbol={symbol} />
       {hasLabel && (
         <CapitalConvictionLabel>
           <VoteLabel conviction={conviction} {...item} tab={tab} />
