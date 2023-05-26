@@ -7,6 +7,7 @@ import startCase from "lodash.startcase";
 import TrackStatistics from "next-common/components/statistics/track";
 import { EmptyList } from "next-common/utils/constants";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { to404 } from "next-common/utils/serverSideUtil";
 
 export default withLoginUserRedux(
   ({
