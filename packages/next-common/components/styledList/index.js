@@ -26,6 +26,7 @@ function StyledList({
   scrollToFirstRowOnChange = true,
   // FIXME: data source, use to scroll to first row
   items = [],
+  className = "",
 }) {
   const tableBodyRef = useRef();
   let tableBody = null;
@@ -51,7 +52,7 @@ function StyledList({
   }, [items]);
 
   return (
-    <StyledTable>
+    <StyledTable className={className}>
       <Headers columns={columns} />
       <tbody ref={tableBodyRef}>{tableBody}</tbody>
     </StyledTable>
