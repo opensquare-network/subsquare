@@ -13,7 +13,7 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
+import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import Chains from "next-common/utils/consts/chains";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { Conviction } from "utils/referendumUtil";

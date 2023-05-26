@@ -19,6 +19,17 @@ import TallyInfo from "next-common/components/referenda/tally/info";
 import { emptyFunction } from "next-common/utils";
 import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+  text_primary,
+} from "next-common/styles/tailwindcss";
+import { p_12_medium } from "next-common/styles/componentCss";
+import CallsVotesPopup from "next-common/components/democracy/callsVotesPopup";
+import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
+
 import useDemocracyTally from "next-common/context/post/democracy/referendum/tally";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
@@ -29,12 +40,28 @@ const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
-const AllVotesPopup = dynamic(
-  () => import("next-common/components/democracy/allVotesPopup"),
+const FlattenedVotesPopup = dynamic(
+  () => import("next-common/components/democracy/flattenedVotesPopup"),
   {
     ssr: false,
-  }
+  },
 );
+
+const VotesGroup = styled.div`
+  ${flex};
+  ${items_center};
+  ${justify_between};
+  margin-top: 16px;
+`;
+const VotesGroupLabel = styled.div`
+  ${p_12_medium};
+  ${text_primary};
+`;
+const VotesGroupItems = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(12)};
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -78,13 +105,12 @@ const RejectStatus = styled(Status)`
   background: ${(props) => props.theme.secondaryRed100};
 `;
 
-function Vote({
-  referendumIndex,
-  onFinalized = emptyFunction,
-}) {
+function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
-  const [showVoteList, setShowVoteList] = useState(false);
+  const [showFlattenedVotesList, setShowFlattenedVotesList] = useState(false);
+  const [showNestedVotesList, setShowNestedVotesList] = useState(false);
+  const [showCallsVotesList, setShowCallsVotesList] = useState(false);
   const api = useApi();
   const tally = useDemocracyTally();
   const isPassing = useIsDemocracyPassing();
@@ -95,7 +121,7 @@ function Vote({
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const isLoadingReferendumStatus = useSelector(
-    isLoadingReferendumStatusSelector
+    isLoadingReferendumStatusSelector,
   );
   const isVoteFinished = useIsDemocracyVoteFinished();
 
@@ -140,21 +166,26 @@ function Vote({
         />
 
         {finishedResult}
-        {
-          !isVoteFinished &&
+        {!isVoteFinished &&
           (isPassing ? (
             <PassStatus>Passing</PassStatus>
           ) : (
             <RejectStatus>Failing</RejectStatus>
-          ))
-        }
+          ))}
 
-        <SubLink
-          style={{ marginTop: 16 }}
-          onClick={() => setShowVoteList(true)}
-        >
-          Check all votes
-        </SubLink>
+        <VotesGroup>
+          <VotesGroupLabel>Votes</VotesGroupLabel>
+          <VotesGroupItems>
+            <SubLink onClick={() => setShowFlattenedVotesList(true)}>
+              Flattened
+            </SubLink>
+            <SubLink onClick={() => setShowNestedVotesList(true)}>
+              Nested
+            </SubLink>
+            {/* TODO: #2866, democracy calls */}
+            {/* <SubLink onClick={() => setShowCallsVotesList(true)}>Calls</SubLink> */}
+          </VotesGroupItems>
+        </VotesGroup>
 
         <MyVote updateTime={updateTime} />
       </SecondaryCardDetail>
@@ -176,9 +207,27 @@ function Vote({
           onFinalized={onFinalized}
         />
       )}
-      {showVoteList && (
-        <AllVotesPopup
-          setShowVoteList={setShowVoteList}
+      {showFlattenedVotesList && (
+        <FlattenedVotesPopup
+          setShowVoteList={setShowFlattenedVotesList}
+          allAye={allAye}
+          allNay={allNay}
+          isLoadingVotes={isLoadingVotes}
+        />
+      )}
+      {showNestedVotesList && (
+        <NestedVotesPopup
+          setShowVoteList={setShowNestedVotesList}
+          allAye={allAye}
+          allNay={allNay}
+          isLoadingVotes={isLoadingVotes}
+        />
+      )}
+
+      {/* TODO: #2866, democracy calls */}
+      {false && showCallsVotesList && (
+        <CallsVotesPopup
+          setShowVoteList={setShowCallsVotesList}
           allAye={allAye}
           allNay={allNay}
           isLoadingVotes={isLoadingVotes}

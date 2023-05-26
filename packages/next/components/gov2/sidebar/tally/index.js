@@ -7,8 +7,8 @@ import VoteBar from "components/referenda/voteBar";
 import Aye from "./values/aye";
 import Nay from "./values/nay";
 import Support from "./values/support";
-import AllVotes from "./allVotes";
-import VoteExtrinsics from "./voteExtrinsics";
+import FlattenedVotes from "./flattenedVotes";
+import CallsVotes from "./callsVotes";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import useIssuance from "next-common/utils/gov2/useIssuance";
@@ -26,6 +26,15 @@ import {
   useApprovalPercentage,
   useSupportPercentage,
 } from "next-common/context/post/gov2/percentage";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+  text_primary,
+} from "next-common/styles/tailwindcss";
+import { p_12_medium } from "next-common/styles/componentCss";
+import NestedVotes from "./nestedVotes";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -41,12 +50,20 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
-const Footer = styled.div`
-  display: flex;
-  > :not(:first-child) {
-    margin-left: 16px;
-  }
+const VotesGroup = styled.div`
+  ${flex};
+  ${items_center};
+  ${justify_between};
   margin-top: 16px;
+`;
+const VotesGroupLabel = styled.div`
+  ${p_12_medium};
+  ${text_primary};
+`;
+const VotesGroupItems = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(12)};
 `;
 
 export default function Gov2Tally() {
@@ -91,10 +108,14 @@ export default function Gov2Tally() {
       <Support supportPerbill={supportPerbill} />
       <Issuance issuance={issuance} />
 
-      <Footer>
-        <AllVotes />
-        <VoteExtrinsics />
-      </Footer>
+      <VotesGroup>
+        <VotesGroupLabel>Votes</VotesGroupLabel>
+        <VotesGroupItems>
+          <FlattenedVotes />
+          <NestedVotes />
+          <CallsVotes />
+        </VotesGroupItems>
+      </VotesGroup>
 
       <MyVote />
 

@@ -1,9 +1,13 @@
+import { overflow_x_scroll } from "next-common/styles/tailwindcss";
+import { breakpoint } from "next-common/utils/responsive";
 import styled from "styled-components";
 import { pretty_scroll_bar } from "../../styles/componentCss";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 
 const PopupListWrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
+  ${breakpoint(720, overflow_x_scroll)};
+
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }
@@ -25,9 +29,20 @@ const PopupListWrapper = styled.div`
     tbody tr {
       display: table;
       width: 100%;
-      table-layout: fixed;
     }
     box-shadow: none;
+  }
+
+  /* reset */
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td {
+    border-collapse: inherit;
+    border-spacing: 0;
   }
 `;
 

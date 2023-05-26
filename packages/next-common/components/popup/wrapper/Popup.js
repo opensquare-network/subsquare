@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import Background from "../../styled/backgroundShade";
-import useOnClickOutside from "../../../utils/hooks/useOnClickOutside";
 import ClosePanelIcon from "../../../assets/imgs/icons/close-panel.svg";
 import { emptyFunction } from "../../../utils";
 import { useScrollLock } from "../../../utils/hooks/useScrollLock";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
-import { useKey } from "../../../utils/hooks/useKey";
+import { useEscapeKeyOnce } from "next-common/utils/hooks/useEscapeKeyOnce";
 import { breakpoint } from "../../../utils/responsive";
 import { w_full } from "../../../styles/tailwindcss";
 
@@ -49,6 +48,7 @@ const TopWrapper = styled.div`
   }
 `;
 
+let z;
 export default function Popup({
   children,
   title,
@@ -58,10 +58,14 @@ export default function Popup({
   zIndex = 999,
 }) {
   const ref = useRef();
-  useOnClickOutside(ref, () => onClose());
-  useKey("Escape", onClose);
+  useEscapeKeyOnce(onClose);
 
   const [, setIsLocked] = useScrollLock();
+
+  useEffect(() => {
+    z = zIndex;
+    z++;
+  }, []);
 
   useEffect(() => {
     setIsLocked(true);
@@ -70,8 +74,13 @@ export default function Popup({
   });
 
   return (
-    <Background zIndex={zIndex}>
-      <Wrapper wide={wide} ref={ref} className={className}>
+    <Background zIndex={z} onClick={onClose}>
+      <Wrapper
+        wide={wide}
+        ref={ref}
+        className={className}
+        onClick={(event) => event.stopPropagation()}
+      >
         {title && (
           <TopWrapper>
             <h3>{title}</h3>

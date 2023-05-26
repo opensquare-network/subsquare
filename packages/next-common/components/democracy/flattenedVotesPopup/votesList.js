@@ -31,15 +31,17 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: 176 }}>
+            <StyledTh style={{ textAlign: "left", width: 416 }}>
               VOTERS
             </StyledTh>
             {hasLabel && (
-              <StyledTh style={{ textAlign: "center", width: 40 }}>
+              <StyledTh style={{ textAlign: "right", width: 128 }}>
                 LABEL
               </StyledTh>
             )}
-            <StyledTh style={{ textAlign: "right" }}>VOTES</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: 128 }}>
+              VOTES
+            </StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={
@@ -53,16 +55,11 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
             items.map((item, index) => (
               <Fragment key={index}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: 176 }}>
-                    <User
-                      add={item.account}
-                      fontSize={14}
-                      maxWidth={132}
-                      noTooltip={true}
-                    />
+                  <StyledTd style={{ textAlign: "left", width: 416 }}>
+                    <User add={item.account} fontSize={14} noTooltip={true} />
                   </StyledTd>
                   {hasLabel && (
-                    <StyledTd style={{ textAlign: "center", width: 40 }}>
+                    <StyledTd style={{ textAlign: "right", width: 128 }}>
                       <VoteLabel
                         conviction={item.conviction}
                         isDelegating={item.isDelegating}
@@ -72,7 +69,7 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
                       />
                     </StyledTd>
                   )}
-                  <StyledTd style={{ textAlign: "right" }}>
+                  <StyledTd style={{ textAlign: "right", width: 128 }}>
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
                       symbol={symbol}
@@ -98,7 +95,7 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
           )}
         </tbody>
       </StyledTable>
-      { !loading && <Annotation isOpenGov={ isOpenGov } /> }
+      {!loading && <Annotation isOpenGov={isOpenGov} />}
     </PopupListWrapper>
   );
 }

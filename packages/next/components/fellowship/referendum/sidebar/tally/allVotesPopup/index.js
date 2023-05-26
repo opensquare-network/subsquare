@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import VotesTab, {
   tabs,
-} from "next-common/components/democracy/allVotesPopup/tab";
+} from "next-common/components/democracy/flattenedVotesPopup/tab";
 import VotersList from "./votesList";
 import Pagination from "next-common/components/pagination";
 

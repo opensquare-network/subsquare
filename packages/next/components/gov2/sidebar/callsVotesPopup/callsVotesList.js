@@ -4,72 +4,46 @@ import { toPrecision } from "next-common/utils";
 import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 
-import { EmptyTd, RowSplitter, StyledTable, StyledTd, StyledTh, StyledTr } from "next-common/components/styled/table";
+import {
+  EmptyTd,
+  RowSplitter,
+  StyledTable,
+  StyledTd,
+  StyledTh,
+  StyledTr,
+} from "next-common/components/styled/table";
 import { useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "next-common/components/valueDisplay";
-import VoteLabel from "next-common/components/democracy/allVotesPopup/voteLabel";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-
-const VoteInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-`;
-
-const VoteInfoValue = styled.div`
-  display: flex;
-  gap: 4px;
-  justify-content: right;
-`;
+import { text_tertiary } from "next-common/styles/tailwindcss";
+import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 
 const VoteTime = styled.div`
-  display: flex;
-  justify-content: right;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: #9da9bb;
+  ${text_tertiary};
   :hover {
     text-decoration: underline;
   }
 `;
 
-function VoteInfo({ item }) {
+function CallsVotesList({ items, theme, loading = true }) {
   const node = useChainSettings();
 
-  return (
-    <VoteInfoWrapper>
-      <VoteInfoValue>
-        <VoteLabel conviction={item.vote.vote.conviction} />
-        <ValueDisplay
-          value={toPrecision(item.vote.balance, node.decimals)}
-          symbol={node.symbol}
-          showTooltip={false}
-        />
-      </VoteInfoValue>
-      <VoteTime>
-        <ExplorerLink indexer={item.indexer}>
-          { formatTime(item.indexer.blockTime) }
-        </ExplorerLink>
-      </VoteTime>
-    </VoteInfoWrapper>
-  );
-}
-
-function VoteExtrinsicsList({ items, theme, loading = true }) {
   return (
     <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: 176 }}>
+            <StyledTh style={{ textAlign: "left", width: 344 }}>
               VOTERS
             </StyledTh>
-            <StyledTh style={{ textAlign: "right", width: "100%" }}>
-              VALUE
+            <StyledTh style={{ textAlign: "left", width: 160 }}>DATE</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: 168 }}>
+              CAPITAL
             </StyledTh>
           </StyledTr>
           <RowSplitter
@@ -84,16 +58,22 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
             items.map((item, index) => (
               <Fragment key={index}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: 176 }}>
-                    <User
-                      add={item.voter}
-                      fontSize={14}
-                      maxWidth={132}
-                      noTooltip={true}
-                    />
+                  <StyledTd style={{ textAlign: "left", width: 344 }}>
+                    <User add={item.voter} fontSize={14} noTooltip={true} />
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "right" }}>
-                    <VoteInfo item={item} />
+                  <StyledTd style={{ textAlign: "left", width: 160 }}>
+                    <VoteTime>
+                      <ExplorerLink indexer={item.indexer}>
+                        {formatTime(item.indexer.blockTime)}
+                      </ExplorerLink>
+                    </VoteTime>
+                  </StyledTd>
+                  <StyledTd style={{ textAlign: "right", width: 168 }}>
+                    <CapitalTableItem
+                      item={item}
+                      capital={toPrecision(item.vote.balance, node.decimals)}
+                      conviction={item.vote.vote.conviction}
+                    />
                   </StyledTd>
                 </StyledTr>
                 {index !== items.length - 1 && (
@@ -118,4 +98,4 @@ function VoteExtrinsicsList({ items, theme, loading = true }) {
   );
 }
 
-export default withTheme(VoteExtrinsicsList);
+export default withTheme(CallsVotesList);
