@@ -101,7 +101,7 @@ function VotesList({ items = [], loading }) {
   const columns = [
     {
       name: "VOTES",
-      style: { minWidth: 344, textAlign: "left" },
+      style: { minWidth: 264, textAlign: "left" },
     },
     {
       name: "DATE",
@@ -120,7 +120,7 @@ function VotesList({ items = [], loading }) {
         add={item.voter}
         fontSize={14}
         noTooltip={true}
-        maxWidth={294}
+        maxWidth={214}
       />,
       <VoteTime key="date">
         <ExplorerLink indexer={item.indexer}>
