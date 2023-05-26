@@ -79,7 +79,7 @@ function VotesList({ loading, items = [] }) {
   const columns = [
     {
       name: "VOTERS",
-      style: { minWidth: 356, textAlign: "left" },
+      style: { minWidth: 276, textAlign: "left" },
     },
     {
       name: "CAPITAL",
@@ -95,7 +95,13 @@ function VotesList({ loading, items = [] }) {
     const capital = item.balance;
 
     const row = [
-      <User key="user" add={item.account} fontSize={14} noTooltip />,
+      <User
+        key="user"
+        add={item.account}
+        fontSize={14}
+        noTooltip
+        maxWidth={226}
+      />,
       <CapitalTableItem
         key="capital"
         item={item}

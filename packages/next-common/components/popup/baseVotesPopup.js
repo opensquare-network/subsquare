@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Popup from "./wrapper/Popup";
 
 const StyledPopup = styled(Popup)`
-  width: 720px;
+  width: 640px;
   ${max_w_full};
 `;
 

@@ -94,8 +94,8 @@ function VotesList({ items = [], loading }) {
 
   const columns = [
     {
-      name: "ADDRESS",
-      style: { minWidth: 376, textAlign: "left" },
+      name: "VOTERS",
+      style: { minWidth: 296, textAlign: "left" },
     },
     {
       name: "DELEGATORS",
@@ -118,7 +118,7 @@ function VotesList({ items = [], loading }) {
         add={item.account}
         fontSize={14}
         noTooltip
-        maxWidth={326}
+        maxWidth={246}
       />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay
