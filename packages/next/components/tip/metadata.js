@@ -17,15 +17,11 @@ export default function TipMetadata({ tip }) {
         ["Hash", tip?.hash],
         [
           "Finder",
-          <>
-            <User add={tip?.finder} fontSize={14} />
-          </>,
+          <User key="finder" add={tip?.finder} fontSize={14} />,
         ],
         [
           "Beneficiary",
-          <>
-            <User add={tip?.meta?.who} fontSize={14} />
-          </>,
+          <User key="beneficiary" add={tip?.meta?.who} fontSize={14} />,
         ],
       ]),
     [tip],
