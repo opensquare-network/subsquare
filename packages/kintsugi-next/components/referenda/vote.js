@@ -33,17 +33,11 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import useDemocracyTally from "next-common/context/post/democracy/referendum/tally";
+import CheckAllVotesPopup from "components/democracy/allVotesPopup";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
 });
-
-const FlattenedVotesPopup = dynamic(
-  () => import("next-common/components/democracy/flattenedVotesPopup"),
-  {
-    ssr: false,
-  },
-);
 
 const Wrapper = styled.div`
   position: absolute;
@@ -316,7 +310,7 @@ function Vote({
       )}
 
       {showVoteList && (
-        <FlattenedVotesPopup
+        <CheckAllVotesPopup
           setShowVoteList={setShowVoteList}
           allAye={allAye}
           allNay={allNay}
