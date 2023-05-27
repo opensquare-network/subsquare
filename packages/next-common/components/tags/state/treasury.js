@@ -20,6 +20,7 @@ const tipStateTagMap = {
   Tipping: StartTag,
   Retracted: NegativeTag,
   Closed: ClosedTag,
+  Slashed: NegativeTag,
 
   "Report Awesome": StartTag,
   tipNew: StartTag,
