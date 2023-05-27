@@ -41,7 +41,7 @@ export default function PostMeta() {
     state={ postState ? <Tag state={ postState } category={ detailType } args={ stateArgs } /> : null }
   >
     <TypeTag type={detailType} />
-    <UpdatedTime post={post} />
+    <UpdatedTime />
     <CommentsMeta />
     {detailPageCategory.ALLIANCE_ANNOUNCEMENT === detailType && (
       <IpfsLink cid={post.cid} />

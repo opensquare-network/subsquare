@@ -2,10 +2,10 @@ import React from "react";
 import { usePost } from "../../../context/post";
 import DetailContentBase from "../common/detailBase";
 import PostTitle from "../common/Title";
-import PostMeta from "../container/Meta";
 import ArticleContent from "../../articleContent";
 import ReferendaReferendumNavigation from "../navigation/referendaReferendumNavigation";
 import useSetEdit from "../common/hooks/useSetEdit";
+import ReferendaPostMeta from "./meta";
 
 export default function ReferendaDetail({ onReply }) {
   const post = usePost();
@@ -14,7 +14,7 @@ export default function ReferendaDetail({ onReply }) {
   return <DetailContentBase>
     <ReferendaReferendumNavigation />
     <PostTitle />
-    <PostMeta />
+    <ReferendaPostMeta />
     <ArticleContent
       post={post}
       onReply={onReply}
