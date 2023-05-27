@@ -46,8 +46,6 @@ export default function PostMeta() {
     {detailPageCategory.ALLIANCE_ANNOUNCEMENT === detailType && (
       <IpfsLink cid={post.cid} />
     )}
-    {post.labels && post.labels.length > 0 && (
-      <PostLabels labels={post.labels} />
-    )}
+    <PostLabels labels={post.labels} />
   </PostMetaBase>;
 }
