@@ -1,11 +1,11 @@
 import DetailContentBase from "../../common/detailBase";
 import PostTitle from "../../common/Title";
-import PostMeta from "../../container/Meta";
 import React from "react";
 import ArticleContent from "../../../articleContent";
 import { usePost } from "../../../../context/post";
 import CloseCountDown from "./closeCountDown";
 import useSetEdit from "../../common/hooks/useSetEdit";
+import TipPostMeta from "./meta";
 
 export default function TipDetail({ onReply }) {
   const post = usePost();
@@ -14,7 +14,7 @@ export default function TipDetail({ onReply }) {
   return <DetailContentBase>
     <CloseCountDown />
     <PostTitle />
-    <PostMeta />
+    <TipPostMeta />
     <ArticleContent
       post={post}
       onReply={onReply}
