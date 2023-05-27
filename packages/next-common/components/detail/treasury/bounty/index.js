@@ -1,24 +1,25 @@
 import React from "react";
+import { usePost } from "../../../../context/post";
+import useSetEdit from "../../common/hooks/useSetEdit";
 import DetailContentBase from "../../common/detailBase";
 import PostTitle from "../../common/Title";
+import BountyPostMeta from "../common/bountyMeta";
 import ArticleContent from "../../../articleContent";
-import { usePost } from "../../../../context/post";
-import TreasuryProposalNavigation from "../../navigation/treasuryProposalNavigation";
-import useSetEdit from "../../common/hooks/useSetEdit";
-import TreasuryProposalPostMeta from "./meta";
+import BountyCountDown from "../common/bountyCountDown";
 
-export default function TreasuryProposalDetail({ onReply }) {
+export default function BountyDetail({ onReply }) {
   const post = usePost();
   const setIsEdit = useSetEdit();
 
   return <DetailContentBase>
-    <TreasuryProposalNavigation />
+    <BountyCountDown data={post.onchainData} />
     <PostTitle />
-    <TreasuryProposalPostMeta />
+    <BountyPostMeta />
     <ArticleContent
       post={post}
       onReply={onReply}
       setIsEdit={setIsEdit}
     />
   </DetailContentBase>;
+
 }

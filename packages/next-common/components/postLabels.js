@@ -21,7 +21,11 @@ const Label = styled.a`
   cursor: pointer;
 `;
 
-export default function PostLabels({ labels }) {
+export default function PostLabels({ labels = [] }) {
+  if (!labels || labels.length <= 0) {
+    return null;
+  }
+
   return (
     <Wrapper>
       {labels.map((item) => (

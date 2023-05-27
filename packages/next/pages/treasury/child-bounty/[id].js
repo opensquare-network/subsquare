@@ -1,4 +1,3 @@
-import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -6,17 +5,11 @@ import Timeline from "components/childBounty/timeline";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import useUniversalComments from "components/universalComments";
-import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
-import TreasuryCountDown from "next-common/components/treasury/common/countdown";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import Claim from "components/childBounty/claim";
 import { useCallback } from "react";
-import {
-  PostProvider,
-  usePost,
-  usePostDispatch,
-} from "next-common/context/post";
+import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
@@ -25,30 +18,7 @@ import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "components/childBounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
-
-const ChildBountyCountDown = ({ data = {} }) => {
-  if (data.state?.state !== "PendingPayout") {
-    return null;
-  }
-
-  const timeline = data.timeline ?? [];
-  const awardedItem = [...timeline]
-    .reverse()
-    .find((item) => item.name === "Awarded");
-  if (!awardedItem) {
-    return null;
-  }
-
-  return (
-    <NoticeWrapper>
-      <TreasuryCountDown
-        startHeight={awardedItem.indexer?.blockHeight}
-        targetHeight={data.unlockAt}
-        prefix="Claimable"
-      />
-    </NoticeWrapper>
-  );
-};
+import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -75,10 +45,7 @@ function ChildBountyContent({ comments }) {
 
   return (
     <>
-      <DetailItem
-        onReply={focusEditor}
-        countDown={<ChildBountyCountDown data={post?.onchainData} />}
-      />
+      <ChildBountyDetail onReply={focusEditor} />
       <Claim childBounty={post?.onchainData} onFinalized={onClaimFinalized} />
       <Metadata meta={post?.onchainData?.meta} />
       <Timeline onchainData={post?.onchainData} />
