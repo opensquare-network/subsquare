@@ -48,7 +48,7 @@ async function queryReferendumInfo(
 export function useTally() {
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
-  const [tally, setTally] = useState(onchain?.info?.tally);
+  const [tally, setTally] = useState(onchain.tally || onchain?.info?.tally);
   const pageType = useDetailType();
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const isMounted = useIsMounted();
