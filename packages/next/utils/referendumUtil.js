@@ -137,3 +137,21 @@ export async function getAddressVote(api, referendumIndex, address) {
 
   return null;
 }
+
+export function getTallyVotesBarPercent(tally) {
+  const ayes = tally?.ayes ?? 0;
+  const nays = tally?.nays ?? 0;
+
+  let ayesPercent = 50;
+  let naysPercent = 50;
+  const nTotal = new BigNumber(ayes).plus(nays);
+  if (nTotal.gt(0)) {
+    ayesPercent = Math.round(new BigNumber(ayes).div(nTotal).toNumber() * 100);
+    naysPercent = 100 - ayesPercent;
+  }
+
+  return {
+    ayesPercent,
+    naysPercent,
+  };
+}
