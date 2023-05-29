@@ -53,7 +53,7 @@ const Wrapper = styled.div`
 `;
 
 const Mark = styled(ThresholdComponent)`
-  margin-top: 8px;
+  top: -0;
 `;
 
 const Tooltip = styled(TooltipOrigin)`
