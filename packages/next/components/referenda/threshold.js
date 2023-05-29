@@ -31,9 +31,13 @@ const Threshold = styled.div`
   z-index: 1;
 `;
 
-export default function ThresholdComponent({ threshold, thin = false }) {
+export default function ThresholdComponent({
+  threshold,
+  thin = false,
+  className,
+}) {
   return (
-    <ThresholdScope>
+    <ThresholdScope className={className}>
       <Threshold threshold={threshold} thin={thin} />
     </ThresholdScope>
   );
