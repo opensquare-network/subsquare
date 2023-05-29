@@ -1,10 +1,11 @@
-import { overflow_x_scroll } from "next-common/styles/tailwindcss";
+import { overflow_x_scroll, w_full } from "next-common/styles/tailwindcss";
 import { breakpoint } from "next-common/utils/responsive";
 import styled from "styled-components";
 import { pretty_scroll_bar } from "../../styles/componentCss";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 
 const PopupListWrapper = styled.div`
+  ${w_full};
   max-width: ${pageHomeLayoutMainContentWidth}px;
   ${breakpoint(720, overflow_x_scroll)};
 
