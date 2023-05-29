@@ -10,6 +10,7 @@ const ThresholdScope = styled.div`
 
 const Threshold = styled.div`
   position: relative;
+  top: -8px; /* progress height */
   ${(p) =>
     p.threshold
       ? css`

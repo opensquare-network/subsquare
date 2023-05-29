@@ -117,7 +117,6 @@ function VotesList({ items = [], loading }) {
         key="value"
         value={toPrecision(item.totalVotes, chainSettings.decimals)}
         symbol={symbol}
-        showTooltip={false}
       />,
       <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
         <EnterSVG />

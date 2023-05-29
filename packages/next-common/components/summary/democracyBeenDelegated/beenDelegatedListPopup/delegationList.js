@@ -20,7 +20,6 @@ import { Conviction } from "utils/referendumUtil";
 import PopupListWrapper from "../../../styled/popupListWrapper";
 import { useScreenSize } from "../../../../utils/hooks/useScreenSize";
 
-
 function DelegationList({ items, theme, loading = true }) {
   const chain = useChain();
   const node = useChainSettings();
@@ -48,9 +47,17 @@ function DelegationList({ items, theme, loading = true }) {
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: colWidths.address }}>ADDRESS</StyledTh>
-            {hasLabel && <StyledTh style={{ textAlign: "right", width: colWidths.label }}>LABEL</StyledTh>}
-            <StyledTh style={{ textAlign: "right", width: colWidths.support }}>SUPPORT</StyledTh>
+            <StyledTh style={{ textAlign: "left", width: colWidths.address }}>
+              ADDRESS
+            </StyledTh>
+            {hasLabel && (
+              <StyledTh style={{ textAlign: "right", width: colWidths.label }}>
+                LABEL
+              </StyledTh>
+            )}
+            <StyledTh style={{ textAlign: "right", width: colWidths.support }}>
+              SUPPORT
+            </StyledTh>
           </StyledTr>
           <RowSplitter
             backgroundColor={
@@ -64,27 +71,32 @@ function DelegationList({ items, theme, loading = true }) {
             items.map((item, index) => (
               <Fragment key={index}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: colWidths.address }}>
+                  <StyledTd
+                    style={{ textAlign: "left", width: colWidths.address }}
+                  >
                     <User
                       add={item.delegator}
                       fontSize={14}
-                      maxWidth={colWidths.address-30}
+                      maxWidth={colWidths.address - 30}
                       noTooltip={true}
                     />
                   </StyledTd>
                   {hasLabel && (
-                    <StyledTd style={{ textAlign: "right", width: colWidths.label }}>
+                    <StyledTd
+                      style={{ textAlign: "right", width: colWidths.label }}
+                    >
                       <VoteLabel
                         conviction={Conviction[item.conviction]}
                         isDelegating={item.isDelegating}
                       />
                     </StyledTd>
                   )}
-                  <StyledTd style={{ textAlign: "right", width: colWidths.support }}>
+                  <StyledTd
+                    style={{ textAlign: "right", width: colWidths.support }}
+                  >
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
                       symbol={symbol}
-                      showTooltip={false}
                     />
                   </StyledTd>
                 </StyledTr>

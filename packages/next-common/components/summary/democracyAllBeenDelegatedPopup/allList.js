@@ -55,7 +55,9 @@ export default function AllBeenDelegatedPopupAllList({
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: colWidths.track }}>TRACK</StyledTh>
+            <StyledTh style={{ textAlign: "left", width: colWidths.track }}>
+              TRACK
+            </StyledTh>
             <StyledTh style={{ textAlign: "right", width: colWidths.support }}>
               SUPPORT
             </StyledTh>
@@ -74,20 +76,23 @@ export default function AllBeenDelegatedPopupAllList({
             beenDelegatedList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: colWidths.track }}>
+                  <StyledTd
+                    style={{ textAlign: "left", width: colWidths.track }}
+                  >
                     <TrackItem
                       track={item.track}
                       onClick={() => onTrackClick(item.track.id)}
                     />
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "right", width: colWidths.support }}>
+                  <StyledTd
+                    style={{ textAlign: "right", width: colWidths.support }}
+                  >
                     <ValueDisplay
                       value={toPrecision(
                         sumBy(item.beenDelegated, "balance"),
                         decimals,
                       )}
                       symbol={symbol}
-                      showTooltip={false}
                     />
                   </StyledTd>
                 </StyledTr>
