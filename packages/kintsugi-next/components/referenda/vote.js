@@ -177,7 +177,7 @@ function Vote({
   const node = useChainSettings(chain);
   const decimals = node.decimals;
 
-  const isPassing = calcPassing(referendumStatus, tally.electorate);
+  const isPassing = calcPassing(referendumStatus, electorate);
 
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(tally?.nays ?? 0, decimals);
