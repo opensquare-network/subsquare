@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { getTallyVoteBarPercent } from "utils/referendumUtil";
+import { getTallyVotesBarPercent } from "utils/referendumUtil";
 
 const BarWrapper = styled.div`
   position: relative;
@@ -38,7 +38,7 @@ const NaysBar = styled.div`
  * @description VoteBar, Bar progress
  */
 export default function VoteBarBarProgress({ tally, thin, children }) {
-  const { ayesPercent, naysPercent } = getTallyVoteBarPercent(tally);
+  const { ayesPercent, naysPercent } = getTallyVotesBarPercent(tally);
   let gap = 2;
   if (ayesPercent === 100 || naysPercent === 100) {
     gap = 0;
