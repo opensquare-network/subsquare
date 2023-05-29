@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function useAchainableData(id) {
   const [data, setData] = useState();
   useEffect(() => {
-    nextApi.fetch(`users/${id}/achainable-profile`).then(({ result }) => {
+    nextApi.fetch(`users/${id}/achainable-labels`).then(({ result }) => {
       setData(result);
     });
   }, [id]);
