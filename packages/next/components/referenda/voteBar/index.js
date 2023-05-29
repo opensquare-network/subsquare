@@ -7,7 +7,7 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import Threshold from "../threshold";
+import Threshold from "./threshold";
 import isNil from "lodash.isnil";
 import { p_12_medium } from "next-common/styles/componentCss";
 
