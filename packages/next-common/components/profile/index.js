@@ -22,6 +22,7 @@ import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import VStack from "../styled/vStack";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import AchainableProfile from "./achainableProfile";
+import Chains from "next-common/utils/consts/chains";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -220,6 +221,8 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   );
   const router = useRouter();
 
+  const showAchainableLabels = chain === Chains.kusama;
+
   const overview = {
     ...summary,
     collectives: {
@@ -293,7 +296,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
             <DisplayUser id={id} />
             <DisplayUserAddress address={address} />
           </Flex>
-          <AchainableProfile id={id} />
+          {showAchainableLabels && <AchainableProfile id={id} />}
         </BioWrapper>
         <CategoryWrapper>
           <VStack space={16}>
