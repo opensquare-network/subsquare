@@ -34,7 +34,7 @@ export default function ThemeModeProvider({ children, defaultThemeMode }) {
 
 export function useThemeMode() {
   const { themeMode } = useContext(ThemeModeContext);
-  return themeMode;
+  return themeMode || "light";
 }
 
 export function useThemeSetting() {
