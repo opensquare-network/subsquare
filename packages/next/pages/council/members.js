@@ -15,12 +15,14 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const { hasElections } = useChainSettings();
-  const electionsInfo = useCall(api?.derive?.elections?.info, []);
-  const allVotes = useCall(api?.derive?.council?.votes, []);
+  const [electionsInfo, loadingElectionsInfo] = useCall(api?.derive?.elections?.info, []);
+  const [allVotes, loadingAllVotes] = useCall(api?.derive?.council?.votes, []);
   const prime = usePrime({ type: detailPageCategory.COUNCIL_MOTION });
 
   useEffect(() => {
-    if (electionsInfo) {
+    setLoading(loadingElectionsInfo || loadingAllVotes);
+
+    if (!loadingElectionsInfo && !loadingAllVotes) {
       const votesMap = {};
       (allVotes || []).forEach((item) => {
         const votes = item[1].votes.toJSON();
@@ -29,7 +31,7 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
         }
       });
 
-      const data = (electionsInfo.members || []).map((item) => {
+      const data = (electionsInfo?.members || []).map((item) => {
         const address = item[0]?.toJSON();
         return {
           address,
@@ -38,9 +40,9 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
         };
       });
       setData(data);
-      setLoading(false);
     }
-  }, [electionsInfo, allVotes]);
+  }, [electionsInfo, loadingElectionsInfo, allVotes, loadingAllVotes]);
+
   const category = "Council Members";
   const seoInfo = { title: category, desc: category };
 
