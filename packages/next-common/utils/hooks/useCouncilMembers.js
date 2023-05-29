@@ -5,7 +5,7 @@ import useCouncilName from "../../hooks/useCouncilName";
 export default function useCouncilMembers() {
   const api = useApi();
   const councilName = useCouncilName();
-  const councilMembers = useCall(
+  const [councilMembers] = useCall(
     (api?.query[councilName])?.members,
     [],
   );

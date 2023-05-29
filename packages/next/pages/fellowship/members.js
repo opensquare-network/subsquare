@@ -11,7 +11,7 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
-  const members = useCall(
+  const [members] = useCall(
     api?.query?.fellowshipCollective?.members.entries,
     []
   );
