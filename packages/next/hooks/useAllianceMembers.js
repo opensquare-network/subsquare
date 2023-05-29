@@ -6,7 +6,7 @@ export function useAllianceMembers() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const api = useApi();
-  const members = useCall(api?.query?.alliance?.members.entries, []);
+  const [members] = useCall(api?.query?.alliance?.members.entries, []);
   useEffect(() => {
     if (!members) {
       setIsLoading(false);

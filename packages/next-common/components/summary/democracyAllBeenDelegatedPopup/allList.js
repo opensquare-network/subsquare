@@ -46,7 +46,7 @@ export default function AllBeenDelegatedPopupAllList({
   const theme = useTheme();
 
   const colWidths = {
-    track: "100%",
+    track: 296,
     support: 128,
   };
 

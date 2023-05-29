@@ -30,7 +30,7 @@ function DelegationList({ items, theme, loading = true }) {
   const { sm } = useScreenSize();
   const colWidths = useMemo(() => {
     let widths = {
-      address: "100%",
+      address: 208,
       label: 80,
       support: 128,
     };

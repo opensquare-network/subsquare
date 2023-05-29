@@ -11,7 +11,7 @@ export default withLoginUserRedux(({}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
-  const members = useCall(api?.derive.technicalCommittee.members, []);
+  const [members] = useCall(api?.derive.technicalCommittee.members, []);
   const prime = usePrime({ type: detailPageCategory.TECH_COMM_MOTION });
   useEffect(() => {
     if (members) {

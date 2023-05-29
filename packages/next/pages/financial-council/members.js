@@ -11,7 +11,7 @@ export default withLoginUserRedux(({ chain }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
-  const members = useCall(api?.query?.financialCouncil?.members, []);
+  const [members] = useCall(api?.query?.financialCouncil?.members, []);
   const prime = usePrime({ type: detailPageCategory.FINANCIAL_MOTION });
   useEffect(() => {
     if (members) {
