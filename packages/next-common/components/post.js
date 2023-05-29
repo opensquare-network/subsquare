@@ -34,6 +34,7 @@ import Link from "next/link";
 import PreparingCountdown from "./gov2/postList/preparingCountdown";
 import { getDemocracyStateArgs } from "../utils/democracy/result";
 import ReferendumElapse from "./democracy/referendum/referendumElapse";
+import PostListCardVotesSummaryBar from "./postList/votesSummaryBar";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -284,6 +285,9 @@ export default function Post({ data, href, type }) {
                 <CommentIcon />
                 {`${commentsCount}`}
               </MobileHiddenInfo>
+            )}
+            {(data.onchainData?.tally || data.onchainData?.info?.tally) && (
+              <PostListCardVotesSummaryBar data={data} />
             )}
             {businessCategory.allianceAnnouncements === type && (
               <IpfsLink cid={data.cid} />
