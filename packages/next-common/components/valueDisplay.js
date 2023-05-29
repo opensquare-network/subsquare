@@ -6,7 +6,6 @@ import { abbreviateBigNumber, getEffectiveNumbers } from "../utils/viewfuncs";
 const NotEqual = styled.div`
   ::before {
     content: "≈";
-    color: ${(props) => props.theme.textPrimary};
     margin-right: 2px;
   }
 `;
