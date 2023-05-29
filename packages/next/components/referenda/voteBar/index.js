@@ -2,7 +2,7 @@ import { memo } from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import {
-  getTallyVoteBarPercent,
+  getTallyVotesBarPercent,
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
@@ -44,7 +44,7 @@ const ContentNayGroup = styled(ContentGroup)`
 
 function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
   const turnout = tally?.turnout ?? 0;
-  const { ayesPercent, naysPercent } = getTallyVoteBarPercent(tally);
+  const { ayesPercent, naysPercent } = getTallyVotesBarPercent(tally);
 
   const percentageStr = `${(percentage * 100).toFixed(1)}%`;
 
