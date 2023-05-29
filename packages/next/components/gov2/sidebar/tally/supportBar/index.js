@@ -124,9 +124,9 @@ export default function SupportBar({ supportPerbill }) {
           }
         >
           <Progress percentage={barPercentage} bg={grey100Bg} />
+          <Mark threshold={markPercentage} />
         </Tooltip>
       </ProgressBarWrapper>
-      <Mark threshold={markPercentage} />
       <ul>
         <li>0.0%</li>
         <li>
