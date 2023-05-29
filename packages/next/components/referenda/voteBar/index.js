@@ -7,7 +7,7 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import Threshold from "./threshold";
+import Threshold from "../threshold";
 import isNil from "lodash.isnil";
 import { p_12_medium } from "next-common/styles/componentCss";
 
@@ -107,7 +107,7 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
               thin={thin}
               threshold={getThresholdOfSuperMajorityApprove(
                 turnout,
-                electorate
+                electorate,
               )}
             />
           )}
@@ -117,7 +117,7 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
               thin={thin}
               threshold={getThresholdOfSuperMajorityAgainst(
                 turnout,
-                electorate
+                electorate,
               )}
             />
           )}
