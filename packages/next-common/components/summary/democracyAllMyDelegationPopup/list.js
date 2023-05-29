@@ -119,7 +119,7 @@ export default function AllMyDelegationPopupList({
                     <User
                       add={item.delegation.target}
                       fontSize={14}
-                      maxWidth={colWidths.delegatingTo}
+                      maxWidth={colWidths.delegatingTo - 50}
                       noTooltip
                     />
                   </StyledTd>

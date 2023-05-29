@@ -2,10 +2,13 @@ import useDemocracyTally from "./tally";
 import BigNumber from "bignumber.js";
 import useDemocracyThreshold from "./threshold";
 import compareRationals from "../../../../utils/democracy/rational";
+import { useSelector } from "react-redux";
+import { electorateSelector } from "../../../../store/reducers/referendumSlice";
 
 export default function useIsDemocracyPassing() {
   const tally = useDemocracyTally();
   const threshold = useDemocracyThreshold();
+  const electorate = useSelector(electorateSelector);
 
   const ayes = new BigNumber(tally.ayes);
   const nays = new BigNumber(tally.nays);
@@ -16,7 +19,7 @@ export default function useIsDemocracyPassing() {
 
   const turnout = new BigNumber(tally.turnout);
   const sqrtTurnout = turnout.sqrt();
-  const sqrtElectorate = new BigNumber(tally.electorate).sqrt();
+  const sqrtElectorate = new BigNumber(electorate).sqrt();
 
   if (sqrtTurnout.isZero()) {
     return false;

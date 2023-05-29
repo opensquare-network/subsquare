@@ -21,6 +21,8 @@ import { useChain } from "../../context/chain";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import VStack from "../styled/vStack";
 import { isEthereumAddress } from "@polkadot/util-crypto";
+import AchainableProfile from "./achainableProfile";
+import Chains from "next-common/utils/consts/chains";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -40,9 +42,11 @@ const Wrapper = styled.div`
 `;
 
 const BioWrapper = styled(SecondaryCard)`
-  padding: 48px;
+  padding: 24px;
   margin-top: 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
 `;
 
@@ -119,6 +123,8 @@ const Username = styled.span`
 `;
 
 const AddressWrapper = styled(Flex)`
+  flex-direction: column;
+  align-items: center;
   gap: 8px;
   margin-top: 4px;
   flex-basis: 100%;
@@ -215,6 +221,8 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   );
   const router = useRouter();
 
+  const showAchainableLabels = chain === Chains.kusama;
+
   const overview = {
     ...summary,
     collectives: {
@@ -284,10 +292,11 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
       <Wrapper>
         <BioWrapper>
           <DisplayUserAvatar address={address} user={user} />
-          <Flex style={{ marginTop: 0, flexWrap: "wrap" }}>
+          <Flex style={{ flexDirection: "column", alignItems: "center",  marginTop: 0, flexWrap: "wrap" }}>
             <DisplayUser id={id} />
             <DisplayUserAddress address={address} />
           </Flex>
+          {showAchainableLabels && <AchainableProfile id={id} />}
         </BioWrapper>
         <CategoryWrapper>
           <VStack space={16}>

@@ -7,6 +7,7 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  electorateSelector,
   fetchReferendumStatus,
   isLoadingElectorateSelector,
   isLoadingReferendumStatusSelector,
@@ -118,6 +119,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   const isPassed = useIsDemocracyPassed();
 
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
+  const electorate = useSelector(electorateSelector);
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const isLoadingReferendumStatus = useSelector(
@@ -155,7 +157,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
 
         <VoteBar
           tally={tally}
-          electorate={tally.electorate}
+          electorate={electorate}
           threshold={threshold}
         />
 

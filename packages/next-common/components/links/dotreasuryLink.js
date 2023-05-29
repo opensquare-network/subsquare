@@ -1,13 +1,16 @@
 import React from "react";
 import { DotreasuryLinkWrapper } from "./thirdPartyLink";
 import LinkDotreasuryIcon from "../../assets/imgs/icons/link-dotreasury.svg";
+import LinkDotreasuryDarkIcon from "../../assets/imgs/icons/link-dotreasury-dark.svg";
 import LinkDotreasuryIconActive from "../../assets/imgs/icons/link-dotreasury-active.svg";
 import { useChain } from "../../context/chain";
 import getChainSettings from "next-common/utils/consts/settings";
+import { useThemeMode } from "next-common/context/theme";
 
 function DotreasuryAccountLink({ address }) {
   const dotreasuryChains = ["kusama", "polkadot"];
   const chain = useChain();
+  const themeMode = useThemeMode();
 
   if (!address || !dotreasuryChains.includes(chain)) {
     return null;
@@ -21,7 +24,7 @@ function DotreasuryAccountLink({ address }) {
       target="_blank"
       rel="noreferrer"
     >
-      <LinkDotreasuryIcon />
+      {themeMode === "light" ? <LinkDotreasuryIcon /> : <LinkDotreasuryDarkIcon />}
       <LinkDotreasuryIconActive />
     </DotreasuryLinkWrapper>
   );

@@ -1,11 +1,5 @@
 import BigNumber from "bignumber.js";
-import compareRationals from "next-common/utils/democracy/rational";
-import {
-  isAye,
-  Conviction,
-  getConviction,
-  convictionToLockX,
-} from "next-common/utils/referendumCommon";
+import { Conviction, convictionToLockX, getConviction, isAye } from "next-common/utils/referendumCommon";
 
 export { isAye, Conviction, getConviction, convictionToLockX };
 
@@ -41,36 +35,6 @@ export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
   const threshold = bnAyes.div(bnAyes.plus(ONE)).times(100).toFixed(0);
 
   return `${threshold}%`;
-}
-
-export function calcPassing(referendumInfo, totalIssuance) {
-  if (!referendumInfo) {
-    return false;
-  }
-
-  const ayes = new BigNumber(referendumInfo.tally.ayes);
-  const nays = new BigNumber(referendumInfo.tally.nays);
-  const threshold = referendumInfo.threshold;
-
-  if (threshold.toLowerCase() === "simplemajority") {
-    return ayes.gt(nays);
-  }
-
-  const turnout = new BigNumber(referendumInfo.tally.turnout);
-  const sqrtTurnout = turnout.sqrt();
-  const sqrtElectorate = new BigNumber(totalIssuance).sqrt();
-
-  if (sqrtTurnout.isZero()) {
-    return false;
-  }
-
-  if (threshold.toLowerCase() === "supermajorityapprove") {
-    return compareRationals(nays, sqrtTurnout, ayes, sqrtElectorate);
-  } else if (threshold.toLowerCase() === "supermajorityagainst") {
-    return compareRationals(nays, sqrtElectorate, ayes, sqrtTurnout);
-  }
-
-  return false;
 }
 
 export async function getAddressVotingBalance(api, address) {
