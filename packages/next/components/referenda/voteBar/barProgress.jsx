@@ -5,6 +5,7 @@ import { getTallyVoteBarPercent } from "utils/referendumUtil";
 const BarWrapper = styled.div`
   position: relative;
   padding: 8px 0;
+  width: 100%;
 `;
 
 const BarContainer = styled.div`
