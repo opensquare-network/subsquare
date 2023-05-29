@@ -34,6 +34,9 @@ const council = {
           <MembersIcon />
         </MenuIconWrapper>
       ),
+      excludeToChains: [
+        Chains.kusama,
+      ],
     },
   ],
 };

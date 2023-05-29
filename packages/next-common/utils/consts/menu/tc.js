@@ -34,6 +34,9 @@ const techComm = {
           <MembersIcon />
         </MenuIconWrapper>
       ),
+      excludeToChains: [
+        Chains.kusama,
+      ],
     },
   ],
 };
