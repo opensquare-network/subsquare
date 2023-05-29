@@ -7,7 +7,7 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import Threshold from "../threshold";
+import Threshold from "./threshold";
 import isNil from "lodash.isnil";
 import { p_12_medium } from "next-common/styles/componentCss";
 
@@ -72,7 +72,14 @@ const NaysBar = styled.div`
   height: 100%;
 `;
 
-function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
+function VoteBar({
+  tally,
+  electorate,
+  threshold,
+  percentage,
+  thin = false,
+  showInfo = true,
+}) {
   const ayes = tally?.ayes ?? 0;
   const nays = tally?.nays ?? 0;
   const turnout = tally?.turnout ?? 0;
@@ -107,7 +114,7 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
               thin={thin}
               threshold={getThresholdOfSuperMajorityApprove(
                 turnout,
-                electorate
+                electorate,
               )}
             />
           )}
@@ -117,7 +124,7 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
               thin={thin}
               threshold={getThresholdOfSuperMajorityAgainst(
                 turnout,
-                electorate
+                electorate,
               )}
             />
           )}
@@ -128,38 +135,40 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
         </BarContainer>
       </BarWrapper>
 
-      <ContentVoteBarInfoGroup>
-        <Flex>
-          <ContentAyeGroup>
-            <ContentPercentage>{ayesPercent}%</ContentPercentage>
-            <ContentDescription>Aye</ContentDescription>
-          </ContentAyeGroup>
+      {showInfo && (
+        <ContentVoteBarInfoGroup>
+          <Flex>
+            <ContentAyeGroup>
+              <ContentPercentage>{ayesPercent}%</ContentPercentage>
+              <ContentDescription>Aye</ContentDescription>
+            </ContentAyeGroup>
 
-          <ContentThresholdGroup>
-            <ContentPercentage>
-              {threshold === "percentage" && !isNil(percentage) && (
-                <span>{percentageStr}</span>
-              )}
-              {threshold && threshold !== "percentage" && (
-                <span>Passing threshold</span>
-              )}
-            </ContentPercentage>
-            <ContentDescription>
-              {threshold === "percentage" && !isNil(percentage) && (
-                <span>Threshold</span>
-              )}
-              {threshold && threshold !== "percentage" && (
-                <span>{threshold}</span>
-              )}
-            </ContentDescription>
-          </ContentThresholdGroup>
+            <ContentThresholdGroup>
+              <ContentPercentage>
+                {threshold === "percentage" && !isNil(percentage) && (
+                  <span>{percentageStr}</span>
+                )}
+                {threshold && threshold !== "percentage" && (
+                  <span>Passing threshold</span>
+                )}
+              </ContentPercentage>
+              <ContentDescription>
+                {threshold === "percentage" && !isNil(percentage) && (
+                  <span>Threshold</span>
+                )}
+                {threshold && threshold !== "percentage" && (
+                  <span>{threshold}</span>
+                )}
+              </ContentDescription>
+            </ContentThresholdGroup>
 
-          <ContentNayGroup>
-            <ContentPercentage>{naysPercent}%</ContentPercentage>
-            <ContentDescription>Nay</ContentDescription>
-          </ContentNayGroup>
-        </Flex>
-      </ContentVoteBarInfoGroup>
+            <ContentNayGroup>
+              <ContentPercentage>{naysPercent}%</ContentPercentage>
+              <ContentDescription>Nay</ContentDescription>
+            </ContentNayGroup>
+          </Flex>
+        </ContentVoteBarInfoGroup>
+      )}
     </Wrapper>
   );
 }
