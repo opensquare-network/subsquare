@@ -8,7 +8,7 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment } from "react";
 import Loading from "next-common/components/loading";
 import startCase from "lodash.startcase";
 import User from "next-common/components/user";
@@ -19,7 +19,6 @@ import { p_12_normal } from "../../../styles/componentCss";
 import { useChainSettings } from "../../../context/chain";
 import { convictionToLockX, Conviction } from "../../../utils/referendumCommon";
 import TooltipOrigin from "../../tooltip";
-import { useScreenSize } from "../../../utils/hooks/useScreenSize";
 import { w_full } from "../../../styles/tailwindcss";
 
 const ConvictionText = styled.div`
@@ -43,35 +42,45 @@ export default function AllMyDelegationPopupList({
 }) {
   const { symbol, decimals } = useChainSettings();
   const theme = useTheme();
-  const { sm } = useScreenSize();
 
-  const colWidths = useMemo(() => {
-    let widths = {
-      track: 144,
-      delegatingTo: 144,
-    };
-
-    if (sm) {
-      widths = {
-        track: "100%",
-        delegatingTo: 124,
-      };
-    }
-
-
-    return widths;
-  }, [sm]);
+  const colWidths = {
+    track: 144,
+    delegatingTo: 144,
+    info: 128,
+  };
 
   return (
     <PopupListWrapper>
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: colWidths.track }}>TRACK</StyledTh>
-            <StyledTh style={{ textAlign: "left", width: colWidths.delegatingTo }}>
+            <StyledTh
+              style={{
+                textAlign: "left",
+                width: colWidths.track,
+                minWidth: colWidths.track,
+              }}
+            >
+              TRACK
+            </StyledTh>
+            <StyledTh
+              style={{
+                textAlign: "left",
+                width: colWidths.delegatingTo,
+                minWidth: colWidths.delegatingTo,
+              }}
+            >
               DELEGATING TO
             </StyledTh>
-            <StyledTh style={{ textAlign: "right", width: "100%" }}>INFO</StyledTh>
+            <StyledTh
+              style={{
+                textAlign: "right",
+                width: colWidths.info,
+                minWidth: colWidths.info,
+              }}
+            >
+              INFO
+            </StyledTh>
           </StyledTr>
 
           <RowSplitter
@@ -87,14 +96,26 @@ export default function AllMyDelegationPopupList({
             myDelegationList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: colWidths.track }}>
+                  <StyledTd
+                    style={{
+                      textAlign: "left",
+                      width: colWidths.track,
+                      minWidth: colWidths.track,
+                    }}
+                  >
                     <Tooltip content={startCase(item.track.name)}>
                       <TrackName style={{ maxWidth: colWidths.track }}>
                         {startCase(item.track.name)}
                       </TrackName>
                     </Tooltip>
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "left", width: colWidths.delegatingTo }}>
+                  <StyledTd
+                    style={{
+                      textAlign: "left",
+                      width: colWidths.delegatingTo,
+                      minWidth: colWidths.delegatingTo,
+                    }}
+                  >
                     <User
                       add={item.delegation.target}
                       fontSize={14}
@@ -102,7 +123,13 @@ export default function AllMyDelegationPopupList({
                       noTooltip
                     />
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "right", width: "100%" }}>
+                  <StyledTd
+                    style={{
+                      textAlign: "right",
+                      width: colWidths.info,
+                      minWidth: colWidths.info,
+                    }}
+                  >
                     <VStack space={2}>
                       <ValueDisplay
                         value={toPrecision(item.delegation.balance, decimals)}
