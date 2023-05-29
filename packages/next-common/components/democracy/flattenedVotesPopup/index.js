@@ -111,7 +111,6 @@ function VotesList({ loading, items = [] }) {
         key="value"
         value={toPrecision(item.totalVotes, chainSettings.decimals)}
         symbol={symbol}
-        showTooltip={false}
       />,
     ];
 

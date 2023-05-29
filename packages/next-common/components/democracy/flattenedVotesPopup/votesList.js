@@ -73,7 +73,6 @@ function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
                     <ValueDisplay
                       value={toPrecision(item.balance, node.decimals)}
                       symbol={symbol}
-                      showTooltip={false}
                     />
                   </StyledTd>
                 </StyledTr>

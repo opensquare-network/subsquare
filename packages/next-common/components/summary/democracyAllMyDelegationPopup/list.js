@@ -58,7 +58,6 @@ export default function AllMyDelegationPopupList({
       };
     }
 
-
     return widths;
   }, [sm]);
 
@@ -67,11 +66,17 @@ export default function AllMyDelegationPopupList({
       <StyledTable>
         <thead>
           <StyledTr>
-            <StyledTh style={{ textAlign: "left", width: colWidths.track }}>TRACK</StyledTh>
-            <StyledTh style={{ textAlign: "left", width: colWidths.delegatingTo }}>
+            <StyledTh style={{ textAlign: "left", width: colWidths.track }}>
+              TRACK
+            </StyledTh>
+            <StyledTh
+              style={{ textAlign: "left", width: colWidths.delegatingTo }}
+            >
               DELEGATING TO
             </StyledTh>
-            <StyledTh style={{ textAlign: "right", width: "100%" }}>INFO</StyledTh>
+            <StyledTh style={{ textAlign: "right", width: "100%" }}>
+              INFO
+            </StyledTh>
           </StyledTr>
 
           <RowSplitter
@@ -87,14 +92,18 @@ export default function AllMyDelegationPopupList({
             myDelegationList.map((item, index) => (
               <Fragment key={item.track.id}>
                 <StyledTr>
-                  <StyledTd style={{ textAlign: "left", width: colWidths.track }}>
+                  <StyledTd
+                    style={{ textAlign: "left", width: colWidths.track }}
+                  >
                     <Tooltip content={startCase(item.track.name)}>
                       <TrackName style={{ maxWidth: colWidths.track }}>
                         {startCase(item.track.name)}
                       </TrackName>
                     </Tooltip>
                   </StyledTd>
-                  <StyledTd style={{ textAlign: "left", width: colWidths.delegatingTo }}>
+                  <StyledTd
+                    style={{ textAlign: "left", width: colWidths.delegatingTo }}
+                  >
                     <User
                       add={item.delegation.target}
                       fontSize={14}
@@ -107,7 +116,6 @@ export default function AllMyDelegationPopupList({
                       <ValueDisplay
                         value={toPrecision(item.delegation.balance, decimals)}
                         symbol={symbol}
-                        showTooltip={false}
                       />
                       <ConvictionText>
                         {convictionToLockX(
