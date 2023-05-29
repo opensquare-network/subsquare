@@ -76,15 +76,9 @@ function AchainableLebels({ labels }) {
 
         let tooltip = "";
         if (normalizedName === "Dolphin") {
-          tooltip = (
-            <span>
-              {"total balance is < 0.1% of the total issuance"}
-              <br/>
-              {"and >= 0.01% of the total issuance."}
-            </span>
-          );
+          tooltip = "Total balance is between 0.01% and 0.1% of total issuance";
         } else if (normalizedName === "Whale") {
-          tooltip = "total balance is >= 0.1% of the total issuance.";
+          tooltip = "Total balance is >= 0.1% of the total issuance.";
         }
 
         return (
