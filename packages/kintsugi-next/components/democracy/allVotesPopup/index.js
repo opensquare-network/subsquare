@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import VotesTab, { tabs } from "./tab";
+"use client";
+
+import VotesTab, {
+  tabs,
+} from "next-common/components/democracy/flattenedVotesPopup/tab";
 import Pagination from "next-common/components/pagination";
-import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
+import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
 import User from "next-common/components/user";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
-import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import Annotation from "./annotation";
+import { toPrecision } from "next-common/utils";
+import React, { useMemo, useState } from "react";
 
-export default function VotesPopup({
-  setShowVoteList,
+export default function CheckAllVotesPopup({
+  setShowVoteList = () => {},
   allAye,
   allNay,
   isLoadingVotes,
@@ -51,65 +53,53 @@ export default function VotesPopup({
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
+  const items = useMemo(() => {
+    return votes.slice(sliceFrom, sliceTo);
+  }, [votes, sliceFrom, sliceTo]);
+
   return (
-    <BaseVotesPopup
-      title="Flattened Votes"
-      onClose={() => setShowVoteList(false)}
-    >
+    <Popup title="All Votes" onClose={() => setShowVoteList(false)}>
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
         ayesCount={allAye?.length || 0}
         naysCount={allNay?.length || 0}
       />
-      <VotesList
-        items={votes.slice(sliceFrom, sliceTo)}
-        loading={isLoadingVotes}
-      />
+
+      <VotesList items={items} loading={isLoadingVotes} />
 
       <Pagination {...pagination} />
-    </BaseVotesPopup>
+    </Popup>
   );
 }
 
-function VotesList({ loading, items = [] }) {
+function VotesList({ items = [], loading }) {
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const columns = [
     {
       name: "VOTERS",
-      style: { minWidth: 276, textAlign: "left" },
-    },
-    {
-      name: "CAPITAL",
-      style: { minWidth: 188, textAlign: "right" },
+      style: { width: 176, textAlign: "left" },
     },
     {
       name: "VOTES",
-      style: { minWidth: 128, textAlign: "right" },
+      style: { width: 168, textAlign: "right" },
     },
   ];
 
-  const rows = items?.map((item) => {
-    const capital = item.balance;
-
+  const rows = items?.map?.((item) => {
     const row = [
       <User
         key="user"
         add={item.account}
         fontSize={14}
         noTooltip
-        maxWidth={226}
-      />,
-      <CapitalTableItem
-        key="capital"
-        item={item}
-        capital={toPrecision(capital, chainSettings.decimals)}
+        maxWidth={126}
       />,
       <ValueDisplay
         key="value"
-        value={toPrecision(item.totalVotes, chainSettings.decimals)}
+        value={toPrecision(item.balance, chainSettings.decimals)}
         symbol={symbol}
         showTooltip={false}
       />,
@@ -119,17 +109,8 @@ function VotesList({ loading, items = [] }) {
   });
 
   return (
-    <>
-      <PopupListWrapper>
-        <StyledList
-          items={items}
-          columns={columns}
-          rows={rows}
-          loading={loading}
-        />
-      </PopupListWrapper>
-
-      {!loading && <Annotation />}
-    </>
+    <PopupListWrapper>
+      <StyledList rows={rows} columns={columns} loading={loading} />
+    </PopupListWrapper>
   );
 }

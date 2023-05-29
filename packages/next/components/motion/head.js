@@ -88,7 +88,7 @@ export default function MotionHead({ motion, type }) {
         <DividerWrapper>
           <User user={motion?.author} add={motion.proposer} fontSize={12} />
           <MotionTag motion={motion.onchainData} />
-          <UpdatedTime post={motion} />
+          <UpdatedTime />
           {!noCommentsCount && commentsCount > -1 && (
             <Info>{`${commentsCount} Comments`}</Info>
           )}

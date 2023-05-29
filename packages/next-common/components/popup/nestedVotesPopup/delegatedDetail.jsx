@@ -215,7 +215,7 @@ function DetailDelegatorList({ items = [] }) {
   const columns = [
     {
       name: "DELEGATOR",
-      style: { minWidth: 376, textAlign: "left" },
+      style: { minWidth: 296, textAlign: "left" },
     },
     {
       name: "CAPITAL",
@@ -236,7 +236,7 @@ function DetailDelegatorList({ items = [] }) {
         add={item.account}
         fontSize={14}
         noTooltip
-        maxWidth={326}
+        maxWidth={246}
       />,
       <CapitalTableItem
         key="capital"

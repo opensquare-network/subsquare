@@ -2,15 +2,14 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import DemocracySummary from "next-common/components/summary/democracySummary";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
-import DemocracySummaryFooter from "next-common/components/summary/democracySummaryFooter";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import MaybeNoDemocracySummary from "next-common/components/maybeNoDemocracySummary";
 
 export default withLoginUserRedux(
-  ({ proposals, chain, tracks, fellowshipTracks }) => {
+  ({ proposals, chain, tracks, fellowshipTracks, summary }) => {
     const items = (proposals.items || []).map((item) =>
       normalizeProposalListItem(chain, item)
     );
@@ -31,7 +30,7 @@ export default withLoginUserRedux(
             pageSize: proposals.pageSize,
             total: proposals.total,
           }}
-          summary={<DemocracySummary footer={<DemocracySummaryFooter />} />}
+          summary={<MaybeNoDemocracySummary summary={summary} />}
         />
       </HomeLayout>
     );
@@ -43,11 +42,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const [{ result: proposals }] = await Promise.all([
+  const [{ result: proposals }, { result: summary }] = await Promise.all([
     nextApi.fetch("democracy/proposals", {
       page: page ?? 1,
       pageSize: pageSize ?? defaultPageSize,
     }),
+    nextApi.fetch("summary"),
   ]);
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
@@ -61,6 +61,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       proposals: proposals ?? EmptyList,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
+      summary: summary ?? {},
     },
   };
 });
