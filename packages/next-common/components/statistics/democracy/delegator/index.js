@@ -12,17 +12,9 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
 const Wrapper = styled.div``;
-
-const ListWrapper = styled.div`
-  display: flex;
-  @media screen and (max-width: 768px) {
-    overflow-x: auto;
-    ${pretty_scroll_bar};
-  }
-`;
 
 const ConvictionText = styled.span`
   width: 40px;
@@ -131,9 +123,9 @@ export default function Delegator({ delegators, apiRoot = "democracy" }) {
   return (
     <Wrapper>
       <div id="header"></div>
-      <ListWrapper>
+      <PopupListWrapper>
         <StyledList columns={columns} rows={rows} />
-      </ListWrapper>
+      </PopupListWrapper>
       <Pagination
         {...delegatorsList}
         onPageChange={(e, page) => {
