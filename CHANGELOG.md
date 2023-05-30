@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# 3.1.4
+date: 05/30/2023
+- Refactor detail container components.
+- Improve and fix tooltip components, previously some tooltips were hidden by other containers.
+- Add [achainable](https://www.achainable.com/) labels support for kusama.
+- Fix mismatch between `useThemeMode` and `useThemeSetting`.
+- Show tally bar on OpenGov and democracy referenda.
+
 # 3.1.3
 date: 05/26/2023
 - Add nested votes view for democracy and OpenGov referenda.
