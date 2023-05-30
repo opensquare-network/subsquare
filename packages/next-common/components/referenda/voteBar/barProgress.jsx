@@ -37,7 +37,7 @@ const NaysBar = styled.div`
 /**
  * @description VoteBar, Bar progress
  */
-export default function VoteBarBarProgress({ tally, thin, children, gap }) {
+export default function VoteBarBarProgress({ tally, thin, children, gap = 2 }) {
   const { ayesPercent, naysPercent } = getTallyVotesBarPercent(tally);
 
   return (
