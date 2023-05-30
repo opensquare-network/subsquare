@@ -53,7 +53,7 @@ const Wrapper = styled.div`
 `;
 
 const Mark = styled(ThresholdComponent)`
-  top: -0;
+  top: 0;
 `;
 
 const Tooltip = styled(TooltipOrigin)`
@@ -112,6 +112,7 @@ export default function SupportBar({ supportPerbill }) {
 
   return (
     <Wrapper>
+      <Mark threshold={markPercentage} />
       <ProgressBarWrapper>
         <Tooltip
           content={
@@ -124,7 +125,6 @@ export default function SupportBar({ supportPerbill }) {
           }
         >
           <Progress percentage={barPercentage} bg={grey100Bg} />
-          <Mark threshold={markPercentage} />
         </Tooltip>
       </ProgressBarWrapper>
       <ul>

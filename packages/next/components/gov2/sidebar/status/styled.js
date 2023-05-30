@@ -8,7 +8,7 @@ export const ProgressGroup = styled.div`
 `;
 
 export const ProgressBarWrapper = styled.div`
-  padding: 8px 0;
+  margin: 8px 0;
 `;
 
 export const Tooltip = styled(TooltipOrigin)`
