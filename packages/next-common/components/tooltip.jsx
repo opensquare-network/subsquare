@@ -30,16 +30,20 @@ const TooltipArrow = styled(RadixTooltip.Arrow)`
   fill: rgba(0, 0, 0, 0.65);
 `;
 
+const ChildrenWrapper = styled.div`
+  display: inline-block;
+`;
+
 export default function Tooltip({ content, children, label, className }) {
   const tooltipTrigger = children ? (
-    <div className={className}>{children}</div>
+    <ChildrenWrapper className={className}>{children}</ChildrenWrapper>
   ) : (
     <LabelWrapper>{label ? label : <QuestionIcon />}</LabelWrapper>
   );
 
   const tooltipContent = content && (
     <RadixTooltip.Portal>
-      <TooltipContent sideOffset={5}>
+      <TooltipContent sideOffset={2}>
         {content}
         <TooltipArrow />
       </TooltipContent>
