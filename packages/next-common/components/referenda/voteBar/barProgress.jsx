@@ -49,6 +49,10 @@ export default function VoteBarBarProgress({ tally, thin, children, gap = 2 }) {
   }
   naysBarPercent = 100 - ayesBarPercent;
 
+  if (ayesPercent === 0 || ayesPercent === 100) {
+    gap = 0;
+  }
+
   return (
     <BarWrapper>
       <BarContainer thin={thin} gap={gap}>
