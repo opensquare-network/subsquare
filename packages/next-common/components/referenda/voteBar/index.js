@@ -2,7 +2,6 @@ import { memo } from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import {
-  getTallyVotesBarPercent,
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
@@ -11,6 +10,7 @@ import Threshold from "../threshold";
 import isNil from "lodash.isnil";
 import { p_12_medium } from "next-common/styles/componentCss";
 import VoteBarBarProgress from "./barProgress";
+import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
 
 const Wrapper = styled.div``;
 

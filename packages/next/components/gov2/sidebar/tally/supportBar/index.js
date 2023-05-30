@@ -2,7 +2,7 @@ import styled, { useTheme } from "styled-components";
 import Progress from "next-common/components/progress";
 import { useSupportThreshold } from "next-common/context/post/gov2/threshold";
 import { useEffect, useMemo, useState } from "react";
-import ThresholdComponent from "../../../../referenda/threshold";
+import ThresholdComponent from "next-common/components/referenda/threshold";
 import isNil from "lodash.isnil";
 import TooltipOrigin from "next-common/components/tooltip";
 import { p_12_medium } from "next-common/styles/componentCss";

@@ -1,5 +1,5 @@
 import React from "react";
-import VoteBarBarProgress from "components/referenda/voteBar/barProgress";
+import VoteBarBarProgress from "../referenda/voteBar/barProgress";
 import Tooltip from "../tooltip";
 import styled from "styled-components";
 import Flex from "../styled/flex";

@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { getTallyVotesBarPercent } from "utils/referendumUtil";
+import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
 
 const BarWrapper = styled.div`
   position: relative;
