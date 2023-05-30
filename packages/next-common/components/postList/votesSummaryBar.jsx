@@ -76,7 +76,7 @@ export default function PostListCardVotesSummaryBar({ data, type }) {
       }
     >
       <VotesSummaryBarWrapper>
-        <VoteBarBarProgress tally={tally} thin />
+        <VoteBarBarProgress tally={tally} thin gap={0} />
       </VotesSummaryBarWrapper>
     </StyledTooltip>
   );
