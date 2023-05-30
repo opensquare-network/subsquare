@@ -8,7 +8,7 @@ import MaxVoters from "./maxVoters";
 import SupportBar from "../../../../gov2/sidebar/tally/supportBar";
 import { useTally } from "next-common/context/post/gov2/referendum";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
-import VoteBar from "../../../../referenda/voteBar";
+import VoteBar from "next-common/components/referenda/voteBar";
 import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowshipVotes";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
