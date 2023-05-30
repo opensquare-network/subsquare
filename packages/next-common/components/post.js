@@ -287,7 +287,9 @@ export default function Post({ data, href, type }) {
               </MobileHiddenInfo>
             )}
             {(data.onchainData?.tally || data.onchainData?.info?.tally) && (
-              <PostListCardVotesSummaryBar data={data} />
+              <Flex>
+                <PostListCardVotesSummaryBar data={data} />
+              </Flex>
             )}
             {businessCategory.allianceAnnouncements === type && (
               <IpfsLink cid={data.cid} />
