@@ -250,7 +250,8 @@ export default function Post({ data, href, type }) {
               fontSize={12}
               noEvent={userNoClickEvent}
               // text max width = design width - address icon - margin - identity icon
-              maxWidth={sm && 211 - 20 - 8 - 16}
+              // FIXME: #2938
+              maxWidth={sm && 160 - 20 - 8 - 16}
             />
 
             {data.trackName && (
