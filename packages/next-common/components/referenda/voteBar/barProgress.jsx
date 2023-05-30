@@ -39,12 +39,21 @@ const NaysBar = styled.div`
  */
 export default function VoteBarBarProgress({ tally, thin, children, gap = 2 }) {
   const { ayesPercent, naysPercent } = getTallyVotesBarPercent(tally);
+  let ayesBarPercent = ayesPercent;
+  let naysBarPercent = naysPercent;
+
+  if (ayesPercent > 99 && ayesPercent < 100) {
+    ayesBarPercent = 99;
+  } else if (ayesPercent < 1 && ayesPercent > 0) {
+    ayesBarPercent = 1;
+  }
+  naysBarPercent = 100 - ayesBarPercent;
 
   return (
     <BarWrapper>
       <BarContainer thin={thin} gap={gap}>
-        <AyesBar precent={ayesPercent} />
-        <NaysBar precent={naysPercent} />
+        <AyesBar precent={ayesBarPercent} />
+        <NaysBar precent={naysBarPercent} />
 
         {children}
       </BarContainer>
