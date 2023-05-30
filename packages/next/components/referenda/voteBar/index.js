@@ -45,12 +45,16 @@ const ContentNayGroup = styled(ContentGroup)`
 function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
   const turnout = tally?.turnout ?? 0;
   const { ayesPercent, naysPercent } = getTallyVotesBarPercent(tally);
+  let gap = 2;
+  if (ayesPercent === 100 || naysPercent === 100) {
+    gap = 0;
+  }
 
   const percentageStr = `${(percentage * 100).toFixed(1)}%`;
 
   return (
     <Wrapper>
-      <VoteBarBarProgress tally={tally} thin={thin}>
+      <VoteBarBarProgress tally={tally} thin={thin} gap={gap}>
         {(threshold || "").toLowerCase() === "simplemajority" && (
           <Threshold thin={thin} threshold={getThresholdOfSimplyMajority()} />
         )}
