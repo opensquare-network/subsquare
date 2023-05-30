@@ -11,7 +11,7 @@ import { p_12_bold } from "next-common/styles/componentCss";
 import businessCategory from "next-common/utils/consts/business/category";
 
 const VotesSummaryBarWrapper = styled(Flex)`
-  width: 24px;
+  width: 25px;
 `;
 const StyledTooltip = styled(Tooltip)`
   display: flex;
