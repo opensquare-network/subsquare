@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { toPercentage } from ".";
 
 export const Conviction = {
   None: 0,
@@ -55,8 +56,10 @@ export function getTallyVotesBarPercent(tally) {
   let naysPercent = 50;
   const nTotal = new BigNumber(ayes).plus(nays);
   if (nTotal.gt(0)) {
-    ayesPercent = Math.round(new BigNumber(ayes).div(nTotal).toNumber() * 100);
-    naysPercent = 100 - ayesPercent;
+    ayesPercent = new BigNumber(ayes).div(nTotal).toNumber();
+    naysPercent = 1 - ayesPercent;
+    ayesPercent = toPercentage(ayesPercent, 1);
+    naysPercent = toPercentage(naysPercent, 1);
   }
 
   return {

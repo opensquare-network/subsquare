@@ -291,3 +291,11 @@ export function isAddressInGroup(addr, addresses = []) {
 export function isExternalLink(url = "") {
   return url.startsWith("http");
 }
+
+/**
+ * @param {number} value unit is 1
+ */
+export function toPercentage(value = 0, decimals = 0) {
+  const length = Math.pow(10, decimals);
+  return Math.round(value * 100 * length) / length;
+}
