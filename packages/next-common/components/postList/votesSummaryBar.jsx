@@ -6,7 +6,7 @@ import Flex from "../styled/flex";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "../valueDisplay";
 import { toPrecision } from "next-common/utils";
-import { getTallyVotesBarPercent } from "utils/referendumUtil";
+import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
 import { p_12_bold } from "next-common/styles/componentCss";
 
 const VotesSummaryBarWrapper = styled(Flex)`
