@@ -1,4 +1,4 @@
-import VoteBar from "components/referenda/voteBar";
+import VoteBar from "next-common/components/referenda/voteBar";
 import useMaybeFetchReferendumStatus from "./useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "./useMaybeFetchElectorate";
 import useApi from "next-common/utils/hooks/useApi";

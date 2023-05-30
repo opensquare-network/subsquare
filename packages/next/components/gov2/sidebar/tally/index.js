@@ -3,7 +3,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import styled from "styled-components";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import useFetchVoteExtrinsics from "next-common/utils/gov2/useFetchVoteExtrinsics";
-import VoteBar from "components/referenda/voteBar";
+import VoteBar from "next-common/components/referenda/voteBar";
 import Aye from "./values/aye";
 import Nay from "./values/nay";
 import Support from "./values/support";

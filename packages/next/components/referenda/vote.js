@@ -15,7 +15,7 @@ import {
   votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
-import VoteBar from "./voteBar";
+import VoteBar from "next-common/components/referenda/voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import { emptyFunction } from "next-common/utils";
 import MyVote from "./myVote";
