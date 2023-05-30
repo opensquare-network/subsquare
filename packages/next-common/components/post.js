@@ -219,6 +219,13 @@ export default function Post({ data, href, type }) {
       ? `/referenda/track/${data.track}`
       : `/fellowship/track/${data.track}`;
 
+  const hasTally = data.onchainData?.tally || data.onchainData?.info?.tally;
+  const showTally = [
+    businessCategory.democracyReferenda,
+    businessCategory.openGovReferenda,
+    businessCategory.fellowship,
+  ].includes(type);
+
   const { sm } = useScreenSize();
 
   return (
@@ -287,7 +294,7 @@ export default function Post({ data, href, type }) {
                 {`${commentsCount}`}
               </MobileHiddenInfo>
             )}
-            {(data.onchainData?.tally || data.onchainData?.info?.tally) && (
+            {(showTally && hasTally) && (
               <Flex>
                 <PostListCardVotesSummaryBar data={data} type={type} />
               </Flex>
