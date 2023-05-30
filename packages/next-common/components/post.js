@@ -288,7 +288,7 @@ export default function Post({ data, href, type }) {
             )}
             {(data.onchainData?.tally || data.onchainData?.info?.tally) && (
               <Flex>
-                <PostListCardVotesSummaryBar data={data} />
+                <PostListCardVotesSummaryBar data={data} type={type} />
               </Flex>
             )}
             {businessCategory.allianceAnnouncements === type && (

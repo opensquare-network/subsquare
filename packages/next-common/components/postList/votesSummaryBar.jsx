@@ -8,6 +8,7 @@ import ValueDisplay from "../valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
 import { p_12_bold } from "next-common/styles/componentCss";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const VotesSummaryBarWrapper = styled(Flex)`
   width: 24px;
@@ -32,10 +33,26 @@ const GroupValue = styled(Flex)`
   gap: 4px;
 `;
 
-export default function PostListCardVotesSummaryBar({ data }) {
+function TypedValueDisplay({ value, type }) {
   const chainSettings = useChainSettings();
   const symbol = chainSettings.symbol;
 
+  let valueDisplayProps = {};
+  if (type === businessCategory.fellowship) {
+    valueDisplayProps = {
+      value,
+    };
+  } else {
+    valueDisplayProps = {
+      value: toPrecision(value, chainSettings.decimals),
+      symbol,
+    };
+  }
+
+  return <ValueDisplay {...valueDisplayProps} showTooltip={false} />;
+}
+
+export default function PostListCardVotesSummaryBar({ data, type }) {
   const tally = data.onchainData?.tally ?? data.onchainData?.info?.tally;
   const ayes = tally?.ayes;
   const nays = tally?.nays;
@@ -47,20 +64,12 @@ export default function PostListCardVotesSummaryBar({ data }) {
         <TooltipContent>
           <GroupTitle>Aye</GroupTitle>
           <GroupValue>
-            <ValueDisplay
-              value={toPrecision(ayes, chainSettings.decimals)}
-              symbol={symbol}
-              showTooltip={false}
-            />
+            <TypedValueDisplay type={type} value={ayes} />
             <span>({ayesPercent}%)</span>
           </GroupValue>
           <GroupTitle>Nay</GroupTitle>
           <GroupValue>
-            <ValueDisplay
-              value={toPrecision(nays, chainSettings.decimals)}
-              symbol={symbol}
-              showTooltip={false}
-            />
+            <TypedValueDisplay type={type} value={nays} />
             <span>({naysPercent}%)</span>
           </GroupValue>
         </TooltipContent>
