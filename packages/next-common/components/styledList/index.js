@@ -27,6 +27,7 @@ function StyledList({
   // FIXME: data source, use to scroll to first row
   items = [],
   className = "",
+  noDataText = "No current votes",
 }) {
   const tableBodyRef = useRef();
   let tableBody = null;
@@ -36,7 +37,7 @@ function StyledList({
   } else if (!rows?.length) {
     tableBody = (
       <StyledTr>
-        <EmptyTd>No current votes</EmptyTd>
+        <EmptyTd>{noDataText}</EmptyTd>
       </StyledTr>
     );
   } else {
