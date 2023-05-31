@@ -6,12 +6,14 @@ import ArticleContent from "../../articleContent";
 import ReferendaReferendumNavigation from "../navigation/referendaReferendumNavigation";
 import useSetEdit from "../common/hooks/useSetEdit";
 import ReferendaPostMeta from "../common/openGov/meta";
+import ReferendaWhiteListNavigation from "./whitelistNavigation";
 
 export default function ReferendaDetail({ onReply }) {
   const post = usePost();
   const setIsEdit = useSetEdit();
 
   return <DetailContentBase>
+    <ReferendaWhiteListNavigation />
     <ReferendaReferendumNavigation />
     <PostTitle />
     <ReferendaPostMeta />
