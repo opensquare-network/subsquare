@@ -5,7 +5,6 @@ import PopupListWrapper from "../../styled/popupListWrapper";
 import ValueDisplay from "../../valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
-import sumBy from "lodash.sumby";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
 import StyledList from "next-common/components/styledList";
 
@@ -43,7 +42,7 @@ export default function AllBeenDelegatedPopupAllList({
       </TrackItemWrapper>,
       <ValueDisplay
         key="votes"
-        value={toPrecision(sumBy(item.beenDelegated, "balance"), decimals)}
+        value={toPrecision(item.totalVotes, decimals)}
         symbol={symbol}
       />,
     ];
