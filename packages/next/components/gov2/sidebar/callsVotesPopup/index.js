@@ -120,7 +120,7 @@ function VotesList({ items = [], loading }) {
         add={item.voter}
         fontSize={14}
         noTooltip={true}
-        maxWidth={214}
+        maxWidth={264}
       />,
       <VoteTime key="date">
         <ExplorerLink indexer={item.indexer}>

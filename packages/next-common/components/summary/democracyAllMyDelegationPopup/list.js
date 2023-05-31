@@ -51,7 +51,7 @@ export default function AllMyDelegationPopupList({ myDelegationList = [] }) {
         key="user"
         add={item.delegation.target}
         fontSize={14}
-        maxWidth={colWidths.delegatingTo - 50}
+        maxWidth={colWidths.delegatingTo}
       />,
       <CapitalTableItem
         key="capital"

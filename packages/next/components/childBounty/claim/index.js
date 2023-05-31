@@ -111,8 +111,8 @@ export default function Claim({
 
   const { lg, sm } = useScreenSize();
   const beneficiaryUserMaxWidth = useMemo(() => {
-    if (sm) return WRAPPER_WIDTH / 2 - 30;
-    else if (lg) return 80;
+    if (sm) return WRAPPER_WIDTH / 2;
+    else if (lg) return 124;
     else return null;
   }, [lg, sm]);
 

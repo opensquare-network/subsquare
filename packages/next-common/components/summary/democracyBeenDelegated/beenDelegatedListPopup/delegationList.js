@@ -51,7 +51,7 @@ function DelegationList({ items, loading = true }) {
         key="user"
         add={item.delegator}
         fontSize={14}
-        maxWidth={colWidths.address - 50}
+        maxWidth={colWidths.address}
       />,
       <CapitalTableItem
         key="capital"

@@ -236,7 +236,7 @@ function DetailDelegatorList({ items = [] }) {
         add={item.account}
         fontSize={14}
         noTooltip
-        maxWidth={246}
+        maxWidth={296}
       />,
       <CapitalTableItem
         key="capital"

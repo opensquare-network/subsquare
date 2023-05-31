@@ -138,7 +138,7 @@ export default function DelegationTabList({ delegatee }) {
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
     <Flex key="account">
-      <User add={item.account} fontSize={14} maxWidth={85} />
+      <User add={item.account} fontSize={14} maxWidth={232} />
     </Flex>,
     <TrackNameText key="track">{startCase(item.trackName)}</TrackNameText>,
     <Flex key="capital" style={{ justifyContent: "right" }}>
