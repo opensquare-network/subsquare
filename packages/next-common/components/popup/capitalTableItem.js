@@ -6,6 +6,7 @@ import { inline_flex, text_tertiary } from "next-common/styles/tailwindcss";
 import styled from "styled-components";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import isNil from "lodash.isnil";
 
 const Capital = styled.div`
   ${inline_flex};
@@ -21,6 +22,10 @@ export default function CapitalTableItem({ capital, item, tab, conviction }) {
   const chain = useChain();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
   const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
+
+  if (isNil(conviction)) {
+    conviction = item.conviction;
+  }
 
   return (
     <Capital>
