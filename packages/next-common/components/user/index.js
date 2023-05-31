@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
 import { fetchIdentity } from "../../services/identity";
 import Avatar from "../avatar";
@@ -111,13 +111,24 @@ const LinkWrapper = styled.a`
   }
 `;
 
+const widths = {
+  // avatar + avatar margin right
+  avatar: 28,
+  // identity icon + identity margin right
+  identity: 16,
+};
+
+/**
+ * @param {object} props
+ * @param {number} props.maxWidth whole `User` max width, includes avatar, identity icon and address or name
+ */
 function User({
   user,
   add,
   showAvatar = true,
   fontSize = 14,
   noEvent = false,
-  maxWidth,
+  maxWidth: propMaxWidth,
   noTooltip = false,
   color,
 }) {
@@ -135,6 +146,18 @@ function User({
       ).then((identity) => isMounted.current && setIdentity(identity));
     }
   }, [address, settings]);
+
+  const maxWidth = useMemo(() => {
+    let res = propMaxWidth;
+    if (showAvatar) {
+      res -= widths.avatar;
+    }
+    if (identity) {
+      res -= widths.identity;
+    }
+
+    return res;
+  }, [showAvatar, identity, propMaxWidth]);
 
   if (!user && !add) {
     return (
