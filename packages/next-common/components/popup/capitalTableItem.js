@@ -27,7 +27,7 @@ export default function CapitalTableItem({ capital, item, tab, conviction }) {
       <ValueDisplay value={capital} symbol={symbol} />
       {hasLabel && (
         <CapitalConvictionLabel>
-          <VoteLabel conviction={conviction} {...item} tab={tab} />
+          <VoteLabel {...item} conviction={conviction} tab={tab} />
         </CapitalConvictionLabel>
       )}
     </Capital>
