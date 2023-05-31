@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { emptyFunction, isSameAddress, toPrecision } from "next-common/utils";
+import { emptyFunction, toPrecision } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import Flex from "next-common/components/styled/flex";
@@ -14,7 +14,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { shadow_100 } from "next-common/styles/componentCss";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
 const Popup = dynamic(() => import("./popup"), {
@@ -100,7 +99,6 @@ export default function Claim({
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
 }) {
-  const realAddress = useRealAddress();
   const { decimals, symbol } = useChainSettings();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -156,17 +154,8 @@ export default function Claim({
     return null;
   }
 
-  const isBeneficiary = isSameAddress(realAddress, childBounty?.beneficiary);
-
   const hasBeenClaimedText = (
     <ClaimInfoText>This child bounty has been claimed.</ClaimInfoText>
-  );
-
-  const stillClaimText = (
-    <ClaimInfoText>
-      Only beneficiary can claim, no account found from the bounty.{" "}
-      <span onClick={() => setShowPopup(true)}>Still claim</span>
-    </ClaimInfoText>
   );
 
   const actionBtn = (
@@ -179,10 +168,8 @@ export default function Claim({
   if (!isLoading) {
     if (isClaimed) {
       actionContent = hasBeenClaimedText;
-    } else if (isBeneficiary) {
-      actionContent = actionBtn;
     } else {
-      actionContent = stillClaimText;
+      actionContent = actionBtn;
     }
   }
 
