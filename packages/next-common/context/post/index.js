@@ -6,6 +6,7 @@ import {
   getGov2TreasuryProposalTitle,
 } from "../../utils/gov2/title";
 import getAnnouncementTitle from "../../utils/alliance/title";
+import sortTimeline from "next-common/utils/timeline/sort";
 
 const PostContext = createContext(null);
 const PostDispatchContext = createContext(null);
@@ -95,5 +96,6 @@ export function useOnchainData() {
 
 export function useTimelineData() {
   const onchainData = useOnchainData();
-  return onchainData.timeline || [];
+  const timeline = onchainData?.timeline || [];
+  return sortTimeline(timeline);
 }
