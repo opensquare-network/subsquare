@@ -118,7 +118,7 @@ function VotesList({ items = [], loading }) {
         add={item.account}
         fontSize={14}
         noTooltip
-        maxWidth={246}
+        maxWidth={296}
       />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay

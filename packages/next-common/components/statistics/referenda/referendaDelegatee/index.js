@@ -148,7 +148,7 @@ export default function ReferendaDelegatee({ delegatee }) {
   const rows = (delegateeList.items || []).map((item) => {
     const row = [
       <Flex key="account">
-        <User add={item.account} fontSize={14} maxWidth={230} />
+        <User add={item.account} fontSize={14} maxWidth={268} />
       </Flex>,
       <div key="tracks">
         <Tooltip content={<TrackNameList tracks={item.tracks} />}>

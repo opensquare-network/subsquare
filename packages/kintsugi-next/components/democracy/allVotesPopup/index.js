@@ -95,7 +95,7 @@ function VotesList({ items = [], loading }) {
         add={item.account}
         fontSize={14}
         noTooltip
-        maxWidth={126}
+        maxWidth={176}
       />,
       <ValueDisplay
         key="value"

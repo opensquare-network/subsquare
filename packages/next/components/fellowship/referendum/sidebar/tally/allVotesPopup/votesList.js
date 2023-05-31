@@ -42,7 +42,7 @@ function VotesList({ items, theme, loading = true }) {
                     <User
                       add={item.address}
                       fontSize={14}
-                      maxWidth={132}
+                      maxWidth={176}
                       noTooltip={true}
                     />
                   </StyledTd>

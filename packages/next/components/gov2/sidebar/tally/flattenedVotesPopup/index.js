@@ -110,7 +110,7 @@ function VotesList({ items = [], loading, tab }) {
         add={item.account}
         fontSize={14}
         noTooltip
-        maxWidth={226}
+        maxWidth={276}
       />,
       <CapitalTableItem
         key="capital"

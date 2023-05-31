@@ -115,7 +115,7 @@ export default function DelegationTabList({
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
     <Flex key="account">
-      <User add={item.account} fontSize={14} maxWidth={85} />
+      <User add={item.account} fontSize={14} maxWidth={129} />
     </Flex>,
     <Flex key="capital" style={{ justifyContent: "right" }}>
       <ValueDisplay

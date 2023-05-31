@@ -256,9 +256,7 @@ export default function Post({ data, href, type }) {
               add={data.address}
               fontSize={12}
               noEvent={userNoClickEvent}
-              // text max width = design width - address icon - margin - identity icon
-              // FIXME: #2938
-              maxWidth={(sm ? 160 : 240) - 20 - 8 - 16}
+              maxWidth={sm ? 160 : 240}
             />
 
             {data.trackName && (
