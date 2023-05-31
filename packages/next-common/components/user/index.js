@@ -148,6 +148,8 @@ function User({
   }, [address, settings]);
 
   const maxWidth = useMemo(() => {
+    if (!propMaxWidth) return propMaxWidth;
+
     let res = propMaxWidth;
     if (showAvatar) {
       res -= widths.avatar;
