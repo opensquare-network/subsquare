@@ -3,17 +3,13 @@ import { withTheme } from "styled-components";
 import Loading from "next-common/components/loading";
 import { Headers } from "./headers";
 import DataRows from "./dataRows";
-import {
-  EmptyTd,
-  StyledTable,
-  StyledTr,
-} from "next-common/components/styled/table";
+import { EmptyTd, StyledTable } from "next-common/components/styled/table";
 
-function EmptyOrLoading({ loading }) {
+function EmptyOrLoading({ loading, noDataText = "" }) {
   return (
     <tr className="empty-tr">
       <EmptyTd colSpan="100%">
-        {loading ? <Loading size={16} /> : "No current members"}
+        {loading ? <Loading size={16} /> : noDataText}
       </EmptyTd>
     </tr>
   );
@@ -35,11 +31,7 @@ function StyledList({
   if (loading) {
     tableBody = <EmptyOrLoading loading={loading} />;
   } else if (!rows?.length) {
-    tableBody = (
-      <StyledTr>
-        <EmptyTd>{noDataText}</EmptyTd>
-      </StyledTr>
-    );
+    tableBody = <EmptyOrLoading noDataText={noDataText} />;
   } else {
     tableBody = <DataRows rows={rows} columns={columns} />;
   }
