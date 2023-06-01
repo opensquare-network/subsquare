@@ -26,6 +26,7 @@ import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
+import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 
 function ReferendumContent({ comments }) {
   const post = usePost();

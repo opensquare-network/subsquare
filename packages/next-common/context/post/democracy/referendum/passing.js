@@ -1,12 +1,12 @@
-import useDemocracyTally from "./tally";
 import BigNumber from "bignumber.js";
 import useDemocracyThreshold from "./threshold";
 import compareRationals from "../../../../utils/democracy/rational";
 import { useSelector } from "react-redux";
 import { electorateSelector } from "../../../../store/reducers/referendumSlice";
+import useSubDemocracyTally from "../../../../hooks/democracy/tally";
 
 export default function useIsDemocracyPassing() {
-  const tally = useDemocracyTally();
+  const tally = useSubDemocracyTally();
   const threshold = useDemocracyThreshold();
   const electorate = useSelector(electorateSelector);
 

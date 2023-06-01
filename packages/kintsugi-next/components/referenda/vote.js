@@ -32,8 +32,8 @@ import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
 import TallyInfo from "next-common/components/referenda/tally/info";
-import useDemocracyTally from "next-common/context/post/democracy/referendum/tally";
 import CheckAllVotesPopup from "components/democracy/allVotesPopup";
+import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -158,7 +158,7 @@ function Vote({
   const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
   const [updateTime, setUpdateTime] = useState(0);
-  const tally = useDemocracyTally();
+  const tally = useSubDemocracyTally();
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);

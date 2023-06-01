@@ -9,7 +9,7 @@ import ElectorateIcon from "../../../assets/imgs/icons/electorate.svg";
 import ValueDisplay from "../../../components/valueDisplay";
 import VotesCount from "../../../components/democracy/referendum/votesCount";
 import { useChainSettings } from "../../../context/chain";
-import useDemocracyTally from "../../../context/post/democracy/referendum/tally";
+import useSubDemocracyTally from "../../../hooks/democracy/tally";
 
 const Row = styled(Flex)`
   height: 44px;
@@ -46,7 +46,7 @@ export default function TallyInfo({
   allNay,
 }) {
   const node = useChainSettings();
-  const tally = useDemocracyTally();
+  const tally = useSubDemocracyTally();
 
   if (!node) {
     return null;
