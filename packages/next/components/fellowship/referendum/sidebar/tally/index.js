@@ -6,7 +6,6 @@ import Nay from "./nay";
 import BareAye from "./bareAye";
 import MaxVoters from "./maxVoters";
 import SupportBar from "../../../../gov2/sidebar/tally/supportBar";
-import { useTally } from "next-common/context/post/gov2/referendum";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import VoteBar from "next-common/components/referenda/voteBar";
 import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowshipVotes";
@@ -14,6 +13,7 @@ import useReferendumVotingFinishHeight from "next-common/context/post/referenda/
 import { useOnchainData } from "next-common/context/post";
 import AllVotes from "./allVotes";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
+import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -28,7 +28,7 @@ const Footer = styled.div`
 `;
 
 export default function FellowshipTally() {
-  const tally = useTally();
+  const tally = useSubReferendaTally();
   const approvalThreshold = useApprovalThreshold();
 
   const votingFinishHeight = useReferendumVotingFinishHeight();

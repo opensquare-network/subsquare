@@ -1,13 +1,9 @@
-import {
-  BorderedRow,
-  Header,
-  Value,
-} from "next-common/components/referenda/tally/styled";
+import { BorderedRow, Header, Value } from "next-common/components/referenda/tally/styled";
 import AyeIcon from "next-common/assets/imgs/icons/aye.svg";
-import { useTally } from "next-common/context/post/gov2/referendum";
+import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
 
 export default function Aye() {
-  const tally = useTally();
+  const tally = useSubReferendaTally();
 
   return (
     <BorderedRow>

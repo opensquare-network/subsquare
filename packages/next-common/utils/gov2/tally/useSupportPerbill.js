@@ -1,13 +1,13 @@
-import { useTally } from "../../../context/post/gov2/referendum";
 import { useDetailType } from "../../../context/page";
 import { detailPageCategory } from "../../consts/business/category";
 import useReferendaIssuance from "./useReferendaIssuance";
 import { useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
+import useSubReferendaTally from "../../../hooks/referenda/useSubReferendaTally";
 
 // support/issuance perbill value
 export default function useSupportPerbill() {
-  const tally = useTally();
+  const tally = useSubReferendaTally();
   const issuance = useReferendaIssuance();
   const pageType = useDetailType();
   const [perbill, setPerbill] = useState();
