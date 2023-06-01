@@ -13,13 +13,6 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
-
-const ListWrapper = styled.div`
-  display: flex;
-  overflow-x: auto;
-  ${pretty_scroll_bar};
-`;
 
 const ConvictionText = styled.span`
   width: 40px;
@@ -82,16 +75,16 @@ export default function DelegationTabList({
     [
       {
         name: "ADDRESS",
-        style: { textAlign: "left", width: "129px", minWidth: "129px" },
+        style: { textAlign: "left", width: "296px", minWidth: "296px" },
       },
       {
         name: "CAPITAL",
-        style: { textAlign: "right", width: "158px", minWidth: "158px" },
+        style: { textAlign: "right", width: "168px", minWidth: "168px" },
         sortable: true,
       },
       {
         name: "VOTES",
-        style: { textAlign: "right", width: "118px", minWidth: "118px" },
+        style: { textAlign: "right", width: "128px", minWidth: "128px" },
         sortable: true,
       },
     ],
@@ -115,7 +108,7 @@ export default function DelegationTabList({
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
     <Flex key="account">
-      <User add={item.account} fontSize={14} maxWidth={129} />
+      <User add={item.account} fontSize={14} maxWidth={296} />
     </Flex>,
     <Flex key="capital" style={{ justifyContent: "right" }}>
       <ValueDisplay
@@ -133,11 +126,9 @@ export default function DelegationTabList({
 
   return (
     <VStack space={16}>
-      <ListWrapper>
-        <MyPopupListWrapper>
-          <StyledList columns={columns} rows={rows} loading={!isLoaded} />
-        </MyPopupListWrapper>
-      </ListWrapper>
+      <MyPopupListWrapper>
+        <StyledList columns={columns} rows={rows} loading={!isLoaded} />
+      </MyPopupListWrapper>
       <Pagination {...pagination} />
     </VStack>
   );

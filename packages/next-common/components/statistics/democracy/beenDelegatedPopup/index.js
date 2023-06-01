@@ -1,5 +1,5 @@
 import React from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
+import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import DelegationSummary from "./delegationSummary";
 import DelegationTabList from "./delegationTabList";
 
@@ -12,7 +12,7 @@ export default function BeenDelegatedListPopup({
   setShow,
 }) {
   return (
-    <Popup wide title="Been Delegated" onClose={() => setShow(false)}>
+    <BaseVotesPopup title="Been Delegated" onClose={() => setShow(false)}>
       <DelegationSummary
         delegatee={delegatee}
         delegatorsCount={delegatorsCount}
@@ -20,6 +20,6 @@ export default function BeenDelegatedListPopup({
         delegatedVotes={delegatedVotes}
       />
       <DelegationTabList apiRoot={apiRoot} delegatee={delegatee} />
-    </Popup>
+    </BaseVotesPopup>
   );
 }
