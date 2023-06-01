@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { getAddressVote } from "./referendumUtil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getVotingBalance } from "./escrow/votingBalance";
 import { useSelector } from "react-redux";
@@ -77,29 +76,4 @@ export function useLockedBalance(api, address) {
   }, [refresh]);
 
   return [balance, isLoading, refresh];
-}
-
-export function useAddressVote(api, referendumIndex, address, updateTime) {
-  const [vote, setVote] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
-
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    setIsLoading(true);
-    getAddressVote(api, referendumIndex, address)
-      .then((vote) => {
-        if (isMounted.current) {
-          setVote(vote);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api, referendumIndex, address, isMounted, updateTime]);
-
-  return [vote, isLoading];
 }

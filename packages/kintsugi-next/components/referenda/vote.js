@@ -157,7 +157,6 @@ function Vote({
   const [showVote, setShowVote] = useState(false);
   const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
-  const [updateTime, setUpdateTime] = useState(0);
   const tally = useSubDemocracyTally();
 
   const electorate = useSelector(electorateSelector);
@@ -171,7 +170,6 @@ function Vote({
 
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
-    setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
   const node = useChainSettings(chain);
@@ -274,7 +272,7 @@ function Vote({
         >
           Check all votes
         </SubLink>
-        <MyVote updateTime={updateTime} />
+        <MyVote />
       </SecondaryCardDetail>
 
       {!referendumInfo?.finished && (
