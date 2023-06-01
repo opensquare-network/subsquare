@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
+import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
@@ -21,6 +21,7 @@ import VoteTypeTab, { Aye, Nay, Split } from "./tab";
 import useStandardVote from "./voteHooks/useStandardVote";
 import useSplitVote from "./voteHooks/useSplitVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 
 function PopupContent({
   extensionAccounts,
@@ -48,12 +49,7 @@ function PopupContent({
     api,
     signerAccount?.address
   );
-
-  const [addressVote, addressVoteIsLoading] = useAddressVote(
-    api,
-    referendumIndex,
-    signerAccount?.realAddress
-  );
+  const { vote: addressVote, isLoading: addressVoteIsLoading } = useSubMyDemocracyVote();
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
