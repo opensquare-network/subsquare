@@ -8,6 +8,7 @@ import {
   justify_between,
   text_primary,
   theme,
+  w_full,
 } from "next-common/styles/tailwindcss";
 import {
   p_14_bold,
@@ -15,7 +16,9 @@ import {
   p_14_normal,
 } from "next-common/styles/componentCss";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  ${w_full};
+`;
 const DescriptionsTitle = styled.h3`
   margin: 0;
   margin-bottom: 8px;
