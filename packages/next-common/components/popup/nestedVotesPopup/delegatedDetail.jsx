@@ -288,12 +288,7 @@ function DetailDelegatorList({ items = [] }) {
 
   return (
     <StyledPopupListWrapper>
-      <StyledList
-        title="Delegation List"
-        items={items}
-        columns={columns}
-        rows={rows}
-      />
+      <StyledList items={items} columns={columns} rows={rows} />
     </StyledPopupListWrapper>
   );
 }
