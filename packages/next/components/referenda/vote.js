@@ -120,11 +120,8 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   );
   const isVoteFinished = useIsDemocracyVoteFinished();
 
-  const [updateTime, setUpdateTime] = useState(0);
-
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
-    setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
   let finishedResult;
@@ -182,7 +179,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
           </VotesGroupItems>
         </VotesGroup>
 
-        <MyVote updateTime={updateTime} />
+        <MyVote />
       </SecondaryCardDetail>
 
       {!isVoteFinished && (
