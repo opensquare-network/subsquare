@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useDemocracyVoteFinishedHeight from "../../context/post/democracy/referendum/voteFinishedHeight";
 import { useOnchainData } from "../../context/post";
 import useApi from "../../utils/hooks/useApi";
+import useIsMounted from "../../utils/hooks/useIsMounted";
 
 export default function useSubDemocracyTally() {
   const api = useApi();
@@ -10,6 +11,7 @@ export default function useSubDemocracyTally() {
   const finishedHeight = useDemocracyVoteFinishedHeight();
   const contextTally = useDemocracyTally();
   const [tally, setTally] = useState(contextTally);
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     if (finishedHeight || !api || !api.query.democracy) {
@@ -28,7 +30,9 @@ export default function useSubDemocracyTally() {
       }
 
       const ongoing = unwrapped.asOngoing;
-      setTally(ongoing.tally.toJSON());
+      if (isMounted.current) {
+        setTally(ongoing.tally.toJSON());
+      }
     }).then(result => {
       unsub = result;
     });
@@ -38,7 +42,7 @@ export default function useSubDemocracyTally() {
         unsub();
       }
     };
-  }, [api, finishedHeight, referendumIndex]);
+  }, [api, finishedHeight, referendumIndex, isMounted]);
 
   return tally;
 }
