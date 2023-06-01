@@ -1,12 +1,6 @@
 import { useOnchainData, useTimelineData } from "../index";
 import findLast from "lodash.findlast";
 import findLastIndex from "lodash.findlastindex";
-import useApi from "../../../utils/hooks/useApi";
-import { useEffect, useState } from "react";
-import { useDetailType } from "../../page";
-import { detailPageCategory } from "../../../utils/consts/business/category";
-import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
-import useIsMounted from "../../../utils/hooks/useIsMounted";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -26,68 +20,6 @@ export function useSubmittedAt() {
 export function useConfirming() {
   const onchain = useOnchainData();
   return onchain.info?.deciding?.confirming;
-}
-
-async function queryReferendumInfo(
-  api,
-  palletName,
-  referendumIndex,
-  votingFinishHeight,
-) {
-  let blockApi = api;
-  if (votingFinishHeight) {
-    const blockHash = await api.rpc.chain.getBlockHash(votingFinishHeight - 1);
-    if (blockHash) {
-      blockApi = await api.at(blockHash);
-    }
-  }
-
-  return blockApi.query[palletName].referendumInfoFor(referendumIndex);
-}
-
-export function useTally() {
-  const onchain = useOnchainData();
-  const { referendumIndex } = onchain;
-  const [tally, setTally] = useState(onchain.tally || onchain?.info?.tally);
-  const pageType = useDetailType();
-  const votingFinishHeight = useReferendumVotingFinishHeight();
-  const isMounted = useIsMounted();
-
-  const api = useApi();
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    let palletName;
-    if (detailPageCategory.GOV2_REFERENDUM === pageType) {
-      palletName = "referenda";
-    } else if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
-      palletName = "fellowshipReferenda";
-    } else {
-      return;
-    }
-
-    queryReferendumInfo(
-      api,
-      palletName,
-      referendumIndex,
-      votingFinishHeight,
-    ).then((optionalInfo) => {
-      if (!isMounted.current || !optionalInfo.isSome) {
-        return;
-      }
-
-      const info = optionalInfo.unwrap();
-      if (!info.isOngoing) {
-        return;
-      }
-
-      setTally(info.asOngoing.tally.toJSON());
-    });
-  }, [api, referendumIndex, pageType, votingFinishHeight]);
-  return tally;
 }
 
 export function useConfirmingStarted() {
