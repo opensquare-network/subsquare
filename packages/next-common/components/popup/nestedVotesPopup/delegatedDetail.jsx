@@ -38,7 +38,7 @@ const StyledPopupListWrapper = styled(PopupListWrapper)`
     }
   `)}
 
-  /* for non-full screen */
+  /* for non-full screen display */
   @media (height < 750px) {
     table tbody {
       max-height: 80px;
