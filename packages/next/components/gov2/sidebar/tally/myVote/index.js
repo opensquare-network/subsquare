@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import useAddressVote from "next-common/utils/hooks/referenda/useAddressVote";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
 import DelegateVoteStatus from "components/referenda/myVote/delegateVoteStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import SplitAbstainVoteStatus from "components/gov2/votePopup/splitAbstainVoteStatus";
-import findLast from "lodash.findlast";
-import { gov2FinalState } from "next-common/utils/consts/state";
-import { usePost, useTimelineData } from "next-common/context/post";
+import { usePost } from "next-common/context/post";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
@@ -17,33 +16,19 @@ const Wrapper = styled.div`
 
 export default function MyVote() {
   const detail = usePost();
+  const pageType = useDetailType();
 
-  let atBlockHeight;
-  const timeline = useTimelineData();
-
-  const finalStateItem = findLast(timeline, ({ name }) =>
-    gov2FinalState.includes(name)
-  );
-  if (finalStateItem) {
-    atBlockHeight = finalStateItem?.indexer.blockHeight;
-  }
-
-  const api = useBlockApi(atBlockHeight);
   const realAddress = useRealAddress();
 
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const updateTime = detail?.onchainData?.state?.indexer.blockTime;
-
-  const [addressVote] = useAddressVote(
-    api,
-    trackId,
-    referendumIndex,
-    realAddress,
-    updateTime
-  );
+  const { vote: addressVote } = useSubMyReferendaVote(trackId, referendumIndex, realAddress);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
+
+  if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
+    return null;
+  }
 
   if (!realAddress) {
     return null;
