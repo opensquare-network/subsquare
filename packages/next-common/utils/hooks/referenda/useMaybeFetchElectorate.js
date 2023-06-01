@@ -9,7 +9,6 @@ import {
 } from "../../../store/reducers/referendumSlice";
 import { nowHeightSelector } from "../../../store/reducers/chainSlice";
 import useDemocracyTally from "../../../context/post/democracy/referendum/tally";
-import useDemocracyVoteFinishedHeight from "../../../context/post/democracy/referendum/voteFinishedHeight";
 
 export default function useMaybeFetchElectorate(referendum, api) {
   const dispatch = useDispatch();
@@ -17,7 +16,6 @@ export default function useMaybeFetchElectorate(referendum, api) {
   const referendumStatus = useSelector(referendumStatusSelector);
   const nowHeight = useSelector(nowHeightSelector);
   const tally = useDemocracyTally();
-  useDemocracyVoteFinishedHeight();
 
   const { voteFinished, voteFinishedHeight } = extractVoteInfo(referendum?.timeline);
   const possibleElectorate = referendumStatus?.tally?.electorate;
