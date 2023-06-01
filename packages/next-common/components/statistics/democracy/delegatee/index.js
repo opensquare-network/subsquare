@@ -13,9 +13,17 @@ import BeenDelegatedListPopup from "../beenDelegatedPopup";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import { pretty_scroll_bar } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div``;
+
+const ListWrapper = styled.div`
+  display: flex;
+  @media screen and (max-width: 768px) {
+    overflow-x: auto;
+    ${pretty_scroll_bar};
+  }
+`;
 
 function getSortParams(sortedColumn) {
   if (!sortedColumn) {
@@ -139,9 +147,9 @@ export default function DemocracyDelegatee({
   return (
     <Wrapper>
       <div id="header"></div>
-      <PopupListWrapper>
+      <ListWrapper>
         <StyledList columns={columns} rows={rows} />
-      </PopupListWrapper>
+      </ListWrapper>
       <Pagination
         {...delegateeList}
         onPageChange={(e, page) => {
