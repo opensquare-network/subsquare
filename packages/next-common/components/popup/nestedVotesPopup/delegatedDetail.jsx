@@ -1,8 +1,8 @@
-"use clinet";
+"use client";
 
 import React, { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import AccountSVG from "next-common/assets/imgs/icons/account.svg";
 import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
 import ConvictionSVG from "next-common/assets/imgs/icons/conviction.svg";
@@ -20,15 +20,29 @@ import StyledList from "next-common/components/styledList";
 import noop from "lodash.noop";
 import {
   flex,
+  flex_col,
   gap_x,
+  gap_y,
   items_center,
+  text_primary,
   text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
+import { smcss } from "next-common/utils/responsive";
+import { p_14_bold } from "next-common/styles/componentCss";
 
 const StyledPopupListWrapper = styled(PopupListWrapper)`
-  table tbody {
-    max-height: 200px;
+  ${smcss(css`
+    table tbody {
+      max-height: 180px;
+    }
+  `)}
+
+  /* for non-full screen */
+  @media (height < 750px) {
+    table tbody {
+      max-height: 80px;
+    }
   }
 `;
 
@@ -55,6 +69,21 @@ const DetailDescriptionLabel = styled.div`
 `;
 const DetailSelfVotesAnnotation = styled.span`
   ${text_tertiary};
+`;
+
+const DescriptionsGroup = styled.div`
+  ${flex};
+  ${gap_x(48)};
+
+  ${smcss(gap_y(16))};
+  ${smcss(flex_col)};
+`;
+
+const DelegationListTitle = styled.h3`
+  margin: 0;
+  margin-bottom: 8px;
+  ${p_14_bold};
+  ${text_primary};
 `;
 
 function getAnnotation(data = {}) {
@@ -86,7 +115,7 @@ export default function NestedPopupDelegatedDetailPopup({
         <DetailDescriptionLabel>
           <StyledAccountSVG />
           <span>
-            Self Votes
+            Votes
             {annotation && (
               <DetailSelfVotesAnnotation>
                 /{annotation}
@@ -132,7 +161,7 @@ export default function NestedPopupDelegatedDetailPopup({
       label: (
         <DetailDescriptionLabel>
           <StyledTotalDelegationSvg />
-          <span>Total Delegation</span>
+          <span>Votes</span>
         </DetailDescriptionLabel>
       ),
       value: data.directVoterDelegations?.length ? (
@@ -194,11 +223,15 @@ export default function NestedPopupDelegatedDetailPopup({
 
   return (
     <BaseVotesPopup title="Delegated Detail" onClose={onClose}>
-      <Descriptions title="Self Votes" items={selfVotesItems} />
-      <Descriptions title="Delegation" items={delegationItems} />
+      <DescriptionsGroup>
+        <Descriptions title="Self Votes" items={selfVotesItems} />
+        <Descriptions title="Delegation Votes" items={delegationItems} />
+      </DescriptionsGroup>
 
       {!!directVoterDelegations?.length && (
         <>
+          <DelegationListTitle>Delegation List</DelegationListTitle>
+
           <DetailDelegatorList items={items} />
 
           <Pagination {...pagination} />
@@ -255,7 +288,12 @@ function DetailDelegatorList({ items = [] }) {
 
   return (
     <StyledPopupListWrapper>
-      <StyledList items={items} columns={columns} rows={rows} />
+      <StyledList
+        title="Delegation List"
+        items={items}
+        columns={columns}
+        rows={rows}
+      />
     </StyledPopupListWrapper>
   );
 }
