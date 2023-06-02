@@ -1949,9 +1949,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^0.12.3":
-  version: 0.12.3
-  resolution: "@osn/previewer@npm:0.12.3"
+"@osn/previewer@npm:^0.12.5":
+  version: 0.12.5
+  resolution: "@osn/previewer@npm:0.12.5"
   dependencies:
     marked: ^4.0.17
     prismjs: ^1.28.0
@@ -1960,7 +1960,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     styled-components: ^5.3.5
-  checksum: 5c761500811f9fa204e21bce71c6032cd0baf219b4376875258f71d4757233301daa67beaf99d53868712ecdfc87f276467b6de0ebb1e674017a22e70755e9fa
+  checksum: 23e6cf478b19b21bece0d3537e822dbb8842af502bc92a2bd00f28cce4c68ac8a10efe70b4e2580915311eb03a1ddb8b355795835717ef9b9f964c407d4151e2
   languageName: node
   linkType: hard
 
@@ -2819,7 +2819,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/previewer": ^0.12.3
+    "@osn/previewer": ^0.12.5
     "@osn/rich-text-editor": ^0.1.56
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
@@ -7418,7 +7418,7 @@ __metadata:
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^0.12.3
+    "@osn/previewer": ^0.12.5
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.1.2
     "@polkadot/api": ^10.1.4
