@@ -6,8 +6,8 @@ import DemocracySummaryDelegation from "./democracySummaryDelegation";
 export default function DemocracySummaryFooter() {
   return (
     <VStack space={8}>
-      <DemocracySummaryDelegation />
       <DemocracyBeenDelegated />
+      <DemocracySummaryDelegation />
     </VStack>
   );
 }

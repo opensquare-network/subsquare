@@ -8,7 +8,7 @@ import PopupListWrapper from "../../../styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 
-function DelegationList({ items, loading = true }) {
+function DelegationList({ items, loading = false }) {
   const node = useChainSettings();
   const symbol = node.voteSymbol || node.symbol;
 
