@@ -1,13 +1,13 @@
 import { useSelector } from "react-redux";
 import { votesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
 import AyeIcon from "next-common/assets/imgs/icons/aye.svg";
-import { useTally } from "next-common/context/post/gov2/referendum";
 import LoadingCount from "./loadingCount";
 import SymbolValue from "./symbolValue";
 import { BorderedRow } from "next-common/components/referenda/tally/styled";
+import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
 
 export default function Aye() {
-  const tally = useTally();
+  const tally = useSubReferendaTally();
   const { allAye = [] } = useSelector(votesSelector);
 
   return (

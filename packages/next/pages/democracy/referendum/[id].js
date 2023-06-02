@@ -14,11 +14,7 @@ import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/use
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
-import {
-  PostProvider,
-  usePost,
-  usePostDispatch,
-} from "next-common/context/post";
+import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";

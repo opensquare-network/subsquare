@@ -64,14 +64,3 @@ export function calcPassing(referendumInfo, totalIssuance) {
 
   return false;
 }
-
-export async function getAddressVote(api, referendumIndex, address) {
-  const voting = await api.query.democracy?.votingOf(address);
-  const jsonVoting = voting?.toJSON();
-  if (!jsonVoting) {
-    return null;
-  }
-  return (jsonVoting.votes || []).find(
-    (vote) => vote[0] === referendumIndex
-  )?.[1];
-}

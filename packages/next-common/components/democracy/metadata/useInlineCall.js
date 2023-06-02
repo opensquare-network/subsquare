@@ -38,7 +38,9 @@ export default function useInlineCall(timeline, proposal) {
       voteFinished?.indexer?.blockHash,
       api,
     ).then((callInfo) => {
-      setInline(callInfo);
+      if (callInfo) {
+        setInline(callInfo);
+      }
     });
 
   }, [proposal, timeline, api]);

@@ -1,18 +1,23 @@
 import { useUser } from "../user";
 import { usePost } from "./index";
 import { useDetailType } from "../page";
+import { useEffect, useState } from "react";
 
 export function useIsPostAuthor() {
   const user = useUser();
-  if (!user) {
-    return false;
-  }
-
   const post = usePost();
   const type = useDetailType();
-  if (type === "post") {
-    return post.author?.username === user.username;
-  }
+  const [isAuthor, setIsAuthor] = useState(false);
 
-  return post?.authors?.includes(user.address);
+  useEffect(() => {
+    if (!user) {
+      setIsAuthor(false);
+    } else if (type === "post") {
+      setIsAuthor(post.author?.username === user.username);
+    } else {
+      setIsAuthor(post?.authors?.includes(user.address));
+    }
+  }, [user, type, post]);
+
+  return isAuthor;
 }

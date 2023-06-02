@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
-import useAddressVote from "next-common/utils/hooks/referenda/useAddressVote";
 import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
@@ -27,6 +26,7 @@ import useStandardVote from "components/referenda/popup/voteHooks/useStandardVot
 import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
 
 function PopupContent({
   extensionAccounts,
@@ -56,12 +56,10 @@ function PopupContent({
     signerAccount?.address
   );
 
-  const [addressVote, addressVoteIsLoading] = useAddressVote(
-    api,
-    trackId,
-    referendumIndex,
-    signerAccount?.realAddress
-  );
+  const {
+    vote: addressVote,
+    isLoading: addressVoteIsLoading,
+  } = useSubMyReferendaVote(trackId, referendumIndex, signerAccount?.realAddress);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 

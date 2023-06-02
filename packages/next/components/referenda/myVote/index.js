@@ -1,35 +1,18 @@
 import styled from "styled-components";
-import { useAddressVote } from "utils/hooks";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { usePost, useTimelineData } from "next-common/context/post";
 import StandardVoteStatus from "../popup/standardVoteStatus";
 import SplitVoteStatus from "../popup/splitVoteStatus";
 import DelegateVoteStatus from "./delegateVoteStatus";
-import extractVoteInfo from "next-common/utils/democracy/referendum";
+import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 
 const Wrapper = styled.div`
   color: ${(p) => p.theme.textPrimary};
   margin-top: 24px;
 `;
 
-export default function MyVote({ updateTime }) {
-  const detail = usePost();
-  const timeline = useTimelineData();
-  const { voteFinishedHeight } = extractVoteInfo(timeline);
-
-  const api = useBlockApi(voteFinishedHeight);
+export default function MyVote() {
   const realAddress = useRealAddress();
-
-  const referendumIndex = detail?.referendumIndex;
-
-  const [addressVote] = useAddressVote(
-    api,
-    referendumIndex,
-    realAddress,
-    updateTime
-  );
-
+  const { vote: addressVote  } = useSubMyDemocracyVote();
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
   if (!realAddress) {

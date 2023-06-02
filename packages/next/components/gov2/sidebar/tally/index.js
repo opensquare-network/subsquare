@@ -9,7 +9,6 @@ import Nay from "./values/nay";
 import Support from "./values/support";
 import FlattenedVotes from "./flattenedVotes";
 import CallsVotes from "./callsVotes";
-import { useTally } from "next-common/context/post/gov2/referendum";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
@@ -22,19 +21,11 @@ import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdC
 import MyVote from "./myVote";
 import { usePost } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
-import {
-  useApprovalPercentage,
-  useSupportPercentage,
-} from "next-common/context/post/gov2/percentage";
-import {
-  flex,
-  gap_x,
-  items_center,
-  justify_between,
-  text_primary,
-} from "next-common/styles/tailwindcss";
+import { useApprovalPercentage, useSupportPercentage } from "next-common/context/post/gov2/percentage";
+import { flex, gap_x, items_center, justify_between, text_primary } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import NestedVotes from "./nestedVotes";
+import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -70,7 +61,7 @@ export default function Gov2Tally() {
   const detail = usePost();
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
-  const tally = useTally();
+  const tally = useSubReferendaTally();
   const approvalThreshold = useApprovalThreshold();
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);

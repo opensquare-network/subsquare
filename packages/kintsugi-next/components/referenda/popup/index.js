@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import isNil from "lodash.isnil";
-import { useAddressVote, useAddressVotingBalance } from "utils/hooks";
+import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, emptyFunction } from "next-common/utils";
@@ -16,6 +16,7 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
+import useSubMyDemocracyVote from "../../../hooks/democracy/useSubMyDemocracyVote";
 
 function PopupContent({
   extensionAccounts,
@@ -39,11 +40,10 @@ function PopupContent({
     api,
     signerAccount?.address
   );
-  const [addressVote, addressVoteIsLoading] = useAddressVote(
-    api,
-    referendumIndex,
-    signerAccount?.realAddress
-  );
+  const {
+    vote: addressVote,
+    isLoading: addressVoteIsLoading,
+  } = useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const isMounted = useIsMounted();
 

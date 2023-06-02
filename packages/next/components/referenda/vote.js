@@ -20,22 +20,15 @@ import TallyInfo from "next-common/components/referenda/tally/info";
 import { emptyFunction } from "next-common/utils";
 import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import {
-  flex,
-  gap_x,
-  items_center,
-  justify_between,
-  text_primary,
-} from "next-common/styles/tailwindcss";
+import { flex, gap_x, items_center, justify_between, text_primary } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import CallsVotesPopup from "next-common/components/democracy/callsVotesPopup";
 import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
-
-import useDemocracyTally from "next-common/context/post/democracy/referendum/tally";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import useDemocracyThreshold from "next-common/context/post/democracy/referendum/threshold";
 import useIsDemocracyPassed from "next-common/context/post/democracy/referendum/result";
+import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -113,7 +106,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   const [showNestedVotesList, setShowNestedVotesList] = useState(false);
   const [showCallsVotesList, setShowCallsVotesList] = useState(false);
   const api = useApi();
-  const tally = useDemocracyTally();
+  const tally = useSubDemocracyTally();
   const isPassing = useIsDemocracyPassing();
   const threshold = useDemocracyThreshold();
   const isPassed = useIsDemocracyPassed();
@@ -127,11 +120,8 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   );
   const isVoteFinished = useIsDemocracyVoteFinished();
 
-  const [updateTime, setUpdateTime] = useState(0);
-
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
-    setUpdateTime(Date.now());
   }, [dispatch, api, referendumIndex]);
 
   let finishedResult;
@@ -189,7 +179,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
           </VotesGroupItems>
         </VotesGroup>
 
-        <MyVote updateTime={updateTime} />
+        <MyVote />
       </SecondaryCardDetail>
 
       {!isVoteFinished && (

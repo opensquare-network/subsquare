@@ -9,7 +9,8 @@ import ElectorateIcon from "../../../assets/imgs/icons/electorate.svg";
 import ValueDisplay from "../../../components/valueDisplay";
 import VotesCount from "../../../components/democracy/referendum/votesCount";
 import { useChainSettings } from "../../../context/chain";
-import useDemocracyTally from "../../../context/post/democracy/referendum/tally";
+import useSubDemocracyTally from "../../../hooks/democracy/tally";
+import useMaybeFetchElectorate from "../../../utils/hooks/referenda/useMaybeFetchElectorate";
 
 const Row = styled(Flex)`
   height: 44px;
@@ -46,7 +47,8 @@ export default function TallyInfo({
   allNay,
 }) {
   const node = useChainSettings();
-  const tally = useDemocracyTally();
+  const tally = useSubDemocracyTally();
+  const electorate = useMaybeFetchElectorate();
 
   if (!node) {
     return null;
@@ -57,7 +59,7 @@ export default function TallyInfo({
   const nAyes = toPrecision(tally?.ayes ?? 0, decimals);
   const nNays = toPrecision(tally?.nays ?? 0, decimals);
   const nTurnout = toPrecision(tally?.turnout ?? 0, decimals);
-  const nElectorate = toPrecision(tally?.electorate ?? 0, decimals);
+  const nElectorate = toPrecision(electorate ?? 0, decimals);
 
   const nTurnoutPercent = (nTurnout / nElectorate) * 100;
   const nTurnoutPercentDisplay = (
