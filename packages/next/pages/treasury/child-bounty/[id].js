@@ -8,45 +8,26 @@ import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import Claim from "components/childBounty/claim";
-import { useCallback } from "react";
-import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import { useDetailType } from "next-common/context/page";
-import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "components/childBounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
-  const type = useDetailType();
-  const postDispatch = usePostDispatch();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
     comments,
   });
 
-  const refreshPageData = useCallback(async () => {
-    fetchAndUpdatePost(
-      postDispatch,
-      type,
-      `${post?.parentBountyId}_${post?.index}`
-    );
-  }, [post, type, postDispatch]);
-
-  const onClaimFinalized = useWaitSyncBlock(
-    "Child bounty claimed",
-    refreshPageData
-  );
-
   return (
     <>
       <ChildBountyDetail onReply={focusEditor} />
-      <Claim childBounty={post?.onchainData} onFinalized={onClaimFinalized} />
+      <Claim />
       <Metadata meta={post?.onchainData?.meta} />
       <Timeline onchainData={post?.onchainData} />
       {CommentComponent}
