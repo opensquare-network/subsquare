@@ -30,7 +30,7 @@ const VoteTime = styled.div`
   }
 `;
 
-function CallsVotesList({ items, theme, loading = true }) {
+function CallsVotesList({ items, theme, loading = false }) {
   const node = useChainSettings();
 
   return (

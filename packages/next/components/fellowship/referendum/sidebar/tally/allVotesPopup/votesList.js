@@ -13,7 +13,7 @@ import {
 } from "next-common/components/styled/table";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
-function VotesList({ items, theme, loading = true }) {
+function VotesList({ items, theme, loading = false }) {
   return (
     <PopupListWrapper>
       <StyledTable>

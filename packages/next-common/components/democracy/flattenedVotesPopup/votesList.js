@@ -19,7 +19,7 @@ import { useChain, useChainSettings } from "../../../context/chain";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import Annotation from "./annotation";
 
-function VotesList({ items, theme, loading = true, tab, isOpenGov = false }) {
+function VotesList({ items, theme, loading = false, tab, isOpenGov = false }) {
   const chain = useChain();
   const node = useChainSettings();
 
