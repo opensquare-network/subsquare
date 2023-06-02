@@ -62,7 +62,7 @@ const Table = styled(StyledTable)`
 
 export default function ThresholdCurvesPopup({
   setShow = emptyFunction,
-  loading = true,
+  loading = false,
   labels = [],
   supportData = [],
   approvalData = [],
