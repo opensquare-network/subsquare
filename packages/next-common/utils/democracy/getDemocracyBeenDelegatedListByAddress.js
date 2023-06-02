@@ -1,5 +1,6 @@
 import { isSameAddress } from "..";
-import { normalizeVotingOfEntry } from "./votes/passed/common";
+import { Conviction } from "../referendumCommon";
+import { calcVotes, normalizeVotingOfEntry } from "./votes/passed/common";
 
 let votingOfEntries;
 
@@ -9,7 +10,7 @@ export async function getDemocracyBeenDelegatedListByAddress(api, address) {
   }
 
   const beenDelegated = [];
-  for (const entry of (votingOfEntries || [])) {
+  for (const entry of votingOfEntries || []) {
     const { account, voting } = normalizeVotingOfEntry(entry);
     if (!voting.isDelegating) {
       continue;
@@ -17,7 +18,15 @@ export async function getDemocracyBeenDelegatedListByAddress(api, address) {
 
     const delegating = voting.asDelegating.toJSON();
     if (isSameAddress(delegating.target, address)) {
-      beenDelegated.push({ delegator: account, ...delegating });
+      const conviction = Conviction[delegating.conviction];
+      const votes = calcVotes(delegating.balance, conviction);
+
+      beenDelegated.push({
+        delegator: account,
+        ...delegating,
+        conviction,
+        votes,
+      });
     }
   }
 
