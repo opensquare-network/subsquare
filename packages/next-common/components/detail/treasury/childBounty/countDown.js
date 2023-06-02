@@ -1,9 +1,12 @@
 import React from "react";
 import { NoticeWrapper } from "../../../styled/containers/titleContainer";
 import TreasuryCountDown from "../../../treasury/common/countdown";
+import { useSelector } from "react-redux";
+import { childBountySelector } from "../../../../store/reducers/childBountySlice";
 
 export default function ChildBountyCountDown({ data = {} }) {
-  if (data.state?.state !== "PendingPayout") {
+  const childBounty = useSelector(childBountySelector);
+  if (data.state?.state !== "PendingPayout" || !childBounty) {
     return null;
   }
 
