@@ -3,6 +3,9 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 const childBountySlice = createSlice({
   name: "childBounty",
   initialState: {
+    /**
+     * store on chain child bounty entity, should be subscribed when enter into child bounty detail page
+     */
     childBounty: null,
   },
   reducers: {
