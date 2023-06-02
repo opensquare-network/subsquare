@@ -221,7 +221,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   );
   const router = useRouter();
 
-  const showAchainableLabels = chain === Chains.kusama;
+  const showAchainableLabels = [Chains.kusama, Chains.polkadot].includes(chain);
 
   const overview = {
     ...summary,
