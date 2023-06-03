@@ -2,7 +2,6 @@ import React from "react";
 import { useOnchainData } from "../../../context/post";
 import Link from "next/link";
 import { NavigationWrapper } from "../navigation/navigators";
-import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 
 export function FellowshipReferendumLink({ referendumIndex }) {
   return (
@@ -14,7 +13,7 @@ export function FellowshipReferendumLink({ referendumIndex }) {
 
 export default function ReferendaWhiteListNavigation() {
   const onchainData = useOnchainData();
-  const { referendumIndex, fellowshipReferenda = [] } = onchainData;
+  const { fellowshipReferenda = [] } = onchainData;
 
   if (fellowshipReferenda.length <= 0) {
     return null;
@@ -23,10 +22,6 @@ export default function ReferendaWhiteListNavigation() {
   const fellowshipReferendumIndex = fellowshipReferenda[0];
 
   return <NavigationWrapper>
-    <FellowshipReferendumLink referendumIndex={ fellowshipReferendumIndex } />
-    <div>
-      <TriangleRight />
-    </div>
-    Referenda #{ referendumIndex }
+    Whitelisted by &nbsp;<FellowshipReferendumLink referendumIndex={ fellowshipReferendumIndex } />
   </NavigationWrapper>;
 }

@@ -2,7 +2,6 @@ import React from "react";
 import { useOnchainData } from "../../../context/post";
 import { NavigationWrapper } from "../navigation/navigators";
 import Link from "next/link";
-import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
@@ -15,7 +14,6 @@ export function ReferendumLink({ referendumIndex }) {
 function OpenGovReferendum({ referendumIndex }) {
   return (
     <div>
-      <TriangleRight />
       <ReferendumLink referendumIndex={ referendumIndex } />
     </div>
   );
@@ -23,14 +21,14 @@ function OpenGovReferendum({ referendumIndex }) {
 
 export default function FellowshipWhitelistNavigation() {
   const onchainData = useOnchainData();
-  const { referendumIndex, openGovReferenda = [] } = onchainData;
+  const { openGovReferenda = [] } = onchainData;
 
   if (openGovReferenda.length <= 0) {
     return null;
   }
 
   return <NavigationWrapper>
-    <div>{ `Fellowship #${ referendumIndex }` }</div>
+    Executed by &nbsp;
     {
       openGovReferenda.map(openGovIndex => <OpenGovReferendum key={openGovIndex} referendumIndex={openGovIndex}/>)
     }
