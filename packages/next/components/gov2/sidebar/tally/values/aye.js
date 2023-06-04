@@ -4,10 +4,8 @@ import AyeIcon from "next-common/assets/imgs/icons/aye.svg";
 import LoadingCount from "./loadingCount";
 import SymbolValue from "./symbolValue";
 import { BorderedRow } from "next-common/components/referenda/tally/styled";
-import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
 
-export default function Aye() {
-  const tally = useSubReferendaTally();
+export default function Aye({ value = 0 }) {
   const { allAye = [] } = useSelector(votesSelector);
 
   return (
@@ -16,7 +14,7 @@ export default function Aye() {
         <AyeIcon />
         Aye
       </LoadingCount>
-      <SymbolValue value={tally?.ayes} />
+      <SymbolValue value={value} />
     </BorderedRow>
   );
 }

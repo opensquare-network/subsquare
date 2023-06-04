@@ -5,7 +5,6 @@ import Percentage from "next-common/components/referenda/tally/support/percentag
 import styled from "styled-components";
 import { p_14_medium } from "next-common/styles/componentCss";
 import { m_l, text_tertiary } from "next-common/styles/tailwindcss";
-import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
 
 const PercentageWrapper = styled.span`
   ${p_14_medium};
@@ -13,8 +12,7 @@ const PercentageWrapper = styled.span`
   ${m_l(4)};
 `;
 
-export default function Support({ supportPerbill = 0 }) {
-  const tally = useSubReferendaTally();
+export default function Support({ supportPerbill = 0, value = 0 }) {
 
   return (
     <BorderedRow>
@@ -25,7 +23,7 @@ export default function Support({ supportPerbill = 0 }) {
           (<Percentage perbill={supportPerbill} />)
         </PercentageWrapper>
       </Header>
-      <SymbolValue value={tally?.support} />
+      <SymbolValue value={value} />
     </BorderedRow>
   );
 }

@@ -91,12 +91,12 @@ export default function Gov2Tally() {
         percentage={approvalThreshold}
       />
 
-      <Aye />
-      <Nay />
+      <Aye value={tally?.ayes} />
+      <Nay value={tally?.nays} />
 
       <SupportBar supportPerbill={supportPerbill} />
 
-      <Support supportPerbill={supportPerbill} />
+      <Support supportPerbill={supportPerbill} value={tally?.support} />
       <Issuance issuance={issuance} />
 
       <VotesGroup>

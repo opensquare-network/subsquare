@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const name = "referendaReferendumTally";
 
+// Used for referenda or fellowship referenda referendum detail page tally data.
 const referendaReferendumSlice = createSlice({
   name,
   initialState: {
