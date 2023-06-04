@@ -16,9 +16,25 @@ import useSubFellowshipTally from "next-common/hooks/fellowship/useSubFellowship
 import useFellowshipTally from "next-common/hooks/fellowship/useFellowshipTally";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import useFetchMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
+import CurveIconOrigin from "next-common/components/icons/curve";
+import { useState } from "react";
+import ThresholdCurvesGov2TallyPopup from "next-common/components/charts/thresholdCurve/gov2TallyPopup";
+import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
+import { useTrack } from "next-common/context/post/gov2/track";
+import { useApprovalPercentage, useSupportPercentage } from "next-common/context/post/gov2/percentage";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
+`;
+
+const CurveIcon = styled(CurveIconOrigin)`
+  cursor: pointer;
+
+  &:hover {
+    path {
+      stroke: ${(p) => p.theme.textSecondary};
+    }
+  }
 `;
 
 const Footer = styled.div`
@@ -42,10 +58,19 @@ export default function FellowshipTally() {
     votingFinishHeight
   );
   const supportPerbill = useFellowshipPerbill();
+  const supportPercentage = useSupportPercentage(supportPerbill);
+
+  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] = useState(false);
+  const track = useTrack();
+  const { labels, supportData, approvalData } = useGov2ThresholdCurveData(track);
+  const approvalPercentage = useApprovalPercentage(tally);
 
   return (
     <SecondaryCardDetail>
-      <Title>Tally</Title>
+      <Title>
+        Tally
+        <CurveIcon role="button" onClick={() => setShowThresholdCurveDetailPopup(true)} />
+      </Title>
 
       <VoteBar
         tally={tally}
@@ -62,6 +87,18 @@ export default function FellowshipTally() {
       <Footer>
         <AllVotes votes={votes} isLoadingVotes={isLoadingVotes} />
       </Footer>
+
+      {showThresholdCurveDetailPopup && (
+        <ThresholdCurvesGov2TallyPopup
+          labels={labels}
+          supportData={supportData}
+          supportPerbill={supportPerbill}
+          approvalData={approvalData}
+          setShow={setShowThresholdCurveDetailPopup}
+          supportPercentage={supportPercentage}
+          approvalPercentage={approvalPercentage}
+        />
+      )}
     </SecondaryCardDetail>
   );
 }

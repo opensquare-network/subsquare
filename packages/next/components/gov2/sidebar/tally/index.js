@@ -65,8 +65,7 @@ export default function Gov2Tally() {
   useSubActiveIssuance();
   const tally = useSubReferendaTally();
   const approvalThreshold = useApprovalThreshold();
-  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
-    useState(false);
+  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] = useState(false);
   const supportPerbill = useSupportPerbill(tally);
   const supportPercentage = useSupportPercentage(supportPerbill);
   const approvalPercentage = useApprovalPercentage(tally);
