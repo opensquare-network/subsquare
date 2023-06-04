@@ -5,6 +5,9 @@ import useApi from "../../../utils/hooks/useApi";
 import { useTrack } from "../gov2/track";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
 import isNil from "lodash.isnil";
+import { useOnchainData } from "../index";
+import { useDispatch } from "react-redux";
+import { clearFellowshipMaxVoters, setFellowshipMaxVoters } from "../../../store/reducers/fellowship/maxVoters";
 
 async function queryMaxVoters(api, trackId, votingFinishHeight) {
   let blockApi = api;
@@ -17,12 +20,23 @@ async function queryMaxVoters(api, trackId, votingFinishHeight) {
   return count.toNumber();
 }
 
-export default function useMaxVoters() {
+export default function useFetchMaxVoters() {
   const { id: trackId } = useTrack();
   const pageType = useDetailType();
-  const [maxVoters, setMaxVoters] = useState(0);
+  const onchain = useOnchainData();
+  const tally = onchain.tally || onchain?.info?.tally;
+  const [maxVoters, setMaxVoters] = useState(tally.electorate || 0);
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const api = useApi();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setFellowshipMaxVoters(maxVoters));
+
+    return () => {
+      dispatch(clearFellowshipMaxVoters());
+    };
+  }, [maxVoters]);
 
   if (detailPageCategory.FELLOWSHIP_REFERENDUM !== pageType) {
     throw new Error(

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import useApi from "../../utils/hooks/useApi";
+import { useDispatch } from "react-redux";
+import { clearFellowshipReferendumTally, setFellowshipReferendumTally } from "../../store/reducers/fellowship/tally";
 
 export default function useSubFellowshipTally() {
   const api = useApi();
@@ -11,6 +13,15 @@ export default function useSubFellowshipTally() {
   const { referendumIndex } = onchain;
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const isMounted = useIsMounted();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setFellowshipReferendumTally(tally));
+
+    return () => {
+      dispatch(clearFellowshipReferendumTally());
+    };
+  }, [tally]);
 
   useEffect(() => {
     if (!api || votingFinishHeight || !api.query.fellowshipReferenda) {

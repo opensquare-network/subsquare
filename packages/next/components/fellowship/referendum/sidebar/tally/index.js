@@ -12,8 +12,10 @@ import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowship
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
 import AllVotes from "./allVotes";
-import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 import useSubFellowshipTally from "next-common/hooks/fellowship/useSubFellowshipTally";
+import useFellowshipTally from "next-common/hooks/fellowship/useFellowshipTally";
+import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
+import useFetchMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -28,7 +30,9 @@ const Footer = styled.div`
 `;
 
 export default function FellowshipTally() {
-  const tally = useSubFellowshipTally();
+  useSubFellowshipTally();
+  useFetchMaxVoters();
+  const tally = useFellowshipTally();
   const approvalThreshold = useApprovalThreshold();
 
   const votingFinishHeight = useReferendumVotingFinishHeight();
@@ -37,7 +41,7 @@ export default function FellowshipTally() {
     referendumIndex,
     votingFinishHeight
   );
-  const supportPerbill = useSupportPerbill();
+  const supportPerbill = useFellowshipPerbill();
 
   return (
     <SecondaryCardDetail>
