@@ -67,7 +67,7 @@ export default function Gov2Tally() {
     useState(false);
   const supportPerbill = useSupportPerbill();
   const supportPercentage = useSupportPercentage();
-  const approvalPercentage = useApprovalPercentage();
+  const approvalPercentage = useApprovalPercentage(tally);
 
   const { issuance } = useIssuance();
 

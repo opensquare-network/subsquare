@@ -13,7 +13,7 @@ import useReferendumVotingFinishHeight from "next-common/context/post/referenda/
 import { useOnchainData } from "next-common/context/post";
 import AllVotes from "./allVotes";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
-import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
+import useSubFellowshipTally from "next-common/hooks/fellowship/useSubFellowshipTally";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -28,7 +28,7 @@ const Footer = styled.div`
 `;
 
 export default function FellowshipTally() {
-  const tally = useSubReferendaTally();
+  const tally = useSubFellowshipTally();
   const approvalThreshold = useApprovalThreshold();
 
   const votingFinishHeight = useReferendumVotingFinishHeight();
@@ -48,11 +48,11 @@ export default function FellowshipTally() {
         threshold="percentage"
         percentage={approvalThreshold}
       />
-      <Aye />
-      <Nay />
+      <Aye value={tally.ayes} />
+      <Nay value={tally.nays} />
 
       <SupportBar supportPerbill={supportPerbill} />
-      <BareAye />
+      <BareAye value={tally.bareAyes} />
       <MaxVoters />
 
       <Footer>

@@ -2,11 +2,8 @@ import BigNumber from "bignumber.js";
 import isNil from "lodash.isnil";
 import { useMemo } from "react";
 import useSupportPerbill from "../../../utils/gov2/tally/useSupportPerbill";
-import useSubReferendaTally from "../../../hooks/referenda/useSubReferendaTally";
 
-export function useApprovalPercentage() {
-  const tally = useSubReferendaTally();
-
+export function useApprovalPercentage(tally) {
   return useMemo(() => {
     if (!tally || isNil(tally.ayes) || isNil(tally.nays)) {
       return;
