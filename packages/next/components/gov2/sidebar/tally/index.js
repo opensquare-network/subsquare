@@ -10,35 +10,22 @@ import Support from "./values/support";
 import FlattenedVotes from "./flattenedVotes";
 import CallsVotes from "./callsVotes";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
-import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
-import CurveIconOrigin from "next-common/components/icons/curve";
-import ThresholdCurvesGov2TallyPopup from "next-common/components/charts/thresholdCurve/gov2TallyPopup";
-import { useState } from "react";
 import { useTrack } from "next-common/context/post/gov2/track";
-import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import MyVote from "./myVote";
 import { usePost } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
-import { useApprovalPercentage, useSupportPercentage } from "next-common/context/post/gov2/percentage";
 import { flex, gap_x, items_center, justify_between, text_primary } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import NestedVotes from "./nestedVotes";
 import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
+import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
+import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
+import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
-`;
-
-const CurveIcon = styled(CurveIconOrigin)`
-  cursor: pointer;
-
-  &:hover {
-    path {
-      stroke: ${(p) => p.theme.textSecondary};
-    }
-  }
 `;
 
 const VotesGroup = styled.div`
@@ -61,29 +48,19 @@ export default function Gov2Tally() {
   const detail = usePost();
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
+  useSubActiveIssuance();
   const tally = useSubReferendaTally();
   const approvalThreshold = useApprovalThreshold();
-  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
-    useState(false);
-  const supportPerbill = useSupportPerbill();
-  const supportPercentage = useSupportPercentage();
-  const approvalPercentage = useApprovalPercentage();
+  const supportPerbill = useSupportPerbill(tally);
 
-  const { issuance } = useIssuance();
-
+  const issuance = useReferendaIssuance();
   const track = useTrack();
-  const { labels, supportData, approvalData } =
-    useGov2ThresholdCurveData(track);
-
-  function showThresholdCurveDetail() {
-    setShowThresholdCurveDetailPopup(true);
-  }
 
   return (
     <SecondaryCardDetail>
       <Title>
         Tally
-        <CurveIcon role="button" onClick={showThresholdCurveDetail} />
+        <CurvePopup track={track} tally={tally} supportPerbill={supportPerbill} />
       </Title>
       <VoteBar
         tally={tally}
@@ -91,12 +68,12 @@ export default function Gov2Tally() {
         percentage={approvalThreshold}
       />
 
-      <Aye />
-      <Nay />
+      <Aye value={tally?.ayes} />
+      <Nay value={tally?.nays} />
 
       <SupportBar supportPerbill={supportPerbill} />
 
-      <Support supportPerbill={supportPerbill} />
+      <Support supportPerbill={supportPerbill} value={tally?.support} />
       <Issuance issuance={issuance} />
 
       <VotesGroup>
@@ -109,18 +86,6 @@ export default function Gov2Tally() {
       </VotesGroup>
 
       <MyVote />
-
-      {showThresholdCurveDetailPopup && (
-        <ThresholdCurvesGov2TallyPopup
-          labels={labels}
-          supportData={supportData}
-          supportPerbill={supportPerbill}
-          approvalData={approvalData}
-          setShow={setShowThresholdCurveDetailPopup}
-          supportPercentage={supportPercentage}
-          approvalPercentage={approvalPercentage}
-        />
-      )}
     </SecondaryCardDetail>
   );
 }

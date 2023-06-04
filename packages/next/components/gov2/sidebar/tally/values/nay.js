@@ -4,11 +4,9 @@ import NayIcon from "next-common/assets/imgs/icons/nay.svg";
 import LoadingCount from "./loadingCount";
 import SymbolValue from "./symbolValue";
 import { Row } from "next-common/components/referenda/tally/styled";
-import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
 
-export default function Nay() {
+export default function Nay({ value = 0 }) {
   const { allNay = [] } = useSelector(votesSelector);
-  const tally = useSubReferendaTally();
 
   return (
     <Row>
@@ -16,7 +14,7 @@ export default function Nay() {
         <NayIcon />
         Nay
       </LoadingCount>
-      <SymbolValue value={tally?.nays} />
+      <SymbolValue value={value} />
     </Row>
   );
 }

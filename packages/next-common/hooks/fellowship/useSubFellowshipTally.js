@@ -1,25 +1,35 @@
-import useApi from "../../utils/hooks/useApi";
 import { useOnchainData } from "../../context/post";
 import { useEffect, useState } from "react";
 import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
 import useIsMounted from "../../utils/hooks/useIsMounted";
+import useApi from "../../utils/hooks/useApi";
+import { useDispatch } from "react-redux";
+import { clearFellowshipReferendumTally, setFellowshipReferendumTally } from "../../store/reducers/fellowship/tally";
 
-export default function useSubReferendaTally() {
+export default function useSubFellowshipTally() {
   const api = useApi();
   const onchain = useOnchainData();
-  const { referendumIndex } = onchain;
-
   const [tally, setTally] = useState(onchain.tally || onchain?.info?.tally);
+  const { referendumIndex } = onchain;
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const isMounted = useIsMounted();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!api || votingFinishHeight || !api.query.referenda) {
+    dispatch(setFellowshipReferendumTally(tally));
+
+    return () => {
+      dispatch(clearFellowshipReferendumTally());
+    };
+  }, [tally]);
+
+  useEffect(() => {
+    if (!api || votingFinishHeight || !api.query.fellowshipReferenda) {
       return;
     }
 
     let unsub;
-    api.query.referenda.referendumInfoFor(referendumIndex, optionalInfo => {
+    api.query.fellowshipReferenda.referendumInfoFor(referendumIndex, optionalInfo => {
       if (!isMounted.current || !optionalInfo.isSome) {
         return;
       }

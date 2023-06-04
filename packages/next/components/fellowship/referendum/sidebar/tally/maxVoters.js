@@ -1,10 +1,6 @@
-import {
-  Header,
-  Row,
-  Value,
-} from "next-common/components/referenda/tally/styled";
+import { Header, Row, Value } from "next-common/components/referenda/tally/styled";
 import TurnoutIcon from "next-common/assets/imgs/icons/turnout.svg";
-import useMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
+import useMaxVoters from "next-common/hooks/fellowship/useMaxVoters";
 
 export default function MaxVoters() {
   const maxVoters = useMaxVoters();

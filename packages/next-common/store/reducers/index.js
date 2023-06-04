@@ -8,6 +8,8 @@ import gov2ReferendumReducer from "./gov2ReferendumSlice";
 import cmdkReducer from "./cmdkSlice";
 import userReducer from "./userSlice";
 import childBountyReducer from "./childBountySlice";
+import fellowship from "./fellowship";
+import referenda from "./referenda";
 
 export default combineReducers({
   toast: toastReducer,
@@ -18,4 +20,6 @@ export default combineReducers({
   cmdk: cmdkReducer,
   user: userReducer,
   childBounty: childBountyReducer,
+  ...fellowship,
+  ...referenda,
 });
