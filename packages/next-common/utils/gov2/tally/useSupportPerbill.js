@@ -1,34 +1,16 @@
 import { useDetailType } from "../../../context/page";
-import { detailPageCategory } from "../../consts/business/category";
-import useReferendaIssuance from "./useReferendaIssuance";
 import { useEffect, useState } from "react";
-import BigNumber from "bignumber.js";
-import useSubReferendaTally from "../../../hooks/referenda/useSubReferendaTally";
+import useReferendaIssuance from "../../../hooks/referenda/useReferendaIssuance";
+import calcPerbill from "../../math/calcPerbill";
 
 // support/issuance perbill value
-export default function useSupportPerbill() {
-  const tally = useSubReferendaTally();
+export default function useSupportPerbill(tally) {
   const issuance = useReferendaIssuance();
   const pageType = useDetailType();
-  const [perbill, setPerbill] = useState();
+  const [perbill, setPerbill] = useState(calcPerbill(tally?.support, issuance));
 
   useEffect(() => {
-    if (!issuance) {
-      return;
-    }
-
-    let support;
-    if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
-      support = tally?.bareAyes;
-    } else if (detailPageCategory.GOV2_REFERENDUM === pageType) {
-      support = tally?.support;
-    }
-
-    const perbill = new BigNumber(support)
-      .div(issuance)
-      .multipliedBy(Math.pow(10, 9))
-      .toNumber();
-    setPerbill(perbill);
+    setPerbill(calcPerbill(tally?.support, issuance));
   }, [tally, pageType, issuance]);
 
   return perbill;

@@ -1,22 +1,8 @@
 import useApi from "../../utils/hooks/useApi";
 import { useOnchainData } from "../../context/post";
-import { useDetailType } from "../../context/page";
 import { useEffect, useState } from "react";
 import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import { detailPageCategory } from "../../utils/consts/business/category";
-
-function usePalletName() {
-  const pageType = useDetailType();
-
-  if (detailPageCategory.GOV2_REFERENDUM === pageType) {
-    return "referenda";
-  } else if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
-    return "fellowshipReferenda";
-  } else {
-    return null;
-  }
-}
 
 export default function useSubReferendaTally() {
   const api = useApi();
@@ -26,16 +12,14 @@ export default function useSubReferendaTally() {
   const [tally, setTally] = useState(onchain.tally || onchain?.info?.tally);
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const isMounted = useIsMounted();
-  const pallet = usePalletName();
 
   useEffect(() => {
-    if (!api || votingFinishHeight || !api.query[pallet]) {
+    if (!api || votingFinishHeight || !api.query.referenda) {
       return;
     }
 
     let unsub;
-    api.query[pallet].referendumInfoFor(referendumIndex, optionalInfo => {
-      console.log("query", optionalInfo.toJSON());
+    api.query.referenda.referendumInfoFor(referendumIndex, optionalInfo => {
       if (!isMounted.current || !optionalInfo.isSome) {
         return;
       }
@@ -55,7 +39,7 @@ export default function useSubReferendaTally() {
         unsub();
       }
     };
-  }, [api, votingFinishHeight, pallet, referendumIndex, isMounted]);
+  }, [api, votingFinishHeight, referendumIndex, isMounted]);
 
   return tally;
 }

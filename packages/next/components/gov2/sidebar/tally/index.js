@@ -10,7 +10,6 @@ import Support from "./values/support";
 import FlattenedVotes from "./flattenedVotes";
 import CallsVotes from "./callsVotes";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
-import useIssuance from "next-common/utils/gov2/useIssuance";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
 import CurveIconOrigin from "next-common/components/icons/curve";
@@ -26,6 +25,8 @@ import { flex, gap_x, items_center, justify_between, text_primary } from "next-c
 import { p_12_medium } from "next-common/styles/componentCss";
 import NestedVotes from "./nestedVotes";
 import useSubReferendaTally from "next-common/hooks/referenda/useSubReferendaTally";
+import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
+import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -61,15 +62,16 @@ export default function Gov2Tally() {
   const detail = usePost();
   useFetchVotes(detail?.onchainData);
   useFetchVoteExtrinsics(detail?.onchainData);
+  useSubActiveIssuance();
   const tally = useSubReferendaTally();
   const approvalThreshold = useApprovalThreshold();
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);
-  const supportPerbill = useSupportPerbill();
-  const supportPercentage = useSupportPercentage();
+  const supportPerbill = useSupportPerbill(tally);
+  const supportPercentage = useSupportPercentage(supportPerbill);
   const approvalPercentage = useApprovalPercentage(tally);
 
-  const { issuance } = useIssuance();
+  const issuance = useReferendaIssuance();
 
   const track = useTrack();
   const { labels, supportData, approvalData } =

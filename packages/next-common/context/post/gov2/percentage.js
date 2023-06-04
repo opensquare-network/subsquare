@@ -1,7 +1,6 @@
 import BigNumber from "bignumber.js";
 import isNil from "lodash.isnil";
 import { useMemo } from "react";
-import useSupportPerbill from "../../../utils/gov2/tally/useSupportPerbill";
 
 export function useApprovalPercentage(tally) {
   return useMemo(() => {
@@ -14,9 +13,7 @@ export function useApprovalPercentage(tally) {
   }, [tally]);
 }
 
-export function useSupportPercentage() {
-  const supportPerbill = useSupportPerbill();
-
+export function useSupportPercentage(supportPerbill) {
   return useMemo(() => {
     if (supportPerbill) {
       return new BigNumber(supportPerbill).div(Math.pow(10, 9)).toNumber();
