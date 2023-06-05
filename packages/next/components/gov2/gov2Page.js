@@ -40,6 +40,7 @@ export default function Gov2Page({
         summary={summary}
         listTitle={listTitle}
         listTitleExtra={listTitleExtra}
+        listTitleCount={posts.total}
       />
     </HomeLayout>
   );
