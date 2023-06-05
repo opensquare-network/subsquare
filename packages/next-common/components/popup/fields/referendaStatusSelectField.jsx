@@ -36,15 +36,16 @@ const options = [
     label: <Label label="All status" />,
   },
   ...[
-    gov2State.Preparing,
-    gov2State.Queueing,
     gov2State.Deciding,
     gov2State.Confirming,
+    gov2State.Preparing,
+    gov2State.Queueing,
+    gov2State.Approved,
     gov2State.Executed,
     gov2State.Rejected,
-    gov2State.Killed,
-    gov2State.Cancelled,
     gov2State.TimedOut,
+    gov2State.Cancelled,
+    gov2State.Killed,
   ].map((label) => {
     return {
       label: <Label label={label} />,
@@ -69,6 +70,7 @@ function Label({ label }) {
     [gov2State.Deciding]: theme.secondaryBlue500,
     [gov2State.Confirming]: theme.secondaryGreen500,
     [gov2State.Executed]: theme.secondaryGreen500,
+    [gov2State.Approved]: theme.secondaryGreen500,
     [gov2State.Rejected]: theme.secondaryRed500,
     [gov2State.Killed]: theme.secondaryRed500,
     [gov2State.Cancelled]: theme.secondaryRed500,
