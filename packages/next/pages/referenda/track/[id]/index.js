@@ -13,9 +13,22 @@ import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 import { to404 } from "next-common/utils/serverSideUtil";
 import StatisticLinkButton from "next-common/components/statisticsLinkButton";
+import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
+import { useRouter } from "next/router";
 
 export default withLoginUserRedux(
-  ({ track, posts, title, tracks, fellowshipTracks, summary, period }) => {
+  ({
+    track,
+    posts,
+    title,
+    tracks,
+    fellowshipTracks,
+    summary,
+    period,
+    status,
+  }) => {
+    const router = useRouter();
+
     const summaryComponent = (
       <Gov2TrackSummary
         summary={summary}
@@ -24,6 +37,19 @@ export default withLoginUserRedux(
       />
     );
 
+    function onStatusChange(item) {
+      const q = router.query;
+
+      delete q.page;
+      if (item.value) {
+        q.status = item.value;
+      } else {
+        delete q.status;
+      }
+
+      router.replace({ query: q });
+    }
+
     return (
       <Gov2Page
         posts={posts}
@@ -31,14 +57,25 @@ export default withLoginUserRedux(
         tracks={tracks}
         fellowshipTracks={fellowshipTracks}
         summary={summaryComponent}
-        topRightCorner={<StatisticLinkButton href={`/referenda/track/${track.id}/statistics`} />}
+        topRightCorner={
+          <StatisticLinkButton
+            href={`/referenda/track/${track.id}/statistics`}
+          />
+        }
+        listTitle="List"
+        listTitleExtra={
+          <ReferendaStatusSelectField
+            value={status}
+            onChange={onStatusChange}
+          />
+        }
       />
     );
   }
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page = 1, page_size: pageSize = 50, id } = context.query;
+  const { page = 1, page_size: pageSize = 50, id, status = "" } = context.query;
 
   const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
   const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(
@@ -58,6 +95,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
         page,
         pageSize,
+        status,
       }),
       ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
       ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
@@ -72,6 +110,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},
       period: period ?? {},
+      status,
     },
   };
 });
