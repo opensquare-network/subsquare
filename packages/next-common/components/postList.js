@@ -6,6 +6,14 @@ import { TitleContainer } from "./styled/containers/titleContainer";
 import { EmptyList } from "./emptyList";
 import { pageHomeLayoutMainContentWidth } from "../utils/constants";
 import Link from "next/link";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+  text_primary,
+} from "next-common/styles/tailwindcss";
+import { p_16_bold } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -28,6 +36,21 @@ const TitleLink = styled.a`
   }
 `;
 
+const ListTitleGroup = styled.div`
+  margin: 16px 0;
+  padding-top: 8px;
+  ${flex};
+  ${justify_between};
+  ${items_center};
+`;
+
+const ListTitle = styled.h3`
+  margin: 0;
+  ${gap_x(8)};
+  ${text_primary};
+  ${p_16_bold};
+`;
+
 export default function PostList({
   title,
   category,
@@ -36,6 +59,8 @@ export default function PostList({
   pagination,
   topRightCorner = null,
   summary,
+  listTitle = "",
+  listTitleExtra,
 }) {
   return (
     <Wrapper>
@@ -46,6 +71,14 @@ export default function PostList({
         {topRightCorner}
       </TitleContainer>
       {summary}
+
+      {listTitle && (
+        <ListTitleGroup>
+          <ListTitle>{listTitle}</ListTitle>
+          {listTitleExtra}
+        </ListTitleGroup>
+      )}
+
       {items?.length > 0 ? (
         items.map((item, index) => (
           <Post
