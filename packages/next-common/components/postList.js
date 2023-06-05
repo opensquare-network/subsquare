@@ -68,6 +68,7 @@ export default function PostList({
   summary,
   listTitle = "",
   listTitleExtra,
+  listTitleCount = null,
 }) {
   return (
     <Wrapper>
@@ -83,7 +84,9 @@ export default function PostList({
         <ListTitleGroup>
           <ListTitle>
             {listTitle}
-            {!!items?.length && <ListTitleCount>{items.length}</ListTitleCount>}
+            {!!listTitleCount && (
+              <ListTitleCount>{listTitleCount}</ListTitleCount>
+            )}
           </ListTitle>
           {listTitleExtra}
         </ListTitleGroup>
