@@ -87,7 +87,7 @@ const Options = styled(NeutralPanel)`
   width: 100%;
   z-index: 1;
   color: ${(props) => props.theme.textPrimary};
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid ${(props) => props.theme.grey200Border};
 
   ${(p) =>
     p.small &&
