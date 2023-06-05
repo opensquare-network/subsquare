@@ -13,7 +13,6 @@ import styled from "styled-components";
 
 const StyledSelect = styled(Select)`
   width: 160px;
-  height: 32px;
 `;
 
 const LabelWrapper = styled.div`
@@ -58,7 +57,9 @@ export default function ReferendaStatusSelectField({
   value = "",
   onChange = noop,
 }) {
-  return <StyledSelect options={options} value={value} onChange={onChange} />;
+  return (
+    <StyledSelect options={options} value={value} onChange={onChange} small />
+  );
 }
 
 function Label({ label }) {
