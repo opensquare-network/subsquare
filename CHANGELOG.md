@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Improve fellowship and referenda navigation components to better show their correlation.
 - Use subscription way to fetch referenda referendum tally instead of one time query and refactor related components.
 - Add referenda filter components so user can filter referenda by their status.
+- Show curve chart on fellowship referendum detail page.
 
 ## 3.2.0
 
