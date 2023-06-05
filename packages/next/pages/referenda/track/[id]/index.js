@@ -20,7 +20,7 @@ export default withLoginUserRedux(
       <Gov2TrackSummary
         summary={summary}
         period={period}
-        titleExtra={`#${period.id}`}
+        titleExtra={`[${period.id}]`}
       />
     );
 
