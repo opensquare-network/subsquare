@@ -65,6 +65,7 @@ function Select({
   options = [],
   onChange = () => {},
   maxDisplayItem,
+  className = "",
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
@@ -84,7 +85,12 @@ function Select({
   );
 
   return (
-    <SelectWrapper ref={ref} disabled={disabled} onClick={handleShowOptions}>
+    <SelectWrapper
+      className={className}
+      ref={ref}
+      disabled={disabled}
+      onClick={handleShowOptions}
+    >
       <SelectInner>
         <span>{displayValue}</span>
         <Caret down={!showOptions} />
