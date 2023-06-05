@@ -25,7 +25,6 @@ import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdC
 import FlexCenter from "next-common/components/styled/flexCenter";
 import Grid from "next-common/components/styled/grid";
 import VStack from "next-common/components/styled/vStack";
-import TextTertiary from "next-common/components/styled/paragraph/textTertiary";
 import Flex from "next-common/components/styled/flex";
 
 // used in `Divider` and `ThresholdCurvesChart`
@@ -110,7 +109,6 @@ export default function Gov2TrackSummary({
   if (!summaryTitle) {
     summaryTitle = <TitleWrapper>
       Origin: {origin}
-      <TextTertiary title="Total referenda">{summary.total}</TextTertiary>
     </TitleWrapper>;
   }
   titleExtra = titleExtra ?? `${id}`;
