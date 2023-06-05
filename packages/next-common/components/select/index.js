@@ -51,6 +51,12 @@ const OptionsWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
 
   ${(p) =>
+    p.theme.isDark &&
+    css`
+      border: 1px solid ${p.theme.grey200Border};
+    `}
+
+  ${(p) =>
     p.maxDisplayItem &&
     css`
       max-height: ${selectorHeight * p.maxDisplayItem}px;
