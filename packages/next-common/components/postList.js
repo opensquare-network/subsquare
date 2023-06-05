@@ -12,8 +12,9 @@ import {
   items_center,
   justify_between,
   text_primary,
+  text_tertiary,
 } from "next-common/styles/tailwindcss";
-import { p_16_bold } from "next-common/styles/componentCss";
+import { p_14_medium, p_16_bold } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -51,6 +52,12 @@ const ListTitle = styled.h3`
   ${p_16_bold};
 `;
 
+const ListTitleCount = styled.small`
+  ${text_tertiary};
+  ${p_14_medium};
+  margin-left: 8px;
+`;
+
 export default function PostList({
   title,
   category,
@@ -74,7 +81,10 @@ export default function PostList({
 
       {listTitle && (
         <ListTitleGroup>
-          <ListTitle>{listTitle}</ListTitle>
+          <ListTitle>
+            {listTitle}
+            {items?.length && <ListTitleCount>{items.length}</ListTitleCount>}
+          </ListTitle>
           {listTitleExtra}
         </ListTitleGroup>
       )}
