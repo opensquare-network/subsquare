@@ -83,7 +83,7 @@ export default function PostList({
         <ListTitleGroup>
           <ListTitle>
             {listTitle}
-            {items?.length && <ListTitleCount>{items.length}</ListTitleCount>}
+            {!!items?.length && <ListTitleCount>{items.length}</ListTitleCount>}
           </ListTitle>
           {listTitleExtra}
         </ListTitleGroup>
