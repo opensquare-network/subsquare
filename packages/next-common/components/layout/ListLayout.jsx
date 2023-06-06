@@ -1,6 +1,6 @@
 export default function ListLayout({ children, footer, nav, header }) {
   return (
-    <div className="min-h-screen flex bg-neutral-100 max-sm:block">
+    <div className="min-h-screen flex bg-neutral100 max-sm:block">
       <section className="sticky top-0 max-h-screen bg-teal-200">
         <nav>{nav || "navigation"}</nav>
       </section>
