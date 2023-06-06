@@ -1,10 +1,8 @@
-import isNil from "lodash.isnil";
 import { usePreferredColorScheme } from "next-common/utils/hooks/usePreferredColorScheme";
 import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useLayoutEffect,
   useState,
 } from "react";
@@ -18,14 +16,6 @@ const ThemeModeContext = createContext(null);
 
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
   const [themeMode, setThemeMode] = useState(defaultThemeMode);
-  const preferred = usePreferredColorScheme();
-
-  useEffect(() => {
-    if (!isNil(defaultThemeMode)) {
-      return;
-    }
-    setThemeMode(preferred);
-  }, [preferred]);
 
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
@@ -63,12 +53,15 @@ function ThemeValueProvider({ children }) {
 
 export function useThemeMode() {
   const { themeMode } = useContext(ThemeModeContext);
-  return themeMode || "light";
+  return themeMode || "system";
 }
 
 export function useThemeSetting() {
   const themeMode = useThemeMode();
-  return themeMode === "dark" ? dark : light;
+  const preferredColorScheme = usePreferredColorScheme();
+  const mode = themeMode === "system" ? preferredColorScheme : themeMode;
+
+  return mode === "dark" ? dark : light;
 }
 
 export function useSetThemeMode() {
