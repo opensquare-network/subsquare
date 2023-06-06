@@ -28,9 +28,9 @@ export default function SEO({ title, desc, ogImage }) {
         images,
       }}
       twitter={{
-        handle: "@handle",
         site: "@site",
-        cardType: "summary_large_image",
+        title: title ?? "SubSquare",
+        cardType: "summary",
         image: images[0]?.url,
       }}
     />

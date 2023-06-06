@@ -256,12 +256,12 @@ const buildTags = (config) => {
       );
     }
 
-    if (config.twitter.handle) {
+    if (config.twitter.title) {
       tagsToRender.push(
         <meta
-          key="twitter:creator"
-          name="twitter:creator"
-          content={config.twitter.handle}
+          key="twitter:title"
+          name="twitter:title"
+          content={config.twitter.title}
         />,
       );
     }
