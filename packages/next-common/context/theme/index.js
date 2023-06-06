@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import dark from "../../components/styled/theme/dark";
 import light from "../../components/styled/theme/light";
 import { CACHE_KEY } from "../../utils/constants";
@@ -33,10 +33,21 @@ export default function ThemeModeProvider({ children, defaultThemeMode }) {
   );
 }
 
+const GlobalThemeVariables = createGlobalStyle`
+  :root {${(p) => p.variables}}
+`;
 function ThemeValueProvider({ children }) {
   const theme = useThemeSetting();
+  const variables = Object.keys(theme)
+    .map((k) => `--${k}: ${theme[k]}`)
+    .join(";");
 
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalThemeVariables variables={variables} />
+      {children}
+    </ThemeProvider>
+  );
 }
 
 export function useThemeMode() {
