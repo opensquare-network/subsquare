@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useState,
 } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -37,10 +38,20 @@ const GlobalThemeVariables = createGlobalStyle`
   :root {${(p) => p.variables}}
 `;
 function ThemeValueProvider({ children }) {
+  const themeMode = useThemeMode();
   const theme = useThemeSetting();
   const variables = Object.keys(theme)
     .map((k) => `--${k}: ${theme[k]}`)
     .join(";");
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    if (themeMode === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [themeMode]);
 
   return (
     <ThemeProvider theme={theme}>
