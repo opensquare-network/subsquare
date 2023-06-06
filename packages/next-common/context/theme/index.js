@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { ThemeProvider } from "styled-components";
 import dark from "../../components/styled/theme/dark";
 import light from "../../components/styled/theme/light";
 import { CACHE_KEY } from "../../utils/constants";
@@ -27,9 +28,15 @@ export default function ThemeModeProvider({ children, defaultThemeMode }) {
 
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
-      {children}
+      <ThemeValueProvider>{children}</ThemeValueProvider>
     </ThemeModeContext.Provider>
   );
+}
+
+function ThemeValueProvider({ children }) {
+  const theme = useThemeSetting();
+
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 
 export function useThemeMode() {
