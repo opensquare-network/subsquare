@@ -27,7 +27,7 @@ module.exports = {
       },
     },
     // TODO: v2, disable all tw colors
-    colors: {},
+    // colors: {},
   },
   plugins: [],
 };
