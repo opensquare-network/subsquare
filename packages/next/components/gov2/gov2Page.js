@@ -13,6 +13,8 @@ export default function Gov2Page({
   fellowshipTracks,
   summary,
   topRightCorner,
+  listTitle,
+  listTitleExtra,
 }) {
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
@@ -36,6 +38,9 @@ export default function Gov2Page({
           total: posts.total,
         }}
         summary={summary}
+        listTitle={listTitle}
+        listTitleExtra={listTitleExtra}
+        listTitleCount={posts.total}
       />
     </HomeLayout>
   );

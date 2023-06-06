@@ -5,7 +5,7 @@ const OptionWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 10px 16px;
-  height: 40px;
+  height: ${(p) => p.height}px;
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
@@ -24,9 +24,21 @@ const OptionWrapper = styled.div`
     `}
 `;
 
-function Option({ active = false, children, onClick = () => {}, ...rest }) {
+function Option({
+  active = false,
+  children,
+  onClick = () => {},
+  height,
+  ...rest
+}) {
   return (
-    <OptionWrapper role="option" active={active} onClick={onClick} {...rest}>
+    <OptionWrapper
+      role="option"
+      active={active}
+      onClick={onClick}
+      height={height}
+      {...rest}
+    >
       {children}
     </OptionWrapper>
   );

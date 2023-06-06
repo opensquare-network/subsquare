@@ -6,15 +6,13 @@ import { pretty_scroll_bar, shadow_200 } from "../../styles/componentCss";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import Caret from "../icons/caret";
 
-const selectorHeight = 40;
-
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
   font-size: 14px;
   background: ${(props) => props.theme.neutral};
   border: 1px solid ${(props) => props.theme.grey300Border};
   border-radius: 4px;
-  height: ${selectorHeight}px;
+  height: ${(p) => p.height}px;
   padding: 10px 16px;
   cursor: pointer;
   color: ${(props) => props.theme.textPrimary};
@@ -41,7 +39,7 @@ const OptionsWrapper = styled.div`
   position: absolute;
   left: -1px;
   right: 0;
-  top: ${selectorHeight + 4}px;
+  top: calc(100% + 4px);
   background: ${(props) => props.theme.neutral};
   ${shadow_200};
   border-radius: 4px;
@@ -51,9 +49,15 @@ const OptionsWrapper = styled.div`
   color: ${(props) => props.theme.textPrimary};
 
   ${(p) =>
+    p.theme.isDark &&
+    css`
+      border: 1px solid ${p.theme.grey200Border};
+    `}
+
+  ${(p) =>
     p.maxDisplayItem &&
     css`
-      max-height: ${selectorHeight * p.maxDisplayItem}px;
+      max-height: ${p.height * p.maxDisplayItem}px;
       overflow-y: scroll;
       ${pretty_scroll_bar};
     `}
@@ -65,10 +69,14 @@ function Select({
   options = [],
   onChange = () => {},
   maxDisplayItem,
+  className = "",
+  small = false,
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
   useOnClickOutside(ref, () => setShowOptions(false));
+
+  const selectorHeight = !small ? 40 : 32;
 
   const handleShowOptions = () => {
     if (disabled) {
@@ -84,19 +92,26 @@ function Select({
   );
 
   return (
-    <SelectWrapper ref={ref} disabled={disabled} onClick={handleShowOptions}>
+    <SelectWrapper
+      className={className}
+      ref={ref}
+      disabled={disabled}
+      onClick={handleShowOptions}
+      height={selectorHeight}
+    >
       <SelectInner>
         <span>{displayValue}</span>
         <Caret down={!showOptions} />
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper maxDisplayItem={maxDisplayItem}>
+        <OptionsWrapper height={selectorHeight} maxDisplayItem={maxDisplayItem}>
           {options.map((option) => (
             <Option
               key={option.value}
               active={value === option.value}
               onClick={() => onChange(option)}
+              height={selectorHeight}
             >
               {option.label}
             </Option>

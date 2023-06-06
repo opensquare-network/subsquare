@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.2.1
+- Refactor child bounty claim related components, and make child bounty claim button enabled only when it's mature.
+- Improve fellowship and referenda navigation components to better show their correlation.
+- Use subscription way to fetch referenda referendum tally instead of one time query and refactor related components.
+- Add referenda filter components so user can filter referenda by their status.
+- Show curve chart on fellowship referendum detail page.
+
+## 3.2.0
+
+date: 06/02/2023
+- Refactor my delegation/been delegated popup UI, and align with that of delegation statistics.
+- Clicking motion close button trigger login modal if no account has login in. 
+- Allow anyone to claim a child bounty when it's mature.
+- Add `maxWidth` attribute for user component, so we can control the space taken by long identity name.
+- Add fellowship and referenda navigation UI to show their correlation with call whitelist.
+- Optimize nested vote UI, so we can leave more space for delegated votes.
+- Subscribe info of democracy referendum and refactor related pages/components, so tally will be updated automatically.
+- Integrate [achainable](https://www.achainable.com/) labels to polkadot subsquare.
+- Fix styles and bugs.
+
 ## 3.1.4
 date: 05/30/2023
 - Refactor detail container components.

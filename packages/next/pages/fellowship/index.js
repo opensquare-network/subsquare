@@ -12,7 +12,7 @@ import FellowshipPage from "components/fellowship/fellowshipPage";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary }) => {
-    const summaryComponent = <Gov2Summary summary={summary} />;
+    const summaryComponent = <Gov2Summary summary={summary} noDelegation={true} />;
 
     return (
       <FellowshipPage
