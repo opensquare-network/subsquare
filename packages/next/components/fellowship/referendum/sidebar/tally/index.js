@@ -18,6 +18,8 @@ import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowsh
 import useFetchMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
 import { useTrack } from "next-common/context/post/gov2/track";
 import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
+import Calls from "./voteCalls";
+import { useChainSettings } from "next-common/context/chain";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -36,6 +38,7 @@ export default function FellowshipTally() {
   useFetchMaxVoters();
   const tally = useFellowshipTally();
   const approvalThreshold = useApprovalThreshold();
+  const { useVoteCall } = useChainSettings();
 
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const { referendumIndex } = useOnchainData();
@@ -67,6 +70,7 @@ export default function FellowshipTally() {
 
       <Footer>
         <AllVotes votes={votes} isLoadingVotes={isLoadingVotes} />
+        {useVoteCall && <Calls />}
       </Footer>
     </SecondaryCardDetail>
   );

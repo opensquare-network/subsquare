@@ -10,8 +10,10 @@ export const gov2ReferendumsTracksApi = (trackId) =>
 export const gov2ReferendumsApi = "gov2/referendums";
 export const gov2ReferendumsDetailApi = (index) =>
   gov2ReferendumsApi + `/${index}`;
-export const gov2ReferendumsVoteExtrinsicsApi = (index) =>
+  export const gov2ReferendumsVoteExtrinsicsApi = (index) =>
   gov2ReferendumsApi + `/${index}/vote-extrinsics`;
+export const gov2ReferendumsVoteCallsApi = (index) =>
+  gov2ReferendumsApi + `/${index}/vote-calls`;
 export const gov2ReferendumsCommentApi = (id) =>
   gov2ReferendumsApi + `/${id}/comments`;
 export const gov2ReferendumsSummaryApi = "gov2/referendums/summary";
@@ -22,6 +24,8 @@ export const fellowshipReferenda = "fellowship/referenda/";
 export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
 export const getFellowshipReferendumCommentsUrl = (id) =>
   `${getFellowshipReferendumUrl(id)}/comments`;
+export const getFellowshipReferendumVoteCallsApi = (id) =>
+  `${fellowshipReferenda}${id}/vote-calls`;
 
 // fellowship tracks
 export const fellowshipTracksApi = "fellowship/tracks";

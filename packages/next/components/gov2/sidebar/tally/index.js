@@ -2,7 +2,6 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import styled from "styled-components";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
-import useFetchVoteExtrinsics from "next-common/utils/gov2/useFetchVoteExtrinsics";
 import VoteBar from "next-common/components/referenda/voteBar";
 import Aye from "./values/aye";
 import Nay from "./values/nay";
@@ -62,7 +61,6 @@ const VotesGroupItems = styled.div`
 export default function Gov2Tally() {
   const detail = usePost();
   useFetchVotes(detail?.onchainData);
-  useFetchVoteExtrinsics(detail?.onchainData);
   useSubActiveIssuance();
   const tally = useSubReferendaTally();
   const approvalThreshold = useApprovalThreshold();
