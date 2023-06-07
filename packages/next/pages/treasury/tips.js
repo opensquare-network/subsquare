@@ -10,16 +10,38 @@ import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import styled from "styled-components";
+import {
+  flex,
+  gap_x,
+  hidden,
+  items_center,
+} from "next-common/styles/tailwindcss";
+import StatisticLinkButton from "next-common/components/statisticsLinkButton";
+import { lowerCase } from "lodash";
+import { smcss } from "next-common/utils/responsive";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
   {
     ssr: false,
-  }
+  },
 );
+
+const CategoryExtraWrapper = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(16)};
+`;
+
+const NewLabel = styled.span`
+  .abbreviate {
+    ${smcss(hidden)}
+  }
+`;
 
 export default withLoginUserRedux(
   ({ tips: ssrTips, tracks, fellowshipTracks }) => {
@@ -28,6 +50,7 @@ export default withLoginUserRedux(
     const [tips, setTips] = useState(ssrTips);
     useEffect(() => setTips(ssrTips), [ssrTips]);
     const isMounted = useIsMounted();
+    const chainSettings = useChainSettings();
 
     const refreshPageData = useCallback(async () => {
       const { result } = await nextApi.fetch("treasury/tips");
@@ -39,17 +62,30 @@ export default withLoginUserRedux(
     const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
 
     const items = (tips.items || []).map((item) =>
-      normalizeTipListItem(chain, item)
+      normalizeTipListItem(chain, item),
     );
+
+    const categoryExtra = (
+      <CategoryExtraWrapper>
+        <Create onClick={() => setShowPopup(true)}>
+          <PlusIcon />
+          <NewLabel>
+            New <span className="abbreviate">Tip</span>
+          </NewLabel>
+        </Create>
+
+        {chainSettings.hasDotreasury && (
+          <StatisticLinkButton
+            href={`https://dotreasury.com/${lowerCase(
+              chainSettings.symbol,
+            )}/tips`}
+          />
+        )}
+      </CategoryExtraWrapper>
+    );
+
     const category = "Tips";
     const seoInfo = { title: "Treasury Tips", desc: "Treasury Tips" };
-
-    const create = (
-      <Create onClick={() => setShowPopup(true)}>
-        <PlusIcon />
-        New Tip
-      </Create>
-    );
 
     return (
       <HomeLayout
@@ -59,7 +95,7 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
-          topRightCorner={create}
+          topRightCorner={categoryExtra}
           items={items}
           summary={<Summary />}
           pagination={{
@@ -76,7 +112,7 @@ export default withLoginUserRedux(
         )}
       </HomeLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
