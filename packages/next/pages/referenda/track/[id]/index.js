@@ -7,7 +7,7 @@ import {
   gov2ReferendumsTracksSummaryApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import { EmptyList } from "next-common/utils/constants";
+import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
 import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
@@ -78,7 +78,7 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const {
     page = 1,
-    page_size: pageSize = 50,
+    page_size: pageSize = defaultPageSize,
     id,
     status: statusQuery = "",
   } = context.query;
