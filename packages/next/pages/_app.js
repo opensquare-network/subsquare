@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
+import "next-common/styles/font-styles.css";
 import { store } from "next-common/store";
 import "next-common/styles/richTextStyles.scss";
 import "react-datepicker/dist/react-datepicker.css";
