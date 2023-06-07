@@ -9,6 +9,7 @@ import SearchInputShortcut from "./searchInputShortcut";
 const Wrapper = styled.div``;
 
 const Input = styled(InputOrigin)`
+  height: 40px;
   ${bg_theme("grey100Bg")};
   border-color: ${theme("grey100Bg")};
 
