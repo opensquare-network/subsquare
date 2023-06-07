@@ -1,6 +1,6 @@
 import { Button } from "./styled";
 import { useState } from "react";
-import CallsVotesPopup from "../callsVotesPopup";
+import OpenGovCallsVotesPopup from "./openGovCallsVotesPopup";
 
 export default function CallsVotes() {
   const [showCallsVotes, setShowCallsVotes] = useState(false);
@@ -9,7 +9,7 @@ export default function CallsVotes() {
     <>
       <Button onClick={() => setShowCallsVotes(true)}>Calls</Button>
       {showCallsVotes && (
-        <CallsVotesPopup setShowVoteList={setShowCallsVotes} />
+        <OpenGovCallsVotesPopup setShowVoteList={setShowCallsVotes} />
       )}
     </>
   );

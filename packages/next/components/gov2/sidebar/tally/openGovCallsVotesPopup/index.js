@@ -2,8 +2,7 @@ import React, { useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import {
-  isLoadingVoteExtrinsicsSelector,
-  voteExtrinsicsSelector,
+  isLoadingVoteCallsSelector,
 } from "next-common/store/reducers/gov2ReferendumSlice";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
@@ -17,6 +16,8 @@ import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { text_tertiary } from "next-common/styles/tailwindcss";
 import { useChainSettings } from "next-common/context/chain";
+import { useOnchainData } from "next-common/context/post";
+import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -29,13 +30,14 @@ const VoteTime = styled.div`
   }
 `;
 
-export default function CallsVotesPopup({ setShowVoteList }) {
+export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
+  const { referendumIndex } = useOnchainData();
   const {
     allAye = [],
     allNay = [],
     allAbstain = [],
-  } = useSelector(voteExtrinsicsSelector);
-  const isLoading = useSelector(isLoadingVoteExtrinsicsSelector);
+  } = useOpenGovFetchVoteCalls(referendumIndex);
+  const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);

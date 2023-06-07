@@ -1,7 +1,9 @@
-import fellowshipReferendumTallyReducer from "./tally";
+import fellowshipReferendumTally from "./tally";
 import fellowshipMaxVoters from "./maxVoters";
+import fellowshipVoteCalls from "./voteCalls";
 
 export default {
-  fellowshipReferendumTally: fellowshipReferendumTallyReducer,
+  fellowshipReferendumTally,
   fellowshipMaxVoters,
+  fellowshipVoteCalls,
 };

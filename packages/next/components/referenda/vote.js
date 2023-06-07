@@ -22,13 +22,14 @@ import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import { flex, gap_x, items_center, justify_between, text_primary } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
-import CallsVotesPopup from "next-common/components/democracy/callsVotesPopup";
 import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import useDemocracyThreshold from "next-common/context/post/democracy/referendum/threshold";
 import useIsDemocracyPassed from "next-common/context/post/democracy/referendum/result";
 import useSubDemocracyTally from "next-common/hooks/democracy/tally";
+import { useChainSettings } from "next-common/context/chain";
+import Calls from "./voteCalls";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -104,12 +105,12 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   const [showVote, setShowVote] = useState(false);
   const [showFlattenedVotesList, setShowFlattenedVotesList] = useState(false);
   const [showNestedVotesList, setShowNestedVotesList] = useState(false);
-  const [showCallsVotesList, setShowCallsVotesList] = useState(false);
   const api = useApi();
   const tally = useSubDemocracyTally();
   const isPassing = useIsDemocracyPassing();
   const threshold = useDemocracyThreshold();
   const isPassed = useIsDemocracyPassed();
+  const { useVoteCall } = useChainSettings();
 
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const electorate = useSelector(electorateSelector);
@@ -174,8 +175,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
             <SubLink onClick={() => setShowNestedVotesList(true)}>
               Nested
             </SubLink>
-            {/* TODO: #2866, democracy calls */}
-            {/* <SubLink onClick={() => setShowCallsVotesList(true)}>Calls</SubLink> */}
+            {useVoteCall && <Calls />}
           </VotesGroupItems>
         </VotesGroup>
 
@@ -210,16 +210,6 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
       {showNestedVotesList && (
         <NestedVotesPopup
           setShowVoteList={setShowNestedVotesList}
-          allAye={allAye}
-          allNay={allNay}
-          isLoadingVotes={isLoadingVotes}
-        />
-      )}
-
-      {/* TODO: #2866, democracy calls */}
-      {false && showCallsVotesList && (
-        <CallsVotesPopup
-          setShowVoteList={setShowCallsVotesList}
           allAye={allAye}
           allNay={allNay}
           isLoadingVotes={isLoadingVotes}
