@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 
 import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
+import "next-common/styles/tailwind.css";
 import { store } from "next-common/store";
 import "next-common/styles/richTextStyles.scss";
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,15 +23,15 @@ NProgress.configure({
 
 Router.events.on(
   "routeChangeStart",
-  (url, { shallow }) => !shallow && NProgress.start()
+  (url, { shallow }) => !shallow && NProgress.start(),
 );
 Router.events.on(
   "routeChangeComplete",
-  (url, { shallow }) => !shallow && NProgress.done()
+  (url, { shallow }) => !shallow && NProgress.done(),
 );
 Router.events.on(
   "routeChangeError",
-  (url, { shallow }) => !shallow && NProgress.done()
+  (url, { shallow }) => !shallow && NProgress.done(),
 );
 
 function MyApp({ Component, pageProps }) {
