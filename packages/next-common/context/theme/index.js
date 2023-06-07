@@ -28,7 +28,7 @@ const GlobalThemeVariables = createGlobalStyle`
   :root {${(p) => p.variables}}
 `;
 function ThemeValueProvider({ children }) {
-  const themeMode = useThemeMode();
+  const isDark = useIsDark();
   const theme = useThemeSetting();
   const variables = Object.keys(theme)
     .map((k) => `--${k}: ${theme[k]}`)
@@ -36,12 +36,12 @@ function ThemeValueProvider({ children }) {
 
   useLayoutEffect(() => {
     const root = document.documentElement;
-    if (themeMode === "dark") {
+    if (isDark) {
       root.classList.add("dark");
     } else {
       root.classList.remove("dark");
     }
-  }, [themeMode]);
+  }, [isDark]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -49,6 +49,11 @@ function ThemeValueProvider({ children }) {
       {children}
     </ThemeProvider>
   );
+}
+
+export function useIsDark() {
+  const themeSetting = useThemeSetting();
+  return themeSetting.isDark;
 }
 
 export function useThemeMode() {
