@@ -12,9 +12,7 @@ export default function ListLayout({ children, footer, nav }) {
           <Header />
         </header>
         <section className="flex flex-col flex-1">
-          <div className="w-full max-w-[1200px] mx-auto flex-1">
-            {children || "children"}
-          </div>
+          <div className="w-full max-w-[1200px] mx-auto flex-1">{children}</div>
           <footer className="bg-rose-200">{footer || "footer"}</footer>
         </section>
       </section>
