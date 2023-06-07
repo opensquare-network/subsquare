@@ -6,14 +6,27 @@ import Summary from "next-common/components/summary";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import StatisticLinkButton from "next-common/components/statisticsLinkButton";
+import { useChainSettings } from "next-common/context/chain";
+import { lowerCase } from "lodash";
 
 export default withLoginUserRedux(
   ({ bounties, chain, tracks, fellowshipTracks }) => {
+    const chainSettings = useChainSettings();
+
     const items = (bounties.items || []).map((item) =>
-      normalizeBountyListItem(chain, item)
+      normalizeBountyListItem(chain, item),
     );
     const category = "Treasury Bounties";
     const seoInfo = { title: category, desc: category };
+
+    const categoryExtra = chainSettings.hasDotreasury && (
+      <StatisticLinkButton
+        href={`https://dotreasury.com/${lowerCase(
+          chainSettings.symbol,
+        )}/bounties`}
+      />
+    );
 
     return (
       <HomeLayout
@@ -23,6 +36,7 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
+          topRightCorner={categoryExtra}
           items={items}
           summary={<Summary />}
           pagination={{
@@ -33,7 +47,7 @@ export default withLoginUserRedux(
         />
       </HomeLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

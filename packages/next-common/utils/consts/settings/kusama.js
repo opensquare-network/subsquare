@@ -62,6 +62,7 @@ const kusama = {
   postLabels: defaultPostLabels,
   hasDemocracy: false,
   useVoteCall: true,
+  hasDotreasury: true,
 };
 
 export default kusama;

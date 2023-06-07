@@ -12,13 +12,36 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import styled from "styled-components";
+import {
+  flex,
+  gap_x,
+  hidden,
+  items_center,
+} from "next-common/styles/tailwindcss";
+import StatisticLinkButton from "next-common/components/statisticsLinkButton";
+import { useChainSettings } from "next-common/context/chain";
+import { lowerCase } from "lodash";
+import { smcss } from "next-common/utils/responsive";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
   {
     ssr: false,
-  }
+  },
 );
+
+const CategoryExtraWrapper = styled.div`
+  ${flex};
+  ${items_center};
+  ${gap_x(16)};
+`;
+
+const NewLabel = styled.span`
+  .abbreviate {
+    ${smcss(hidden)}
+  }
+`;
 
 export default withLoginUserRedux(
   ({ proposals: ssrProposals, chain, tracks, fellowshipTracks }) => {
@@ -26,9 +49,10 @@ export default withLoginUserRedux(
     const [proposals, setProposals] = useState(ssrProposals);
     useEffect(() => setProposals(ssrProposals), [ssrProposals]);
     const isMounted = useIsMounted();
+    const chainSettings = useChainSettings();
 
     const items = (proposals.items || []).map((item) =>
-      normalizeTreasuryProposalListItem(chain, item)
+      normalizeTreasuryProposalListItem(chain, item),
     );
 
     const refreshPageData = useCallback(async () => {
@@ -40,14 +64,26 @@ export default withLoginUserRedux(
 
     const onProposeFinalized = useWaitSyncBlock(
       "Proposal proposed",
-      refreshPageData
+      refreshPageData,
     );
 
-    const create = (
-      <Create onClick={() => setShowPopup(true)}>
-        <PlusIcon />
-        New Proposal
-      </Create>
+    const categoryExtra = (
+      <CategoryExtraWrapper>
+        <Create onClick={() => setShowPopup(true)}>
+          <PlusIcon />
+          <NewLabel>
+            New <span className="abbreviate">Proposal</span>
+          </NewLabel>
+        </Create>
+
+        {chainSettings.hasDotreasury && (
+          <StatisticLinkButton
+            href={`https://dotreasury.com/${lowerCase(
+              chainSettings.symbol,
+            )}/proposals`}
+          />
+        )}
+      </CategoryExtraWrapper>
     );
 
     const category = "Treasury Proposals";
@@ -61,7 +97,7 @@ export default withLoginUserRedux(
       >
         <PostList
           category={category}
-          topRightCorner={create}
+          topRightCorner={categoryExtra}
           items={items}
           summary={<Summary />}
           pagination={{
@@ -78,7 +114,7 @@ export default withLoginUserRedux(
         )}
       </HomeLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

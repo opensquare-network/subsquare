@@ -61,6 +61,7 @@ const polkadot = {
   postLabels: defaultPostLabels,
   hasStatescan: true,
   hasSubscan: true,
+  hasDotreasury: true,
 };
 
 export default polkadot;
