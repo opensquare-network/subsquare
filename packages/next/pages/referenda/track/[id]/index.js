@@ -15,6 +15,7 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
+import { camelCase, upperFirst } from "lodash";
 
 export default withLoginUserRedux(
   ({
@@ -42,7 +43,7 @@ export default withLoginUserRedux(
 
       delete q.page;
       if (item.value) {
-        q.status = item.value;
+        q.status = camelCase(item.value);
       } else {
         delete q.status;
       }
@@ -75,7 +76,14 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page = 1, page_size: pageSize = 50, id, status = "" } = context.query;
+  const {
+    page = 1,
+    page_size: pageSize = 50,
+    id,
+    status: statusQuery = "",
+  } = context.query;
+
+  const status = upperFirst(statusQuery);
 
   const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
   const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(

@@ -12,6 +12,7 @@ import Gov2Page from "components/gov2/gov2Page";
 import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
+import { camelCase, upperFirst } from "lodash";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary, status }) => {
@@ -24,7 +25,7 @@ export default withLoginUserRedux(
 
       delete q.page;
       if (item.value) {
-        q.status = item.value;
+        q.status = camelCase(item.value);
       } else {
         delete q.status;
       }
@@ -56,8 +57,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const {
     page = 1,
     page_size: pageSize = defaultPageSize,
-    status = "",
+    status: statusQuery = "",
   } = context.query;
+
+  const status = upperFirst(statusQuery);
 
   const [
     { result: tracks },
