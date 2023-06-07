@@ -48,6 +48,7 @@ const light = {
   navigationBg: "rgba(0,0,0,1)",
   navigationActive: "rgba(20,20,20,1)",
   navigationBorder: "rgba(38,38,38,1)",
+  navigationText: "var(--textPrimaryContrast)",
   // shadow
 
   // OLD
