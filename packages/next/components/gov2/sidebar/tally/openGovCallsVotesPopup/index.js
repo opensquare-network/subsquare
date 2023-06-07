@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { text_tertiary } from "next-common/styles/tailwindcss";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import useFetchVoteCalls from "./useFetchVoteCalls";
+import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -36,7 +36,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
     allAye = [],
     allNay = [],
     allAbstain = [],
-  } = useFetchVoteCalls(referendumIndex);
+  } = useOpenGovFetchVoteCalls(referendumIndex);
   const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);

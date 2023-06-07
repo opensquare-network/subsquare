@@ -13,7 +13,7 @@ import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import styled from "styled-components";
 import { text_tertiary } from "next-common/styles/tailwindcss";
-import useFetchVoteCalls from "./useFetchVoteCalls";
+import useFellowshipFetchVoteCalls from "./useFellowshipFetchVoteCalls";
 import { useOnchainData } from "next-common/context/post";
 
 const VoteTime = styled.div`
@@ -32,7 +32,7 @@ export default function FellowshipCallsVotesPopup({ setShowVoteList }) {
   const {
     allAye = [],
     allNay = [],
-  } = useFetchVoteCalls(referendumIndex);
+  } = useFellowshipFetchVoteCalls(referendumIndex);
 
   const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);

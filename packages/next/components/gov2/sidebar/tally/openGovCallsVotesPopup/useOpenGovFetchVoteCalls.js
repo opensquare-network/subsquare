@@ -8,7 +8,7 @@ import {
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 
-export default function useFetchVoteCalls() {
+export default function useOpenGovFetchVoteCalls() {
   const { referendumIndex } = useOnchainData();
   const { useVoteCall } = useChainSettings();
   const { allAye = [], allNay = [] } = useSelector(voteCallsSelector);
