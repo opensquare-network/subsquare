@@ -56,6 +56,9 @@ const settingsMap = {
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
+/**
+ * @returns {typeof kusama & typeof polkadot & typeof kintsugi}
+ */
 export default function getChainSettings(chain) {
   const settings = settingsMap[chain];
   if (!settings) {
