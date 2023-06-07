@@ -2,9 +2,8 @@ import React, { useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import {
-  isLoadingVoteExtrinsicsSelector,
-  voteExtrinsicsSelector,
-} from "next-common/store/reducers/gov2ReferendumSlice";
+  isLoadingVoteCallsSelector,
+} from "next-common/store/reducers/referendumSlice";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -17,6 +16,8 @@ import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { text_tertiary } from "next-common/styles/tailwindcss";
 import { useChainSettings } from "next-common/context/chain";
+import { useOnchainData } from "next-common/context/post";
+import useFetchVoteCalls from "./useFetchVoteCalls";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -29,17 +30,16 @@ const VoteTime = styled.div`
   }
 `;
 
-export default function CallsVotesPopup({ setShowVoteList }) {
+export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
+  const { referendumIndex } = useOnchainData();
   const {
     allAye = [],
     allNay = [],
-    allAbstain = [],
-  } = useSelector(voteExtrinsicsSelector);
-  const isLoading = useSelector(isLoadingVoteExtrinsicsSelector);
+  } = useFetchVoteCalls(referendumIndex);
+  const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
-  const [abstainPage, setAbstainPage] = useState(1);
   const pageSize = 50;
 
   let page;
@@ -50,9 +50,6 @@ export default function CallsVotesPopup({ setShowVoteList }) {
   } else if (tabIndex === "Nay") {
     page = nayPage;
     votes = allNay;
-  } else {
-    page = abstainPage;
-    votes = allAbstain;
   }
 
   const onPageChange = (e, target) => {
@@ -61,8 +58,6 @@ export default function CallsVotesPopup({ setShowVoteList }) {
       setAyePage(target);
     } else if (tabIndex === "Nay") {
       setNayPage(target);
-    } else if (tabIndex === "Abstain") {
-      setAbstainPage(target);
     }
   };
 
@@ -87,7 +82,6 @@ export default function CallsVotesPopup({ setShowVoteList }) {
         setTabIndex={setTabIndex}
         ayesCount={allAye?.length || 0}
         naysCount={allNay?.length || 0}
-        abstainCount={allAbstain?.length || 0}
       />
       <VotesList items={items} loading={isLoading} />
       <Pagination {...pagination} />

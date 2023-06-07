@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import nextApi from "../../services/nextApi";
-import { gov2ReferendumsVoteExtrinsicsApi } from "../../services/url";
+import {
+  gov2ReferendumsVoteCallsApi,
+  gov2ReferendumsVoteExtrinsicsApi,
+} from "../../services/url";
 import { emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
@@ -14,8 +17,8 @@ const gov2ReferendumSlice = createSlice({
   initialState: {
     isLoadingVotes: true,
     votes: emptyVotes,
-    isLoadingVoteExtrinsics: true,
-    voteExtrinsics: emptyVotes,
+    isLoadingVoteCalls: true,
+    voteCalls: emptyVotes,
     issuance: null,
   },
   reducers: {
@@ -25,11 +28,11 @@ const gov2ReferendumSlice = createSlice({
     setVotes(state, { payload }) {
       state.votes = payload;
     },
-    setIsLoadingVoteExtrinsics(state, { payload }) {
-      state.isLoadingVoteExtrinsics = payload;
+    setIsLoadingVoteCalls(state, { payload }) {
+      state.isLoadingVoteCalls = payload;
     },
-    setVoteExtrinsics(state, { payload }) {
-      state.voteExtrinsics = payload;
+    setVoteCalls(state, { payload }) {
+      state.voteCalls = payload;
     },
     setIssuance(state, { payload }) {
       state.issuance = payload;
@@ -40,18 +43,18 @@ const gov2ReferendumSlice = createSlice({
 export const {
   setVotes,
   setIsLoadingVotes,
-  setVoteExtrinsics,
-  setIsLoadingVoteExtrinsics,
+  setVoteCalls,
+  setIsLoadingVoteCalls,
   setIssuance,
 } = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
   state.gov2Referendum.isLoadingVotes;
-export const isLoadingVoteExtrinsicsSelector = (state) =>
-  state.gov2Referendum.isLoadingVoteExtrinsics;
+export const isLoadingVoteCallsSelector = (state) =>
+  state.gov2Referendum.isLoadingVoteCalls;
 export const votesSelector = (state) => state.gov2Referendum.votes;
-export const voteExtrinsicsSelector = (state) =>
-  state.gov2Referendum.voteExtrinsics;
+export const voteCallsSelector = (state) =>
+  state.gov2Referendum.voteCalls;
 export const gov2IssuanceSelector = (state) => state.gov2Referendum.issuance;
 
 export const clearVotes = () => async (dispatch) => {
@@ -80,8 +83,8 @@ export const fetchVotes =
     }
   };
 
-export const clearVoteExtrinsics = () => async (dispatch) => {
-  dispatch(setVoteExtrinsics(emptyVotes));
+export const clearVoteCalls = () => async (dispatch) => {
+  dispatch(setVoteCalls(emptyVotes));
 };
 
 function normalizeExtrinsic(voteExtrinsic, balance) {
@@ -124,12 +127,12 @@ function extractVoteElementsFromOneExtrinsic(voteExtrinsic) {
   return {};
 }
 
-function classifyVoteExtrinsics(voteExtrinsics) {
+function classifyVoteCalls(voteCalls) {
   const allAye = [];
   const allNay = [];
   const allAbstain = [];
 
-  for (const item of voteExtrinsics) {
+  for (const item of voteCalls) {
     const { aye, nay, abstain } = extractVoteElementsFromOneExtrinsic(item);
 
     if (aye) allAye.push(aye);
@@ -141,18 +144,34 @@ function classifyVoteExtrinsics(voteExtrinsics) {
 }
 
 export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
-  dispatch(clearVoteExtrinsics());
-  dispatch(setIsLoadingVoteExtrinsics(true));
+  dispatch(clearVoteCalls());
+  dispatch(setIsLoadingVoteCalls(true));
   try {
     const { result } = await nextApi.fetch(
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex),
     );
 
-    const { allAye, allNay, allAbstain } = classifyVoteExtrinsics(result);
+    const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
 
-    dispatch(setVoteExtrinsics({ allAye, allNay, allAbstain }));
+    dispatch(setVoteCalls({ allAye, allNay, allAbstain }));
   } finally {
-    dispatch(setIsLoadingVoteExtrinsics(false));
+    dispatch(setIsLoadingVoteCalls(false));
+  }
+};
+
+export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
+  dispatch(clearVoteCalls());
+  dispatch(setIsLoadingVoteCalls(true));
+  try {
+    const { result } = await nextApi.fetch(
+      gov2ReferendumsVoteCallsApi(referendumIndex),
+    );
+
+    const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
+
+    dispatch(setVoteCalls({ allAye, allNay, allAbstain }));
+  } finally {
+    dispatch(setIsLoadingVoteCalls(false));
   }
 };
 
