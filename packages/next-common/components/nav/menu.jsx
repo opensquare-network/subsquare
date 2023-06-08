@@ -8,7 +8,6 @@ import Link from "next/link";
 export default function NavMenu({ collapsed }) {
   const [commonMenu, featuredMenu] = useMenu();
   const router = useRouter();
-  console.log(featuredMenu);
 
   return (
     <div>
