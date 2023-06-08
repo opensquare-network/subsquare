@@ -4,7 +4,7 @@ import {
   gov2ReferendumsVoteCallsApi,
   gov2ReferendumsVoteExtrinsicsApi,
 } from "../../services/url";
-import { emptyVotes } from "../../utils/democracy/votes/passed/common";
+import { openGovEmptyVotes as emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";

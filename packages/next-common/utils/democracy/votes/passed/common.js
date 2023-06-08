@@ -6,6 +6,12 @@ export const emptyVotes = {
   allNay: [],
 };
 
+export const openGovEmptyVotes = {
+  allAye: [],
+  allNay: [],
+  allAbstain: [],
+};
+
 export function calcVotes(capital = 0, conviction = 0) {
   return new BigNumber(capital)
     .multipliedBy(LOCKS[conviction])
