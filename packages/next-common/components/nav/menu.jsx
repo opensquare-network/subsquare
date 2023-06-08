@@ -4,6 +4,7 @@ import { usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { isExternalLink } from "next-common/utils";
 
 export default function NavMenu({ collapsed }) {
   const [commonMenu, featuredMenu] = useMenu();
@@ -35,10 +36,13 @@ export default function NavMenu({ collapsed }) {
 }
 
 function MenuItem({ active, item, collapsed }) {
+  const isExternal = isExternalLink(item.pathname);
+
   return (
     <div className="group/menu-item">
       <Link
         href={item.pathname}
+        target={isExternal ? "_blank" : "_self"}
         className={clsx(
           "flex p-2 gap-x-3 items-center text14Medium h-10",
           "rounded-lg",
@@ -49,7 +53,14 @@ function MenuItem({ active, item, collapsed }) {
         )}
       >
         {item.icon}
-        {!collapsed && <span>{item.name}</span>}
+        {!collapsed && (
+          <span>
+            {item.name}{" "}
+            {isExternal && (
+              <span className="ml-1 text-textTertiaryContrast">↗</span>
+            )}
+          </span>
+        )}
       </Link>
     </div>
   );
