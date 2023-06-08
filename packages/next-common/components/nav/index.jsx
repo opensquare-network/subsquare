@@ -61,7 +61,7 @@ function NavDesktop() {
       </div>
 
       <div className="p-4">
-        <NavMenu />
+        <NavMenu collapsed={menuCollapsed} />
       </div>
     </nav>
   );
