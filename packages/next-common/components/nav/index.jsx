@@ -5,6 +5,7 @@ import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
 import ArrowFoldIcon from "next-common/assets/imgs/icons/arrow-fold.svg";
 import tw from "tailwind-styled-components";
+import HeaderDrawer from "../header/v2/drawer";
 
 export default function Nav() {
   const { sm } = useScreenSize();
@@ -70,8 +71,13 @@ function NavDesktop() {
 const NavMobileToolbarItem = tw.div`
 w-[72px] flex items-center justify-center
 `;
+const NavMobileFloatContainer = tw.div`
+fixed bottom-0 top-16 left-0 right-0
+p-4 overflow-y-scroll
+`;
 function NavMobile() {
   const [menuVisible, menuToggle] = useToggle(false);
+  const [toolbarVisible, toolbarToggle] = useToggle(false);
 
   return (
     <nav
@@ -88,20 +94,23 @@ function NavMobile() {
           <BrandingHint />
         </div>
         <NavMobileToolbarItem>
-          <div>--</div>
+          <div role="button" onClick={toolbarToggle}>
+            --
+          </div>
         </NavMobileToolbarItem>
       </div>
 
-      <div
-        className={clsx(
-          "fixed bottom-0 top-16 left-0 right-0",
-          "p-4 overflow-y-scroll",
-          "bg-navigationBg",
-          menuVisible ? "block" : "hidden",
-        )}
+      <NavMobileFloatContainer
+        className={clsx("bg-navigationBg", menuVisible ? "block" : "hidden")}
       >
         <NavMenu />
-      </div>
+      </NavMobileFloatContainer>
+
+      <NavMobileFloatContainer
+        className={clsx("bg-neutral100", toolbarVisible ? "block" : "hidden")}
+      >
+        <HeaderDrawer />
+      </NavMobileFloatContainer>
     </nav>
   );
 }

@@ -13,9 +13,7 @@ import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 
-const Wrapper = styled.div`
-  padding: 32px 0 0;
-`;
+const Wrapper = styled.div``;
 
 const Title = styled.div`
   font-weight: bold;
