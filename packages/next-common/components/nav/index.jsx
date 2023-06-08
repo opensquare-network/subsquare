@@ -41,7 +41,7 @@ function NavDesktop() {
     <nav
       className={clsx(
         menuCollapsed ? "w-[72px]" : "w-[300px]",
-        "max-w-[300px] h-full",
+        "max-w-[300px] h-full overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
       )}
     >
@@ -76,7 +76,7 @@ function NavMobile() {
   return (
     <nav
       className={clsx(
-        "h-16",
+        "h-16 overflow-y-scroll",
         "flex items-center justify-between",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
       )}
