@@ -75,26 +75,35 @@ function NavMobile() {
 
   return (
     <nav
-      className={clsx(
-        "h-16 overflow-y-scroll",
-        "flex items-center justify-between",
-        "bg-navigationBg dark:bg-neutral100 text-navigationText",
-      )}
+      className={clsx("bg-navigationBg dark:bg-neutral100 text-navigationText")}
     >
-      <NavMobileToolbarItem>
-        <ToggleMenuButton onClick={menuToggle}>
-          <ArrowFoldIcon
-            className={clsx("rotate-180", menuVisible && "rotate-0")}
-          />
-        </ToggleMenuButton>
-      </NavMobileToolbarItem>
-      <div className="text-center">
-        <ChainName />
-        <BrandingHint />
+      <div className={clsx("h-16", "flex items-center justify-between")}>
+        <NavMobileToolbarItem>
+          <ToggleMenuButton onClick={menuToggle}>
+            <ArrowFoldIcon
+              className={clsx("rotate-180", menuVisible && "rotate-0")}
+            />
+          </ToggleMenuButton>
+        </NavMobileToolbarItem>
+        <div className="text-center">
+          <ChainName />
+          <BrandingHint />
+        </div>
+        <NavMobileToolbarItem>
+          <div>--</div>
+        </NavMobileToolbarItem>
       </div>
-      <NavMobileToolbarItem>
-        <div>--</div>
-      </NavMobileToolbarItem>
+
+      <div
+        className={clsx(
+          "fixed bottom-0 top-16 left-0 right-0",
+          "p-4 overflow-y-scroll",
+          "bg-navigationBg",
+          menuVisible ? "block" : "hidden",
+        )}
+      >
+        <NavMenu />
+      </div>
     </nav>
   );
 }
