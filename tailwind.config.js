@@ -21,6 +21,11 @@ module.exports = {
     resolve("./packages/next-common/**/*.{html,js,jsx}"),
   ],
   theme: {
+    screens: {
+      sm: "768px",
+      md: "1024px",
+      lg: "1280px",
+    },
     extend: {
       colors: {
         ...twLightVariables,
