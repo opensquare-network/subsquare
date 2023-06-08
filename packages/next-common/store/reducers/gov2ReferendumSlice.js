@@ -4,7 +4,7 @@ import {
   gov2ReferendumsVoteCallsApi,
   gov2ReferendumsVoteExtrinsicsApi,
 } from "../../services/url";
-import { emptyVotes } from "../../utils/democracy/votes/passed/common";
+import { openGovEmptyVotes as emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
@@ -151,6 +151,11 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex),
     );
 
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
+
     const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
 
     dispatch(setVoteCalls({ allAye, allNay, allAbstain }));
@@ -166,6 +171,11 @@ export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
     const { result } = await nextApi.fetch(
       gov2ReferendumsVoteCallsApi(referendumIndex),
     );
+
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
 
     const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
 
