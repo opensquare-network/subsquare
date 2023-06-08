@@ -151,6 +151,11 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex),
     );
 
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
+
     const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
 
     dispatch(setVoteCalls({ allAye, allNay, allAbstain }));
@@ -166,6 +171,11 @@ export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
     const { result } = await nextApi.fetch(
       gov2ReferendumsVoteCallsApi(referendumIndex),
     );
+
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
 
     const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
 
