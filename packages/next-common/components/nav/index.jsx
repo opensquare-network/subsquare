@@ -47,7 +47,7 @@ function NavDesktop() {
     >
       <div>
         <div className="p-4">logo</div>
-        <div className="py-4 px-6 flex justify-between">
+        <div className="py-4 px-6 flex justify-between h-[84px]">
           <div className={clsx(menuCollapsed && "hidden")}>
             <ChainName />
             <BrandingHint />
