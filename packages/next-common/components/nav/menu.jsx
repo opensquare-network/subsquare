@@ -9,6 +9,7 @@ import { useChain } from "next-common/context/chain";
 import { useToggle } from "usehooks-ts";
 import tw from "tailwind-styled-components";
 import { useEffect } from "react";
+import ArrowDownIcon from "next-common/assets/imgs/icons/arrow-down.svg";
 
 export default function NavMenu({ collapsed }) {
   const { commonMenu, featuredMenu } = useMenu();
@@ -20,7 +21,9 @@ export default function NavMenu({ collapsed }) {
         {commonMenu?.[0]?.items?.map?.((item) => (
           <li key={item.value}>
             <MenuItem
-              item={item}
+              icon={item.icon}
+              label={item.name}
+              url={item.pathname}
               active={item.pathname === router.asPath}
               collapsed={collapsed}
             />
@@ -49,14 +52,19 @@ hover:text-theme500 [&_svg_path]:hover:fill-theme500
 ${(p) =>
   p.$active && "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500"}
 `;
+
+const ActiveCountLabel = tw.span`
+ml-2 text-textTertiaryContrast
+`;
+
 function MenuGroup({ menu = [], collapsed }) {
   // FIXME: v2 read cookie
-  const [childCollapsed, childToggle, setChildCollapsed] = useToggle(false);
-  console.log(menu);
+  const [childMenuVisible, childMenuToggle, setChildMenuVisible] =
+    useToggle(false);
 
   useEffect(() => {
     if (collapsed) {
-      setChildCollapsed(true);
+      setChildMenuVisible(false);
     }
   }, [collapsed]);
 
@@ -66,17 +74,38 @@ function MenuGroup({ menu = [], collapsed }) {
         <MenuItemWrapper
           role="button"
           className="flex items-center justify-between w-full h-full"
-          onClick={childToggle}
+          onClick={childMenuToggle}
         >
-          {capitalize(menu.name)}
-          <div>=</div>
+          <span>
+            {capitalize(menu.name)}
+            {!!menu.activeCount && (
+              <ActiveCountLabel>{menu.activeCount}</ActiveCountLabel>
+            )}
+          </span>
+          <div>
+            <ArrowDownIcon
+              className={clsx(
+                childMenuVisible && "rotate-180",
+                "[&_path]:!fill-transparent",
+              )}
+            />
+          </div>
         </MenuItemWrapper>
       </li>
       {!!menu.items?.length && (
-        <ul className={clsx(!childCollapsed ? "block" : "hidden", "pl-7")}>
+        <ul className={clsx(childMenuVisible ? "block" : "hidden", "pl-7")}>
           {menu.items.map((item) => (
             <li key={item.value}>
-              <MenuItem item={item} collapsed={collapsed} />
+              {item?.type === "divider" ? (
+                <Divider />
+              ) : (
+                <MenuItem
+                  label={item.name}
+                  url={item.pathname}
+                  icon={item.icon}
+                  activeCount={item.activeCount}
+                />
+              )}
             </li>
           ))}
         </ul>
@@ -85,19 +114,16 @@ function MenuGroup({ menu = [], collapsed }) {
   );
 }
 
-function MenuItem({ active, item, collapsed }) {
-  const isExternal = isExternalLink(item.pathname);
-
-  if (item?.type === "divider") {
-    return <Divider />;
-  }
+function MenuItem({ active, collapsed, icon, label, url, activeCount }) {
+  const isExternal = isExternalLink(url);
 
   return (
-    <Link href={item.pathname || ""} target={isExternal ? "_blank" : "_self"}>
+    <Link href={url || ""} target={isExternal ? "_blank" : "_self"}>
       <MenuItemWrapper $active={active}>
-        {item.icon}
+        {icon}
         <span className={clsx(collapsed && "hidden")}>
-          {item.name}{" "}
+          {label}{" "}
+          {!!activeCount && <ActiveCountLabel>{activeCount}</ActiveCountLabel>}
           {isExternal && (
             <span className="ml-1 text-textTertiaryContrast">↗</span>
           )}
