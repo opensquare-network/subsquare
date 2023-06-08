@@ -80,9 +80,7 @@ function NavMobile() {
       <div className={clsx("h-16", "flex items-center justify-between")}>
         <NavMobileToolbarItem>
           <ToggleMenuButton onClick={menuToggle}>
-            <ArrowFoldIcon
-              className={clsx("rotate-180", menuVisible && "rotate-0")}
-            />
+            <ArrowFoldIcon className={clsx(!menuVisible && "rotate-180")} />
           </ToggleMenuButton>
         </NavMobileToolbarItem>
         <div className="text-center">
