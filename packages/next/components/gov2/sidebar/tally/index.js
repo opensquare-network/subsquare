@@ -18,6 +18,9 @@ import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuan
 import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
 import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
+import { useSelector } from "react-redux";
+import { isLoadingVotesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
+import Loading from "next-common/components/loading";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -33,16 +36,25 @@ export default function Gov2Tally() {
 
   const issuance = useReferendaIssuance();
   const track = useTrack();
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+
+  let titleRightCorner = (
+    <CurvePopup
+      track={track}
+      tally={tally}
+      supportPerbill={supportPerbill}
+    />
+  );
+
+  if (isLoadingVotes) {
+    titleRightCorner = <Loading size={16} />;
+  }
 
   return (
     <SecondaryCardDetail>
       <Title>
         Tally
-        <CurvePopup
-          track={track}
-          tally={tally}
-          supportPerbill={supportPerbill}
-        />
+        {titleRightCorner}
       </Title>
       <VoteBar
         tally={tally}

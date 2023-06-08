@@ -14,47 +14,45 @@ export default function usePercentageBarData() {
     delegatedCapital,
     directVotes,
     delegatedVotes,
-    directCapitalPercentage = 50,
-    delegatedCapitalPercentage = 50,
-    directVotesPercentage = 50,
-    delegatedVotesPercentage = 50,
+    directCapitalPercentage = 0,
+    delegatedCapitalPercentage = 0,
+    directVotesPercentage = 0,
+    delegatedVotesPercentage = 0,
   } = useMemo(() => {
     let directCapital = new BigNumber(0);
     let delegatedCapital = new BigNumber(0);
     let directVotes = new BigNumber(0);
     let delegatedVotes = new BigNumber(0);
-    let directCapitalPercentage = 50;
-    let delegatedCapitalPercentage = 50;
-    let directVotesPercentage = 50;
-    let delegatedVotesPercentage = 50;
+    let directCapitalPercentage = 0;
+    let delegatedCapitalPercentage = 0;
+    let directVotesPercentage = 0;
+    let delegatedVotesPercentage = 0;
 
-    if (allVotes?.length > 0) {
-      for (const vote of allVotes) {
-        directCapital = directCapital.plus(vote.balance);
-        delegatedCapital = delegatedCapital.plus(vote.totalDelegatedCapital);
-        directVotes = directVotes.plus(vote.votes);
-        delegatedVotes = delegatedVotes.plus(vote.totalDelegatedVotes);
-      }
-
-      const totalCapital = directCapital.plus(delegatedCapital);
-      const totalVotes = directVotes.plus(delegatedVotes);
-
-      directCapitalPercentage = totalCapital.isZero()
-        ? 0
-        : directCapital.div(totalCapital).times(100).toNumber();
-
-      delegatedCapitalPercentage = totalCapital.isZero()
-        ? 0
-        : delegatedCapital.div(totalCapital).times(100).toNumber();
-
-      directVotesPercentage = totalVotes.isZero()
-        ? 0
-        : directVotes.div(totalVotes).times(100).toNumber();
-
-      delegatedVotesPercentage = totalVotes.isZero()
-        ? 0
-        : delegatedVotes.div(totalVotes).times(100).toNumber();
+    for (const vote of allVotes) {
+      directCapital = directCapital.plus(vote.balance);
+      delegatedCapital = delegatedCapital.plus(vote.totalDelegatedCapital);
+      directVotes = directVotes.plus(vote.votes);
+      delegatedVotes = delegatedVotes.plus(vote.totalDelegatedVotes);
     }
+
+    const totalCapital = directCapital.plus(delegatedCapital);
+    const totalVotes = directVotes.plus(delegatedVotes);
+
+    directCapitalPercentage = totalCapital.isZero()
+      ? 0
+      : directCapital.div(totalCapital).times(100).toNumber();
+
+    delegatedCapitalPercentage = totalCapital.isZero()
+      ? 0
+      : delegatedCapital.div(totalCapital).times(100).toNumber();
+
+    directVotesPercentage = totalVotes.isZero()
+      ? 0
+      : directVotes.div(totalVotes).times(100).toNumber();
+
+    delegatedVotesPercentage = totalVotes.isZero()
+      ? 0
+      : delegatedVotes.div(totalVotes).times(100).toNumber();
 
     return {
       directCapital,
@@ -94,6 +92,16 @@ export default function usePercentageBarData() {
     delegatedVotesPercentage = totalVotes.isZero()
       ? 0
       : delegatedVotes.div(totalVotes).times(100).toNumber();
+  }
+
+  if (directCapitalPercentage === 0 && delegatedCapitalPercentage === 0) {
+    directCapitalPercentage = 50;
+    delegatedCapitalPercentage = 50;
+  }
+
+  if (directVotesPercentage === 0 && delegatedVotesPercentage === 0) {
+    directVotesPercentage = 50;
+    delegatedVotesPercentage = 50;
   }
 
   return {
