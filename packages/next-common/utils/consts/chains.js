@@ -28,6 +28,8 @@ const Chains = {
   "westend-collectives": "westend-collectives",
   collectives: "collectives",
   darwinia2: "darwinia2",
+  moonriver: "moonriver",
+  moonbeam: "moonbeam",
 };
 
 export default Chains;

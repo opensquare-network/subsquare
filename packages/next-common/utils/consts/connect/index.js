@@ -38,7 +38,13 @@ const metamask = {
 };
 
 export function getWallets() {
-  if (process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2) {
+  if (
+    [
+      Chains.darwinia2,
+      Chains.moonbeam,
+      Chains.moonriver,
+    ].includes(process.env.NEXT_PUBLIC_CHAIN)
+  ) {
     return [talisman, metamask];
   }
 
