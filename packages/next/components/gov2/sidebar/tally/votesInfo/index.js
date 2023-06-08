@@ -17,6 +17,9 @@ import { useCallback } from "react";
 import { Tooltip } from "../../status/styled";
 import { useChainSettings } from "next-common/context/chain";
 import usePercentageBarData from "./usePercentageBarData";
+import { useSelector } from "react-redux";
+import { isLoadingVotesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
+import { useThemeSetting } from "next-common/context/theme";
 
 const VotesGroup = styled.div`
   display: flex;
@@ -72,7 +75,9 @@ function PercentageTooltip({
 }
 
 export default function VotesInfo() {
+  const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { referendumIndex } = useOnchainData();
+  const theme = useThemeSetting();
 
   const {
     directCapital,
@@ -84,6 +89,61 @@ export default function VotesInfo() {
     directVotesPercentage,
     delegatedVotesPercentage,
   } = usePercentageBarData();
+
+  let disabledBar = (
+    <PercentageBar
+      percent={50}
+      colorLeft={theme.grey100Bg}
+      colorRight={theme.grey100Bg}
+    />
+  );
+
+  let capitalBar = (
+    <Tooltip
+      content={
+        <PercentageTooltip
+          type="Capital"
+          referendumIndex={referendumIndex}
+          directPercentage={directCapitalPercentage}
+          directAmount={directCapital}
+          delegatedPercentage={delegatedCapitalPercentage}
+          delegatedAmount={delegatedCapital}
+        />
+      }
+    >
+      <PercentageBar
+        percent={directCapitalPercentage}
+        colorLeft="rgba(15, 111, 255, 0.4)"
+        colorRight="rgba(232, 31, 102, 0.4)"
+      />
+    </Tooltip>
+  );
+
+  let votesBar = (
+    <Tooltip
+      content={
+        <PercentageTooltip
+          type="Votes"
+          referendumIndex={referendumIndex}
+          directPercentage={directVotesPercentage}
+          directAmount={directVotes}
+          delegatedPercentage={delegatedVotesPercentage}
+          delegatedAmount={delegatedVotes}
+        />
+      }
+    >
+      <PercentageBar
+        percent={directVotesPercentage}
+        colorLeft="rgba(255, 152, 0, 0.4)"
+        colorRight="rgba(232, 31, 102, 0.4)"
+      />
+    </Tooltip>
+  );
+
+  if (isLoadingVotes) {
+    capitalBar = disabledBar;
+    votesBar = disabledBar;
+  }
 
   return (
     <VotesGroup>
@@ -97,45 +157,11 @@ export default function VotesInfo() {
       </VotesInfoLine>
       <VotesInfoLine>
         <VotesGroupLabel>Capital Pct.</VotesGroupLabel>
-        <Tooltip
-          content={
-            <PercentageTooltip
-              type="Capital"
-              referendumIndex={referendumIndex}
-              directPercentage={directCapitalPercentage}
-              directAmount={directCapital}
-              delegatedPercentage={delegatedCapitalPercentage}
-              delegatedAmount={delegatedCapital}
-            />
-          }
-        >
-          <PercentageBar
-            percent={directCapitalPercentage}
-            colorLeft="rgba(15, 111, 255, 0.4)"
-            colorRight="rgba(232, 31, 102, 0.4)"
-          />
-        </Tooltip>
+        {capitalBar}
       </VotesInfoLine>
       <VotesInfoLine>
         <VotesGroupLabel>Votes Pct.</VotesGroupLabel>
-        <Tooltip
-          content={
-            <PercentageTooltip
-              type="Votes"
-              referendumIndex={referendumIndex}
-              directPercentage={directVotesPercentage}
-              directAmount={directVotes}
-              delegatedPercentage={delegatedVotesPercentage}
-              delegatedAmount={delegatedVotes}
-            />
-          }
-        >
-          <PercentageBar
-            percent={directVotesPercentage}
-            colorLeft="rgba(255, 152, 0, 0.4)"
-            colorRight="rgba(232, 31, 102, 0.4)"
-          />
-        </Tooltip>
+        {votesBar}
       </VotesInfoLine>
     </VotesGroup>
   );
