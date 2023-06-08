@@ -3,6 +3,8 @@ import { useChainSettings } from "next-common/context/chain";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
+import ArrowFoldIcon from "next-common/assets/imgs/icons/arrow-fold.svg";
+import tw from "tailwind-styled-components";
 
 export default function Nav() {
   const { sm } = useScreenSize();
@@ -28,13 +30,17 @@ function BrandingHint() {
   );
 }
 
+const ToggleMenuButton = tw.button`
+w-6 h-6 bg-navigationActive rounded
+`;
+
 function NavDesktop() {
-  const [collapsed, toggle] = useToggle(false);
+  const [menuCollapsed, menuToggle] = useToggle(false);
 
   return (
     <nav
       className={clsx(
-        collapsed ? "w-[72px]" : "w-[300px]",
+        menuCollapsed ? "w-[72px]" : "w-[300px]",
         "max-w-[300px] h-full",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
       )}
@@ -42,17 +48,14 @@ function NavDesktop() {
       <div>
         <div className="p-4">logo</div>
         <div className="py-4 px-6 flex justify-between">
-          <div className={clsx(collapsed && "hidden")}>
+          <div className={clsx(menuCollapsed && "hidden")}>
             <ChainName />
             <BrandingHint />
           </div>
           <div>
-            <button
-              className="w-6 h-6 bg-navigationActive rounded"
-              onClick={toggle}
-            >
-              {"<>"}
-            </button>
+            <ToggleMenuButton onClick={menuToggle}>
+              <ArrowFoldIcon className={clsx(menuCollapsed && "rotate-180")} />
+            </ToggleMenuButton>
           </div>
         </div>
       </div>
@@ -64,12 +67,12 @@ function NavDesktop() {
   );
 }
 
-function NavMobileToolbarItem({ children }) {
-  return (
-    <div className="w-[72px] flex items-center justify-center">{children}</div>
-  );
-}
+const NavMobileToolbarItem = tw.div`
+w-[72px] flex items-center justify-center
+`;
 function NavMobile() {
+  const [menuVisible, menuToggle] = useToggle(false);
+
   return (
     <nav
       className={clsx(
@@ -79,7 +82,11 @@ function NavMobile() {
       )}
     >
       <NavMobileToolbarItem>
-        <button>{"<>"}</button>
+        <ToggleMenuButton onClick={menuToggle}>
+          <ArrowFoldIcon
+            className={clsx("rotate-180", menuVisible && "rotate-0")}
+          />
+        </ToggleMenuButton>
       </NavMobileToolbarItem>
       <div className="text-center">
         <ChainName />
