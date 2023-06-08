@@ -18,7 +18,11 @@ export function getFellowshipMenu(fellowshipTracks = []) {
 
   const menu = {
     name,
-    excludeToChains: getExcludeChains([Chains.development, Chains.kusama, Chains.collectives]),
+    excludeToChains: getExcludeChains([
+      Chains.development,
+      Chains.kusama,
+      Chains.collectives,
+    ]),
     activeCount: totalActiveCount,
     items: [
       {
@@ -38,6 +42,7 @@ export function getFellowshipMenu(fellowshipTracks = []) {
             style={{ width: 62, margin: "10px 0 10px 18px" }}
           />
         ),
+        type: "divider",
       },
       {
         value: "all",
