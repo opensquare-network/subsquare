@@ -14,6 +14,8 @@ export const gov2ReferendumsDetailApi = (index) =>
   gov2ReferendumsApi + `/${index}/vote-extrinsics`;
 export const gov2ReferendumsVoteCallsApi = (index) =>
   gov2ReferendumsApi + `/${index}/vote-calls`;
+export const gov2ReferendumsVoteStatsApi = (index) =>
+  gov2ReferendumsApi + `/${index}/vote-stats`;
 export const gov2ReferendumsCommentApi = (id) =>
   gov2ReferendumsApi + `/${id}/comments`;
 export const gov2ReferendumsSummaryApi = "gov2/referendums/summary";

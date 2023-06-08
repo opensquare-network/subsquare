@@ -215,6 +215,7 @@ export async function getGov2ReferendumVotesFromVotingOf(
 
   const directVotes = extractVotes(mapped, referendumIndex, blockApi);
   const delegationVotes = extractDelegations(mapped, trackId, directVotes);
+
   const sorted = sortVotes([...directVotes, ...delegationVotes]);
 
   let allAye = sorted.filter((v) => !v.isAbstain && v.aye);
@@ -225,5 +226,7 @@ export async function getGov2ReferendumVotesFromVotingOf(
   allNay = extractDirectVoterDelegations(allNay, delegationVotes);
   allAbstain = extractDirectVoterDelegations(allAbstain, delegationVotes);
 
-  return { allAye, allNay, allAbstain };
+  const allVotes = extractDirectVoterDelegations(directVotes, delegationVotes);
+
+  return { allAye, allNay, allAbstain, allVotes };
 }
