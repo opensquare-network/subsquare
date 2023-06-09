@@ -94,8 +94,8 @@ function MenuGroup({ menu = [], collapsed }) {
       </li>
       {!!menu.items?.length && (
         <ul className={clsx(childMenuVisible ? "block" : "hidden", "pl-7")}>
-          {menu.items.map((item) => (
-            <li key={item.value}>
+          {menu.items.map((item, idx) => (
+            <li key={idx}>
               {item?.type === "divider" ? (
                 <Divider />
               ) : (
