@@ -1,7 +1,10 @@
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import CMDKPalette from "../cmdk/cmdkPalette";
+import CookiesConsent from "../cookiesConsent";
 import Header from "../header/v2";
 import Nav from "../nav";
 import SEO from "../SEO";
+import Toast from "../toast";
 
 export default function ListLayout({ children, footer, seoInfo = {} }) {
   const { sm } = useScreenSize();
@@ -25,6 +28,10 @@ export default function ListLayout({ children, footer, seoInfo = {} }) {
           </section>
         </section>
       </div>
+
+      <CMDKPalette />
+      <Toast />
+      <CookiesConsent />
     </>
   );
 }
