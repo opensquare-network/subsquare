@@ -10,6 +10,7 @@ import normalizeTipListItem from "../../../viewfuncs/treasury/normalizeTipListIt
 import normalizeCouncilMotionListItem from "../../../viewfuncs/collective/normalizeCouncilMotionListItem";
 import normalizeDiscussionListItem from "../../../viewfuncs/discussion/normalizeDiscussionListItem";
 import normalizePolkassemblyDiscussionListItem from "../../../viewfuncs/discussion/normalizePaListItem";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const commonCategories = [
   {
@@ -85,16 +86,30 @@ const commonCategories = [
     id: "collectives",
     name: "Collective",
     children: [
-      {
-        id: "councilMotions",
-        name: "Council Motions",
-        categoryName: "Council motions",
-        categoryId: businessCategory.councilMotions,
-        routePath: "council/motions",
-        apiPath: "council-motions",
-        formatter: normalizeCouncilMotionListItem,
-        excludeChains: [Chains.kintsugi, Chains.interlay],
-      },
+      ...(
+        isMoonChain() ? [
+          {
+            id: "treasuryCouncilMotions",
+            name: "Treasury Council Motions",
+            categoryName: "Treasury Council motions",
+            categoryId: businessCategory.treasuryCouncilMotions,
+            routePath: "council/motions",
+            apiPath: "council-motions",
+            formatter: normalizeCouncilMotionListItem,
+          },
+        ] : [
+          {
+            id: "councilMotions",
+            name: "Council Motions",
+            categoryName: "Council motions",
+            categoryId: businessCategory.councilMotions,
+            routePath: "council/motions",
+            apiPath: "council-motions",
+            formatter: normalizeCouncilMotionListItem,
+            excludeChains: [Chains.kintsugi, Chains.interlay],
+          },
+        ]
+      ),
       {
         id: "techCommProposals",
         name: "Tech. Comm. Proposals",
@@ -104,6 +119,20 @@ const commonCategories = [
         apiPath: "techcomm-proposals",
         formatter: normalizeTechCommMotionListItem,
       },
+      ...(
+        isMoonChain() ? [
+          {
+            id: "openTechCommitteeProposals",
+            name: "Open Tech. Comm. proposals",
+            categoryName: "Open Tech. Comm. proposals",
+            categoryId: businessCategory.openTechCommitteeProposals,
+            routePath: "open-techcomm/motions",
+            apiPath: "open-techcomm/motions",
+            formatter: normalizeTechCommMotionListItem,
+          },
+        ] : []
+      ),
+
     ],
   },
   {

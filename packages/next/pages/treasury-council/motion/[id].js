@@ -12,7 +12,6 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
-import Chains from "next-common/utils/consts/chains";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -47,7 +46,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
   const breadcrumbItemName = getMotionBreadcrumbName(id, motion);
   const breadcrumbItems = [
     {
-      content: "Council",
+      content: "Treasury Council",
     },
     {
       content: "Motions",
@@ -78,16 +77,10 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id, page, page_size } = context.query;
   const pageSize = Math.min(page_size ?? 50, 100);
 
-  let listApi = "motions";
-  if ([Chains.moonbeam, Chains.moonriver].includes(chain)) {
-    listApi = "moon-council/motions";
-  }
-
-  const { result: motion } = await nextApi.fetch(`${listApi}/${id}`);
+  const { result: motion } = await nextApi.fetch(`motions/${id}`);
   if (!motion) {
     return {
       props: {
@@ -101,7 +94,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const motionId = motion._id;
 
   const { result: comments } = await nextApi.fetch(
-    `${listApi}/${motionId}/comments`,
+    `motions/${motionId}/comments`,
     {
       page: page ?? "last",
       pageSize,

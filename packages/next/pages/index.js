@@ -24,6 +24,7 @@ import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allian
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 import { isCollectivesChain } from "next-common/utils/chain";
 import businessCategory from "next-common/utils/consts/business/category";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -109,7 +110,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     },
     ...discussions,
     {
-      category: businessCategory.councilMotions,
+      category: isMoonChain() ? businessCategory.treasuryCouncilMotions : businessCategory.councilMotions,
       link: "/council/motions",
       items: (overview?.council?.motions ?? []).map((item) =>
         normalizeCouncilMotionListItem(chain, item)

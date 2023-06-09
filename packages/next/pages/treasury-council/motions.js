@@ -4,16 +4,19 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
-import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
+import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import Chains from "next-common/utils/consts/chains";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 export default withLoginUserRedux(
   ({ motions, chain, tracks, fellowshipTracks }) => {
     const items = (motions.items || []).map((item) =>
-      normalizeCouncilMotionListItem(chain, item)
+      normalizeTreasuryCouncilMotionListItem(chain, item)
     );
-    const category = businessCategory.councilMotions;
+    let category = businessCategory.councilMotions;
+    if (isMoonChain()) {
+      category = businessCategory.treasuryCouncilMotions;
+    }
     const seoInfo = { title: category, desc: category };
 
     return (
@@ -40,13 +43,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
 
-  let listApi = "motions";
-  if ([Chains.moonbeam, Chains.moonriver].includes(chain)) {
-    listApi = "moon-council/motions";
-  }
-
   const [{ result: motions }] = await Promise.all([
-    nextApi.fetch(listApi, {
+    nextApi.fetch("motions", {
       page: page ?? 1,
       pageSize: pageSize ?? defaultPageSize,
     }),

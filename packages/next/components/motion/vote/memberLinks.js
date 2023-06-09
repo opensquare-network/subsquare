@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import SubLink from "next-common/components/styled/subLink";
 import { useDetailType } from "next-common/context/page";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const Anchor = styled(SubLink)`
   margin-top: 16px !important;
@@ -23,9 +24,26 @@ function MemberLinks() {
       name: "members",
     };
   } else if (detailPageCategory.TREASURY_TIP === type) {
+    if (isMoonChain()) {
+      obj = {
+        url: "/treasury-council/members",
+        name: "tippers",
+      };
+    } else {
+      obj = {
+        url: "/council/members",
+        name: "tippers",
+      };
+    }
+  } else if (detailPageCategory.TREASURY_COUNCIL_MOTION === type) {
     obj = {
-      url: "/council/members",
-      name: "tippers",
+      url: "/treasury-council/members",
+      name: "councilors",
+    };
+  } else if (detailPageCategory.OPEN_TECH_COMM_PROPOSAL === type) {
+    obj = {
+      url: "/open-techcomm/members",
+      name: "members",
     };
   }
 
