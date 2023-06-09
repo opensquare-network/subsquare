@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { partition, capitalize } from "lodash";
-import { usePageProps } from "next-common/context/page";
+import { useIsMacOS, usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -10,10 +10,21 @@ import { useToggle } from "usehooks-ts";
 import tw from "tailwind-styled-components";
 import { useEffect } from "react";
 import ArrowDownIcon from "next-common/assets/imgs/icons/arrow-down.svg";
+import { useDispatch } from "react-redux";
+import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
+
+const MenuItemWrapper = tw.div`
+h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium
+hover:text-theme500 [&_svg_path]:hover:fill-theme500
+${(p) =>
+  p.$active && "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500"}
+`;
 
 export default function NavMenu({ collapsed }) {
+  const dispatch = useDispatch();
   const { commonMenu, featuredMenu } = useMenu();
   const router = useRouter();
+  const isMacOS = useIsMacOS();
 
   return (
     <div>
@@ -29,6 +40,27 @@ export default function NavMenu({ collapsed }) {
             />
           </li>
         ))}
+        <li>
+          <MenuItemWrapper
+            role="menuitem"
+            onClick={() => {
+              dispatch(setCmdkPaletteVisible(true));
+            }}
+          >
+            <span>icon</span>
+            <span className="inline-flex justify-between items-center w-full">
+              <span>Navigation</span>
+              <span
+                className={clsx(
+                  "bg-navigationActive rounded",
+                  "text12Medium text-textTertiaryContrast",
+                )}
+              >
+                {isMacOS ? "⌘" : "Ctrl +"} K
+              </span>
+            </span>
+          </MenuItemWrapper>
+        </li>
       </ul>
 
       <Divider />
@@ -45,13 +77,6 @@ export default function NavMenu({ collapsed }) {
     </div>
   );
 }
-
-const MenuItemWrapper = tw.div`
-h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium
-hover:text-theme500 [&_svg_path]:hover:fill-theme500
-${(p) =>
-  p.$active && "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500"}
-`;
 
 const ActiveCountLabel = tw.span`
 ml-2 text-textTertiaryContrast
@@ -121,7 +146,7 @@ function MenuItem({ active, collapsed, icon, label, url, activeCount }) {
     <Link href={url || ""} target={isExternal ? "_blank" : "_self"}>
       <MenuItemWrapper $active={active}>
         {icon}
-        <span className={clsx(collapsed && "hidden")}>
+        <span className={clsx(collapsed && "hidden", "w-full")}>
           {label}{" "}
           {!!activeCount && <ActiveCountLabel>{activeCount}</ActiveCountLabel>}
           {isExternal && (
