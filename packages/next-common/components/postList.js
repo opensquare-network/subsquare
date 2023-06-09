@@ -4,7 +4,6 @@ import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination/index.js";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import { EmptyList } from "./emptyList";
-import { pageHomeLayoutMainContentWidth } from "../utils/constants";
 import Link from "next/link";
 import {
   flex,
@@ -17,11 +16,6 @@ import {
 import { p_14_medium, p_16_bold } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-
   > :not(:first-child) {
     margin-top: 16px;
   }
