@@ -4,6 +4,8 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
 import ArrowFoldIcon from "next-common/assets/imgs/icons/arrow-fold.svg";
+import MenuIcon from "next-common/assets/imgs/icons/menu.svg";
+import CloseIcon from "next-common/assets/imgs/icons/close.svg";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/v2/drawer";
 
@@ -95,7 +97,18 @@ function NavMobile() {
         </div>
         <NavMobileToolbarItem>
           <div role="button" onClick={toolbarToggle}>
-            --
+            <MenuIcon
+              className={clsx(
+                "[&_path]:stroke-textPrimaryContrast",
+                toolbarVisible && "hidden",
+              )}
+            />
+            <CloseIcon
+              className={clsx(
+                "[&_path]:stroke-textPrimaryContrast",
+                !toolbarVisible && "hidden",
+              )}
+            />
           </div>
         </NavMobileToolbarItem>
       </div>
