@@ -81,9 +81,13 @@ export function useMenuHasTechComm() {
 }
 
 /**
- * @alias useHasGov2
+ * @deprecated use `useHasGov2` instead
  */
 export function useMenuHasGov2() {
+  return useHasGov2();
+}
+
+export function useHasGov2() {
   const chain = useChain();
   return [Chains.kusama, Chains.development].includes(chain);
 }
