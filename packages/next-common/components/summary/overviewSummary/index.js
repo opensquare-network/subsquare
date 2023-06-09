@@ -13,7 +13,7 @@ import {
   useMenuHasTreasuryChildBounties,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
-import Summary from "../summaryBase";
+import Summary from "../v2/base";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -199,8 +199,10 @@ export default function OverviewSummary({ summaryData }) {
       content: <TreasuryGroupContent summaryData={summaryData} />,
     },
     {
-      title: `${ showCouncil ? "Council" : "" }${ showTC && showCouncil ? " / " : "" }${ showTC ? "T.C." : "" }`,
-      content: <CouncilGroupContent summaryData={ summaryData } />,
+      title: `${showCouncil ? "Council" : ""}${
+        showTC && showCouncil ? " / " : ""
+      }${showTC ? "T.C." : ""}`,
+      content: <CouncilGroupContent summaryData={summaryData} />,
     },
   );
 
