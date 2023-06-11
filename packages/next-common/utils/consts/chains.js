@@ -28,6 +28,7 @@ const Chains = {
   "westend-collectives": "westend-collectives",
   collectives: "collectives",
   darwinia2: "darwinia2",
+  "bifrost-polkadot": "bifrost-polkadot",
 };
 
 export default Chains;
