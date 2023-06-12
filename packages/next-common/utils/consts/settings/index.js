@@ -26,7 +26,7 @@ import westend from "./westend";
 import collectives from "./collectives";
 import darwinia2 from "./darwinia2";
 import moonriver from "./moonriver";
-import moonbeam from "./moonbeam";
+// import moonbeam from "./moonbeam";
 
 const settingsMap = {
   polkadot,
@@ -48,7 +48,7 @@ const settingsMap = {
   kintsugi,
   litentry,
   litmus,
-  moonbeam,
+  // moonbeam,
   moonriver,
   phala,
   polkadex,

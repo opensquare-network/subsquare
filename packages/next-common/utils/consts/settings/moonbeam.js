@@ -1,6 +1,6 @@
-import Logo from "../../../assets/header-logos/darwinia2.svg";
-import DarkModeLogo from "../../../assets/header-logos/darwinia2-dark.svg";
-import Avatar from "../../../assets/icons/chain/darwinia2.png";
+import Logo from "../../../assets/header-logos/moonbeam.svg";
+import DarkModeLogo from "../../../assets/header-logos/moonbeam-dark.svg";
+import Avatar from "../../../assets/icons/chain/moonbeam.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
@@ -27,7 +27,7 @@ const moonbeam = {
   decimals: 18,
   hasElections: false,
   ss58Format: 18,
-  snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",
+  snsCoverCid: "QmQ2r48Wf6yu8d9k9VEejvcRoxNDVuiqW12ui7RCiXgWQg",
   endpoints: DEFAULT_MOONBEAM_NODES,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,

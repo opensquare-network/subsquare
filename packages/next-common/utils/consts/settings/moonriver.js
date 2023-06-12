@@ -27,7 +27,7 @@ const moonriver = {
   decimals: 18,
   hasElections: false,
   ss58Format: 18,
-  snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",
+  snsCoverCid: "QmR2LSfa9e46C1Wc5LTZ2oRm9wkdaxfX4SyhYXVohcsdrB",
   endpoints: DEFAULT_MOONRIVER_NODES,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
