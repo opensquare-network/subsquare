@@ -7,8 +7,8 @@ const openTechCommittee = {
   name: "OPEN TECH.COMM.",
   items: [
     {
-      value: "motions",
-      name: "Motions",
+      value: "openTechCommitteeProposals",
+      name: "Proposals",
       pathname: "/open-techcomm/proposals",
       icon: (
         <MenuIconWrapper>
@@ -17,7 +17,7 @@ const openTechCommittee = {
       ),
     },
     {
-      value: "councilMembers",
+      value: "openTechCommitteeMembers",
       name: "Members",
       pathname: "/open-techcomm/members",
       icon: (
