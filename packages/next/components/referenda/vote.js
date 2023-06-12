@@ -110,7 +110,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   const isPassing = useIsDemocracyPassing();
   const threshold = useDemocracyThreshold();
   const isPassed = useIsDemocracyPassed();
-  const { useVoteCall } = useChainSettings();
+  const { useVoteCall, hideActionButtons } = useChainSettings();
 
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const electorate = useSelector(electorateSelector);
@@ -182,7 +182,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
         <MyVote />
       </SecondaryCardDetail>
 
-      {!isVoteFinished && (
+      {!isVoteFinished && !hideActionButtons && (
         <SecondaryButton
           onClick={() => {
             setShowVote(true);

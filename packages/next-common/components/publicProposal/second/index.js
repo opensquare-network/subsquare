@@ -206,7 +206,7 @@ export default function Second({
           </Title>
           {secondsList}
         </GhostCard>
-        {action}
+        {!node?.hideActionButtons && action}
       </Wrapper>
       {showPopup && (
         <Popup

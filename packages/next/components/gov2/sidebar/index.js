@@ -32,18 +32,16 @@ export default function Gov2Sidebar({
 
       <Gov2Tally />
 
-      {isVoting && (
+      {isVoting && !hideActionButtons && (
         <InlineWrapper>
-          {!hideActionButtons && (
-            <SecondaryButton
-              style={{ width: "100%" }}
-              onClick={() => {
-                setShowVote(true);
-              }}
-            >
-              Vote
-            </SecondaryButton>
-          )}
+          <SecondaryButton
+            style={{ width: "100%" }}
+            onClick={() => {
+              setShowVote(true);
+            }}
+          >
+            Vote
+          </SecondaryButton>
         </InlineWrapper>
       )}
       {showVote && (
