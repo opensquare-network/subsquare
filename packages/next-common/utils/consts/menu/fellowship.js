@@ -18,7 +18,13 @@ export function getFellowshipMenu(fellowshipTracks = []) {
 
   const menu = {
     name,
-    excludeToChains: getExcludeChains([Chains.development, Chains.kusama, Chains.collectives]),
+    excludeToChains: getExcludeChains([
+      Chains.development,
+      Chains.kusama,
+      Chains.collectives,
+      Chains.moonriver,
+      Chains.moonbeam,
+    ]),
     activeCount: totalActiveCount,
     items: [
       {
