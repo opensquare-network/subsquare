@@ -22,19 +22,20 @@ export default function Footer() {
     <div
       className={clsx(
         "flex",
-        "h-[72px] px-6 justify-between items-center",
+        "h-[72px] px-6 py-4 justify-between items-center",
         "border-t border-neutral300 bg-neutral100",
+        "max-sm:flex-col",
       )}
     >
-      <div className="flex items-center gap-x-4">
+      <div className={clsx("flex items-center gap-x-4", "max-sm:flex-col")}>
         <div>logo</div>
-        <p className="text14Medium text-textTertiary">
+        <p className={clsx("text14Medium text-textTertiary", "max-sm:mt-2")}>
           @{new Date().getFullYear()} SubSquare. Powered by OpenSquare
         </p>
       </div>
 
-      <div className="flex items-center gap-x-6">
-        <ul className={clsx("flex", "text14Medium")}>
+      <div className={clsx("flex items-center gap-x-6", "max-sm:flex-col")}>
+        <ul className={clsx("flex", "text14Medium", "max-sm:mt-2.5")}>
           {contactLinks.map((contact) => (
             <li
               key={contact.name}
@@ -47,7 +48,7 @@ export default function Footer() {
           ))}
         </ul>
 
-        <div>
+        <div className={clsx("max-sm:mt-3")}>
           <ThemeToggleGroup />
         </div>
       </div>
