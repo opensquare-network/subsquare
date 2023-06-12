@@ -89,11 +89,20 @@ const commonCategories = [
       ...(
         isMoonChain() ? [
           {
+            id: "councilMotions",
+            name: "Council Motions",
+            categoryName: "Council motions",
+            categoryId: businessCategory.councilMotions,
+            routePath: "council/motions",
+            apiPath: "moon-council-motions",
+            formatter: normalizeCouncilMotionListItem,
+          },
+          {
             id: "treasuryCouncilMotions",
             name: "Treasury Council Motions",
             categoryName: "Treasury Council motions",
             categoryId: businessCategory.treasuryCouncilMotions,
-            routePath: "council/motions",
+            routePath: "treasury-council/motions",
             apiPath: "council-motions",
             formatter: normalizeCouncilMotionListItem,
           },
@@ -122,17 +131,16 @@ const commonCategories = [
       ...(
         isMoonChain() ? [
           {
-            id: "openTechCommitteeProposals",
-            name: "Open Tech. Comm. proposals",
+            id: "openTechCommProposals",
+            name: "Open Tech. Comm. Proposals",
             categoryName: "Open Tech. Comm. proposals",
-            categoryId: businessCategory.openTechCommitteeProposals,
-            routePath: "open-techcomm/motions",
-            apiPath: "open-techcomm/motions",
+            categoryId: businessCategory.openTechCommProposals,
+            routePath: "open-techcomm/proposals",
+            apiPath: "open-techcomm-proposals",
             formatter: normalizeTechCommMotionListItem,
           },
         ] : []
       ),
-
     ],
   },
   {

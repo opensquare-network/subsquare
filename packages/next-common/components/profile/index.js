@@ -23,6 +23,7 @@ import VStack from "../styled/vStack";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import AchainableProfile from "./achainableProfile";
 import Chains from "next-common/utils/consts/chains";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -55,6 +56,7 @@ const Secondary = styled.span`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
+  white-space: nowrap;
 
   ${(props) =>
     props.selected &&
@@ -72,7 +74,6 @@ const Tertiary = styled.span`
   font-size: 14px;
   line-height: 20px;
   white-space: pre-wrap;
-  word-break: break-all;
   color: ${(props) => props.theme.textTertiary};
 `;
 
@@ -82,11 +83,10 @@ const CategoryList = styled.ul`
   all: unset;
   padding-inline-start: 0 !important;
   display: flex;
-  height: 28px;
-  gap: 16px;
   overflow-x: scroll;
   overflow-y: hidden;
   ${no_scroll_bar};
+  flex-wrap: wrap;
 `;
 
 const CategoryOption = styled.li`
@@ -94,6 +94,7 @@ const CategoryOption = styled.li`
   display: flex;
   align-items: center;
   gap: 4px;
+  margin-left: 16px;
 
   :first-child {
     font-weight: 500;
@@ -228,6 +229,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
     collectives: {
       councilMotions: summary?.council?.motions ?? 0,
       techCommProposals: summary?.techComm?.proposals ?? 0,
+      openTechCommProposals: summary?.openTechComm?.motions ?? 0,
     },
     discussions: {
       posts: summary?.discussions ?? 0,
@@ -235,6 +237,11 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
       polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
     },
   };
+
+  if (isMoonChain()) {
+    overview.collectives.treasuryCouncilMotions = overview.collectives.councilMotions;
+    overview.collectives.councilMotions = summary?.moonCouncil?.motions;
+  }
 
   const resetPage = () => setPagination({ ...pagination, page: 1 });
 
