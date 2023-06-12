@@ -36,6 +36,8 @@ const treasury = {
         Chains.centrifuge,
         Chains.altair,
         Chains.darwinia2,
+        Chains.moonriver,
+        Chains.moonbeam,
       ],
       icon: (
         <MenuIconWrapper>
@@ -72,6 +74,8 @@ const treasury = {
         Chains.zeitgeist,
         Chains.centrifuge,
         Chains.altair,
+        Chains.moonriver,
+        Chains.moonbeam,
       ],
       icon: (
         <MenuIconWrapper>
