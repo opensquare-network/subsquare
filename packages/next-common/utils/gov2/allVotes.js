@@ -2,8 +2,8 @@ import { calcVotes, objectSpread, sortVotes } from "../democracy/votes/passed/co
 import { extractAddressAndTrackId } from "./utils";
 import BigNumber from "bignumber.js";
 
-function normalizeVotingOfEntry([storageKey, voting], blockApi) {
-  const { address, trackId } = extractAddressAndTrackId(storageKey, blockApi);
+function normalizeVotingOfEntry([storageKey, voting]) {
+  const { address, trackId } = extractAddressAndTrackId(storageKey);
   return { account: address, trackId, voting };
 }
 
@@ -211,7 +211,7 @@ export async function getGov2ReferendumVotesFromVotingOf(
   referendumIndex,
 ) {
   const voting = await blockApi.query.convictionVoting.votingFor.entries();
-  const mapped = voting.map((item) => normalizeVotingOfEntry(item, blockApi));
+  const mapped = voting.map((item) => normalizeVotingOfEntry(item));
 
   const directVotes = extractVotes(mapped, referendumIndex, blockApi);
   const delegationVotes = extractDelegations(mapped, trackId, directVotes);

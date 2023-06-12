@@ -20,10 +20,7 @@ export async function getGov2BeenDelegatedListByAddress(api, address, trackId) {
 
   const beenDelegated = [];
   for (const [storageKey, votingFor] of votingForEntries) {
-    const { address: delegator, trackId: _trackId } = extractAddressAndTrackId(
-      storageKey,
-      api,
-    );
+    const { address: delegator, trackId: _trackId } = extractAddressAndTrackId(storageKey);
     if (!isNil(trackId)) {
       if (_trackId !== trackId) {
         continue;
