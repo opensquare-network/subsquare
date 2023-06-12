@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearVotes,
   fetchVotes,
   votesSelector,
 } from "../../store/reducers/gov2ReferendumSlice";
@@ -45,6 +46,8 @@ export default function useFetchVotes(referendum) {
     if (api) {
       dispatch(fetchVotes(api, trackId, referendumIndex, voteFinishedHeight));
     }
+
+    return () => dispatch(clearVotes());
   }, [api, dispatch, referendumIndex, voteFinishedHeight]);
 
   return { allAye, allNay };

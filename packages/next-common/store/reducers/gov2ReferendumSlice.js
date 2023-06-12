@@ -63,7 +63,6 @@ export const clearVotes = () => async (dispatch) => {
 
 export const fetchVotes =
   (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {
-    dispatch(clearVotes());
     dispatch(setIsLoadingVotes(true));
     try {
       let blockApi = api;
