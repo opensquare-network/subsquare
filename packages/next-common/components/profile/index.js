@@ -229,7 +229,6 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
     collectives: {
       councilMotions: summary?.council?.motions ?? 0,
       techCommProposals: summary?.techComm?.proposals ?? 0,
-      openTechCommProposals: summary?.openTechComm?.motions ?? 0,
     },
     discussions: {
       posts: summary?.discussions ?? 0,
@@ -239,8 +238,9 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   };
 
   if (isMoonChain()) {
-    overview.collectives.treasuryCouncilMotions = overview.collectives.councilMotions;
-    overview.collectives.councilMotions = summary?.moonCouncil?.motions;
+    overview.collectives.treasuryCouncilMotions = overview.collectives.councilMotions ?? 0;
+    overview.collectives.councilMotions = summary?.moonCouncil?.motions ?? 0;
+    overview.collectives.openTechCommProposals = summary?.openTechComm?.proposals ?? 0;
   }
 
   const resetPage = () => setPagination({ ...pagination, page: 1 });

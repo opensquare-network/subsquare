@@ -11,6 +11,8 @@ import normalizeCouncilMotionListItem from "../../../viewfuncs/collective/normal
 import normalizeDiscussionListItem from "../../../viewfuncs/discussion/normalizeDiscussionListItem";
 import normalizePolkassemblyDiscussionListItem from "../../../viewfuncs/discussion/normalizePaListItem";
 import isMoonChain from "next-common/utils/isMoonChain";
+import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 
 const commonCategories = [
   {
@@ -104,7 +106,7 @@ const commonCategories = [
             categoryId: businessCategory.treasuryCouncilMotions,
             routePath: "treasury-council/motions",
             apiPath: "council-motions",
-            formatter: normalizeCouncilMotionListItem,
+            formatter: normalizeTreasuryCouncilMotionListItem,
           },
         ] : [
           {
@@ -137,7 +139,7 @@ const commonCategories = [
             categoryId: businessCategory.openTechCommProposals,
             routePath: "open-techcomm/proposals",
             apiPath: "open-techcomm-proposals",
-            formatter: normalizeTechCommMotionListItem,
+            formatter: normalizeOpenTechCommProposalListItem,
           },
         ] : []
       ),
