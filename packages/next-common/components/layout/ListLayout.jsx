@@ -5,8 +5,9 @@ import Header from "../header/v2";
 import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
+import Footer from "./footer/v2";
 
-export default function ListLayout({ children, footer, seoInfo = {} }) {
+export default function ListLayout({ children, seoInfo = {} }) {
   const { sm } = useScreenSize();
 
   return (
@@ -22,7 +23,9 @@ export default function ListLayout({ children, footer, seoInfo = {} }) {
           <header className="sticky top-0 z-10">{!sm && <Header />}</header>
           <section className="flex flex-col flex-1">
             <div className="w-full flex-1">{children}</div>
-            <footer className="bg-rose-200">{footer || "footer"}</footer>
+            <footer className="bg-rose-200">
+              <Footer />
+            </footer>
           </section>
         </section>
       </div>
