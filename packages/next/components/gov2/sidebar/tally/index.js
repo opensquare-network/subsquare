@@ -18,6 +18,7 @@ import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuan
 import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
 import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
+import { useChainSettings } from "next-common/context/chain";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -33,6 +34,7 @@ export default function Gov2Tally() {
 
   const issuance = useReferendaIssuance();
   const track = useTrack();
+  const { showReferendaReferendumDelegationPercentage: showDelegationPercentage } = useChainSettings();
 
   let titleRightCorner = (
     <CurvePopup
@@ -62,7 +64,7 @@ export default function Gov2Tally() {
       <Support supportPerbill={supportPerbill} value={tally?.support} />
       <Issuance issuance={issuance} />
 
-      <VotesInfo />
+      { showDelegationPercentage && <VotesInfo /> }
       <MyVote />
     </SecondaryCardDetail>
   );
