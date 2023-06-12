@@ -136,7 +136,7 @@ const commonCategories = [
             id: "openTechCommProposals",
             name: "Open Tech. Comm. Proposals",
             categoryName: "Open Tech. Comm. proposals",
-            categoryId: businessCategory.openTechCommProposals,
+            categoryId: businessCategory.openTechCommitteeProposals,
             routePath: "open-techcomm/proposals",
             apiPath: "open-techcomm-proposals",
             formatter: normalizeOpenTechCommProposalListItem,
