@@ -85,5 +85,5 @@ export function useMenuHasTechComm() {
  */
 export function useMenuHasGov2() {
   const chain = useChain();
-  return [Chains.kusama, Chains.development].includes(chain);
+  return [Chains.kusama, Chains.moonriver, Chains.development].includes(chain);
 }
