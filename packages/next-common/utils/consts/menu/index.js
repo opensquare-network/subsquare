@@ -17,7 +17,6 @@ export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
     return [
       commonMenus,
       getReferendaMenu(tracks),
-      getFellowshipMenu(fellowshipTracks),
       democracy,
       treasury,
       council,
