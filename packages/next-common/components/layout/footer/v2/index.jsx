@@ -48,7 +48,7 @@ export default function Footer() {
           ))}
         </ul>
 
-        <div className={clsx("max-sm:mt-3")}>
+        <div className={clsx("max-sm:mt-3 max-sm:mb-4")}>
           <ThemeToggleGroup />
         </div>
       </div>
