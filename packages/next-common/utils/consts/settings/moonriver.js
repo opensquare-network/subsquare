@@ -1,6 +1,6 @@
-import Logo from "../../../assets/header-logos/darwinia2.svg";
-import DarkModeLogo from "../../../assets/header-logos/darwinia2-dark.svg";
-import Avatar from "../../../assets/icons/chain/darwinia2.png";
+import Logo from "../../../assets/header-logos/moonriver.svg";
+import DarkModeLogo from "../../../assets/header-logos/moonriver-dark.svg";
+import Avatar from "../../../assets/icons/chain/moonriver.png";
 
 import Chains from "../chains";
 import capitalize from "../../capitalize";
