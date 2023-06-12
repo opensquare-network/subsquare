@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.2.2
+- Show fellowship UI on polkadot collectives para chain.
+- Implement a status filter for OpenGov referenda.
+- Add dotreasury link to subsquare treasury panel for kusama and polkadot.
+- Show direct vs delegation vote ratios on OpenGov referendum detail page.
+- Fix OpenGov referendum decision deposit button disable status.
+- Update votes automatically when OpenGov referendum tally changed.
+- Supported bifrost polkadot para chain.
+- Separate democracy/referenda votes scan with the main scan process, add a new api to serve new votes data, and adapt this in fronted.
+
 ## 3.2.1
 - Refactor child bounty claim related components, and make child bounty claim button enabled only when it's mature.
 - Improve fellowship and referenda navigation components to better show their correlation.
