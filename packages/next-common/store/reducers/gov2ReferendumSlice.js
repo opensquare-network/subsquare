@@ -20,6 +20,7 @@ const gov2ReferendumSlice = createSlice({
     isLoadingVoteCalls: true,
     voteCalls: emptyVotes,
     issuance: null,
+    votesTrigger: 1,
   },
   reducers: {
     setIsLoadingVotes(state, { payload }) {
@@ -37,6 +38,9 @@ const gov2ReferendumSlice = createSlice({
     setIssuance(state, { payload }) {
       state.issuance = payload;
     },
+    incVotesTrigger(state) {
+      state.votesTrigger += 1;
+    },
   },
 });
 
@@ -46,6 +50,7 @@ export const {
   setVoteCalls,
   setIsLoadingVoteCalls,
   setIssuance,
+  incVotesTrigger,
 } = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
@@ -56,10 +61,13 @@ export const votesSelector = (state) => state.gov2Referendum.votes;
 export const voteCallsSelector = (state) =>
   state.gov2Referendum.voteCalls;
 export const gov2IssuanceSelector = (state) => state.gov2Referendum.issuance;
+export const votesTriggerSelector = state => state.gov2Referendum.votesTrigger;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
 };
+
+export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigger());
 
 export const fetchVotes =
   (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {

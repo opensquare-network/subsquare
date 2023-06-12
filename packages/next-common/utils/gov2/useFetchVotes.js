@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   clearVotes,
   fetchVotes,
-  votesSelector,
+  votesSelector, votesTriggerSelector,
 } from "../../store/reducers/gov2ReferendumSlice";
 import useApi from "../hooks/useApi";
 
@@ -35,6 +35,7 @@ function extractVoteInfo(timeline = []) {
 
 export default function useFetchVotes(referendum) {
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
+  const votesTrigger = useSelector(votesTriggerSelector);
   const { voteFinishedHeight } = extractVoteInfo(referendum?.timeline);
   const referendumIndex = referendum?.referendumIndex;
   const trackId = referendum?.track;
@@ -48,7 +49,7 @@ export default function useFetchVotes(referendum) {
     }
 
     return () => dispatch(clearVotes());
-  }, [api, dispatch, referendumIndex, voteFinishedHeight]);
+  }, [api, dispatch, referendumIndex, voteFinishedHeight, votesTrigger]);
 
   return { allAye, allNay };
 }
