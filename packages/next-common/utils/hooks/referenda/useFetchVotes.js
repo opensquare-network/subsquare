@@ -6,6 +6,7 @@ import {
   votesSelector,
 } from "../../../store/reducers/referendumSlice";
 import useApi from "../useApi";
+import { clearVotes } from "../../../store/reducers/referendumSlice";
 
 export default function useFetchVotes(referendum) {
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
@@ -19,6 +20,8 @@ export default function useFetchVotes(referendum) {
     if (api) {
       dispatch(fetchVotes(api, referendumIndex, voteFinishedHeight));
     }
+
+    return () => dispatch(clearVotes());
   }, [api, dispatch, referendumIndex, voteFinishedHeight]);
 
   return { allAye, allNay };

@@ -4,6 +4,8 @@ import useDemocracyVoteFinishedHeight from "../../context/post/democracy/referen
 import { useOnchainData } from "../../context/post";
 import useApi from "../../utils/hooks/useApi";
 import useIsMounted from "../../utils/hooks/useIsMounted";
+import { triggerFetchDemocracyVotes } from "../../store/reducers/referendumSlice";
+import { useDispatch } from "react-redux";
 
 export default function useSubDemocracyTally() {
   const api = useApi();
@@ -13,6 +15,8 @@ export default function useSubDemocracyTally() {
   const [tally, setTally] = useState(contextTally);
   const isMounted = useIsMounted();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (finishedHeight || !api || !api.query.democracy) {
       return;
@@ -20,7 +24,7 @@ export default function useSubDemocracyTally() {
 
     let unsub;
     api.query.democracy.referendumInfoOf(referendumIndex, (info) => {
-      if (!info || !info.isSome) {
+      if (!isMounted.current || !info || !info.isSome) {
         return;
       }
 
@@ -30,9 +34,9 @@ export default function useSubDemocracyTally() {
       }
 
       const ongoing = unwrapped.asOngoing;
-      if (isMounted.current) {
-        setTally(ongoing.tally.toJSON());
-      }
+      setTally(ongoing.tally.toJSON());
+
+      dispatch(triggerFetchDemocracyVotes());
     }).then(result => {
       unsub = result;
     });
