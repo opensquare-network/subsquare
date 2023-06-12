@@ -5,6 +5,7 @@ import { emptyFunction } from "next-common/utils";
 import { useDetailType } from "next-common/context/page";
 import Voters from "./voters";
 import Action from "./action";
+import { useChainSettings } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -37,12 +38,15 @@ export default function Vote({
 }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
+  const { hideActionButtons } = useChainSettings();
 
   return (
     <>
       <Wrapper>
         <Voters votes={votes} isLoadingVote={isLoadingVote} prime={prime} />
-        <Action refreshData={onFinalized} setShowPopup={setShowPopup} />
+        {!hideActionButtons && (
+          <Action refreshData={onFinalized} setShowPopup={setShowPopup} />
+        )}
       </Wrapper>
       {showPopup && (
         <Popup

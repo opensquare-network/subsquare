@@ -9,17 +9,22 @@ import { usePost } from "next-common/context/post";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import LearnGov2Link from "next-common/components/links/learnGov2Link";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
+import { useChainSettings } from "next-common/context/chain";
 
 const Popup = dynamic(() => import("../votePopup"), {
   ssr: false,
 });
 
-export default function Gov2Sidebar({ onVoteFinalized = emptyFunction, onDecisionDepositFinalized = emptyFunction }) {
+export default function Gov2Sidebar({
+  onVoteFinalized = emptyFunction,
+  onDecisionDepositFinalized = emptyFunction,
+}) {
   const detail = usePost();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
   const isVoting = gov2VotingState.includes(detail?.state?.name);
+  const { hideActionButtons } = useChainSettings();
 
   return (
     <RightBarWrapper>
@@ -29,14 +34,16 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction, onDecisio
 
       {isVoting && (
         <InlineWrapper>
-          <SecondaryButton
-            style={{ width: "100%" }}
-            onClick={() => {
-              setShowVote(true);
-            }}
-          >
-            Vote
-          </SecondaryButton>
+          {!hideActionButtons && (
+            <SecondaryButton
+              style={{ width: "100%" }}
+              onClick={() => {
+                setShowVote(true);
+              }}
+            >
+              Vote
+            </SecondaryButton>
+          )}
         </InlineWrapper>
       )}
       {showVote && (

@@ -28,7 +28,7 @@ const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
   {
     ssr: false,
-  },
+  }
 );
 
 const CategoryExtraWrapper = styled.div`
@@ -52,7 +52,7 @@ export default withLoginUserRedux(
     const chainSettings = useChainSettings();
 
     const items = (proposals.items || []).map((item) =>
-      normalizeTreasuryProposalListItem(chain, item),
+      normalizeTreasuryProposalListItem(chain, item)
     );
 
     const refreshPageData = useCallback(async () => {
@@ -64,22 +64,24 @@ export default withLoginUserRedux(
 
     const onProposeFinalized = useWaitSyncBlock(
       "Proposal proposed",
-      refreshPageData,
+      refreshPageData
     );
 
     const categoryExtra = (
       <CategoryExtraWrapper>
-        <Create onClick={() => setShowPopup(true)}>
-          <PlusIcon />
-          <NewLabel>
-            New <span className="abbreviate">Proposal</span>
-          </NewLabel>
-        </Create>
+        {!chainSettings?.hideActionButtons && (
+          <Create onClick={() => setShowPopup(true)}>
+            <PlusIcon />
+            <NewLabel>
+              New <span className="abbreviate">Proposal</span>
+            </NewLabel>
+          </Create>
+        )}
 
         {chainSettings.hasDotreasury && (
           <StatisticLinkButton
             href={`https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
+              chainSettings.symbol
             )}/proposals`}
           />
         )}
@@ -114,7 +116,7 @@ export default withLoginUserRedux(
         )}
       </HomeLayout>
     );
-  },
+  }
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
