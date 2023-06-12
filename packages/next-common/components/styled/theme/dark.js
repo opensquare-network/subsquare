@@ -38,7 +38,7 @@ const dark = {
   // neutral
   neutral100: "rgba(33,36,51,1)",
   neutral200: "rgba(29,30,44,1)",
-  neutral300: "rgba(39,42,58,1)",
+  neutral300: "rgba(38,41,56,1)",
   neutral400: "rgba(54,58,77,1)",
   neutral500: "rgba(87,92,114,1)",
   // other
