@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 - Add dotreasury link to subsquare treasury panel for kusama and polkadot.
 - Show direct vs delegation vote ratios on OpenGov referendum detail page.
 - Fix OpenGov referendum decision deposit button disable status.
-- Update votes automatically when OpenGov referendum tally changed.
+- Update votes automatically when OpenGov/democracy referendum tally changed.
 - Supported bifrost polkadot para chain.
 - Separate democracy/referenda votes scan with the main scan process, add a new api to serve new votes data, and adapt this in fronted.
 
