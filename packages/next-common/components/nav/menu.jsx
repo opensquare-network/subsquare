@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { partition, capitalize } from "lodash";
+import { partition, capitalize, noop } from "lodash";
 import { useIsMacOS, usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { useRouter } from "next/router";
@@ -12,13 +12,7 @@ import { useEffect } from "react";
 import ArrowDownIcon from "next-common/assets/imgs/icons/arrow-down.svg";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
-
-const MenuItemWrapper = tw.div`
-h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium
-hover:text-theme500 [&_svg_path]:hover:fill-theme500
-${(p) =>
-  p.$active && "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500"}
-`;
+import { MenuNavigation } from "@osn/icons/subsquare";
 
 export default function NavMenu({ collapsed }) {
   const dispatch = useDispatch();
@@ -32,34 +26,33 @@ export default function NavMenu({ collapsed }) {
         {commonMenu?.[0]?.items?.map?.((item) => (
           <li key={item.value}>
             <MenuItem
-              icon={item.icon}
+              icon={item.iconV2}
               label={item.name}
-              url={item.pathname}
+              link={item.pathname}
               active={item.pathname === router.asPath}
               collapsed={collapsed}
             />
           </li>
         ))}
         <li>
-          <MenuItemWrapper
-            role="menuitem"
+          <MenuItem
             onClick={() => {
               dispatch(setCmdkPaletteVisible(true));
             }}
-          >
-            <span>icon</span>
-            <span className="inline-flex justify-between items-center w-full">
-              <span>Navigation</span>
+            icon={<MenuNavigation />}
+            label="Navigation"
+            collapsed={collapsed}
+            extra={
               <span
                 className={clsx(
-                  "bg-navigationActive rounded",
+                  "bg-navigationActive rounded py-0.5 px-2",
                   "text12Medium text-textTertiaryContrast",
                 )}
               >
                 {isMacOS ? "⌘" : "Ctrl +"} K
               </span>
-            </span>
-          </MenuItemWrapper>
+            }
+          />
         </li>
       </ul>
 
@@ -96,29 +89,24 @@ function MenuGroup({ menu = [], collapsed }) {
   return (
     <ul>
       <li>
-        <MenuItemWrapper
-          role="button"
-          className="flex items-center justify-between w-full h-full"
+        <MenuItem
           onClick={childMenuToggle}
-        >
-          <span>
-            {capitalize(menu.name)}
-            {!!menu.activeCount && (
-              <ActiveCountLabel>{menu.activeCount}</ActiveCountLabel>
-            )}
-          </span>
-          <div>
-            <ArrowDownIcon
-              className={clsx(
-                childMenuVisible && "rotate-180",
-                "[&_path]:!fill-transparent",
-              )}
-            />
-          </div>
-        </MenuItemWrapper>
+          icon={menu.icon}
+          label={capitalize(menu.name)}
+          extra={
+            <span>
+              <ArrowDownIcon
+                className={clsx(
+                  childMenuVisible && "rotate-180",
+                  "[&_path]:!fill-transparent",
+                )}
+              />
+            </span>
+          }
+        />
       </li>
       {!!menu.items?.length && (
-        <ul className={clsx(childMenuVisible ? "block" : "hidden", "pl-7")}>
+        <ul className={clsx(childMenuVisible ? "block" : "hidden", "pl-9")}>
           {menu.items.map((item, idx) => (
             <li key={idx}>
               {item?.type === "divider" ? (
@@ -126,8 +114,8 @@ function MenuGroup({ menu = [], collapsed }) {
               ) : (
                 <MenuItem
                   label={item.name}
-                  url={item.pathname}
-                  icon={item.icon}
+                  link={item.pathname}
+                  icon={item.iconV2}
                   activeCount={item.activeCount}
                 />
               )}
@@ -139,23 +127,56 @@ function MenuGroup({ menu = [], collapsed }) {
   );
 }
 
-function MenuItem({ active, collapsed, icon, label, url, activeCount }) {
-  const isExternal = isExternalLink(url);
+function MenuItem({
+  active,
+  collapsed,
+  icon,
+  label,
+  activeCount,
+  extra,
+  link,
+  onClick = noop,
+}) {
+  const isExternal = isExternalLink(link);
 
-  return (
-    <Link href={url || ""} target={isExternal ? "_blank" : "_self"}>
-      <MenuItemWrapper $active={active}>
-        {icon}
-        <span className={clsx(collapsed && "hidden", "w-full")}>
+  let content = (
+    <div
+      onClick={onClick}
+      className={clsx(
+        "h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
+        "hover:text-theme500 [&_svg_path]:fill-textSecondaryContrast [&_svg_path]:hover:fill-theme500",
+        active &&
+          "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500",
+      )}
+    >
+      {icon}
+      <span
+        className={clsx(
+          collapsed && "hidden",
+          "w-full inline-flex justify-between items-center",
+        )}
+      >
+        <span>
           {label}{" "}
           {!!activeCount && <ActiveCountLabel>{activeCount}</ActiveCountLabel>}
           {isExternal && (
             <span className="ml-1 text-textTertiaryContrast">↗</span>
           )}
         </span>
-      </MenuItemWrapper>
-    </Link>
+        <span>{extra}</span>
+      </span>
+    </div>
   );
+
+  if (link) {
+    content = (
+      <Link href={link || ""} target={isExternal ? "_blank" : "_self"}>
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }
 
 function Divider() {
@@ -168,7 +189,7 @@ function useMenu() {
   const { tracks, fellowshipTracks } = props;
   const menu = getHomeMenu({ tracks, fellowshipTracks });
 
-  const [commonMenu, rest] = partition(menu, (item) => !item.name);
+  let [commonMenu, rest] = partition(menu, (item) => !item.name);
   const featuredMenu = rest
     .map((m) => {
       if (m?.excludeToChains?.includes?.(chain)) {
