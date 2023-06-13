@@ -50,7 +50,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
     },
     {
       content: "Motions",
-      path: "/council/motions",
+      path: "/treasury-council/motions",
     },
     {
       content: `#${ breadcrumbItemName }`,
