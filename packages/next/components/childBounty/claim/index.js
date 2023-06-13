@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ChildBountyClaim from "./Action";
 import Meta from "./metadata";
 import { useOnchainData } from "next-common/context/post";
+import { useChainSettings } from "next-common/context/chain";
 
 const WRAPPER_WIDTH = 300;
 
@@ -22,6 +23,7 @@ const Wrapper = styled.div`
 `;
 
 export default function Claim() {
+  const { hideActionButtons } = useChainSettings();
   const onChain = useOnchainData();
   if (!["PendingPayout", "Claimed"].includes(onChain.state?.state)) {
     return null;
@@ -29,6 +31,6 @@ export default function Claim() {
 
   return <Wrapper>
     <Meta />
-    <ChildBountyClaim />
+    {!hideActionButtons && <ChildBountyClaim />}
   </Wrapper>;
 }

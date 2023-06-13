@@ -9,12 +9,14 @@ import Popup from "../votePopup";
 import { emptyFunction } from "next-common/utils";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import LearnGov2Link from "next-common/components/links/learnGov2Link";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function FellowshipReferendumSideBar({
   onVoteFinalized = emptyFunction,
 }) {
   const post = usePost();
   const [showVote, setShowVote] = useState(false);
+  const { hideActionButtons } = useChainSettings();
   const referendumIndex = post?.referendumIndex;
   const isVoting = gov2VotingState.includes(post?.state?.name);
 
@@ -22,7 +24,7 @@ export default function FellowshipReferendumSideBar({
     <RightBarWrapper>
       <Gov2Status />
       <FellowshipTally />
-      {isVoting && (
+      {isVoting && !hideActionButtons && (
         <InlineWrapper>
           <SecondaryButton
             style={{ width: "100%" }}

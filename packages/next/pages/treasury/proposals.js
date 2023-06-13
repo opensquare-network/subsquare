@@ -49,7 +49,7 @@ export default withLoginUserRedux(
     const [proposals, setProposals] = useState(ssrProposals);
     useEffect(() => setProposals(ssrProposals), [ssrProposals]);
     const isMounted = useIsMounted();
-    const chainSettings = useChainSettings();
+    const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
 
     const items = (proposals.items || []).map((item) =>
       normalizeTreasuryProposalListItem(chain, item)
@@ -69,7 +69,7 @@ export default withLoginUserRedux(
 
     const categoryExtra = (
       <CategoryExtraWrapper>
-        {!chainSettings?.hideActionButtons && (
+        {!hideActionButtons && (
           <Create onClick={() => setShowPopup(true)}>
             <PlusIcon />
             <NewLabel>
@@ -78,11 +78,9 @@ export default withLoginUserRedux(
           </Create>
         )}
 
-        {chainSettings.hasDotreasury && (
+        {hasDotreasury && (
           <StatisticLinkButton
-            href={`https://dotreasury.com/${lowerCase(
-              chainSettings.symbol
-            )}/proposals`}
+            href={`https://dotreasury.com/${lowerCase(symbol)}/proposals`}
           />
         )}
       </CategoryExtraWrapper>
