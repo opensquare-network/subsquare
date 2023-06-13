@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import ExternalLink from "next-common/components/externalLink";
 import { useThemeMode, useSetThemeMode } from "next-common/context/theme";
+import { ThemeSun, ThemeMoon, ThemeSystem } from "@osn/icons/subsquare";
 
 export default function Footer() {
   const contactLinks = [
@@ -62,15 +63,15 @@ function ThemeToggleGroup() {
 
   const themeButtons = [
     {
-      content: "L",
+      content: <ThemeSun />,
       themeMode: "light",
     },
     {
-      content: "D",
+      content: <ThemeMoon />,
       themeMode: "dark",
     },
     {
-      content: "S",
+      content: <ThemeSystem />,
       themeMode: "system",
     },
   ];
@@ -81,9 +82,11 @@ function ThemeToggleGroup() {
         <button
           key={button.themeMode}
           className={clsx(
-            "w-7 h-7 rounded",
+            "p-1.5 rounded",
             "hover:bg-neutral200",
-            button.themeMode === themeMode && "bg-neutral200",
+            "[&_path]:fill-textDisabled",
+            button.themeMode === themeMode &&
+              "bg-neutral200 [&_path]:fill-textSecondary",
             "text-textPrimary",
           )}
           onClick={() => setThemeMode(button.themeMode)}
