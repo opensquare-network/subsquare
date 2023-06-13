@@ -33,7 +33,7 @@ const moonbeam = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
-  postLabels: defaultPostLabels,
+  postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonbeam",
   chainType: ChainTypes.ETHEREUM,

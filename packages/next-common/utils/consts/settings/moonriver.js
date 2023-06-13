@@ -33,7 +33,7 @@ const moonriver = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
-  postLabels: defaultPostLabels,
+  postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonriver",
   chainType: ChainTypes.ETHEREUM,
