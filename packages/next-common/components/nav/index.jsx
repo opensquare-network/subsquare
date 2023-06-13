@@ -34,16 +34,20 @@ function BrandingHint() {
   );
 }
 
-function NavLogo({ className = "" }) {
+function ChainLogo({ className = "" }) {
   const chainSettings = useChainSettings();
   const isDark = useIsDark();
-  const navLogo = isDark ? chainSettings.navLogoDark : chainSettings.navLogo;
+  const NavLogo = isDark ? chainSettings.navLogoDark : chainSettings.navLogo;
 
-  if (!navLogo) {
+  if (!NavLogo) {
     return null;
   }
 
-  return <div className={className}>{navLogo}</div>;
+  return (
+    <div className={className}>
+      <NavLogo />
+    </div>
+  );
 }
 
 const ToggleMenuButton = tw.button`
@@ -62,7 +66,7 @@ function NavDesktop() {
       )}
     >
       <div>
-        <NavLogo className="p-4" />
+        <ChainLogo className="p-4" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
           <div className={clsx(menuCollapsed && "hidden")}>
             <ChainName />
