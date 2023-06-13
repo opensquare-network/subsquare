@@ -6,7 +6,9 @@ export default function ChainInfo() {
   return (
     <div>
       <h3 className="text20Bold text-textPrimary">{chainSettings.name}</h3>
-      <p className="text14Medium text-textTertiary">chain description</p>
+      <p className="text14Medium text-textTertiary">
+        {"{chainSettings.description}"}
+      </p>
 
       <ul className="flex gap-x-3 mt-2">
         <li>icon1</li>
