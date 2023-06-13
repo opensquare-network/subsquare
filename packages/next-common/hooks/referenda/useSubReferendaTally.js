@@ -3,11 +3,15 @@ import { useOnchainData } from "../../context/post";
 import { useEffect, useState } from "react";
 import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
 import useIsMounted from "../../utils/hooks/useIsMounted";
+import { useDispatch } from "react-redux";
+import { triggerFetchVotes } from "../../store/reducers/gov2ReferendumSlice";
 
 export default function useSubReferendaTally() {
   const api = useApi();
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
+
+  const dispatch = useDispatch();
 
   const [tally, setTally] = useState(onchain.tally || onchain?.info?.tally);
   const votingFinishHeight = useReferendumVotingFinishHeight();
@@ -30,6 +34,8 @@ export default function useSubReferendaTally() {
       }
 
       setTally(info.asOngoing.tally.toJSON());
+
+      dispatch(triggerFetchVotes());
     }).then(result => {
       unsub = result;
     });

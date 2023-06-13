@@ -46,7 +46,6 @@ const VotesGroupItems = styled.div`
 `;
 
 function PercentageTooltip({
-  type,
   referendumIndex,
   directPercentage,
   directAmount,
@@ -63,7 +62,7 @@ function PercentageTooltip({
     <div style={{ display: "flex", flexDirection: "column" }}>
       <span style={{ fontWeight: 600 }}>Referendum #{referendumIndex}</span>
       <span>
-        {type}: {directPercentage.toFixed(2)}% ({fromUnit(directAmount)}{" "}
+        Direct: {directPercentage.toFixed(2)}% ({fromUnit(directAmount)}{" "}
         {symbol})
       </span>
       <span>
@@ -102,7 +101,6 @@ export default function VotesInfo() {
     <Tooltip
       content={
         <PercentageTooltip
-          type="Capital"
           referendumIndex={referendumIndex}
           directPercentage={directCapitalPercentage}
           directAmount={directCapital}
@@ -123,7 +121,6 @@ export default function VotesInfo() {
     <Tooltip
       content={
         <PercentageTooltip
-          type="Votes"
           referendumIndex={referendumIndex}
           directPercentage={directVotesPercentage}
           directAmount={directVotes}

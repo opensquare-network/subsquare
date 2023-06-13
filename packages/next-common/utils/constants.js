@@ -25,6 +25,7 @@ import collectives from "./consts/settings/collectives";
 import darwinia2 from "./consts/settings/darwinia2";
 // import moonbeam from "./consts/settings/moonbeam";
 import moonriver from "./consts/settings/moonriver";
+import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 
 /**
  * left + gap + main content
@@ -46,6 +47,7 @@ export const nodes = [
   altair,
   basilisk,
   bifrost,
+  bifrostPolkadot,
   // calamari,
   centrifuge,
   collectives,

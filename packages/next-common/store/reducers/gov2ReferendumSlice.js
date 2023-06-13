@@ -4,7 +4,7 @@ import {
   gov2ReferendumsVoteCallsApi,
   gov2ReferendumsVoteExtrinsicsApi,
 } from "../../services/url";
-import { emptyVotes } from "../../utils/democracy/votes/passed/common";
+import { openGovEmptyVotes as emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
@@ -20,6 +20,7 @@ const gov2ReferendumSlice = createSlice({
     isLoadingVoteCalls: true,
     voteCalls: emptyVotes,
     issuance: null,
+    votesTrigger: 1,
   },
   reducers: {
     setIsLoadingVotes(state, { payload }) {
@@ -37,6 +38,9 @@ const gov2ReferendumSlice = createSlice({
     setIssuance(state, { payload }) {
       state.issuance = payload;
     },
+    incVotesTrigger(state) {
+      state.votesTrigger += 1;
+    },
   },
 });
 
@@ -46,6 +50,7 @@ export const {
   setVoteCalls,
   setIsLoadingVoteCalls,
   setIssuance,
+  incVotesTrigger,
 } = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
@@ -56,14 +61,16 @@ export const votesSelector = (state) => state.gov2Referendum.votes;
 export const voteCallsSelector = (state) =>
   state.gov2Referendum.voteCalls;
 export const gov2IssuanceSelector = (state) => state.gov2Referendum.issuance;
+export const votesTriggerSelector = state => state.gov2Referendum.votesTrigger;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
 };
 
+export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigger());
+
 export const fetchVotes =
   (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {
-    dispatch(clearVotes());
     dispatch(setIsLoadingVotes(true));
     try {
       let blockApi = api;
@@ -151,6 +158,11 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex),
     );
 
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
+
     const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
 
     dispatch(setVoteCalls({ allAye, allNay, allAbstain }));
@@ -166,6 +178,11 @@ export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
     const { result } = await nextApi.fetch(
       gov2ReferendumsVoteCallsApi(referendumIndex),
     );
+
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
 
     const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
 

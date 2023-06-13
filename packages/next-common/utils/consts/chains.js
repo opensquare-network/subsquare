@@ -30,6 +30,7 @@ const Chains = {
   darwinia2: "darwinia2",
   moonriver: "moonriver",
   moonbeam: "moonbeam",
+  "bifrost-polkadot": "bifrost-polkadot",
 };
 
 export default Chains;

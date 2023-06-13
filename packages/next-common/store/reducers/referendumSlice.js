@@ -20,6 +20,7 @@ const referendumSlice = createSlice({
     isLoadingReferendumStatus: false,
     isLoadingVoteCalls: true,
     voteCalls: emptyVotes,
+    democracyVotesTrigger: 1,
   },
   reducers: {
     setIsLoadingVotes(state, { payload }) {
@@ -46,6 +47,9 @@ const referendumSlice = createSlice({
     setVoteCalls(state, { payload }) {
       state.voteCalls = payload;
     },
+    incDemocracyVotesTrigger(state) {
+      state.democracyVotesTrigger += 1;
+    },
   },
 });
 
@@ -58,6 +62,7 @@ export const {
   setIsLoadingReferendumStatus,
   setVoteCalls,
   setIsLoadingVoteCalls,
+  incDemocracyVotesTrigger,
 } = referendumSlice.actions;
 
 export const isLoadingElectorateSelector = (state) =>
@@ -74,6 +79,9 @@ export const isLoadingReferendumStatusSelector = (state) =>
   state.referendum.isLoadingVoteCalls;
 export const voteCallsSelector = (state) =>
   state.referendum.voteCalls;
+export const democracyVotesTriggerSelector = state => state.referendum.democracyVotesTrigger;
+
+export const triggerFetchDemocracyVotes = () => async dispatch => dispatch(incDemocracyVotesTrigger());
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
@@ -82,7 +90,6 @@ export const clearVotes = () => async (dispatch) => {
 export const fetchVotes =
   (api, referendumIndex, passedHeight) => async (dispatch) => {
     let votes;
-    dispatch(clearVotes());
     dispatch(setIsLoadingVotes(true));
     try {
       if ([Chains.kintsugi, Chains.interlay].includes(chain)) {

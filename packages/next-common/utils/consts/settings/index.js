@@ -27,6 +27,7 @@ import collectives from "./collectives";
 import darwinia2 from "./darwinia2";
 import moonriver from "./moonriver";
 // import moonbeam from "./moonbeam";
+import bifrostPolkadot from "./bifrostPolkadot";
 
 const settingsMap = {
   polkadot,
@@ -57,6 +58,7 @@ const settingsMap = {
   rococo,
   westend,
   "westend-collectives": westendCollectives,
+  "bifrost-polkadot": bifrostPolkadot,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
