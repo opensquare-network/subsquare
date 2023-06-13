@@ -1,9 +1,21 @@
 import clsx from "clsx";
 import ExternalLink from "next-common/components/externalLink";
-import { useThemeMode, useSetThemeMode } from "next-common/context/theme";
-import { ThemeSun, ThemeMoon, ThemeSystem } from "@osn/icons/subsquare";
+import {
+  useThemeMode,
+  useSetThemeMode,
+  useIsDark,
+} from "next-common/context/theme";
+import {
+  ThemeSun,
+  ThemeMoon,
+  ThemeSystem,
+  FooterLogoLight,
+  FooterLogoDark,
+} from "@osn/icons/subsquare";
 
 export default function Footer() {
+  const isDark = useIsDark();
+
   const contactLinks = [
     {
       name: "Element",
@@ -29,7 +41,7 @@ export default function Footer() {
       )}
     >
       <div className={clsx("flex items-center gap-x-4", "max-sm:flex-col")}>
-        <div>logo</div>
+        <div>{isDark ? <FooterLogoDark /> : <FooterLogoLight />}</div>
         <p className={clsx("text14Medium text-textTertiary", "max-sm:mt-2")}>
           @{new Date().getFullYear()} SubSquare. Powered by OpenSquare
         </p>
