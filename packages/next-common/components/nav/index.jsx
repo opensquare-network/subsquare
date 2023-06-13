@@ -8,6 +8,7 @@ import MenuIcon from "next-common/assets/imgs/icons/menu.svg";
 import CloseIcon from "next-common/assets/imgs/icons/close.svg";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/v2/drawer";
+import { useIsDark } from "next-common/context/theme";
 
 export default function Nav() {
   const { sm } = useScreenSize();
@@ -33,6 +34,18 @@ function BrandingHint() {
   );
 }
 
+function NavLogo({ className = "" }) {
+  const chainSettings = useChainSettings();
+  const isDark = useIsDark();
+  const navLogo = isDark ? chainSettings.navLogoDark : chainSettings.navLogo;
+
+  if (!navLogo) {
+    return null;
+  }
+
+  return <div className={className}>{navLogo}</div>;
+}
+
 const ToggleMenuButton = tw.button`
 w-6 h-6 bg-navigationActive rounded
 `;
@@ -49,7 +62,7 @@ function NavDesktop() {
       )}
     >
       <div>
-        <div className="p-4">logo</div>
+        <NavLogo className="p-4" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
           <div className={clsx(menuCollapsed && "hidden")}>
             <ChainName />

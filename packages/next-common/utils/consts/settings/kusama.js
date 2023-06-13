@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/kusama.png";
 import DarkAvatar from "../../../assets/icons/chain/kusama-dark.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoKusamaDark } from "@osn/icons/subsquare";
 
 const DEFAULT_KUSAMA_NODES = [
   {
@@ -74,6 +75,8 @@ const kusama = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: <ProjectLogoKusamaDark />,
+  navLogoDark: <ProjectLogoKusamaDark />,
   group: MenuGroups.KusamaAndParachains,
   links,
   hasGov2: true,
