@@ -6,6 +6,13 @@ import DiscussionIcon from "../../../assets/imgs/icons/discussions.svg";
 import PolkassemblyIcon from "../../../assets/imgs/icons/polkassembly.svg";
 import ReferendaIcon from "../../../assets/imgs/icons/type-referenda.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import {
+  MenuOverview,
+  MenuDiscussions,
+  MenuPolkassembly,
+  MenuCalendar,
+  MenuOffChainVoting,
+} from "@osn/icons/subsquare";
 
 let polkassemblyMenu = {
   value: "polkassembly",
@@ -16,6 +23,7 @@ let polkassemblyMenu = {
       <PolkassemblyIcon />
     </MenuIconWrapper>
   ),
+  iconV2: <MenuPolkassembly />,
 };
 
 const commonMenus = {
@@ -29,6 +37,7 @@ const commonMenus = {
           <OverviewIcon />
         </MenuIconWrapper>
       ),
+      iconV2: <MenuOverview />,
     },
     {
       value: "discussions",
@@ -40,6 +49,7 @@ const commonMenus = {
           <DiscussionIcon />
         </MenuIconWrapper>
       ),
+      iconV2: <MenuDiscussions />,
     },
   ],
 };
@@ -57,6 +67,7 @@ commonMenus.items.push({
       <CalendarIcon />
     </MenuIconWrapper>
   ),
+  iconV2: <MenuCalendar />,
 });
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
@@ -70,6 +81,7 @@ if (space) {
         <ReferendaIcon />
       </MenuIconWrapper>
     ),
+    iconV2: <MenuOffChainVoting />,
   });
 }
 

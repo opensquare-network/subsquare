@@ -3,6 +3,7 @@ import Chains from "../chains";
 import { TrackIconMap } from "../../../components/icons/track";
 import sumBy from "lodash.sumby";
 import startCase from "lodash.startcase";
+import { MenuReferenda } from "@osn/icons/subsquare";
 
 export const name = "REFERENDA";
 
@@ -13,6 +14,7 @@ export function getReferendaMenu(tracks = []) {
     name,
     excludeToChains: getExcludeChains([Chains.development, Chains.kusama]),
     activeCount: totalActiveCount,
+    icon: <MenuReferenda />,
     items: [
       {
         value: "all",

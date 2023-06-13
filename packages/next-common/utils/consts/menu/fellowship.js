@@ -10,6 +10,7 @@ import Divider from "../../../components/styled/layout/divider";
 import startCase from "lodash.startcase";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
+import { MenuFellowship } from "@osn/icons/subsquare";
 
 export const name = "FELLOWSHIP";
 
@@ -24,6 +25,7 @@ export function getFellowshipMenu(fellowshipTracks = []) {
       Chains.collectives,
     ]),
     activeCount: totalActiveCount,
+    icon: <MenuFellowship />,
     items: [
       {
         value: "fellowship-members",
