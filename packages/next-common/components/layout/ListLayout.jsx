@@ -23,7 +23,7 @@ export default function ListLayout({ children, seoInfo = {} }) {
           <header className="sticky top-0 z-10">{!sm && <Header />}</header>
           <section className="flex flex-col flex-1">
             <div className="w-full flex-1">{children}</div>
-            <footer className="bg-rose-200">
+            <footer>
               <Footer />
             </footer>
           </section>
