@@ -40,6 +40,25 @@ const DEFAULT_KUSAMA_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://kusama.network/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/kusamanetwork",
+  },
+  {
+    name: "discord",
+    url: "https://kusa.ma/discord",
+  },
+  {
+    name: "github",
+    url: "https://github.com/paritytech/polkadot/",
+  },
+];
+
 const kusama = {
   value: "kusama",
   name: "Kusama",
@@ -56,6 +75,7 @@ const kusama = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.KusamaAndParachains,
+  links,
   hasGov2: true,
   hasStatescan: true,
   hasSubscan: true,
