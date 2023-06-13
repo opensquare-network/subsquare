@@ -35,9 +35,10 @@ export default function Footer() {
     <div
       className={clsx(
         "flex",
-        "h-[72px] px-6 py-4 justify-between items-center",
+        "h-auto px-6 py-4 justify-between items-center",
+        "lg:h-[72px]",
         "border-t border-neutral300 bg-neutral100",
-        "max-sm:flex-col",
+        "max-lg:flex-col",
       )}
     >
       <div className={clsx("flex items-center gap-x-4", "max-sm:flex-col")}>
