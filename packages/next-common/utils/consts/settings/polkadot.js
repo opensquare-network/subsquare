@@ -64,6 +64,7 @@ const polkadot = {
   hasDotreasury: true,
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
+  useVoteCall: true,
 };
 
 export default polkadot;
