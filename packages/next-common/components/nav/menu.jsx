@@ -93,6 +93,7 @@ function MenuGroup({ menu = [], collapsed }) {
           icon={menu.icon}
           label={capitalize(menu.name)}
           activeCount={menu.activeCount}
+          collapsed={collapsed}
           extra={
             <span>
               <ArrowDown
@@ -149,7 +150,7 @@ function MenuItem({
           "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500",
       )}
     >
-      {icon}
+      {icon && <span className="w-6 h-6">{icon}</span>}
       <span
         className={clsx(
           collapsed && "hidden",
