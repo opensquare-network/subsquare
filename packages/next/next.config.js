@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  transpilePackages: ["next-common", "@osn/icons"],
+  transpilePackages: ["next-common"],
   compiler: {
     styledComponents: {
       ssr: true,
