@@ -63,6 +63,7 @@ export function getFellowshipMenu(fellowshipTracks = []) {
       pathname: `/fellowship/track/${track.id}`,
       activeCount: track.activeCount,
       icon: FellowshipTrackIconMap[track.id] ?? FellowshipTrackIconMap.Default,
+      iconV2: `[${track.id}]`,
     };
   };
 

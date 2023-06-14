@@ -33,6 +33,7 @@ export function getReferendaMenu(tracks = []) {
       pathname: `/referenda/track/${track.id}`,
       activeCount: track.activeCount,
       icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
+      iconV2: `[${track.id}]`,
     };
   };
 
