@@ -3,6 +3,7 @@ import DemocracyProposalIcon from "../../../assets/imgs/icons/type-proposals.svg
 import React from "react";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuTechComm } from "@osn/icons/subsquare";
 
 const techComm = {
   name: "TECH.COMM.",
@@ -14,6 +15,7 @@ const techComm = {
     Chains["westend-collectives"],
     Chains.collectives,
   ],
+  icon: <MenuTechComm />,
   items: [
     {
       value: "techCommProposals",

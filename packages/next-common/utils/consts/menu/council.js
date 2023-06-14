@@ -3,6 +3,7 @@ import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import React from "react";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuCouncil } from "@osn/icons/subsquare";
 
 const council = {
   name: "COUNCIL",
@@ -14,6 +15,7 @@ const council = {
     Chains["westend-collectives"],
     Chains.collectives,
   ],
+  icon: <MenuCouncil />,
   items: [
     {
       value: "motions",

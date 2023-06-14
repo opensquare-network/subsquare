@@ -3,13 +3,17 @@ import Chains from "../chains";
 import ReferendaIcon from "../../../assets/imgs/icons/type-referenda.svg";
 import DemocracyProposalIcon from "../../../assets/imgs/icons/type-proposals.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuDemocracy } from "@osn/icons/subsquare";
 
 const democracy = {
   name: "DEMOCRACY",
   excludeToChains: [
-    Chains.kabocha, Chains.development, Chains["westend-collectives"],
+    Chains.kabocha,
+    Chains.development,
+    Chains["westend-collectives"],
     Chains.collectives,
   ],
+  icon: <MenuDemocracy />,
   items: [
     {
       value: "referenda",

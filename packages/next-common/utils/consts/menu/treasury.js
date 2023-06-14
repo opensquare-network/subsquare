@@ -5,12 +5,16 @@ import React from "react";
 import BountyIcon from "../../../assets/imgs/icons/bounties.svg";
 import TipIcon from "../../../assets/imgs/icons/tips.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuTreasury } from "@osn/icons/subsquare";
 
 const treasury = {
   name: "TREASURY",
   excludeToChains: [
-    Chains.kabocha, Chains["westend-collectives"], Chains.collectives,
+    Chains.kabocha,
+    Chains["westend-collectives"],
+    Chains.collectives,
   ],
+  icon: <MenuTreasury />,
   items: [
     {
       value: "proposals",
