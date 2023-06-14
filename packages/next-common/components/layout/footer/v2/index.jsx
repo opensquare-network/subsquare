@@ -74,17 +74,19 @@ function ThemeToggleGroup() {
   const themeMode = useThemeMode();
   const setThemeMode = useSetThemeMode();
 
+  const iconClassName = "w-4 h-4";
+
   const themeButtons = [
     {
-      content: <ThemeSun />,
+      content: <ThemeSun className={iconClassName} />,
       themeMode: "light",
     },
     {
-      content: <ThemeMoon />,
+      content: <ThemeMoon className={iconClassName} />,
       themeMode: "dark",
     },
     {
-      content: <ThemeSystem />,
+      content: <ThemeSystem className={iconClassName} />,
       themeMode: "system",
     },
   ];
