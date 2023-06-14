@@ -80,7 +80,7 @@ function MenuGroup({ menu = [], collapsed }) {
   const { sm } = useScreenSize();
 
   // FIXME: v2 read cookie
-  const [childMenuVisible, childMenuToggle, setChildMenuVisible] =
+  const [childMenuVisible, childMenuToggler, setChildMenuVisible] =
     useToggle(false);
 
   useEffect(() => {
@@ -89,13 +89,21 @@ function MenuGroup({ menu = [], collapsed }) {
     }
   }, [collapsed]);
 
+  function toggleChildMenu() {
+    if (collapsed) {
+      return;
+    }
+
+    childMenuToggler();
+  }
+
   return (
     <ul>
       <li>
         <HoverCard.Root openDelay={0} closeDelay={0}>
           <HoverCard.Trigger>
             <MenuItem
-              onClick={childMenuToggle}
+              onClick={toggleChildMenu}
               icon={menu.icon}
               label={capitalize(menu.name)}
               activeCount={menu.activeCount}
