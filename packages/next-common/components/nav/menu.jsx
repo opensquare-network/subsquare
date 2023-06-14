@@ -9,10 +9,9 @@ import { useChain } from "next-common/context/chain";
 import { useToggle } from "usehooks-ts";
 import tw from "tailwind-styled-components";
 import { useEffect } from "react";
-import ArrowDownIcon from "next-common/assets/imgs/icons/arrow-down.svg";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
-import { MenuNavigation } from "@osn/icons/subsquare";
+import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
 
 export default function NavMenu({ collapsed }) {
   const dispatch = useDispatch();
@@ -95,10 +94,10 @@ function MenuGroup({ menu = [], collapsed }) {
           label={capitalize(menu.name)}
           extra={
             <span>
-              <ArrowDownIcon
+              <ArrowDown
                 className={clsx(
                   childMenuVisible && "rotate-180",
-                  "[&_path]:!fill-transparent",
+                  "[&_path]:stroke-textTertiaryContrast [&_path]:!fill-transparent",
                 )}
               />
             </span>
