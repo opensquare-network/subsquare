@@ -15,7 +15,7 @@ export default function ListLayout({ children, seoInfo = {} }) {
       <SEO {...seoInfo} />
 
       <div className="min-h-screen flex bg-neutral200 max-sm:block">
-        <section className="sticky top-0 max-h-screen z-10">
+        <section className="sticky top-0 max-h-screen z-20">
           <Nav />
         </section>
 
