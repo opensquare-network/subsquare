@@ -13,7 +13,7 @@ import deepmerge from "deepmerge";
 
 const Wrapper = styled.div``;
 const ChartWrapper = styled.div`
-  height: 484px;
+  height: ${p => p.height || 484}px;
 `;
 
 const Legend = styled.div`
@@ -89,12 +89,13 @@ export default function BarChart({
   data,
   options: userOptions = {},
   noLegend,
+  height,
 }) {
   const options = useOptions(userOptions);
 
   return (
     <Wrapper>
-      <ChartWrapper>
+      <ChartWrapper height={height}>
         <Bar data={data} options={options} />
       </ChartWrapper>
 

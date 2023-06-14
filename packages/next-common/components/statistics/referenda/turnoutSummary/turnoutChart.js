@@ -6,6 +6,8 @@ export default function TurnoutChart({ turnouts }) {
   const categoryPercentage = 0.2;
   const barPercentage = 1;
 
+  const height = (turnouts.length + 1) * 30;
+
   const labels = turnouts.map((track) => startCase(track.name));
   const datasets = [
     {
@@ -24,6 +26,7 @@ export default function TurnoutChart({ turnouts }) {
 
   return (
     <BarChart
+      height={height}
       data={data}
       noLegend={true}
       options={{
