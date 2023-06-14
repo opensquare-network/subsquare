@@ -15,17 +15,17 @@ import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
 
 export default function NavMenu({ collapsed }) {
   const dispatch = useDispatch();
-  const { commonMenu, featuredMenu } = useMenu();
+  const { featuredMenu, baseMenu } = useMenu();
   const router = useRouter();
   const isMacOS = useIsMacOS();
 
   return (
     <div>
       <ul>
-        {commonMenu?.[0]?.items?.map?.((item) => (
+        {baseMenu?.map?.((item) => (
           <li key={item.value}>
             <MenuItem
-              icon={item.iconV2}
+              icon={item.icon}
               label={item.name}
               link={item.pathname}
               active={item.pathname === router.asPath}
@@ -201,8 +201,16 @@ function useMenu() {
     })
     .filter(Boolean);
 
+  // TODO: v2, remove iconv2 compat
+  const baseMenu = commonMenu?.[0]?.items?.map?.((item) => {
+    if (item.iconV2) {
+      item.icon = item.iconV2;
+    }
+    return item;
+  });
+
   return {
-    commonMenu,
+    baseMenu,
     featuredMenu,
   };
 }
