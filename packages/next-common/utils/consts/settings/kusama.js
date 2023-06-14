@@ -61,7 +61,7 @@ const kusama = {
   hasSubscan: true,
   postLabels: defaultPostLabels,
   hasDemocracy: false,
-  useVoteCall: false,
+  useVoteCall: true,
   hasDotreasury: true,
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
