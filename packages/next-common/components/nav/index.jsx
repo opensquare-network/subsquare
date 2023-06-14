@@ -3,12 +3,10 @@ import { useChainSettings } from "next-common/context/chain";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
-import ArrowFoldIcon from "next-common/assets/imgs/icons/arrow-fold.svg";
-import MenuIcon from "next-common/assets/imgs/icons/menu.svg";
-import CloseIcon from "next-common/assets/imgs/icons/close.svg";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/v2/drawer";
 import { useIsDark } from "next-common/context/theme";
+import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 
 export default function Nav() {
   const { sm } = useScreenSize();
@@ -52,6 +50,7 @@ function ChainLogo({ className = "" }) {
 
 const ToggleMenuButton = tw.button`
 w-6 h-6 bg-navigationActive rounded
+[&_svg_path]:stroke-textTertiaryContrast
 `;
 
 function NavDesktop() {
@@ -74,7 +73,7 @@ function NavDesktop() {
           </div>
           <div>
             <ToggleMenuButton onClick={menuToggle}>
-              <ArrowFoldIcon className={clsx(menuCollapsed && "rotate-180")} />
+              <ArrowFold className={clsx(menuCollapsed && "rotate-180")} />
             </ToggleMenuButton>
           </div>
         </div>
@@ -105,7 +104,7 @@ function NavMobile() {
       <div className={clsx("h-16", "flex items-center justify-between")}>
         <NavMobileToolbarItem>
           <ToggleMenuButton onClick={menuToggle}>
-            <ArrowFoldIcon className={clsx(!menuVisible && "rotate-180")} />
+            <ArrowFold className={clsx(!menuVisible && "rotate-180")} />
           </ToggleMenuButton>
         </NavMobileToolbarItem>
         <div className="text-center">
@@ -114,15 +113,15 @@ function NavMobile() {
         </div>
         <NavMobileToolbarItem>
           <div role="button" onClick={toolbarToggle}>
-            <MenuIcon
+            <SystemMenu
               className={clsx(
-                "[&_path]:stroke-textPrimaryContrast",
+                "[&_path]:fill-textPrimaryContrast",
                 toolbarVisible && "hidden",
               )}
             />
-            <CloseIcon
+            <SystemClose
               className={clsx(
-                "[&_path]:stroke-textPrimaryContrast",
+                "[&_path]:fill-textPrimaryContrast",
                 !toolbarVisible && "hidden",
               )}
             />
