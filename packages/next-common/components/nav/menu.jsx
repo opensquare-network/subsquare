@@ -92,6 +92,7 @@ function MenuGroup({ menu = [], collapsed }) {
           onClick={childMenuToggle}
           icon={menu.icon}
           label={capitalize(menu.name)}
+          activeCount={menu.activeCount}
           extra={
             <span>
               <ArrowDown
