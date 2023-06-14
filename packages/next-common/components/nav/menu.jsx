@@ -115,7 +115,7 @@ function MenuGroup({ menu = [], collapsed }) {
                 <MenuItem
                   label={item.name}
                   link={item.pathname}
-                  icon={item.iconV2}
+                  icon={item.icon}
                   activeCount={item.activeCount}
                 />
               )}
@@ -198,6 +198,12 @@ function useMenu() {
 
       m.items =
         m.items?.filter?.((i) => !i?.excludeToChains?.includes?.(chain)) ?? [];
+
+      // TODO: v2, remove iconv2 compat
+      m.items = m.items?.map?.((item) => {
+        item.icon = item.iconV2;
+        return item;
+      });
       return m;
     })
     .filter(Boolean);
