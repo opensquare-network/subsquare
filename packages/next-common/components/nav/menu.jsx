@@ -12,6 +12,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
+import * as HoverCard from "@radix-ui/react-hover-card";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
 export default function NavMenu({ collapsed }) {
   const dispatch = useDispatch();
@@ -75,6 +77,8 @@ ml-2 text-textTertiaryContrast
 `;
 
 function MenuGroup({ menu = [], collapsed }) {
+  const { sm } = useScreenSize();
+
   // FIXME: v2 read cookie
   const [childMenuVisible, childMenuToggle, setChildMenuVisible] =
     useToggle(false);
@@ -88,42 +92,65 @@ function MenuGroup({ menu = [], collapsed }) {
   return (
     <ul>
       <li>
-        <MenuItem
-          onClick={childMenuToggle}
-          icon={menu.icon}
-          label={capitalize(menu.name)}
-          activeCount={menu.activeCount}
-          collapsed={collapsed}
-          extra={
-            <span>
-              <ArrowDown
-                className={clsx(
-                  childMenuVisible && "rotate-180",
-                  "[&_path]:stroke-textTertiaryContrast [&_path]:!fill-transparent",
-                )}
-              />
-            </span>
-          }
-        />
+        <HoverCard.Root openDelay={0} closeDelay={0}>
+          <HoverCard.Trigger>
+            <MenuItem
+              onClick={childMenuToggle}
+              icon={menu.icon}
+              label={capitalize(menu.name)}
+              activeCount={menu.activeCount}
+              collapsed={collapsed}
+              extra={
+                <span>
+                  <ArrowDown
+                    className={clsx(
+                      childMenuVisible && "rotate-180",
+                      "[&_path]:stroke-textTertiaryContrast [&_path]:!fill-transparent",
+                    )}
+                  />
+                </span>
+              }
+            />
+          </HoverCard.Trigger>
+
+          {collapsed && !sm && (
+            <HoverCard.Content side="right" align="start">
+              <div className="pl-6">
+                <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg">
+                  <SubMenuItems items={menu.items} />
+                </div>
+              </div>
+            </HoverCard.Content>
+          )}
+        </HoverCard.Root>
       </li>
       {!!menu.items?.length && (
-        <ul className={clsx(childMenuVisible ? "block" : "hidden", "pl-9")}>
-          {menu.items.map((item, idx) => (
-            <li key={idx}>
-              {item?.type === "divider" ? (
-                <Divider />
-              ) : (
-                <MenuItem
-                  label={item.name}
-                  link={item.pathname}
-                  icon={item.icon}
-                  activeCount={item.activeCount}
-                />
-              )}
-            </li>
-          ))}
-        </ul>
+        <SubMenuItems
+          className={clsx(childMenuVisible ? "block" : "hidden", "pl-9")}
+          items={menu.items}
+        />
       )}
+    </ul>
+  );
+}
+
+function SubMenuItems({ className = "", items = [] }) {
+  return (
+    <ul className={className}>
+      {items.map((item, idx) => (
+        <li key={idx}>
+          {item?.type === "divider" ? (
+            <Divider />
+          ) : (
+            <MenuItem
+              label={item.name}
+              link={item.pathname}
+              icon={item.icon}
+              activeCount={item.activeCount}
+            />
+          )}
+        </li>
+      ))}
     </ul>
   );
 }
@@ -144,6 +171,7 @@ function MenuItem({
     <div
       onClick={onClick}
       className={clsx(
+        "text-textPrimaryContrast",
         "h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
         "hover:text-theme500 [&_svg_path]:fill-textSecondaryContrast [&_svg_path]:hover:fill-theme500",
         active &&
