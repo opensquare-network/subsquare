@@ -101,6 +101,9 @@ export const chainThemeColors = {
       navigationBg: "rgba(4,19,51,1)",
       navigationActive: "rgba(255,255,255,0.06)",
       navigationBorder: "rgba(255,255,255,0.08)",
+      navigationText: "var(--textPrimaryContrast)",
+      navigationTextTertiary: "var(--textTertiaryContrast)",
+      navigationIcon: "var(--textSecondaryContrast)",
     },
   },
   kusama: {
