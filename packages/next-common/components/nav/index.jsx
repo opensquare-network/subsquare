@@ -7,6 +7,7 @@ import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/v2/drawer";
 import { useIsDark } from "next-common/context/theme";
 import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
+import Link from "next/link";
 
 export default function Nav() {
   const { sm } = useScreenSize();
@@ -43,7 +44,9 @@ function ChainLogo({ className = "" }) {
 
   return (
     <div className={className}>
-      <NavLogo />
+      <Link href="/">
+        <NavLogo />
+      </Link>
     </div>
   );
 }
@@ -65,7 +68,7 @@ function NavDesktop() {
       )}
     >
       <div>
-        <ChainLogo className="p-4" />
+        <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
           <div className={clsx(menuCollapsed && "hidden")}>
             <ChainName />
