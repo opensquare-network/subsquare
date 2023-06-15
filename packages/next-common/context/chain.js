@@ -5,7 +5,6 @@ import democracy from "../utils/consts/menu/democracy";
 import treasury from "../utils/consts/menu/treasury";
 import council from "../utils/consts/menu/council";
 import techComm from "../utils/consts/menu/tc";
-import Chains from "../utils/consts/chains";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
@@ -84,6 +83,6 @@ export function useMenuHasTechComm() {
  * @alias useHasGov2
  */
 export function useMenuHasGov2() {
-  const chain = useChain();
-  return [Chains.kusama, Chains.development].includes(chain);
+  const settings = useChainSettings();
+  return settings.hasGov2;
 }
