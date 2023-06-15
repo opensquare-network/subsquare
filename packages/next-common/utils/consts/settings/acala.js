@@ -3,6 +3,10 @@ import DarkModeLogo from "../../../assets/header-logos/acala-dark.svg";
 import Avatar from "../../../assets/icons/chain/acala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
+import {
+  ProjectLogoAcalaDark,
+  ProjectLogoAcalaLight,
+} from "@osn/icons/subsquare";
 
 const DEFAULT_ACALA_NODES = [
   {
@@ -48,6 +52,8 @@ const acala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoAcalaLight,
+  navLogoDark: ProjectLogoAcalaDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
