@@ -1,3 +1,4 @@
+import { chainThemeColors } from "next-common/utils/consts/chainThemeColors";
 import { usePreferredColorScheme } from "next-common/utils/hooks/usePreferredColorScheme";
 import React, {
   createContext,
@@ -11,6 +12,7 @@ import dark from "../../components/styled/theme/dark";
 import light from "../../components/styled/theme/light";
 import { CACHE_KEY } from "../../utils/constants";
 import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
+import { useChainSettings } from "../chain";
 
 const ThemeModeContext = createContext(null);
 
@@ -62,11 +64,16 @@ export function useThemeMode() {
 }
 
 export function useThemeSetting() {
+  const chainSettings = useChainSettings();
   const themeMode = useThemeMode();
   const preferredColorScheme = usePreferredColorScheme();
   const mode = themeMode === "system" ? preferredColorScheme : themeMode;
+  const chainThemeColor = chainThemeColors[chainSettings.value];
 
-  return mode === "dark" ? dark : light;
+  const mergedLight = { ...light, ...chainThemeColor.light };
+  const mergedDark = { ...dark, ...chainThemeColor.dark };
+
+  return mode === "dark" ? mergedDark : mergedLight;
 }
 
 export function useSetThemeMode() {
