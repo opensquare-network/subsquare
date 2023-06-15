@@ -54,7 +54,7 @@ function ChainLogo({ className = "" }) {
 
 const ToggleMenuButton = tw.button`
 w-6 h-6 bg-navigationActive rounded
-[&_svg_path]:stroke-textTertiaryContrast
+[&_svg_path]:stroke-navigationTextTertiary
 `;
 
 function NavDesktop() {

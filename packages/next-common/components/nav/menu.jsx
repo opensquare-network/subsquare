@@ -47,7 +47,7 @@ export default function NavMenu({ collapsed }) {
               <span
                 className={clsx(
                   "bg-navigationActive rounded py-0.5 px-2",
-                  "text12Medium text-textTertiaryContrast",
+                  "text12Medium text-navigationTextTertiary",
                 )}
               >
                 {isMacOS ? "⌘" : "Ctrl +"} K
@@ -113,7 +113,7 @@ function MenuGroup({ menu = [], collapsed }) {
                   <ArrowDown
                     className={clsx(
                       childMenuVisible && "rotate-180",
-                      "[&_path]:stroke-textTertiaryContrast [&_path]:!fill-transparent",
+                      "[&_path]:stroke-navigationTextTertiary [&_path]:!fill-transparent",
                     )}
                   />
                 </span>
@@ -179,9 +179,9 @@ function MenuItem({
     <div
       onClick={onClick}
       className={clsx(
-        "text-textPrimaryContrast",
+        "text-navigationText",
         "h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
-        "hover:text-theme500 [&_svg_path]:fill-textSecondaryContrast [&_svg_path]:hover:fill-theme500",
+        "hover:text-theme500 [&_svg_path]:fill-navigationIcon [&_svg_path]:hover:fill-theme500",
         active &&
           "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500",
       )}
@@ -197,7 +197,7 @@ function MenuItem({
           {label}{" "}
           {!!activeCount && <ActiveCountLabel>{activeCount}</ActiveCountLabel>}
           {isExternal && (
-            <span className="ml-1 text-textTertiaryContrast">↗</span>
+            <span className="ml-1 text-navigationTextTertiary">↗</span>
           )}
         </span>
         <span>{extra}</span>
