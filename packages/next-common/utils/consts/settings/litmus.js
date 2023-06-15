@@ -29,7 +29,7 @@ const litmus = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
-  hasSubscan: true,
+  hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
 };
