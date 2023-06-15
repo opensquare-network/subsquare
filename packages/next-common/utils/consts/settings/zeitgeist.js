@@ -41,6 +41,7 @@ const zeitgeist = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
   hasSubscan: true,
+  useVoteCall: true,
 };
 
 export default zeitgeist;
