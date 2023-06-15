@@ -59,6 +59,7 @@ const polkadot = {
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
+  hasGov2: true,
   hasStatescan: true,
   hasSubscan: true,
   hasDotreasury: true,
