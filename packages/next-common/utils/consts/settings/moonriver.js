@@ -38,7 +38,6 @@ const moonriver = {
   subscanDomain: "moonriver",
   chainType: ChainTypes.ETHEREUM,
   hasGov2: true,
-  hideActionButtons: true,
   ethereumNetwork: {
     chainId: "0x505",
     chainName: "Moonriver",

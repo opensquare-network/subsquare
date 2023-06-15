@@ -11,7 +11,7 @@ import {
 import { getLastApi } from "./hooks/useApi";
 import { getMetaMaskEthereum } from "./metamask";
 
-export async function sendTxDarwinia2({
+export async function sendEvmTx({
   tx,
   dispatch,
   setLoading = emptyFunction,
