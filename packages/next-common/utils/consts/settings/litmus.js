@@ -31,6 +31,7 @@ const litmus = {
   hasStatescan: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
+  useVoteCall: true,
 };
 
 export default litmus;

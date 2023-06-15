@@ -34,6 +34,7 @@ const litentry = {
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,
   postLabels: defaultPostLabels,
+  useVoteCall: true,
 };
 
 export default litentry;
