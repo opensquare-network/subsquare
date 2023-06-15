@@ -4,6 +4,7 @@ import UserProvider from "./user";
 import SettingsProvider from "./settings";
 import ThemeModeProvider from "./theme";
 import PageProvider from "./page";
+import NavProvider from "./nav";
 
 export default function GlobalProvider({
   user,
@@ -12,15 +13,18 @@ export default function GlobalProvider({
   themeMode,
   children,
   pageProperties,
+  navCollapsed,
 }) {
   return (
     <ThemeModeProvider defaultThemeMode={themeMode}>
       <ChainProvider chain={chain}>
         <UserProvider user={user}>
           <SettingsProvider homeExpandedMenus={homeExpandedMenus}>
-            <PageProvider pageProperties={pageProperties}>
-              {children}
-            </PageProvider>
+            <NavProvider navCollpased={navCollapsed}>
+              <PageProvider pageProperties={pageProperties}>
+                {children}
+              </PageProvider>
+            </NavProvider>
           </SettingsProvider>
         </UserProvider>
       </ChainProvider>

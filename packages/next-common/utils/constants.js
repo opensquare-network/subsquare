@@ -97,6 +97,7 @@ export const CACHE_KEY = {
   homeExpandedMenus: "home-expanded-menus",
   acceptCookies: "accept-cookies",
   dontRemindEmail: "dont-remind-email",
+  navCollapsed: "nav-collapsed",
 };
 
 export const chain = process.env.NEXT_PUBLIC_CHAIN;

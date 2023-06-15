@@ -49,6 +49,7 @@ function MyApp({ Component, pageProps }) {
     homeExpandedMenus,
     themeMode,
     pageProperties,
+    navCollapsed,
     ...otherProps
   } = pageProps;
   return (
@@ -59,6 +60,7 @@ function MyApp({ Component, pageProps }) {
         homeExpandedMenus={homeExpandedMenus}
         themeMode={themeMode}
         pageProperties={pageProperties}
+        navCollapsed={navCollapsed}
       >
         <Component {...otherProps} />
       </GlobalProvider>

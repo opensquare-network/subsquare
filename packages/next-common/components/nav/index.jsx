@@ -8,6 +8,7 @@ import HeaderDrawer from "../header/v2/drawer";
 import { useIsDark } from "next-common/context/theme";
 import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next/link";
+import { useNavCollapsed } from "next-common/context/nav";
 
 export default function Nav() {
   const { sm } = useScreenSize();
@@ -57,12 +58,12 @@ w-6 h-6 bg-navigationActive rounded
 `;
 
 function NavDesktop() {
-  const [menuCollapsed, menuToggle] = useToggle(false);
+  const [navCollapsed, setNavCollapsed] = useNavCollapsed();
 
   return (
     <nav
       className={clsx(
-        menuCollapsed ? "w-[72px]" : "w-[300px]",
+        navCollapsed ? "w-[72px]" : "w-[300px]",
         "max-w-[300px] h-full overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
       )}
@@ -70,20 +71,20 @@ function NavDesktop() {
       <div>
         <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
-          <div className={clsx(menuCollapsed && "hidden")}>
+          <div className={clsx(navCollapsed && "hidden")}>
             <ChainName />
             <BrandingHint />
           </div>
           <div>
-            <ToggleMenuButton onClick={menuToggle}>
-              <ArrowFold className={clsx(menuCollapsed && "rotate-180")} />
+            <ToggleMenuButton onClick={() => setNavCollapsed(!navCollapsed)}>
+              <ArrowFold className={clsx(navCollapsed && "rotate-180")} />
             </ToggleMenuButton>
           </div>
         </div>
       </div>
 
       <div className="p-4">
-        <NavMenu collapsed={menuCollapsed} />
+        <NavMenu collapsed={navCollapsed} />
       </div>
     </nav>
   );
