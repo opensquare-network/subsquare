@@ -44,13 +44,15 @@ const dark = {
   // other
   tooltipBg: "rgba(0,0,0,0.800)",
   // customized
-  // kusama
-  theme100: "rgba(230,0,122,0.100)",
-  theme300: "rgba(230,0,122,0.400)",
-  theme500: "rgba(230,0,122,1)",
-  navigationBg: "rgba(33,36,51,1)",
-  navigationActive: "rgba(39,42,58,1)",
-  navigationBorder: "rgba(39,42,58,1)",
+  theme100: "var(--purple100)",
+  theme300: "var(--purple300)",
+  theme500: "var(--purple500)",
+  navigationBg: "var(--neutral100)",
+  navigationActive: "var(--neutral200)",
+  navigationBorder: "var(--neutral300)",
+  navigationText: "var(--textPrimary)",
+  navigationTextTertiary: "var(--textTertiaryContrast)",
+  navigationIcon: "var(--textSecondaryContrast)",
   // shadow
 
   // OLD

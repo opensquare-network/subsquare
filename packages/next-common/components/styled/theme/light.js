@@ -41,14 +41,15 @@ const light = {
   // other
   tooltipBg: "rgba(0,0,0,0.800)",
   // customized
-  // kusama
-  theme100: "rgba(230,0,122,0.100)",
-  theme300: "rgba(230,0,122,0.400)",
-  theme500: "rgba(230,0,122,1)",
-  navigationBg: "rgba(0,0,0,1)",
-  navigationActive: "rgba(20,20,20,1)",
-  navigationBorder: "rgba(38,38,38,1)",
-  navigationText: "var(--textPrimaryContrast)",
+  theme100: "var(--purple100)",
+  theme300: "var(--purple300)",
+  theme500: "var(--purple500)",
+  navigationBg: "var(--neutral100)",
+  navigationActive: "var(--neutral200)",
+  navigationBorder: "var(--neutral300)",
+  navigationText: "var(--textPrimary)",
+  navigationTextTertiary: "var(--textTertiary)",
+  navigationIcon: "var(--textSecondary)",
   // shadow
 
   // OLD
