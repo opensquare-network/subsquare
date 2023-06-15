@@ -50,7 +50,7 @@ const dark = {
   navigationBg: "var(--neutral100)",
   navigationActive: "var(--neutral200)",
   navigationBorder: "var(--neutral300)",
-  navigationText: "var(--textPrimary)",
+  navigationText: "var(--textPrimaryContrast)",
   navigationTextTertiary: "var(--textTertiaryContrast)",
   navigationIcon: "var(--textSecondaryContrast)",
   // shadow
