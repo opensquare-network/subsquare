@@ -7,7 +7,7 @@ const resolve = (dir) => path.resolve(__dirname, dir);
 /**
  * `light.neutral100` -> `{ neutral100: 'var(--neutral100)' }`
  */
-const twLightVariables = Object.keys(light).reduce((value, key) => {
+const twThemeVariables = Object.keys(light).reduce((value, key) => {
   value[key] = `var(--${key})`;
   return value;
 }, {});
@@ -29,7 +29,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        ...twLightVariables,
+        ...twThemeVariables,
       },
     },
     // TODO: v2, disable all tw colors
