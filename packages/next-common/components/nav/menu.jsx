@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
-import { useToggle, useUpdateEffect } from "usehooks-ts";
 import tw from "tailwind-styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
@@ -93,7 +92,7 @@ function MenuGroup({
   const { sm } = useScreenSize();
   const router = useRouter();
 
-  const [childMenuVisible, childMenuToggler, setChildMenuVisible] = useToggle(
+  const [childMenuVisible, setChildMenuVisible] = useState(
     !!submenuVisible[menu.name],
   );
 
@@ -105,19 +104,17 @@ function MenuGroup({
     }
   }, [collapsed]);
 
-  useUpdateEffect(() => {
-    setSubmenuVisible({
-      ...submenuVisible,
-      [menu.name]: childMenuVisible,
-    });
-  }, [childMenuVisible]);
-
   function toggleChildMenu() {
     if (collapsed) {
       return;
     }
 
-    childMenuToggler();
+    setChildMenuVisible(!childMenuVisible);
+
+    setSubmenuVisible({
+      ...submenuVisible,
+      [menu.name]: !childMenuVisible,
+    });
   }
 
   return (
