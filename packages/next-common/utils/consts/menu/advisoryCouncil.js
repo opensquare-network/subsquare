@@ -4,10 +4,12 @@ import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import React from "react";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuAdvisoryCommittee } from "@osn/icons/subsquare";
 
 const advisoryCommittee = {
   name: "ADVISORY COMMITTEE",
   excludeToChains: getExcludeChains([Chains.zeitgeist]),
+  icon: <MenuAdvisoryCommittee />,
   items: [
     {
       value: "advisoryMotions",
