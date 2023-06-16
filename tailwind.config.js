@@ -1,13 +1,12 @@
 const path = require("node:path");
-const light =
-  require("./packages/next-common/components/styled/theme/light").default;
+const light = require("./packages/next-common/styles/light").default;
 
 const resolve = (dir) => path.resolve(__dirname, dir);
 
 /**
  * `light.neutral100` -> `{ neutral100: 'var(--neutral100)' }`
  */
-const twThemeVariables = Object.keys(light).reduce((value, key) => {
+const twThemeVariables = Object.keys(light.base).reduce((value, key) => {
   value[key] = `var(--${key})`;
   return value;
 }, {});
