@@ -59,6 +59,7 @@ const alliance = {
     Chains.collectives,
   ]),
   icon: <MenuAlliance />,
+  pathname: "/alliance",
   items: [announcements, motions, unscrupulous, members],
 };
 

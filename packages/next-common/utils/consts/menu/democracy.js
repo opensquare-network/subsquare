@@ -14,6 +14,7 @@ const democracy = {
     Chains.collectives,
   ],
   icon: <MenuDemocracy />,
+  pathname: "/democracy",
   items: [
     {
       value: "referenda",

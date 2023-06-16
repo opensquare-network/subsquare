@@ -26,6 +26,7 @@ export function getFellowshipMenu(fellowshipTracks = []) {
     ]),
     activeCount: totalActiveCount,
     icon: <MenuFellowship />,
+    pathname: "/fellowship",
     items: [
       {
         value: "fellowship-members",

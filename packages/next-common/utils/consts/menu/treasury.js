@@ -15,6 +15,7 @@ const treasury = {
     Chains.collectives,
   ],
   icon: <MenuTreasury />,
+  pathname: "/treasury",
   items: [
     {
       value: "proposals",

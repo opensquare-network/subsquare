@@ -10,6 +10,7 @@ const financialCouncil = {
   name: "FINANCIAL COUNCIL",
   excludeToChains: getExcludeChains([Chains.karura, Chains.acala]),
   icon: <MenuFinancialCouncil />,
+  pathname: "/financial-council",
   items: [
     {
       value: "financialMotions",

@@ -16,6 +16,7 @@ const techComm = {
     Chains.collectives,
   ],
   icon: <MenuTechComm />,
+  pathname: "/techcomm",
   items: [
     {
       value: "techCommProposals",

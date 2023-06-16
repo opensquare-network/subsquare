@@ -15,6 +15,7 @@ export function getReferendaMenu(tracks = []) {
     excludeToChains: getExcludeChains([Chains.development, Chains.kusama]),
     activeCount: totalActiveCount,
     icon: <MenuReferenda />,
+    pathname: "/referenda",
     items: [
       {
         value: "all",

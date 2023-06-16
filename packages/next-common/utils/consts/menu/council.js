@@ -16,6 +16,7 @@ const council = {
     Chains.collectives,
   ],
   icon: <MenuCouncil />,
+  pathname: "/council",
   items: [
     {
       value: "motions",

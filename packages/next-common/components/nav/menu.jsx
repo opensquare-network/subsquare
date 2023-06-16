@@ -7,7 +7,7 @@ import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import tw from "tailwind-styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
@@ -15,6 +15,7 @@ import * as HoverCard from "@radix-ui/react-hover-card";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useNavSubmenuVisible } from "next-common/context/nav";
 import { clone } from "lodash";
+import { useUpdateEffect } from "usehooks-ts";
 
 export default function NavMenu({ collapsed }) {
   const dispatch = useDispatch();
@@ -93,10 +94,10 @@ function MenuGroup({
   const router = useRouter();
 
   const [childMenuVisible, setChildMenuVisible] = useState(
-    !!submenuVisible[menu.name],
+    router.asPath.startsWith(menu.pathname) || !!submenuVisible[menu.name],
   );
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (collapsed) {
       setChildMenuVisible(false);
     } else {

@@ -10,6 +10,7 @@ const advisoryCommittee = {
   name: "ADVISORY COMMITTEE",
   excludeToChains: getExcludeChains([Chains.zeitgeist]),
   icon: <MenuAdvisoryCommittee />,
+  pathname: "/advisory-committee",
   items: [
     {
       value: "advisoryMotions",
