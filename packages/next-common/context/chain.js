@@ -45,7 +45,7 @@ export function useMenuHasTreasuryBounties() {
   const bountiesConfig = treasury.items.find(
     ({ value }) => value === "bounties",
   );
-  return !bountiesConfig.excludeToChains.includes(chain);
+  return bountiesConfig && !bountiesConfig.excludeToChains.includes(chain);
 }
 
 export function useMenuHasTreasuryChildBounties() {
@@ -53,13 +53,15 @@ export function useMenuHasTreasuryChildBounties() {
   const childBountiesConfig = treasury.items.find(
     ({ value }) => value === "child-bounties",
   );
-  return !childBountiesConfig.excludeToChains.includes(chain);
+  return (
+    childBountiesConfig && !childBountiesConfig.excludeToChains.includes(chain)
+  );
 }
 
 export function useMenuHasTreasuryTips() {
   const chain = useChain();
   const tipsConfig = treasury.items.find(({ value }) => value === "tips");
-  return !tipsConfig.excludeToChains.includes(chain);
+  return tipsConfig && !tipsConfig.excludeToChains.includes(chain);
 }
 
 export function useMenuHasDemocracyExternal() {
@@ -67,7 +69,7 @@ export function useMenuHasDemocracyExternal() {
   const tipsConfig = democracy.items.find(
     ({ value }) => value === "democracyExternals",
   );
-  return !tipsConfig.excludeToChains.includes(chain);
+  return tipsConfig && !tipsConfig.excludeToChains.includes(chain);
 }
 
 export function useMenuHasCouncil() {
