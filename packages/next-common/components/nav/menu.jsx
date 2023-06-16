@@ -7,7 +7,7 @@ import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import tw from "tailwind-styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
@@ -93,16 +93,18 @@ function MenuGroup({
   const { sm } = useScreenSize();
   const router = useRouter();
 
-  const [childMenuVisible, setChildMenuVisible] = useState(
-    router.asPath.startsWith(menu.pathname) || !!submenuVisible[menu.name],
+  const [subMenuVisible, setSubMenuVisible] = useState(
+    collapsed
+      ? false
+      : router.asPath.startsWith(menu.pathname) || submenuVisible[menu.name],
   );
 
   useUpdateEffect(() => {
-    if (collapsed) {
-      setChildMenuVisible(false);
-    } else {
-      setChildMenuVisible(submenuVisible[menu.name]);
-    }
+    setSubmenuVisible(
+      collapsed
+        ? false
+        : router.asPath.startsWith(menu.pathname) || submenuVisible[menu.name],
+    );
   }, [collapsed]);
 
   function toggleChildMenu() {
@@ -110,11 +112,11 @@ function MenuGroup({
       return;
     }
 
-    setChildMenuVisible(!childMenuVisible);
+    setSubMenuVisible(!subMenuVisible);
 
     setSubmenuVisible({
       ...submenuVisible,
-      [menu.name]: !childMenuVisible,
+      [menu.name]: !subMenuVisible,
     });
   }
 
@@ -134,7 +136,7 @@ function MenuGroup({
                 <span>
                   <ArrowDown
                     className={clsx(
-                      childMenuVisible && "rotate-180",
+                      subMenuVisible && "rotate-180",
                       "[&_path]:stroke-navigationTextTertiary",
                     )}
                   />
@@ -156,7 +158,7 @@ function MenuGroup({
       </li>
       {!!menu.items?.length && (
         <SubMenuItems
-          className={clsx(childMenuVisible ? "block" : "hidden", "pl-9")}
+          className={clsx(subMenuVisible ? "block" : "hidden", "pl-9")}
           items={menu.items}
         />
       )}
