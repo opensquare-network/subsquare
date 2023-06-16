@@ -36,9 +36,10 @@ const moonriver = {
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonriver",
-  chainType: ChainTypes.ETHEREUM,
   hasGov2: true,
-  hideActionButtons: true,
+  noFellowship: true,
+  chainType: ChainTypes.ETHEREUM,
+  noDispatchPrecompile: true,
   ethereumNetwork: {
     chainId: "0x505",
     chainName: "Moonriver",
