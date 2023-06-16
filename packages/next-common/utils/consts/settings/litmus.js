@@ -6,6 +6,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoLitmusDark } from "@osn/icons/subsquare";
 
 const DEFAULT_LITMUS_NODES = [
   {
@@ -27,6 +28,8 @@ const litmus = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoLitmusDark,
+  navLogoDark: ProjectLogoLitmusDark,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
   hasSubscan: true,

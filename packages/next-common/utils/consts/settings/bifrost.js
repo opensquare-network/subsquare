@@ -3,6 +3,7 @@ import DarkModeLogo from "../../../assets/header-logos/bifrost-kusama-dark.svg";
 import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoBifrostKusamaDark } from "@osn/icons/subsquare";
 
 const DEFAULT_BIFROST_NODES = [
   {
@@ -33,6 +34,8 @@ const bifrost = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoBifrostKusamaDark,
+  navLogoDark: ProjectLogoBifrostKusamaDark,
   group: MenuGroups.KusamaAndParachains,
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,

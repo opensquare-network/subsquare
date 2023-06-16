@@ -6,6 +6,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoTuringDark } from "@osn/icons/subsquare";
 
 export const DEFAULT_TURING_NODES = [
   {
@@ -31,6 +32,8 @@ const turing = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoTuringDark,
+  navLogoDark: ProjectLogoTuringDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

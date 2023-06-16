@@ -7,6 +7,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoCrustDark } from "@osn/icons/subsquare";
 
 const DEFAULT_CRUST_NODES = [
   {
@@ -42,6 +43,8 @@ const crust = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoCrustDark,
+  navLogoDark: ProjectLogoCrustDark,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,

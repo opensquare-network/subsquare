@@ -4,6 +4,7 @@ import Chains from "../chains";
 import Avatar from "../../../assets/icons/chain/hydradx.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoHydradxDark } from "@osn/icons/subsquare";
 
 const defaultHydradxEndpoints = [
   {
@@ -29,6 +30,8 @@ const hydradx = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: Avatar,
+  navLogo: ProjectLogoHydradxDark,
+  navLogoDark: ProjectLogoHydradxDark,
   endpoints: defaultHydradxEndpoints,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,

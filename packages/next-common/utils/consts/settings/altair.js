@@ -6,6 +6,7 @@ import Avatar from "../../../assets/icons/chain/altair.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
+import { ProjectLogoAltairDark } from "@osn/icons/subsquare";
 
 const nodes = [
   {
@@ -27,6 +28,8 @@ const altair = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoAltairDark,
+  navLogoDark: ProjectLogoAltairDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,

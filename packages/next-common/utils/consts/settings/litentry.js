@@ -6,6 +6,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoLitentryDark } from "@osn/icons/subsquare";
 
 const DEFAULT_LITENTRY_NODES = [
   {
@@ -31,6 +32,8 @@ const litentry = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoLitentryDark,
+  navLogoDark: ProjectLogoLitentryDark,
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,
   postLabels: defaultPostLabels,

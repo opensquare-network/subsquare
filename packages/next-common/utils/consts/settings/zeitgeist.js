@@ -7,6 +7,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
+import { ProjectLogoZeigeistDark } from "@osn/icons/subsquare";
 
 const defaultNodes = [
   {
@@ -38,6 +39,8 @@ const zeitgeist = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoZeigeistDark,
+  navLogoDark: ProjectLogoZeigeistDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
   hasSubscan: true,

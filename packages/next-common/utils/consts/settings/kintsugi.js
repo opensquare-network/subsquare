@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/kintsugi.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
+import { ProjectLogoKintsugiDark } from "@osn/icons/subsquare";
 
 const DEFAULT_KINTSUGI_NODES =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
@@ -38,6 +39,8 @@ const kintsugi = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoKintsugiDark,
+  navLogoDark: ProjectLogoKintsugiDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
   hasSubscan: true,

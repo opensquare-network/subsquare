@@ -3,6 +3,7 @@ import DarkModeLogo from "../../../assets/header-logos/khala-dark.svg";
 import Avatar from "../../../assets/icons/chain/khala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoKhalaDark } from "@osn/icons/subsquare";
 
 const DEFAULT_KHALA_NODES = [
   {
@@ -32,6 +33,8 @@ const khala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoKhalaDark,
+  navLogoDark: ProjectLogoKhalaDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

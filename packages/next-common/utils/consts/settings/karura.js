@@ -3,6 +3,7 @@ import DarkModeLogo from "../../../assets/header-logos/karura-dark.svg";
 import Avatar from "../../../assets/icons/chain/karura.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
+import { ProjectLogoKaruraDark } from "@osn/icons/subsquare";
 
 export const DEFAULT_KARURA_NODES = [
   {
@@ -48,6 +49,8 @@ const karura = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoKaruraDark,
+  navLogoDark: ProjectLogoKaruraDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
