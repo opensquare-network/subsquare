@@ -6,6 +6,10 @@ import DarkAvatar from "../../../assets/icons/chain/collectives-dark.png";
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
+import {
+  ProjectLogoPolkadotCollectivesDark,
+  ProjectLogoPolkadotCollectivesLight,
+} from "@osn/icons/subsquare";
 
 const collectivesEndpoints = [
   {
@@ -39,6 +43,8 @@ const collectives = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoPolkadotCollectivesLight,
+  navLogoDark: ProjectLogoPolkadotCollectivesDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,

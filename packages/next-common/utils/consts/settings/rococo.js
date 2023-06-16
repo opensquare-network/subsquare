@@ -5,6 +5,10 @@ import Avatar from "../../../assets/icons/chain/rococo.png";
 import MenuGroups from "./menuGroups";
 import Chains from "../chains";
 import { defaultPostLabels } from "./common";
+import {
+  ProjectLogoRococoDark,
+  ProjectLogoRococoLight,
+} from "@osn/icons/subsquare";
 
 export const defaultRococoNodes = [
   {
@@ -28,6 +32,8 @@ const rococo = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoRococoLight,
+  navLogoDark: ProjectLogoRococoDark,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,

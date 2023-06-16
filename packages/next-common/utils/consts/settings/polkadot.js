@@ -6,6 +6,10 @@ import capitalize from "../../capitalize";
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import {
+  ProjectLogoPolkadotDark,
+  ProjectLogoPolkadotLight,
+} from "@osn/icons/subsquare";
 
 const name = Chains.polkadot;
 
@@ -57,6 +61,8 @@ const polkadot = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoPolkadotLight,
+  navLogoDark: ProjectLogoPolkadotDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasStatescan: true,

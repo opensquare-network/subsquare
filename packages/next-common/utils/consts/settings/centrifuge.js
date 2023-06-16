@@ -8,6 +8,10 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
+import {
+  ProjectLogoCentrifugeDark,
+  ProjectLogoCentrifugeLight,
+} from "@osn/icons/subsquare";
 
 const name = Chains.centrifuge;
 
@@ -32,6 +36,8 @@ const centrifuge = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoCentrifugeLight,
+  navLogoDark: ProjectLogoCentrifugeDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,

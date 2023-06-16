@@ -7,6 +7,10 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
+import {
+  ProjectLogoDarwinia2Dark,
+  ProjectLogoDarwinia2Light,
+} from "@osn/icons/subsquare";
 
 export const DEFAULT_DARWINIA_NODES = [
   {
@@ -32,6 +36,8 @@ const darwinia2 = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoDarwinia2Light,
+  navLogoDark: ProjectLogoDarwinia2Dark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

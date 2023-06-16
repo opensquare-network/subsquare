@@ -5,6 +5,10 @@ import DarkAvatar from "../../../assets/icons/chain/interlay-dark.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
+import {
+  ProjectLogoInterlayDark,
+  ProjectLogoInterlayLight,
+} from "@osn/icons/subsquare";
 
 const DEFAULT_INTERLAY_NODES = [
   {
@@ -32,6 +36,8 @@ const interlay = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoInterlayLight,
+  navLogoDark: ProjectLogoInterlayDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
   hasSubscan: true,
