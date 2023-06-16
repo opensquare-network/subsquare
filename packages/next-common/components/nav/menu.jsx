@@ -15,6 +15,7 @@ import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useNavSubmenuVisible } from "next-common/context/nav";
+import { clone } from "lodash";
 
 export default function NavMenu({ collapsed }) {
   const dispatch = useDispatch();
@@ -268,10 +269,11 @@ function useMenu() {
 
   // TODO: v2, remove iconv2 compat
   const baseMenu = commonMenu?.[0]?.items?.map?.((item) => {
-    if (item.iconV2) {
-      item.icon = item.iconV2;
+    const clonedItem = clone(item);
+    if (clonedItem.iconV2) {
+      clonedItem.icon = clonedItem.iconV2;
     }
-    return item;
+    return clonedItem;
   });
 
   return {
