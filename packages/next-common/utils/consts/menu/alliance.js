@@ -6,6 +6,7 @@ import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import AnnouncementIcon from "../../../assets/imgs/icons/type-announcements.svg";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
 import GhostIcon from "../../../assets/imgs/icons/ghost.svg";
+import { MenuAlliance } from "@osn/icons/subsquare";
 
 const motions = {
   value: "allianceMotions",
@@ -57,6 +58,7 @@ const alliance = {
     Chains["westend-collectives"],
     Chains.collectives,
   ]),
+  icon: <MenuAlliance />,
   items: [announcements, motions, unscrupulous, members],
 };
 

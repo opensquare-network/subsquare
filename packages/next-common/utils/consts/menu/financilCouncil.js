@@ -4,10 +4,12 @@ import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
 import React from "react";
 import MembersIcon from "../../../assets/imgs/icons/members.svg";
 import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuFinancialCouncil } from "@osn/icons/subsquare";
 
 const financialCouncil = {
   name: "FINANCIAL COUNCIL",
   excludeToChains: getExcludeChains([Chains.karura, Chains.acala]),
+  icon: <MenuFinancialCouncil />,
   items: [
     {
       value: "financialMotions",
