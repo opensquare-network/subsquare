@@ -98,6 +98,7 @@ export const CACHE_KEY = {
   acceptCookies: "accept-cookies",
   dontRemindEmail: "dont-remind-email",
   navCollapsed: "nav-collapsed",
+  navSubmenuVisible: "nav-submenu-visible",
 };
 
 export const chain = process.env.NEXT_PUBLIC_CHAIN;

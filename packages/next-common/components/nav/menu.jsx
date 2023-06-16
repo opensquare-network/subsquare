@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
-import { useToggle } from "usehooks-ts";
+import { useToggle, useUpdateEffect } from "usehooks-ts";
 import tw from "tailwind-styled-components";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -14,12 +14,14 @@ import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import { useNavSubmenuVisible } from "next-common/context/nav";
 
 export default function NavMenu({ collapsed }) {
   const dispatch = useDispatch();
   const { featuredMenu, baseMenu } = useMenu();
   const router = useRouter();
   const isMacOS = useIsMacOS();
+  const [submenuVisible, setSubmenuVisible] = useNavSubmenuVisible();
 
   return (
     <div>
@@ -63,7 +65,12 @@ export default function NavMenu({ collapsed }) {
         {featuredMenu?.map((menu) => (
           <li key={menu.name}>
             {menu.name && menu.items && (
-              <MenuGroup menu={menu} collapsed={collapsed} />
+              <MenuGroup
+                menu={menu}
+                collapsed={collapsed}
+                submenuVisible={submenuVisible}
+                setSubmenuVisible={setSubmenuVisible}
+              />
             )}
           </li>
         ))}
@@ -76,18 +83,32 @@ const ActiveCountLabel = tw.span`
 ml-2 text-textTertiaryContrast
 `;
 
-function MenuGroup({ menu = [], collapsed }) {
+function MenuGroup({
+  menu = {},
+  collapsed,
+  submenuVisible,
+  setSubmenuVisible,
+}) {
   const { sm } = useScreenSize();
 
-  // FIXME: v2 read cookie
   const [childMenuVisible, childMenuToggler, setChildMenuVisible] =
     useToggle(false);
+  useEffect(() => setChildMenuVisible(submenuVisible[menu.name]), []);
 
   useEffect(() => {
     if (collapsed) {
       setChildMenuVisible(false);
+    } else {
+      setChildMenuVisible(submenuVisible[menu.name]);
     }
   }, [collapsed]);
+
+  useUpdateEffect(() => {
+    setSubmenuVisible({
+      ...submenuVisible,
+      [menu.name]: childMenuVisible,
+    });
+  }, [childMenuVisible]);
 
   function toggleChildMenu() {
     if (collapsed) {

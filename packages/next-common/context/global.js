@@ -14,13 +14,17 @@ export default function GlobalProvider({
   children,
   pageProperties,
   navCollapsed,
+  navSubmenuVisible,
 }) {
   return (
     <ThemeModeProvider defaultThemeMode={themeMode}>
       <ChainProvider chain={chain}>
         <UserProvider user={user}>
           <SettingsProvider homeExpandedMenus={homeExpandedMenus}>
-            <NavProvider navCollpased={navCollapsed}>
+            <NavProvider
+              navCollpased={navCollapsed}
+              navSubmenuCollapsed={navSubmenuVisible}
+            >
               <PageProvider pageProperties={pageProperties}>
                 {children}
               </PageProvider>
