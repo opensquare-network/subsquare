@@ -91,6 +91,7 @@ function MenuGroup({
   setSubmenuVisible,
 }) {
   const { sm } = useScreenSize();
+  const router = useRouter();
 
   const [childMenuVisible, childMenuToggler, setChildMenuVisible] = useToggle(
     !!submenuVisible[menu.name],
@@ -130,12 +131,13 @@ function MenuGroup({
               label={capitalize(menu.name)}
               activeCount={menu.activeCount}
               collapsed={collapsed}
+              active={router.asPath.startsWith(menu.pathname)}
               extra={
                 <span>
                   <ArrowDown
                     className={clsx(
                       childMenuVisible && "rotate-180",
-                      "[&_path]:stroke-navigationTextTertiary [&_path]:!fill-transparent",
+                      "[&_path]:stroke-navigationTextTertiary",
                     )}
                   />
                 </span>
@@ -165,6 +167,8 @@ function MenuGroup({
 }
 
 function SubMenuItems({ className = "", items = [] }) {
+  const router = useRouter();
+
   return (
     <ul className={className}>
       {items.map((item, idx) => (
@@ -177,6 +181,8 @@ function SubMenuItems({ className = "", items = [] }) {
               link={item.pathname}
               icon={item.icon}
               activeCount={item.activeCount}
+              active={item.pathname === router.asPath}
+              className={item.pathname === router.asPath && "bg-transparent"}
             />
           )}
         </li>
@@ -194,6 +200,7 @@ function MenuItem({
   extra,
   link,
   onClick = noop,
+  className = "",
 }) {
   const isExternal = isExternalLink(link);
 
@@ -201,14 +208,26 @@ function MenuItem({
     <div
       onClick={onClick}
       className={clsx(
+        "group/menu-item",
         "text-navigationText",
         "h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
-        "hover:text-theme500 [&_svg_path]:fill-navigationIcon [&_svg_path]:hover:fill-theme500",
-        active &&
-          "text-theme500 bg-navigationActive [&_svg_path]:!fill-theme500",
+        "hover:text-theme500",
+        active && "text-theme500 bg-navigationActive",
+        className,
       )}
     >
-      {icon && <span className="w-6 h-6">{icon}</span>}
+      {icon && (
+        <span
+          className={clsx(
+            "w-6 h-6",
+            " [&_svg_path]:fill-navigationIcon",
+            active && "[&_svg_path]:fill-theme500",
+            "group-hover/menu-item:[&_svg_path]:fill-theme500",
+          )}
+        >
+          {icon}
+        </span>
+      )}
       <span
         className={clsx(
           collapsed && "hidden",
