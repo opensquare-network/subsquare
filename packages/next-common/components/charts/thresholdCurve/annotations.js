@@ -1,6 +1,4 @@
-import { useTheme } from "styled-components";
-import light from "../../styled/theme/light";
-import dark from "../../styled/theme/dark";
+import { useThemeSetting } from "next-common/context/theme";
 
 function percentageLineBase(threshold, borderColor) {
   return {
@@ -18,10 +16,12 @@ function percentageLineBase(threshold, borderColor) {
 }
 
 export function useSupportPercentageLine(supportPercentage) {
-  return percentageLineBase(supportPercentage, light.primaryPurple300);
+  const { purple300 } = useThemeSetting();
+  return percentageLineBase(supportPercentage, purple300);
 }
 export function useApprovalPercentageLine(approvalPercentage) {
-  return percentageLineBase(approvalPercentage, light.secondaryGreen300);
+  const { secondaryGreen300 } = useThemeSetting();
+  return percentageLineBase(approvalPercentage, secondaryGreen300);
 }
 
 function outerPointBase(backgroundColor, borderColor, x, y) {
@@ -45,18 +45,18 @@ function innerPointBase(backgroundColor, x, y) {
   };
 }
 export function useSupportPoints(x, y) {
-  const { neutral } = useTheme();
+  const { neutral, purple500 } = useThemeSetting();
 
   return [
-    outerPointBase(neutral, dark.primaryDarkBlue, x, y),
-    innerPointBase(dark.primaryDarkBlue, x, y),
+    outerPointBase(neutral, purple500, x, y),
+    innerPointBase(purple500, x, y),
   ];
 }
 export function useApprovalPoints(x, y) {
-  const { neutral } = useTheme();
+  const { neutral, secondaryGreen500 } = useThemeSetting();
 
   return [
-    outerPointBase(neutral, light.secondaryGreen500, x, y),
-    innerPointBase(light.secondaryGreen500, x, y),
+    outerPointBase(neutral, secondaryGreen500, x, y),
+    innerPointBase(secondaryGreen500, x, y),
   ];
 }

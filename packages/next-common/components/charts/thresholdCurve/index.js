@@ -1,11 +1,10 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import "../globalConfig";
-import light from "../../styled/theme/light";
-import dark from "../../styled/theme/dark";
 import { emptyFunction } from "../../../utils";
 import hoverLinePlugin from "../plugins/hoverLine";
+import { useThemeSetting } from "next-common/context/theme";
 
 const Wrapper = styled.div``;
 
@@ -20,7 +19,7 @@ export default function ThresholdCurvesChart({
   approvalData = [],
   beforeDrawOptions = emptyFunction,
 }) {
-  const { grey300Border } = useTheme();
+  const { grey300Border, purple500, secondaryGreen500 } = useThemeSetting();
 
   const chartData = {
     labels,
@@ -29,7 +28,7 @@ export default function ThresholdCurvesChart({
         label: "Support",
         data: supportData,
         tension: 0.1,
-        borderColor: dark.primaryDarkBlue,
+        borderColor: purple500,
         borderWidth: 2,
         pointRadius: 0,
         pointHitRadius: 10,
@@ -39,7 +38,7 @@ export default function ThresholdCurvesChart({
         label: "Approval",
         data: approvalData,
         tension: 0.1,
-        borderColor: light.secondaryGreen500,
+        borderColor: secondaryGreen500,
         borderWidth: 2,
         pointRadius: 0,
         pointHitRadius: 10,

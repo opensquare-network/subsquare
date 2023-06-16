@@ -1,4 +1,3 @@
-import { chainThemeColors } from "next-common/utils/consts/chainThemeColors";
 import { usePreferredColorScheme } from "next-common/utils/hooks/usePreferredColorScheme";
 import React, {
   createContext,
@@ -8,8 +7,8 @@ import React, {
   useState,
 } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import dark from "../../components/styled/theme/dark";
-import light from "../../components/styled/theme/light";
+import light from "../../styles/light";
+import dark from "../../styles/dark";
 import { CACHE_KEY } from "../../utils/constants";
 import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
 import { useChainSettings } from "../chain";
@@ -68,10 +67,15 @@ export function useThemeSetting() {
   const themeMode = useThemeMode();
   const preferredColorScheme = usePreferredColorScheme();
   const mode = themeMode === "system" ? preferredColorScheme : themeMode;
-  const chainThemeColor = chainThemeColors[chainSettings.value];
 
-  const mergedLight = { ...light, ...chainThemeColor.light };
-  const mergedDark = { ...dark, ...chainThemeColor.dark };
+  /**
+   * @type {typeof light.base & typeof light.chain.kusama}
+   */
+  const mergedLight = { ...light.base, ...light.chain[chainSettings.value] };
+  /**
+   * @type {typeof light.base & typeof light.chain.kusama}
+   */
+  const mergedDark = { ...dark.base, ...dark.chain[chainSettings.value] };
 
   return mode === "dark" ? mergedDark : mergedLight;
 }

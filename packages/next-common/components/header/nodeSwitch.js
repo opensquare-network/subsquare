@@ -16,8 +16,6 @@ import signalFast from "../../assets/imgs/icons/signal-fast.png";
 import darkSignalMedium from "../../assets/imgs/icons/dark-signal-medium.png";
 import darkSignalSlow from "../../assets/imgs/icons/dark-signal-slow.png";
 import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
-import light from "../styled/theme/light";
-import dark from "../styled/theme/dark";
 import { useChainSettings } from "../../context/chain";
 import { useThemeMode } from "../../context/theme";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
@@ -171,14 +169,6 @@ export default function NodeSwitch({ small }) {
     return <img alt="" src={`${imgFile.src}`} width={24} height={24} />;
   };
 
-  const getSignalColor = (delay) => {
-    if (!delay || isNaN(delay))
-      return mode === "dark" ? dark.grey400Border : light.grey400Border;
-    if (delay >= 300) return light.secondaryRed500;
-    if (delay >= 100) return light.secondaryYellow500;
-    return light.secondaryGreen500;
-  };
-
   if (!currentNodeSetting) {
     return null;
   }
@@ -211,7 +201,6 @@ export default function NodeSwitch({ small }) {
                 setShow(false);
               }}
               active={item.url === currentNodeSetting.url}
-              color={getSignalColor(item?.delay)}
             >
               {getSignalImg(item?.delay)}
               <div>{`${item?.name}`}</div>
