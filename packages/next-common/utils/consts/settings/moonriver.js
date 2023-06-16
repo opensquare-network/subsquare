@@ -39,6 +39,7 @@ const moonriver = {
   hasGov2: true,
   noFellowship: true,
   chainType: ChainTypes.ETHEREUM,
+  noDispatchPrecompile: true,
   ethereumNetwork: {
     chainId: "0x505",
     chainName: "Moonriver",

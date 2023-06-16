@@ -8,6 +8,7 @@ import {
   updatePendingToast,
 } from "../store/reducers/toastSlice";
 import WalletTypes from "./consts/walletTypes";
+import hasDispatchPrecompile from "./hasDispatchPrecompile";
 import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
 import { sendEvmTx } from "./sendEvmTx";
@@ -55,7 +56,7 @@ export async function sendTx({
   method: methodName,
 }) {
   if (
-    isEvmChain() &&
+    isEvmChain() && hasDispatchPrecompile() &&
     localStorage.lastLoginExtension === WalletTypes.METAMASK
   ) {
     await sendEvmTx({
