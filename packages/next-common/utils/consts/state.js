@@ -24,6 +24,7 @@ export const gov2FinalState = [
 ];
 
 export const gov2VotingState = [
+  gov2State.Preparing,
   gov2State.Submitted,
   gov2State.Queueing,
   gov2State.Deciding,

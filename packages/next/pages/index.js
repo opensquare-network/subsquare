@@ -6,7 +6,7 @@ import {
   toAdvisoryMotionsListItem,
 } from "utils/viewfuncs";
 import HomeLayout from "next-common/components/layout/HomeLayout";
-import { useChain } from "next-common/context/chain";
+import { useChain, useMenuHasGov2 } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
@@ -31,7 +31,7 @@ import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/c
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
   const isKarura = ["karura", "acala"].includes(chain);
-  const hasGov2 = ["kusama", "moonriver", "development"].includes(chain);
+  const hasGov2 = useMenuHasGov2();
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
   const isCollectives = isCollectivesChain(chain);
   const isZeitgeist = chain === Chains.zeitgeist;

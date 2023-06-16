@@ -50,7 +50,7 @@ export default function ThresholdCurvesGov2TallyPopup({
   const supportThreshold = useSupportThreshold();
 
   const decisionSince = useDecidingSince();
-  const gone = decidingEnd - decisionSince;
+  const gone = decisionSince && decidingEnd ? decidingEnd - decisionSince : 0;
 
   const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
   const seconds = value / 1000;
