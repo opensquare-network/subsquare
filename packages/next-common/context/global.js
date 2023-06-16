@@ -23,7 +23,7 @@ export default function GlobalProvider({
           <SettingsProvider homeExpandedMenus={homeExpandedMenus}>
             <NavProvider
               navCollpased={navCollapsed}
-              navSubmenuCollapsed={navSubmenuVisible}
+              navSubmenuVisible={navSubmenuVisible}
             >
               <PageProvider pageProperties={pageProperties}>
                 {children}

@@ -92,9 +92,9 @@ function MenuGroup({
 }) {
   const { sm } = useScreenSize();
 
-  const [childMenuVisible, childMenuToggler, setChildMenuVisible] =
-    useToggle(false);
-  useEffect(() => setChildMenuVisible(submenuVisible[menu.name]), []);
+  const [childMenuVisible, childMenuToggler, setChildMenuVisible] = useToggle(
+    !!submenuVisible[menu.name],
+  );
 
   useEffect(() => {
     if (collapsed) {

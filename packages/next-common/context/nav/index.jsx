@@ -10,26 +10,12 @@ export default function NavProvider({
   navSubmenuVisible = "{}",
   children,
 }) {
-  let collapsed;
-  try {
-    collapsed = JSON.parse(navCollpased);
-  } catch (_) {
-    /* empty */
-  }
-
-  let submenuCollapsed;
-  try {
-    submenuCollapsed = JSON.parse(navSubmenuVisible);
-  } catch (_) {
-    /* empty */
-  }
-
   return (
-    <NavCollapsedContext.Provider value={collapsed}>
-      <NavSubmenuVisibleContext.Provider value={submenuCollapsed}>
+    <NavCollapsedProvider value={navCollpased}>
+      <NavSubmenuVisibleProvider value={navSubmenuVisible}>
         {children}
-      </NavSubmenuVisibleContext.Provider>
-    </NavCollapsedContext.Provider>
+      </NavSubmenuVisibleProvider>
+    </NavCollapsedProvider>
   );
 }
 
@@ -49,4 +35,34 @@ export function useNavSubmenuVisible() {
     value,
   );
   return [navSubmenuVisible, setNavSubmenuVisible];
+}
+
+function NavCollapsedProvider({ children, value }) {
+  let collapsed;
+  try {
+    collapsed = JSON.parse(value);
+  } catch (_) {
+    /* empty */
+  }
+
+  return (
+    <NavCollapsedContext.Provider value={collapsed}>
+      {children}
+    </NavCollapsedContext.Provider>
+  );
+}
+
+function NavSubmenuVisibleProvider({ children, value }) {
+  let submenuVisible = {};
+  try {
+    submenuVisible = JSON.parse(decodeURIComponent(value));
+  } catch (error) {
+    console.error(error);
+  }
+
+  return (
+    <NavSubmenuVisibleContext.Provider value={submenuVisible}>
+      {children}
+    </NavSubmenuVisibleContext.Provider>
+  );
 }

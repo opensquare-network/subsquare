@@ -50,6 +50,7 @@ function MyApp({ Component, pageProps }) {
     themeMode,
     pageProperties,
     navCollapsed,
+    navSubmenuVisible,
     ...otherProps
   } = pageProps;
   return (
@@ -61,6 +62,7 @@ function MyApp({ Component, pageProps }) {
         themeMode={themeMode}
         pageProperties={pageProperties}
         navCollapsed={navCollapsed}
+        navSubmenuVisible={navSubmenuVisible}
       >
         <Component {...otherProps} />
       </GlobalProvider>
