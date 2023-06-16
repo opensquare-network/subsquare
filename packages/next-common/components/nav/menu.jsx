@@ -7,7 +7,7 @@ import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import tw from "tailwind-styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { MenuNavigation, ArrowDown } from "@osn/icons/subsquare";
