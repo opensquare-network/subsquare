@@ -49,8 +49,6 @@ function OpenGovGroupContent({ summaryData }) {
   const { activeGov2ReferendaCount, activeFellowshipReferendaCount } =
     summaryData ?? {};
 
-  const hasFellowship = chain !== "polkadot";
-
   return (
     <ContentWrapper>
       <SummaryTypeGroup

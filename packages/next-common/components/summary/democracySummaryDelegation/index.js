@@ -8,6 +8,7 @@ import DemocracySummaryDelegationInfo from "./democracySummaryDelegationInfo";
 import DemocracySummaryDelegationButton from "./democracySummaryDelegationButton";
 import useDemocracyDelegating from "../../../utils/hooks/referenda/useDemocracyDelegating";
 import useRealAddress from "../../../utils/hooks/useRealAddress";
+import { useChainSettings } from "next-common/context/chain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ export default function DemocracySummaryDelegation() {
   const api = useApi();
   const realAddress = useRealAddress();
   const { delegating, refresh } = useDemocracyDelegating(api, realAddress);
+  const { hideActionButtons } = useChainSettings();
 
   const onDelegateInBlock = useCallback(() => {
     refresh();
@@ -35,11 +37,13 @@ export default function DemocracySummaryDelegation() {
   return (
     <Wrapper>
       <DemocracySummaryDelegationInfo delegating={delegating} />
-      <DemocracySummaryDelegationButton
-        delegating={delegating}
-        onDelegateInBlock={onDelegateInBlock}
-        onUndelegateInBlock={onUndelegateInBlock}
-      />
+      {!hideActionButtons && (
+        <DemocracySummaryDelegationButton
+          delegating={delegating}
+          onDelegateInBlock={onDelegateInBlock}
+          onUndelegateInBlock={onUndelegateInBlock}
+        />
+      )}
     </Wrapper>
   );
 }

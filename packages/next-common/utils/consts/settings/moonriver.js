@@ -38,6 +38,7 @@ const moonriver = {
   subscanDomain: "moonriver",
   hasGov2: true,
   noFellowship: true,
+  hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
   ethereumNetwork: {

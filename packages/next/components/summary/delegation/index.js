@@ -8,6 +8,7 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DelegationInfo from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
 import DelegationButton from "./delegationButton";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
+import { useChainSettings } from "next-common/context/chain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ export default function Delegation({ trackId }) {
   const api = useApi();
   const realAddress = useRealAddress();
   const { delegating, refresh } = useTrackDelegating(api, trackId, realAddress);
+  const { hideActionButtons } = useChainSettings();
 
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
@@ -38,12 +40,14 @@ export default function Delegation({ trackId }) {
   return (
     <Wrapper>
       <DelegationInfo delegating={delegating} />
-      <DelegationButton
-        delegating={delegating}
-        trackId={trackId}
-        onDelegateInBlock={onDelegateInBlock}
-        onUndelegateInBlock={onUndelegateInBlock}
-      />
+      {!hideActionButtons && (
+        <DelegationButton
+          delegating={delegating}
+          trackId={trackId}
+          onDelegateInBlock={onDelegateInBlock}
+          onUndelegateInBlock={onUndelegateInBlock}
+        />
+      )}
     </Wrapper>
   );
 }

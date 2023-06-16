@@ -17,6 +17,7 @@ import AllBeenDelegatedListPopup from "next-common/components/summary/democracyA
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { useChainSettings } from "next-common/context/chain";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -43,6 +44,7 @@ export default function AllDelegation() {
   const dispatch = useDispatch();
   const { myDelegationList, refresh } = useAllMyDelegationList();
   const { beenDelegatedList } = useAllBeenDelegatedList();
+  const { hideActionButtons } = useChainSettings();
 
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
   const [showAllMyDelegationPopup, setShowAllMyDelegationPopup] =
@@ -120,12 +122,14 @@ export default function AllDelegation() {
           </>
         )}
 
-        <ButtonWrapper>
-          <Button onClick={() => setShowDelegatePopup(true)}>
-            <AddSVG />
-            New Delegate
-          </Button>
-        </ButtonWrapper>
+        {!hideActionButtons && (
+          <ButtonWrapper>
+            <Button onClick={() => setShowDelegatePopup(true)}>
+              <AddSVG />
+              New Delegate
+            </Button>
+          </ButtonWrapper>
+        )}
       </VStack>
     </Wrapper>
   );
