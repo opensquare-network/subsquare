@@ -60,6 +60,7 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasGov2: true,
+  noFellowship: true,
   hasStatescan: true,
   hasSubscan: true,
   hasDotreasury: true,
