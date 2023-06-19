@@ -17,7 +17,7 @@ bg-neutral100
 `;
 
 const SearchWrapper = tw.div`
-w-full
+flex-1
 `;
 
 const ExtrasWrapper = tw.div`
