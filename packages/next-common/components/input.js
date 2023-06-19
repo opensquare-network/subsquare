@@ -23,28 +23,28 @@ const Wrapper = styled.div`
   input[type="number"] {
     -moz-appearance: textfield;
   }
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   width: 100%;
   border-radius: 4px;
   :hover {
-    border-color: ${(props) => props.theme.grey400Border};
+    border-color: var(--neutral500);
   }
   ${(p) =>
     p.focus &&
     css`
-      border-color: ${(props) => props.theme.grey400Border};
+      border-color: var(--neutral500);
     `}
   ${(p) =>
     p.error &&
     css`
-      border-color: #f44336 !important;
+      border-color: var(--red500) !important;
     `}
   ${(p) =>
     p.disabled &&
     css`
-      background: ${(props) => props.theme.grey100Bg};
+      background-color: var(--neutral200);
       :hover {
-        border-color: ${(props) => props.theme.grey300Border};
+        border-color: var(--neutral400);
       }
     `}
   display:flex;
@@ -59,12 +59,12 @@ const InputWrapper = styled.input`
   display: block;
   padding: 10px 16px;
   font-size: 14px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   background: transparent !important;
   ::placeholder {
-    color: ${(props) => props.theme.textPlaceholder};
+    color: var(--textDisabled);
   }
-  caret-color: ${(props) => props.theme.textPrimary};
+  caret-color: var(--textPrimary);
 `;
 
 const ShowButton = styled.div`
@@ -80,11 +80,11 @@ const ShowButton = styled.div`
   > svg {
     width: 14px;
     height: 14px;
-    fill: ${(props) => props.theme.textPlaceholder};
+    fill: var(--textDisabled);
   }
   :hover {
     > svg {
-      fill: ${(props) => props.theme.textTertiary};
+      fill: var(--textDisabled);
     }
   }
 `;
@@ -96,7 +96,7 @@ const PostWrapper = styled.div`
 `;
 
 const SymbolWrapper = styled.div`
-  background: ${(props) => props.theme.grey100Bg};
+  background-color: var(--neutral200);
   padding: 11px 16px;
   display: flex;
   align-items: center;
@@ -104,7 +104,7 @@ const SymbolWrapper = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
-  border-left: 1px solid ${(props) => props.theme.grey300Border};
+  border-left: 1px solid var(--neutral400);
 `;
 const OuterWrapper = styled.div``;
 

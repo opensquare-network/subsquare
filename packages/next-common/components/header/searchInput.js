@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import InputOrigin from "../input";
-import { bg_theme, theme } from "../../styles/tailwindcss";
 import { useChain } from "../../context/chain";
 import MagnifyingIcon from "../icons/magnifying";
 import SearchInputShortcut from "./searchInputShortcut";
@@ -10,12 +9,12 @@ const Wrapper = styled.div``;
 
 const Input = styled(InputOrigin)`
   height: 40px;
-  ${bg_theme("grey100Bg")};
-  border-color: ${theme("grey100Bg")};
+  background-color: var(--neutral200);
+  border-color: var(--neutral200);
 
   &[data-focus="true"] {
-    ${bg_theme("neutral")}
-    border-color: ${theme("grey400Border")};
+    background-color: var(--neutral100);
+    border-color: var(--neutral500);
   }
 `;
 
