@@ -44,6 +44,7 @@ const collectives = {
   hasStatescan: true,
   hasGov2: true,
   noReferenda: true,
+  showAchainableLabels: true,
 };
 
 export default collectives;

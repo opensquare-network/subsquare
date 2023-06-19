@@ -17,12 +17,11 @@ import styled, { css } from "styled-components";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { no_scroll_bar } from "../../styles/componentCss";
 import { useRouter } from "next/router";
-import { useChain } from "../../context/chain";
+import { useChain, useChainSettings } from "../../context/chain";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import VStack from "../styled/vStack";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import AchainableProfile from "./achainableProfile";
-import Chains from "next-common/utils/consts/chains";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -221,11 +220,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   );
   const router = useRouter();
 
-  const showAchainableLabels = [
-    Chains.kusama,
-    Chains.polkadot,
-    Chains.collectives,
-  ].includes(chain);
+  const { showAchainableLabels } = useChainSettings();
 
   const overview = {
     ...summary,

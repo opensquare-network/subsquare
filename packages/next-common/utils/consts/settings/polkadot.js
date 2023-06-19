@@ -67,6 +67,7 @@ const polkadot = {
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
+  showAchainableLabels: true,
 };
 
 export default polkadot;
