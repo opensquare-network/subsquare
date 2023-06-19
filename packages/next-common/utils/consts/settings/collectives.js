@@ -43,6 +43,7 @@ const collectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasGov2: true,
+  noReferenda: true,
 };
 
 export default collectives;
