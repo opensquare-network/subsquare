@@ -5,6 +5,7 @@ import {
   LinkDiscord,
   LinkTelegram,
   LinkGithub,
+  LinkElement,
 } from "@osn/icons/subsquare";
 import ExternalLink from "../externalLink";
 
@@ -14,6 +15,7 @@ const iconMap = {
   discord: LinkDiscord,
   telegram: LinkTelegram,
   github: LinkGithub,
+  element: LinkElement,
 };
 
 export default function ChainInfo() {
