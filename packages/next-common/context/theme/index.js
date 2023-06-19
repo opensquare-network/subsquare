@@ -3,7 +3,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useLayoutEffect,
+  useEffect,
   useState,
 } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -35,7 +35,7 @@ function ThemeValueProvider({ children }) {
     .map((k) => `--${k}: ${theme[k]}`)
     .join(";");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const root = document.documentElement;
     if (isDark) {
       root.classList.add("dark");
