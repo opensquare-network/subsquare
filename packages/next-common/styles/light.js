@@ -46,6 +46,9 @@ const light = {
     navigationTextTertiary: "var(--textTertiary)",
     navigationIcon: "var(--textSecondary)",
 
+    // compat
+    darkBlue: "var(--textPrimary)",
+
     // old
     textPlaceholder: "#D7DEE8",
     textContrast: "#FFFFFF",

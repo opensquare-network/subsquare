@@ -50,6 +50,9 @@ const dark = {
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
 
+    // compat
+    darkBlue: "var(--purple500)",
+
     // old
     textPlaceholder: "rgba(255, 255, 255, 0.15)",
     primaryDarkBlue: "#6848FF",
