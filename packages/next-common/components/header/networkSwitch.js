@@ -6,7 +6,7 @@ import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
-import Caret from "../icons/caret";
+import { ArrowDown } from "@osn/icons/subsquare";
 import NetworkOptions from "./networkOptions";
 
 const Wrapper = styled.div`
@@ -90,7 +90,7 @@ export default function NetworkSwitch({ activeNode }) {
             heightComponent
           )}
         </NetworkBlock>
-        <Caret />
+        <ArrowDown className="[&_path]:stroke-textTertiary" />
       </Select>
       {show && <NetworkOptions activeNode={activeNode} setShow={setShow} />}
     </Wrapper>
