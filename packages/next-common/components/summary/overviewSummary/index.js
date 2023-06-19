@@ -5,7 +5,7 @@ import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
 import {
-  useChain,
+  useChainSettings,
   useMenuHasCouncil,
   useMenuHasDemocracyExternal,
   useMenuHasGov2,
@@ -44,11 +44,9 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
 }
 
 function OpenGovGroupContent({ summaryData }) {
-  const chain = useChain();
+  const { hasFellowship } = useChainSettings();
   const { activeGov2ReferendaCount, activeFellowshipReferendaCount } =
     summaryData ?? {};
-
-  const hasFellowship = chain !== "polkadot";
 
   return (
     <ContentWrapper>

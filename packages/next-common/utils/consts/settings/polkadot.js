@@ -59,13 +59,14 @@ const polkadot = {
   avatar: Avatar,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
-  hasGov2: true,
+  hasReferenda: true,
   hasStatescan: true,
   hasSubscan: true,
   hasDotreasury: true,
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
+  showAchainableLabels: true,
 };
 
 export default polkadot;

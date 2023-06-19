@@ -84,5 +84,5 @@ export function useMenuHasTechComm() {
  */
 export function useMenuHasGov2() {
   const settings = useChainSettings();
-  return settings.hasGov2;
+  return settings.hasReferenda || settings.hasFellowship;
 }
