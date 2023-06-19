@@ -52,8 +52,8 @@ export default function useOpenGovSubscription(
   if (hasFellowship || hasReferenda) {
     openGovOptions = (
       <FoldableSections title="Open Gov">
-        {hasFellowship && referendaReferendumOptionsComponent}
-        {hasReferenda && fellowshipReferendumOptionsComponent}
+        {hasReferenda && referendaReferendumOptionsComponent}
+        {hasFellowship && fellowshipReferendumOptionsComponent}
       </FoldableSections>
     );
   }
@@ -65,8 +65,8 @@ export default function useOpenGovSubscription(
       isFellowshipReferendumOptionsChanged,
     getOpenGovOptionValues: () => {
       return {
-        ...(hasFellowship ? getReferendaReferendumOptionValues() : {}),
-        ...(hasReferenda ? getFellowshipReferendumOptionValues() : {}),
+        ...(hasReferenda ? getReferendaReferendumOptionValues() : {}),
+        ...(hasFellowship ? getFellowshipReferendumOptionValues() : {}),
       };
     },
   };
