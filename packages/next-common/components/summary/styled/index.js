@@ -14,20 +14,20 @@ export const SummaryWrapper = styled.div`
 
 export const SummaryCard = styled(SecondaryCard)`
   position: relative;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   flex: 1;
 `;
 
 export const SummaryTitle = styled.div`
   letter-spacing: 0.16em;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   margin-bottom: 4px;
   text-transform: uppercase;
   ${p_12_bold};
 `;
 
 export const SummaryGreyText = styled.span`
-  color: ${(props) => props.theme.textTertiary} !important;
+  color: var(--textTertiary) !important;
 `;
 
 export const SummaryItemWrapper = styled.div`
@@ -53,45 +53,51 @@ export const Button = styled.div`
     css`
       pointer-events: none;
       opacity: 0.3;
+      color: var(--textSecondary);
+
+      svg {
+        path {
+          stroke: var(--textSecondary);
+        }
+      }
     `}
 
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: ${(p) => (p.disabled ? p.theme.textSecondary : p.theme.textPrimary)};
+  color: var(--textPrimary);
 
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4px 12px;
   gap: 4px;
-  background: ${(p) => p.theme.neutral};
-  border: 1px solid ${(p) => p.theme.grey300Border};
+  background-color: var(--neutral100);
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   :hover {
-    border-color: ${(p) => p.theme.grey400Border};
+    border-color: var(--neutral500);
   }
 
   svg {
     path {
-      stroke: ${(p) =>
-        p.disabled ? p.theme.textSecondary : p.theme.textPrimary};
+      stroke: var(--textPrimary);
     }
   }
 `;
 
 export const PrimaryButton = styled(Button)`
-  background: ${(props) => props.theme.primaryPurple500};
-  color: ${(props) => props.theme.textContrast};
+  background-color: var(--purple500);
+  color: var(--textPrimaryConstrast);
   > svg path {
-    stroke: ${(props) => props.theme.textContrast};
+    stroke: var(--textPrimaryConstrast);
   }
 `;
 
 export const SummaryDescription = styled.p`
   margin: 0;
   margin-top: 4px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
   ${p_14_normal};
 `;
