@@ -48,6 +48,33 @@ export const defaultPolkadotNodes = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://polkadot.network/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/Polkadot",
+  },
+  {
+    name: "reddit",
+    url: "https://www.reddit.com/r/polkadot",
+  },
+  {
+    name: "discord",
+    url: "https://dot.li/discord",
+  },
+  {
+    name: "github",
+    url: "https://github.com/paritytech/polkadot/",
+  },
+  {
+    name: "element",
+    url: "https://matrix.to/#/#Polkadot-Direction:parity.io",
+  },
+];
+
 const polkadot = {
   value: name,
   name: capitalize(name),
@@ -64,6 +91,7 @@ const polkadot = {
   navLogo: ProjectLogoPolkadotLight,
   navLogoDark: ProjectLogoPolkadotDark,
   group: MenuGroups.PolkadotAndParachains,
+  links,
   postLabels: defaultPostLabels,
   hasStatescan: true,
   hasSubscan: true,

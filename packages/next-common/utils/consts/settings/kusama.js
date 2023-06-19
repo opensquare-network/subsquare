@@ -58,6 +58,14 @@ const links = [
     name: "github",
     url: "https://github.com/paritytech/polkadot/",
   },
+  {
+    name: "element",
+    url: "https://matrix.to/#/#Kusama-Direction:parity.io",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/kusamanetworkofficial",
+  },
 ];
 
 const kusama = {
