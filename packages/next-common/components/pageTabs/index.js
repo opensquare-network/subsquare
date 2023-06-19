@@ -14,7 +14,7 @@ const TabTitle = styled(TitleContainer)`
   ${(p) =>
     p.active
       ? css`
-          color: var(--textTertiary);
+          color: var(--textPrimary);
         `
       : css`
           color: var(--textTertiary);
