@@ -10,7 +10,11 @@ const Wrapper = styled.div``;
 const Input = styled(InputOrigin)`
   height: 40px;
   background-color: var(--neutral200);
-  border-color: var(--neutral200);
+  border-color: var(--neutral200) !important;
+
+  &:hover {
+    border-color: var(--neutral400) !important;
+  }
 
   &[data-focus="true"] {
     background-color: var(--neutral100);
