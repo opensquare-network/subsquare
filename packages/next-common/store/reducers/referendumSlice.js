@@ -90,7 +90,6 @@ export const clearVotes = () => async (dispatch) => {
 export const fetchVotes =
   (api, referendumIndex, passedHeight) => async (dispatch) => {
     let votes;
-    dispatch(setIsLoadingVotes(true));
     try {
       if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
         votes = await getKintsugiReferendumVotes(
