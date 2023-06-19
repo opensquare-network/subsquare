@@ -9,8 +9,8 @@ export const Wrapper = styled.div`
   }
   gap: 16px;
 
-  background: ${(p) => p.theme.neutral};
-  border: 1px solid ${(p) => p.theme.grey200Border};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
   box-shadow: 0px 6px 7px rgba(30, 33, 52, 0.02),
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
@@ -25,5 +25,5 @@ export const Header = styled.div`
   font-size: 16px;
   line-height: 24px;
 
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;

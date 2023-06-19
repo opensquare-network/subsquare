@@ -27,7 +27,7 @@ const Wrapper = styled.div`
       display: none;
     }
     th.clickable {
-      color: ${(props) => props.theme.textSecondary};
+      color: var(--textSecondary);
       cursor: pointer;
       pointer-events: auto;
     }
@@ -41,10 +41,10 @@ const Member = styled.div`
 `;
 
 const BalanceWrapper = styled.span`
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 const SymbolWrapper = styled.span`
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 function Balance({ value }) {

@@ -27,7 +27,7 @@ export const VotingStatusWrapper = styled.div`
   font-weight: bold;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   margin-left: auto !important;
   display: flex;
   > :not(:first-child) {
@@ -45,14 +45,14 @@ export const StatusWrapper = styled(GreyPanel)`
     display: flex;
     font-weight: 500;
     > span {
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       margin-left: 2px;
     }
   }
   > div.result {
     display: flex;
     align-items: center;
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
     > svg {
       margin-left: 8px;
     }
@@ -63,7 +63,7 @@ export const StatusWrapper = styled(GreyPanel)`
   > div.no-data {
     font-size: 14px;
     line-height: 100%;
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
     flex-grow: 1;
     text-align: center;
   }
@@ -71,7 +71,7 @@ export const StatusWrapper = styled(GreyPanel)`
 
 export const WarningMessage = styled(GreyPanel)`
   padding: 12px 16px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   font-size: 14px;
   line-height: 140%;
   ${(p) =>
@@ -90,7 +90,7 @@ export const DelegatingInfo = styled(GreyPanel)`
   font-weight: normal;
   font-size: 14px;
   line-height: 140%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 export const DelegatingValue = styled(GreyPanel)`
@@ -107,11 +107,11 @@ export const DelegatingValue = styled(GreyPanel)`
     line-height: 100%;
 
     > .balance {
-      color: ${(props) => props.theme.textPrimary};
+      color: var(--textPrimary);
     }
 
     > .conviction {
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       margin-left: 2px;
     }
   }
@@ -124,7 +124,7 @@ export const DelegatingValue = styled(GreyPanel)`
     line-height: 100%;
 
     > .proxy-label {
-      color: ${(props) => props.theme.textSecondary};
+      color: var(--textSecondary);
     }
 
     > .proxy-addr {
@@ -148,9 +148,9 @@ export const BalanceWrapper = styled.div`
   display: flex;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   > :nth-child(2) {
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     font-weight: bold;
   }
   > :not(:first-child) {

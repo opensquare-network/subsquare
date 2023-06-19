@@ -48,7 +48,7 @@ const Bar = styled.div`
   ${(p) =>
     !p.isFold &&
     css`
-      background-color: ${(props) => props.theme.grey200Border};
+      background-color: var(--neutral300);
     `}
 `;
 

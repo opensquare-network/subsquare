@@ -23,7 +23,7 @@ const localizer = dayjsLocalizer(dayjs);
 
 const CalendarWrapper = styled.div`
   padding: 12px;
-  border: 1px solid ${p => p.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
 
   .rbc-month-view {
@@ -68,10 +68,7 @@ const CalendarWrapper = styled.div`
   }
 `;
 
-export default function DaySelect({
-  date,
-  setDate,
-}) {
+export default function DaySelect({ date, setDate }) {
   const components = {
     toolbar(props) {
       return <CalendarToolbar {...props} />;

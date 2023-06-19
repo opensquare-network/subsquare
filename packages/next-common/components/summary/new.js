@@ -13,12 +13,12 @@ const TitleGroup = styled.div`
 
 const Title = styled.h2`
   margin: 0;
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   ${p_20_bold};
 `;
 
 const TitleExtra = styled.span`
-  color: ${(p) => p.theme.textPlaceholder};
+  color: var(--textDisabled);
   ${p_20_bold};
 `;
 

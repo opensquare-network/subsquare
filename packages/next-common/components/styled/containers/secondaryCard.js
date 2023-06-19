@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { NeutralPanel } from "./neutralPanel";
 
 export const SecondaryCard = styled(NeutralPanel)`
-  box-shadow: ${(props) => props.theme.shadow100};
+  box-shadow: var(--shadow100);
   border-radius: 8px;
   padding: 24px;
 `;
 
 export const HoverSecondaryCard = styled(SecondaryCard)`
   :hover {
-    box-shadow: ${(props) => props.theme.shadow200};
+    box-shadow: var(--shadow200);
   }
 `;
 

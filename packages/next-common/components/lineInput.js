@@ -5,11 +5,11 @@ import { p_14_normal } from "../styles/componentCss";
 
 const Wrapper = styled.div`
   flex-grow: 1;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   overflow: hidden;
 
-  color: ${(props) => props.theme.textPlaceholder};
+  color: var(--textDisabled);
 `;
 
 const Input = styled.input`
@@ -21,10 +21,10 @@ const Input = styled.input`
   ${(p) =>
     p.disabled &&
     css`
-      background: ${(props) => props.theme.grey100Bg} !important;
+      background: var(--neutral200) !important;
     `}
   background-color: rgba(0,0,0,0);
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export default function LineInput({

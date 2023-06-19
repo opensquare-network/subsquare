@@ -18,7 +18,7 @@ const TitleWrapper = styled.div`
     > :last-child {
       margin-left: 12px;
       font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       display: inline-flex;
     }
   }

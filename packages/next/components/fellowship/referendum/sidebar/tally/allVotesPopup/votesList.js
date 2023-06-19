@@ -28,7 +28,7 @@ function VotesList({ items, theme, loading = false }) {
           </StyledTr>
           <RowSplitter
             backgroundColor={
-              theme.isDark ? theme.grey200Border : theme.grey100Bg
+              theme.isDark ? theme.grey200Border : "var(--neutral200)"
             }
             padding={"16px 0 4px 0"}
           />
@@ -53,7 +53,7 @@ function VotesList({ items, theme, loading = false }) {
                 {index !== items.length - 1 && (
                   <RowSplitter
                     backgroundColor={
-                      theme.isDark ? theme.grey200Border : theme.grey100Bg
+                      theme.isDark ? theme.grey200Border : "var(--neutral200)"
                     }
                   />
                 )}

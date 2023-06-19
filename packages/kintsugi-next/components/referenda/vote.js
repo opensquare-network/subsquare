@@ -62,7 +62,7 @@ const Title = styled(TitleContainer)`
 const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 
   span:nth-child(2) {
     text-align: center;
@@ -76,7 +76,7 @@ const Headers = styled(Flex)`
 
 const Contents = styled(Headers)`
   font-weight: 500;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   margin-top: 8px !important;
   margin-bottom: 16px;
 `;
@@ -134,7 +134,7 @@ const Guide = styled.p`
   white-space: nowrap;
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   a {
     margin-left: 2px;
     svg {

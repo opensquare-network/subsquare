@@ -10,7 +10,7 @@ export const Row = styled(Flex)`
 `;
 
 export const BorderedRow = styled(Row)`
-  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+  border-bottom: 1px solid var(--neutral300);
 `;
 
 export const Header = styled.span`
@@ -19,7 +19,7 @@ export const Header = styled.span`
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   svg {
     min-width: 14px;
@@ -28,5 +28,5 @@ export const Header = styled.span`
 `;
 
 export const Value = styled.span`
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;

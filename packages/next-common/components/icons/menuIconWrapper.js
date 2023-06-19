@@ -6,7 +6,7 @@ const Wrapper = styled.span`
 
   svg {
     path {
-      fill: ${(p) => p.theme.textSecondary};
+      fill: var(--textSecondary);
     }
   }
 `;

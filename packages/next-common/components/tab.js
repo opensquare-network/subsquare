@@ -55,15 +55,15 @@ const Button = styled.div`
   ${(p) =>
     p.highlight
       ? css`
-          color: ${(props) => props.theme.textPrimary};
+          color: var(--textPrimary);
 
-          background: ${(props) => props.theme.neutral};
+          background: var(--neutral100);
 
-          box-shadow: ${(props) => props.theme.shadow100};
+          box-shadow: var(--shadow100);
           border-radius: 2px;
         `
       : css`
-          color: ${(props) => props.theme.textTertiary};
+          color: var(--textTertiary);
         `}
 `;
 

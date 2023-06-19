@@ -9,6 +9,6 @@ export const ValueWrapper = styled(Flex)`
 export const GreyText = styled.span`
   display: inline-flex;
   align-items: center;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
   ${p_12_normal};
 `;

@@ -10,7 +10,7 @@ export const OptionWrapper = styled(NeutralPanel)`
   border-radius: 4px;
   border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export const OptionItem = styled.div`
@@ -19,9 +19,9 @@ export const OptionItem = styled.div`
   cursor: pointer;
   padding: 0 12px;
   font-weight: 500;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   :hover {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
 `;

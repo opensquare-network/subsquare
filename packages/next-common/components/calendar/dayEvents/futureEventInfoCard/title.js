@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   line-height: 20px;
   gap: 8px;
 
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 
   @media screen and (max-width: 768px) {
     flex-direction: column;

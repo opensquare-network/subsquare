@@ -5,7 +5,7 @@ const ClaimInfoText = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   > span {
     color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;

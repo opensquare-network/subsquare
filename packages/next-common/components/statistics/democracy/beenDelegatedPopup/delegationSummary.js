@@ -20,7 +20,7 @@ const Wrapper = styled.div`
       display: block;
       height: 1px;
       width: 100%;
-      background: ${(p) => p.theme.grey200Border};
+      background: var(--neutral300);
     }
   }
 `;
@@ -34,12 +34,12 @@ const Title = styled(Flex)`
   gap: 8px;
 
   ${p_14_medium};
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const Value = styled.div`
   ${p_14_normal};
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export default function DelegationSummary({

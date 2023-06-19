@@ -44,14 +44,14 @@ const Wrapper = styled(NeutralPanel)`
 `;
 
 const Button = styled(BackgroundButton)`
-  background-color: ${(p) => p.theme.primaryDarkBlue};
+  background-color: var(--darkBlue);
 `;
 const ButtonWrapper = styled(Flex)`
   justify-content: flex-end;
 `;
 
 const Title = styled.h3`
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   margin: 0;
   ${p_14_bold};
 `;
@@ -63,7 +63,7 @@ const ClosePanelIcon = styled(ClosePanelIconOrigin)`
 `;
 
 const Description = styled.p`
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
   margin: 0;
   ${p_14_normal};
 `;

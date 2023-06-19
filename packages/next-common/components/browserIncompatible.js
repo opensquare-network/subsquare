@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     font-size: 14px;
     line-height: 140%;
     text-align: center;
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
 `;
 

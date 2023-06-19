@@ -32,7 +32,7 @@ const ButtonWrapper = styled(Flex)`
 `;
 
 const Count = styled.span`
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const ListButton = styled(Button)`

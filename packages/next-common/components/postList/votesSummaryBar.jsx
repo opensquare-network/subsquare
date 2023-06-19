@@ -20,7 +20,7 @@ const StyledTooltip = styled(Tooltip)`
 
 const TooltipContent = styled.div`
   > * {
-    color: ${(p) => p.theme.textContrast};
+    color: var(--textPrimaryContrast);
   }
 `;
 

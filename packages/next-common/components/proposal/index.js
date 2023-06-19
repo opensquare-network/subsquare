@@ -32,8 +32,8 @@ const Header = styled.div`
 
 const ArgsWrapper = styled.div`
   border-radius: 4px;
-  border: 24px solid ${(props) => props.theme.grey100Bg};
-  border-bottom: 24px solid ${(props) => props.theme.grey100Bg} !important;
+  border: 24px solid var(--neutral200);
+  border-bottom: 24px solid var(--neutral200) !important;
   font-size: 14px;
   line-height: 20px;
   word-wrap: break-word;
@@ -75,14 +75,14 @@ const TagItem = styled.div`
   padding: 4px 8px;
 
   &.tag {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
 
   border-radius: 2px;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   cursor: pointer;
   ${(p) =>
     p.active &&

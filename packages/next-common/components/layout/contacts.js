@@ -19,12 +19,12 @@ const FlexWrapper = styled(Flex)`
 
   svg {
     path {
-      fill: ${(props) => props.theme.textPlaceholder};
+      fill: var(--textDisabled);
       fill-opacity: 1;
     }
     &:hover {
       path {
-        fill: ${(props) => props.theme.textSecondary};
+        fill: var(--textSecondary);
       }
     }
   }
@@ -35,7 +35,7 @@ const Divider = styled.div`
   margin-right: 8px;
   width: 1px;
   height: 8px;
-  background-color: ${(props) => props.theme.grey200Border};
+  background-color: var(--neutral300);
 `;
 
 const ThemeToggle = styled.div`

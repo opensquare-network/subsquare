@@ -27,10 +27,10 @@ export const DotreasuryLinkWrapper = StatescanLink;
 export const SubscanLinkWrapper = styled(ThirdPartyLink)`
   svg:first-child {
     path:first-child {
-      fill: ${(props) => props.theme.grey200Border};
+      fill: var(--neutral300);
     }
     path:last-child {
-      fill: ${(props) => props.theme.grey400Border};
+      fill: var(--neutral500);
     }
   }
   &:hover {
@@ -39,7 +39,7 @@ export const SubscanLinkWrapper = styled(ThirdPartyLink)`
     }
     svg:last-child {
       path:first-child {
-        fill: ${(props) => props.theme.grey200Border};
+        fill: var(--neutral300);
       }
     }
   }

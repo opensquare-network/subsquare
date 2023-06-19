@@ -38,7 +38,7 @@ const Tips = styled.ul`
   margin: 8px 0;
 
   li {
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
     ${p_12_normal};
     &::before {
       content: "\\2022";
@@ -49,7 +49,7 @@ const Tips = styled.ul`
 
 const Hint = styled.span`
   ${p_14_normal}
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   line-height: 19.6px;
 `;
 
@@ -57,7 +57,7 @@ const SelectFile = styled.div`
   display: flex;
   align-items: center;
   ${p_14_normal}
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   margin-left: 8px;
   line-height: 19.6px;
   display: flex;
@@ -80,7 +80,7 @@ const BannerPreview = styled(Flex)`
   ${(p) =>
     p.disabled &&
     css`
-      background-color: ${(props) => props.theme.grey100Bg}; ;
+      background-color: var(--neutral200); ;
     `}
 
   img {

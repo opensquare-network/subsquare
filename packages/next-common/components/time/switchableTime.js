@@ -7,11 +7,11 @@ const Wrapper = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
 
   & > span {

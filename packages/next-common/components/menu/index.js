@@ -79,7 +79,7 @@ const TitleGroup = styled(Flex)`
 
 const ItemActiveCount = styled.span`
   margin-left: 8px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
   ${p_12_medium};
 `;
 const ItemInner = styled(Flex)`
@@ -98,15 +98,15 @@ const Item = styled.div`
   font-weight: 500;
   cursor: pointer;
   font-size: 14px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   > svg:first-child {
     path {
-      fill: ${(props) => props.theme.textSecondary};
+      fill: var(--textSecondary);
     }
   }
   > svg.external-link-icon {
     path {
-      stroke: ${(props) => props.theme.textPlaceholder};
+      stroke: var(--textDisabled);
     }
   }
 
@@ -134,7 +134,7 @@ const Item = styled.div`
     p.active &&
     css`
       font-weight: 600;
-      background: ${(props) => props.theme.grey200Border};
+      background: var(--neutral300);
       color: ${(props) => props.theme.primaryPurple500};
 
       svg {

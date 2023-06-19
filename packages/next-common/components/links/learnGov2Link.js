@@ -8,7 +8,7 @@ const Link = styled(ExternalLink)`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
   ${p_12_normal};
 `;
 

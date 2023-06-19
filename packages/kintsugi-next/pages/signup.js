@@ -28,9 +28,9 @@ const Wrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  box-shadow: ${(props) => props.theme.shadow100};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
+  box-shadow: var(--shadow100);
   border-radius: 6px;
   width: 400px;
   margin: 0 auto;
@@ -56,7 +56,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const LinkWrapper = styled.div`
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   text-align: center;
 
   a {
@@ -72,7 +72,7 @@ const Label = styled.div`
   font-size: 12px;
   margin-bottom: 8px;
   line-height: 12px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   :not(:first-child) {
     margin-top: 16px;
@@ -81,15 +81,15 @@ const Label = styled.div`
 
 const InfoWrapper = styled.div`
   padding: 12px 16px;
-  background: ${(props) => props.theme.grey100Bg};
+  background: var(--neutral200);
   border-radius: 4px;
   line-height: 150%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const Redirect = styled.div`
   text-align: center;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 
   .sec {
     font-weight: bold;
@@ -137,7 +137,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       }
       setLoading(false);
     },
-    () => setErrors(null)
+    () => setErrors(null),
   );
   const { username, email, password } = formData;
 
@@ -152,7 +152,7 @@ export default withLoginUserRedux(({ loginUser }) => {
           return setSendEmailState(true);
         }
         showErrorToast(
-          error?.message ?? "some error occured when sending an Email"
+          error?.message ?? "some error occured when sending an Email",
         );
       })
       .catch((err) => {

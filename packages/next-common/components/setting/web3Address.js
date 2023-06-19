@@ -10,15 +10,15 @@ const AddressWrapper = styled.div`
   align-items: center;
   padding: 12px 16px;
 
-  background: ${(props) => props.theme.grey100Bg};
+  background: var(--neutral200);
 
-  border: 1px solid ${(props) => props.theme.grey200Border};
+  border: 1px solid var(--neutral300);
   border-radius: 4px;
 `;
 
 const FullAddress = styled.div`
   font-size: 14px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   @media screen and (max-width: 1024px) {
     display: none;
   }
@@ -26,7 +26,7 @@ const FullAddress = styled.div`
 
 const ShortAddress = styled.div`
   font-size: 14px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   @media screen and (min-width: 1024px) {
     display: none;
   }

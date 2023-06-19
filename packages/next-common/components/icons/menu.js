@@ -3,12 +3,12 @@ import Menu from "../../assets/imgs/icons/menu.svg";
 
 const MenuIcon = styled(Menu)`
   path {
-    stroke: ${(p) => p.theme.textSecondary};
+    stroke: var(--textSecondary);
   }
 
   &:hover {
     path {
-      stroke: ${(p) => p.theme.textSecondary};
+      stroke: var(--textSecondary);
     }
   }
 `;

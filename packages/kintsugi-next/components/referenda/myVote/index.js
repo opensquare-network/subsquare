@@ -6,7 +6,7 @@ import PopupLabel from "next-common/components/popup/label";
 import useSubMyDemocracyVote from "../../../hooks/democracy/useSubMyDemocracyVote";
 
 const Wrapper = styled.div`
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   margin-top: 24px;
 `;
 

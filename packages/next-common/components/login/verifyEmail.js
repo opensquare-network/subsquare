@@ -21,7 +21,7 @@ const Text = styled.span`
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const SubButton = styled.button`

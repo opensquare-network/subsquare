@@ -47,19 +47,19 @@ const StyledPopupListWrapper = styled(PopupListWrapper)`
 `;
 
 const StyledAccountSVG = styled(AccountSVG)`
-  fill: ${(p) => p.theme.textTertiary};
+  fill: var(--textTertiary);
 `;
 const StyledConvictionSVG = styled(ConvictionSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 const StyledCapitalSVG = styled(BalanceSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 const StyledDelegatorsSVG = styled(AddressesSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 const StyledTotalDelegationSvg = styled(SupportSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 
 const DetailDescriptionLabel = styled.div`

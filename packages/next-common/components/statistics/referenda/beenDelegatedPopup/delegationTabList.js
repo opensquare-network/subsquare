@@ -25,7 +25,7 @@ const ListWrapper = styled.div`
 
 const ConvictionText = styled.span`
   width: 40px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const TrackNameText = styled.div`
@@ -35,13 +35,13 @@ const TrackNameText = styled.div`
   white-space: nowrap;
   padding: 2px 8px;
 
-  background: ${(p) => p.theme.grey100Bg};
+  background: var(--neutral200);
   border-radius: 10px;
 
   ${p_12_medium}
 
   text-align: center;
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const MyPopupListWrapper = styled(PopupListWrapper)`

@@ -3,12 +3,12 @@ import ArrowOutSimple from "../../assets/imgs/icons/arrow-out-simple.svg";
 
 const ArrowOutSimpleIcon = styled(ArrowOutSimple)`
   path {
-    stroke: ${(p) => p.theme.textTertiary};
+    stroke: var(--textTertiary);
   }
 
   &:hover {
     path {
-      stroke: ${(p) => p.theme.textSecondary};
+      stroke: var(--textSecondary);
     }
   }
 `;

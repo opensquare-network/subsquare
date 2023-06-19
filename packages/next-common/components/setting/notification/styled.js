@@ -5,7 +5,7 @@ const Label = styled.div`
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const Sections = styled.div`
@@ -22,7 +22,7 @@ const SubLabel = styled.div`
   font-weight: 700;
   font-size: 12px;
   line-height: 16px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const ToggleItem = styled.div`
@@ -48,7 +48,7 @@ const Options = styled.div`
     display: block;
     margin-bottom: 24px;
     height: 1px;
-    background-color: ${(props) => props.theme.grey200Border};
+    background-color: var(--neutral300);
   }
 `;
 

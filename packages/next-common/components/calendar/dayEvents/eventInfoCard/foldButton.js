@@ -9,13 +9,13 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid ${(p) => p.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 2px;
   width: 20px;
   height: 20px;
 
   > svg path {
-    fill: ${(p) => p.theme.textSecondary};
+    fill: var(--textSecondary);
   }
 `;
 

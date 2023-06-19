@@ -30,7 +30,7 @@ const EmptyPanel = styled(NeutralPanel)`
   flex-direction: column;
   padding: 48px;
   box-sizing: border-box;
-  box-shadow: ${(props) => props.theme.shadow100};
+  box-shadow: var(--shadow100);
 
   > .title {
     font-style: normal;
@@ -38,7 +38,7 @@ const EmptyPanel = styled(NeutralPanel)`
     font-size: 20px;
     line-height: 100%;
     text-align: center;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     margin-bottom: 16px;
   }
 
@@ -48,7 +48,7 @@ const EmptyPanel = styled(NeutralPanel)`
     font-size: 14px;
     line-height: 140%;
     text-align: center;
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
     margin-bottom: 24px;
     max-width: 343px;
   }

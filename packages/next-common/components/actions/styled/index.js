@@ -7,7 +7,7 @@ export const Wrapper = styled(Flex)`
   flex-wrap: wrap;
   margin-top: 16px;
   height: 22px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 export const GreyWrapper = styled(GreyPanel)`
@@ -25,7 +25,7 @@ export const GreyItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
 `;
 
@@ -37,10 +37,10 @@ export const Item = styled(Flex)`
     css`
       cursor: pointer;
       :hover {
-        color: ${(props) => props.theme.textSecondary};
+        color: var(--textSecondary);
         > svg {
           path {
-            fill: ${(props) => props.theme.textSecondary};
+            fill: var(--textSecondary);
           }
         }
       }
@@ -49,18 +49,18 @@ export const Item = styled(Flex)`
   ${(p) =>
     p.highlight
       ? css`
-          color: ${(props) => props.theme.textSecondary};
+          color: var(--textSecondary);
           > svg {
             path {
-              fill: ${(props) => props.theme.textSecondary};
+              fill: var(--textSecondary);
             }
           }
         `
       : css`
-          color: ${(props) => props.theme.textTertiary};
+          color: var(--textTertiary);
           > svg {
             path {
-              fill: ${(props) => props.theme.textTertiary};
+              fill: var(--textTertiary);
             }
           }
         `}

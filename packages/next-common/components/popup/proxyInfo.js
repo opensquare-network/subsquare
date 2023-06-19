@@ -14,10 +14,10 @@ const Wrapper = styled(GreyPanel)`
   justify-content: space-between;
 
   ${p_14_normal};
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
   .proxyaddr {
     font-weight: 500;
-    color: ${(p) => p.theme.textPrimary};
+    color: var(--textPrimary);
   }
 `;
 
@@ -25,7 +25,7 @@ const BalanceWrapper = styled.div`
   display: flex;
   font-size: 12px;
   line-height: 16px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   font-weight: bold;
 `;
 

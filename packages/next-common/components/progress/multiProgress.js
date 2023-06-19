@@ -27,7 +27,7 @@ const Bar = styled.div`
 `;
 
 const Background = styled(Bar)`
-  background-color: ${(p) => p.theme.grey100Bg};
+  background-color: var(--neutral200);
 `;
 
 const Percentage = styled(Bar)`

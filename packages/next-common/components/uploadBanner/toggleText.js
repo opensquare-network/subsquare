@@ -16,7 +16,7 @@ const Text = styled.button`
   ${(p) =>
     p.disabled &&
     css`
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       cursor: not-allowed !important;
     `}
 `;

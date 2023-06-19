@@ -6,7 +6,7 @@ import ClosePanel from "../../assets/imgs/icons/close-panel.svg";
  */
 const ClosePanelIcon = styled(ClosePanel)`
   path {
-    stroke: ${(p) => p.theme.textTertiary};
+    stroke: var(--textTertiary);
   }
 `;
 

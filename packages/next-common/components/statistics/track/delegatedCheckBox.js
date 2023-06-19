@@ -11,7 +11,7 @@ const Wrapper = styled(FlexBetweenCenter)`
 
 const Text = styled.span`
   ${p_12_normal}
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export default function DelegatedCheckBox({ setChecked, checked }) {

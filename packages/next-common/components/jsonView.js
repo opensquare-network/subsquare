@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   padding: 8px;
   overflow-x: auto;
   border: 1px solid
-    ${(props) => (props.theme.isDark ? "#2C303B" : props.theme.grey200Border)};
+    ${(props) => (props.theme.isDark ? "#2C303B" : "var(--neutral300)")};
 `;
 
 function JsonView({ src, theme }) {

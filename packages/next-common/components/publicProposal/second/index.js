@@ -56,7 +56,7 @@ const NoSeconds = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const SecondsList = styled.div`
@@ -72,7 +72,7 @@ const SecondItem = styled.div`
   justify-content: space-between;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   > :last-child {
     white-space: nowrap;
   }
@@ -82,13 +82,13 @@ const DepositRequired = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   > span {
     color: ${(props) => props.theme.primaryPurple500};
     cursor: pointer;

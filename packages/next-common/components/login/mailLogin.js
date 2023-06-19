@@ -14,7 +14,7 @@ import { updateUser, useUserDispatch } from "../../context/user";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   font-size: 12px;
 `;
 

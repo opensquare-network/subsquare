@@ -13,7 +13,7 @@ const Info = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const Item = styled.div`
@@ -34,7 +34,7 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 14px;
   line-height: 140%;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export default function PollHeader({ title, expiresTime, anonymous }) {

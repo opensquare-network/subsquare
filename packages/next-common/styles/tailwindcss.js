@@ -8,7 +8,7 @@ import { css } from "styled-components";
 // ---
 
 export function theme(key) {
-  return (p) => p.theme[key];
+  return `var(--${key})`;
 }
 export function px(n) {
   return `${n}px`;

@@ -111,7 +111,7 @@ export const NavigationWrapper = styled(NoticeWrapper)`
 
   > div > svg {
     margin-right: 8px;
-    fill: ${(props) => props.theme.textTertiary};
+    fill: var(--textTertiary);
   }
 
   a {

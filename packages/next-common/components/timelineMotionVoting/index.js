@@ -13,7 +13,7 @@ const TitleWrapper = styled(Flex)`
   > :last-child {
     display: flex;
     align-items: center;
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
     > span {
       margin-left: 4px;
     }
@@ -38,14 +38,14 @@ const ArgItem = styled.div`
     font-weight: normal;
     font-size: 14px;
     line-height: 100%;
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
   > :last-child {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 100%;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
   }
 `;
 

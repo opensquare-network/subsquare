@@ -27,7 +27,7 @@ const TrackItem = styled.div`
 
 const Name = styled(Link)`
   ${p_12_normal}
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   :hover {
     text-decoration: underline;
   }
@@ -35,7 +35,7 @@ const Name = styled(Link)`
 
 const Count = styled.span`
   ${p_12_normal}
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const Wrapper = styled.div`

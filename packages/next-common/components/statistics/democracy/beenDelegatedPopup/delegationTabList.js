@@ -16,7 +16,7 @@ import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
 const ConvictionText = styled.span`
   width: 40px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const MyPopupListWrapper = styled(PopupListWrapper)`

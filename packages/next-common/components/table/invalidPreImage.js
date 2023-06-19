@@ -9,9 +9,9 @@ const Wrapper = styled(Flex)`
   gap: 8px;
   font-size: 14px;
   line-height: 140%;
-  color: ${(props) => props.theme.textPrimary};
-  background-color: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: var(--textPrimary);
+  background-color: var(--neutral100);
+  border: 1px solid var(--neutral300);
 `;
 
 export default function InvalidPreImage() {

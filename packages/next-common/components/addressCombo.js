@@ -14,8 +14,8 @@ import { normalizeAddress } from "next-common/utils/address.js";
 const Wrapper = Relative;
 
 const Select = styled(Flex)`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   height: 56px;
   padding: 0 16px;
@@ -34,7 +34,7 @@ const NameWrapper = styled.div`
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 `;
 
@@ -43,7 +43,7 @@ const Options = styled.div`
   width: 100%;
   margin-top: 4px;
   padding: 8px 0;
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   ${shadow_200};
   border-radius: 4px;
   max-height: 320px;
@@ -54,7 +54,7 @@ const Options = styled.div`
 `;
 
 const Item = styled(Flex)`
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   height: 56px;
   padding: 0 16px;
   cursor: pointer;
@@ -67,12 +67,12 @@ const Item = styled(Flex)`
     flex: 0 0 auto;
   }
   :hover {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
   ${(p) =>
     p.selected &&
     css`
-      background: ${(props) => props.theme.grey100Bg};
+      background: var(--neutral200);
     `}
 `;
 
@@ -87,7 +87,7 @@ const Input = styled.input`
   font-size: 14px;
   line-height: 100%;
 
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   margin: 4px 16px;
 `;

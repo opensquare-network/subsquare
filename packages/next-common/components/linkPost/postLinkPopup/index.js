@@ -25,18 +25,18 @@ const Section = styled.div`
 
 const SectionTitle = styled.span`
   ${p_12_bold}
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const Discussion = styled.div`
   display: flex;
   cursor: pointer;
   padding: 10px 16px;
-  background: ${(p) => p.theme.grey100Bg};
+  background: var(--neutral200);
   ${(p) =>
     p.selected &&
     css`
-      background: ${(p) => p.theme.grey200Border};
+      background: var(--neutral300);
     `}
   border-radius: 4px;
 `;
@@ -47,7 +47,7 @@ const NoDiscussion = styled.div`
   align-items: center;
 
   ${p_14_normal}
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 function getDiscussionUrl(discussion) {

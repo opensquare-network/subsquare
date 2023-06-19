@@ -80,7 +80,7 @@ const TagsWrapper = styled.div`
 const ViewWrapper = styled.div`
   ${rounded_4};
   border: 24px solid;
-  border-color: ${(p) => p.theme.grey100Bg};
+  border-color: var(--neutral200);
 `;
 
 const DataTableViewDescription = styled.div`

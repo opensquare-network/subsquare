@@ -18,11 +18,11 @@ const Wrapper = styled(Flex)`
     margin-left: 16px;
   }
 
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   > svg {
     path {
-      stroke: ${(props) => props.theme.textPrimary};
+      stroke: var(--textPrimary);
     }
   }
 `;

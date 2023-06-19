@@ -9,7 +9,7 @@ export const TitleContainer = styled.div`
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export const StatisticTitleContainer = styled(TitleContainer)`
@@ -35,7 +35,7 @@ export const PageTitleContainer = styled.title`
   font-weight: bold;
   font-size: 20px;
   line-height: 28px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export const NoticeWrapper = styled(GreyPanel)`
@@ -44,5 +44,5 @@ export const NoticeWrapper = styled(GreyPanel)`
   padding: 12px;
   margin-bottom: 16px;
   font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;

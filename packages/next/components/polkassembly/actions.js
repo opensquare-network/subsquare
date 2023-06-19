@@ -27,7 +27,7 @@ const GreyItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
 `;
 

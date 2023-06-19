@@ -24,11 +24,11 @@ const ContentGroup = styled.div`
   flex-direction: column;
 `;
 const ContentPercentage = styled.span`
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   ${p_12_medium};
 `;
 const ContentDescription = styled.span`
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   ${p_12_medium};
 `;
 const ContentAyeGroup = styled(ContentGroup)`

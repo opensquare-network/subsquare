@@ -54,7 +54,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       margin: 0 8px;
     }
   }
@@ -78,11 +78,11 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   svg {
     margin-right: 4px;
     path {
-      stroke: ${(props) => props.theme.textTertiary};
+      stroke: var(--textTertiary);
     }
   }
   .elapseIcon > * {
@@ -102,15 +102,15 @@ const FooterWrapper = styled(Flex)`
 `;
 
 const TitleExtraValue = styled(Flex)`
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   .value-display-symbol {
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 `;
 const TitleExtra = styled(Flex)`
   align-items: flex-start;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   padding: 2px 0;
   margin-left: 8px;
   ${p_14_medium};

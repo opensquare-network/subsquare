@@ -10,7 +10,7 @@ const CurveIcon = styled(CurveIconOrigin)`
 
   &:hover {
     path {
-      stroke: ${(p) => p.theme.textSecondary};
+      stroke: var(--textSecondary);
     }
   }
 `;

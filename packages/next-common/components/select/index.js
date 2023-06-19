@@ -9,17 +9,17 @@ import Caret from "../icons/caret";
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
   font-size: 14px;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   height: ${(p) => p.height}px;
   padding: 10px 16px;
   cursor: pointer;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   ${(p) =>
     p.disabled &&
     css`
-      background-color: ${(props) => props.theme.grey100Bg};
+      background-color: var(--neutral200);
       color: #e0e5ed;
       cursor: default;
 
@@ -40,18 +40,18 @@ const OptionsWrapper = styled.div`
   left: -1px;
   right: 0;
   top: calc(100% + 4px);
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   ${shadow_200};
   border-radius: 4px;
   padding: 8px 0;
   width: calc(100% + 2px);
   z-index: 999999;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   ${(p) =>
     p.theme.isDark &&
     css`
-      border: 1px solid ${p.theme.grey200Border};
+      border: 1px solid var(--neutral300);
     `}
 
   ${(p) =>

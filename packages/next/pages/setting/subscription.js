@@ -50,9 +50,9 @@ const ContentWrapper = styled(PrimaryCard)`
   font-size: 14px;
 
   input {
-    background: ${(props) => props.theme.neutral};
-    border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
+    background: var(--neutral100);
+    border-color: var(--neutral400);
+    color: var(--textPrimary);
   }
 `;
 

@@ -25,12 +25,12 @@ const Nav = styled.div`
 
   svg {
     path {
-      stroke: ${(props) => props.theme.textSecondary};
+      stroke: var(--textSecondary);
     }
   }
 
   :hover {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
 
   ${(p) =>
@@ -40,7 +40,7 @@ const Nav = styled.div`
       pointer-events: none;
       svg {
         path {
-          stroke: ${(props) => props.theme.textTertiary};
+          stroke: var(--textTertiary);
         }
       }
 
