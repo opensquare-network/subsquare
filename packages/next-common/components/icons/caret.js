@@ -4,7 +4,7 @@ import styled from "styled-components";
 const SVG = styled.svg`
   path {
     stroke: ${(props) =>
-      props.isGrey ? props.theme.textTertiary : props.theme.textPrimary};
+      props.isGrey ? "var(--textprimary)" : "var(--textprimary)"};
   }
 `;
 

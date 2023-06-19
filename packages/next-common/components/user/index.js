@@ -101,8 +101,7 @@ const LinkWrapper = styled.a`
         `
       : css`
           color: var(--textPrimary) !important;
-          text-decoration-color: ${(props) =>
-            props.theme.textPrimary} !important;
+          text-decoration-color: var(--textPrimary) !important;
         `}
   display: block;
   :hover {

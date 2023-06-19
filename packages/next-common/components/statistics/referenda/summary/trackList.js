@@ -9,7 +9,7 @@ const Box = styled.div`
   width: 10px;
   height: 10px;
 
-  background: ${(p) => p.color || p.theme.textTertiary};
+  background: ${(p) => p.color || "var(--textprimary)"};
   border-radius: 2px;
 `;
 

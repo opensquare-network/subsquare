@@ -41,7 +41,7 @@ export const WalletOption = styled.li`
   ${(props) =>
     props.installed === false &&
     css`
-      color: ${props.theme.textTertiary};
+      color: var(--textTertiary);
       cursor: not-allowed;
       pointer-events: none;
       user-select: none;

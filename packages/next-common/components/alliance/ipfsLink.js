@@ -8,7 +8,7 @@ const Link = styled(ExternalLink)`
   display: inline-flex;
   align-items: center;
   font-size: 12px;
-  color: ${ (props) => props.theme.textSecondary };
+  color: var(--textSecondary);
 
   span:hover {
     text-decoration: underline;

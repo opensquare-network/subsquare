@@ -22,7 +22,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: ${ (props) => props.theme.textTertiary };
+      color: var(--textTertiary);
       margin: 0 8px;
     }
   }

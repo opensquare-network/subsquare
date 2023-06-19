@@ -24,7 +24,7 @@ const TitleExtra = styled.span`
 
 const Description = styled.p`
   margin: 4px 0 0;
-  color: ${ (p) => p.theme.textTertiary };
+  color: var(--textTertiary);
   ${ p_14_normal };
 `;
 
