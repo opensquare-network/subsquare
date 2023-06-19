@@ -36,6 +36,7 @@ export default function ChainInfo() {
             <li key={link.name}>
               <ExternalLink
                 href={link.url}
+                title={link.title || link.name}
                 className="[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary"
               >
                 <Icon className="w-5 h-5" />
