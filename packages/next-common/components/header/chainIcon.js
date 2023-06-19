@@ -1,11 +1,9 @@
-import { useChain, useChainSettings } from "next-common/context/chain";
-import { useThemeSetting } from "next-common/context/theme";
 import React, { useEffect, useState } from "react";
+import { withTheme } from "styled-components";
+import getChainSettings from "../../utils/consts/settings";
 
-export default function ChainIcon() {
-  const theme = useThemeSetting();
-  const chain = useChain();
-  const chainSetting = useChainSettings();
+function ChainIcon({ chain, theme }) {
+  const chainSetting = getChainSettings(chain);
   const [image, setImage] = useState(chainSetting.avatar);
 
   useEffect(() => {
@@ -14,7 +12,7 @@ export default function ChainIcon() {
     } else {
       setImage(chainSetting.avatar);
     }
-  }, [theme.isDark, chainSetting.darkAvatar]);
+  }, [theme.isDark]);
 
   if (!image) {
     throw new Error(`Can not get icon of ${chain}`);
@@ -22,3 +20,5 @@ export default function ChainIcon() {
 
   return <img width={24} height={24} src={image.src} alt="" className="logo" />;
 }
+
+export default withTheme(ChainIcon);
