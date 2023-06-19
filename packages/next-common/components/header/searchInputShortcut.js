@@ -1,6 +1,6 @@
 import React from "react";
 import { useKey } from "../../utils/hooks/useKey";
-import SlashShortIcon from "../icons/slashShortcut";
+import { ShortcutSlash } from "@osn/icons/subsquare";
 
 const ignoreTagNames = ["INPUT", "TEXTAREA"];
 
@@ -30,5 +30,5 @@ export default function SearchBarShortcut({ focus, inputRef }) {
     return null;
   }
 
-  return <SlashShortIcon />;
+  return <ShortcutSlash className="[&_path]:fill-textDisabled" />;
 }
