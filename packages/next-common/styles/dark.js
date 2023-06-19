@@ -49,6 +49,8 @@ const dark = {
     navigationText: "var(--textPrimaryContrast)",
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
+
+    // old
     textPlaceholder: "rgba(255, 255, 255, 0.15)",
     primaryDarkBlue: "#6848FF",
     neutral: "#212433",

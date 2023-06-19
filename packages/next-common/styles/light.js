@@ -45,6 +45,8 @@ const light = {
     navigationText: "var(--textPrimary)",
     navigationTextTertiary: "var(--textTertiary)",
     navigationIcon: "var(--textSecondary)",
+
+    // old
     textPlaceholder: "#D7DEE8",
     textContrast: "#FFFFFF",
     primaryPurple100: "rgba(104, 72, 255, 0.1)",
