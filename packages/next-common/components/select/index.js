@@ -4,7 +4,8 @@ import Option from "./option";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import { pretty_scroll_bar, shadow_200 } from "../../styles/componentCss";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
-import Caret from "../icons/caret";
+import { ArrowDown } from "@osn/icons/subsquare";
+import clsx from "clsx";
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
@@ -101,7 +102,13 @@ function Select({
     >
       <SelectInner>
         <span>{displayValue}</span>
-        <Caret down={!showOptions} />
+        <ArrowDown
+          className={clsx(
+            showOptions && "rotate-180",
+            "w-5 h-5",
+            "[&_path]:stroke-textTertiary",
+          )}
+        />
       </SelectInner>
 
       {showOptions && (
