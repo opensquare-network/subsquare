@@ -42,8 +42,7 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
-  hasGov2: true,
-  noReferenda: true,
+  hasFellowship: true,
   showAchainableLabels: true,
 };
 

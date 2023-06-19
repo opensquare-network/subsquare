@@ -8,7 +8,7 @@ export default function useOpenGovSubscription(
   saving,
   isVerifiedUser
 ) {
-  const { hasGov2, noFellowship, noReferenda } = useChainSettings();
+  const { hasFellowship, hasReferenda } = useChainSettings();
 
   const {
     referendaReferendumOptionsComponent,
@@ -49,11 +49,11 @@ export default function useOpenGovSubscription(
   });
 
   let openGovOptions = null;
-  if (hasGov2) {
+  if (hasFellowship || hasReferenda) {
     openGovOptions = (
       <FoldableSections title="Open Gov">
-        {!noReferenda && referendaReferendumOptionsComponent}
-        {!noFellowship && fellowshipReferendumOptionsComponent}
+        {hasFellowship && referendaReferendumOptionsComponent}
+        {hasReferenda && fellowshipReferendumOptionsComponent}
       </FoldableSections>
     );
   }
@@ -64,13 +64,10 @@ export default function useOpenGovSubscription(
       isReferendaReferendumOptionsChanged ||
       isFellowshipReferendumOptionsChanged,
     getOpenGovOptionValues: () => {
-      if (hasGov2) {
-        return {
-          ...(noReferenda ? {} : getReferendaReferendumOptionValues()),
-          ...(noFellowship ? {} : getFellowshipReferendumOptionValues()),
-        };
-      }
-      return {};
+      return {
+        ...(hasFellowship ? getReferendaReferendumOptionValues() : {}),
+        ...(hasReferenda ? getFellowshipReferendumOptionValues() : {}),
+      };
     },
   };
 }
