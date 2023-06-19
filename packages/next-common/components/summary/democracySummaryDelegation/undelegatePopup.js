@@ -7,6 +7,8 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
+import isMoonChain from "next-common/utils/isMoonChain";
+import { unDelegate } from "next-common/utils/moonPrecompiles/democracy";
 
 export default function UndelegatePopup({
   onClose,
@@ -32,22 +34,26 @@ export default function UndelegatePopup({
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount?.address;
+      if (isMoonChain()) {
+        await unDelegate();
+      } else {
+        const signerAddress = signerAccount?.address;
 
-      let tx = api.tx.democracy.undelegate();
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+        let tx = api.tx.democracy.undelegate();
+        if (signerAccount?.proxyAddress) {
+          tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+        }
+
+        await sendTx({
+          tx,
+          dispatch,
+          setLoading: setIsLoading,
+          onInBlock,
+          signerAddress,
+          isMounted,
+          onClose,
+        });
       }
-
-      await sendTx({
-        tx,
-        dispatch,
-        setLoading: setIsLoading,
-        onInBlock,
-        signerAddress,
-        isMounted,
-        onClose,
-      });
     },
     [dispatch, onInBlock, isMounted, showErrorToast, setIsLoading, onClose],
   );

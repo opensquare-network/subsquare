@@ -4,7 +4,6 @@ import TalismanLogo from "../../../assets/icons/wallet/talisman.svg";
 import MetaMaskLogo from "../../../assets/icons/wallet/metamask.svg";
 import WalletTypes from "../walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
-import hasDispatchPrecompile from "next-common/utils/hasDispatchPrecompile";
 
 const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
@@ -40,10 +39,7 @@ const metamask = {
 
 export function getWallets() {
   if (isEvmChain()) {
-    if (hasDispatchPrecompile()) {
-      return [talisman, metamask];
-    }
-    return [talisman];
+    return [talisman, metamask];
   }
 
   return [polkadotJs, subWalletJs, talisman];

@@ -21,6 +21,8 @@ import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSignerAccount from "../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../popup/wrapper";
+import isMoonChain from "next-common/utils/isMoonChain";
+import { delegate } from "next-common/utils/moonPrecompiles/democracy";
 
 function PopupContent({
   extensionAccounts,
@@ -92,25 +94,30 @@ function PopupContent({
       );
     }
 
-    let tx = api.tx.democracy.delegate(
-      targetAddress,
-      conviction,
-      bnVoteBalance.toString(),
-    );
+    if (isMoonChain()) {
+      await delegate(targetAddress, conviction, bnVoteBalance.toString());
+    } else {
+      let tx = api.tx.democracy.delegate(
+        targetAddress,
+        conviction,
+        bnVoteBalance.toString(),
+      );
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
+
+      await sendTx({
+        tx,
+        dispatch,
+        setLoading: setIsLoading,
+        onInBlock,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
     }
 
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setIsLoading,
-      onInBlock,
-      onClose,
-      signerAddress,
-      isMounted,
-    });
   };
 
   return (
