@@ -38,7 +38,7 @@ const Wrapper = styled.div`
 
 const Card = styled(SecondaryCard)`
   position: relative;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   flex: 0 1 33.33%;
   height: 88px;
 `;
@@ -48,7 +48,7 @@ const Title = styled.div`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   margin-bottom: 8px;
 `;
 

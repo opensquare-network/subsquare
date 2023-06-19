@@ -21,7 +21,7 @@ const ExternalReference = styled(GreyPanel)`
     font-size: 12px;
     line-height: 140%;
 
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 
   a {

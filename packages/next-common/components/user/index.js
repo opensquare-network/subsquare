@@ -28,7 +28,7 @@ const Wrapper = styled(Flex)`
             color: ${p.color};
           `
         : css`
-            color: ${(props) => props.theme.textPrimary};
+            color: var(--textPrimary);
           `}
   }
 
@@ -44,7 +44,7 @@ const AvatarWrapper = styled(Flex)`
   margin-right: 8px;
   svg {
     circle:first-child {
-      fill: ${(props) => props.theme.grey100Bg};
+      fill: var(--neutral200);
     }
   }
 `;
@@ -58,7 +58,7 @@ const Username = styled.div`
           color: ${p.color} !important;
         `
       : css`
-          color: ${(props) => props.theme.textPrimary} !important;
+          color: var(--textPrimary) !important;
         `}
   ${(p) =>
     p.maxWidth
@@ -77,16 +77,16 @@ const DeleteAccount = styled(Flex)`
   font-weight: 500;
   word-break: break-all;
   font-size: ${(props) => props.fontSize}px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   > svg {
     width: 20px;
     height: 20px;
     margin-right: 8px;
     circle:last-child {
-      fill: ${(props) => props.theme.grey300Border};
+      fill: var(--neutral400);
     }
     circle:first-child {
-      fill: ${(props) => props.theme.grey100Bg};
+      fill: var(--neutral200);
     }
   }
 `;
@@ -100,9 +100,8 @@ const LinkWrapper = styled.a`
           text-decoration-color: ${p.color} !important;
         `
       : css`
-          color: ${(props) => props.theme.textPrimary} !important;
-          text-decoration-color: ${(props) =>
-            props.theme.textPrimary} !important;
+          color: var(--textPrimary) !important;
+          text-decoration-color: var(--textPrimary) !important;
         `}
   display: block;
   :hover {

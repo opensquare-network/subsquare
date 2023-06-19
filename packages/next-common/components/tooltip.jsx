@@ -8,7 +8,7 @@ import { cursor_pointer } from "next-common/styles/tailwindcss";
 
 const QuestionIcon = styled(Icon)`
   path {
-    fill: ${(props) => props.theme.textPlaceholder};
+    fill: var(--textDisabled);
   }
 `;
 
@@ -21,7 +21,7 @@ const TooltipContent = styled(RadixTooltip.Content)`
   background-color: rgba(0, 0, 0, 0.65);
   border-radius: 4px;
   padding: 6px 12px;
-  color: ${(props) => props.theme.textContrast} !important;
+  color: var(--textPrimaryContrast) !important;
   word-wrap: break-word;
   ${p_12_normal};
 `;

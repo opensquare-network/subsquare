@@ -13,16 +13,16 @@ import ToastWarningIcon from "../../assets/imgs/icons/toast-warning.svg";
 const Wrapper = styled(Flex)`
   align-items: flex-start;
   padding: 16px 16px;
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   ${shadow_200};
   border-radius: 6px;
-  border: 1px solid ${(props) => props.theme.grey200Border};
+  border: 1px solid var(--neutral300);
   font-size: 14px;
   line-height: 140%;
   width: 320px;
   font-style: normal;
   font-weight: 400;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   > img:first-child {
     width: 20px;

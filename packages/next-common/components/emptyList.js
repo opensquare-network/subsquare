@@ -5,7 +5,7 @@ import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled(Flex)`
   justify-content: center;
-  border: 1px solid ${(props) => props.theme.grey200Border};
+  border: 1px solid var(--neutral300);
   ${shadow_100};
   border-radius: 6px;
   padding: 24px;
@@ -13,8 +13,8 @@ const Wrapper = styled(Flex)`
   font-weight: normal;
   font-size: 14px;
   text-align: center;
-  background: ${(props) => props.theme.neutral};
-  color: ${(props) => props.theme.textTertiary};
+  background: var(--neutral100);
+  color: var(--textTertiary);
 `;
 
 export function EmptyList({ type = "discussions" }) {

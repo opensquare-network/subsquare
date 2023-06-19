@@ -17,7 +17,7 @@ const Bar = styled.div`
       ? p.theme.secondaryGreen500
       : p.value === false
       ? p.theme.secondaryRed500
-      : p.theme.grey200Border};
+      : "var(--neutral300)"};
   flex-grow: 1;
   :not(:first-child) {
     margin-left: 4px;
@@ -35,7 +35,7 @@ const Bar = styled.div`
 const DetailWrapper = styled(Flex)`
   min-height: 14px;
   margin-top: 8px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   > :not(:first-child) {
     :nth-child(2) {
       margin-left: auto;

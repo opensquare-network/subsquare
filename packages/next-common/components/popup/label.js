@@ -22,7 +22,7 @@ const StatusWrapper = styled.div`
   font-weight: bold;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   margin-left: auto !important;
   display: flex;
   > :not(:first-child) {

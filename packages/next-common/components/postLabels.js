@@ -15,8 +15,8 @@ const Label = styled.a`
   display: flex;
   padding: 2px 8px;
   ${p_12_normal}
-  color: ${(p) => p.theme.textSecondary};
-  border: 1px solid ${(p) => p.theme.grey300Border};
+  color: var(--textSecondary);
+  border: 1px solid var(--neutral400);
   border-radius: 10px;
   cursor: pointer;
 `;
@@ -32,7 +32,8 @@ export default function PostLabels({ labels = [] }) {
         <Link
           key={item}
           href={`/discussions?label=${encodeURIComponent(item)}`}
-          legacyBehavior>
+          legacyBehavior
+        >
           <Label>{item}</Label>
         </Link>
       ))}

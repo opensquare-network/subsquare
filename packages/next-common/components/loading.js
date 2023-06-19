@@ -6,7 +6,7 @@ import LoadingIcon from "../assets/imgs/icons/loading.svg";
 const ColorLoadingIcon = styled(LoadingIcon)`
   > path {
     // default color is textPlaceholder
-    fill: ${(props) => props.theme.textPlaceholder};
+    fill: var(--textDisabled);
   }
   ${(p) =>
     p.color &&

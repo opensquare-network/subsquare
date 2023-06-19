@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.span`
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   margin-left: 4px;
 `;
 

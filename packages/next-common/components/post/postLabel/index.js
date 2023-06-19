@@ -9,7 +9,7 @@ import uniq from "lodash.uniq";
 const Hint = styled.div`
   margin-top: 8px;
   ${p_12_normal}
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 export default function PostLabel({ selectedLabels, setSelectedLabels }) {

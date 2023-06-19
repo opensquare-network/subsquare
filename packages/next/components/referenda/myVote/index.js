@@ -6,7 +6,7 @@ import DelegateVoteStatus from "./delegateVoteStatus";
 import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 
 const Wrapper = styled.div`
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   margin-top: 24px;
 `;
 

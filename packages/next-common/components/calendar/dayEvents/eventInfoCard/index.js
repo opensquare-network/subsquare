@@ -12,10 +12,10 @@ const Wrapper = styled.div`
   padding: 12px;
   gap: 8px;
 
-  background: ${(p) => p.theme.neutral};
-  border: 1px solid ${(p) => p.theme.grey200Border};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
 
-  box-shadow: ${(p) => p.theme.shadow100};
+  box-shadow: var(--shadow100);
   border-radius: 4px;
 `;
 

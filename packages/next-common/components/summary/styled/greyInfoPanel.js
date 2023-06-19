@@ -5,7 +5,7 @@ const GreyInfoPanel = styled(GreyPanel)`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 
   flex-grow: 1;
   flex-wrap: wrap;

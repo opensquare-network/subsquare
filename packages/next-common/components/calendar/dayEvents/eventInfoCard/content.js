@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   font-size: 12px;
   line-height: 16px;
 
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export default function Content({ type, ...props }) {

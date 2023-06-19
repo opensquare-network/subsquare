@@ -3,7 +3,7 @@ import { p_12_medium } from "../../../styles/componentCss";
 import styled, { css } from "styled-components";
 
 const LegendItem = styled(Flex)`
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
   ${p_12_medium};
 
   &::before {

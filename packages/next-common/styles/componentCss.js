@@ -102,7 +102,7 @@ export const pretty_scroll_bar = css`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${(props) => props.theme.grey400Border};
+    background: var(--neutral500);
     border-radius: 4px;
   }
 `;

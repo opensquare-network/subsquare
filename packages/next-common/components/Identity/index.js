@@ -17,17 +17,17 @@ const Wrapper = styled(Flex)`
       fill: ${(props) => props.theme.secondaryGreen500};
     }
     path:last-child {
-      fill: ${(props) => props.theme.textContrast};
+      fill: var(--textPrimaryContrast);
     }
   }
 
   .NOT_VERIFIED,
   .NOT_VERIFIED_LINKED {
     path:first-child {
-      fill: ${(props) => props.theme.grey300Border};
+      fill: var(--neutral400);
     }
     path:last-child {
-      fill: ${(props) => props.theme.grey400Border};
+      fill: var(--neutral500);
     }
   }
 
@@ -37,7 +37,7 @@ const Wrapper = styled(Flex)`
       fill: ${(props) => props.theme.secondaryRed500};
     }
     path:last-child {
-      fill: ${(props) => props.theme.textContrast};
+      fill: var(--textPrimaryContrast);
     }
   }
 `;

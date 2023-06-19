@@ -6,7 +6,7 @@ const Common = styled.span`
   line-height: 16px;
   font-weight: 500;
   border-radius: 4px;
-  color: ${(props) => props.theme.textContrast};
+  color: var(--textPrimaryContrast);
 `;
 
 export const StartTag = styled(Common)`
@@ -30,7 +30,7 @@ export const NegativeTag = styled(Common)`
 `;
 
 export const ClosedTag = styled(Common)`
-  background: ${(props) => props.theme.grey400Border};
+  background: var(--neutral500);
 `;
 
 export const BaseTag = Common;

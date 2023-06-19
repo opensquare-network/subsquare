@@ -27,12 +27,12 @@ const Tag = styled.div`
   align-items: center;
   padding: 2px 8px;
 
-  border: 1px solid ${p => p.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   white-space: nowrap;
 
   ${p_12_medium}
-  color: ${p => p.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const Footer = styled.div`
@@ -43,15 +43,15 @@ const Footer = styled.div`
   font-size: 10px;
   line-height: 10px;
 
-  color: ${p => p.theme.textTertiary};
+  color: var(--textTertiary);
   svg {
     cursor: pointer;
     path {
-      fill: ${p => p.theme.textTertiary};
+      fill: var(--textTertiary);
     }
     :hover {
       path {
-        fill: ${p => p.theme.textSecondary};
+        fill: var(--textSecondary);
       }
     }
   }
@@ -76,7 +76,8 @@ function AchainableLebels({ labels }) {
 
         let tooltip = "";
         if (normalizedName === "Dolphin") {
-          tooltip = "Total balance is between 0.01% and 0.1% of total issuance.";
+          tooltip =
+            "Total balance is between 0.01% and 0.1% of total issuance.";
         } else if (normalizedName === "Whale") {
           tooltip = "Total balance is >= 0.1% of the total issuance.";
         }

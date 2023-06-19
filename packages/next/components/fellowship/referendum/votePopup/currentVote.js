@@ -13,7 +13,7 @@ const CurrentVotingWrapper = styled.div`
 
 const CurrentVotingLoading = styled.div`
   height: 38px;
-  background: ${(props) => props.theme.grey100Bg};
+  background: var(--neutral200);
   border-radius: 4px;
   display: flex;
   align-items: center;

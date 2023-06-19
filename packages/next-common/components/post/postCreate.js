@@ -27,18 +27,18 @@ const UniverseEditor = dynamic(
 
 const Wrapper = styled(NeutralPanel)`
   padding: 48px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   ${shadow_100};
   textarea:read-only,
   div.ql-disabled {
-    background-color: ${(props) => props.theme.grey100Bg} !important;
+    background-color: var(--neutral200) !important;
   }
 
   div + textarea {
-    border-color: ${(props) => props.theme.grey300Border};
+    border-color: var(--neutral400);
   }
   input {
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
   }
 
   @media screen and (max-width: 768px) {

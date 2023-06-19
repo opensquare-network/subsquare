@@ -68,7 +68,7 @@ const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
 `;
 const SummaryDecisionDepositValueWrapper = styled.span`
   .value-display-symbol {
-    color: ${(p) => p.theme.textTertiary};
+    color: var(--textTertiary);
   }
 `;
 

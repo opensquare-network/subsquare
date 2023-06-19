@@ -11,7 +11,7 @@ const TitleWrapper = styled.div`
       content: "·";
       font-size: 20px;
       line-height: 28px;
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       margin: 0 8px;
     }
   }

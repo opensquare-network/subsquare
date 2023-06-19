@@ -7,7 +7,7 @@ import Link from "next/link";
 const TitleWrapper = styled.div`
   flex: 1;
   overflow: hidden;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const Index = styled.div`
@@ -19,7 +19,7 @@ const Index = styled.div`
     content: "·";
     font-size: 16px;
     line-height: 22.4px;
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
     margin: 0 8px;
   }
 `;

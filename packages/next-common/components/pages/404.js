@@ -10,11 +10,11 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${(props) => props.theme.grey100Bg};
+  background-color: var(--neutral200);
   justify-content: center;
   svg {
     path {
-      fill: ${(props) => props.theme.textPlaceholder};
+      fill: var(--textDisabled);
     }
   }
   button {
@@ -41,7 +41,7 @@ const Wrapper = styled.div`
 
 const H2 = styled.h2`
   margin: 16px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const P = styled.p`
@@ -53,7 +53,7 @@ const P = styled.p`
   font-weight: normal;
   line-height: 20px;
   padding: 0;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const Page404 = function Custom404() {

@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   line-height: 20px;
   gap: 8px;
 
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -45,12 +45,12 @@ const Right = styled.div`
 const DeleteWrapper = styled(Flex)`
   cursor: pointer;
   justify-content: center;
-  border: 1px solid ${(p) => p.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 2px;
   width: 20px;
   height: 20px;
   > svg path {
-    fill: ${(p) => p.theme.textSecondary};
+    fill: var(--textSecondary);
   }
   ${(p) =>
     p.disabled &&
@@ -90,7 +90,12 @@ function DeleteButton({ disabled, onClick = noop }) {
   );
 }
 
-export default function Title({ event, isFolded, setIsFolded = noop, refresh }) {
+export default function Title({
+  event,
+  isFolded,
+  setIsFolded = noop,
+  refresh,
+}) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { admins } = usePageProps();
   const user = useUser();

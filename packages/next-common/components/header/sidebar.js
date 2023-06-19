@@ -23,7 +23,7 @@ const Mask = styled.div`
 `;
 
 const Content = styled.div`
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   height: 100%;
   display: inline-block;
   position: absolute;
@@ -50,7 +50,7 @@ const Content = styled.div`
 
 const CloseWrapper = styled.div`
   height: 64px;
-  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+  border-bottom: 1px solid var(--neutral300);
   display: flex;
   align-items: center;
   ${(p) =>
@@ -73,11 +73,11 @@ const CloseButton = styled(Flex)`
   justify-content: center;
   width: 38px;
   height: 38px;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   cursor: pointer;
   svg path {
-    stroke: ${(props) => props.theme.textTertiary};
+    stroke: var(--textTertiary);
   }
 `;
 

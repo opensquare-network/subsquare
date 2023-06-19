@@ -7,7 +7,7 @@ const Wrapper = styled.nav`
   display: flex;
   align-items: center;
   ${p_16_bold};
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const CrumbsWrapper = styled.ul`

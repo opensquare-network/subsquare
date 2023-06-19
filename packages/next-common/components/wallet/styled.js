@@ -14,21 +14,21 @@ export const WalletOption = styled.li`
   font-size: 14px;
   line-height: 20px;
   font-weight: 700;
-  color: ${(props) => props.theme.textPrimary};
-  background: ${(props) => props.theme.grey100Bg};
+  color: var(--textPrimary);
+  background: var(--neutral200);
 
   ${(props) =>
     props.installed === true &&
     css`
       &:hover {
-        background: ${(props) => props.theme.grey200Border};
+        background: var(--neutral300);
       }
     `}
 
   ${(props) =>
     props.selected &&
     css`
-      background: ${(props) => props.theme.grey200Border};
+      background: var(--neutral300);
     `}
 
   border-radius: 4px;
@@ -41,7 +41,7 @@ export const WalletOption = styled.li`
   ${(props) =>
     props.installed === false &&
     css`
-      color: ${props.theme.textTertiary};
+      color: var(--textTertiary);
       cursor: not-allowed;
       pointer-events: none;
       user-select: none;

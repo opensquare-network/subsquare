@@ -13,13 +13,13 @@ const Wrapper = styled.div`
 const OptionWrapper = styled(GreyPanel)`
   justify-content: space-between;
   padding: 12px 16px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   ${(p) =>
     p.selectable &&
     css`
       cursor: pointer;
       :hover {
-        background: ${(props) => props.theme.grey200Border};
+        background: var(--neutral300);
       }
     `}
   ${(p) =>
@@ -62,7 +62,7 @@ const StatsNumbers = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   gap: 8px;
 `;
 
@@ -94,7 +94,7 @@ const TotalVotes = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 function Option({

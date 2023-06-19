@@ -34,7 +34,7 @@ const DividerWrapper = styled(Flex)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       margin: 0 8px;
     }
   }
@@ -42,7 +42,7 @@ const DividerWrapper = styled(Flex)`
 
 const Footer = styled(DividerWrapper)`
   > div:first-child {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
   @media screen and (max-width: 768px) {
     > :nth-child(3) {
@@ -61,11 +61,11 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   svg {
     margin-right: 4px;
     path {
-      stroke: ${(props) => props.theme.textTertiary};
+      stroke: var(--textTertiary);
     }
   }
   .elapseIcon > * {
@@ -90,10 +90,10 @@ const FooterWrapper = styled(Flex)`
 
 const TitleWrapper = styled.div`
   overflow: hidden;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   div.markdown-body,
   div.html-body {
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
   }
 `;
 
@@ -105,7 +105,7 @@ const HeadWrapper = styled.div`
     display: block;
     ${p_14_medium};
     line-height: 22.4px;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     white-space: nowrap;
     flex-basis: 120px;
     flex-grow: 0;
@@ -114,7 +114,7 @@ const HeadWrapper = styled.div`
   }
 
   .symbol {
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 
   @media screen and (max-width: 768px) {

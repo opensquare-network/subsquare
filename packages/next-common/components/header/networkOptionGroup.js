@@ -15,7 +15,7 @@ const GroupName = styled(Flex)`
 
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const GroupOptions = styled.div`
@@ -35,14 +35,14 @@ const Item = styled.a`
   font-weight: 500;
   cursor: pointer;
   border-radius: 4px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   :hover {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
   ${(p) =>
     p.active &&
     css`
-      background: ${(props) => props.theme.grey100Bg};
+      background: var(--neutral200);
     `}
   > :not(:first-child) {
     margin-left: 8px;

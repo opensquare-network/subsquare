@@ -4,10 +4,10 @@ import styled from "styled-components";
 import ExternalLink from "next-common/components/externalLink";
 
 const Wrapper = styled.div`
-  background: ${(props) => props.theme.grey100Bg};
+  background: var(--neutral200);
   border-radius: 4px;
   padding: 12px 16px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   font-size: 14px;
   line-height: 140%;
 `;

@@ -34,7 +34,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const BannerImage = styled.img`

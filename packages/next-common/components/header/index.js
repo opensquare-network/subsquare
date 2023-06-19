@@ -35,9 +35,9 @@ const HeaderSearchInputWrapper = styled.div`
 `;
 
 const MenuButton = styled(Flex)`
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   display: none !important;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   width: 38px;
   height: 38px;
@@ -48,13 +48,13 @@ const MenuButton = styled(Flex)`
     margin-right: 12px;
   }
   svg path {
-    stroke: ${(props) => props.theme.textTertiary};
+    stroke: var(--textTertiary);
   }
 `;
 
 const NodeButton = styled(Flex)`
   display: none !important;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   width: 38px;
   height: 38px;

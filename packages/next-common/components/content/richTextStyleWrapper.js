@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 
 const RichTextStyleWrapper = styled.div`
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   div.osn-previewer > div {
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     //fixme: @osn-previewer has built-in CSS text color, better remove it later
   }
 
@@ -12,17 +12,17 @@ const RichTextStyleWrapper = styled.div`
   div.html-body,
   div.markdown-body {
     hr {
-      background-color: ${(props) => props.theme.grey200Border};
+      background-color: var(--neutral300);
     }
 
     span.mention,
     span.mention span {
-      background-color: ${(props) => props.theme.neutral};
+      background-color: var(--neutral100);
       color: ${(props) => props.theme.secondarySapphire500};
     }
 
     blockquote {
-      border-color: ${(props) => props.theme.grey200Border};
+      border-color: var(--neutral300);
     }
 
     ol > li[data-list="bullet"]::before {
@@ -36,29 +36,29 @@ const RichTextStyleWrapper = styled.div`
     table {
       text-align: center;
       thead tr th {
-        background: ${(props) => props.theme.grey200Border};
-        border-color: ${(props) => props.theme.grey300Border};
-        color: ${(props) => props.theme.textPrimary};
+        background: var(--neutral300);
+        border-color: var(--neutral400);
+        color: var(--textPrimary);
       }
     }
     table tbody {
       tr:nth-child(even) {
-        background: ${(props) => props.theme.grey100Bg};
+        background: var(--neutral200);
       }
 
       th,
       td {
-        border-color: ${(props) => props.theme.grey300Border};
-        color: ${(props) => props.theme.textPrimary};
+        border-color: var(--neutral400);
+        color: var(--textPrimary);
       }
     }
 
     pre,
     code {
-      background: ${(props) => props.theme.grey100Bg} !important;
+      background: var(--neutral200) !important;
       // fixme: undone !import declare in editor repo
-      background-color: ${(props) => props.theme.grey100Bg} !important;
-      color: ${(props) => props.theme.textPrimary} !important;
+      background-color: var(--neutral200) !important;
+      color: var(--textPrimary) !important;
 
       ${(props) =>
         props?.theme.isDark &&

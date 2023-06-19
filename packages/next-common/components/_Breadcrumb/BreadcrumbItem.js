@@ -16,7 +16,7 @@ const Item = styled.span`
 
 const Separator = styled.span`
   margin: 0 8px;
-  color: ${(p) => p.theme.textPlaceholder};
+  color: var(--textDisabled);
 `;
 
 const Wrapper = styled.li`
@@ -29,7 +29,7 @@ const Wrapper = styled.li`
     }
 
     ${Item} {
-      color: ${(p) => p.theme.textTertiary};
+      color: var(--textTertiary);
       pointer-events: none;
       a {
         cursor: unset;

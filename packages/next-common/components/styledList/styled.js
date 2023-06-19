@@ -3,14 +3,14 @@ import styled from "styled-components";
 
 export const StyledTable = styled.table`
   width: 100%;
-  background: ${(props) => props.theme.neutral};
-  color: ${(props) => props.theme.textPrimary};
+  background: var(--neutral100);
+  color: var(--textPrimary);
 `;
 
 export const StyledTh = styled.th`
   ${p_12_bold};
   letter-spacing: 0.16em;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   padding-top: 8px;
   padding-bottom: 16px;
   height: 12px;
@@ -22,7 +22,7 @@ export const StyledTd = styled.td`
   font-weight: normal;
   font-size: 14px;
   line-height: 100%;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export const EmptyTd = styled.td`
@@ -32,5 +32,5 @@ export const EmptyTd = styled.td`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;

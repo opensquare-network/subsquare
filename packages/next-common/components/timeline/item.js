@@ -78,7 +78,7 @@ const FoldButton = styled.div`
   display: none;
   height: 20px;
   width: 20px;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   margin-left: 8px;
   align-items: center;
@@ -92,7 +92,7 @@ const FoldButton = styled.div`
         transform: rotate(180deg);
       `}
     path {
-      fill: ${(props) => props.theme.textPrimary};
+      fill: var(--textPrimary);
     }
   }
 `;
@@ -107,7 +107,7 @@ const ContentItem = styled(Flex)`
   word-break: break-word;
   font-size: 14px;
   > :first-child {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
     line-height: 28px;
     flex: 0 0 120px;
   }

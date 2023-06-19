@@ -23,7 +23,7 @@ const NoTippers = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const TipperItem = styled.div`
@@ -32,7 +32,7 @@ const TipperItem = styled.div`
   justify-content: space-between;
   font-size: 12px;
   line-height: 100%;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const VoterAddr = styled.div`

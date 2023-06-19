@@ -40,14 +40,14 @@ const CmdkGlobalStyle = createGlobalStyle`
     }
     .command-palette-list-item {
       &.bg-gray-200/50 {
-        background-color: ${(p) => p.theme.grey100Bg};
+        background-color: var(--neutral200);
       }
       &.bg-gray-800 {
-        background-color: ${(p) => p.theme.grey100Bg};
+        background-color: var(--neutral200);
       }
       
       &:hover {
-        background-color: ${(p) => p.theme.grey100Bg};
+        background-color: var(--neutral200);
       }
 
       & div:first-child  {

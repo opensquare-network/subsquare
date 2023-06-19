@@ -14,10 +14,10 @@ const TabTitle = styled(TitleContainer)`
   ${(p) =>
     p.active
       ? css`
-          color: ${p.theme.textPrimary};
+          color: var(--textPrimary);
         `
       : css`
-          color: ${p.theme.textTertiary};
+          color: var(--textTertiary);
         `}
 `;
 

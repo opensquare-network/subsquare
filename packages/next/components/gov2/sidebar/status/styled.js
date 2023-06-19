@@ -16,7 +16,7 @@ export const Tooltip = styled(TooltipOrigin)`
 `;
 
 export const ProgressInfo = styled(FlexBetween)`
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   padding: 4px 0;
   padding-bottom: 8px;
   ${p_12_medium};

@@ -8,7 +8,7 @@ const Options = styled(NeutralPanel)`
   position: absolute;
   border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   border-radius: 4px;
   display: flex;
   gap: 8px;

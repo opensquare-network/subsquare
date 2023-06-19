@@ -3,12 +3,12 @@ import MenuUnFold from "../../assets/imgs/icons/menu-unfold.svg";
 
 const MenuUnFoldIcon = styled(MenuUnFold)`
   g {
-    stroke: ${(p) => p.theme.textTertiary};
+    stroke: var(--textTertiary);
   }
 
   &:hover {
     path {
-      stroke: ${(p) => p.theme.textSecondary};
+      stroke: var(--textSecondary);
     }
   }
 `;

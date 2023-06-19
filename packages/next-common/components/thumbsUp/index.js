@@ -17,11 +17,11 @@ const ActionItem = styled(Flex)`
       cursor: pointer;
 
       :hover {
-        color: ${(props) => props.theme.textSecondary};
+        color: var(--textSecondary);
 
         > svg {
           path {
-            fill: ${(props) => props.theme.textSecondary};
+            fill: var(--textSecondary);
           }
         }
       }
@@ -30,20 +30,20 @@ const ActionItem = styled(Flex)`
   ${(p) =>
     p.highlight
       ? css`
-          color: ${(props) => props.theme.textSecondary};
+          color: var(--textSecondary);
 
           > svg {
             path {
-              fill: ${(props) => props.theme.textSecondary};
+              fill: var(--textSecondary);
             }
           }
         `
       : css`
-          color: ${(props) => props.theme.textTertiary};
+          color: var(--textTertiary);
 
           > svg {
             path {
-              fill: ${(props) => props.theme.textTertiary};
+              fill: var(--textTertiary);
             }
           }
         `}
@@ -68,10 +68,10 @@ const UnfoldWrapper = styled(ActionItem)`
   cursor: pointer;
 
   :hover {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
     > svg {
       path {
-        fill: ${(props) => props.theme.textSecondary};
+        fill: var(--textSecondary);
       }
     }
   }
@@ -79,7 +79,7 @@ const UnfoldWrapper = styled(ActionItem)`
 
 const DisabledThumbUp = styled(ThumbUpIcon)`
   & > path {
-    fill: ${(props) => props.theme.textPlaceholder} !important;
+    fill: var(--textDisabled) !important;
   }
 `;
 

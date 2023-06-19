@@ -12,7 +12,7 @@ const BondValueWrapper = styled(Flex)`
 
   &::before {
     content: "·";
-    color: ${(p) => p.theme.textTertiary};
+    color: var(--textTertiary);
   }
 `;
 

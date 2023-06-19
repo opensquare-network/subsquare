@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
-    color: ${(p) => p.theme.textTertiary};
+    color: var(--textTertiary);
   }
 `;
 

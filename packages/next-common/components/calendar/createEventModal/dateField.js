@@ -9,7 +9,7 @@ import RightSVG from "./right.svg";
 
 const DateWrapper = styled.div`
   display: flex;
-  border: 1px solid ${(p) => p.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   overflow: hidden;
 
@@ -21,11 +21,11 @@ const DateLabel = styled.div`
   display: flex;
   align-items: center;
   padding: 10px 16px;
-  background: ${(p) => p.theme.grey100Bg};
+  background: var(--neutral200);
 
   ${p_14_normal}
 
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   white-space: nowrap;
 `;
 
@@ -34,14 +34,14 @@ const Time = styled.div`
   line-height: 100%;
   padding: 12px 16px;
   flex-grow: 1;
-  background: ${(props) => props.theme.neutral};
-  color: ${(props) => props.theme.textTertiary};
+  background: var(--neutral100);
+  color: var(--textTertiary);
 `;
 
 const Icon = styled(Flex)`
   margin: 0 16px 0 8px;
   > svg path {
-    stroke: ${(p) => p.theme.textPrimary};
+    stroke: var(--textPrimary);
   }
 `;
 

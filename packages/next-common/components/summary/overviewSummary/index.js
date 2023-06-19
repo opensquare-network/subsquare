@@ -24,7 +24,7 @@ const TypeGroup = styled(Flex)`
       content: "${(p) => p.separator || "·"}";
       display: inline-block;
       margin: 0 4px;
-      color: ${(p) => p.theme.textPlaceholder};
+      color: var(--textDisabled);
     }
   }
 `;

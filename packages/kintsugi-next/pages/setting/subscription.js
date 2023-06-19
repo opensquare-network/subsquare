@@ -46,9 +46,9 @@ const ContentWrapper = styled(PrimaryCard)`
   font-size: 14px;
 
   input {
-    background: ${(props) => props.theme.neutral};
-    border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
+    background: var(--neutral100);
+    border-color: var(--neutral400);
+    color: var(--textPrimary);
   }
 `;
 
@@ -77,7 +77,7 @@ const Info = styled(GreyPanel)`
   font-size: 14px;
   line-height: 20px;
 
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
 
   margin-bottom: 16px;
 `;
@@ -246,7 +246,7 @@ export default withLoginUserRedux(
         </Wrapper>
       </SettingsLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
@@ -266,7 +266,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: subscription } = await ssrNextApi.fetch(
     "user/subscription",
     {},
-    options
+    options,
   );
 
   return {
