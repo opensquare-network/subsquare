@@ -89,9 +89,9 @@ export const Button = styled.div`
 
 export const PrimaryButton = styled(Button)`
   background-color: var(--purple500);
-  color: var(--textPrimaryConstrast);
+  color: var(--textPrimaryContrast);
   > svg path {
-    stroke: var(--textPrimaryConstrast);
+    stroke: var(--textPrimaryContrast);
   }
 `;
 
