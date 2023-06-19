@@ -5,11 +5,11 @@ import { Disabled } from "./secondaryButton";
 import { LightLoading } from "./loading";
 
 const RawPositiveButton = styled(BackgroundButton)`
-  background: ${(props) => props.theme.secondaryGreen500};
+  background-color: var(--green500);
 `;
 
 const RawNegativeButton = styled(BackgroundButton)`
-  background: ${(props) => props.theme.secondaryRed500};
+  background-color: var(--red500);
 `;
 
 function ColorButton({

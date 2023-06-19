@@ -4,12 +4,12 @@ import { BackgroundButton, DisabledButton } from "./styled";
 import { LightLoading } from "./loading";
 
 const RawButton = styled(BackgroundButton)`
-  background: ${(props) => props.theme.primaryPurple500};
+  background-color: var(--purple500);
 `;
 
 const Disabled = styled(DisabledButton)`
-  background: ${(props) => props.theme.grey400Border};
-  color: ${(props) => props.theme.textContrast};
+  background-color: var(--neutral500);
+  color: var(--textPrimaryContrast);
 `;
 
 export default function PrimaryButton({

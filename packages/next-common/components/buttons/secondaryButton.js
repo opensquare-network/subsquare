@@ -4,13 +4,13 @@ import CommonButton, { DisabledButton } from "./styled";
 import { LightLoading } from "./loading";
 
 const RawButton = styled(CommonButton)`
-  background: ${(props) => props.theme.primaryDarkBlue};
-  color: ${(props) => props.theme.textContrast};
+  background-color: var(--darkBlue);
+  color: var(--textPrimaryContrast);
 `;
 
 export const Disabled = styled(DisabledButton)`
-  background: ${(props) => props.theme.grey400Border};
-  color: ${(props) => props.theme.textContrast};
+  background-color: var(--neutral500);
+  color: var(--textPrimaryContrast);
 `;
 
 export default function SecondaryButton({
