@@ -15,9 +15,9 @@ const Wrapper = styled.div`
 `;
 
 const Select = styled.div`
-  background: ${(props) => props.theme.textContrast};
-  border: 1px solid ${(props) => props.theme.grey300Border};
-  background: ${(props) => props.theme.neutral};
+  border: 1px solid;
+  border-color: var(--neutral400);
+  background-color: var(--neutral100);
   border-radius: 4px;
   height: 38px;
   display: flex;
@@ -31,11 +31,11 @@ const Select = styled.div`
     flex-grow: 1;
     display: flex;
     > :first-child {
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
     }
     > :last-child {
       font-weight: 500;
-      color: ${(props) => props.theme.textPrimary};
+      color: var(--textPrimary);
     }
   }
   > img.logo {
@@ -50,7 +50,7 @@ const NetworkBlock = styled.div`
   > span {
     margin-left: 4px;
     margin-right: 12px;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
   }
   > svg {
     margin-left: 7px;

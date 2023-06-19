@@ -1,9 +1,12 @@
+import { useChain, useChainSettings } from "next-common/context/chain";
+import { useThemeSetting } from "next-common/context/theme";
 import React from "react";
-import { withTheme } from "styled-components";
-import getChainSettings from "../../utils/consts/settings";
 
-function ChainIcon({ chain, theme }) {
-  const chainSetting = getChainSettings(chain);
+export default function ChainIcon() {
+  const theme = useThemeSetting();
+  const chain = useChain();
+  const chainSetting = useChainSettings();
+
   let image = chainSetting.avatar;
   if (theme.isDark && chainSetting.darkAvatar) {
     image = chainSetting.darkAvatar;
@@ -15,5 +18,3 @@ function ChainIcon({ chain, theme }) {
 
   return <img width={24} height={24} src={image.src} alt="" className="logo" />;
 }
-
-export default withTheme(ChainIcon);
