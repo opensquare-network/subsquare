@@ -22,7 +22,7 @@ export default function NavMenu({ collapsed }) {
   const { featuredMenu, baseMenu } = useMenu();
   const router = useRouter();
   const isMacOS = useIsMacOS();
-  const [submenuVisible, setSubmenuVisible] = useNavSubmenuVisible();
+  const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
 
   return (
     <div>
@@ -69,8 +69,8 @@ export default function NavMenu({ collapsed }) {
               <MenuGroup
                 menu={menu}
                 collapsed={collapsed}
-                submenuVisible={submenuVisible}
-                setSubmenuVisible={setSubmenuVisible}
+                navSubmenuVisible={navSubmenuVisible}
+                setNavSubmenuVisible={setNavSubmenuVisible}
               />
             )}
           </li>
@@ -87,23 +87,24 @@ ml-2 text-textTertiaryContrast
 function MenuGroup({
   menu = {},
   collapsed,
-  submenuVisible,
-  setSubmenuVisible,
+  navSubmenuVisible,
+  setNavSubmenuVisible,
 }) {
   const { sm } = useScreenSize();
   const router = useRouter();
 
-  const [subMenuVisible, setSubMenuVisible] = useState(
+  const [submenuVisible, setSubmenuVisible] = useState(
     collapsed
       ? false
-      : router.asPath.startsWith(menu.pathname) || submenuVisible[menu.name],
+      : router.asPath.startsWith(menu.pathname) || navSubmenuVisible[menu.name],
   );
 
   useUpdateEffect(() => {
     setSubmenuVisible(
       collapsed
         ? false
-        : router.asPath.startsWith(menu.pathname) || submenuVisible[menu.name],
+        : router.asPath.startsWith(menu.pathname) ||
+            navSubmenuVisible[menu.name],
     );
   }, [collapsed]);
 
@@ -112,11 +113,11 @@ function MenuGroup({
       return;
     }
 
-    setSubMenuVisible(!subMenuVisible);
+    setSubmenuVisible(!submenuVisible);
 
-    setSubmenuVisible({
-      ...submenuVisible,
-      [menu.name]: !subMenuVisible,
+    setNavSubmenuVisible({
+      ...navSubmenuVisible,
+      [menu.name]: !submenuVisible,
     });
   }
 
@@ -136,7 +137,7 @@ function MenuGroup({
                 <span>
                   <ArrowDown
                     className={clsx(
-                      subMenuVisible && "rotate-180",
+                      submenuVisible && "rotate-180",
                       "[&_path]:stroke-navigationTextTertiary",
                     )}
                   />
@@ -158,7 +159,7 @@ function MenuGroup({
       </li>
       {!!menu.items?.length && (
         <SubMenuItems
-          className={clsx(subMenuVisible ? "block" : "hidden", "pl-9")}
+          className={clsx(submenuVisible ? "block" : "hidden", "pl-9")}
           items={menu.items}
         />
       )}
