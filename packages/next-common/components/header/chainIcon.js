@@ -11,6 +11,8 @@ export default function ChainIcon() {
   useEffect(() => {
     if (theme.isDark && chainSetting.darkAvatar) {
       setImage(chainSetting.darkAvatar);
+    } else {
+      setImage(chainSetting.avatar);
     }
   }, [theme.isDark, chainSetting.darkAvatar]);
 
