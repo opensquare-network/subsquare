@@ -1,10 +1,6 @@
 import clsx from "clsx";
 import ExternalLink from "next-common/components/externalLink";
-import {
-  useThemeMode,
-  useSetThemeMode,
-  useIsDark,
-} from "next-common/context/theme";
+import { useThemeMode } from "next-common/context/theme";
 import {
   ThemeSun,
   ThemeMoon,
@@ -14,8 +10,6 @@ import {
 } from "@osn/icons/subsquare";
 
 export default function Footer() {
-  const isDark = useIsDark();
-
   const contactLinks = [
     {
       name: "Element",
@@ -42,7 +36,10 @@ export default function Footer() {
       )}
     >
       <div className={clsx("flex items-center gap-x-4", "max-sm:flex-col")}>
-        <div>{isDark ? <FooterLogoDark /> : <FooterLogoLight />}</div>
+        <div>
+          <FooterLogoLight className="dark:hidden" />
+          <FooterLogoDark className="hidden dark:inline" />
+        </div>
         <p className={clsx("text14Medium text-textTertiary", "max-sm:mt-2")}>
           @{new Date().getFullYear()} SubSquare. Powered by OpenSquare
         </p>
@@ -71,8 +68,7 @@ export default function Footer() {
 }
 
 function ThemeToggleGroup() {
-  const themeMode = useThemeMode();
-  const setThemeMode = useSetThemeMode();
+  const [, setThemeMode, themeMode] = useThemeMode();
 
   const iconClassName = "w-4 h-4";
 

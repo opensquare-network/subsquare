@@ -138,7 +138,7 @@ export default function NodeSwitch({ small }) {
     chainSettings.endpoints[0],
   );
   const dispatch = useDispatch();
-  const mode = useThemeMode();
+  const [mode] = useThemeMode();
 
   useOnClickOutside(ref, () => setShow(false));
 

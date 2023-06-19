@@ -6,17 +6,17 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components";
 import light from "../../styles/light";
 import dark from "../../styles/dark";
 import { CACHE_KEY } from "../../utils/constants";
-import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
+import { setCookie } from "../../utils/viewfuncs/cookies";
 import { useChainSettings } from "../chain";
 
-const ThemeModeContext = createContext(null);
+const ThemeModeContext = createContext({});
 
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
-  const [themeMode, setThemeMode] = useState(defaultThemeMode);
+  const [themeMode, setThemeMode] = useState(defaultThemeMode || "system");
 
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
@@ -25,15 +25,32 @@ export default function ThemeModeProvider({ children, defaultThemeMode }) {
   );
 }
 
-const GlobalThemeVariables = createGlobalStyle`
-  :root {${(p) => p.variables}}
-`;
+/**
+ * @typedef {'light' | 'dark'} Mode
+ * @typedef {Mode | 'system'} ThemeMode
+ * @typedef {(value: ThemeMode) => void} SetThemeMode
+ *
+ * @returns {[Mode, SetThemeMode, ThemeMode]} mode is only `light` or `dark`, themeMode can be `light`, `dark` or `system`
+ */
+export function useThemeMode() {
+  const { themeMode, setThemeMode } = useContext(ThemeModeContext);
+  const preferredColorScheme = usePreferredColorScheme();
+  const mode = themeMode === "system" ? preferredColorScheme : themeMode;
+
+  /**
+   * @type {SetThemeMode}
+   */
+  function set(value) {
+    setThemeMode(value);
+    setCookie(CACHE_KEY.themeMode, value);
+  }
+
+  return [mode, set, themeMode];
+}
+
 function ThemeValueProvider({ children }) {
   const isDark = useIsDark();
   const theme = useThemeSetting();
-  const variables = Object.keys(theme)
-    .map((k) => `--${k}: ${theme[k]}`)
-    .join(";");
 
   useEffect(() => {
     const root = document.documentElement;
@@ -44,29 +61,17 @@ function ThemeValueProvider({ children }) {
     }
   }, [isDark]);
 
-  return (
-    <ThemeProvider theme={theme}>
-      <GlobalThemeVariables variables={variables} />
-      {children}
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 
 export function useIsDark() {
-  const themeSetting = useThemeSetting();
-  return themeSetting.isDark;
-}
-
-export function useThemeMode() {
-  const { themeMode } = useContext(ThemeModeContext);
-  return themeMode || "system";
+  const [mode] = useThemeMode();
+  return mode === "dark";
 }
 
 export function useThemeSetting() {
   const chainSettings = useChainSettings();
-  const themeMode = useThemeMode();
-  const preferredColorScheme = usePreferredColorScheme();
-  const mode = themeMode === "system" ? preferredColorScheme : themeMode;
+  const [mode] = useThemeMode();
 
   /**
    * @type {typeof light.base & typeof light.chain.kusama}
@@ -78,19 +83,6 @@ export function useThemeSetting() {
   const mergedDark = { ...dark.base, ...dark.chain[chainSettings.value] };
 
   return mode === "dark" ? mergedDark : mergedLight;
-}
-
-export function useSetThemeMode() {
-  const { setThemeMode } = useContext(ThemeModeContext);
-
-  const themeModeSetter = useCallback((mode) => {
-    setThemeMode(mode);
-    if (getCookie(CACHE_KEY.themeMode) !== mode) {
-      setCookie(CACHE_KEY.themeMode, mode);
-    }
-  }, []);
-
-  return themeModeSetter;
 }
 
 export function useToggleThemeMode() {
