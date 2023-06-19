@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import InputOrigin from "../input";
 import { useChain } from "../../context/chain";
-import MagnifyingIcon from "../icons/magnifying";
 import SearchInputShortcut from "./searchInputShortcut";
+import { SystemSearch } from "@osn/icons/subsquare";
 
 const Wrapper = styled.div``;
 
@@ -53,7 +53,7 @@ export default function SearchInput({ shortcut = true, inputType }) {
         }}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        prefix={<MagnifyingIcon />}
+        prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
         suffix={
           shortcut && <SearchInputShortcut focus={focus} inputRef={inputRef} />
         }
