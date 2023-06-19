@@ -221,7 +221,11 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   );
   const router = useRouter();
 
-  const showAchainableLabels = [Chains.kusama, Chains.polkadot].includes(chain);
+  const showAchainableLabels = [
+    Chains.kusama,
+    Chains.polkadot,
+    Chains.collectives,
+  ].includes(chain);
 
   const overview = {
     ...summary,
@@ -292,7 +296,14 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
       <Wrapper>
         <BioWrapper>
           <DisplayUserAvatar address={address} user={user} />
-          <Flex style={{ flexDirection: "column", alignItems: "center",  marginTop: 0, flexWrap: "wrap" }}>
+          <Flex
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: 0,
+              flexWrap: "wrap",
+            }}
+          >
             <DisplayUser id={id} />
             <DisplayUserAddress address={address} />
           </Flex>
