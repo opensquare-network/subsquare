@@ -18,7 +18,6 @@ import {
   rounded_4,
   space_x,
   text_secondary,
-  text_theme,
   w,
   w_full,
 } from "next-common/styles/tailwindcss";
@@ -85,13 +84,13 @@ const ViewWrapper = styled.div`
 const DataTableViewDescription = styled.div`
   ${p_14_normal};
   a {
-    ${text_theme("secondarySapphire500")};
+    color: var(--sapphire500);
   }
 `;
 
 const DataTableViewQuestionLink = styled(ExternalLink)`
   ${p_14_normal};
-  ${text_theme("secondarySapphire500")};
+  color: var(--sapphire500);
 `;
 
 const DataTableViewTags = styled.div`

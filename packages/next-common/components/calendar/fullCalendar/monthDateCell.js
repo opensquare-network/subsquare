@@ -7,7 +7,6 @@ import { p_12_bold, p_12_normal } from "../../../styles/componentCss";
 import {
   block,
   border,
-  border_color_theme,
   border_theme_grey200,
   border_theme_grey400,
   cursor_pointer,
@@ -81,14 +80,14 @@ const CellWrapper = styled.div`
   ${(p) =>
     p.isSelectedDay &&
     css`
-      ${border_color_theme("primaryPurple500")}
+      border-color: var(--purple500);
 
       ${CellLabel} {
         color: var(--purple500);
       }
 
       &:hover {
-        ${border_color_theme("primaryPurple500")}
+        border-color: var(--purple500);
       }
     `}
 `;

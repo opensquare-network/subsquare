@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React from "react";
 import {
-  bg_theme,
   border,
   border_theme_grey200,
   cursor_pointer,
@@ -35,7 +34,7 @@ import { useIsMacOS } from "../../context/page";
 const Trigger = styled.button`
   ${p_x(18)};
   ${p_y(10)};
-  ${bg_theme("neutral")};
+  background-color: var(--neutral100);
   ${shadow_100};
   ${rounded_4};
   ${p_14_medium};
