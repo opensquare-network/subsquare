@@ -27,7 +27,7 @@ const Percentage = styled(Bar)`
   width: ${(p) => p.percentage}%;
 `;
 const Total = styled(Bar)`
-  background-color: ${(p) => p.fg ?? "var(--blue100)"};
+  background-color: ${(p) => p.bg ?? "var(--blue100)"};
   overflow: hidden;
 `;
 
