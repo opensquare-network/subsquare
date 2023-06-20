@@ -19,7 +19,7 @@ export default function ThresholdCurvesChart({
   approvalData = [],
   beforeDrawOptions = emptyFunction,
 }) {
-  const { grey300Border, purple500, secondaryGreen500 } = useThemeSetting();
+  const { neutral400, purple500, secondaryGreen500 } = useThemeSetting();
 
   const chartData = {
     labels,
@@ -117,7 +117,7 @@ export default function ThresholdCurvesChart({
         },
       },
       hoverLine: {
-        lineColor: grey300Border,
+        lineColor: neutral400,
         lineWidth: 1,
       },
     },

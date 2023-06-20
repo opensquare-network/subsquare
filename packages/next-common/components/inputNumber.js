@@ -9,7 +9,6 @@ import {
   h_full,
   items_center,
   justify_center,
-  theme,
   w,
 } from "../styles/tailwindcss";
 import styled from "styled-components";
@@ -18,7 +17,7 @@ import DividerOrigin from "./styled/layout/divider";
 import Caret from "./icons/caret";
 
 const Divider = styled(DividerOrigin)`
-  background-color: ${theme("grey300Border")};
+  background-color: var(--neutral400);
 `;
 
 const NumberController = styled.div`
@@ -27,7 +26,7 @@ const NumberController = styled.div`
   ${w(46)};
   ${h_full};
   ${border_hidden};
-  box-shadow: -1px 0 0 0 ${theme("grey300Border")};
+  box-shadow: -1px 0 0 0 var(--neutral400);
 `;
 
 const NumberSteper = styled.button`
@@ -43,9 +42,9 @@ const NumberSteper = styled.button`
 const Input = styled(InputOrigin)`
   &:hover {
     ${NumberController} {
-      box-shadow: -1px 0 0 0 ${theme("grey400Border")};
+      box-shadow: -1px 0 0 0 var(--neutral500);
       ${Divider} {
-        background-color: ${theme("grey400Border")};
+        background-color: var(--neutral500);
       }
     }
   }
