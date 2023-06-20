@@ -22,7 +22,7 @@ export const ActiveTag = styled(Common)`
 `;
 
 export const PositiveTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryGreen500};
+  background: var(--green500);
 `;
 
 export const NegativeTag = styled(Common)`

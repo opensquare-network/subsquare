@@ -14,7 +14,7 @@ const Wrapper = styled(Flex)`
   .VERIFIED,
   VERIFIED_LINKED {
     path:first-child {
-      fill: ${(props) => props.theme.secondaryGreen500};
+      fill: var(--green500);
     }
     path:last-child {
       fill: var(--textPrimaryContrast);

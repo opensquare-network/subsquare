@@ -32,8 +32,8 @@ const OpenGov = styled(Common)`
 `;
 
 const Collectives = styled(Common)`
-  background: ${(props) => props.theme.secondaryGreen100};
-  color: ${(props) => props.theme.secondaryGreen500};
+  background: var(--green100);
+  color: var(--green500);
 `;
 
 const Staking = styled(Common)`

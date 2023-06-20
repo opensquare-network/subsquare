@@ -91,8 +91,8 @@ const Status = styled.div`
 `;
 
 const PassStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryGreen500};
-  background: ${(props) => props.theme.secondaryGreen100};
+  color: var(--green500);
+  background: var(--green100);
 `;
 
 const RejectStatus = styled(Status)`
