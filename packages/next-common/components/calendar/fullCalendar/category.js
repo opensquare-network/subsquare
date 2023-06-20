@@ -6,7 +6,6 @@ import {
   items_center,
   m_l,
   rounded_full,
-  text_secondary,
 } from "../../../styles/tailwindcss";
 import { FULLCALENDAR_CATEGORY_COLORS } from "./consts";
 
@@ -24,7 +23,7 @@ const Dot = styled.span`
 
 const Label = styled.span`
   ${p_12_medium}
-  ${text_secondary}
+  color: var(--textSecondary);
   ${m_l(8)}
 `;
 

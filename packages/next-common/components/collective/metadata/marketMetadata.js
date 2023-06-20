@@ -17,7 +17,6 @@ import {
   rounded,
   rounded_4,
   space_x,
-  text_secondary,
   w,
   w_full,
 } from "next-common/styles/tailwindcss";
@@ -57,7 +56,7 @@ const TagButton = styled.button`
   background-color: var(--neutral200);
   ${p_12_medium};
   ${rounded};
-  ${text_secondary};
+  color: var(--textSecondary);
   ${border_hidden};
   ${cursor_pointer};
   line-height: 1;

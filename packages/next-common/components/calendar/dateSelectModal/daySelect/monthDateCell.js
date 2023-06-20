@@ -12,7 +12,6 @@ import {
   justify_between,
   m,
   p,
-  text_secondary,
   w_full,
 } from "../../../../styles/tailwindcss";
 
@@ -21,7 +20,7 @@ dayjs.extend(isToday);
 const CellLabel = styled.span`
   ${p_12_bold}
   ${m(0)}
-  ${text_secondary}
+  color: var(--textSecondary);
   text-align: center;
   ${(p) =>
     !p.isSameMonth &&

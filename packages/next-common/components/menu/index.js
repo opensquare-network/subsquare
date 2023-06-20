@@ -20,7 +20,6 @@ import {
   items_center,
   m_r,
   space_y,
-  text_secondary,
   text_tertiary,
 } from "../../styles/tailwindcss";
 import { getHomeMenuGroupDefaultBehaviorByCounts } from "../../utils/consts/menu";
@@ -57,7 +56,7 @@ const TitleGroup = styled(Flex)`
   ${text_tertiary};
 
   &:hover {
-    ${text_secondary};
+    color: var(--textSecondary);
   }
 
   ${MenuFoldIcon},

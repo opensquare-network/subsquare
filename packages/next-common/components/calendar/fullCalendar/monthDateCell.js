@@ -20,7 +20,6 @@ import {
   p,
   p_l,
   rounded_4,
-  text_secondary,
   w_full,
 } from "../../../styles/tailwindcss";
 import TooltipOrigin from "../../tooltip";
@@ -38,7 +37,7 @@ dayjs.extend(isToday);
 const CellLabel = styled.p`
   ${p_12_bold}
   ${m(0)}
-  ${text_secondary}
+  color: var(--textSecondary);
 `;
 
 const CellLabelMonth = styled.span`
