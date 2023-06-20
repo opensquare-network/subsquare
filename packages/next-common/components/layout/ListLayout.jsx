@@ -1,38 +1,25 @@
-import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import CMDKPalette from "../cmdk/cmdkPalette";
-import CookiesConsent from "../cookiesConsent";
-import Header from "../header/v2";
-import Nav from "../nav";
-import SEO from "../SEO";
-import Toast from "../toast";
-import Footer from "./footer/v2";
+import clsx from "clsx";
+import BaseLayout from "./baseLayoutV2";
 
-export default function ListLayout({ children, seoInfo = {} }) {
-  const { sm } = useScreenSize();
-
+/**
+ * @param {object} props
+ * @param {JSX.Element} props.head - the head of the list
+ * @param {JSX.Element} props.children - the list
+ * @param {object} props.seoInfo - the seo info
+ */
+export default function ListLayout({ seoInfo = {}, children, head }) {
   return (
-    <>
-      <SEO {...seoInfo} />
-
-      <div className="min-h-screen flex bg-neutral200 max-sm:block">
-        <section className="sticky top-0 max-h-screen z-20">
-          <Nav />
-        </section>
-
-        <section className="flex flex-col flex-1">
-          <header className="sticky top-0 z-10">{!sm && <Header />}</header>
-          <section className="flex flex-col flex-1">
-            <div className="w-full flex-1">{children}</div>
-            <footer>
-              <Footer />
-            </footer>
-          </section>
-        </section>
+    <BaseLayout seoInfo={seoInfo}>
+      {head && (
+        <div className="bg-neutral100">
+          <div className={clsx("px-6 mx-auto max-w-7xl", "max-sm:px-0")}>
+            {head}
+          </div>
+        </div>
+      )}
+      <div className={clsx("px-6 my-6 mx-auto max-w-7xl", "max-sm:px-0")}>
+        {children}
       </div>
-
-      <CMDKPalette />
-      <Toast />
-      <CookiesConsent />
-    </>
+    </BaseLayout>
   );
 }
