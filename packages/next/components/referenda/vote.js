@@ -96,8 +96,8 @@ const PassStatus = styled(Status)`
 `;
 
 const RejectStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
 `;
 
 function Vote({ referendumIndex, onFinalized = emptyFunction }) {

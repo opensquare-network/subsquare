@@ -77,8 +77,8 @@ export const WarningMessage = styled(GreyPanel)`
   ${(p) =>
     p.danger &&
     css`
-      color: ${(props) => props.theme.secondaryRed500};
-      background: ${(props) => props.theme.secondaryRed100};
+      color: var(--red500);
+      background: var(--red100);
     `}
 `;
 

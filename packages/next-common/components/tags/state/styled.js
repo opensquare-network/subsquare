@@ -26,7 +26,7 @@ export const PositiveTag = styled(Common)`
 `;
 
 export const NegativeTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryRed500};
+  background: var(--red500);
 `;
 
 export const ClosedTag = styled(Common)`

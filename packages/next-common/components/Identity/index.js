@@ -34,7 +34,7 @@ const Wrapper = styled(Flex)`
   .ERRONEOUS,
   .ERRONEOUS_LINKED {
     path:first-child {
-      fill: ${(props) => props.theme.secondaryRed500};
+      fill: var(--red500);
     }
     path:last-child {
       fill: var(--textPrimaryContrast);

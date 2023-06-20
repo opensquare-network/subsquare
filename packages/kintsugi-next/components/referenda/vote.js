@@ -99,8 +99,8 @@ const PassStatus = styled(Status)`
 `;
 
 const RejectStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
 `;
 
 const BarWrapper = styled.div`
@@ -124,7 +124,7 @@ const AyesBar = styled.div`
 `;
 
 const NaysBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryRed500};
+  background-color: var(--red500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;

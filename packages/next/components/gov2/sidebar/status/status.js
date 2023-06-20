@@ -27,8 +27,8 @@ const PositiveStatus = styled(StatusBase)`
 `;
 
 const NegativeStatus = styled(StatusBase)`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
 `;
 
 export function PrepareStatus() {

@@ -29,7 +29,7 @@ const AyesBar = styled.div`
 `;
 
 const NaysBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryRed500};
+  background-color: var(--red500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;

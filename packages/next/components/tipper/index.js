@@ -43,7 +43,7 @@ const Description = styled.div`
     cursor: pointer;
   }
   > span.danger {
-    color: ${(props) => props.theme.secondaryRed500};
+    color: var(--red500);
   }
 `;
 
