@@ -24,7 +24,6 @@ import {
   gap_x,
   gap_y,
   items_center,
-  text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
 import { smcss } from "next-common/utils/responsive";
@@ -67,7 +66,7 @@ const DetailDescriptionLabel = styled.div`
   ${gap_x(8)};
 `;
 const DetailSelfVotesAnnotation = styled.span`
-  ${text_tertiary};
+  color: var(--textTertiary);
 `;
 
 const DescriptionsGroup = styled.div`

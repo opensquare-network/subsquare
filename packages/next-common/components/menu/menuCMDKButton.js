@@ -12,7 +12,6 @@ import {
   p_x,
   p_y,
   rounded_4,
-  text_tertiary,
   w_full,
 } from "../../styles/tailwindcss";
 import {
@@ -38,7 +37,7 @@ const Trigger = styled.button`
   ${rounded_4};
   ${p_14_medium};
   ${border};
-  ${text_tertiary};
+  color: var(--textTertiary);
   border-color: var(--neutral300);
   ${w_full};
   ${cursor_pointer};

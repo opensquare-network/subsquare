@@ -16,7 +16,6 @@ import { useChainSettings } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import { text_tertiary } from "next-common/styles/tailwindcss";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 
 const VoteTime = styled.div`
@@ -24,7 +23,7 @@ const VoteTime = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  ${text_tertiary};
+  color: var(--textTertiary);
   :hover {
     text-decoration: underline;
   }

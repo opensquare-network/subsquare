@@ -1,9 +1,7 @@
 import React, { useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
-import {
-  isLoadingVoteCallsSelector,
-} from "next-common/store/reducers/fellowship/voteCalls";
+import { isLoadingVoteCallsSelector } from "next-common/store/reducers/fellowship/voteCalls";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -12,7 +10,6 @@ import User from "next-common/components/user";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import styled from "styled-components";
-import { text_tertiary } from "next-common/styles/tailwindcss";
 import useFellowshipFetchVoteCalls from "./useFellowshipFetchVoteCalls";
 import { useOnchainData } from "next-common/context/post";
 
@@ -21,7 +18,7 @@ const VoteTime = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  ${text_tertiary};
+  color: var(--textTertiary);
   :hover {
     text-decoration: underline;
   }
@@ -29,10 +26,8 @@ const VoteTime = styled.div`
 
 export default function FellowshipCallsVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
-  const {
-    allAye = [],
-    allNay = [],
-  } = useFellowshipFetchVoteCalls(referendumIndex);
+  const { allAye = [], allNay = [] } =
+    useFellowshipFetchVoteCalls(referendumIndex);
 
   const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);

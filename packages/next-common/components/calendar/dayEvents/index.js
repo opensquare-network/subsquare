@@ -11,7 +11,6 @@ import {
   m_l,
   p_x,
   p_y,
-  text_tertiary,
 } from "../../../styles/tailwindcss";
 import {
   p_12_normal,
@@ -41,7 +40,7 @@ const Title = styled.h2`
 const TitleDate = styled.small`
   ${m_l(12)}
   ${p_12_normal}
-  ${text_tertiary}
+  color: var(--textTertiary);
 `;
 
 export default function DayEvents({

@@ -10,7 +10,6 @@ import {
   gap_x,
   items_center,
   justify_between,
-  text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { p_14_medium, p_16_bold } from "next-common/styles/componentCss";
 
@@ -46,7 +45,7 @@ const ListTitle = styled.h3`
 `;
 
 const ListTitleCount = styled.small`
-  ${text_tertiary};
+  color: var(--textTertiary);
   ${p_14_medium};
   margin-left: 8px;
 `;

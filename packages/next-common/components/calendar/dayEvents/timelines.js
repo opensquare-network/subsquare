@@ -12,7 +12,6 @@ import {
   m,
   m_l,
   p_b,
-  text_tertiary,
   w,
   w_full,
 } from "../../../styles/tailwindcss";
@@ -26,7 +25,7 @@ import UserEventInfoCard from "./userEventInfoCard";
 const TimeLineHour = styled.div`
   ${w(40)}
   ${p_12_medium}
-  ${text_tertiary}
+  color: var(--textTertiary);
   text-align: right;
 `;
 const TimeLineSolid = styled.div`
@@ -58,7 +57,7 @@ const StatusWrapper = styled.div`
 
 const NoData = styled.p`
   ${p_14_normal}
-  ${text_tertiary}
+  color: var(--textTertiary);
   ${m(0)}
 `;
 

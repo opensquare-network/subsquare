@@ -20,7 +20,6 @@ import {
   items_center,
   m_r,
   space_y,
-  text_tertiary,
 } from "../../styles/tailwindcss";
 import { getHomeMenuGroupDefaultBehaviorByCounts } from "../../utils/consts/menu";
 import isNil from "lodash.isnil";
@@ -53,7 +52,7 @@ const Title = styled.div`
 const TitleGroup = styled(Flex)`
   padding: 12px 0;
   ${cursor_pointer};
-  ${text_tertiary};
+  color: var(--textTertiary);
 
   &:hover {
     color: var(--textSecondary);
