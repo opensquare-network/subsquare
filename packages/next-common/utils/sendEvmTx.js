@@ -11,8 +11,12 @@ import {
 import { getLastApi } from "./hooks/useApi";
 import { getMetaMaskEthereum } from "./metamask";
 
+export const DISPATCH_PRECOMPILE_ADDRESS =
+  "0x0000000000000000000000000000000000000401";
+
 export async function sendEvmTx({
-  tx,
+  to,
+  data,
   dispatch,
   setLoading = emptyFunction,
   onFinalized = emptyFunction,
@@ -42,10 +46,11 @@ export async function sendEvmTx({
     const provider = new ethers.BrowserProvider(ethereum);
     const signer = await provider.getSigner();
     await dispatchCall({
+      to,
       provider,
       signer,
       signerAddress,
-      data: tx.inner.toU8a(),
+      data,
       onSubmitted: () => {
         dispatch(
           updatePendingToast(
@@ -89,6 +94,7 @@ export async function sendEvmTx({
 }
 
 async function dispatchCall({
+  to = DISPATCH_PRECOMPILE_ADDRESS,
   provider,
   signer,
   signerAddress,
@@ -97,10 +103,9 @@ async function dispatchCall({
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
 }) {
-  const contractAddress = "0x0000000000000000000000000000000000000401";
   let tx = {
     from: signerAddress,
-    to: contractAddress,
+    to,
     data: data,
   };
   await dryRun(provider, tx);

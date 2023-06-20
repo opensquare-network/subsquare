@@ -8,7 +8,9 @@ import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import isMoonChain from "next-common/utils/isMoonChain";
-import { unDelegate } from "next-common/utils/moonPrecompiles/democracy";
+import { encodeUnDelegateData } from "next-common/utils/moonPrecompiles/democracy";
+import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
+import { sendEvmTx } from "next-common/utils/sendEvmTx";
 
 export default function UndelegatePopup({
   onClose,
@@ -37,7 +39,19 @@ export default function UndelegatePopup({
       const signerAddress = signerAccount?.address;
 
       if (isMoonChain()) {
-        await unDelegate({
+        let { callTo, callData } = await encodeUnDelegateData();
+
+        if (signerAccount?.proxyAddress) {
+          ({ callTo, callData } = await encodeProxyData({
+            real: signerAccount?.proxyAddress,
+            callTo,
+            callData,
+          }));
+        }
+
+        await sendEvmTx({
+          to: callTo,
+          data: callData,
           dispatch,
           setLoading: setIsLoading,
           onInBlock,
@@ -47,6 +61,7 @@ export default function UndelegatePopup({
         });
       } else {
         let tx = api.tx.democracy.undelegate();
+
         if (signerAccount?.proxyAddress) {
           tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
         }
