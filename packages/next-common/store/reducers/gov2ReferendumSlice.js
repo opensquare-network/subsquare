@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import nextApi from "../../services/nextApi";
-import { gov2ReferendumsVoteExtrinsicsApi } from "../../services/url";
-import { emptyVotes } from "../../utils/democracy/votes/passed/common";
+import {
+  gov2ReferendumsVoteCallsApi,
+  gov2ReferendumsVoteExtrinsicsApi,
+} from "../../services/url";
+import { openGovEmptyVotes as emptyVotes } from "../../utils/democracy/votes/passed/common";
 import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
@@ -14,9 +17,10 @@ const gov2ReferendumSlice = createSlice({
   initialState: {
     isLoadingVotes: true,
     votes: emptyVotes,
-    isLoadingVoteExtrinsics: true,
-    voteExtrinsics: emptyVotes,
+    isLoadingVoteCalls: true,
+    voteCalls: emptyVotes,
     issuance: null,
+    votesTrigger: 1,
   },
   reducers: {
     setIsLoadingVotes(state, { payload }) {
@@ -25,14 +29,17 @@ const gov2ReferendumSlice = createSlice({
     setVotes(state, { payload }) {
       state.votes = payload;
     },
-    setIsLoadingVoteExtrinsics(state, { payload }) {
-      state.isLoadingVoteExtrinsics = payload;
+    setIsLoadingVoteCalls(state, { payload }) {
+      state.isLoadingVoteCalls = payload;
     },
-    setVoteExtrinsics(state, { payload }) {
-      state.voteExtrinsics = payload;
+    setVoteCalls(state, { payload }) {
+      state.voteCalls = payload;
     },
     setIssuance(state, { payload }) {
       state.issuance = payload;
+    },
+    incVotesTrigger(state) {
+      state.votesTrigger += 1;
     },
   },
 });
@@ -40,28 +47,30 @@ const gov2ReferendumSlice = createSlice({
 export const {
   setVotes,
   setIsLoadingVotes,
-  setVoteExtrinsics,
-  setIsLoadingVoteExtrinsics,
+  setVoteCalls,
+  setIsLoadingVoteCalls,
   setIssuance,
+  incVotesTrigger,
 } = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
   state.gov2Referendum.isLoadingVotes;
-export const isLoadingVoteExtrinsicsSelector = (state) =>
-  state.gov2Referendum.isLoadingVoteExtrinsics;
+export const isLoadingVoteCallsSelector = (state) =>
+  state.gov2Referendum.isLoadingVoteCalls;
 export const votesSelector = (state) => state.gov2Referendum.votes;
-export const voteExtrinsicsSelector = (state) =>
-  state.gov2Referendum.voteExtrinsics;
+export const voteCallsSelector = (state) =>
+  state.gov2Referendum.voteCalls;
 export const gov2IssuanceSelector = (state) => state.gov2Referendum.issuance;
+export const votesTriggerSelector = state => state.gov2Referendum.votesTrigger;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
 };
 
+export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigger());
+
 export const fetchVotes =
   (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {
-    dispatch(clearVotes());
-    dispatch(setIsLoadingVotes(true));
     try {
       let blockApi = api;
       if (passedHeight) {
@@ -80,8 +89,8 @@ export const fetchVotes =
     }
   };
 
-export const clearVoteExtrinsics = () => async (dispatch) => {
-  dispatch(setVoteExtrinsics(emptyVotes));
+export const clearVoteCalls = () => async (dispatch) => {
+  dispatch(setVoteCalls(emptyVotes));
 };
 
 function normalizeExtrinsic(voteExtrinsic, balance) {
@@ -124,12 +133,12 @@ function extractVoteElementsFromOneExtrinsic(voteExtrinsic) {
   return {};
 }
 
-function classifyVoteExtrinsics(voteExtrinsics) {
+function classifyVoteCalls(voteCalls) {
   const allAye = [];
   const allNay = [];
   const allAbstain = [];
 
-  for (const item of voteExtrinsics) {
+  for (const item of voteCalls) {
     const { aye, nay, abstain } = extractVoteElementsFromOneExtrinsic(item);
 
     if (aye) allAye.push(aye);
@@ -141,18 +150,44 @@ function classifyVoteExtrinsics(voteExtrinsics) {
 }
 
 export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
-  dispatch(clearVoteExtrinsics());
-  dispatch(setIsLoadingVoteExtrinsics(true));
+  dispatch(clearVoteCalls());
+  dispatch(setIsLoadingVoteCalls(true));
   try {
     const { result } = await nextApi.fetch(
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex),
     );
 
-    const { allAye, allNay, allAbstain } = classifyVoteExtrinsics(result);
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
 
-    dispatch(setVoteExtrinsics({ allAye, allNay, allAbstain }));
+    const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
+
+    dispatch(setVoteCalls({ allAye, allNay, allAbstain }));
   } finally {
-    dispatch(setIsLoadingVoteExtrinsics(false));
+    dispatch(setIsLoadingVoteCalls(false));
+  }
+};
+
+export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
+  dispatch(clearVoteCalls());
+  dispatch(setIsLoadingVoteCalls(true));
+  try {
+    const { result } = await nextApi.fetch(
+      gov2ReferendumsVoteCallsApi(referendumIndex),
+    );
+
+    if (!result) {
+      dispatch(setVoteCalls(emptyVotes));
+      return;
+    }
+
+    const { allAye, allNay, allAbstain } = classifyVoteCalls(result);
+
+    dispatch(setVoteCalls({ allAye, allNay, allAbstain }));
+  } finally {
+    dispatch(setIsLoadingVoteCalls(false));
   }
 };
 

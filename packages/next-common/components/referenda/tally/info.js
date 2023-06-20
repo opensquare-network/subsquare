@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { toPrecision } from "../../../utils";
 import Flex from "../../../components/styled/flex";
@@ -9,7 +9,6 @@ import ElectorateIcon from "../../../assets/imgs/icons/electorate.svg";
 import ValueDisplay from "../../../components/valueDisplay";
 import VotesCount from "../../../components/democracy/referendum/votesCount";
 import { useChainSettings } from "../../../context/chain";
-import useSubDemocracyTally from "../../../hooks/democracy/tally";
 import useMaybeFetchElectorate from "../../../utils/hooks/referenda/useMaybeFetchElectorate";
 
 const Row = styled(Flex)`
@@ -42,17 +41,14 @@ const Value = styled.span`
 `;
 
 export default function TallyInfo({
+  tally,
   isLoadingVotes,
   allAye,
   allNay,
 }) {
   const node = useChainSettings();
-  const tally = useSubDemocracyTally();
   const electorate = useMaybeFetchElectorate();
-
-  if (!node) {
-    return null;
-  }
+  const [turnoutPercentage, setTurnoutPercentage] = useState();
   const decimals = node.decimals;
   const symbol = node.voteSymbol ?? node.symbol;
 
@@ -61,10 +57,14 @@ export default function TallyInfo({
   const nTurnout = toPrecision(tally?.turnout ?? 0, decimals);
   const nElectorate = toPrecision(electorate ?? 0, decimals);
 
-  const nTurnoutPercent = (nTurnout / nElectorate) * 100;
-  const nTurnoutPercentDisplay = (
-    Math.floor(nTurnoutPercent * 100) / 100
-  ).toFixed(2);
+  useEffect(() => {
+    const turnout = tally?.turnout || 0;
+    if (electorate <= 0) {
+      setTurnoutPercentage(0);
+    }
+
+    setTurnoutPercentage((turnout / electorate * 100).toFixed(2));
+  }, [tally, electorate]);
 
   return (
     <div>
@@ -92,8 +92,8 @@ export default function TallyInfo({
         <Header>
           <TurnoutIcon />
           Turnout
-          {!isLoadingVotes && tally?.electorate > 0 && (
-            <VotesCount>{nTurnoutPercentDisplay}%</VotesCount>
+          {!isLoadingVotes && turnoutPercentage && (
+            <VotesCount>{turnoutPercentage}%</VotesCount>
           )}
         </Header>
         <Value>

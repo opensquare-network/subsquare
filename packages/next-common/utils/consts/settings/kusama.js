@@ -88,11 +88,17 @@ const kusama = {
   group: MenuGroups.KusamaAndParachains,
   links,
   hasGov2: true,
+  hasReferenda: true,
+  hasFellowship: true,
   hasStatescan: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
   hasDemocracy: false,
+  useVoteCall: true,
   hasDotreasury: true,
+  // used to control whether to show votes delegation percentage on referendum detail page.
+  showReferendaReferendumDelegationPercentage: true,
+  showAchainableLabels: true,
 };
 
 export default kusama;

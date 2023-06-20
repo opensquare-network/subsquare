@@ -48,6 +48,8 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
+  hasFellowship: true,
+  showAchainableLabels: true,
 };
 
 export default collectives;

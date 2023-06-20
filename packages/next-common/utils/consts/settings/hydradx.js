@@ -36,6 +36,7 @@ const hydradx = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  useVoteCall: true,
 };
 
 export default hydradx;

@@ -23,6 +23,7 @@ import rococo from "./consts/settings/rococo";
 import westendCollectives from "./consts/settings/westendCollectives";
 import collectives from "./consts/settings/collectives";
 import darwinia2 from "./consts/settings/darwinia2";
+import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 
 /**
  * left + gap + main content
@@ -44,6 +45,7 @@ export const nodes = [
   altair,
   basilisk,
   bifrost,
+  bifrostPolkadot,
   // calamari,
   centrifuge,
   collectives,

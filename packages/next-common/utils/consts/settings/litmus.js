@@ -32,8 +32,9 @@ const litmus = {
   navLogoDark: ProjectLogoLitmusDark,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
-  hasSubscan: true,
+  hasSubscan: false,
   postLabels: defaultPostLabels,
+  useVoteCall: true,
 };
 
 export default litmus;

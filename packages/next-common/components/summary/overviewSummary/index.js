@@ -5,6 +5,7 @@ import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
 import {
+  useChainSettings,
   useMenuHasCouncil,
   useMenuHasDemocracyExternal,
   useMenuHasGov2,
@@ -43,6 +44,7 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
 }
 
 function OpenGovGroupContent({ summaryData }) {
+  const { hasFellowship } = useChainSettings();
   const { activeGov2ReferendaCount, activeFellowshipReferendaCount } =
     summaryData ?? {};
 
@@ -54,12 +56,14 @@ function OpenGovGroupContent({ summaryData }) {
         href="/referenda"
         value={activeGov2ReferendaCount}
       />
-      <SummaryTypeGroup
-        label="F"
-        tooltip="Active fellowship referenda"
-        href="/fellowship"
-        value={activeFellowshipReferendaCount}
-      />
+      {hasFellowship && (
+        <SummaryTypeGroup
+          label="F"
+          tooltip="Active fellowship referenda"
+          href="/fellowship"
+          value={activeFellowshipReferendaCount}
+        />
+      )}
     </ContentWrapper>
   );
 }

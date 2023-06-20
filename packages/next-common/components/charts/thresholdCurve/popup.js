@@ -82,7 +82,7 @@ export default function ThresholdCurvesPopup({
 
   return (
     <Popup
-      title="Thoreshold Curves"
+      title="Threshold Curves"
       onClose={() => {
         setShow(false);
       }}

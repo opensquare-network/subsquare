@@ -8,7 +8,7 @@ export function getProfileCategories(chain) {
   const categories = [...commonCategories];
 
   const settings = getChainSettings(chain);
-  if (settings.hasGov2) {
+  if (settings.hasReferenda || settings.hasFellowship) {
     categories.push(gov2Category);
   }
 

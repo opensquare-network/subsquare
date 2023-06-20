@@ -48,7 +48,6 @@ const subscriptionSetting = {
   value: "subscription",
   name: "Subscription",
   pathname: "/setting/subscription",
-  excludeToChains: [Chains.collectives, Chains["westend-collectives"]],
   icon: (
     <MenuIconWrapper>
       <SubscriptionIcon />

@@ -27,7 +27,7 @@ const bifrost = {
   identity: "bifrost",
   symbol: "bnc",
   decimals: 12,
-  hasElections: true,
+  hasElections: false,
   ss58Format: 6,
   snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
   endpoints: DEFAULT_BIFROST_NODES,

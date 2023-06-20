@@ -34,6 +34,7 @@ const basilisk = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  useVoteCall: true,
 };
 
 export default basilisk;
