@@ -22,8 +22,8 @@ const Treasury = styled(Common)`
 `;
 
 const Democracy = styled(Common)`
-  background: ${(props) => props.theme.secondaryPink100};
-  color: ${(props) => props.theme.secondaryPink500};
+  background: var(--pink100);
+  color: var(--pink500);
 `;
 
 const OpenGov = styled(Common)`
