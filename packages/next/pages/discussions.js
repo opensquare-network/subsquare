@@ -4,7 +4,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import styled from "styled-components";
 import PlusIcon from "public/imgs/icons/plusInCircle.svg";
-import HomeLayout from "next-common/components/layout/HomeLayout";
+import ListLayout from "next-common/components/layout/ListLayout";
 import { useChain } from "next-common/context/chain";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
@@ -21,10 +21,10 @@ const Create = styled.a`
   cursor: pointer;
 `;
 
-export default withLoginUserRedux(({ posts, tracks, fellowshipTracks }) => {
+export default withLoginUserRedux(({ posts }) => {
   const chain = useChain();
   const items = (posts.items || []).map((item) =>
-    normalizeDiscussionListItem(chain, item)
+    normalizeDiscussionListItem(chain, item),
   );
 
   const create = (
@@ -37,11 +37,7 @@ export default withLoginUserRedux(({ posts, tracks, fellowshipTracks }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout
-      seoInfo={seoInfo}
-      tracks={tracks}
-      fellowshipTracks={fellowshipTracks}
-    >
+    <ListLayout seoInfo={seoInfo}>
       <PostList
         category={category}
         topRightCorner={create}
@@ -52,7 +48,7 @@ export default withLoginUserRedux(({ posts, tracks, fellowshipTracks }) => {
           total: posts.total,
         }}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 
