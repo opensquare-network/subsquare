@@ -6,7 +6,7 @@ import startCase from "lodash.startcase";
 const Tag = styled.span`
   padding: 2px 8px;
   border-radius: 10px;
-  color: ${(p) => p.fg || "var(--textSeondary)"};
+  color: ${(p) => p.fg || "var(--textSecondary)"};
   background-color: ${(p) => p.bg || "var(--neutral200)"};
   ${p_12_medium};
 `;
