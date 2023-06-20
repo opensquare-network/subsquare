@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { p_12_medium } from "../../../styles/componentCss";
 import {
-  bg_theme,
   inline_flex,
   items_center,
   m_l,
@@ -20,7 +19,7 @@ const Dot = styled.span`
   width: 8px;
   height: 8px;
   ${rounded_full}
-  ${(p) => bg_theme(p.color)}
+  background-color: ${(p) => p.color || "var(--textTertiary)"};
 `;
 
 const Label = styled.span`
@@ -29,9 +28,6 @@ const Label = styled.span`
   ${m_l(8)}
 `;
 
-/**
- * @param {{color: themeKey}}
- */
 export default function FullCalendarCategory({
   category,
   onlyDot = false,

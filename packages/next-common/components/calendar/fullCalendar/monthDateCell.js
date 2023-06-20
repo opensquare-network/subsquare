@@ -257,7 +257,7 @@ export default function FullCalendarMonthDateCell({
                 ))}
               </CellEventGroup>
               <CellEventGroupSmSize>
-                <FullCalendarCategory color="primaryPurple500" />
+                <FullCalendarCategory color="var(--purple500)" />
               </CellEventGroupSmSize>
             </>
           )}
