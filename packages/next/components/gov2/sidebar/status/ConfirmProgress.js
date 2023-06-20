@@ -63,7 +63,7 @@ function Empty() {
 
 function ConfirmationStarted() {
   const latestHeight = useSelector(latestHeightSelector);
-  const { secondaryGreen500, secondaryGreen300, grey400Border } = useTheme();
+  const { secondaryGreen500, secondaryGreen300 } = useTheme();
 
   const confirmPeriod = useConfirm();
   const confirmRemaining = useConfirmRemaining();
@@ -117,7 +117,7 @@ function ConfirmationStarted() {
         percentage: 100,
         start,
         end: end < 1 ? 1 : end,
-        fg: grey400Border,
+        fg: "var(--neutral500)",
         tooltipContent: (
           <ProgressTooltipFailContent>
             <span>Started: {startedHeight?.toLocaleString?.()}</span>
@@ -156,7 +156,6 @@ function ConfirmationStarted() {
     confirmStartPercentage,
     decisionBlocks,
     decisionSince,
-    grey400Border,
     secondaryGreen300,
     secondaryGreen500,
   ]);
