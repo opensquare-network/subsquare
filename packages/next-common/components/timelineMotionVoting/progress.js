@@ -16,7 +16,7 @@ const Bar = styled.div`
     p.value === true
       ? "var(--green500)"
       : p.value === false
-      ? p.theme.secondaryRed500
+      ? "var(--red500)"
       : "var(--neutral300)"};
   flex-grow: 1;
   :not(:first-child) {
