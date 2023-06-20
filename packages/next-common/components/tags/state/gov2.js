@@ -11,7 +11,7 @@ import {
 } from "./styled";
 
 const QueueingTag = styled(BaseTag)`
-  background-color: ${(p) => p.theme.secondaryYellow500};
+  background-color: var(--yellow500);
 `;
 
 const gov2ReferendaTagMap = {

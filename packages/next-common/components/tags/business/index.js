@@ -17,8 +17,8 @@ const Common = styled.div`
 `;
 
 const Treasury = styled(Common)`
-  background: ${(props) => props.theme.secondaryYellow100};
-  color: ${(props) => props.theme.secondaryYellow500};
+  background: var(--yellow100);
+  color: var(--yellow500);
 `;
 
 const Democracy = styled(Common)`
