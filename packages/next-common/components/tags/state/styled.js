@@ -10,7 +10,7 @@ const Common = styled.span`
 `;
 
 export const StartTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryAzure500};
+  background: var(--azure500);
 `;
 
 export const MotionTag = styled(Common)`
