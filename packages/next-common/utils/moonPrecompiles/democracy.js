@@ -1,5 +1,14 @@
-import { ethers } from "ethers";
-import { getMetaMaskEthereum } from "../metamask";
+import { emptyFunction } from "..";
+import { getLastApi } from "../hooks/useApi";
+import {
+  newErrorToast,
+  newPendingToast,
+  newToastId,
+  newWarningToast,
+  removeToast,
+  updatePendingToast,
+} from "next-common/store/reducers/toastSlice";
+import { getContract } from "./common";
 
 const DEMOCRACY_ADDRESS = "0x0000000000000000000000000000000000000803";
 
@@ -8,41 +17,129 @@ const democracyAbi = [
   "function unDelegate()",
 ];
 
-function getProvider() {
-  const ethereum = getMetaMaskEthereum();
-  if (!ethereum) {
-    throw new Error("Please install MetaMask");
-  }
-  return new ethers.BrowserProvider(ethereum);
-}
+async function runContractMethod({
+  method,
+  args = [],
+  onSubmitted = emptyFunction,
+  onInBlock = emptyFunction,
+  onFinalized = emptyFunction,
+  setLoading = emptyFunction,
+  onClose = emptyFunction,
+  signerAddress,
+  dispatch,
+  isMounted,
+}) {
+  const democracy = await getContract(DEMOCRACY_ADDRESS, democracyAbi);
 
-async function runContractMethod(method, ...args) {
-  const provider = getProvider();
-  const signer = await provider.getSigner();
-  const democracy = new ethers.Contract(DEMOCRACY_ADDRESS, democracyAbi, signer);
+  const noWaitForFinalized = onFinalized === emptyFunction;
+  const totalSteps = noWaitForFinalized ? 2 : 3;
 
-  const unsigedTx = await democracy[method].call(democracy, ...args);
-  unsigedTx.gasLimit = await provider.estimateGas(unsigedTx);
+  const toastId = newToastId();
+  dispatch(
+    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
+  );
 
   try {
-    const signedTx = await signer.signTransaction(unsigedTx);
-    const submittedTx = await provider.sendTransaction(signedTx);
+    const submittedTx = await democracy[method].call(democracy, ...args);
+
+    dispatch(
+      updatePendingToast(
+        toastId,
+        `(2/${totalSteps}) Submitted, waiting for wrapping...`,
+      ),
+    );
+    onSubmitted(signerAddress);
+    onClose();
 
     const receipt = await submittedTx.wait();
 
-    if (receipt.status === 0) {
-      throw new Error("Delegate transaction failed");
+    if (noWaitForFinalized) {
+      dispatch(removeToast(toastId));
+    } else {
+      dispatch(
+        updatePendingToast(
+          toastId,
+          `(3/${totalSteps}) Inblock, waiting for finalization...`,
+        ),
+      );
     }
+    onInBlock(receipt);
+
+    if (onFinalized !== emptyFunction) {
+      const api = getLastApi();
+      const unsub = await api?.rpc.chain.subscribeFinalizedHeads(
+        async ({ number }) => {
+          if (number.toNumber() < receipt.blockNumber) {
+            return;
+          }
+          if (unsub) {
+            unsub();
+          }
+          dispatch(removeToast(toastId));
+          onFinalized(receipt.blockHash);
+        },
+      );
+    }
+
+    return receipt;
   } catch (e) {
-    console.error(e);
-    throw e;
+    dispatch(removeToast(toastId));
+    if (e.info?.error?.code === 4001) {
+      dispatch(newWarningToast(e.info?.error?.message));
+    } else {
+      dispatch(newErrorToast(e.info?.error?.message || e.message));
+    }
+  } finally {
+    if (isMounted.current) {
+      setLoading(false);
+    }
   }
 }
 
-export function delegate(target, conviction, amount) {
-  return runContractMethod("delegate", target, conviction, amount);
+export function delegate({
+  args: { targetAddress, conviction, amount },
+  onSubmitted,
+  onInBlock,
+  onFinalized,
+  setLoading,
+  onClose,
+  signerAddress,
+  dispatch,
+  isMounted,
+}) {
+  return runContractMethod({
+    method: "delegate",
+    args: [targetAddress, conviction, amount],
+    onSubmitted,
+    onInBlock,
+    onFinalized,
+    setLoading,
+    onClose,
+    signerAddress,
+    dispatch,
+    isMounted,
+  });
 }
 
-export function unDelegate() {
-  return runContractMethod("unDelegate");
+export function unDelegate({
+  onSubmitted,
+  onInBlock,
+  onFinalized,
+  setLoading,
+  onClose,
+  signerAddress,
+  dispatch,
+  isMounted,
+}) {
+  return runContractMethod({
+    method: "unDelegate",
+    onSubmitted,
+    onInBlock,
+    onFinalized,
+    setLoading,
+    onClose,
+    signerAddress,
+    dispatch,
+    isMounted,
+  });
 }

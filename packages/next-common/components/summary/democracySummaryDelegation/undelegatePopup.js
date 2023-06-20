@@ -34,11 +34,18 @@ export default function UndelegatePopup({
         return showErrorToast("Please login first");
       }
 
-      if (isMoonChain()) {
-        await unDelegate();
-      } else {
-        const signerAddress = signerAccount?.address;
+      const signerAddress = signerAccount?.address;
 
+      if (isMoonChain()) {
+        await unDelegate({
+          dispatch,
+          setLoading: setIsLoading,
+          onInBlock,
+          onClose,
+          signerAddress,
+          isMounted,
+        });
+      } else {
         let tx = api.tx.democracy.undelegate();
         if (signerAccount?.proxyAddress) {
           tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);

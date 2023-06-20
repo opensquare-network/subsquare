@@ -95,7 +95,19 @@ function PopupContent({
     }
 
     if (isMoonChain()) {
-      await delegate(targetAddress, conviction, bnVoteBalance.toString());
+      await delegate({
+        args: {
+          targetAddress,
+          conviction: parseInt(conviction),
+          amount: BigInt(bnVoteBalance.toString()),
+        },
+        dispatch,
+        setLoading: setIsLoading,
+        onInBlock,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
     } else {
       let tx = api.tx.democracy.delegate(
         targetAddress,
@@ -117,7 +129,6 @@ function PopupContent({
         isMounted,
       });
     }
-
   };
 
   return (
