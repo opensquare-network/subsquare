@@ -52,7 +52,7 @@ const Cirtcle = styled.div`
 
 const Bar = styled.div`
   width: 2px;
-  background-color: ${(props) => props.theme.primaryPurple300};
+  background-color: var(--purple300);
   margin: 0 auto;
   flex-grow: 1;
 `;

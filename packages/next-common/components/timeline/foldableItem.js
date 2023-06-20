@@ -42,7 +42,7 @@ const Circle = styled.div`
 
 const Bar = styled.div`
   width: 2px;
-  background-color: ${(props) => props.theme.primaryPurple300};
+  background-color: var(--purple300);
   margin: 0 auto;
   flex-grow: 1;
   ${(p) =>
@@ -56,7 +56,7 @@ const Mid = styled.div`
   height: 2px;
   width: 8px;
   margin: 9px 4px 0;
-  background-color: ${(props) => props.theme.primaryPurple300};
+  background-color: var(--purple300);
 `;
 
 const Right = styled.div`
