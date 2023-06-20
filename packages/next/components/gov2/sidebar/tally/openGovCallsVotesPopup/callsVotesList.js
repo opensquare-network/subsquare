@@ -48,7 +48,7 @@ function CallsVotesList({ items, theme, loading = false }) {
           </StyledTr>
           <RowSplitter
             backgroundColor={
-              theme.isDark ? theme.grey200Border : "var(--neutral200)"
+              theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
             }
             padding={"16px 0 4px 0"}
           />
@@ -79,7 +79,7 @@ function CallsVotesList({ items, theme, loading = false }) {
                 {index !== items.length - 1 && (
                   <RowSplitter
                     backgroundColor={
-                      theme.isDark ? theme.grey200Border : "var(--neutral200)"
+                      theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
                     }
                   />
                 )}

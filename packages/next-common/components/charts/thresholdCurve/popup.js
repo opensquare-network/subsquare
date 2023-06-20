@@ -107,7 +107,7 @@ export default function ThresholdCurvesPopup({
           </StyledTr>
           <RowSplitter
             backgroundColor={
-              theme.isDark ? theme.grey200Border : "var(--neutral200)"
+              theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
             }
             padding={"16px 0 0 0"}
           />
