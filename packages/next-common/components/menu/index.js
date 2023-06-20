@@ -22,7 +22,6 @@ import {
   space_y,
   text_secondary,
   text_tertiary,
-  theme,
 } from "../../styles/tailwindcss";
 import { getHomeMenuGroupDefaultBehaviorByCounts } from "../../utils/consts/menu";
 import isNil from "lodash.isnil";
@@ -64,14 +63,14 @@ const TitleGroup = styled(Flex)`
   ${MenuFoldIcon},
   ${MenuUnFoldIcon} {
     path {
-      stroke: ${theme("textTertiary")};
+      stroke: var(--textTertiary);
     }
   }
   &:hover {
     ${MenuFoldIcon},
     ${MenuUnFoldIcon} {
       path {
-        stroke: ${theme("textSecondary")};
+        stroke: var(--textSecondary);
       }
     }
   }
