@@ -21,7 +21,8 @@ import { useMemo } from "react";
 import {
   useConfirmingStarted,
   useConfirmTimelineFailPairs,
-  useDecidingSince, userConfirmingAborted,
+  useDecidingSince,
+  userConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import isNil from "lodash.isnil";
 import { useTheme } from "styled-components";
@@ -42,7 +43,6 @@ function ConfirmationInfo() {
 }
 
 function Empty() {
-  const { grey100Bg } = useTheme();
   const confirmStart = useConfirmingStarted();
   if (confirmStart) {
     return null;
@@ -52,7 +52,7 @@ function Empty() {
     <ProgressGroup>
       <ProgressBarWrapper>
         <Tooltip content="Not started yet">
-          <Progress percentage={0} bg={grey100Bg} />
+          <Progress percentage={0} bg="var(--neutral200)" />
         </Tooltip>
       </ProgressBarWrapper>
 
@@ -78,8 +78,9 @@ function ConfirmationStarted() {
 
   const confirmPercentage = useMemo(() => {
     if (
-      isNil(latestHeight) || latestHeight <= confirmStart ||
-      !isNil(confirmAbortedHeight) && confirmAbortedHeight > confirmStart
+      isNil(latestHeight) ||
+      latestHeight <= confirmStart ||
+      (!isNil(confirmAbortedHeight) && confirmAbortedHeight > confirmStart)
     ) {
       return 0;
     }
@@ -103,12 +104,12 @@ function ConfirmationStarted() {
       const start = calcConfirmStartPercentage(
         decisionSince,
         decisionBlocks,
-        startedHeight
+        startedHeight,
       );
       const abortedHeightStart = calcConfirmStartPercentage(
         decisionSince,
         decisionBlocks,
-        startedHeight + abortedHeight - startedHeight
+        startedHeight + abortedHeight - startedHeight,
       );
 
       const end = abortedHeightStart - start;
@@ -140,7 +141,7 @@ function ConfirmationStarted() {
         fg: secondaryGreen500,
         bg: secondaryGreen300,
         tooltipContent: confirmRemaining > 0 && (
-          <Remaining blocks={ confirmRemaining } />
+          <Remaining blocks={confirmRemaining} />
         ),
       });
     }

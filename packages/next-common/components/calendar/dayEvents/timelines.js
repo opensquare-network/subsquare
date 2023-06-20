@@ -4,7 +4,6 @@ import React from "react";
 import styled from "styled-components";
 import { p_12_medium, p_14_normal } from "../../../styles/componentCss";
 import {
-  bg_theme,
   flex,
   gap_x,
   h,
@@ -33,7 +32,7 @@ const TimeLineHour = styled.div`
 const TimeLineSolid = styled.div`
   ${w_full}
   ${h(1)}
-  ${bg_theme("grey100Bg")}
+  background-color: var(--neutral200);
 `;
 const TimeLineContent = styled.div`
   ${m_l(48)}
@@ -158,7 +157,13 @@ export default function DayEventTimelines({
             if (Object.values(FutureEventType).includes(event.type)) {
               return <FutureEventInfoCard key={index} event={event} />;
             }
-            return <UserEventInfoCard key={event._id} event={event} refresh={refresh} />;
+            return (
+              <UserEventInfoCard
+                key={event._id}
+                event={event}
+                refresh={refresh}
+              />
+            );
           })}
         </Timeline>
       ))}

@@ -56,7 +56,7 @@ const HeaderTitle = styled.div`
 const TagButton = styled.button`
   ${p_x(8)};
   ${p_y(4)};
-  ${bg_theme("grey100Bg")};
+  background-color: var(--neutral200);
   ${p_12_medium};
   ${rounded};
   ${text_secondary};
