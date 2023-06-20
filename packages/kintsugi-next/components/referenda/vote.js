@@ -249,6 +249,7 @@ function Vote({
         </Contents>
 
         <TallyInfo
+          tally={tally}
           isLoadingVotes={isLoadingVotes}
           allAye={allAye}
           allNay={allNay}

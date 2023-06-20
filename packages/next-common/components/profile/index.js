@@ -17,12 +17,11 @@ import styled, { css } from "styled-components";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { no_scroll_bar } from "../../styles/componentCss";
 import { useRouter } from "next/router";
-import { useChain } from "../../context/chain";
+import { useChain, useChainSettings } from "../../context/chain";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import VStack from "../styled/vStack";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import AchainableProfile from "./achainableProfile";
-import Chains from "next-common/utils/consts/chains";
 import isMoonChain from "next-common/utils/isMoonChain";
 
 const Wrapper = styled.div`
@@ -222,7 +221,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   );
   const router = useRouter();
 
-  const showAchainableLabels = [Chains.kusama, Chains.polkadot].includes(chain);
+  const { showAchainableLabels } = useChainSettings();
 
   const overview = {
     ...summary,
@@ -299,7 +298,14 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
       <Wrapper>
         <BioWrapper>
           <DisplayUserAvatar address={address} user={user} />
-          <Flex style={{ flexDirection: "column", alignItems: "center",  marginTop: 0, flexWrap: "wrap" }}>
+          <Flex
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: 0,
+              flexWrap: "wrap",
+            }}
+          >
             <DisplayUser id={id} />
             <DisplayUserAddress address={address} />
           </Flex>

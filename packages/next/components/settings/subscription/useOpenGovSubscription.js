@@ -1,13 +1,14 @@
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useReferendaReferendumOptions from "next-common/components/setting/notification/useReferendaReferendumOptions";
 import useFellowshipReferendumOptions from "next-common/components/setting/notification/useFellowshipReferendumOptions";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useOpenGovSubscription(
   subscription,
   saving,
   isVerifiedUser
 ) {
-  const hasOpenGov = ["kusama"].includes(process.env.NEXT_PUBLIC_CHAIN);
+  const { hasFellowship, hasReferenda } = useChainSettings();
 
   const {
     referendaReferendumOptionsComponent,
@@ -48,11 +49,11 @@ export default function useOpenGovSubscription(
   });
 
   let openGovOptions = null;
-  if (hasOpenGov) {
+  if (hasFellowship || hasReferenda) {
     openGovOptions = (
       <FoldableSections title="Open Gov">
-        {referendaReferendumOptionsComponent}
-        {fellowshipReferendumOptionsComponent}
+        {hasReferenda && referendaReferendumOptionsComponent}
+        {hasFellowship && fellowshipReferendumOptionsComponent}
       </FoldableSections>
     );
   }
@@ -63,13 +64,10 @@ export default function useOpenGovSubscription(
       isReferendaReferendumOptionsChanged ||
       isFellowshipReferendumOptionsChanged,
     getOpenGovOptionValues: () => {
-      if (hasOpenGov) {
-        return {
-          ...getReferendaReferendumOptionValues(),
-          ...getFellowshipReferendumOptionValues(),
-        };
-      }
-      return {};
+      return {
+        ...(hasReferenda ? getReferendaReferendumOptionValues() : {}),
+        ...(hasFellowship ? getFellowshipReferendumOptionValues() : {}),
+      };
     },
   };
 }

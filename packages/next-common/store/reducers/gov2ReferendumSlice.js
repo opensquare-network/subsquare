@@ -71,7 +71,6 @@ export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigge
 
 export const fetchVotes =
   (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {
-    dispatch(setIsLoadingVotes(true));
     try {
       let blockApi = api;
       if (passedHeight) {

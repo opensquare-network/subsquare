@@ -107,7 +107,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   const [showNestedVotesList, setShowNestedVotesList] = useState(false);
   const api = useApi();
   const tally = useSubDemocracyTally();
-  const isPassing = useIsDemocracyPassing();
+  const isPassing = useIsDemocracyPassing(tally);
   const threshold = useDemocracyThreshold();
   const isPassed = useIsDemocracyPassed();
   const { useVoteCall, hideActionButtons } = useChainSettings();
@@ -153,6 +153,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
         />
 
         <TallyInfo
+          tally={tally}
           isLoadingVotes={isLoadingVotes}
           allAye={allAye}
           allNay={allNay}

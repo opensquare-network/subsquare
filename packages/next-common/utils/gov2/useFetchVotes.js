@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   clearVotes,
   fetchVotes,
-  votesSelector, votesTriggerSelector,
+  setIsLoadingVotes,
+  votesSelector,
+  votesTriggerSelector,
 } from "../../store/reducers/gov2ReferendumSlice";
 import useApi from "../hooks/useApi";
 
@@ -45,6 +47,10 @@ export default function useFetchVotes(referendum) {
 
   useEffect(() => {
     if (api) {
+      if (votesTrigger <= 1) {
+        dispatch(setIsLoadingVotes(true));
+      }
+
       dispatch(fetchVotes(api, trackId, referendumIndex, voteFinishedHeight));
     }
 

@@ -56,7 +56,8 @@ const kusama = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.KusamaAndParachains,
-  hasGov2: true,
+  hasReferenda: true,
+  hasFellowship: true,
   hasStatescan: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
@@ -65,6 +66,7 @@ const kusama = {
   hasDotreasury: true,
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
+  showAchainableLabels: true,
 };
 
 export default kusama;

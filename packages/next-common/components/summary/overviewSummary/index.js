@@ -45,7 +45,7 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
 }
 
 function OpenGovGroupContent({ summaryData }) {
-  const { noFellowship } = useChainSettings();
+  const { hasFellowship } = useChainSettings();
   const { activeGov2ReferendaCount, activeFellowshipReferendaCount } =
     summaryData ?? {};
 
@@ -57,7 +57,7 @@ function OpenGovGroupContent({ summaryData }) {
         href="/referenda"
         value={activeGov2ReferendaCount}
       />
-      {!noFellowship && (
+      {hasFellowship && (
         <SummaryTypeGroup
           label="F"
           tooltip="Active fellowship referenda"

@@ -9,7 +9,6 @@ import ElectorateIcon from "../../../assets/imgs/icons/electorate.svg";
 import ValueDisplay from "../../../components/valueDisplay";
 import VotesCount from "../../../components/democracy/referendum/votesCount";
 import { useChainSettings } from "../../../context/chain";
-import useSubDemocracyTally from "../../../hooks/democracy/tally";
 import useMaybeFetchElectorate from "../../../utils/hooks/referenda/useMaybeFetchElectorate";
 
 const Row = styled(Flex)`
@@ -42,12 +41,12 @@ const Value = styled.span`
 `;
 
 export default function TallyInfo({
+  tally,
   isLoadingVotes,
   allAye,
   allNay,
 }) {
   const node = useChainSettings();
-  const tally = useSubDemocracyTally();
   const electorate = useMaybeFetchElectorate();
   const [turnoutPercentage, setTurnoutPercentage] = useState();
   const decimals = node.decimals;
