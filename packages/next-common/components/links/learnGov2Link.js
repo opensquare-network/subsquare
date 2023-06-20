@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import ExternalLink from "../externalLink";
 import { p_12_normal } from "../../styles/componentCss";
 import ExternalLinkIcon from "../icons/externalLink";
@@ -16,8 +16,6 @@ const Link = styled(ExternalLink)`
  * @alias how gov2 works
  */
 export default function LearnGov2Link({ anchor = "" }) {
-  const { primaryPurple500 } = useTheme();
-
   let link = "https://wiki.polkadot.network/docs/maintain-guides-opengov";
   if (anchor) {
     link += `#${anchor}`;
@@ -26,7 +24,7 @@ export default function LearnGov2Link({ anchor = "" }) {
   return (
     <Link href={link}>
       How Governance V2 Works
-      <ExternalLinkIcon color={primaryPurple500} />
+      <ExternalLinkIcon color="var(--purple500)" />
     </Link>
   );
 }
