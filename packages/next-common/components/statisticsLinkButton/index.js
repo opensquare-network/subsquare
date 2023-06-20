@@ -10,7 +10,7 @@ import { isExternalLink } from "next-common/utils";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  color: ${(p) => p.theme.primaryPurple500};
+  color: var(--purple500);
   gap: 8px;
   ${p_14_bold};
 `;

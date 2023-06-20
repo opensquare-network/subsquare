@@ -6,7 +6,7 @@ const SubLink = styled.a`
   line-height: 16px;
   font-weight: 500;
   color: ${(props) =>
-    props.disabled ? "var(--textTertiary)" : props.theme.primaryPurple500};
+    props.disabled ? "var(--textTertiary)" : "var(--purple500)"};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 

@@ -39,11 +39,11 @@ const Description = styled.div`
   line-height: 140%;
   color: var(--textTertiary);
   > span {
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
     cursor: pointer;
   }
   > span.danger {
-    color: ${(props) => props.theme.secondaryRed500};
+    color: var(--red500);
   }
 `;
 

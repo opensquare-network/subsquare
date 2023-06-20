@@ -71,7 +71,7 @@ const EmptyPanel = styled(NeutralPanel)`
     min-width: 153px;
     height: 38px;
 
-    background: ${(props) => props.theme.primaryPurple500};
+    background: var(--purple500);
     border-radius: 4px;
 
     font-style: normal;

@@ -8,7 +8,6 @@ import {
   gap_x,
   items_center,
   justify_between,
-  text_primary,
 } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import PercentageBar from "next-common/components/percentageBar";
@@ -19,7 +18,6 @@ import { useChainSettings } from "next-common/context/chain";
 import usePercentageBarData from "./usePercentageBarData";
 import { useSelector } from "react-redux";
 import { isLoadingVotesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
-import { useThemeSetting } from "next-common/context/theme";
 
 const VotesGroup = styled.div`
   display: flex;
@@ -36,7 +34,7 @@ const VotesInfoLine = styled.div`
 
 const VotesGroupLabel = styled.div`
   ${p_12_medium};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 
 const VotesGroupItems = styled.div`
@@ -55,7 +53,7 @@ function PercentageTooltip({
   const { symbol, decimals } = useChainSettings();
   const fromUnit = useCallback(
     (value) => new BigNumber(value).div(Math.pow(10, decimals)).toFixed(2),
-    [decimals]
+    [decimals],
   );
 
   return (
@@ -76,7 +74,6 @@ function PercentageTooltip({
 export default function VotesInfo() {
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
   const { referendumIndex } = useOnchainData();
-  const theme = useThemeSetting();
 
   const {
     directCapital,
@@ -92,8 +89,8 @@ export default function VotesInfo() {
   let disabledBar = (
     <PercentageBar
       percent={50}
-      colorLeft={theme.grey100Bg}
-      colorRight={theme.grey100Bg}
+      colorLeft="var(--neutral200)"
+      colorRight="var(--neutral200)"
     />
   );
 

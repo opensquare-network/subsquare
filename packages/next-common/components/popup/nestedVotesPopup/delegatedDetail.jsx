@@ -24,8 +24,6 @@ import {
   gap_x,
   gap_y,
   items_center,
-  text_primary,
-  text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
 import { smcss } from "next-common/utils/responsive";
@@ -68,7 +66,7 @@ const DetailDescriptionLabel = styled.div`
   ${gap_x(8)};
 `;
 const DetailSelfVotesAnnotation = styled.span`
-  ${text_tertiary};
+  color: var(--textTertiary);
 `;
 
 const DescriptionsGroup = styled.div`
@@ -83,7 +81,7 @@ const DelegationListTitle = styled.h3`
   margin: 0;
   margin-bottom: 8px;
   ${p_14_bold};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 
 function getAnnotation(data = {}) {

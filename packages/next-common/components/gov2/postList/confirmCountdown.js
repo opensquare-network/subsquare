@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useTheme } from "styled-components";
 import { latestHeightSelector } from "../../../store/reducers/chainSlice";
 import TimeDuration from "../../TimeDuration";
 import CountDown from "../../_CountDown";
@@ -9,8 +8,6 @@ import getRemaining from "./common";
 import usePercentage from "./usePercentage";
 
 export default function ConfirmCountdown({ detail }) {
-  const { secondaryGreen500, secondaryGreen100 } = useTheme();
-
   const latestHeight = useSelector(latestHeightSelector);
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
@@ -19,7 +16,11 @@ export default function ConfirmCountdown({ detail }) {
   const confirmSince = onchain?.lastConfirmStartedAt?.blockHeight;
   const confirmEnd = confirmSince + confirmPeriod;
 
-  const confirmRemaining = getRemaining(latestHeight, confirmSince, confirmPeriod);
+  const confirmRemaining = getRemaining(
+    latestHeight,
+    confirmSince,
+    confirmPeriod,
+  );
   const confirmPercentage = usePercentage(confirmSince, confirmPeriod);
 
   return (
@@ -27,8 +28,8 @@ export default function ConfirmCountdown({ detail }) {
       <CountDown
         denominator={100}
         numerator={confirmPercentage}
-        foregroundColor={secondaryGreen500}
-        backgroundColor={secondaryGreen100}
+        foregroundColor="var(--green500)"
+        backgroundColor="var(--green100)"
         tooltipContent={
           confirmRemaining > 0 && (
             <span>

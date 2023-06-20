@@ -12,7 +12,6 @@ import {
   flex_nowrap,
   gap_x,
   items_center,
-  text_secondary,
   whitespace_nowrap,
 } from "../../../styles/tailwindcss";
 import { no_scroll_bar, p_12_normal } from "../../../styles/componentCss";
@@ -42,7 +41,7 @@ const Item = styled.div`
 `;
 
 const TextSecondary = styled.span`
-  ${text_secondary};
+  color: var(--textSecondary);
 `;
 
 export default function DemocracySummaryDelegationInfo({ delegating }) {

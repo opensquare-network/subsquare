@@ -4,7 +4,6 @@ import React from "react";
 import styled from "styled-components";
 import { p_12_medium, p_14_normal } from "../../../styles/componentCss";
 import {
-  bg_theme,
   flex,
   gap_x,
   h,
@@ -13,7 +12,6 @@ import {
   m,
   m_l,
   p_b,
-  text_tertiary,
   w,
   w_full,
 } from "../../../styles/tailwindcss";
@@ -27,13 +25,13 @@ import UserEventInfoCard from "./userEventInfoCard";
 const TimeLineHour = styled.div`
   ${w(40)}
   ${p_12_medium}
-  ${text_tertiary}
+  color: var(--textTertiary);
   text-align: right;
 `;
 const TimeLineSolid = styled.div`
   ${w_full}
   ${h(1)}
-  ${bg_theme("grey100Bg")}
+  background-color: var(--neutral200);
 `;
 const TimeLineContent = styled.div`
   ${m_l(48)}
@@ -59,7 +57,7 @@ const StatusWrapper = styled.div`
 
 const NoData = styled.p`
   ${p_14_normal}
-  ${text_tertiary}
+  color: var(--textTertiary);
   ${m(0)}
 `;
 
@@ -158,7 +156,13 @@ export default function DayEventTimelines({
             if (Object.values(FutureEventType).includes(event.type)) {
               return <FutureEventInfoCard key={index} event={event} />;
             }
-            return <UserEventInfoCard key={event._id} event={event} refresh={refresh} />;
+            return (
+              <UserEventInfoCard
+                key={event._id}
+                event={event}
+                refresh={refresh}
+              />
+            );
           })}
         </Timeline>
       ))}

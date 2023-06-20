@@ -87,8 +87,8 @@ const TagItem = styled.div`
   ${(p) =>
     p.active &&
     css`
-      background: ${(props) => props.theme.primaryPurple100} !important;
-      color: ${(props) => props.theme.primaryPurple500};
+      background: var(--purple100) !important;
+      color: var(--purple500);
     `}
 `;
 

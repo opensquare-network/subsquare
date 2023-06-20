@@ -27,7 +27,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   div.on {
-    background: ${(props) => props.theme.primaryPurple500};
+    background: var(--purple500);
   }
 
   div ul.mention-list,

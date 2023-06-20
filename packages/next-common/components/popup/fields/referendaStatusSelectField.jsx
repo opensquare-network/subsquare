@@ -1,6 +1,5 @@
 import noop from "lodash.noop";
 import Select from "next-common/components/select";
-import { useThemeSetting } from "next-common/context/theme";
 import { p_12_medium } from "next-common/styles/componentCss";
 import {
   flex,
@@ -63,19 +62,17 @@ export default function ReferendaStatusSelectField({
 }
 
 function Label({ label }) {
-  const theme = useThemeSetting();
-
   const colors = {
-    [gov2State.Preparing]: theme.secondaryAzure500,
-    [gov2State.Queueing]: theme.secondaryYellow500,
-    [gov2State.Deciding]: theme.secondaryBlue500,
-    [gov2State.Confirming]: theme.secondaryGreen500,
-    [gov2State.Executed]: theme.secondaryGreen500,
-    [gov2State.Approved]: theme.secondaryGreen500,
-    [gov2State.Rejected]: theme.secondaryRed500,
-    [gov2State.Killed]: theme.secondaryRed500,
-    [gov2State.Cancelled]: theme.secondaryRed500,
-    [gov2State.TimedOut]: theme.grey400Border,
+    [gov2State.Preparing]: "var(--azure500)",
+    [gov2State.Queueing]: "var(--orange500)",
+    [gov2State.Deciding]: "var(--blue500)",
+    [gov2State.Confirming]: "var(--green500)",
+    [gov2State.Executed]: "var(--green500)",
+    [gov2State.Approved]: "var(--green500)",
+    [gov2State.Rejected]: "var(--red500)",
+    [gov2State.Killed]: "var(--red500)",
+    [gov2State.Cancelled]: "var(--red500)",
+    [gov2State.TimedOut]: "var(--neutral500)",
   };
 
   return (

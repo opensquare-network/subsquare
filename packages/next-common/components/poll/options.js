@@ -25,8 +25,8 @@ const OptionWrapper = styled(GreyPanel)`
   ${(p) =>
     p.selected &&
     css`
-      background: ${(props) => props.theme.primaryPurple100};
-      color: ${(props) => props.theme.primaryPurple500};
+      background: var(--purple100);
+      color: var(--purple500);
     `}
   //todo : this needs to be fixed
   ${(props) =>

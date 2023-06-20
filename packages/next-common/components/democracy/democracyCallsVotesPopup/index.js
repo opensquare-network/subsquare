@@ -1,9 +1,7 @@
 import React, { useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
-import {
-  isLoadingVoteCallsSelector,
-} from "next-common/store/reducers/referendumSlice";
+import { isLoadingVoteCallsSelector } from "next-common/store/reducers/referendumSlice";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -14,7 +12,6 @@ import formatTime from "next-common/utils/viewfuncs/formatDate";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
-import { text_tertiary } from "next-common/styles/tailwindcss";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import useDemocracyFetchVoteCalls from "./useDemocracyFetchVoteCalls";
@@ -24,7 +21,7 @@ const VoteTime = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  ${text_tertiary};
+  color: var(--textTertiary);
   :hover {
     text-decoration: underline;
   }
@@ -32,10 +29,8 @@ const VoteTime = styled.div`
 
 export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
-  const {
-    allAye = [],
-    allNay = [],
-  } = useDemocracyFetchVoteCalls(referendumIndex);
+  const { allAye = [], allNay = [] } =
+    useDemocracyFetchVoteCalls(referendumIndex);
   const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);

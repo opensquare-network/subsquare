@@ -8,7 +8,7 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
-    fill: ${(props) => props.themeObj.grey200Border};
+    fill: var(--neutral300);
   }
 `;
 

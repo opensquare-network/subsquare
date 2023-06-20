@@ -77,8 +77,8 @@ export const WarningMessage = styled(GreyPanel)`
   ${(p) =>
     p.danger &&
     css`
-      color: ${(props) => props.theme.secondaryRed500};
-      background: ${(props) => props.theme.secondaryRed100};
+      color: var(--red500);
+      background: var(--red100);
     `}
 `;
 
@@ -128,7 +128,7 @@ export const DelegatingValue = styled(GreyPanel)`
     }
 
     > .proxy-addr {
-      color: ${(props) => props.theme.secondarySapphire500};
+      color: var(--sapphire500);
       margin-left: 8px;
     }
   }

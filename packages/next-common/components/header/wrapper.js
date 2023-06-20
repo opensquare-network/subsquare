@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import styled from "styled-components";
-import { bg_theme } from "../../styles/tailwindcss";
 
 const Wrapper = styled.header`
   padding-left: 32px;
@@ -17,8 +16,7 @@ const Wrapper = styled.header`
   box-shadow: var(--shadow100);
   height: 64px;
   border-bottom: 1px solid var(--neutral300);
-  ${bg_theme("neutral")};
-  ${(p) => p.theme.isDark && bg_theme("neutralBg")};
+  background-color: var(--neutral100);
 `;
 
 function HeaderWrapper({ children }) {

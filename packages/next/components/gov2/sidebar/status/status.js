@@ -17,18 +17,18 @@ const StatusBase = styled.div`
 `;
 
 const DecidingStatus = styled(StatusBase)`
-  color: ${(props) => props.theme.secondaryBlue500};
-  background: ${(props) => props.theme.secondaryBlue100};
+  color: var(--blue500);
+  background: var(--blue100);
 `;
 
 const PositiveStatus = styled(StatusBase)`
-  color: ${(props) => props.theme.secondaryGreen500};
-  background: ${(props) => props.theme.secondaryGreen100};
+  color: var(--green500);
+  background: var(--green100);
 `;
 
 const NegativeStatus = styled(StatusBase)`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
 `;
 
 export function PrepareStatus() {

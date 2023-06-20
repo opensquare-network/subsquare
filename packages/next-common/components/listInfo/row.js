@@ -36,7 +36,7 @@ const Content = styled.div`
   word-break: break-all;
 
   a {
-    color: ${(props) => props.theme.secondarySapphire500};
+    color: var(--sapphire500);
     font-weight: 500;
 
     &:hover {

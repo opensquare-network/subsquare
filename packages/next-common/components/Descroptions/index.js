@@ -6,8 +6,6 @@ import {
   flex,
   items_center,
   justify_between,
-  text_primary,
-  theme,
   w_full,
 } from "next-common/styles/tailwindcss";
 import {
@@ -23,17 +21,17 @@ const DescriptionsTitle = styled.h3`
   margin: 0;
   margin-bottom: 8px;
   ${p_14_bold};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 const DescriptionItem = styled.div`
   height: 44px;
   ${flex};
   ${justify_between};
   ${items_center};
-  ${text_primary};
+  color: var(--textPrimary);
 
   & + & {
-    border-top: 1px solid ${theme("grey200Border")};
+    border-top: 1px solid var(--neutral300);
   }
 `;
 const DescriptionItemLabel = styled.div`

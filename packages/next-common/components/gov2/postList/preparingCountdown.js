@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "styled-components";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "../../../store/reducers/chainSlice";
 import getRemaining from "./common";
@@ -9,7 +8,6 @@ import TimeDuration from "../../TimeDuration";
 import usePercentage from "./usePercentage";
 
 export default function PreparingCountdown({ detail }) {
-  const { secondaryBlue500, secondaryBlue100 } = useTheme();
   const latestHeight = useSelector(latestHeightSelector);
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
@@ -27,15 +25,20 @@ export default function PreparingCountdown({ detail }) {
       <CountDown
         denominator={100}
         numerator={preparePercentage}
-        foregroundColor={secondaryBlue500}
-        backgroundColor={secondaryBlue100}
+        foregroundColor="var(--blue500)"
+        backgroundColor="var(--blue100)"
         tooltipContent={
           remaining > 0 ? (
             <span>
               Preparing end in <TimeDuration blocks={remaining} /> #
               {prepareEnd?.toLocaleString()}
             </span>
-          ) : <span>Preparation ended{ hasPutDecisionDeposit ? "" : ", waiting for decision deposit" }</span>
+          ) : (
+            <span>
+              Preparation ended
+              {hasPutDecisionDeposit ? "" : ", waiting for decision deposit"}
+            </span>
+          )
         }
       />
     </Wrapper>

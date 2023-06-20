@@ -15,7 +15,6 @@ import {
   m_l,
   p,
   space_x,
-  text_primary,
 } from "../../../styles/tailwindcss";
 import CreateEventButton from "./createEventButton";
 import noop from "lodash.noop";
@@ -43,7 +42,7 @@ const ToolbarButtonGroup = styled.div`
 const ToolbarDateLabel = styled.span`
   ${p_16_bold}
   ${m_l(16)}
-  ${text_primary}
+  color: var(--textPrimary);
 `;
 
 const NavigateButton = styled(Button)`

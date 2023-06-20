@@ -28,7 +28,7 @@ const SubButton = styled.button`
   all: unset;
   font-size: 12px;
   font-weight: 500;
-  color: ${(props) => props.theme.primaryPurple500};
+  color: var(--purple500);
   cursor: pointer;
 `;
 

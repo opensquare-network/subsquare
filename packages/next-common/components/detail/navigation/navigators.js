@@ -115,7 +115,7 @@ export const NavigationWrapper = styled(NoticeWrapper)`
   }
 
   a {
-    color: ${(props) => props.theme.secondarySapphire500};
+    color: var(--sapphire500);
   }
 
   > :not(:first-child) {

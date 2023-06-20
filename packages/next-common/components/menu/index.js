@@ -1,4 +1,4 @@
-import styled, { css, useTheme } from "styled-components";
+import styled, { css } from "styled-components";
 import React, { Fragment, useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -20,9 +20,6 @@ import {
   items_center,
   m_r,
   space_y,
-  text_secondary,
-  text_tertiary,
-  theme,
 } from "../../styles/tailwindcss";
 import { getHomeMenuGroupDefaultBehaviorByCounts } from "../../utils/consts/menu";
 import isNil from "lodash.isnil";
@@ -55,23 +52,23 @@ const Title = styled.div`
 const TitleGroup = styled(Flex)`
   padding: 12px 0;
   ${cursor_pointer};
-  ${text_tertiary};
+  color: var(--textTertiary);
 
   &:hover {
-    ${text_secondary};
+    color: var(--textSecondary);
   }
 
   ${MenuFoldIcon},
   ${MenuUnFoldIcon} {
     path {
-      stroke: ${theme("textTertiary")};
+      stroke: var(--textTertiary);
     }
   }
   &:hover {
     ${MenuFoldIcon},
     ${MenuUnFoldIcon} {
       path {
-        stroke: ${theme("textSecondary")};
+        stroke: var(--textSecondary);
       }
     }
   }
@@ -111,12 +108,12 @@ const Item = styled.div`
   }
 
   :hover {
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
 
     svg {
       &:first-child {
         path {
-          fill: ${(props) => props.theme.primaryPurple500};
+          fill: var(--purple500);
         }
       }
     }
@@ -135,11 +132,11 @@ const Item = styled.div`
     css`
       font-weight: 600;
       background: var(--neutral300);
-      color: ${(props) => props.theme.primaryPurple500};
+      color: var(--purple500);
 
       svg {
         &:first-child path {
-          fill: ${(props) => props.theme.primaryPurple500};
+          fill: var(--purple500);
         }
       }
     `}
@@ -160,8 +157,6 @@ const MenuExpandOrCollapseIconWrapper = styled.span`
 `;
 
 function defaultItemRender(icon, name, activeCount, isExternalLink) {
-  const { textPlaceholder } = useTheme();
-
   return (
     <ItemInner>
       {icon}
@@ -169,7 +164,7 @@ function defaultItemRender(icon, name, activeCount, isExternalLink) {
         {name}
         {!!activeCount && <ItemActiveCount>{activeCount}</ItemActiveCount>}
       </span>
-      {isExternalLink && <ExternalLink color={textPlaceholder} />}
+      {isExternalLink && <ExternalLink color="var(--textDisabled)" />}
     </ItemInner>
   );
 }
@@ -236,8 +231,8 @@ function MenuGroup({ menu, defaultExpanded }) {
               <Link
                 href={item?.pathname}
                 passHref
-                target={isExternalLink ? "_blank" : "_self"}>
-
+                target={isExternalLink ? "_blank" : "_self"}
+              >
                 <Item
                   active={
                     router.pathname === item.pathname ||
@@ -245,11 +240,7 @@ function MenuGroup({ menu, defaultExpanded }) {
                     (router.pathname === "/[chain]" && item.pathname === "/")
                   }
                 >
-                  {item.itemRender?.(
-                    item.icon,
-                    item.name,
-                    item.activeCount,
-                  ) ??
+                  {item.itemRender?.(item.icon, item.name, item.activeCount) ??
                     defaultItemRender(
                       item.icon,
                       item.name,
@@ -257,7 +248,6 @@ function MenuGroup({ menu, defaultExpanded }) {
                       isExternalLink,
                     )}
                 </Item>
-
               </Link>
             </Fragment>
           );

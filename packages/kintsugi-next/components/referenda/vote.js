@@ -94,13 +94,13 @@ const Status = styled.div`
 `;
 
 const PassStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryGreen500};
-  background: ${(props) => props.theme.secondaryGreen100};
+  color: var(--green500);
+  background: var(--green100);
 `;
 
 const RejectStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
 `;
 
 const BarWrapper = styled.div`
@@ -118,13 +118,13 @@ const BarContainer = styled.div`
 `;
 
 const AyesBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryGreen500};
+  background-color: var(--green500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
 
 const NaysBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryRed500};
+  background-color: var(--red500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
@@ -143,7 +143,7 @@ const Guide = styled.p`
     font-size: 12px !important;
     display: flex;
     align-items: center;
-    color: ${(props) => props.theme.primaryPurple500} !important;
+    color: var(--purple500) !important;
   }
 `;
 

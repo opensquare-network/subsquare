@@ -1,12 +1,7 @@
 import React, { useState, useMemo } from "react";
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
 import { createGlobalStyle, useTheme } from "styled-components";
-import {
-  bg_theme,
-  p_y,
-  text_capitalize,
-  text_primary,
-} from "../../styles/tailwindcss";
+import { p_y, text_capitalize } from "../../styles/tailwindcss";
 import { p_12_bold, p_14_medium } from "../../styles/componentCss";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import Link from "next/link";
@@ -36,7 +31,7 @@ const CmdkGlobalStyle = createGlobalStyle`
       background-color: rgba(0, 0, 0, 0.25);
     }
     .command-palette-content-panel {
-      ${bg_theme("neutral")};
+      background-color: var(--neutral100);
     }
     .command-palette-list-item {
       &.bg-gray-200/50 {
@@ -53,7 +48,7 @@ const CmdkGlobalStyle = createGlobalStyle`
       & div:first-child  {
         width: auto;
         ${p_14_medium};
-        ${text_primary};
+        color: var(--textPrimary);
         ${text_capitalize};
       }
     }

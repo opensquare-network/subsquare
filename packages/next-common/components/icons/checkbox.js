@@ -6,7 +6,7 @@ const CheckboxIcon = styled(Checkbox)`
     p.checked &&
     css`
       rect {
-        fill: ${(p) => p.theme.primaryPurple500};
+        fill: var(--purple500);
       }
     `}
 `;

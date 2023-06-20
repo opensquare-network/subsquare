@@ -42,7 +42,7 @@ function MembersList({ category, items, loading = false, theme }) {
           </StyledTr>
           <RowSplitter
             backgroundColor={
-              theme.isDark ? theme.grey200Border : "var(--neutral200)"
+              theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
             }
             padding={"16px 0 4px 0"}
           />
@@ -64,7 +64,7 @@ function MembersList({ category, items, loading = false, theme }) {
                 {index !== items.length - 1 && (
                   <RowSplitter
                     backgroundColor={
-                      theme.isDark ? theme.grey200Border : "var(--neutral200)"
+                      theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
                     }
                   />
                 )}

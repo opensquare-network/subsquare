@@ -23,11 +23,11 @@ const Background = styled(Bar)`
 `;
 
 const Percentage = styled(Bar)`
-  background-color: ${(p) => p.fg ?? p.theme.secondaryBlue500};
+  background-color: ${(p) => p.fg ?? "var(--blue500)"};
   width: ${(p) => p.percentage}%;
 `;
 const Total = styled(Bar)`
-  background-color: ${(p) => p.bg ?? p.theme.secondaryBlue100};
+  background-color: ${(p) => p.bg ?? "var(--blue100)"};
   overflow: hidden;
 `;
 

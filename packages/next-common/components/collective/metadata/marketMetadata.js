@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
 import {
-  bg_theme,
   block,
   border_hidden,
   cursor_pointer,
@@ -18,8 +17,6 @@ import {
   rounded,
   rounded_4,
   space_x,
-  text_secondary,
-  text_theme,
   w,
   w_full,
 } from "next-common/styles/tailwindcss";
@@ -56,17 +53,17 @@ const HeaderTitle = styled.div`
 const TagButton = styled.button`
   ${p_x(8)};
   ${p_y(4)};
-  ${bg_theme("grey100Bg")};
+  background-color: var(--neutral200);
   ${p_12_medium};
   ${rounded};
-  ${text_secondary};
+  color: var(--textSecondary);
   ${border_hidden};
   ${cursor_pointer};
   line-height: 1;
 
   &.active {
-    ${bg_theme("primaryPurple100")};
-    ${text_theme("primaryPurple500")};
+    background-color: var(--purple100);
+    color: var(--purple500);
   }
 `;
 const TagsWrapper = styled.div`
@@ -86,13 +83,13 @@ const ViewWrapper = styled.div`
 const DataTableViewDescription = styled.div`
   ${p_14_normal};
   a {
-    ${text_theme("secondarySapphire500")};
+    color: var(--sapphire500);
   }
 `;
 
 const DataTableViewQuestionLink = styled(ExternalLink)`
   ${p_14_normal};
-  ${text_theme("secondarySapphire500")};
+  color: var(--sapphire500);
 `;
 
 const DataTableViewTags = styled.div`

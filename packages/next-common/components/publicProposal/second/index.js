@@ -90,7 +90,7 @@ const Description = styled.div`
   line-height: 140%;
   color: var(--textTertiary);
   > span {
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
     cursor: pointer;
   }
 `;
