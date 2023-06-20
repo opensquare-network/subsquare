@@ -1,12 +1,11 @@
-import Overview from "next-common/components/overview";
-import OverviewV2 from "next-common/components/overview/v2";
+import OverviewPostList from "next-common/components/overview/postList";
+import OverviewHead from "next-common/components/overview/head";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   toFinancialMotionsListItem,
   toAdvisoryMotionsListItem,
 } from "utils/viewfuncs";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain, useMenuHasGov2 } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
@@ -186,21 +185,9 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   );
 
   return (
-    <ListLayout>
-      <OverviewV2
-        overviewData={filteredOverviewData}
-        summaryData={overview?.summary}
-      />
+    <ListLayout head={<OverviewHead summaryData={overview?.summary} />}>
+      <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
-  );
-
-  return (
-    <HomeLayout tracks={tracks} fellowshipTracks={fellowshipTracks}>
-      <Overview
-        overviewData={filteredOverviewData}
-        summaryData={overview?.summary}
-      />
-    </HomeLayout>
   );
 });
 
