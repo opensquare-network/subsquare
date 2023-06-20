@@ -8,7 +8,6 @@ import {
   gap_x,
   items_center,
   justify_between,
-  text_primary,
 } from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import PercentageBar from "next-common/components/percentageBar";
@@ -35,7 +34,7 @@ const VotesInfoLine = styled.div`
 
 const VotesGroupLabel = styled.div`
   ${p_12_medium};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 
 const VotesGroupItems = styled.div`

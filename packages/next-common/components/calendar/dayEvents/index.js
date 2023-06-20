@@ -11,7 +11,6 @@ import {
   m_l,
   p_x,
   p_y,
-  text_primary,
   text_tertiary,
 } from "../../../styles/tailwindcss";
 import {
@@ -37,7 +36,7 @@ const Wrapper = styled(NeutralPanel)`
 const Title = styled.h2`
   ${m(0)}
   ${p_16_bold}
-  ${text_primary}
+  color: var(--textPrimary)
 `;
 const TitleDate = styled.small`
   ${m_l(12)}

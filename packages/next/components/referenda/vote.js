@@ -20,7 +20,12 @@ import TallyInfo from "next-common/components/referenda/tally/info";
 import { emptyFunction } from "next-common/utils";
 import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import { flex, gap_x, items_center, justify_between, text_primary } from "next-common/styles/tailwindcss";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+} from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
@@ -50,7 +55,7 @@ const VotesGroup = styled.div`
 `;
 const VotesGroupLabel = styled.div`
   ${p_12_medium};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 const VotesGroupItems = styled.div`
   ${flex};
@@ -146,11 +151,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
           </div>
         </Title>
 
-        <VoteBar
-          tally={tally}
-          electorate={electorate}
-          threshold={threshold}
-        />
+        <VoteBar tally={tally} electorate={electorate} threshold={threshold} />
 
         <TallyInfo
           tally={tally}

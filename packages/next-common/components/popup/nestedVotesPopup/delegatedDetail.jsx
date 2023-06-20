@@ -24,7 +24,6 @@ import {
   gap_x,
   gap_y,
   items_center,
-  text_primary,
   text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
@@ -83,7 +82,7 @@ const DelegationListTitle = styled.h3`
   margin: 0;
   margin-bottom: 8px;
   ${p_14_bold};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 
 function getAnnotation(data = {}) {

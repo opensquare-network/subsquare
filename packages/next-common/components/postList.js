@@ -10,7 +10,6 @@ import {
   gap_x,
   items_center,
   justify_between,
-  text_primary,
   text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { p_14_medium, p_16_bold } from "next-common/styles/componentCss";
@@ -42,7 +41,7 @@ const ListTitleGroup = styled.div`
 const ListTitle = styled.h3`
   margin: 0;
   ${gap_x(8)};
-  ${text_primary};
+  color: var(--textPrimary);
   ${p_16_bold};
 `;
 

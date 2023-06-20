@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
 import { createGlobalStyle, useTheme } from "styled-components";
-import { p_y, text_capitalize, text_primary } from "../../styles/tailwindcss";
+import { p_y, text_capitalize } from "../../styles/tailwindcss";
 import { p_12_bold, p_14_medium } from "../../styles/componentCss";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import Link from "next/link";
@@ -48,7 +48,7 @@ const CmdkGlobalStyle = createGlobalStyle`
       & div:first-child  {
         width: auto;
         ${p_14_medium};
-        ${text_primary};
+        color: var(--textPrimary);
         ${text_capitalize};
       }
     }
