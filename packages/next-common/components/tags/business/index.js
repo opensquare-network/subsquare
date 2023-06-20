@@ -27,8 +27,8 @@ const Democracy = styled(Common)`
 `;
 
 const OpenGov = styled(Common)`
-  background: ${(props) => props.theme.secondaryBlue100};
-  color: ${(props) => props.theme.secondaryBlue500};
+  background: var(--blue100);
+  color: var(--blue500);
 `;
 
 const Collectives = styled(Common)`

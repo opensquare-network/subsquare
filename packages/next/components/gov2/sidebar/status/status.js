@@ -17,8 +17,8 @@ const StatusBase = styled.div`
 `;
 
 const DecidingStatus = styled(StatusBase)`
-  color: ${(props) => props.theme.secondaryBlue500};
-  background: ${(props) => props.theme.secondaryBlue100};
+  color: var(--blue500);
+  background: var(--blue100);
 `;
 
 const PositiveStatus = styled(StatusBase)`

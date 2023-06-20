@@ -18,7 +18,7 @@ export const MotionTag = styled(Common)`
 `;
 
 export const ActiveTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryBlue500};
+  background: var(--blue500);
 `;
 
 export const PositiveTag = styled(Common)`
