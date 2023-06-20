@@ -65,7 +65,7 @@ const TagButton = styled.button`
 
   &.active {
     background-color: var(--purple100);
-    ${text_theme("primaryPurple500")};
+    color: var(--purple500);
   }
 `;
 const TagsWrapper = styled.div`

@@ -15,7 +15,6 @@ import {
   p_y,
   rounded_4,
   text_tertiary,
-  text_theme,
   w_full,
 } from "../../styles/tailwindcss";
 import {
@@ -54,7 +53,7 @@ const Trigger = styled.button`
 
 const HotKey = styled.span`
   background-color: var(--purple100);
-  ${text_theme("primaryPurple500")};
+  color: var(--purple500);
   ${rounded_4};
   ${p_x(8)};
   ${p_y(2)};

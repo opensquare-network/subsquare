@@ -24,7 +24,6 @@ import {
   p_l,
   rounded_4,
   text_secondary,
-  text_theme,
   w_full,
 } from "../../../styles/tailwindcss";
 import TooltipOrigin from "../../tooltip";
@@ -85,7 +84,7 @@ const CellWrapper = styled.div`
       ${border_color_theme("primaryPurple500")}
 
       ${CellLabel} {
-        ${text_theme("primaryPurple500")}
+        color: var(--purple500);
       }
 
       &:hover {
