@@ -7,7 +7,6 @@ import {
   items_center,
   justify_between,
   text_primary,
-  theme,
   w_full,
 } from "next-common/styles/tailwindcss";
 import {
@@ -33,7 +32,7 @@ const DescriptionItem = styled.div`
   ${text_primary};
 
   & + & {
-    border-top: 1px solid ${theme("grey200Border")};
+    border-top: 1px solid var(--neutral300);
   }
 `;
 const DescriptionItemLabel = styled.div`
