@@ -143,7 +143,7 @@ const Guide = styled.p`
     font-size: 12px !important;
     display: flex;
     align-items: center;
-    color: ${(props) => props.theme.primaryPurple500} !important;
+    color: var(--purple500) !important;
   }
 `;
 

@@ -28,7 +28,7 @@ const UploadArea = styled(Flex)`
   ${(p) =>
     p.active &&
     css`
-      border-color: ${(props) => props.theme.primaryPurple500};
+      border-color: var(--purple500);
     `}
 `;
 

@@ -45,7 +45,7 @@ const Left = styled.div`
 const Cirtcle = styled.div`
   height: 12px;
   width: 12px;
-  border: 3px solid ${(props) => props.theme.primaryPurple500};
+  border: 3px solid var(--purple500);
   border-radius: 50%;
   margin: 4px 0;
 `;

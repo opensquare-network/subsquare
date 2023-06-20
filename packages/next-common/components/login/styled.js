@@ -22,7 +22,7 @@ export const LinkWrapper = styled.div`
   text-align: center;
   a {
     font-weight: bold;
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
     cursor: pointer;
   }
 `;
@@ -64,7 +64,7 @@ export const Redirect = styled.div`
   color: var(--textSecondary);
   .sec {
     font-weight: bold;
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
     margin-left: 8px;
   }
 `;

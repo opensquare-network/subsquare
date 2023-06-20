@@ -111,12 +111,12 @@ const Item = styled.div`
   }
 
   :hover {
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
 
     svg {
       &:first-child {
         path {
-          fill: ${(props) => props.theme.primaryPurple500};
+          fill: var(--purple500);
         }
       }
     }
@@ -135,11 +135,11 @@ const Item = styled.div`
     css`
       font-weight: 600;
       background: var(--neutral300);
-      color: ${(props) => props.theme.primaryPurple500};
+      color: var(--purple500);
 
       svg {
         &:first-child path {
-          fill: ${(props) => props.theme.primaryPurple500};
+          fill: var(--purple500);
         }
       }
     `}

@@ -12,7 +12,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 const Create = styled.a`
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.primaryPurple500};
+  color: var(--purple500);
   font-size: 14px;
   white-space: nowrap;
   svg {

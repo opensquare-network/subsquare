@@ -38,7 +38,7 @@ const Text = styled.div`
   color: var(--textTertiary);
   a {
     font-weight: bold;
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
   }
 `;
 
