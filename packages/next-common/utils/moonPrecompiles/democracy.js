@@ -7,11 +7,7 @@ const democracyAbi = [
   "function unDelegate()",
 ];
 
-export async function encodeDelegateData({
-  targetAddress,
-  conviction,
-  amount,
-}) {
+export function encodeDelegateData({ targetAddress, conviction, amount }) {
   const contractInterface = new ethers.Interface(democracyAbi);
   const callData = contractInterface.encodeFunctionData("delegate", [
     targetAddress,
@@ -24,7 +20,7 @@ export async function encodeDelegateData({
   };
 }
 
-export async function encodeUnDelegateData() {
+export function encodeUnDelegateData() {
   const contractInterface = new ethers.Interface(democracyAbi);
   const callData = contractInterface.encodeFunctionData("unDelegate");
   return {

@@ -39,10 +39,10 @@ export default function UndelegatePopup({
       const signerAddress = signerAccount?.address;
 
       if (isMoonChain()) {
-        let { callTo, callData } = await encodeUnDelegateData();
+        let { callTo, callData } = encodeUnDelegateData();
 
         if (signerAccount?.proxyAddress) {
-          ({ callTo, callData } = await encodeProxyData({
+          ({ callTo, callData } = encodeProxyData({
             real: signerAccount?.proxyAddress,
             callTo,
             callData,

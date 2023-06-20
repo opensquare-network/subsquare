@@ -22,6 +22,10 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import Track from "next-common/components/popup/fields/trackField";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
+import isMoonChain from "next-common/utils/isMoonChain";
+import { encodeDelegateData } from "next-common/utils/moonPrecompiles/convictionVoting";
+import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
+import { sendEvmTx } from "next-common/utils/sendEvmTx";
 
 function PopupContent({
   extensionAccounts,
@@ -96,26 +100,54 @@ function PopupContent({
       );
     }
 
-    let tx = api.tx.convictionVoting.delegate(
-      track,
-      targetAddress,
-      conviction,
-      bnVoteBalance.toString()
-    );
+    if (isMoonChain()) {
+      let { callTo, callData } = encodeDelegateData({
+        trackId: parseInt(track),
+        targetAddress,
+        conviction: parseInt(conviction),
+        amount: BigInt(bnVoteBalance.toString()),
+      });
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      if (signerAccount?.proxyAddress) {
+        ({ callTo, callData } = encodeProxyData({
+          real: signerAccount?.proxyAddress,
+          callTo,
+          callData,
+        }));
+      }
+
+      await sendEvmTx({
+        to: callTo,
+        data: callData,
+        dispatch,
+        setLoading: setIsLoading,
+        onInBlock,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    } else {
+      let tx = api.tx.convictionVoting.delegate(
+        track,
+        targetAddress,
+        conviction,
+        bnVoteBalance.toString()
+      );
+
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
+
+      await sendTx({
+        tx,
+        dispatch,
+        setLoading: setIsLoading,
+        onInBlock,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
     }
-
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setIsLoading,
-      onInBlock,
-      onClose,
-      signerAddress,
-      isMounted,
-    });
   };
 
   return (

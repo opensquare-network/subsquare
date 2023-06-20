@@ -97,14 +97,14 @@ function PopupContent({
     }
 
     if (isMoonChain()) {
-      let { callTo, callData } = await encodeDelegateData({
+      let { callTo, callData } = encodeDelegateData({
         targetAddress,
         conviction: parseInt(conviction),
         amount: BigInt(bnVoteBalance.toString()),
       });
 
       if (signerAccount?.proxyAddress) {
-        ({ callTo, callData } = await encodeProxyData({
+        ({ callTo, callData } = encodeProxyData({
           real: signerAccount?.proxyAddress,
           callTo,
           callData,
