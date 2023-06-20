@@ -37,28 +37,28 @@ const Collectives = styled(Common)`
 `;
 
 const Staking = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const Scheduler = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const Society = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const Parachain = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const UserEvent = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 export function TreasuryTag() {
