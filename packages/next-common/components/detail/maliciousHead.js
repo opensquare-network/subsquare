@@ -6,8 +6,8 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--yellow500);
-  background-color: var(--yellow100);
+  color: var(--orange500);
+  background-color: var(--orange100);
   border-radius: 4px;
   padding: 10px;
   margin-bottom: 16px;
