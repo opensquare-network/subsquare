@@ -10,8 +10,8 @@ export const ThresholdInfo = styled(GreyPanel)`
   ${(p) =>
     p.positive &&
     css`
-      background-color: ${p.theme.secondaryGreen100};
-      color: ${p.theme.secondaryGreen500};
+      background-color: var(--green100);
+      color: var(--green500);
     `}
 `;
 

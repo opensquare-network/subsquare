@@ -14,7 +14,7 @@ const Bar = styled.div`
   height: 4px;
   background: ${(p) =>
     p.value === true
-      ? p.theme.secondaryGreen500
+      ? "var(--green500)"
       : p.value === false
       ? p.theme.secondaryRed500
       : "var(--neutral300)"};
