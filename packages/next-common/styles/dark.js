@@ -54,15 +54,6 @@ const dark = {
 
     // compat
     darkBlue: "var(--purple500)",
-
-    // old
-    textPlaceholder: "rgba(255, 255, 255, 0.15)",
-    primaryDarkBlue: "#6848FF",
-    neutral: "#212433",
-    grey100Bg: "#1D1E2C",
-    grey200Border: "#272A3A",
-    grey300Border: "#363A4D",
-    grey400Border: "#575C72",
   },
   chain: {
     altair: {

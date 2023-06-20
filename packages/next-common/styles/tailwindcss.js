@@ -2,31 +2,11 @@
 // https://tailwindcss.com
 // `inline-block` => `inline_block`
 
-import { css } from "styled-components";
-
 // utility functions
 // ---
 
-export function theme(key) {
-  return `var(--${key})`;
-}
 export function px(n) {
   return `${n}px`;
-}
-export function bg_theme(key) {
-  return css`
-    background-color: ${theme(key)};
-  `;
-}
-export function text_theme(key) {
-  return css`
-    color: ${theme(key)};
-  `;
-}
-export function border_color_theme(key) {
-  return css`
-    border-color: ${theme(key)};
-  `;
 }
 export function m(n) {
   return `
@@ -297,14 +277,6 @@ export const rounded_8 = make_rounded(8);
 export const rounded_full = make_rounded(9999);
 export const rounded_none = make_rounded(0);
 
-// border color
-export const border_theme_grey200 = css`
-  border-color: ${theme("grey200Border")};
-`;
-export const border_theme_grey400 = css`
-  border-color: ${theme("grey400Border")};
-`;
-
 // border style
 export const border_hidden = `
   border-style: hidden;
@@ -382,14 +354,6 @@ export const truncate = `
   ${text_ellipsis};
 `;
 
-// text color
-export const text_primary = text_theme("textPrimary");
-export const text_primary_inverse = text_theme("textPrimaryInverse");
-export const text_secondary = text_theme("textSecondary");
-export const text_tertiary = text_theme("textTertiary");
-export const text_quaternary = text_theme("textQuaternary");
-export const text_placeholder = text_theme("textPlaceholder");
-
 // text transform
 export const text_capitalize = `
   text-transform: capitalize;
@@ -419,10 +383,6 @@ export const cursor_default = `
 
 // backgrounds
 // ---
-
-// background color
-export const bg_fill_panel = bg_theme("fillPanel");
-export const bg_theme500 = bg_theme("theme500");
 
 // private
 // ---
