@@ -25,7 +25,6 @@ import {
   userConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import isNil from "lodash.isnil";
-import { useTheme } from "styled-components";
 import TimeDuration from "next-common/components/TimeDuration";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 
@@ -63,7 +62,6 @@ function Empty() {
 
 function ConfirmationStarted() {
   const latestHeight = useSelector(latestHeightSelector);
-  const { secondaryGreen500, secondaryGreen300 } = useTheme();
 
   const confirmPeriod = useConfirm();
   const confirmRemaining = useConfirmRemaining();
@@ -138,8 +136,8 @@ function ConfirmationStarted() {
         percentage: confirmPercentage,
         start: confirmStartPercentage,
         end: confirmEndPercentage < 1 ? 1 : confirmEndPercentage,
-        fg: secondaryGreen500,
-        bg: secondaryGreen300,
+        fg: "var(--green500)",
+        bg: "var(--green300)",
         tooltipContent: confirmRemaining > 0 && (
           <Remaining blocks={confirmRemaining} />
         ),
@@ -157,8 +155,6 @@ function ConfirmationStarted() {
     confirmStartPercentage,
     decisionBlocks,
     decisionSince,
-    secondaryGreen300,
-    secondaryGreen500,
   ]);
 
   if (isNil(confirmStart)) {

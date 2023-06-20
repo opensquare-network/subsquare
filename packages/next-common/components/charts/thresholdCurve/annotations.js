@@ -20,8 +20,8 @@ export function useSupportPercentageLine(supportPercentage) {
   return percentageLineBase(supportPercentage, purple300);
 }
 export function useApprovalPercentageLine(approvalPercentage) {
-  const { secondaryGreen300 } = useThemeSetting();
-  return percentageLineBase(approvalPercentage, secondaryGreen300);
+  const { green300 } = useThemeSetting();
+  return percentageLineBase(approvalPercentage, green300);
 }
 
 function outerPointBase(backgroundColor, borderColor, x, y) {
@@ -45,18 +45,18 @@ function innerPointBase(backgroundColor, x, y) {
   };
 }
 export function useSupportPoints(x, y) {
-  const { neutral, purple500 } = useThemeSetting();
+  const { neutral100, purple500 } = useThemeSetting();
 
   return [
-    outerPointBase(neutral, purple500, x, y),
+    outerPointBase(neutral100, purple500, x, y),
     innerPointBase(purple500, x, y),
   ];
 }
 export function useApprovalPoints(x, y) {
-  const { neutral, secondaryGreen500 } = useThemeSetting();
+  const { neutral100, green500 } = useThemeSetting();
 
   return [
-    outerPointBase(neutral, secondaryGreen500, x, y),
-    innerPointBase(secondaryGreen500, x, y),
+    outerPointBase(neutral100, green500, x, y),
+    innerPointBase(green500, x, y),
   ];
 }
