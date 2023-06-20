@@ -53,7 +53,7 @@ const Trigger = styled.button`
 `;
 
 const HotKey = styled.span`
-  ${bg_theme("primaryPurple100")};
+  background-color: var(--purple100);
   ${text_theme("primaryPurple500")};
   ${rounded_4};
   ${p_x(8)};

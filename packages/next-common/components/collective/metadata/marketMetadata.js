@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
 import {
-  bg_theme,
   block,
   border_hidden,
   cursor_pointer,
@@ -65,7 +64,7 @@ const TagButton = styled.button`
   line-height: 1;
 
   &.active {
-    ${bg_theme("primaryPurple100")};
+    background-color: var(--purple100);
     ${text_theme("primaryPurple500")};
   }
 `;
