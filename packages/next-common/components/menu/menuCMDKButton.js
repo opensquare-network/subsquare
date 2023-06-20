@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React from "react";
 import {
   border,
-  border_theme_grey200,
   cursor_pointer,
   gap_x,
   inline_flex,
@@ -40,7 +39,7 @@ const Trigger = styled.button`
   ${p_14_medium};
   ${border};
   ${text_tertiary};
-  ${border_theme_grey200};
+  border-color: var(--neutral300);
   ${w_full};
   ${cursor_pointer};
   ${inline_flex};

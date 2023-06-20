@@ -7,8 +7,6 @@ import { p_12_bold, p_12_normal } from "../../../styles/componentCss";
 import {
   block,
   border,
-  border_theme_grey200,
-  border_theme_grey400,
   cursor_pointer,
   flex,
   flex_col,
@@ -66,16 +64,20 @@ const CellWrapper = styled.div`
   ${justify_between}
   ${p(8)}
   ${border}
-  ${border_theme_grey200}
+  border-color: var(--neutral300);
   ${rounded_4}
   text-align: left;
   ${cursor_pointer}
 
   &:hover {
-    ${border_theme_grey400}
+    border-color: var(--neutral500);
   }
 
-  ${(p) => p.isToday && border_theme_grey400}
+  ${(p) =>
+    p.isToday &&
+    css`
+      border-color: var(--neutral500);
+    `}
 
   ${(p) =>
     p.isSelectedDay &&
