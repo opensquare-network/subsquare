@@ -1,4 +1,4 @@
-import styled, { css, useTheme } from "styled-components";
+import styled, { css } from "styled-components";
 import React, { Fragment, useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -160,8 +160,6 @@ const MenuExpandOrCollapseIconWrapper = styled.span`
 `;
 
 function defaultItemRender(icon, name, activeCount, isExternalLink) {
-  const { textPlaceholder } = useTheme();
-
   return (
     <ItemInner>
       {icon}
@@ -169,7 +167,7 @@ function defaultItemRender(icon, name, activeCount, isExternalLink) {
         {name}
         {!!activeCount && <ItemActiveCount>{activeCount}</ItemActiveCount>}
       </span>
-      {isExternalLink && <ExternalLink color={textPlaceholder} />}
+      {isExternalLink && <ExternalLink color="var(--textDisabled)" />}
     </ItemInner>
   );
 }
@@ -236,8 +234,8 @@ function MenuGroup({ menu, defaultExpanded }) {
               <Link
                 href={item?.pathname}
                 passHref
-                target={isExternalLink ? "_blank" : "_self"}>
-
+                target={isExternalLink ? "_blank" : "_self"}
+              >
                 <Item
                   active={
                     router.pathname === item.pathname ||
@@ -245,11 +243,7 @@ function MenuGroup({ menu, defaultExpanded }) {
                     (router.pathname === "/[chain]" && item.pathname === "/")
                   }
                 >
-                  {item.itemRender?.(
-                    item.icon,
-                    item.name,
-                    item.activeCount,
-                  ) ??
+                  {item.itemRender?.(item.icon, item.name, item.activeCount) ??
                     defaultItemRender(
                       item.icon,
                       item.name,
@@ -257,7 +251,6 @@ function MenuGroup({ menu, defaultExpanded }) {
                       isExternalLink,
                     )}
                 </Item>
-
               </Link>
             </Fragment>
           );
