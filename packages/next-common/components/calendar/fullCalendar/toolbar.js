@@ -42,7 +42,7 @@ const ToolbarButtonGroup = styled.div`
 const ToolbarDateLabel = styled.span`
   ${p_16_bold}
   ${m_l(16)}
-  color: var(--textPrimary)
+  color: var(--textPrimary);
 `;
 
 const NavigateButton = styled(Button)`

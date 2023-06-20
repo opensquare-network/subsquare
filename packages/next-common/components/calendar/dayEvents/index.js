@@ -35,7 +35,7 @@ const Wrapper = styled(NeutralPanel)`
 const Title = styled.h2`
   ${m(0)}
   ${p_16_bold}
-  color: var(--textPrimary)
+  color: var(--textPrimary);
 `;
 const TitleDate = styled.small`
   ${m_l(12)}

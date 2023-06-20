@@ -38,7 +38,7 @@ const ToolbarButtonGroup = styled.div`
 const ToolbarDateLabel = styled(Flex)`
   ${p_14_bold}
   ${m_l(16)}
-  color: var(--textPrimary)
+  color: var(--textPrimary);
   flex-grow: 1;
   justify-content: center;
 `;
