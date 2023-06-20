@@ -18,7 +18,7 @@ const RichTextStyleWrapper = styled.div`
     span.mention,
     span.mention span {
       background-color: var(--neutral100);
-      color: ${(props) => props.theme.secondarySapphire500};
+      color: var(--sapphire500);
     }
 
     blockquote {

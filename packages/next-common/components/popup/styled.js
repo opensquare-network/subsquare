@@ -128,7 +128,7 @@ export const DelegatingValue = styled(GreyPanel)`
     }
 
     > .proxy-addr {
-      color: ${(props) => props.theme.secondarySapphire500};
+      color: var(--sapphire500);
       margin-left: 8px;
     }
   }

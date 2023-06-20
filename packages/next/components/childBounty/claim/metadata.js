@@ -47,7 +47,7 @@ const InfoItemValue = styled.div`
   font-weight: 400;
 
   > a {
-    color: ${(props) => props.theme.secondarySapphire500};
+    color: var(--sapphire500);
     font-weight: 500;
 
     &:hover {
