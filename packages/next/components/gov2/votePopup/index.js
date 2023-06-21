@@ -122,7 +122,6 @@ function PopupContent({
 
     if (isMoonChain()) {
       let { callTo, callData } = getMoonVoteTx();
-      console.log({ callTo, callData });
 
       if (signerAccount?.proxyAddress) {
         ({ callTo, callData } = encodeProxyData({

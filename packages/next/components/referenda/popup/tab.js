@@ -18,6 +18,7 @@ export default function VoteTypeTab({ tabIndex, setTabIndex }) {
     },
   ];
 
+  // Moonbeam doesn't support democracy split voting
   if (!isMoonChain()) {
     tabs.push({
       tabId: Split,
