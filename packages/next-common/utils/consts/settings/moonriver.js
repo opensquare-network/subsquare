@@ -40,6 +40,9 @@ const moonriver = {
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
+  noTreasuryPrecompile: true,
+  noBountyPrecompile: true,
+  noTipPrecompile: true,
   ethereumNetwork: {
     chainId: "0x505",
     chainName: "Moonriver",

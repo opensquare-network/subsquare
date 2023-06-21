@@ -40,6 +40,9 @@ const moonbeam = {
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
+  noTreasuryPrecompile: true,
+  noBountyPrecompile: true,
+  noTipPrecompile: true,
   ethereumNetwork: {
     chainId: "0x504",
     chainName: "Moonbeam",
