@@ -44,7 +44,7 @@ export default function FellowshipTally() {
   const { referendumIndex } = useOnchainData();
   const { votes, isLoading: isLoadingVotes } = useFellowshipVotes(
     referendumIndex,
-    votingFinishHeight
+    votingFinishHeight,
   );
   const supportPerbill = useFellowshipPerbill();
   const track = useTrack();

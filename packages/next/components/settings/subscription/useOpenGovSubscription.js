@@ -6,7 +6,7 @@ import { useChainSettings } from "next-common/context/chain";
 export default function useOpenGovSubscription(
   subscription,
   saving,
-  isVerifiedUser
+  isVerifiedUser,
 ) {
   const { hasFellowship, hasReferenda } = useChainSettings();
 

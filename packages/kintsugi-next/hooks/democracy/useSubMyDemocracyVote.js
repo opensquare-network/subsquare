@@ -18,24 +18,27 @@ export default function useSubMyDemocracyVote(referendumIndex, address) {
 
     let unsub;
     setIsLoading(true);
-    api.query.democracy?.votingOf(address, voting => {
-      setIsLoading(false);
-      const jsonVoting = voting?.toJSON();
-      const vote = (jsonVoting?.votes || []).find(
-        (vote) => vote[0] === referendumIndex
-      )?.[1];
+    api.query.democracy
+      ?.votingOf(address, (voting) => {
+        setIsLoading(false);
+        const jsonVoting = voting?.toJSON();
+        const vote = (jsonVoting?.votes || []).find(
+          (vote) => vote[0] === referendumIndex,
+        )?.[1];
 
-      if (isMounted.current) {
-        setVote(vote);
-      }
-    }).then(result => unsub = result).finally(() => setIsLoading(false));
+        if (isMounted.current) {
+          setVote(vote);
+        }
+      })
+      .then((result) => (unsub = result))
+      .finally(() => setIsLoading(false));
 
     return () => {
       if (unsub) {
         unsub();
       }
     };
-  }, [api, referendumIndex, address]);
+  }, [api, referendumIndex, address, isMounted]);
 
   return {
     vote,

@@ -21,7 +21,7 @@ export function useAllianceMembers() {
             args: [role],
           },
           list,
-        ]
+        ],
       ) => {
         const memberRole = role.toJSON();
         const memberList = list.toJSON();
@@ -31,7 +31,7 @@ export function useAllianceMembers() {
           ...curr,
         };
       },
-      {}
+      {},
     );
     setData(data);
     setIsLoading(false);

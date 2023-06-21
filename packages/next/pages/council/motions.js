@@ -10,7 +10,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 export default withLoginUserRedux(
   ({ motions, chain, tracks, fellowshipTracks }) => {
     const items = (motions.items || []).map((item) =>
-      normalizeCouncilMotionListItem(chain, item)
+      normalizeCouncilMotionListItem(chain, item),
     );
     const category = businessCategory.councilMotions;
     const seoInfo = { title: category, desc: category };
@@ -32,7 +32,7 @@ export default withLoginUserRedux(
         />
       </HomeLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

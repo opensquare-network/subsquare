@@ -16,4 +16,9 @@ module.exports = {
     "react/jsx-uses-react": "error",
     "react/prop-types": 0,
   },
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
 };

@@ -13,7 +13,7 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const api = useApi();
   const [members] = useCall(
     api?.query?.fellowshipCollective?.members.entries,
-    []
+    [],
   );
 
   useEffect(() => {

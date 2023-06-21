@@ -37,11 +37,11 @@ function PopupContent({
   const { decimals } = useChainSettings();
   const [balance, loadingBalance] = useAddressBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
   const councilTippers = useCouncilMembers();
   const isTipper = isAddressInGroup(signerAccount?.realAddress, councilTippers || []);

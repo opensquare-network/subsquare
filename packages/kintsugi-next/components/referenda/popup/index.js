@@ -34,11 +34,11 @@ function PopupContent({
   const api = useApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
   const {
     vote: addressVote,
@@ -63,7 +63,7 @@ function PopupContent({
       bnVoteBalance = checkInputValue(
         inputVoteBalance,
         node.decimals,
-        "vote balance"
+        "vote balance",
       );
     } catch (err) {
       return showErrorToast(err.message);

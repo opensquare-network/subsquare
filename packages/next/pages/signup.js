@@ -153,7 +153,7 @@ export default withLoginUserRedux(({ loginUser }) => {
         setLoading(false);
       }
     },
-    () => setErrors(null)
+    () => setErrors(null),
   );
   const { username, email, password } = formData;
 
@@ -171,11 +171,11 @@ export default withLoginUserRedux(({ loginUser }) => {
         }
         if (isMounted.current) {
           showErrorToast(
-            error?.message ?? "some error occured when sending an Email"
+            error?.message ?? "some error occured when sending an Email",
           );
         }
       })
-      .catch((err) => {
+      .catch(() => {
         if (isMounted.current) {
           showErrorToast("some error occurred when sending an Email");
         }

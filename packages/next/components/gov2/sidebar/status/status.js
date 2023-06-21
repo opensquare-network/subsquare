@@ -44,11 +44,11 @@ export default function Status() {
   // same logic: `show confirming period`
   const isPositiveState = useMemo(
     () => [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(state),
-    [state]
+    [state],
   );
   const isNegativeState = useMemo(() =>
       [gov2State.Rejected, gov2State.Killed, gov2State.TimedOut, gov2State.Cancelled].includes(state),
-    [state]
+    [state],
   );
 
   const showState = useMemo(() => {

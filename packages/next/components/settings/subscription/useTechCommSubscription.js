@@ -6,17 +6,17 @@ import useTechCommMotionOptions from "next-common/components/setting/notificatio
 export default function useTechCommSubscription(
   subscription,
   saving,
-  isVerifiedUser
+  isVerifiedUser,
 ) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasTechComm, menu: techCommMenu } = checkSubMenu(
     homeMenus,
-    "TECH.COMM."
+    "TECH.COMM.",
   );
   const { hasMenu: hasTechCommMotion } = checkSubMenu(
     techCommMenu?.items,
-    "Proposals"
+    "Proposals",
   );
 
   const {

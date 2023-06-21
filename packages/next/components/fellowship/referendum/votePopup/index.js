@@ -5,6 +5,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
@@ -28,6 +29,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const signerAccount = useSignerAccount(extensionAccounts);
 
@@ -37,15 +39,15 @@ function PopupContent({
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
   const [votingBalance, votingIsLoading] = useAddressBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
   const { vote, isLoading: isLoadingVote } = useFellowshipVote(
     referendumIndex,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
 
   const doVote = async (aye) => {

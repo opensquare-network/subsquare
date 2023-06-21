@@ -7,21 +7,21 @@ import useDemocracyReferendumOptions from "next-common/components/setting/notifi
 export default function useDemocracySubscription(
   subscription,
   saving,
-  isVerifiedUser
+  isVerifiedUser,
 ) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasDemocracy, menu: democracyMenu } = checkSubMenu(
     homeMenus,
-    "DEMOCRACY"
+    "DEMOCRACY",
   );
   const { hasMenu: hasDemocracyProposal } = checkSubMenu(
     democracyMenu?.items,
-    "Proposals"
+    "Proposals",
   );
   const { hasMenu: hasDemocracyReferenda } = checkSubMenu(
     democracyMenu?.items,
-    "Referenda"
+    "Referenda",
   );
 
   const {

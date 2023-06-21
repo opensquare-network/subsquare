@@ -43,7 +43,7 @@ export default function BeenDelegated({ trackId }) {
         if (isMounted.current) {
           setBeenDelegatedList(result);
         }
-      }
+      },
     );
   }, [api, trackId, realAddress, isMounted]);
 

@@ -10,7 +10,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 export default withLoginUserRedux(({ motions }) => {
   const chain = useChain();
   const items = (motions.items || []).map((item) =>
-    toFinancialMotionsListItem(chain, item)
+    toFinancialMotionsListItem(chain, item),
   );
   const category = businessCategory.financialMotions;
   const seoInfo = { title: category, desc: category };

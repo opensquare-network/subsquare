@@ -165,7 +165,7 @@ function Vote({
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
   const isLoadingReferendumStatus = useSelector(
-    isLoadingReferendumStatusSelector
+    isLoadingReferendumStatusSelector,
   );
 
   const updateVoteProgress = useCallback(() => {
@@ -219,7 +219,7 @@ function Vote({
               <Threshold
                 threshold={getThresholdOfSuperMajorityApprove(
                   tally?.turnout ?? 0,
-                  electorate
+                  electorate,
                 )}
               />
             )}
@@ -229,7 +229,7 @@ function Vote({
               <Threshold
                 threshold={getThresholdOfSuperMajorityAgainst(
                   tally?.turnout ?? 0,
-                  electorate
+                  electorate,
                 )}
               />
             )}

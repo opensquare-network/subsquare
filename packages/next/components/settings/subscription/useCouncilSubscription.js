@@ -6,17 +6,17 @@ import useCouncilMotionOptions from "next-common/components/setting/notification
 export default function useCouncilSubscription(
   subscription,
   saving,
-  isVerifiedUser
+  isVerifiedUser,
 ) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(
     homeMenus,
-    "COUNCIL"
+    "COUNCIL",
   );
   const { hasMenu: hasCouncilMotion } = checkSubMenu(
     councilMenu?.items,
-    "Motions"
+    "Motions",
   );
 
   const {

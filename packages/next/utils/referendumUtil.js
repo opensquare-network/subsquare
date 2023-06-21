@@ -56,7 +56,7 @@ export async function getAddressVote(api, referendumIndex, address) {
   // For the direct vote, just return the vote.
   if (jsonVoting.direct) {
     const vote = (jsonVoting.direct.votes || []).find(
-      (vote) => vote[0] === referendumIndex
+      (vote) => vote[0] === referendumIndex,
     )?.[1];
 
     return {
@@ -73,7 +73,7 @@ export async function getAddressVote(api, referendumIndex, address) {
     const jsonProxyVoting = proxyVoting?.toJSON();
 
     const vote = (jsonProxyVoting?.direct?.votes || []).find(
-      (vote) => vote[0] === referendumIndex
+      (vote) => vote[0] === referendumIndex,
     )?.[1];
 
     if (!vote?.standard) {

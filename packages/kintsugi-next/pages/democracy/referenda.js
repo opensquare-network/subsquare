@@ -10,7 +10,7 @@ import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 
 export default withLoginUserRedux(({ posts, chain }) => {
   const items = (posts.items || []).map((item) =>
-    normalizeReferendaListItem(chain, item)
+    normalizeReferendaListItem(chain, item),
   );
   const category = "Referenda";
   const seoInfo = { title: "Democracy Referenda", desc: "Democracy Referenda" };

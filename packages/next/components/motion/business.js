@@ -91,7 +91,7 @@ export default function Business({ motion }) {
             href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
             legacyBehavior>{`Democracy External #${external?.proposalHash?.slice(
             0,
-            6
+            6,
           )}`}</Link>,
         ],
         ["Hash", external.proposalHash],
@@ -110,7 +110,7 @@ export default function Business({ motion }) {
             href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
             legacyBehavior>{`Democracy External #${external?.proposalHash?.slice(
             0,
-            6
+            6,
           )}`}</Link>,
         ],
         ["Hash", external.proposalHash],

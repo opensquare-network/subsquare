@@ -54,7 +54,7 @@ function Balance({ value }) {
     <div>
       <BalanceWrapper>
         {bigNumber2Locale(
-          decimalPlaces(toPrecision(value ?? 0, node.decimals), 4)
+          decimalPlaces(toPrecision(value ?? 0, node.decimals), 4),
         )}
       </BalanceWrapper>
       <SymbolWrapper style={{ color: "#9DA9BB", marginLeft: "8px" }}>
@@ -88,7 +88,7 @@ function MembersList({
         style: { textAlign: "right" },
         className: hideColumn === "votes" ? "autohide" : "clickable",
         onClick: () => setHideColumn("votes"),
-      }
+      },
     );
   }
 

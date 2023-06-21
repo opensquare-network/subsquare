@@ -1,4 +1,4 @@
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import Progress from "next-common/components/progress";
 import { useSupportThreshold } from "next-common/context/post/gov2/threshold";
 import { useEffect, useMemo, useState } from "react";

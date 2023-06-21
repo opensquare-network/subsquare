@@ -37,7 +37,7 @@ function FellowshipContent({ comments }) {
 
   const onVoteFinalized = useWaitSyncBlock(
     "Fellowship referendum voted",
-    refreshPageData
+    refreshPageData,
   );
 
   return (
@@ -117,7 +117,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const pageSize = Math.min(page_size ?? 50, 100);
 
   const { result: detail } = await ssrNextApi.fetch(
-    getFellowshipReferendumUrl(id)
+    getFellowshipReferendumUrl(id),
   );
   if (!detail) {
     return {
@@ -135,7 +135,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {

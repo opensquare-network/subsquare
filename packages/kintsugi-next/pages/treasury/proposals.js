@@ -17,7 +17,7 @@ const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
   {
     ssr: false,
-  }
+  },
 );
 
 export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   const isMounted = useIsMounted();
 
   const items = (proposals.items || []).map((item) =>
-    normalizeTreasuryProposalListItem(chain, item)
+    normalizeTreasuryProposalListItem(chain, item),
   );
 
   const create = (
@@ -46,7 +46,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
 
   const onProposeFinalized = useWaitSyncBlock(
     "Proposal proposed",
-    refreshPageData
+    refreshPageData,
   );
 
   const category = businessCategory.treasuryProposals;

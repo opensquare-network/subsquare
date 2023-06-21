@@ -106,7 +106,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
-    }
+    },
   );
 
   return {

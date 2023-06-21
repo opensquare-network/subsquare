@@ -43,11 +43,11 @@ function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -66,7 +66,7 @@ function PopupContent({
       bnVoteBalance = checkInputValue(
         inputVoteBalance,
         node.decimals,
-        "vote balance"
+        "vote balance",
       );
     } catch (err) {
       return showErrorToast(err.message);
@@ -92,7 +92,7 @@ function PopupContent({
 
     if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
       return showErrorToast(
-        "Target address cannot be same with the delegator address"
+        "Target address cannot be same with the delegator address",
       );
     }
 
@@ -100,7 +100,7 @@ function PopupContent({
       track,
       targetAddress,
       conviction,
-      bnVoteBalance.toString()
+      bnVoteBalance.toString(),
     );
 
     if (signerAccount?.proxyAddress) {

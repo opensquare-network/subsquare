@@ -30,7 +30,7 @@ export default withLoginUserRedux(
         <TurnoutStatistics turnout={turnout} />
       </DetailLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

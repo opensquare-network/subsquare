@@ -47,7 +47,7 @@ export function useConfirmEndPercentage() {
 export function calcConfirmStartPercentage(
   decidingSince,
   decisionBlocks,
-  confirmingStarted
+  confirmingStarted,
 ) {
   if (!decidingSince || !confirmingStarted) {
     return 0;

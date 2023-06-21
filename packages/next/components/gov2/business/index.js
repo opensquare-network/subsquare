@@ -18,7 +18,7 @@ export default function ReferendaBusiness() {
     onchain,
     onchain.proposal?.call,
     decimals,
-    symbol
+    symbol,
   );
   if (spendBusiness) {
     return <MultiKVList title="Business" data={spendBusiness} />;

@@ -9,9 +9,7 @@
     "no-unused-vars": [
       "error",
       {
-        "varsIgnorePattern": [
-          "context"
-        ]
+        "argsIgnorePattern": "(^_|^req|^context)"
       }
     ]
   }

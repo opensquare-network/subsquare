@@ -50,7 +50,7 @@ export default withLoginUserRedux(
         />
       </DetailLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

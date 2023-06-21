@@ -12,6 +12,7 @@ import NoVoteRecord from "./noVoteRecord";
 import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
 import Signer from "next-common/components/popup/fields/signerField";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
@@ -43,13 +44,14 @@ function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
-  const { vote: addressVote, isLoading: addressVoteIsLoading } = useSubMyDemocracyVote();
+  const { vote: addressVote, isLoading: addressVoteIsLoading } =
+    useSubMyDemocracyVote();
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
@@ -77,6 +79,8 @@ function PopupContent({
     voteComponent = SplitVoteComponent;
     getVoteTx = getSplitVoteTx;
   }
+
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async () => {
     if (isLoading || referendumIndex == null || !node) {

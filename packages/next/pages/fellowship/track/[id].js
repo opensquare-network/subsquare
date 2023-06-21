@@ -33,7 +33,7 @@ export default withLoginUserRedux(
         summary={summaryComponent}
       />
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
@@ -46,7 +46,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     ]);
 
   let track = fellowshipTracks.find(
-    (trackItem) => trackItem.id === parseInt(id)
+    (trackItem) => trackItem.id === parseInt(id),
   );
   if (!track) {
     track = fellowshipTracks.find((item) => item.name === id);

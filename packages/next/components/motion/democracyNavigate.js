@@ -60,7 +60,7 @@ export default function DemocracyNavigate({ motion }) {
           />
         </div>
       );
-    }
+    },
   );
 
   const referendumIndex = external.referendumIndex;

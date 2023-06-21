@@ -205,7 +205,7 @@ export default withLoginUserRedux(
         </Wrapper>
       </SettingsLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
@@ -225,7 +225,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: subscription } = await ssrNextApi.fetch(
     "user/subscription",
     {},
-    options
+    options,
   );
 
   return {

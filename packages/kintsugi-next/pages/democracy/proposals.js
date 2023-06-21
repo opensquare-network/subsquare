@@ -11,7 +11,7 @@ import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/nor
 export default withLoginUserRedux(({ proposals }) => {
   const chain = useChain();
   const items = (proposals.items || []).map((item) =>
-    normalizeProposalListItem(chain, item)
+    normalizeProposalListItem(chain, item),
   );
   const category = "Democracy Public Proposals";
   const seoInfo = { title: category, desc: category };

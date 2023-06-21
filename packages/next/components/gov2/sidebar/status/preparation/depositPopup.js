@@ -5,7 +5,6 @@ import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { useTrack } from "next-common/context/post/gov2/track";
 import { usePostOnChainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceInput from "next-common/components/balanceInput";
@@ -32,8 +31,14 @@ function PopupContent({
 
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
   const signerAccount = useSignerAccount(extensionAccounts);
-  const [balance, loadingBalance] = useAddressBalance(api, signerAccount?.realAddress);
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(api, signerAccount?.address);
+  const [balance, loadingBalance] = useAddressBalance(
+    api,
+    signerAccount?.realAddress,
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
+    api,
+    signerAccount?.address,
+  );
 
   const [calling, setCalling] = useState(false);
 
@@ -72,10 +77,7 @@ function PopupContent({
       />
       <div>
         <PopupLabel text={"Referendum ID"} />
-        <Input
-          value={referendumIndex}
-          disabled={true}
-        />
+        <Input value={referendumIndex} disabled={true} />
       </div>
       <div>
         <PopupLabel text={"Decision Deposit"} />
@@ -96,5 +98,11 @@ function PopupContent({
 }
 
 export default function DepositPopup(props) {
-  return <PopupWithAddress title="Place decision deposit" Component={PopupContent} {...props} />;
+  return (
+    <PopupWithAddress
+      title="Place decision deposit"
+      Component={PopupContent}
+      {...props}
+    />
+  );
 }

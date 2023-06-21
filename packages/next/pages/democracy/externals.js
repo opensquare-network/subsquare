@@ -11,7 +11,7 @@ import MaybeNoDemocracySummary from "next-common/components/maybeNoDemocracySumm
 export default withLoginUserRedux(
   ({ externals, chain, tracks, fellowshipTracks, summary }) => {
     const items = (externals.items || []).map((item) =>
-      normalizeExternalListItem(chain, item)
+      normalizeExternalListItem(chain, item),
     );
     const category = businessCategory.democracyExternals;
     const seoInfo = { title: category, desc: category };
@@ -34,7 +34,7 @@ export default withLoginUserRedux(
         />
       </HomeLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

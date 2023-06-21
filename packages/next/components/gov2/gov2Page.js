@@ -18,7 +18,7 @@ export default function Gov2Page({
 }) {
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
-    normalizeGov2ReferendaListItem(item, tracks)
+    normalizeGov2ReferendaListItem(item, tracks),
   );
 
   return (

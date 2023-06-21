@@ -23,7 +23,7 @@ export default withLoginUserRedux(
         summary={summaryComponent}
       />
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

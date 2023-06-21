@@ -7,7 +7,7 @@ import getElectorate from "next-common/utils/democracy/electorate";
 export default function useMaybeFetchElectorate(
   referendum,
   referendumStatus,
-  api
+  api,
 ) {
   const [electorate, setElectorate] = useState(0);
   const nowHeight = useSelector(nowHeightSelector);
@@ -21,7 +21,7 @@ export default function useMaybeFetchElectorate(
     } else if (api) {
       const height = voteFinishedHeight || nowHeight;
       getElectorate(api, height).then((electorate) =>
-        setElectorate(electorate)
+        setElectorate(electorate),
       );
     }
   }, [api, voteFinishedHeight, nowHeight, possibleElectorate]);

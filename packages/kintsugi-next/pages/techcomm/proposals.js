@@ -7,7 +7,7 @@ import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collect
 
 export default withLoginUserRedux(({ proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
-    normalizeTechCommMotionListItem(chain, item)
+    normalizeTechCommMotionListItem(chain, item),
   );
   const category = "Tech. Comm. Proposals";
   const seoInfo = {

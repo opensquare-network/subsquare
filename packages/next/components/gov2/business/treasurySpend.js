@@ -9,7 +9,7 @@ export default function getTreasurySpendBusiness(
   onchain,
   call = {},
   decimals,
-  symbol
+  symbol,
 ) {
   const { section, method, args = [] } = call;
   if ("treasury" !== section && "spend" !== method) {

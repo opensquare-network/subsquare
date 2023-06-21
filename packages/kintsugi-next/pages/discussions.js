@@ -23,7 +23,7 @@ const Create = styled.a`
 export default withLoginUserRedux(({ posts }) => {
   const chain = useChain();
   const items = (posts.items || []).map((item) =>
-    normalizeDiscussionListItem(chain, item)
+    normalizeDiscussionListItem(chain, item),
   );
 
   const create = (

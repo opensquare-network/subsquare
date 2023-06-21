@@ -11,7 +11,7 @@ import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTi
 
 export const convertPolkassemblyReaction = (chain, paReactions) =>
   flatten(
-    Object.entries(paReactions || {}).map(([r, { usernames } = {}]) => usernames?.map(u => [r, u]))
+    Object.entries(paReactions || {}).map(([r, { usernames } = {}]) => usernames?.map(u => [r, u])),
   ).map(([r, u]) => ({
     reaction: r === "👍" ? 1 : 0,
     user: u,

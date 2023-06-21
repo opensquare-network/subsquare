@@ -57,7 +57,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
   const desc = getMetaDesc(detail);
 
   const showRightSidePanel = ["PendingPayout", "Claimed"].includes(
-    detail?.onchainData?.state?.state
+    detail?.onchainData?.state?.state,
   );
 
   const Layout = showRightSidePanel ? DetailWithRightLayout : DetailLayout;
@@ -99,7 +99,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const pageSize = Math.min(page_size ?? 50, 100);
 
   const { result: detail } = await ssrNextApi.fetch(
-    `treasury/child-bounties/${id}`
+    `treasury/child-bounties/${id}`,
   );
 
   if (!detail) {
@@ -117,7 +117,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {

@@ -10,7 +10,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 export default withLoginUserRedux(
   ({ proposals, chain, tracks, fellowshipTracks }) => {
     const items = (proposals.items || []).map((item) =>
-      normalizeTechCommMotionListItem(chain, item)
+      normalizeTechCommMotionListItem(chain, item),
     );
     const category = businessCategory.tcProposals;
     const seoInfo = {
@@ -35,7 +35,7 @@ export default withLoginUserRedux(
         />
       </HomeLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

@@ -46,6 +46,7 @@ export default function ChildBountyTimeline({ onchainData }) {
             Index: `#${args.index}`,
           };
         case "Awarded":
+          // eslint-disable-next-line no-case-declarations
           const AwardedTimelineNode = {
             Beneficiary: <User add={args.beneficiary} fontSize={14} />,
           };

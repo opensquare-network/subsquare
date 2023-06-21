@@ -7,7 +7,7 @@ import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 
-export default withLoginUserRedux(({ chain }) => {
+export default withLoginUserRedux(() => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();

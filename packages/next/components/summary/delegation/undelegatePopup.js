@@ -20,7 +20,7 @@ export default function UndelegatePopup({
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    [dispatch]
+    [dispatch],
   );
 
   const removeDelegating = useCallback(
@@ -58,7 +58,7 @@ export default function UndelegatePopup({
       showErrorToast,
       setIsLoading,
       onClose,
-    ]
+    ],
   );
 
   return (

@@ -39,7 +39,7 @@ export default function useSplitAbstainVote({
         abstainInputVoteBalance,
         node.decimals,
         "abstain vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);
@@ -52,7 +52,7 @@ export default function useSplitAbstainVote({
         ayeInputVoteBalance,
         node.decimals,
         "aye vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);
@@ -65,7 +65,7 @@ export default function useSplitAbstainVote({
         nayInputVoteBalance,
         node.decimals,
         "nay vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);

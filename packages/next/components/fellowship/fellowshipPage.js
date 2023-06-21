@@ -12,7 +12,7 @@ export default function FellowshipPage({
 }) {
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
-    normalizeFellowshipReferendaListItem(item, fellowshipTracks)
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
   );
 
   return (

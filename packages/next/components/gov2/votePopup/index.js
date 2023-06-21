@@ -49,11 +49,11 @@ function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
 
   const {

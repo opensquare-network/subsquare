@@ -155,7 +155,7 @@ export default withLoginUserRedux(({ loginUser }) => {
           error?.message ?? "some error occured when sending an Email",
         );
       })
-      .catch((err) => {
+      .catch(() => {
         showErrorToast("some error occurred when sending an Email");
       });
   };
