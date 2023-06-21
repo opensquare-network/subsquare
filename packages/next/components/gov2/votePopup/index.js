@@ -27,6 +27,9 @@ import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
+import isMoonChain from "next-common/utils/isMoonChain";
+import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
+import { sendEvmTx } from "next-common/utils/sendEvmTx";
 
 function PopupContent({
   extensionAccounts,
@@ -56,41 +59,48 @@ function PopupContent({
     signerAccount?.address
   );
 
-  const {
-    vote: addressVote,
-    isLoading: addressVoteIsLoading,
-  } = useSubMyReferendaVote(trackId, referendumIndex, signerAccount?.realAddress);
+  const { vote: addressVote, isLoading: addressVoteIsLoading } =
+    useSubMyReferendaVote(trackId, referendumIndex, signerAccount?.realAddress);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
-  const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
-    module: "convictionVoting",
-    referendumIndex,
-    isAye: tabIndex === Aye,
-    addressVoteDelegations: addressVote?.delegations,
-    isLoading,
-    votingBalance,
-  });
-  const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
-    module: "convictionVoting",
-    referendumIndex,
-    isLoading,
-    votingBalance,
-  });
-  const { SplitAbstainVoteComponent, getSplitAbstainVoteTx } =
-    useSplitAbstainVote({ referendumIndex, isLoading, votingBalance });
+  const { StandardVoteComponent, getStandardVoteTx, getMoonStandardVoteTx } =
+    useStandardVote({
+      module: "convictionVoting",
+      referendumIndex,
+      isAye: tabIndex === Aye,
+      addressVoteDelegations: addressVote?.delegations,
+      isLoading,
+      votingBalance,
+    });
+  const { SplitVoteComponent, getSplitVoteTx, getMoonSplitVoteTx } =
+    useSplitVote({
+      module: "convictionVoting",
+      referendumIndex,
+      isLoading,
+      votingBalance,
+    });
+  const {
+    SplitAbstainVoteComponent,
+    getSplitAbstainVoteTx,
+    getMoonSplitAbstainVoteTx,
+  } = useSplitAbstainVote({ referendumIndex, isLoading, votingBalance });
 
   let voteComponent = null;
   let getVoteTx = null;
+  let getMoonVoteTx = null;
   if (tabIndex === Aye || tabIndex === Nay) {
     voteComponent = StandardVoteComponent;
     getVoteTx = getStandardVoteTx;
+    getMoonVoteTx = getMoonStandardVoteTx;
   } else if (tabIndex === Split) {
     voteComponent = SplitVoteComponent;
     getVoteTx = getSplitVoteTx;
+    getMoonVoteTx = getMoonSplitVoteTx;
   } else if (tabIndex === SplitAbstain) {
     voteComponent = SplitAbstainVoteComponent;
     getVoteTx = getSplitAbstainVoteTx;
+    getMoonVoteTx = getMoonSplitAbstainVoteTx;
   }
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -104,32 +114,58 @@ function PopupContent({
       return showErrorToast("Chain network is not connected yet");
     }
 
-    let tx = getVoteTx();
-    if (!tx) {
-      return;
-    }
-
     if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
     const signerAddress = signerAccount.address;
 
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setIsLoading,
-      onFinalized,
-      onInBlock,
-      onSubmitted,
-      onClose,
-      signerAddress,
-      isMounted,
-    });
+    if (isMoonChain()) {
+      let { callTo, callData } = getMoonVoteTx();
+      console.log({ callTo, callData });
+
+      if (signerAccount?.proxyAddress) {
+        ({ callTo, callData } = encodeProxyData({
+          real: signerAccount?.proxyAddress,
+          callTo,
+          callData,
+        }));
+      }
+
+      await sendEvmTx({
+        to: callTo,
+        data: callData,
+        dispatch,
+        setLoading: setIsLoading,
+        onFinalized,
+        onInBlock,
+        onSubmitted,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    } else {
+      let tx = getVoteTx();
+      if (!tx) {
+        return;
+      }
+
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
+
+      await sendTx({
+        tx,
+        dispatch,
+        setLoading: setIsLoading,
+        onFinalized,
+        onInBlock,
+        onSubmitted,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    }
   };
 
   return (

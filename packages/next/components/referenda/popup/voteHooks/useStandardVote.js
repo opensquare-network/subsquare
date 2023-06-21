@@ -6,6 +6,7 @@ import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import DirectVote from "../directVote";
 import { encodeStandardVoteData } from "next-common/utils/moonPrecompiles/democracy";
+import { encodeVoteNoData, encodeVoteYesData } from "next-common/utils/moonPrecompiles/convictionVoting";
 
 export default function useStandardVote({
   module = "convictionVoting",
@@ -85,12 +86,30 @@ export default function useStandardVote({
       return;
     }
 
-    return encodeStandardVoteData({
-      refIndex: referendumIndex,
-      aye: isAye,
-      voteAmount: BigInt(bnVoteBalance.toString()),
-      conviction: voteLock,
-    });
+    if (module === "democracy") {
+      return encodeStandardVoteData({
+        refIndex: referendumIndex,
+        aye: isAye,
+        voteAmount: BigInt(bnVoteBalance.toString()),
+        conviction: voteLock,
+      });
+    } else if (module === "convictionVoting") {
+      if (isAye) {
+        return encodeVoteYesData({
+          pollIndex: referendumIndex,
+          voteAmount: BigInt(bnVoteBalance.toString()),
+          conviction: voteLock,
+        });
+      } else {
+        return encodeVoteNoData({
+          pollIndex: referendumIndex,
+          voteAmount: BigInt(bnVoteBalance.toString()),
+          conviction: voteLock,
+        });
+      }
+    } else {
+      throw new Error("Invalid module");
+    }
   };
 
   return { StandardVoteComponent, getStandardVoteTx, getMoonStandardVoteTx };
