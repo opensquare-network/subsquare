@@ -33,7 +33,7 @@ const Member = styled.div`
 function MembersList({ category, items, loading = false, theme }) {
   return (
     <Wrapper>
-      <TitleContainer>{category}</TitleContainer>
+      {category && <TitleContainer>{category}</TitleContainer>}
       <StyledTable>
         <thead>
           <StyledTr>
