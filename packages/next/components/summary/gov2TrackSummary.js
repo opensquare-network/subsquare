@@ -9,7 +9,7 @@ import {
 } from "next-common/components/summary/styled";
 import Delegation from "./delegation";
 import BeenDelegated from "./beenDelegated";
-import Summary from "next-common/components/summary/new";
+import Summary from "next-common/components/summary/v2/base";
 import Content from "next-common/components/summary/cardContent";
 import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
 import ArrowOutSimpleIcon from "next-common/components/icons/arrowOutSimple";
@@ -22,25 +22,12 @@ import { smcss } from "next-common/utils/responsive";
 import DividerOrigin from "next-common/components/styled/layout/divider";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import FlexCenter from "next-common/components/styled/flexCenter";
-import Grid from "next-common/components/styled/grid";
 import VStack from "next-common/components/styled/vStack";
 import Flex from "next-common/components/styled/flex";
 
 // used in `Divider` and `ThresholdCurvesChart`
 const THRESHOLD_CURVE_PADDING = 8;
 
-const SummaryContentWrapper = styled.div`
-  display: flex;
-
-  ${smcss(css`
-    display: block;
-  `)}
-`;
-
-const SummaryItemWrapper = styled.div`
-  flex: 2;
-  width: 100%;
-`;
 const SummaryThresholdCurveWrapper = styled.div`
   flex: 1;
 
@@ -89,12 +76,8 @@ export default function Gov2TrackSummary({
   summary,
   period,
   noDelegation = false,
-  title = null,
-  titleExtra = null,
 }) {
   const {
-    origin,
-    description,
     maxDeciding,
     preparePeriod,
     decisionPeriod,
@@ -103,12 +86,6 @@ export default function Gov2TrackSummary({
     decisionDeposit,
     minEnactmentPeriod,
   } = period ?? {};
-
-  let summaryTitle = title;
-  if (!summaryTitle) {
-    summaryTitle = <TitleWrapper>Origin: {origin}</TitleWrapper>;
-  }
-  titleExtra = titleExtra ?? `${id}`;
 
   const {
     labels: chartLabels,
@@ -145,118 +122,95 @@ export default function Gov2TrackSummary({
   }
 
   return (
-    <Summary
-      title={summaryTitle}
-      titleExtra={titleExtra}
-      description={description}
-      footer={footer}
-    >
-      <SummaryContentWrapper>
-        <SummaryItemWrapper>
-          <Grid gap={16} columns={2}>
-            <SummaryItem>
-              <SummaryItemTitle>Capacity</SummaryItemTitle>
-              <Content>
-                <span>
-                  {summary.decidingCount || 0}
-                  <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
-                </span>
-              </Content>
-            </SummaryItem>
+    <>
+      <Summary
+        footer={footer}
+        items={[
+          {
+            title: "Capacity",
+            content: (
+              <span>
+                {summary.decidingCount || 0}
+                <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
+              </span>
+            ),
+          },
+          {
+            title: "Confirm Period",
+            content: (
+              <span>
+                {confirmPeriodBlockTime[0] || 0}
+                <SummaryGreyText> {confirmPeriodBlockTime[1]}</SummaryGreyText>
+              </span>
+            ),
+          },
+          {
+            title: "Prepare Period",
+            content: (
+              <span>
+                {preparePeriodBlockTime[0] || 0}
+                <SummaryGreyText> {preparePeriodBlockTime[1]}</SummaryGreyText>
+              </span>
+            ),
+          },
+          {
+            title: "Decision Period",
+            content: (
+              <span>
+                {decisionPeriodBlockTime[0] || 0}
+                <SummaryGreyText> {decisionPeriodBlockTime[1]}</SummaryGreyText>
+              </span>
+            ),
+          },
+          {
+            title: "Min Enact Period",
+            content: (
+              <span>
+                {minEnactPeriodBlockTime[0] || 0}
+                <SummaryGreyText> {minEnactPeriodBlockTime[1]}</SummaryGreyText>
+              </span>
+            ),
+          },
+          {
+            title: "Decision Deposit",
+            content: (
+              <SummaryDecisionDepositValueWrapper>
+                <ValueDisplay
+                  value={toPrecision(decisionDeposit, decimals)}
+                  symbol={symbol}
+                />
+              </SummaryDecisionDepositValueWrapper>
+            ),
+          },
+        ]}
+        chart={
+          <SummaryThresholdCurveWrapper>
+            <SummaryThresholdCurveItem>
+              <SummaryThresholdCurveItemTitle>
+                <span>Threshold Curves</span>
+                <ArrowOutSimpleIcon onClick={showThresholdCurveDetail} />
+              </SummaryThresholdCurveItemTitle>
+              <SummaryThresholdCurveContent>
+                <ThresholdCurvesChart
+                  height={110}
+                  scalesX={false}
+                  scalesY={false}
+                  layoutPadding={THRESHOLD_CURVE_PADDING}
+                  labels={chartLabels}
+                  supportData={supportData}
+                  approvalData={approvalData}
+                />
 
-            <SummaryItem>
-              <SummaryItemTitle>Confirm Period</SummaryItemTitle>
-              <Content>
-                <span>
-                  {confirmPeriodBlockTime[0] || 0}
-                  <SummaryGreyText>
-                    {" "}
-                    {confirmPeriodBlockTime[1]}
-                  </SummaryGreyText>
-                </span>
-              </Content>
-            </SummaryItem>
+                <Divider />
 
-            <SummaryItem>
-              <SummaryItemTitle>Prepare Period</SummaryItemTitle>
-              <Content>
-                <span>
-                  {preparePeriodBlockTime[0] || 0}
-                  <SummaryGreyText>
-                    {" "}
-                    {preparePeriodBlockTime[1]}
-                  </SummaryGreyText>
-                </span>
-              </Content>
-            </SummaryItem>
-
-            <SummaryItem>
-              <SummaryItemTitle>Decision period</SummaryItemTitle>
-              <Content>
-                <span>
-                  {decisionPeriodBlockTime[0] || 0}
-                  <SummaryGreyText>
-                    {" "}
-                    {decisionPeriodBlockTime[1]}
-                  </SummaryGreyText>
-                </span>
-              </Content>
-            </SummaryItem>
-
-            <SummaryItem>
-              <SummaryItemTitle>Min Enact Period</SummaryItemTitle>
-              <Content>
-                <span>
-                  {minEnactPeriodBlockTime[0] || 0}
-                  <SummaryGreyText>
-                    {" "}
-                    {minEnactPeriodBlockTime[1]}
-                  </SummaryGreyText>
-                </span>
-              </Content>
-            </SummaryItem>
-
-            {/* prevent title text wrap */}
-            <SummaryItem style={{ minWidth: 146 }}>
-              <SummaryItemTitle>Decision Deposit</SummaryItemTitle>
-              <Content>
-                <SummaryDecisionDepositValueWrapper>
-                  <ValueDisplay
-                    value={toPrecision(decisionDeposit, decimals)}
-                    symbol={symbol}
-                  />
-                </SummaryDecisionDepositValueWrapper>
-              </Content>
-            </SummaryItem>
-          </Grid>
-        </SummaryItemWrapper>
-
-        <SummaryThresholdCurveWrapper>
-          <SummaryThresholdCurveItem>
-            <SummaryThresholdCurveItemTitle>
-              <span>Threshold Curves</span>
-              <ArrowOutSimpleIcon onClick={showThresholdCurveDetail} />
-            </SummaryThresholdCurveItemTitle>
-            <SummaryThresholdCurveContent>
-              <ThresholdCurvesChart
-                height={110}
-                scalesX={false}
-                scalesY={false}
-                layoutPadding={THRESHOLD_CURVE_PADDING}
-                labels={chartLabels}
-                supportData={supportData}
-                approvalData={approvalData}
-              />
-
-              <Divider />
-
-              <SummaryThresholdCurveLegendWrapper>
-                <ThresholdCurvesGov2TrackSummaryLegend />
-              </SummaryThresholdCurveLegendWrapper>
-            </SummaryThresholdCurveContent>
-          </SummaryThresholdCurveItem>
-        </SummaryThresholdCurveWrapper>
-      </SummaryContentWrapper>
+                <SummaryThresholdCurveLegendWrapper>
+                  <ThresholdCurvesGov2TrackSummaryLegend />
+                </SummaryThresholdCurveLegendWrapper>
+              </SummaryThresholdCurveContent>
+            </SummaryThresholdCurveItem>
+          </SummaryThresholdCurveWrapper>
+        }
+      />
 
       {showThresholdCurveDetailPopup && (
         <ThresholdCurvesPopup
@@ -266,6 +220,6 @@ export default function Gov2TrackSummary({
           setShow={setShowThresholdCurveDetailPopup}
         />
       )}
-    </Summary>
+    </>
   );
 }

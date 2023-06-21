@@ -45,6 +45,11 @@ export default withLoginUserRedux(
     return (
       <ListLayout
         seoInfo={seoInfo}
+        title={`Origin: ${period.origin}`}
+        titleExtra={
+          <div className="text-textDisabled text20Bold">[{period.id}]</div>
+        }
+        description={period.description}
         tabs={[
           { label: "Referenda", url: `/referenda/track/${period.id}` },
           {
@@ -52,7 +57,7 @@ export default withLoginUserRedux(
             url: `/referenda/track/${period.id}/statistics`,
           },
         ]}
-        head={
+        summary={
           <Gov2TrackSummary
             summary={summary}
             period={period}

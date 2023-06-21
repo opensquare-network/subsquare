@@ -1,30 +1,16 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { smcss } from "../../utils/responsive";
 import Content from "./cardContent";
 import { SummaryTitle } from "./styled";
+import clsx from "clsx";
 
-export const Wrapper = styled.div`
-  display: flex;
-  ${smcss(css`
-    flex-direction: column;
-    gap: 16px;
-  `)}
-`;
-
-export const SummaryItem = styled.div`
-  flex: 1;
-`;
-
-export default function SummaryItems({ items }) {
+export default function SummaryItems({ items, className }) {
   return (
-    <Wrapper>
+    <div className={clsx("flex max-sm:flex-col max-sm:gap-4", className)}>
       {items.map((item, index) => (
-        <SummaryItem key={index}>
+        <div key={index} className="flex-1">
           {item.title && <SummaryTitle>{item.title}</SummaryTitle>}
           <Content>{item.content}</Content>
-        </SummaryItem>
+        </div>
       ))}
-    </Wrapper>
+    </div>
   );
 }

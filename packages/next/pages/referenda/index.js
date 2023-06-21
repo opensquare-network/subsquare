@@ -42,7 +42,9 @@ export default withLoginUserRedux(
     return (
       <ListLayout
         seoInfo={seoInfo}
-        head={<Gov2Summary summary={summary} title={title} />}
+        title={title}
+        description="All active and history referenda of various tracks."
+        summary={<Gov2Summary summary={summary} />}
         tabs={[
           { label: "Referenda", url: "/referenda" },
           { label: "Statistics", url: "/referenda/statistics" },
