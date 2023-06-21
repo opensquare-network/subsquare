@@ -9,33 +9,22 @@ import {
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
-import Gov2Page from "components/gov2/gov2Page";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 import { to404 } from "next-common/utils/serverSideUtil";
-import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import { camelCase, upperFirst, snakeCase } from "lodash";
+import ListLayout from "next-common/components/layout/ListLayout";
+import PostList from "next-common/components/postList";
+import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
-  ({
-    track,
-    posts,
-    title,
-    tracks,
-    fellowshipTracks,
-    summary,
-    period,
-    status,
-  }) => {
+  ({ posts, title, tracks, summary, period, status }) => {
     const router = useRouter();
 
-    const summaryComponent = (
-      <Gov2TrackSummary
-        summary={summary}
-        period={period}
-        titleExtra={`[${period.id}]`}
-      />
+    const items = (posts.items || []).map((item) =>
+      normalizeGov2ReferendaListItem(item, tracks),
     );
 
     function onStatusChange(item) {
@@ -51,26 +40,44 @@ export default withLoginUserRedux(
       router.replace({ query: q });
     }
 
+    const seoInfo = { title, desc: title };
+
     return (
-      <Gov2Page
-        posts={posts}
-        title={title}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-        summary={summaryComponent}
-        topRightCorner={
-          <StatisticLinkButton
-            href={`/referenda/track/${track.id}/statistics`}
+      <ListLayout
+        seoInfo={seoInfo}
+        tabs={[
+          { label: "Referenda", url: `/referenda/track/${period.id}` },
+          {
+            label: "Statistics",
+            url: `/referenda/track/${period.id}/statistics`,
+          },
+        ]}
+        head={
+          <Gov2TrackSummary
+            summary={summary}
+            period={period}
+            titleExtra={`[${period.id}]`}
           />
         }
-        listTitle="List"
-        listTitleExtra={
-          <ReferendaStatusSelectField
-            value={status}
-            onChange={onStatusChange}
-          />
-        }
-      />
+      >
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          titleExtra={
+            <ReferendaStatusSelectField
+              value={status}
+              onChange={onStatusChange}
+            />
+          }
+          category={businessCategory.openGovReferenda}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
+        />
+      </ListLayout>
     );
   },
 );
