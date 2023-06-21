@@ -169,6 +169,10 @@ function MenuGroup({
 
 function SubMenuItems({ className = "", items = [] }) {
   const router = useRouter();
+  let routePath = router.asPath;
+  if (routePath.includes("?")) {
+    routePath = routePath.slice(0, routePath.indexOf("?"));
+  }
 
   return (
     <ul className={className}>
@@ -182,10 +186,8 @@ function SubMenuItems({ className = "", items = [] }) {
               link={item.pathname}
               icon={item.icon}
               activeCount={item.activeCount}
-              active={router.asPath.startsWith(item.pathname)}
-              className={
-                router.asPath.startsWith(item.pathname) && "bg-transparent"
-              }
+              active={routePath === item.pathname}
+              className={routePath === item.pathname && "bg-transparent"}
             />
           )}
         </li>
