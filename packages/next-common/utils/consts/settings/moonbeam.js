@@ -36,9 +36,10 @@ const moonbeam = {
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonbeam",
-  hasGov2: true,
-  noFellowship: true,
+  hasReferenda: true,
+  // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
+  noDispatchPrecompile: true,
   ethereumNetwork: {
     chainId: "0x504",
     chainName: "Moonbeam",
