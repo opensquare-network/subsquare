@@ -6,6 +6,13 @@
     "tw\\.\\w+`([^`]*)",
     "tw\\(.*?\\)`([^`]*)"
   ],
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "cSpell.words": [
     "acala",
     "Achainable",
@@ -33,11 +40,14 @@
     "phala",
     "polkadex",
     "polkadot",
+    "polkassembly",
+    "Polkassembly",
     "radiumblock",
     "Statescan",
     "Subscan",
     "subsquare",
     "usehooks",
+    "viewfuncs",
     "westend"
   ]
 }
