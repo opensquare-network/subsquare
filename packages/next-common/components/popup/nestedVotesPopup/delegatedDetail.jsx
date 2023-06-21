@@ -11,7 +11,7 @@ import SupportSVG from "next-common/assets/imgs/icons/support.svg";
 import ValueDisplay from "next-common/components/valueDisplay";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
-import Descriptions from "next-common/components/Descroptions";
+import Descriptions from "next-common/components/Descriptions";
 import Pagination from "next-common/components/pagination";
 import User from "next-common/components/user";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
