@@ -8,7 +8,7 @@ export default function Summary({ items = [], footer, chart }) {
       <div className="flex max-sm:block">
         <SummaryItems
           items={items}
-          className={clsx("w-full", chart && "grid grid-cols-2 gap-4")}
+          className={clsx("w-full", chart && "!grid-cols-2")}
         />
 
         {chart}
