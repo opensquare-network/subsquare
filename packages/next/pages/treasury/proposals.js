@@ -3,26 +3,15 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
-import Summary from "next-common/components/summary";
-import PlusIcon from "public/imgs/icons/plusInCircle.svg";
+import TreasurySummary from "next-common/components/summary";
 import dynamic from "next/dynamic";
-import { Create } from "next-common/components/treasury/common/styled";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import styled from "styled-components";
-import {
-  flex,
-  gap_x,
-  hidden,
-  items_center,
-} from "next-common/styles/tailwindcss";
-import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
-import { smcss } from "next-common/utils/responsive";
+import ListLayout from "next-common/components/layout/ListLayout";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
@@ -31,91 +20,66 @@ const Popup = dynamic(
   },
 );
 
-const CategoryExtraWrapper = styled.div`
-  ${flex};
-  ${items_center};
-  ${gap_x(16)};
-`;
+export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [proposals, setProposals] = useState(ssrProposals);
+  useEffect(() => setProposals(ssrProposals), [ssrProposals]);
+  const isMounted = useIsMounted();
+  const chainSettings = useChainSettings();
 
-const NewLabel = styled.span`
-  .abbreviate {
-    ${smcss(hidden)}
-  }
-`;
+  const items = (proposals.items || []).map((item) =>
+    normalizeTreasuryProposalListItem(chain, item),
+  );
 
-export default withLoginUserRedux(
-  ({ proposals: ssrProposals, chain, tracks, fellowshipTracks }) => {
-    const [showPopup, setShowPopup] = useState(false);
-    const [proposals, setProposals] = useState(ssrProposals);
-    useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-    const isMounted = useIsMounted();
-    const chainSettings = useChainSettings();
+  const refreshPageData = useCallback(async () => {
+    const { result } = await nextApi.fetch("treasury/proposals");
+    if (result && isMounted.current) {
+      setProposals(result);
+    }
+  }, [isMounted]);
 
-    const items = (proposals.items || []).map((item) =>
-      normalizeTreasuryProposalListItem(chain, item),
-    );
+  const onProposeFinalized = useWaitSyncBlock(
+    "Proposal proposed",
+    refreshPageData,
+  );
 
-    const refreshPageData = useCallback(async () => {
-      const { result } = await nextApi.fetch("treasury/proposals");
-      if (result && isMounted.current) {
-        setProposals(result);
-      }
-    }, [isMounted]);
+  const category = "Treasury Proposals";
+  const seoInfo = { title: category, desc: category };
 
-    const onProposeFinalized = useWaitSyncBlock(
-      "Proposal proposed",
-      refreshPageData,
-    );
-
-    const categoryExtra = (
-      <CategoryExtraWrapper>
-        <Create onClick={() => setShowPopup(true)}>
-          <PlusIcon />
-          <NewLabel>
-            New <span className="abbreviate">Proposal</span>
-          </NewLabel>
-        </Create>
-
-        {chainSettings.hasDotreasury && (
-          <StatisticLinkButton
-            href={`https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/proposals`}
-          />
-        )}
-      </CategoryExtraWrapper>
-    );
-
-    const category = "Treasury Proposals";
-    const seoInfo = { title: category, desc: category };
-
-    return (
-      <HomeLayout
-        seoInfo={seoInfo}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-      >
-        <PostList
-          category={category}
-          topRightCorner={categoryExtra}
-          items={items}
-          summary={<Summary />}
-          pagination={{
-            page: proposals.page,
-            pageSize: proposals.pageSize,
-            total: proposals.total,
-          }}
+  return (
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      summary={<TreasurySummary />}
+      tabs={[
+        { label: "Proposals", url: "/treasury/proposals" },
+        {
+          label: "Statistics",
+          url: `https://dotreasury.com/${lowerCase(
+            chainSettings.symbol,
+          )}/proposals`,
+        },
+      ]}
+    >
+      <PostList
+        category={category}
+        title="List"
+        items={items}
+        pagination={{
+          page: proposals.page,
+          pageSize: proposals.pageSize,
+          total: proposals.total,
+        }}
+      />
+      {showPopup && (
+        <Popup
+          onClose={() => setShowPopup(false)}
+          onFinalized={onProposeFinalized}
         />
-        {showPopup && (
-          <Popup
-            onClose={() => setShowPopup(false)}
-            onFinalized={onProposeFinalized}
-          />
-        )}
-      </HomeLayout>
-    );
-  },
-);
+      )}
+    </ListLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
