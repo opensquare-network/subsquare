@@ -1,10 +1,6 @@
-import React from "react";
 import styled from "styled-components";
 import { p_14_normal, p_20_bold } from "../../styles/componentCss";
 import Divider from "../styled/layout/divider";
-import { SummaryCard } from "./styled";
-
-const Wrapper = SummaryCard;
 
 const TitleGroup = styled.div`
   display: flex;
@@ -25,7 +21,7 @@ const TitleExtra = styled.span`
 const Description = styled.p`
   margin: 4px 0 0;
   color: var(--textTertiary);
-  ${ p_14_normal };
+  ${p_14_normal};
 `;
 
 export default function Summary({
@@ -36,7 +32,7 @@ export default function Summary({
   children,
 }) {
   return (
-    <Wrapper>
+    <div className="p-6">
       {title && (
         <>
           <TitleGroup>
@@ -61,6 +57,6 @@ export default function Summary({
           {footer}
         </>
       )}
-    </Wrapper>
+    </div>
   );
 }
