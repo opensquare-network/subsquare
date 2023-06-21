@@ -8,20 +8,37 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import Gov2Summary from "components/summary/gov2Summary";
-import FellowshipPage from "components/fellowship/fellowshipPage";
+import ListLayout from "next-common/components/layout/ListLayout";
+import PostList from "next-common/components/postList";
+import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
-  ({ posts, title, tracks, fellowshipTracks, summary }) => {
-    const summaryComponent = <Gov2Summary summary={summary} noDelegation={true} />;
+  ({ posts, title, fellowshipTracks, summary }) => {
+    const seoInfo = { title, desc: title };
+    const items = (posts.items || []).map((item) =>
+      normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+    );
 
     return (
-      <FellowshipPage
-        posts={posts}
-        title={title}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-        summary={summaryComponent}
-      />
+      <ListLayout
+        seoInfo={seoInfo}
+        head={
+          <Gov2Summary summary={summary} noDelegation={true} title={title} />
+        }
+      >
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          category={businessCategory.fellowship}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
+        />
+      </ListLayout>
     );
   },
 );

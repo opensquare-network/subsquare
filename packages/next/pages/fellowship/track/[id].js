@@ -10,28 +10,43 @@ import {
 import { EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
 import Gov2TrackSummary from "components/summary/gov2TrackSummary";
-import FellowshipPage from "components/fellowship/fellowshipPage";
 import { to404 } from "next-common/utils/serverSideUtil";
+import ListLayout from "next-common/components/layout/ListLayout";
+import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
+import PostList from "next-common/components/postList";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
-  ({ posts, title, tracks, fellowshipTracks, summary, period }) => {
-    const summaryComponent = (
-      <Gov2TrackSummary
-        summary={summary}
-        period={period}
-        noDelegation={true}
-        titleExtra={`[${period.id}]`}
-      />
+  ({ posts, title, fellowshipTracks, summary, period }) => {
+    const seoInfo = { title, desc: title };
+    const items = (posts.items || []).map((item) =>
+      normalizeFellowshipReferendaListItem(item, fellowshipTracks),
     );
 
     return (
-      <FellowshipPage
-        posts={posts}
-        title={title}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-        summary={summaryComponent}
-      />
+      <ListLayout
+        seoInfo={seoInfo}
+        head={
+          <Gov2TrackSummary
+            summary={summary}
+            period={period}
+            noDelegation={true}
+            titleExtra={`[${period.id}]`}
+          />
+        }
+      >
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          category={businessCategory.fellowship}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
+        />
+      </ListLayout>
     );
   },
 );
