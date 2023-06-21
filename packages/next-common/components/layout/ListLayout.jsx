@@ -2,6 +2,7 @@ import clsx from "clsx";
 import BaseLayout from "./baseLayoutV2";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { isExternalLink } from "next-common/utils";
 
 /**
  * @param {object} props
@@ -50,23 +51,33 @@ export default function ListLayout({
         </div>
         {tabs?.length > 0 && (
           <ul className="flex space-x-8 px-12">
-            {tabs.map((tab) => (
-              <li key={tab.url}>
-                <Link
-                  href={tab.url}
-                  className={clsx(
-                    "block pb-3",
-                    "text14Bold border-b-4 text-textPrimary",
-                    "hover:text-theme500",
-                    router.asPath.startsWith(tab.url)
-                      ? "border-theme500 text-theme500"
-                      : "border-transparent",
-                  )}
-                >
-                  {tab.label}
-                </Link>
-              </li>
-            ))}
+            {tabs.map((tab) => {
+              const isExternal = isExternalLink(tab.url);
+
+              return (
+                <li key={tab.url}>
+                  <Link
+                    href={tab.url}
+                    target={isExternal ? "_blank" : "_self"}
+                    className={clsx(
+                      "block pb-3",
+                      "text14Bold border-b-4 text-textPrimary",
+                      "hover:text-theme500",
+                      router.asPath.startsWith(tab.url)
+                        ? "border-theme500 text-theme500"
+                        : "border-transparent",
+                    )}
+                  >
+                    {tab.label}
+                    {isExternal && (
+                      <span className="ml-1 text-textTertiary text14Medium">
+                        ↗
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
