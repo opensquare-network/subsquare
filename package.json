@@ -9,7 +9,8 @@
   "scripts": {
     "prepare": "husky install",
     "scan": "yarn workspace @subsquare/scan scan",
-    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint"
+    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint",
+    "lint-fix": "yarn workspace @subsquare/kintsugi-next lint --fix && yarn workspace @subsquare/next lint --fix && yarn workspace next-common lint --fix"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
@@ -20,7 +21,7 @@
     "tailwindcss": "^3.3.2"
   },
   "lint-staged": {
-    "**/*.js": [
+    "**/*.jsx?": [
       "eslint --fix"
     ]
   },

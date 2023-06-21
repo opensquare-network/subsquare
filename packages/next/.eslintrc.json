@@ -5,6 +5,14 @@
     "../next-common/.eslintrc.js"
   ],
   "rules": {
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": [
+          "context"
+        ]
+      }
+    ]
   }
 }
