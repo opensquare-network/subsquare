@@ -11,7 +11,7 @@ import {
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import AllDelegation from "./allDelegation";
 
-export default function Gov2Summary({ summary, noDelegation = false }) {
+export default function Gov2Summary({ summary, noDelegation = false, title }) {
   const { sm } = useScreenSize();
 
   let footer;
@@ -21,7 +21,7 @@ export default function Gov2Summary({ summary, noDelegation = false }) {
 
   return (
     <Summary
-      title="Referenda"
+      title={title ?? "Referenda"}
       description="All active and history referenda of various tracks."
       footer={footer}
     >
