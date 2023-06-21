@@ -23,7 +23,6 @@ import DividerOrigin from "next-common/components/styled/layout/divider";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import FlexCenter from "next-common/components/styled/flexCenter";
 import VStack from "next-common/components/styled/vStack";
-import Flex from "next-common/components/styled/flex";
 
 // used in `Divider` and `ThresholdCurvesChart`
 const THRESHOLD_CURVE_PADDING = 8;
@@ -64,12 +63,6 @@ const Divider = styled(DividerOrigin)`
   ${smcss(`
     margin-right: ${4 + THRESHOLD_CURVE_PADDING}px;
   `)}
-`;
-
-const TitleWrapper = styled(Flex)`
-  > span {
-    margin-left: 8px;
-  }
 `;
 
 export default function Gov2TrackSummary({
