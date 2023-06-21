@@ -182,8 +182,10 @@ function SubMenuItems({ className = "", items = [] }) {
               link={item.pathname}
               icon={item.icon}
               activeCount={item.activeCount}
-              active={item.pathname === router.asPath}
-              className={item.pathname === router.asPath && "bg-transparent"}
+              active={router.asPath.startsWith(item.pathname)}
+              className={
+                router.asPath.startsWith(item.pathname) && "bg-transparent"
+              }
             />
           )}
         </li>
