@@ -1,10 +1,9 @@
 import React from "react";
-import Overview from "next-common/components/overview";
-import OverviewV2 from "next-common/components/overview/v2";
+import OverviewPostList from "next-common/components/overview/postList";
+import OverviewHead from "next-common/components/overview/head";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toDiscussionListItem } from "utils/viewfuncs";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
@@ -62,27 +61,15 @@ export default withLoginUserRedux(({ overview, chain }) => {
   );
 
   return (
-    <ListLayout>
-      <OverviewV2
-        overviewData={filteredOverviewData}
-        summaryData={overview?.summary}
-      />
+    <ListLayout head={<OverviewHead summaryData={overview?.summary} />}>
+      <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
-  );
-
-  return (
-    <HomeLayout>
-      <Overview
-        overviewData={filteredOverviewData}
-        summaryData={overview?.summary}
-      />
-    </HomeLayout>
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withLoginUser(async () => {
   const chain = process.env.CHAIN;
-  const { result, error } = await nextApi.fetch("overview");
+  const { result } = await nextApi.fetch("overview");
 
   return {
     props: {
