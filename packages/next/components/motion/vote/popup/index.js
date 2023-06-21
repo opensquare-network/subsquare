@@ -19,6 +19,13 @@ import styled from "styled-components";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
+import isMoonChain from "next-common/utils/isMoonChain";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import * as treasuryCouncil from "next-common/utils/moonPrecompiles/treasuryCouncil";
+import * as moonCouncil from "next-common/utils/moonPrecompiles/council";
+import * as techCommCouncil from "next-common/utils/moonPrecompiles/techCommCouncil";
+import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
+import { sendEvmTx } from "next-common/utils/sendEvmTx";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -58,17 +65,12 @@ function PopupContent({
     (item) => item[0] === signerAccount?.realAddress
   );
 
-  const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
   const isMounted = useIsMounted();
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (approve) => {
     if (loadingState !== VoteLoadingEnum.None) return;
-
-    if (!voteMethod) {
-      return showErrorToast("Chain network is not connected yet");
-    }
 
     if (!motionHash || motionIndex === undefined) {
       return;
@@ -78,30 +80,84 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    let tx = voteMethod(motionHash, motionIndex, approve);
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
     const signerAddress = signerAccount.address;
 
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: (loading) => {
-        if (loading) {
-          setLoadingState(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-        } else {
-          setLoadingState(VoteLoadingEnum.None);
-        }
-      },
-      onFinalized,
-      onInBlock,
-      onSubmitted,
-      onClose,
-      signerAddress,
-      isMounted,
-    });
+    const setLoading = (loading) => {
+      if (loading) {
+        setLoadingState(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
+      } else {
+        setLoadingState(VoteLoadingEnum.None);
+      }
+    };
+
+    if (isMoonChain()) {
+      let callTo, callData;
+
+      if (type === detailPageCategory.TREASURY_COUNCIL_MOTION) {
+        ({ callTo, callData } = treasuryCouncil.encodeVoteData({
+          proposalHash: motionHash,
+          proposalIndex: motionIndex,
+          approve,
+        }));
+      } else if (type === detailPageCategory.COUNCIL_MOTION) {
+        ({ callTo, callData } = moonCouncil.encodeVoteData({
+          proposalHash: motionHash,
+          proposalIndex: motionIndex,
+          approve,
+        }));
+      } else if (type === detailPageCategory.TECH_COMM_MOTION) {
+        ({ callTo, callData } = techCommCouncil.encodeVoteData({
+          proposalHash: motionHash,
+          proposalIndex: motionIndex,
+          approve,
+        }));
+      } else {
+        return showErrorToast(`Unsupported vote for motion type: ${type}`);
+      }
+
+      if (signerAccount?.proxyAddress) {
+        ({ callTo, callData } = encodeProxyData({
+          real: signerAccount?.proxyAddress,
+          callTo,
+          callData,
+        }));
+      }
+
+      await sendEvmTx({
+        to: callTo,
+        data: callData,
+        dispatch,
+        setLoading,
+        onFinalized,
+        onInBlock,
+        onSubmitted,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    } else {
+      const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
+      if (!voteMethod) {
+        return showErrorToast("Chain network is not connected yet");
+      }
+
+      let tx = voteMethod(motionHash, motionIndex, approve);
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
+
+      await sendTx({
+        tx,
+        dispatch,
+        setLoading,
+        onFinalized,
+        onInBlock,
+        onSubmitted,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    }
   };
 
   return (

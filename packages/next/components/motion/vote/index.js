@@ -6,6 +6,7 @@ import { useDetailType } from "next-common/context/page";
 import Voters from "./voters";
 import Action from "./action";
 import { useChainSettings } from "next-common/context/chain";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -40,11 +41,14 @@ export default function Vote({
   const [showPopup, setShowPopup] = useState(false);
   const { hideActionButtons } = useChainSettings();
 
+  // No openTechComm precompile at the moment
+  const noAction = type === detailPageCategory.OPEN_TECH_COMM_PROPOSAL;
+
   return (
     <>
       <Wrapper>
         <Voters votes={votes} isLoadingVote={isLoadingVote} prime={prime} />
-        {!hideActionButtons && (
+        {!hideActionButtons && !noAction && (
           <Action refreshData={onFinalized} setShowPopup={setShowPopup} />
         )}
       </Wrapper>
