@@ -1,29 +1,23 @@
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { flex, flex_col, gap_y, m_x } from "next-common/styles/tailwindcss";
-import styled from "styled-components";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
 import { useCallback, useState } from "react";
-import { smcss } from "next-common/utils/responsive";
 import useScheduled from "next-common/hooks/useScheduled";
-import { useCalendarUserEvents, useCalendarUserEventsSummary } from "next-common/hooks/calendar";
+import {
+  useCalendarUserEvents,
+  useCalendarUserEventsSummary,
+} from "next-common/hooks/calendar";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   adminsApi,
   fellowshipTracksApi,
   gov2TracksApi,
 } from "next-common/services/url";
+import ListLayout from "next-common/components/layout/ListLayout";
+import clsx from "clsx";
 
-const Wrapper = styled.div`
-  ${flex}
-  ${flex_col}
-  ${gap_y(16)}
-  ${smcss(m_x(16))}
-`;
-
-export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
+export default withLoginUserRedux(() => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
   const futureEvents = useScheduled();
@@ -38,8 +32,8 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   }, [refreshDayUserEvents, refreshMonthUserEvents]);
 
   return (
-    <HomeLayout tracks={tracks} fellowshipTracks={fellowshipTracks}>
-      <Wrapper>
+    <ListLayout>
+      <div className={clsx("flex flex-col gap-y-4", "max-sm:mx-4")}>
         <TitleContainer>Calendar</TitleContainer>
 
         {/* calendar component */}
@@ -61,8 +55,8 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
           loadingDayUserEvents={loadingDayUserEvents}
           refresh={refresh}
         />
-      </Wrapper>
-    </HomeLayout>
+      </div>
+    </ListLayout>
   );
 });
 
