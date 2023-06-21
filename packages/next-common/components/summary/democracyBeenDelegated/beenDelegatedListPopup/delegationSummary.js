@@ -8,7 +8,7 @@ import BalanceSVG from "next-common/assets/imgs/icons/balance.svg";
 import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import Flex from "next-common/components/styled/flex";
 import ValueDisplay from "next-common/components/valueDisplay";
-import Descriptions from "next-common/components/Descroptions";
+import Descriptions from "next-common/components/Descriptions";
 
 const Title = styled(Flex)`
   gap: 8px;

@@ -3,6 +3,10 @@ import TrackAllIcon from "../../assets/imgs/icons/track-all.svg";
 import TrackDefaultIcon from "../../assets/imgs/icons/track-default.svg";
 import Track0Icon from "../../assets/imgs/icons/track-0.svg";
 import Track1Icon from "../../assets/imgs/icons/track-1.svg";
+import Track2Icon from "../../assets/imgs/icons/track-2.svg";
+import Track3Icon from "../../assets/imgs/icons/track-3.svg";
+import Track4Icon from "../../assets/imgs/icons/track-4.svg";
+import Track5Icon from "../../assets/imgs/icons/track-5.svg";
 import Track10Icon from "../../assets/imgs/icons/track-10.svg";
 import Track11Icon from "../../assets/imgs/icons/track-11.svg";
 import Track12Icon from "../../assets/imgs/icons/track-12.svg";
@@ -33,6 +37,10 @@ export const TrackIconMap = {
   Default: wrapIcon(<TrackDefaultIcon />),
   0: wrapIcon(<Track0Icon />),
   1: wrapIcon(<Track1Icon />),
+  2: wrapIcon(<Track2Icon />),
+  3: wrapIcon(<Track3Icon />),
+  4: wrapIcon(<Track4Icon />),
+  5: wrapIcon(<Track5Icon />),
   10: wrapIcon(<Track10Icon />),
   11: wrapIcon(<Track11Icon />),
   12: wrapIcon(<Track12Icon />),
