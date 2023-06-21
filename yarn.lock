@@ -3153,6 +3153,7 @@ __metadata:
     "@osn/eslint-config": "*"
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
+    clsx: ^1.2.1
     cookies: ^0.8.0
     dayjs: ^1.10.7
     eslint: 7.32.0
@@ -3186,6 +3187,7 @@ __metadata:
     "@osn/rich-text-editor": ^0.1.56
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
+    clsx: ^1.2.1
     cookies: ^0.8.0
     dayjs: ^1.10.7
     eslint: 7.32.0
