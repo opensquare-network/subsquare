@@ -5,51 +5,67 @@ import { useRouter } from "next/router";
 
 /**
  * @param {object} props
- * @param {JSX.Element} props.head - the head of the list
+ * @param {JSX.Element} props.summary - the summary area
  * @param {JSX.Element} props.children - the list
  * @param {object} props.seoInfo - the seo info
- * @param {{label: string, url: string}[]} props.tabs - the seo info
+ * @param {{label: string, url: string}[]} props.tabs - the tabs
+ * @param {string} props.title - the title
+ * @param {string} props.description - the description
+ * @param {JSX.Element} props.headContent - the head content
  */
 export default function ListLayout({
   seoInfo = {},
   children,
-  head,
+  title,
+  description,
+  headContent,
+  summary,
   tabs = [],
 }) {
   const router = useRouter();
-  console.log(router.asPath);
 
   return (
     <BaseLayout seoInfo={seoInfo}>
-      {head && (
-        <div className="bg-neutral100">
-          <div className={clsx("px-6 mx-auto max-w-7xl", "max-sm:px-0")}>
-            {head}
+      <div className="bg-neutral100">
+        <div className={clsx("px-12 py-6 mx-auto max-w-7xl", "max-sm:px-0")}>
+          <div>
+            <h3 className="text20Bold text-textPrimary">{title}</h3>
+            <p className="text14Medium text-textTertiary">{description}</p>
 
-            {tabs?.length > 0 && (
-              <ul className="flex px-6 space-x-8">
-                {tabs.map((tab) => (
-                  <li key={tab.url}>
-                    <Link
-                      href={tab.url}
-                      className={clsx(
-                        "block pb-3",
-                        "text14Bold border-b-4 text-textPrimary",
-                        "hover:text-theme500",
-                        router.asPath.startsWith(tab.url)
-                          ? "border-theme500 text-theme500"
-                          : "border-transparent",
-                      )}
-                    >
-                      {tab.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            {headContent && <div className="mt-2">{headContent}</div>}
+
+            {summary && (
+              <>
+                <hr className="h-px my-4 bg-neutral300" />
+                {summary}
+              </>
             )}
           </div>
+
+          {tabs?.length > 0 && (
+            <ul className="flex px-6 space-x-8">
+              {tabs.map((tab) => (
+                <li key={tab.url}>
+                  <Link
+                    href={tab.url}
+                    className={clsx(
+                      "block pb-3",
+                      "text14Bold border-b-4 text-textPrimary",
+                      "hover:text-theme500",
+                      router.asPath.startsWith(tab.url)
+                        ? "border-theme500 text-theme500"
+                        : "border-transparent",
+                    )}
+                  >
+                    {tab.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      )}
+      </div>
+
       <div className={clsx("px-6 my-6 mx-auto max-w-7xl", "max-sm:px-0")}>
         {children}
       </div>
