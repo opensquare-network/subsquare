@@ -49,7 +49,8 @@ export default withLoginUserRedux(
     const [proposals, setProposals] = useState(ssrProposals);
     useEffect(() => setProposals(ssrProposals), [ssrProposals]);
     const isMounted = useIsMounted();
-    const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
+    const { hasDotreasury, symbol, hideActionButtons, noTreasuryPrecompile } =
+      useChainSettings();
 
     const items = (proposals.items || []).map((item) =>
       normalizeTreasuryProposalListItem(chain, item)
@@ -69,7 +70,7 @@ export default withLoginUserRedux(
 
     const categoryExtra = (
       <CategoryExtraWrapper>
-        {!hideActionButtons && (
+        {!hideActionButtons && !noTreasuryPrecompile && (
           <Create onClick={() => setShowPopup(true)}>
             <PlusIcon />
             <NewLabel>

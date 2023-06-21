@@ -14,6 +14,11 @@ import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 import SecondPopupInputTimes from "./inputTimes";
+import isMoonChain from "next-common/utils/isMoonChain";
+import { encodeSecondData } from "next-common/utils/moonPrecompiles/democracy";
+import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
+import { sendEvmTx } from "next-common/utils/sendEvmTx";
+import { encodeBatchAllData } from "next-common/utils/moonPrecompiles/batch";
 
 function PopupContent({
   extensionAccounts,
@@ -59,39 +64,83 @@ function PopupContent({
       return showErrorToast("Please select an account");
     }
 
-    let tx = null;
-    try {
-      if (api.tx.democracy?.second?.meta.args.length < 2) {
-        tx = api.tx.democracy.second(proposalIndex);
-      } else {
-        tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 1);
-      }
-    } catch (e) {
-      return showErrorToast(e.message);
-    }
-
-    if (times > 1) {
-      const txs = Array.from({ length: times }).fill(tx);
-      tx = api.tx.utility.batch(txs);
-    }
-
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
     const signerAddress = signerAccount.address;
 
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setIsSubmitting,
-      onFinalized,
-      onInBlock,
-      onSubmitted,
-      onClose,
-      signerAddress,
-      isMounted,
-    });
+    if (isMoonChain()) {
+      let { callTo, callData } = encodeSecondData({
+        propIndex: parseInt(proposalIndex),
+        secondsUpperBound: parseInt(depositorUpperBound) || 1,
+      });
+
+      if (times > 1) {
+        let toParam = [], valueParam = [], callDataParam = [], gasLimitParam = [];
+
+        for (let n = 0; n < times; n++) {
+          toParam.push(callTo);
+          valueParam.push(0);
+          callDataParam.push(callData);
+          gasLimitParam.push(0);
+        }
+
+        ({ callTo, callData } = encodeBatchAllData({
+          to: toParam,
+          value: valueParam,
+          callData: callDataParam,
+          gasLimit: gasLimitParam,
+        }));
+      }
+
+      if (signerAccount?.proxyAddress) {
+        ({ callTo, callData } = encodeProxyData({
+          real: signerAccount?.proxyAddress,
+          callTo,
+          callData,
+        }));
+      }
+
+      await sendEvmTx({
+        to: callTo,
+        data: callData,
+        dispatch,
+        setLoading: setIsSubmitting,
+        onInBlock,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    } else {
+      let tx = null;
+      try {
+        if (api.tx.democracy?.second?.meta.args.length < 2) {
+          tx = api.tx.democracy.second(proposalIndex);
+        } else {
+          tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 1);
+        }
+      } catch (e) {
+        return showErrorToast(e.message);
+      }
+
+      if (times > 1) {
+        const txs = Array.from({ length: times }).fill(tx);
+        tx = api.tx.utility.batch(txs);
+      }
+
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
+
+      await sendTx({
+        tx,
+        dispatch,
+        setLoading: setIsSubmitting,
+        onFinalized,
+        onInBlock,
+        onSubmitted,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    }
   };
 
   return (

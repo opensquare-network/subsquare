@@ -5,6 +5,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import DirectVote from "../directVote";
+import { encodeStandardVoteData } from "next-common/utils/moonPrecompiles/democracy";
 
 export default function useStandardVote({
   module = "convictionVoting",
@@ -65,5 +66,32 @@ export default function useStandardVote({
     });
   };
 
-  return { StandardVoteComponent, getStandardVoteTx };
+  const getMoonStandardVoteTx = () => {
+    let bnVoteBalance;
+    try {
+      bnVoteBalance = checkInputValue(
+        inputVoteBalance,
+        node.decimals,
+        "vote balance",
+        true
+      );
+    } catch (err) {
+      showErrorToast(err.message);
+      return;
+    }
+
+    if (bnVoteBalance.gt(votingBalance)) {
+      showErrorToast("Insufficient voting balance");
+      return;
+    }
+
+    return encodeStandardVoteData({
+      refIndex: referendumIndex,
+      aye: isAye,
+      voteAmount: BigInt(bnVoteBalance.toString()),
+      conviction: voteLock,
+    });
+  };
+
+  return { StandardVoteComponent, getStandardVoteTx, getMoonStandardVoteTx };
 }

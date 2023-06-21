@@ -70,5 +70,9 @@ export default function useSplitVote({
     });
   };
 
-  return { SplitVoteComponent, getSplitVoteTx };
+  const getMoonSplitVoteTx = () => {
+    throw new Error("The Moonbeam/Moonriver democracy precompile does not support split votes");
+  };
+
+  return { SplitVoteComponent, getSplitVoteTx, getMoonSplitVoteTx };
 }
