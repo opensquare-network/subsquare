@@ -6,7 +6,7 @@ export default function ThresholdCurvesGov2TrackSummaryLegend() {
   return (
     <Flex>
       <LegendItem color="var(--purple500)">Support</LegendItem>
-      <LegendItem color="var(--secondaryGreen500)">Approval</LegendItem>
+      <LegendItem color="var(--green500)">Approval</LegendItem>
     </Flex>
   );
 }

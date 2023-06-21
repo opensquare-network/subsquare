@@ -9,8 +9,8 @@ export default function ThresholdCurvesGov2TallyLegend() {
       <LegendItem dashed color="var(--purple300)">
         Current Support
       </LegendItem>
-      <LegendItem color="var(--secondaryGreen500)">Approval</LegendItem>
-      <LegendItem dashed color="var(--secondaryGreen300)">
+      <LegendItem color="var(--green500)">Approval</LegendItem>
+      <LegendItem dashed color="var(--green300)">
         Current Approval
       </LegendItem>
     </FlexCenter>
