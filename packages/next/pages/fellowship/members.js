@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
-import Summary from "next-common/components/summary/new";
 
 export default withLoginUserRedux(() => {
   const [data, setData] = useState([]);
@@ -44,7 +43,7 @@ export default withLoginUserRedux(() => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout seoInfo={seoInfo} head={<Summary title={category} />}>
+    <ListLayout seoInfo={seoInfo} title={category}>
       <MembersList items={data} loading={loading} />
     </ListLayout>
   );
