@@ -23,6 +23,7 @@ const rococo = {
   decimals: 12,
   hasElections: true,
   ss58Format: 42,
+  blockTime: 6000,
   snsCoverCid: "bafybeia7np32r7cq2ykeeopfyxfgxhhsi2e4tl4bew4zjwu2zixiw2rx74",
   endpoints: defaultRococoNodes,
   headerLogo: Logo,

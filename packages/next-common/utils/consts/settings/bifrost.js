@@ -37,6 +37,8 @@ const bifrost = {
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  hasReferenda: true,
+  hasFellowship: true,
 };
 
 export default bifrost;
