@@ -29,17 +29,18 @@ export default function ListLayout({
             {tabs?.length > 0 && (
               <ul className="flex px-6 space-x-8">
                 {tabs.map((tab) => (
-                  <li
-                    key={tab.url}
-                    className={clsx(
-                      "text14Bold pb-3 border-b-4 text-textPrimary",
-                      "hover:text-theme500",
-                      router.asPath.startsWith(tab.url)
-                        ? "border-theme500 text-theme500"
-                        : "border-transparent",
-                    )}
-                  >
-                    <Link href={tab.url} className="">
+                  <li key={tab.url}>
+                    <Link
+                      href={tab.url}
+                      className={clsx(
+                        "block pb-3",
+                        "text14Bold border-b-4 text-textPrimary",
+                        "hover:text-theme500",
+                        router.asPath.startsWith(tab.url)
+                          ? "border-theme500 text-theme500"
+                          : "border-transparent",
+                      )}
+                    >
                       {tab.label}
                     </Link>
                   </li>
