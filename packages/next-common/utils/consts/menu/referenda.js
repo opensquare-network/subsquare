@@ -11,7 +11,12 @@ export function getReferendaMenu(tracks = []) {
 
   const menu = {
     name,
-    excludeToChains: getExcludeChains([Chains.development, Chains.kusama, Chains.polkadot]),
+    excludeToChains: getExcludeChains([
+      Chains.development,
+      Chains.kusama,
+      Chains.polkadot,
+      Chains.bifrost,
+    ]),
     activeCount: totalActiveCount,
     items: [
       {
