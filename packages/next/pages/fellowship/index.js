@@ -49,7 +49,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: `${ capitalize(chain) } OpenGov Fellowship Referenda`,
+      title: `${ capitalize(chain) } Fellowship Referenda`,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},
