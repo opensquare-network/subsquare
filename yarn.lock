@@ -2828,6 +2828,7 @@ __metadata:
     eslint: 7.32.0
     eslint-config-next: ^13.3.0
     http-proxy: ^1.18.1
+    lodash.capitalize: ^4.2.1
     lodash.clonedeep: ^4.5.0
     lodash.findlast: ^4.6.0
     lodash.findlastindex: ^4.6.0
@@ -6831,6 +6832,13 @@ __metadata:
   version: 4.17.21
   resolution: "lodash-es@npm:4.17.21"
   checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
+  languageName: node
+  linkType: hard
+
+"lodash.capitalize@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "lodash.capitalize@npm:4.2.1"
+  checksum: d9195f31d48c105206f1099946d8bbc8ab71435bc1c8708296992a31a992bb901baf120fdcadd773098ac96e62a79e6b023ee7d26a2deb0d6c6aada930e6ad0a
   languageName: node
   linkType: hard
 
