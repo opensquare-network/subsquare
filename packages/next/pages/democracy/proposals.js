@@ -7,6 +7,7 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import MaybeNoDemocracySummary from "next-common/components/maybeNoDemocracySummary";
+import usePageTitle from "next-common/hooks/usePageTitle";
 
 export default withLoginUserRedux(
   ({ proposals, chain, tracks, fellowshipTracks, summary }) => {
@@ -14,7 +15,8 @@ export default withLoginUserRedux(
       normalizeProposalListItem(chain, item)
     );
     const category = businessCategory.democracyProposals;
-    const seoInfo = { title: category, desc: category };
+    const title = usePageTitle(category);
+    const seoInfo = { title, desc: title };
 
     return (
       <HomeLayout

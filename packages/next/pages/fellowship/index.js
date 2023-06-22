@@ -9,6 +9,7 @@ import {
 } from "next-common/services/url";
 import Gov2Summary from "components/summary/gov2Summary";
 import FellowshipPage from "components/fellowship/fellowshipPage";
+import capitalize from "lodash.capitalize";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary }) => {
@@ -27,6 +28,7 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const chain = process.env.CHAIN;
   const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
 
   const [
@@ -47,7 +49,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "All Fellowship Referenda",
+      title: `${ capitalize(chain) } OpenGov Fellowship Referenda`,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},
