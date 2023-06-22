@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.2.3
+date:2023-06-22
+
+- Enable events subscription for polkadot collectives deployment.
+- Enable OpenGov for Bifrost.
+- Reduce unnecessary referendum votes query.
+- Improve OpenGov list page title.
+
 ### 3.2.2
 date: 2023-06-12
 
