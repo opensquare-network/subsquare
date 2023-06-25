@@ -2,6 +2,7 @@ import PolkadotLogo from "../../../assets/icons/wallet/polkadot.svg";
 import SubWalletLogo from "../../../assets/icons/wallet/subWallet.svg";
 import TalismanLogo from "../../../assets/icons/wallet/talisman.svg";
 import MetaMaskLogo from "../../../assets/icons/wallet/metamask.svg";
+import PolkagateLogo from "../../../assets/icons/wallet/polkagate.svg";
 import Chains from "../chains";
 import WalletTypes from "../walletTypes";
 
@@ -37,10 +38,18 @@ const metamask = {
   logo: MetaMaskLogo,
 };
 
+const polkagate = {
+  extensionName: WalletTypes.POLKAGATE,
+  title: "PolkaGate",
+  installUrl:
+    "https://chrome.google.com/webstore/detail/polkagate-the-gateway-to/ginchbkmljhldofnbjabmeophlhdldgp",
+  logo: PolkagateLogo,
+};
+
 export function getWallets() {
   if (process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2) {
     return [talisman, metamask];
   }
 
-  return [polkadotJs, subWalletJs, talisman];
+  return [polkadotJs, subWalletJs, talisman, polkagate];
 }
