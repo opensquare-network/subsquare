@@ -67,7 +67,10 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
         </div>
       }
       tabs={[
-        { label: "Proposals", url: "/treasury/proposals" },
+        {
+          label: "Proposals",
+          url: "/treasury/proposals",
+        },
         chainSettings.hasDotreasury && {
           label: "Statistics",
           url: `https://dotreasury.com/${lowerCase(
