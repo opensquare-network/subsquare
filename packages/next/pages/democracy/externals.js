@@ -6,7 +6,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import normalizeExternalListItem from "next-common/utils/viewfuncs/democracy/normliazeExternalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
-import DemocracySummary from "components/summary/democracySummary";
+import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 
 export default withLoginUserRedux(({ externals, chain, summary }) => {
   const items = (externals.items || []).map((item) =>

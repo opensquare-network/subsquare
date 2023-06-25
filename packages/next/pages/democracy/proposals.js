@@ -7,7 +7,7 @@ import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/nor
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import ListLayout from "next-common/components/layout/ListLayout";
-import DemocracySummary from "components/summary/democracySummary";
+import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 
 export default withLoginUserRedux(({ proposals, chain, summary }) => {
   const items = (proposals.items || []).map((item) =>
