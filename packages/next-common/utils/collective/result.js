@@ -1,5 +1,5 @@
 // used for collective timeline executed item
-import { capitailize } from "../index";
+import capitalize from "lodash.capitalize";
 
 export default function getMotionExecutedResult(dispatchResult) {
   if (typeof dispatchResult === "boolean") {
@@ -12,7 +12,7 @@ export default function getMotionExecutedResult(dispatchResult) {
 
   if (Object.keys(dispatchResult).includes("err")) {
     return {
-      Result: `Error: ${capitailize(Object.keys(dispatchResult.err)[0])}`,
+      Result: `Error: ${capitalize(Object.keys(dispatchResult.err)[0])}`,
     };
   }
 }

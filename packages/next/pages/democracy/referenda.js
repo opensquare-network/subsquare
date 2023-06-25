@@ -8,6 +8,7 @@ import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/no
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import MaybeNoDemocracySummary from "next-common/components/maybeNoDemocracySummary";
+import usePageTitle from "next-common/hooks/usePageTitle";
 
 export default withLoginUserRedux(
   ({ posts, chain, tracks, fellowshipTracks, summary }) => {
@@ -15,9 +16,10 @@ export default withLoginUserRedux(
       normalizeReferendaListItem(chain, item),
     );
     const category = businessCategory.democracyReferenda;
+    const title = usePageTitle(category);
     const seoInfo = {
-      title: "Democracy Referenda",
-      desc: "Democracy Referenda",
+      title,
+      desc: title,
     };
 
     return (
