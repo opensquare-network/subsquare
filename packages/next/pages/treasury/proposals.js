@@ -68,13 +68,13 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       }
       tabs={[
         { label: "Proposals", url: "/treasury/proposals" },
-        {
+        chainSettings.hasDotreasury && {
           label: "Statistics",
           url: `https://dotreasury.com/${lowerCase(
             chainSettings.symbol,
           )}/proposals`,
         },
-      ]}
+      ].filter(Boolean)}
     >
       <PostList
         category={category}
