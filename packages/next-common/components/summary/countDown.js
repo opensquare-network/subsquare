@@ -14,7 +14,7 @@ const BackCircle = styled.div`
   width: ${size}px;
   height: ${size}px;
   border-radius: 50%;
-  border: 8px solid var(--purple100);
+  border: 8px solid var(--theme100);
   background: var(--neutral100);
 `;
 
@@ -32,7 +32,7 @@ const InnerCircle = styled.div`
   top: 1px;
   background: var(--neutral100);
   border-radius: 50%;
-  border: 6px solid var(--purple500);
+  border: 6px solid var(--theme500);
 `;
 
 const InnerCircleLeft = styled(InnerCircle)`
