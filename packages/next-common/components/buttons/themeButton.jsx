@@ -13,7 +13,7 @@ export default function ThemeButton({
 }) {
   return (
     <PrimaryButton
-      className={clsx("bg-theme500 text-textPrimaryContrast", className)}
+      className={clsx("!bg-theme500 text-textPrimaryContrast", className)}
       isLoading={isLoading}
       disabled={disabled}
       {...props}
