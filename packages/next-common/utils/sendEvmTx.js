@@ -84,7 +84,11 @@ export async function sendEvmTx({
     if (e.info?.error?.code === 4001) {
       dispatch(newWarningToast(e.info?.error?.message));
     } else {
-      dispatch(newErrorToast(e.info?.error?.message || e.message));
+      dispatch(
+        newErrorToast(
+          e.info?.error?.data?.message || e.info?.error?.message || e.message,
+        ),
+      );
     }
   } finally {
     if (isMounted.current) {
