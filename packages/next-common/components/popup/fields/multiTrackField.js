@@ -18,9 +18,11 @@ export default function MultiTrack({
     };
   });
 
+  const titleWithCount = `${title} (${selectedTracks.length})`;
+
   return (
     <div>
-      {title && <PopupLabel text={title} />}
+      {title && <PopupLabel text={titleWithCount} />}
       <MultiSelect
         labelAll={"All Tracks"}
         options={options}

@@ -25,7 +25,7 @@ const IconWrapper = styled.div`
 
 export default function SelectedValueItem({ title, onRemove = noop }) {
   return (
-    <Wrapper>
+    <Wrapper onClick={(e) => e.stopPropagation()}>
       <span>{title}</span>
       <IconWrapper onClick={onRemove}>
         <RemoveSVG />

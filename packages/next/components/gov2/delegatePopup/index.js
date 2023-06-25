@@ -61,6 +61,10 @@ function PopupContent({
       return;
     }
 
+    if (selectedTracks.length === 0) {
+      return showErrorToast("Please select at least one track");
+    }
+
     let bnVoteBalance;
     try {
       bnVoteBalance = checkInputValue(
@@ -72,7 +76,7 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    if (bnVoteBalance.gt(votingBalance)) {
+    if (bnVoteBalance.times(selectedTracks.length).gt(votingBalance)) {
       return showErrorToast("Insufficient voting balance");
     }
 
@@ -94,10 +98,6 @@ function PopupContent({
       return showErrorToast(
         "Target address cannot be same with the delegator address"
       );
-    }
-
-    if (selectedTracks.length === 0) {
-      return showErrorToast("Please select at least one track");
     }
 
     let tx;

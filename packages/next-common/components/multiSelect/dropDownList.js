@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import SelectedSVG from "./selected.svg";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import { pretty_scroll_bar, shadow_200 } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -10,10 +10,13 @@ const Wrapper = styled.div`
   flex-direction: column;
   border-radius: 4px;
   background: ${(p) => p.theme.neutral};
-  box-shadow: 0px 0.3990061283111572px 1.4630224704742432px 0px
-      rgba(30, 33, 52, 0.04),
-    0px 1.3401784896850586px 4.91398811340332px 0px rgba(30, 33, 52, 0.07),
-    0px 6px 22px 0px rgba(30, 33, 52, 0.11);
+  ${shadow_200};
+
+  ${(p) =>
+    p.theme.isDark &&
+    css`
+      border: 1px solid ${p.theme.grey200Border};
+    `}
 
   ${(p) =>
     p.maxDisplayItem &&
