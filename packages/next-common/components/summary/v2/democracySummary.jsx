@@ -48,23 +48,7 @@ export default function DemocracySummary({ summary = {} }) {
 
         showLaunchPeriod && {
           title: "Launch Period",
-          content: (
-            <>
-              {(summary?.launchPeriod || []).map((item, index) => (
-                <span className={index % 2 === 1 ? "unit" : ""} key={index}>
-                  {item}
-                </span>
-              ))}
-              {(summary?.totalPeriod || []).map((item, index) => (
-                <span
-                  className={index % 2 === 1 ? "unit total" : "total"}
-                  key={index}
-                >
-                  {item}
-                </span>
-              ))}
-            </>
-          ),
+          content: <LaunchPeriod summary={summary} />,
           suffix: <CountDown percent={summary?.progress ?? 0} />,
         },
 
@@ -77,6 +61,23 @@ export default function DemocracySummary({ summary = {} }) {
       ].filter(Boolean)}
       footer={hasDemocracy && !isKintsugi && <DemocracySummaryFooter />}
     />
+  );
+}
+
+function LaunchPeriod({ summary }) {
+  return (
+    <>
+      {(summary?.launchPeriod || []).map((item, index) => (
+        <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+          {item}
+        </span>
+      ))}
+      {(summary?.totalPeriod || []).map((item, index) => (
+        <span className={index % 2 === 1 ? "unit total" : "total"} key={index}>
+          {item}
+        </span>
+      ))}
+    </>
   );
 }
 
