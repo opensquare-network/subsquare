@@ -12,6 +12,8 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
+import ThemeButton from "next-common/components/buttons/themeButton";
+import { SystemPlus } from "@osn/icons/subsquare";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
@@ -51,6 +53,19 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       seoInfo={seoInfo}
       title={category}
       summary={<TreasurySummary />}
+      summaryFooter={
+        <div className="flex justify-end">
+          <ThemeButton
+            small
+            icon={
+              <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
+            }
+            onClick={() => setShowPopup(true)}
+          >
+            New Proposal
+          </ThemeButton>
+        </div>
+      }
       tabs={[
         { label: "Proposals", url: "/treasury/proposals" },
         {
