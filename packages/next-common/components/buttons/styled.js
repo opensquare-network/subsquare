@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 
-const CommonButton = styled.button`
-  all: unset;
+const CommonButtonWrapper = styled.button`
   padding: 0 12px;
   height: 38px;
   border-radius: 4px;
@@ -22,7 +21,32 @@ const CommonButton = styled.button`
     css`
       pointer-events: none;
     `}
+
+  ${(p) =>
+    p.small &&
+    css`
+      height: 28px;
+      font-size: 12px;
+    `}
 `;
+
+function CommonButton({
+  children,
+  className,
+  icon,
+  isLoading,
+  small,
+  ...props
+}) {
+  return (
+    <CommonButtonWrapper className={className} small={small} {...props}>
+      <div className="flex items-center">
+        {icon && !isLoading && <div className="mr-1.5">{icon}</div>}
+        {children}
+      </div>
+    </CommonButtonWrapper>
+  );
+}
 
 // These kinds of button has a colored background, and the text color is contrast.
 export const BackgroundButton = styled(CommonButton)`
