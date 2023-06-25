@@ -3,39 +3,39 @@ import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeExternalListItem from "next-common/utils/viewfuncs/democracy/normliazeExternalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import MaybeNoDemocracySummary from "next-common/components/maybeNoDemocracySummary";
+import ListLayout from "next-common/components/layout/ListLayout";
+import DemocracySummary from "components/summary/democracySummary";
 
-export default withLoginUserRedux(
-  ({ externals, chain, tracks, fellowshipTracks, summary }) => {
-    const items = (externals.items || []).map((item) =>
-      normalizeExternalListItem(chain, item),
-    );
-    const category = businessCategory.democracyExternals;
-    const seoInfo = { title: category, desc: category };
+export default withLoginUserRedux(({ externals, chain, summary }) => {
+  const items = (externals.items || []).map((item) =>
+    normalizeExternalListItem(chain, item),
+  );
+  const category = businessCategory.democracyExternals;
+  const seoInfo = { title: category, desc: category };
 
-    return (
-      <HomeLayout
-        seoInfo={seoInfo}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-      >
-        <PostList
-          category={category}
-          items={items}
-          pagination={{
-            page: externals.page,
-            pageSize: externals.pageSize,
-            total: externals.total,
-          }}
-          summary={<MaybeNoDemocracySummary summary={summary} />}
-        />
-      </HomeLayout>
-    );
-  },
-);
+  return (
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
+      summary={<DemocracySummary summary={summary} />}
+    >
+      <PostList
+        category={category}
+        title="List"
+        titleCount={externals.total}
+        items={items}
+        pagination={{
+          page: externals.page,
+          pageSize: externals.pageSize,
+          total: externals.total,
+        }}
+      />
+    </ListLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
