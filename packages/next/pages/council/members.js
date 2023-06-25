@@ -5,17 +5,20 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChainSettings } from "next-common/context/chain";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import ListLayout from "next-common/components/layout/ListLayout";
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
+export default withLoginUserRedux(() => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const { hasElections } = useChainSettings();
-  const [electionsInfo, loadingElectionsInfo] = useCall(api?.derive?.elections?.info, []);
+  const [electionsInfo, loadingElectionsInfo] = useCall(
+    api?.derive?.elections?.info,
+    [],
+  );
   const [allVotes, loadingAllVotes] = useCall(api?.derive?.council?.votes, []);
   const prime = usePrime({ type: detailPageCategory.COUNCIL_MOTION });
 
@@ -47,19 +50,14 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout
-      seoInfo={seoInfo}
-      tracks={tracks}
-      fellowshipTracks={fellowshipTracks}
-    >
+    <ListLayout seoInfo={seoInfo} title={category} description="Description">
       <MembersList
-        category={category}
         items={data}
         prime={prime}
         loading={loading}
         hasElections={hasElections}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 
