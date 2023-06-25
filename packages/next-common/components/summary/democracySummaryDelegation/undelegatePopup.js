@@ -11,6 +11,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { encodeUnDelegateData } from "next-common/utils/moonPrecompiles/democracy";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 export default function UndelegatePopup({
   onClose,
@@ -38,7 +39,7 @@ export default function UndelegatePopup({
 
       const signerAddress = signerAccount?.address;
 
-      if (isMoonChain()) {
+      if (isMoonChain() && isUseMetamask()) {
         let { callTo, callData } = encodeUnDelegateData();
 
         if (signerAccount?.proxyAddress) {

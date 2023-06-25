@@ -26,6 +26,7 @@ import * as moonCouncil from "next-common/utils/moonPrecompiles/council";
 import * as techCommCouncil from "next-common/utils/moonPrecompiles/techCommCouncil";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -90,7 +91,7 @@ function PopupContent({
       }
     };
 
-    if (isMoonChain()) {
+    if (isMoonChain() && isUseMetamask()) {
       let callTo, callData;
 
       if (type === detailPageCategory.TREASURY_COUNCIL_MOTION) {

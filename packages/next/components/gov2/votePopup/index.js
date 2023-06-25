@@ -30,6 +30,7 @@ import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferenda
 import isMoonChain from "next-common/utils/isMoonChain";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 function PopupContent({
   extensionAccounts,
@@ -120,7 +121,7 @@ function PopupContent({
 
     const signerAddress = signerAccount.address;
 
-    if (isMoonChain()) {
+    if (isMoonChain() && isUseMetamask()) {
       let { callTo, callData } = getMoonVoteTx();
 
       if (signerAccount?.proxyAddress) {

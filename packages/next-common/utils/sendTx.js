@@ -7,9 +7,9 @@ import {
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
-import WalletTypes from "./consts/walletTypes";
 import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
+import isUseMetamask from "./isUseMetamask";
 import { sendEvmTx } from "./sendEvmTx";
 
 export async function getSigner(signerAddress) {
@@ -54,10 +54,7 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
-  if (
-    isEvmChain() &&
-    localStorage.lastLoginExtension === WalletTypes.METAMASK
-  ) {
+  if (isEvmChain() && isUseMetamask()) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
       dispatch,

@@ -19,6 +19,7 @@ import { encodeSecondData } from "next-common/utils/moonPrecompiles/democracy";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
 import { encodeBatchAllData } from "next-common/utils/moonPrecompiles/batch";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 function PopupContent({
   extensionAccounts,
@@ -66,7 +67,7 @@ function PopupContent({
 
     const signerAddress = signerAccount.address;
 
-    if (isMoonChain()) {
+    if (isMoonChain() && isUseMetamask()) {
       let { callTo, callData } = encodeSecondData({
         propIndex: parseInt(proposalIndex),
         secondsUpperBound: parseInt(depositorUpperBound) || 1,

@@ -25,6 +25,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { encodeDelegateData } from "next-common/utils/moonPrecompiles/democracy";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 function PopupContent({
   extensionAccounts,
@@ -96,7 +97,7 @@ function PopupContent({
       );
     }
 
-    if (isMoonChain()) {
+    if (isMoonChain() && isUseMetamask()) {
       let { callTo, callData } = encodeDelegateData({
         targetAddress,
         conviction: parseInt(conviction),
