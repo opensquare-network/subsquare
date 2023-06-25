@@ -14,6 +14,7 @@ import { isExternalLink } from "next-common/utils";
  * @param {string | JSX.Element} props.titleExtra - the title extra content
  * @param {string} props.description - the description
  * @param {JSX.Element} props.headContent - the head content
+ * @param {JSX.Element} props.summaryFooter - the summary footer
  */
 export default function ListLayout({
   seoInfo = {},
@@ -23,6 +24,7 @@ export default function ListLayout({
   description,
   headContent,
   summary,
+  summaryFooter,
   tabs = [],
 }) {
   const router = useRouter();
@@ -45,6 +47,13 @@ export default function ListLayout({
               <>
                 <hr className="h-px my-4 bg-neutral300" />
                 {summary}
+              </>
+            )}
+
+            {summaryFooter && (
+              <>
+                <hr className="h-px my-4 bg-neutral300" />
+                {summaryFooter}
               </>
             )}
           </div>
