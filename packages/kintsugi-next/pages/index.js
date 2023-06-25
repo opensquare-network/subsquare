@@ -1,6 +1,4 @@
-import React from "react";
 import OverviewPostList from "next-common/components/overview/postList";
-import OverviewHead from "next-common/components/overview/head";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toDiscussionListItem } from "utils/viewfuncs";
@@ -9,8 +7,15 @@ import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/no
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
+import { useChainSettings } from "next-common/context/chain";
+import { isCollectivesChain } from "next-common/utils/chain";
+import OverviewSummary from "next-common/components/summary/overviewSummary";
+import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
+import ChainSocialLinks from "next-common/components/chain/socialLinks";
 
 export default withLoginUserRedux(({ overview, chain }) => {
+  const chainSettings = useChainSettings();
+
   let overviewData = [
     {
       category: "Discussions",
@@ -60,8 +65,18 @@ export default withLoginUserRedux(({ overview, chain }) => {
       : b?.items?.length - a?.items?.length,
   );
 
+  const SummaryComponent = isCollectivesChain(chain)
+    ? AllianceOverviewSummary
+    : OverviewSummary;
+
   return (
-    <ListLayout head={<OverviewHead summaryData={overview?.summary} />}>
+    <ListLayout
+      title={chainSettings.name}
+      // FIXME: v2, chain description
+      description={"{chainSettings.description}"}
+      headContent={<ChainSocialLinks />}
+      summary={<SummaryComponent summaryData={overview?.summary} />}
+    >
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
   );
