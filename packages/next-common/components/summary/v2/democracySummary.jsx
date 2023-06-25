@@ -6,6 +6,7 @@ import { SummaryGreyText } from "next-common/components/summary/styled";
 import Summary from "next-common/components/summary/v2/base";
 import Tooltip from "next-common/components/tooltip";
 import { useChain, useChainSettings } from "next-common/context/chain";
+import { useDemocracySummaryData } from "next-common/hooks/useDemoracySummaryData";
 import Chains from "next-common/utils/consts/chains";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
 import { useMemo } from "react";
@@ -14,6 +15,7 @@ export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const hasDemocracy = chainSettings.hasDemocracy !== false;
+  const summaryData = useDemocracySummaryData(summary);
 
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
   const showLaunchPeriod = !isKintsugi && hasDemocracy;
@@ -25,10 +27,10 @@ export default function DemocracySummary({ summary = {} }) {
           title: "Proposals",
           content: (
             <span>
-              {summary.publicProposals?.active || 0}
+              {summaryData.publicProposals?.active || 0}
               <SummaryGreyText>
                 {" "}
-                / {summary.publicProposals?.all || 0}
+                / {summaryData.publicProposals?.all || 0}
               </SummaryGreyText>
             </span>
           ),
@@ -37,10 +39,10 @@ export default function DemocracySummary({ summary = {} }) {
           title: "Referenda",
           content: (
             <span>
-              {summary.referenda?.active || 0}
+              {summaryData.referenda?.active || 0}
               <SummaryGreyText>
                 {" "}
-                / {summary.referenda?.all || 0}
+                / {summaryData.referenda?.all || 0}
               </SummaryGreyText>
             </span>
           ),
@@ -48,14 +50,16 @@ export default function DemocracySummary({ summary = {} }) {
 
         showLaunchPeriod && {
           title: "Launch Period",
-          content: <LaunchPeriod summary={summary} />,
-          suffix: <CountDown percent={summary?.progress ?? 0} />,
+          content: <LaunchPeriod summary={summaryData} />,
+          suffix: <CountDown percent={summaryData?.progress ?? 0} />,
         },
 
         isKintsugi && {
           title: "Next Launch Time",
           content: (
-            <NextLaunchTime nextLaunchTimestamp={summary.nextLaunchTimestamp} />
+            <NextLaunchTime
+              nextLaunchTimestamp={summaryData.nextLaunchTimestamp}
+            />
           ),
         },
       ].filter(Boolean)}
