@@ -93,7 +93,7 @@ export default function TreasurySummary() {
               ))}
             </>
           ),
-          icon: <CountDown percent={summary?.progress ?? 0} />,
+          suffix: <CountDown percent={summary?.progress ?? 0} />,
         },
       ]}
     />

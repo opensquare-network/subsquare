@@ -13,7 +13,7 @@ export default function SummaryItems({ items, className }) {
             {item.title && <SummaryTitle>{item.title}</SummaryTitle>}
             <Content>{item.content}</Content>
           </div>
-          {item.icon && <div>{item.icon}</div>}
+          {item.suffix && <div>{item.suffix}</div>}
         </div>
       ))}
     </div>

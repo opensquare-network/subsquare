@@ -54,7 +54,7 @@ export default function DemocracySummary({ summary = {} }) {
               ))}
             </>
           ),
-          icon: <CountDown percent={summary?.progress ?? 0} />,
+          suffix: <CountDown percent={summary?.progress ?? 0} />,
         },
       ].filter(Boolean)}
       footer={hasDemocracy && <DemocracySummaryFooter />}
