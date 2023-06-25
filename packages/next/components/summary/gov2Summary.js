@@ -1,5 +1,3 @@
-// bulk copied from `next-common/components/summary/democracySummary`
-
 import Summary from "next-common/components/summary/v2/base";
 import { SummaryGreyText } from "next-common/components/summary/styled";
 import AllDelegation from "./allDelegation";
