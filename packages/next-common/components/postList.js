@@ -22,7 +22,7 @@ const TitleLink = styled.a`
 `;
 
 export default function PostList({
-  title,
+  title = "",
   titleCount = null,
   titleExtra = null,
   category,
