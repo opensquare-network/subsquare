@@ -21,9 +21,9 @@ async function referendumsActive(api) {
   });
 }
 
-export function useDemocracySummaryData() {
+export function useDemocracySummaryData(defaultSummaryData = {}) {
   const chain = useChain();
-  const [summary, setSummary] = useState({});
+  const [summary, setSummary] = useState(defaultSummaryData || {});
   const api = useApi();
   const blockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
