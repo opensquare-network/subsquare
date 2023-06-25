@@ -4,17 +4,12 @@ import { useRef, useState } from "react";
 import noop from "lodash.noop";
 import DropDownList from "./dropDownList";
 import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
+import { OptionsWrapper } from "../select/styled";
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const DropDownWrapper = styled.div`
   position: relative;
   display: flex;
-  width: 100%;
-  z-index: 1;
+  flex-direction: column;
 `;
 
 export default function MultiSelect({
@@ -41,16 +36,14 @@ export default function MultiSelect({
         setShowDropDown={setShowDropDown}
       />
       {showDropDown && (
-        <DropDownWrapper>
+        <OptionsWrapper itemHeight={itemHeight} maxDisplayItem={maxDisplayItem}>
           <DropDownList
             labelAll={labelAll}
             options={options}
             selectedValues={selectedValues}
             setSelectedValues={setSelectedValues}
-            itemHeight={itemHeight}
-            maxDisplayItem={maxDisplayItem}
           />
-        </DropDownWrapper>
+        </OptionsWrapper>
       )}
     </Wrapper>
   );

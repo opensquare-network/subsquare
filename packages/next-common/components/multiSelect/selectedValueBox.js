@@ -25,7 +25,7 @@ const IconWrapper = styled.div`
   display: inline-flex;
   cursor: pointer;
   svg path {
-    stroke: ${p => p.theme.textPrimary};
+    stroke: ${(p) => p.theme.textPrimary};
   }
   ${(p) =>
     p.showDropDown &&
@@ -47,9 +47,7 @@ export default function SelectedValueBox({
   };
 
   return (
-    <Wrapper
-      onClick={() => setShowDropDown(!showDropDown)}
-    >
+    <Wrapper onClick={() => setShowDropDown(!showDropDown)}>
       <ValueContent>
         {showOptions.map((o) => (
           <SelectedValueItem
@@ -59,9 +57,7 @@ export default function SelectedValueBox({
           />
         ))}
       </ValueContent>
-      <IconWrapper
-        showDropDown={showDropDown}
-      >
+      <IconWrapper showDropDown={showDropDown}>
         <DownSVG />
       </IconWrapper>
     </Wrapper>
