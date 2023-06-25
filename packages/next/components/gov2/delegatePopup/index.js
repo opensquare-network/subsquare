@@ -25,9 +25,9 @@ import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 
 function PopupContent({
   extensionAccounts,
-  trackId,
+  tracks,
   onClose,
-  showTrackSelect = false,
+  showTrackSelect = true,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ function PopupContent({
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
-  const [selectedTracks, setSelectedTracks] = useState([trackId]);
+  const [selectedTracks, setSelectedTracks] = useState(tracks);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
