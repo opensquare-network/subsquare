@@ -3,9 +3,9 @@ import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
 import businessCategory from "next-common/utils/consts/business/category";
+import ListLayout from "next-common/components/layout/ListLayout";
 
 export default withLoginUserRedux(({ motions }) => {
   const chain = useChain();
@@ -16,9 +16,11 @@ export default withLoginUserRedux(({ motions }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
+    <ListLayout seoInfo={seoInfo} title={category}>
       <PostList
         category={category}
+        title="List"
+        titleCount={motions.total}
         items={items}
         pagination={{
           page: motions.page,
@@ -26,7 +28,7 @@ export default withLoginUserRedux(({ motions }) => {
           total: motions.total,
         }}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 
