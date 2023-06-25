@@ -20,7 +20,7 @@ import VoteValue from "next-common/components/democracy/delegatePopup/voteValue"
 import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import Track from "next-common/components/popup/fields/trackField";
+import MultiTrack from "next-common/components/popup/fields/multiTrackField";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 
 function PopupContent({
@@ -52,7 +52,7 @@ function PopupContent({
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
-  const [track, setTrack] = useState(trackId);
+  const [selectedTracks, setSelectedTracks] = useState([trackId]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -96,12 +96,30 @@ function PopupContent({
       );
     }
 
-    let tx = api.tx.convictionVoting.delegate(
-      track,
-      targetAddress,
-      conviction,
-      bnVoteBalance.toString()
-    );
+    if (selectedTracks.length === 0) {
+      return showErrorToast("Please select at least one track");
+    }
+
+    let tx;
+    if (selectedTracks.length === 1) {
+      tx = api.tx.convictionVoting.delegate(
+        selectedTracks[0],
+        targetAddress,
+        conviction,
+        bnVoteBalance.toString()
+      );
+    } else {
+      tx = api.tx.utility.batch(
+        selectedTracks.map((trackId) =>
+          api.tx.convictionVoting.delegate(
+            trackId,
+            targetAddress,
+            conviction,
+            bnVoteBalance.toString()
+          )
+        )
+      );
+    }
 
     if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -129,7 +147,12 @@ function PopupContent({
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
 
-      {showTrackSelect && <Track track={track} setTrack={setTrack} />}
+      {showTrackSelect && (
+        <MultiTrack
+          selectedTracks={selectedTracks}
+          setSelectedTracks={setSelectedTracks}
+        />
+      )}
 
       <Target
         extensionAccounts={extensionAccounts}
