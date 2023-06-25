@@ -2,53 +2,52 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import Summary from "next-common/components/summary";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
+import ListLayout from "next-common/components/layout/ListLayout";
+import TreasurySummary from "next-common/components/summary";
 
-export default withLoginUserRedux(
-  ({ bounties, chain, tracks, fellowshipTracks }) => {
-    const chainSettings = useChainSettings();
+export default withLoginUserRedux(({ bounties, chain }) => {
+  const chainSettings = useChainSettings();
 
-    const items = (bounties.items || []).map((item) =>
-      normalizeBountyListItem(chain, item),
-    );
-    const category = "Treasury Bounties";
-    const seoInfo = { title: category, desc: category };
+  const items = (bounties.items || []).map((item) =>
+    normalizeBountyListItem(chain, item),
+  );
+  const category = "Treasury Bounties";
+  const seoInfo = { title: category, desc: category };
 
-    const categoryExtra = chainSettings.hasDotreasury && (
-      <StatisticLinkButton
-        href={`https://dotreasury.com/${lowerCase(
-          chainSettings.symbol,
-        )}/bounties`}
+  return (
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      summary={<TreasurySummary />}
+      tabs={[
+        {
+          label: "Bounties",
+          url: "/treasury/bounties",
+        },
+        chainSettings.hasDotreasury && {
+          label: "Statistics",
+          url: `https://dotreasury.com/${lowerCase(
+            chainSettings.symbol,
+          )}/bounties`,
+        },
+      ].filter(Boolean)}
+    >
+      <PostList
+        category={category}
+        items={items}
+        pagination={{
+          page: bounties.page,
+          pageSize: bounties.pageSize,
+          total: bounties.total,
+        }}
       />
-    );
-
-    return (
-      <HomeLayout
-        seoInfo={seoInfo}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-      >
-        <PostList
-          category={category}
-          topRightCorner={categoryExtra}
-          items={items}
-          summary={<Summary />}
-          pagination={{
-            page: bounties.page,
-            pageSize: bounties.pageSize,
-            total: bounties.total,
-          }}
-        />
-      </HomeLayout>
-    );
-  },
-);
+    </ListLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
