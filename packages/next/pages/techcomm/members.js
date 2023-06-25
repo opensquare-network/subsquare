@@ -8,7 +8,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
 
-export default withLoginUserRedux(({}) => {
+export default withLoginUserRedux(() => {
   const api = useApi();
   const [members, loadingMembers] = useCall(
     api?.derive?.technicalCommittee?.members,
