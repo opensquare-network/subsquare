@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
@@ -109,20 +109,26 @@ export default function AddressCombo({ accounts, address, setAddress }) {
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
 
-  useEffect(() => {
-    accounts.forEach((acc) => {
-      const identityAddress = encodeAddressToChain(acc.address, identity);
-      fetchIdentity(identity, identityAddress).then((identity) => {
-        if (!identity || identity?.info?.status === "NO_ID") {
-          return;
-        }
-        setIdentities((identities) => ({
-          ...identities,
-          [acc.address]: getIdentityDisplay(identity),
-        }));
-      });
+  const fetchAddressIdentity = useCallback((address) => {
+    const identityAddress = encodeAddressToChain(address, identity);
+    fetchIdentity(identity, identityAddress).then((identity) => {
+      if (!identity || identity?.info?.status === "NO_ID") {
+        return;
+      }
+      setIdentities((identities) => ({
+        ...identities,
+        [address]: getIdentityDisplay(identity),
+      }));
     });
-  }, [identity, accounts]);
+  }, [identity]);
+
+  useEffect(() => {
+    accounts.forEach((acc) => fetchAddressIdentity(acc.address));
+  }, [fetchAddressIdentity, accounts]);
+
+  useEffect(() => {
+    fetchAddressIdentity(address);
+  }, [fetchAddressIdentity, address]);
 
   const onBlur = () => {
     const isAddr = isAddress(inputAddress);
@@ -174,7 +180,7 @@ export default function AddressCombo({ accounts, address, setAddress }) {
       <>
         <Avatar address={address} />
         <NameWrapper>
-          <div>{shortAddr}</div>
+          <div>{identities[address] || shortAddr}</div>
           <div>{shortAddr}</div>
         </NameWrapper>
       </>
