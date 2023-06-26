@@ -1,11 +1,5 @@
 import React from "react";
 import sumBy from "lodash.sumby";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
-import MembersIcon from "../../../assets/imgs/icons/members.svg";
-import {
-  FellowshipTrackIconMap,
-  TrackIconMap,
-} from "../../../components/icons/track";
 import Divider from "../../../components/styled/layout/divider";
 import startCase from "lodash.startcase";
 import { getExcludeChains } from "../../viewfuncs";
@@ -33,11 +27,6 @@ export function getFellowshipMenu(fellowshipTracks = []) {
         value: "fellowship-members",
         name: "Members",
         pathname: "/fellowship/members",
-        icon: (
-          <MenuIconWrapper>
-            <MembersIcon />
-          </MenuIconWrapper>
-        ),
       },
       {
         component: (
@@ -52,7 +41,6 @@ export function getFellowshipMenu(fellowshipTracks = []) {
         value: "all",
         name: "All",
         pathname: "/fellowship",
-        icon: TrackIconMap.All,
         activeCount: totalActiveCount,
       },
     ],
@@ -64,8 +52,7 @@ export function getFellowshipMenu(fellowshipTracks = []) {
       name: startCase(track.name),
       pathname: `/fellowship/track/${track.id}`,
       activeCount: track.activeCount,
-      icon: FellowshipTrackIconMap[track.id] ?? FellowshipTrackIconMap.Default,
-      iconV2: `[${track.id}]`,
+      icon: `[${track.id}]`,
     };
   };
 

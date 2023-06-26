@@ -1,6 +1,5 @@
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
-import { TrackIconMap } from "../../../components/icons/track";
 import sumBy from "lodash.sumby";
 import startCase from "lodash.startcase";
 import { MenuReferenda } from "@osn/icons/subsquare";
@@ -26,7 +25,6 @@ export function getReferendaMenu(tracks = []) {
         value: "all",
         name: "All",
         pathname: "/referenda",
-        icon: TrackIconMap.All,
         activeCount: totalActiveCount,
       },
     ],
@@ -38,8 +36,7 @@ export function getReferendaMenu(tracks = []) {
       name: startCase(track.name),
       pathname: `/referenda/track/${track.id}`,
       activeCount: track.activeCount,
-      icon: TrackIconMap[track.id] ?? TrackIconMap.Default,
-      iconV2: `[${track.id}]`,
+      icon: `[${track.id}]`,
     };
   };
 
