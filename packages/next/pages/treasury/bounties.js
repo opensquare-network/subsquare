@@ -39,6 +39,7 @@ export default withLoginUserRedux(({ bounties, chain }) => {
       <PostList
         category={category}
         title="List"
+        titleCount={bounties.total}
         items={items}
         pagination={{
           page: bounties.page,

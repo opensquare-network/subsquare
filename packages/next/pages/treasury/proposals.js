@@ -82,6 +82,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       <PostList
         category={category}
         title="List"
+        titleCount={proposals.total}
         items={items}
         pagination={{
           page: proposals.page,

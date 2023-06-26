@@ -78,6 +78,7 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
       <PostList
         category={category}
         title="List"
+        titleCount={tips.total}
         items={items}
         pagination={{
           page: tips.page,
