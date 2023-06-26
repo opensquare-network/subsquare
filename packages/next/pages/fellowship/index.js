@@ -12,40 +12,40 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
-import capitalize from "lodash.capitalize";
+import usePageTitle from "next-common/hooks/usePageTitle";
 
-export default withLoginUserRedux(
-  ({ posts, title, fellowshipTracks, summary }) => {
-    const seoInfo = { title, desc: title };
-    const items = (posts.items || []).map((item) =>
-      normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-    );
+export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
+  const category = "Fellowship Referenda";
+  const title = usePageTitle(category);
+  const seoInfo = { title, desc: title };
 
-    return (
-      <ListLayout
-        seoInfo={seoInfo}
-        head={
-          <Gov2Summary summary={summary} noDelegation={true} title={title} />
-        }
-      >
-        <PostList
-          title="List"
-          titleCount={posts.total}
-          category={businessCategory.fellowship}
-          items={items}
-          pagination={{
-            page: posts.page,
-            pageSize: posts.pageSize,
-            total: posts.total,
-          }}
-        />
-      </ListLayout>
-    );
-  },
-);
+  const items = (posts.items || []).map((item) =>
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+  );
+
+  return (
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="All active and history referenda of various tracks."
+      summary={<Gov2Summary summary={summary} noDelegation />}
+    >
+      <PostList
+        title="List"
+        titleCount={posts.total}
+        category={businessCategory.fellowship}
+        items={items}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
+      />
+    </ListLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
 
   const [
@@ -66,7 +66,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: `${capitalize(chain)} Fellowship Referenda`,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},

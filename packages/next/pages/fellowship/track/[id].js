@@ -26,7 +26,9 @@ export default withLoginUserRedux(
     return (
       <ListLayout
         seoInfo={seoInfo}
-        head={
+        title={`[${period.id}] Origin: ${period.origin}`}
+        description={period.description}
+        summary={
           <Gov2TrackSummary
             summary={summary}
             period={period}
