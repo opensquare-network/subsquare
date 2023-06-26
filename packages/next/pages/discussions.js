@@ -2,45 +2,46 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import styled from "styled-components";
-import PlusIcon from "public/imgs/icons/plusInCircle.svg";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChain } from "next-common/context/chain";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-
-const Create = styled.a`
-  display: flex;
-  align-items: center;
-  color: var(--purple500);
-  font-size: 14px;
-  white-space: nowrap;
-  svg {
-    margin-right: 8px;
-  }
-  cursor: pointer;
-`;
+import ThemeButton from "next-common/components/buttons/themeButton";
+import { SystemPlus } from "@osn/icons/subsquare";
+import { useRouter } from "next/router";
 
 export default withLoginUserRedux(({ posts }) => {
   const chain = useChain();
+  const router = useRouter();
   const items = (posts.items || []).map((item) =>
     normalizeDiscussionListItem(chain, item),
   );
 
-  const create = (
-    <Create href="post/create">
-      <PlusIcon />
-      New Post
-    </Create>
-  );
   const category = "Discussions";
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout seoInfo={seoInfo}>
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      summaryFooter={
+        <div className="flex justify-end">
+          <ThemeButton
+            small
+            icon={
+              <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
+            }
+            onClick={() => router.push("/post/create")}
+          >
+            New Post
+          </ThemeButton>
+        </div>
+      }
+    >
       <PostList
         category={category}
-        topRightCorner={create}
+        title="List"
+        titleCount={posts.total}
         items={items}
         pagination={{
           page: posts.page,
