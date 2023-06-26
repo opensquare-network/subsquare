@@ -33,7 +33,7 @@ export default function TreasurySummary() {
   const isMounted = useIsMountedBool();
 
   useEffect(() => {
-    if (api && blockHeight) {
+    if (api?.consts?.treasury?.spendPeriod && blockHeight) {
       const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
       const goneBlocks = new BigNumber(blockHeight).mod(spendPeriod).toNumber();
       const progress = new BigNumber(goneBlocks)
