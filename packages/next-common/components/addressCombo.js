@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
@@ -10,6 +10,10 @@ import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
+import { fetchIdentity } from "next-common/services/identity.js";
+import { useChainSettings } from "next-common/context/chain.js";
+import { encodeAddressToChain } from "next-common/services/address.js";
+import { getIdentityDisplay } from "next-common/utils/identity.js";
 
 const Wrapper = Relative;
 
@@ -102,6 +106,23 @@ export default function AddressCombo({ accounts, address, setAddress }) {
     (item) => normalizeAddress(item.address) === address,
   );
   const shortAddr = addressEllipsis(address);
+  const { identity } = useChainSettings();
+  const [identities, setIdentities] = useState({});
+
+  useEffect(() => {
+    accounts.forEach((acc) => {
+      const identityAddress = encodeAddressToChain(acc.address, identity);
+      fetchIdentity(identity, identityAddress).then((identity) => {
+        if (!identity || identity?.info?.status === "NO_ID") {
+          return;
+        }
+        setIdentities((identities) => ({
+          ...identities,
+          [acc.address]: getIdentityDisplay(identity),
+        }));
+      });
+    });
+  }, [identity, accounts]);
 
   const onBlur = () => {
     const isAddr = isAddress(inputAddress);
@@ -141,7 +162,9 @@ export default function AddressCombo({ accounts, address, setAddress }) {
       <>
         <Avatar address={selectedAccount.address} />
         <NameWrapper>
-          <div>{selectedAccount.name}</div>
+          <div>
+            {identities[selectedAccount.address] || selectedAccount.name}
+          </div>
           <div>{shortAddr}</div>
         </NameWrapper>
       </>
@@ -175,7 +198,7 @@ export default function AddressCombo({ accounts, address, setAddress }) {
           >
             <Avatar address={item.address} />
             <NameWrapper>
-              <div>{item.name}</div>
+              <div>{identities[item.address] || item.name}</div>
               <div>{addressEllipsis(ss58Address)}</div>
             </NameWrapper>
           </Item>
