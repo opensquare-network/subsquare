@@ -225,7 +225,8 @@ function MenuItem({
         <span
           className={clsx(
             "w-6 h-6",
-            " [&_svg_path]:fill-navigationIcon",
+            "inline-flex items-center",
+            "[&_svg_path]:fill-navigationIcon",
             active && "[&_svg_path]:fill-theme500",
             "group-hover/menu-item:[&_svg_path]:fill-theme500",
           )}
