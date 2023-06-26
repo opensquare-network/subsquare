@@ -15,22 +15,25 @@ import noop from "lodash.noop";
  */
 
 /**
- * @param {object} props
- * @param {JSX.Element} props.summary - the summary area
- * @param {JSX.Element} props.children - the list
- * @param {object} props.seoInfo - the seo info
- * @param {Tab[]} props.tabs - the tabs
- * @param {string} props.title - the title
- * @param {string | JSX.Element} props.titleExtra - the title extra content
- * @param {string} props.description - the description
- * @param {JSX.Element} props.headContent - the head content
- * @param {JSX.Element} props.summaryFooter - the summary footer
+ * @typedef {{
+ * seoInfo?: object
+ * children: JSX.Element
+ * title: string
+ * description: string
+ * headContent?: JSX.Element
+ * summary?: JSX.Element
+ * summaryFooter?: JSX.Element
+ * tabs?: Tab[]
+ * }} ListLayoutProps
+ */
+
+/**
+ * @param {ListLayoutProps} props
  */
 export default function ListLayout({
   seoInfo = {},
   children,
   title,
-  titleExtra,
   description,
   headContent,
   summary,
@@ -44,7 +47,6 @@ export default function ListLayout({
           <div>
             <div className="flex justify-between items-baseline">
               <h3 className="text20Bold text-textPrimary">{title}</h3>
-              {titleExtra}
             </div>
 
             <p className="text14Medium text-textTertiary">{description}</p>
