@@ -19,7 +19,6 @@ import ThresholdCurvesGov2TrackSummaryLegend from "next-common/components/charts
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { smcss } from "next-common/utils/responsive";
-import DividerOrigin from "next-common/components/styled/layout/divider";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import FlexCenter from "next-common/components/styled/flexCenter";
 import VStack from "next-common/components/styled/vStack";
@@ -41,7 +40,7 @@ const SummaryThresholdCurveContent = styled(Content)`
   margin: 0 -6px;
 `;
 const SummaryThresholdCurveLegendWrapper = styled(FlexCenter)`
-  margin-top: 8px;
+  margin-top: 2px;
 `;
 const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
   display: flex;
@@ -55,14 +54,6 @@ const SummaryDecisionDepositValueWrapper = styled.span`
   .value-display-symbol {
     color: var(--textTertiary);
   }
-`;
-
-const Divider = styled(DividerOrigin)`
-  margin-top: ${0 - THRESHOLD_CURVE_PADDING}px;
-  margin-right: ${THRESHOLD_CURVE_PADDING}px;
-  ${smcss(`
-    margin-right: ${4 + THRESHOLD_CURVE_PADDING}px;
-  `)}
 `;
 
 export default function Gov2TrackSummary({
@@ -193,8 +184,6 @@ export default function Gov2TrackSummary({
                   supportData={supportData}
                   approvalData={approvalData}
                 />
-
-                <Divider />
 
                 <SummaryThresholdCurveLegendWrapper>
                   <ThresholdCurvesGov2TrackSummaryLegend />
