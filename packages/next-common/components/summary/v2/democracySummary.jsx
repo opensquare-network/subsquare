@@ -9,7 +9,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import { useDemocracySummaryData } from "next-common/hooks/useDemoracySummaryData";
 import Chains from "next-common/utils/consts/chains";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -113,13 +113,13 @@ function useEstimateTime(ms) {
   const { days, hours, minutes, seconds } = extractTime(ms);
 
   const render = (number, unit, suffix = "s") => (
-    <>
+    <Fragment key={unit}>
       {number}{" "}
       <SummaryGreyText>
         {unit}
         {number > 1 ? suffix : ""}{" "}
       </SummaryGreyText>
-    </>
+    </Fragment>
   );
 
   return useMemo(
