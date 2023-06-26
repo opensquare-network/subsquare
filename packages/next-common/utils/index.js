@@ -5,6 +5,7 @@ import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
+import capitalize from "lodash.capitalize";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -232,8 +233,6 @@ export function isKeyRegisteredUser(user) {
 
 export function emptyFunction() {}
 
-export const capitailize = (text) => text[0].toUpperCase() + text.slice(1);
-
 export function checkInputValue(
   inputValue,
   decimals,
@@ -250,11 +249,11 @@ export function checkInputValue(
   }
 
   if (bnValue.lt(0)) {
-    throw new Error(`${capitailize(valueName)} must not be less than 0`);
+    throw new Error(`${capitalize(valueName)} must not be less than 0`);
   }
 
   if (!allowZero && bnValue.isZero()) {
-    throw new Error(`${capitailize(valueName)} must not be 0`);
+    throw new Error(`${capitalize(valueName)} must not be 0`);
   }
 
   if (!bnValue.mod(1).isZero()) {

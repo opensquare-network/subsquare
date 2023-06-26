@@ -13,6 +13,7 @@ import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import { snakeCase, upperFirst, camelCase } from "lodash";
+import capitalize from "lodash.capitalize";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, fellowshipTracks, summary, status }) => {
@@ -54,6 +55,8 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const chain = process.env.CHAIN;
+
   const {
     page = 1,
     page_size: pageSize = defaultPageSize,
@@ -81,7 +84,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "All Referenda",
+      title: `${ capitalize(chain) } OpenGov Referenda`,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},

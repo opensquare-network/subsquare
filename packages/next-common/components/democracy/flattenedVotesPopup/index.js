@@ -53,7 +53,7 @@ export default function VotesPopup({
 
   return (
     <BaseVotesPopup
-      title="Flattened Votes"
+      title="Flattened View"
       onClose={() => setShowVoteList(false)}
     >
       <VotesTab

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import { capitailize, emptyFunction, toPrecision } from "next-common/utils";
+import { emptyFunction, toPrecision } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import {
   calcPassing,
@@ -34,6 +34,7 @@ import MyVote from "./myVote";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import CheckAllVotesPopup from "components/democracy/allVotesPopup";
 import useSubDemocracyTally from "next-common/hooks/democracy/tally";
+import capitalize from "lodash.capitalize";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -288,7 +289,7 @@ function Vote({
       )}
 
       <Guide>
-        How {capitailize(chain)} Governance Works.
+        How {capitalize(chain)} Governance Works.
         <a
           href={`https://docs.interlay.io/#/${chain}/governance`}
           target="_blank"

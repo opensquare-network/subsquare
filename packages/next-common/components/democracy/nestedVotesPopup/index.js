@@ -59,7 +59,7 @@ export default function NestedVotesPopup({
   const sliceTo = sliceFrom + pageSize;
 
   return (
-    <BaseVotesPopup title="Nested Votes" onClose={() => setShowVoteList(false)}>
+    <BaseVotesPopup title="Nested View" onClose={() => setShowVoteList(false)}>
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
