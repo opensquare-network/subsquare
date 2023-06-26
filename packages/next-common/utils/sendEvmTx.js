@@ -8,7 +8,6 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
-import { getLastApi } from "./hooks/useApi";
 import { getMetaMaskEthereum } from "./metamask";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
@@ -19,7 +18,6 @@ export async function sendEvmTx({
   data,
   dispatch,
   setLoading = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
@@ -32,13 +30,9 @@ export async function sendEvmTx({
     return;
   }
 
-  const noWaitForFinalized = onFinalized === emptyFunction;
-  const totalSteps = noWaitForFinalized ? 2 : 3;
-
+  const totalSteps = 2 ;
   const toastId = newToastId();
-  dispatch(
-    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
-  );
+  dispatch(newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`));
 
   try {
     setLoading(true);
@@ -62,21 +56,8 @@ export async function sendEvmTx({
         onClose();
       },
       onInBlock: (receipt) => {
-        if (noWaitForFinalized) {
-          dispatch(removeToast(toastId));
-        } else {
-          dispatch(
-            updatePendingToast(
-              toastId,
-              `(3/${totalSteps}) Inblock, waiting for finalization...`,
-            ),
-          );
-        }
-        onInBlock(receipt);
-      },
-      onFinalized: (receipt) => {
         dispatch(removeToast(toastId));
-        onFinalized(receipt.blockHash);
+        onInBlock(receipt);
       },
     });
   } catch (e) {
@@ -105,7 +86,6 @@ async function dispatchCall({
   data,
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
-  onFinalized = emptyFunction,
 }) {
   let tx = {
     from: signerAddress,
@@ -118,22 +98,6 @@ async function dispatchCall({
   onSubmitted();
   let receipt = await sentTx.wait();
   onInBlock(receipt);
-
-  if (onFinalized !== emptyFunction) {
-    const api = getLastApi();
-    const unsub = await api?.rpc.chain.subscribeFinalizedHeads(
-      async ({ number }) => {
-        if (number.toNumber() < receipt.blockNumber) {
-          return;
-        }
-        if (unsub) {
-          unsub();
-        }
-        onFinalized(receipt);
-      },
-    );
-  }
-
   return receipt;
 }
 
