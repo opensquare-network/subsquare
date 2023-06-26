@@ -166,7 +166,11 @@ function PopupContent({
       />
       <Conviction conviction={conviction} setConviction={setConviction} />
       <PopupButtonWrapper>
-        <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
+        <SecondaryButton
+          isLoading={isLoading}
+          disabled={selectedTracks.length === 0}
+          onClick={doDelegate}
+        >
           Confirm
         </SecondaryButton>
       </PopupButtonWrapper>
