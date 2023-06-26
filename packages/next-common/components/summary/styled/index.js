@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
-import { p_12_bold, p_14_normal } from "../../../styles/componentCss";
+import { p_14_normal } from "../../../styles/componentCss";
 import { smcss } from "../../../utils/responsive";
 import { SecondaryCard } from "../../styled/containers/secondaryCard";
+import tw from "tailwind-styled-components";
 
 export const SummaryWrapper = styled.div`
   display: flex;
@@ -18,13 +19,7 @@ export const SummaryCard = styled(SecondaryCard)`
   flex: 1;
 `;
 
-export const SummaryTitle = styled.div`
-  letter-spacing: 0.16em;
-  color: var(--textTertiary);
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  ${p_12_bold};
-`;
+export const SummaryTitle = tw.div`text12Medium text-textTertiary`;
 
 export const SummaryGreyText = styled.span`
   color: var(--textTertiary) !important;
