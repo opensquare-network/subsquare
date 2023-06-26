@@ -3,7 +3,7 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
-import TreasurySummary from "next-common/components/summary";
+import TreasurySummary from "next-common/components/summary/treasurySummary";
 import dynamic from "next/dynamic";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";

@@ -7,7 +7,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummary from "next-common/components/summary";
+import TreasurySummary from "next-common/components/summary/treasurySummary";
 
 export default withLoginUserRedux(({ bounties, chain }) => {
   const chainSettings = useChainSettings();

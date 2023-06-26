@@ -13,7 +13,7 @@ import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
 import ThemeButton from "next-common/components/buttons/themeButton";
 import { SystemPlus } from "@osn/icons/subsquare";
-import TreasurySummary from "next-common/components/summary";
+import TreasurySummary from "next-common/components/summary/treasurySummary";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
