@@ -136,6 +136,8 @@ function PopupContent({
     });
   };
 
+  const disabled = !(selectedTracks?.length > 0);
+
   return (
     <>
       <Signer
@@ -168,7 +170,7 @@ function PopupContent({
       <PopupButtonWrapper>
         <SecondaryButton
           isLoading={isLoading}
-          disabled={selectedTracks.length === 0}
+          disabled={disabled}
           onClick={doDelegate}
         >
           Confirm
