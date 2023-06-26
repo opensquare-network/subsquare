@@ -16,7 +16,7 @@ import noop from "lodash.noop";
 
 /**
  * @typedef {{
- * seoInfo?: object
+ * seoInfo?: Record<string, string>
  * children: JSX.Element
  * title: string
  * description: string
