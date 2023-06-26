@@ -1,4 +1,3 @@
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
@@ -32,10 +31,8 @@ export default withLoginUserRedux(() => {
   }, [refreshDayUserEvents, refreshMonthUserEvents]);
 
   return (
-    <ListLayout>
+    <ListLayout title="Calendar">
       <div className={clsx("flex flex-col gap-y-4", "max-sm:mx-4")}>
-        <TitleContainer>Calendar</TitleContainer>
-
         {/* calendar component */}
         <FullCalendar
           date={date}
