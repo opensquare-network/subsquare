@@ -16,9 +16,11 @@ export default withLoginUserRedux(({ posts, chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout seoInfo={seoInfo}>
+    <ListLayout seoInfo={seoInfo} title={category}>
       <PostList
         category={category}
+        title="List"
+        titleCount={posts.total}
         items={items}
         pagination={{
           page: posts.page,
