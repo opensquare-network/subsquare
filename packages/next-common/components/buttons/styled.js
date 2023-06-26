@@ -40,10 +40,10 @@ function CommonButton({
 }) {
   return (
     <CommonButtonWrapper className={className} small={small} {...props}>
-      <div className="flex items-center">
-        {icon && !isLoading && <div className="mr-1.5">{icon}</div>}
-        {children}
-      </div>
+      <span className="w-full h-full inline-flex items-center justify-center">
+        {icon && !isLoading && <span className="mr-1.5">{icon}</span>}
+        <span>{children}</span>
+      </span>
     </CommonButtonWrapper>
   );
 }
