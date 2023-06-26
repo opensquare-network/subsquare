@@ -19,14 +19,29 @@ const ListItem = styled.div`
   ${p_14_normal}
 
   ${(p) =>
+    p.disabled
+      ? css`
+          cursor: not-allowed;
+        `
+      : css`
+          :hover {
+            background: ${(p) => p.theme.grey100Bg};
+          }
+        `}
+
+  ${(p) =>
     p.selected &&
     css`
       background: ${(p) => p.theme.grey100Bg};
     `}
+`;
 
-  :hover {
-    background: ${(p) => p.theme.grey100Bg};
-  }
+const TrackName = styled.span`
+  ${(p) =>
+    p.disabled &&
+    css`
+      color: ${(p) => p.theme.textPlaceholder};
+    `}
 `;
 
 const Divider = styled.div`
@@ -36,12 +51,18 @@ const Divider = styled.div`
   margin: 8px 0;
 `;
 
+const Info = styled.span`
+  color: ${(p) => p.theme.textTertiary};
+`;
+
 export default function DropDownList({
   labelAll = "All",
   options,
   selectedValues,
   setSelectedValues,
 }) {
+  const availableOptions = options.filter((o) => !o.disabled);
+
   const toggleSelect = (value) => {
     if (selectedValues.includes(value)) {
       setSelectedValues(selectedValues.filter((v) => v !== value));
@@ -50,10 +71,10 @@ export default function DropDownList({
     }
   };
 
-  const all = selectedValues.length === options.length;
+  const all = selectedValues.length === availableOptions.length;
   const toggleAll = () => {
     if (!all) {
-      setSelectedValues(options.map((o) => o.value));
+      setSelectedValues(availableOptions.map((o) => o.value));
     } else {
       setSelectedValues([]);
     }
@@ -72,9 +93,16 @@ export default function DropDownList({
           <ListItem
             key={o.value}
             selected={selected}
-            onClick={() => toggleSelect(o.value)}
+            disabled={o.disabled}
+            onClick={() => {
+              if (o.disabled) {
+                return;
+              }
+              toggleSelect(o.value);
+            }}
           >
-            <span>{o.label}</span>
+            <TrackName disabled={o.disabled}>{o.label}</TrackName>
+            <Info>{o.info}</Info>
             {selected && <SelectedSVG />}
           </ListItem>
         );

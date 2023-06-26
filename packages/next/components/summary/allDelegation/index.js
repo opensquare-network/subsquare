@@ -63,7 +63,7 @@ export default function AllDelegation() {
       <VStack space={8}>
         {showDelegatePopup && (
           <DelegatePopup
-            tracks={trackList.map(t => t.id)}
+            tracks={[trackList[0].id]}
             onInBlock={onDelegateInBlock}
             onClose={() => setShowDelegatePopup(false)}
           />
