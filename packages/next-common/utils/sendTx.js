@@ -59,7 +59,6 @@ export async function sendTx({
       data: tx.inner.toU8a(),
       dispatch,
       setLoading,
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,

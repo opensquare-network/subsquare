@@ -119,7 +119,6 @@ function PopupContent({
         data: callData,
         dispatch,
         setLoading: setIsLoading,
-        onFinalized,
         onInBlock,
         onSubmitted,
         onClose,
