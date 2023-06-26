@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import RemoveSVG from "./remove.svg";
 import noop from "lodash.noop";
+import { p_12_medium } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
   display: flex;
@@ -9,9 +10,7 @@ const Wrapper = styled.div`
   gap: 4px;
   padding: 2px 4px;
 
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
+  ${p_12_medium}
 
   color: ${p => p.theme.textPrimary};
 

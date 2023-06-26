@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import SelectedValueItem from "./selectedValueItem";
 import DownSVG from "./down.svg";
 import noop from "lodash.noop";
+import { p_14_normal } from "next-common/styles/componentCss";
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const ValueContent = styled.div`
   flex-grow: 1;
   flex-wrap: wrap;
   gap: 8px;
+  ${p_14_normal}
 `;
 
 const IconWrapper = styled.div`
@@ -49,13 +51,17 @@ export default function SelectedValueBox({
   return (
     <Wrapper onClick={() => setShowDropDown(!showDropDown)}>
       <ValueContent>
-        {showOptions.map((o) => (
-          <SelectedValueItem
-            key={o.value}
-            title={o.label}
-            onRemove={() => onRemove(o.value)}
-          />
-        ))}
+        {showOptions.length < 3 ? (
+          showOptions.map((o) => (
+            <SelectedValueItem
+              key={o.value}
+              title={o.label}
+              onRemove={() => onRemove(o.value)}
+            />
+          ))
+        ) : (
+          <span>{`Selected ${showOptions.length} tracks`}</span>
+        )}
       </ValueContent>
       <IconWrapper showDropDown={showDropDown}>
         <DownSVG />
