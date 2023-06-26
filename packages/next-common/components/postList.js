@@ -9,10 +9,6 @@ const Wrapper = styled.div`
   > :not(:first-child) {
     margin-top: 16px;
   }
-  @media screen and (max-width: 768px) {
-    margin-left: 16px;
-    margin-right: 16px;
-  }
 `;
 
 const TitleLink = styled.a`
