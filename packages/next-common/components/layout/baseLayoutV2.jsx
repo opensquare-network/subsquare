@@ -64,7 +64,11 @@ export default function BaseLayout({ children, seoInfo = {} }) {
         </section>
 
         <section className="flex flex-col flex-1">
-          <header className="sticky top-0 z-10">{!sm && <Header />}</header>
+          {!sm && (
+            <div className="sticky top-0 z-10 max-sm:hidden">
+              <Header />
+            </div>
+          )}
           <section className="flex flex-col flex-1">
             <div className="w-full flex-1">{children}</div>
             <footer>

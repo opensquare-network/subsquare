@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { useChainSettings } from "next-common/context/chain";
-import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
@@ -11,9 +10,12 @@ import Link from "next/link";
 import { useNavCollapsed } from "next-common/context/nav";
 
 export default function Nav() {
-  const { sm } = useScreenSize();
-
-  return sm ? <NavMobile /> : <NavDesktop />;
+  return (
+    <>
+      <NavDesktop />
+      <NavMobile />
+    </>
+  );
 }
 
 function ChainName() {
@@ -64,7 +66,7 @@ function NavDesktop() {
     <nav
       className={clsx(
         navCollapsed ? "w-[72px]" : "w-[300px]",
-        "max-w-[300px] h-full overflow-y-scroll",
+        "max-w-[300px] max-sm:hidden h-full overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
       )}
     >
@@ -103,7 +105,10 @@ function NavMobile() {
 
   return (
     <nav
-      className={clsx("bg-navigationBg dark:bg-neutral100 text-navigationText")}
+      className={clsx(
+        "bg-navigationBg dark:bg-neutral100 text-navigationText",
+        "sm:hidden",
+      )}
     >
       <div className={clsx("h-16", "flex items-center justify-between")}>
         <NavMobileToolbarItem>

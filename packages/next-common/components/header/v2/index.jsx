@@ -1,44 +1,23 @@
 import { useChainSettings } from "next-common/context/chain";
-import tw from "tailwind-styled-components";
 import HeaderAccount from "../headerAccount";
 import NetworkSwitch from "../networkSwitch";
 import NodeSwitch from "../nodeSwitch";
 import SearchInput from "../searchInput";
 
-const Wrapper = tw.div`
-py-4
-px-6
-h-[72px]
-flex
-gap-x-6
-border-b
-border-neutral300
-bg-neutral100
-`;
-
-const SearchWrapper = tw.div`
-flex-1
-`;
-
-const ExtrasWrapper = tw.div`
-flex
-gap-x-2
-`;
-
 export default function Header() {
   const chainSettings = useChainSettings();
 
   return (
-    <Wrapper>
-      <SearchWrapper>
+    <header className="h-[72px] py-4 px-6 flex gap-x-6 border-b border-neutral300 bg-neutral100">
+      <div className="flex-1">
         <SearchInput />
-      </SearchWrapper>
+      </div>
 
-      <ExtrasWrapper>
+      <div className="flex gap-x-2">
         <NetworkSwitch activeNode={chainSettings} />
         <NodeSwitch small />
         <HeaderAccount />
-      </ExtrasWrapper>
-    </Wrapper>
+      </div>
+    </header>
   );
 }
