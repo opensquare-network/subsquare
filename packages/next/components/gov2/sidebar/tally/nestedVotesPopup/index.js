@@ -66,7 +66,7 @@ export default function NestedVotesPopup({
   return (
     <>
       <BaseVotesPopup
-        title="Nested Votes"
+        title="Nested View"
         onClose={() => setShowVoteList(false)}
       >
         <VotesTab
