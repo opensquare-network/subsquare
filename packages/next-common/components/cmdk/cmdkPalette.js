@@ -113,7 +113,7 @@ export default function CMDKPalette() {
               return {
                 id: m.name + "-" + i.name + `-${idx}`,
                 children: i.name,
-                icon: () => i.icon,
+                icon: () => i.icon && <span>{i.icon}</span>,
                 href: i.pathname,
               };
             }),
