@@ -35,6 +35,7 @@ const moonriver = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
+  showReferendaReferendumDelegationPercentage: true,
   subscanDomain: "moonriver",
   hasReferenda: true,
   // hideActionButtons: true,
