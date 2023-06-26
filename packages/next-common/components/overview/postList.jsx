@@ -15,6 +15,7 @@ export default function OverviewPostList({ overviewData = [] }) {
         <PostList
           key={item.category}
           category={item.category}
+          title={item.category}
           link={item.link}
           items={item.items}
           type={item.type}
