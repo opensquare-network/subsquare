@@ -13,7 +13,8 @@ const Wrapper = styled.div`
 `;
 
 export default function MultiSelect({
-  labelAll,
+  disabled = false,
+  itemName = "item",
   options = [],
   selectedValues = [],
   setSelectedValues = noop,
@@ -29,6 +30,8 @@ export default function MultiSelect({
   return (
     <Wrapper ref={ref}>
       <SelectedValueBox
+        disabled={disabled}
+        itemName={itemName}
         options={options}
         selectedValues={selectedValues}
         setSelectedValues={setSelectedValues}
@@ -38,7 +41,7 @@ export default function MultiSelect({
       {showDropDown && (
         <OptionsWrapper itemHeight={itemHeight} maxDisplayItem={maxDisplayItem}>
           <DropDownList
-            labelAll={labelAll}
+            itemName={itemName}
             options={options}
             selectedValues={selectedValues}
             setSelectedValues={setSelectedValues}

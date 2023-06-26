@@ -17,7 +17,6 @@ import AllBeenDelegatedListPopup from "next-common/components/summary/democracyA
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import { usePageProps } from "next-common/context/page";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -56,14 +55,12 @@ export default function AllDelegation() {
     refresh();
     dispatch(newSuccessToast("Delegate success"));
   }, [dispatch, refresh]);
-  const { tracks: trackList } = usePageProps();
 
   return (
     <Wrapper>
       <VStack space={8}>
         {showDelegatePopup && (
           <DelegatePopup
-            tracks={[trackList[0].id]}
             onInBlock={onDelegateInBlock}
             onClose={() => setShowDelegatePopup(false)}
           />

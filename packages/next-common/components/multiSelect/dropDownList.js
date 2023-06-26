@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import SelectedSVG from "./selected.svg";
 import { p_14_normal } from "next-common/styles/componentCss";
+import pluralize from "pluralize";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ const Info = styled.span`
 `;
 
 export default function DropDownList({
-  labelAll = "All",
+  itemName,
   options,
   selectedValues,
   setSelectedValues,
@@ -83,7 +84,7 @@ export default function DropDownList({
   return (
     <Wrapper>
       <ListItem selected={all} onClick={() => toggleAll()}>
-        <span>{labelAll}</span>
+        <span>All {pluralize(itemName)}</span>
         {all && <SelectedSVG />}
       </ListItem>
       <Divider />
@@ -103,7 +104,7 @@ export default function DropDownList({
           >
             <TrackName disabled={o.disabled}>{o.label}</TrackName>
             <Info>{o.info}</Info>
-            {selected && <SelectedSVG />}
+            {selected && !o.disabled && <SelectedSVG />}
           </ListItem>
         );
       })}

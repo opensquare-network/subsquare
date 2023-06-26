@@ -3,6 +3,7 @@ import SelectedValueItem from "./selectedValueItem";
 import DownSVG from "./down.svg";
 import noop from "lodash.noop";
 import { p_14_normal } from "next-common/styles/componentCss";
+import pluralize from "pluralize";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,7 +37,13 @@ const IconWrapper = styled.div`
     `}
 `;
 
+const Placeholder = styled.span`
+  color: ${(p) => p.theme.textPlaceholder};
+`;
+
 export default function SelectedValueBox({
+  disabled,
+  itemName,
   options = [],
   selectedValues = [],
   setSelectedValues = noop,
@@ -48,21 +55,29 @@ export default function SelectedValueBox({
     setSelectedValues(selectedValues.filter((v) => v !== value));
   };
 
+  let selectedTracks;
+  if (showOptions.length === 0) {
+    selectedTracks = <Placeholder>Please select {pluralize(itemName)}</Placeholder>;
+  } else if (showOptions.length > 2) {
+    selectedTracks = <span>Selected {showOptions.length} {pluralize(itemName)}</span>;
+  } else {
+    selectedTracks = showOptions.map((o) => (
+      <SelectedValueItem
+        key={o.value}
+        title={o.label}
+        onRemove={() => onRemove(o.value)}
+      />
+    ));
+  }
+
   return (
-    <Wrapper onClick={() => setShowDropDown(!showDropDown)}>
-      <ValueContent>
-        {showOptions.length < 3 ? (
-          showOptions.map((o) => (
-            <SelectedValueItem
-              key={o.value}
-              title={o.label}
-              onRemove={() => onRemove(o.value)}
-            />
-          ))
-        ) : (
-          <span>{`Selected ${showOptions.length} tracks`}</span>
-        )}
-      </ValueContent>
+    <Wrapper onClick={() => {
+      if (disabled) {
+        return;
+      }
+      setShowDropDown(!showDropDown);
+    }}>
+      <ValueContent>{selectedTracks}</ValueContent>
       <IconWrapper showDropDown={showDropDown}>
         <DownSVG />
       </IconWrapper>

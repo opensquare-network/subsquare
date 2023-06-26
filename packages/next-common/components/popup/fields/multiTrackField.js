@@ -6,6 +6,7 @@ import MultiSelect from "next-common/components/multiSelect";
 import useCall from "next-common/utils/hooks/useCall";
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Loading from "next-common/components/loading";
 
 export default function MultiTrack({
   title = "Track",
@@ -18,7 +19,7 @@ export default function MultiTrack({
 
   const address = useRealAddress();
   const api = useApi();
-  const [delegation, isLoading] = useCall(
+  let [delegation, isLoading] = useCall(
     api?.query?.convictionVoting?.votingFor.entries,
     [address],
   );
@@ -36,12 +37,17 @@ export default function MultiTrack({
       } = storageKey;
       const trackId = track.toJSON();
       const {
-        casting: { votes },
+        casting: { votes } = {},
+        delegating,
       } = voting.toJSON();
-      if (!votes || votes.length === 0) {
-        continue;
+
+      if (votes?.length > 0) {
+        result[trackId] = { disabled: true, info: "Voted" };
       }
-      result[trackId] = { disabled: true, info: "Voted" };
+
+      if (delegating) {
+        result[trackId] = { disabled: true, info: "Delegated" };
+      }
     }
 
     return result;
@@ -62,15 +68,18 @@ export default function MultiTrack({
     });
   }, [tracks, myVotes]);
 
+  const status = isLoading && <Loading />;
+
   return (
     <div>
-      {title && <PopupLabel text={title} />}
+      {title && <PopupLabel text={title} status={status} />}
       <MultiSelect
-        labelAll={"All Tracks"}
+        disabled={isLoading}
+        itemName="track"
         options={options}
         selectedValues={selectedTracks}
         setSelectedValues={setSelectedTracks}
-        maxDisplayItem={5}
+        maxDisplayItem={7}
       />
     </div>
   );
