@@ -1,8 +1,5 @@
 import Chains from "../chains";
-import DemocracyProposalIcon from "../../../assets/imgs/icons/type-proposals.svg";
 import React from "react";
-import MembersIcon from "../../../assets/imgs/icons/members.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 import { MenuTechComm } from "@osn/icons/subsquare";
 
 const techComm = {
@@ -22,21 +19,11 @@ const techComm = {
       value: "techCommProposals",
       name: "Proposals",
       pathname: "/techcomm/proposals",
-      icon: (
-        <MenuIconWrapper>
-          <DemocracyProposalIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "techCommMembers",
       name: "Members",
       pathname: "/techcomm/members",
-      icon: (
-        <MenuIconWrapper>
-          <MembersIcon />
-        </MenuIconWrapper>
-      ),
     },
   ],
 };

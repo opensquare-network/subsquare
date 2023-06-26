@@ -1,10 +1,6 @@
 import Chains from "../chains";
 import { getExcludeChains } from "../../viewfuncs";
-import ProposalIcon from "../../../assets/imgs/icons/proposals.svg";
 import React from "react";
-import BountyIcon from "../../../assets/imgs/icons/bounties.svg";
-import TipIcon from "../../../assets/imgs/icons/tips.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 import { MenuTreasury } from "@osn/icons/subsquare";
 
 const treasury = {
@@ -21,11 +17,6 @@ const treasury = {
       value: "proposals",
       name: "Proposals",
       pathname: "/treasury/proposals",
-      icon: (
-        <MenuIconWrapper>
-          <ProposalIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "bounties",
@@ -42,11 +33,6 @@ const treasury = {
         Chains.altair,
         Chains.darwinia2,
       ],
-      icon: (
-        <MenuIconWrapper>
-          <BountyIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "child-bounties",
@@ -59,11 +45,6 @@ const treasury = {
         Chains.khala,
         Chains.phala,
       ]),
-      icon: (
-        <MenuIconWrapper>
-          <BountyIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "tips",
@@ -78,11 +59,6 @@ const treasury = {
         Chains.centrifuge,
         Chains.altair,
       ],
-      icon: (
-        <MenuIconWrapper>
-          <TipIcon />
-        </MenuIconWrapper>
-      ),
     },
   ],
 };

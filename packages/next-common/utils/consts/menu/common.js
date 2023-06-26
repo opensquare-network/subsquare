@@ -1,11 +1,5 @@
 import React from "react";
 import Chains from "../chains";
-import OverviewIcon from "../../../assets/imgs/icons/overview.svg";
-import CalendarIcon from "../../../assets/imgs/icons/calendar.svg";
-import DiscussionIcon from "../../../assets/imgs/icons/discussions.svg";
-import PolkassemblyIcon from "../../../assets/imgs/icons/polkassembly.svg";
-import ReferendaIcon from "../../../assets/imgs/icons/type-referenda.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
 import {
   MenuOverview,
   MenuDiscussions,
@@ -18,12 +12,7 @@ let polkassemblyMenu = {
   value: "polkassembly",
   name: "Polkassembly",
   pathname: "/polkassembly/discussions",
-  icon: (
-    <MenuIconWrapper>
-      <PolkassemblyIcon />
-    </MenuIconWrapper>
-  ),
-  iconV2: <MenuPolkassembly />,
+  icon: <MenuPolkassembly />,
 };
 
 const commonMenus = {
@@ -32,24 +21,14 @@ const commonMenus = {
       value: "overview",
       name: "Overview",
       pathname: "/",
-      icon: (
-        <MenuIconWrapper>
-          <OverviewIcon />
-        </MenuIconWrapper>
-      ),
-      iconV2: <MenuOverview />,
+      icon: <MenuOverview />,
     },
     {
       value: "discussions",
       name: "Discussions",
       pathname: "/discussions",
       excludeToChains: [Chains.centrifuge, Chains.altair],
-      icon: (
-        <MenuIconWrapper>
-          <DiscussionIcon />
-        </MenuIconWrapper>
-      ),
-      iconV2: <MenuDiscussions />,
+      icon: <MenuDiscussions />,
     },
   ],
 };
@@ -62,12 +41,7 @@ commonMenus.items.push({
   value: "calendar",
   name: "Calendar",
   pathname: "/calendar",
-  icon: (
-    <MenuIconWrapper>
-      <CalendarIcon />
-    </MenuIconWrapper>
-  ),
-  iconV2: <MenuCalendar />,
+  icon: <MenuCalendar />,
 });
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
@@ -76,12 +50,7 @@ if (space) {
     value: "offChainVoting",
     name: "Off-chain",
     pathname: `https://voting.opensquare.io/space/${space}`,
-    icon: (
-      <MenuIconWrapper>
-        <ReferendaIcon />
-      </MenuIconWrapper>
-    ),
-    iconV2: <MenuOffChainVoting />,
+    icon: <MenuOffChainVoting />,
   });
 }
 
