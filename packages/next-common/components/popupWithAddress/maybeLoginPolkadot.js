@@ -12,6 +12,7 @@ export default function MaybeLoginPolkadot({
 }) {
   const { injectedWeb3 } = useInjectedWeb3();
   const [polkadotAccounts, setPolkadotAccounts] = useState([]);
+  const [detecting, setDetecting] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -23,6 +24,7 @@ export default function MaybeLoginPolkadot({
       const extension = injectedWeb3?.[extensionName];
 
       if (!extension) {
+        setDetecting(false);
         return;
       }
 
@@ -41,8 +43,14 @@ export default function MaybeLoginPolkadot({
       } catch (e) {
         console.error(e);
       }
+
+      setDetecting(false);
     })();
   }, [injectedWeb3]);
+
+  if (detecting) {
+    return null;
+  }
 
   return (
     <MaybeLogin
