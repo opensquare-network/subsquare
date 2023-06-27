@@ -55,7 +55,6 @@ function ReferendumContent({ comments }) {
     fetchAndUpdatePost(postDispatch, type, post?._id);
   }, [post, type, postDispatch]);
 
-  const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
   const onDecisionDepositFinalized = useWaitSyncBlock(
     "Decision deposit placed",
     refreshPageData
@@ -66,7 +65,6 @@ function ReferendumContent({ comments }) {
       <ReferendaDetail onReply={focusEditor} />
 
       <Gov2Sidebar
-        onVoteFinalized={onVoteFinalized}
         onDecisionDepositFinalized={onDecisionDepositFinalized}
       />
 

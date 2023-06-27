@@ -14,7 +14,7 @@ const Popup = dynamic(() => import("../votePopup"), {
   ssr: false,
 });
 
-export default function Gov2Sidebar({ onVoteFinalized = emptyFunction, onDecisionDepositFinalized = emptyFunction }) {
+export default function Gov2Sidebar({ onDecisionDepositFinalized = emptyFunction }) {
   const detail = usePost();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
@@ -44,7 +44,6 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction, onDecisio
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           trackId={trackId}
-          onFinalized={onVoteFinalized}
         />
       )}
 
