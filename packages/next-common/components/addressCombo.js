@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
@@ -10,6 +10,11 @@ import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
+import { fetchIdentity } from "next-common/services/identity.js";
+import { useChainSettings } from "next-common/context/chain.js";
+import { encodeAddressToChain } from "next-common/services/address.js";
+import { getIdentityDisplay } from "next-common/utils/identity.js";
+import IdentityIcon from "./Identity/identityIcon.js";
 
 const Wrapper = Relative;
 
@@ -92,6 +97,11 @@ const Input = styled.input`
   margin: 4px 16px;
 `;
 
+const IdentityName = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
 export default function AddressCombo({ accounts, address, setAddress }) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -102,6 +112,35 @@ export default function AddressCombo({ accounts, address, setAddress }) {
     (item) => normalizeAddress(item.address) === address,
   );
   const shortAddr = addressEllipsis(address);
+  const { identity } = useChainSettings();
+  const [identities, setIdentities] = useState({});
+
+  const fetchAddressIdentity = useCallback(
+    (address) => {
+      const identityAddress = encodeAddressToChain(address, identity);
+      fetchIdentity(identity, identityAddress).then((identity) => {
+        if (!identity || identity?.info?.status === "NO_ID") {
+          return;
+        }
+        setIdentities((identities) => ({
+          ...identities,
+          [address]: {
+            identity,
+            displayName: getIdentityDisplay(identity),
+          },
+        }));
+      });
+    },
+    [identity],
+  );
+
+  useEffect(() => {
+    accounts.forEach((acc) => fetchAddressIdentity(acc.address));
+  }, [fetchAddressIdentity, accounts]);
+
+  useEffect(() => {
+    fetchAddressIdentity(address);
+  }, [fetchAddressIdentity, address]);
 
   const onBlur = () => {
     const isAddr = isAddress(inputAddress);
@@ -141,7 +180,17 @@ export default function AddressCombo({ accounts, address, setAddress }) {
       <>
         <Avatar address={selectedAccount.address} />
         <NameWrapper>
-          <div>{selectedAccount.name}</div>
+          <IdentityName>
+            {identities[selectedAccount.address] && (
+              <IdentityIcon
+                identity={identities[selectedAccount.address]?.identity}
+              />
+            )}
+            <div>
+              {identities[selectedAccount.address]?.displayName ||
+                selectedAccount.name}
+            </div>
+          </IdentityName>
           <div>{shortAddr}</div>
         </NameWrapper>
       </>
@@ -151,7 +200,12 @@ export default function AddressCombo({ accounts, address, setAddress }) {
       <>
         <Avatar address={address} />
         <NameWrapper>
-          <div>{shortAddr}</div>
+          <IdentityName>
+            {identities[address] && (
+              <IdentityIcon identity={identities[address].identity} />
+            )}
+            <div>{identities[address]?.displayName || shortAddr}</div>
+          </IdentityName>
           <div>{shortAddr}</div>
         </NameWrapper>
       </>
@@ -175,7 +229,12 @@ export default function AddressCombo({ accounts, address, setAddress }) {
           >
             <Avatar address={item.address} />
             <NameWrapper>
-              <div>{item.name}</div>
+              <IdentityName>
+                {identities[item.address] && (
+                  <IdentityIcon identity={identities[item.address].identity} />
+                )}
+                <div>{identities[item.address]?.displayName || item.name}</div>
+              </IdentityName>
               <div>{addressEllipsis(ss58Address)}</div>
             </NameWrapper>
           </Item>

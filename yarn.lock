@@ -2845,6 +2845,7 @@ __metadata:
     next: ^13.3.0
     next-common: "workspace:*"
     nprogress: ^0.2.0
+    pluralize: ^8.0.0
     raw-loader: ^4.0.2
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -7986,6 +7987,13 @@ __metadata:
   bin:
     pidtree: bin/pidtree.js
   checksum: 8fbc073ede9209dd15e80d616e65eb674986c93be49f42d9ddde8dbbd141bb53d628a7ca4e58ab5c370bb00383f67d75df59a9a226dede8fa801267a7030c27a
+  languageName: node
+  linkType: hard
+
+"pluralize@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "pluralize@npm:8.0.0"
+  checksum: 08931d4a6a4a5561a7f94f67a31c17e6632cb21e459ab3ff4f6f629d9a822984cf8afef2311d2005fbea5d7ef26016ebb090db008e2d8bce39d0a9a9d218736e
   languageName: node
   linkType: hard
 
