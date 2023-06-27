@@ -181,9 +181,11 @@ export default function AddressCombo({ accounts, address, setAddress }) {
         <Avatar address={selectedAccount.address} />
         <NameWrapper>
           <IdentityName>
-            <IdentityIcon
-              identity={identities[selectedAccount.address]?.identity}
-            />
+            {identities[selectedAccount.address] && (
+              <IdentityIcon
+                identity={identities[selectedAccount.address]?.identity}
+              />
+            )}
             <div>
               {identities[selectedAccount.address]?.displayName ||
                 selectedAccount.name}
@@ -199,7 +201,9 @@ export default function AddressCombo({ accounts, address, setAddress }) {
         <Avatar address={address} />
         <NameWrapper>
           <IdentityName>
-            <IdentityIcon identity={identities[address]?.identity} />
+            {identities[address] && (
+              <IdentityIcon identity={identities[address].identity} />
+            )}
             <div>{identities[address]?.displayName || shortAddr}</div>
           </IdentityName>
           <div>{shortAddr}</div>
@@ -226,7 +230,9 @@ export default function AddressCombo({ accounts, address, setAddress }) {
             <Avatar address={item.address} />
             <NameWrapper>
               <IdentityName>
-                <IdentityIcon identity={identities[item.address]?.identity} />
+                {identities[item.address] && (
+                  <IdentityIcon identity={identities[item.address].identity} />
+                )}
                 <div>{identities[item.address]?.displayName || item.name}</div>
               </IdentityName>
               <div>{addressEllipsis(ss58Address)}</div>
