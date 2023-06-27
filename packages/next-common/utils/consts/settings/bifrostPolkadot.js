@@ -3,6 +3,10 @@ import DarkModeLogo from "../../../assets/header-logos/bifrost-polkadot-dark.svg
 import Avatar from "../../../assets/icons/chain/bifrost-polkadot.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import {
+  ProjectLogoBifrostPolkadotDark,
+  ProjectLogoBifrostPolkadotLight,
+} from "@osn/icons/subsquare";
 
 const DEFAULT_NODES = [
   {
@@ -29,6 +33,9 @@ const bifrostPolkadot = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoBifrostPolkadotLight,
+  navLogoDark: ProjectLogoBifrostPolkadotDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   subscanDomain: "bifrost",
   postLabels: defaultPostLabels,
