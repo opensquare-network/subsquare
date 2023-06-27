@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.2.4
+date: 2023-06-27
+
+- Implement Referenda delegation for multiple tracks at one time.
+- Support [PolkaGate](https://polkagate.xyz/) extension.
+- Subscribe referenda/fellowship referendum on-chain info so we can remove the callback function which will update it after voting.
+- Show fellowship votes count on tally panel.
+- Show referenda aye/nay votes from SplitAbstain vote.
+- Introduce lodash.capitalize to take place the legacy util function.
+
 ### 3.2.3
 date:2023-06-22
 
