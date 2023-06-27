@@ -14,9 +14,9 @@ export default function Header() {
       </div>
 
       <div className="flex gap-x-2">
+        <HeaderAccount />
         <NetworkSwitch activeNode={chainSettings} />
         <NodeSwitch small />
-        <HeaderAccount />
       </div>
     </header>
   );
