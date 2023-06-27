@@ -104,6 +104,10 @@ function PopupContent({
     const signerAddress = signerAccount.address;
 
     if (isMoonChain() && isUseMetamask()) {
+      if (!getMoonVoteTx) {
+        return showErrorToast("Vote component is not ready yet");
+      }
+
       let { callTo, callData } = getMoonVoteTx();
 
       if (signerAccount?.proxyAddress) {
@@ -126,6 +130,10 @@ function PopupContent({
         isMounted,
       });
     } else {
+      if (!getVoteTx) {
+        return showErrorToast("Vote component is not ready yet");
+      }
+
       let tx = getVoteTx();
       if (!tx) {
         return;
