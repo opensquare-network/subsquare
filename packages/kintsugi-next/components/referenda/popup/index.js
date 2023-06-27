@@ -83,7 +83,7 @@ function PopupContent({
 
     let tx = api.tx.democracy.vote(referendumIndex, {
       aye,
-      balance: bnVoteBalance.toNumber(),
+      balance: bnVoteBalance.toString(),
     });
 
     if (signerAccount?.proxyAddress) {
