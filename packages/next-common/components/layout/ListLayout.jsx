@@ -68,7 +68,12 @@ export default function ListLayout({
             )}
           </div>
         </div>
-        {tabs?.length > 0 && <Tabs tabs={tabs} />}
+
+        {tabs?.length > 0 && (
+          <div className={clsx("px-12 mx-auto max-w-7xl", "max-sm:px-6")}>
+            <Tabs tabs={tabs} />
+          </div>
+        )}
       </div>
 
       <div className={clsx("px-6 my-6 mx-auto max-w-7xl", "max-sm:px-0")}>
@@ -86,7 +91,7 @@ function Tabs({ tabs = [] }) {
   const router = useRouter();
 
   return (
-    <ul className="flex space-x-8 px-12 max-sm:px-6">
+    <ul className="flex space-x-8">
       {tabs.map((tab, idx) => {
         const isExternal = isExternalLink(tab.url);
         const itemClassName = clsx(
