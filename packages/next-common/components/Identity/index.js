@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import IdentityIcon from "./identityIcon";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
+import { getIdentityDisplay } from "next-common/utils/identity";
 
 const Wrapper = styled(Flex)`
   display: flex;
@@ -63,9 +64,7 @@ export default function Identity({ identity, fontSize = 14, maxWidth }) {
     return null;
   }
 
-  const displayName = identity?.info?.displayParent
-    ? `${identity?.info?.displayParent}/${identity?.info?.display}`
-    : identity?.info?.display;
+  const displayName = getIdentityDisplay(identity);
 
   return (
     <Wrapper>

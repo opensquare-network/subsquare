@@ -8,6 +8,7 @@ import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import { useEscapeKeyOnce } from "next-common/utils/hooks/useEscapeKeyOnce";
 import { breakpoint } from "../../../utils/responsive";
 import { w_full } from "../../../styles/tailwindcss";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
 
 const Wrapper = styled(NeutralPanel)`
   position: fixed;
@@ -59,6 +60,7 @@ export default function Popup({
 }) {
   const ref = useRef();
   useEscapeKeyOnce(onClose);
+  useOnClickOutside(ref, onClose);
 
   const [, setIsLocked] = useScrollLock();
 
@@ -74,7 +76,7 @@ export default function Popup({
   });
 
   return (
-    <Background zIndex={z} onClick={onClose}>
+    <Background zIndex={z}>
       <Wrapper
         wide={wide}
         ref={ref}
