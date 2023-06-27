@@ -17,6 +17,7 @@ import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { useChainSettings } from "../../context/chain";
 import Summary from "./v2/base";
+import clsx from "clsx";
 
 export default function TreasurySummary() {
   const [summary, setSummary] = useState({});
@@ -85,7 +86,10 @@ export default function TreasurySummary() {
               ))}
               {(summary?.totalPeriod || []).map((item, index) => (
                 <span
-                  className={index % 2 === 1 ? "unit total" : "total"}
+                  className={clsx(
+                    index % 2 === 1 ? "unit total" : "total",
+                    "max-sm:hidden",
+                  )}
                   key={index}
                 >
                   {item}
@@ -93,7 +97,11 @@ export default function TreasurySummary() {
               ))}
             </>
           ),
-          suffix: <CountDown percent={summary?.progress ?? 0} />,
+          suffix: (
+            <div className="max-sm:hidden">
+              <CountDown percent={summary?.progress ?? 0} />
+            </div>
+          ),
         },
       ]}
     />
