@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { clearReferendaReferendumInfo, setReferendaReferendumInfo } from "../../store/reducers/referenda/info";
+import { triggerFetchVotes } from "next-common/store/reducers/gov2ReferendumSlice";
 
 export default function useSubReferendumInfo() {
   const api = useApi();
@@ -33,6 +34,7 @@ export default function useSubReferendumInfo() {
       }
 
       dispatch(setReferendaReferendumInfo(info.asOngoing.toJSON()));
+      dispatch(triggerFetchVotes());
     }).then(result => {
       unsub = result;
     });

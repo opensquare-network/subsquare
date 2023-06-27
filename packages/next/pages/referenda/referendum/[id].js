@@ -25,11 +25,13 @@ import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
 import NonNullPost from "next-common/components/nonNullPost";
 import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
+import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
   const dispatch = useDispatch();
-  const info = useSubReferendumInfo();
+  useSubReferendumInfo();
+  const info = useReferendumInfo();
 
   useEffect(() => {
     return () => {
@@ -47,7 +49,6 @@ function ReferendumContent({ comments }) {
       <ReferendaDetail onReply={focusEditor} />
 
       <Gov2Sidebar />
-
       <ReferendaBusiness />
       <Gov2ReferendumMetadata info={ info } />
 
