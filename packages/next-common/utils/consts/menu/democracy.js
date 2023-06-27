@@ -20,13 +20,13 @@ const democracy = {
     },
     {
       value: "democracyProposals",
-      name: "Proposals",
+      name: "Public Proposals",
       pathname: "/democracy/proposals",
     },
     {
       value: "democracyExternals",
       excludeToChains: [Chains.kintsugi, Chains.interlay],
-      name: "External",
+      name: "External Proposals",
       pathname: "/democracy/externals",
     },
   ],

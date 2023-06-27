@@ -3,7 +3,7 @@ import React from "react";
 import { MenuTechComm } from "@osn/icons/subsquare";
 
 const techComm = {
-  name: "TECH.COMM.",
+  name: "Technical Committee",
   excludeToChains: [
     Chains.kabocha,
     Chains.centrifuge,
