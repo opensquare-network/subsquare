@@ -40,10 +40,7 @@ export default function FellowshipTally() {
 
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const { referendumIndex } = useOnchainData();
-  const { votes, isLoading: isLoadingVotes } = useFellowshipVotes(
-    referendumIndex,
-    votingFinishHeight
-  );
+  useFellowshipVotes(referendumIndex, votingFinishHeight);
   const supportPerbill = useFellowshipPerbill();
   const track = useTrack();
 
@@ -67,7 +64,7 @@ export default function FellowshipTally() {
       <MaxVoters />
 
       <Footer>
-        <AllVotes votes={votes} isLoadingVotes={isLoadingVotes} />
+        <AllVotes />
         {useVoteCall && <Calls />}
       </Footer>
     </SecondaryCardDetail>
