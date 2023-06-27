@@ -39,6 +39,7 @@ const bifrost = {
   hasSubscan: true,
   hasReferenda: true,
   hasFellowship: true,
+  showReferendaReferendumDelegationPercentage: true,
 };
 
 export default bifrost;
