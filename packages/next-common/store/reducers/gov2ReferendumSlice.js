@@ -41,6 +41,9 @@ const gov2ReferendumSlice = createSlice({
     incVotesTrigger(state) {
       state.votesTrigger += 1;
     },
+    clearVotersTrigger(state) {
+      state.votesTrigger = 1;
+    },
   },
 });
 
@@ -51,6 +54,7 @@ export const {
   setIsLoadingVoteCalls,
   setIssuance,
   incVotesTrigger,
+  clearVotersTrigger,
 } = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
@@ -65,6 +69,7 @@ export const votesTriggerSelector = state => state.gov2Referendum.votesTrigger;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setVotes(emptyVotes));
+  dispatch(clearVotersTrigger());
 };
 
 export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigger());

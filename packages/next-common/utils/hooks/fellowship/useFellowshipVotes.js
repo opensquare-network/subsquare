@@ -1,7 +1,15 @@
 import useApi from "../useApi";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import isNil from "lodash.isnil";
-import { encodeAddress } from "@polkadot/keyring";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearFellowshipVotes,
+  clearFellowshipVotesTrigger,
+  fellowshipVotesTriggerSelector,
+  setFellowshipVotes,
+  setIsLoadingFellowshipVotes,
+} from "next-common/store/reducers/fellowship/votes";
+import partition from "lodash.partition";
 
 /**
  * // Fellowship voting storage: (pollIndex, address, VoteRecord)
@@ -13,17 +21,9 @@ import { encodeAddress } from "@polkadot/keyring";
  * // 5. account = 32;
  * // total = 92
  */
-function extractPollIndexAndAddress(storageKey = [], api) {
-  const sectionRemoved = storageKey.slice(32);
-  const pollIndexHashRemoved = sectionRemoved.slice(16);
-  const pollIndexU8a = pollIndexHashRemoved.slice(0, 4);
-
-  const pollIndex = api.registry.createType("U16", pollIndexU8a).toNumber();
-  const pollIndexRemoved = pollIndexHashRemoved.slice(4);
-
-  // left 32 byte is the account id
-  const accountHashRemoved = pollIndexRemoved.slice(8);
-  const address = encodeAddress(accountHashRemoved, api.registry.chainSS58);
+function extractPollIndexAndAddress(storageKey = []) {
+  const pollIndex = storageKey.args[0].toNumber();
+  const address = storageKey.args[1].toString();
 
   return {
     pollIndex,
@@ -56,7 +56,7 @@ async function query(api, targetPollIndex, blockHeight) {
 
   const normalized = [];
   for (const [storageKey, votingOf] of voting) {
-    const { pollIndex, address } = extractPollIndexAndAddress(storageKey, api);
+    const { pollIndex, address } = extractPollIndexAndAddress(storageKey);
     if (pollIndex !== targetPollIndex) {
       continue;
     }
@@ -76,19 +76,28 @@ async function query(api, targetPollIndex, blockHeight) {
 
 export default function useFellowshipVotes(pollIndex, blockHeight) {
   const api = useApi();
-  const [isLoading, setIsLoading] = useState(false);
-  const [votes, setVotes] = useState([]);
+  const dispatch = useDispatch();
+  const votesTrigger = useSelector(fellowshipVotesTriggerSelector);
 
   useEffect(() => {
     if (!api || isNil(pollIndex)) {
       return;
     }
 
-    setIsLoading(true);
-    query(api, pollIndex, blockHeight)
-      .then((votes) => setVotes(votes))
-      .finally(() => setIsLoading(false));
-  }, [api, pollIndex, blockHeight]);
+    if (votesTrigger <= 1) {
+      dispatch(setIsLoadingFellowshipVotes(true));
+    }
 
-  return { votes, isLoading };
+    query(api, pollIndex, blockHeight)
+      .then((votes) => {
+        const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
+        dispatch(setFellowshipVotes({ allAye, allNay }));
+      })
+      .finally(() => dispatch(setIsLoadingFellowshipVotes(false)));
+
+    return () => {
+      dispatch(clearFellowshipVotes());
+      dispatch(clearFellowshipVotesTrigger());
+    };
+  }, [api, pollIndex, blockHeight, votesTrigger]);
 }

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import AllVotesPopup from "./allVotesPopup";
-import partition from "lodash.partition";
 import { Button } from "components/gov2/sidebar/tally/styled";
+import { useSelector } from "react-redux";
+import { fellowshipVotesSelector, isLoadingFellowshipVotesSelector } from "next-common/store/reducers/fellowship/votes";
 
-export default function AllVotes({ votes, isLoadingVotes }) {
+export default function AllVotes() {
   const [showAllVotes, setShowAllVotes] = useState(false);
-  const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
+  const { allAye, allNay } = useSelector(fellowshipVotesSelector);
+  const isLoadingVotes = useSelector(isLoadingFellowshipVotesSelector);
 
   return (
     <>
