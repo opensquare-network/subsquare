@@ -34,7 +34,6 @@ export default function MultiTrack({
       if (voting.isDelegating) {
         result[trackId] = { disabled: true, info: "Delegated" };
       } else if (voting.isCasting && voting.asCasting.votes.length > 0) {
-        console.log("voting", voting);
         result[trackId] = { disabled: true, info: "Voted" };
       }
 
