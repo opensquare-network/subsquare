@@ -9,15 +9,9 @@ import { useState } from "react";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useChainSettings } from "next-common/context/chain";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 import MemberListTable from "next-common/components/memberListTable";
 
 const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-
   > :not(:first-child) {
     margin-top: 16px;
   }

@@ -11,14 +11,8 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-
   > :not(:first-child) {
     margin-top: 16px;
   }
