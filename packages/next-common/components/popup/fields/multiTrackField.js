@@ -19,39 +19,27 @@ export default function MultiTrack({
 
   const address = useRealAddress();
   const api = useApi();
-  let [delegation, isLoading] = useCall(
+  let [myVotingTuple, isLoading] = useCall(
     api?.query?.convictionVoting?.votingFor.entries,
     [address],
   );
 
   const myVotes = useMemo(() => {
-    const result = {};
-
-    if (isLoading || !delegation) {
-      return result;
+    if (isLoading || !myVotingTuple) {
+      return {};
     }
 
-    for (const [storageKey, voting] of delegation) {
-      const {
-        args: [, track],
-      } = storageKey;
-      const trackId = track.toJSON();
-      const {
-        casting: { votes } = {},
-        delegating,
-      } = voting.toJSON();
-
-      if (votes?.length > 0) {
+    return (myVotingTuple || []).reduce((result, [storageKey, voting]) => {
+      const trackId = storageKey.args[1].toNumber();
+      if (voting.isDelegating) {
+        result[trackId] = { disabled: true, info: "Delegated" };
+      } else if (voting.isCasting && voting.asCasting.votes.length > 0) {
         result[trackId] = { disabled: true, info: "Voted" };
       }
 
-      if (delegating) {
-        result[trackId] = { disabled: true, info: "Delegated" };
-      }
-    }
-
-    return result;
-  }, [delegation, isLoading]);
+      return result;
+    }, {});
+  }, [myVotingTuple, isLoading]);
 
   const options = useMemo(() => {
     return tracks.map((track) => {
