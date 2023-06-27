@@ -1,13 +1,10 @@
 import React from "react";
-import useExtensionAccounts from "../../utils/hooks/useExtensionAccounts";
-import Popup from "../popup/wrapper/Popup";
-import MaybeLogin from "../maybeLogin";
-import { useMetaMaskAccounts } from "next-common/utils/metamask";
-import { useChainSettings } from "next-common/context/chain";
-import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useUser } from "next-common/context/user";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import MaybeLoginPolkadot from "./maybeLoginPolkadot";
+import MaybeLoginMetamask from "./maybeLoginMetamask";
+import ConnectWallet from "../connectWallet";
+import { emptyFunction } from "next-common/utils";
 
 export default function PopupWithAddress({
   Component,
@@ -18,40 +15,35 @@ export default function PopupWithAddress({
 }) {
   const loginUser = useUser();
   const lastLoginExtension = localStorage.lastLoginExtension;
-  const { chainType } = useChainSettings();
-  const { accounts: polkadotExtensionAccounts, detecting: extensionDetecting } =
-    useExtensionAccounts("subsquare");
-  const polkadotAccounts = polkadotExtensionAccounts.map((item) => ({
-    ...item,
-    name: item.meta.name,
-  }));
 
-  const metamaskActive =
-    chainType === ChainTypes.ETHEREUM &&
-    loginUser &&
-    isEthereumAddress(loginUser.address) &&
-    lastLoginExtension === WalletTypes.METAMASK;
-  const metamaskAccounts = useMetaMaskAccounts(metamaskActive);
-  const extensionAccounts = [...polkadotAccounts, ...metamaskAccounts];
+  if (!loginUser) {
+    return (
+      <ConnectWallet
+        onClose={onClose}
+        onLoggedIn={autoCloseAfterLogin ? onClose : emptyFunction}
+      />
+    );
+  }
 
-  if (extensionDetecting) {
-    return null;
+  if (lastLoginExtension === WalletTypes.METAMASK) {
+    return (
+      <MaybeLoginMetamask
+        onClose={onClose}
+        autoCloseAfterLogin={autoCloseAfterLogin}
+        title={title}
+        Component={Component}
+        {...props}
+      />
+    );
   }
 
   return (
-    <MaybeLogin
-      polkadotAccounts={polkadotAccounts}
-      metamaskAccounts={metamaskAccounts}
+    <MaybeLoginPolkadot
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
-    >
-      <Popup onClose={onClose} title={title}>
-        <Component
-          onClose={onClose}
-          extensionAccounts={extensionAccounts}
-          {...props}
-        />
-      </Popup>
-    </MaybeLogin>
+      title={title}
+      Component={Component}
+      {...props}
+    />
   );
 }

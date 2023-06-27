@@ -74,6 +74,7 @@ export function normalizedMetaMaskAccounts(accounts) {
 }
 
 export function useMetaMaskAccounts(active) {
+  const [isLoading, setIsLoading] = useState(true);
   const [accounts, setAccounts] = useState([]);
 
   const updateAccounts = useCallback((accounts = []) => {
@@ -82,15 +83,21 @@ export function useMetaMaskAccounts(active) {
 
   useEffect(() => {
     if (!active) {
+      setIsLoading(false);
       return;
     }
 
     const ethereum = getMetaMaskEthereum();
     if (!ethereum) {
+      setIsLoading(false);
       return;
     }
 
-    requestAccounts().then(updateAccounts);
+    requestAccounts()
+      .then(updateAccounts)
+      .finally(() => {
+        setIsLoading(false);
+      });
 
     ethereum.on("accountsChanged", updateAccounts);
 
@@ -99,5 +106,5 @@ export function useMetaMaskAccounts(active) {
     };
   }, [updateAccounts, active]);
 
-  return accounts;
+  return [accounts, isLoading];
 }
