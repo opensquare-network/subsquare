@@ -46,7 +46,7 @@ export default function SelectWallet({
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
   const chain = useChain();
-  const metamaskAccounts = useMetaMaskAccounts(selectedWallet === WalletTypes.METAMASK);
+  const [metamaskAccounts] = useMetaMaskAccounts(selectedWallet === WalletTypes.METAMASK);
 
   useEffect(() => {
     if (selectedWallet === WalletTypes.METAMASK) {

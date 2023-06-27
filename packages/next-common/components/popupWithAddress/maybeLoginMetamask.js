@@ -10,7 +10,11 @@ export default function MaybeLoginMetamask({
   Component,
   ...props
 }) {
-  const metamaskAccounts = useMetaMaskAccounts(true);
+  const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <MaybeLogin
