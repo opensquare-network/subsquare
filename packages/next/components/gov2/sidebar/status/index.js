@@ -6,10 +6,9 @@ import { gov2State } from "next-common/utils/consts/state";
 import StatusWrapper from "./wrapper";
 import PreparationProgress from "./preparation";
 import PlaceDecisionDeposit from "./preparation/decisionDeposit";
-import { emptyFunction } from "next-common/utils";
 import EnactmentProgress from "./enactment";
 
-export default function Gov2Status({ onDecisionDepositFinalized = emptyFunction }) {
+export default function Gov2Status() {
   const state = usePostState();
 
   if (gov2State.Approved === state) {
@@ -24,7 +23,7 @@ export default function Gov2Status({ onDecisionDepositFinalized = emptyFunction 
       <StatusWrapper>
         <PreparationProgress />
         <PrepareStatus />
-        <PlaceDecisionDeposit onDecisionDepositFinalized={onDecisionDepositFinalized} />
+        <PlaceDecisionDeposit />
       </StatusWrapper>
     );
   }

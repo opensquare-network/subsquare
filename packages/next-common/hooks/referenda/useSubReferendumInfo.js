@@ -1,25 +1,25 @@
-import useApi from "../../utils/hooks/useApi";
-import { useOnchainData } from "../../context/post";
-import { useEffect, useState } from "react";
-import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
-import useIsMounted from "../../utils/hooks/useIsMounted";
+import useApi from "next-common/utils/hooks/useApi";
+import { useOnchainData } from "next-common/context/post";
 import { useDispatch } from "react-redux";
-import { triggerFetchVotes } from "../../store/reducers/gov2ReferendumSlice";
+import { useEffect } from "react";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { clearReferendaReferendumInfo, setReferendaReferendumInfo } from "../../store/reducers/referenda/info";
+import { triggerFetchVotes } from "next-common/store/reducers/gov2ReferendumSlice";
 
-export default function useSubReferendaTally() {
+export default function useSubReferendumInfo() {
   const api = useApi();
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
 
   const dispatch = useDispatch();
-
-  const [tally, setTally] = useState(onchain.tally || onchain?.info?.tally);
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const isMounted = useIsMounted();
 
   useEffect(() => {
     if (!api || votingFinishHeight || !api.query.referenda) {
-      return;
+      dispatch(setReferendaReferendumInfo(onchain.info));
+      return () => dispatch(clearReferendaReferendumInfo());
     }
 
     let unsub;
@@ -33,8 +33,7 @@ export default function useSubReferendaTally() {
         return;
       }
 
-      setTally(info.asOngoing.tally.toJSON());
-
+      dispatch(setReferendaReferendumInfo(info.asOngoing.toJSON()));
       dispatch(triggerFetchVotes());
     }).then(result => {
       unsub = result;
@@ -44,8 +43,7 @@ export default function useSubReferendaTally() {
       if (unsub) {
         unsub();
       }
+      dispatch(clearReferendaReferendumInfo());
     };
   }, [api, votingFinishHeight, referendumIndex, isMounted]);
-
-  return tally;
 }

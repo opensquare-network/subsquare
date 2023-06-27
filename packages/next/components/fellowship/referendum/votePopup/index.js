@@ -24,7 +24,6 @@ function PopupContent({
   referendumIndex,
   onClose,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -85,7 +84,6 @@ function PopupContent({
           setLoadingState(VoteLoadingEnum.None);
         }
       },
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,

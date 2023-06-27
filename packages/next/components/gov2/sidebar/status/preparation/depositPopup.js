@@ -21,7 +21,6 @@ function PopupContent({
   extensionAccounts,
   onClose = emptyFunction,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -57,7 +56,6 @@ function PopupContent({
       tx,
       dispatch,
       setLoading: setCalling,
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,

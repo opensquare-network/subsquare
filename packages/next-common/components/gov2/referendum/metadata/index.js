@@ -6,6 +6,7 @@ import { GreyText } from "./styled";
 import BlockPeriod from "./blockPeriod";
 import UserBond from "./userBond";
 import { useTrack } from "../../../../context/post/gov2/track";
+import { useOnchainData } from "next-common/context/post";
 
 function getEnactmentValue(enactment = {}) {
   let value = "";
@@ -26,9 +27,8 @@ function getEnactmentValue(enactment = {}) {
   return `${key}: ${localeValue}`;
 }
 
-export default function Gov2ReferendumMetadata({ detail }) {
-  const onchainData = detail?.onchainData ?? {};
-  const info = onchainData?.info ?? {};
+export default function Gov2ReferendumMetadata({ info }) {
+  const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const trackInfo = useTrack();
   const proposalHash = onchainData?.proposalHash;

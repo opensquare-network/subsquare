@@ -1,8 +1,11 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
-import { getFellowshipReferendumCommentsUrl, getFellowshipReferendumUrl } from "next-common/services/url";
+import {
+  getFellowshipReferendumCommentsUrl,
+  getFellowshipReferendumUrl,
+} from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
-import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -11,42 +14,31 @@ import useUniversalComments from "../../../components/universalComments";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import Timeline from "../../../components/gov2/timeline";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import { useCallback } from "react";
-import { useDetailType } from "next-common/context/page";
-import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "components/fellowship/checkUnFinalized";
-import BreadcrumbWrapper, { BreadcrumbHideOnMobileText } from "next-common/components/detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper, {
+  BreadcrumbHideOnMobileText,
+} from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import NonNullPost from "next-common/components/nonNullPost";
 import FellowshipReferendaDetail from "next-common/components/detail/fellowship";
+import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
+import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
-  const type = useDetailType();
-  const postDispatch = usePostDispatch();
+  useSubFellowshipReferendumInfo();
+  const info = useFellowshipReferendumInfo();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
     comments,
   });
 
-  const refreshPageData = useCallback(async () => {
-    fetchAndUpdatePost(postDispatch, type, post?._id);
-  }, [post, type, postDispatch]);
-
-  const onVoteFinalized = useWaitSyncBlock(
-    "Fellowship referendum voted",
-    refreshPageData,
-  );
-
   return (
     <>
-      <FellowshipReferendaDetail onReply={ focusEditor } />
-
-      <FellowshipReferendumSideBar onVoteFinalized={onVoteFinalized} />
-
-      <Gov2ReferendumMetadata detail={post} />
+      <FellowshipReferendaDetail onReply={focusEditor} />
+      <FellowshipReferendumSideBar />
+      <Gov2ReferendumMetadata info={info} />
       <Timeline trackInfo={post?.onchainData?.trackInfo} />
       {CommentComponent}
     </>

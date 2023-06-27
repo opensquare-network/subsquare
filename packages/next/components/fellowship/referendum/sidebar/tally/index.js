@@ -12,14 +12,13 @@ import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowship
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
 import AllVotes from "./allVotes";
-import useSubFellowshipTally from "next-common/hooks/fellowship/useSubFellowshipTally";
-import useFellowshipTally from "next-common/hooks/fellowship/useFellowshipTally";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import useFetchMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
 import { useTrack } from "next-common/context/post/gov2/track";
 import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
 import Calls from "./voteCalls";
 import { useChainSettings } from "next-common/context/chain";
+import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -34,9 +33,8 @@ const Footer = styled.div`
 `;
 
 export default function FellowshipTally() {
-  useSubFellowshipTally();
   useFetchMaxVoters();
-  const tally = useFellowshipTally();
+  const tally = useFellowshipReferendumTally();
   const approvalThreshold = useApprovalThreshold();
   const { useVoteCall } = useChainSettings();
 
