@@ -3,7 +3,6 @@ import SubLink from "next-common/components/styled/subLink";
 import { useDecisionDeposit } from "next-common/context/post/gov2/referendum";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { emptyFunction } from "next-common/utils";
 
 const DepositPopup = dynamic(() => import("./depositPopup"), { ssr: false });
 
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
   margin-top: 16px;
 `;
 
-export default function PlaceDecisionDeposit({ onDecisionDepositFinalized = emptyFunction }) {
+export default function PlaceDecisionDeposit() {
   const deposit = useDecisionDeposit();
   const [showDepositPopup, setShowDepositPopup] = useState(false);
 
@@ -33,10 +32,7 @@ export default function PlaceDecisionDeposit({ onDecisionDepositFinalized = empt
       </Wrapper>
       {
         showDepositPopup && (
-          <DepositPopup
-            onClose={() => setShowDepositPopup(false)}
-            onFinalized={onDecisionDepositFinalized}
-          />
+          <DepositPopup onClose={() => setShowDepositPopup(false)} />
         )
       }
     </>
