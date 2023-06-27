@@ -22,6 +22,26 @@ export const defaultNodes = [
   },
 ];
 
+// centrifuge network social links
+const links = [
+  {
+    name: "website",
+    url: "https://centrifuge.io/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/centrifuge",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/yEzyUq5gxF",
+  },
+  {
+    name: "github",
+    url: "https://github.com/centrifuge/",
+  },
+];
+
 const centrifuge = {
   value: name,
   name: capitalize(name),
@@ -38,6 +58,7 @@ const centrifuge = {
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoCentrifugeLight,
   navLogoDark: ProjectLogoCentrifugeDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,

@@ -19,6 +19,29 @@ const DEFAULT_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://bifrost.finance/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/bifrost-finance",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/BifrostFinance",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/bifrost_finance",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/8DRBw2h5X4",
+  },
+];
+
 const bifrostPolkadot = {
   value: "bifrost-polkadot",
   name: "Bifrost Polkadot",
