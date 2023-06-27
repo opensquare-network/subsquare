@@ -14,6 +14,7 @@ import { fetchIdentity } from "next-common/services/identity.js";
 import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
+import IdentityIcon from "./Identity/identityIcon.js";
 
 const Wrapper = Relative;
 
@@ -96,6 +97,11 @@ const Input = styled.input`
   margin: 4px 16px;
 `;
 
+const IdentityName = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
 export default function AddressCombo({ accounts, address, setAddress }) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -109,18 +115,24 @@ export default function AddressCombo({ accounts, address, setAddress }) {
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
 
-  const fetchAddressIdentity = useCallback((address) => {
-    const identityAddress = encodeAddressToChain(address, identity);
-    fetchIdentity(identity, identityAddress).then((identity) => {
-      if (!identity || identity?.info?.status === "NO_ID") {
-        return;
-      }
-      setIdentities((identities) => ({
-        ...identities,
-        [address]: getIdentityDisplay(identity),
-      }));
-    });
-  }, [identity]);
+  const fetchAddressIdentity = useCallback(
+    (address) => {
+      const identityAddress = encodeAddressToChain(address, identity);
+      fetchIdentity(identity, identityAddress).then((identity) => {
+        if (!identity || identity?.info?.status === "NO_ID") {
+          return;
+        }
+        setIdentities((identities) => ({
+          ...identities,
+          [address]: {
+            identity,
+            displayName: getIdentityDisplay(identity),
+          },
+        }));
+      });
+    },
+    [identity],
+  );
 
   useEffect(() => {
     accounts.forEach((acc) => fetchAddressIdentity(acc.address));
@@ -168,9 +180,15 @@ export default function AddressCombo({ accounts, address, setAddress }) {
       <>
         <Avatar address={selectedAccount.address} />
         <NameWrapper>
-          <div>
-            {identities[selectedAccount.address] || selectedAccount.name}
-          </div>
+          <IdentityName>
+            <IdentityIcon
+              identity={identities[selectedAccount.address]?.identity}
+            />
+            <div>
+              {identities[selectedAccount.address]?.displayName ||
+                selectedAccount.name}
+            </div>
+          </IdentityName>
           <div>{shortAddr}</div>
         </NameWrapper>
       </>
@@ -180,7 +198,10 @@ export default function AddressCombo({ accounts, address, setAddress }) {
       <>
         <Avatar address={address} />
         <NameWrapper>
-          <div>{identities[address] || shortAddr}</div>
+          <IdentityName>
+            <IdentityIcon identity={identities[address]?.identity} />
+            <div>{identities[address]?.displayName || shortAddr}</div>
+          </IdentityName>
           <div>{shortAddr}</div>
         </NameWrapper>
       </>
@@ -204,7 +225,10 @@ export default function AddressCombo({ accounts, address, setAddress }) {
           >
             <Avatar address={item.address} />
             <NameWrapper>
-              <div>{identities[item.address] || item.name}</div>
+              <IdentityName>
+                <IdentityIcon identity={identities[item.address]?.identity} />
+                <div>{identities[item.address]?.displayName || item.name}</div>
+              </IdentityName>
               <div>{addressEllipsis(ss58Address)}</div>
             </NameWrapper>
           </Item>
