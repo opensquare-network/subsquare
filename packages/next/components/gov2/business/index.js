@@ -14,12 +14,7 @@ export default function ReferendaBusiness() {
     return null;
   }
 
-  const spendBusiness = getTreasurySpendBusiness(
-    onchain,
-    onchain.proposal?.call,
-    decimals,
-    symbol
-  );
+  const spendBusiness = getTreasurySpendBusiness(onchain, decimals, symbol);
   if (spendBusiness) {
     return <MultiKVList title="Business" data={spendBusiness} />;
   }
