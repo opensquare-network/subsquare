@@ -1,9 +1,9 @@
-import fellowshipReferendumTally from "./tally";
 import fellowshipMaxVoters from "./maxVoters";
 import fellowshipVoteCalls from "./voteCalls";
+import fellowshipReferendumInfo from "./info";
 
 export default {
-  fellowshipReferendumTally,
   fellowshipMaxVoters,
   fellowshipVoteCalls,
+  fellowshipReferendumInfo,
 };

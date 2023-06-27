@@ -1,10 +1,10 @@
-import useFellowshipTally from "../../../hooks/fellowship/useFellowshipTally";
 import { useEffect, useState } from "react";
 import useMaxVoters from "../../../hooks/fellowship/useMaxVoters";
 import calcPerbill from "../../math/calcPerbill";
+import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 
 export default function useFellowshipPerbill() {
-  const tally = useFellowshipTally();
+  const tally = useFellowshipReferendumTally();
   const maxVoters = useMaxVoters();
   const [perbill, setPerbill] = useState(calcPerbill(tally.bareAyes, maxVoters));
 

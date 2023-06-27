@@ -1,4 +1,3 @@
-import { emptyFunction } from "next-common/utils";
 import { gov2VotingState } from "next-common/utils/consts/state";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -14,7 +13,7 @@ const Popup = dynamic(() => import("../votePopup"), {
   ssr: false,
 });
 
-export default function Gov2Sidebar({ onVoteFinalized = emptyFunction, onDecisionDepositFinalized = emptyFunction }) {
+export default function Gov2Sidebar() {
   const detail = usePost();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
@@ -23,7 +22,7 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction, onDecisio
 
   return (
     <RightBarWrapper>
-      <Gov2Status onDecisionDepositFinalized={onDecisionDepositFinalized} />
+      <Gov2Status />
 
       <Gov2Tally />
 
@@ -44,7 +43,6 @@ export default function Gov2Sidebar({ onVoteFinalized = emptyFunction, onDecisio
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           trackId={trackId}
-          onFinalized={onVoteFinalized}
         />
       )}
 

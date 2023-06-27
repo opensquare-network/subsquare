@@ -5,7 +5,6 @@ import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import { useTrack } from "next-common/context/post/gov2/track";
 import { usePostOnChainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceInput from "next-common/components/balanceInput";
@@ -22,7 +21,6 @@ function PopupContent({
   extensionAccounts,
   onClose = emptyFunction,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -52,7 +50,6 @@ function PopupContent({
       tx,
       dispatch,
       setLoading: setCalling,
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,
