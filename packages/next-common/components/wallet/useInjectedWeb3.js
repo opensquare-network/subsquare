@@ -8,12 +8,19 @@ export default function useInjectedWeb3() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setTimeout(() => {
+      if (window.injectedWeb3) {
         if (isMounted.current) {
           setLoading(false);
           setInjectedWeb3(window.injectedWeb3);
         }
-      }, 1000);
+      } else {
+        setTimeout(() => {
+          if (isMounted.current) {
+            setLoading(false);
+            setInjectedWeb3(window.injectedWeb3);
+          }
+        }, 1000);
+      }
     }
   }, []);
 

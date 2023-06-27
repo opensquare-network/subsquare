@@ -47,7 +47,7 @@ export default function DelegationButton({
       {delegating ? removeDelegationButton : addDelegationButton}
       {showDelegatePopup && (
         <DelegatePopup
-          trackId={trackId}
+          tracks={[trackId]}
           onInBlock={onDelegateInBlock}
           onClose={() => setShowDelegatePopup(false)}
         />

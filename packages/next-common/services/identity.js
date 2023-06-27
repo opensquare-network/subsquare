@@ -17,7 +17,6 @@ const delayQuery = debounce(() => {
   if (pending.size < 1) {
     return;
   }
-  pendingQueries = new Map();
 
   const chainAddresses = {};
   const idNames = [...pending.keys()];
@@ -49,7 +48,14 @@ const delayQuery = debounce(() => {
       .then((data) => {
         const identities = new Map(data.map((item) => [item.address, item]));
 
-        for (const [idName, { resolve }] of pending) {
+        for (const idName of idNames) {
+          if (!pending.has(idName)) {
+            continue;
+          }
+
+          const { resolve } = pending.get(idName);
+          pending.delete(idName);
+
           const [chainOfIdName, addrOfIdName] = idName.split("/");
           if (chainOfIdName !== chain) {
             continue;
@@ -66,6 +72,10 @@ const delayQuery = debounce(() => {
 }, 0);
 
 export function fetchIdentity(chain, address) {
+  if (!chain || !address) {
+    return Promise.resolve(null);
+  }
+
   const idName = `${chain}/${address}`;
   if (cachedIdentities.has(idName)) {
     return Promise.resolve(cachedIdentities.get(idName));

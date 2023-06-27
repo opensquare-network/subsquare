@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
@@ -38,7 +38,6 @@ function PopupContent({
   trackId,
   onClose,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -157,7 +156,6 @@ function PopupContent({
         tx,
         dispatch,
         setLoading: setIsLoading,
-        onFinalized,
         onInBlock,
         onSubmitted,
         onClose,

@@ -20,19 +20,20 @@ import VoteValue from "next-common/components/democracy/delegatePopup/voteValue"
 import Target from "next-common/components/democracy/delegatePopup/target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import Track from "next-common/components/popup/fields/trackField";
+import MultiTrack from "next-common/components/popup/fields/multiTrackField";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { encodeDelegateData } from "next-common/utils/moonPrecompiles/convictionVoting";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
 import isUseMetamask from "next-common/utils/isUseMetamask";
+import { encodeBatchAllData } from "next-common/utils/moonPrecompiles/batch";
 
 function PopupContent({
   extensionAccounts,
-  trackId,
+  tracks,
   onClose,
-  showTrackSelect = false,
+  showTrackSelect = true,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -57,13 +58,17 @@ function PopupContent({
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
-  const [track, setTrack] = useState(trackId);
+  const [selectedTracks, setSelectedTracks] = useState(tracks);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doDelegate = async () => {
     if (isLoading) {
       return;
+    }
+
+    if (selectedTracks.length === 0) {
+      return showErrorToast("Please select at least one track");
     }
 
     let bnVoteBalance;
@@ -77,7 +82,7 @@ function PopupContent({
       return showErrorToast(err.message);
     }
 
-    if (bnVoteBalance.gt(votingBalance)) {
+    if (bnVoteBalance.times(selectedTracks.length).gt(votingBalance)) {
       return showErrorToast("Insufficient voting balance");
     }
 
@@ -109,6 +114,24 @@ function PopupContent({
         amount: BigInt(bnVoteBalance.toString()),
       });
 
+      if (selectedTracks.length > 1) {
+        let toParam = [], valueParam = [], callDataParam = [], gasLimitParam = [];
+
+        for (let n = 0; n < selectedTracks.length; n++) {
+          toParam.push(callTo);
+          valueParam.push(0);
+          callDataParam.push(callData);
+          gasLimitParam.push(0);
+        }
+
+        ({ callTo, callData } = encodeBatchAllData({
+          to: toParam,
+          value: valueParam,
+          callData: callDataParam,
+          gasLimit: gasLimitParam,
+        }));
+      }
+
       if (signerAccount?.proxyAddress) {
         ({ callTo, callData } = encodeProxyData({
           real: signerAccount?.proxyAddress,
@@ -128,12 +151,26 @@ function PopupContent({
         isMounted,
       });
     } else {
-      let tx = api.tx.convictionVoting.delegate(
-        track,
-        targetAddress,
-        conviction,
-        bnVoteBalance.toString()
-      );
+      let tx;
+      if (selectedTracks.length === 1) {
+        tx = api.tx.convictionVoting.delegate(
+          selectedTracks[0],
+          targetAddress,
+          conviction,
+          bnVoteBalance.toString()
+        );
+      } else {
+        tx = api.tx.utility.batch(
+          selectedTracks.map((trackId) =>
+            api.tx.convictionVoting.delegate(
+              trackId,
+              targetAddress,
+              conviction,
+              bnVoteBalance.toString()
+            )
+          )
+        );
+      }
 
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -151,6 +188,8 @@ function PopupContent({
     }
   };
 
+  const disabled = !(selectedTracks?.length > 0);
+
   return (
     <>
       <Signer
@@ -162,7 +201,12 @@ function PopupContent({
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
 
-      {showTrackSelect && <Track track={track} setTrack={setTrack} />}
+      {showTrackSelect && (
+        <MultiTrack
+          selectedTracks={selectedTracks}
+          setSelectedTracks={setSelectedTracks}
+        />
+      )}
 
       <Target
         extensionAccounts={extensionAccounts}
@@ -176,7 +220,11 @@ function PopupContent({
       />
       <Conviction conviction={conviction} setConviction={setConviction} />
       <PopupButtonWrapper>
-        <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
+        <SecondaryButton
+          isLoading={isLoading}
+          disabled={disabled}
+          onClick={doDelegate}
+        >
           Confirm
         </SecondaryButton>
       </PopupButtonWrapper>

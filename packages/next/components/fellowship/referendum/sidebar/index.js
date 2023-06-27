@@ -6,14 +6,11 @@ import { usePost } from "next-common/context/post";
 import { gov2VotingState } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
-import { emptyFunction } from "next-common/utils";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import LearnGov2Link from "next-common/components/links/learnGov2Link";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function FellowshipReferendumSideBar({
-  onVoteFinalized = emptyFunction,
-}) {
+export default function FellowshipReferendumSideBar() {
   const post = usePost();
   const [showVote, setShowVote] = useState(false);
   const { hideActionButtons } = useChainSettings();
@@ -40,7 +37,6 @@ export default function FellowshipReferendumSideBar({
         <Popup
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
-          onFinalized={onVoteFinalized}
         />
       )}
 

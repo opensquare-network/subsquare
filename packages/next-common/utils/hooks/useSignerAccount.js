@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { isSameAddress } from "..";
-import { CACHE_KEY } from "../constants";
+import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useUser } from "../../context/user";
 import useApi from "./useApi";
 import WalletTypes from "../consts/walletTypes";
 
 export default function useSignerAccount(extensionAccounts) {
+  const { injectedWeb3 } = useInjectedWeb3();
   const [signerAccount, setSignerAccount] = useState();
   const api = useApi();
   const user = useUser();
@@ -17,7 +18,7 @@ export default function useSignerAccount(extensionAccounts) {
       return;
     }
 
-    const extensionName = localStorage.getItem(CACHE_KEY.lastLoginExtension);
+    const extensionName = localStorage.lastLoginExtension;
 
     let account = extensionAccounts?.find(
       (item) =>
@@ -32,10 +33,17 @@ export default function useSignerAccount(extensionAccounts) {
 
     if (account) {
       if (account.meta?.source !== WalletTypes.METAMASK) {
-        import("@polkadot/extension-dapp").then(({ web3FromSource }) => {
-          web3FromSource(account.meta?.source).then((injector) => {
-            api?.setSigner(injector.signer);
-          });
+        if (!injectedWeb3) {
+          return;
+        }
+        const extension = injectedWeb3?.[extensionName];
+        if (!extension) {
+          return;
+        }
+        extension.enable("subsquare").then((wallet) => {
+          if (wallet) {
+            api?.setSigner(wallet.signer);
+          }
         });
       }
 
@@ -48,7 +56,7 @@ export default function useSignerAccount(extensionAccounts) {
     } else {
       setSignerAccount();
     }
-  }, [extensionAccounts, address, proxyAddress, api]);
+  }, [extensionAccounts, address, proxyAddress, api, injectedWeb3]);
 
   return signerAccount;
 }
