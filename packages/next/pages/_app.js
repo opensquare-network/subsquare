@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import GlobalProvider from "next-common/context/global";
 import "next-common/styles/cmdk.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Head from "next/head";
 
 NProgress.configure({
   minimum: 0.3,
@@ -54,19 +55,24 @@ function MyApp({ Component, pageProps }) {
     ...otherProps
   } = pageProps;
   return (
-    <Provider store={store}>
-      <GlobalProvider
-        user={loginUser}
-        chain={process.env.NEXT_PUBLIC_CHAIN}
-        homeExpandedMenus={homeExpandedMenus}
-        themeMode={themeMode}
-        pageProperties={pageProperties}
-        navCollapsed={navCollapsed}
-        navSubmenuVisible={navSubmenuVisible}
-      >
-        <Component {...otherProps} />
-      </GlobalProvider>
-    </Provider>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+      </Head>
+      <Provider store={store}>
+        <GlobalProvider
+          user={loginUser}
+          chain={process.env.NEXT_PUBLIC_CHAIN}
+          homeExpandedMenus={homeExpandedMenus}
+          themeMode={themeMode}
+          pageProperties={pageProperties}
+          navCollapsed={navCollapsed}
+          navSubmenuVisible={navSubmenuVisible}
+        >
+          <Component {...otherProps} />
+        </GlobalProvider>
+      </Provider>
+    </>
   );
 }
 
