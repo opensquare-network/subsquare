@@ -6,6 +6,8 @@ import {
   LinkTelegram,
   LinkGithub,
   LinkElement,
+  LinkMedium,
+  LinkYoutube,
 } from "@osn/icons/subsquare";
 import ExternalLink from "../externalLink";
 import clsx from "clsx";
@@ -17,6 +19,8 @@ const iconMap = {
   telegram: LinkTelegram,
   github: LinkGithub,
   element: LinkElement,
+  medium: LinkMedium,
+  youtube: LinkYoutube,
 };
 
 export default function ChainSocialLinks({ className }) {
