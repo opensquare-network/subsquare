@@ -89,6 +89,7 @@ export default function ListLayout({
  */
 function Tabs({ tabs = [] }) {
   const router = useRouter();
+  const routePath = router.asPath.split("?")[0];
 
   return (
     <ul className="flex space-x-8">
@@ -109,7 +110,7 @@ function Tabs({ tabs = [] }) {
                 target={isExternal ? "_blank" : "_self"}
                 className={clsx(
                   itemClassName,
-                  tab.active || router.asPath.startsWith(tab.url)
+                  tab.active ?? routePath === tab.url
                     ? itemActiveClassName
                     : "border-transparent",
                 )}
