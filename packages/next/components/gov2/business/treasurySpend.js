@@ -7,34 +7,28 @@ import Link from "next/link";
 
 export default function getTreasurySpendBusiness(
   onchain,
-  call = {},
   decimals,
   symbol
 ) {
-  const { section, method, args = [] } = call;
-  if ("treasury" !== section && "spend" !== method) {
-    return null;
-  }
+  const { amount, beneficiary } = onchain?.treasuryInfo || {};
 
   const business = [[]];
-  const valueArg = args.find(({ name }) => "amount" === name);
-  if (valueArg) {
+  if (amount) {
     business[0].push([
       "Request",
       <ValueDisplay
         key="request"
-        value={toPrecision(valueArg.value, decimals)}
+        value={toPrecision(amount, decimals)}
         symbol={symbol}
       />,
     ]);
   }
-  const beneficiaryArg = args.find(({ name }) => "beneficiary" === name);
-  if (beneficiaryArg) {
+  if (beneficiary) {
     business[0].push([
       "Beneficiary",
       <User
         key="beneficiary"
-        add={beneficiaryArg.value.id || beneficiaryArg.value}
+        add={beneficiary}
         fontSize={14}
       />,
     ]);
