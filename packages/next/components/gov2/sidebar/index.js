@@ -9,8 +9,13 @@ import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import LearnGov2Link from "next-common/components/links/learnGov2Link";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import { useChainSettings } from "next-common/context/chain";
+import isMoonChain from "next-common/utils/isMoonChain";
 
-const Popup = dynamic(() => import("../votePopup"), {
+const VotePopup = dynamic(() => import("../votePopup"), {
+  ssr: false,
+});
+
+const MoonVotePopup = dynamic(() => import("../votePopup/moonPopup"), {
   ssr: false,
 });
 
@@ -21,6 +26,11 @@ export default function Gov2Sidebar() {
   const trackId = detail?.track;
   const isVoting = gov2VotingState.includes(detail?.state?.name);
   const { hideActionButtons } = useChainSettings();
+
+  let Popup = VotePopup;
+  if (isMoonChain()) {
+    Popup = MoonVotePopup;
+  }
 
   return (
     <RightBarWrapper>
