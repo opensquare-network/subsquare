@@ -7,8 +7,6 @@ import {
   SummaryItem,
   SummaryItemTitle,
 } from "next-common/components/summary/styled";
-import Delegation from "./delegation";
-import BeenDelegated from "./beenDelegated";
 import Summary from "next-common/components/summary/v2/base";
 import Content from "next-common/components/summary/cardContent";
 import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
@@ -21,7 +19,6 @@ import { useChainSettings } from "next-common/context/chain";
 import { smcss } from "next-common/utils/responsive";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 import FlexCenter from "next-common/components/styled/flexCenter";
-import VStack from "next-common/components/styled/vStack";
 
 // used in `Divider` and `ThresholdCurvesChart`
 const THRESHOLD_CURVE_PADDING = 8;
@@ -56,17 +53,12 @@ const SummaryDecisionDepositValueWrapper = styled.span`
   }
 `;
 
-export default function Gov2TrackSummary({
-  summary,
-  period,
-  noDelegation = false,
-}) {
+export default function Gov2TrackSummary({ summary, period }) {
   const {
     maxDeciding,
     preparePeriod,
     decisionPeriod,
     confirmPeriod,
-    id,
     decisionDeposit,
     minEnactmentPeriod,
   } = period ?? {};
@@ -91,16 +83,6 @@ export default function Gov2TrackSummary({
     blockTime,
   );
 
-  let footer = null;
-  if (!noDelegation) {
-    footer = (
-      <VStack space={8}>
-        <Delegation trackId={id} />
-        <BeenDelegated trackId={id} />
-      </VStack>
-    );
-  }
-
   function showThresholdCurveDetail() {
     setShowThresholdCurveDetailPopup(true);
   }
@@ -108,7 +90,6 @@ export default function Gov2TrackSummary({
   return (
     <>
       <Summary
-        footer={footer}
         items={[
           {
             title: "Capacity",

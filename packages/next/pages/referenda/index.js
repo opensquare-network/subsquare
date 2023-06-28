@@ -15,6 +15,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
+import Gov2SummaryFooter from "components/summary/gov2SummaryFooter";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, summary, status }) => {
@@ -45,6 +46,7 @@ export default withLoginUserRedux(
         title={title}
         description="All active and history referenda of various tracks."
         summary={<Gov2Summary summary={summary} />}
+        summaryFooter={<Gov2SummaryFooter />}
         tabs={[
           { label: "Referenda", url: "/referenda" },
           { label: "Statistics", url: "/referenda/statistics" },

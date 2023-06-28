@@ -1,16 +1,9 @@
 import Summary from "next-common/components/summary/v2/base";
 import { SummaryGreyText } from "next-common/components/summary/styled";
-import AllDelegation from "./allDelegation";
 
-export default function Gov2Summary({ summary, noDelegation = false }) {
-  let footer;
-  if (!noDelegation) {
-    footer = <AllDelegation />;
-  }
-
+export default function Gov2Summary({ summary }) {
   return (
     <Summary
-      footer={footer}
       items={[
         {
           title: "Confirming",

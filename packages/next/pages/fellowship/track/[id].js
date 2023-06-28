@@ -32,7 +32,6 @@ export default withLoginUserRedux(
           <Gov2TrackSummary
             summary={summary}
             period={period}
-            noDelegation={true}
             titleExtra={`[${period.id}]`}
           />
         }

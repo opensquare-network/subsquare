@@ -26,7 +26,7 @@ export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
       seoInfo={seoInfo}
       title={title}
       description="All active and history referenda of various tracks."
-      summary={<Gov2Summary summary={summary} noDelegation />}
+      summary={<Gov2Summary summary={summary} />}
     >
       <PostList
         title="List"

@@ -18,6 +18,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
+import Gov2TrackSummaryFooter from "components/summary/gov2TrackSummaryFooter";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, summary, period, status }) => {
@@ -61,6 +62,7 @@ export default withLoginUserRedux(
             titleExtra={`[${period.id}]`}
           />
         }
+        summaryFooter={<Gov2TrackSummaryFooter period={period} />}
       >
         <PostList
           title="List"
