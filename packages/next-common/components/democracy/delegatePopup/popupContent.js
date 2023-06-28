@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
@@ -13,19 +13,16 @@ import {
 import Signer from "next-common/components/popup/fields/signerField";
 
 import { useChainSettings } from "next-common/context/chain";
-import Conviction from "next-common/components/popup/fields/convictionField";
-import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
-import Target from "next-common/components/democracy/delegatePopup/target";
+import Conviction from "./conviction";
+import VoteValue from "./voteValue";
+import Target from "./target";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import MultiTrack from "next-common/components/popup/fields/multiTrackField";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
+import useSignerAccount from "../../../utils/hooks/useSignerAccount";
+import { PopupButtonWrapper } from "../../popup/wrapper";
 
 export default function PopupContent({
   extensionAccounts,
-  tracks,
   onClose,
-  showTrackSelect = true,
   onInBlock = emptyFunction,
   submitExtrinsic = emptyFunction,
 }) {
@@ -42,16 +39,15 @@ export default function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
-  const [selectedTracks, setSelectedTracks] = useState(tracks);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -60,22 +56,18 @@ export default function PopupContent({
       return;
     }
 
-    if (selectedTracks.length === 0) {
-      return showErrorToast("Please select at least one track");
-    }
-
     let bnVoteBalance;
     try {
       bnVoteBalance = checkInputValue(
         inputVoteBalance,
         node.decimals,
-        "vote balance"
+        "vote balance",
       );
     } catch (err) {
       return showErrorToast(err.message);
     }
 
-    if (bnVoteBalance.times(selectedTracks.length).gt(votingBalance)) {
+    if (bnVoteBalance.gt(votingBalance)) {
       return showErrorToast("Insufficient voting balance");
     }
 
@@ -93,13 +85,12 @@ export default function PopupContent({
 
     if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
       return showErrorToast(
-        "Target address cannot be same with the delegator address"
+        "Target address cannot be same with the delegator address",
       );
     }
 
     await submitExtrinsic({
       api,
-      trackIds: selectedTracks,
       conviction,
       bnVoteBalance,
       targetAddress,
@@ -112,8 +103,6 @@ export default function PopupContent({
     });
   };
 
-  const disabled = !(selectedTracks?.length > 0);
-
   return (
     <>
       <Signer
@@ -123,15 +112,8 @@ export default function PopupContent({
         isBalanceLoading={votingIsLoading}
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
+        symbol={node.voteSymbol || node.symbol}
       />
-
-      {showTrackSelect && (
-        <MultiTrack
-          selectedTracks={selectedTracks}
-          setSelectedTracks={setSelectedTracks}
-        />
-      )}
-
       <Target
         extensionAccounts={extensionAccounts}
         setAddress={setTargetAddress}
@@ -144,11 +126,7 @@ export default function PopupContent({
       />
       <Conviction conviction={conviction} setConviction={setConviction} />
       <PopupButtonWrapper>
-        <SecondaryButton
-          isLoading={isLoading}
-          disabled={disabled}
-          onClick={doDelegate}
-        >
+        <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
           Confirm
         </SecondaryButton>
       </PopupButtonWrapper>

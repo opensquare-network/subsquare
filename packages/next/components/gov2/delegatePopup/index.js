@@ -8,6 +8,7 @@ export async function submitPolkadotExtrinsic({
   trackIds,
   conviction,
   bnVoteBalance,
+  targetAddress,
   dispatch,
   setLoading,
   onInBlock = emptyFunction,
@@ -15,13 +16,11 @@ export async function submitPolkadotExtrinsic({
   signerAccount,
   isMounted,
 }) {
-  const signerAddress = signerAccount?.address;
-
   let tx;
   if (trackIds.length === 1) {
     tx = api.tx.convictionVoting.delegate(
       trackIds[0],
-      signerAddress,
+      targetAddress,
       conviction,
       bnVoteBalance.toString()
     );
@@ -30,7 +29,7 @@ export async function submitPolkadotExtrinsic({
       trackIds.map((trackId) =>
         api.tx.convictionVoting.delegate(
           trackId,
-          signerAddress,
+          targetAddress,
           conviction,
           bnVoteBalance.toString()
         )
@@ -48,7 +47,7 @@ export async function submitPolkadotExtrinsic({
     setLoading,
     onInBlock,
     onClose,
-    signerAddress,
+    signerAddress: signerAccount?.address,
     isMounted,
   });
 }

@@ -1,15 +1,14 @@
-import { emptyFunction } from "next-common/utils";
+import React from "react";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import PopupContent from "./popupContent";
-import isUseMetamask from "next-common/utils/isUseMetamask";
+import { emptyFunction } from "next-common/utils";
 import { submitPolkadotExtrinsic } from ".";
-import { sendEvmTx } from "next-common/utils/sendEvmTx";
+import isUseMetamask from "next-common/utils/isUseMetamask";
+import { encodeDelegateData } from "next-common/utils/moonPrecompiles/democracy";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
-import { encodeBatchAllData } from "next-common/utils/moonPrecompiles/batch";
-import { encodeDelegateData } from "next-common/utils/moonPrecompiles/convictionVoting";
+import { sendEvmTx } from "next-common/utils/sendEvmTx";
 
 async function submitMoonMetamaskExtrinsic({
-  trackIds,
   conviction,
   bnVoteBalance,
   targetAddress,
@@ -21,44 +20,10 @@ async function submitMoonMetamaskExtrinsic({
   isMounted,
 }) {
   let { callTo, callData } = encodeDelegateData({
-    trackId: parseInt(trackIds[0]),
     targetAddress,
     conviction: parseInt(conviction),
     amount: BigInt(bnVoteBalance.toString()),
   });
-
-  if (trackIds.length > 1) {
-    let toParam = [],
-      valueParam = [],
-      callDataParam = [],
-      gasLimitParam = [];
-
-    toParam.push(callTo);
-    valueParam.push(0);
-    callDataParam.push(callData);
-    gasLimitParam.push(0);
-
-    for (let n = 1; n < trackIds.length; n++) {
-      let { callTo, callData } = encodeDelegateData({
-        trackId: parseInt(trackIds[n]),
-        targetAddress,
-        conviction: parseInt(conviction),
-        amount: BigInt(bnVoteBalance.toString()),
-      });
-
-      toParam.push(callTo);
-      valueParam.push(0);
-      callDataParam.push(callData);
-      gasLimitParam.push(0);
-    }
-
-    ({ callTo, callData } = encodeBatchAllData({
-      to: toParam,
-      value: valueParam,
-      callData: callDataParam,
-      gasLimit: gasLimitParam,
-    }));
-  }
 
   if (signerAccount?.proxyAddress) {
     ({ callTo, callData } = encodeProxyData({
@@ -82,7 +47,6 @@ async function submitMoonMetamaskExtrinsic({
 
 async function submitExtrinsic({
   api,
-  trackIds,
   conviction,
   bnVoteBalance,
   targetAddress,
@@ -95,7 +59,6 @@ async function submitExtrinsic({
 }) {
   if (isUseMetamask()) {
     await submitMoonMetamaskExtrinsic({
-      trackIds,
       conviction,
       bnVoteBalance,
       targetAddress,
@@ -109,7 +72,6 @@ async function submitExtrinsic({
   } else {
     await submitPolkadotExtrinsic({
       api,
-      trackIds,
       conviction,
       bnVoteBalance,
       targetAddress,
