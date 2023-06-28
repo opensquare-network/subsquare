@@ -1,53 +1,12 @@
-import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { estimateBlocksTime, toPrecision } from "next-common/utils";
-import {
-  SummaryGreyText,
-  SummaryItem,
-  SummaryItemTitle,
-} from "next-common/components/summary/styled";
+import { SummaryGreyText } from "next-common/components/summary/styled";
 import Summary from "next-common/components/summary/v2/base";
-import Content from "next-common/components/summary/cardContent";
-import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
-import { ArrowExpend } from "@osn/icons/subsquare";
-import { useState } from "react";
-import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
-import ThresholdCurvesGov2TrackSummaryLegend from "next-common/components/charts/thresholdCurve/legend/gov2TrackSummaryLegend";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { smcss } from "next-common/utils/responsive";
-import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
-import FlexCenter from "next-common/components/styled/flexCenter";
-
-// used in `Divider` and `ThresholdCurvesChart`
-const THRESHOLD_CURVE_PADDING = 8;
-
-const SummaryThresholdCurveWrapper = styled.div`
-  flex: 1;
-
-  ${smcss(css`
-    margin-top: 16px;
-  `)}
-`;
-const SummaryThresholdCurveItem = styled(SummaryItem)`
-  height: 100%;
-`;
-const SummaryThresholdCurveContent = styled(Content)`
-  margin: 0 -6px;
-`;
-const SummaryThresholdCurveLegendWrapper = styled(FlexCenter)`
-  margin-top: 2px;
-`;
-const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
-  display: flex;
-  justify-content: space-between;
-`;
-const SummaryDecisionDepositValueWrapper = styled.span`
-  .value-display-symbol {
-    color: var(--textTertiary);
-  }
-`;
+import clsx from "clsx";
+import Gov2TrackSummaryThresholdCurves from "./gov2TrackSummaryThresholdCurves";
 
 export default function Gov2TrackSummary({ summary, period }) {
   const {
@@ -59,16 +18,7 @@ export default function Gov2TrackSummary({ summary, period }) {
     minEnactmentPeriod,
   } = period ?? {};
 
-  const {
-    labels: chartLabels,
-    supportData,
-    approvalData,
-  } = useGov2ThresholdCurveData(period);
-
   const { decimals, symbol } = useChainSettings();
-
-  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
-    useState(false);
 
   const blockTime = useSelector(blockTimeSelector);
   const preparePeriodBlockTime = estimateBlocksTime(preparePeriod, blockTime);
@@ -79,13 +29,10 @@ export default function Gov2TrackSummary({ summary, period }) {
     blockTime,
   );
 
-  function showThresholdCurveDetail() {
-    setShowThresholdCurveDetailPopup(true);
-  }
-
   return (
-    <>
+    <div className={clsx("flex", "max-md:block max-md:space-y-4")}>
       <Summary
+        className="!grid-cols-3 max-md:!grid-cols-2"
         items={[
           {
             title: "Capacity",
@@ -135,54 +82,18 @@ export default function Gov2TrackSummary({ summary, period }) {
           {
             title: "Decision Deposit",
             content: (
-              <SummaryDecisionDepositValueWrapper>
+              <span className="[&_.value-display-symbol]:text-textTertiary">
                 <ValueDisplay
                   value={toPrecision(decisionDeposit, decimals)}
                   symbol={symbol}
                 />
-              </SummaryDecisionDepositValueWrapper>
+              </span>
             ),
           },
         ]}
-        chart={
-          <SummaryThresholdCurveWrapper>
-            <SummaryThresholdCurveItem>
-              <SummaryThresholdCurveItemTitle>
-                <span>Threshold Curves</span>
-                <ArrowExpend
-                  role="button"
-                  className="w-4 h-4 [&_path]:fill-textSecondary"
-                  onClick={showThresholdCurveDetail}
-                />
-              </SummaryThresholdCurveItemTitle>
-              <SummaryThresholdCurveContent>
-                <ThresholdCurvesChart
-                  height={110}
-                  scalesX={false}
-                  scalesY={false}
-                  layoutPadding={THRESHOLD_CURVE_PADDING}
-                  labels={chartLabels}
-                  supportData={supportData}
-                  approvalData={approvalData}
-                />
-
-                <SummaryThresholdCurveLegendWrapper>
-                  <ThresholdCurvesGov2TrackSummaryLegend />
-                </SummaryThresholdCurveLegendWrapper>
-              </SummaryThresholdCurveContent>
-            </SummaryThresholdCurveItem>
-          </SummaryThresholdCurveWrapper>
-        }
       />
 
-      {showThresholdCurveDetailPopup && (
-        <ThresholdCurvesPopup
-          labels={chartLabels}
-          supportData={supportData}
-          approvalData={approvalData}
-          setShow={setShowThresholdCurveDetailPopup}
-        />
-      )}
-    </>
+      <Gov2TrackSummaryThresholdCurves period={period} />
+    </div>
   );
 }
