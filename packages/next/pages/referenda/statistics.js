@@ -3,36 +3,27 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import ReferendaStatistics from "next-common/components/statistics/referenda";
 import ReferendaSummary from "next-common/components/statistics/referenda/summary";
-import DetailLayout from "next-common/components/layout/DetailLayout";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import OpenGovTurnoutSummary from "next-common/components/statistics/referenda/turnoutSummary";
+import ListLayout from "next-common/components/layout/ListLayout";
 
 export default withLoginUserRedux(({ tracksStats, delegatee, summary }) => {
+  const title = "OpenGov Statistics";
+  const seoInfo = { title, desc: title };
+
   return (
-    <DetailLayout
-      seoInfo={{
-        title: "OpenGov Statistics",
-        desc: "OpenGov Statistics",
-      }}
+    <ListLayout
+      seoInfo={seoInfo}
+      title={title}
+      description="All active and history referenda of various tracks."
+      tabs={[
+        { label: "Referenda", url: "/referenda" },
+        { label: "Statistics", url: "/referenda/statistics" },
+      ]}
     >
-      <BreadcrumbWrapper>
-        <Breadcrumb
-          items={[
-            {
-              path: "/referenda",
-              content: "Referenda",
-            },
-            {
-              content: "Statistics",
-            },
-          ]}
-        />
-      </BreadcrumbWrapper>
       <ReferendaSummary summary={summary} />
       <OpenGovTurnoutSummary summary={summary} />
       <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
-    </DetailLayout>
+    </ListLayout>
   );
 });
 
