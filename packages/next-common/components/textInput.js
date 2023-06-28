@@ -17,7 +17,7 @@ const Input = styled.textarea`
   ${(p) =>
     p.disabled &&
     css`
-      background: var(--neutral200); !important;
+      background: var(--neutral200) !important;
     `}
   all: unset;
   padding: 12px 16px;

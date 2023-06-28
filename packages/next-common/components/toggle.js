@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   cursor: pointer;
   width: 38px;
   height: 22px;
-  background: var(--neutral500); !important;
+  background: var(--neutral500) !important;
   border-radius: 16px;
   > div {
     width: 14px;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     position: absolute;
     top: 4px;
     left: 4px;
-    background: var(--neutral100); !important;
+    background: var(--neutral100) !important;
     border-radius: 7px;
   }
   ${(p) =>
