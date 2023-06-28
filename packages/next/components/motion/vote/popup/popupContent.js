@@ -95,7 +95,7 @@ export default function PopupContent({
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress,
+      signerAccount,
       isMounted,
     });
   };
