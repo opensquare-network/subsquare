@@ -1,12 +1,11 @@
 import React from "react";
 import Tab from "next-common/components/tab";
-import isMoonChain from "next-common/utils/isMoonChain";
 
 export const Aye = "Aye";
 export const Nay = "Nay";
 export const Split = "Split";
 
-export default function VoteTypeTab({ tabIndex, setTabIndex }) {
+export default function AyeNaySplitTab({ tabIndex, setTabIndex }) {
   const tabs = [
     {
       tabId: Aye,
@@ -16,15 +15,11 @@ export default function VoteTypeTab({ tabIndex, setTabIndex }) {
       tabId: Nay,
       tabTitle: "Nay",
     },
-  ];
-
-  // Moonbeam doesn't support democracy split voting
-  if (!isMoonChain()) {
-    tabs.push({
+    {
       tabId: Split,
       tabTitle: "Split",
-    });
-  }
+    },
+  ];
 
   return (
     <Tab

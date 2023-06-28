@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import SplitVote from "../splitVote";
+import { encodeVoteSplitData } from "next-common/utils/moonPrecompiles/convictionVoting";
 
-export default function useSplitVote({
+export default function useMoonSplitVote({
   module = "convictionVoting",
   referendumIndex,
   isLoading,
@@ -16,7 +16,6 @@ export default function useSplitVote({
   const [ayeInputVoteBalance, setAyeInputVoteBalance] = useState("0");
   const [nayInputVoteBalance, setNayInputVoteBalance] = useState("0");
   const node = useChainSettings();
-  const api = useApi();
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -62,12 +61,17 @@ export default function useSplitVote({
       return;
     }
 
-    return api.tx[module].vote(referendumIndex, {
-      Split: {
-        aye: bnAyeVoteBalance.toString(),
-        nay: bnNayVoteBalance.toString(),
-      },
-    });
+    if (module === "convictionVoting") {
+      return encodeVoteSplitData({
+        pollIndex: referendumIndex,
+        aye: BigInt(bnAyeVoteBalance.toString()),
+        nay: BigInt(bnNayVoteBalance.toString()),
+      });
+    } else if (module === "democracy") {
+      throw new Error("The Moonbeam/Moonriver democracy precompile does not support split votes");
+    } else {
+      throw new Error("Unsupported module");
+    }
   };
 
   return { SplitVoteComponent, getSplitVoteTx };

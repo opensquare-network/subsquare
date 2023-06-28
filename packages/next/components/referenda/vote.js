@@ -30,10 +30,16 @@ import useIsDemocracyPassed from "next-common/context/post/democracy/referendum/
 import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import { useChainSettings } from "next-common/context/chain";
 import Calls from "./voteCalls";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
+
+const MoonVotePopup = dynamic(() => import("components/referenda/popup/moonPopup"), {
+  ssr: false,
+});
+
 
 const FlattenedVotesPopup = dynamic(
   () => import("next-common/components/democracy/flattenedVotesPopup"),
@@ -121,6 +127,11 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   );
   const isVoteFinished = useIsDemocracyVoteFinished();
 
+  let Popup = VotePopup;
+  if (isMoonChain()) {
+    Popup = MoonVotePopup;
+  }
+
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
   }, [dispatch, api, referendumIndex]);
@@ -193,7 +204,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
         </SecondaryButton>
       )}
       {showVote && (
-        <VotePopup
+        <Popup
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onInBlock={updateVoteProgress}
