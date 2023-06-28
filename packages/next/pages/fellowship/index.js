@@ -12,11 +12,9 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
-import usePageTitle from "next-common/hooks/usePageTitle";
 
 export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
-  const category = "Fellowship Referenda";
-  const title = usePageTitle(category);
+  const title = "Fellowship Referenda";
   const seoInfo = { title, desc: title };
 
   const items = (posts.items || []).map((item) =>
@@ -26,7 +24,7 @@ export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
   return (
     <ListLayout
       seoInfo={seoInfo}
-      title={category}
+      title={title}
       description="All active and history referenda of various tracks."
       summary={<Gov2Summary summary={summary} noDelegation />}
     >

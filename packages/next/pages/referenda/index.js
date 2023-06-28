@@ -15,7 +15,6 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
-import capitalize from "lodash.capitalize";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, summary, status }) => {
@@ -74,8 +73,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const {
     page = 1,
     page_size: pageSize = defaultPageSize,
@@ -103,7 +100,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: `${capitalize(chain)} OpenGov Referenda`,
+      title: "OpenGov Referenda",
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},

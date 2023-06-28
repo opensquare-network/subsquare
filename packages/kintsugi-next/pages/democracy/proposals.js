@@ -7,14 +7,16 @@ import { useChain } from "next-common/context/chain";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ proposals, summary }) => {
   const chain = useChain();
   const items = (proposals.items || []).map((item) =>
     normalizeProposalListItem(chain, item),
   );
-  const category = "Democracy Public Proposals";
-  const seoInfo = { title: category, desc: category };
+  const category = businessCategory.democracyProposals;
+  const title = category;
+  const seoInfo = { title, desc: title };
 
   return (
     <ListLayout

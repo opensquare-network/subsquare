@@ -5,7 +5,6 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import usePageTitle from "next-common/hooks/usePageTitle";
 import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 
@@ -14,7 +13,7 @@ export default withLoginUserRedux(({ proposals, chain, summary }) => {
     normalizeProposalListItem(chain, item),
   );
   const category = businessCategory.democracyProposals;
-  const title = usePageTitle(category);
+  const title = category;
   const seoInfo = { title, desc: title };
 
   return (

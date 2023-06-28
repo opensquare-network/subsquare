@@ -5,7 +5,6 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import usePageTitle from "next-common/hooks/usePageTitle";
 import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 
@@ -14,7 +13,7 @@ export default withLoginUserRedux(({ posts, chain, summary }) => {
     normalizeReferendaListItem(chain, item),
   );
   const category = businessCategory.democracyReferenda;
-  const title = usePageTitle(category);
+  const title = "Democracy " + category;
   const seoInfo = {
     title,
     desc: title,
@@ -22,7 +21,7 @@ export default withLoginUserRedux(({ posts, chain, summary }) => {
 
   return (
     <ListLayout
-      title="Democracy Referenda"
+      title={title}
       description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
       seoInfo={seoInfo}
       summary={<DemocracySummary summary={summary} />}
