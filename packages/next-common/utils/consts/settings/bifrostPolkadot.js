@@ -40,6 +40,10 @@ const links = [
     name: "discord",
     url: "https://discord.gg/8DRBw2h5X4",
   },
+  {
+    name: "medium",
+    url: "https://medium.com/bifrost-finance",
+  },
 ];
 
 const bifrostPolkadot = {
