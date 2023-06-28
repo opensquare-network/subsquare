@@ -10,7 +10,7 @@ import {
 import Summary from "next-common/components/summary/v2/base";
 import Content from "next-common/components/summary/cardContent";
 import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
-import ArrowOutSimpleIcon from "next-common/components/icons/arrowOutSimple";
+import { ArrowExpend } from "@osn/icons/subsquare";
 import { useState } from "react";
 import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
 import ThresholdCurvesGov2TrackSummaryLegend from "next-common/components/charts/thresholdCurve/legend/gov2TrackSummaryLegend";
@@ -42,10 +42,6 @@ const SummaryThresholdCurveLegendWrapper = styled(FlexCenter)`
 const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
   display: flex;
   justify-content: space-between;
-
-  ${ArrowOutSimpleIcon} {
-    cursor: pointer;
-  }
 `;
 const SummaryDecisionDepositValueWrapper = styled.span`
   .value-display-symbol {
@@ -153,7 +149,11 @@ export default function Gov2TrackSummary({ summary, period }) {
             <SummaryThresholdCurveItem>
               <SummaryThresholdCurveItemTitle>
                 <span>Threshold Curves</span>
-                <ArrowOutSimpleIcon onClick={showThresholdCurveDetail} />
+                <ArrowExpend
+                  role="button"
+                  className="w-4 h-4 [&_path]:fill-textSecondary"
+                  onClick={showThresholdCurveDetail}
+                />
               </SummaryThresholdCurveItemTitle>
               <SummaryThresholdCurveContent>
                 <ThresholdCurvesChart
