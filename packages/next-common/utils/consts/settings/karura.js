@@ -36,6 +36,29 @@ export const DEFAULT_KARURA_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://acala.network/karura",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/KaruraNetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/acalaofficial",
+  },
+  {
+    name: "discord",
+    url: "https://www.acala.gg/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/AcalaNetwork",
+  },
+];
+
 const karura = {
   value: "karura",
   name: "Karura",
@@ -51,6 +74,7 @@ const karura = {
   avatar: Avatar,
   navLogo: ProjectLogoKaruraDark,
   navLogoDark: ProjectLogoKaruraDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,

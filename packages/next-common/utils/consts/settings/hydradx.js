@@ -17,6 +17,33 @@ const defaultHydradxEndpoints = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://hydradx.io/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/hydra_dx",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/kkmY35UxAG",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/hydradx",
+  },
+  {
+    name: "reddit",
+    url: "https://www.reddit.com/r/hdx/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/galacticcouncil",
+  },
+];
+
 const hydradx = {
   value: Chains.hydradx,
   name: "HydraDX",
@@ -33,6 +60,7 @@ const hydradx = {
   navLogo: ProjectLogoHydradxDark,
   navLogoDark: ProjectLogoHydradxDark,
   endpoints: defaultHydradxEndpoints,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

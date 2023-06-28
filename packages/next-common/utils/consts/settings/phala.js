@@ -16,6 +16,33 @@ const DEFAULT_PHALA_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://phala.network",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/phalanetwork",
+  },
+  {
+    name: "youtube",
+    url: "https://www.youtube.com/@PhalaNetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/phalanetwork",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/gZjZuVHXtm",
+  },
+  {
+    name: "github",
+    url: "https://github.com/phala-network",
+  },
+];
+
 const phala = {
   value: "phala",
   name: "Phala",
@@ -31,6 +58,7 @@ const phala = {
   avatar: Avatar,
   navLogo: ProjectLogoPhalaDark,
   navLogoDark: ProjectLogoPhalaDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

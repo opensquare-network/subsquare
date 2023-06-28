@@ -15,6 +15,29 @@ const DEFAULT_LITMUS_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://kusama-crowdloan.litentry.com/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/litentry",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/litentry",
+  },
+  {
+    name: "github",
+    url: "https://github.com/litentry",
+  },
+  {
+    name: "medium",
+    url: "https://litentry.medium.com/",
+  },
+];
+
 const litmus = {
   value: Chains.litmus,
   name: capitalize(Chains.litmus),
@@ -30,6 +53,7 @@ const litmus = {
   avatar: Avatar,
   navLogo: ProjectLogoLitmusDark,
   navLogoDark: ProjectLogoLitmusDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
   hasSubscan: false,

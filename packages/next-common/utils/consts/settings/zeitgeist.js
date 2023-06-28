@@ -24,6 +24,25 @@ const defaultNodes = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://zeitgeist.pm",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/xv8HuA4s8v",
+  },
+  {
+    name: "github",
+    url: "https://github.com/ZeitgeistPM",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/ZeitgeistPM",
+  },
+];
+
 const zeitgeist = {
   value: Chains.zeitgeist,
   name: capitalize(Chains.zeitgeist),
@@ -41,6 +60,7 @@ const zeitgeist = {
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoZeigeistDark,
   navLogoDark: ProjectLogoZeigeistDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
   hasSubscan: true,

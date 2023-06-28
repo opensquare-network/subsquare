@@ -19,6 +19,37 @@ export const DEFAULT_TURING_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://oak.tech/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/oak_network",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/7W9UDvsbwh",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/oak-blockchain",
+  },
+  {
+    name: "youtube",
+    url: "https://youtube.com/channel/UCpR12msmm43z46PoAJ1TAiQ",
+  },
+  {
+    name: "github",
+    url: "https://github.com/OAK-Foundation/",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/OAKNetworkCommunity",
+  },
+];
+
 const turing = {
   value: Chains.turing,
   name: capitalize(Chains.turing),
@@ -34,6 +65,7 @@ const turing = {
   avatar: Avatar,
   navLogo: ProjectLogoTuringDark,
   navLogoDark: ProjectLogoTuringDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

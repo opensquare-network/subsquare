@@ -19,6 +19,13 @@ export const defaultRococoNodes = [
 
 const name = Chains.rococo;
 
+const links = [
+  {
+    name: "github",
+    url: "https://github.com/paritytech/polkadot",
+  },
+];
+
 const rococo = {
   value: name,
   name: capitalize(name),
@@ -35,6 +42,7 @@ const rococo = {
   avatar: Avatar,
   navLogo: ProjectLogoRococoLight,
   navLogoDark: ProjectLogoRococoDark,
+  links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,

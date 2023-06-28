@@ -16,6 +16,33 @@ const DEFAULT_BASILISK_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://bsx.fi",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/bsx_finance",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/bsx_fi",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/S8YZj5aXR6",
+  },
+  {
+    name: "github",
+    url: "https://github.com/galacticcouncil",
+  },
+  {
+    name: "reddit",
+    url: "https://www.reddit.com/r/bsx_fi/",
+  },
+];
+
 const basilisk = {
   value: "basilisk",
   name: "Basilisk",
@@ -31,6 +58,7 @@ const basilisk = {
   navLogo: ProjectLogoBasiliskDark,
   navLogoDark: ProjectLogoBasiliskDark,
   endpoints: DEFAULT_BASILISK_NODES,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

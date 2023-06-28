@@ -21,6 +21,33 @@ const DEFAULT_INTERLAY_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://interlay.io/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/interlayHQ",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/interlay",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/interlay_community",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/interlay",
+  },
+  {
+    name: "github",
+    url: "https://github.com/interlay",
+  },
+];
+
 const interlay = {
   value: "interlay",
   name: "Interlay",
@@ -38,6 +65,7 @@ const interlay = {
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoInterlayLight,
   navLogoDark: ProjectLogoInterlayDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
   hasSubscan: true,

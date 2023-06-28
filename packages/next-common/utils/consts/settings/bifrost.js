@@ -20,6 +20,33 @@ const DEFAULT_BIFROST_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://bifrost.finance/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/bifrost-finance",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/BifrostFinance",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/bifrost_finance",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/8DRBw2h5X4",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/bifrost-finance",
+  },
+];
+
 const bifrost = {
   value: "bifrost",
   name: "Bifrost Kusama",
@@ -36,6 +63,7 @@ const bifrost = {
   avatar: Avatar,
   navLogo: ProjectLogoBifrostKusamaDark,
   navLogoDark: ProjectLogoBifrostKusamaDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,

@@ -19,6 +19,37 @@ const DEFAULT_LITENTRY_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://litentry.com",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/litentry",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/litentry",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/litentry",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/6KxSqDPgWh",
+  },
+  {
+    name: "github",
+    url: "https://github.com/litentry",
+  },
+  {
+    name: "youtube",
+    url: "https://www.youtube.com/channel/UCbv8QnsNngpV6RMd0Bo2ZBw",
+  },
+];
+
 const litentry = {
   value: Chains.litentry,
   name: capitalize(Chains.litentry),
@@ -34,6 +65,7 @@ const litentry = {
   avatar: Avatar,
   navLogo: ProjectLogoLitentryDark,
   navLogoDark: ProjectLogoLitentryDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,
   hasSubscan: false,

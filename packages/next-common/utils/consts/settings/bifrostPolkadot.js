@@ -7,6 +7,7 @@ import {
   ProjectLogoBifrostPolkadotDark,
   ProjectLogoBifrostPolkadotLight,
 } from "@osn/icons/subsquare";
+import bifrost from "./bifrost";
 
 const DEFAULT_NODES = [
   {
@@ -19,32 +20,7 @@ const DEFAULT_NODES = [
   },
 ];
 
-const links = [
-  {
-    name: "website",
-    url: "https://bifrost.finance/",
-  },
-  {
-    name: "github",
-    url: "https://github.com/bifrost-finance",
-  },
-  {
-    name: "twitter",
-    url: "https://twitter.com/BifrostFinance",
-  },
-  {
-    name: "telegram",
-    url: "https://t.me/bifrost_finance",
-  },
-  {
-    name: "discord",
-    url: "https://discord.gg/8DRBw2h5X4",
-  },
-  {
-    name: "medium",
-    url: "https://medium.com/bifrost-finance",
-  },
-];
+const links = bifrost.links;
 
 const bifrostPolkadot = {
   value: "bifrost-polkadot",

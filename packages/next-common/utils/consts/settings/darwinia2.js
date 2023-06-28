@@ -23,6 +23,37 @@ export const DEFAULT_DARWINIA_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://darwinia.network/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/DarwiniaNetwork",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/darwinianetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/DarwiniaNetwork",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/aQdK9H4MZS",
+  },
+  {
+    name: "github",
+    url: "https://github.com/darwinia-network",
+  },
+  {
+    name: "element",
+    url: "https://app.element.io/#/room/#darwinia:matrix.org",
+  },
+];
+
 const darwinia2 = {
   value: Chains.darwinia2,
   name: capitalize(Chains.darwinia2),
@@ -38,6 +69,7 @@ const darwinia2 = {
   avatar: Avatar,
   navLogo: ProjectLogoDarwinia2Light,
   navLogoDark: ProjectLogoDarwinia2Dark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,

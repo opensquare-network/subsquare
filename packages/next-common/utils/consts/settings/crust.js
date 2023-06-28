@@ -28,6 +28,33 @@ const DEFAULT_CRUST_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://crust.network",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/CrustNetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/crustnetwork",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/Jbw2PAUSCR",
+  },
+  {
+    name: "medium",
+    url: "https://crustnetwork.medium.com/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/crustio",
+  },
+];
+
 const crust = {
   value: Chains.crust,
   name: capitalize(Chains.crust),
@@ -45,6 +72,7 @@ const crust = {
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoCrustDark,
   navLogoDark: ProjectLogoCrustDark,
+  links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,

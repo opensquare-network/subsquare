@@ -25,6 +25,33 @@ const DEFAULT_KINTSUGI_NODES =
         },
       ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://parachains.info/details/kintsugi/",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/interlay_community",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/kintsugi_btc",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/interlay",
+  },
+  {
+    name: "medium",
+    url: "https://interlay.medium.com/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/interlay/interbtc",
+  },
+];
+
 const kintsugi = {
   value: "kintsugi",
   name: "Kintsugi",
@@ -41,6 +68,7 @@ const kintsugi = {
   avatar: Avatar,
   navLogo: ProjectLogoKintsugiDark,
   navLogoDark: ProjectLogoKintsugiDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
   hasSubscan: true,

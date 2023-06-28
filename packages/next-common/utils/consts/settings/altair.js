@@ -15,6 +15,17 @@ const nodes = [
   },
 ];
 
+const links = [
+  {
+    name: "twitter",
+    url: "https://twitter.com/altair_network",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/altair-network",
+  },
+];
+
 const altair = {
   value: Chains.altair,
   name: capitalize(Chains.altair),
@@ -30,6 +41,7 @@ const altair = {
   avatar: Avatar,
   navLogo: ProjectLogoAltairDark,
   navLogoDark: ProjectLogoAltairDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,

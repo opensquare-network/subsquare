@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/khala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import { ProjectLogoKhalaDark } from "@osn/icons/subsquare";
+import phala from "./phala";
 
 const DEFAULT_KHALA_NODES = [
   {
@@ -20,6 +21,8 @@ const DEFAULT_KHALA_NODES = [
   },
 ];
 
+const links = phala.links;
+
 const khala = {
   value: "khala",
   name: "Khala",
@@ -35,6 +38,7 @@ const khala = {
   avatar: Avatar,
   navLogo: ProjectLogoKhalaDark,
   navLogoDark: ProjectLogoKhalaDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
