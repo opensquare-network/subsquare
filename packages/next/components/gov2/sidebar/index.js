@@ -21,7 +21,7 @@ const MoonVotePopup = dynamic(() => import("../votePopup/moonPopup"), {
 
 export default function Gov2Sidebar() {
   const detail = usePost();
-  const [showVote, setShowVote] = useState(true);
+  const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
   const isVoting = gov2VotingState.includes(detail?.state?.name);
