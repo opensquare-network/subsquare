@@ -107,9 +107,7 @@ export default function Gov2TrackSummary({
 
   let summaryTitle = title;
   if (!summaryTitle) {
-    summaryTitle = <TitleWrapper>
-      Origin: {origin}
-    </TitleWrapper>;
+    summaryTitle = <TitleWrapper>Origin: {origin}</TitleWrapper>;
   }
   titleExtra = titleExtra ?? `${id}`;
 
@@ -128,7 +126,10 @@ export default function Gov2TrackSummary({
   const preparePeriodBlockTime = estimateBlocksTime(preparePeriod, blockTime);
   const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
   const confirmPeriodBlockTime = estimateBlocksTime(confirmPeriod, blockTime);
-  const minEnactPeriodBlockTime = estimateBlocksTime(minEnactmentPeriod, blockTime);
+  const minEnactPeriodBlockTime = estimateBlocksTime(
+    minEnactmentPeriod,
+    blockTime
+  );
 
   let footer = null;
   if (!noDelegation) {
@@ -207,10 +208,10 @@ export default function Gov2TrackSummary({
               <SummaryItemTitle>Min Enact Period</SummaryItemTitle>
               <Content>
                 <span>
-                  { minEnactPeriodBlockTime[0] || 0 }
+                  {minEnactPeriodBlockTime[0] || 0}
                   <SummaryGreyText>
-                    { " " }
-                    { minEnactPeriodBlockTime[1] }
+                    {" "}
+                    {minEnactPeriodBlockTime[1]}
                   </SummaryGreyText>
                 </span>
               </Content>

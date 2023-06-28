@@ -15,8 +15,13 @@ import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
 import useMaxDeposits from "./useMaxDeposits";
+import isMoonChain from "next-common/utils/isMoonChain";
 
-const Popup = dynamic(() => import("./popup"), {
+const SecondPopup = dynamic(() => import("./popup"), {
+  ssr: false,
+});
+
+const MoonSecondPopup = dynamic(() => import("./popup/moonPopup"), {
   ssr: false,
 });
 
@@ -111,6 +116,11 @@ export default function Second({
   const [expand, setExpand] = useState(false);
   const maxDeposits = useMaxDeposits();
 
+  let Popup = SecondPopup;
+  if (isMoonChain()) {
+    Popup = MoonSecondPopup;
+  }
+
   const api = useApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
@@ -171,9 +181,7 @@ export default function Second({
       <Description>This proposal has been turned into referendum.</Description>
     );
   } else if (reachedMaxDeposits) {
-    action = (
-      <Description>Has reached max deposits.</Description>
-    );
+    action = <Description>Has reached max deposits.</Description>;
   } else if (hasCanceled) {
     action = <Description>This proposal has been canceled.</Description>;
   } else {

@@ -1,179 +1,40 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-
-import { useAddressVotingBalance } from "utils/hooks";
-import useApi from "next-common/utils/hooks/useApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import {
-  checkInputValue,
-  emptyFunction,
-  isSameAddress,
-} from "next-common/utils";
-import Signer from "next-common/components/popup/fields/signerField";
-
+import React from "react";
 import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupContent from "./popupContent";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { useChainSettings } from "next-common/context/chain";
-import Conviction from "./conviction";
-import VoteValue from "./voteValue";
-import Target from "./target";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import useSignerAccount from "../../../utils/hooks/useSignerAccount";
-import { PopupButtonWrapper } from "../../popup/wrapper";
-import isMoonChain from "next-common/utils/isMoonChain";
-import { encodeDelegateData } from "next-common/utils/moonPrecompiles/democracy";
-import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
-import { sendEvmTx } from "next-common/utils/sendEvmTx";
-import isUseMetamask from "next-common/utils/isUseMetamask";
+import { emptyFunction } from "next-common/utils";
 
-function PopupContent({
-  extensionAccounts,
-  onClose,
+export async function submitPolkadotExtrinsic({
+  api,
+  conviction,
+  bnVoteBalance,
+  targetAddress,
+  dispatch,
+  setLoading,
   onInBlock = emptyFunction,
+  onClose,
+  signerAccount,
+  isMounted,
 }) {
-  const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-
-  const signerAccount = useSignerAccount(extensionAccounts);
-
-  const [targetAddress, setTargetAddress] = useState("");
-
-  const api = useApi();
-  const node = useChainSettings();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
+  let tx = api.tx.democracy.delegate(
+    targetAddress,
+    conviction,
+    bnVoteBalance.toString(),
   );
 
-  const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const [conviction, setConviction] = useState(0);
+  if (signerAccount?.proxyAddress) {
+    tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+  }
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  const doDelegate = async () => {
-    if (isLoading) {
-      return;
-    }
-
-    let bnVoteBalance;
-    try {
-      bnVoteBalance = checkInputValue(
-        inputVoteBalance,
-        node.decimals,
-        "vote balance",
-      );
-    } catch (err) {
-      return showErrorToast(err.message);
-    }
-
-    if (bnVoteBalance.gt(votingBalance)) {
-      return showErrorToast("Insufficient voting balance");
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
-
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
-
-    if (!targetAddress) {
-      return showErrorToast("Please input a target address");
-    }
-
-    const signerAddress = signerAccount?.address;
-
-    if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
-      return showErrorToast(
-        "Target address cannot be same with the delegator address",
-      );
-    }
-
-    if (isMoonChain() && isUseMetamask()) {
-      let { callTo, callData } = encodeDelegateData({
-        targetAddress,
-        conviction: parseInt(conviction),
-        amount: BigInt(bnVoteBalance.toString()),
-      });
-
-      if (signerAccount?.proxyAddress) {
-        ({ callTo, callData } = encodeProxyData({
-          real: signerAccount?.proxyAddress,
-          callTo,
-          callData,
-        }));
-      }
-
-      await sendEvmTx({
-        to: callTo,
-        data: callData,
-        dispatch,
-        setLoading: setIsLoading,
-        onInBlock,
-        onClose,
-        signerAddress,
-        isMounted,
-      });
-    } else {
-      let tx = api.tx.democracy.delegate(
-        targetAddress,
-        conviction,
-        bnVoteBalance.toString(),
-      );
-
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        dispatch,
-        setLoading: setIsLoading,
-        onInBlock,
-        onClose,
-        signerAddress,
-        isMounted,
-      });
-    }
-  };
-
-  return (
-    <>
-      <Signer
-        signerAccount={signerAccount}
-        balanceName="Voting balance"
-        balance={votingBalance}
-        isBalanceLoading={votingIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-        symbol={node.voteSymbol || node.symbol}
-      />
-      <Target
-        extensionAccounts={extensionAccounts}
-        setAddress={setTargetAddress}
-      />
-      <VoteValue
-        isLoading={isLoading}
-        inputVoteBalance={inputVoteBalance}
-        setInputVoteBalance={setInputVoteBalance}
-        node={node}
-      />
-      <Conviction conviction={conviction} setConviction={setConviction} />
-      <PopupButtonWrapper>
-        <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
-          Confirm
-        </SecondaryButton>
-      </PopupButtonWrapper>
-    </>
-  );
+  await sendTx({
+    tx,
+    dispatch,
+    setLoading,
+    onInBlock,
+    onClose,
+    signerAddress: signerAccount?.address,
+    isMounted,
+  });
 }
 
 export default function DelegatePopup(props) {
@@ -182,6 +43,7 @@ export default function DelegatePopup(props) {
       title="Delegate"
       Component={PopupContent}
       autoCloseAfterLogin={true}
+      submitExtrinsic={submitPolkadotExtrinsic}
       {...props}
     />
   );

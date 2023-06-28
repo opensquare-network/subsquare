@@ -8,7 +8,7 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 export async function submitPolkadotExtrinsic({
   getVoteTx,
   dispatch,
-  setLoading: setIsLoading,
+  setLoading,
   onInBlock,
   onSubmitted,
   onClose,
@@ -27,7 +27,7 @@ export async function submitPolkadotExtrinsic({
   await sendTx({
     tx,
     dispatch,
-    setLoading: setIsLoading,
+    setLoading,
     onInBlock,
     onSubmitted,
     onClose,
