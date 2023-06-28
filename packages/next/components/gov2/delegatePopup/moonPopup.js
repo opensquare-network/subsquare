@@ -34,9 +34,7 @@ async function submitMoonMetamaskExtrinsic({
       gasLimitParam = [];
 
     toParam.push(callTo);
-    valueParam.push(0);
     callDataParam.push(callData);
-    gasLimitParam.push(0);
 
     for (let n = 1; n < trackIds.length; n++) {
       let { callTo, callData } = encodeDelegateData({
@@ -47,9 +45,7 @@ async function submitMoonMetamaskExtrinsic({
       });
 
       toParam.push(callTo);
-      valueParam.push(0);
       callDataParam.push(callData);
-      gasLimitParam.push(0);
     }
 
     ({ callTo, callData } = encodeBatchAllData({

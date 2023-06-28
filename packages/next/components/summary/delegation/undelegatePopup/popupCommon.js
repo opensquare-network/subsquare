@@ -8,6 +8,7 @@ import { emptyFunction } from "next-common/utils";
 import SignerPopup from "next-common/components/signerPopup";
 
 export default function PopupCommon({
+  trackId,
   onClose,
   isLoading,
   setIsLoading = emptyFunction,
@@ -19,7 +20,7 @@ export default function PopupCommon({
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    [dispatch],
+    [dispatch]
   );
 
   const removeDelegating = useCallback(
@@ -34,6 +35,7 @@ export default function PopupCommon({
 
       await submitExtrinsic({
         api,
+        trackId: parseInt(trackId),
         dispatch,
         setLoading: setIsLoading,
         onInBlock,
@@ -46,11 +48,12 @@ export default function PopupCommon({
       dispatch,
       onInBlock,
       isMounted,
+      trackId,
       showErrorToast,
       setIsLoading,
       onClose,
       submitExtrinsic,
-    ],
+    ]
   );
 
   return (

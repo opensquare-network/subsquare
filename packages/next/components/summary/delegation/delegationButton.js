@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Button } from "next-common/components/summary/styled";
 import DelegatePopup from "components/gov2/delegatePopup";
+import MoonDelegatePopup from "components/gov2/delegatePopup/moonPopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
 import UndelegatePopup from "./undelegatePopup";
+import MoonUndelegatePopup from "./undelegatePopup/moonPopup";
 import Tooltip from "next-common/components/tooltip";
 import styled from "styled-components";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const RemoveButton = styled(Button)`
   display: flex;
@@ -21,6 +24,13 @@ export default function DelegationButton({
   const [isLoading, setIsLoading] = useState(false);
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
   const [showUndelegatePopup, setShowUndelegatePopup] = useState(false);
+
+  let TheDelegatePopup = DelegatePopup;
+  let TheUndelegatePopup = UndelegatePopup;
+  if (isMoonChain()) {
+    TheDelegatePopup = MoonDelegatePopup;
+    TheUndelegatePopup = MoonUndelegatePopup;
+  }
 
   const addDelegationButton = (
     <Button onClick={() => setShowDelegatePopup(true)}>
@@ -46,14 +56,14 @@ export default function DelegationButton({
     <>
       {delegating ? removeDelegationButton : addDelegationButton}
       {showDelegatePopup && (
-        <DelegatePopup
+        <TheDelegatePopup
           tracks={[trackId]}
           onInBlock={onDelegateInBlock}
           onClose={() => setShowDelegatePopup(false)}
         />
       )}
       {showUndelegatePopup && (
-        <UndelegatePopup
+        <TheUndelegatePopup
           trackId={trackId}
           onInBlock={onUndelegateInBlock}
           onClose={() => setShowUndelegatePopup(false)}
