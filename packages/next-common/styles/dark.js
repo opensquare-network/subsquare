@@ -35,6 +35,8 @@ const dark = {
     sapphire300: "rgba(31,112,199,0.400)",
     sapphire500: "rgba(31,112,199,1)",
     gray100: "var(--neutral200)",
+    gray200: "var(--neutral300)",
+    gray400: "var(--neutral500)",
     gray500: "var(--textSecondary)",
     neutral100: "rgba(33,36,51,1)",
     neutral200: "rgba(38, 41, 56, 1)",
