@@ -7,11 +7,11 @@ import {
   fellowshipTracksApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import Gov2Summary from "components/summary/gov2Summary";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
+import Gov2Summary from "next-common/components/summary/gov2Summary";
 
 export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
   const title = "Fellowship Referenda";

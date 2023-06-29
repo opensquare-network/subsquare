@@ -9,12 +9,12 @@ import {
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
-import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ListLayout from "next-common/components/layout/ListLayout";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
+import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 
 export default withLoginUserRedux(
   ({ posts, title, fellowshipTracks, summary, period }) => {
