@@ -63,7 +63,7 @@ const settingsMap = {
 };
 
 /**
- * @returns {typeof kusama & typeof polkadot & typeof kintsugi}
+ * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof moonriver}
  */
 export default function getChainSettings(chain) {
   const settings = settingsMap[chain];
