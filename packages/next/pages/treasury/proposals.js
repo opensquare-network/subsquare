@@ -28,7 +28,7 @@ const Popup = dynamic(
   () => import("next-common/components/treasury/proposal/popup"),
   {
     ssr: false,
-  },
+  }
 );
 
 const CategoryExtraWrapper = styled.div`
@@ -49,10 +49,11 @@ export default withLoginUserRedux(
     const [proposals, setProposals] = useState(ssrProposals);
     useEffect(() => setProposals(ssrProposals), [ssrProposals]);
     const isMounted = useIsMounted();
-    const chainSettings = useChainSettings();
+    const { hasDotreasury, symbol, hideActionButtons, noTreasuryPrecompile } =
+      useChainSettings();
 
     const items = (proposals.items || []).map((item) =>
-      normalizeTreasuryProposalListItem(chain, item),
+      normalizeTreasuryProposalListItem(chain, item)
     );
 
     const refreshPageData = useCallback(async () => {
@@ -64,23 +65,23 @@ export default withLoginUserRedux(
 
     const onProposeFinalized = useWaitSyncBlock(
       "Proposal proposed",
-      refreshPageData,
+      refreshPageData
     );
 
     const categoryExtra = (
       <CategoryExtraWrapper>
-        <Create onClick={() => setShowPopup(true)}>
-          <PlusIcon />
-          <NewLabel>
-            New <span className="abbreviate">Proposal</span>
-          </NewLabel>
-        </Create>
+        {!hideActionButtons && !noTreasuryPrecompile && (
+          <Create onClick={() => setShowPopup(true)}>
+            <PlusIcon />
+            <NewLabel>
+              New <span className="abbreviate">Proposal</span>
+            </NewLabel>
+          </Create>
+        )}
 
-        {chainSettings.hasDotreasury && (
+        {hasDotreasury && (
           <StatisticLinkButton
-            href={`https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/proposals`}
+            href={`https://dotreasury.com/${lowerCase(symbol)}/proposals`}
           />
         )}
       </CategoryExtraWrapper>
@@ -114,7 +115,7 @@ export default withLoginUserRedux(
         )}
       </HomeLayout>
     );
-  },
+  }
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

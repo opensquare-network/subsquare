@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import toApiCouncil from "../toApiCouncil";
 import useIsMounted from "./useIsMounted";
 import useApi from "./useApi";
-import { useChain } from "../../context/chain";
+import useCouncilName from "next-common/hooks/useCouncilName";
 
-export default function usePrime({ blockHash, type }) {
-  const chain = useChain();
+export default function usePrime(blockHash) {
   const [prime, setPrime] = useState();
+  const councilName = useCouncilName();
   const isMounted = useIsMounted();
   const api = useApi();
 
@@ -15,7 +14,7 @@ export default function usePrime({ blockHash, type }) {
 
     (blockHash ? api.at(blockHash) : Promise.resolve(api))
       .then((blockApi) => {
-        return blockApi.query[toApiCouncil(chain, type)]?.prime?.();
+        return blockApi.query[councilName]?.prime?.();
       })
       .then((prime) => {
         if (!prime) return;
@@ -24,7 +23,7 @@ export default function usePrime({ blockHash, type }) {
           setPrime(prime.toJSON());
         }
       });
-  }, [api, blockHash, chain, type, isMounted]);
+  }, [api, blockHash, councilName, isMounted]);
 
   return prime;
 }

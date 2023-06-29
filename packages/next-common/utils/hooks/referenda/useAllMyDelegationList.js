@@ -10,7 +10,7 @@ export async function getAddressTrackDelegations(api, address) {
   const voting = await api.query.convictionVoting.votingFor.entries(address);
   return voting.reduce((result, [storageKey, votingOf]) => {
     if (votingOf.isDelegating) {
-      const { trackId } = extractAddressAndTrackId(storageKey, api);
+      const { trackId } = extractAddressAndTrackId(storageKey);
       result.push({ trackId, delegation: votingOf.asDelegating.toJSON() });
     }
 

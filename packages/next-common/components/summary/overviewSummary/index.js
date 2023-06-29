@@ -15,6 +15,7 @@ import {
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
 import Summary from "../summaryBase";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -155,7 +156,11 @@ function CouncilGroupContent({ summaryData }) {
   const showCouncil = useMenuHasCouncil();
   const showTc = useMenuHasTechComm();
 
-  const { activeMotionsCount, activeTechCommMotionsCount } = summaryData ?? {};
+  let { activeMotionsCount, activeTechCommMotionsCount } = summaryData ?? {};
+
+  if (isMoonChain()) {
+    activeMotionsCount = summaryData?.activeMoonCouncilMotionsCount;
+  }
 
   return (
     <ContentWrapper>

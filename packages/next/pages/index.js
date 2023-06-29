@@ -24,6 +24,9 @@ import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allian
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 import { isCollectivesChain } from "next-common/utils/chain";
 import businessCategory from "next-common/utils/consts/business/category";
+import isMoonChain from "next-common/utils/isMoonChain";
+import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
+import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -108,13 +111,38 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       ),
     },
     ...discussions,
-    {
-      category: businessCategory.councilMotions,
-      link: "/council/motions",
-      items: (overview?.council?.motions ?? []).map((item) =>
-        normalizeCouncilMotionListItem(chain, item)
-      ),
-    },
+  );
+
+  if (isMoonChain()) {
+    overviewData.push(
+      {
+        category: businessCategory.councilMotions,
+        link: "/council/motions",
+        items: (overview?.moonCouncil?.motions ?? []).map((item) =>
+          normalizeCouncilMotionListItem(chain, item)
+        ),
+      },
+      {
+        category: businessCategory.treasuryCouncilMotions,
+        link: "/treasury-council/motions",
+        items: (overview?.council?.motions ?? []).map((item) =>
+          normalizeTreasuryCouncilMotionListItem(chain, item)
+        ),
+      },
+    );
+  } else {
+    overviewData.push(
+      {
+        category: businessCategory.councilMotions,
+        link: "/council/motions",
+        items: (overview?.council?.motions ?? []).map((item) =>
+          normalizeCouncilMotionListItem(chain, item)
+        ),
+      },
+    );
+  }
+
+  overviewData.push(
     {
       category: businessCategory.tcProposals,
       link: "/techcomm/proposals",
@@ -123,6 +151,17 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       ),
     }
   );
+  if (isMoonChain()) {
+    overviewData.push(
+      {
+        category: businessCategory.openTechCommitteeProposals,
+        link: "/open-techcomm/proposals",
+        items: (overview?.openTechComm?.motions ?? []).map((item) =>
+          normalizeOpenTechCommProposalListItem(chain, item)
+        ),
+      }
+    );
+  }
 
   if (isKarura) {
     overviewData.push({

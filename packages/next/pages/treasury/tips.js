@@ -28,7 +28,7 @@ const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
   {
     ssr: false,
-  },
+  }
 );
 
 const CategoryExtraWrapper = styled.div`
@@ -50,7 +50,7 @@ export default withLoginUserRedux(
     const [tips, setTips] = useState(ssrTips);
     useEffect(() => setTips(ssrTips), [ssrTips]);
     const isMounted = useIsMounted();
-    const chainSettings = useChainSettings();
+    const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
 
     const refreshPageData = useCallback(async () => {
       const { result } = await nextApi.fetch("treasury/tips");
@@ -62,23 +62,23 @@ export default withLoginUserRedux(
     const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
 
     const items = (tips.items || []).map((item) =>
-      normalizeTipListItem(chain, item),
+      normalizeTipListItem(chain, item)
     );
 
     const categoryExtra = (
       <CategoryExtraWrapper>
-        <Create onClick={() => setShowPopup(true)}>
-          <PlusIcon />
-          <NewLabel>
-            New <span className="abbreviate">Tip</span>
-          </NewLabel>
-        </Create>
+        {!hideActionButtons && (
+          <Create onClick={() => setShowPopup(true)}>
+            <PlusIcon />
+            <NewLabel>
+              New <span className="abbreviate">Tip</span>
+            </NewLabel>
+          </Create>
+        )}
 
-        {chainSettings.hasDotreasury && (
+        {hasDotreasury && (
           <StatisticLinkButton
-            href={`https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/tips`}
+            href={`https://dotreasury.com/${lowerCase(symbol)}/tips`}
           />
         )}
       </CategoryExtraWrapper>
@@ -112,7 +112,7 @@ export default withLoginUserRedux(
         )}
       </HomeLayout>
     );
-  },
+  }
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

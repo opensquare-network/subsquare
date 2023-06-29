@@ -1,12 +1,9 @@
 import { useChain } from "../context/chain";
-import Chains from "../utils/consts/chains";
+import { usePageProperties } from "next-common/context/page";
+import toApiCouncil from "next-common/utils/toApiCouncil";
 
-export default function useCouncilName() {
+export default function useCouncilName(detailType) {
   const chain = useChain();
-
-  if ([Chains.karura, Chains.acala].includes(chain)) {
-    return "generalCouncil";
-  } else {
-    return "council";
-  }
+  const { type } = usePageProperties();
+  return toApiCouncil(chain, detailType || type);
 }

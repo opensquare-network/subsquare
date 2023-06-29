@@ -14,6 +14,8 @@ export function getReferendaMenu(tracks = []) {
     excludeToChains: getExcludeChains([
       Chains.development,
       Chains.kusama,
+      Chains.moonriver,
+      Chains.moonbeam,
       Chains.polkadot,
       Chains.bifrost,
     ]),

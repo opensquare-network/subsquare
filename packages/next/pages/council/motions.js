@@ -6,6 +6,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import Chains from "next-common/utils/consts/chains";
 
 export default withLoginUserRedux(
   ({ motions, chain, tracks, fellowshipTracks }) => {
@@ -39,8 +40,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
 
+  let listApi = "motions";
+  if ([Chains.moonbeam, Chains.moonriver].includes(chain)) {
+    listApi = "moon-council/motions";
+  }
+
   const [{ result: motions }] = await Promise.all([
-    nextApi.fetch("motions", {
+    nextApi.fetch(listApi, {
       page: page ?? 1,
       pageSize: pageSize ?? defaultPageSize,
     }),

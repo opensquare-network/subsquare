@@ -7,10 +7,10 @@ import {
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
-import Chains from "./consts/chains";
-import WalletTypes from "./consts/walletTypes";
 import { getLastApi } from "./hooks/useApi";
-import { sendTxDarwinia2 } from "./sendDarwiniaTx";
+import isEvmChain from "./isEvmChain";
+import isUseMetamask from "./isUseMetamask";
+import { sendEvmTx } from "./sendEvmTx";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -54,15 +54,11 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
-  if (
-    process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2 &&
-    localStorage.lastLoginExtension === WalletTypes.METAMASK
-  ) {
-    await sendTxDarwinia2({
-      tx,
+  if (isEvmChain() && isUseMetamask()) {
+    await sendEvmTx({
+      data: tx.inner.toU8a(),
       dispatch,
       setLoading,
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,

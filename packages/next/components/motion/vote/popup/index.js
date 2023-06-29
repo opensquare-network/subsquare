@@ -1,131 +1,55 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-
-import useApi from "next-common/utils/hooks/useApi";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import CurrentVote from "./currentVote";
-import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { emptyFunction } from "next-common/utils";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
-import { useChain } from "next-common/context/chain";
-import Signer from "next-common/components/popup/fields/signerField";
-import { WarningMessage } from "next-common/components/popup/styled";
-import styled from "styled-components";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
-import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import PopupContent from "./popupContent";
 
-const SignerWrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 8px;
-  }
-`;
-
-function PopupContent({
-  extensionAccounts,
-  votes,
-  isLoadingVotes,
+export async function submitPolkadotExtrinsic({
+  api,
+  chain,
+  type,
   motionHash,
   motionIndex,
+  approve,
+  dispatch,
+  setLoading,
+  onFinalized,
+  onInBlock,
+  onSubmitted,
   onClose,
-  onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  type,
+  signerAccount,
+  isMounted,
 }) {
-  const chain = useChain();
-  const dispatch = useDispatch();
-  const api = useApi();
-  const signerAccount = useSignerAccount(extensionAccounts);
-  const [balance, loadingBalance] = useAddressBalance(
-    api,
-    signerAccount?.realAddress
-  );
-  const [signerBalance, loadingSignerBalance] = useAddressBalance(
-    api,
-    signerAccount?.address
-  );
-
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
-
-  const canVote = useIsCollectiveMember(toApiCouncil(chain, type));
-  const currentVote = votes.find(
-    (item) => item[0] === signerAccount?.realAddress
-  );
-
   const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
-  const isMounted = useIsMounted();
+  if (!voteMethod) {
+    return dispatch(newErrorToast("Chain network is not connected yet"));
+  }
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  let tx = voteMethod(motionHash, motionIndex, approve);
+  if (signerAccount?.proxyAddress) {
+    tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+  }
 
-  const doVote = async (approve) => {
-    if (loadingState !== VoteLoadingEnum.None) return;
-
-    if (!voteMethod) {
-      return showErrorToast("Chain network is not connected yet");
-    }
-
-    if (!motionHash || motionIndex === undefined) {
-      return;
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
-
-    let tx = voteMethod(motionHash, motionIndex, approve);
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    const signerAddress = signerAccount.address;
-
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: (loading) => {
-        if (loading) {
-          setLoadingState(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-        } else {
-          setLoadingState(VoteLoadingEnum.None);
-        }
-      },
-      onFinalized,
-      onInBlock,
-      onSubmitted,
-      onClose,
-      signerAddress,
-      isMounted,
-    });
-  };
-
-  return (
-    <>
-      <SignerWrapper>
-        <Signer
-          signerAccount={signerAccount}
-          balance={balance}
-          isBalanceLoading={loadingBalance}
-          signerBalance={signerBalance}
-          isSignerBalanceLoading={loadingSignerBalance}
-        />
-        {!canVote && (
-          <WarningMessage danger={!canVote}>
-            Only council members can vote.
-          </WarningMessage>
-        )}
-      </SignerWrapper>
-      <CurrentVote currentVote={currentVote} isLoadingVotes={isLoadingVotes} />
-      <VoteButton doVote={doVote} loadingState={loadingState} />
-    </>
-  );
+  await sendTx({
+    tx,
+    dispatch,
+    setLoading,
+    onFinalized,
+    onInBlock,
+    onSubmitted,
+    onClose,
+    signerAddress: signerAccount?.address,
+    isMounted,
+  });
 }
 
 export default function Popup(props) {
-  return <PopupWithAddress title="Vote" Component={PopupContent} {...props} />;
+  return (
+    <PopupWithAddress
+      title="Vote"
+      Component={PopupContent}
+      submitExtrinsic={submitPolkadotExtrinsic}
+      {...props}
+    />
+  );
 }

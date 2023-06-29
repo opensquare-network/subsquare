@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import Chains from "../consts/chains";
 import { BalanceDecimals } from "../constants";
 import { detailPageCategory } from "../consts/business/category";
+import isMoonChain from "../isMoonChain";
 
 export function toApiType(type) {
   if (type === detailPageCategory.TREASURY_BOUNTY) {
@@ -16,10 +17,19 @@ export function toApiType(type) {
   if (type === detailPageCategory.TECH_COMM_MOTION) {
     return "tech-comm/motions";
   }
+  if (type === detailPageCategory.OPEN_TECH_COMM_PROPOSAL) {
+    return "open-techcomm/motions";
+  }
   if (type === detailPageCategory.PA_POST) {
     return "polkassembly-discussions";
   }
   if (type === detailPageCategory.COUNCIL_MOTION) {
+    if (isMoonChain()) {
+      return "moon-council/motions";
+    }
+    return "motions";
+  }
+  if (type === detailPageCategory.TREASURY_COUNCIL_MOTION) {
     return "motions";
   }
   if (type === detailPageCategory.GOV2_REFERENDUM) {

@@ -29,11 +29,15 @@ export default function useUniversalComments({ detail, comments }) {
     }
   }, [hasAnchor]);
 
-  const isDotsama = [Chains.kusama, Chains.polkadot].includes(chain);
+  const isPolkassemblyEnabled = [
+    Chains.kusama,
+    Chains.polkadot,
+    Chains.moonriver,
+  ].includes(chain);
 
   let tabs = null;
 
-  if (detail?.polkassemblyId !== undefined && isDotsama) {
+  if (detail?.polkassemblyId !== undefined && isPolkassemblyEnabled) {
     // Allow to switch to polkassembly comments if has corresponding pa post
     if (parseInt(width) <= 768) {
       tabs = (
@@ -46,7 +50,7 @@ export default function useUniversalComments({ detail, comments }) {
           />
         </div>
       );
-    } else if (isDotsama) {
+    } else if (isPolkassemblyEnabled) {
       tabs = (
         <div style={{ marginTop: "-6px" }}>
           <SourceTabs

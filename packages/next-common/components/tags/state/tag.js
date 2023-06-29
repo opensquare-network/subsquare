@@ -22,19 +22,31 @@ const categoryTagMap = {
 
   [businessCategory.treasuryBounties]: BountyTag,
   [detailPageCategory.TREASURY_BOUNTY]: BountyTag,
+
   [businessCategory.treasuryChildBounties]: ChildBountyTag,
   [detailPageCategory.TREASURY_CHILD_BOUNTY]: ChildBountyTag,
 
   [businessCategory.councilMotions]: CollectiveTag,
   [detailPageCategory.COUNCIL_MOTION]: CollectiveTag,
+
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
+
   [businessCategory.advisoryMotions]: CollectiveTag,
   [detailPageCategory.ADVISORY_MOTION]: CollectiveTag,
+
   [businessCategory.allianceMotions]: CollectiveTag,
-  [businessCategory.financialMotions]: CollectiveTag,
   [detailPageCategory.ALLIANCE_MOTION]: CollectiveTag,
+
+  [businessCategory.financialMotions]: CollectiveTag,
   [detailPageCategory.FINANCIAL_MOTION]: CollectiveTag,
+
+  [businessCategory.treasuryCouncilMotions]: CollectiveTag,
+  [detailPageCategory.TREASURY_COUNCIL_MOTION]: CollectiveTag,
+
+  [businessCategory.openTechCommitteeProposals]: CollectiveTag,
+  [detailPageCategory.OPEN_TECH_COMM_PROPOSAL]: CollectiveTag,
+
   [businessCategory.collective]: CollectiveTag,
 
   [businessCategory.democracyProposals]: DemocracyProposalTag,

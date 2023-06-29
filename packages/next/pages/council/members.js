@@ -1,50 +1,25 @@
-import MembersList from "components/membersList/councilMembersList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import useApi from "next-common/utils/hooks/useApi";
-import useCall from "next-common/utils/hooks/useCall";
-import { useEffect, useState } from "react";
-import usePrime from "next-common/utils/hooks/usePrime";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import HomeLayout from "next-common/components/layout/HomeLayout";
-import { useChainSettings } from "next-common/context/chain";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import Members from "components/council/members";
+import MembersNoElections from "components/council/membersNoElections";
+import isMoonChain from "next-common/utils/isMoonChain";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const api = useApi();
-  const { hasElections } = useChainSettings();
-  const [electionsInfo, loadingElectionsInfo] = useCall(api?.derive?.elections?.info, []);
-  const [allVotes, loadingAllVotes] = useCall(api?.derive?.council?.votes, []);
-  const prime = usePrime({ type: detailPageCategory.COUNCIL_MOTION });
-
-  useEffect(() => {
-    setLoading(loadingElectionsInfo || loadingAllVotes);
-
-    if (!loadingElectionsInfo && !loadingAllVotes) {
-      const votesMap = {};
-      (allVotes || []).forEach((item) => {
-        const votes = item[1].votes.toJSON();
-        for (const addr of votes) {
-          votesMap[addr] = (votesMap[addr] || 0) + 1;
-        }
-      });
-
-      const data = (electionsInfo?.members || []).map((item) => {
-        const address = item[0]?.toJSON();
-        return {
-          address,
-          backing: item[1]?.toJSON(),
-          votes: votesMap[address],
-        };
-      });
-      setData(data);
-    }
-  }, [electionsInfo, loadingElectionsInfo, allVotes, loadingAllVotes]);
-
   const category = "Council Members";
   const seoInfo = { title: category, desc: category };
+
+  let members = <Members category={category} />;
+  if (isMoonChain()) {
+    members = (
+      <MembersNoElections
+        category={category}
+        type={detailPageCategory.COUNCIL_MOTION}
+      />
+    );
+  }
 
   return (
     <HomeLayout
@@ -52,13 +27,7 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
       tracks={tracks}
       fellowshipTracks={fellowshipTracks}
     >
-      <MembersList
-        category={category}
-        items={data}
-        prime={prime}
-        loading={loading}
-        hasElections={hasElections}
-      />
+      {members}
     </HomeLayout>
   );
 });

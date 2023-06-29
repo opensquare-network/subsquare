@@ -5,15 +5,15 @@ import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 
-export default function UndelegatePopup({
+export default function PopupCommon({
   trackId,
   onClose,
   isLoading,
   setIsLoading = emptyFunction,
   onInBlock = emptyFunction,
+  submitExtrinsic = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -33,19 +33,13 @@ export default function UndelegatePopup({
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount?.address;
-
-      let tx = api.tx.convictionVoting.undelegate(trackId);
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
+      await submitExtrinsic({
+        api,
+        trackId: parseInt(trackId),
         dispatch,
         setLoading: setIsLoading,
         onInBlock,
-        signerAddress,
+        signerAccount,
         isMounted,
         onClose,
       });
@@ -58,6 +52,7 @@ export default function UndelegatePopup({
       showErrorToast,
       setIsLoading,
       onClose,
+      submitExtrinsic,
     ]
   );
 

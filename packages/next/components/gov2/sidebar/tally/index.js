@@ -64,7 +64,7 @@ export default function Gov2Tally() {
       <Support supportPerbill={supportPerbill} value={tally?.support} />
       <Issuance issuance={issuance} />
 
-      { showDelegationPercentage && <VotesInfo /> }
+      <VotesInfo />
       <MyVote />
     </SecondaryCardDetail>
   );

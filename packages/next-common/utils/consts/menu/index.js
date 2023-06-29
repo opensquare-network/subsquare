@@ -8,8 +8,24 @@ import advisoryCommittee from "./advisoryCouncil";
 import alliance from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
+import isMoonChain from "next-common/utils/isMoonChain";
+import treasuryCouncil from "./treasuryCouncil";
+import openTechCommittee from "./openTechCommittee";
 
 export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
+  if (isMoonChain()) {
+    return [
+      commonMenus,
+      getReferendaMenu(tracks),
+      democracy,
+      treasury,
+      council,
+      treasuryCouncil,
+      techComm,
+      openTechCommittee,
+    ];
+  }
+
   return [
     commonMenus,
     getReferendaMenu(tracks),
