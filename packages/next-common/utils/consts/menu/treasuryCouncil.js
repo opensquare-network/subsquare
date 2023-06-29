@@ -1,5 +1,8 @@
+import { MenuTreasury } from "@osn/icons/subsquare";
+
 const treasuryCouncil = {
   name: "TREASURY COUNCIL",
+  icon: <MenuTreasury />,
   items: [
     {
       value: "motions",
