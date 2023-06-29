@@ -56,13 +56,13 @@ export default function MultiTrack({
     });
   }, [tracks, myVotes]);
 
-  const status = isLoading && <Loading />;
+  const status = (isLoading || !myVotingTuple) && <Loading />;
 
   return (
     <div>
       {title && <PopupLabel text={title} status={status} />}
       <MultiSelect
-        disabled={isLoading}
+        disabled={isLoading || !myVotingTuple}
         itemName="track"
         options={options}
         selectedValues={selectedTracks}

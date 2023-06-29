@@ -12,8 +12,7 @@ const Wrapper = styled.div`
   padding: 10px 16px;
 
   border-radius: 4px;
-  border: 1px solid ${(p) => p.theme.grey300Border};
-  background: ${(p) => p.theme.neutral};
+  border: 1px solid var(--gray400);
 `;
 
 const ValueContent = styled.div`
@@ -28,7 +27,7 @@ const IconWrapper = styled.div`
   display: inline-flex;
   cursor: pointer;
   svg path {
-    stroke: ${(p) => p.theme.textPrimary};
+    stroke: var(--textPrimary);
   }
   ${(p) =>
     p.showDropDown &&
@@ -38,7 +37,7 @@ const IconWrapper = styled.div`
 `;
 
 const Placeholder = styled.span`
-  color: ${(p) => p.theme.textPlaceholder};
+  color: var(--textDisabled);
 `;
 
 export default function SelectedValueBox({
@@ -57,9 +56,15 @@ export default function SelectedValueBox({
 
   let selectedTracks;
   if (showOptions.length === 0) {
-    selectedTracks = <Placeholder>Please select {pluralize(itemName)}</Placeholder>;
+    selectedTracks = (
+      <Placeholder>Please select {pluralize(itemName)}</Placeholder>
+    );
   } else if (showOptions.length > 2) {
-    selectedTracks = <span>Selected {showOptions.length} {pluralize(itemName)}</span>;
+    selectedTracks = (
+      <span>
+        Selected {showOptions.length} {pluralize(itemName)}
+      </span>
+    );
   } else {
     selectedTracks = showOptions.map((o) => (
       <SelectedValueItem
@@ -71,12 +76,14 @@ export default function SelectedValueBox({
   }
 
   return (
-    <Wrapper onClick={() => {
-      if (disabled) {
-        return;
-      }
-      setShowDropDown(!showDropDown);
-    }}>
+    <Wrapper
+      onClick={() => {
+        if (disabled) {
+          return;
+        }
+        setShowDropDown(!showDropDown);
+      }}
+    >
       <ValueContent>{selectedTracks}</ValueContent>
       <IconWrapper showDropDown={showDropDown}>
         <DownSVG />
