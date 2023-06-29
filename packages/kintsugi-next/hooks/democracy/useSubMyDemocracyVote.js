@@ -35,7 +35,7 @@ export default function useSubMyDemocracyVote(referendumIndex, address) {
         unsub();
       }
     };
-  }, [api, referendumIndex, address]);
+  }, [api, referendumIndex, address, isMounted]);
 
   return {
     vote,
