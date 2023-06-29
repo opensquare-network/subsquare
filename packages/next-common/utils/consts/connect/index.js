@@ -3,8 +3,8 @@ import SubWalletLogo from "../../../assets/icons/wallet/subWallet.svg";
 import TalismanLogo from "../../../assets/icons/wallet/talisman.svg";
 import MetaMaskLogo from "../../../assets/icons/wallet/metamask.svg";
 import PolkagateLogo from "../../../assets/icons/wallet/polkagate.svg";
-import Chains from "../chains";
 import WalletTypes from "../walletTypes";
+import isEvmChain from "next-common/utils/isEvmChain";
 
 const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
@@ -47,7 +47,7 @@ const polkagate = {
 };
 
 export function getWallets() {
-  if (process.env.NEXT_PUBLIC_CHAIN === Chains.darwinia2) {
+  if (isEvmChain()) {
     return [talisman, metamask];
   }
 

@@ -23,6 +23,8 @@ import rococo from "./consts/settings/rococo";
 import westendCollectives from "./consts/settings/westendCollectives";
 import collectives from "./consts/settings/collectives";
 import darwinia2 from "./consts/settings/darwinia2";
+// import moonbeam from "./consts/settings/moonbeam";
+import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 
 /**
@@ -60,6 +62,8 @@ export const nodes = [
   kintsugi,
   litentry,
   litmus,
+  // moonbeam,
+  moonriver,
   phala,
   // polkadex,
   turing,

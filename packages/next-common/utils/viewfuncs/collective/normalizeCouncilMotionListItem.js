@@ -1,24 +1,8 @@
-import isNil from "lodash.isnil";
 import { getMotionId } from "../../motion";
 import { getPostLastActivityAt } from "../postUpdatedTime";
 import { getTitle } from "../../post";
 import { councilMotionBaseUrl } from "../../postBaseUrl";
-
-function getMotionState(item = {}) {
-  if (!item.state) {
-    return "Unknown";
-  }
-
-  const voting = "Voting";
-  if (item.state !== voting) {
-    return item.state;
-  }
-
-  const { tally: { yesVotes } = {}, voting: { ayes = [] } = {} } =
-    item.onchainData || {};
-  const ayeCount = isNil(yesVotes) ? ayes.length : yesVotes;
-  return isNil(yesVotes) ? voting : `${voting} (${ayeCount})`;
-}
+import { getMotionState } from "./common";
 
 export default function normalizeCouncilMotionListItem(chain, item) {
   return {

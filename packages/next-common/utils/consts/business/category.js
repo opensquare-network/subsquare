@@ -4,6 +4,7 @@ const businessCategory = {
   treasuryBounties: "Treasury Bounties",
   treasuryChildBounties: "Treasury Child Bounties",
   councilMotions: "Council Motions",
+  treasuryCouncilMotions: "Treasury Council Motions",
   tcProposals: "Tech. Comm. Proposals",
   democracyProposals: "Democracy Public Proposals",
   democracyExternals: "Democracy External Proposals",
@@ -17,6 +18,7 @@ const businessCategory = {
   advisoryMotions: "Advisory Motions",
   allianceMotions: "Alliance Motions",
   allianceAnnouncements: "Alliance Announcements",
+  openTechCommitteeProposals: "Open Tech. Comm. Proposals",
 };
 
 export const detailPageCategory = {
@@ -37,6 +39,8 @@ export const detailPageCategory = {
   ADVISORY_MOTION: "advisory-committee/motion",
   ALLIANCE_MOTION: "alliance/motion",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcement",
+  TREASURY_COUNCIL_MOTION: "treasury-council/motion",
+  OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposal",
 };
 
 export default businessCategory;

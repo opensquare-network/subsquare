@@ -27,7 +27,8 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
   const isMounted = useIsMounted();
-  const chainSettings = useChainSettings();
+  const { hasDotreasury, symbol, hideActionButtons, noTreasuryPrecompile } =
+    useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
@@ -54,28 +55,29 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       title={category}
       summary={<TreasurySummary />}
       summaryFooter={
-        <div className="flex justify-end">
-          <ThemeButton
-            small
-            icon={
-              <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
-            }
-            onClick={() => setShowPopup(true)}
-          >
-            New Proposal
-          </ThemeButton>
-        </div>
+        !hideActionButtons &&
+        !noTreasuryPrecompile && (
+          <div className="flex justify-end">
+            <ThemeButton
+              small
+              icon={
+                <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
+              }
+              onClick={() => setShowPopup(true)}
+            >
+              New Proposal
+            </ThemeButton>
+          </div>
+        )
       }
       tabs={[
         {
           label: "Proposals",
           url: "/treasury/proposals",
         },
-        chainSettings.hasDotreasury && {
+        hasDotreasury && {
           label: "Statistics",
-          url: `https://dotreasury.com/${lowerCase(
-            chainSettings.symbol,
-          )}/proposals`,
+          url: `https://dotreasury.com/${lowerCase(symbol)}/proposals`,
         },
       ].filter(Boolean)}
     >

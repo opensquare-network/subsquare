@@ -33,7 +33,11 @@ const commonMenus = {
   ],
 };
 
-if ([Chains.polkadot, Chains.kusama].includes(process.env.NEXT_PUBLIC_CHAIN)) {
+if (
+  [Chains.polkadot, Chains.kusama, Chains.moonriver].includes(
+    process.env.NEXT_PUBLIC_CHAIN,
+  )
+) {
   commonMenus.items.push(polkassemblyMenu);
 }
 

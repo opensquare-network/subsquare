@@ -5,8 +5,15 @@ import { emptyFunction } from "next-common/utils";
 import { useDetailType } from "next-common/context/page";
 import Voters from "./voters";
 import Action from "./action";
+import { useChainSettings } from "next-common/context/chain";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import isMoonChain from "next-common/utils/isMoonChain";
 
-const Popup = dynamic(() => import("./popup"), {
+const VotePopup = dynamic(() => import("./popup"), {
+  ssr: false,
+});
+
+const MoonVotePopup = dynamic(() => import("./popup/moonPopup"), {
   ssr: false,
 });
 
@@ -37,12 +44,23 @@ export default function Vote({
 }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
+  const { hideActionButtons } = useChainSettings();
+
+  let Popup = VotePopup;
+  if (isMoonChain()) {
+    Popup = MoonVotePopup;
+  }
+
+  // No openTechComm precompile at the moment
+  const noAction = type === detailPageCategory.OPEN_TECH_COMM_PROPOSAL;
 
   return (
     <>
       <Wrapper>
         <Voters votes={votes} isLoadingVote={isLoadingVote} prime={prime} />
-        <Action refreshData={onFinalized} setShowPopup={setShowPopup} />
+        {!hideActionButtons && !noAction && (
+          <Action refreshData={onFinalized} setShowPopup={setShowPopup} />
+        )}
       </Wrapper>
       {showPopup && (
         <Popup

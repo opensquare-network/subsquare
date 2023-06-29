@@ -28,7 +28,7 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
   const [tips, setTips] = useState(ssrTips);
   useEffect(() => setTips(ssrTips), [ssrTips]);
   const isMounted = useIsMounted();
-  const chainSettings = useChainSettings();
+  const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
 
   const refreshPageData = useCallback(async () => {
     const { result } = await nextApi.fetch("treasury/tips");
@@ -52,26 +52,28 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
       title={category}
       summary={<TreasurySummary />}
       summaryFooter={
-        <div className="flex justify-end">
-          <ThemeButton
-            small
-            icon={
-              <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
-            }
-            onClick={() => setShowPopup(true)}
-          >
-            New Tip
-          </ThemeButton>
-        </div>
+        !hideActionButtons && (
+          <div className="flex justify-end">
+            <ThemeButton
+              small
+              icon={
+                <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
+              }
+              onClick={() => setShowPopup(true)}
+            >
+              New Tip
+            </ThemeButton>
+          </div>
+        )
       }
       tabs={[
         {
           label: "Tips",
           url: "/treasury/tips",
         },
-        chainSettings.hasDotreasury && {
+        hasDotreasury && {
           label: "Statistics",
-          url: `https://dotreasury.com/${lowerCase(chainSettings.symbol)}/tips`,
+          url: `https://dotreasury.com/${lowerCase(symbol)}/tips`,
         },
       ].filter(Boolean)}
     >

@@ -17,6 +17,8 @@ export function getFellowshipMenu(fellowshipTracks = []) {
       Chains.development,
       Chains.kusama,
       Chains.collectives,
+      Chains.moonriver,
+      Chains.moonbeam,
       Chains.bifrost,
     ]),
     activeCount: totalActiveCount,

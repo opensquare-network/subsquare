@@ -3,6 +3,8 @@ import BarChart from "../barChart";
 import startCase from "lodash.startcase";
 
 export default function AddressCountChart({ tracks }) {
+  const height = (tracks.length + 1) * 30;
+
   const categoryPercentage = 0.6;
   const barPercentage = 1;
 
@@ -40,6 +42,7 @@ export default function AddressCountChart({ tracks }) {
 
   return (
     <BarChart
+      height={height}
       data={data}
       options={{
         plugins: {

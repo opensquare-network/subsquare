@@ -11,7 +11,7 @@ export default function PageProvider({ pageProperties = {}, children }) {
   );
 }
 
-function usePageProperties() {
+export function usePageProperties() {
   return useContext(PageContext);
 }
 

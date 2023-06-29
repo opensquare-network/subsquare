@@ -155,6 +155,8 @@ export default function Post({ data, href, type }) {
     businessCategory.tcProposals,
     businessCategory.financialMotions,
     businessCategory.advisoryMotions,
+    businessCategory.treasuryCouncilMotions,
+    businessCategory.openTechCommitteeProposals,
   ].includes(type);
 
   const isGov2Referendum = [
@@ -183,6 +185,8 @@ export default function Post({ data, href, type }) {
       businessCategory.tcProposals,
       businessCategory.advisoryMotions,
       businessCategory.allianceMotions,
+      businessCategory.treasuryCouncilMotions,
+      businessCategory.openTechCommitteeProposals,
     ].includes(type)
   ) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;

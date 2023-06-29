@@ -3205,6 +3205,7 @@ __metadata:
     lodash.isnil: ^4.0.0
     lodash.noop: ^3.0.1
     lodash.partition: ^4.6.0
+    lodash.pick: ^4.4.0
     lodash.range: ^3.2.0
     lodash.sumby: ^4.6.0
     lodash.uniqby: ^4.7.0
@@ -7435,6 +7436,13 @@ __metadata:
   version: 4.6.0
   resolution: "lodash.partition@npm:4.6.0"
   checksum: 57c01e3b790c4c4352bffd8be281bd98ed09f6076985d764163478b5a27db3183454cc8c9c25231210d3c69ae2bea37b78911a794bc82c296865eba8b6bd314f
+  languageName: node
+  linkType: hard
+
+"lodash.pick@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "lodash.pick@npm:4.4.0"
+  checksum: 2c36cab7da6b999a20bd3373b40e31a3ef81fa264f34a6979c852c5bc8ac039379686b27380f0cb8e3781610844fafec6949c6fbbebc059c98f8fa8570e3675f
   languageName: node
   linkType: hard
 

@@ -13,6 +13,7 @@ import RetractTipPopup from "./retractTipPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { useOnchainData } from "next-common/context/post";
+import { useChainSettings } from "next-common/context/chain";
 
 const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
@@ -60,6 +61,7 @@ export default function Tipper({
   const tipIsFinal = useTipIsFinished();
   const userIsTipper = useIsCouncilMember();
   const scanHeight = useSelector(nodesHeightSelector);
+  const { hideActionButtons } = useChainSettings();
 
   const closeFromHeight = chainData.meta?.closes;
   const tipCanClose = !!closeFromHeight && scanHeight > closeFromHeight;
@@ -118,7 +120,7 @@ export default function Tipper({
     <>
       <Wrapper>
         <TipperList tipHash={tipHash} />
-        {action}
+        {!hideActionButtons && action}
       </Wrapper>
       {showEndorsePopup && (
         <EndorsePopup

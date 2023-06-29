@@ -35,10 +35,16 @@ import useIsDemocracyPassed from "next-common/context/post/democracy/referendum/
 import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import { useChainSettings } from "next-common/context/chain";
 import Calls from "./voteCalls";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
+
+const MoonVotePopup = dynamic(() => import("components/referenda/popup/moonPopup"), {
+  ssr: false,
+});
+
 
 const FlattenedVotesPopup = dynamic(
   () => import("next-common/components/democracy/flattenedVotesPopup"),
@@ -115,7 +121,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   const isPassing = useIsDemocracyPassing(tally);
   const threshold = useDemocracyThreshold();
   const isPassed = useIsDemocracyPassed();
-  const { useVoteCall } = useChainSettings();
+  const { useVoteCall, hideActionButtons } = useChainSettings();
 
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const electorate = useSelector(electorateSelector);
@@ -125,6 +131,11 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
     isLoadingReferendumStatusSelector,
   );
   const isVoteFinished = useIsDemocracyVoteFinished();
+
+  let Popup = VotePopup;
+  if (isMoonChain()) {
+    Popup = MoonVotePopup;
+  }
 
   const updateVoteProgress = useCallback(() => {
     dispatch(fetchReferendumStatus(api, referendumIndex));
@@ -184,7 +195,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
         <MyVote />
       </SecondaryCardDetail>
 
-      {!isVoteFinished && (
+      {!isVoteFinished && !hideActionButtons && (
         <SecondaryButton
           onClick={() => {
             setShowVote(true);
@@ -194,7 +205,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
         </SecondaryButton>
       )}
       {showVote && (
-        <VotePopup
+        <Popup
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onInBlock={updateVoteProgress}

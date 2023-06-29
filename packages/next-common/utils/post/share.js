@@ -20,10 +20,20 @@ export const getShare2SNStext = (post, type) => {
     category = `Tip #${post.index}:`;
   } else if (detailPageCategory.COUNCIL_MOTION === type) {
     category = `Council motion #${post.motionIndex}:`;
+  } else if (detailPageCategory.TREASURY_COUNCIL_MOTION === type) {
+    category = `Treasury council motion #${post.motionIndex}:`;
   } else if (detailPageCategory.TECH_COMM_MOTION === type) {
     category = `Tech. Comm. motion #${post.motionIndex}:`;
+  } else if (detailPageCategory.OPEN_TECH_COMM_PROPOSAL === type) {
+    category = `Open Tech. Comm. motion #${post.motionIndex}:`;
   } else if (detailPageCategory.FINANCIAL_MOTION === type) {
     category = `Financial council motion #${post.motionIndex}:`;
+  } else if (detailPageCategory.ADVISORY_MOTION === type) {
+    category = `Advisory motion #${post.motionIndex}:`;
+  } else if (detailPageCategory.ALLIANCE_ANNOUNCEMENT === type) {
+    category = `Alliance announcement #${post.cid}:`;
+  } else if (detailPageCategory.ALLIANCE_MOTION === type) {
+    category = `Alliance motion #${post.motionIndex}:`;
   }
 
   return `[${chain}] ${category}${post.title ?? ""}`;

@@ -9,6 +9,7 @@ import { createReferendumTimelineData } from "utils/timeline/referendum";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 function getTimelineData(args, method) {
   switch (method) {
@@ -42,7 +43,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
       time: formatTime(indexer?.blockTime),
       status: getTimelineStatus(
         detailPageCategory.TREASURY_PROPOSAL,
-        "Approved",
+        "Approved"
       ),
     },
   ];
@@ -50,6 +51,10 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const [timelineData, setTimelineData] = useState([]);
+  const motionLink = isMoonChain()
+    ? "/treasury-council/motion"
+    : "/council/motion";
+
   useEffect(() => {
     const data = flatten(
       (treasuryProposal?.timeline || []).map((item) => {
@@ -67,16 +72,16 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
           time: formatTime(indexer?.blockTime),
           status: getTimelineStatus(
             detailPageCategory.TREASURY_PROPOSAL,
-            method,
+            method
           ),
           data: getTimelineData(item.args, item.method ?? item.name),
         };
-      }),
+      })
     );
 
     const motions =
       treasuryProposal?.motions?.map((motion) => {
-        return createMotionTimelineData(motion, true, "/council/motion");
+        return createMotionTimelineData(motion, true, motionLink);
       }) ?? [];
 
     const referendums =
@@ -84,12 +89,12 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
         return createReferendumTimelineData(
           referendum,
           true,
-          "/democracy/referendum",
+          "/democracy/referendum"
         );
       }) ?? [];
 
     setTimelineData(sortTimeline([...data, ...motions, ...referendums]));
-  }, [treasuryProposal]);
+  }, [treasuryProposal, motionLink]);
 
   return <Timeline data={timelineData} indent={false} />;
 }

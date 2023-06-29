@@ -32,6 +32,8 @@ const treasury = {
         Chains.centrifuge,
         Chains.altair,
         Chains.darwinia2,
+        Chains.moonriver,
+        Chains.moonbeam,
       ],
     },
     {
@@ -58,6 +60,8 @@ const treasury = {
         Chains.zeitgeist,
         Chains.centrifuge,
         Chains.altair,
+        Chains.moonriver,
+        Chains.moonbeam,
       ],
     },
   ],
