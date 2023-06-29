@@ -2,8 +2,7 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import DemocracySummary from "next-common/components/summary/v2/democracySummary";
-import ListLayout from "next-common/components/layout/ListLayout";
+import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
@@ -20,16 +19,11 @@ export default withLoginUserRedux(({ posts, chain, summary }) => {
   };
 
   return (
-    <ListLayout
+    <DemocracyReferendaLayout
       seoInfo={seoInfo}
       title={seoInfo.title}
-      description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
-      summary={<DemocracySummary summary={summary} />}
+      summaryData={summary}
       summaryFooter={<KintsugiDemocracyStaking />}
-      tabs={[
-        { label: "Referenda", url: "/democracy/referenda" },
-        { label: "Statistics", url: "/democracy/statistics" },
-      ]}
     >
       <PostList
         category={category}
@@ -42,7 +36,7 @@ export default withLoginUserRedux(({ posts, chain, summary }) => {
           total: posts.total,
         }}
       />
-    </ListLayout>
+    </DemocracyReferendaLayout>
   );
 });
 
