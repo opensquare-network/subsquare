@@ -5,35 +5,23 @@ import DemocracyStatistics from "next-common/components/statistics/democracy";
 import AllVotesStatistics from "next-common/components/statistics/track/allVoteStatistics";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
 import BigNumber from "bignumber.js";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
-import DetailLayout from "next-common/components/layout/DetailLayout";
 import { useChainSettings } from "next-common/context/chain";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 
 export default withLoginUserRedux(
-  ({ delegatee, delegators, summary, turnout }) => {
+  ({ delegatee, delegators, summary, turnout, referendumsSummary }) => {
     const { hasDemocracy } = useChainSettings();
 
+    const title = "Democracy Statistics";
+    const seoInfo = { title, desc: title };
+
     return (
-      <DetailLayout
-        seoInfo={{
-          title: "Democracy Statistics",
-          desc: "Democracy Statistics",
-        }}
+      <DemocracyReferendaLayout
+        seoInfo={seoInfo}
+        title={title}
+        summaryData={referendumsSummary}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb
-            items={[
-              {
-                path: "/democracy/referenda",
-                content: "Democracy",
-              },
-              {
-                content: "Statistics",
-              },
-            ]}
-          />
-        </BreadcrumbWrapper>
         <AllVotesStatistics turnout={turnout} />
         <TurnoutStatistics turnout={turnout} />
         {hasDemocracy !== false && (
@@ -43,7 +31,7 @@ export default withLoginUserRedux(
             summary={summary}
           />
         )}
-      </DetailLayout>
+      </DemocracyReferendaLayout>
     );
   },
 );
@@ -54,6 +42,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
     { result: delegators },
     { result: summary },
     { result: turnout },
+
+    { result: referendumsSummary },
   ] = await Promise.all([
     nextApi.fetch("democracy/delegatee", {
       sort: JSON.stringify(["delegatedVotes", "desc"]),
@@ -65,6 +55,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
     }),
     nextApi.fetch("democracy/summary"),
     nextApi.fetch("democracy/referenda/turnout"),
+
+    nextApi.fetch("summary"),
   ]);
 
   const normailizedTurnout = turnout?.map((item) => ({
@@ -75,12 +67,22 @@ export const getServerSideProps = withLoginUser(async (context) => {
       .toString(),
   }));
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,
       summary: summary ?? {},
       turnout: normailizedTurnout ?? [],
+
+      referendumsSummary: referendumsSummary ?? {},
+
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });

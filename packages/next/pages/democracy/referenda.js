@@ -5,8 +5,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import ListLayout from "next-common/components/layout/ListLayout";
-import DemocracySummary from "next-common/components/summary/v2/democracySummary";
+import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 
 export default withLoginUserRedux(({ posts, chain, summary }) => {
   const items = (posts.items || []).map((item) =>
@@ -20,15 +19,10 @@ export default withLoginUserRedux(({ posts, chain, summary }) => {
   };
 
   return (
-    <ListLayout
+    <DemocracyReferendaLayout
       title={title}
-      description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
       seoInfo={seoInfo}
-      summary={<DemocracySummary summary={summary} />}
-      tabs={[
-        { label: "Referenda", url: "/democracy/referenda" },
-        { label: "Statistics", url: "/democracy/statistics" },
-      ]}
+      summaryData={summary}
     >
       <PostList
         category={category}
@@ -41,7 +35,7 @@ export default withLoginUserRedux(({ posts, chain, summary }) => {
           total: posts.total,
         }}
       />
-    </ListLayout>
+    </DemocracyReferendaLayout>
   );
 });
 
