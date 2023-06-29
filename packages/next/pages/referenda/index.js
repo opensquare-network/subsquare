@@ -7,15 +7,13 @@ import {
   gov2ReferendumsSummaryApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import Gov2Summary from "components/summary/gov2Summary";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import { snakeCase, upperFirst, camelCase } from "lodash";
-import ListLayout from "next-common/components/layout/ListLayout";
+import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
-import Gov2SummaryFooter from "components/summary/gov2SummaryFooter";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, summary, status }) => {
@@ -41,17 +39,7 @@ export default withLoginUserRedux(
     const seoInfo = { title, desc: title };
 
     return (
-      <ListLayout
-        seoInfo={seoInfo}
-        title={title}
-        description="All active and history referenda of various tracks."
-        summary={<Gov2Summary summary={summary} />}
-        summaryFooter={<Gov2SummaryFooter />}
-        tabs={[
-          { label: "Referenda", url: "/referenda" },
-          { label: "Statistics", url: "/referenda/statistics" },
-        ]}
-      >
+      <ReferendaLayout seoInfo={seoInfo} title={title} summaryData={summary}>
         <PostList
           title="List"
           titleCount={posts.total}
@@ -69,7 +57,7 @@ export default withLoginUserRedux(
             total: posts.total,
           }}
         />
-      </ListLayout>
+      </ReferendaLayout>
     );
   },
 );

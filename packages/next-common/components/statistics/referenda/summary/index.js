@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Header, Wrapper } from "../../styled";
 import Divider from "next-common/components/styled/layout/divider";
-import SummaryHeaderContent from "./header";
 import { DoughnutChart } from "./doughnetChart";
 import TrackList from "./trackList";
 
@@ -18,8 +17,6 @@ export default function ReferendaSummary({ summary }) {
   return (
     <Wrapper>
       <Header>All Referenda</Header>
-      <Divider />
-      <SummaryHeaderContent summary={summary} />
       <Divider />
       <Header>Referendum Count</Header>
       <Content>
