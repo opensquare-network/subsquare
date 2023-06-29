@@ -45,6 +45,7 @@ async function submitMoonMetamaskExtrinsic({
 }
 
 export async function submitExtrinsic({
+  api,
   getVoteTx,
   dispatch,
   setLoading,
@@ -67,6 +68,7 @@ export async function submitExtrinsic({
     });
   } else {
     await submitPolkadotExtrinsic({
+      api,
       getVoteTx,
       dispatch,
       setLoading,

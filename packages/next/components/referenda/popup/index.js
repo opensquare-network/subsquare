@@ -6,6 +6,7 @@ import PopupContent from "./popupContent";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 
 export async function submitPolkadotExtrinsic({
+  api,
   getVoteTx,
   dispatch,
   setLoading,

@@ -113,6 +113,7 @@ export default function PopupContent({
     }
 
     await submitExtrinsic({
+      api,
       getVoteTx,
       dispatch,
       setLoading: setIsLoading,
