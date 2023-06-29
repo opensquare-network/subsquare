@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { flex, gap_x, items_center, justify_between, text_primary } from "next-common/styles/tailwindcss";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+} from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 
 export const VotesGroup = styled.div`
@@ -17,7 +22,7 @@ export const VotesInfoLine = styled.div`
 
 export const VotesGroupLabel = styled.div`
   ${p_12_medium};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 
 export const VotesGroupItems = styled.div`
