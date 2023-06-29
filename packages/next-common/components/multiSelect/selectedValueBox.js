@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   padding: 10px 16px;
 
   border-radius: 4px;
-  border: 1px solid var(--gray400);
+  border: 1px solid var(--neutral400);
 `;
 
 const ValueContent = styled.div`
