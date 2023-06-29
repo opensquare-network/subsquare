@@ -12,10 +12,10 @@ const Wrapper = styled.div`
 
   ${p_12_medium}
 
-  color: ${p => p.theme.textPrimary};
+  color: var(--textPrimary);
 
   border-radius: 4px;
-  background: ${p => p.theme.grey100Bg};
+  background: var(--gray100);
 `;
 
 const IconWrapper = styled.div`
