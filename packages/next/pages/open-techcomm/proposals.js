@@ -11,7 +11,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 export default withLoginUserRedux(({ tracks, fellowshipTracks, motions }) => {
   const chain = useChain();
   const items = (motions.items || []).map((item) =>
-    normalizeOpenTechCommProposalListItem(chain, item)
+    normalizeOpenTechCommProposalListItem(chain, item),
   );
   const category = businessCategory.openTechCommitteeProposals;
   const seoInfo = { title: category, desc: category };

@@ -9,12 +9,12 @@ export default function PercentageTooltip(
     directAmount,
     delegatedPercentage,
     delegatedAmount,
-  }
+  },
 ) {
   const { symbol, decimals } = useChainSettings();
   const fromUnit = useCallback(
     (value) => new BigNumber(value).div(Math.pow(10, decimals)).toFixed(2),
-    [decimals]
+    [decimals],
   );
 
   return (

@@ -11,7 +11,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 export default withLoginUserRedux(
   ({ motions, chain, tracks, fellowshipTracks }) => {
     const items = (motions.items || []).map((item) =>
-      normalizeTreasuryCouncilMotionListItem(chain, item)
+      normalizeTreasuryCouncilMotionListItem(chain, item),
     );
     let category = businessCategory.councilMotions;
     if (isMoonChain()) {
@@ -36,7 +36,7 @@ export default withLoginUserRedux(
         />
       </HomeLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {

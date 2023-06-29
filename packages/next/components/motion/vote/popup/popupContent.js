@@ -43,18 +43,18 @@ export default function PopupContent({
   const signerAccount = useSignerAccount(extensionAccounts);
   const [balance, loadingBalance] = useAddressBalance(
     api,
-    signerAccount?.realAddress
+    signerAccount?.realAddress,
   );
   const [signerBalance, loadingSignerBalance] = useAddressBalance(
     api,
-    signerAccount?.address
+    signerAccount?.address,
   );
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
   const canVote = useIsCollectiveMember(toApiCouncil(chain, type));
   const currentVote = votes.find(
-    (item) => item[0] === signerAccount?.realAddress
+    (item) => item[0] === signerAccount?.realAddress,
   );
 
   const isMounted = useIsMounted();
@@ -71,8 +71,6 @@ export default function PopupContent({
     if (!signerAccount) {
       return showErrorToast("Please select an account");
     }
-
-    const signerAddress = signerAccount.address;
 
     const setLoading = (loading) => {
       if (loading) {

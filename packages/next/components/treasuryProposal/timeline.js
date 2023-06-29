@@ -43,7 +43,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
       time: formatTime(indexer?.blockTime),
       status: getTimelineStatus(
         detailPageCategory.TREASURY_PROPOSAL,
-        "Approved"
+        "Approved",
       ),
     },
   ];
@@ -72,11 +72,11 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
           time: formatTime(indexer?.blockTime),
           status: getTimelineStatus(
             detailPageCategory.TREASURY_PROPOSAL,
-            method
+            method,
           ),
           data: getTimelineData(item.args, item.method ?? item.name),
         };
-      })
+      }),
     );
 
     const motions =
@@ -89,7 +89,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
         return createReferendumTimelineData(
           referendum,
           true,
-          "/democracy/referendum"
+          "/democracy/referendum",
         );
       }) ?? [];
 
