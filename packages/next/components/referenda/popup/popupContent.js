@@ -18,6 +18,7 @@ import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { Aye, Nay, Split } from "./ayeNaySplitTab";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 export default function PopupContent({
   extensionAccounts,
@@ -53,22 +54,20 @@ export default function PopupContent({
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
-  const { StandardVoteComponent, getStandardVoteTx } =
-    useStandardVote({
-      module: "democracy",
-      referendumIndex,
-      isAye: tabIndex === Aye,
-      addressVoteDelegations: addressVote?.delegations,
-      isLoading,
-      votingBalance,
-    });
-  const { SplitVoteComponent, getSplitVoteTx } =
-    useSplitVote({
-      module: "democracy",
-      referendumIndex,
-      isLoading,
-      votingBalance,
-    });
+  const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
+    module: "democracy",
+    referendumIndex,
+    isAye: tabIndex === Aye,
+    addressVoteDelegations: addressVote?.delegations,
+    isLoading,
+    votingBalance,
+  });
+  const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
+    module: "democracy",
+    referendumIndex,
+    isLoading,
+    votingBalance,
+  });
 
   let voteComponent = null;
   let getVoteTx = null;
@@ -79,6 +78,8 @@ export default function PopupContent({
     voteComponent = SplitVoteComponent;
     getVoteTx = getSplitVoteTx;
   }
+
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async () => {
     if (isLoading || referendumIndex == null || !node) {
@@ -98,6 +99,7 @@ export default function PopupContent({
     }
 
     await submitExtrinsic({
+      api,
       getVoteTx,
       dispatch,
       setLoading: setIsLoading,
