@@ -51,6 +51,7 @@ const karura = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
+  useVoteCall: true,
 };
 
 export default karura;
