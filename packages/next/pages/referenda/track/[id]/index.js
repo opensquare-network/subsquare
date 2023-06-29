@@ -9,16 +9,14 @@ import {
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
-import Gov2TrackSummary from "components/summary/gov2TrackSummary";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import { camelCase, upperFirst, snakeCase } from "lodash";
-import ListLayout from "next-common/components/layout/ListLayout";
+import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
-import Gov2TrackSummaryFooter from "components/summary/gov2TrackSummaryFooter";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, summary, period, status }) => {
@@ -44,25 +42,11 @@ export default withLoginUserRedux(
     const seoInfo = { title, desc: title };
 
     return (
-      <ListLayout
+      <ReferendaTrackLayout
         seoInfo={seoInfo}
         title={`[${period.id}] Origin: ${period.origin}`}
-        description={period.description}
-        tabs={[
-          { label: "Referenda", url: `/referenda/track/${period.id}` },
-          {
-            label: "Statistics",
-            url: `/referenda/track/${period.id}/statistics`,
-          },
-        ]}
-        summary={
-          <Gov2TrackSummary
-            summary={summary}
-            period={period}
-            titleExtra={`[${period.id}]`}
-          />
-        }
-        summaryFooter={<Gov2TrackSummaryFooter period={period} />}
+        periodData={period}
+        summaryData={summary}
       >
         <PostList
           title="List"
@@ -81,7 +65,7 @@ export default withLoginUserRedux(
             total: posts.total,
           }}
         />
-      </ListLayout>
+      </ReferendaTrackLayout>
     );
   },
 );

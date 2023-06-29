@@ -2,7 +2,6 @@ import React from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import PageTabs from "next-common/components/pageTabs";
 import VoteTrendChart from "./voteTrendChart";
-import TrackReferendumSummary from "./summary";
 import AddressTrendChart from "./addressTrendChart";
 import DelegatedCheckBox from "./delegatedCheckBox";
 import Flex from "next-common/components/styled/flex";
@@ -37,15 +36,9 @@ export default function AllVotesStatistics({ turnout }) {
     },
   ];
 
-  const summary = {
-    referendumCount: turnout?.length || 0,
-  };
-
   return (
     <Wrapper>
       <Header>All Vote</Header>
-      <Divider />
-      <TrackReferendumSummary summary={summary} />
       <Divider />
       <PageTabs tabs={voteCharts} />
     </Wrapper>
