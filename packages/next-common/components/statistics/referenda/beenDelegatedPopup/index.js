@@ -5,11 +5,13 @@ import DelegationTabList from "./delegationTabList";
 import styled from "styled-components";
 import { smcss } from "next-common/utils/responsive";
 import { w_full, overflow_y_scroll } from "next-common/styles/tailwindcss";
+import { pretty_scroll_bar } from "next-common/styles/componentCss";
 
 const StyledPopup = styled(Popup)`
   width: 720px;
   max-height: 100vh;
   ${overflow_y_scroll};
+  ${pretty_scroll_bar}
 
   ${smcss(w_full)};
 `;
