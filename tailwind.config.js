@@ -34,5 +34,7 @@ module.exports = {
     // TODO: v2, disable all tw colors
     // colors: {},
   },
-  plugins: [],
+  plugins: [
+    require("./packages/next-common/styles/tailwind-plugins/scrollbar"),
+  ],
 };
