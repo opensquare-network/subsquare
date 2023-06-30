@@ -107,4 +107,8 @@ export const CACHE_KEY = {
   navSubmenuVisible: "nav-submenu-visible",
 };
 
-export const chain = process.env.NEXT_PUBLIC_CHAIN;
+export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
+/**
+ * @deprecated use `CHAIN`
+ */
+export const chain = CHAIN;

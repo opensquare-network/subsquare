@@ -12,6 +12,7 @@ const council = {
     Chains["westend-collectives"],
     Chains.collectives,
   ],
+  archivedToChains: [Chains.kusama],
   icon: <MenuCouncil />,
   pathname: "/council",
   items: [
