@@ -3,7 +3,17 @@ const plugin = require("tailwindcss/plugin");
 module.exports = plugin(({ addUtilities }) => {
   addUtilities(
     {
-      ".scrollbar-hide": {
+      ".scrollbar-pretty": {
+        "&::-webkit-scrollbar": {
+          width: "4px",
+          height: "4px",
+        },
+        "&::webkit-scrollbar-thumb": {
+          background: "var(--neutral500)",
+          "border-radius": "4px",
+        },
+      },
+      ".scrollbar-hidden": {
         /* IE and Edge */
         "-ms-overflow-style": "none",
 

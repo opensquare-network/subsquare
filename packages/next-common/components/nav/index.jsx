@@ -69,7 +69,7 @@ function NavDesktop() {
         "border-r border-neutral300",
         "max-w-[300px] max-sm:hidden h-full overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
-        "scrollbar-hide",
+        "scrollbar-hidden",
       )}
     >
       <div>
