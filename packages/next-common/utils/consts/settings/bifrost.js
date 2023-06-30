@@ -71,7 +71,7 @@ const bifrost = {
   hasReferenda: true,
   hasFellowship: true,
   showReferendaReferendumDelegationPercentage: true,
-  description: "The Bifrost Network is an EVM-compatible blockchain open to everyone.",
+  description: "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
 };
 
 export default bifrost;

@@ -62,7 +62,7 @@ const centrifuge = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
-  description: "The on-chain ecosystem for structured credit. Institutional investors earn yield backed by tokenized RWAs, while SMEs get access to a cheaper cost of capital.",
+  description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
 };
 
 export default centrifuge;
