@@ -12,6 +12,7 @@ const techComm = {
     Chains["westend-collectives"],
     Chains.collectives,
   ],
+  archivedToChains: [Chains.kusama],
   icon: <MenuTechComm />,
   pathname: "/techcomm",
   items: [

@@ -10,6 +10,7 @@ import userReducer from "./userSlice";
 import childBountyReducer from "./childBountySlice";
 import fellowship from "./fellowship";
 import referenda from "./referenda";
+import navReducer from "./navSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -20,6 +21,7 @@ export default combineReducers({
   cmdk: cmdkReducer,
   user: userReducer,
   childBounty: childBountyReducer,
+  nav: navReducer,
   ...fellowship,
   ...referenda,
 });
