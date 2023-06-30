@@ -173,7 +173,7 @@ export default function NodeSwitch({ small }) {
   }
 
   return (
-    <Wrapper ref={ref}>
+    <Wrapper className="max-sm:relative" ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
           {getSignalImg(currentNodeSetting?.delay)}
