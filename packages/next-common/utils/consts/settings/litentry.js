@@ -71,6 +71,7 @@ const litentry = {
   hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
+  description: "The Litentry identity Hub allows you to aggregate your personal data from blockchains and platforms to manage granular access to dApps. Exist in a digital world without KYC. Get Maximum Privacy & Authorization Control. Share Interoperable Verifiable Credentials. Use Multi-chain Data from Web3 + Web2 Platforms",
 };
 
 export default litentry;

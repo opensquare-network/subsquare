@@ -50,6 +50,7 @@ const collectives = {
   hasStatescan: true,
   hasFellowship: true,
   showAchainableLabels: true,
+  description: "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
 };
 
 export default collectives;

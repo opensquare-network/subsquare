@@ -43,6 +43,7 @@ const bifrostPolkadot = {
   subscanDomain: "bifrost",
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  description: "The Bifrost Network is an EVM-compatible blockchain open to everyone.",
 };
 
 export default bifrostPolkadot;

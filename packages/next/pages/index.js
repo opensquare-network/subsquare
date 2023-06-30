@@ -231,8 +231,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   return (
     <ListLayout
       title={chainSettings.name}
-      // FIXME: v2, chain description
-      description={"{chainSettings.description}"}
+      description={chainSettings.description}
       headContent={<ChainSocialLinks />}
       summary={<SummaryComponent summaryData={overview?.summary} />}
     >

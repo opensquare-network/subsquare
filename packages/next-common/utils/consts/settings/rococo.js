@@ -46,6 +46,7 @@ const rococo = {
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  description: "Polkadot’s Parachain Testnet",
 };
 
 export default rococo;

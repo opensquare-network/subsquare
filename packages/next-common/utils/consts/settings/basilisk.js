@@ -63,6 +63,7 @@ const basilisk = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   useVoteCall: true,
+  description: "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
 };
 
 export default basilisk;
