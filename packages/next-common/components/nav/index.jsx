@@ -67,7 +67,7 @@ function NavDesktop() {
       className={clsx(
         navCollapsed ? "w-[72px]" : "w-[300px]",
         "border-r border-neutral300",
-        "max-w-[300px] max-sm:hidden h-full overflow-y-scroll",
+        "max-w-[300px] max-sm:hidden h-full overflow-y-auto no-scroll-bar",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
       )}
     >
@@ -98,7 +98,7 @@ w-[72px] flex items-center justify-center
 `;
 const NavMobileFloatContainer = tw.div`
 fixed bottom-0 top-16 left-0 right-0
-p-4 overflow-y-scroll
+p-4 overflow-y-auto pretty-scroll-bar
 `;
 function NavMobile() {
   const [menuVisible, menuToggle] = useToggle(false);

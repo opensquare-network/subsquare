@@ -148,7 +148,7 @@ function MenuGroup({
           {collapsed && !sm && (
             <HoverCard.Content side="right" align="start">
               <div className="pl-6">
-                <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-scroll">
+                <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-auto pretty-scroll-bar">
                   <SubMenuItems items={menu.items} />
                 </div>
               </div>

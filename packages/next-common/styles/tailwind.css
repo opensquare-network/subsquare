@@ -5,3 +5,22 @@
 table {
   border-collapse: separate;
 }
+
+.pretty-scroll-bar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.pretty-scroll-bar::-webkit-scrollbar-thumb {
+  background: var(--neutral500);
+  border-radius: 4px;
+}
+
+.no-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
