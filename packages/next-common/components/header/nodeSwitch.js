@@ -26,9 +26,7 @@ const SignalDefaultIcon = styled(SignalDefault)`
   }
 `;
 
-const Wrapper = styled.div`
-  position: relative;
-`;
+const Wrapper = styled.div``;
 
 const SmallSelect = styled.div`
   width: 38px;
@@ -175,7 +173,7 @@ export default function NodeSwitch({ small }) {
   }
 
   return (
-    <Wrapper ref={ref}>
+    <Wrapper className="max-sm:relative" ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
           {getSignalImg(currentNodeSetting?.delay)}

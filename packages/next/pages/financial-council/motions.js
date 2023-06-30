@@ -16,7 +16,11 @@ export default withLoginUserRedux(({ motions }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout seoInfo={seoInfo} title={category}>
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="Financial council motions"
+    >
       <PostList
         category={category}
         title="List"

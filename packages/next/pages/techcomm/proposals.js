@@ -18,7 +18,11 @@ export default withLoginUserRedux(({ proposals, chain }) => {
   };
 
   return (
-    <ListLayout seoInfo={seoInfo} title={category} description="description">
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="Technical committee proposals"
+    >
       <PostList
         category={category}
         title="List"
