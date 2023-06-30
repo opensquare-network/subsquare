@@ -62,6 +62,7 @@ const centrifuge = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
+  description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
 };
 
 export default centrifuge;

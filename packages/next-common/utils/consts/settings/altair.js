@@ -45,6 +45,7 @@ const altair = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
+  description: "The home for financing assets on Kusama. Powered by Centrifuge.",
 };
 
 export default altair;

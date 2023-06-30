@@ -82,6 +82,7 @@ const acala = {
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
   useVoteCall: true,
+  description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
 };
 
 export default acala;

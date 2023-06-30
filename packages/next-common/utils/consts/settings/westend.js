@@ -11,6 +11,7 @@ const westend = {
   decimals: 12,
   ss58Format: 42,
   hasSubscan: true,
+  description: "Westend is the primary test network of Polkadot.",
 };
 
 export default westend;

@@ -69,6 +69,7 @@ const turing = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  description: "The Web 3.0 Hub for Automated DeFi and Payments",
 };
 
 export default turing;

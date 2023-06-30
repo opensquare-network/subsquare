@@ -72,6 +72,7 @@ const kintsugi = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
   hasSubscan: true,
+  description: "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
 };
 
 export default kintsugi;

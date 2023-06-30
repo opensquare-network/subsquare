@@ -102,6 +102,7 @@ const polkadot = {
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
   showAchainableLabels: true,
+  description: "Polkadot empowers blockchain networks to work together under the protection of shared security.",
 };
 
 export default polkadot;
