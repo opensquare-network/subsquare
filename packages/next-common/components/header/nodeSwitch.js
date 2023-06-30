@@ -26,9 +26,7 @@ const SignalDefaultIcon = styled(SignalDefault)`
   }
 `;
 
-const Wrapper = styled.div`
-  position: relative;
-`;
+const Wrapper = styled.div``;
 
 const SmallSelect = styled.div`
   width: 38px;

@@ -13,7 +13,7 @@ export default function Header() {
         <SearchInput />
       </div>
 
-      <div className="flex gap-x-2">
+      <div className="flex gap-x-2 relative">
         <HeaderAccount />
         <NetworkSwitch activeNode={chainSettings} />
         <NodeSwitch small />
