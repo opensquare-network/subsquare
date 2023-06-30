@@ -26,7 +26,7 @@ const Choice = styled.div`
     p.selected
       ? css`
           color: var(--purple500);
-          border: 1px solid var(--purple500)66;
+          border: 1px solid var(--purple500);
         `
       : css`
           color: var(--textSecondary);
