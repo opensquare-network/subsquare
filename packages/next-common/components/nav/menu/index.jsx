@@ -1,7 +1,6 @@
 import NavCommonMenu from "./common";
 import NavMenuDivider from "../divider";
 import NavFeaturedMenu from "./featured";
-import { useToggle } from "usehooks-ts";
 import NavArchivedMenu from "./archived";
 import {
   ArrowCircleLeft,
@@ -10,31 +9,26 @@ import {
 } from "@osn/icons/subsquare";
 import NavMenuItem from "./item";
 import { getArchivedMenu } from "next-common/utils/consts/menu";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  navMenuShowMainMenuSelector,
+  setMenuShowMainMenu,
+} from "next-common/store/reducers/navSlice";
 
 export default function NavMenu({ collapsed }) {
-  const [showMainMenu, toggleShowMainMenu] = useToggle(true);
+  const showMainMenu = useSelector(navMenuShowMainMenuSelector);
   const showArchivedMenu = !showMainMenu;
 
   return (
     <div>
-      {showMainMenu && (
-        <MainMenu
-          collapsed={collapsed}
-          toggleShowMainMenu={toggleShowMainMenu}
-        />
-      )}
+      {showMainMenu && <MainMenu collapsed={collapsed} />}
 
-      {showArchivedMenu && (
-        <ArchivedMenu
-          collapsed={collapsed}
-          toggleShowMainMenu={toggleShowMainMenu}
-        />
-      )}
+      {showArchivedMenu && <ArchivedMenu collapsed={collapsed} />}
     </div>
   );
 }
 
-function MainMenu({ collapsed, toggleShowMainMenu }) {
+function MainMenu({ collapsed }) {
   const archivedMenu = getArchivedMenu({});
 
   return (
@@ -47,17 +41,16 @@ function MainMenu({ collapsed, toggleShowMainMenu }) {
       {!!archivedMenu?.length && (
         <>
           <NavMenuDivider />
-          <ArchivedMenuButton
-            collapsed={collapsed}
-            toggleShowMainMenu={toggleShowMainMenu}
-          />
+          <ArchivedMenuButton collapsed={collapsed} />
         </>
       )}
     </>
   );
 }
 
-function ArchivedMenu({ collapsed, toggleShowMainMenu }) {
+function ArchivedMenu({ collapsed }) {
+  const dispatch = useDispatch();
+
   return (
     <>
       <ul>
@@ -65,7 +58,9 @@ function ArchivedMenu({ collapsed, toggleShowMainMenu }) {
           <NavMenuItem
             icon={<ArrowCircleLeft />}
             label="Back"
-            onClick={toggleShowMainMenu}
+            onClick={() => {
+              dispatch(setMenuShowMainMenu(true));
+            }}
             collapsed={collapsed}
           />
         </li>
@@ -78,7 +73,9 @@ function ArchivedMenu({ collapsed, toggleShowMainMenu }) {
   );
 }
 
-function ArchivedMenuButton({ collapsed, toggleShowMainMenu }) {
+function ArchivedMenuButton({ collapsed }) {
+  const dispatch = useDispatch();
+
   return (
     <ul>
       <li>
@@ -86,7 +83,9 @@ function ArchivedMenuButton({ collapsed, toggleShowMainMenu }) {
           collapsed={collapsed}
           icon={<MenuArchived />}
           label="Archived"
-          onClick={toggleShowMainMenu}
+          onClick={() => {
+            dispatch(setMenuShowMainMenu(false));
+          }}
           extra={
             <ArrowRight className="[&_path]:stroke-navigationTextTertiary" />
           }
