@@ -140,7 +140,11 @@ export default function CMDKPalette() {
                 return {
                   id: i.name,
                   children: i.name,
-                  icon: () => i.icon,
+                  icon: () => (
+                    <span className="[&_svg_path]:fill-textSecondary">
+                      {i.icon}
+                    </span>
+                  ),
                   href: i.pathname,
                 };
               }),
