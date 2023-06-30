@@ -18,6 +18,7 @@ const democracy = {
       value: "referenda",
       name: "Referenda",
       pathname: "/democracy/referenda",
+      extraMatchNavMenuActivePathnames: ["/democracy/statistics"],
     },
     {
       value: "democracyProposals",

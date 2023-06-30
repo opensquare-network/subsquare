@@ -28,6 +28,7 @@ export function getReferendaMenu(tracks = []) {
         name: "All",
         pathname: "/referenda",
         activeCount: totalActiveCount,
+        extraMatchNavMenuActivePathnames: ["/referenda/statistics"],
       },
     ],
   };
@@ -39,6 +40,9 @@ export function getReferendaMenu(tracks = []) {
       pathname: `/referenda/track/${track.id}`,
       activeCount: track.activeCount,
       icon: `[${track.id}]`,
+      extraMatchNavMenuActivePathnames: [
+        `/referenda/track/${track.id}/statistics`,
+      ],
     };
   };
 

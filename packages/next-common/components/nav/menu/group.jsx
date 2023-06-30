@@ -100,29 +100,33 @@ export default function NavMenuGroup({
 
 function SubMenuItems({ className = "", items = [] }) {
   const router = useRouter();
-  let routePath = router.asPath;
-  if (routePath.includes("?")) {
-    routePath = routePath.slice(0, routePath.indexOf("?"));
-  }
+  const routePath = router.asPath.split("?")[0];
 
   return (
     <ul className={className}>
-      {items.map((item, idx) => (
-        <li key={idx}>
-          {item?.type === "divider" ? (
-            <NavMenuDivider />
-          ) : (
-            <NavMenuItem
-              label={item.name}
-              link={item.pathname}
-              icon={item.icon}
-              activeCount={item.activeCount}
-              active={routePath === item.pathname}
-              className={routePath === item.pathname && "bg-transparent"}
-            />
-          )}
-        </li>
-      ))}
+      {items.map((item, idx) => {
+        const active = [
+          ...(item?.extraMatchNavMenuActivePathnames ?? []),
+          item.pathname,
+        ].includes(routePath);
+
+        return (
+          <li key={idx}>
+            {item?.type === "divider" ? (
+              <NavMenuDivider />
+            ) : (
+              <NavMenuItem
+                label={item.name}
+                link={item.pathname}
+                icon={item.icon}
+                activeCount={item.activeCount}
+                active={active}
+                className={active && "bg-transparent"}
+              />
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }
