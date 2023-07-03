@@ -16,14 +16,7 @@ import AnnouncementNavigate from "./announcementNavigate";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
 import { smcss } from "next-common/utils/responsive";
 import { hidden } from "next-common/styles/tailwindcss";
-import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
-
-const MotionEndHeader = styled(NoticeWrapper)`
-  position: static;
-  height: 38px;
-
-  gap: 8px;
-`;
+import { CountDownWrapper } from "next-common/components/detail/common/styled";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -65,9 +58,9 @@ export default function MotionHead({ motion, type }) {
   const showMotionEnd = useShowMotionEnd(motion?.onchainData);
 
   const motionEndHeader = showMotionEnd ? (
-    <MotionEndHeader>
+    <CountDownWrapper>
       <MotionEnd type="full" motion={motion.onchainData} />
-    </MotionEndHeader>
+    </CountDownWrapper>
   ) : null;
 
   const noCommentsCount =

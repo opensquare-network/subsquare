@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
 export const LinkButton = styled.div`
   display: inline-flex;
@@ -17,4 +18,11 @@ export const LinkButton = styled.div`
   }
 
   transform: translateY(5px);
+`;
+
+export const CountDownWrapper = styled(NoticeWrapper)`
+  position: static;
+  height: 38px;
+
+  gap: 8px;
 `;
