@@ -80,7 +80,7 @@ export default function ListLayout({
         className={clsx(
           "flex-1",
           "bg-[length:100%_640px] bg-gradient-to-b from-[#f6f7fa] to-neutral100 bg-no-repeat",
-          "dark:from-[#1d1e2c] dark:to-[#212433]",
+          "dark:from-[#1e2130] dark:to-[#212433]",
         )}
       >
         <div className={clsx("px-6 py-6 mx-auto max-w-7xl", "max-sm:px-0")}>
