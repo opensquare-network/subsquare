@@ -48,5 +48,10 @@ module.exports = plugin(({ addComponents }) => {
       "font-weight": 500,
       "line-height": "16px",
     },
+    ".text12Normal": {
+      "font-size": "12px",
+      "font-weight": 400,
+      "line-height": "16px",
+    },
   });
 });
