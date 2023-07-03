@@ -41,13 +41,14 @@ export default function TreasuryAwardCountDown() {
     return;
   }
 
-  const tooltipContent = `Next award in ${ estimatedBlocksTime }, #${ bigNumber2Locale(new BigNumber(blockHeight + period - gone).toString()) }`;
+  const shortText = `Next award in ${ estimatedBlocksTime }`;
+  const longText = `${ shortText }, #${ bigNumber2Locale(new BigNumber(blockHeight + period - gone).toString()) }`;
   return <CountDownWrapper>
     <CountDown
       numerator={gone}
       denominator={period}
-      tooltipContent={tooltipContent}
+      tooltipContent={longText}
     />
-    <span>{tooltipContent}</span>
+    <span>{shortText}</span>
   </CountDownWrapper>;
 }
