@@ -11,6 +11,7 @@ const ListWrapper = styled.div`
 `;
 
 const TabTitle = styled(TitleContainer)`
+  padding: 0;
   ${(p) =>
     p.active
       ? css`
