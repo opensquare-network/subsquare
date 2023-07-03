@@ -1,5 +1,6 @@
 import isNil from "lodash.isnil";
 import { extractAddressAndTrackId } from "./utils";
+import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 
 export async function getGov2TrackDelegation(api, trackId, address) {
   const voting = await api.query.convictionVoting.votingFor(address, trackId);
@@ -33,8 +34,9 @@ export async function getGov2BeenDelegatedListByAddress(api, address, trackId) {
     if (voting.target !== address) {
       continue;
     }
+    const votes = calcVotes(voting.balance, votingFor.asDelegating.conviction.toNumber());
 
-    beenDelegated.push({ delegator, trackId: _trackId, ...voting });
+    beenDelegated.push({ delegator, trackId: _trackId, ...voting, votes });
   }
 
   return beenDelegated;
