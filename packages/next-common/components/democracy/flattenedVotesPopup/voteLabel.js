@@ -1,4 +1,5 @@
 import isNil from "lodash.isnil";
+import { Conviction } from "next-common/utils/referendumCommon";
 
 const sizing = ["0.1x", "1x", "2x", "3x", "4x", "5x", "6x"];
 
@@ -7,6 +8,9 @@ export default function VoteLabel({ conviction, isDelegating, isSplit, isSplitAb
     return null;
   }
 
+  if (conviction in Conviction) {
+    conviction = Conviction[conviction];
+  }
   let size = sizing[conviction];
   if (tab === "Abstain") {
     return size;
