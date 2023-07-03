@@ -25,7 +25,11 @@ export default withLoginUserRedux(() => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout seoInfo={seoInfo} title={category} description="Description">
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="Technical committee members"
+    >
       <MembersList prime={prime} items={data} loading={loadingMembers} />
     </ListLayout>
   );

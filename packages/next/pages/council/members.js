@@ -22,7 +22,11 @@ export default withLoginUserRedux(() => {
   }
 
   return (
-    <ListLayout seoInfo={seoInfo} title={category}>
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="Council members"
+    >
       {members}
     </ListLayout>
   );
