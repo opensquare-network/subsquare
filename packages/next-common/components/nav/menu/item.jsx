@@ -2,6 +2,7 @@ import clsx from "clsx";
 import noop from "lodash.noop";
 import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 export default function NavMenuItem({
   active,
@@ -13,6 +14,7 @@ export default function NavMenuItem({
   link,
   onClick = noop,
   className = "",
+  hoverTooltipLabel = true,
 }) {
   const isExternal = isExternalLink(link);
 
@@ -22,7 +24,7 @@ export default function NavMenuItem({
       className={clsx(
         "group/menu-item",
         "text-navigationText",
-        "h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
+        "w-full h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
         "hover:text-theme500",
         active && "text-theme500 bg-navigationActive",
         className,
@@ -65,9 +67,26 @@ export default function NavMenuItem({
 
   if (link) {
     content = (
-      <Link href={link || ""} target={isExternal ? "_blank" : "_self"}>
+      <Link
+        href={link || ""}
+        target={isExternal ? "_blank" : "_self"}
+        className="w-full"
+      >
         {content}
       </Link>
+    );
+  }
+
+  if (collapsed && hoverTooltipLabel) {
+    content = (
+      <Tooltip
+        side="right"
+        content={label}
+        sideOffset={20}
+        className="flex w-full"
+      >
+        {content}
+      </Tooltip>
     );
   }
 

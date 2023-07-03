@@ -68,6 +68,7 @@ export default function NavMenuGroup({
                   />
                 </span>
               }
+              hoverTooltipLabel={false}
             />
           </HoverCard.Trigger>
 

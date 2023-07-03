@@ -24,6 +24,7 @@ export default function NavCommonMenu({ collapsed }) {
             link={item.pathname}
             active={item.pathname === router.asPath}
             collapsed={collapsed}
+            hoverTooltip
           />
         </li>
       ))}
@@ -45,6 +46,7 @@ export default function NavCommonMenu({ collapsed }) {
               {isMacOS ? "⌘" : "Ctrl +"} K
             </span>
           }
+          hoverTooltip
         />
       </li>
     </ul>

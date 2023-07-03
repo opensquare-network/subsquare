@@ -5,6 +5,7 @@ import * as RadixTooltip from "@radix-ui/react-tooltip";
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
 import { p_12_normal } from "next-common/styles/componentCss";
 import { cursor_pointer } from "next-common/styles/tailwindcss";
+import clsx from "clsx";
 
 const QuestionIcon = styled(Icon)`
   path {
@@ -30,20 +31,28 @@ const TooltipArrow = styled(RadixTooltip.Arrow)`
   fill: rgba(0, 0, 0, 0.65);
 `;
 
-const ChildrenWrapper = styled.div`
-  display: inline-block;
-`;
-
-export default function Tooltip({ content, children, label, className }) {
+/**
+ * @param {object} props
+ * @param {RadixTooltip.TooltipContentProps['side']} props.side
+ * @param {RadixTooltip.TooltipContentProps['sideOffset']} props.sideOffset
+ */
+export default function Tooltip({
+  content,
+  children,
+  label,
+  className,
+  side,
+  sideOffset = 2,
+}) {
   const tooltipTrigger = children ? (
-    <ChildrenWrapper className={className}>{children}</ChildrenWrapper>
+    <div className={clsx("inline-block", className)}>{children}</div>
   ) : (
     <LabelWrapper>{label ? label : <QuestionIcon />}</LabelWrapper>
   );
 
   const tooltipContent = content && (
     <RadixTooltip.Portal>
-      <TooltipContent sideOffset={2}>
+      <TooltipContent sideOffset={sideOffset} side={side}>
         {content}
         <TooltipArrow />
       </TooltipContent>
