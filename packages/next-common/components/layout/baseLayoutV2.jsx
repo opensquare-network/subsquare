@@ -69,12 +69,12 @@ export default function BaseLayout({ children, seoInfo = {} }) {
               <Header />
             </div>
           )}
-          <section className="flex flex-col flex-1">
-            <div className="w-full flex-1">{children}</div>
-            <footer>
-              <Footer />
-            </footer>
-          </section>
+
+          <section className="flex flex-col flex-1">{children}</section>
+
+          <footer>
+            <Footer />
+          </footer>
         </section>
       </div>
 
