@@ -53,7 +53,7 @@ export default class MyDocument extends Document {
                 .dark:root {${buildThemeVariables(dark.chain[chain])}}
 
                 body {
-                  background-color: var(--neutral200);
+                  background-color: var(--neutral100);
                 }
               `,
             }}
