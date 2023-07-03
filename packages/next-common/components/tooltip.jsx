@@ -1,9 +1,7 @@
-import React from "react";
 import styled from "styled-components";
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
-import { p_12_normal } from "next-common/styles/componentCss";
 import { cursor_pointer } from "next-common/styles/tailwindcss";
 import clsx from "clsx";
 
@@ -15,20 +13,6 @@ const QuestionIcon = styled(Icon)`
 
 const LabelWrapper = styled.div`
   ${cursor_pointer};
-`;
-
-const TooltipContent = styled(RadixTooltip.Content)`
-  z-index: 10000;
-  background-color: rgba(0, 0, 0, 0.65);
-  border-radius: 4px;
-  padding: 6px 12px;
-  color: var(--textPrimaryContrast) !important;
-  word-wrap: break-word;
-  ${p_12_normal};
-`;
-
-const TooltipArrow = styled(RadixTooltip.Arrow)`
-  fill: rgba(0, 0, 0, 0.65);
 `;
 
 /**
@@ -52,10 +36,18 @@ export default function Tooltip({
 
   const tooltipContent = content && (
     <RadixTooltip.Portal>
-      <TooltipContent sideOffset={sideOffset} side={side}>
+      <RadixTooltip.Content
+        sideOffset={sideOffset}
+        side={side}
+        className={clsx(
+          "z-[10000] rounded py-1.5 px-3",
+          "text12Normal text-textPrimaryContrast break-words",
+          "bg-tooltipBg",
+        )}
+      >
         {content}
-        <TooltipArrow />
-      </TooltipContent>
+        <RadixTooltip.Arrow className="fill-tooltipBg" />
+      </RadixTooltip.Content>
     </RadixTooltip.Portal>
   );
 
