@@ -8,10 +8,11 @@ export default function VoteLabel({ conviction, isDelegating, isSplit, isSplitAb
     return null;
   }
 
+  let convictionNum = conviction;
   if (conviction in Conviction) {
-    conviction = Conviction[conviction];
+    convictionNum = Conviction[conviction];
   }
-  let size = sizing[conviction];
+  let size = sizing[convictionNum];
   if (tab === "Abstain") {
     return size;
   } else if (isDelegating) {
