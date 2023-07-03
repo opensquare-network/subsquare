@@ -72,7 +72,7 @@ export default function NavMenuGroup({
           </HoverCard.Trigger>
 
           {collapsed && !sm && (
-            <HoverCard.Content side="right" align="start">
+            <HoverCard.Content side="right" align="start" alignOffset={-8}>
               <div className="pl-6">
                 <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-scroll scrollbar-pretty">
                   <NavMenuItem
