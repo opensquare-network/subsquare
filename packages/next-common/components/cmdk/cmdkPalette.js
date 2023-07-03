@@ -6,7 +6,6 @@ import { p_12_bold, p_14_medium } from "../../styles/componentCss";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
-import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
 import { useIsMacOS, usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
@@ -16,6 +15,7 @@ import {
   setCmdkPaletteVisible,
 } from "next-common/store/reducers/cmdkSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { SystemMenu } from "@osn/icons/subsquare";
 
 // next-common/styles/cmdk.css
 const CmdkGlobalStyle = createGlobalStyle`
@@ -152,7 +152,9 @@ export default function CMDKPalette() {
                 return {
                   id: m.name,
                   children: m.name?.toLowerCase(),
-                  icon: () => <MenuIcon />,
+                  icon: () => (
+                    <SystemMenu className="[&_path]:fill-textSecondary" />
+                  ),
                   closeOnSelect: false,
                   onClick() {
                     setSearch("");
