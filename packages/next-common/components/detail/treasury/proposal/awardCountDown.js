@@ -6,17 +6,9 @@ import BigNumber from "bignumber.js";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale } from "next-common/utils";
 import CountDown from "next-common/components/_CountDown";
-import styled from "styled-components";
-import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 import useCall from "next-common/utils/hooks/useCall";
 import { useOnchainData } from "next-common/context/post";
-
-const Wrapper = styled(NoticeWrapper)`
-  position: static;
-  height: 38px;
-  
-  gap: 8px;
-`;
+import { CountDownWrapper } from "next-common/components/detail/common/styled";
 
 export default function TreasuryAwardCountDown() {
   const api = useApi();
@@ -50,12 +42,12 @@ export default function TreasuryAwardCountDown() {
   }
 
   const tooltipContent = `Next award in ${ estimatedBlocksTime }, #${ bigNumber2Locale(new BigNumber(blockHeight + period - gone).toString()) }`;
-  return <Wrapper>
+  return <CountDownWrapper>
     <CountDown
       numerator={gone}
       denominator={period}
       tooltipContent={tooltipContent}
     />
     <span>{tooltipContent}</span>
-  </Wrapper>;
+  </CountDownWrapper>;
 }

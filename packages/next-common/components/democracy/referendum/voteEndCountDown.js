@@ -1,5 +1,3 @@
-import { NoticeWrapper } from "../../styled/containers/titleContainer";
-import styled from "styled-components";
 import useDemocracyMeta from "../../../context/post/democracy/referendum/useDemocracyMeta";
 import { useOnchainData } from "../../../context/post";
 import { useSelector } from "react-redux";
@@ -9,13 +7,7 @@ import CountDown from "../../_CountDown";
 import React from "react";
 import { useEstimateBlocksTime } from "../../../utils/hooks";
 import { bigNumber2Locale } from "../../../utils";
-
-const Wrapper = styled(NoticeWrapper)`
-  position: static;
-  height: 38px;
-  
-  gap: 8px;
-`;
+import { CountDownWrapper } from "next-common/components/detail/common/styled";
 
 export default function ReferendumVoteEndCountDown() {
   const onchain = useOnchainData();
@@ -36,12 +28,12 @@ export default function ReferendumVoteEndCountDown() {
   }
 
   const tooltipContent = `End in ${estimatedBlocksTime}, #${bigNumber2Locale(end.toString())}`;
-  return <Wrapper>
+  return <CountDownWrapper>
     <CountDown
       numerator={blockHeight - startHeight}
       denominator={end - startHeight}
       tooltipContent={tooltipContent}
     />
     <span>{tooltipContent}</span>
-  </Wrapper>;
+  </CountDownWrapper>;
 }

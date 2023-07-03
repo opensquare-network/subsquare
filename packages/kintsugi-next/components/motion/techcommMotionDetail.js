@@ -24,7 +24,7 @@ import { useChain } from "next-common/context/chain";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useDetailType } from "next-common/context/page";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
-import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
+import { CountDownWrapper } from "next-common/components/detail/common/styled";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -32,13 +32,6 @@ const TimelineMotionEnd = styled.div`
   > :first-child {
     margin-right: 8px;
   }
-`;
-
-const MotionEndHeader = styled(NoticeWrapper)`
-  position: static;
-  height: 38px;
-
-  gap: 8px;
 `;
 
 function createMotionBusinessData(motion) {
@@ -200,9 +193,9 @@ export default function TechcommMotionDetail({ motion, onReply }) {
   ) : null;
 
   const motionEndHeader = showMotionEnd ? (
-    <MotionEndHeader>
+    <CountDownWrapper>
       <MotionEnd type="full" motion={motion.onchainData} />
-    </MotionEndHeader>
+    </CountDownWrapper>
   ) : null;
 
   return (
