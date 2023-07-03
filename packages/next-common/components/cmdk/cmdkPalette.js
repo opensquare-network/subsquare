@@ -1,8 +1,6 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
-import { createGlobalStyle, useTheme } from "styled-components";
-import { p_y, text_capitalize } from "../../styles/tailwindcss";
-import { p_12_bold, p_14_medium } from "../../styles/componentCss";
+import { useTheme } from "styled-components";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
@@ -16,44 +14,6 @@ import {
 } from "next-common/store/reducers/cmdkSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { SystemMenu } from "@osn/icons/subsquare";
-
-// next-common/styles/cmdk.css
-const CmdkGlobalStyle = createGlobalStyle`
-  .command-palette {
-    z-index: 1000;
-
-    .command-palette-content h4 {
-      ${p_12_bold};
-      letter-spacing: 0.16em;
-      ${p_y(8)};
-    }
-    .command-palette-content .fixed.inset-0 {
-      background-color: rgba(0, 0, 0, 0.25);
-    }
-    .command-palette-content-panel {
-      background-color: var(--neutral100);
-    }
-    .command-palette-list-item {
-      &.bg-gray-200/50 {
-        background-color: var(--neutral200);
-      }
-      &.bg-gray-800 {
-        background-color: var(--neutral200);
-      }
-      
-      &:hover {
-        background-color: var(--neutral200);
-      }
-
-      & div:first-child  {
-        width: auto;
-        ${p_14_medium};
-        color: var(--textPrimary);
-        ${text_capitalize};
-      }
-    }
-  }
-`;
 
 function renderCommandPaletteLink(props) {
   const { href, children, ...restProps } = props ?? {};
@@ -192,8 +152,6 @@ export default function CMDKPalette() {
 
   return (
     <>
-      <CmdkGlobalStyle />
-
       <CommandPalette
         page={page}
         onChangeSearch={setSearch}
