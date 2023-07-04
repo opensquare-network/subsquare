@@ -1,16 +1,16 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import NextHead from "next-common/components/nextHead";
-import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
-import Web3Address from "next-common/components/setting/web3Address";
-import NotificationEmail from "next-common/components/setting/notificationEmail";
-import Logout from "next-common/components/setting/logout";
+import { ContentWrapper } from "next-common/components/settingV2/styled";
+import Web3Address from "next-common/components/settingV2/web3Address";
+import Logout from "next-common/components/settingV2/logout";
 import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Divider from "next-common/components/styled/layout/divider";
-import SettingsLayout from "next-common/components/layout/settingsLayout";
+import {
+  SettingSection,
+  TitleContainer,
+} from "next-common/components/styled/containers/titleContainer";
+import SettingLayout from "next-common/components/settingV2/settingLayout";
 import { useChain } from "next-common/context/chain";
 
 export default withLoginUserRedux(({ loginUser }) => {
@@ -33,22 +33,20 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   return (
     <>
-      <SettingsLayout>
-        <NextHead title={"Settings"} desc={""} />
-        <Wrapper>
-          <TitleContainer>Account</TitleContainer>
+      <SettingLayout>
+        <SettingSection>
+          <TitleContainer>Web3 Address</TitleContainer>
           <ContentWrapper>
             <Web3Address address={address} />
-            <Divider margin={24} />
-            <NotificationEmail
-              email={user?.email}
-              verified={user?.emailVerified}
-            />
-            <Divider margin={24} />
+          </ContentWrapper>
+        </SettingSection>
+        <SettingSection>
+          <TitleContainer>Logout</TitleContainer>
+          <ContentWrapper>
             <Logout />
           </ContentWrapper>
-        </Wrapper>
-      </SettingsLayout>
+        </SettingSection>
+      </SettingLayout>
     </>
   );
 });
