@@ -24,7 +24,7 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import NotificationEmail from "next-common/components/settingV2/notificationEmail";
-import useSubscription from "next-common/components/settingV2/subscription";
+import useSubscription from "components/setting/subscription/useSubscription";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 

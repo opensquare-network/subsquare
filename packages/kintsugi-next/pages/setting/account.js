@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import NextHead from "next-common/components/nextHead";
-import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
-import Username from "next-common/components/setting/username";
-import Email from "next-common/components/setting/email";
-import Password from "next-common/components/setting/password";
-import Logout from "next-common/components/setting/logout";
+import { ContentWrapper } from "next-common/components/settingV2/styled";
+import Username from "next-common/components/settingV2/username";
+import Email from "next-common/components/settingV2/email";
+import Password from "next-common/components/settingV2/password";
+import Logout from "next-common/components/settingV2/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Divider from "next-common/components/styled/layout/divider";
-import SettingsLayout from "next-common/components/layout/settingsLayout";
+import {
+  SettingSection,
+  TitleContainer,
+} from "next-common/components/styled/containers/titleContainer";
+import SettingLayout from "next-common/components/settingV2/settingLayout";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
@@ -26,24 +27,35 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   return (
     <>
-      <SettingsLayout>
-        <NextHead title={"Settings"} desc={""} />
-        <Wrapper>
-          <TitleContainer>Account</TitleContainer>
+      <SettingLayout>
+        <SettingSection>
+          <TitleContainer>Username</TitleContainer>
           <ContentWrapper>
             <Username username={loginUser?.username} />
-            <Divider margin={24} />
+          </ContentWrapper>
+        </SettingSection>
+        <SettingSection>
+          <TitleContainer>Email</TitleContainer>
+          <ContentWrapper>
             <Email
               email={loginUser?.email}
               verified={loginUser?.emailVerified}
             />
-            <Divider margin={24} />
+          </ContentWrapper>
+        </SettingSection>
+        <SettingSection>
+          <TitleContainer>Change Password</TitleContainer>
+          <ContentWrapper>
             <Password />
-            <Divider margin={24} />
+          </ContentWrapper>
+        </SettingSection>
+        <SettingSection>
+          <TitleContainer>Logout</TitleContainer>
+          <ContentWrapper>
             <Logout />
           </ContentWrapper>
-        </Wrapper>
-      </SettingsLayout>
+        </SettingSection>
+      </SettingLayout>
     </>
   );
 });
