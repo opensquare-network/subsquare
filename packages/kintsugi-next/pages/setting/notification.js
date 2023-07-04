@@ -20,7 +20,7 @@ import SettingLayout from "next-common/components/settingV2/settingLayout";
 import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import { CACHE_KEY } from "next-common/utils/constants";
-import useSubscription from "components/setting/useSubscription";
+import useSubscription from "components/settings/useSubscription";
 import Cookies from "cookies";
 import NotificationEmail from "next-common/components/settingV2/notificationEmail";
 import { ContentWrapper } from "next-common/components/settingV2/styled";
