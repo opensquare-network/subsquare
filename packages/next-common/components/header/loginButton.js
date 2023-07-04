@@ -19,11 +19,11 @@ function LoginButton({ theme }) {
       .then(emptyFunction);
   };
 
-  let TargetButton = SecondaryButton;
   if (theme.isDark) {
-    TargetButton = PrimaryButton;
+    return <PrimaryButton onClick={gotoLogin}>Login</PrimaryButton>;
   }
-  return <TargetButton onClick={gotoLogin}>Login</TargetButton>;
+
+  return <SecondaryButton onClick={gotoLogin}>Login</SecondaryButton>;
 }
 
 export default withTheme(LoginButton);
