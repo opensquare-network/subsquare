@@ -7,12 +7,14 @@ import ReferendumVoteEndCountDown from "next-common/components/democracy/referen
 import PostTitle from "next-common/components/detail/common/Title";
 import DemocracyReferendumMeta from "next-common/components/detail/Democracy/referendum/meta";
 import ArticleContent from "next-common/components/articleContent";
+import ExecutionCountdown from "next-common/components/detail/Democracy/referendum/executionCountdown";
 
 export default function DemocracyReferendaDetail({ onReply }) {
   const post = usePost();
   const setIsEdit = useSetEdit();
 
   return <DetailContentBase>
+    <ExecutionCountdown />
     <ReferendumVoteEndCountDown />
     <ReferendumNavigation post={post} />
     <PostTitle />
