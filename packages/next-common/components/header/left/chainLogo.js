@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import SubSquare from "../../../assets/header-logos/subsquare.svg";
 import SubSquareMobile from "../../../assets/header-logos/subsquare-mobile.svg";
@@ -44,14 +44,16 @@ function ChainLogo({ theme }) {
   const headerUrl = useHeaderUrl();
 
   const Element = chainSetting.headerLogo ?? SubSquare;
-  let logo = <Element />;
-  let mobileLogo = <SubSquareMobile />;
+  const [logo, setLogo] = useState(<Element />)
+  const [mobileLogo, setMobileLogo] = useState(<SubSquareMobile />)
 
-  if (theme.isDark) {
-    const DarkElement = chainSetting.darkHeaderLogo ?? SubSquareDark;
-    logo = <DarkElement />;
-    mobileLogo = <SubSquareMobileDark />;
-  }
+  useEffect(() => {
+    if (theme.isDark) {
+      const DarkElement = chainSetting.darkHeaderLogo ?? SubSquareDark;
+      setLogo(<DarkElement />)
+      setMobileLogo(<SubSquareMobileDark />)
+    }
+  }, [theme])
 
   return (
     <Wrapper>
