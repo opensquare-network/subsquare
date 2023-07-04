@@ -43,7 +43,9 @@ export default function ListLayout({
   return (
     <BaseLayout seoInfo={seoInfo}>
       <div className="bg-neutral100 border-b border-neutral300">
-        <div className={clsx("px-12 py-6 mx-auto max-w-7xl", "max-sm:px-6")}>
+        <div
+          className={clsx("px-12 py-6 mx-auto max-w-[1200px]", "max-sm:px-6")}
+        >
           <div>
             <div className="flex justify-between items-baseline">
               <h3 className="text20Bold text-textPrimary">{title}</h3>
@@ -70,14 +72,16 @@ export default function ListLayout({
         </div>
 
         {tabs?.length > 0 && (
-          <div className={clsx("px-12 mx-auto max-w-7xl", "max-sm:px-6")}>
+          <div className={clsx("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
             <Tabs tabs={tabs} />
           </div>
         )}
       </div>
 
       <div className="flex-1">
-        <div className={clsx("px-6 py-6 mx-auto max-w-7xl", "max-sm:px-0")}>
+        <div
+          className={clsx("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}
+        >
           {children}
         </div>
       </div>
