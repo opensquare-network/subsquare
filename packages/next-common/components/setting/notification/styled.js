@@ -30,6 +30,7 @@ const ToggleItem = styled.div`
   align-items: center;
   line-height: 150%;
   padding: 8px 0;
+  color: var(--textPrimary);
   > :first-child {
     flex-grow: 1;
   }

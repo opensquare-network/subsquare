@@ -2,46 +2,28 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import NextHead from "next-common/components/nextHead";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import { PrimaryCard } from "next-common/components/styled/containers/primaryCard";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import {
+  SettingSection,
+  TitleContainer,
+} from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
-import SettingsLayout from "next-common/components/layout/settingsLayout";
+import SettingLayout from "next-common/components/settingV2/settingLayout";
 import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
-
-const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  @media screen and (min-width: 1080px) {
-    padding-bottom: 16px;
-  }
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-`;
-
-const ContentWrapper = styled(PrimaryCard)`
-  font-size: 14px;
-
-  input {
-    background: var(--neutral100);
-    border-color: var(--neutral400);
-    color: var(--textPrimary);
-  }
-`;
+import { CACHE_KEY } from "next-common/utils/constants";
+import useSubscription from "components/settings/useSubscription";
+import Cookies from "cookies";
+import NotificationEmail from "next-common/components/settingV2/notificationEmail";
+import { ContentWrapper } from "next-common/components/settingV2/styled";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -67,103 +49,160 @@ const Options = styled.div`
   gap: 24px;
 `;
 
-export default withLoginUserRedux(({ loginUser, unsubscribe }) => {
-  const dispatch = useDispatch();
-  const userDispatch = useUserDispatch();
-  const [saving, setSaving] = useState(false);
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+export default withLoginUserRedux(
+  ({ loginUser, unsubscribe, subscription }) => {
+    const isKeyUser = loginUser && isKeyRegisteredUser(loginUser);
+    const dispatch = useDispatch();
+    const userDispatch = useUserDispatch();
+    const [saving, setSaving] = useState(false);
+    const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+    const user = loginUser;
 
-  const emailVerified =
-    loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
-  const isVerifiedUser = loginUser?.emailVerified;
+    const emailVerified =
+      loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+    const isVerifiedUser = loginUser?.emailVerified;
 
-  const { discussionOptionsComponent, getDiscussionOptionValues, isChanged } =
-    useDiscussionOptions({
+    const {
+      discussionOptionsComponent,
+      getDiscussionOptionValues,
+      isChanged: isNotificationChanged,
+    } = useDiscussionOptions({
       disabled: !isVerifiedUser,
       saving,
       reply: !!loginUser?.notification?.reply,
       mention: !!loginUser?.notification?.mention,
     });
 
-  const router = useRouter();
+    const {
+      subscriptionComponent,
+      isSubscriptionChanged,
+      updateSubscriptionSetting,
+    } = useSubscription({
+      subscription,
+    });
 
-  useEffect(() => {
-    if (unsubscribe) {
-      if (loginUser === null) {
-        setShowLoginToUnsubscribe(true);
+    const router = useRouter();
+
+    useEffect(() => {
+      if (unsubscribe) {
+        if (loginUser === null) {
+          setShowLoginToUnsubscribe(true);
+        }
+        return;
       }
-      return;
-    }
 
-    if (loginUser === null) {
-      router.push("/login");
-    }
-  }, [loginUser, router, unsubscribe]);
+      if (loginUser === null) {
+        router.push("/login");
+      }
+    }, [loginUser, router, unsubscribe]);
 
-  const updateNotificationSetting = async () => {
-    if (saving) {
-      return;
-    }
+    const updateNotificationSetting = async () => {
+      if (saving) {
+        return;
+      }
 
-    setSaving(true);
+      setSaving(true);
 
-    const data = {
-      ...getDiscussionOptionValues(),
+      const data = {
+        ...getDiscussionOptionValues(),
+      };
+
+      const { result, error } = await nextApi.patch("user/notification", data);
+      if (result) {
+        await fetchAndUpdateUser(userDispatch);
+
+        if (isSubscriptionChanged) {
+          const { result, error } = await updateSubscriptionSetting();
+          if (result) {
+            dispatch(newSuccessToast("Settings updated"));
+          }
+          if (error) {
+            dispatch(newErrorToast(error.message));
+          }
+        }
+      } else if (error) {
+        dispatch(newErrorToast(error.message));
+      }
+      setSaving(false);
     };
 
-    const { result, error } = await nextApi.patch("user/notification", data);
-    if (result) {
-      await fetchAndUpdateUser(userDispatch);
-      dispatch(newSuccessToast("Settings saved"));
-    } else if (error) {
-      dispatch(newErrorToast(error.message));
-    }
-    setSaving(false);
-  };
+    return (
+      <SettingLayout>
+        {isKeyUser && (
+          <SettingSection>
+            <TitleContainer>Email</TitleContainer>
+            <ContentWrapper>
+              {showLoginToUnsubscribe && (
+                <WarningMessage>
+                  Please login to unsubscribe notifications
+                </WarningMessage>
+              )}
+              {emailVerified && (
+                <WarningMessage>
+                  Please set the email to receive notifications
+                </WarningMessage>
+              )}
+              <NotificationEmail
+                email={user?.email}
+                verified={user?.emailVerified}
+              />
+            </ContentWrapper>
+          </SettingSection>
+        )}
 
-  return (
-    <SettingsLayout>
-      <NextHead title={"Settings"} desc={""} />
-      <Wrapper>
-        <TitleContainer>Notification</TitleContainer>
-        <ContentWrapper>
-          {showLoginToUnsubscribe && (
-            <WarningMessage>
-              Please login to unsubscribe notifications
-            </WarningMessage>
-          )}
-          {emailVerified && (
-            <WarningMessage>
-              Please set the email to receive notifications
-            </WarningMessage>
-          )}
+        <SettingSection>
+          <TitleContainer>Notification Settings</TitleContainer>
+          <ContentWrapper>
+            <Options>{discussionOptionsComponent}</Options>
 
-          <Options>{discussionOptionsComponent}</Options>
-
-          <Divider margin={24} />
-          <ButtonWrapper>
-            <SecondaryButton
-              disabled={!isVerifiedUser || !isChanged}
-              onClick={updateNotificationSetting}
-              isLoading={saving}
-            >
-              Save
-            </SecondaryButton>
-          </ButtonWrapper>
-        </ContentWrapper>
-      </Wrapper>
-    </SettingsLayout>
-  );
-});
+            <Divider margin={24} />
+            {subscriptionComponent}
+            <Divider margin={24} />
+            <ButtonWrapper>
+              <SecondaryButton
+                disabled={
+                  !isVerifiedUser ||
+                  (!isNotificationChanged && !isSubscriptionChanged)
+                }
+                onClick={updateNotificationSetting}
+                isLoading={saving}
+              >
+                Save
+              </SecondaryButton>
+            </ButtonWrapper>
+          </ContentWrapper>
+        </SettingSection>
+      </SettingLayout>
+    );
+  },
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { unsubscribe } = context.query;
 
+  const cookies = new Cookies(context.req, context.res);
+  const authToken = cookies.get(CACHE_KEY.authToken);
+  let options = { credentials: true };
+  if (authToken) {
+    options = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+  }
+
+  const { result: subscription } = await ssrNextApi.fetch(
+    "user/subscription",
+    {},
+    options,
+  );
+
   return {
     props: {
       chain,
       unsubscribe: unsubscribe ?? null,
+      subscription: subscription ?? null,
     },
   };
 });

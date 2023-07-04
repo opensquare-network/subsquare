@@ -1,12 +1,11 @@
 import dynamic from "next/dynamic";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import NextHead from "next-common/components/nextHead";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import SettingsLayout from "next-common/components/layout/settingsLayout";
+import SettingLayout from "next-common/components/settingV2/settingLayout";
 
 const LinkedAddressComp = dynamic(
-  () => import("next-common/components/linkedAddress"),
+  () => import("next-common/components/linkedAddressV2"),
   {
     ssr: false,
   },
@@ -22,10 +21,9 @@ export default withLoginUserRedux(({ loginUser }) => {
   }, [loginUser, router]);
 
   return (
-    <SettingsLayout>
-      <NextHead title={"Settings"} desc={""} />
+    <SettingLayout>
       <LinkedAddressComp />
-    </SettingsLayout>
+    </SettingLayout>
   );
 });
 

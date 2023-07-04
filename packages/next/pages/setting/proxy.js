@@ -1,31 +1,29 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import NextHead from "next-common/components/nextHead";
 import {
   ContentWrapper,
   InfoMessage,
-  Wrapper,
-} from "next-common/components/setting/styled";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import SettingsLayout from "next-common/components/layout/settingsLayout";
+} from "next-common/components/settingV2/styled";
 import ProxyAddress from "next-common/components/setting/proxyAddress";
+import SettingLayout from "next-common/components/settingV2/settingLayout";
+import {
+  SettingSection,
+  TitleContainer,
+} from "next-common/components/styled/containers/titleContainer";
 
 export default withLoginUserRedux(() => {
   return (
-    <>
-      <SettingsLayout>
-        <NextHead title={"Settings"} desc={""} />
-        <Wrapper>
-          <TitleContainer>Proxy</TitleContainer>
-          <ContentWrapper>
-            <InfoMessage>
-              All your transactions will be submitted on behalf of this proxy
-              address.
-            </InfoMessage>
-            <ProxyAddress />
-          </ContentWrapper>
-        </Wrapper>
-      </SettingsLayout>
-    </>
+    <SettingLayout>
+      <SettingSection>
+        <TitleContainer>Proxy Address</TitleContainer>
+        <ContentWrapper>
+          <InfoMessage>
+            All your transactions will be submitted on behalf of this proxy
+            address.
+          </InfoMessage>
+          <ProxyAddress />
+        </ContentWrapper>
+      </SettingSection>
+    </SettingLayout>
   );
 });
 
