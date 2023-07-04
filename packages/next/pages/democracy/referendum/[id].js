@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -22,6 +21,7 @@ import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
+import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -49,7 +49,7 @@ function ReferendumContent({ comments }) {
 
   return (
     <>
-      <DetailItem onReply={focusEditor} />
+      <DemocracyReferendaDetail onReply={focusEditor} />
 
       <Vote
         referendumIndex={post?.referendumIndex}
