@@ -1,15 +1,15 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import NextHead from "next-common/components/nextHead";
-import { ContentWrapper, Wrapper } from "next-common/components/setting/styled";
-import Web3Address from "next-common/components/setting/web3Address";
-import NotificationEmail from "next-common/components/setting/notificationEmail";
-import Logout from "next-common/components/setting/logout";
+import Web3Address from "next-common/components/settingV2/web3Address";
+import Logout from "next-common/components/settingV2/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Divider from "next-common/components/styled/layout/divider";
-import SettingsLayout from "next-common/components/layout/settingsLayout";
+import SettingLayout from "next-common/components/settingV2/settingLayout";
+import {
+  SettingSection,
+  TitleContainer,
+} from "next-common/components/styled/containers/titleContainer";
+import { ContentWrapper } from "next-common/components/settingV2/styled";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const user = loginUser;
@@ -27,24 +27,20 @@ export default withLoginUserRedux(({ loginUser }) => {
   }, [loginUser, router]);
 
   return (
-    <>
-      <SettingsLayout>
-        <NextHead title={"Settings"} desc={""} />
-        <Wrapper>
-          <TitleContainer>Account</TitleContainer>
-          <ContentWrapper>
-            <Web3Address address={address} />
-            <Divider margin={24} />
-            <NotificationEmail
-              email={user?.email}
-              verified={user?.emailVerified}
-            />
-            <Divider margin={24} />
-            <Logout />
-          </ContentWrapper>
-        </Wrapper>
-      </SettingsLayout>
-    </>
+    <SettingLayout>
+      <SettingSection>
+        <TitleContainer>Web3 Address</TitleContainer>
+        <ContentWrapper>
+          <Web3Address address={address} />
+        </ContentWrapper>
+      </SettingSection>
+      <SettingSection>
+        <TitleContainer>Logout</TitleContainer>
+        <ContentWrapper>
+          <Logout />
+        </ContentWrapper>
+      </SettingSection>
+    </SettingLayout>
   );
 });
 

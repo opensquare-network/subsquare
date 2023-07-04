@@ -29,7 +29,7 @@ const Wrapper = styled.div`
         `
       : p.active
       ? css`
-          background: #6848ff !important;
+          background: var(--theme500) !important;
           > div {
             left: auto;
             right: 4px;
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
       ${(p) =>
         p.active &&
         css`
-          background: #6848ff !important;
+          background: var(--theme500) !important;
           > div {
             left: auto;
             right: 3px;

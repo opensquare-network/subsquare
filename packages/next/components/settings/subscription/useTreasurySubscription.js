@@ -6,7 +6,7 @@ import useTreasuryBountyOptions from "next-common/components/setting/notificatio
 import useTreasuryTipOptions from "next-common/components/setting/notification/useTreasuryTipOptions";
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
 
-export default function useTreasrySubscription(
+export default function useTreasurySubscription(
   subscription,
   saving,
   isVerifiedUser,
