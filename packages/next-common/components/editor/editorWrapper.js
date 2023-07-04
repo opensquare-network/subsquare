@@ -3,157 +3,157 @@ import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
 const EditorWrapper = styled(RichTextStyleWrapper)`
   > div:first-child {
-    border-color: ${(props) => props.theme.grey300Border};
+    border-color: var(--neutral400);
     &:hover {
-      border-color: ${(props) => props.theme.grey400Border};
+      border-color: var(--neutral500);
     }
   }
   textarea {
-    background: ${(props) => props.theme.neutral};
-    color: ${(props) => props.theme.textPrimary};
+    background: var(--neutral100);
+    color: var(--textPrimary);
   }
 
   svg[width="26"] {
     path {
-      fill: ${(props) => props.theme.textPrimary};
+      fill: var(--textPrimary);
     }
     rect {
-      stroke: ${(props) => props.theme.textPrimary};
+      stroke: var(--textPrimary);
     }
   }
 
   div.off {
-    background: ${(props) => props.theme.grey400Border};
+    background: var(--neutral500);
   }
 
   div.on {
-    background: ${(props) => props.theme.primaryPurple500};
+    background: var(--purple500);
   }
 
   div ul.mention-list,
   div.ql-mention-list-container {
-    background: ${(props) => props.theme.neutral};
+    background: var(--neutral100);
     li[aria-selected="true"],
     li.ql-mention-list-item.selected,
     li:hover {
-      background: ${(props) => props.theme.grey100Bg};
-      background-color: ${(props) => props.theme.grey100Bg};
-      color: ${(props) => props.theme.textPrimary};
+      background: var(--neutral200);
+      background-color: var(--neutral200);
+      color: var(--textPrimary);
     }
     li,
     li.ql-mention-list-item {
-      color: ${(props) => props.theme.textPrimary};
+      color: var(--textPrimary);
     }
   }
   span.ql-picker-options {
-    border: 1px solid ${(props) => props.theme.grey200Border};
+    border: 1px solid var(--neutral300);
   }
 
   .ql-picker-label {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
   .ql-picker-label:hover,
   .ql-picker-item.ql-selected {
-    color: ${(props) => props.theme.textPrimary} !important;
+    color: var(--textPrimary) !important;
     svg {
       polygon {
-        stroke: ${(props) => props.theme.textPrimary} !important;
+        stroke: var(--textPrimary) !important;
       }
     }
   }
 
   .editor-toolbar-buttons button {
-    background-color: ${(props) => props.theme.grey100Bg} !important;
+    background-color: var(--neutral200) !important;
   }
 
   .editor-toolbar-buttons button.active {
-    box-shadow: ${(props) => props.theme.neutral} 0px 1px 0px 0px;
+    box-shadow: var(--neutral100) 0px 1px 0px 0px;
   }
 
   div button {
     //todo: add a className in editor repo later
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
     &:hover {
-      color: ${(props) => props.theme.textSecondary};
+      color: var(--textSecondary);
     }
   }
 
   div button.active {
-    background-color: ${(props) => props.theme.neutral} !important;
-    border-color: ${(props) => props.theme.neutral} !important;
-    color: ${(props) => props.theme.textPrimary} !important;
-    box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
+    background-color: var(--neutral100) !important;
+    border-color: var(--neutral100) !important;
+    color: var(--textPrimary) !important;
+    box-shadow: 1px 0 0 0 var(--neutral400);
 
     + button {
-      box-shadow: 1px 0 0 0 ${(props) => props.theme.grey300Border};
+      box-shadow: 1px 0 0 0 var(--neutral400);
     }
 
     :last-child {
-      box-shadow: ${(props) => props.theme.grey300Border} -1px 0px 0px 0px,
-      ${(props) => props.theme.grey300Border} 1px 0px 0px 0px;
+      box-shadow: var(--neutral400) -1px 0px 0px 0px,
+      var(--neutral400) 1px 0px 0px 0px;
     }
   }
 
   div.modal {
-    background-color: ${(props) => props.theme.neutral} !important;
-    border-color: ${(props) => props.theme.grey200Border} !important;
+    background-color: var(--neutral100) !important;
+    border-color: var(--neutral300) !important;
   }
 
   .modal textarea {
-    background-color: #${(props) => props.theme.neutral} !important;
-    border-color: ${(props) => props.theme.grey200Border} !important;
-    color: ${(props) => props.theme.textPrimary} !important;
+    background-color: #var(--neutral100) !important;
+    border-color: var(--neutral300) !important;
+    color: var(--textPrimary) !important;
   }
 
   .editor-toolbar,
   .ql-toolbar.ql-snow,
   span.ql-formats {
-    background-color: ${(props) => props.theme.grey100Bg} !important;
-    border-color: ${(props) => props.theme.grey300Border} !important;
+    background-color: var(--neutral200) !important;
+    border-color: var(--neutral400) !important;
   }
 
   .editor-toolbar > div {
-    border-color: ${(props) => props.theme.grey300Border} !important;
+    border-color: var(--neutral400) !important;
   }
 
   .editor-toolbar-buttons > div {
-    background-color: ${(props) => props.theme.grey300Border} !important;
+    background-color: var(--neutral400) !important;
   }
 
   button svg {
     path {
-      fill: ${(props) => props.theme.textSecondary};
+      fill: var(--textSecondary);
     }
   }
 
   button:hover svg path {
-    fill: ${(props) => props.theme.textPrimary} !important;
+    fill: var(--textPrimary) !important;
   }
 
   .modal p,
   span.ql-picker-options {
-    background-color: ${(props) => props.theme.neutral};
+    background-color: var(--neutral100);
   }
 
   .html-body,
   .markdown-body,
   span.ql-picker-label.ql-active,
   .ql-picker-options .ql-picker-item {
-    color: ${(props) => props.theme.textPrimary} !important;
+    color: var(--textPrimary) !important;
 
     &:hover {
-      color: ${(props) => props.theme.textPrimary} !important;
+      color: var(--textPrimary) !important;
     }
   }
 
-  caret-color: ${(props) => props.theme.textPrimary} !important;
+  caret-color: var(--textPrimary) !important;
 
   > div > div {
-    border-color: ${(props) => props.theme.grey200Border};
+    border-color: var(--neutral300);
   }
 
   > div > div > div + div {
-    border-color: ${(props) => props.theme.grey300Border} !important;
+    border-color: var(--neutral400) !important;
   }
 
   span.ql-formats button:last-child {

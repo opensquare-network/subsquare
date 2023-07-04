@@ -1,11 +1,9 @@
 import Chains from "../chains";
-import DemocracyProposalIcon from "../../../assets/imgs/icons/type-proposals.svg";
 import React from "react";
-import MembersIcon from "../../../assets/imgs/icons/members.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuTechComm } from "@osn/icons/subsquare";
 
 const techComm = {
-  name: "TECH.COMM.",
+  name: "Technical Committee",
   excludeToChains: [
     Chains.kabocha,
     Chains.centrifuge,
@@ -14,26 +12,19 @@ const techComm = {
     Chains["westend-collectives"],
     Chains.collectives,
   ],
+  archivedToChains: [Chains.kusama],
+  icon: <MenuTechComm />,
+  pathname: "/techcomm",
   items: [
     {
       value: "techCommProposals",
       name: "Proposals",
       pathname: "/techcomm/proposals",
-      icon: (
-        <MenuIconWrapper>
-          <DemocracyProposalIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "techCommMembers",
       name: "Members",
       pathname: "/techcomm/members",
-      icon: (
-        <MenuIconWrapper>
-          <MembersIcon />
-        </MenuIconWrapper>
-      ),
     },
   ],
 };

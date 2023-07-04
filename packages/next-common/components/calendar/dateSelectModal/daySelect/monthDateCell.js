@@ -12,7 +12,6 @@ import {
   justify_between,
   m,
   p,
-  text_secondary,
   w_full,
 } from "../../../../styles/tailwindcss";
 
@@ -21,17 +20,17 @@ dayjs.extend(isToday);
 const CellLabel = styled.span`
   ${p_12_bold}
   ${m(0)}
-  ${text_secondary}
+  color: var(--textSecondary);
   text-align: center;
   ${(p) =>
     !p.isSameMonth &&
     css`
-      color: ${(p) => p.theme.textTertiary};
+      color: var(--textTertiary);
     `}
   ${(p) =>
     p.isPast &&
     css`
-      color: ${(p) => p.theme.textPlaceholder};
+      color: var(--textDisabled);
     `}
 `;
 
@@ -46,20 +45,20 @@ const CellWrapper = styled.div`
   ${cursor_pointer}
 
   &:hover {
-    background-color: ${(p) => p.theme.grey100Bg};
+    background-color: var(--neutral200);
   }
 
   ${(p) =>
     p.isToday &&
     css`
-      border: 1px solid ${(p) => p.theme.grey400Border};
+      border: 1px solid var(--neutral500);
       border-radius: 4px;
     `}
 
   ${(p) =>
     p.isSelectedDay &&
     css`
-      background-color: ${(p) => p.theme.grey200Border};
+      background-color: var(--neutral300);
     `}
 `;
 

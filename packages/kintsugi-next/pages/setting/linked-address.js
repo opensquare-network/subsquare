@@ -9,7 +9,7 @@ const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
   {
     ssr: false,
-  }
+  },
 );
 
 export default withLoginUserRedux(({ loginUser }) => {

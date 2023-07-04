@@ -35,7 +35,8 @@ export default function ReferendaBusiness() {
         <Link
           key="proposal-link"
           href={`/treasury/proposal/${proposalId}`}
-          legacyBehavior>{`Treasury Proposal #${proposalId}`}</Link>,
+          legacyBehavior
+        >{`Treasury Proposal #${proposalId}`}</Link>,
       ],
     ],
   ];

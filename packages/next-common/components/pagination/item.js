@@ -15,17 +15,17 @@ const Item = styled.a`
   justify-content: center;
   font-size: 14px;
   font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 
   :hover {
-    background: ${(props) => props.theme.grey200Border};
+    background: var(--neutral300);
   }
 
   ${(p) =>
     p.active &&
     css`
-      background: ${(props) => props.theme.grey200Border};
-      color: ${(props) => props.theme.textPrimary};
+      background: var(--neutral300);
+      color: var(--textPrimary);
       cursor: auto;
       pointer-events: none;
     `}

@@ -32,7 +32,7 @@ const StyledList = styled(StyledListOrigin)`
 
 const ConvictionText = styled.span`
   width: 40px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 function getSortParams(sortedColumn) {

@@ -70,7 +70,7 @@ export default function usePercentageBarData() {
     directCapital = new BigNumber(voteStats.directCapital);
     delegatedCapital = new BigNumber(voteStats.delegationCapital);
     directVotes = new BigNumber(voteStats.votes).minus(
-      voteStats.delegationVotes
+      voteStats.delegationVotes,
     );
     delegatedVotes = new BigNumber(voteStats.delegationVotes);
 

@@ -3,6 +3,7 @@ import DarkModeLogo from "../../../assets/header-logos/bifrost-kusama-dark.svg";
 import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoBifrostKusamaDark } from "@osn/icons/subsquare";
 
 const DEFAULT_BIFROST_NODES = [
   {
@@ -16,6 +17,33 @@ const DEFAULT_BIFROST_NODES = [
   {
     name: "Dwellir",
     url: "wss://bifrost-rpc.dwellir.com",
+  },
+];
+
+const links = [
+  {
+    name: "website",
+    url: "https://bifrost.finance/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/bifrost-finance",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/BifrostFinance",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/bifrost_finance",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/8DRBw2h5X4",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/bifrost-finance",
   },
 ];
 
@@ -33,6 +61,9 @@ const bifrost = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoBifrostKusamaDark,
+  navLogoDark: ProjectLogoBifrostKusamaDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
@@ -40,6 +71,7 @@ const bifrost = {
   hasReferenda: true,
   hasFellowship: true,
   showReferendaReferendumDelegationPercentage: true,
+  description: "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
 };
 
 export default bifrost;

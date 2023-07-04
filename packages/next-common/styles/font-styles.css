@@ -1,0 +1,41 @@
+.text20Bold {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 32px;
+}
+.text16Bold {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+.text16Medium {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.text14Bold {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+}
+.text14Medium {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.text12Medium {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+.text20BoldLogo {
+  font-size: 24px;
+  font-family: "Montserrat";
+  font-weight: 700;
+  line-height: 32px;
+}
+.text15MediumContent {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 28px;
+}

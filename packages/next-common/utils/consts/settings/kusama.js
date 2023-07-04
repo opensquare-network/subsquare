@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/kusama.png";
 import DarkAvatar from "../../../assets/icons/chain/kusama-dark.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoKusamaDark } from "@osn/icons/subsquare";
 
 const DEFAULT_KUSAMA_NODES = [
   {
@@ -40,6 +41,33 @@ const DEFAULT_KUSAMA_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://kusama.network/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/kusamanetwork",
+  },
+  {
+    name: "discord",
+    url: "https://kusa.ma/discord",
+  },
+  {
+    name: "github",
+    url: "https://github.com/paritytech/polkadot/",
+  },
+  {
+    name: "element",
+    url: "https://matrix.to/#/#Kusama-Direction:parity.io",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/kusamanetworkofficial",
+  },
+];
+
 const kusama = {
   value: "kusama",
   name: "Kusama",
@@ -55,7 +83,11 @@ const kusama = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoKusamaDark,
+  navLogoDark: ProjectLogoKusamaDark,
   group: MenuGroups.KusamaAndParachains,
+  links,
+  hasGov2: true,
   hasReferenda: true,
   hasFellowship: true,
   hasStatescan: true,
@@ -67,6 +99,7 @@ const kusama = {
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   showAchainableLabels: true,
+  description: "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
 };
 
 export default kusama;

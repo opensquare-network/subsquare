@@ -22,7 +22,7 @@ export async function submitPolkadotExtrinsic({
       trackIds[0],
       targetAddress,
       conviction,
-      bnVoteBalance.toString()
+      bnVoteBalance.toString(),
     );
   } else {
     tx = api.tx.utility.batch(
@@ -31,9 +31,9 @@ export async function submitPolkadotExtrinsic({
           trackId,
           targetAddress,
           conviction,
-          bnVoteBalance.toString()
-        )
-      )
+          bnVoteBalance.toString(),
+        ),
+      ),
     );
   }
 

@@ -7,28 +7,43 @@ import {
   fellowshipTracksApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import Gov2Summary from "components/summary/gov2Summary";
-import FellowshipPage from "components/fellowship/fellowshipPage";
-import capitalize from "lodash.capitalize";
+import ListLayout from "next-common/components/layout/ListLayout";
+import PostList from "next-common/components/postList";
+import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
+import businessCategory from "next-common/utils/consts/business/category";
+import Gov2Summary from "next-common/components/summary/gov2Summary";
 
-export default withLoginUserRedux(
-  ({ posts, title, tracks, fellowshipTracks, summary }) => {
-    const summaryComponent = <Gov2Summary summary={summary} noDelegation={true} />;
+export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
+  const title = "Fellowship Referenda";
+  const seoInfo = { title, desc: title };
 
-    return (
-      <FellowshipPage
-        posts={posts}
-        title={title}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-        summary={summaryComponent}
+  const items = (posts.items || []).map((item) =>
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+  );
+
+  return (
+    <ListLayout
+      seoInfo={seoInfo}
+      title={title}
+      description="All active and history referenda of various tracks."
+      summary={<Gov2Summary summary={summary} />}
+    >
+      <PostList
+        title="List"
+        titleCount={posts.total}
+        category={businessCategory.fellowship}
+        items={items}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
       />
-    );
-  }
-);
+    </ListLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
 
   const [
@@ -49,7 +64,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: `${ capitalize(chain) } Fellowship Referenda`,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},

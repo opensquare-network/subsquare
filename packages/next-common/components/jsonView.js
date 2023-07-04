@@ -4,11 +4,11 @@ import styled, { withTheme } from "styled-components";
 
 const Wrapper = styled.div`
   background-color: ${(props) =>
-    props.theme.isDark ? "#2C303B" : props.theme.neutral};
+    props.theme.isDark ? "#2C303B" : "var(--neutral100)"};
   padding: 8px;
   overflow-x: auto;
   border: 1px solid
-    ${(props) => (props.theme.isDark ? "#2C303B" : props.theme.grey200Border)};
+    ${(props) => (props.theme.isDark ? "#2C303B" : "var(--neutral300)")};
 `;
 
 function JsonView({ src, theme }) {

@@ -2,49 +2,60 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import DemocracySummary from "next-common/components/summary/democracySummary";
-import HomeLayout from "next-common/components/layout/HomeLayout";
+import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { useChain } from "next-common/context/chain";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
+import ListLayout from "next-common/components/layout/ListLayout";
+import businessCategory from "next-common/utils/consts/business/category";
 
-export default withLoginUserRedux(({ proposals }) => {
+export default withLoginUserRedux(({ proposals, summary }) => {
   const chain = useChain();
   const items = (proposals.items || []).map((item) =>
-    normalizeProposalListItem(chain, item)
+    normalizeProposalListItem(chain, item),
   );
-  const category = "Democracy Public Proposals";
-  const seoInfo = { title: category, desc: category };
+  const category = businessCategory.democracyProposals;
+  const title = category;
+  const seoInfo = { title, desc: title };
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
+      summary={<DemocracySummary summary={summary} />}
+      summaryFooter={<KintsugiDemocracyStaking />}
+    >
       <PostList
         category={category}
+        title="List"
+        titleCount={proposals.total}
         items={items}
         pagination={{
           page: proposals.page,
           pageSize: proposals.pageSize,
           total: proposals.total,
         }}
-        summary={<DemocracySummary footer={<KintsugiDemocracyStaking />} />}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
-  const [{ result: proposals }] = await Promise.all([
+  const [{ result: proposals }, { result: summary }] = await Promise.all([
     nextApi.fetch("democracy/proposals", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),
+    nextApi.fetch("summary"),
   ]);
 
   return {
     props: {
       proposals: proposals ?? EmptyList,
+      summary: summary ?? {},
     },
   };
 });

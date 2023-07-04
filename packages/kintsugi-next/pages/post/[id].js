@@ -71,7 +71,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     ({ result: myVote } = await nextApi.fetch(
       `polls/${detail.poll._id}/myvote`,
       {},
-      options
+      options,
     ));
   }
 

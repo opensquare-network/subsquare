@@ -5,15 +5,15 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import HomeLayout from "next-common/components/layout/HomeLayout";
+import ListLayout from "next-common/components/layout/ListLayout";
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
+export default withLoginUserRedux(() => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
   const [members] = useCall(
     api?.query?.fellowshipCollective?.members.entries,
-    []
+    [],
   );
 
   useEffect(() => {
@@ -43,13 +43,9 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout
-      seoInfo={seoInfo}
-      tracks={tracks}
-      fellowshipTracks={fellowshipTracks}
-    >
-      <MembersList category={category} items={data} loading={loading} />
-    </HomeLayout>
+    <ListLayout seoInfo={seoInfo} title={category}>
+      <MembersList items={data} loading={loading} />
+    </ListLayout>
   );
 });
 

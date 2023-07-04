@@ -21,7 +21,7 @@ const CountdownWrapper = styled.div`
   width: 80px;
   height: 38px;
 
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
 
   font-style: normal;
@@ -30,7 +30,7 @@ const CountdownWrapper = styled.div`
   line-height: 100%;
 
   text-align: center;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export default function NotificationEmail({ email, verified }) {

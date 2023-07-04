@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
 
 export default function useMaybeFetchReferendumStatus(referendum, api) {
   const { voteFinished } = extractVoteInfo(referendum?.timeline);
   const [referendumStatus, setReferendumStatus] = useState(
-    referendum?.status || referendum?.info?.ongoing || referendum?.meta
+    referendum?.status || referendum?.info?.ongoing || referendum?.meta,
   );
 
   useEffect(() => {

@@ -28,7 +28,7 @@ const ChildBounty = styled(FlexBetween)`
     white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
   }
 
   > div {
@@ -39,7 +39,7 @@ const ChildBounty = styled(FlexBetween)`
       justify-content: end;
     }
     .symbol {
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
     }
   }
   > div > span {
@@ -79,7 +79,7 @@ const DividerWrapper = styled(FlexBetween)`
     ::before {
       content: "·";
       font-size: 12px;
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       margin: 0 8px;
     }
   }
@@ -95,7 +95,7 @@ const DomesticLink = styled.a`
   width: 60px;
   font-size: 12px;
   font-weight: 500;
-  color: ${(props) => props.theme.primaryPurple500};
+  color: var(--purple500);
   cursor: pointer;
 `;
 

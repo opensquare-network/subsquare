@@ -44,20 +44,20 @@ const Wrapper = styled.div`
 
 const ContentWrapper = styled(PrimaryCard)`
   input {
-    background: ${(props) => props.theme.neutral};
-    border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
+    background: var(--neutral100);
+    border-color: var(--neutral400);
+    color: var(--textPrimary);
   }
 `;
 
 const InfoWrapper = styled.div`
-  background: ${(props) => props.theme.grey100Bg};
+  background: var(--neutral200);
   border-radius: 4px;
   padding: 12px 16px;
   line-height: 150%;
   font-size: 14px;
   margin-bottom: 16px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 const AddressWrapper = styled.div`
@@ -71,7 +71,7 @@ const AddressItem = styled.div`
   padding: 0 16px;
   display: flex;
   align-items: center;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
 
   > :not(:first-child) {
@@ -86,8 +86,8 @@ const AddressItem = styled.div`
   ${(p) =>
     p.linked &&
     css`
-      background: ${(props) => props.theme.grey100Bg};
-      border-color: ${(props) => props.theme.grey100Bg};
+      background: var(--neutral200);
+      border-color: var(--neutral200);
     `}
 `;
 
@@ -108,7 +108,7 @@ const NameWrapper = styled.div`
 const LinkWrapper = styled.div`
   display: flex;
   font-size: 14px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   cursor: pointer;
   align-items: center;
 
@@ -124,7 +124,7 @@ const LinkWrapper = styled.div`
 const NodesWrapper = styled.div`
   display: flex;
   margin: 24px 0;
-  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+  border-bottom: 1px solid var(--neutral300);
 
   > :not(:first-child) {
     margin-left: 24px;
@@ -159,7 +159,7 @@ const EmptyList = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 export default function LinkedAddress() {

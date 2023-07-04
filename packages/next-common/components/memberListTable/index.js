@@ -5,11 +5,11 @@ import Loading from "../loading";
 
 const StyledTable = styled.table`
   width: 100%;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  color: ${(props) => props.theme.textPrimary};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
+  color: var(--textPrimary);
   box-sizing: border-box;
-  box-shadow: ${(props) => props.theme.shadow100};
+  box-shadow: var(--shadow100);
   border-radius: 6px;
   padding: 24px;
 `;
@@ -20,7 +20,7 @@ const StyledTh = styled.th`
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.16em;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   pointer-events: none;
 `;
 
@@ -30,7 +30,7 @@ const StyledTd = styled.td`
   font-weight: normal;
   font-size: 14px;
   line-height: 100%;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const EmptyTd = styled.td`
@@ -40,7 +40,7 @@ const EmptyTd = styled.td`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const RowSplitter = ({ backgroundColor, padding }) => (

@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/kintsugi.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
+import { ProjectLogoKintsugiDark } from "@osn/icons/subsquare";
 
 const DEFAULT_KINTSUGI_NODES =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
@@ -24,6 +25,33 @@ const DEFAULT_KINTSUGI_NODES =
         },
       ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://parachains.info/details/kintsugi/",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/interlay_community",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/kintsugi_btc",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/interlay",
+  },
+  {
+    name: "medium",
+    url: "https://interlay.medium.com/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/interlay/interbtc",
+  },
+];
+
 const kintsugi = {
   value: "kintsugi",
   name: "Kintsugi",
@@ -38,9 +66,13 @@ const kintsugi = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoKintsugiDark,
+  navLogoDark: ProjectLogoKintsugiDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
   hasSubscan: true,
+  description: "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
 };
 
 export default kintsugi;

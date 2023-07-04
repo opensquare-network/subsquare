@@ -15,7 +15,8 @@ const TitleWrapper = styled.div`
   }
   span.num {
     margin-left: 4px;
-    color: ${(p) => (p.active ? p.theme.textSecondary : p.theme.textTertiary)};
+    color: ${(p) =>
+      p.active ? "var(--textSecondary)" : "var(--textTertiary)"};
     @media screen and (max-width: 768px) {
       display: none;
     }

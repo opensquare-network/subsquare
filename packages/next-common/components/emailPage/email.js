@@ -42,9 +42,9 @@ const Hint = styled.p`
   margin-top: 24px !important;
   padding: 12px 16px;
   ${p_14_normal};
-  color: ${(props) => props.theme.textSecondary};
-  background: ${(props) => props.theme.grey100Bg};
-  border-color: ${(props) => props.theme.grey300Border};
+  color: var(--textSecondary);
+  background: var(--neutral200);
+  border-color: var(--neutral400);
 `;
 
 const BorderRadiusWrapper = styled.div`
@@ -62,7 +62,7 @@ const DontRemindWrapper = styled.span`
 `;
 const DontRemindText = styled.span`
   margin-left: 8px;
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
   ${p_14_normal};
 `;
 

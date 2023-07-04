@@ -1,10 +1,13 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import HomeLayout from "next-common/components/layout/HomeLayout";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useUnscrupulousAccounts } from "hooks/useUnscrupulousAccounts";
 import { useUnscrupulousWebsites } from "hooks/useUnscrupulousWebsites";
 import UnscrupulousSummary from "components/alliance/unscrupulousSummary";
-import UnscrupulousTabList from "components/alliance/unscrupulousTabList";
+import UnscrupulousAccounts from "components/alliance/unscrupulousAccounts";
+import UnscrupulousWebsites from "components/alliance/unscrupulousWebsites";
+import ListLayout from "next-common/components/layout/ListLayout";
+import { useState } from "react";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { ssrNextApi } from "next-common/services/nextApi";
 
 export default withLoginUserRedux(() => {
   const { data: accounts, isLoading: isAccountsLoading } =
@@ -14,26 +17,59 @@ export default withLoginUserRedux(() => {
 
   const category = "Unscrupulous";
   const seoInfo = { title: category, desc: category };
+  const [tab, setTab] = useState("accounts");
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
-      <TitleContainer>{category}</TitleContainer>
-      <UnscrupulousSummary
-        accounts={accounts?.length}
-        websites={websites?.length}
-      />
-      <UnscrupulousTabList
-        accounts={accounts}
-        isAccountsLoading={isAccountsLoading}
-        websites={websites}
-        isWebsitesLoading={isWebsitesLoading}
-      />
-    </HomeLayout>
+    <ListLayout
+      seoInfo={seoInfo}
+      title={category}
+      description="The current list of accounts/websites deemed unscrupulous."
+      summary={
+        <UnscrupulousSummary
+          accounts={accounts?.length}
+          websites={websites?.length}
+        />
+      }
+      tabs={[
+        {
+          label: "Accounts",
+          active: tab === "accounts",
+          onClick: () => setTab("accounts"),
+        },
+        {
+          label: "Websites",
+          active: tab === "websites",
+          onClick: () => setTab("websites"),
+        },
+      ]}
+    >
+      {tab === "accounts" && (
+        <UnscrupulousAccounts
+          items={accounts || []}
+          loading={isAccountsLoading}
+        />
+      )}
+
+      {tab === "websites" && (
+        <UnscrupulousWebsites
+          items={websites || []}
+          loading={isWebsitesLoading}
+        />
+      )}
+    </ListLayout>
   );
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
-    props: {},
+    props: {
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
+    },
   };
 });

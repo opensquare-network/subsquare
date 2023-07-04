@@ -1,6 +1,9 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
-import { getFellowshipReferendumCommentsUrl, getFellowshipReferendumUrl } from "next-common/services/url";
+import {
+  getFellowshipReferendumCommentsUrl,
+  getFellowshipReferendumUrl,
+} from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -12,7 +15,9 @@ import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metad
 import Timeline from "../../../components/gov2/timeline";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CheckUnFinalized from "components/fellowship/checkUnFinalized";
-import BreadcrumbWrapper, { BreadcrumbHideOnMobileText } from "next-common/components/detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper, {
+  BreadcrumbHideOnMobileText,
+} from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import NonNullPost from "next-common/components/nonNullPost";
 import FellowshipReferendaDetail from "next-common/components/detail/fellowship";
@@ -31,7 +36,7 @@ function FellowshipContent({ comments }) {
 
   return (
     <>
-      <FellowshipReferendaDetail onReply={ focusEditor } />
+      <FellowshipReferendaDetail onReply={focusEditor} />
       <FellowshipReferendumSideBar />
       <Gov2ReferendumMetadata info={info} />
       <Timeline trackInfo={post?.onchainData?.trackInfo} />
@@ -104,7 +109,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const pageSize = Math.min(page_size ?? 50, 100);
 
   const { result: detail } = await ssrNextApi.fetch(
-    getFellowshipReferendumUrl(id)
+    getFellowshipReferendumUrl(id),
   );
   if (!detail) {
     return {
@@ -122,7 +127,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {

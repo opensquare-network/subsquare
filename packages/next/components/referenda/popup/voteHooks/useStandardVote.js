@@ -42,7 +42,7 @@ export default function useStandardVote({
         inputVoteBalance,
         node.decimals,
         "vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);

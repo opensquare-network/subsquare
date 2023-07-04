@@ -11,8 +11,8 @@ import getChainSettings from "next-common/utils/consts/settings";
 const NameWrapper = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: ${(props) => props.theme.secondarySapphire500};
-  background: ${(props) => props.theme.secondarySapphire100};
+  color: var(--sapphire500);
+  background: var(--sapphire100);
 `;
 
 const MentionBox = styled.a`

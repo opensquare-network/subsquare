@@ -4,9 +4,9 @@ import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import usePrime from "next-common/utils/hooks/usePrime";
-import HomeLayout from "next-common/components/layout/HomeLayout";
+import ListLayout from "next-common/components/layout/ListLayout";
 
-export default withLoginUserRedux(({ chain }) => {
+export default withLoginUserRedux(() => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
@@ -22,14 +22,9 @@ export default withLoginUserRedux(({ chain }) => {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
-      <MembersList
-        prime={prime}
-        category={category}
-        items={data}
-        loading={loading}
-      />
-    </HomeLayout>
+    <ListLayout seoInfo={seoInfo} title={category}>
+      <MembersList prime={prime} items={data} loading={loading} />
+    </ListLayout>
   );
 });
 

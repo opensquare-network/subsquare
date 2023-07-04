@@ -5,6 +5,7 @@ import democracy from "../utils/consts/menu/democracy";
 import treasury from "../utils/consts/menu/treasury";
 import council from "../utils/consts/menu/council";
 import techComm from "../utils/consts/menu/tc";
+import Chains from "../utils/consts/chains";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
@@ -44,7 +45,7 @@ export function useMenuHasTreasuryBounties() {
   const bountiesConfig = treasury.items.find(
     ({ value }) => value === "bounties",
   );
-  return !bountiesConfig.excludeToChains.includes(chain);
+  return bountiesConfig && !bountiesConfig.excludeToChains.includes(chain);
 }
 
 export function useMenuHasTreasuryChildBounties() {
@@ -52,13 +53,15 @@ export function useMenuHasTreasuryChildBounties() {
   const childBountiesConfig = treasury.items.find(
     ({ value }) => value === "child-bounties",
   );
-  return !childBountiesConfig.excludeToChains.includes(chain);
+  return (
+    childBountiesConfig && !childBountiesConfig.excludeToChains.includes(chain)
+  );
 }
 
 export function useMenuHasTreasuryTips() {
   const chain = useChain();
   const tipsConfig = treasury.items.find(({ value }) => value === "tips");
-  return !tipsConfig.excludeToChains.includes(chain);
+  return tipsConfig && !tipsConfig.excludeToChains.includes(chain);
 }
 
 export function useMenuHasDemocracyExternal() {
@@ -66,7 +69,7 @@ export function useMenuHasDemocracyExternal() {
   const tipsConfig = democracy.items.find(
     ({ value }) => value === "democracyExternals",
   );
-  return !tipsConfig.excludeToChains.includes(chain);
+  return tipsConfig && !tipsConfig.excludeToChains.includes(chain);
 }
 
 export function useMenuHasCouncil() {
@@ -80,9 +83,13 @@ export function useMenuHasTechComm() {
 }
 
 /**
- * @alias useHasGov2
+ * @deprecated use `useHasGov2` instead
  */
 export function useMenuHasGov2() {
-  const settings = useChainSettings();
-  return settings.hasReferenda || settings.hasFellowship;
+  return useHasGov2();
+}
+
+export function useHasGov2() {
+  const chain = useChain();
+  return [Chains.kusama, Chains.development].includes(chain);
 }

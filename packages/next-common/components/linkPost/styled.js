@@ -3,9 +3,9 @@ import { p_14_normal } from "../../styles/componentCss";
 
 export const Info = styled.div`
   padding: 10px 16px;
-  background: ${(p) => p.theme.grey100Bg};
+  background: var(--neutral200);
   border-radius: 4px;
 
   ${p_14_normal}
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
 `;

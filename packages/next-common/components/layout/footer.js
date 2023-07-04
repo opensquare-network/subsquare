@@ -6,7 +6,7 @@ import FooterLogo from "../../assets/imgs/icons/footerLogo.svg";
 import Contacts from "./contacts";
 
 const Wrapper = styled.footer`
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   font-size: 12px;
 
   > a:first-child {
@@ -22,7 +22,7 @@ const Wrapper = styled.footer`
   }
   svg.divider {
     rect {
-      fill: ${(props) => props.theme.grey300Border};
+      fill: var(--neutral400);
     }
   }
 `;
@@ -35,11 +35,11 @@ const FlexWrapper = styled(Flex)`
   }
   > a.opensquare svg {
     path {
-      fill: ${(props) => props.theme.textTertiary};
+      fill: var(--textTertiary);
     }
     &:hover {
       path {
-        fill: ${(props) => props.theme.textSecondary};
+        fill: var(--textSecondary);
       }
     }
   }

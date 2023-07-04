@@ -21,7 +21,7 @@ const getClosedTimelineData = (timeline = []) => {
   let firstTipIndex = timeline.findIndex((item) => item?.method === "tip");
   const lastTipIndex = findLastIndex(
     timeline,
-    (item) => item?.method === "tip"
+    (item) => item?.method === "tip",
   );
   if (firstTipIndex > 0) {
     firstTipIndex--;
@@ -32,10 +32,10 @@ const getClosedTimelineData = (timeline = []) => {
   }
 
   const foldItems = timeline.filter(
-    (item, idx) => idx >= firstTipIndex && idx <= lastTipIndex
+    (item, idx) => idx >= firstTipIndex && idx <= lastTipIndex,
   );
   const notFoldItems = timeline.filter(
-    (item, idx) => idx < firstTipIndex || idx > lastTipIndex
+    (item, idx) => idx < firstTipIndex || idx > lastTipIndex,
   );
   const fd = [...foldItems];
   return [fd, ...notFoldItems];
@@ -60,6 +60,7 @@ export default function TipTimeline({ tip }) {
           Reason: args.reason,
         };
       case "tip":
+        // eslint-disable-next-line no-case-declarations
         const value = args.award ? args.award : args.value;
         return {
           Tipper: (

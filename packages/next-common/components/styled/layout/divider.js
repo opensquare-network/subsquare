@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Divider = styled.div`
   height: 1px;
-  background: ${(props) => props.theme.grey200Border};
+  background: var(--neutral300);
   margin: ${(props) => props.margin}px 0;
 `;
 

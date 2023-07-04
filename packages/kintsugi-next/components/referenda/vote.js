@@ -63,7 +63,7 @@ const Title = styled(TitleContainer)`
 const Headers = styled(Flex)`
   justify-content: space-between;
   font-size: 12px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 
   span:nth-child(2) {
     text-align: center;
@@ -77,7 +77,7 @@ const Headers = styled(Flex)`
 
 const Contents = styled(Headers)`
   font-weight: 500;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   margin-top: 8px !important;
   margin-bottom: 16px;
 `;
@@ -95,13 +95,13 @@ const Status = styled.div`
 `;
 
 const PassStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryGreen500};
-  background: ${(props) => props.theme.secondaryGreen100};
+  color: var(--green500);
+  background: var(--green100);
 `;
 
 const RejectStatus = styled(Status)`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
 `;
 
 const BarWrapper = styled.div`
@@ -119,13 +119,13 @@ const BarContainer = styled.div`
 `;
 
 const AyesBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryGreen500};
+  background-color: var(--green500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
 
 const NaysBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryRed500};
+  background-color: var(--red500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
@@ -135,7 +135,7 @@ const Guide = styled.p`
   white-space: nowrap;
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   a {
     margin-left: 2px;
     svg {
@@ -144,7 +144,7 @@ const Guide = styled.p`
     font-size: 12px !important;
     display: flex;
     align-items: center;
-    color: ${(props) => props.theme.primaryPurple500} !important;
+    color: var(--purple500) !important;
   }
 `;
 
@@ -166,7 +166,7 @@ function Vote({
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
   const isLoadingReferendumStatus = useSelector(
-    isLoadingReferendumStatusSelector
+    isLoadingReferendumStatusSelector,
   );
 
   const updateVoteProgress = useCallback(() => {
@@ -220,7 +220,7 @@ function Vote({
               <Threshold
                 threshold={getThresholdOfSuperMajorityApprove(
                   tally?.turnout ?? 0,
-                  electorate
+                  electorate,
                 )}
               />
             )}
@@ -230,7 +230,7 @@ function Vote({
               <Threshold
                 threshold={getThresholdOfSuperMajorityAgainst(
                   tally?.turnout ?? 0,
-                  electorate
+                  electorate,
                 )}
               />
             )}

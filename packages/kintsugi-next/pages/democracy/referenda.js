@@ -2,33 +2,41 @@ import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import DemocracySummary from "next-common/components/summary/democracySummary";
-import HomeLayout from "next-common/components/layout/HomeLayout";
+import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
-import StatisticLinkButton from "next-common/components/statisticsLinkButton";
+import businessCategory from "next-common/utils/consts/business/category";
 
-export default withLoginUserRedux(({ posts, chain }) => {
+export default withLoginUserRedux(({ posts, chain, summary }) => {
   const items = (posts.items || []).map((item) =>
-    normalizeReferendaListItem(chain, item)
+    normalizeReferendaListItem(chain, item),
   );
-  const category = "Referenda";
-  const seoInfo = { title: "Democracy Referenda", desc: "Democracy Referenda" };
+  const category = businessCategory.democracyReferenda;
+  const title = "Democracy " + category;
+  const seoInfo = {
+    title,
+    desc: title,
+  };
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
+    <DemocracyReferendaLayout
+      seoInfo={seoInfo}
+      title={seoInfo.title}
+      summaryData={summary}
+      summaryFooter={<KintsugiDemocracyStaking />}
+    >
       <PostList
         category={category}
-        topRightCorner={<StatisticLinkButton href="/democracy/statistics" />}
+        title="List"
+        titleCount={posts.total}
         items={items}
         pagination={{
           page: posts.page,
           pageSize: posts.pageSize,
           total: posts.total,
         }}
-        summary={<DemocracySummary footer={<KintsugiDemocracyStaking />} />}
       />
-    </HomeLayout>
+    </DemocracyReferendaLayout>
   );
 });
 
@@ -36,17 +44,19 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
 
-  const [{ result: posts }] = await Promise.all([
+  const [{ result: posts }, { result: summary }] = await Promise.all([
     nextApi.fetch("democracy/referendums", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),
+    nextApi.fetch("summary"),
   ]);
 
   return {
     props: {
       chain,
       posts: posts ?? EmptyList,
+      summary: summary ?? {},
     },
   };
 });

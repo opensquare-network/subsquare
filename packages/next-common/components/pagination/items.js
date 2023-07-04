@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Ellipsis = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 export default function Items({ total = 0, page, onPageChange = null }) {

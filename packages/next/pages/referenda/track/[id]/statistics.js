@@ -1,13 +1,15 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
-import { gov2TracksApi } from "next-common/services/url";
+import {
+  fellowshipTracksApi,
+  gov2ReferendumsTracksApi,
+  gov2ReferendumsTracksSummaryApi,
+  gov2TracksApi,
+} from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
-import startCase from "lodash.startcase";
 import TrackStatistics from "next-common/components/statistics/track";
 import { EmptyList } from "next-common/utils/constants";
-import DetailLayout from "next-common/components/layout/DetailLayout";
 import { to404 } from "next-common/utils/serverSideUtil";
+import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
 
 export default withLoginUserRedux(
   ({
@@ -16,31 +18,20 @@ export default withLoginUserRedux(
     delegatee,
     delegators,
     summary,
+
+    referendumsSummary,
+    period,
   }) => {
+    const title = "OpenGov Statistics";
+    const seoInfo = { title, desc: title };
+
     return (
-      <DetailLayout
-        seoInfo={{
-          title: "OpenGov Statistics",
-          desc: "OpenGov Statistics",
-        }}
+      <ReferendaTrackLayout
+        seoInfo={seoInfo}
+        title={`[${period.id}] Origin: ${period.origin}`}
+        summaryData={referendumsSummary}
+        periodData={period}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb
-            items={[
-              {
-                path: "/referenda",
-                content: "Referenda",
-              },
-              {
-                path: `/referenda/track/${track.id}`,
-                content: `[${track.id}] ${startCase(track.name)}`,
-              },
-              {
-                content: "Statistics",
-              },
-            ]}
-          />
-        </BreadcrumbWrapper>
         <TrackStatistics
           track={track}
           turnout={turnout}
@@ -48,15 +39,18 @@ export default withLoginUserRedux(
           delegators={delegators}
           summary={summary}
         />
-      </DetailLayout>
+      </ReferendaTrackLayout>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
 
   const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
+  const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(
+    fellowshipTracksApi,
+  );
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -70,6 +64,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
     { result: delegatee },
     { result: delegators },
     { result: summary },
+
+    { result: referendumsSummary },
+    { result: period },
   ] = await Promise.all([
     ssrNextApi.fetch(`referenda/tracks/${id}/turnout`),
     ssrNextApi.fetch(`referenda/tracks/${id}/delegatee`, {
@@ -81,15 +78,23 @@ export const getServerSideProps = withLoginUser(async (context) => {
       pageSize: 25,
     }),
     ssrNextApi.fetch(`referenda/tracks/${id}/summary`),
+
+    ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
+    ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
   ]);
 
   return {
     props: {
       track: track ?? {},
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
       turnout: turnout ?? [],
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,
       summary: summary ?? {},
+
+      referendumsSummary: referendumsSummary ?? {},
+      period: period ?? {},
     },
   };
 });

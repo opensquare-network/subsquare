@@ -55,7 +55,7 @@ function PublicProposalContent({ comments }) {
 
   const onSecondFinalized = useWaitSyncBlock(
     "Proposal seconded",
-    refreshPageData
+    refreshPageData,
   );
 
   return (
@@ -147,7 +147,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {

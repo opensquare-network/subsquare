@@ -1,1 +1,35 @@
 @import "@osn/react-cmdk/dist/cmdk.css";
+
+.command-palette {
+  @apply z-50;
+
+  & .command-palette-content h4 {
+    @apply py-2 tracking-[0.16em] text12Bold;
+  }
+
+  & .command-palette-content .fixed.inset-0 {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  & .command-palette-content-panel {
+    @apply bg-neutral100;
+  }
+
+  & .command-palette-list-item {
+    &.bg-gray-200\/50 {
+      @apply bg-neutral200;
+    }
+    &.bg-gray-800 {
+      @apply bg-neutral200;
+    }
+
+    &:hover {
+      @apply bg-neutral200;
+    }
+
+    & div:first-child {
+      width: auto;
+      @apply text14Medium text-textPrimary capitalize;
+    }
+  }
+}

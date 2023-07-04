@@ -26,14 +26,14 @@ const ListItem = styled.div`
         `
       : css`
           :hover {
-            background: ${(p) => p.theme.grey100Bg};
+            background: var(--neutral200);
           }
         `}
 
   ${(p) =>
     p.selected &&
     css`
-      background: ${(p) => p.theme.grey100Bg};
+      background: var(--neutral200);
     `}
 `;
 
@@ -41,19 +41,19 @@ const TrackName = styled.span`
   ${(p) =>
     p.disabled &&
     css`
-      color: ${(p) => p.theme.textPlaceholder};
+      color: var(--textDisabled);
     `}
 `;
 
 const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background: ${(p) => p.theme.grey200Border};
+  background: var(--gray200);
   margin: 8px 0;
 `;
 
 const Info = styled.span`
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 export default function DropDownList({

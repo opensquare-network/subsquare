@@ -1,5 +1,5 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import HomeLayout from "next-common/components/layout/HomeLayout";
+import ListLayout from "next-common/components/layout/ListLayout";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Members from "components/council/members";
@@ -7,7 +7,7 @@ import MembersNoElections from "components/council/membersNoElections";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
+export default withLoginUserRedux(() => {
   const category = "Council Members";
   const seoInfo = { title: category, desc: category };
 
@@ -22,13 +22,13 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
   }
 
   return (
-    <HomeLayout
+    <ListLayout
       seoInfo={seoInfo}
-      tracks={tracks}
-      fellowshipTracks={fellowshipTracks}
+      title={category}
+      description="Council members"
     >
       {members}
-    </HomeLayout>
+    </ListLayout>
   );
 });
 

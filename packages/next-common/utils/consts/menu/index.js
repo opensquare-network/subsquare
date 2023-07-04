@@ -11,6 +11,7 @@ import { getFellowshipMenu } from "./fellowship";
 import isMoonChain from "next-common/utils/isMoonChain";
 import treasuryCouncil from "./treasuryCouncil";
 import openTechCommittee from "./openTechCommittee";
+import { CHAIN } from "next-common/utils/constants";
 
 export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
   if (isMoonChain()) {
@@ -30,8 +31,8 @@ export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
     commonMenus,
     getReferendaMenu(tracks),
     getFellowshipMenu(fellowshipTracks),
-    democracy,
     treasury,
+    democracy,
     council,
     techComm,
     financialCouncil,
@@ -51,4 +52,51 @@ export const allHomeMenuNames = getHomeMenu()
  */
 export function getHomeMenuGroupDefaultBehaviorByCounts(counts = 3) {
   return counts > 3 ? "collapse" : "expand";
+}
+
+export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
+  const [commonMenu] = getHomeMenu({ tracks, fellowshipTracks });
+  commonMenu.items = commonMenu.items.filter(
+    (i) => !i?.excludeToChains?.includes?.(CHAIN),
+  );
+  return commonMenu.items;
+}
+
+export function getFeaturedMenu({ tracks = [], fellowshipTracks = [] }) {
+  const menu = getHomeMenu({ tracks, fellowshipTracks });
+  // drop common menu
+  const featureMenuData = menu.slice(1);
+  return featureMenuData
+    .map((m) => {
+      if (m?.archivedToChains?.includes?.(CHAIN)) {
+        return null;
+      }
+
+      if (m?.excludeToChains?.includes?.(CHAIN)) {
+        return null;
+      }
+
+      m.items =
+        m.items?.filter?.((i) => !i?.excludeToChains?.includes?.(CHAIN)) ?? [];
+
+      return m;
+    })
+    .filter(Boolean);
+}
+
+export function getArchivedMenu({ tracks = [], fellowshipTracks = [] } = {}) {
+  const menu = getHomeMenu({ tracks, fellowshipTracks });
+  // drop common menu
+  const archivedMenuData = menu.slice(1);
+  return archivedMenuData
+    .map((m) => {
+      if (m?.excludeToChains?.includes?.(CHAIN)) {
+        return null;
+      }
+
+      if (m?.archivedToChains?.includes?.(CHAIN)) {
+        return m;
+      }
+    })
+    .filter(Boolean);
 }

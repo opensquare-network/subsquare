@@ -3,6 +3,7 @@ import DarkModeLogo from "../../../assets/header-logos/karura-dark.svg";
 import Avatar from "../../../assets/icons/chain/karura.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
+import { ProjectLogoKaruraDark } from "@osn/icons/subsquare";
 
 export const DEFAULT_KARURA_NODES = [
   {
@@ -35,6 +36,29 @@ export const DEFAULT_KARURA_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://acala.network/karura",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/KaruraNetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/acalaofficial",
+  },
+  {
+    name: "discord",
+    url: "https://www.acala.gg/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/AcalaNetwork",
+  },
+];
+
 const karura = {
   value: "karura",
   name: "Karura",
@@ -48,10 +72,14 @@ const karura = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoKaruraDark,
+  navLogoDark: ProjectLogoKaruraDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
   useVoteCall: true,
+  description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
 };
 
 export default karura;

@@ -30,8 +30,14 @@ function PopupContent({
 
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
   const signerAccount = useSignerAccount(extensionAccounts);
-  const [balance, loadingBalance] = useAddressBalance(api, signerAccount?.realAddress);
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(api, signerAccount?.address);
+  const [balance, loadingBalance] = useAddressBalance(
+    api,
+    signerAccount?.realAddress,
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
+    api,
+    signerAccount?.address,
+  );
 
   const [calling, setCalling] = useState(false);
 
@@ -69,10 +75,7 @@ function PopupContent({
       />
       <div>
         <PopupLabel text={"Referendum ID"} />
-        <Input
-          value={referendumIndex}
-          disabled={true}
-        />
+        <Input value={referendumIndex} disabled={true} />
       </div>
       <div>
         <PopupLabel text={"Decision Deposit"} />
@@ -93,5 +96,11 @@ function PopupContent({
 }
 
 export default function DepositPopup(props) {
-  return <PopupWithAddress title="Place decision deposit" Component={PopupContent} {...props} />;
+  return (
+    <PopupWithAddress
+      title="Place decision deposit"
+      Component={PopupContent}
+      {...props}
+    />
+  );
 }

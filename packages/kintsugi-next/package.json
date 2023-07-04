@@ -12,8 +12,10 @@
   "dependencies": {
     "@interlay/monetary-js": "^0.5.3",
     "@next/env": "^13.3.0",
+    "@osn/icons": "^1.16.1",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
+    "clsx": "^1.2.1",
     "cookies": "^0.8.0",
     "dayjs": "^1.10.7",
     "http-proxy": "^1.18.1",
@@ -29,6 +31,7 @@
     "sass": "^1.38.0",
     "sharp": "^0.32.0",
     "styled-components": "^5.3.9",
+    "tailwind-styled-components": "^2.2.0",
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {

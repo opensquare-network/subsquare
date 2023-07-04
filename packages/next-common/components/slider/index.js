@@ -18,18 +18,16 @@ const StyledThumb = styled.div`
   align-items: center;
   justify-content: center;
   cursor: grab;
-  background: ${(p) => p.theme.neutral};
+  background: var(--neutral100);
   width: 20px;
   height: 20px;
-  box-shadow: 0px 6px 22px ${(p) => p.theme.textPrimary}1C,
-    0px 1.34018px 4.91399px ${(p) => p.theme.textPrimary}0F,
-    0px 0.399006px 1.46302px ${(p) => p.theme.textPrimary}0A;
+  box-shadow: var(--shadow200);
   border-radius: 4px;
   &:focus-visible {
     outline: none;
   }
   svg path {
-    stroke: ${(p) => p.theme.grey400Border};
+    stroke: var(--neutral500);
   }
 `;
 
@@ -41,7 +39,7 @@ const StyledThumbValue = styled.div`
   justify-content: center;
   width: 100%;
   ${p_12_normal}
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
 `;
 
 function useThumb({ formatValue = (val) => val }) {
@@ -61,10 +59,10 @@ const StyledTrack = styled.div`
   bottom: 0;
   background: ${(props) =>
     props.index === 2
-      ? props.theme.grey100Bg
+      ? "var(--neutral200)"
       : props.index === 1
-      ? props.theme.grey300Border
-      : props.theme.grey100Bg};
+      ? "var(--neutral400)"
+      : "var(--neutral200)"};
 `;
 
 const Track = (props, state) => <StyledTrack {...props} index={state.index} />;

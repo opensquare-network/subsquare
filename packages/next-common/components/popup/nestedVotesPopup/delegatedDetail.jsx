@@ -24,8 +24,6 @@ import {
   gap_x,
   gap_y,
   items_center,
-  text_primary,
-  text_tertiary,
 } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
 import { smcss } from "next-common/utils/responsive";
@@ -47,19 +45,19 @@ const StyledPopupListWrapper = styled(PopupListWrapper)`
 `;
 
 const StyledAccountSVG = styled(AccountSVG)`
-  fill: ${(p) => p.theme.textTertiary};
+  fill: var(--textTertiary);
 `;
 const StyledConvictionSVG = styled(ConvictionSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 const StyledCapitalSVG = styled(BalanceSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 const StyledDelegatorsSVG = styled(AddressesSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 const StyledTotalDelegationSvg = styled(SupportSVG)`
-  stroke: ${(p) => p.theme.textTertiary};
+  stroke: var(--textTertiary);
 `;
 
 const DetailDescriptionLabel = styled.div`
@@ -68,7 +66,7 @@ const DetailDescriptionLabel = styled.div`
   ${gap_x(8)};
 `;
 const DetailSelfVotesAnnotation = styled.span`
-  ${text_tertiary};
+  color: var(--textTertiary);
 `;
 
 const DescriptionsGroup = styled.div`
@@ -83,7 +81,7 @@ const DelegationListTitle = styled.h3`
   margin: 0;
   margin-bottom: 8px;
   ${p_14_bold};
-  ${text_primary};
+  color: var(--textPrimary);
 `;
 
 function getAnnotation(data = {}) {

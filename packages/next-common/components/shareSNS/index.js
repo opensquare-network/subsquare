@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   display: flex;
   padding-left: 16px;
   height: 14px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
   cursor: pointer;
 
   > div {
@@ -25,24 +25,24 @@ const Wrapper = styled.div`
 
   svg {
     rect {
-      fill: ${(props) => props.theme.textTertiary};
+      fill: var(--textTertiary);
     }
 
     path {
-      fill: ${(props) => props.theme.textTertiary};
+      fill: var(--textTertiary);
     }
   }
 
   &:hover {
-    color: ${(p) => p.theme.textSecondary};
+    color: var(--textSecondary);
 
     svg {
       rect {
-        fill: ${(props) => props.theme.textSecondary};
+        fill: var(--textSecondary);
       }
 
       path {
-        fill: ${(props) => props.theme.textSecondary};
+        fill: var(--textSecondary);
       }
     }
   }

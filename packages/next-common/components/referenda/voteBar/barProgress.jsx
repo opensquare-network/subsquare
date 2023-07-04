@@ -23,13 +23,13 @@ const BarContainer = styled.div`
 `;
 
 const AyesBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryGreen500};
+  background-color: var(--green500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;
 
 const NaysBar = styled.div`
-  background-color: ${(props) => props.theme.secondaryRed500};
+  background-color: var(--red500);
   width: ${(p) => p.precent}%;
   height: 100%;
 `;

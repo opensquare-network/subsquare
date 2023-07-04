@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Tab from "../tab";
 
 const Count = styled.span`
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 export const SubSquare = "SubSquare";

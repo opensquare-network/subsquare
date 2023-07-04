@@ -14,7 +14,7 @@ import {
   useMenuHasTreasuryChildBounties,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
-import Summary from "../summaryBase";
+import Summary from "../v2/base";
 import isMoonChain from "next-common/utils/isMoonChain";
 
 const ContentWrapper = styled.div`
@@ -26,7 +26,7 @@ const TypeGroup = styled(Flex)`
       content: "${(p) => p.separator || "·"}";
       display: inline-block;
       margin: 0 4px;
-      color: ${(p) => p.theme.textPlaceholder};
+      color: var(--textDisabled);
     }
   }
 `;

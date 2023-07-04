@@ -8,8 +8,8 @@ const Wrapper = styled.div`
   align-items: start;
   padding-top: 12px;
   padding-bottom: 12px;
-  color: ${(props) => props.theme.textPrimary};
-  border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+  color: var(--textPrimary);
+  border-bottom: 1px solid var(--neutral300);
 
   @media (max-width: 768px) {
     display: block;
@@ -32,11 +32,11 @@ const Content = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 140%;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   word-break: break-all;
 
   a {
-    color: ${(props) => props.theme.secondarySapphire500};
+    color: var(--sapphire500);
     font-weight: 500;
 
     &:hover {

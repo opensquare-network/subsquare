@@ -16,14 +16,14 @@ import SecondaryButton from "./buttons/secondaryButton";
 const CaretWrapper = styled.div`
   cursor: pointer;
   padding: 6px 7px 5px 7px;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
 
   :hover {
-    border-color: ${(props) => props.theme.grey400Border};
+    border-color: var(--neutral500);
   }
   * {
-    stroke: ${(props) => props.theme.textPrimary};
+    stroke: var(--textPrimary);
   }
 
   ${(p) =>
@@ -32,14 +32,14 @@ const CaretWrapper = styled.div`
       cursor: not-allowed;
       pointer-events: none;
       * {
-        stroke: ${(props) => props.theme.textPlaceholder};
+        stroke: var(--textDisabled);
       }
       :hover {
-        border-color: ${(props) => props.theme.grey300Border};
+        border-color: var(--neutral400);
       }
     `}
   * {
-    stroke: ${(props) => props.theme.textPrimary};
+    stroke: var(--textPrimary);
   }
 `;
 
@@ -69,35 +69,35 @@ const DateTimeWrapper = styled.div``;
 const Label = styled.span`
   width: 91px;
   line-height: 36px;
-  background: ${(props) => props.theme.grey100Bg};
-  border-right: 1px solid ${(props) => props.theme.grey300Border};
+  background: var(--neutral200);
+  border-right: 1px solid var(--neutral400);
   text-align: center;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const DateTime = styled.span`
   padding-left: 16px;
   flex-grow: 1;
   text-align: left;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const PlaceHolder = styled.span`
   padding-left: 16px;
   flex-grow: 1;
   text-align: left;
-  color: ${(props) => props.theme.textPlaceholder};
+  color: var(--textDisabled);
 `;
 
 const DateButton = styled.div`
   overflow: hidden;
   padding-right: 12px;
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
 
   :hover {
-    border-color: ${(props) => props.theme.grey200Border};
+    border-color: var(--neutral300);
   }
 
   display: flex;
@@ -109,7 +109,7 @@ const DateButton = styled.div`
   line-height: 24px;
 
   .placeholder {
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 
   > div {
@@ -119,7 +119,7 @@ const DateButton = styled.div`
   ${(p) =>
     p.active &&
     css`
-      border-color: ${(props) => props.theme.grey300Border};
+      border-color: var(--neutral400);
     `}
 `;
 
@@ -131,8 +131,8 @@ const DateWrapper = styled.div`
   top: 50%;
   margin-top: -280px;
   padding: 24px;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border}
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300)
   box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
     0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
     0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
@@ -157,12 +157,12 @@ const DateWrapper = styled.div`
   h6 + span {
     font-size: 12px;
     font-weight: 500;
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 
   .react-datepicker {
     padding: 20px 12px;
-    border: 1px solid ${(props) => props.theme.grey300Border};
+    border: 1px solid var(--neutral400);
     border-radius: 4px;
   }
 
@@ -178,7 +178,7 @@ const DateWrapper = styled.div`
     ${p_14_medium};
     line-height: 32px;
     text-align: center;
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
     margin: 0 !important;
   }
 
@@ -196,7 +196,7 @@ const DateWrapper = styled.div`
     ${font_family};
     ${p_14_normal};
     line-height: 32px;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -204,7 +204,7 @@ const DateWrapper = styled.div`
     border-radius: 4px;
 
     :hover {
-      background: ${(props) => props.theme.grey100Bg};
+      background: var(--neutral200);
     }
   }
 
@@ -215,14 +215,14 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day--selected {
-    background: ${(props) => props.theme.grey200Border};
+    background: var(--neutral300);
     &:hover {
-      background: ${(props) => props.theme.grey200Border};
+      background: var(--neutral300);
     }
   }
 
   .react-datepicker__day--outside-month {
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 
   .react-datepicker__day--keyboard-selected {
@@ -230,7 +230,7 @@ const DateWrapper = styled.div`
   }
 
   .react-datepicker__day--disabled {
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
     cursor: not-allowed;
 
     &:hover {
@@ -291,7 +291,7 @@ const DateHeader = styled(Flex)`
   > b {
     ${font_family};
     text-align: center;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     flex: 1 1 auto;
   }
 
@@ -299,7 +299,7 @@ const DateHeader = styled(Flex)`
     cursor: pointer;
 
     path {
-      fill: ${(props) => props.theme.textSecondary};
+      fill: var(--textSecondary);
     }
   }
 `;

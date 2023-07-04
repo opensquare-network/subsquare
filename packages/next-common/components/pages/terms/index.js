@@ -14,17 +14,17 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   margin-top: 16px;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
-  box-shadow: ${(props) => props.theme.shadow100};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
+  box-shadow: var(--shadow100);
   border-radius: 6px;
   padding: 48px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   p,
   h2,
   li {
-    color: ${(props) => props.theme.textPrimary} !important;
+    color: var(--textPrimary) !important;
   }
 `;
 

@@ -25,15 +25,15 @@ const Choice = styled.div`
   ${(p) =>
     p.selected
       ? css`
-          color: ${(p) => p.theme.primaryPurple500};
-          border: 1px solid ${(p) => p.theme.primaryPurple500}66;
+          color: var(--purple500);
+          border: 1px solid var(--purple500);
         `
       : css`
-          color: ${(p) => p.theme.textSecondary};
-          border: 1px solid ${(p) => p.theme.grey300Border};
+          color: var(--textSecondary);
+          border: 1px solid var(--neutral400);
           :hover {
-            color: ${(p) => p.theme.textPrimary};
-            border-color: ${(p) => p.theme.grey400Border};
+            color: var(--textPrimary);
+            border-color: var(--neutral500);
           }
         `}
 `;

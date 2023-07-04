@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 
 import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
+import "next-common/styles/tailwind.css";
 import { store } from "next-common/store";
 import "next-common/styles/richTextStyles.scss";
 import "react-datepicker/dist/react-datepicker.css";
@@ -12,6 +13,7 @@ import React, { useEffect } from "react";
 import GlobalProvider from "next-common/context/global";
 import "next-common/styles/cmdk.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Head from "next/head";
 
 NProgress.configure({
   minimum: 0.3,
@@ -22,15 +24,15 @@ NProgress.configure({
 
 Router.events.on(
   "routeChangeStart",
-  (url, { shallow }) => !shallow && NProgress.start()
+  (url, { shallow }) => !shallow && NProgress.start(),
 );
 Router.events.on(
   "routeChangeComplete",
-  (url, { shallow }) => !shallow && NProgress.done()
+  (url, { shallow }) => !shallow && NProgress.done(),
 );
 Router.events.on(
   "routeChangeError",
-  (url, { shallow }) => !shallow && NProgress.done()
+  (url, { shallow }) => !shallow && NProgress.done(),
 );
 
 function MyApp({ Component, pageProps }) {
@@ -47,20 +49,29 @@ function MyApp({ Component, pageProps }) {
     homeExpandedMenus,
     themeMode,
     pageProperties,
+    navCollapsed,
+    navSubmenuVisible,
     ...otherProps
   } = pageProps;
   return (
-    <Provider store={store}>
-      <GlobalProvider
-        user={loginUser}
-        chain={process.env.NEXT_PUBLIC_CHAIN}
-        homeExpandedMenus={homeExpandedMenus}
-        themeMode={themeMode}
-        pageProperties={pageProperties}
-      >
-        <Component {...otherProps} />
-      </GlobalProvider>
-    </Provider>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+      </Head>
+      <Provider store={store}>
+        <GlobalProvider
+          user={loginUser}
+          chain={process.env.NEXT_PUBLIC_CHAIN}
+          homeExpandedMenus={homeExpandedMenus}
+          themeMode={themeMode}
+          pageProperties={pageProperties}
+          navCollapsed={navCollapsed}
+          navSubmenuVisible={navSubmenuVisible}
+        >
+          <Component {...otherProps} />
+        </GlobalProvider>
+      </Provider>
+    </>
   );
 }
 

@@ -1,4 +1,3 @@
-import isNil from "lodash.isnil";
 import { usePreferredColorScheme } from "next-common/utils/hooks/usePreferredColorScheme";
 import React, {
   createContext,
@@ -7,52 +6,83 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import dark from "../../components/styled/theme/dark";
-import light from "../../components/styled/theme/light";
+import { ThemeProvider } from "styled-components";
+import light from "../../styles/light";
+import dark from "../../styles/dark";
 import { CACHE_KEY } from "../../utils/constants";
-import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
+import { setCookie } from "../../utils/viewfuncs/cookies";
+import { useChainSettings } from "../chain";
 
-const ThemeModeContext = createContext(null);
+const ThemeModeContext = createContext({});
 
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
-  const [themeMode, setThemeMode] = useState(defaultThemeMode);
-  const preferred = usePreferredColorScheme();
-
-  useEffect(() => {
-    if (!isNil(defaultThemeMode)) {
-      return;
-    }
-    setThemeMode(preferred);
-  }, [preferred]);
+  const [themeMode, setThemeMode] = useState(defaultThemeMode || "system");
 
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
-      {children}
+      <ThemeValueProvider>{children}</ThemeValueProvider>
     </ThemeModeContext.Provider>
   );
 }
 
+/**
+ * @typedef {'light' | 'dark'} Mode
+ * @typedef {Mode | 'system'} ThemeMode
+ * @typedef {(value: ThemeMode) => void} SetThemeMode
+ *
+ * @returns {[Mode, SetThemeMode, ThemeMode]} mode is only `light` or `dark`, themeMode can be `light`, `dark` or `system`
+ */
 export function useThemeMode() {
-  const { themeMode } = useContext(ThemeModeContext);
-  return themeMode || "light";
+  const { themeMode, setThemeMode } = useContext(ThemeModeContext);
+  const preferredColorScheme = usePreferredColorScheme();
+  const mode = themeMode === "system" ? preferredColorScheme : themeMode;
+
+  /**
+   * @type {SetThemeMode}
+   */
+  function set(value) {
+    setThemeMode(value);
+    setCookie(CACHE_KEY.themeMode, value);
+  }
+
+  return [mode, set, themeMode];
+}
+
+function ThemeValueProvider({ children }) {
+  const isDark = useIsDark();
+  const theme = useThemeSetting();
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [isDark]);
+
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+}
+
+export function useIsDark() {
+  const [mode] = useThemeMode();
+  return mode === "dark";
 }
 
 export function useThemeSetting() {
-  const themeMode = useThemeMode();
-  return themeMode === "dark" ? dark : light;
-}
+  const chainSettings = useChainSettings();
+  const [mode] = useThemeMode();
 
-export function useSetThemeMode() {
-  const { setThemeMode } = useContext(ThemeModeContext);
+  /**
+   * @type {typeof light.base & typeof light.chain.kusama}
+   */
+  const mergedLight = { ...light.base, ...light.chain[chainSettings.value] };
+  /**
+   * @type {typeof light.base & typeof light.chain.kusama}
+   */
+  const mergedDark = { ...dark.base, ...dark.chain[chainSettings.value] };
 
-  const themeModeSetter = useCallback((mode) => {
-    setThemeMode(mode);
-    if (getCookie(CACHE_KEY.themeMode) !== mode) {
-      setCookie(CACHE_KEY.themeMode, mode);
-    }
-  }, []);
-
-  return themeModeSetter;
+  return mode === "dark" ? mergedDark : mergedLight;
 }
 
 export function useToggleThemeMode() {

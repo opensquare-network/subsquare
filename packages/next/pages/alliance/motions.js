@@ -1,27 +1,31 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import {
+  ssrNextApi as nextApi,
+  ssrNextApi,
+} from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allianceMotion";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
+import ListLayout from "next-common/components/layout/ListLayout";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(({ motions }) => {
   const items = motions.items.map((item) => normalizeAllianceMotion(item));
 
+  const seoInfo = {
+    title: "Alliance motions",
+    desc: "Alliance motions",
+  };
+
   return (
-    <HomeLayout
-      seoInfo={{
-        title: "Alliance motions",
-        desc: "Alliance motions",
-      }}
-    >
+    <ListLayout seoInfo={seoInfo} title={seoInfo.title}>
       <PostList
         category={businessCategory.allianceMotions}
         items={items}
         pagination={motions}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 
@@ -32,9 +36,16 @@ export const getServerSideProps = withLoginUser(async (context) => {
     pageSize: pageSize ?? 50,
   });
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       motions: motions ?? EmptyList,
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });

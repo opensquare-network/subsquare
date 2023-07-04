@@ -14,7 +14,7 @@ const Title = styled(Flex)`
   gap: 8px;
 
   ${p_14_medium};
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export default function DelegationSummary({ delegations, beenDelegatedList }) {

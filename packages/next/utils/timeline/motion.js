@@ -44,7 +44,7 @@ function getTimelineItemCommonData(item, motion, type) {
 export function createMotionTimelineData(
   motion = {},
   linkable = false,
-  linkPrefix = ""
+  linkPrefix = "",
 ) {
   const {
     indexer,

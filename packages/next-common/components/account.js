@@ -18,7 +18,7 @@ const NameWrapper = styled.div`
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 `;
 

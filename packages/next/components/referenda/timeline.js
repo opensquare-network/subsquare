@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 const getTimelineData = (args, method) => {
   switch (method) {
     case "Executed":
+      // eslint-disable-next-line no-case-declarations
       const rawResult = args.result;
+      // eslint-disable-next-line no-case-declarations
       let result;
       if (typeof rawResult === "boolean") {
         result = rawResult;

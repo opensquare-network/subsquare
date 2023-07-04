@@ -34,7 +34,9 @@ function getTimelineData(args, method) {
         ),
       };
     case "Executed":
+      // eslint-disable-next-line no-case-declarations
       const rawResult = args.result;
+      // eslint-disable-next-line no-case-declarations
       let result;
       if (typeof rawResult === "boolean") {
         result = rawResult;
@@ -51,7 +53,7 @@ function getTimelineData(args, method) {
 
 export function getDemocracyTimelineData(
   timeline,
-  type = detailPageCategory.DEMOCRACY_PROPOSAL
+  type = detailPageCategory.DEMOCRACY_PROPOSAL,
 ) {
   return timeline.map((item) => ({
     time: formatTime(item.indexer.blockTime),

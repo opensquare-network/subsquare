@@ -9,18 +9,18 @@ const OptionWrapper = styled.div`
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
-  color: ${(props) => props.theme.textPrimary};
-  background: ${(props) => props.theme.neutral};
-  border-color: ${(props) => props.theme.grey300Border};
+  color: var(--textPrimary);
+  background: var(--neutral100);
+  border-color: var(--neutral400);
   :hover {
-    background-color: ${(props) => props.theme.grey100Bg};
+    background-color: var(--neutral200);
   }
 
   ${(p) =>
     p.active &&
     css`
-      color: ${(props) => props.theme.textPrimary};
-      background-color: ${(props) => props.theme.grey100Bg};
+      color: var(--textPrimary);
+      background-color: var(--neutral200);
     `}
 `;
 

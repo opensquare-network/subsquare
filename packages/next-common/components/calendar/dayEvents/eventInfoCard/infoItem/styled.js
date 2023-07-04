@@ -11,7 +11,7 @@ export const ItemValue = styled.span`
 `;
 
 export const ItemLink = styled.a`
-  color: ${(p) => p.theme.secondarySapphire500};
+  color: var(--sapphire500);
   :hover {
     text-decoration: underline;
   }

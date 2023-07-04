@@ -10,7 +10,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
 
 const Wrapper = styled.div`
-  color: ${(p) => p.theme.textPrimary};
+  color: var(--textPrimary);
   margin-top: 24px;
 `;
 

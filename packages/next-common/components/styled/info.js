@@ -3,11 +3,11 @@ import Flex from "./flex";
 
 const Info = styled(Flex)`
   font-size: 12px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   svg {
     margin-right: 4px;
     path {
-      stroke: ${(props) => props.theme.textTertiary};
+      stroke: var(--textTertiary);
     }
   }
 `;

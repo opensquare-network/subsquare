@@ -5,7 +5,7 @@ import { p_12_medium } from "next-common/styles/componentCss";
 const Text = styled.button`
   user-select: none;
   ${p_12_medium};
-  color: ${(props) => props.theme.primaryPurple500};
+  color: var(--purple500);
   background-color: transparent;
   border: none;
 
@@ -16,7 +16,7 @@ const Text = styled.button`
   ${(p) =>
     p.disabled &&
     css`
-      color: ${(props) => props.theme.textTertiary};
+      color: var(--textTertiary);
       cursor: not-allowed !important;
     `}
 `;

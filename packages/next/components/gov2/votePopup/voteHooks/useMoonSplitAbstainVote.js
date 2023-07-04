@@ -38,7 +38,7 @@ export default function useMoonSplitAbstainVote({
         abstainInputVoteBalance,
         node.decimals,
         "abstain vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);
@@ -51,7 +51,7 @@ export default function useMoonSplitAbstainVote({
         ayeInputVoteBalance,
         node.decimals,
         "aye vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);
@@ -64,7 +64,7 @@ export default function useMoonSplitAbstainVote({
         nayInputVoteBalance,
         node.decimals,
         "nay vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);

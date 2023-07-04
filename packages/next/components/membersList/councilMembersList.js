@@ -9,15 +9,9 @@ import { useState } from "react";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useChainSettings } from "next-common/context/chain";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 import MemberListTable from "next-common/components/memberListTable";
 
 const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -27,7 +21,7 @@ const Wrapper = styled.div`
       display: none;
     }
     th.clickable {
-      color: ${(props) => props.theme.textSecondary};
+      color: var(--textSecondary);
       cursor: pointer;
       pointer-events: auto;
     }
@@ -41,10 +35,10 @@ const Member = styled.div`
 `;
 
 const BalanceWrapper = styled.span`
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 const SymbolWrapper = styled.span`
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 function Balance({ value }) {
@@ -54,7 +48,7 @@ function Balance({ value }) {
     <div>
       <BalanceWrapper>
         {bigNumber2Locale(
-          decimalPlaces(toPrecision(value ?? 0, node.decimals), 4)
+          decimalPlaces(toPrecision(value ?? 0, node.decimals), 4),
         )}
       </BalanceWrapper>
       <SymbolWrapper style={{ color: "#9DA9BB", marginLeft: "8px" }}>
@@ -88,7 +82,7 @@ function MembersList({
         style: { textAlign: "right" },
         className: hideColumn === "votes" ? "autohide" : "clickable",
         onClick: () => setHideColumn("votes"),
-      }
+      },
     );
   }
 

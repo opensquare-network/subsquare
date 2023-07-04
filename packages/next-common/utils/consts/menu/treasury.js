@@ -1,26 +1,22 @@
 import Chains from "../chains";
 import { getExcludeChains } from "../../viewfuncs";
-import ProposalIcon from "../../../assets/imgs/icons/proposals.svg";
 import React from "react";
-import BountyIcon from "../../../assets/imgs/icons/bounties.svg";
-import TipIcon from "../../../assets/imgs/icons/tips.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuTreasury } from "@osn/icons/subsquare";
 
 const treasury = {
   name: "TREASURY",
   excludeToChains: [
-    Chains.kabocha, Chains["westend-collectives"], Chains.collectives,
+    Chains.kabocha,
+    Chains["westend-collectives"],
+    Chains.collectives,
   ],
+  icon: <MenuTreasury />,
+  pathname: "/treasury",
   items: [
     {
       value: "proposals",
       name: "Proposals",
       pathname: "/treasury/proposals",
-      icon: (
-        <MenuIconWrapper>
-          <ProposalIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "bounties",
@@ -39,11 +35,6 @@ const treasury = {
         Chains.moonriver,
         Chains.moonbeam,
       ],
-      icon: (
-        <MenuIconWrapper>
-          <BountyIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "child-bounties",
@@ -56,11 +47,6 @@ const treasury = {
         Chains.khala,
         Chains.phala,
       ]),
-      icon: (
-        <MenuIconWrapper>
-          <BountyIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "tips",
@@ -77,11 +63,6 @@ const treasury = {
         Chains.moonriver,
         Chains.moonbeam,
       ],
-      icon: (
-        <MenuIconWrapper>
-          <TipIcon />
-        </MenuIconWrapper>
-      ),
     },
   ],
 };

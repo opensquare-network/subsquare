@@ -1,25 +1,25 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import MembersNoElections from "components/council/membersNoElections";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import ListLayout from "next-common/components/layout/ListLayout";
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks }) => {
+export default withLoginUserRedux(() => {
   const category = "Treasury Council Members";
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout
+    <ListLayout
       seoInfo={seoInfo}
-      tracks={tracks}
-      fellowshipTracks={fellowshipTracks}
+      title={category}
+      description="Treasury council members"
     >
       <MembersNoElections
         category={category}
         type={detailPageCategory.TREASURY_COUNCIL_MOTION}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 

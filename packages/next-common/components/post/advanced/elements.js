@@ -4,7 +4,7 @@ import FlexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import { p_14_normal, p_12_medium } from "../../../styles/componentCss";
 
 const notAllowedCss = css`
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   cursor: not-allowed !important;
 `;
 
@@ -23,7 +23,7 @@ export const FormToggler = styled.button`
   user-select: none;
   background-color: transparent;
   border: none;
-  color: ${(props) => props.theme.primaryPurple500};
+  color: var(--purple500);
   font-weight: 700;
   cursor: pointer;
 
@@ -65,7 +65,7 @@ export const PollFormOptionAddOptionButton = styled.button`
   background-color: transparent;
   border: none;
   ${p_12_medium};
-  color: ${(props) => props.theme.primaryPurple500};
+  color: var(--purple500);
   cursor: pointer;
 
   ${(p) => p.disabled && notAllowedCss}

@@ -16,31 +16,26 @@ import signalFast from "../../assets/imgs/icons/signal-fast.png";
 import darkSignalMedium from "../../assets/imgs/icons/dark-signal-medium.png";
 import darkSignalSlow from "../../assets/imgs/icons/dark-signal-slow.png";
 import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
-import light from "../styled/theme/light";
-import dark from "../styled/theme/dark";
 import { useChainSettings } from "../../context/chain";
 import { useThemeMode } from "../../context/theme";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 const SignalDefaultIcon = styled(SignalDefault)`
   path {
-    fill: ${(props) => props.theme.grey400Border};
+    fill: var(--neutral500);
   }
 `;
 
-const Wrapper = styled.div`
-  position: relative;
-`;
+const Wrapper = styled.div``;
 
 const SmallSelect = styled.div`
-  background: ${(props) => props.theme.neutral};
   width: 38px;
   height: 38px;
-  background: ${(props) => props.theme.neutral};
+  background-color: var(--neutral100);
   border-width: 1px;
   border-style: solid;
-  border-color: ${(props) => props.theme.grey300Border};
-  color: ${(props) => props.theme.textPrimary};
+  border-color: var(--neutral400);
+  color: var(--textPrimary);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -53,9 +48,10 @@ const SmallSelect = styled.div`
 `;
 
 const Select = styled.div`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey300Border};
-  color: ${(props) => props.theme.textPrimary};
+  background-color: var(--neutral100);
+  border: 1px solid;
+  border-color: var(--neutral400);
+  color: var(--textPrimary);
   border-radius: 4px;
   height: 38px;
   display: flex;
@@ -86,8 +82,9 @@ const Options = styled(NeutralPanel)`
   padding: 8px 0;
   width: 100%;
   z-index: 1;
-  color: ${(props) => props.theme.textPrimary};
-  border: 1px solid ${(props) => props.theme.grey200Border};
+  color: var(--textPrimary);
+  border: 1px solid;
+  border-color: var(--neutral300);
 
   ${(p) =>
     p.small &&
@@ -106,14 +103,14 @@ const Item = styled.div`
   line-height: 100%;
   cursor: pointer;
   white-space: nowrap;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   :hover {
-    background: ${(props) => props.theme.grey100Bg};
+    background-color: var(--neutral200);
   }
   ${(p) =>
     p.active &&
     css`
-      background: ${(props) => props.theme.grey100Bg};
+      background-color: var(--neutral200);
     `}
   > img {
     width: 24px;
@@ -139,7 +136,7 @@ export default function NodeSwitch({ small }) {
     chainSettings.endpoints[0],
   );
   const dispatch = useDispatch();
-  const mode = useThemeMode();
+  const [mode] = useThemeMode();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -171,20 +168,12 @@ export default function NodeSwitch({ small }) {
     return <img alt="" src={`${imgFile.src}`} width={24} height={24} />;
   };
 
-  const getSignalColor = (delay) => {
-    if (!delay || isNaN(delay))
-      return mode === "dark" ? dark.grey400Border : light.grey400Border;
-    if (delay >= 300) return light.secondaryRed500;
-    if (delay >= 100) return light.secondaryYellow500;
-    return light.secondaryGreen500;
-  };
-
   if (!currentNodeSetting) {
     return null;
   }
 
   return (
-    <Wrapper ref={ref}>
+    <Wrapper className="max-sm:relative" ref={ref}>
       {small && (
         <SmallSelect onClick={() => setShow(!show)}>
           {getSignalImg(currentNodeSetting?.delay)}
@@ -211,7 +200,6 @@ export default function NodeSwitch({ small }) {
                 setShow(false);
               }}
               active={item.url === currentNodeSetting.url}
-              color={getSignalColor(item?.delay)}
             >
               {getSignalImg(item?.delay)}
               <div>{`${item?.name}`}</div>

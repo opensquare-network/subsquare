@@ -23,7 +23,7 @@ export default withLoginUserRedux(
     const [quillRef, setQuillRef] = useState(null);
     const [content, setContent] = useState("");
     const [contentType, setContentType] = useState(
-      loginUser?.preference.editor || "markdown"
+      loginUser?.preference.editor || "markdown",
     );
     const users = useMentionList(detail, comments);
 
@@ -55,7 +55,7 @@ export default withLoginUserRedux(
         </DetailLayout>
       </PostProvider>
     );
-  }
+  },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
@@ -95,7 +95,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     ({ result: myVote } = await nextApi.fetch(
       `polls/${detail.poll._id}/myvote`,
       {},
-      options
+      options,
     ));
   }
 

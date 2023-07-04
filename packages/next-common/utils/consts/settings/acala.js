@@ -3,6 +3,10 @@ import DarkModeLogo from "../../../assets/header-logos/acala-dark.svg";
 import Avatar from "../../../assets/icons/chain/acala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
+import {
+  ProjectLogoAcalaDark,
+  ProjectLogoAcalaLight,
+} from "@osn/icons/subsquare";
 
 const DEFAULT_ACALA_NODES = [
   {
@@ -35,6 +39,29 @@ const DEFAULT_ACALA_NODES = [
   // },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://acala.network/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/AcalaNetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/acalaofficial",
+  },
+  {
+    name: "discord",
+    url: "https://www.acala.gg/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/AcalaNetwork",
+  },
+];
+
 const acala = {
   value: "acala",
   name: "Acala",
@@ -48,10 +75,14 @@ const acala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoAcalaLight,
+  navLogoDark: ProjectLogoAcalaDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
   useVoteCall: true,
+  description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
 };
 
 export default acala;

@@ -8,7 +8,7 @@ import HomeLayout from "next-common/components/layout/HomeLayout";
 
 export default withLoginUserRedux(({ motions, chain }) => {
   const items = (motions.items || []).map((item) =>
-    toAdvisoryMotionsListItem(chain, item)
+    toAdvisoryMotionsListItem(chain, item),
   );
   const category = businessCategory.advisoryMotions;
   const seoInfo = {

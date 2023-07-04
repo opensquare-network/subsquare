@@ -2,16 +2,16 @@ import styled from "styled-components";
 import { p_16_bold } from "../../styles/componentCss";
 
 const Content = styled.div`
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   ${p_16_bold};
 
   > .unit {
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 
   > .total {
     font-size: 12px;
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 
   > .upper {

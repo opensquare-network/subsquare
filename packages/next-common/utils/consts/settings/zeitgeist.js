@@ -7,6 +7,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
+import { ProjectLogoZeigeistDark } from "@osn/icons/subsquare";
 
 const defaultNodes = [
   {
@@ -20,6 +21,25 @@ const defaultNodes = [
   {
     name: "ZeitgeistPM",
     url: "wss://main.rpc.zeitgeist.pm/ws",
+  },
+];
+
+const links = [
+  {
+    name: "website",
+    url: "https://zeitgeist.pm",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/xv8HuA4s8v",
+  },
+  {
+    name: "github",
+    url: "https://github.com/ZeitgeistPM",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/ZeitgeistPM",
   },
 ];
 
@@ -38,10 +58,14 @@ const zeitgeist = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoZeigeistDark,
+  navLogoDark: ProjectLogoZeigeistDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
   hasSubscan: true,
   useVoteCall: true,
+  description: "A Prediction Markets protocol built on Polkadot. With the world’s leading forecasting minds, we’re building the best prediction markets app available.",
 };
 
 export default zeitgeist;

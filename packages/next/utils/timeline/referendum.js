@@ -6,7 +6,7 @@ import formatTime from "next-common/utils/viewfuncs/formatDate";
 export function createReferendumTimelineData(
   referendum = {},
   linkable = false,
-  linkPrefix = ""
+  linkPrefix = "",
 ) {
   const { referendumIndex, timeline = [] } = referendum;
 

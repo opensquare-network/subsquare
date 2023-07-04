@@ -3,12 +3,12 @@ import MenuFold from "../../assets/imgs/icons/menu-fold.svg";
 
 const MenuFoldIcon = styled(MenuFold)`
   g {
-    stroke: ${(p) => p.theme.textTertiary};
+    stroke: var(--textTertiary);
   }
 
   &:hover {
     path {
-      stroke: ${(p) => p.theme.textSecondary};
+      stroke: var(--textSecondary);
     }
   }
 `;

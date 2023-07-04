@@ -1,17 +1,9 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
-import { createGlobalStyle, useTheme } from "styled-components";
-import {
-  bg_theme,
-  p_y,
-  text_capitalize,
-  text_primary,
-} from "../../styles/tailwindcss";
-import { p_12_bold, p_14_medium } from "../../styles/componentCss";
+import { useTheme } from "styled-components";
 import { useEventListener } from "../../utils/hooks/useEventListener";
 import Link from "next/link";
 import { isExternalLink } from "../../utils";
-import MenuIcon from "../icons/menu";
 import commonMenus from "../../utils/consts/menu/common";
 import { useIsMacOS, usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
@@ -21,44 +13,7 @@ import {
   setCmdkPaletteVisible,
 } from "next-common/store/reducers/cmdkSlice";
 import { useSelector, useDispatch } from "react-redux";
-
-// next-common/styles/cmdk.css
-const CmdkGlobalStyle = createGlobalStyle`
-  .command-palette {
-    z-index: 1000;
-
-    .command-palette-content h4 {
-      ${p_12_bold};
-      letter-spacing: 0.16em;
-      ${p_y(8)};
-    }
-    .command-palette-content .fixed.inset-0 {
-      background-color: rgba(0, 0, 0, 0.25);
-    }
-    .command-palette-content-panel {
-      ${bg_theme("neutral")};
-    }
-    .command-palette-list-item {
-      &.bg-gray-200/50 {
-        background-color: ${(p) => p.theme.grey100Bg};
-      }
-      &.bg-gray-800 {
-        background-color: ${(p) => p.theme.grey100Bg};
-      }
-      
-      &:hover {
-        background-color: ${(p) => p.theme.grey100Bg};
-      }
-
-      & div:first-child  {
-        width: auto;
-        ${p_14_medium};
-        ${text_primary};
-        ${text_capitalize};
-      }
-    }
-  }
-`;
+import { SystemMenu } from "@osn/icons/subsquare";
 
 function renderCommandPaletteLink(props) {
   const { href, children, ...restProps } = props ?? {};
@@ -118,7 +73,7 @@ export default function CMDKPalette() {
               return {
                 id: m.name + "-" + i.name + `-${idx}`,
                 children: i.name,
-                icon: () => i.icon,
+                icon: () => i.icon && <span>{i.icon}</span>,
                 href: i.pathname,
               };
             }),
@@ -145,7 +100,11 @@ export default function CMDKPalette() {
                 return {
                   id: i.name,
                   children: i.name,
-                  icon: () => i.icon,
+                  icon: () => (
+                    <span className="[&_svg_path]:fill-textSecondary">
+                      {i.icon}
+                    </span>
+                  ),
                   href: i.pathname,
                 };
               }),
@@ -153,7 +112,9 @@ export default function CMDKPalette() {
                 return {
                   id: m.name,
                   children: m.name?.toLowerCase(),
-                  icon: () => <MenuIcon />,
+                  icon: () => (
+                    <SystemMenu className="[&_path]:fill-textSecondary" />
+                  ),
                   closeOnSelect: false,
                   onClick() {
                     setSearch("");
@@ -191,8 +152,6 @@ export default function CMDKPalette() {
 
   return (
     <>
-      <CmdkGlobalStyle />
-
       <CommandPalette
         page={page}
         onChangeSearch={setSearch}

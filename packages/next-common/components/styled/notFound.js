@@ -10,14 +10,14 @@ export const Wrapper = styled(PrimaryCard)`
 
   svg {
     path {
-      fill: ${(props) => props.theme.textPlaceholder};
+      fill: var(--textDisabled);
     }
   }
 `;
 
 export const H2 = styled.h2`
   margin: 16px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 export const P = styled.p`
@@ -26,5 +26,5 @@ export const P = styled.p`
   margin: 0;
   text-align: center;
   padding: 0;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
 `;

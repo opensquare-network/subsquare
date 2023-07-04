@@ -111,11 +111,11 @@ export const NavigationWrapper = styled(NoticeWrapper)`
 
   > div > svg {
     margin-right: 8px;
-    fill: ${(props) => props.theme.textTertiary};
+    fill: var(--textTertiary);
   }
 
   a {
-    color: ${(props) => props.theme.secondarySapphire500};
+    color: var(--sapphire500);
   }
 
   > :not(:first-child) {

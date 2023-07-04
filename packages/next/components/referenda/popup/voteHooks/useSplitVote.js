@@ -37,7 +37,7 @@ export default function useSplitVote({
         ayeInputVoteBalance,
         node.decimals,
         "aye vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);
@@ -50,7 +50,7 @@ export default function useSplitVote({
         nayInputVoteBalance,
         node.decimals,
         "nay vote balance",
-        true
+        true,
       );
     } catch (err) {
       showErrorToast(err.message);

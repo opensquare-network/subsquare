@@ -13,7 +13,7 @@ export default function CheckUnFinalized({ id }) {
       }
       return externals;
     },
-    [id]
+    [id],
   );
 
   return (

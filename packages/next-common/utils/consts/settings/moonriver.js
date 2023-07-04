@@ -7,6 +7,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
+import { ProjectLogoMoonriverDark } from "@osn/icons/subsquare";
 
 export const DEFAULT_MOONRIVER_NODES = [
   {
@@ -31,6 +32,8 @@ const moonriver = {
   endpoints: DEFAULT_MOONRIVER_NODES,
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
+  navLogo: ProjectLogoMoonriverDark,
+  navLogoDark: ProjectLogoMoonriverDark,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
@@ -52,6 +55,7 @@ const moonriver = {
       decimals: 18,
     },
   },
+  description: "Solidity Smart Contracts on Kusama. Moonriver is a community-led cousin parachain on Kusama and will provide a permanently incentivized canary network for Moonbeam.",
 };
 
 export default moonriver;

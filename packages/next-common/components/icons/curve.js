@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const CurveIcon = styled(Curve)`
   path {
-    stroke: ${(p) => p.theme.textTertiary};
+    stroke: var(--textTertiary);
   }
 `;
 

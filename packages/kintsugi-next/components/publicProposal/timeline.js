@@ -10,7 +10,7 @@ export default function PublicProposalTimeline({
   const proposal = getDemocracyTimelineData(publicProposalTimeline);
   const referendum = getDemocracyTimelineData(
     referendumTimeline,
-    detailPageCategory.DEMOCRACY_REFERENDUM
+    detailPageCategory.DEMOCRACY_REFERENDUM,
   );
   const all = [...proposal, ...referendum];
 

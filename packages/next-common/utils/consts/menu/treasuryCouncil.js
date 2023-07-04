@@ -1,33 +1,20 @@
-import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
-import React from "react";
-import MembersIcon from "../../../assets/imgs/icons/members.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuFinancialCouncil } from "@osn/icons/subsquare";
 
 const treasuryCouncil = {
   name: "TREASURY COUNCIL",
+  icon: <MenuFinancialCouncil />,
   items: [
     {
       value: "motions",
       name: "Motions",
       pathname: "/treasury-council/motions",
-      icon: (
-        <MenuIconWrapper>
-          <MotionIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "councilMembers",
       name: "Members",
       pathname: "/treasury-council/members",
-      icon: (
-        <MenuIconWrapper>
-          <MembersIcon />
-        </MenuIconWrapper>
-      ),
     },
   ],
-
 };
 
 export default treasuryCouncil;

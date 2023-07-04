@@ -1,46 +1,35 @@
 import React from "react";
 import Chains from "../chains";
-import ReferendaIcon from "../../../assets/imgs/icons/type-referenda.svg";
-import DemocracyProposalIcon from "../../../assets/imgs/icons/type-proposals.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuDemocracy } from "@osn/icons/subsquare";
 
 const democracy = {
   name: "DEMOCRACY",
   excludeToChains: [
-    Chains.kabocha, Chains.development, Chains["westend-collectives"],
+    Chains.kabocha,
+    Chains.development,
+    Chains["westend-collectives"],
     Chains.collectives,
   ],
+  archivedToChains: [Chains.kusama],
+  icon: <MenuDemocracy />,
+  pathname: "/democracy",
   items: [
     {
       value: "referenda",
       name: "Referenda",
       pathname: "/democracy/referenda",
-      icon: (
-        <MenuIconWrapper>
-          <ReferendaIcon />
-        </MenuIconWrapper>
-      ),
+      extraMatchNavMenuActivePathnames: ["/democracy/statistics"],
     },
     {
       value: "democracyProposals",
-      name: "Proposals",
+      name: "Public Proposals",
       pathname: "/democracy/proposals",
-      icon: (
-        <MenuIconWrapper>
-          <DemocracyProposalIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "democracyExternals",
       excludeToChains: [Chains.kintsugi, Chains.interlay],
-      name: "External",
+      name: "External Proposals",
       pathname: "/democracy/externals",
-      icon: (
-        <MenuIconWrapper>
-          <DemocracyProposalIcon />
-        </MenuIconWrapper>
-      ),
     },
   ],
 };

@@ -7,9 +7,6 @@ import { p_12_bold, p_12_normal } from "../../../styles/componentCss";
 import {
   block,
   border,
-  border_color_theme,
-  border_theme_grey200,
-  border_theme_grey400,
   cursor_pointer,
   flex,
   flex_col,
@@ -23,8 +20,6 @@ import {
   p,
   p_l,
   rounded_4,
-  text_secondary,
-  text_theme,
   w_full,
 } from "../../../styles/tailwindcss";
 import TooltipOrigin from "../../tooltip";
@@ -42,7 +37,7 @@ dayjs.extend(isToday);
 const CellLabel = styled.p`
   ${p_12_bold}
   ${m(0)}
-  ${text_secondary}
+  color: var(--textSecondary);
 `;
 
 const CellLabelMonth = styled.span`
@@ -68,28 +63,32 @@ const CellWrapper = styled.div`
   ${justify_between}
   ${p(8)}
   ${border}
-  ${border_theme_grey200}
+  border-color: var(--neutral300);
   ${rounded_4}
   text-align: left;
   ${cursor_pointer}
 
   &:hover {
-    ${border_theme_grey400}
+    border-color: var(--neutral500);
   }
 
-  ${(p) => p.isToday && border_theme_grey400}
+  ${(p) =>
+    p.isToday &&
+    css`
+      border-color: var(--neutral500);
+    `}
 
   ${(p) =>
     p.isSelectedDay &&
     css`
-      ${border_color_theme("primaryPurple500")}
+      border-color: var(--purple500);
 
       ${CellLabel} {
-        ${text_theme("primaryPurple500")}
+        color: var(--purple500);
       }
 
       &:hover {
-        ${border_color_theme("primaryPurple500")}
+        border-color: var(--purple500);
       }
     `}
 `;
@@ -257,7 +256,7 @@ export default function FullCalendarMonthDateCell({
                 ))}
               </CellEventGroup>
               <CellEventGroupSmSize>
-                <FullCalendarCategory color="primaryPurple500" />
+                <FullCalendarCategory color="var(--purple500)" />
               </CellEventGroupSmSize>
             </>
           )}

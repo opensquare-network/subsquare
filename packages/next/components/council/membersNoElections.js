@@ -9,7 +9,7 @@ export default function Members({ category, type }) {
   const councilName = useCouncilName(type);
   const [members, loadingMembers] = useCall(
     api?.query[councilName]?.members,
-    []
+    [],
   );
   const prime = usePrime();
 

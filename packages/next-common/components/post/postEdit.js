@@ -18,7 +18,7 @@ import { detailPageCategory } from "../../utils/consts/business/category";
 const Wrapper = styled(EditablePanel)`
   textarea:read-only,
   div.ql-disabled {
-    background-color: ${(props) => props.theme.grey100Bg} !important;
+    background-color: var(--neutral200) !important;
   }
 `;
 

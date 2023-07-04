@@ -19,7 +19,9 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import ReferendaBusiness from "../../../components/gov2/business";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
-import BreadcrumbWrapper, { BreadcrumbHideOnMobileText } from "next-common/components/detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper, {
+  BreadcrumbHideOnMobileText,
+} from "next-common/components/detail/common/BreadcrumbWrapper";
 import CheckUnFinalized from "components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
 import NonNullPost from "next-common/components/nonNullPost";
@@ -50,7 +52,7 @@ function ReferendumContent({ comments }) {
 
       <Gov2Sidebar />
       <ReferendaBusiness />
-      <Gov2ReferendumMetadata info={ info } />
+      <Gov2ReferendumMetadata info={info} />
 
       <Timeline trackInfo={post?.onchainData?.trackInfo} />
 
@@ -125,7 +127,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const pageSize = Math.min(page_size ?? 50, 100);
 
   const { result: detail } = await ssrNextApi.fetch(
-    gov2ReferendumsDetailApi(id)
+    gov2ReferendumsDetailApi(id),
   );
 
   if (!detail) {
@@ -140,7 +142,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const { result: voteStats } = await ssrNextApi.fetch(
-    gov2ReferendumsVoteStatsApi(id)
+    gov2ReferendumsVoteStatsApi(id),
   );
 
   const postId = detail?._id;
@@ -149,7 +151,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize,
-    }
+    },
   );
 
   return {

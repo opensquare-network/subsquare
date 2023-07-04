@@ -1,30 +1,18 @@
-import MotionIcon from "../../../assets/imgs/icons/type-motions.svg";
-import React from "react";
-import MembersIcon from "../../../assets/imgs/icons/members.svg";
-import MenuIconWrapper from "../../../components/icons/menuIconWrapper";
+import { MenuOpenTechComm } from "@osn/icons/subsquare";
 
 const openTechCommittee = {
   name: "OPEN TECH.COMM.",
+  icon: <MenuOpenTechComm />,
   items: [
     {
       value: "openTechCommitteeProposals",
       name: "Proposals",
       pathname: "/open-techcomm/proposals",
-      icon: (
-        <MenuIconWrapper>
-          <MotionIcon />
-        </MenuIconWrapper>
-      ),
     },
     {
       value: "openTechCommitteeMembers",
       name: "Members",
       pathname: "/open-techcomm/members",
-      icon: (
-        <MenuIconWrapper>
-          <MembersIcon />
-        </MenuIconWrapper>
-      ),
     },
   ],
 };

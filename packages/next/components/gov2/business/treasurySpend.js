@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function getTreasurySpendBusiness(
   onchain,
   decimals,
-  symbol
+  symbol,
 ) {
   const { amount, beneficiary } = onchain?.treasuryInfo || {};
 

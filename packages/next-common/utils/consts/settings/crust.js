@@ -7,6 +7,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoCrustDark } from "@osn/icons/subsquare";
 
 const DEFAULT_CRUST_NODES = [
   {
@@ -27,6 +28,33 @@ const DEFAULT_CRUST_NODES = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://crust.network",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/CrustNetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/crustnetwork",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/Jbw2PAUSCR",
+  },
+  {
+    name: "medium",
+    url: "https://crustnetwork.medium.com/",
+  },
+  {
+    name: "github",
+    url: "https://github.com/crustio",
+  },
+];
+
 const crust = {
   value: Chains.crust,
   name: capitalize(Chains.crust),
@@ -42,9 +70,13 @@ const crust = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoCrustDark,
+  navLogoDark: ProjectLogoCrustDark,
+  links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  description: "CRUST implements the incentive layer protocol for decentralized storage. It is adaptable to multiple storage layer protocols such as IPFS, and provides support for the application layer. ",
 };
 
 export default crust;

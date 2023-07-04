@@ -34,7 +34,7 @@ const Wrapper = styled.div`
           left: 28px;
           width: calc(100% - 28px);
         }
-        background-color: ${(props) => props.theme.grey200Border};
+        background-color: var(--neutral300);
       }
     `}
 `;
@@ -46,7 +46,7 @@ const InfoWrapper = styled(Flex)`
 
   > :last-child {
     font-size: 14px;
-    color: ${(props) => props.theme.textTertiary};
+    color: var(--textTertiary);
   }
 `;
 
@@ -60,7 +60,7 @@ const IndentWrapper = styled.div`
     p.quoted &&
     css`
       padding-left: 16px;
-      border-left: 3px solid ${(props) => props.theme.grey200Border};
+      border-left: 3px solid var(--neutral300);
     `};
 `;
 
@@ -68,9 +68,9 @@ const FoldButton = styled.button`
   all: unset;
   line-height: 20px;
   height: 28px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   &:hover {
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     cursor: pointer;
   }
 `;
@@ -80,7 +80,7 @@ const EditedLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 export default function Item({ data, isSecondLevel }) {

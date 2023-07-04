@@ -6,6 +6,10 @@ import capitalize from "../../capitalize";
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import {
+  ProjectLogoPolkadotDark,
+  ProjectLogoPolkadotLight,
+} from "@osn/icons/subsquare";
 
 const name = Chains.polkadot;
 
@@ -44,6 +48,33 @@ export const defaultPolkadotNodes = [
   },
 ];
 
+const links = [
+  {
+    name: "website",
+    url: "https://polkadot.network/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/Polkadot",
+  },
+  {
+    name: "reddit",
+    url: "https://www.reddit.com/r/polkadot",
+  },
+  {
+    name: "discord",
+    url: "https://dot.li/discord",
+  },
+  {
+    name: "github",
+    url: "https://github.com/paritytech/polkadot/",
+  },
+  {
+    name: "element",
+    url: "https://matrix.to/#/#Polkadot-Direction:parity.io",
+  },
+];
+
 const polkadot = {
   value: name,
   name: capitalize(name),
@@ -58,7 +89,10 @@ const polkadot = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoPolkadotLight,
+  navLogoDark: ProjectLogoPolkadotDark,
   group: MenuGroups.PolkadotAndParachains,
+  links,
   postLabels: defaultPostLabels,
   hasReferenda: true,
   hasStatescan: true,
@@ -68,6 +102,7 @@ const polkadot = {
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
   showAchainableLabels: true,
+  description: "Polkadot empowers blockchain networks to work together under the protection of shared security.",
 };
 
 export default polkadot;

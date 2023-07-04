@@ -4,14 +4,14 @@ import CommonButton, { DisabledButton } from "./styled";
 import { DarkLoading } from "./loading";
 
 const RawButton = styled(CommonButton)`
-  background: ${(props) => props.theme.neutral};
-  color: ${(props) => props.theme.textPrimary};
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  background-color: var(--neutral100);
+  color: var(--textPrimary);
+  border: 1px solid var(--neutral400);
 `;
 
 const Disabled = styled(DisabledButton)`
-  background: ${(props) => props.theme.grey400Border};
-  color: ${(props) => props.theme.textTertiary};
+  background-color: var(--neutral500);
+  color: var(--textTertiary);
 `;
 
 export default function GhostButton({

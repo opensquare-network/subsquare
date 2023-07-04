@@ -10,7 +10,7 @@ import { useThemeMode } from "next-common/context/theme";
 function DotreasuryAccountLink({ address }) {
   const dotreasuryChains = ["kusama", "polkadot"];
   const chain = useChain();
-  const themeMode = useThemeMode();
+  const [mode] = useThemeMode();
 
   if (!address || !dotreasuryChains.includes(chain)) {
     return null;
@@ -24,7 +24,7 @@ function DotreasuryAccountLink({ address }) {
       target="_blank"
       rel="noreferrer"
     >
-      {themeMode === "light" ? <LinkDotreasuryIcon /> : <LinkDotreasuryDarkIcon />}
+      {mode === "light" ? <LinkDotreasuryIcon /> : <LinkDotreasuryDarkIcon />}
       <LinkDotreasuryIconActive />
     </DotreasuryLinkWrapper>
   );

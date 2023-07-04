@@ -3,23 +3,24 @@ import styled, { css } from "styled-components";
 import Option from "./option";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
-import Caret from "../icons/caret";
+import { ArrowDown } from "@osn/icons/subsquare";
+import clsx from "clsx";
 import { OptionsWrapper } from "./styled";
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
   font-size: 14px;
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   height: ${(p) => p.itemHeight}px;
   padding: 10px 16px;
   cursor: pointer;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   ${(p) =>
     p.disabled &&
     css`
-      background-color: ${(props) => props.theme.grey100Bg};
+      background-color: var(--neutral200);
       color: #e0e5ed;
       cursor: default;
 
@@ -73,7 +74,13 @@ function Select({
     >
       <SelectInner>
         <span>{displayValue}</span>
-        <Caret down={!showOptions} />
+        <ArrowDown
+          className={clsx(
+            showOptions && "rotate-180",
+            "w-5 h-5",
+            "[&_path]:stroke-textTertiary",
+          )}
+        />
       </SelectInner>
 
       {showOptions && (

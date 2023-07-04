@@ -1,7 +1,6 @@
 import User from "next-common/components/user";
 import React from "react";
 import MemberListTable from "next-common/components/memberListTable";
-import { ListWrapper } from "./styled";
 
 export default function MembersList({ items, loading = false }) {
   const columns = [
@@ -14,9 +13,5 @@ export default function MembersList({ items, loading = false }) {
     item.role,
   ]);
 
-  return (
-    <ListWrapper>
-      <MemberListTable columns={columns} rows={rows} loading={loading} />
-    </ListWrapper>
-  );
+  return <MemberListTable columns={columns} rows={rows} loading={loading} />;
 }

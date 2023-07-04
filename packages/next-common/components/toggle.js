@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   cursor: pointer;
   width: 38px;
   height: 22px;
-  background: ${(props) => props.theme.grey400Border}; !important;
+  background: var(--neutral500) !important;
   border-radius: 16px;
   > div {
     width: 14px;
@@ -14,14 +14,14 @@ const Wrapper = styled.div`
     position: absolute;
     top: 4px;
     left: 4px;
-    background: ${(props) => props.theme.neutral}; !important;
+    background: var(--neutral100) !important;
     border-radius: 7px;
   }
   ${(p) =>
     p.disabled
       ? css`
           cursor: default;
-          background: ${(props) => props.theme.grey100Bg};
+          background: var(--neutral200);
           > div {
             left: auto;
             right: 4px;

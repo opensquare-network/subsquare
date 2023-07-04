@@ -1,12 +1,15 @@
-import Overview from "next-common/components/overview";
+import OverviewPostList from "next-common/components/overview/postList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   toFinancialMotionsListItem,
   toAdvisoryMotionsListItem,
 } from "utils/viewfuncs";
-import HomeLayout from "next-common/components/layout/HomeLayout";
-import { useChain, useMenuHasGov2 } from "next-common/context/chain";
+import {
+  useChain,
+  useChainSettings,
+  useMenuHasGov2,
+} from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
@@ -24,6 +27,10 @@ import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allian
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 import { isCollectivesChain } from "next-common/utils/chain";
 import businessCategory from "next-common/utils/consts/business/category";
+import ListLayout from "next-common/components/layout/ListLayout";
+import OverviewSummary from "next-common/components/summary/overviewSummary";
+import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
+import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
@@ -35,13 +42,14 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
   const isCollectives = isCollectivesChain(chain);
   const isZeitgeist = chain === Chains.zeitgeist;
+  const chainSettings = useChainSettings();
 
   const discussionsCategory = [
     {
       category: businessCategory.discussions,
       link: "/discussions",
       items: (overview?.discussions ?? []).map((item) =>
-        normalizeDiscussionListItem(chain, item)
+        normalizeDiscussionListItem(chain, item),
       ),
     },
   ];
@@ -56,16 +64,16 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
         category: businessCategory.openGovReferenda,
         link: "/referenda",
         items: (overview?.gov2?.referenda ?? []).map((item) =>
-          normalizeGov2ReferendaListItem(item, tracks)
+          normalizeGov2ReferendaListItem(item, tracks),
         ),
       },
       {
         category: businessCategory.fellowship,
         link: "/fellowship",
         items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
-          normalizeFellowshipReferendaListItem(item, fellowshipTracks)
+          normalizeFellowshipReferendaListItem(item, fellowshipTracks),
         ),
-      }
+      },
     );
   }
 
@@ -75,16 +83,16 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
         category: businessCategory.allianceMotions,
         link: "/alliance/motions",
         items: (overview?.alliance?.motions ?? []).map((item) =>
-          normalizeAllianceMotion(item)
+          normalizeAllianceMotion(item),
         ),
       },
       {
         category: businessCategory.allianceAnnouncements,
         link: "/alliance/announcements",
         items: (overview?.alliance?.announcements ?? []).map((item) =>
-          normalizeAllianceAnnouncement(item)
+          normalizeAllianceAnnouncement(item),
         ),
-      }
+      },
     );
   }
 
@@ -93,21 +101,21 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       category: businessCategory.democracyReferenda,
       link: "/democracy/referenda",
       items: (overview?.democracy?.referenda ?? []).map((item) =>
-        normalizeReferendaListItem(chain, item)
+        normalizeReferendaListItem(chain, item),
       ),
     },
     {
       category: businessCategory.democracyExternals,
       link: "/democracy/externals",
       items: (overview?.democracy?.externals ?? []).map((item) =>
-        normalizeExternalListItem(chain, item)
+        normalizeExternalListItem(chain, item),
       ),
     },
     {
       category: businessCategory.democracyProposals,
       link: "/democracy/proposals",
       items: (overview?.democracy?.proposals ?? []).map((item) =>
-        normalizeProposalListItem(chain, item)
+        normalizeProposalListItem(chain, item),
       ),
     },
     ...discussions,
@@ -119,48 +127,42 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
         category: businessCategory.councilMotions,
         link: "/council/motions",
         items: (overview?.moonCouncil?.motions ?? []).map((item) =>
-          normalizeCouncilMotionListItem(chain, item)
+          normalizeCouncilMotionListItem(chain, item),
         ),
       },
       {
         category: businessCategory.treasuryCouncilMotions,
         link: "/treasury-council/motions",
         items: (overview?.council?.motions ?? []).map((item) =>
-          normalizeTreasuryCouncilMotionListItem(chain, item)
+          normalizeTreasuryCouncilMotionListItem(chain, item),
         ),
       },
     );
   } else {
-    overviewData.push(
-      {
-        category: businessCategory.councilMotions,
-        link: "/council/motions",
-        items: (overview?.council?.motions ?? []).map((item) =>
-          normalizeCouncilMotionListItem(chain, item)
-        ),
-      },
-    );
+    overviewData.push({
+      category: businessCategory.councilMotions,
+      link: "/council/motions",
+      items: (overview?.council?.motions ?? []).map((item) =>
+        normalizeCouncilMotionListItem(chain, item),
+      ),
+    });
   }
 
-  overviewData.push(
-    {
-      category: businessCategory.tcProposals,
-      link: "/techcomm/proposals",
-      items: (overview?.techComm?.motions ?? []).map((item) =>
-        normalizeTechCommMotionListItem(chain, item)
-      ),
-    }
-  );
+  overviewData.push({
+    category: businessCategory.tcProposals,
+    link: "/techcomm/proposals",
+    items: (overview?.techComm?.motions ?? []).map((item) =>
+      normalizeTechCommMotionListItem(chain, item),
+    ),
+  });
   if (isMoonChain()) {
-    overviewData.push(
-      {
-        category: businessCategory.openTechCommitteeProposals,
-        link: "/open-techcomm/proposals",
-        items: (overview?.openTechComm?.motions ?? []).map((item) =>
-          normalizeOpenTechCommProposalListItem(chain, item)
-        ),
-      }
-    );
+    overviewData.push({
+      category: businessCategory.openTechCommitteeProposals,
+      link: "/open-techcomm/proposals",
+      items: (overview?.openTechComm?.motions ?? []).map((item) =>
+        normalizeOpenTechCommProposalListItem(chain, item),
+      ),
+    });
   }
 
   if (isKarura) {
@@ -168,7 +170,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       category: businessCategory.financialMotions,
       link: "/financial-council/motions",
       items: (overview?.financialCouncil?.motions ?? []).map((item) =>
-        toFinancialMotionsListItem(chain, item)
+        toFinancialMotionsListItem(chain, item),
       ),
     });
   }
@@ -178,23 +180,23 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       category: businessCategory.treasuryProposals,
       link: "/treasury/proposals",
       items: (overview?.treasury?.proposals ?? []).map((item) =>
-        normalizeTreasuryProposalListItem(chain, item)
+        normalizeTreasuryProposalListItem(chain, item),
       ),
     },
     {
       category: businessCategory.treasuryBounties,
       link: "/treasury/bounties",
       items: (overview?.treasury?.bounties ?? []).map((item) =>
-        normalizeBountyListItem(chain, item)
+        normalizeBountyListItem(chain, item),
       ),
     },
     {
       category: businessCategory.treasuryTips,
       link: "/treasury/tips",
       items: (overview?.treasury?.tips ?? []).map((item) =>
-        normalizeTipListItem(chain, item)
+        normalizeTipListItem(chain, item),
       ),
-    }
+    },
   );
 
   if (isZeitgeist) {
@@ -202,7 +204,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       category: businessCategory.advisoryMotions,
       link: "/advisory-committee/motions",
       items: (overview?.advisoryCommittee?.motions ?? []).map((item) =>
-        toAdvisoryMotionsListItem(chain, item)
+        toAdvisoryMotionsListItem(chain, item),
       ),
     });
   }
@@ -212,23 +214,29 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   }
 
   const filteredOverviewData = overviewData.filter(
-    (data) => data?.items?.length > 0 || data?.category === "Discussions"
+    (data) => data?.items?.length > 0 || data?.category === "Discussions",
   );
 
   // Sort the items with length = 0 to the end of the list
   filteredOverviewData.sort((a, b) =>
     a?.items?.length > 0 && b?.items?.length > 0
       ? 0
-      : b?.items?.length - a?.items?.length
+      : b?.items?.length - a?.items?.length,
   );
 
+  const SummaryComponent = isCollectivesChain(chain)
+    ? AllianceOverviewSummary
+    : OverviewSummary;
+
   return (
-    <HomeLayout tracks={tracks} fellowshipTracks={fellowshipTracks}>
-      <Overview
-        overviewData={filteredOverviewData}
-        summaryData={overview?.summary}
-      />
-    </HomeLayout>
+    <ListLayout
+      title={chainSettings.name}
+      description={chainSettings.description}
+      headContent={<ChainSocialLinks />}
+      summary={<SummaryComponent summaryData={overview?.summary} />}
+    >
+      <OverviewPostList overviewData={filteredOverviewData} />
+    </ListLayout>
   );
 });
 

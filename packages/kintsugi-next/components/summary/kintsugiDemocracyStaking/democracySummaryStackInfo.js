@@ -11,7 +11,7 @@ const Wrapper = styled(GreyPanel)`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: ${(p) => p.theme.textTertiary};
+  color: var(--textTertiary);
 
   flex-wrap: wrap;
   padding: 4px 12px;
@@ -21,7 +21,7 @@ const Wrapper = styled(GreyPanel)`
     ::before {
       content: "·";
       margin-right: 8px;
-      color: ${(p) => p.theme.textTertiary};
+      color: var(--textTertiary);
     }
   }
 `;
@@ -29,7 +29,7 @@ const Wrapper = styled(GreyPanel)`
 const InfoItem = styled(Flex)`
   gap: 4px;
   > :nth-child(2) {
-    color: ${(p) => p.theme.textSecondary};
+    color: var(--textSecondary);
   }
 `;
 

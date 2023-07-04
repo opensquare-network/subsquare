@@ -4,7 +4,8 @@
     "paths": {
       "next-common/*": ["../next-common/*"],
       "@subsquare/next/*": ["../next/*"]
-    }
+    },
+    "jsx": "react-jsx"
   },
   "include": ["./"]
 }

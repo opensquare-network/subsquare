@@ -2,28 +2,30 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import HomeLayout from "next-common/components/layout/HomeLayout";
 import { useChain } from "next-common/context/chain";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import ListLayout from "next-common/components/layout/ListLayout";
 
-export default withLoginUserRedux(({ tracks, fellowshipTracks, motions }) => {
+export default withLoginUserRedux(({ motions }) => {
   const chain = useChain();
   const items = (motions.items || []).map((item) =>
-    normalizeOpenTechCommProposalListItem(chain, item)
+    normalizeOpenTechCommProposalListItem(chain, item),
   );
   const category = businessCategory.openTechCommitteeProposals;
   const seoInfo = { title: category, desc: category };
 
   return (
-    <HomeLayout
+    <ListLayout
       seoInfo={seoInfo}
-      tracks={tracks}
-      fellowshipTracks={fellowshipTracks}
+      title={category}
+      description="Open technical committee proposals"
     >
       <PostList
         category={category}
+        title="List"
+        titleCount={motions.total}
         items={items}
         pagination={{
           page: motions.page,
@@ -31,7 +33,7 @@ export default withLoginUserRedux(({ tracks, fellowshipTracks, motions }) => {
           total: motions.total,
         }}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 

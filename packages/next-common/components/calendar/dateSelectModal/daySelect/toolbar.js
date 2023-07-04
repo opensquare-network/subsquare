@@ -15,7 +15,6 @@ import {
   m_l,
   p,
   space_x,
-  text_primary,
 } from "../../../../styles/tailwindcss";
 
 const ToolbarWrapper = styled.div`
@@ -39,7 +38,7 @@ const ToolbarButtonGroup = styled.div`
 const ToolbarDateLabel = styled(Flex)`
   ${p_14_bold}
   ${m_l(16)}
-  ${text_primary}
+  color: var(--textPrimary);
   flex-grow: 1;
   justify-content: center;
 `;

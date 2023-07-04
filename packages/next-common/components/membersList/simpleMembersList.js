@@ -3,15 +3,9 @@ import User from "../user";
 import React from "react";
 import PrimeAddressMark from "../primeAddressMark";
 import { TitleContainer } from "../styled/containers/titleContainer";
-import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import MemberListTable from "../memberListTable";
 
 const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-
   > :not(:first-child) {
     margin-top: 16px;
   }

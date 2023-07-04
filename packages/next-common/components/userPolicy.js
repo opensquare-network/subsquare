@@ -7,10 +7,10 @@ import CheckBoxOff from "../assets/imgs/icons/check-box-off.svg";
 
 const CheckBoxOffIcon = styled(CheckBoxOff)`
   rect {
-    fill: ${(props) => props.theme.grey300Border};
+    fill: var(--neutral400);
   }
   path {
-    stroke: ${(props) => props.theme.textContrast};
+    stroke: var(--textPrimaryContrast);
   }
 `;
 
@@ -35,10 +35,10 @@ const CheckBoxWrapper = styled.span`
 const Text = styled.div`
   font-size: 14px;
   line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   a {
     font-weight: bold;
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
   }
 `;
 

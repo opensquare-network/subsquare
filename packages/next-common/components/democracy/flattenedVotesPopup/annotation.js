@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const AnnotationText = styled.p`
   margin: 0;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   font-size: 12px;
   line-height: 16px;
 `;

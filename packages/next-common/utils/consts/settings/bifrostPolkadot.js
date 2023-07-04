@@ -3,6 +3,11 @@ import DarkModeLogo from "../../../assets/header-logos/bifrost-polkadot-dark.svg
 import Avatar from "../../../assets/icons/chain/bifrost-polkadot.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import {
+  ProjectLogoBifrostPolkadotDark,
+  ProjectLogoBifrostPolkadotLight,
+} from "@osn/icons/subsquare";
+import bifrost from "./bifrost";
 
 const DEFAULT_NODES = [
   {
@@ -14,6 +19,8 @@ const DEFAULT_NODES = [
     url: "wss://bifrost-polkadot.api.onfinality.io/public-ws",
   },
 ];
+
+const links = bifrost.links;
 
 const bifrostPolkadot = {
   value: "bifrost-polkadot",
@@ -29,10 +36,14 @@ const bifrostPolkadot = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoBifrostPolkadotLight,
+  navLogoDark: ProjectLogoBifrostPolkadotDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   subscanDomain: "bifrost",
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  description: "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
 };
 
 export default bifrostPolkadot;

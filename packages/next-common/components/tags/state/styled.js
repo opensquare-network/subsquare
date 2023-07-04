@@ -6,31 +6,31 @@ const Common = styled.span`
   line-height: 16px;
   font-weight: 500;
   border-radius: 4px;
-  color: ${(props) => props.theme.textContrast};
+  color: var(--textPrimaryContrast);
 `;
 
 export const StartTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryAzure500};
+  background: var(--azure500);
 `;
 
 export const MotionTag = styled(Common)`
-  background: ${(props) => props.theme.primaryPurple500};
+  background: var(--purple500);
 `;
 
 export const ActiveTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryBlue500};
+  background: var(--blue500);
 `;
 
 export const PositiveTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryGreen500};
+  background: var(--green500);
 `;
 
 export const NegativeTag = styled(Common)`
-  background: ${(props) => props.theme.secondaryRed500};
+  background: var(--red500);
 `;
 
 export const ClosedTag = styled(Common)`
-  background: ${(props) => props.theme.grey400Border};
+  background: var(--neutral500);
 `;
 
 export const BaseTag = Common;

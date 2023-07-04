@@ -1,10 +1,9 @@
 import React from "react";
-import Summary from "next-common/components/summary/summaryBase";
+import Summary from "next-common/components/summary/v2/base";
 
 export default function MemberSummary({ fellow, ally, retiring }) {
   return (
     <Summary
-      description="Alliance members by role."
       items={[
         { title: "Fellow", content: fellow || 0 },
         { title: "Ally", content: ally || 0 },

@@ -7,7 +7,7 @@ export default function useShowMotionEnd(motion) {
   const latestHeight = useSelector(latestHeightSelector);
   const motionEndHeight = motion?.voting?.end;
   const estimatedBlocksTime = useEstimateBlocksTime(
-    motionEndHeight - latestHeight
+    motionEndHeight - latestHeight,
   );
   const motionEnd = isMotionEnded(motion);
 

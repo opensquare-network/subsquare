@@ -21,14 +21,14 @@ const Text = styled.span`
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
 `;
 
 const SubButton = styled.button`
   all: unset;
   font-size: 12px;
   font-weight: 500;
-  color: ${(props) => props.theme.primaryPurple500};
+  color: var(--purple500);
   cursor: pointer;
 `;
 

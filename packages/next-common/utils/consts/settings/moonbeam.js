@@ -7,6 +7,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
+import { ProjectLogoMoonbeamDark } from "@osn/icons/subsquare";
 
 export const DEFAULT_MOONBEAM_NODES = [
   {
@@ -32,6 +33,8 @@ const moonbeam = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoMoonbeamDark,
+  navLogoDark: ProjectLogoMoonbeamDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
@@ -51,6 +54,7 @@ const moonbeam = {
       decimals: 18,
     },
   },
+  description: "Solidity Smart Contracts on Polkadot. Moonbeam is a Polkadot parachain designed for developers that combines full Ethereum compatibility with the power of Polkadot.",
 };
 
 export default moonbeam;

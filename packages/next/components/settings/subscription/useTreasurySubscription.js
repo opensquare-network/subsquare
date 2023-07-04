@@ -9,26 +9,26 @@ import useTreasuryProposalOptions from "next-common/components/setting/notificat
 export default function useTreasrySubscription(
   subscription,
   saving,
-  isVerifiedUser
+  isVerifiedUser,
 ) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(
     homeMenus,
-    "TREASURY"
+    "TREASURY",
   );
   const { hasMenu: hasTreasuryProposal } = checkSubMenu(
     treasuryMenu?.items,
-    "Proposals"
+    "Proposals",
   );
   const { hasMenu: hasTreasuryTip } = checkSubMenu(treasuryMenu?.items, "Tips");
   const { hasMenu: hasTreasuryBounty } = checkSubMenu(
     treasuryMenu?.items,
-    "Bounties"
+    "Bounties",
   );
   const { hasMenu: hasTreasuryChildBounty } = checkSubMenu(
     treasuryMenu?.items,
-    "Child Bounties"
+    "Child Bounties",
   );
 
   const {

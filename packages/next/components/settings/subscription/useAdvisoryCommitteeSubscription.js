@@ -6,13 +6,13 @@ import FoldableSections from "next-common/components/setting/notification/foldab
 export default function useAdvisoryCommitteeSubscription(
   subscription,
   saving,
-  isVerifiedUser
+  isVerifiedUser,
 ) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasAdvisoryCommittee } = checkSubMenu(
     homeMenus,
-    "ADVISORY COMMITTEE"
+    "ADVISORY COMMITTEE",
   );
 
   const {

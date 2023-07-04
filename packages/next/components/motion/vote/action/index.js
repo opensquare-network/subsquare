@@ -11,10 +11,10 @@ import Close from "./close";
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: ${ (props) => props.theme.textTertiary };
+  color: var(--textTertiary);
 
   > span {
-    color: ${ (props) => props.theme.primaryPurple500 };
+    color: var(--purple500);
     cursor: pointer;
   }
 `;

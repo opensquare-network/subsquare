@@ -8,6 +8,10 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
+import {
+  ProjectLogoCentrifugeDark,
+  ProjectLogoCentrifugeLight,
+} from "@osn/icons/subsquare";
 
 const name = Chains.centrifuge;
 
@@ -15,6 +19,26 @@ export const defaultNodes = [
   {
     name: "OnFinality",
     url: "wss://centrifuge-parachain.api.onfinality.io/public-ws",
+  },
+];
+
+// centrifuge network social links
+const links = [
+  {
+    name: "website",
+    url: "https://centrifuge.io/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/centrifuge",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/yEzyUq5gxF",
+  },
+  {
+    name: "github",
+    url: "https://github.com/centrifuge/",
   },
 ];
 
@@ -32,9 +56,13 @@ const centrifuge = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoCentrifugeLight,
+  navLogoDark: ProjectLogoCentrifugeDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
+  description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
 };
 
 export default centrifuge;

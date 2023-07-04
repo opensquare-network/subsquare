@@ -13,15 +13,13 @@ import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 
-const Wrapper = styled.div`
-  padding: 32px 0 0;
-`;
+const Wrapper = styled.div``;
 
 const Title = styled.div`
   font-weight: bold;
   font-size: 12px;
   letter-spacing: 0.16em;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   margin-bottom: 16px;
   margin-top: 24px;
   :first-child {
@@ -38,13 +36,13 @@ const ButtonWrapper = styled.div`
 `;
 
 const Item = styled(Flex)`
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
   border-radius: 4px;
   :hover {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
   > :not(:first-child) {
     margin-left: 8px;
@@ -52,7 +50,7 @@ const Item = styled(Flex)`
 `;
 
 const UserWrapper = styled(Flex)`
-  border: 1px solid ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
   border-radius: 4px;
   padding: 0 12px;
   height: 38px;

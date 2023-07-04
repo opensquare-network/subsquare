@@ -22,7 +22,7 @@ export default function RetractTipPopup({
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    [dispatch]
+    [dispatch],
   );
 
   const doRetractTip = useCallback(
@@ -64,7 +64,7 @@ export default function RetractTipPopup({
       tipHash,
       setIsLoading,
       onClose,
-    ]
+    ],
   );
 
   return (

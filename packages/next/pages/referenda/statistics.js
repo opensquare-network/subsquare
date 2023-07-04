@@ -3,55 +3,63 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import ReferendaStatistics from "next-common/components/statistics/referenda";
 import ReferendaSummary from "next-common/components/statistics/referenda/summary";
-import DetailLayout from "next-common/components/layout/DetailLayout";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import OpenGovTurnoutSummary from "next-common/components/statistics/referenda/turnoutSummary";
+import ReferendaLayout from "next-common/components/layout/referendaLayout";
+import {
+  fellowshipTracksApi,
+  gov2ReferendumsSummaryApi,
+  gov2TracksApi,
+} from "next-common/services/url";
 
-export default withLoginUserRedux(({ tracksStats, delegatee, summary }) => {
-  return (
-    <DetailLayout
-      seoInfo={{
-        title: "OpenGov Statistics",
-        desc: "OpenGov Statistics",
-      }}
-    >
-      <BreadcrumbWrapper>
-        <Breadcrumb
-          items={[
-            {
-              path: "/referenda",
-              content: "Referenda",
-            },
-            {
-              content: "Statistics",
-            },
-          ]}
-        />
-      </BreadcrumbWrapper>
-      <ReferendaSummary summary={summary} />
-      <OpenGovTurnoutSummary summary={summary} />
-      <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
-    </DetailLayout>
-  );
-});
+export default withLoginUserRedux(
+  ({ tracksStats, delegatee, summary, referendumsSummary }) => {
+    const title = "OpenGov Statistics";
+    const seoInfo = { title, desc: title };
+
+    return (
+      <ReferendaLayout
+        seoInfo={seoInfo}
+        title={title}
+        summaryData={referendumsSummary}
+      >
+        <ReferendaSummary summary={summary} />
+        <OpenGovTurnoutSummary summary={summary} />
+        <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
+      </ReferendaLayout>
+    );
+  },
+);
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const [{ result: tracksStats }, { result: delegatee }, { result: summary }] =
-    await Promise.all([
-      ssrNextApi.fetch("referenda/tracks"),
-      ssrNextApi.fetch("referenda/delegatee", {
-        sort: JSON.stringify(["votes", "desc"]),
-        pageSize: 25,
-      }),
-      ssrNextApi.fetch("referenda/summary"),
-    ]);
+  const [
+    { result: tracksStats },
+    { result: delegatee },
+    { result: summary },
+    { result: tracks },
+    { result: fellowshipTracks },
+    { result: referendumsSummary },
+  ] = await Promise.all([
+    ssrNextApi.fetch("referenda/tracks"),
+    ssrNextApi.fetch("referenda/delegatee", {
+      sort: JSON.stringify(["votes", "desc"]),
+      pageSize: 25,
+    }),
+    ssrNextApi.fetch("referenda/summary"),
+
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+    ssrNextApi.fetch(gov2ReferendumsSummaryApi),
+  ]);
 
   return {
     props: {
       tracksStats: tracksStats ?? [],
       delegatee: delegatee ?? EmptyList,
       summary: summary ?? [],
+
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
+      referendumsSummary: referendumsSummary ?? {},
     },
   };
 });

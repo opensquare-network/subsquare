@@ -3,7 +3,6 @@ import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import usePrime from "next-common/utils/hooks/usePrime";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function Members({ category }) {
@@ -13,7 +12,7 @@ export default function Members({ category }) {
   const { hasElections } = useChainSettings();
   const [electionsInfo, loadingElectionsInfo] = useCall(
     api?.derive?.elections?.info,
-    []
+    [],
   );
   const [allVotes, loadingAllVotes] = useCall(api?.derive?.council?.votes, []);
   const prime = usePrime();

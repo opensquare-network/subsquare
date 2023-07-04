@@ -3,6 +3,8 @@ import DarkModeLogo from "../../../assets/header-logos/khala-dark.svg";
 import Avatar from "../../../assets/icons/chain/khala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoKhalaDark } from "@osn/icons/subsquare";
+import phala from "./phala";
 
 const DEFAULT_KHALA_NODES = [
   {
@@ -19,6 +21,8 @@ const DEFAULT_KHALA_NODES = [
   },
 ];
 
+const links = phala.links;
+
 const khala = {
   value: "khala",
   name: "Khala",
@@ -32,9 +36,13 @@ const khala = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoKhalaDark,
+  navLogoDark: ProjectLogoKhalaDark,
+  links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  description: "Khala Network is the canary network of Phala launched on Kusama and is responsible for the technical and economic testing of Phala Network.",
 };
 
 export default khala;

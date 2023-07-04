@@ -51,7 +51,7 @@ const BioWrapper = styled(SecondaryCard)`
 `;
 
 const Secondary = styled.span`
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -61,10 +61,10 @@ const Secondary = styled.span`
     props.selected &&
     css`
       font-weight: 700 !important;
-      color: ${(props) => props.theme.textPrimary};
+      color: var(--textPrimary);
     `}
   :hover {
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
   }
 `;
 
@@ -73,7 +73,8 @@ const Tertiary = styled.span`
   font-size: 14px;
   line-height: 20px;
   white-space: pre-wrap;
-  color: ${(props) => props.theme.textTertiary};
+  word-break: break-all;
+  color: var(--textTertiary);
 `;
 
 const CategoryWrapper = styled(SecondaryCard)``;
@@ -109,7 +110,7 @@ const CategoryOption = styled.li`
   ${(props) =>
     props.selected &&
     css`
-      background: ${props.theme.grey100Bg};
+      background: var(--neutral200);
     `};
   cursor: pointer;
   user-select: none;
@@ -119,7 +120,7 @@ const Username = styled.span`
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const AddressWrapper = styled(Flex)`
@@ -237,9 +238,11 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   };
 
   if (isMoonChain()) {
-    overview.collectives.treasuryCouncilMotions = overview.collectives.councilMotions ?? 0;
+    overview.collectives.treasuryCouncilMotions =
+      overview.collectives.councilMotions ?? 0;
     overview.collectives.councilMotions = summary?.moonCouncil?.motions ?? 0;
-    overview.collectives.openTechCommProposals = summary?.openTechComm?.proposals ?? 0;
+    overview.collectives.openTechCommProposals =
+      summary?.openTechComm?.proposals ?? 0;
   }
 
   const resetPage = () => setPagination({ ...pagination, page: 1 });

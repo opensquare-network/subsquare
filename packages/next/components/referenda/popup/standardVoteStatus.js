@@ -14,7 +14,7 @@ export default function StandardVoteStatus({
   const addressVoteStandardBalance = addressVoteStandard?.balance;
   const addressVoteStandardAye = isAye(addressVoteStandard?.vote);
   const addressVoteStandardConviction = getConviction(
-    addressVoteStandard?.vote
+    addressVoteStandard?.vote,
   );
 
   return (

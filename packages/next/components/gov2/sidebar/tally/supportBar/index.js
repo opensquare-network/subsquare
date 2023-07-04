@@ -1,4 +1,4 @@
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import Progress from "next-common/components/progress";
 import { useSupportThreshold } from "next-common/context/post/gov2/threshold";
 import { useEffect, useMemo, useState } from "react";
@@ -8,6 +8,7 @@ import TooltipOrigin from "next-common/components/tooltip";
 import { p_12_medium } from "next-common/styles/componentCss";
 import BigNumber from "bignumber.js";
 import Percentage from "next-common/components/referenda/tally/support/percentage";
+import { useThemeSetting } from "next-common/context/theme";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -31,7 +32,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
 
     font-weight: 500;
-    color: ${(props) => props.theme.textPrimary};
+    color: var(--textPrimary);
     li {
       width: 33.3%;
       ${p_12_medium};
@@ -47,7 +48,7 @@ const Wrapper = styled.div`
   p {
     margin: 0;
     text-align: center;
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
     ${p_12_medium};
   }
 `;
@@ -71,7 +72,7 @@ export default function SupportBar({ supportPerbill }) {
   const [threshold, setThreshold] = useState(null);
   // progress max value in perbill
   const [progressMax, setProgressMax] = useState(null);
-  const { grey100Bg } = useTheme();
+  const { neutral200 } = useThemeSetting();
 
   useEffect(() => {
     if (supportThreshold) {
@@ -124,7 +125,7 @@ export default function SupportBar({ supportPerbill }) {
             )
           }
         >
-          <Progress percentage={barPercentage} bg={grey100Bg} />
+          <Progress percentage={barPercentage} bg={neutral200} />
         </Tooltip>
       </ProgressBarWrapper>
       <ul>

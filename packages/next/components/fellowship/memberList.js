@@ -11,14 +11,8 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 
 const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-
   > :not(:first-child) {
     margin-top: 16px;
   }
@@ -33,7 +27,7 @@ const Member = styled.div`
 function MembersList({ category, items, loading = false, theme }) {
   return (
     <Wrapper>
-      <TitleContainer>{category}</TitleContainer>
+      {category && <TitleContainer>{category}</TitleContainer>}
       <StyledTable>
         <thead>
           <StyledTr>
@@ -42,7 +36,7 @@ function MembersList({ category, items, loading = false, theme }) {
           </StyledTr>
           <RowSplitter
             backgroundColor={
-              theme.isDark ? theme.grey200Border : theme.grey100Bg
+              theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
             }
             padding={"16px 0 4px 0"}
           />
@@ -64,7 +58,7 @@ function MembersList({ category, items, loading = false, theme }) {
                 {index !== items.length - 1 && (
                   <RowSplitter
                     backgroundColor={
-                      theme.isDark ? theme.grey200Border : theme.grey100Bg
+                      theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
                     }
                   />
                 )}

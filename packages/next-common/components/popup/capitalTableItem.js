@@ -2,7 +2,7 @@ import React from "react";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { p_14_normal } from "next-common/styles/componentCss";
-import { inline_flex, text_tertiary } from "next-common/styles/tailwindcss";
+import { inline_flex } from "next-common/styles/tailwindcss";
 import styled from "styled-components";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
@@ -14,7 +14,7 @@ const Capital = styled.div`
 `;
 const CapitalConvictionLabel = styled.span`
   width: 60px;
-  ${text_tertiary};
+  color: var(--textTertiary);
 `;
 
 export default function CapitalTableItem({ capital, item, tab, conviction }) {

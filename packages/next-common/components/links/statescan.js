@@ -14,7 +14,7 @@ const statescanDomainMap = {
 };
 
 export default function Statescan({ indexer, children }) {
-  const mode = useThemeMode();
+  const [mode] = useThemeMode();
   const chain = useChain();
   const { hasStatescan } = useChainSettings();
   if (!hasStatescan) {
@@ -52,7 +52,7 @@ export default function Statescan({ indexer, children }) {
 }
 
 export function StatescanAccountLink({ address }) {
-  const mode = useThemeMode();
+  const [mode] = useThemeMode();
   const chain = useChain();
   const { hasStatescan } = useChainSettings();
   if (!hasStatescan) {

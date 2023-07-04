@@ -40,7 +40,7 @@ export default function usePolkassemblyPostData({ polkassemblyId, polkassemblyPo
     }).then(({ result }) => {
       if (isMounted.current) {
         const comments = result?.comments?.map((item) =>
-          toPolkassemblyCommentListItem(chain, item)
+          toPolkassemblyCommentListItem(chain, item),
         );
         comments?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         const postReactions = convertPolkassemblyReaction(result?.post_reactions);

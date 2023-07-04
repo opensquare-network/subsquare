@@ -25,7 +25,7 @@ const Wrapper = styled(NeutralPanel)`
     `}
   padding: 24px;
   transform: translate(-50%, -50%);
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   ${breakpoint(400, w_full)};
 

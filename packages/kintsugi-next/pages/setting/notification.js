@@ -37,9 +37,9 @@ const ContentWrapper = styled(PrimaryCard)`
   font-size: 14px;
 
   input {
-    background: ${(props) => props.theme.neutral};
-    border-color: ${(props) => props.theme.grey300Border};
-    color: ${(props) => props.theme.textPrimary};
+    background: var(--neutral100);
+    border-color: var(--neutral400);
+    color: var(--textPrimary);
   }
 `;
 
@@ -52,8 +52,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const WarningMessage = styled.div`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
   border-radius: 4px;
   padding: 12px 16px;
   font-size: 14px;

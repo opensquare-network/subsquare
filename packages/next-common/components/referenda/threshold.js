@@ -25,7 +25,7 @@ const Threshold = styled.div`
     css`
       height: 12px;
     `}
-  background-color: ${(props) => props.theme.grey400Border};
+  background-color: var(--neutral500);
   transform: translateX(-50%);
   z-index: 1;
 `;

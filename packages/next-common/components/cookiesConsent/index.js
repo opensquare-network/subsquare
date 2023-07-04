@@ -1,72 +1,9 @@
-import React from "react";
-import VStack from "../styled/vStack";
-import { BackgroundButton } from "../buttons/styled";
-import styled, { css } from "styled-components";
-import FlexBetweenCenter from "../styled/flexBetweenCenter";
-import { p_14_bold, p_14_normal } from "../../styles/componentCss";
-import ClosePanelIconOrigin from "../icons/closePanel";
 import { useEffect, useState } from "react";
-import Flex from "../styled/flex";
-import OutWrapperOrigin from "../styled/outWrapper";
-import { pageMaxWidth } from "../../utils/constants";
-import { smcss } from "../../utils/responsive";
-import { NeutralPanel } from "../styled/containers/neutralPanel";
-import { useScrollbarWidth } from "../../utils/hooks/useScrollbarWidth";
 import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 import isNil from "lodash.isnil";
-
-const OutWrapper = styled(OutWrapperOrigin)`
-  z-index: 999;
-  position: fixed;
-  bottom: 32px;
-  ${(p) => css`
-    right: max(
-      calc(((100vw - ${pageMaxWidth}px) / 2) - ${p.scrollbarWidth / 2}px),
-      32px
-    );
-  `}
-
-  ${smcss(css`
-    right: 16px;
-    left: 16px;
-  `)}
-`;
-
-const Wrapper = styled(NeutralPanel)`
-  margin-left: auto;
-  width: 320px;
-  border-radius: 8px;
-  padding: 24px;
-
-  ${smcss(css`
-    width: 100%;
-  `)}
-`;
-
-const Button = styled(BackgroundButton)`
-  background-color: ${(p) => p.theme.primaryDarkBlue};
-`;
-const ButtonWrapper = styled(Flex)`
-  justify-content: flex-end;
-`;
-
-const Title = styled.h3`
-  color: ${(p) => p.theme.textPrimary};
-  margin: 0;
-  ${p_14_bold};
-`;
-
-const ClosePanelIcon = styled(ClosePanelIconOrigin)`
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const Description = styled.p`
-  color: ${(p) => p.theme.textSecondary};
-  margin: 0;
-  ${p_14_normal};
-`;
+import clsx from "clsx";
+import { SystemClose } from "@osn/icons/subsquare";
+import ThemeButton from "../buttons/themeButton";
 
 export default function CookiesConsent() {
   const [show, setShow] = useState(false);
@@ -74,8 +11,6 @@ export default function CookiesConsent() {
   useEffect(() => {
     setShow(isNil(isAcceptCookies));
   }, [isAcceptCookies]);
-
-  const scrollbarWidth = useScrollbarWidth();
 
   function handleAccept() {
     setIsAcceptCookies(true, { expires: 30 });
@@ -94,25 +29,37 @@ export default function CookiesConsent() {
   }
 
   return (
-    <OutWrapper scrollbarWidth={scrollbarWidth}>
-      <Wrapper>
-        <VStack space={16}>
-          <VStack space={8}>
-            <FlexBetweenCenter>
-              <Title>We Use Cookies!</Title>
-              <ClosePanelIcon role="button" onClick={handleIgnore} />
-            </FlexBetweenCenter>
+    <div
+      className={clsx(
+        " w-[432px] max-sm:w-full",
+        "fixed right-6 bottom-24",
+        "max-sm:right-0 max-sm:left-0 max-sm:bottom-12",
+      )}
+    >
+      <div
+        className={clsx(
+          "bg-neutral100 shadow-100",
+          "border border-neutral300 rounded-lg p-6",
+          "space-y-4",
+        )}
+      >
+        <div className="flex justify-between items-center">
+          <p className="text-textPrimary text16Bold">We Use Cookies!</p>
+          <SystemClose
+            className="[&_path]:fill-textTertiary"
+            role="button"
+            onClick={handleIgnore}
+          />
+        </div>
 
-            <Description>
-              We use cookies to improve your experience on our site.
-            </Description>
-          </VStack>
+        <p className="text14Medium text-textSecondary">
+          We use cookies to improve your experience on our site.
+        </p>
 
-          <ButtonWrapper>
-            <Button onClick={handleAccept}>Got it</Button>
-          </ButtonWrapper>
-        </VStack>
-      </Wrapper>
-    </OutWrapper>
+        <div className="flex justify-end">
+          <ThemeButton onClick={handleAccept}>Got it</ThemeButton>
+        </div>
+      </div>
+    </div>
   );
 }

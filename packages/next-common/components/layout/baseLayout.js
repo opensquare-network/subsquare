@@ -32,12 +32,12 @@ const Wrapper = styled.div`
   min-height: 100vh;
   justify-content: center;
   padding-top: 64px;
-  background: ${(props) => props.theme.grey100Bg};
+  background: var(--neutral200);
 `;
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
 `;
 

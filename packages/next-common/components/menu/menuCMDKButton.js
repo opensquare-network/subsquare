@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import {
-  bg_theme,
   border,
-  border_theme_grey200,
   cursor_pointer,
   gap_x,
   inline_flex,
@@ -14,8 +12,6 @@ import {
   p_x,
   p_y,
   rounded_4,
-  text_tertiary,
-  text_theme,
   w_full,
 } from "../../styles/tailwindcss";
 import {
@@ -36,13 +32,13 @@ import { useIsMacOS } from "../../context/page";
 const Trigger = styled.button`
   ${p_x(18)};
   ${p_y(10)};
-  ${bg_theme("neutral")};
+  background-color: var(--neutral100);
   ${shadow_100};
   ${rounded_4};
   ${p_14_medium};
   ${border};
-  ${text_tertiary};
-  ${border_theme_grey200};
+  color: var(--textTertiary);
+  border-color: var(--neutral300);
   ${w_full};
   ${cursor_pointer};
   ${inline_flex};
@@ -53,8 +49,8 @@ const Trigger = styled.button`
 `;
 
 const HotKey = styled.span`
-  ${bg_theme("primaryPurple100")};
-  ${text_theme("primaryPurple500")};
+  background-color: var(--purple100);
+  color: var(--purple500);
   ${rounded_4};
   ${p_x(8)};
   ${p_y(2)};

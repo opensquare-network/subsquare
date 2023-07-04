@@ -13,7 +13,7 @@ import styled from "styled-components";
 
 const DelegateStatus = styled(StatusWrapper)`
   .light {
-    color: ${(p) => p.theme.textSecondary};
+    color: var(--textSecondary);
   }
 `;
 

@@ -1,20 +1,24 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import InputOrigin from "../input";
-import { bg_theme, theme } from "../../styles/tailwindcss";
 import { useChain } from "../../context/chain";
-import MagnifyingIcon from "../icons/magnifying";
 import SearchInputShortcut from "./searchInputShortcut";
+import { SystemSearch } from "@osn/icons/subsquare";
 
 const Wrapper = styled.div``;
 
 const Input = styled(InputOrigin)`
-  ${bg_theme("grey100Bg")};
-  border-color: ${theme("grey100Bg")};
+  height: 40px;
+  background-color: var(--neutral200);
+  border-color: var(--neutral200) !important;
+
+  &:hover {
+    border-color: var(--neutral400) !important;
+  }
 
   &[data-focus="true"] {
-    ${bg_theme("neutral")}
-    border-color: ${theme("grey400Border")};
+    background-color: var(--neutral100);
+    border-color: var(--neutral500);
   }
 `;
 
@@ -49,7 +53,7 @@ export default function SearchInput({ shortcut = true, inputType }) {
         }}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        prefix={<MagnifyingIcon />}
+        prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
         suffix={
           shortcut && <SearchInputShortcut focus={focus} inputRef={inputRef} />
         }

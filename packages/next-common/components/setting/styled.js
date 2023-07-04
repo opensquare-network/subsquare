@@ -18,8 +18,8 @@ export const Wrapper = styled.div`
 
 export const ContentWrapper = styled(PrimaryCard)`
   input {
-    background-color: ${(props) => props.theme.neutral};
-    border-color: ${(props) => props.theme.grey300Border};
+    background-color: var(--neutral100);
+    border-color: var(--neutral400);
   }
   button {
     overflow: hidden;
@@ -30,7 +30,7 @@ export const Label = styled.div`
   margin-bottom: 8px;
   font-weight: bold;
   font-size: 12px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   :not(:first-child) {
     margin-top: 16px;
   }
@@ -66,7 +66,7 @@ export const InputWrapper = styled.div`
 export const EmailVerify = styled.div`
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   height: 38px;
   padding-right: 16px;
   font-size: 14px;
@@ -86,8 +86,8 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const WarningMessage = styled.div`
-  color: ${(props) => props.theme.secondaryRed500};
-  background: ${(props) => props.theme.secondaryRed100};
+  color: var(--red500);
+  background: var(--red100);
   border-radius: 4px;
   padding: 12px 16px;
   font-size: 14px;
@@ -102,7 +102,7 @@ export const InfoMessage = styled(GreyPanel)`
   font-size: 14px;
   line-height: 20px;
 
-  color: ${(p) => p.theme.textSecondary};
+  color: var(--textSecondary);
 
   margin-bottom: 16px;
 `;

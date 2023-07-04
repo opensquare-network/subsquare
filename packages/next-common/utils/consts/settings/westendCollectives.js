@@ -6,6 +6,10 @@ import DarkAvatar from "../../../assets/icons/chain/westend-collectives-dark.png
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
+import {
+  ProjectLogoWestendCollectivesDark,
+  ProjectLogoWestendCollectivesLight,
+} from "@osn/icons/subsquare";
 
 const westendCollectivesEndpoints = [
   {
@@ -35,6 +39,8 @@ const westendCollectives = {
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
+  navLogo: ProjectLogoWestendCollectivesLight,
+  navLogoDark: ProjectLogoWestendCollectivesDark,
   group: MenuGroups.Solochain,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,

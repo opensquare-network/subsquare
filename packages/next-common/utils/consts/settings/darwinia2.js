@@ -7,6 +7,10 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
+import {
+  ProjectLogoDarwinia2Dark,
+  ProjectLogoDarwinia2Light,
+} from "@osn/icons/subsquare";
 
 export const DEFAULT_DARWINIA_NODES = [
   {
@@ -16,6 +20,37 @@ export const DEFAULT_DARWINIA_NODES = [
   {
     name: "Dwellir",
     url: "wss://darwinia-rpc.dwellir.com",
+  },
+];
+
+const links = [
+  {
+    name: "website",
+    url: "https://darwinia.network/",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/DarwiniaNetwork",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/darwinianetwork",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/DarwiniaNetwork",
+  },
+  {
+    name: "discord",
+    url: "https://discord.com/invite/aQdK9H4MZS",
+  },
+  {
+    name: "github",
+    url: "https://github.com/darwinia-network",
+  },
+  {
+    name: "element",
+    url: "https://app.element.io/#/room/#darwinia:matrix.org",
   },
 ];
 
@@ -32,6 +67,9 @@ const darwinia2 = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoDarwinia2Light,
+  navLogoDark: ProjectLogoDarwinia2Dark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
@@ -47,6 +85,7 @@ const darwinia2 = {
       decimals: 18,
     },
   },
+  description: "Darwinia Provides Cross-Chain Smart Contract Platform And Message Port Network.",
 };
 
 export default darwinia2;

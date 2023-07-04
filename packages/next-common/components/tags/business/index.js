@@ -17,48 +17,48 @@ const Common = styled.div`
 `;
 
 const Treasury = styled(Common)`
-  background: ${(props) => props.theme.secondaryYellow100};
-  color: ${(props) => props.theme.secondaryYellow500};
+  background: var(--orange100);
+  color: var(--orange500);
 `;
 
 const Democracy = styled(Common)`
-  background: ${(props) => props.theme.secondaryPink100};
-  color: ${(props) => props.theme.secondaryPink500};
+  background: var(--pink100);
+  color: var(--pink500);
 `;
 
 const OpenGov = styled(Common)`
-  background: ${(props) => props.theme.secondaryBlue100};
-  color: ${(props) => props.theme.secondaryBlue500};
+  background: var(--blue100);
+  color: var(--blue500);
 `;
 
 const Collectives = styled(Common)`
-  background: ${(props) => props.theme.secondaryGreen100};
-  color: ${(props) => props.theme.secondaryGreen500};
+  background: var(--green100);
+  color: var(--green500);
 `;
 
 const Staking = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const Scheduler = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const Society = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const Parachain = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 const UserEvent = styled(Common)`
-  background: ${(props) => props.theme.secondaryGray100};
-  color: ${(props) => props.theme.secondaryGray500};
+  background: var(--gray100);
+  color: var(--gray500);
 `;
 
 export function TreasuryTag() {

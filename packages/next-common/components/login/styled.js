@@ -7,7 +7,7 @@ export const ContentCenterWrapper = styled(NeutralPanel)`
   width: 400px;
   margin: 0 auto;
   padding: 48px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
   > :not(:first-child) {
     margin-top: 24px;
   }
@@ -18,11 +18,11 @@ export const ContentCenterWrapper = styled(NeutralPanel)`
 
 export const LinkWrapper = styled.div`
   font-size: 14px;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   text-align: center;
   a {
     font-weight: bold;
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
     cursor: pointer;
   }
 `;
@@ -53,7 +53,7 @@ export const Label = styled.div`
 
 export const InfoWrapper = styled.div`
   padding: 12px 16px;
-  background: ${(props) => props.theme.grey100Bg};
+  background: var(--neutral200);
   border-radius: 4px;
   line-height: 150%;
   color: #506176;
@@ -61,10 +61,10 @@ export const InfoWrapper = styled.div`
 
 export const Redirect = styled.div`
   text-align: center;
-  color: ${(props) => props.theme.textSecondary};
+  color: var(--textSecondary);
   .sec {
     font-weight: bold;
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
     margin-left: 8px;
   }
 `;

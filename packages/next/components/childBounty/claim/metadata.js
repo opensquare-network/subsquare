@@ -13,11 +13,11 @@ import { useChainSettings } from "next-common/context/chain";
 import Anchor from "next-common/components/styled/anchor";
 
 const MyGhostCard = styled(GhostCard)`
-  background: ${(props) => props.theme.neutral};
-  border: 1px solid ${(props) => props.theme.grey200Border};
+  background: var(--neutral100);
+  border: 1px solid var(--neutral300);
   ${shadow_100};
   border-radius: 6px;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 `;
 
 const Info = styled.div`
@@ -30,7 +30,7 @@ const InfoItem = styled.div`
   display: flex;
   padding: 12px 0;
   :not(:last-child) {
-    border-bottom: 1px solid ${(props) => props.theme.grey200Border};
+    border-bottom: 1px solid var(--neutral300);
   }
   font-size: 14px;
   line-height: 20px;
@@ -47,7 +47,7 @@ const InfoItemValue = styled.div`
   font-weight: 400;
 
   > a {
-    color: ${(props) => props.theme.secondarySapphire500};
+    color: var(--sapphire500);
     font-weight: 500;
 
     &:hover {

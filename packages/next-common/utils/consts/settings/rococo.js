@@ -5,6 +5,10 @@ import Avatar from "../../../assets/icons/chain/rococo.png";
 import MenuGroups from "./menuGroups";
 import Chains from "../chains";
 import { defaultPostLabels } from "./common";
+import {
+  ProjectLogoRococoDark,
+  ProjectLogoRococoLight,
+} from "@osn/icons/subsquare";
 
 export const defaultRococoNodes = [
   {
@@ -14,6 +18,13 @@ export const defaultRococoNodes = [
 ];
 
 const name = Chains.rococo;
+
+const links = [
+  {
+    name: "github",
+    url: "https://github.com/paritytech/polkadot",
+  },
+];
 
 const rococo = {
   value: name,
@@ -29,9 +40,13 @@ const rococo = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoRococoLight,
+  navLogoDark: ProjectLogoRococoDark,
+  links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  description: "Polkadot’s Parachain Testnet",
 };
 
 export default rococo;

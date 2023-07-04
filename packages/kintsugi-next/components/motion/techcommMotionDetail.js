@@ -59,13 +59,13 @@ const isMotionCompleted = (motion) => {
     return false;
   }
   const ok = motion.state.data.some((data) =>
-    Object.keys(data).some((rawData) => rawData === "ok")
+    Object.keys(data).some((rawData) => rawData === "ok"),
   );
   if (!ok) {
     return false;
   }
   const error = motion.state.data.some((data) =>
-    Object.keys(data).some((rawData) => rawData === "error")
+    Object.keys(data).some((rawData) => rawData === "error"),
   );
   return !error;
 };
@@ -74,7 +74,7 @@ const getClosedTimelineData = (timeline = []) => {
   let firstFoldIndex = timeline.findIndex((item) => item?.method === "Voted");
   const lastFoldIndex = findLastIndex(
     timeline,
-    (item) => item?.method === "Voted"
+    (item) => item?.method === "Voted",
   );
   if (firstFoldIndex > 0) {
     firstFoldIndex--;
@@ -85,10 +85,10 @@ const getClosedTimelineData = (timeline = []) => {
   }
 
   const foldItems = timeline.filter(
-    (item, idx) => idx >= firstFoldIndex && idx <= lastFoldIndex
+    (item, idx) => idx >= firstFoldIndex && idx <= lastFoldIndex,
   );
   const notFoldItems = timeline.filter(
-    (item, idx) => idx < firstFoldIndex || idx > lastFoldIndex
+    (item, idx) => idx < firstFoldIndex || idx > lastFoldIndex,
   );
   const fd = [...foldItems];
   return [fd, ...notFoldItems];
@@ -103,7 +103,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
   const motionEndHeight = motion.onchainData?.voting?.end;
   const blockHeight = useSelector(latestHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
-    blockHeight - motionEndHeight
+    blockHeight - motionEndHeight,
   );
 
   if (isEdit) {

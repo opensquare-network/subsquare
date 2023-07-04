@@ -1,25 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import {
   defaultLinkSvg,
   extractLinks,
   getLinkIcon,
 } from "../utils/viewfuncs/tip";
-
-const ReasonText = styled.span``;
-
-const LogoLink = styled.a`
-  margin-left: 9px;
-  margin-right: 20px;
-  position: relative;
-
-  > svg {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`;
+import Link from "next/link";
 
 export default function ReasonLink({ text, hideText = false }) {
   if (!text) {
@@ -27,23 +12,31 @@ export default function ReasonLink({ text, hideText = false }) {
   }
 
   const links = extractLinks(text);
-  return (
-    <>
-      {!hideText && <ReasonText>{text}</ReasonText>}
-      {links.map((link, index) => {
-        let SvgIcon;
-        try {
-          SvgIcon = getLinkIcon(link);
-        } catch (e) {
-          SvgIcon = defaultLinkSvg;
-        }
 
-        return (
-          <LogoLink key={index} href={link} target="_blank">
-            <SvgIcon />
-          </LogoLink>
-        );
-      })}
-    </>
+  return (
+    <span>
+      {!hideText && <span>{text}</span>}
+      <span className="inline-flex ml-2 space-x-2 relative top-1">
+        {links.map((link) => {
+          let SvgIcon;
+          try {
+            SvgIcon = getLinkIcon(link);
+          } catch (e) {
+            SvgIcon = defaultLinkSvg;
+          }
+
+          return (
+            <Link
+              key={link}
+              className="inline-flex items-center"
+              href={link}
+              target="_blank"
+            >
+              <SvgIcon />
+            </Link>
+          );
+        })}
+      </span>
+    </span>
   );
 }

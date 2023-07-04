@@ -38,13 +38,13 @@ const Wrapper = styled.div`
 const Description = styled.div`
   font-size: 12px;
   line-height: 140%;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   > span {
-    color: ${(props) => props.theme.primaryPurple500};
+    color: var(--purple500);
     cursor: pointer;
   }
   > span.danger {
-    color: ${(props) => props.theme.secondaryRed500};
+    color: var(--red500);
   }
 `;
 

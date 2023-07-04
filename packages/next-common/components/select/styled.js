@@ -6,18 +6,18 @@ export const OptionsWrapper = styled.div`
   left: -1px;
   right: 0;
   top: calc(100% + 4px);
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   ${shadow_200};
   border-radius: 4px;
   padding: 8px 0;
   width: calc(100% + 2px);
   z-index: 999999;
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   ${(p) =>
     p.theme.isDark &&
     css`
-      border: 1px solid ${p.theme.grey200Border};
+      border: 1px solid var(--neutral300);
     `}
 
   ${(p) =>

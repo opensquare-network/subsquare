@@ -40,7 +40,7 @@ function PublicProposalContent({ referendum, comments }) {
   const proposalIndex = publicProposal?.proposalIndex;
   const state = publicProposal?.state?.state;
   const isEnded = ["Tabled", "Canceled", "FastTracked", "Cleared"].includes(
-    state
+    state,
   );
   const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
   const hasCanceled = ["Canceled", "Cleared"].includes(state);
@@ -58,7 +58,7 @@ function PublicProposalContent({ referendum, comments }) {
 
   const onSecondFinalized = useWaitSyncBlock(
     "Proposal seconded",
-    refreshPageData
+    refreshPageData,
   );
 
   const treasuryProposals = publicProposal?.treasuryProposals;
@@ -154,7 +154,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   let referendum;
   if (!isNil(detail.referendumIndex)) {
     const { result } = await nextApi.fetch(
-      `democracy/referendums/${detail.referendumIndex}`
+      `democracy/referendums/${detail.referendumIndex}`,
     );
     referendum = result;
   }
@@ -164,7 +164,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     {
       page: page ?? "last",
       pageSize: Math.min(pageSize ?? 50, 100),
-    }
+    },
   );
 
   return {

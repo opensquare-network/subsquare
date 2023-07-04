@@ -24,18 +24,18 @@ export default function ClaimPopup({
     fetchAndUpdatePost(
       postDispatch,
       type,
-      `${childBounty?.parentBountyId}_${childBounty?.index}`
+      `${childBounty?.parentBountyId}_${childBounty?.index}`,
     );
   }, [childBounty, type, postDispatch]);
 
   const onClaimFinalized = useWaitSyncBlock(
     "Child bounty claimed",
-    refreshPageData
+    refreshPageData,
   );
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    [dispatch]
+    [dispatch],
   );
 
   const doClaim = useCallback(
@@ -52,7 +52,7 @@ export default function ClaimPopup({
 
       let tx = api.tx.childBounties.claimChildBounty(
         childBounty.parentBountyId,
-        childBounty.index
+        childBounty.index,
       );
 
       if (signerAccount?.proxyAddress) {
@@ -77,7 +77,7 @@ export default function ClaimPopup({
       onClose,
       childBounty,
       setIsLoading,
-    ]
+    ],
   );
 
   return (

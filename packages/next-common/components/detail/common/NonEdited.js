@@ -15,7 +15,7 @@ const PlaceHolder = styled.div`
   font-size: 14px;
   line-height: 140%;
   text-align: center;
-  color: ${(props) => props.theme.textTertiary};
+  color: var(--textTertiary);
   height: 68px;
   display: flex;
   align-items: center;
@@ -37,7 +37,7 @@ const GreyItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: ${(props) => props.theme.textSecondary};
+    color: var(--textSecondary);
   }
 `;
 

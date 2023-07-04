@@ -22,7 +22,7 @@ export default function CloseTipPopup({
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    [dispatch]
+    [dispatch],
   );
 
   const doCloseTip = useCallback(
@@ -64,7 +64,7 @@ export default function CloseTipPopup({
       onClose,
       tipHash,
       setIsLoading,
-    ]
+    ],
   );
 
   return (

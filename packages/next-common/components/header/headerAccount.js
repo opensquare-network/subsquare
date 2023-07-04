@@ -17,12 +17,12 @@ import Profile from "../../assets/imgs/icons/profile.svg";
 const Wrapper = Relative;
 
 const AccountButton = styled(Flex)`
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   justify-content: center;
-  border: 1px solid ${(props) => props.theme.grey300Border};
-  border-color: ${(props) => props.theme.grey300Border};
+  border: 1px solid var(--neutral400);
+  border-color: var(--neutral400);
   > div > span:last-child {
-    color: ${(props) => props.theme.textContrast};
+    color: var(--textPrimaryContrast);
   }
 
   border-radius: 4px;
@@ -40,11 +40,11 @@ const Menu = styled.div`
   margin-top: 4px;
   padding: 8px 0;
   z-index: 999999;
-  background: ${(props) => props.theme.neutral};
+  background: var(--neutral100);
   border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
   border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  border-color: ${(props) => props.theme.grey200Border};
-  color: ${(props) => props.theme.textPrimary};
+  border-color: var(--neutral300);
+  color: var(--textPrimary);
 `;
 
 const Item = styled(Flex)`
@@ -55,9 +55,9 @@ const Item = styled(Flex)`
   font-size: 14px;
   font-weight: 500;
   :hover {
-    background: ${(props) => props.theme.grey100Bg};
+    background: var(--neutral200);
   }
-  color: ${(props) => props.theme.textPrimary};
+  color: var(--textPrimary);
 
   > :not(:first-child) {
     margin-left: 8px;

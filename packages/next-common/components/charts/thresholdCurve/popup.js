@@ -52,7 +52,7 @@ const Table = styled(StyledTable)`
     ${StyledTr} {
       height: 44px;
       &:not(:last-child) {
-        border-bottom: 1px solid ${(p) => p.theme.grey100Bg};
+        border-bottom: 1px solid var(--neutral200);
       }
     }
   }
@@ -107,7 +107,7 @@ export default function ThresholdCurvesPopup({
           </StyledTr>
           <RowSplitter
             backgroundColor={
-              theme.isDark ? theme.grey200Border : theme.grey100Bg
+              theme.isDark ? "var(--neutral300)" : "var(--neutral200)"
             }
             padding={"16px 0 0 0"}
           />

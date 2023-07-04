@@ -7,19 +7,21 @@ import {
   gov2ReferendumsSummaryApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import Gov2Summary from "components/summary/gov2Summary";
-import Gov2Page from "components/gov2/gov2Page";
-import StatisticLinkButton from "next-common/components/statisticsLinkButton";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import { snakeCase, upperFirst, camelCase } from "lodash";
-import capitalize from "lodash.capitalize";
+import ReferendaLayout from "next-common/components/layout/referendaLayout";
+import PostList from "next-common/components/postList";
+import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default withLoginUserRedux(
-  ({ posts, title, tracks, fellowshipTracks, summary, status }) => {
+  ({ posts, title, tracks, summary, status }) => {
     const router = useRouter();
 
-    const summaryComponent = <Gov2Summary summary={summary} />;
+    const items = (posts.items || []).map((item) =>
+      normalizeGov2ReferendaListItem(item, tracks),
+    );
 
     function onStatusChange(item) {
       const q = router.query;
@@ -34,29 +36,33 @@ export default withLoginUserRedux(
       router.replace({ query: q });
     }
 
+    const seoInfo = { title, desc: title };
+
     return (
-      <Gov2Page
-        posts={posts}
-        title={title}
-        tracks={tracks}
-        fellowshipTracks={fellowshipTracks}
-        summary={summaryComponent}
-        topRightCorner={<StatisticLinkButton href="/referenda/statistics" />}
-        listTitle="List"
-        listTitleExtra={
-          <ReferendaStatusSelectField
-            value={status}
-            onChange={onStatusChange}
-          />
-        }
-      />
+      <ReferendaLayout seoInfo={seoInfo} title={title} summaryData={summary}>
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          titleExtra={
+            <ReferendaStatusSelectField
+              value={status}
+              onChange={onStatusChange}
+            />
+          }
+          category={businessCategory.openGovReferenda}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
+        />
+      </ReferendaLayout>
     );
   },
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const {
     page = 1,
     page_size: pageSize = defaultPageSize,
@@ -84,7 +90,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: `${ capitalize(chain) } OpenGov Referenda`,
+      title: "OpenGov Referenda",
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
       summary: summary ?? {},

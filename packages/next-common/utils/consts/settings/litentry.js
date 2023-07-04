@@ -6,6 +6,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
+import { ProjectLogoLitentryDark } from "@osn/icons/subsquare";
 
 const DEFAULT_LITENTRY_NODES = [
   {
@@ -15,6 +16,37 @@ const DEFAULT_LITENTRY_NODES = [
   {
     name: "Dwellir",
     url: "wss://litentry-rpc.dwellir.com/",
+  },
+];
+
+const links = [
+  {
+    name: "website",
+    url: "https://litentry.com",
+  },
+  {
+    name: "twitter",
+    url: "https://twitter.com/litentry",
+  },
+  {
+    name: "medium",
+    url: "https://medium.com/litentry",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/litentry",
+  },
+  {
+    name: "discord",
+    url: "https://discord.gg/6KxSqDPgWh",
+  },
+  {
+    name: "github",
+    url: "https://github.com/litentry",
+  },
+  {
+    name: "youtube",
+    url: "https://www.youtube.com/channel/UCbv8QnsNngpV6RMd0Bo2ZBw",
   },
 ];
 
@@ -31,11 +63,15 @@ const litentry = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
+  navLogo: ProjectLogoLitentryDark,
+  navLogoDark: ProjectLogoLitentryDark,
+  links,
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,
   hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
+  description: "The Litentry identity Hub allows you to aggregate your personal data from blockchains and platforms to manage granular access to dApps. Exist in a digital world without KYC. Get Maximum Privacy & Authorization Control. Share Interoperable Verifiable Credentials. Use Multi-chain Data from Web3 + Web2 Platforms",
 };
 
 export default litentry;

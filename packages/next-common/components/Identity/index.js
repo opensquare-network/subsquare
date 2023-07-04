@@ -15,30 +15,30 @@ const Wrapper = styled(Flex)`
   .VERIFIED,
   VERIFIED_LINKED {
     path:first-child {
-      fill: ${(props) => props.theme.secondaryGreen500};
+      fill: var(--green500);
     }
     path:last-child {
-      fill: ${(props) => props.theme.textContrast};
+      fill: var(--textPrimaryContrast);
     }
   }
 
   .NOT_VERIFIED,
   .NOT_VERIFIED_LINKED {
     path:first-child {
-      fill: ${(props) => props.theme.grey300Border};
+      fill: var(--neutral400);
     }
     path:last-child {
-      fill: ${(props) => props.theme.grey400Border};
+      fill: var(--neutral500);
     }
   }
 
   .ERRONEOUS,
   .ERRONEOUS_LINKED {
     path:first-child {
-      fill: ${(props) => props.theme.secondaryRed500};
+      fill: var(--red500);
     }
     path:last-child {
-      fill: ${(props) => props.theme.textContrast};
+      fill: var(--textPrimaryContrast);
     }
   }
 `;
