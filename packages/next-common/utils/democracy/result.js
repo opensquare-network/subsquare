@@ -16,6 +16,9 @@ export function getDemocracyStateArgs(state = {}, timeline = []) {
 
   // By scheduler#Dispatched event
   const executed = timeline.find(item => item.method === "Executed");
-  const isOk = Object.keys(executed.args.result).includes("ok");
+  let isOk = true;
+  if (executed) {
+    isOk = Object.keys(executed.args.result).includes("ok");
+  }
   return { isOk };
 }
