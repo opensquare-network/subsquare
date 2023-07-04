@@ -14,7 +14,6 @@ import { addressEllipsis, isSameAddress } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
-import SecondaryButton from "./buttons/secondaryButton";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
@@ -60,8 +59,8 @@ const AddressItem = styled.div`
   ${(p) =>
     p.linked &&
     css`
-      background: var(--neutral200);
-      border-color: var(--neutral200);
+      background: var(--neutral100);
+      border-color: var(--neutral400);
     `}
 `;
 

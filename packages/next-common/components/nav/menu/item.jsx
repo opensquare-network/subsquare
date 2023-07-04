@@ -24,7 +24,7 @@ export default function NavMenuItem({
       className={clsx(
         "group/menu-item",
         "text-navigationText",
-        "w-full h-10 flex p-2 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
+        "w-full h-10 flex px-2 py-2.5 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
         "hover:text-theme500",
         active && "text-theme500 bg-navigationActive",
         className,

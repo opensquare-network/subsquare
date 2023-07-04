@@ -8,6 +8,7 @@ import {
   FooterLogoLight,
   FooterLogoDark,
 } from "@osn/icons/subsquare";
+import Tooltip from "next-common/components/tooltip";
 
 export default function Footer() {
   const contactLinks = [
@@ -52,7 +53,10 @@ export default function Footer() {
               key={contact.name}
               className="after:content-['·'] after:mx-2 after:text-textTertiary after:last:hidden"
             >
-              <ExternalLink className="text-textSecondary" href={contact.link}>
+              <ExternalLink
+                className="text-textSecondary hover:text-textPrimary"
+                href={contact.link}
+              >
                 {contact.name}
               </ExternalLink>
             </li>
@@ -90,20 +94,25 @@ function ThemeToggleGroup() {
   return (
     <div className={clsx("p-1", "border rounded-lg border-neutral300")}>
       {themeButtons.map((button) => (
-        <button
+        <Tooltip
           key={button.themeMode}
-          className={clsx(
-            "p-1.5 rounded",
-            "hover:bg-neutral200",
-            "[&_path]:fill-textDisabled",
-            button.themeMode === themeMode &&
-              "bg-neutral200 [&_path]:fill-textSecondary",
-            "text-textPrimary",
-          )}
-          onClick={() => setThemeMode(button.themeMode)}
+          content={<span className="capitalize">{button.themeMode}</span>}
+          sideOffset={5}
         >
-          {button.content}
-        </button>
+          <button
+            className={clsx(
+              "p-1.5 rounded",
+              "hover:bg-neutral200",
+              "[&_path]:fill-textDisabled",
+              button.themeMode === themeMode &&
+                "bg-neutral200 [&_path]:fill-textSecondary",
+              "text-textPrimary",
+            )}
+            onClick={() => setThemeMode(button.themeMode)}
+          >
+            {button.content}
+          </button>
+        </Tooltip>
       ))}
     </div>
   );

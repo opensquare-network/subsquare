@@ -21,6 +21,14 @@ export const ContentWrapper = styled.div`
   border-radius: 12px;
   border: 1px solid var(--neutral300);
   background: var(--neutral100);
+
+  font-size: 14px;
+
+  input {
+    background: var(--neutral100);
+    border-color: var(--neutral400);
+    color: var(--textPrimary);
+  }
 `;
 
 export const Label = styled.div`
