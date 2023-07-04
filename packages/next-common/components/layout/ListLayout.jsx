@@ -42,7 +42,7 @@ export default function ListLayout({
 }) {
   return (
     <BaseLayout seoInfo={seoInfo}>
-      <div className="bg-neutral100">
+      <div className="bg-neutral100 border-b border-neutral300">
         <div className={clsx("px-12 py-6 mx-auto max-w-7xl", "max-sm:px-6")}>
           <div>
             <div className="flex justify-between items-baseline">
@@ -94,7 +94,7 @@ function Tabs({ tabs = [] }) {
   const routePath = router.asPath.split("?")[0];
 
   return (
-    <ul className="flex space-x-8">
+    <ul className="flex space-x-6">
       {tabs.map((tab, idx) => {
         const isExternal = isExternalLink(tab.url);
         const itemClassName = clsx(
