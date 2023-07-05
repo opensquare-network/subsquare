@@ -1,28 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import ListLayout from "next-common/components/layout/ListLayout";
+import nextApi from "next-common/services/nextApi";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 import { withLoginUserRedux } from "../../lib";
 import { isPolkadotAddress } from "../../utils/viewfuncs";
 import { getProfileCategories } from "../../utils/consts/profile";
-import nextApi from "next-common/services/nextApi";
-import User from "../user";
-import CommentList from "../commentList";
-import PostList from "../postList";
-import DetailLayout from "../layout/DetailLayout";
 import Back from "../back";
-import Avatar from "../avatar";
-import Gravatar from "../gravatar";
-import Flex from "../styled/flex";
-import AccountLinks from "../links/accountLinks";
-import Loading from "../loading";
-import styled, { css } from "styled-components";
-import { SecondaryCard } from "../styled/containers/secondaryCard";
-import { no_scroll_bar } from "../../styles/componentCss";
 import { useRouter } from "next/router";
-import { useChain, useChainSettings } from "../../context/chain";
+import { useChain } from "../../context/chain";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
-import VStack from "../styled/vStack";
-import { isEthereumAddress } from "@polkadot/util-crypto";
-import AchainableProfile from "./achainableProfile";
-import isMoonChain from "next-common/utils/isMoonChain";
+import Bio from "./bio";
+import List from "./list";
+import Categories from "./categories";
 
 const Wrapper = styled.div`
   max-width: ${pageHomeLayoutMainContentWidth}px;
@@ -40,155 +30,6 @@ const Wrapper = styled.div`
     margin-right: 16px;
   }
 `;
-
-const BioWrapper = styled(SecondaryCard)`
-  padding: 24px;
-  margin-top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-`;
-
-const Secondary = styled.span`
-  color: var(--textSecondary);
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  white-space: nowrap;
-
-  ${(props) =>
-    props.selected &&
-    css`
-      font-weight: 700 !important;
-      color: var(--textPrimary);
-    `}
-  :hover {
-    color: var(--textPrimary);
-  }
-`;
-
-const Tertiary = styled.span`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  white-space: pre-wrap;
-  word-break: break-all;
-  color: var(--textTertiary);
-`;
-
-const CategoryWrapper = styled(SecondaryCard)``;
-
-const CategoryList = styled.ul`
-  all: unset;
-  padding-inline-start: 0 !important;
-  display: flex;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  ${no_scroll_bar};
-  flex-wrap: wrap;
-`;
-
-const CategoryOption = styled.li`
-  all: unset;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: 16px;
-
-  :first-child {
-    font-weight: 500;
-  }
-
-  > span {
-    height: 20px;
-  }
-
-  padding: 4px 8px;
-  border-radius: 4px;
-
-  ${(props) =>
-    props.selected &&
-    css`
-      background: var(--neutral200);
-    `};
-  cursor: pointer;
-  user-select: none;
-`;
-
-const Username = styled.span`
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--textPrimary);
-`;
-
-const AddressWrapper = styled(Flex)`
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-  flex-basis: 100%;
-  flex-wrap: wrap;
-`;
-
-const getFirstCategoryCount = (firstCategory, summary) => {
-  if (!summary[firstCategory]) {
-    return 0;
-  }
-  return Object.keys(summary[firstCategory])
-    .map((secondCategory) => {
-      return summary[firstCategory][secondCategory];
-    })
-    .reduce((partialSum, a) => partialSum + a, 0);
-};
-
-const getSecondCategoryCount = (firstCategory, secondCategory, summary) => {
-  if (!summary[firstCategory]) {
-    return 0;
-  }
-  if (Number.isInteger(summary[firstCategory])) {
-    return summary[firstCategory];
-  }
-  return summary[firstCategory][secondCategory] ?? 0;
-};
-
-const Category = ({ type, count, selected, onClick }) => {
-  return (
-    <CategoryOption selected={selected} onClick={onClick}>
-      <Secondary selected={selected}>{type}</Secondary>
-      <Tertiary>{count}</Tertiary>
-    </CategoryOption>
-  );
-};
-
-const DisplayUser = ({ id }) => {
-  if (isPolkadotAddress(id) || isEthereumAddress(id)) {
-    return <User add={id} showAvatar={false} fontSize={16} />;
-  }
-
-  return <Username>{id}</Username>;
-};
-
-const DisplayUserAddress = ({ address }) => {
-  if (!address) {
-    return null;
-  }
-  return (
-    <AddressWrapper>
-      <Tertiary>{address}</Tertiary>
-      {!isEthereumAddress(address) && <AccountLinks address={address} />}
-    </AddressWrapper>
-  );
-};
-
-const DisplayUserAvatar = ({ address, user }) => {
-  return address ? (
-    <Avatar address={address} size={48} />
-  ) : (
-    <Gravatar emailMd5={user?.emmailMd5} size={48} />
-  );
-};
 
 const getCategoryByRoute = (route, categories = []) => {
   let category;
@@ -210,40 +51,17 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
   const defaultPage = { page: 1, pageSize: 10, total: 0 };
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
-  const [items, setItems] = React.useState([]);
-  const [pagination, setPagination] = React.useState(defaultPage);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [items, setItems] = useState([]);
+  const [pagination, setPagination] = useState(defaultPage);
+  const [isLoading, setIsLoading] = useState(true);
   const categories = getProfileCategories(chain);
-  const [firstCategory, setFirstCategory] = React.useState(
+  const [firstCategory, setFirstCategory] = useState(
     getCategoryByRoute(route, categories)[0],
   );
-  const [secondCategory, setSecondCategory] = React.useState(
+  const [secondCategory, setSecondCategory] = useState(
     getCategoryByRoute(route, categories)[1],
   );
   const router = useRouter();
-
-  const { showAchainableLabels } = useChainSettings();
-
-  const overview = {
-    ...summary,
-    collectives: {
-      councilMotions: summary?.council?.motions ?? 0,
-      techCommProposals: summary?.techComm?.proposals ?? 0,
-    },
-    discussions: {
-      posts: summary?.discussions ?? 0,
-      comments: summary?.comments ?? 0,
-      polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
-    },
-  };
-
-  if (isMoonChain()) {
-    overview.collectives.treasuryCouncilMotions =
-      overview.collectives.councilMotions ?? 0;
-    overview.collectives.councilMotions = summary?.moonCouncil?.motions ?? 0;
-    overview.collectives.openTechCommProposals =
-      summary?.openTechComm?.proposals ?? 0;
-  }
 
   const resetPage = () => setPagination({ ...pagination, page: 1 });
 
@@ -278,105 +96,38 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
     setPagination({ ...pagination, page: target });
   };
 
-  const list =
-    secondCategory.id === "comments" ? (
-      <CommentList
-        items={items}
-        category={secondCategory.categoryName}
-        pagination={{ ...pagination, onPageChange }}
-      />
-    ) : (
-      <PostList
-        link={"/" + secondCategory.routePath}
-        title={secondCategory.categoryName}
-        category={secondCategory.categoryId}
-        items={items}
-        pagination={{ ...pagination, onPageChange }}
-      />
-    );
-
   return (
-    <DetailLayout>
-      <Back href={"/"} text="Profile" />
-      <Wrapper>
-        <BioWrapper>
-          <DisplayUserAvatar address={address} user={user} />
-          <Flex
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              marginTop: 0,
-              flexWrap: "wrap",
-            }}
-          >
-            <DisplayUser id={id} />
-            <DisplayUserAddress address={address} />
-          </Flex>
-          {showAchainableLabels && <AchainableProfile id={id} />}
-        </BioWrapper>
-        <CategoryWrapper>
-          <VStack space={16}>
-            <CategoryList>
-              {categories.map((c, index) => (
-                <Category
-                  onClick={() => {
-                    setItems(null);
-                    setFirstCategory(c);
-                    setSecondCategory(
-                      c.children.find(
-                        (child) => !child?.excludeChains?.includes(chain),
-                      ),
-                    );
-                    resetPage();
-                  }}
-                  key={index}
-                  type={c.name}
-                  count={getFirstCategoryCount(c.id, overview)}
-                  selected={c.id === firstCategory.id}
-                />
-              ))}
-            </CategoryList>
-            <CategoryList>
-              {firstCategory.children.map((c, index) => {
-                if (c?.excludeChains?.includes(chain)) {
-                  return null;
-                }
-                return (
-                  <Category
-                    onClick={() => {
-                      setIsLoading(true);
-                      setSecondCategory(c);
-                      resetPage();
-                    }}
-                    key={index}
-                    type={c.name}
-                    count={getSecondCategoryCount(
-                      firstCategory.id,
-                      c.id,
-                      overview,
-                    )}
-                    selected={c.id === secondCategory.id}
-                  />
-                );
-              })}
-            </CategoryList>
-          </VStack>
-        </CategoryWrapper>
-      </Wrapper>
-
-      {isLoading ? (
-        <Flex
-          style={{
-            marginTop: 28,
-            flexBasis: "100%",
-            justifyContent: "center",
-          }}
-        >
-          <Loading size={16} />
-        </Flex>
-      ) : (
-        list
-      )}
-    </DetailLayout>
+    <ListLayout
+      header={
+        <>
+          <Back href={"/"} text="Profile" />
+          <Bio address={address} user={user} id={id} />
+        </>
+      }
+      tabs={[
+        {
+          label: "Posted",
+          url: `/user/${id}`,
+        },
+      ]}
+    >
+      <Categories
+        categories={categories}
+        setItems={setItems}
+        setFirstCategory={setFirstCategory}
+        setSecondCategory={setSecondCategory}
+        resetPage={resetPage}
+        setIsLoading={setIsLoading}
+        firstCategory={firstCategory}
+        secondCategory={secondCategory}
+        summary={summary}
+      />
+      <List
+        items={items}
+        pagination={{ ...pagination, onPageChange }}
+        isLoading={isLoading}
+        secondCategory={secondCategory}
+      />
+    </ListLayout>
   );
 });
