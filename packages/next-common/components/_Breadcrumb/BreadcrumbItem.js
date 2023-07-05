@@ -1,46 +1,5 @@
-import React from "react";
-import styled from "styled-components";
-import { p_16_bold } from "../../styles/componentCss";
 import Link from "next/link";
-
-const Item = styled.span`
-  a {
-    cursor: pointer;
-
-    :hover {
-      color: inherit;
-      text-decoration: underline;
-    }
-  }
-`;
-
-const Separator = styled.span`
-  margin: 0 8px;
-  color: var(--textDisabled);
-`;
-
-const Wrapper = styled.li`
-  list-style: none;
-  ${p_16_bold};
-
-  &:last-child {
-    ${Separator} {
-      display: none;
-    }
-
-    ${Item} {
-      color: var(--textTertiary);
-      pointer-events: none;
-      a {
-        cursor: unset;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
-    }
-  }
-`;
+import clsx from "clsx";
 
 /**
  * @param {import('./types').BreadcrumbItemProps} props
@@ -50,23 +9,33 @@ function BreadcrumbItem(props) {
 
   let content = children;
   if (path) {
-    content = <Link href={path} legacyBehavior>{content}</Link>;
-  }
-
-  if (children) {
-    return (
-      <Wrapper>
-        <Item>{content}</Item>
-        {separator && (
-          <Separator className="osn-breadcrumb-separator">
-            {separator}
-          </Separator>
-        )}
-      </Wrapper>
+    content = (
+      <Link href={path} className="hover:underline">
+        {content}
+      </Link>
     );
   }
 
-  return null;
+  if (!children) {
+    return null;
+  }
+
+  return (
+    <li
+      className={clsx(
+        "group",
+        "text14Medium text-textPrimary last:text-textTertiary",
+      )}
+    >
+      <span>{content}</span>
+
+      {separator && (
+        <span className="text-textDisabled mx-2 group-last:hidden">
+          {separator}
+        </span>
+      )}
+    </li>
+  );
 }
 
 export default BreadcrumbItem;
