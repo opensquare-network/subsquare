@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { isExternalLink } from "next-common/utils";
 import noop from "lodash.noop";
+import usePageTitle from "next-common/hooks/usePageTitle";
 
 /**
  * @typedef {{
@@ -31,7 +32,7 @@ import noop from "lodash.noop";
  * @param {ListLayoutProps} props
  */
 export default function ListLayout({
-  seoInfo = {},
+  seoInfo: seoInfoProp = {},
   children,
   title,
   description,
@@ -41,6 +42,15 @@ export default function ListLayout({
   tabs = [],
   header,
 }) {
+  const seoTitle = usePageTitle(
+    seoInfoProp.title || title || "governance platform",
+  );
+
+  const seoInfo = {
+    title: "Subsquare | " + seoTitle,
+    desc: description || seoInfoProp.desc,
+  };
+
   const listHeader = (
     <div>
       <div className="flex justify-between items-baseline">
