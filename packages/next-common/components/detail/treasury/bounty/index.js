@@ -11,15 +11,12 @@ export default function BountyDetail({ onReply }) {
   const post = usePost();
   const setIsEdit = useSetEdit();
 
-  return <DetailContentBase>
-    <BountyCountDown data={post.onchainData} />
-    <PostTitle />
-    <BountyPostMeta />
-    <ArticleContent
-      post={post}
-      onReply={onReply}
-      setIsEdit={setIsEdit}
-    />
-  </DetailContentBase>;
-
+  return (
+    <DetailContentBase>
+      <BountyCountDown data={post.onchainData} />
+      <PostTitle />
+      <BountyPostMeta />
+      <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
+    </DetailContentBase>
+  );
 }

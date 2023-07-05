@@ -15,14 +15,15 @@ export default function List({ items, pagination, isLoading, secondCategory }) {
     ) : (
       <PostList
         link={"/" + secondCategory.routePath}
-        title={secondCategory.categoryName}
+        title={"List"}
+        titleCount={pagination.total}
         category={secondCategory.categoryId}
         items={items}
         pagination={pagination}
       />
     );
 
-  return isLoading ? (
+  return (
     <Flex
       style={{
         marginTop: 28,
@@ -30,9 +31,7 @@ export default function List({ items, pagination, isLoading, secondCategory }) {
         justifyContent: "center",
       }}
     >
-      <Loading size={16} />
+      {isLoading ? <Loading size={16} /> : list}
     </Flex>
-  ) : (
-    list
   );
 }

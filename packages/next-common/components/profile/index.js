@@ -1,35 +1,18 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import ListLayout from "next-common/components/layout/ListLayout";
 import nextApi from "next-common/services/nextApi";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { withLoginUserRedux } from "../../lib";
 import { isPolkadotAddress } from "../../utils/viewfuncs";
 import { getProfileCategories } from "../../utils/consts/profile";
-import Back from "../back";
 import { useRouter } from "next/router";
 import { useChain } from "../../context/chain";
-import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import Bio from "./bio";
 import List from "./list";
 import Categories from "./categories";
-
-const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  margin: auto;
-
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  @media screen and (max-width: 768px) {
-    margin-left: 16px;
-    margin-right: 16px;
-  }
-`;
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
+import Breadcrumb from "next-common/components/_Breadcrumb";
+import { addressEllipsis } from "next-common/utils";
 
 const getCategoryByRoute = (route, categories = []) => {
   let category;
@@ -96,11 +79,22 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
     setPagination({ ...pagination, page: target });
   };
 
+  const breadcrumbItems = [
+    {
+      content: "Profile",
+    },
+    {
+      content: addressEllipsis(id),
+    },
+  ];
+
   return (
     <ListLayout
       header={
         <>
-          <Back href={"/"} text="Profile" />
+          <BreadcrumbWrapper>
+            <Breadcrumb items={breadcrumbItems} />
+          </BreadcrumbWrapper>
           <Bio address={address} user={user} id={id} />
         </>
       }
