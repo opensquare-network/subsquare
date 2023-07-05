@@ -3,7 +3,7 @@ import {
   ContentWrapper,
   InfoMessage,
 } from "next-common/components/settingV2/styled";
-import ProxyAddress from "next-common/components/setting/proxyAddress";
+import ProxyAddress from "next-common/components/settingV2/proxyAddress";
 import SettingLayout from "next-common/components/settingV2/settingLayout";
 import {
   SettingSection,
