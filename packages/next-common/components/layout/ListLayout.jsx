@@ -42,7 +42,7 @@ export default function ListLayout({
   tabs = [],
 }) {
   const seoTitle = usePageTitle(
-    seoInfoProp.title || title || "governance platform",
+    seoInfoProp.title ?? title ?? "governance platform",
   );
 
   const seoInfo = {

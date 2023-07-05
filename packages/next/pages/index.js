@@ -230,6 +230,8 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
 
   return (
     <ListLayout
+      title={chainSettings.name}
+      seoInfo={{ title: "" }}
       description={chainSettings.description}
       headContent={<ChainSocialLinks />}
       summary={<SummaryComponent summaryData={overview?.summary} />}
