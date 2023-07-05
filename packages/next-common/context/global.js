@@ -5,6 +5,7 @@ import SettingsProvider from "./settings";
 import ThemeModeProvider from "./theme";
 import PageProvider from "./page";
 import NavProvider from "./nav";
+import { PostProvider } from "./post";
 
 export default function GlobalProvider({
   user,
@@ -15,6 +16,7 @@ export default function GlobalProvider({
   pageProperties,
   navCollapsed,
   navSubmenuVisible,
+  detail,
 }) {
   return (
     <ThemeModeProvider defaultThemeMode={themeMode}>
@@ -26,7 +28,7 @@ export default function GlobalProvider({
               navSubmenuVisible={navSubmenuVisible}
             >
               <PageProvider pageProperties={pageProperties}>
-                {children}
+                <PostProvider post={detail}>{children}</PostProvider>
               </PageProvider>
             </NavProvider>
           </SettingsProvider>
