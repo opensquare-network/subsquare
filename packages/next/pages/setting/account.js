@@ -12,6 +12,8 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import { ContentWrapper } from "next-common/components/settingV2/styled";
+import { ssrNextApi } from "next-common/services/nextApi";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
@@ -56,7 +58,15 @@ export default withLoginUserRedux(({ loginUser }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
-    props: {},
+    props: {
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
+    },
   };
 });
