@@ -32,12 +32,12 @@ const Wrapper = styled.div`
   min-height: 100vh;
   justify-content: center;
   padding-top: 64px;
-  background: var(--neutral200);
+  background: var(--pageBg);
 `;
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background: var(--neutral200);
+    background: var(--pageBg);
   }
 `;
 
