@@ -10,7 +10,7 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import AchainableProfile from "./achainableProfile";
 import { useChainSettings } from "next-common/context/chain";
 
-const BioWrapper = styled.div`
+const Wrapper = styled.div`
   padding: 24px;
   margin-top: 0;
   display: flex;
@@ -76,7 +76,7 @@ export default function Bio({ address, user, id }) {
   const { showAchainableLabels } = useChainSettings();
 
   return (
-    <BioWrapper>
+    <Wrapper>
       <DisplayUserAvatar address={address} user={user} />
       <Flex
         style={{
@@ -90,6 +90,6 @@ export default function Bio({ address, user, id }) {
         <DisplayUserAddress address={address} />
       </Flex>
       {showAchainableLabels && <AchainableProfile id={id} />}
-    </BioWrapper>
+    </Wrapper>
   );
 }

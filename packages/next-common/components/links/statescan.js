@@ -26,27 +26,27 @@ export default function Statescan({ indexer, children }) {
     return null;
   }
 
-  let url = `https://${ statescanDomainMap[chain] || chain }.statescan.io/#`;
+  let url = `https://${statescanDomainMap[chain] || chain}.statescan.io/#`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
-    url += `/extrinsics/${ blockHeight }-${ extrinsicIndex ?? index }`;
+    url += `/extrinsics/${blockHeight}-${extrinsicIndex ?? index}`;
   } else {
-    url += `/events/${ blockHeight }-${ eventIndex }`;
+    url += `/events/${blockHeight}-${eventIndex}`;
   }
 
   const isLight = mode === "light";
 
   if (children) {
     return (
-      <a href={ url } target="_blank" rel="noreferrer">
-        { children }
+      <a href={url} target="_blank" rel="noreferrer">
+        {children}
       </a>
     );
   }
 
   return (
-    <StatescanLink href={ url } target="_blank" rel="noreferrer">
-      { isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon /> }
-      { isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark /> }
+    <StatescanLink href={url} target="_blank" rel="noreferrer">
+      {isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon />}
+      {isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark />}
     </StatescanLink>
   );
 }
@@ -63,12 +63,14 @@ export function StatescanAccountLink({ address }) {
 
   return (
     <StatescanLink
-      href={`https://${ statescanDomainMap[chain] || chain }.statescan.io//#/accounts/${address}`}
+      href={`https://${
+        statescanDomainMap[chain] || chain
+      }.statescan.io//#/accounts/${address}`}
       target="_blank"
       rel="noreferrer"
     >
-      { isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon /> }
-      { isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark /> }
+      {isLight ? <LinkStatescanLightIcon /> : <LinkStatescanDarkIcon />}
+      {isLight ? <LinkStatescanActiveLight /> : <LinkStatescanActiveDark />}
     </StatescanLink>
   );
 }
