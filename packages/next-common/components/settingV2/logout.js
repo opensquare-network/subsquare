@@ -11,7 +11,6 @@ export default function Logout() {
   return (
     <ButtonWrapper>
       <ThemeGhostButton
-        isFill
         onClick={async () => {
           await logoutUser(userDispatch);
           await router.replace("/");

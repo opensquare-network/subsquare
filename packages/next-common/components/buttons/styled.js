@@ -28,6 +28,12 @@ const CommonButtonWrapper = styled.button`
       height: 28px;
       font-size: 12px;
     `}
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      cursor: not-allowed;
+    `}
 `;
 
 function CommonButton({
@@ -35,11 +41,18 @@ function CommonButton({
   className,
   icon,
   isLoading,
+  disabled,
   small,
   ...props
 }) {
   return (
-    <CommonButtonWrapper className={className} small={small} {...props}>
+    <CommonButtonWrapper
+      className={className}
+      small={small}
+      isLoading={isLoading}
+      disabled={disabled}
+      {...props}
+    >
       <span className="w-full h-full inline-flex items-center justify-center">
         {icon && !isLoading && <span className="mr-1.5">{icon}</span>}
         <span>{children}</span>
