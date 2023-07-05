@@ -26,6 +26,10 @@ const ShortAddress = styled.div`
   }
 `;
 
+const Address = styled.span`
+  color: var(--textPrimary);
+`;
+
 export default function Web3Address({ address }) {
   const [identity, hasId] = useIdentityInfo(address);
 
@@ -33,7 +37,11 @@ export default function Web3Address({ address }) {
     <AddressWrapper>
       <Avatar address={address} size={40} />
       <div>
-        {hasId ? <Identity identity={identity} /> : addressEllipsis(address)}
+        {hasId ? (
+          <Identity identity={identity} />
+        ) : (
+          <Address>{addressEllipsis(address)}</Address>
+        )}
         <div>
           <FullAddress>{address}</FullAddress>
           <ShortAddress>{addressEllipsis(address)}</ShortAddress>
