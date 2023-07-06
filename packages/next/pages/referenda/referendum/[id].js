@@ -28,6 +28,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
+import { clearVotes } from "next-common/store/reducers/referenda/votes";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -38,6 +39,7 @@ function ReferendumContent({ comments }) {
   useEffect(() => {
     return () => {
       dispatch(unsetIssuance());
+      dispatch(clearVotes());
     };
   }, [dispatch]);
 

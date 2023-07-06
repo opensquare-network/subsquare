@@ -158,13 +158,5 @@ export async function getReferendumVotesFromVotingOf(
   const mapped = (voting || []).map((item) => normalizeVotingOfEntry(item));
   const directVotes = extractDirectVotes(mapped, referendumIndex);
   const delegationVotes = extractDelegations(mapped, directVotes);
-  const sorted = sortVotes([...directVotes, ...delegationVotes]);
-
-  let allAye = sorted.filter((v) => v.aye);
-  let allNay = sorted.filter((v) => !v.aye);
-
-  allAye = extractDirectVoterDelegations(allAye, delegationVotes);
-  allNay = extractDirectVoterDelegations(allNay, delegationVotes);
-
-  return { allAye, allNay };
+  return sortVotes([...directVotes, ...delegationVotes]);
 }

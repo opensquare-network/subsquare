@@ -15,13 +15,14 @@ import { useChainSettings } from "next-common/context/chain";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 import { sortTotalVotes } from "../../../utils/democracy/votes/passed/common";
+import { useSelector } from "react-redux";
+import { allNestedVotesSelector, showVotesNumberSelector } from "next-common/store/reducers/democracy/votes/selectors";
 
 export default function NestedVotesPopup({
   setShowVoteList = noop,
-  allAye,
-  allNay,
-  isLoadingVotes,
 }) {
+  const showVotesNumber = useSelector(showVotesNumberSelector);
+  const { allAye, allNay } = useSelector(allNestedVotesSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
@@ -69,7 +70,7 @@ export default function NestedVotesPopup({
 
       <VotesList
         items={votes.slice(sliceFrom, sliceTo)}
-        loading={isLoadingVotes}
+        loading={!showVotesNumber}
       />
 
       <Pagination {...pagination} />

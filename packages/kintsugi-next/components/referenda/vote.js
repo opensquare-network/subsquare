@@ -249,12 +249,7 @@ function Vote({
           <span style={{ width: 40 }}>{nNaysPercent}%</span>
         </Contents>
 
-        <TallyInfo
-          tally={tally}
-          isLoadingVotes={isLoadingVotes}
-          allAye={allAye}
-          allNay={allNay}
-        />
+        <TallyInfo tally={tally} />
 
         {referendumInfo?.finished?.approved && <PassStatus>Passed</PassStatus>}
         {referendumInfo?.finished?.approved === false && (
