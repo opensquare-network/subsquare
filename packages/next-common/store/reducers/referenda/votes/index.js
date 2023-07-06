@@ -5,14 +5,10 @@ import { name } from "./consts"
 const referendaVotesSlice = createSlice({
   name,
   initialState: {
-    isLoadingVotes: false,
     allVotes: null,
     votesTrigger: 1,
   },
   reducers: {
-    setIsLoadingVotes(state, { payload }) {
-      state.isLoadingVotes = payload;
-    },
     setAllVotes(state, { payload }) {
       state.allVotes = payload;
     },
@@ -26,7 +22,6 @@ const referendaVotesSlice = createSlice({
 });
 
 export const {
-  setIsLoadingVotes,
   setAllVotes,
   incVotesTrigger,
   clearVotersTrigger,
@@ -40,12 +35,8 @@ export const clearVotes = () => async (dispatch) => {
 export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigger());
 
 export const fetchReferendaVotes = (api, trackId, referendumIndex) => async (dispatch) => {
-  try {
-    const sortedVotes = await fetchAndNormalizeVotes(api, trackId, referendumIndex);
-    dispatch(setAllVotes(sortedVotes));
-  } finally {
-    dispatch(setIsLoadingVotes(false));
-  }
+  const sortedVotes = await fetchAndNormalizeVotes(api, trackId, referendumIndex);
+  dispatch(setAllVotes(sortedVotes));
 }
 
 export default referendaVotesSlice.reducer;
