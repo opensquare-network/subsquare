@@ -1,21 +1,19 @@
-import {
-  isLoadingVotesSelector,
-  votesSelector,
-} from "next-common/store/reducers/gov2ReferendumSlice";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import NestedVotesPopup from "./nestedVotesPopup";
 import { Button } from "./styled";
 import { sortTotalVotes } from "next-common/utils/democracy/votes/passed/common";
+import { allNestedVotesSelector, isLoadingVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 export default function NestedVotes() {
   const [showNestedVotes, setShowNestedVotes] = useState(false);
   const isLoadingVotes = useSelector(isLoadingVotesSelector);
+
   const {
     allAye = [],
     allNay = [],
     allAbstain = [],
-  } = useSelector(votesSelector);
+  } = useSelector(allNestedVotesSelector);
 
   const directAyes = useMemo(
     () => sortTotalVotes(allAye.filter((v) => !v.isDelegating)),
