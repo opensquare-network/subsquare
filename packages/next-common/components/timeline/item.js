@@ -58,7 +58,6 @@ const Bar = styled.div`
 `;
 
 const Right = styled.div`
-  padding-bottom: 16px;
   flex-grow: 1;
 `;
 
@@ -132,12 +131,16 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
   const itemAge = useDuration(itemTime);
 
   return (
-    <Wrapper foldable={foldable} isFold={isFold}>
+    <Wrapper
+      foldable={foldable}
+      isFold={isFold}
+      className="group/timeline-item"
+    >
       <Left>
         <Cirtcle />
         <Bar className="bar" />
       </Left>
-      <Right>
+      <Right className="pb-4 group-last/timeline-item:pb-0">
         <TitleWrapper>
           <Tooltip content={itemAge}>
             <div>{itemTime}</div>
