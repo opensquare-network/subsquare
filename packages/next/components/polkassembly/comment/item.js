@@ -10,6 +10,8 @@ import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import Actions from "../actions";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import useDuration from "next-common/utils/hooks/useDuration";
+import Divider from "next-common/components/styled/layout/divider";
+import clsx from "clsx";
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,24 +20,6 @@ const Wrapper = styled.div`
     padding: 16px 0;
     margin: 0;
   }
-
-  ${(p) =>
-    !p.isSecondLevel &&
-    css`
-      :not(:last-child)::after {
-        content: "";
-        height: 1px;
-        position: absolute;
-        bottom: 0;
-        left: 76px;
-        width: calc(100% - 124px);
-        @media screen and (max-width: 768px) {
-          left: 28px;
-          width: calc(100% - 28px);
-        }
-        background-color: var(--neutral300);
-      }
-    `}
 `;
 
 const InfoWrapper = styled(Flex)`
@@ -89,7 +73,7 @@ export default function Item({ data, isSecondLevel }) {
   const duration = useDuration(comment.createdAt);
 
   return (
-    <Wrapper isSecondLevel={isSecondLevel}>
+    <Wrapper className="group/comment-item">
       <InfoWrapper>
         <User user={comment.author} noEvent />
         <div>{duration}</div>
@@ -124,6 +108,15 @@ export default function Item({ data, isSecondLevel }) {
               ))
             : null}
         </IndentWrapper>
+      )}
+
+      {!isSecondLevel && (
+        <Divider
+          className={clsx(
+            "group-last/comment-item:hidden",
+            "ml-7 relative top-5",
+          )}
+        />
       )}
     </Wrapper>
   );

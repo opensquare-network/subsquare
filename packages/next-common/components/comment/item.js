@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
@@ -20,33 +20,16 @@ import copy from "copy-to-clipboard";
 import useDuration from "../../utils/hooks/useDuration";
 import { useUser } from "../../context/user";
 import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
+import Divider from "next-common/components/styled/layout/divider";
+import clsx from "clsx";
 
 const Wrapper = styled.div`
   position: relative;
-  padding: 16px 48px;
-  margin: 0 -48px;
+  padding: 16px 24px;
   @media screen and (max-width: 768px) {
     padding: 16px 0;
     margin: 0;
   }
-
-  ${(p) =>
-    !p.isSecondLevel &&
-    css`
-      :not(:last-child)::after {
-        content: "";
-        height: 1px;
-        position: absolute;
-        bottom: 0;
-        left: 76px;
-        width: calc(100% - 124px);
-        @media screen and (max-width: 768px) {
-          left: 28px;
-          width: calc(100% - 28px);
-        }
-        background-color: var(--neutral300);
-      }
-    `}
 
   :hover {
     .edit {
@@ -221,12 +204,7 @@ export default function Item({
   };
 
   return (
-    <Wrapper
-      ref={refCommentTree}
-      id={comment.height}
-      highlight={highlight}
-      isSecondLevel={isSecondLevel}
-    >
+    <Wrapper ref={refCommentTree} id={comment.height} highlight={highlight}>
       <InfoWrapper>
         <User user={comment.author} />
         <div>{duration}</div>
@@ -322,6 +300,15 @@ export default function Item({
               ))
             : null}
         </IndentWrapper>
+      )}
+
+      {!isSecondLevel && (
+        <Divider
+          className={clsx(
+            "group-last/comment-item:hidden",
+            "ml-7 relative top-5",
+          )}
+        />
       )}
     </Wrapper>
   );
