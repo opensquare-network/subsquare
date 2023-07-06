@@ -51,10 +51,8 @@ function MyApp({ Component, pageProps }) {
     pageProperties,
     navCollapsed,
     navSubmenuVisible,
-    detail,
     ...otherProps
   } = pageProps;
-
   return (
     <>
       <Head>
@@ -69,9 +67,8 @@ function MyApp({ Component, pageProps }) {
           pageProperties={pageProperties}
           navCollapsed={navCollapsed}
           navSubmenuVisible={navSubmenuVisible}
-          detail={detail}
         >
-          <Component detail={detail} {...otherProps} />
+          <Component {...otherProps} />
         </GlobalProvider>
       </Provider>
     </>
