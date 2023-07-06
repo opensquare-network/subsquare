@@ -13,6 +13,7 @@ import Categories from "./categories";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { addressEllipsis } from "next-common/utils";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const getCategoryByRoute = (route, categories = []) => {
   let category;
@@ -30,6 +31,27 @@ const getCategoryByRoute = (route, categories = []) => {
 };
 
 export default withLoginUserRedux(({ route, summary, user, id }) => {
+  const overview = {
+    ...summary,
+    collectives: {
+      councilMotions: summary?.council?.motions ?? 0,
+      techCommProposals: summary?.techComm?.proposals ?? 0,
+    },
+    discussions: {
+      posts: summary?.discussions ?? 0,
+      comments: summary?.comments ?? 0,
+      polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
+    },
+  };
+
+  if (isMoonChain()) {
+    overview.collectives.treasuryCouncilMotions =
+      overview.collectives.councilMotions ?? 0;
+    overview.collectives.councilMotions = summary?.moonCouncil?.motions ?? 0;
+    overview.collectives.openTechCommProposals =
+      summary?.openTechComm?.proposals ?? 0;
+  }
+
   const chain = useChain();
   const defaultPage = { page: 1, pageSize: 10, total: 0 };
   const address =
@@ -88,6 +110,28 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
     },
   ];
 
+  useEffect(() => {
+    if (router.asPath !== `/user/${id}`) {
+      return;
+    }
+
+    let mainCategory, subCategory;
+
+    // find first non-empty category
+    for (mainCategory of categories) {
+      if (!overview[mainCategory.id]) {
+        continue;
+      }
+      for (subCategory of mainCategory.children) {
+        if (overview[mainCategory.id][subCategory.id] > 0) {
+          setFirstCategory(mainCategory);
+          setSecondCategory(subCategory);
+          return;
+        }
+      }
+    }
+  }, [id, router, categories, summary]);
+
   return (
     <ListLayout
       header={
@@ -114,7 +158,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
         setIsLoading={setIsLoading}
         firstCategory={firstCategory}
         secondCategory={secondCategory}
-        summary={summary}
+        overview={overview}
       />
       <List
         items={items}

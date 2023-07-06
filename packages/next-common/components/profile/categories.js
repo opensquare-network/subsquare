@@ -4,7 +4,6 @@ import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { no_scroll_bar } from "../../styles/componentCss";
 import { useChain } from "../../context/chain";
 import VStack from "../styled/vStack";
-import isMoonChain from "next-common/utils/isMoonChain";
 
 const CategoryWrapper = styled(SecondaryCard)``;
 
@@ -111,29 +110,8 @@ export default function Categories({
   setIsLoading,
   firstCategory,
   secondCategory,
-  summary,
+  overview,
 }) {
-  const overview = {
-    ...summary,
-    collectives: {
-      councilMotions: summary?.council?.motions ?? 0,
-      techCommProposals: summary?.techComm?.proposals ?? 0,
-    },
-    discussions: {
-      posts: summary?.discussions ?? 0,
-      comments: summary?.comments ?? 0,
-      polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
-    },
-  };
-
-  if (isMoonChain()) {
-    overview.collectives.treasuryCouncilMotions =
-      overview.collectives.councilMotions ?? 0;
-    overview.collectives.councilMotions = summary?.moonCouncil?.motions ?? 0;
-    overview.collectives.openTechCommProposals =
-      summary?.openTechComm?.proposals ?? 0;
-  }
-
   const chain = useChain();
 
   const onFirstCategoryClick = (c) => {
