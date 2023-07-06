@@ -37,11 +37,9 @@ export default function Web3Address({ address }) {
     <AddressWrapper>
       <Avatar address={address} size={40} />
       <div>
-        {hasId ? (
-          <Identity identity={identity} />
-        ) : (
-          <Address>{addressEllipsis(address)}</Address>
-        )}
+        <Address>
+          {hasId ? <Identity identity={identity} /> : addressEllipsis(address)}
+        </Address>
         <div>
           <FullAddress>{address}</FullAddress>
           <ShortAddress>{addressEllipsis(address)}</ShortAddress>

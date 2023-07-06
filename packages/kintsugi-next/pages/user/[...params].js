@@ -1,7 +1,7 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import { ssrNextApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
-// import { isKeyRegisteredUser } from "next-common/utils";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(Profile);
 
@@ -12,14 +12,15 @@ export const getServerSideProps = withLoginUser(async (context) => {
   } = context.query;
 
   const [{ result: summary }, { result: user }] = await Promise.all([
-    nextApi.fetch(`users/${id}/counts`),
-    nextApi.fetch(`users/${id}`),
+    ssrNextApi.fetch(`users/${id}/counts`),
+    ssrNextApi.fetch(`users/${id}`),
   ]);
 
-  // let username = id;
-  // if (user?.username && !isKeyRegisteredUser(user)) {
-  //   username = user?.username;
-  // }
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       id,
@@ -27,6 +28,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       summary: summary ?? {},
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });

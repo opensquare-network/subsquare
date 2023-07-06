@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const ThirdPartyLink = styled.a`
+  display: inline-flex;
   width: 20px;
   height: 20px;
   overflow: hidden;
@@ -25,7 +26,7 @@ export const StatescanLink = styled(ThirdPartyLink)`
 export const DotreasuryLinkWrapper = StatescanLink;
 
 export const SubscanLinkWrapper = styled(ThirdPartyLink)`
-  svg:first-child {
+  svg {
     path:first-child {
       fill: var(--neutral300);
     }
@@ -33,14 +34,17 @@ export const SubscanLinkWrapper = styled(ThirdPartyLink)`
       fill: var(--neutral500);
     }
   }
+
+  svg:last-child {
+    display: none;
+  }
+
   &:hover {
     svg:first-child {
       display: none;
     }
     svg:last-child {
-      path:first-child {
-        fill: var(--neutral300);
-      }
+      display: inline-block;
     }
   }
 `;
