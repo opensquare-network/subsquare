@@ -1,58 +1,60 @@
 // https://ant.design/components/descriptions, Display multiple read-only fields in groups.
 
-import React from "react";
-import styled from "styled-components";
-import {
-  flex,
-  items_center,
-  justify_between,
-  w_full,
-} from "next-common/styles/tailwindcss";
-import {
-  p_14_bold,
-  p_14_medium,
-  p_14_normal,
-} from "next-common/styles/componentCss";
+import clsx from "clsx";
 
-const Wrapper = styled.div`
-  ${w_full};
-`;
-const DescriptionsTitle = styled.h3`
-  margin: 0;
-  margin-bottom: 8px;
-  ${p_14_bold};
-  color: var(--textPrimary);
-`;
-const DescriptionItem = styled.div`
-  height: 44px;
-  ${flex};
-  ${justify_between};
-  ${items_center};
-  color: var(--textPrimary);
-
-  & + & {
-    border-top: 1px solid var(--neutral300);
-  }
-`;
-const DescriptionItemLabel = styled.div`
-  ${p_14_medium};
-`;
-const DescriptionItemValue = styled.div`
-  ${p_14_normal};
-`;
-
-export default function Descriptions({ title = "", items = [] }) {
+/**
+ * @param {Object} props
+ * @param {{label: string, labelWidth?: number, value: JSX.Element, content?: JSX.Element}[]} props.items
+ * @param {number} props.labelWidth
+ * @param {'left' | 'right'} props.valueAlign
+ */
+export default function Descriptions({
+  title = "",
+  items = [],
+  labelWidth,
+  valueAlign = "right",
+}) {
   return (
-    <Wrapper>
-      {title && <DescriptionsTitle>{title}</DescriptionsTitle>}
+    <div className="w-full py-2">
+      {title && <h4 className="text14Bold text-textPrimary">{title}</h4>}
 
-      {items?.length &&
-        items.map((item, idx) => (
-          <DescriptionItem key={idx}>
-            <DescriptionItemLabel>{item.label}</DescriptionItemLabel>
-            <DescriptionItemValue>{item.value}</DescriptionItemValue>
-          </DescriptionItem>
-        ))}
-    </Wrapper>
+      {!!items?.length && (
+        <div className="mt-2">
+          {items.map((item, idx) => (
+            <div
+              key={idx}
+              className={clsx(
+                "py-4",
+                "flex items-center",
+                "border-t border-neutral300 first:border-none",
+                "max-sm:block",
+              )}
+            >
+              {item.content ?? (
+                <>
+                  <div
+                    className="text-textPrimary text14Medium"
+                    style={{ width: item.labelWidth || labelWidth }}
+                  >
+                    {item.label}
+                  </div>
+                  <div
+                    className={clsx(
+                      "text-textPrimary text14Medium break-words",
+                      "flex-1 flex",
+                      valueAlign === "right" && "justify-end",
+                      valueAlign === "left" && "justify-start",
+                      "max-sm:mt-2",
+                    )}
+                  >
+                    {item.value}
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
