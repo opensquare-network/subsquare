@@ -52,7 +52,9 @@ export default function DetailLayout({
           {head && <div className="px-6">{head}</div>}
 
           <div className="flex gap-x-6 mt-6 max-w-full">
-            <div className="w-full">{children}</div>
+            <div className={clsx(side && "max-w-[calc(100%-320px-24px)]")}>
+              {children}
+            </div>
 
             {side && <div className={clsx("w-80 px-6")}>{side}</div>}
           </div>
