@@ -15,7 +15,7 @@ export default function Descriptions({
   valueAlign = "right",
 }) {
   return (
-    <div className="w-full py-2">
+    <div className="w-full">
       {title && <h4 className="text14Bold text-textPrimary">{title}</h4>}
 
       {!!items?.length && (
@@ -24,7 +24,7 @@ export default function Descriptions({
             <div
               key={idx}
               className={clsx(
-                "py-4",
+                "py-4 first:pt-0 last:pb-0",
                 "flex items-center",
                 "border-t border-neutral300 first:border-none",
                 "max-sm:block",
