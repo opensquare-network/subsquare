@@ -13,8 +13,7 @@ import useDuration from "next-common/utils/hooks/useDuration";
 
 const Wrapper = styled.div`
   position: relative;
-  padding: 16px 48px;
-  margin: 0 -48px;
+  padding: 16px 24px;
   @media screen and (max-width: 768px) {
     padding: 16px 0;
     margin: 0;
