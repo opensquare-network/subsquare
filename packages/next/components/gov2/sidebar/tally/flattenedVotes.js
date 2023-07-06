@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Button } from "./styled";
 import FlattenedVotesPopup from "./flattenedVotesPopup";
 import { useSelector } from "react-redux";
-import { flattenVotesSelector, isLoadingVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { flattenVotesSelector, showVotesNumberSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 export default function FlattenedVotes() {
   const [showFlattenedVotes, setShowFlattenedVotes] = useState(false);
-  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const showVotesNum = useSelector(showVotesNumberSelector);
   const {
     allAye = [],
     allNay = [],
@@ -22,7 +22,7 @@ export default function FlattenedVotes() {
           allAye={allAye}
           allNay={allNay}
           allAbstain={allAbstain}
-          isLoadingVotes={isLoadingVotes}
+          isLoadingVotes={!showVotesNum}
         />
       )}
     </>

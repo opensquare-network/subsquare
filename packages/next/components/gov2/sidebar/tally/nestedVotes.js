@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import NestedVotesPopup from "./nestedVotesPopup";
 import { Button } from "./styled";
 import { sortTotalVotes } from "next-common/utils/democracy/votes/passed/common";
-import { allNestedVotesSelector, isLoadingVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { allNestedVotesSelector, showVotesNumberSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 export default function NestedVotes() {
   const [showNestedVotes, setShowNestedVotes] = useState(false);
-  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const showVotesNum = useSelector(showVotesNumberSelector);
 
   const {
     allAye = [],
@@ -34,7 +34,7 @@ export default function NestedVotes() {
           allNay={directNays}
           allAbstain={allAbstain}
           setShowVoteList={setShowNestedVotes}
-          isLoadingVotes={isLoadingVotes}
+          isLoadingVotes={!showVotesNum}
         />
       )}
     </>
