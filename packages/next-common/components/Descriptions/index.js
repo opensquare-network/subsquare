@@ -16,10 +16,10 @@ export default function Descriptions({
 }) {
   return (
     <div className="w-full">
-      {title && <h4 className="text14Bold text-textPrimary">{title}</h4>}
+      {title && <h4 className="text14Bold text-textPrimary mb-2">{title}</h4>}
 
       {!!items?.length && (
-        <div className="mt-2">
+        <div>
           {items.map((item, idx) => (
             <div
               key={idx}
