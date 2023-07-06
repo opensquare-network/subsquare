@@ -4,7 +4,6 @@ import isNil from "lodash.isnil";
 import { usePost, usePostTitle } from "../../../context/post";
 
 const TitleWrapper = styled.div`
-  margin-bottom: 8px;
   overflow: hidden;
   > :not(:first-child) {
     ::before {
@@ -22,7 +21,6 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 20px;
   line-height: 140%;
-  margin-bottom: 12px;
 `;
 
 const Index = styled.div`
