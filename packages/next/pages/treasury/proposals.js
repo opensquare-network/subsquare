@@ -115,8 +115,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
   ]);
 
   return {
