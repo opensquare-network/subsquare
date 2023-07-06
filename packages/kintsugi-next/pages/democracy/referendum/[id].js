@@ -21,13 +21,13 @@ import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useDispatch } from "react-redux";
 import {
   fetchReferendumStatus,
-  fetchVotes,
 } from "next-common/store/reducers/referendumSlice";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
+import { clearVotes, fetchVotes } from "next-common/store/reducers/democracy/votes";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -45,6 +45,10 @@ function ReferendumContent({ publicProposal, comments }) {
   );
   useMaybeFetchElectorate(post?.onchainData, api);
   useFetchVotes(post?.onchainData);
+
+  useEffect(() => {
+    return () => dispatch(clearVotes());
+  }, []);
 
   const [timelineData, setTimelineData] = useState([]);
   useEffect(() => {

@@ -11,6 +11,7 @@ import childBountyReducer from "./childBountySlice";
 import fellowship from "./fellowship";
 import referenda from "./referenda";
 import navReducer from "./navSlice";
+import democracy from "./democracy";
 
 export default combineReducers({
   toast: toastReducer,
@@ -24,4 +25,5 @@ export default combineReducers({
   nav: navReducer,
   ...fellowship,
   ...referenda,
+  ...democracy,
 });

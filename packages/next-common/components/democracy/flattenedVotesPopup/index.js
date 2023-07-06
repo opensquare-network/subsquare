@@ -10,13 +10,19 @@ import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import Annotation from "./annotation";
+import { useSelector } from "react-redux";
+import {
+  allAyeSelector,
+  allNaySelector,
+  showVotesNumberSelector
+} from "next-common/store/reducers/democracy/votes/selectors";
 
 export default function VotesPopup({
   setShowVoteList,
-  allAye,
-  allNay,
-  isLoadingVotes,
 }) {
+  const showVotesNumber = useSelector(showVotesNumberSelector);
+  const allAye = useSelector(allAyeSelector);
+  const allNay = useSelector(allNaySelector)
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
@@ -64,7 +70,7 @@ export default function VotesPopup({
       />
       <VotesList
         items={votes.slice(sliceFrom, sliceTo)}
-        loading={isLoadingVotes}
+        loading={!showVotesNumber}
       />
 
       <Pagination {...pagination} />
@@ -109,7 +115,7 @@ function VotesList({ loading, items = [] }) {
       />,
       <ValueDisplay
         key="value"
-        value={toPrecision(item.totalVotes, chainSettings.decimals)}
+        value={toPrecision(item.votes, chainSettings.decimals)}
         symbol={symbol}
       />,
     ];

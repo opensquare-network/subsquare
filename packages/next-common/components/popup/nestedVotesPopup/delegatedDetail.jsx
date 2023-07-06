@@ -276,7 +276,7 @@ function DetailDelegatorList({ items = [] }) {
       />,
       <ValueDisplay
         key="value"
-        value={toPrecision(item.totalVotes, chainSettings.decimals)}
+        value={toPrecision(item.votes, chainSettings.decimals)}
         symbol={symbol}
       />,
     ];

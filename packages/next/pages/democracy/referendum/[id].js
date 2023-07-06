@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -22,11 +22,15 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
+import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
+import { clearVotes } from "next-common/store/reducers/democracy/votes";
+import { useDispatch } from "react-redux";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
   const type = useDetailType();
   const postDispatch = usePostDispatch();
+  const dispatch = useDispatch();
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
@@ -39,7 +43,14 @@ function ReferendumContent({ comments }) {
     api,
   );
   useMaybeFetchElectorate(post?.onchainData, api);
-  useFetchVotes(post?.onchainData, api);
+  useDemocracyVotesFromServer(post.referendumIndex);
+  useFetchVotes(post?.onchainData);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearVotes());
+    }
+  }, []);
 
   const refreshPageData = useCallback(async () => {
     fetchAndUpdatePost(postDispatch, type, post?._id);

@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { emptyVotes } from "../../utils/democracy/votes/passed/common";
-import getReferendumVotes from "../../utils/democracy/votes";
 import Chains from "../../utils/consts/chains";
-import getKintsugiReferendumVotes from "../../utils/democracy/votes/kintsugi";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
 import getElectorate from "../../utils/democracy/electorate";
 import nextApi from "next-common/services/nextApi";
@@ -15,19 +13,14 @@ const referendumSlice = createSlice({
     isLoadingElectorate: false,
     electorate: 0,
     isLoadingVotes: true,
-    votes: emptyVotes,
     referendumStatus: null,
     isLoadingReferendumStatus: false,
     isLoadingVoteCalls: true,
     voteCalls: emptyVotes,
-    democracyVotesTrigger: 1,
   },
   reducers: {
     setIsLoadingVotes(state, { payload }) {
       state.isLoadingVotes = payload;
-    },
-    setVotes(state, { payload }) {
-      state.votes = payload;
     },
     setIsLoadingElectorate(state, { payload }) {
       state.isLoadingElectorate = payload;
@@ -47,22 +40,16 @@ const referendumSlice = createSlice({
     setVoteCalls(state, { payload }) {
       state.voteCalls = payload;
     },
-    incDemocracyVotesTrigger(state) {
-      state.democracyVotesTrigger += 1;
-    },
   },
 });
 
 export const {
-  setVotes,
-  setIsLoadingVotes,
   setElectorate,
   setIsLoadingElectorate,
   setReferendumStatus,
   setIsLoadingReferendumStatus,
   setVoteCalls,
   setIsLoadingVoteCalls,
-  incDemocracyVotesTrigger,
 } = referendumSlice.actions;
 
 export const isLoadingElectorateSelector = (state) =>
@@ -80,32 +67,6 @@ export const isLoadingReferendumStatusSelector = (state) =>
 export const voteCallsSelector = (state) =>
   state.referendum.voteCalls;
 export const democracyVotesTriggerSelector = state => state.referendum.democracyVotesTrigger;
-
-export const triggerFetchDemocracyVotes = () => async dispatch => dispatch(incDemocracyVotesTrigger());
-
-export const clearVotes = () => async (dispatch) => {
-  dispatch(setVotes(emptyVotes));
-};
-
-export const fetchVotes =
-  (api, referendumIndex, passedHeight) => async (dispatch) => {
-    let votes;
-    try {
-      if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-        votes = await getKintsugiReferendumVotes(
-          api,
-          referendumIndex,
-          passedHeight,
-        );
-      } else {
-        votes = await getReferendumVotes(api, referendumIndex, passedHeight);
-      }
-
-      dispatch(setVotes(votes));
-    } finally {
-      dispatch(setIsLoadingVotes(false));
-    }
-  };
 
 export const fetchElectorate =
   (api, height, possibleElectorate) => async (dispatch) => {
