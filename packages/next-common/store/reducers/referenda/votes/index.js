@@ -5,7 +5,7 @@ import { name } from "./consts"
 const referendaVotesSlice = createSlice({
   name,
   initialState: {
-    isLoadingVotes: true,
+    isLoadingVotes: false,
     allVotes: null,
     votesTrigger: 1,
   },

@@ -4,6 +4,14 @@ import BigNumber from "bignumber.js";
 
 export const isLoadingVotesSelector = (state) => state[name].isLoadingVotes;
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
+export const allVotesSelector = (state) => state[name].allVotes;
+
+export const showVotesNumberSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => {
+    return !!allVotes;
+  }
+);
 
 export const allAyeSelector = state => {
   const allVotes = state[name].allVotes || [];

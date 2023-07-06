@@ -10,6 +10,7 @@ import {
   clearVotes,
 } from "next-common/store/reducers/referenda/votes";
 import { votesTriggerSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function useFetchVotes(referendum) {
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
@@ -17,12 +18,13 @@ export default function useFetchVotes(referendum) {
   const referendumIndex = referendum?.referendumIndex;
   const trackId = referendum?.track;
   const api = useApi();
+  const finishedHeight = useReferendumVotingFinishHeight();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!api) {
-      return () => dispatch(clearVotes());
+    if (!api || finishedHeight) {
+      return;
     }
 
     if (votesTrigger <= 1) {
@@ -30,8 +32,7 @@ export default function useFetchVotes(referendum) {
     }
 
     dispatch(fetchReferendaVotes(api, trackId, referendumIndex));
-    return () => dispatch(clearVotes());
-  }, [api, dispatch, referendumIndex, votesTrigger]);
+  }, [api, dispatch, finishedHeight, referendumIndex, votesTrigger]);
 
   return { allAye, allNay };
 }
