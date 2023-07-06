@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import nextApi from "../../services/nextApi";
-import {
-  gov2ReferendumsVoteCallsApi,
-  gov2ReferendumsVoteExtrinsicsApi,
-} from "../../services/url";
+import { gov2ReferendumsVoteCallsApi, gov2ReferendumsVoteExtrinsicsApi, } from "../../services/url";
 import { openGovEmptyVotes as emptyVotes } from "../../utils/democracy/votes/passed/common";
-import { getGov2ReferendumVotesFromVotingOf } from "../../utils/gov2/allVotes";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
 import queryActiveBalance from "../../utils/democracy/electorate/active";
@@ -15,17 +11,12 @@ const chain = process.env.NEXT_PUBLIC_CHAIN;
 const gov2ReferendumSlice = createSlice({
   name: "gov2Referendum",
   initialState: {
-    isLoadingVotes: true,
     votes: emptyVotes,
     isLoadingVoteCalls: true,
     voteCalls: emptyVotes,
     issuance: null,
-    votesTrigger: 1,
   },
   reducers: {
-    setIsLoadingVotes(state, { payload }) {
-      state.isLoadingVotes = payload;
-    },
     setVotes(state, { payload }) {
       state.votes = payload;
     },
@@ -38,23 +29,13 @@ const gov2ReferendumSlice = createSlice({
     setIssuance(state, { payload }) {
       state.issuance = payload;
     },
-    incVotesTrigger(state) {
-      state.votesTrigger += 1;
-    },
-    clearVotersTrigger(state) {
-      state.votesTrigger = 1;
-    },
   },
 });
 
 export const {
-  setVotes,
-  setIsLoadingVotes,
   setVoteCalls,
   setIsLoadingVoteCalls,
   setIssuance,
-  incVotesTrigger,
-  clearVotersTrigger,
 } = gov2ReferendumSlice.actions;
 
 export const isLoadingVotesSelector = (state) =>
@@ -65,34 +46,6 @@ export const votesSelector = (state) => state.gov2Referendum.votes;
 export const voteCallsSelector = (state) =>
   state.gov2Referendum.voteCalls;
 export const gov2IssuanceSelector = (state) => state.gov2Referendum.issuance;
-export const votesTriggerSelector = state => state.gov2Referendum.votesTrigger;
-
-export const clearVotes = () => async (dispatch) => {
-  dispatch(setVotes(emptyVotes));
-  dispatch(clearVotersTrigger());
-};
-
-export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigger());
-
-export const fetchVotes =
-  (api, trackId, referendumIndex, passedHeight) => async (dispatch) => {
-    try {
-      let blockApi = api;
-      if (passedHeight) {
-        const blockHash = await api.rpc.chain.getBlockHash(passedHeight - 1);
-        blockApi = await api.at(blockHash);
-      }
-      const votes = await getGov2ReferendumVotesFromVotingOf(
-        blockApi,
-        trackId,
-        referendumIndex,
-      );
-
-      dispatch(setVotes(votes));
-    } finally {
-      dispatch(setIsLoadingVotes(false));
-    }
-  };
 
 export const clearVoteCalls = () => async (dispatch) => {
   dispatch(setVoteCalls(emptyVotes));

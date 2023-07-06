@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { clearReferendaReferendumInfo, setReferendaReferendumInfo } from "../../store/reducers/referenda/info";
-import { triggerFetchVotes } from "next-common/store/reducers/gov2ReferendumSlice";
+import { triggerFetchVotes } from "next-common/store/reducers/referenda/votes";
 
 export default function useSubReferendumInfo() {
   const api = useApi();

@@ -11,13 +11,14 @@ import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
 import { useTrack } from "next-common/context/post/gov2/track";
 import MyVote from "./myVote";
-import { usePost } from "next-common/context/post";
+import { useOnchainData, usePost } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
 import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
 import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
+import useVotesFromServer from "next-common/utils/gov2/useVotesFromServer";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -25,6 +26,8 @@ const Title = styled(TitleContainer)`
 
 export default function Gov2Tally() {
   const detail = usePost();
+  const { referendumIndex } = useOnchainData();
+  useVotesFromServer(referendumIndex);
   useFetchVotes(detail?.onchainData);
   useSubActiveIssuance();
   const tally = useReferendumTally();
