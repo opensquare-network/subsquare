@@ -1,50 +1,32 @@
-import React, { memo, useState } from "react";
-import styled from "styled-components";
-import Caret from "../icons/caret";
-import { PrimaryCard } from "../styled/containers/primaryCard";
-import { TitleContainer } from "../styled/containers/titleContainer";
+import { ArrowUp } from "@osn/icons/subsquare";
+import clsx from "clsx";
+import { useState } from "react";
 
-const Wrapper = styled(PrimaryCard)`
-  margin: 16px 0;
-
-  div:last-child {
-    border-bottom: none;
-  }
-`;
-
-const Title = styled(TitleContainer)`
-  span {
-    display: inline-flex;
-    align-items: center;
-    font-weight: bold;
-  }
-
-  svg {
-    cursor: pointer;
-  }
-`;
-
-const Items = styled.article`
-  display: ${(props) => (props.show ? "block" : "none")};
-  margin-top: 16px;
-`;
-
-function Accordion({ children, title, showFold = true }) {
-  const [fold, setFold] = useState(false);
+export default function Accordion({ children, title, defaultOpen = true }) {
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <Wrapper>
-      <Title>
-        <span>{title}</span>
-        {showFold && (
-          <span onClick={() => setFold(!fold)}>
-            <Caret size={16} isGrey={true} down={fold} />
-          </span>
+    <div className="py-6">
+      <div className="flex items-center justify-between px-6">
+        <h4 className="text16Bold">{title}</h4>
+        <ArrowUp
+          role="button"
+          className={clsx(
+            "[&_path]:stroke-textTertiary",
+            !open && "rotate-180",
+          )}
+          onClick={() => setOpen((v) => !v)}
+        />
+      </div>
+
+      <div
+        className={clsx(
+          !open && "hidden",
+          "border border-neutral300 shadow-100 rounded-3xl p-6 mt-6",
         )}
-      </Title>
-      <Items show={!fold}>{children}</Items>
-    </Wrapper>
+      >
+        <div>{children}</div>
+      </div>
+    </div>
   );
 }
-
-export default memo(Accordion);
