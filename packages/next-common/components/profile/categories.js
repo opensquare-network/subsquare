@@ -16,6 +16,7 @@ const CategoryList = styled.ul`
   overflow-y: hidden;
   ${no_scroll_bar};
   flex-wrap: wrap;
+  gap: 8px;
 `;
 
 const CategoryOption = styled.li`
@@ -23,7 +24,6 @@ const CategoryOption = styled.li`
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-left: 16px;
 
   :first-child {
     font-weight: 500;
