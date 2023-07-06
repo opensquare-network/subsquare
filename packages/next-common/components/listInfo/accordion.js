@@ -2,7 +2,11 @@ import { ArrowUp } from "@osn/icons/subsquare";
 import clsx from "clsx";
 import { useState } from "react";
 
-export default function Accordion({ children, title, defaultOpen = true }) {
+export default function Accordion({
+  children,
+  title = "",
+  defaultOpen = true,
+}) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
