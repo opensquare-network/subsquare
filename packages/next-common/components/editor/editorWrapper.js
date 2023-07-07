@@ -29,9 +29,9 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   > div:first-child {
-    border-color: var(--neutral300);
+    border-color: var(--neutral400);
     &:hover {
-      border-color: var(--neutral400);
+      border-color: var(--neutral500);
     }
   }
   textarea {
