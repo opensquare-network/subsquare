@@ -3,7 +3,7 @@ import { NeutralPanel } from "./neutralPanel";
 
 export const SecondaryCard = styled(NeutralPanel)`
   box-shadow: var(--shadow100);
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 24px;
 `;
 
