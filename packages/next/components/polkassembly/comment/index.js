@@ -37,8 +37,10 @@ export default function PolkassemblyComments({
   return (
     <div>
       <Header>
-        <Title>Comments</Title>
-        {tabs}
+        <Title className="w-full">
+          <div>Comments</div>
+          {tabs}
+        </Title>
       </Header>
       {isLoading ? (
         <LoadingDiv>
@@ -55,7 +57,13 @@ export default function PolkassemblyComments({
       ) : (
         <NoComment />
       )}
-      <PolkassemblyCommentButton detail={detail} paId={paId} btnRef={btnRef} />
+      <div className="px-6">
+        <PolkassemblyCommentButton
+          detail={detail}
+          paId={paId}
+          btnRef={btnRef}
+        />
+      </div>
     </div>
   );
 }

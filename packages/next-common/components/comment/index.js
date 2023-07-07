@@ -31,25 +31,27 @@ export default function Comments({
   return (
     <div>
       <Header>
-        <Title>Comments</Title>
-        {tabs}
+        <Title className="w-full">
+          <div>Comments</div>
+          {tabs}
+        </Title>
       </Header>
       {items?.length > 0 && (
         <>
           <div>
             {(items || []).map((item) => (
-              <Item
-                key={item._id}
-                data={item}
-                replyToCommentId={item._id}
-              />
+              <Item key={item._id} data={item} replyToCommentId={item._id} />
             ))}
           </div>
           <Pagination page={page} pageSize={pageSize} total={total} />
         </>
       )}
       {!items?.length > 0 && <NoComment />}
-      {!isLogin && <LoginButtons />}
+      {!isLogin && (
+        <div className="px-6">
+          <LoginButtons />
+        </div>
+      )}
     </div>
   );
 }
