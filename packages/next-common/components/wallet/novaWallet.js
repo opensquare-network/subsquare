@@ -5,7 +5,7 @@ import Loading from "../loading";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import { WalletOption } from "./styled";
 
-export default function NovaWallet({
+export function NovaWallet({
   wallet,
   onClick,
   selected = false,
