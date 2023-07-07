@@ -73,6 +73,7 @@ const Tertiary = styled.span`
   font-size: 14px;
   line-height: 20px;
   white-space: pre-wrap;
+  word-break: break-word;
   color: ${(props) => props.theme.textTertiary};
 `;
 
