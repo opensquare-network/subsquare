@@ -27,8 +27,13 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
   const isMounted = useIsMounted();
-  const { hasDotreasury, symbol, hideActionButtons, noTreasuryPrecompile } =
-    useChainSettings();
+  const {
+    hasDotreasury,
+    symbol,
+    hideActionButtons,
+    noTreasuryPrecompile,
+    hideNewTreasuryProposalButton,
+  } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
@@ -56,6 +61,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       summary={<TreasurySummary />}
       summaryFooter={
         !hideActionButtons &&
+        !hideNewTreasuryProposalButton &&
         !noTreasuryPrecompile && (
           <div className="flex justify-end">
             <ThemeButton
