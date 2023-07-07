@@ -8,7 +8,6 @@ import {
   useChainSettings,
   useMenuHasCouncil,
   useMenuHasDemocracyExternal,
-  useMenuHasGov2,
   useMenuHasTechComm,
   useMenuHasTreasuryBounties,
   useMenuHasTreasuryChildBounties,
@@ -45,18 +44,20 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
 }
 
 function OpenGovGroupContent({ summaryData }) {
-  const { hasFellowship } = useChainSettings();
+  const { hasFellowship, hasReferenda } = useChainSettings();
   const { activeGov2ReferendaCount, activeFellowshipReferendaCount } =
     summaryData ?? {};
 
   return (
     <ContentWrapper>
-      <SummaryTypeGroup
-        label="R"
-        tooltip="Active referenda"
-        href="/referenda"
-        value={activeGov2ReferendaCount}
-      />
+      {
+        hasReferenda && <SummaryTypeGroup
+          label="R"
+          tooltip="Active referenda"
+          href="/referenda"
+          value={ activeGov2ReferendaCount }
+        />
+      }
       {hasFellowship && (
         <SummaryTypeGroup
           label="F"
@@ -187,11 +188,11 @@ function CouncilGroupContent({ summaryData }) {
 
 export default function OverviewSummary({ summaryData }) {
   const showCouncil = useMenuHasCouncil();
-  const showOpenGov = useMenuHasGov2();
   const showTC = useMenuHasTechComm();
+  const { hasFellowship, hasReferenda } = useChainSettings();
 
   const items = [];
-  if (showOpenGov) {
+  if (hasReferenda || hasFellowship) {
     items.push({
       title: "Open Gov",
       content: <OpenGovGroupContent summaryData={summaryData} />,

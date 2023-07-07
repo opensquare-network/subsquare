@@ -1,13 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { useMenuHasGov2 } from "../../../context/chain";
-import {
-  flex,
-  gap_x,
-  hidden,
-  justify_center,
-  p_b,
-} from "../../../styles/tailwindcss";
+import { useChainSettings } from "../../../context/chain";
+import { flex, gap_x, hidden, justify_center, p_b, } from "../../../styles/tailwindcss";
 import { smcss } from "../../../utils/responsive";
 import Tooltip from "../../tooltip";
 import FullCalendarCategory from "./category";
@@ -40,7 +34,8 @@ const OthersCategory = styled.div`
 `;
 
 export default function FullCalendarFooter() {
-  const hasGov2 = useMenuHasGov2();
+  const { hasReferenda, hasFellowship } = useChainSettings();
+  const hasGov2 = hasReferenda || hasFellowship;
 
   const categories = useMemo(
     () =>
