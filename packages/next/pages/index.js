@@ -1,8 +1,8 @@
 import OverviewPostList from "next-common/components/overview/postList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toAdvisoryMotionsListItem, toFinancialMotionsListItem, } from "utils/viewfuncs";
-import { useChain, useChainSettings, } from "next-common/context/chain";
+import { toAdvisoryMotionsListItem, toFinancialMotionsListItem } from "utils/viewfuncs";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
@@ -59,7 +59,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       items: (overview?.gov2?.referenda ?? []).map((item) =>
         normalizeGov2ReferendaListItem(item, tracks),
       ),
-    })
+    });
   }
   if (chainSettings.hasFellowship) {
     overviewData.push(
