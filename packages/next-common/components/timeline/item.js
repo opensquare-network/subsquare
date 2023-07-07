@@ -169,7 +169,7 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
             (React.isValidElement(data.data)
               ? data.data
               : Object.entries(data.data).map((item, index) => (
-                  <ContentItem key={index}>
+                  <ContentItem key={index} className="text-textPrimary">
                     <div>{item[0]}</div>
                     <div>
                       {["boolean", "number", "string"].includes(
