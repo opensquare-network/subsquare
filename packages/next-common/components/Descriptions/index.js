@@ -30,10 +30,10 @@ export default function Descriptions({
                 "max-sm:block",
               )}
             >
-              {item.content ?? (
-                <>
+              <div className="w-full">
+                <div className="flex items-center">
                   <div
-                    className="text-textPrimary text14Medium"
+                    className="text-textSecondary text14Medium"
                     style={{ width: item.labelWidth || labelWidth }}
                   >
                     {item.label}
@@ -49,8 +49,9 @@ export default function Descriptions({
                   >
                     {item.value}
                   </div>
-                </>
-              )}
+                </div>
+                {item.content}
+              </div>
             </div>
           ))}
         </div>

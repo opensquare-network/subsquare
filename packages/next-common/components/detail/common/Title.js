@@ -38,7 +38,7 @@ export default function PostTitle() {
   return (
     <TitleWrapper>
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title>{title}</Title>
+      <Title className="text-textPrimary">{title}</Title>
     </TitleWrapper>
   );
 }

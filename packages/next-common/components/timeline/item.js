@@ -143,7 +143,7 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
       <Right className="pb-4 group-last/timeline-item:pb-0">
         <TitleWrapper>
           <Tooltip content={itemAge}>
-            <div>{itemTime}</div>
+            <div className="text-textPrimary">{itemTime}</div>
           </Tooltip>
           {data.status && data.status.value && (
             <TagWrapper>

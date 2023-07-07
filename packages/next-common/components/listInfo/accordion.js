@@ -12,7 +12,7 @@ export default function Accordion({
   return (
     <div className="py-6">
       <div className="flex items-center justify-between px-6">
-        <h4 className="text16Bold">{title}</h4>
+        <h4 className="text16Bold text-textPrimary">{title}</h4>
         <ArrowUp
           role="button"
           className={clsx(
