@@ -17,16 +17,19 @@ import Breadcrumb from "../_Breadcrumb";
  */
 
 /**
- * @param {Object} props
- * @param {Breadcrumb[]} props.breadcrumbs - The breadcrumb items.
- * @param {SeoInfo} props.seoInfo - The SEO information.
- * @param {JSX.Element} props.children - The children components.
- * @param {JSX.Element} props.title - The title element.
- * @param {JSX.Element} props.titleHead - The title head element.
- * @param {JSX.Element} props.header - The header element.
- * @param {boolean} props.hasSider - Indicates if the layout has a sider component.
+ * @typedef {Object} DetailLayoutProps
+ * @property {Breadcrumb[]} breadcrumbs - The breadcrumb items.
+ * @property {SeoInfo} seoInfo - The SEO information.
+ * @property {JSX.Element} children - The children components.
+ * @property {JSX.Element} title - The title element.
+ * @property {JSX.Element} titleHead - The title head element.
+ * @property {JSX.Element} header - The header element.
+ * @property {boolean} hasSider - Indicates if the layout has a sider component.
  */
 
+/**
+ * @param {DetailLayoutProps} props
+ */
 export default function DetailLayout({
   seoInfo,
   breadcrumbs,
