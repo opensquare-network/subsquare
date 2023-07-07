@@ -20,6 +20,7 @@ export default function PostMetaBase({ children, state }) {
             key={idx}
             className={clsx(
               "flex items-center",
+              "max-sm:hidden",
               "before:content-['·'] before:last:hidden before:mx-2 before:text-textTertiary",
             )}
           >
