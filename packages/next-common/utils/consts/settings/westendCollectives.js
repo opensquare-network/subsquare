@@ -44,6 +44,7 @@ const westendCollectives = {
   group: MenuGroups.Solochain,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
+  hasFellowship: true,
 };
 
 export default westendCollectives;
