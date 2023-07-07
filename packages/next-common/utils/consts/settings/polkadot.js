@@ -68,6 +68,7 @@ const polkadot = {
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
   showAchainableLabels: true,
+  hideNewTreasuryProposalButton: true,
 };
 
 export default polkadot;
