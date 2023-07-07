@@ -49,8 +49,8 @@ function ReferendumContent({ comments }) {
   useEffect(() => {
     return () => {
       dispatch(clearVotes());
-    }
-  }, []);
+    };
+  }, [dispatch]);
 
   const refreshPageData = useCallback(async () => {
     fetchAndUpdatePost(postDispatch, type, post?._id);
