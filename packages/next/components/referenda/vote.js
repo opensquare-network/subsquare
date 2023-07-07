@@ -41,10 +41,12 @@ const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
-const MoonVotePopup = dynamic(() => import("components/referenda/popup/moonPopup"), {
-  ssr: false,
-});
-
+const MoonVotePopup = dynamic(
+  () => import("components/referenda/popup/moonPopup"),
+  {
+    ssr: false,
+  },
+);
 
 const FlattenedVotesPopup = dynamic(
   () => import("next-common/components/democracy/flattenedVotesPopup"),
@@ -73,11 +75,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  position: absolute;
-  right: 0;
-  top: 40px;
-  width: 300px;
-  margin-top: 0 !important;
   @media screen and (max-width: 1024px) {
     position: static;
     width: auto;
@@ -153,7 +150,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   return (
     <Wrapper>
       <SecondaryCardDetail>
-        <Title>
+        <Title className="!px-0">
           <span>Votes</span>
           <div>
             {isLoadingReferendumStatus || isElectorateLoading ? (
