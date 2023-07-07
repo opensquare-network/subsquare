@@ -26,10 +26,6 @@ import clsx from "clsx";
 const Wrapper = styled.div`
   position: relative;
   padding: 16px 24px;
-  @media screen and (max-width: 768px) {
-    padding: 16px 0;
-    margin: 0;
-  }
 
   :hover {
     .edit {
@@ -204,7 +200,12 @@ export default function Item({
   };
 
   return (
-    <Wrapper ref={refCommentTree} id={comment.height} highlight={highlight}>
+    <Wrapper
+      ref={refCommentTree}
+      id={comment.height}
+      highlight={highlight}
+      className="group/comment-item"
+    >
       <InfoWrapper>
         <User user={comment.author} />
         <div>{duration}</div>

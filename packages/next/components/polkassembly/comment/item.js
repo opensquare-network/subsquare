@@ -16,10 +16,6 @@ import clsx from "clsx";
 const Wrapper = styled.div`
   position: relative;
   padding: 16px 24px;
-  @media screen and (max-width: 768px) {
-    padding: 16px 0;
-    margin: 0;
-  }
 `;
 
 const InfoWrapper = styled(Flex)`
