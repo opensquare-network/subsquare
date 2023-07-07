@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -8,20 +8,22 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useUniversalComments from "components/universalComments";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import Breadcrumb from "next-common/components/_Breadcrumb";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
+import DemocracyReferendaDetailLayout from "next-common/components/layout/democracyLayout/detail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -101,21 +103,21 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
     },
   ];
 
+  const seoInfo = {
+    title: detail?.title,
+    desc,
+    ogImage: getBannerUrl(detail?.bannerCid),
+  };
+
   return (
     <PostProvider post={detail}>
-      <DetailWithRightLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
+      <DemocracyReferendaDetailLayout
+        seoInfo={seoInfo}
+        breadcrumbs={breadcrumbItems}
+        hasSider
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailWithRightLayout>
+      </DemocracyReferendaDetailLayout>
     </PostProvider>
   );
 });
