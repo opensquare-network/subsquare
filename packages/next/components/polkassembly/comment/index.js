@@ -4,6 +4,7 @@ import NoComment from "next-common/components/comment/noComment";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import clsx from "clsx";
 
 const Header = styled.div`
   display: flex;
@@ -14,10 +15,6 @@ const Header = styled.div`
   @media screen and (min-width: 768px) {
     justify-content: space-between;
   }
-`;
-
-const Title = styled(TitleContainer)`
-  margin-bottom: 16px;
 `;
 
 const LoadingDiv = styled.div`
@@ -37,10 +34,10 @@ export default function PolkassemblyComments({
   return (
     <div>
       <Header>
-        <Title className="w-full">
-          <div>Comments</div>
+        <TitleContainer className={clsx("w-full", "max-sm:!block")}>
+          <div className="max-sm:mb-4">Comments</div>
           {tabs}
-        </Title>
+        </TitleContainer>
       </Header>
       {isLoading ? (
         <LoadingDiv>
