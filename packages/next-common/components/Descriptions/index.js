@@ -31,7 +31,7 @@ export default function Descriptions({
               )}
             >
               <div className="w-full">
-                <div className="flex items-center">
+                <div className="flex items-center max-sm:block">
                   <div
                     className="text-textSecondary text14Medium"
                     style={{ width: item.labelWidth || labelWidth }}
@@ -40,7 +40,7 @@ export default function Descriptions({
                   </div>
                   <div
                     className={clsx(
-                      "text-textPrimary text14Medium break-words",
+                      "text-textPrimary text14Medium break-all",
                       "flex-1 flex",
                       valueAlign === "right" && "justify-end",
                       valueAlign === "left" && "justify-start",
