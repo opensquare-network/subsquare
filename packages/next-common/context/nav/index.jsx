@@ -19,49 +19,46 @@ export default function NavProvider({
   );
 }
 
-export function useNavCollapsed() {
-  const value = useContext(NavCollapsedContext);
+export function useNavSubmenuVisible() {
+  return useContext(NavSubmenuVisibleContext);
+}
+function NavCollapsedProvider({ children, value }) {
+  try {
+    value = JSON.parse(value);
+  } catch (_) {
+    /* empty */
+  }
   const [navCollapsed, setNavCollapsed] = useCookieValue(
     CACHE_KEY.navCollapsed,
     value,
   );
-  return [navCollapsed, setNavCollapsed];
-}
-
-export function useNavSubmenuVisible() {
-  const value = useContext(NavSubmenuVisibleContext);
-  const [navSubmenuVisible, setNavSubmenuVisible] = useCookieValue(
-    CACHE_KEY.navSubmenuVisible,
-    value,
-  );
-  return [navSubmenuVisible, setNavSubmenuVisible];
-}
-
-function NavCollapsedProvider({ children, value }) {
-  let collapsed;
-  try {
-    collapsed = JSON.parse(value);
-  } catch (_) {
-    /* empty */
-  }
 
   return (
-    <NavCollapsedContext.Provider value={collapsed}>
+    <NavCollapsedContext.Provider value={[navCollapsed, setNavCollapsed]}>
       {children}
     </NavCollapsedContext.Provider>
   );
 }
 
+export function useNavCollapsed() {
+  return useContext(NavCollapsedContext);
+}
 function NavSubmenuVisibleProvider({ children, value }) {
-  let submenuVisible = {};
   try {
-    submenuVisible = JSON.parse(decodeURIComponent(value));
+    value = JSON.parse(decodeURIComponent(value));
   } catch (error) {
     console.error(error);
   }
 
+  const [navSubmenuVisible, setNavSubmenuVisible] = useCookieValue(
+    CACHE_KEY.navSubmenuVisible,
+    value,
+  );
+
   return (
-    <NavSubmenuVisibleContext.Provider value={submenuVisible}>
+    <NavSubmenuVisibleContext.Provider
+      value={[navSubmenuVisible, setNavSubmenuVisible]}
+    >
       {children}
     </NavSubmenuVisibleContext.Provider>
   );
