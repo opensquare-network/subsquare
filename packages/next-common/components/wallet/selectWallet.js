@@ -20,6 +20,7 @@ import {
 } from "next-common/utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import isEvmChain from "next-common/utils/isEvmChain";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -200,8 +201,13 @@ export default function SelectWallet({
   );
 
   const onNovaWalletClick = useCallback(() => {
-    loadAccounts("polkadot-js");
-    onSelect && onSelect("polkadot-js");
+    if (isEvmChain()) {
+      loadAccounts("metamask");
+      onSelect && onSelect("metamask");
+    } else {
+      loadAccounts("polkadot-js");
+      onSelect && onSelect("polkadot-js");
+    }
   }, [loadAccounts, onSelect]);
 
   const onMetaMaskWalletClick = useCallback(
