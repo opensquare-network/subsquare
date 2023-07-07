@@ -202,13 +202,13 @@ export default function SelectWallet({
 
   const onNovaWalletClick = useCallback(() => {
     if (isEvmChain()) {
-      loadAccounts("metamask");
+      loadMetaMaskAccounts("metamask");
       onSelect && onSelect("metamask");
     } else {
       loadAccounts("polkadot-js");
       onSelect && onSelect("polkadot-js");
     }
-  }, [loadAccounts, onSelect]);
+  }, [loadMetaMaskAccounts, loadAccounts, onSelect]);
 
   const onMetaMaskWalletClick = useCallback(
     (wallet) => {
