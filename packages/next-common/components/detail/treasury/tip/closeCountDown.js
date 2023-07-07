@@ -1,7 +1,7 @@
 import React from "react";
 import useTipMeta from "../../../../utils/hooks/useTipMeta";
 import useApi from "../../../../utils/hooks/useApi";
-import { usePostState } from "../../../../context/post";
+import { useOnchainData, usePostState } from "../../../../context/post";
 import isNil from "lodash.isnil";
 import { TipStateMap } from "../../../../utils/viewfuncs/treasury/normalizeTipListItem";
 import useTipCountDown from "../../../../hooks/useTipCountDown";
@@ -9,8 +9,11 @@ import { NoticeWrapper } from "../../../styled/containers/titleContainer";
 import TreasuryCountDown from "../../../treasury/common/countdown";
 
 export default function CloseCountDown() {
+  const chainData = useOnchainData();
+  const tipHash = chainData?.hash;
+
   const api = useApi();
-  const meta = useTipMeta();
+  const meta = useTipMeta(tipHash);
   const closes = meta.closes;
   const state = usePostState();
   const tipCountdownBlockNum =useTipCountDown();

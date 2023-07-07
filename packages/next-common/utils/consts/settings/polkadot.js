@@ -103,6 +103,7 @@ const polkadot = {
   useVoteCall: true,
   showAchainableLabels: true,
   description: "Polkadot empowers blockchain networks to work together under the protection of shared security.",
+  hideNewTreasuryProposalButton: true,
 };
 
 export default polkadot;
