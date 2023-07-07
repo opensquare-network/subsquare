@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   }
   border: 1px solid var(--neutral400);
   width: 100%;
-  border-radius: 4px;
+  border-radius: 16px;
   :hover {
     border-color: var(--neutral500);
   }
@@ -57,7 +57,7 @@ const InputWrapper = styled.input`
   all: unset;
   flex-grow: 1;
   display: block;
-  padding: 10px 16px;
+  padding: 16px 24px;
   font-size: 14px;
   color: var(--textPrimary);
   background: transparent !important;
