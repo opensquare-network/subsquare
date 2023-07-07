@@ -4,6 +4,7 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import { WalletOption } from "./styled";
+import isNil from "lodash.isnil";
 
 export function NovaWallet({
   wallet,
@@ -24,7 +25,8 @@ export function NovaWallet({
 
     if (isMounted.current) {
       const installed =
-        injectedWeb3?.["polkadot-js"] && window.walletExtension.isNovaWallet;
+        !isNil(injectedWeb3?.["polkadot-js"]) &&
+        window.walletExtension?.isNovaWallet === true;
       setInstalled(installed);
     }
   }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
