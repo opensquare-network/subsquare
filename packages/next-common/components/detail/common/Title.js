@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import isNil from "lodash.isnil";
 import { usePost, usePostTitle } from "../../../context/post";
+import { useSelector } from "react-redux";
+import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import clsx from "clsx";
 
 const TitleWrapper = styled.div`
   overflow: hidden;
@@ -34,11 +37,19 @@ export default function PostTitle() {
   const post = usePost();
   const title = usePostTitle();
   const index = post.index || post.motionIndex;
+  const isEditing = useSelector(isEditingPostSelector);
 
   return (
     <TitleWrapper>
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title className="text-textPrimary">{title}</Title>
+      <Title
+        className={clsx(
+          "text-textPrimary",
+          isEditing && "!text-textDisabled select-none",
+        )}
+      >
+        {title}
+      </Title>
     </TitleWrapper>
   );
 }
