@@ -41,7 +41,7 @@ export default function DetailLayout({
 }) {
   return (
     <BaseLayout seoInfo={seoInfo}>
-      <div className="bg-neutral100 px-6">
+      <div className={clsx("bg-neutral100 px-6", "max-sm:px-0")}>
         <div className={clsx("mx-auto max-w-[1200px] w-full py-6")}>
           {!!breadcrumbs?.length && (
             <div className="mb-6 px-6">
@@ -52,7 +52,12 @@ export default function DetailLayout({
           {head && <div className="px-6">{head}</div>}
 
           <div className="flex gap-x-6 mt-6 max-w-full">
-            <div className={clsx(side && "max-w-[calc(100%-320px-24px)]")}>
+            <div
+              className={clsx(
+                side && "max-w-[calc(100%-320px-24px)]",
+                "max-sm:max-w-full",
+              )}
+            >
               {children}
             </div>
 
