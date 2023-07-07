@@ -1,15 +1,8 @@
 import OverviewPostList from "next-common/components/overview/postList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import {
-  toFinancialMotionsListItem,
-  toAdvisoryMotionsListItem,
-} from "utils/viewfuncs";
-import {
-  useChain,
-  useChainSettings,
-  useMenuHasGov2,
-} from "next-common/context/chain";
+import { toAdvisoryMotionsListItem, toFinancialMotionsListItem, } from "utils/viewfuncs";
+import { useChain, useChainSettings, } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
@@ -32,13 +25,14 @@ import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
-import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
-import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import normalizeTreasuryCouncilMotionListItem
+  from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
+import normalizeOpenTechCommProposalListItem
+  from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
   const isKarura = ["karura", "acala"].includes(chain);
-  const hasGov2 = useMenuHasGov2();
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
   const isCollectives = isCollectivesChain(chain);
   const isZeitgeist = chain === Chains.zeitgeist;
@@ -58,15 +52,17 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
 
   let overviewData = [];
 
-  if (hasGov2) {
+  if (chainSettings.hasReferenda) {
+    overviewData.push({
+      category: businessCategory.openGovReferenda,
+      link: "/referenda",
+      items: (overview?.gov2?.referenda ?? []).map((item) =>
+        normalizeGov2ReferendaListItem(item, tracks),
+      ),
+    })
+  }
+  if (chainSettings.hasFellowship) {
     overviewData.push(
-      {
-        category: businessCategory.openGovReferenda,
-        link: "/referenda",
-        items: (overview?.gov2?.referenda ?? []).map((item) =>
-          normalizeGov2ReferendaListItem(item, tracks),
-        ),
-      },
       {
         category: businessCategory.fellowship,
         link: "/fellowship",

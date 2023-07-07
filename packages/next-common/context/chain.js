@@ -1,11 +1,9 @@
-import React from "react";
-import { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 import getChainSettings from "../utils/consts/settings";
 import democracy from "../utils/consts/menu/democracy";
 import treasury from "../utils/consts/menu/treasury";
 import council from "../utils/consts/menu/council";
 import techComm from "../utils/consts/menu/tc";
-import Chains from "../utils/consts/chains";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
@@ -80,16 +78,4 @@ export function useMenuHasCouncil() {
 export function useMenuHasTechComm() {
   const chain = useChain();
   return !techComm.excludeToChains.includes(chain);
-}
-
-/**
- * @deprecated use `useHasGov2` instead
- */
-export function useMenuHasGov2() {
-  return useHasGov2();
-}
-
-export function useHasGov2() {
-  const chain = useChain();
-  return [Chains.kusama, Chains.development].includes(chain);
 }
