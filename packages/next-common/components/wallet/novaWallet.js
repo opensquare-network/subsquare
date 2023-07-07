@@ -24,8 +24,7 @@ export function NovaWallet({
 
     if (isMounted.current) {
       const installed =
-        wallet?.extensionName === "polkadot-js" &&
-        window.walletExtension.isNovaWallet;
+        injectedWeb3?.["polkadot-js"] && window.walletExtension.isNovaWallet;
       setInstalled(installed);
     }
   }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
