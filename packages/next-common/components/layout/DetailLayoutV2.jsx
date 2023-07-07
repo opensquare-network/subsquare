@@ -17,28 +17,22 @@ import Breadcrumb from "../_Breadcrumb";
  */
 
 /**
- * @typedef {{
- * breadcrumbs: Breadcrumb[]
- * seoInfo?: SeoInfo
- * children: JSX.Element
- * title: JSX.Element
- * titleHead: JSX.Element
- * header: JSX.Element
- * footer: JSX.Element
- * sider: JSX.Element
- * }} DetailLayoutProps
+ * @param {Object} props
+ * @param {Breadcrumb[]} props.breadcrumbs - The breadcrumb items.
+ * @param {SeoInfo} props.seoInfo - The SEO information.
+ * @param {JSX.Element} props.children - The children components.
+ * @param {JSX.Element} props.title - The title element.
+ * @param {JSX.Element} props.titleHead - The title head element.
+ * @param {JSX.Element} props.header - The header element.
+ * @param {boolean} props.hasSider - Indicates if the layout has a sider component.
  */
 
-/**
- * @param {DetailLayoutProps} props
- */
 export default function DetailLayout({
   seoInfo,
   breadcrumbs,
   header,
-  footer,
-  sider,
   children,
+  hasSider,
 }) {
   return (
     <BaseLayout seoInfo={seoInfo}>
@@ -57,23 +51,16 @@ export default function DetailLayout({
 
           {header && <div className="px-6">{header}</div>}
 
-          <div className="flex gap-x-6 mt-6 max-w-full">
+          {/* set relative for right side(vote) component */}
+          <div className="flex gap-x-6 mt-6 max-w-full relative">
             <div
               className={clsx(
-                sider ? "max-w-[calc(100%-320px-24px)]" : "max-w-full",
+                hasSider ? "max-w-[calc(100%-320px-24px)]" : "max-w-full",
                 "max-sm:max-w-full",
               )}
             >
               {children}
-
-              {sider && <div className={clsx("mt-6 sm:hidden")}>{sider}</div>}
-
-              {footer}
             </div>
-
-            {sider && (
-              <div className={clsx("w-80 px-6 max-sm:hidden")}>{sider}</div>
-            )}
           </div>
         </div>
       </div>
