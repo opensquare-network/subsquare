@@ -18,7 +18,7 @@ import Breadcrumb from "../_Breadcrumb";
 
 /**
  * @typedef {Object} DetailLayoutProps
- * @property {Breadcrumb[]} breadcrumbs - The breadcrumb items.
+ * @property {JSX.Element | Breadcrumb[]} breadcrumbs - The breadcrumb items.
  * @property {SeoInfo} seoInfo - The SEO information.
  * @property {JSX.Element} children - The children components.
  * @property {JSX.Element} title - The title element.
@@ -46,9 +46,13 @@ export default function DetailLayout({
         )}
       >
         <div className={clsx("mx-auto py-6 max-w-[1200px] w-full")}>
-          {!!breadcrumbs?.length && (
+          {breadcrumbs && (
             <div className="mb-6 px-6">
-              <Breadcrumb items={breadcrumbs} />
+              {breadcrumbs?.length > 0 ? (
+                <Breadcrumb items={breadcrumbs} />
+              ) : (
+                breadcrumbs
+              )}
             </div>
           )}
 
