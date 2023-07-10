@@ -46,8 +46,12 @@ export const NoticeWrapper = styled(GreyPanel)`
   flex-wrap: wrap;
   padding: 12px;
   margin-bottom: 16px;
-  font-weight: 500;
   color: var(--textSecondary);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
 `;
 
 export const SettingSection = styled.div`
