@@ -7,7 +7,7 @@ export const RightBarWrapper = styled.div`
   right: 24px;
   top: 0;
   width: 300px;
-  margin-top: 8px !important;
+  margin-top: 0px !important;
   > :not(:first-child) {
     margin-top: 16px;
   }
