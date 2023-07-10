@@ -1,15 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import { withTheme } from "styled-components";
-import Loading from "next-common/components/loading";
 import { Headers } from "./headers";
 import DataRows from "./dataRows";
 import { EmptyTd, StyledTable } from "next-common/components/styled/table";
+import { SystemLoading } from "@osn/icons/subsquare";
 
 function EmptyOrLoading({ loading, noDataText = "" }) {
   return (
     <tr className="empty-tr">
       <EmptyTd colSpan="100%">
-        {loading ? <Loading size={16} /> : noDataText}
+        {loading ? (
+          <SystemLoading className="w-5 h-5 mx-auto [&_path]:stroke-textDisabled" />
+        ) : (
+          noDataText
+        )}
       </EmptyTd>
     </tr>
   );
