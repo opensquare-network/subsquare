@@ -27,6 +27,7 @@ import DemocracyReferendaDetailLayout from "next-common/components/layout/democr
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -157,11 +158,19 @@ export const getServerSideProps = withLoginUser(async (context) => {
     },
   );
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       id,
       detail,
       comments: comments ?? EmptyList,
+
+      tracks,
+      fellowshipTracks,
     },
   };
 });
