@@ -2,7 +2,12 @@ import clsx from "clsx";
 import BaseLayout from "./baseLayoutV2";
 import Breadcrumb from "../_Breadcrumb";
 import { useSelector } from "react-redux";
-import { layoutDetailSiderHeight } from "next-common/store/reducers/layoutSlice";
+import {
+  layoutDetailSiderHeight,
+  setLayoutDetailSiderHeight,
+} from "next-common/store/reducers/layoutSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 /**
  * @typedef {{
@@ -39,7 +44,13 @@ export default function DetailLayout({
   children,
   hasSider,
 }) {
+  const dispatch = useDispatch();
   const siderHeight = useSelector(layoutDetailSiderHeight);
+  useEffect(() => {
+    return () => {
+      dispatch(setLayoutDetailSiderHeight(0));
+    };
+  }, []);
 
   return (
     <BaseLayout seoInfo={seoInfo}>
