@@ -23,7 +23,7 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
-import DemocracyReferendaDetailLayout from "next-common/components/layout/democracyLayout/detail";
+import DemocracyReferendaDetailLayout from "next-common/components/layout/democracyLayout/referendaDetail";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
