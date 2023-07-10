@@ -20,11 +20,17 @@ import { useDetailType } from "next-common/context/page";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
+import useSubscribePostDetail, { postTypes } from "hooks/useSubscribePostDetail";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
   const postDispatch = usePostDispatch();
   const type = useDetailType();
+  useSubscribePostDetail({
+    detailType: type,
+    postType: postTypes.tip,
+    postId: `${post.height}_${post.hash}`,
+  });
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
