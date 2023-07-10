@@ -6,6 +6,8 @@ const Wrapper = styled.div``;
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
+  padding-left: 0;
+  padding-right: 0;
 `;
 
 export default function StatusWrapper({ children }) {
@@ -13,7 +15,7 @@ export default function StatusWrapper({ children }) {
     <Wrapper>
       <SecondaryCardDetail>
         <Title>Status</Title>
-        { children }
+        {children}
       </SecondaryCardDetail>
     </Wrapper>
   );
