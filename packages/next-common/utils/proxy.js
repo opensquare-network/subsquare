@@ -1,8 +1,10 @@
 import { addressToPublicKey } from "./address";
+import chains from "next-common/utils/consts/chains";
 
 export async function checkProxy(api, delegator, toCheckDelegate) {
   const data = await api.query.proxy.proxies(delegator);
   const [proxies] = data.toJSON() || [];
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
 
   const proxyTypes = (proxies || [])
     .filter((item) => {
@@ -17,9 +19,12 @@ export async function checkProxy(api, delegator, toCheckDelegate) {
     })
     .map((item) => item.proxyType);
 
-  const success = proxyTypes.some((item) =>
-    ["Any", "NonTransfer", "Governance"].includes(item),
-  );
+  const types = ["Any", "NonTransfer", "Governance"];
+  if ([chains.collectives, chains["westend-collectives"]].includes(chain)) {
+    types.push("Alliance", "Fellowship");
+  }
+
+  const success = proxyTypes.some((item) => types.includes(item));
 
   return {
     proxyTypes,

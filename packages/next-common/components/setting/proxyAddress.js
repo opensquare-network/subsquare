@@ -103,7 +103,7 @@ export default function ProxyAddress() {
         setErrorMsg(
           `Proxy type: ${proxyTypes.join(
             ",",
-          )}. Proxy type should be Governance, NonTransfer, or Any.`,
+          )}. Proxy type should be Governance, Fellowship, Alliance, NonTransfer, or Any.`,
         );
         return;
       }
