@@ -215,12 +215,14 @@ export default function Item({
           <ContentWrapper ref={ref}>
             {comment.contentType === "markdown" && (
               <MarkdownPreviewer
+                className="prose max-w-full"
                 content={comment.content}
                 plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
               />
             )}
             {comment.contentType === "html" && (
               <HtmlPreviewer
+                className="prose max-w-full"
                 content={prettyHTML(comment.content)}
                 plugins={[
                   renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
