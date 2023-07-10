@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import BaseLayout from "./baseLayoutV2";
 import Breadcrumb from "../_Breadcrumb";
+import { useSelector } from "react-redux";
+import { layoutDetailSiderHeight } from "next-common/store/reducers/layoutSlice";
 
 /**
  * @typedef {{
@@ -37,6 +39,8 @@ export default function DetailLayout({
   children,
   hasSider,
 }) {
+  const siderHeight = useSelector(layoutDetailSiderHeight);
+
   return (
     <BaseLayout seoInfo={seoInfo}>
       <div
@@ -67,6 +71,7 @@ export default function DetailLayout({
                 "space-y-6",
                 "max-md:max-w-full",
               )}
+              style={{ minHeight: `${siderHeight}px` }}
             >
               {children}
             </div>
