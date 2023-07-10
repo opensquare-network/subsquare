@@ -34,7 +34,7 @@ export default function PolkassemblyComments({
   return (
     <div>
       <Header>
-        <TitleContainer className={clsx("w-full", "max-sm:!block")}>
+        <TitleContainer className={clsx("w-full pt-6", "max-sm:!block")}>
           <div className="max-sm:mb-4">Comments</div>
           {tabs}
         </TitleContainer>
