@@ -89,7 +89,7 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
   const bannerUrl = getBannerUrl(post.bannerCid);
 
   return (
-    <Wrapper className="prose max-w-full">
+    <Wrapper>
       {!post.content && (
         <NonEdited
           setIsEdit={setIsEdit}
