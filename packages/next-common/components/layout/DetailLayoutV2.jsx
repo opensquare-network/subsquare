@@ -62,6 +62,7 @@ export default function DetailLayout({
           <div className="flex gap-x-6 mt-6 max-w-full relative">
             <div
               className={clsx(
+                "w-full",
                 hasSider ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
                 "space-y-6",
                 "max-md:max-w-full",
