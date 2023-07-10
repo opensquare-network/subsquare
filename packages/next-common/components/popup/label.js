@@ -30,6 +30,14 @@ const StatusWrapper = styled.div`
   }
 `;
 
+const TooltipDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+`;
+
 export default function PopupLabel({ text, status, tooltip }) {
   return (
     <TooltipWrapper>
@@ -40,7 +48,11 @@ export default function PopupLabel({ text, status, tooltip }) {
           {tooltip && <Tooltip content={tooltip} />}
         </StatusWrapper>
       ) : (
-        tooltip && <Tooltip content={tooltip} />
+        tooltip && (
+          <TooltipDiv>
+            <Tooltip content={tooltip} />
+          </TooltipDiv>
+        )
       )}
     </TooltipWrapper>
   );

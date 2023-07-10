@@ -52,8 +52,5 @@ export async function getReferendumVotesFromVotersFor(
     };
   });
 
-  const sorted = sortVotes(normalizedVotes);
-  const allAye = sorted.filter((v) => v.aye);
-  const allNay = sorted.filter((v) => !v.aye);
-  return { allAye, allNay };
+  return sortVotes(normalizedVotes);
 }

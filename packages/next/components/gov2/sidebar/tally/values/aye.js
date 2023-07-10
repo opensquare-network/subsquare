@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { votesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
 import AyeIcon from "next-common/assets/imgs/icons/aye.svg";
 import LoadingCount from "./loadingCount";
 import SymbolValue from "./symbolValue";
 import { BorderedRow } from "next-common/components/referenda/tally/styled";
+import { allAyeSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 export default function Aye({ value = 0 }) {
-  const { allAye = [] } = useSelector(votesSelector);
+  const allAye = useSelector(allAyeSelector);
 
   return (
     <BorderedRow>

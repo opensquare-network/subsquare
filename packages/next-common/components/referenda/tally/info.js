@@ -10,6 +10,12 @@ import ValueDisplay from "../../../components/valueDisplay";
 import VotesCount from "../../../components/democracy/referendum/votesCount";
 import { useChainSettings } from "../../../context/chain";
 import useMaybeFetchElectorate from "../../../utils/hooks/referenda/useMaybeFetchElectorate";
+import { useSelector } from "react-redux";
+import {
+  allAyeSelector,
+  allNaySelector,
+  showVotesNumberSelector
+} from "next-common/store/reducers/democracy/votes/selectors";
 
 const Row = styled(Flex)`
   height: 44px;
@@ -40,12 +46,11 @@ const Value = styled.span`
   color: var(--textPrimary);
 `;
 
-export default function TallyInfo({
-  tally,
-  isLoadingVotes,
-  allAye,
-  allNay,
-}) {
+export default function TallyInfo({ tally }) {
+  const showVotesNumber = useSelector(showVotesNumberSelector);
+  const allAye = useSelector(allAyeSelector);
+  const allNay = useSelector(allNaySelector)
+
   const node = useChainSettings();
   const electorate = useMaybeFetchElectorate();
   const [turnoutPercentage, setTurnoutPercentage] = useState();
@@ -72,7 +77,7 @@ export default function TallyInfo({
         <Header>
           <AyeIcon />
           Aye
-          {!isLoadingVotes ? <VotesCount>{allAye.length}</VotesCount> : null}
+          {showVotesNumber ? <VotesCount>{allAye.length}</VotesCount> : null}
         </Header>
         <Value>
           <ValueDisplay value={nAyes} symbol={symbol} />
@@ -82,7 +87,7 @@ export default function TallyInfo({
         <Header>
           <NayIcon />
           Nay
-          {!isLoadingVotes ? <VotesCount>{allNay.length}</VotesCount> : null}
+          {showVotesNumber ? <VotesCount>{allNay.length}</VotesCount> : null}
         </Header>
         <Value>
           <ValueDisplay value={nNays} symbol={symbol} />
@@ -92,7 +97,7 @@ export default function TallyInfo({
         <Header>
           <TurnoutIcon />
           Turnout
-          {!isLoadingVotes && turnoutPercentage && (
+          {turnoutPercentage && (
             <VotesCount>{turnoutPercentage}%</VotesCount>
           )}
         </Header>

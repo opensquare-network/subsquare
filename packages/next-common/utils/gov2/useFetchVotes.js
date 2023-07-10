@@ -1,61 +1,28 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearVotes,
-  fetchVotes,
-  setIsLoadingVotes,
-  votesSelector,
-  votesTriggerSelector,
-} from "../../store/reducers/gov2ReferendumSlice";
+import { votesSelector, } from "../../store/reducers/gov2ReferendumSlice";
 import useApi from "../hooks/useApi";
-
-const referendumVoteFinishedStatusArray = [
-  "Confirmed",
-  "Cancelled",
-  "Canceled",
-  "Killed",
-  "TimedOut",
-  "Rejected",
-];
-
-function extractVoteInfo(timeline = []) {
-  const timelineStatuses = timeline.map((item) => item.name);
-  const index = timelineStatuses.findIndex((status) =>
-    referendumVoteFinishedStatusArray.includes(status),
-  );
-  const voteFinished = index >= 0;
-  let voteFinishedHeight = null;
-  if (voteFinished) {
-    voteFinishedHeight = timeline[index].indexer.blockHeight;
-  }
-
-  return {
-    voteFinished,
-    voteFinishedHeight,
-  };
-}
+import { fetchReferendaVotes, } from "next-common/store/reducers/referenda/votes";
+import { votesTriggerSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function useFetchVotes(referendum) {
   const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const votesTrigger = useSelector(votesTriggerSelector);
-  const { voteFinishedHeight } = extractVoteInfo(referendum?.timeline);
   const referendumIndex = referendum?.referendumIndex;
   const trackId = referendum?.track;
   const api = useApi();
+  const finishedHeight = useReferendumVotingFinishHeight();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (api) {
-      if (votesTrigger <= 1) {
-        dispatch(setIsLoadingVotes(true));
-      }
-
-      dispatch(fetchVotes(api, trackId, referendumIndex, voteFinishedHeight));
+    if (!api || finishedHeight) {
+      return;
     }
 
-    return () => dispatch(clearVotes());
-  }, [api, dispatch, referendumIndex, voteFinishedHeight, votesTrigger]);
+    dispatch(fetchReferendaVotes(api, trackId, referendumIndex));
+  }, [api, dispatch, finishedHeight, referendumIndex, votesTrigger]);
 
   return { allAye, allNay };
 }

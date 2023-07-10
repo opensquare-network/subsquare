@@ -6,6 +6,10 @@ import { EmptyList } from "./emptyList";
 import Link from "next/link";
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
   > :not(:first-child) {
     margin-top: 16px;
   }

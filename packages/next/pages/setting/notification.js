@@ -27,6 +27,7 @@ import NotificationEmail from "next-common/components/settingV2/notificationEmai
 import useSubscription from "components/settings/subscription/useSubscription";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -191,10 +192,17 @@ export const getServerSideProps = withLoginUser(async (context) => {
     options,
   );
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       subscription: subscription ?? null,
       unsubscribe: unsubscribe ?? null,
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });

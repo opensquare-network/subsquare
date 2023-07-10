@@ -9,6 +9,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import PolkadotWallet from "./polkadotWallet";
 import { MetaMaskWallet } from "./metamaskWallet";
+import { NovaWallet } from "./novaWallet";
 import {
   addNetwork,
   getChainId,
@@ -19,6 +20,7 @@ import {
 } from "next-common/utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import isEvmChain from "next-common/utils/isEvmChain";
 
 const WalletOptions = styled.ul`
   all: unset;
@@ -46,7 +48,9 @@ export default function SelectWallet({
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
   const chain = useChain();
-  const [metamaskAccounts] = useMetaMaskAccounts(selectedWallet === WalletTypes.METAMASK);
+  const [metamaskAccounts] = useMetaMaskAccounts(
+    selectedWallet === WalletTypes.METAMASK,
+  );
 
   useEffect(() => {
     if (selectedWallet === WalletTypes.METAMASK) {
@@ -196,6 +200,16 @@ export default function SelectWallet({
     [loadAccounts, onSelect],
   );
 
+  const onNovaWalletClick = useCallback(() => {
+    if (isEvmChain()) {
+      loadMetaMaskAccounts(WalletTypes.METAMASK);
+      onSelect && onSelect(WalletTypes.METAMASK);
+    } else {
+      loadAccounts(WalletTypes.POLKADOT_JS);
+      onSelect && onSelect(WalletTypes.POLKADOT_JS);
+    }
+  }, [loadMetaMaskAccounts, loadAccounts, onSelect]);
+
   const onMetaMaskWalletClick = useCallback(
     (wallet) => {
       loadMetaMaskAccounts(wallet.extensionName);
@@ -213,6 +227,18 @@ export default function SelectWallet({
               key={index}
               wallet={wallet}
               onClick={onMetaMaskWalletClick}
+              selected={wallet.extensionName === selectedWallet}
+              loading={wallet.extensionName === waitingPermissionWallet}
+            />
+          );
+        }
+
+        if (wallet.extensionName === WalletTypes.NOVA) {
+          return (
+            <NovaWallet
+              key={index}
+              wallet={wallet}
+              onClick={onNovaWalletClick}
               selected={wallet.extensionName === selectedWallet}
               loading={wallet.extensionName === waitingPermissionWallet}
             />

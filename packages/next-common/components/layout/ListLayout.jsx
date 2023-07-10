@@ -40,6 +40,7 @@ export default function ListLayout({
   summary,
   summaryFooter,
   tabs = [],
+  header,
 }) {
   const seoTitle = usePageTitle(
     seoInfoProp.title ?? title ?? "governance platform",
@@ -50,35 +51,39 @@ export default function ListLayout({
     desc: description || seoInfoProp.desc,
   };
 
+  const listHeader = (
+    <div>
+      <div className="flex justify-between items-baseline">
+        <h3 className="text20Bold text-textPrimary">{title}</h3>
+      </div>
+
+      <p className="text14Medium text-textTertiary">{description}</p>
+
+      {headContent && <div className="mt-2">{headContent}</div>}
+
+      {summary && (
+        <>
+          <hr className="h-px my-4 bg-neutral300" />
+          {summary}
+        </>
+      )}
+
+      {summaryFooter && (
+        <>
+          <hr className="h-px my-4 bg-neutral300" />
+          {summaryFooter}
+        </>
+      )}
+    </div>
+  );
+
   return (
     <BaseLayout seoInfo={seoInfo}>
       <div className="bg-neutral100 border-b border-neutral300">
         <div
           className={clsx("px-12 py-6 mx-auto max-w-[1200px]", "max-sm:px-6")}
         >
-          <div>
-            <div className="flex justify-between items-baseline">
-              <h3 className="text20Bold text-textPrimary">{title}</h3>
-            </div>
-
-            <p className="text14Medium text-textTertiary">{description}</p>
-
-            {headContent && <div className="mt-2">{headContent}</div>}
-
-            {summary && (
-              <>
-                <hr className="h-px my-4 bg-neutral300" />
-                {summary}
-              </>
-            )}
-
-            {summaryFooter && (
-              <>
-                <hr className="h-px my-4 bg-neutral300" />
-                {summaryFooter}
-              </>
-            )}
-          </div>
+          {header || listHeader}
         </div>
 
         {tabs?.length > 0 && (
@@ -126,7 +131,7 @@ function Tabs({ tabs = [] }) {
                 target={isExternal ? "_blank" : "_self"}
                 className={clsx(
                   itemClassName,
-                  tab.active ?? routePath === tab.url
+                  tab.active ?? routePath.startsWith(tab.url)
                     ? itemActiveClassName
                     : "border-transparent",
                 )}

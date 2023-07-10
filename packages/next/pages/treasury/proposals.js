@@ -27,8 +27,13 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
   const isMounted = useIsMounted();
-  const { hasDotreasury, symbol, hideActionButtons, noTreasuryPrecompile } =
-    useChainSettings();
+  const {
+    hasDotreasury,
+    symbol,
+    hideActionButtons,
+    noTreasuryPrecompile,
+    hideNewTreasuryProposalButton,
+  } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
@@ -56,6 +61,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       summary={<TreasurySummary />}
       summaryFooter={
         !hideActionButtons &&
+        !hideNewTreasuryProposalButton &&
         !noTreasuryPrecompile && (
           <div className="flex justify-end">
             <ThemeButton
@@ -115,8 +121,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
   ]);
 
   return {

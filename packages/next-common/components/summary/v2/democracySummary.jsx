@@ -24,18 +24,6 @@ export default function DemocracySummary({ summary = {} }) {
     <Summary
       items={[
         {
-          title: "Proposals",
-          content: (
-            <span>
-              {summaryData.publicProposals?.active || 0}
-              <SummaryGreyText>
-                {" "}
-                / {summaryData.publicProposals?.all || 0}
-              </SummaryGreyText>
-            </span>
-          ),
-        },
-        {
           title: "Referenda",
           content: (
             <span>
@@ -43,6 +31,18 @@ export default function DemocracySummary({ summary = {} }) {
               <SummaryGreyText>
                 {" "}
                 / {summaryData.referenda?.all || 0}
+              </SummaryGreyText>
+            </span>
+          ),
+        },
+        {
+          title: "Proposals",
+          content: (
+            <span>
+              {summaryData.publicProposals?.active || 0}
+              <SummaryGreyText>
+                {" "}
+                / {summaryData.publicProposals?.all || 0}
               </SummaryGreyText>
             </span>
           ),

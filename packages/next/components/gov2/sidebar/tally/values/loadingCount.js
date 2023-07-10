@@ -1,15 +1,15 @@
 import { useSelector } from "react-redux";
-import { isLoadingVotesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
 import VotesCount from "next-common/components/democracy/referendum/votesCount";
 import { Header } from "next-common/components/referenda/tally/styled";
+import { showVotesNumberSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 export default function LoadingCount({ count, children }) {
-  const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  const shouldShow = useSelector(showVotesNumberSelector);
 
   return (
     <Header>
       {children}
-      {!isLoadingVotes ? <VotesCount>{count}</VotesCount> : null}
+      {shouldShow ? <VotesCount>{count}</VotesCount> : null}
     </Header>
   );
 }

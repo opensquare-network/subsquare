@@ -3,6 +3,7 @@ import SubWalletLogo from "../../../assets/icons/wallet/subWallet.svg";
 import TalismanLogo from "../../../assets/icons/wallet/talisman.svg";
 import MetaMaskLogo from "../../../assets/icons/wallet/metamask.svg";
 import PolkagateLogo from "../../../assets/icons/wallet/polkagate.svg";
+import NovaLogo from "../../../assets/icons/wallet/nova.svg";
 import WalletTypes from "../walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
 
@@ -46,10 +47,17 @@ const polkagate = {
   logo: PolkagateLogo,
 };
 
+const nova = {
+  extensionName: WalletTypes.NOVA,
+  title: "Nova",
+  installUrl: "https://novawallet.io/",
+  logo: NovaLogo,
+};
+
 export function getWallets() {
   if (isEvmChain()) {
-    return [talisman, metamask];
+    return [talisman, metamask, nova];
   }
 
-  return [polkadotJs, subWalletJs, talisman, polkagate];
+  return [polkadotJs, subWalletJs, talisman, polkagate, nova];
 }
