@@ -4,8 +4,8 @@ export const RightBarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  right: 0;
-  top: 32px;
+  right: 24px;
+  top: 0;
   width: 300px;
   margin-top: 8px !important;
   > :not(:first-child) {
