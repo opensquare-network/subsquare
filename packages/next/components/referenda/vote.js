@@ -34,6 +34,7 @@ import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import { useChainSettings } from "next-common/context/chain";
 import Calls from "./voteCalls";
 import isMoonChain from "next-common/utils/isMoonChain";
+import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -67,22 +68,6 @@ const VotesGroupItems = styled.div`
   ${flex};
   ${items_center};
   ${gap_x(12)};
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  position: absolute;
-  right: 24px;
-  top: 0;
-  width: 300px;
-  margin-top: 0 !important;
-  @media screen and (max-width: 1024px) {
-    position: static;
-    width: auto;
-    margin-top: 16px !important;
-  }
 `;
 
 const Title = styled(TitleContainer)`
@@ -150,7 +135,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
   }
 
   return (
-    <Wrapper>
+    <RightBarWrapper>
       <SecondaryCardDetail>
         <Title className="!px-0">
           <span>Votes</span>
@@ -211,7 +196,7 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
       {showNestedVotesList && (
         <NestedVotesPopup setShowVoteList={setShowNestedVotesList} />
       )}
-    </Wrapper>
+    </RightBarWrapper>
   );
 }
 
