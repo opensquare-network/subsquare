@@ -59,6 +59,7 @@ export default function DetailLayout({
             <div
               className={clsx(
                 hasSider ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
+                "space-y-6",
                 "max-sm:max-w-full",
               )}
             >
