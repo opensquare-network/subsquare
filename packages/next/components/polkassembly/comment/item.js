@@ -76,7 +76,6 @@ export default function Item({ data, isSecondLevel }) {
       </InfoWrapper>
       <ContentWrapper>
         <MarkdownPreviewer
-          className="prose max-w-full"
           content={comment.content}
           plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
         />

@@ -6,18 +6,8 @@ export default function PostContent() {
   const post = usePost();
 
   if (post.contentType === "markdown") {
-    return (
-      <MarkdownPreviewer
-        className="prose max-w-full"
-        content={post.content || ""}
-      />
-    );
+    return <MarkdownPreviewer content={post.content || ""} />;
   } else if (post.contentType === "html") {
-    return (
-      <HtmlPreviewer
-        className="prose max-w-full"
-        content={post.content || ""}
-      />
-    );
+    return <HtmlPreviewer content={post.content || ""} />;
   }
 }
