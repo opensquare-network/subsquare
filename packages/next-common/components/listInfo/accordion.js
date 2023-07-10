@@ -11,8 +11,8 @@ export default function Accordion({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="py-6">
-      <TitleContainer>
+    <div>
+      <TitleContainer className="pt-6">
         {title}
         <ArrowUp
           role="button"

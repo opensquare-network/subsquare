@@ -11,7 +11,8 @@ export const TitleContainer = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: var(--textPrimary);
-  padding: 0 24px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 
 export const StatisticTitleContainer = styled(TitleContainer)`
