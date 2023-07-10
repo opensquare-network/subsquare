@@ -43,6 +43,7 @@ module.exports = {
     // colors: {},
   },
   plugins: [
+    require("@tailwindcss/typography"),
     require("./packages/next-common/styles/tailwind-plugins/scrollbar"),
     require("./packages/next-common/styles/tailwind-plugins/fonts"),
   ],

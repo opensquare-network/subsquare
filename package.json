@@ -13,6 +13,7 @@
     "lint-fix": "yarn workspace @subsquare/kintsugi-next lint --fix && yarn workspace @subsquare/next lint --fix && yarn workspace next-common lint --fix"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "autoprefixer": "^10.4.14",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
