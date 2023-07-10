@@ -12,26 +12,27 @@ import Divider from "next-common/components/styled/layout/divider";
 /**
  * @param {import("../DetailLayoutV2").DetailLayoutProps} props
  */
-export default function DemocracyReferendaDetailLayout({ seoInfo, ...props }) {
+export default function DemocracyReferendaDetailLayout(props) {
   const post = usePost();
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
     <DetailLayout
-      seoInfo={seoInfo}
       header={
-        <>
-          {!isEditing && (
-            <>
-              <ExecutionCountdown />
-              <ReferendumVoteEndCountDown />
-              <ReferendumNavigation post={post} />
-            </>
-          )}
-          <PostTitle />
-          <Divider className="my-4" />
-          <DemocracyReferendumMeta />
-        </>
+        props.detail && (
+          <>
+            {!isEditing && (
+              <>
+                <ExecutionCountdown />
+                <ReferendumVoteEndCountDown />
+                <ReferendumNavigation post={post} />
+              </>
+            )}
+            <PostTitle />
+            <Divider className="my-4" />
+            <DemocracyReferendumMeta />
+          </>
+        )
       }
       {...props}
     >

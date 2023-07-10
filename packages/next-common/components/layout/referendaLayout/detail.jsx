@@ -10,24 +10,25 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 /**
  * @param {import("../DetailLayoutV2").DetailLayoutProps} props
  */
-export default function ReferendaDetailLayout({ seoInfo, ...props }) {
+export default function ReferendaDetailLayout(props) {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
     <DetailLayout
-      seoInfo={seoInfo}
       header={
-        <>
-          {!isEditing && (
-            <>
-              <ReferendaWhiteListNavigation />
-              <ReferendaReferendumNavigation />
-            </>
-          )}
-          <PostTitle />
-          <Divider className="my-4" />
-          <ReferendaPostMeta />
-        </>
+        props.detail && (
+          <>
+            {!isEditing && (
+              <>
+                <ReferendaWhiteListNavigation />
+                <ReferendaReferendumNavigation />
+              </>
+            )}
+            <PostTitle />
+            <Divider className="my-4" />
+            <ReferendaPostMeta />
+          </>
+        )
       }
       {...props}
     >

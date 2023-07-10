@@ -117,6 +117,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
   return (
     <PostProvider post={detail}>
       <ReferendaDetailLayout
+        detail={detail}
         seoInfo={seoInfo}
         breadcrumbs={breadcrumbs}
         hasSider

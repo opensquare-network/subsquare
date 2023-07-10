@@ -124,6 +124,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
   return (
     <PostProvider post={detail}>
       <DemocracyReferendaDetailLayout
+        detail={detail}
         seoInfo={seoInfo}
         breadcrumbs={breadcrumbItems}
         hasSider

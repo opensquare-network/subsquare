@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
  * @typedef {Object} DetailLayoutProps
  * @property {JSX.Element | Breadcrumb[]} breadcrumbs - The breadcrumb items.
  * @property {SeoInfo} seoInfo - The SEO information.
+ * @property {Object} detail - The post detail from server.
  * @property {JSX.Element} children - The children components.
  * @property {JSX.Element} header - The header element.
  * @property {boolean} hasSider - Indicates if the layout has a sider component.
@@ -41,6 +42,7 @@ export default function DetailLayout({
   header,
   children,
   hasSider,
+  detail,
 }) {
   const dispatch = useDispatch();
   const siderHeight = useSelector(layoutDetailSiderHeight);
@@ -76,7 +78,9 @@ export default function DetailLayout({
             <div
               className={clsx(
                 "w-full",
-                hasSider ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
+                detail && hasSider
+                  ? "max-w-[calc(100%-320px-48px)]"
+                  : "max-w-full",
                 "space-y-6",
                 "max-md:max-w-full",
               )}

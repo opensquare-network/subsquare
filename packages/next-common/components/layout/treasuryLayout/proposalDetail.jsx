@@ -10,24 +10,25 @@ import TreasuryProposalPostMeta from "next-common/components/detail/treasury/pro
 /**
  * @param {import("../DetailLayoutV2").DetailLayoutProps} props
  */
-export default function TreasuryProposalDetailLayout({ seoInfo, ...props }) {
+export default function TreasuryProposalDetailLayout(props) {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
     <DetailLayout
-      seoInfo={seoInfo}
       header={
-        <>
-          {!isEditing && (
-            <>
-              <TreasuryAwardCountDown />
-              <TreasuryProposalNavigation />
-            </>
-          )}
-          <PostTitle />
-          <Divider className="my-4" />
-          <TreasuryProposalPostMeta />
-        </>
+        props.detail && (
+          <>
+            {!isEditing && (
+              <>
+                <TreasuryAwardCountDown />
+                <TreasuryProposalNavigation />
+              </>
+            )}
+            <PostTitle />
+            <Divider className="my-4" />
+            <TreasuryProposalPostMeta />
+          </>
+        )
       }
       {...props}
     >
