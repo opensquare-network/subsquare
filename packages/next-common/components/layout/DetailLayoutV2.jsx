@@ -28,8 +28,6 @@ import { useDispatch } from "react-redux";
  * @property {JSX.Element | Breadcrumb[]} breadcrumbs - The breadcrumb items.
  * @property {SeoInfo} seoInfo - The SEO information.
  * @property {JSX.Element} children - The children components.
- * @property {JSX.Element} title - The title element.
- * @property {JSX.Element} titleHead - The title head element.
  * @property {JSX.Element} header - The header element.
  * @property {boolean} hasSider - Indicates if the layout has a sider component.
  */
