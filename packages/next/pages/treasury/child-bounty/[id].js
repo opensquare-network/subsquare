@@ -8,7 +8,11 @@ import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import Claim from "components/childBounty/claim";
-import { PostProvider, useOnchainData, usePost } from "next-common/context/post";
+import {
+  PostProvider,
+  useOnchainData,
+  usePost,
+} from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
@@ -16,6 +20,7 @@ import CheckUnFinalized from "components/childBounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -26,6 +31,8 @@ function ChildBountyContent({ comments }) {
     detail: post,
     comments,
   });
+
+  useSubscribePostDetail(post?.index);
 
   return (
     <>

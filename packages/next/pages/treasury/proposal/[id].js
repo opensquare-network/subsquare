@@ -13,12 +13,15 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
   });
+
+  useSubscribePostDetail(detail?.proposalIndex);
 
   return (
     <>

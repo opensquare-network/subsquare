@@ -19,6 +19,7 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
@@ -27,6 +28,8 @@ export default function MotionDetail({ onReply }) {
   const api = useApi();
   const isMounted = useIsMounted();
   const post = usePost();
+
+  useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
   const [isEdit, setIsEdit] = useState(false);
@@ -119,7 +122,10 @@ export default function MotionDetail({ onReply }) {
 
   const refreshPageData = () =>
     fetchAndUpdatePost(postDispatch, type, post._id);
-  const onVoteFinalized = useWaitSyncBlock("Extrinsic submitted", refreshPageData);
+  const onVoteFinalized = useWaitSyncBlock(
+    "Extrinsic submitted",
+    refreshPageData,
+  );
 
   if (isEdit) {
     return <PostEdit setIsEdit={setIsEdit} updatePost={refreshPageData} />;

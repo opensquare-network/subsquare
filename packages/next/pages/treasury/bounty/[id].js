@@ -14,12 +14,15 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "components/bounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
   });
+
+  useSubscribePostDetail(detail?.bountyIndex);
 
   return (
     <>

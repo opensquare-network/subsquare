@@ -29,6 +29,7 @@ import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -47,6 +48,8 @@ function ReferendumContent({ comments }) {
     detail: post,
     comments,
   });
+
+  useSubscribePostDetail(post?.referendumIndex);
 
   return (
     <>
