@@ -11,7 +11,11 @@ import useUniversalComments from "components/universalComments";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { hashEllipsis } from "next-common/utils";
-import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
@@ -20,7 +24,7 @@ import { useDetailType } from "next-common/context/page";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
-import useSubscribePostDetail, { postTypes } from "hooks/useSubscribePostDetail";
+import useSubscribePostDetail from "hooks/useSubscribePostDetail";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -28,7 +32,6 @@ function TreasuryTipContent({ comments }) {
   const type = useDetailType();
   useSubscribePostDetail({
     detailType: type,
-    postType: postTypes.tip,
     postId: `${post.height}_${post.hash}`,
   });
 

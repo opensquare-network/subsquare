@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useSocket } from "next-common/context/socket";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const postStatusRoom = "POST_STATUS_ROOM";
 
@@ -10,7 +11,6 @@ function getRoomId(postType, postId) {
 }
 
 export const postTypes = Object.freeze({
-  post: "post",
   tip: "tip",
   treasuryProposal: "treasuryProposal",
   bounty: "bounty",
@@ -30,7 +30,31 @@ export const postTypes = Object.freeze({
   openTechCommittee: "openTechCommittee",
 });
 
-export default function useSubscribePostDetail({ detailType, postType, postId }) {
+const detailTypeToPostTypeMap = Object.freeze({
+  [detailPageCategory.TREASURY_TIP]: postTypes.tip,
+  [detailPageCategory.TREASURY_PROPOSAL]: postTypes.treasuryProposal,
+  [detailPageCategory.TREASURY_BOUNTY]: postTypes.bounty,
+  [detailPageCategory.TREASURY_CHILD_BOUNTY]: postTypes.childBounty,
+  [detailPageCategory.COUNCIL_MOTION]: postTypes.motion,
+  [detailPageCategory.TECH_COMM_MOTION]: postTypes.techCommMotion,
+  [detailPageCategory.FINANCIAL_MOTION]: postTypes.financialMotion,
+  [detailPageCategory.ADVISORY_MOTION]: postTypes.advisoryCommitteeMotion,
+  [detailPageCategory.DEMOCRACY_REFERENDUM]: postTypes.democracyReferendum,
+  [detailPageCategory.DEMOCRACY_EXTERNAL]: postTypes.democracyExternal,
+  [detailPageCategory.DEMOCRACY_PROPOSAL]: postTypes.democracyPublicProposal,
+  [detailPageCategory.GOV2_REFERENDUM]: postTypes.referendaReferendum,
+  [detailPageCategory.FELLOWSHIP_REFERENDUM]: postTypes.fellowshipReferendum,
+  [detailPageCategory.ALLIANCE_MOTION]: postTypes.allianceMotion,
+  [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: postTypes.allianceAnnouncement,
+  [detailPageCategory.TREASURY_COUNCIL_MOTION]: postTypes.moonCouncil,
+  [detailPageCategory.OPEN_TECH_COMM_PROPOSAL]: postTypes.openTechCommittee,
+});
+
+function detailTypeToPostType(detailType) {
+  return detailTypeToPostTypeMap[detailType];
+}
+
+export default function useSubscribePostDetail({ detailType, postId }) {
   const socket = useSocket();
   const postDispatch = usePostDispatch();
   const onPostUpdated = useCallback(() => {
@@ -42,6 +66,7 @@ export default function useSubscribePostDetail({ detailType, postType, postId })
       return;
     }
 
+    const postType = detailTypeToPostType(detailType);
     const roomId = getRoomId(postType, postId);
 
     socket.emit("subscribe", roomId);
@@ -51,5 +76,5 @@ export default function useSubscribePostDetail({ detailType, postType, postId })
       socket.emit("unsubscribe", roomId);
       socket.off("postUpdated", onPostUpdated);
     };
-  }, [socket, postType, postId, onPostUpdated]);
+  }, [socket, detailType, postId, onPostUpdated]);
 }

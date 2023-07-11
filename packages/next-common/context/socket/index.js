@@ -17,6 +17,9 @@ export function SocketProvider({ children }) {
     socket.on("disconnect", () => {
       setSocket(null);
     });
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (
@@ -29,9 +32,4 @@ export function SocketProvider({ children }) {
 export function useSocket() {
   const [socket] = useContext(SocketContext);
   return socket;
-}
-
-export function useSetSocket() {
-  const [, setSocket] = useContext(SocketContext);
-  return setSocket;
 }
