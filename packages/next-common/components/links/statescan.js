@@ -26,11 +26,13 @@ export default function Statescan({ indexer, children }) {
     return null;
   }
 
-  let url = `https://${statescanDomainMap[chain] || chain}.statescan.io/#`;
+  let url = `https://${ statescanDomainMap[chain] || chain }.statescan.io/#`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
-    url += `/extrinsics/${blockHeight}-${extrinsicIndex ?? index}`;
+    url += `/extrinsics/${ blockHeight }-${ extrinsicIndex ?? index }`;
+  } else if (!isNil(eventIndex)) {
+    url += `/events/${ blockHeight }-${ eventIndex }`;
   } else {
-    url += `/events/${blockHeight}-${eventIndex}`;
+    url += `/blocks/${ blockHeight }`;
   }
 
   const isLight = mode === "light";
