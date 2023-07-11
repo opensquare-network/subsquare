@@ -2,8 +2,8 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { createContext, useContext } from "react";
 
-const NavCollapsedContext = createContext({});
-const NavSubmenuVisibleContext = createContext({});
+const NavCollapsedContext = createContext([]);
+const NavSubmenuVisibleContext = createContext([]);
 
 export default function NavProvider({
   navCollapsed,
