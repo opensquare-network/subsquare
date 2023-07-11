@@ -1,16 +1,9 @@
-import styled, { css } from "styled-components";
-import { smcss } from "../../../utils/responsive";
+import tw from "tailwind-styled-components";
 
-const BreadcrumbWrapper = styled.div`
-  ${smcss(css`
-    padding: 0 16px;
-  `)}
-`;
+const BreadcrumbWrapper = tw.div``;
 
-export const BreadcrumbHideOnMobileText = styled.span`
-  ${smcss(css`
-    display: none;
-  `)}
+export const BreadcrumbHideOnMobileText = tw.span`
+max-sm:hidden
 `;
 
 export default BreadcrumbWrapper;
