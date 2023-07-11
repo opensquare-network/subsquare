@@ -24,7 +24,7 @@ export default function GlobalProvider({
           <UserProvider user={user}>
             <SettingsProvider homeExpandedMenus={homeExpandedMenus}>
               <NavProvider
-                navCollpased={navCollapsed}
+                navCollapsed={navCollapsed}
                 navSubmenuVisible={navSubmenuVisible}
               >
                 <PageProvider pageProperties={pageProperties}>
