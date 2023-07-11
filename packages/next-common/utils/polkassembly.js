@@ -38,6 +38,9 @@ export function getPolkassemblyLink(type, post) {
     case detailPageCategory.GOV2_REFERENDUM: {
       return `https://${chain}.polkassembly.io/referenda/${post.referendumIndex}`;
     }
+    case detailPageCategory.FELLOWSHIP_REFERENDUM: {
+      return `https://${chain}.polkassembly.io/member-referenda/${post.referendumIndex}`;
+    }
     default: {
       return null;
     }
