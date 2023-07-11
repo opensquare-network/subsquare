@@ -24,7 +24,7 @@ import { useDetailType } from "next-common/context/page";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
-import useSubscribePostDetail from "hooks/useSubscribePostDetail";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
