@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   }
   border: 1px solid var(--neutral400);
   width: 100%;
-  border-radius: 16px;
+  border-radius: 8px;
   :hover {
     border-color: var(--neutral500);
   }
