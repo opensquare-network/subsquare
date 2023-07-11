@@ -137,13 +137,13 @@ function NavMobile() {
           <div role="button" onClick={toolbarToggle}>
             <SystemMenu
               className={clsx(
-                "[&_path]:fill-textPrimaryContrast",
+                "[&_path]:fill-navigationText",
                 toolbarVisible && "hidden",
               )}
             />
             <SystemClose
               className={clsx(
-                "[&_path]:fill-textPrimaryContrast",
+                "[&_path]:fill-navigationText",
                 !toolbarVisible && "hidden",
               )}
             />
