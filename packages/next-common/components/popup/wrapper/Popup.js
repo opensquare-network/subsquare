@@ -44,7 +44,7 @@ export default function Popup({
             {title && (
               <div className="flex items-center justify-between">
                 <Dialog.Title asChild>
-                  <h3 className="text14Bold">{title}</h3>
+                  <h3 className="text14Bold text-textPrimary">{title}</h3>
                 </Dialog.Title>
                 <SystemClose
                   className="w-4 h-4 [&_path]:stroke-textTertiary"
