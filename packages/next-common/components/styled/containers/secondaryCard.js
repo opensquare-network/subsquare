@@ -14,8 +14,4 @@ export const HoverSecondaryCard = styled(SecondaryCard)`
 `;
 
 // Used for cards on detail page
-export const SecondaryCardDetail = styled(SecondaryCard)`
-  @media screen and (max-width: 768px) {
-    border-radius: 0;
-  }
-`;
+export const SecondaryCardDetail = styled(SecondaryCard)``;

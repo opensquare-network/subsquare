@@ -24,7 +24,7 @@ export default function Accordion({
         />
       </TitleContainer>
 
-      <div className={clsx(!open && "hidden", "p-6 mt-6")}>
+      <div className={clsx(!open && "hidden", "p-6", "max-sm:py-4")}>
         <div>{children}</div>
       </div>
     </div>
