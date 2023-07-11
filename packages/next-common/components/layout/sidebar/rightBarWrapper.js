@@ -1,25 +1,8 @@
+import clsx from "clsx";
+import { useNavCollapsed } from "next-common/context/nav";
 import { setLayoutDetailSiderHeight } from "next-common/store/reducers/layoutSlice";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
-
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  right: 24px;
-  top: 0;
-  width: 300px;
-  margin-top: 0px !important;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 1024px) {
-    position: static;
-    width: auto;
-    margin-top: 16px !important;
-  }
-`;
 
 /**
  * @param {import("react").HTMLAttributes<HTMLDivElement>} props - The props object containing the properties passed to the function.
@@ -31,9 +14,22 @@ export function RightBarWrapper(props) {
     dispatch(setLayoutDetailSiderHeight(ref.current.clientHeight));
   }, []);
 
+  const [navCollapsed] = useNavCollapsed();
+
   return (
-    <Wrapper ref={ref} {...props}>
+    <div
+      ref={ref}
+      {...props}
+      className={clsx(
+        "flex flex-col",
+        "space-y-4",
+        "absolute right-6 top-0 w-[300px] mt-0",
+        "max-md:static max-md:w-auto max-md:mt-4",
+        !navCollapsed && "max-lg:static max-lg:w-auto max-lg:mt-4",
+        props.className,
+      )}
+    >
       {props.children}
-    </Wrapper>
+    </div>
   );
 }

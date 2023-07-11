@@ -8,6 +8,7 @@ import {
 } from "next-common/store/reducers/layoutSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavCollapsed } from "next-common/context/nav";
 
 /**
  * @typedef {{
@@ -52,6 +53,8 @@ export default function DetailLayout({
     };
   }, []);
 
+  const [navCollapsed] = useNavCollapsed();
+
   return (
     <BaseLayout seoInfo={seoInfo}>
       <div
@@ -77,12 +80,11 @@ export default function DetailLayout({
           <div className="flex gap-x-6 mt-6 max-w-full relative">
             <div
               className={clsx(
-                "w-full",
+                "w-full space-y-6",
                 detail && hasSider
                   ? "max-w-[calc(100%-320px-48px)]"
                   : "max-w-full",
-                "space-y-6",
-                "max-md:max-w-full",
+                navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
               )}
               style={{ minHeight: `${siderHeight}px` }}
             >

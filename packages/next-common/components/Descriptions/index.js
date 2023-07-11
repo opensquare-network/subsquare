@@ -1,6 +1,7 @@
 // https://ant.design/components/descriptions, Display multiple read-only fields in groups.
 
 import clsx from "clsx";
+import { useNavCollapsed } from "next-common/context/nav";
 
 /**
  * @param {Object} props
@@ -14,6 +15,8 @@ export default function Descriptions({
   labelWidth,
   valueAlign = "right",
 }) {
+  const [navCollapsed] = useNavCollapsed();
+
   return (
     <div className="w-full">
       {title && <h4 className="text14Bold text-textPrimary mb-2">{title}</h4>}
@@ -27,11 +30,16 @@ export default function Descriptions({
                 "py-4 first:pt-0 last:pb-0",
                 "flex items-center",
                 "border-t border-neutral300 first:border-none",
-                "max-sm:block",
+                navCollapsed ? "max-sm:block" : "max-md:block",
               )}
             >
               <div className="w-full">
-                <div className="flex items-center max-sm:block">
+                <div
+                  className={clsx(
+                    "flex items-center",
+                    navCollapsed ? "max-sm:block" : "max-md:block",
+                  )}
+                >
                   <div
                     className="text-textSecondary text14Medium"
                     style={{ width: item.labelWidth || labelWidth }}
@@ -44,7 +52,7 @@ export default function Descriptions({
                       "flex-1 flex",
                       valueAlign === "right" && "justify-end",
                       valueAlign === "left" && "justify-start",
-                      "max-sm:mt-2",
+                      navCollapsed ? "max-sm:mt-2" : "max-md:mt-2",
                     )}
                   >
                     {item.value}
