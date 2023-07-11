@@ -10,63 +10,47 @@ function getRoomId(postType, postId) {
   return `${postStatusRoom}:${postType}:${postId}`;
 }
 
-export const postTypes = Object.freeze({
-  tip: "tip",
-  treasuryProposal: "treasuryProposal",
-  bounty: "bounty",
-  childBounty: "childBounty",
-  motion: "motion",
-  techCommMotion: "techCommMotion",
-  financialMotion: "financialMotion",
-  advisoryCommitteeMotion: "advisoryCommitteeMotion",
-  democracyReferendum: "democracyReferendum",
-  democracyExternal: "democracyExternal",
-  democracyPublicProposal: "democracyPublicProposal",
-  referendaReferendum: "referendaReferendum",
-  fellowshipReferendum: "fellowshipReferendum",
-  allianceMotion: "allianceMotion",
-  allianceAnnouncement: "allianceAnnouncement",
-  moonCouncil: "moonCouncil",
-  openTechCommittee: "openTechCommittee",
-});
-
 const detailTypeToPostTypeMap = Object.freeze({
-  [detailPageCategory.TREASURY_TIP]: postTypes.tip,
-  [detailPageCategory.TREASURY_PROPOSAL]: postTypes.treasuryProposal,
-  [detailPageCategory.TREASURY_BOUNTY]: postTypes.bounty,
-  [detailPageCategory.TREASURY_CHILD_BOUNTY]: postTypes.childBounty,
-  [detailPageCategory.COUNCIL_MOTION]: postTypes.motion,
-  [detailPageCategory.TECH_COMM_MOTION]: postTypes.techCommMotion,
-  [detailPageCategory.FINANCIAL_MOTION]: postTypes.financialMotion,
-  [detailPageCategory.ADVISORY_MOTION]: postTypes.advisoryCommitteeMotion,
-  [detailPageCategory.DEMOCRACY_REFERENDUM]: postTypes.democracyReferendum,
-  [detailPageCategory.DEMOCRACY_EXTERNAL]: postTypes.democracyExternal,
-  [detailPageCategory.DEMOCRACY_PROPOSAL]: postTypes.democracyPublicProposal,
-  [detailPageCategory.GOV2_REFERENDUM]: postTypes.referendaReferendum,
-  [detailPageCategory.FELLOWSHIP_REFERENDUM]: postTypes.fellowshipReferendum,
-  [detailPageCategory.ALLIANCE_MOTION]: postTypes.allianceMotion,
-  [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: postTypes.allianceAnnouncement,
-  [detailPageCategory.TREASURY_COUNCIL_MOTION]: postTypes.moonCouncil,
-  [detailPageCategory.OPEN_TECH_COMM_PROPOSAL]: postTypes.openTechCommittee,
+  [detailPageCategory.TREASURY_TIP]: "tip",
+  [detailPageCategory.TREASURY_PROPOSAL]: "treasuryProposal",
+  [detailPageCategory.TREASURY_BOUNTY]: "bounty",
+  [detailPageCategory.TREASURY_CHILD_BOUNTY]: "childBounty",
+  [detailPageCategory.COUNCIL_MOTION]: "motion",
+  [detailPageCategory.TECH_COMM_MOTION]: "techCommMotion",
+  [detailPageCategory.FINANCIAL_MOTION]: "financialMotion",
+  [detailPageCategory.ADVISORY_MOTION]: "advisoryCommitteeMotion",
+  [detailPageCategory.DEMOCRACY_REFERENDUM]: "democracyReferendum",
+  [detailPageCategory.DEMOCRACY_EXTERNAL]: "democracyExternal",
+  [detailPageCategory.DEMOCRACY_PROPOSAL]: "democracyPublicProposal",
+  [detailPageCategory.GOV2_REFERENDUM]: "referendaReferendum",
+  [detailPageCategory.FELLOWSHIP_REFERENDUM]: "fellowshipReferendum",
+  [detailPageCategory.ALLIANCE_MOTION]: "allianceMotion",
+  [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: "allianceAnnouncement",
+  [detailPageCategory.TREASURY_COUNCIL_MOTION]: "moonCouncil",
+  [detailPageCategory.OPEN_TECH_COMM_PROPOSAL]: "openTechCommittee",
 });
 
 function detailTypeToPostType(detailType) {
-  return detailTypeToPostTypeMap[detailType];
+  const postType = detailTypeToPostTypeMap[detailType];
+  if (!postType) {
+    throw new Error(`Unknown detail type: ${detailType}`);
+  }
+  return postType;
 }
 
-export default function useSubscribePostDetail({ detailType, postId }) {
+export default function useSubscribePostDetail({ type, postId }) {
   const socket = useSocket();
   const postDispatch = usePostDispatch();
   const onPostUpdated = useCallback(() => {
-    fetchAndUpdatePost(postDispatch, detailType, postId);
-  }, [postDispatch, detailType, postId]);
+    fetchAndUpdatePost(postDispatch, type, postId);
+  }, [postDispatch, type, postId]);
 
   useEffect(() => {
     if (!socket) {
       return;
     }
 
-    const postType = detailTypeToPostType(detailType);
+    const postType = detailTypeToPostType(type);
     const roomId = getRoomId(postType, postId);
 
     socket.emit("subscribe", roomId);
@@ -76,5 +60,5 @@ export default function useSubscribePostDetail({ detailType, postId }) {
       socket.emit("unsubscribe", roomId);
       socket.off("postUpdated", onPostUpdated);
     };
-  }, [socket, detailType, postId, onPostUpdated]);
+  }, [socket, type, postId, onPostUpdated]);
 }
