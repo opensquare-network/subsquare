@@ -6,12 +6,12 @@ const NavCollapsedContext = createContext({});
 const NavSubmenuVisibleContext = createContext({});
 
 export default function NavProvider({
-  navCollpased,
+  navCollapsed,
   navSubmenuVisible = "{}",
   children,
 }) {
   return (
-    <NavCollapsedProvider value={navCollpased}>
+    <NavCollapsedProvider value={navCollapsed}>
       <NavSubmenuVisibleProvider value={navSubmenuVisible}>
         {children}
       </NavSubmenuVisibleProvider>

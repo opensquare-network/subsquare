@@ -5,6 +5,7 @@ import SettingsProvider from "./settings";
 import ThemeModeProvider from "./theme";
 import PageProvider from "./page";
 import NavProvider from "./nav";
+import { SocketProvider } from "./socket";
 
 export default function GlobalProvider({
   user,
@@ -17,21 +18,23 @@ export default function GlobalProvider({
   navSubmenuVisible,
 }) {
   return (
-    <ThemeModeProvider defaultThemeMode={themeMode}>
-      <ChainProvider chain={chain}>
-        <UserProvider user={user}>
-          <SettingsProvider homeExpandedMenus={homeExpandedMenus}>
-            <NavProvider
-              navCollpased={navCollapsed}
-              navSubmenuVisible={navSubmenuVisible}
-            >
-              <PageProvider pageProperties={pageProperties}>
-                {children}
-              </PageProvider>
-            </NavProvider>
-          </SettingsProvider>
-        </UserProvider>
-      </ChainProvider>
-    </ThemeModeProvider>
+    <SocketProvider>
+      <ThemeModeProvider defaultThemeMode={themeMode}>
+        <ChainProvider chain={chain}>
+          <UserProvider user={user}>
+            <SettingsProvider homeExpandedMenus={homeExpandedMenus}>
+              <NavProvider
+                navCollapsed={navCollapsed}
+                navSubmenuVisible={navSubmenuVisible}
+              >
+                <PageProvider pageProperties={pageProperties}>
+                  {children}
+                </PageProvider>
+              </NavProvider>
+            </SettingsProvider>
+          </UserProvider>
+        </ChainProvider>
+      </ThemeModeProvider>
+    </SocketProvider>
   );
 }

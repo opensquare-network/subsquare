@@ -13,11 +13,13 @@ function SubScanLink({ indexer = {}, children }) {
   }
 
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
-  let url = `https://${subscanDomain || chain}.subscan.io`;
+  let url = `https://${ subscanDomain || chain }.subscan.io`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
-    url += `/extrinsic/${blockHeight}-${extrinsicIndex ?? index}`;
+    url += `/extrinsic/${ blockHeight }-${ extrinsicIndex ?? index }`;
+  } else if (!isNil(eventIndex)) {
+    url += `/block/${ blockHeight }?tab=event&event=${ blockHeight }-${ eventIndex }`;
   } else {
-    url += `/block/${blockHeight}?tab=event&event=${blockHeight}-${eventIndex}`;
+    url += `/block/${ blockHeight }`;
   }
 
   if (children) {
