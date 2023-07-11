@@ -32,7 +32,7 @@ function ChainName() {
 
 function BrandingHint() {
   return (
-    <div className="text12Medium mt-1 max-sm:mt-0 text-textTertiaryContrast">
+    <div className="text12Medium mt-1 max-sm:mt-0 text-navigationTextTertiary">
       Governance by Subsquare
     </div>
   );
