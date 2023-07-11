@@ -25,7 +25,7 @@ export function RightBarWrapper(props) {
         "space-y-6",
         "absolute right-6 top-0 w-[320px] mt-0",
         "max-md:static max-md:w-auto max-md:mt-4",
-        "max-sm:p-6",
+        !navCollapsed && "max-lg:p-6",
         !navCollapsed && "max-lg:static max-lg:w-auto max-lg:mt-4",
         props.className,
       )}
