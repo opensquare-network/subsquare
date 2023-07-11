@@ -31,7 +31,7 @@ function TreasuryTipContent({ comments }) {
   const postDispatch = usePostDispatch();
   const type = useDetailType();
   useSubscribePostDetail({
-    detailType: type,
+    type,
     postId: `${post.height}_${post.hash}`,
   });
 
