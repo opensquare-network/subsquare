@@ -23,6 +23,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import FellowshipReferendaDetail from "next-common/components/detail/fellowship";
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -33,6 +34,8 @@ function FellowshipContent({ comments }) {
     detail: post,
     comments,
   });
+
+  useSubscribePostDetail(post?.referendumIndex);
 
   return (
     <>

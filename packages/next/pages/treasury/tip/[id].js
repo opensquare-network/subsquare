@@ -30,10 +30,7 @@ function TreasuryTipContent({ comments }) {
   const post = usePost();
   const postDispatch = usePostDispatch();
   const type = useDetailType();
-  useSubscribePostDetail({
-    type,
-    postId: `${post.height}_${post.hash}`,
-  });
+  useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,

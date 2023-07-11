@@ -13,7 +13,11 @@ import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/use
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider, usePost, usePostDispatch } from "next-common/context/post";
+import {
+  PostProvider,
+  usePost,
+  usePostDispatch,
+} from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
@@ -25,12 +29,15 @@ import DemocracyReferendaDetail from "next-common/components/detail/Democracy/re
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
+
+  useSubscribePostDetail(post?.referendumIndex);
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
