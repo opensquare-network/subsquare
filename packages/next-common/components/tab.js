@@ -15,7 +15,7 @@ export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
           key={tabId}
           className={clsx(
             "text14Medium",
-            "flex justify-center items-center",
+            "flex justify-center items-center flex-1",
             "py-2.5 w-[172px]",
             small && "py-0.5 w-[156px]",
             "text-textTertiary",
