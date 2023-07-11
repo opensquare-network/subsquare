@@ -7,7 +7,7 @@ const Wrapper = styled(Flex)`
   justify-content: center;
   border: 1px solid var(--neutral300);
   ${shadow_100};
-  border-radius: 6px;
+  border-radius: 12px;
   padding: 24px;
   font-style: normal;
   font-weight: normal;
@@ -29,7 +29,7 @@ export function EmptyList({ type = "discussions" }) {
 
 export default function MaybeEmpty({ items = [], type, children }) {
   if (items.length <= 0) {
-    return <EmptyList type={type}/>;
+    return <EmptyList type={type} />;
   }
 
   return children;
