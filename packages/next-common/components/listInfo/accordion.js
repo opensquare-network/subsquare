@@ -24,12 +24,7 @@ export default function Accordion({
         />
       </TitleContainer>
 
-      <div
-        className={clsx(
-          !open && "hidden",
-          "border border-neutral300 shadow-100 rounded-3xl p-6 mt-6",
-        )}
-      >
+      <div className={clsx(!open && "hidden", "p-6 mt-6")}>
         <div>{children}</div>
       </div>
     </div>
