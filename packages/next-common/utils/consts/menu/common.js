@@ -45,9 +45,12 @@ const commonMenus = {
 };
 
 if (
-  [Chains.polkadot, Chains.kusama, Chains.moonriver].includes(
-    process.env.NEXT_PUBLIC_CHAIN,
-  )
+  [
+    Chains.polkadot,
+    Chains.kusama,
+    Chains.moonriver,
+    Chains.collectives,
+  ].includes(process.env.NEXT_PUBLIC_CHAIN)
 ) {
   commonMenus.items.push(polkassemblyMenu);
 }
