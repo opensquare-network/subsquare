@@ -11,26 +11,15 @@ import isNil from "lodash.isnil";
 import useUniversalComments from "components/universalComments";
 import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
-import {
-  PostProvider,
-  usePost,
-  usePostDispatch,
-} from "next-common/context/post";
-import { useCallback } from "react";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import { PostProvider, usePost, } from "next-common/context/post";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import { useDetailType } from "next-common/context/page";
-import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function PublicProposalContent({ comments }) {
   const post = usePost();
-  const type = useDetailType();
-  const postDispatch = usePostDispatch();
-
   useSubscribePostDetail(post?.proposalIndex);
 
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -52,15 +41,6 @@ function PublicProposalContent({ comments }) {
     ? lastTimelineBlockHeight - 1
     : undefined;
 
-  const refreshPageData = useCallback(async () => {
-    fetchAndUpdatePost(postDispatch, type, post?.proposalIndex);
-  }, [post, type, postDispatch]);
-
-  const onSecondFinalized = useWaitSyncBlock(
-    "Proposal seconded",
-    refreshPageData,
-  );
-
   return (
     <>
       <DetailItem onReply={focusEditor} />
@@ -70,7 +50,6 @@ function PublicProposalContent({ comments }) {
         hasCanceled={hasCanceled}
         useAddressVotingBalance={useAddressBalance}
         atBlockHeight={secondsAtBlockHeight}
-        onFinalized={onSecondFinalized}
       />
       <Metadata publicProposal={post?.onchainData} />
       <Timeline />
