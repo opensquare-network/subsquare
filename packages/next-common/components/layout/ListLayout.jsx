@@ -131,7 +131,7 @@ function Tabs({ tabs = [] }) {
                 target={isExternal ? "_blank" : "_self"}
                 className={clsx(
                   itemClassName,
-                  tab.active ?? routePath.startsWith(tab.url)
+                  tab.active ?? routePath === tab.url
                     ? itemActiveClassName
                     : "border-transparent",
                 )}
