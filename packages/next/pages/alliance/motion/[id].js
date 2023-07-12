@@ -2,10 +2,8 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider } from "next-common/context/post";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import CouncilMotionDetailLayout from "next-common/components/layout/councilLayout/motionDetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import MotionContent from "../../../components/motion/motionContent";
@@ -27,22 +25,22 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 
   return (
     <PostProvider post={motion}>
-      <DetailWithRightLayout
+      <CouncilMotionDetailLayout
+        detail={motion}
         seoInfo={{
           title: motion?.title,
           desc: getMetaDesc(motion),
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
+        breadcrumbs={breadcrumbItems}
+        hasSider
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
         {motion ? (
           <MotionContent motion={motion} comments={comments} />
         ) : (
           <CheckUnFinalized id={id} />
         )}
-      </DetailWithRightLayout>
+      </CouncilMotionDetailLayout>
     </PostProvider>
   );
 });
