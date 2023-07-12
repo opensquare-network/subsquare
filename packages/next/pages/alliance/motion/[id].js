@@ -2,7 +2,7 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider } from "next-common/context/post";
-import CouncilMotionDetailLayout from "next-common/components/layout/councilLayout/motionDetailLayout";
+import MotionDetailLayout from "next-common/components/layout/motionDetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
@@ -25,7 +25,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 
   return (
     <PostProvider post={motion}>
-      <CouncilMotionDetailLayout
+      <MotionDetailLayout
         detail={motion}
         seoInfo={{
           title: motion?.title,
@@ -40,7 +40,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
         ) : (
           <CheckUnFinalized id={id} />
         )}
-      </CouncilMotionDetailLayout>
+      </MotionDetailLayout>
     </PostProvider>
   );
 });
