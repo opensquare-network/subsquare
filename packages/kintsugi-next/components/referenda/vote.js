@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
-import { emptyFunction, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import Flex from "next-common/components/styled/flex";
 import {
   calcPassing,
