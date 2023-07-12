@@ -19,7 +19,7 @@ const Description = styled.div`
   }
 `;
 
-export default function Action({ setShowPopup, refreshData }) {
+export default function Action({ setShowPopup }) {
   const onchainData = usePostOnChainData();
   const motionIsFinal = isMotionEnded(onchainData);
   const chain = useChain();
@@ -50,7 +50,7 @@ export default function Action({ setShowPopup, refreshData }) {
   return (
     <>
       { action }
-      <Close refreshData={ refreshData } />
+      <Close />
     </>
   );
 }

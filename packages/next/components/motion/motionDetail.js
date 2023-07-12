@@ -16,7 +16,6 @@ import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -122,10 +121,6 @@ export default function MotionDetail({ onReply }) {
 
   const refreshPageData = () =>
     fetchAndUpdatePost(postDispatch, type, post._id);
-  const onVoteFinalized = useWaitSyncBlock(
-    "Extrinsic submitted",
-    refreshPageData,
-  );
 
   if (isEdit) {
     return <PostEdit setIsEdit={setIsEdit} updatePost={refreshPageData} />;
@@ -143,7 +138,6 @@ export default function MotionDetail({ onReply }) {
         motionHash={post.hash}
         motionIndex={post.motionIndex}
         onInBlock={updateVotes}
-        onFinalized={onVoteFinalized}
         isLoadingVote={isLoadingVote}
       />
       <Business motion={post?.onchainData} />

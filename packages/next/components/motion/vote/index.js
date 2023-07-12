@@ -40,7 +40,6 @@ export default function Vote({
   motionIndex,
   isLoadingVote = false,
   onInBlock = emptyFunction,
-  onFinalized = emptyFunction,
 }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
@@ -59,7 +58,7 @@ export default function Vote({
       <Wrapper>
         <Voters votes={votes} isLoadingVote={isLoadingVote} prime={prime} />
         {!hideActionButtons && !noAction && (
-          <Action refreshData={onFinalized} setShowPopup={setShowPopup} />
+          <Action setShowPopup={setShowPopup} />
         )}
       </Wrapper>
       {showPopup && (
@@ -70,7 +69,6 @@ export default function Vote({
           type={type}
           onClose={() => setShowPopup(false)}
           onInBlock={onInBlock}
-          onFinalized={onFinalized}
         />
       )}
     </>
