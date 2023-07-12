@@ -33,6 +33,7 @@ export default function useUniversalComments({ detail, comments }) {
     Chains.kusama,
     Chains.polkadot,
     Chains.moonriver,
+    Chains.collectives,
   ].includes(chain);
 
   let tabs = null;

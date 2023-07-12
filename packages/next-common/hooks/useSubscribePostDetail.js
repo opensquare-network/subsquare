@@ -3,6 +3,7 @@ import { usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useSocket } from "next-common/context/socket";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { useDetailType } from "next-common/context/page";
 
 const postStatusRoom = "POST_STATUS_ROOM";
 
@@ -38,7 +39,8 @@ function detailTypeToPostType(detailType) {
   return postType;
 }
 
-export default function useSubscribePostDetail({ type, postId }) {
+export default function useSubscribePostDetail(postId) {
+  const type = useDetailType();
   const socket = useSocket();
   const postDispatch = usePostDispatch();
   const onPostUpdated = useCallback(() => {

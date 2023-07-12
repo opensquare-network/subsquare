@@ -28,12 +28,15 @@ import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDe
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
+
+  useSubscribePostDetail(post?.referendumIndex);
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,

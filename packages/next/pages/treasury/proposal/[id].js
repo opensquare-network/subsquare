@@ -12,12 +12,15 @@ import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFi
 import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
   });
+
+  useSubscribePostDetail(detail?.proposalIndex);
 
   return (
     <>

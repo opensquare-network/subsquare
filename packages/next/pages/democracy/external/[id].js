@@ -15,12 +15,15 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "components/external/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function DemocracyExternalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail,
     comments,
   });
+
+  useSubscribePostDetail(detail?.externalProposalHash);
 
   return (
     <>
