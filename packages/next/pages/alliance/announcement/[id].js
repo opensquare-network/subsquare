@@ -3,16 +3,15 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getAnnouncementBreadcrumbName from "next-common/utils/alliance/announcementBread";
 import { PostProvider } from "next-common/context/post";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import NonNullPost from "next-common/components/nonNullPost";
 import useUniversalComments from "../../../components/universalComments";
 import DetailItem from "../../../components/detailItem";
 import AnnouncementTimeline from "next-common/components/alliance/announcement/timeline";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailHeader from "next-common/components/detail/detailHeader";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -54,15 +53,15 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
   return (
     <PostProvider post={announcement}>
       <DetailLayout
+        detail={announcement}
         seoInfo={{
           title: announcement?.title,
           desc: getMetaDesc(announcement),
           ogImage: getBannerUrl(announcement?.bannerCid),
         }}
+        header={<DetailHeader />}
+        breadcrumbs={breadcrumbItems}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
         {postContent}
       </DetailLayout>
     </PostProvider>
