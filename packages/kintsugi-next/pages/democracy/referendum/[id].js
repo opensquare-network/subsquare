@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -17,15 +17,13 @@ import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeF
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useDispatch } from "react-redux";
-import { fetchReferendumStatus, } from "next-common/store/reducers/referendumSlice";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
-import { clearVotes, fetchVotes } from "next-common/store/reducers/democracy/votes";
+import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
@@ -63,16 +61,6 @@ function ReferendumContent({ publicProposal, comments }) {
     ]);
   }, [publicProposal, post]);
 
-  const refreshPageData = useCallback(async () => {
-    const referendumIndex = post?.onchainData.referendumIndex;
-    if (api) {
-      dispatch(fetchReferendumStatus(api, referendumIndex));
-      dispatch(fetchVotes(api, referendumIndex));
-    }
-  }, [api, post, dispatch]);
-
-  const onVoteFinalized = useWaitSyncBlock("Referendum voted", refreshPageData);
-
   return (
     <>
       <DetailItem onReply={focusEditor} />
@@ -80,7 +68,6 @@ function ReferendumContent({ publicProposal, comments }) {
       <Vote
         referendumInfo={post?.onchainData?.info}
         referendumIndex={post?.referendumIndex}
-        onFinalized={onVoteFinalized}
       />
 
       <ReferendumMetadata
