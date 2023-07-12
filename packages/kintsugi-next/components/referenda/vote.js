@@ -160,8 +160,6 @@ function Vote({
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
-  // const isLoadingVotes = useSelector(isLoadingVotesSelector);
-  // const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
   const isLoadingReferendumStatus = useSelector(
     isLoadingReferendumStatusSelector,
