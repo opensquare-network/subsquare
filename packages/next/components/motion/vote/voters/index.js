@@ -70,7 +70,7 @@ export default function Voters({ votes = [], isLoadingVote = false, prime }) {
 
   return (
     <GhostCard>
-      <StatisticTitleContainer>
+      <StatisticTitleContainer className="!px-0">
         <Flex>
           <span>Votes</span>
           <Statistics>
