@@ -7,15 +7,13 @@ import Metadata from "components/external/metadata";
 import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "components/external/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DemocracyProposalDetailLayout from "next-common/components/layout/democracyLayout/proposalDetailLayout";
 
 function DemocracyExternalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -70,19 +68,17 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DetailLayout
+      <DemocracyProposalDetailLayout
+        detail={detail}
         seoInfo={{
           title: detail?.title,
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
+        breadcrumbs={breadcrumbItems}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailLayout>
+      </DemocracyProposalDetailLayout>
     </PostProvider>
   );
 });
