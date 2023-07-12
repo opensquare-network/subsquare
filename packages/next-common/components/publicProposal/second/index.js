@@ -16,6 +16,7 @@ import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
 import useMaxDeposits from "./useMaxDeposits";
 import isMoonChain from "next-common/utils/isMoonChain";
+import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 
 const SecondPopup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -24,22 +25,6 @@ const SecondPopup = dynamic(() => import("./popup"), {
 const MoonSecondPopup = dynamic(() => import("./popup/moonPopup"), {
   ssr: false,
 });
-
-const Wrapper = styled.div`
-  position: absolute;
-  right: 0;
-  top: 40px;
-  width: 300px;
-  margin-top: 0 !important;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 1024px) {
-    position: static;
-    width: auto;
-    margin-top: 16px !important;
-  }
-`;
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -205,16 +190,16 @@ export default function Second({
 
   return (
     <>
-      <Wrapper>
+      <RightBarWrapper>
         <GhostCard>
-          <Title>
+          <Title className="!px-0">
             <div>Second</div>
             <div>{totalSeconds}</div>
           </Title>
           {secondsList}
         </GhostCard>
         {!node?.hideActionButtons && action}
-      </Wrapper>
+      </RightBarWrapper>
       {showPopup && (
         <Popup
           proposalIndex={proposalIndex}
