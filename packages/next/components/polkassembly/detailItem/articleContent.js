@@ -4,7 +4,6 @@ import Actions from "../actions";
 import PostDataSource from "next-common/components/postDataSource";
 import { MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
-import Divider from "next-common/components/styled/layout/divider";
 
 const Wrapper = styled(RichTextStyleWrapper)``;
 
@@ -36,7 +35,6 @@ export default function ArticleContent({ post, type, postReactions }) {
 
   return (
     <Wrapper>
-      <Divider margin={16} />
       {post.content === "" && (
         <PlaceHolder>
           {`The ${type} has not been edited by creator.`}
