@@ -20,7 +20,6 @@ export default function CloseMotionPopup({
   isLoading,
   setIsLoading = emptyFunction,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -61,7 +60,6 @@ export default function CloseMotionPopup({
       tx,
       setLoading: setIsLoading,
       dispatch,
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,

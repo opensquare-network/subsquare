@@ -11,7 +11,7 @@ import useWeight from "next-common/utils/hooks/common/useWeight";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import CloseMotionPopup from "./closeMotionPopup";
 
-export default function Close({ refreshData }) {
+export default function Close() {
   const latestHeight = useSelector(latestHeightSelector);
   const onchainData = usePostOnChainData();
   const { voting: { end, nays = [], ayes = [], threshold } = {} } = onchainData || {};
@@ -60,12 +60,6 @@ export default function Close({ refreshData }) {
           encodedCallLength={encodedCallLength}
           hasFailed={hasFailed}
           onClose={() => setShowClosePopup(false)}
-          onFinalized={async () => {
-            await refreshData();
-            window.setTimeout(() => {
-              window.location.reload();
-            }, 12000);
-          }}
         />
       )}
     </>
