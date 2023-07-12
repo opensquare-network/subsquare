@@ -1,8 +1,6 @@
 "use client";
 
-import VotesTab, {
-  tabs,
-} from "next-common/components/democracy/flattenedVotesPopup/tab";
+import VotesTab, { tabs, } from "next-common/components/democracy/flattenedVotesPopup/tab";
 import Pagination from "next-common/components/pagination";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -12,13 +10,20 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import React, { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  allAyeSelector,
+  allNaySelector,
+  showVotesNumberSelector
+} from "next-common/store/reducers/democracy/votes/selectors";
 
 export default function CheckAllVotesPopup({
   setShowVoteList = () => {},
-  allAye,
-  allNay,
-  isLoadingVotes,
 }) {
+  const showVotesNumber = useSelector(showVotesNumberSelector);
+  const allAye = useSelector(allAyeSelector);
+  const allNay = useSelector(allNaySelector)
+
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
@@ -66,7 +71,7 @@ export default function CheckAllVotesPopup({
         naysCount={allNay?.length || 0}
       />
 
-      <VotesList items={items} loading={isLoadingVotes} />
+      <VotesList items={items} loading={!showVotesNumber} />
 
       <Pagination {...pagination} />
     </Popup>

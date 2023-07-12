@@ -19,15 +19,14 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useDispatch } from "react-redux";
-import {
-  fetchReferendumStatus,
-} from "next-common/store/reducers/referendumSlice";
+import { fetchReferendumStatus, } from "next-common/store/reducers/referendumSlice";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import { clearVotes, fetchVotes } from "next-common/store/reducers/democracy/votes";
+import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent({ publicProposal, comments }) {
@@ -47,6 +46,7 @@ function ReferendumContent({ publicProposal, comments }) {
     api,
   );
   useMaybeFetchElectorate(post?.onchainData, api);
+  useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
 
   useEffect(() => {
