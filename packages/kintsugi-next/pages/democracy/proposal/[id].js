@@ -25,11 +25,14 @@ import { useDetailType } from "next-common/context/page";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
   const type = useDetailType();
   const postDispatch = usePostDispatch();
+
+  useSubscribePostDetail(post?.proposalIndex);
 
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail: post,

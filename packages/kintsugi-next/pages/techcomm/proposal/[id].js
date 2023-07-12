@@ -12,12 +12,15 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail: motion,
     comments,
   });
+
+  useSubscribePostDetail(`${motion?.height}_${motion?.hash}`);
 
   return (
     <>
