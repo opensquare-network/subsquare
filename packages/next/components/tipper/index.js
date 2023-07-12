@@ -48,11 +48,7 @@ const Description = styled.div`
   }
 `;
 
-export default function Tipper({
-  onEndorseFinalized = emptyFunction,
-  onCloseTipFinalized = emptyFunction,
-  onRetractFinalized = emptyFunction,
-}) {
+export default function Tipper() {
   const chainData = useOnchainData();
   const realAddress = useRealAddress();
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
@@ -126,21 +122,18 @@ export default function Tipper({
         <EndorsePopup
           tipHash={tipHash}
           onClose={() => setShowEndorsePopup(false)}
-          onFinalized={onEndorseFinalized}
         />
       )}
       {showCloseTipPopup && (
         <CloseTipPopup
           tipHash={tipHash}
           onClose={() => setShowCloseTipPopup(false)}
-          onFinalized={onCloseTipFinalized}
         />
       )}
       {showRetractTipPopup && (
         <RetractTipPopup
           tipHash={tipHash}
           onClose={() => setShowRetractTipPopup(false)}
-          onFinalized={onRetractFinalized}
         />
       )}
     </>
