@@ -7,7 +7,6 @@ import {
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
 import useUniversalComments from "../../../components/universalComments";
@@ -24,6 +23,7 @@ import FellowshipReferendaDetail from "next-common/components/detail/fellowship"
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import FellowshipReferendaDetailLayout from "next-common/components/layout/fellowshipLayout/referendaDetail";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -75,34 +75,40 @@ function UnFinalizedBreadcrumb({ id }) {
 
 export default withLoginUserRedux(({ id, detail, comments }) => {
   let postContent = null;
+  let breadcrumbs;
 
   if (detail) {
     postContent = (
       <NonNullPost>
-        <FellowshipBreadcrumb />
         <FellowshipContent comments={comments} />
       </NonNullPost>
     );
+    breadcrumbs = <FellowshipBreadcrumb />;
   } else {
     postContent = (
       <>
-        <UnFinalizedBreadcrumb id={id} />
         <CheckUnFinalized id={id} />
       </>
     );
+    breadcrumbs = <UnFinalizedBreadcrumb id={id} />;
   }
+
+  const seoInfo = {
+    title: detail?.title,
+    desc: getMetaDesc(detail),
+    ogImage: getBannerUrl(detail?.bannerCid),
+  };
 
   return (
     <PostProvider post={detail}>
-      <DetailWithRightLayout
-        seoInfo={{
-          title: detail?.title,
-          desc: getMetaDesc(detail),
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
+      <FellowshipReferendaDetailLayout
+        detail={detail}
+        breadcrumbs={breadcrumbs}
+        seoInfo={seoInfo}
+        hasSider
       >
         {postContent}
-      </DetailWithRightLayout>
+      </FellowshipReferendaDetailLayout>
     </PostProvider>
   );
 });
