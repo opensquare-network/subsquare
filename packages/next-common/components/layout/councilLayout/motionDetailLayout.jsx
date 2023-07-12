@@ -8,9 +8,9 @@ import { useDetailType } from "next-common/context/page";
 import MotionHead from "components/motion/head";
 
 /**
- * @param {{countDown: JSX.Element} & import("../DetailLayoutV2").DetailLayoutProps} props
+ * @param {import("../DetailLayoutV2").DetailLayoutProps} props
  */
-export default function DemocracyPublicProposalDetailLayout(props) {
+export default function CouncilMotionDetailLayout(props) {
   const post = usePost();
   const isEditing = useSelector(isEditingPostSelector);
   const type = useDetailType();
