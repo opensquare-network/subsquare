@@ -6,11 +6,10 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Business from "./business";
 import Metadata from "./metadata";
 import Timeline from "./timeline";
-import Head from "./head";
 import { isMotionEnded } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useApi";
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import { EditablePanel } from "next-common/components/styled/panel";
+import DetailContentBase from "next-common/components/detail/common/detailBase";
 import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
 import PostEdit from "next-common/components/post/postEdit";
@@ -19,6 +18,9 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
+import { useSelector } from "react-redux";
+import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
@@ -31,7 +33,8 @@ export default function MotionDetail({ onReply }) {
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
-  const [isEdit, setIsEdit] = useState(false);
+  const isEdit = useSelector(isEditingPostSelector);
+  const setIsEdit = useSetEdit();
 
   const motionEnd = isMotionEnded(post.onchainData);
 
@@ -128,10 +131,9 @@ export default function MotionDetail({ onReply }) {
 
   return (
     <div>
-      <EditablePanel>
-        {!isEdit && <Head motion={post} type={type} />}
+      <DetailContentBase>
         <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
-      </EditablePanel>
+      </DetailContentBase>
       <Vote
         votes={votes}
         prime={prime}

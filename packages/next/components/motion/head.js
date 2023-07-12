@@ -5,10 +5,16 @@ import MotionEnd from "next-common/components/motionEnd";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import DemocracyNavigate from "./democracyNavigate";
-import { DemocracyTag, TreasuryTag } from "next-common/components/tags/business";
+import {
+  DemocracyTag,
+  TreasuryTag,
+} from "next-common/components/tags/business";
 import UpdatedTime from "next-common/components/detail/common/UpdatedTime";
 import PostTitle from "next-common/components/detail/common/Title";
-import { isDemocracyMotion, isTreasuryMotion } from "next-common/utils/viewfuncs/motion";
+import {
+  isDemocracyMotion,
+  isTreasuryMotion,
+} from "next-common/utils/viewfuncs/motion";
 import Info from "next-common/components/styled/info";
 import isNil from "lodash.isnil";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
@@ -17,6 +23,7 @@ import MaliciousHead from "next-common/components/detail/maliciousHead";
 import { smcss } from "next-common/utils/responsive";
 import { hidden } from "next-common/styles/tailwindcss";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
+import Divider from "next-common/components/styled/layout/divider";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -77,6 +84,7 @@ export default function MotionHead({ motion, type }) {
       <DemocracyNavigate motion={motion.onchainData} />
       <AnnouncementNavigate />
       <PostTitle />
+      <Divider className="my-4" />
       <FlexWrapper>
         <DividerWrapper>
           <User user={motion?.author} add={motion.proposer} fontSize={12} />
