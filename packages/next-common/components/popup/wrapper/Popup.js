@@ -29,7 +29,7 @@ export default function Popup({
         <Dialog.Content asChild onEscapeKeyDown={onClose}>
           <NeutralPanel
             className={clsx(
-              "fixed top-[12vw] left-1/2 transform -translate-x-1/2",
+              "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
               "w-[400px] max-w-full",
               wide && "sm:w-[480px]",
               "p-6 space-y-4",
