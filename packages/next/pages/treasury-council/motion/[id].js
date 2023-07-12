@@ -4,11 +4,9 @@ import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import useUniversalComments from "components/universalComments";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import CouncilMotionDetailLayout from "next-common/components/layout/councilLayout/motionDetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
@@ -53,25 +51,24 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       path: "/treasury-council/motions",
     },
     {
-      content: `#${ breadcrumbItemName }`,
+      content: `#${breadcrumbItemName}`,
     },
   ];
 
   return (
     <PostProvider post={motion}>
-      <DetailWithRightLayout
+      <CouncilMotionDetailLayout
+        detail={motion}
         seoInfo={{
           title: motion?.title,
           desc,
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
+        breadcrumbs={breadcrumbItems}
+        hasSider
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailWithRightLayout>
+      </CouncilMotionDetailLayout>
     </PostProvider>
   );
 });
