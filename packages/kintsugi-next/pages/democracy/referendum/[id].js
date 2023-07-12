@@ -49,7 +49,7 @@ function ReferendumContent({ publicProposal, comments }) {
 
   useEffect(() => {
     return () => dispatch(clearVotes());
-  }, []);
+  }, [dispatch]);
 
   const [timelineData, setTimelineData] = useState([]);
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import VotesTab, { tabs, } from "next-common/components/democracy/flattenedVotesPopup/tab";
+import VotesTab, { tabs } from "next-common/components/democracy/flattenedVotesPopup/tab";
 import Pagination from "next-common/components/pagination";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import {
   allAyeSelector,
   allNaySelector,
-  showVotesNumberSelector
+  showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 
 export default function CheckAllVotesPopup({
@@ -22,7 +22,7 @@ export default function CheckAllVotesPopup({
 }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const allAye = useSelector(allAyeSelector);
-  const allNay = useSelector(allNaySelector)
+  const allNay = useSelector(allNaySelector);
 
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
