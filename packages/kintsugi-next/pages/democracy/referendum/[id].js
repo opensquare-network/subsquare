@@ -28,10 +28,13 @@ import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import { clearVotes, fetchVotes } from "next-common/store/reducers/democracy/votes";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
   const post = usePost();
+
+  useSubscribePostDetail(post?.referendumIndex);
 
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail: post,
