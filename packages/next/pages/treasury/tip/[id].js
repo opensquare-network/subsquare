@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -10,14 +8,7 @@ import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import { hashEllipsis } from "next-common/utils";
-import {
-  PostProvider,
-  usePost,
-  usePostDispatch,
-} from "next-common/context/post";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import fetchAndUpdatePost from "next-common/context/post/update";
-import { useDetailType } from "next-common/context/page";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
@@ -26,8 +17,6 @@ import TreasuryTipDetailLayout from "next-common/components/layout/treasuryLayou
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
-  const postDispatch = usePostDispatch();
-  const type = useDetailType();
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -35,22 +24,10 @@ function TreasuryTipContent({ comments }) {
     comments,
   });
 
-  const refreshPageData = useCallback(async () => {
-    fetchAndUpdatePost(postDispatch, type, post?._id);
-  }, [post, type, postDispatch]);
-
-  const onEndorseFinalized = useWaitSyncBlock("Tip endorsed", refreshPageData);
-  const onCloseTipFinalized = useWaitSyncBlock("Tip closed", refreshPageData);
-  const onRetractFinalized = useWaitSyncBlock("Tip retracted", refreshPageData);
-
   return (
     <>
       <TipDetail onReply={focusEditor} />
-      <Tipper
-        onEndorseFinalized={onEndorseFinalized}
-        onCloseTipFinalized={onCloseTipFinalized}
-        onRetractFinalized={onRetractFinalized}
-      />
+      <Tipper />
       <Metadata tip={post?.onchainData} />
       <Timeline tip={post?.onchainData} />
       {CommentComponent}

@@ -14,7 +14,6 @@ export default function RetractTipPopup({
   isLoading,
   setIsLoading = emptyFunction,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -48,7 +47,6 @@ export default function RetractTipPopup({
         dispatch,
         onSubmitted,
         onInBlock,
-        onFinalized,
         onClose,
         signerAddress,
         isMounted,
@@ -58,7 +56,6 @@ export default function RetractTipPopup({
       dispatch,
       isMounted,
       showErrorToast,
-      onFinalized,
       onSubmitted,
       onInBlock,
       tipHash,
