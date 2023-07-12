@@ -8,13 +8,13 @@ import Editor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
 import { getFocusEditor } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import DetailHeader from "next-common/components/detail/detailHeader";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote }) => {
@@ -38,20 +38,21 @@ export default withLoginUserRedux(
             desc,
             ogImage: getBannerUrl(detail?.bannerCid),
           }}
+          header={<DetailHeader />}
+          breadcrumbs={
+            <Back href={"/discussions"} text="Back to Discussions" />
+          }
         >
-          <Back href={"/discussions"} text="Back to Discussions" />
           <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
-          <CommentsWrapper>
-            <Comments data={comments} />
-            {loginUser && (
-              <Editor
-                postId={postId}
-                ref={editorWrapperRef}
-                setQuillRef={setQuillRef}
-                {...{ contentType, setContentType, content, setContent, users }}
-              />
-            )}
-          </CommentsWrapper>
+          <Comments data={comments} />
+          {loginUser && (
+            <Editor
+              postId={postId}
+              ref={editorWrapperRef}
+              setQuillRef={setQuillRef}
+              {...{ contentType, setContentType, content, setContent, users }}
+            />
+          )}
         </DetailLayout>
       </PostProvider>
     );
