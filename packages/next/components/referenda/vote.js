@@ -15,7 +15,6 @@ import {
 import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "next-common/components/referenda/voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
-import { emptyFunction } from "next-common/utils";
 import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import {
@@ -96,7 +95,7 @@ const RejectStatus = styled(Status)`
   background: var(--red100);
 `;
 
-function Vote({ referendumIndex, onFinalized = emptyFunction }) {
+function Vote({ referendumIndex }) {
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showFlattenedVotesList, setShowFlattenedVotesList] = useState(false);
@@ -187,7 +186,6 @@ function Vote({ referendumIndex, onFinalized = emptyFunction }) {
           onClose={() => setShowVote(false)}
           referendumIndex={referendumIndex}
           onInBlock={updateVoteProgress}
-          onFinalized={onFinalized}
         />
       )}
       {showFlattenedVotesList && (
