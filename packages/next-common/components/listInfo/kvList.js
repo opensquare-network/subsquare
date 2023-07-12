@@ -1,28 +1,19 @@
-import Descriptions from "../Descriptions";
+import React, { memo } from "react";
 import Accordion from "./accordion";
+import Row from "./row";
 
-export default function KVList({ data = [], title, showFold = true }) {
+function KVList({ data = [], title, showFold = true }) {
   if (!data || data?.length === 0) {
     return null;
   }
 
-  const descriptionsItems = data.map((item) => {
-    const [label, value] = item ?? [];
-    if (typeof label === "string") {
-      return { label, value };
-    } else {
-      // custom content
-      return { content: label };
-    }
-  });
-
   return (
     <Accordion title={title} showFold={showFold}>
-      <Descriptions
-        items={descriptionsItems}
-        labelWidth={160}
-        valueAlign="left"
-      />
+      {data.map((row, index) => (
+        <Row row={row} key={index} />
+      ))}
     </Accordion>
   );
 }
+
+export default memo(KVList);

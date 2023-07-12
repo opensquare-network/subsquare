@@ -1,6 +1,13 @@
 import React, { memo } from "react";
+import styled from "styled-components";
 import Accordion from "./accordion";
-import Descriptions from "../Descriptions";
+import Row from "./row";
+
+const Section = styled.div`
+  :not(:first-child) {
+    margin-top: 16px;
+  }
+`;
 
 function MultiKVList({ data = [], title, showFold = true }) {
   if (!data || data?.length === 0) {
@@ -9,28 +16,13 @@ function MultiKVList({ data = [], title, showFold = true }) {
 
   return (
     <Accordion title={title} showFold={showFold}>
-      <div className="space-y-4">
-        {data.map((itemData, idx) => {
-          const descriptionsItems = itemData.map((item) => {
-            const [label, value] = item ?? [];
-            if (typeof label === "string") {
-              return { label, value };
-            } else {
-              // custom content
-              return { content: label };
-            }
-          });
-
-          return (
-            <Descriptions
-              key={idx}
-              items={descriptionsItems}
-              labelWidth={160}
-              valueAlign="left"
-            />
-          );
-        })}
-      </div>
+      {data.map((item, index) => (
+        <Section key={index}>
+          {item.map((row, index) => (
+            <Row row={row} key={index} />
+          ))}
+        </Section>
+      ))}
     </Accordion>
   );
 }
