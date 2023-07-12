@@ -5,8 +5,7 @@ import noop from "lodash.noop";
 import clsx from "clsx";
 import { SystemClose } from "@osn/icons/subsquare";
 
-let z_overlay_init = 999;
-let z_content_init = 1000;
+let z = 999;
 export default function Popup({
   children,
   onClose = noop,
@@ -14,11 +13,10 @@ export default function Popup({
   className = "",
   wide,
 }) {
-  const [zOverlay] = useState(z_overlay_init);
-  const [zContent] = useState(z_content_init);
+  const [zOverlay] = useState(z);
+  const [zContent] = useState(z + 1);
   useEffect(() => {
-    z_overlay_init++;
-    z_content_init++;
+    z++;
   }, []);
 
   return (
@@ -31,7 +29,7 @@ export default function Popup({
         <Dialog.Content asChild onEscapeKeyDown={onClose}>
           <NeutralPanel
             className={clsx(
-              "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
+              "fixed top-[12vw] left-1/2 transform -translate-x-1/2",
               "w-[400px] max-w-full",
               wide && "sm:w-[480px]",
               "p-6 space-y-4",
