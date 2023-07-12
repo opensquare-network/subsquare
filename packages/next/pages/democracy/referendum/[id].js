@@ -13,10 +13,9 @@ import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/use
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider, usePost, usePostDispatch, } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import { useDetailType } from "next-common/context/page";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
@@ -27,8 +26,6 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
-  const type = useDetailType();
-  const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
 
   useSubscribePostDetail(post?.referendumIndex);
