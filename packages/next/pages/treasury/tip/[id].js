@@ -8,7 +8,6 @@ import Timeline from "components/tip/timeline";
 import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { hashEllipsis } from "next-common/utils";
 import {
@@ -17,14 +16,13 @@ import {
   usePostDispatch,
 } from "next-common/context/post";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useDetailType } from "next-common/context/page";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import TreasuryTipDetailLayout from "next-common/components/layout/treasuryLayout/tipDetail";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -94,19 +92,18 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DetailWithRightLayout
+      <TreasuryTipDetailLayout
+        detail={detail}
+        breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
+        hasSider
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailWithRightLayout>
+      </TreasuryTipDetailLayout>
     </PostProvider>
   );
 });

@@ -75,7 +75,7 @@ export default function TipperList({ tipHash }) {
 
   return (
     <GhostCard>
-      <StatisticTitleContainer>
+      <StatisticTitleContainer className="!px-0">
         <Flex>
           <span>Tippers</span>
           <Statistics>
