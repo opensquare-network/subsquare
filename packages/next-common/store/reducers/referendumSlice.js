@@ -55,9 +55,6 @@ export const {
 export const isLoadingElectorateSelector = (state) =>
   state.referendum.isLoadingElectorate;
 export const electorateSelector = (state) => state.referendum.electorate;
-export const isLoadingVotesSelector = (state) =>
-  state.referendum.isLoadingVotes;
-export const votesSelector = (state) => state.referendum.votes;
 export const referendumStatusSelector = (state) =>
   state.referendum.referendumStatus;
 export const isLoadingReferendumStatusSelector = (state) =>
@@ -66,7 +63,6 @@ export const isLoadingReferendumStatusSelector = (state) =>
   state.referendum.isLoadingVoteCalls;
 export const voteCallsSelector = (state) =>
   state.referendum.voteCalls;
-export const democracyVotesTriggerSelector = state => state.referendum.democracyVotesTrigger;
 
 export const fetchElectorate =
   (api, height, possibleElectorate) => async (dispatch) => {

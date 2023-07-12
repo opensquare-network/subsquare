@@ -23,10 +23,8 @@ import {
   fetchReferendumStatus,
   isLoadingElectorateSelector,
   isLoadingReferendumStatusSelector,
-  isLoadingVotesSelector,
   referendumStatusSelector,
   setIsLoadingReferendumStatus,
-  votesSelector,
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
@@ -162,8 +160,8 @@ function Vote({
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
-  const isLoadingVotes = useSelector(isLoadingVotesSelector);
-  const { allAye = [], allNay = [] } = useSelector(votesSelector);
+  // const isLoadingVotes = useSelector(isLoadingVotesSelector);
+  // const { allAye = [], allNay = [] } = useSelector(votesSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
   const isLoadingReferendumStatus = useSelector(
     isLoadingReferendumStatusSelector,
@@ -307,9 +305,6 @@ function Vote({
       {showVoteList && (
         <CheckAllVotesPopup
           setShowVoteList={setShowVoteList}
-          allAye={allAye}
-          allNay={allNay}
-          isLoadingVotes={isLoadingVotes}
         />
       )}
     </Wrapper>
