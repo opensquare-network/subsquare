@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { emptyFunction, isSameAddress } from "next-common/utils";
+import { isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
@@ -48,11 +48,7 @@ const Description = styled.div`
   }
 `;
 
-export default function Tipper({
-  onEndorseFinalized = emptyFunction,
-  onCloseTipFinalized = emptyFunction,
-  onRetractFinalized = emptyFunction,
-}) {
+export default function Tipper() {
   const chainData = useOnchainData();
   const realAddress = useRealAddress();
   const [showEndorsePopup, setShowEndorsePopup] = useState(false);
@@ -126,21 +122,18 @@ export default function Tipper({
         <EndorsePopup
           tipHash={tipHash}
           onClose={() => setShowEndorsePopup(false)}
-          onFinalized={onEndorseFinalized}
         />
       )}
       {showCloseTipPopup && (
         <CloseTipPopup
           tipHash={tipHash}
           onClose={() => setShowCloseTipPopup(false)}
-          onFinalized={onCloseTipFinalized}
         />
       )}
       {showRetractTipPopup && (
         <RetractTipPopup
           tipHash={tipHash}
           onClose={() => setShowRetractTipPopup(false)}
-          onFinalized={onRetractFinalized}
         />
       )}
     </>

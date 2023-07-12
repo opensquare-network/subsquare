@@ -14,7 +14,6 @@ export default function CloseTipPopup({
   isLoading,
   setIsLoading = emptyFunction,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -46,7 +45,6 @@ export default function CloseTipPopup({
         tx,
         setLoading: setIsLoading,
         dispatch,
-        onFinalized,
         onInBlock,
         onSubmitted,
         onClose,
@@ -58,7 +56,6 @@ export default function CloseTipPopup({
       dispatch,
       isMounted,
       showErrorToast,
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,

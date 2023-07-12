@@ -23,7 +23,6 @@ function PopupContent({
   tipHash,
   onClose,
   onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
@@ -79,7 +78,6 @@ function PopupContent({
       tx,
       dispatch,
       setLoading: setTipping,
-      onFinalized,
       onInBlock,
       onSubmitted,
       onClose,
