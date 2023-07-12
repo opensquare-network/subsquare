@@ -6,15 +6,13 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import useUniversalComments from "components/universalComments";
-import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "components/bounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import TreasuryBountyDetailLayout from "next-common/components/layout/treasuryLayout/bountyDetail";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -72,19 +70,17 @@ export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DetailLayout
+      <TreasuryBountyDetailLayout
+        detail={detail}
+        breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailLayout>
+      </TreasuryBountyDetailLayout>
     </PostProvider>
   );
 });

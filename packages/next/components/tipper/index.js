@@ -14,26 +14,11 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { useOnchainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
+import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 
 const EndorsePopup = dynamic(() => import("./endorsePopup"), {
   ssr: false,
 });
-
-const Wrapper = styled.div`
-  position: absolute;
-  right: 0;
-  top: 40px;
-  width: 300px;
-  margin-top: 0 !important;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 1024px) {
-    position: static;
-    width: auto;
-    margin-top: 16px !important;
-  }
-`;
 
 const Description = styled.div`
   font-size: 12px;
@@ -114,10 +99,10 @@ export default function Tipper() {
 
   return (
     <>
-      <Wrapper>
+      <RightBarWrapper>
         <TipperList tipHash={tipHash} />
         {!hideActionButtons && action}
-      </Wrapper>
+      </RightBarWrapper>
       {showEndorsePopup && (
         <EndorsePopup
           tipHash={tipHash}
