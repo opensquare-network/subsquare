@@ -4,7 +4,7 @@ import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import useUniversalComments from "components/universalComments";
-import CouncilMotionDetailLayout from "next-common/components/layout/councilLayout/motionDetailLayout";
+import MotionDetailLayout from "next-common/components/layout/motionDetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
@@ -58,7 +58,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 
   return (
     <PostProvider post={motion}>
-      <CouncilMotionDetailLayout
+      <MotionDetailLayout
         detail={motion}
         seoInfo={{
           title: motion?.title,
@@ -69,7 +69,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
         hasSider
       >
         {postContent}
-      </CouncilMotionDetailLayout>
+      </MotionDetailLayout>
     </PostProvider>
   );
 });
