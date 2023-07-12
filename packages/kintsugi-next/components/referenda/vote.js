@@ -149,7 +149,6 @@ const Guide = styled.p`
 function Vote({
   referendumInfo,
   referendumIndex,
-  onFinalized = emptyFunction,
 }) {
   const chain = useChain();
   const dispatch = useDispatch();
@@ -296,7 +295,6 @@ function Vote({
           referendumIndex={referendumIndex}
           onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
           onInBlock={updateVoteProgress}
-          onFinalized={onFinalized}
         />
       )}
 
