@@ -1,4 +1,3 @@
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { PostProvider, usePost } from "next-common/context/post";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -7,9 +6,11 @@ import Gov2Sidebar from "components/gov2/sidebar";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
 import {
+  fellowshipTracksApi,
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
+  gov2TracksApi,
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
@@ -29,6 +30,7 @@ import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
+import ReferendaDetailLayout from "next-common/components/layout/referendaLayout/detail";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent({ comments }) {
@@ -93,36 +95,38 @@ function UnFinalizedBreadcrumb({ id }) {
 
 export default withLoginUserRedux(({ id, detail, comments }) => {
   let postContent;
+  let breadcrumbs;
 
   if (detail) {
     postContent = (
       <NonNullPost>
-        <ReferendaBreadcrumb />
         <ReferendumContent comments={comments} />
       </NonNullPost>
     );
+    breadcrumbs = <ReferendaBreadcrumb />;
   } else {
-    postContent = (
-      <>
-        <UnFinalizedBreadcrumb id={id} />
-        <CheckUnFinalized id={id} />
-      </>
-    );
+    postContent = <CheckUnFinalized id={id} />;
+    breadcrumbs = <UnFinalizedBreadcrumb id={id} />;
   }
 
   const desc = getMetaDesc(detail);
 
+  const seoInfo = {
+    title: detail?.title,
+    desc,
+    ogImage: getBannerUrl(detail?.bannerCid),
+  };
+
   return (
     <PostProvider post={detail}>
-      <DetailWithRightLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
+      <ReferendaDetailLayout
+        detail={detail}
+        seoInfo={seoInfo}
+        breadcrumbs={breadcrumbs}
+        hasSider
       >
         {postContent}
-      </DetailWithRightLayout>
+      </ReferendaDetailLayout>
     </PostProvider>
   );
 });
@@ -159,12 +163,20 @@ export const getServerSideProps = withLoginUser(async (context) => {
     },
   );
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       id,
       detail,
       voteStats: voteStats ?? {},
       comments: comments ?? EmptyList,
+
+      tracks,
+      fellowshipTracks,
     },
   };
 });

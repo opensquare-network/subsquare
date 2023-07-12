@@ -6,6 +6,7 @@ import NoComment from "./noComment";
 import LoginButtons from "./loginButtons";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useIsLogin } from "../../context/user";
+import clsx from "clsx";
 
 const Header = styled.div`
   display: flex;
@@ -18,10 +19,6 @@ const Header = styled.div`
   }
 `;
 
-const Title = styled(TitleContainer)`
-  margin-bottom: 16px;
-`;
-
 export default function Comments({
   data: { items, page, pageSize, total } = {},
   tabs = null,
@@ -31,25 +28,27 @@ export default function Comments({
   return (
     <div>
       <Header>
-        <Title>Comments</Title>
-        {tabs}
+        <TitleContainer className={clsx("w-full pt-6", "max-sm:!block")}>
+          <div className="max-sm:mb-4">Comments</div>
+          {tabs}
+        </TitleContainer>
       </Header>
       {items?.length > 0 && (
         <>
           <div>
             {(items || []).map((item) => (
-              <Item
-                key={item._id}
-                data={item}
-                replyToCommentId={item._id}
-              />
+              <Item key={item._id} data={item} replyToCommentId={item._id} />
             ))}
           </div>
           <Pagination page={page} pageSize={pageSize} total={total} />
         </>
       )}
       {!items?.length > 0 && <NoComment />}
-      {!isLogin && <LoginButtons />}
+      {!isLogin && (
+        <div className="px-6">
+          <LoginButtons />
+        </div>
+      )}
     </div>
   );
 }

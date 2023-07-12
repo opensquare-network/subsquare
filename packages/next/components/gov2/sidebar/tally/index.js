@@ -22,6 +22,8 @@ import useVotesFromServer from "next-common/utils/gov2/useVotesFromServer";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
+  padding-left: 0;
+  padding-right: 0;
 `;
 
 export default function Gov2Tally() {

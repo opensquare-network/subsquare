@@ -3,6 +3,32 @@ import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
 const EditorWrapper = styled(RichTextStyleWrapper)`
   > div:first-child {
+    max-width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+
+    .editor-toolbar {
+      display: flex;
+      justify-content: space-between;
+      border-color: var(--neutral300) !important;
+
+      > div:first-child {
+        position: static;
+      }
+    }
+
+    /* switch markdown toggle */
+    > div:nth-child(2) {
+      padding: 12px 24px;
+    }
+  }
+
+  /* plus padding */
+  div.osn-previewer {
+    padding: 6px 8px;
+  }
+
+  > div:first-child {
     border-color: var(--neutral400);
     &:hover {
       border-color: var(--neutral500);
@@ -11,6 +37,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   textarea {
     background: var(--neutral100);
     color: var(--textPrimary);
+    padding: 16px 24px;
   }
 
   svg[width="26"] {
@@ -70,6 +97,14 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     box-shadow: var(--neutral100) 0px 1px 0px 0px;
   }
 
+  .editor-toolbar {
+    /* left side: write and preview button */
+    > div:first-child {
+      button {
+        padding: 12px 24px;
+      }
+    }
+  }
   div button {
     //todo: add a className in editor repo later
     color: var(--textTertiary);
@@ -82,15 +117,15 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     background-color: var(--neutral100) !important;
     border-color: var(--neutral100) !important;
     color: var(--textPrimary) !important;
-    box-shadow: 1px 0 0 0 var(--neutral400);
+    box-shadow: 1px 0 0 0 var(--neutral300);
 
     + button {
-      box-shadow: 1px 0 0 0 var(--neutral400);
+      box-shadow: 1px 0 0 0 var(--neutral300);
     }
 
     :last-child {
-      box-shadow: var(--neutral400) -1px 0px 0px 0px,
-      var(--neutral400) 1px 0px 0px 0px;
+      box-shadow: var(--neutral300) -1px 0px 0px 0px,
+        var(--neutral300) 1px 0px 0px 0px;
     }
   }
 
@@ -100,7 +135,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   .modal textarea {
-    background-color: #var(--neutral100) !important;
+    background-color: var(--neutral100) !important;
     border-color: var(--neutral300) !important;
     color: var(--textPrimary) !important;
   }

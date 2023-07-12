@@ -1,45 +1,35 @@
-import styled from "styled-components";
-import Flex from "../../../styled/flex";
-import { smcss } from "../../../../utils/responsive";
-import { hidden, inline_flex, items_center } from "../../../../styles/tailwindcss";
 import User from "../../../user";
-import React from "react";
 import { usePost } from "../../../../context/post";
-
-const FlexWrapper = styled(Flex)`
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-
-  > :not(:first-child) {
-    ${ smcss(hidden) };
-    ${ inline_flex };
-    ${ items_center };
-
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: var(--textTertiary);
-      margin: 0 8px;
-    }
-  }
-`;
+import clsx from "clsx";
+import { Children } from "react";
 
 export default function PostMetaBase({ children, state }) {
   const post = usePost();
 
-  return <FlexWrapper>
-    <DividerWrapper>
-      <User
-        user={post.author}
-        add={post.proposer || post.finder}
-        fontSize={12}
-      />
-      { children }
-    </DividerWrapper>
-    { state }
-  </FlexWrapper>;
+  return (
+    <div className="flex justify-between items-center">
+      <div className="flex">
+        <User
+          user={post.author}
+          add={post.proposer || post.finder}
+          fontSize={12}
+        />
+
+        {Children.toArray(children).map((node, idx) => (
+          <div
+            key={idx}
+            className={clsx(
+              "flex items-center",
+              "max-sm:hidden",
+              "before:content-['·'] before:last:hidden before:mx-2 before:text-textTertiary",
+            )}
+          >
+            {node}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center">{state}</div>
+    </div>
+  );
 }

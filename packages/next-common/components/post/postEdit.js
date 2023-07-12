@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Input from "../input";
 import EditInput from "../editInput";
@@ -7,29 +7,11 @@ import { toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
-import FlexBetweenCenter from "../styled/flexBetweenCenter";
-import { TitleContainer } from "../styled/containers/titleContainer";
-import { EditablePanel } from "../styled/panel";
 import { usePost, usePostTitle } from "../../context/post";
 import { useDetailType } from "../../context/page";
 import PostLabel from "./postLabel";
 import { detailPageCategory } from "../../utils/consts/business/category";
-
-const Wrapper = styled(EditablePanel)`
-  textarea:read-only,
-  div.ql-disabled {
-    background-color: var(--neutral200) !important;
-  }
-`;
-
-const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-`;
-
-const LabelWrapper = styled(FlexBetweenCenter)`
-  margin: 16px 0 8px;
-`;
+import FormItem from "./advanced/formItem";
 
 const UploaderWrapper = styled.div`
   margin-top: 16px;
@@ -69,21 +51,23 @@ export default function PostEdit({ setIsEdit, updatePost }) {
   const isMounted = useIsMountedBool();
 
   return (
-    <Wrapper>
-      <TitleContainer>Edit</TitleContainer>
-      <LabelWrapper>
-        <Label>Title</Label>
-        <ToggleText
+    <div>
+      <FormItem
+        label="Title"
+        labelExternal={
+          <ToggleText
+            disabled={updating}
+            isSetBanner={isSetBanner}
+            setIsSetBanner={setIsSetBanner}
+          />
+        }
+      >
+        <Input
           disabled={updating}
-          isSetBanner={isSetBanner}
-          setIsSetBanner={setIsSetBanner}
+          value={title || ""}
+          onChange={(e) => setTitle(e.target.value)}
         />
-      </LabelWrapper>
-      <Input
-        disabled={updating}
-        value={title || ""}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      </FormItem>
 
       {isSetBanner && (
         <UploaderWrapper>
@@ -102,26 +86,24 @@ export default function PostEdit({ setIsEdit, updatePost }) {
         />
       )}
 
-      <LabelWrapper>
-        <Label>Issue</Label>
-      </LabelWrapper>
+      <FormItem label="Issue">
+        <EditInput
+          editContent={post.content || ""}
+          editContentType={post.contentType}
+          onFinishedEdit={async (reload) => {
+            if (reload) {
+              await updatePost();
+            }
 
-      <EditInput
-        editContent={post.content || ""}
-        editContentType={post.contentType}
-        onFinishedEdit={async (reload) => {
-          if (reload) {
-            await updatePost();
-          }
-
-          if (isMounted()) {
-            setIsEdit(false);
-          }
-        }}
-        loading={updating}
-        setLoading={setUpdating}
-        update={editPost}
-      />
-    </Wrapper>
+            if (isMounted()) {
+              setIsEdit(false);
+            }
+          }}
+          loading={updating}
+          setLoading={setUpdating}
+          update={editPost}
+        />
+      </FormItem>
+    </div>
   );
 }

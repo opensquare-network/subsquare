@@ -1,8 +1,9 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 
 import Item from "./item";
 import FoldableItem from "./foldableItem";
-import TimelineAccordion from "./timelineAccordion";
+import Accordion from "../listInfo/accordion";
+import useDuration from "next-common/utils/hooks/useDuration";
 
 export default function Timeline({
   data,
@@ -18,10 +19,18 @@ export default function Timeline({
     lastTimelineItem = lastTimelineItem[lastTimelineItem.length - 1];
   }
 
+  const duration = useDuration(lastTimelineItem?.indexer?.blockTime);
+
   return (
-    <TimelineAccordion
-      motionEndInfo={motionEndInfo}
-      lastActivityTime={lastTimelineItem?.indexer?.blockTime}
+    <Accordion
+      title={
+        <span>
+          Timeline
+          <span className="ml-3 text-textTertiary text14Medium">
+            {motionEndInfo || `Latest activity ${duration}`}
+          </span>
+        </span>
+      }
     >
       {data.map((item, index) => (
         <Fragment key={index}>
@@ -32,6 +41,6 @@ export default function Timeline({
           )}
         </Fragment>
       ))}
-    </TimelineAccordion>
+    </Accordion>
   );
 }

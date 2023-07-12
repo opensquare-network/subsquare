@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
+import { useRef, useState } from "react";
 import Comments from "next-common/components/comment/index";
 import Editor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -22,7 +21,7 @@ export default function useCommentComponent({ detail, comments, tabs = null }) {
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
   const CommentComponent = (
-    <CommentsWrapper>
+    <div>
       <Comments data={comments} tabs={tabs} />
       {loginUser && (
         <Editor
@@ -38,7 +37,7 @@ export default function useCommentComponent({ detail, comments, tabs = null }) {
           }}
         />
       )}
-    </CommentsWrapper>
+    </div>
   );
 
   return { CommentComponent, focusEditor };

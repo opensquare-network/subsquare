@@ -55,7 +55,7 @@ function Row({ row = [] }) {
   }
 
   return (
-    <Wrapper>
+    <Wrapper className="last:border-b-0">
       {row.length === 1 && row[0]}
       {row.length === 2 && (
         <>

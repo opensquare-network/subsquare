@@ -1,11 +1,10 @@
-import React from "react";
 import styled from "styled-components";
 import Item from "./item";
 import NoComment from "next-common/components/comment/noComment";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
-import CommentsWrapper from "next-common/components/styled/commentsWrapper";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import clsx from "clsx";
 
 const Header = styled.div`
   display: flex;
@@ -16,10 +15,6 @@ const Header = styled.div`
   @media screen and (min-width: 768px) {
     justify-content: space-between;
   }
-`;
-
-const Title = styled(TitleContainer)`
-  margin-bottom: 16px;
 `;
 
 const LoadingDiv = styled.div`
@@ -37,33 +32,35 @@ export default function PolkassemblyComments({
   btnRef = null,
 }) {
   return (
-    <CommentsWrapper>
-      <div>
-        <Header>
-          <Title>Comments</Title>
+    <div>
+      <Header>
+        <TitleContainer className={clsx("w-full pt-6", "max-sm:!block")}>
+          <div className="max-sm:mb-4">Comments</div>
           {tabs}
-        </Header>
-        {isLoading ? (
-          <LoadingDiv>
-            <Loading size={14} />
-          </LoadingDiv>
-        ) : comments?.length > 0 ? (
-          <>
-            <div>
-              {(comments || []).map((item, idx) => (
-                <Item key={idx} data={item} />
-              ))}
-            </div>
-          </>
-        ) : (
-          <NoComment />
-        )}
+        </TitleContainer>
+      </Header>
+      {isLoading ? (
+        <LoadingDiv>
+          <Loading size={14} />
+        </LoadingDiv>
+      ) : comments?.length > 0 ? (
+        <>
+          <div>
+            {(comments || []).map((item, idx) => (
+              <Item key={idx} data={item} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <NoComment />
+      )}
+      <div className="px-6">
         <PolkassemblyCommentButton
           detail={detail}
           paId={paId}
           btnRef={btnRef}
         />
       </div>
-    </CommentsWrapper>
+    </div>
   );
 }

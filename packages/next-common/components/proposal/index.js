@@ -153,7 +153,10 @@ function convertProposalForTableView(proposal, chain) {
             }
 
             const { section, method } = proposal;
-            if (needCheckUtf8(section, method, arg.name) && hexIsValidUTF8(arg.value)) {
+            if (
+              needCheckUtf8(section, method, arg.name) &&
+              hexIsValidUTF8(arg.value)
+            ) {
               return [arg.name, hexToString(arg.value)];
             }
 
@@ -282,7 +285,7 @@ export default function Proposal({
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Header>Call</Header>
+        <Header className="text-textSecondary">Call</Header>
         <TagWrapper>
           <TagItem
             className="tag"
@@ -303,7 +306,7 @@ export default function Proposal({
         </TagWrapper>
       </HeaderWrapper>
       {callType === "table" && (
-        <ArgsWrapper className="wrapper">
+        <ArgsWrapper className="wrapper text-textPrimary">
           <InnerDataTable data={dataTableData} />
         </ArgsWrapper>
       )}

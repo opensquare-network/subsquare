@@ -21,12 +21,15 @@ import {
   setLatestHeight,
   setNowHeight,
 } from "next-common/store/reducers/chainSlice";
+import clsx from "clsx";
+import { useNavCollapsed } from "next-common/context/nav";
 
 /**
  * @description a base layout includes nav, header and footer
  */
 export default function BaseLayout({ children, seoInfo = {} }) {
   const { sm } = useScreenSize();
+  const [navCollapsed] = useNavCollapsed();
 
   const api = useApi();
   const blockTime = useBlockTime(api);
@@ -63,7 +66,15 @@ export default function BaseLayout({ children, seoInfo = {} }) {
           <Nav />
         </section>
 
-        <section className="flex flex-col flex-1">
+        <section
+          className={clsx(
+            "flex flex-col flex-1",
+            navCollapsed
+              ? "max-w-[calc(100%-72px)]"
+              : "max-w-[calc(100%-300px)]",
+            "max-sm:max-w-full",
+          )}
+        >
           {!sm && (
             <div className="sticky top-0 z-10 max-sm:hidden">
               <Header />

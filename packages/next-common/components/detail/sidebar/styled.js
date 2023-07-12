@@ -17,9 +17,4 @@ const Link = styled(ExternalLink)`
 
 export { Link };
 
-export const InlineWrapper = styled.div`
-  ${mdcss(css`
-    padding-left: 16px;
-    padding-right: 16px;
-  `)}
-`;
+export const InlineWrapper = styled.div``;

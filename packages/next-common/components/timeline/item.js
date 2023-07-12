@@ -58,7 +58,6 @@ const Bar = styled.div`
 `;
 
 const Right = styled.div`
-  padding-bottom: 16px;
   flex-grow: 1;
 `;
 
@@ -132,15 +131,19 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
   const itemAge = useDuration(itemTime);
 
   return (
-    <Wrapper foldable={foldable} isFold={isFold}>
+    <Wrapper
+      foldable={foldable}
+      isFold={isFold}
+      className="group/timeline-item"
+    >
       <Left>
         <Cirtcle />
         <Bar className="bar" />
       </Left>
-      <Right>
+      <Right className="pb-4 group-last/timeline-item:pb-0">
         <TitleWrapper>
           <Tooltip content={itemAge}>
-            <div>{itemTime}</div>
+            <div className="text-textPrimary">{itemTime}</div>
           </Tooltip>
           {data.status && data.status.value && (
             <TagWrapper>
@@ -166,7 +169,7 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
             (React.isValidElement(data.data)
               ? data.data
               : Object.entries(data.data).map((item, index) => (
-                  <ContentItem key={index}>
+                  <ContentItem key={index} className="text-textPrimary">
                     <div>{item[0]}</div>
                     <div>
                       {["boolean", "number", "string"].includes(

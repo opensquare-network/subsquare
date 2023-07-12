@@ -1,85 +1,32 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { GreyPanel } from "./styled/containers/greyPanel";
-
-const Wrapper = styled(GreyPanel)`
-  padding: 4px;
-
-  ${(p) =>
-    p.small
-      ? css`
-          height: 36px;
-        `
-      : css`
-          height: 48px;
-        `}
-
-  flex-grow: 1;
-
-  justify-content: space-between;
-`;
-
-const Button = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  ${(p) =>
-    p.small
-      ? css`
-          padding-top: 4px;
-          padding-bottom: 4px;
-        `
-      : css`
-          padding-top: 10px;
-          padding-bottom: 10px;
-        `}
-
-  cursor: pointer;
-  ${(p) =>
-    p.small
-      ? css`
-          width: 156px;
-        `
-      : css`
-          width: 172px;
-        `}
-
-  flex-grow: 1;
-
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-
-  ${(p) =>
-    p.highlight
-      ? css`
-          color: var(--textPrimary);
-
-          background: var(--neutral100);
-
-          box-shadow: var(--shadow100);
-          border-radius: 2px;
-        `
-      : css`
-          color: var(--textTertiary);
-        `}
-`;
+import clsx from "clsx";
 
 export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
   return (
-    <Wrapper small={small}>
-      {tabs?.map(({ tabId, tabTitle }) => (
-        <Button
+    <div
+      className={clsx(
+        "flex justify-between",
+        "bg-neutral200",
+        "rounded p-1 h-12",
+        small && "h-9",
+      )}
+    >
+      {tabs?.map?.(({ tabId, tabTitle }) => (
+        <button
           key={tabId}
-          small={small}
-          highlight={selectedTabId === tabId}
+          className={clsx(
+            "text14Medium outline-none",
+            "flex justify-center items-center flex-1",
+            "py-2.5 w-[172px]",
+            small && "py-0.5 w-[156px]",
+            "text-textTertiary",
+            selectedTabId === tabId &&
+              "!text-textPrimary bg-neutral100 shadow-100 rounded-sm",
+          )}
           onClick={() => setSelectedTabId(tabId)}
         >
           {tabTitle}
-        </Button>
+        </button>
       ))}
-    </Wrapper>
+    </div>
   );
 }

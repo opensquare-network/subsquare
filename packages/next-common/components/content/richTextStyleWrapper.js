@@ -74,6 +74,11 @@ const RichTextStyleWrapper = styled.div`
     padding-left: 8px !important;
     line-height: 24px;
   }
+
+  p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
 `;
 
 export default RichTextStyleWrapper;

@@ -90,7 +90,6 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
 
   return (
     <Wrapper>
-      <Divider margin={16} />
       {!post.content && (
         <NonEdited
           setIsEdit={setIsEdit}

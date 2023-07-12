@@ -1,27 +1,23 @@
-import styled from "styled-components";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
+import tw from "tailwind-styled-components";
 
-export const OptionWrapper = styled(NeutralPanel)`
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 10px);
-  width: 96px;
-  padding: 8px 0;
-  border-radius: 4px;
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
-  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
-  color: var(--textPrimary);
+export const OptionWrapper = tw(NeutralPanel)`
+absolute
+right-0
+bottom-[calc(100%+10px)]
+w-[160px]
+p-2
+!rounded-lg
+border
+border-neutral300
+shadow-100
 `;
 
-export const OptionItem = styled.div`
-  height: 36px;
-  line-height: 36px;
-  cursor: pointer;
-  padding: 0 12px;
-  font-weight: 500;
-  color: var(--textPrimary);
-
-  :hover {
-    background: var(--neutral200);
-  }
+export const OptionItem = tw.div`
+text14Medium
+text-textPrimary
+cursor-pointer
+rounded-md
+p-2 
+hover:bg-neutral200
 `;

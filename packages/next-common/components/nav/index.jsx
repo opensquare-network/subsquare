@@ -8,6 +8,8 @@ import { useIsDark } from "next-common/context/theme";
 import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { useNavCollapsed } from "next-common/context/nav";
+import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
+import { useEffect } from "react";
 
 export default function Nav() {
   return (
@@ -30,7 +32,7 @@ function ChainName() {
 
 function BrandingHint() {
   return (
-    <div className="text12Medium mt-1 max-sm:mt-0 text-textTertiaryContrast">
+    <div className="text12Medium mt-1 max-sm:mt-0 text-navigationTextTertiary">
       Governance by Subsquare
     </div>
   );
@@ -104,6 +106,15 @@ p-4 overflow-y-scroll
 function NavMobile() {
   const [menuVisible, menuToggle] = useToggle(false);
   const [toolbarVisible, toolbarToggle] = useToggle(false);
+  const [, setLocked] = useScrollLock();
+
+  useEffect(() => {
+    if (menuVisible || toolbarVisible) {
+      setLocked(true);
+    } else {
+      setLocked(false);
+    }
+  }, [menuVisible, toolbarVisible]);
 
   return (
     <nav
@@ -126,13 +137,13 @@ function NavMobile() {
           <div role="button" onClick={toolbarToggle}>
             <SystemMenu
               className={clsx(
-                "[&_path]:fill-textPrimaryContrast",
+                "[&_path]:fill-navigationText",
                 toolbarVisible && "hidden",
               )}
             />
             <SystemClose
               className={clsx(
-                "[&_path]:fill-textPrimaryContrast",
+                "[&_path]:fill-navigationText",
                 !toolbarVisible && "hidden",
               )}
             />

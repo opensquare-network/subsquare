@@ -17,7 +17,12 @@ import VoteBar from "next-common/components/referenda/voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import MyVote from "./myVote";
 import SecondaryButton from "next-common/components/buttons/secondaryButton";
-import { flex, gap_x, items_center, justify_between } from "next-common/styles/tailwindcss";
+import {
+  flex,
+  gap_x,
+  items_center,
+  justify_between,
+} from "next-common/styles/tailwindcss";
 import { p_12_medium } from "next-common/styles/componentCss";
 import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
@@ -28,15 +33,18 @@ import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import { useChainSettings } from "next-common/context/chain";
 import Calls from "./voteCalls";
 import isMoonChain from "next-common/utils/isMoonChain";
+import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
 });
 
-const MoonVotePopup = dynamic(() => import("components/referenda/popup/moonPopup"), {
-  ssr: false,
-});
-
+const MoonVotePopup = dynamic(
+  () => import("components/referenda/popup/moonPopup"),
+  {
+    ssr: false,
+  },
+);
 
 const FlattenedVotesPopup = dynamic(
   () => import("next-common/components/democracy/flattenedVotesPopup"),
@@ -59,22 +67,6 @@ const VotesGroupItems = styled.div`
   ${flex};
   ${items_center};
   ${gap_x(12)};
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  position: absolute;
-  right: 0;
-  top: 40px;
-  width: 300px;
-  margin-top: 0 !important;
-  @media screen and (max-width: 1024px) {
-    position: static;
-    width: auto;
-    margin-top: 16px !important;
-  }
 `;
 
 const Title = styled(TitleContainer)`
@@ -142,9 +134,9 @@ function Vote({ referendumIndex }) {
   }
 
   return (
-    <Wrapper>
+    <RightBarWrapper>
       <SecondaryCardDetail>
-        <Title>
+        <Title className="!px-0">
           <span>Votes</span>
           <div>
             {isLoadingReferendumStatus || isElectorateLoading ? (
@@ -197,14 +189,12 @@ function Vote({ referendumIndex }) {
         />
       )}
       {showFlattenedVotesList && (
-        <FlattenedVotesPopup
-          setShowVoteList={setShowFlattenedVotesList}
-        />
+        <FlattenedVotesPopup setShowVoteList={setShowFlattenedVotesList} />
       )}
       {showNestedVotesList && (
         <NestedVotesPopup setShowVoteList={setShowNestedVotesList} />
       )}
-    </Wrapper>
+    </RightBarWrapper>
   );
 }
 

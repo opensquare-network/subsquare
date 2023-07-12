@@ -3,7 +3,7 @@ import { NeutralPanel } from "./neutralPanel";
 
 export const SecondaryCard = styled(NeutralPanel)`
   box-shadow: var(--shadow100);
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 24px;
 `;
 
@@ -14,8 +14,4 @@ export const HoverSecondaryCard = styled(SecondaryCard)`
 `;
 
 // Used for cards on detail page
-export const SecondaryCardDetail = styled(SecondaryCard)`
-  @media screen and (max-width: 768px) {
-    border-radius: 0;
-  }
-`;
+export const SecondaryCardDetail = styled(SecondaryCard)``;

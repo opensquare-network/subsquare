@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import isNil from "lodash.isnil";
 import { usePost, usePostTitle } from "../../../context/post";
+import { useSelector } from "react-redux";
+import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import clsx from "clsx";
 
 const TitleWrapper = styled.div`
-  margin-bottom: 8px;
   overflow: hidden;
   > :not(:first-child) {
     ::before {
@@ -18,12 +20,10 @@ const TitleWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  max-width: 750px;
   word-break: break-word;
   font-weight: 500;
   font-size: 20px;
   line-height: 140%;
-  margin-bottom: 12px;
 `;
 
 const Index = styled.div`
@@ -37,11 +37,19 @@ export default function PostTitle() {
   const post = usePost();
   const title = usePostTitle();
   const index = post.index || post.motionIndex;
+  const isEditing = useSelector(isEditingPostSelector);
 
   return (
     <TitleWrapper>
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title>{title}</Title>
+      <Title
+        className={clsx(
+          "text-textPrimary",
+          isEditing && "!text-textDisabled select-none",
+        )}
+      >
+        {title}
+      </Title>
     </TitleWrapper>
   );
 }
