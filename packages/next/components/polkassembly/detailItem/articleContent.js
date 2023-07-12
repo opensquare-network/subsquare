@@ -36,7 +36,6 @@ export default function ArticleContent({ post, type, postReactions }) {
 
   return (
     <Wrapper>
-      <Divider margin={16} />
       {post.content === "" && (
         <PlaceHolder>
           {`The ${type} has not been edited by creator.`}

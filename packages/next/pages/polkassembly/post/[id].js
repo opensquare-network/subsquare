@@ -6,9 +6,10 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import PolkassemblyDetailHeader from "components/polkassembly/detailHeader";
 
 export default withLoginUserRedux(({ detail }) => {
   const polkassemblyId = detail?.polkassemblyId;
@@ -25,11 +26,14 @@ export default withLoginUserRedux(({ detail }) => {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
+        header={<PolkassemblyDetailHeader />}
+        breadcrumbs={
+          <Back
+            href={"/polkassembly/discussions"}
+            text="Back to Polkassembly Discussions"
+          />
+        }
       >
-        <Back
-          href={"/polkassembly/discussions"}
-          text="Back to Polkassembly Discussions"
-        />
         <DetailItem postReactions={postReactions} />
         <PolkassemblyComments
           isLoading={loadingComments}
