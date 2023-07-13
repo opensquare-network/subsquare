@@ -8,6 +8,7 @@ const openTechCommittee = {
       value: "openTechCommitteeProposals",
       name: "Proposals",
       pathname: "/open-techcomm/proposals",
+      extraMatchNavMenuActivePathnames: ["/open-techcomm/proposal/[id]"],
     },
     {
       value: "openTechCommitteeMembers",
