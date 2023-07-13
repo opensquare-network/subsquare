@@ -1,0 +1,51 @@
+import PostTitle from "next-common/components/detail/common/Title";
+import TechCommNavigation from "./techCommNavigation";
+import PostMeta from "next-common/components/detail/container/Meta";
+import MaliciousHead from "next-common/components/detail/maliciousHead";
+import { CountDownWrapper } from "next-common/components/detail/common/styled";
+import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import { useSelector } from "react-redux";
+import { usePost } from "next-common/context/post";
+import { isMotionEnded } from "next-common/utils";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import MotionEnd from "next-common/components/motionEnd";
+import Divider from "next-common/components/styled/layout/divider";
+
+export default function TechcommMotionDetailHeader({ motion }) {
+  const post = usePost();
+  const isEdit = useSelector(isEditingPostSelector);
+  const blockHeight = useSelector(latestHeightSelector);
+  const motionEndHeight = motion.onchainData?.voting?.end;
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    blockHeight - motionEndHeight,
+  );
+  const motionEnd = isMotionEnded(motion.onchainData);
+  const showMotionEnd =
+    !motionEnd &&
+    motionEndHeight &&
+    blockHeight &&
+    blockHeight <= motionEndHeight &&
+    estimatedBlocksTime;
+
+  const motionEndHeader = showMotionEnd ? (
+    <CountDownWrapper>
+      <MotionEnd type="full" motion={motion.onchainData} />
+    </CountDownWrapper>
+  ) : null;
+
+  return (
+    <>
+      {!isEdit && (
+        <>
+          {post?.isMalicious && <MaliciousHead />}
+          <TechCommNavigation motion={motion} />
+          {motionEndHeader}
+        </>
+      )}
+      <PostTitle />
+      <Divider className="my-4" />
+      <PostMeta />
+    </>
+  );
+}

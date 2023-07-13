@@ -4,15 +4,14 @@ import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -71,16 +70,15 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
   return (
     <PostProvider post={motion}>
       <DetailLayout
+        detail={motion}
         seoInfo={{
           title: motion?.title,
           desc,
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
+        breadcrumbs={breadcrumbItems}
+        header={<TechcommMotionDetailHeader motion={motion} />}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
       </DetailLayout>
     </PostProvider>

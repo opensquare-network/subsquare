@@ -5,11 +5,9 @@ import Timeline from "components/treasuryProposal/timeline";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import TreasuryProposalDetailLayout from "next-common/components/layout/treasuryLayout/proposalDetail";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
@@ -64,21 +62,21 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
     },
   ];
 
+  const seoInfo = {
+    title: detail?.title,
+    desc,
+    ogImage: getBannerUrl(detail?.bannerCid),
+  };
+
   return (
     <PostProvider post={detail}>
-      <DetailLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
+      <TreasuryProposalDetailLayout
+        detail={detail}
+        seoInfo={seoInfo}
+        breadcrumbs={breadcrumbItems}
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailLayout>
+      </TreasuryProposalDetailLayout>
     </PostProvider>
   );
 });
