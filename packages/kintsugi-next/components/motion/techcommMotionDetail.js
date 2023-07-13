@@ -4,18 +4,13 @@ import Timeline from "next-common/components/timeline";
 import { isMotionEnded } from "next-common/utils";
 import findLastIndex from "lodash.findlastindex";
 import ArticleContent from "next-common/components/articleContent";
-import { useState } from "react";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { EditablePanel } from "next-common/components/styled/panel";
 import CollectiveMetadata from "next-common/components/collective/metadata";
-import PostTitle from "next-common/components/detail/common/Title";
-import TechCommNavigation from "./techCommNavigation";
-import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
@@ -23,8 +18,9 @@ import User from "next-common/components/user";
 import { useChain } from "next-common/context/chain";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useDetailType } from "next-common/context/page";
-import MaliciousHead from "next-common/components/detail/maliciousHead";
-import { CountDownWrapper } from "next-common/components/detail/common/styled";
+import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
+import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import DetailContentBase from "next-common/components/detail/common/detailBase";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -42,7 +38,8 @@ function createMotionBusinessData(motion) {
       <Link
         key="link-to"
         href={`/democracy/external/${height}_${motion.proposalHash}`}
-        legacyBehavior>{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
+        legacyBehavior
+      >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
     ],
   ];
 }
@@ -99,7 +96,8 @@ export default function TechcommMotionDetail({ motion, onReply }) {
   const chain = useChain();
   const postDispatch = usePostDispatch();
   const post = usePost();
-  const [isEdit, setIsEdit] = useState(false);
+  const isEdit = useSelector(isEditingPostSelector);
+  const setIsEdit = useSetEdit();
   const motionEndHeight = motion.onchainData?.voting?.end;
   const blockHeight = useSelector(latestHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
@@ -149,7 +147,8 @@ export default function TechcommMotionDetail({ motion, onReply }) {
         <Link
           key="treasury-link-to"
           href={`/treasury/proposal/${motion.treasuryProposalIndex}`}
-          legacyBehavior>{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
+          legacyBehavior
+        >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
       ],
       [
         "Beneficiary",
@@ -175,7 +174,8 @@ export default function TechcommMotionDetail({ motion, onReply }) {
           <Link
             key="link-to"
             href={`/democracy/proposal/${proposal?.proposalIndex}`}
-            legacyBehavior>{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
+            legacyBehavior
+          >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
         ["Hash", proposal.hash],
         [
@@ -192,24 +192,11 @@ export default function TechcommMotionDetail({ motion, onReply }) {
     </TimelineMotionEnd>
   ) : null;
 
-  const motionEndHeader = showMotionEnd ? (
-    <CountDownWrapper>
-      <MotionEnd type="full" motion={motion.onchainData} />
-    </CountDownWrapper>
-  ) : null;
-
   return (
     <div>
-      <EditablePanel>
-        <div>
-          {post?.isMalicious && <MaliciousHead />}
-          <TechCommNavigation motion={motion} />
-          {motionEndHeader}
-          <PostTitle />
-          <PostMeta />
-          <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
-        </div>
-      </EditablePanel>
+      <DetailContentBase>
+        <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
+      </DetailContentBase>
 
       <MultiKVList title="Business" data={business} />
 

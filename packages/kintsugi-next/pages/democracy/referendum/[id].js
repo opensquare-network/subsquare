@@ -11,21 +11,20 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
+import DemocracyReferendaDetailLayout from "next-common/components/layout/democracyLayout/referendaDetail";
 import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import { useDispatch } from "react-redux";
-import Breadcrumb from "next-common/components/_Breadcrumb";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailHeader from "components/detailHeader";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -56,8 +55,14 @@ function ReferendumContent({ publicProposal, comments }) {
     const proposalTimeline = publicProposal?.onchainData?.timeline || [];
     const referendumTimeline = post?.onchainData?.timeline || [];
     setTimelineData([
-      ...getDemocracyTimelineData(proposalTimeline, detailPageCategory.DEMOCRACY_PROPOSAL),
-      ...getDemocracyTimelineData(referendumTimeline, detailPageCategory.DEMOCRACY_REFERENDUM),
+      ...getDemocracyTimelineData(
+        proposalTimeline,
+        detailPageCategory.DEMOCRACY_PROPOSAL,
+      ),
+      ...getDemocracyTimelineData(
+        referendumTimeline,
+        detailPageCategory.DEMOCRACY_REFERENDUM,
+      ),
     ]);
   }, [publicProposal, post]);
 
@@ -118,21 +123,23 @@ export default withLoginUserRedux(
       },
     ];
 
+    const seoInfo = {
+      title: detail?.title,
+      desc,
+      ogImage: getBannerUrl(detail?.bannerCid),
+    };
+
     return (
       <PostProvider post={detail}>
-        <DetailWithRightLayout
-          seoInfo={{
-            title: detail?.title,
-            desc,
-            ogImage: getBannerUrl(detail?.bannerCid),
-          }}
+        <DemocracyReferendaDetailLayout
+          detail={detail}
+          seoInfo={seoInfo}
+          breadcrumbs={breadcrumbItems}
+          hasSider
+          header={<DetailHeader />}
         >
-          <BreadcrumbWrapper>
-            <Breadcrumb items={breadcrumbItems} />
-          </BreadcrumbWrapper>
-
           {postContent}
-        </DetailWithRightLayout>
+        </DemocracyReferendaDetailLayout>
       </PostProvider>
     );
   },

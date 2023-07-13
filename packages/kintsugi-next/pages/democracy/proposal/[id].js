@@ -10,14 +10,12 @@ import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
 import isNil from "lodash.isnil";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DemocracyProposalDetailLayout from "next-common/components/layout/democracyLayout/proposalDetailLayout";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -101,19 +99,18 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DetailWithRightLayout
+      <DemocracyProposalDetailLayout
+        detail={detail}
+        breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
+        hasSider
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailWithRightLayout>
+      </DemocracyProposalDetailLayout>
     </PostProvider>
   );
 });

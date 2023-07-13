@@ -33,26 +33,11 @@ import TallyInfo from "next-common/components/referenda/tally/info";
 import CheckAllVotesPopup from "components/democracy/allVotesPopup";
 import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import capitalize from "lodash.capitalize";
+import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
 });
-
-const Wrapper = styled.div`
-  position: absolute;
-  right: 0;
-  top: 40px;
-  width: 300px;
-  margin-top: 0 !important;
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  @media screen and (max-width: 1024px) {
-    position: static;
-    width: auto;
-    margin-top: 16px !important;
-  }
-`;
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -146,10 +131,7 @@ const Guide = styled.p`
   }
 `;
 
-function Vote({
-  referendumInfo,
-  referendumIndex,
-}) {
+function Vote({ referendumInfo, referendumIndex }) {
   const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
@@ -181,7 +163,9 @@ function Vote({
   let gap = 2;
   const nTotal = new BigNumber(nAyes).plus(nNays);
   if (nTotal.gt(0)) {
-    nAyesPercent = Math.round(new BigNumber(nAyes).div(nTotal).toNumber() * 100);
+    nAyesPercent = Math.round(
+      new BigNumber(nAyes).div(nTotal).toNumber() * 100,
+    );
     nNaysPercent = 100 - nAyesPercent;
     if (nAyesPercent === 100 || nNaysPercent === 100) {
       gap = 0;
@@ -189,7 +173,7 @@ function Vote({
   }
 
   return (
-    <Wrapper>
+    <RightBarWrapper>
       <SecondaryCardDetail>
         <Title>
           <span>Votes</span>
@@ -298,12 +282,8 @@ function Vote({
         />
       )}
 
-      {showVoteList && (
-        <CheckAllVotesPopup
-          setShowVoteList={setShowVoteList}
-        />
-      )}
-    </Wrapper>
+      {showVoteList && <CheckAllVotesPopup setShowVoteList={setShowVoteList} />}
+    </RightBarWrapper>
   );
 }
 

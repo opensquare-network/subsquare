@@ -13,7 +13,7 @@ function DemocracyReferendumState() {
   const state = usePostState();
   const args = getDemocracyStateArgs(onchain.state, onchain.timeline);
 
-  return <DemocracyReferendumTag state={state} args={args}/>
+  return <DemocracyReferendumTag state={state} args={args}/>;
 }
 
 export default function DemocracyReferendumMeta() {
@@ -22,5 +22,5 @@ export default function DemocracyReferendumMeta() {
     <UpdatedTime />
     <CommentsMeta />
     <DetailLabels />
-  </PostMetaBase>
+  </PostMetaBase>;
 }

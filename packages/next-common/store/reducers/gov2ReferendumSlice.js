@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import nextApi from "../../services/nextApi";
-import { gov2ReferendumsVoteCallsApi, gov2ReferendumsVoteExtrinsicsApi, } from "../../services/url";
+import { gov2ReferendumsVoteCallsApi, gov2ReferendumsVoteExtrinsicsApi } from "../../services/url";
 import { openGovEmptyVotes as emptyVotes } from "../../utils/democracy/votes/passed/common";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";

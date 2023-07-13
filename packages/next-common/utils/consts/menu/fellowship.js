@@ -20,7 +20,7 @@ export function getFellowshipMenu(fellowshipTracks = []) {
       Chains.moonriver,
       Chains.moonbeam,
       Chains.bifrost,
-      Chains["westend-collectives"]
+      Chains["westend-collectives"],
     ]),
     activeCount: totalActiveCount,
     icon: <MenuFellowship />,
