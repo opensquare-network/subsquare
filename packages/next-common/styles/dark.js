@@ -40,7 +40,7 @@ const dark = {
     gray500: "var(--textSecondary)",
     neutral100: "rgba(33,36,51,1)",
     neutral200: "rgba(38, 41, 56, 1)",
-    neutral300: "rgba(39, 42, 58, 1)",
+    neutral300: "#2e3141",
     neutral400: "rgba(54,58,77,1)",
     neutral500: "rgba(87,92,114,1)",
     tooltipBg: "rgba(0,0,0,0.800)",
@@ -59,7 +59,7 @@ const dark = {
       "0px 6px 22px rgba(30, 33, 52, 0.11), 0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718), 0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282)",
 
     // compat
-    pageBg: "#1E2130",
+    pageBg: "#1C1F2E",
     darkBlue: "var(--purple500)",
   },
   chain: {
@@ -69,7 +69,7 @@ const dark = {
       theme500: "rgba(255,192,18,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     bifrostKusama: {
       theme100: "rgba(84,43,251,0.10)",
@@ -77,7 +77,7 @@ const dark = {
       theme500: "rgba(84,43,251,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     karura: {
       theme100: "rgba(229,15,89,0.10)",
@@ -85,7 +85,7 @@ const dark = {
       theme500: "rgba(229,15,89,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     khala: {
       theme100: "rgba(2,255,255,0.10)",
@@ -93,7 +93,7 @@ const dark = {
       theme500: "rgba(2,255,255,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     kintsugi: {
       theme100: "rgba(247,205,69,0.10)",
@@ -101,7 +101,7 @@ const dark = {
       theme500: "rgba(247,205,69,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     kusama: {
       theme100: "rgba(230,0,122,0.10)",
@@ -109,7 +109,7 @@ const dark = {
       theme500: "rgba(230,0,122,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     litmus: {
       theme100: "rgba(104,34,251,0.10)",
@@ -117,7 +117,7 @@ const dark = {
       theme500: "rgba(104,34,251,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     turing: {
       theme100: "rgba(168,44,190,0.10)",
@@ -125,7 +125,7 @@ const dark = {
       theme500: "rgba(168,44,190,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     acala: {
       theme100: "rgba(100,90,255,0.10)",
@@ -133,7 +133,7 @@ const dark = {
       theme500: "rgba(100,90,255,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     bifrostPolkadot: {
       theme100: "rgba(84,43,251,0.10)",
@@ -141,7 +141,7 @@ const dark = {
       theme500: "rgba(84,43,251,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     centrifuge: {
       theme100: "rgba(18,83,255,0.10)",
@@ -149,7 +149,7 @@ const dark = {
       theme500: "rgba(18,83,255,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     darwinia2: {
       theme100: "rgba(219,55,138,0.10)",
@@ -157,7 +157,7 @@ const dark = {
       theme500: "rgba(219,55,138,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     hydradx: {
       theme100: "rgba(246,41,124,0.10)",
@@ -165,7 +165,7 @@ const dark = {
       theme500: "rgba(246,41,124,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     interlay: {
       theme100: "rgba(7,90,188,0.10)",
@@ -173,7 +173,7 @@ const dark = {
       theme500: "rgba(7,90,188,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     litentry: {
       theme100: "rgba(21,184,135,0.10)",
@@ -181,7 +181,7 @@ const dark = {
       theme500: "rgba(21,184,135,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     phala: {
       theme100: "rgba(205,250,80,0.10)",
@@ -189,7 +189,7 @@ const dark = {
       theme500: "rgba(205,250,80,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     polkadotCollectives: {
       theme100: "rgba(230,0,122,0.10)",
@@ -197,7 +197,7 @@ const dark = {
       theme500: "rgba(230,0,122,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     polkadot: {
       theme100: "rgba(230,0,122,0.10)",
@@ -205,7 +205,7 @@ const dark = {
       theme500: "rgba(230,0,122,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     zeitgeist: {
       theme100: "rgba(28,100,242,0.10)",
@@ -213,7 +213,7 @@ const dark = {
       theme500: "rgba(28,100,242,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     crust: {
       theme100: "rgba(250,140,22,0.10)",
@@ -221,7 +221,7 @@ const dark = {
       theme500: "rgba(250,140,22,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     rococo: {
       theme100: "rgba(230,0,122,0.10)",
@@ -229,7 +229,7 @@ const dark = {
       theme500: "rgba(230,0,122,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     westendCollectives: {
       theme100: "rgba(239,72,106,0.10)",
@@ -237,7 +237,7 @@ const dark = {
       theme500: "rgba(239,72,106,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     moonbeam: {
       theme100: "rgba(230,0,122,0.10)",
@@ -245,7 +245,7 @@ const dark = {
       theme500: "rgba(230,0,122,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
     moonriver: {
       theme100: "rgba(79,204,198,0.10)",
@@ -253,7 +253,7 @@ const dark = {
       theme500: "rgba(79,204,198,1)",
       navigationBg: "rgba(33,36,51,1)",
       navigationActive: "rgba(38,41,56,1)",
-      navigationBorder: "rgba(39,42,58,1)",
+      navigationBorder: "var(--neutral300)",
     },
   },
 };
