@@ -12,6 +12,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -53,7 +54,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       path: "/open-techcomm/proposals",
     },
     {
-      content: `#${ breadcrumbItemName }`,
+      content: `#${breadcrumbItemName}`,
     },
   ];
 
@@ -101,11 +102,19 @@ export const getServerSideProps = withLoginUser(async (context) => {
     },
   );
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       id,
       motion,
       comments: comments ?? EmptyList,
+
+      tracks,
+      fellowshipTracks,
     },
   };
 });

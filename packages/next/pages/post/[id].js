@@ -15,6 +15,7 @@ import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import DetailHeader from "next-common/components/detail/detailHeader";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote }) => {
@@ -100,6 +101,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
     ));
   }
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       detail,
@@ -107,6 +113,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
       votes,
       myVote: myVote ?? null,
       chain,
+
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });

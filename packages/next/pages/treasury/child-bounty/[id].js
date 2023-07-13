@@ -18,6 +18,7 @@ import ChildBountyDetail from "next-common/components/detail/treasury/childBount
 import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import TreasuryChildBountyDetailLayout from "next-common/components/layout/treasuryLayout/childBountyDetail";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -121,11 +122,19 @@ export const getServerSideProps = withLoginUser(async (context) => {
     },
   );
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    ssrNextApi.fetch(gov2TracksApi),
+    ssrNextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       id,
       detail,
       comments: comments ?? EmptyList,
+
+      tracks,
+      fellowshipTracks,
     },
   };
 });

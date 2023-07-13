@@ -10,6 +10,7 @@ import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -96,11 +97,19 @@ export const getServerSideProps = withLoginUser(async (context) => {
     },
   );
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       id,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
+
+      tracks,
+      fellowshipTracks,
     },
   };
 });

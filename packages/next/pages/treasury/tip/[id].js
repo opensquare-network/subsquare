@@ -14,6 +14,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import TreasuryTipDetailLayout from "next-common/components/layout/treasuryLayout/tipDetail";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -109,11 +110,19 @@ export const getServerSideProps = withLoginUser(async (context) => {
     },
   );
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       id,
       detail,
       comments: comments ?? EmptyList,
+
+      tracks,
+      fellowshipTracks,
     },
   };
 });
