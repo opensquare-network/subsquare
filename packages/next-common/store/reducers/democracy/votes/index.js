@@ -22,7 +22,7 @@ const democracyVotesSlice = createSlice({
     clearVotersTrigger(state) {
       state.votesTrigger = 1;
     },
-  }
+  },
 });
 
 export const {

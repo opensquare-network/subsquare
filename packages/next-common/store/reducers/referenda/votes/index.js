@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import fetchAndNormalizeVotes from "next-common/utils/gov2/votes/fetch";
-import { name } from "./consts"
+import { name } from "./consts";
 
 const referendaVotesSlice = createSlice({
   name,
@@ -18,7 +18,7 @@ const referendaVotesSlice = createSlice({
     clearVotersTrigger(state) {
       state.votesTrigger = 1;
     },
-  }
+  },
 });
 
 export const {
@@ -37,6 +37,6 @@ export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigge
 export const fetchReferendaVotes = (api, trackId, referendumIndex) => async (dispatch) => {
   const sortedVotes = await fetchAndNormalizeVotes(api, trackId, referendumIndex);
   dispatch(setAllVotes(sortedVotes));
-}
+};
 
 export default referendaVotesSlice.reducer;

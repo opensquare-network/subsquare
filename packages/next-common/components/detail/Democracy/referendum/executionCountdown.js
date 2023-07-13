@@ -28,5 +28,5 @@ export default function ExecutionCountdown() {
       tooltipContent={longText}
     />
     <span>{shortText}</span>
-  </CountDownWrapper>
+  </CountDownWrapper>;
 }

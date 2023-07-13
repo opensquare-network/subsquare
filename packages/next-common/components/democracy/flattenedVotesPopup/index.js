@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import {
   allAyeSelector,
   allNaySelector,
-  showVotesNumberSelector
+  showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 
 export default function VotesPopup({
@@ -22,7 +22,7 @@ export default function VotesPopup({
 }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const allAye = useSelector(allAyeSelector);
-  const allNay = useSelector(allNaySelector)
+  const allNay = useSelector(allNaySelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);

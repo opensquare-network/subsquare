@@ -25,7 +25,7 @@ function extractSplitVotes(vote = {}) {
       aye: false,
       votes: nayVotes,
     },
-  ]
+  ];
 }
 
 export default function useDemocracyVotesFromServer(referendumIndex) {
@@ -35,11 +35,11 @@ export default function useDemocracyVotesFromServer(referendumIndex) {
   useEffect(() => {
     nextApi.fetch(`democracy/referenda/${ referendumIndex }/votes`)
       .then(({ result: votes }) => setVotes(votes));
-  }, [referendumIndex])
+  }, [referendumIndex]);
 
   useEffect(() => {
     if (!votes) {
-      return
+      return;
     }
 
     const allVotes = (votes || []).reduce((result, vote) => {

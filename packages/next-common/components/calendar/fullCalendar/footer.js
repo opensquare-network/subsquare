@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useChainSettings } from "../../../context/chain";
-import { flex, gap_x, hidden, justify_center, p_b, } from "../../../styles/tailwindcss";
+import { flex, gap_x, hidden, justify_center, p_b } from "../../../styles/tailwindcss";
 import { smcss } from "../../../utils/responsive";
 import Tooltip from "../../tooltip";
 import FullCalendarCategory from "./category";

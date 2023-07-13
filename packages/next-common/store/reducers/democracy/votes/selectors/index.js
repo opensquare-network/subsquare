@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
-import { name } from "../consts"
+import { name } from "../consts";
 
 export const allVotesSelector = (state) => state[name].allVotes;
 export const showVotesNumberSelector = createSelector(allVotesSelector, (allVotes) => !!allVotes);
@@ -9,22 +9,22 @@ export const votesTriggerSelector = (state) => state[name].votesTrigger;
 export const allAyeSelector = state => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => v.aye);
-}
+};
 
 export const allNaySelector = state => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => !v.aye);
-}
+};
 
 export const allDirectVotesSelector = state => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter(v => !v.isDelegating);
-}
+};
 
 export const allDelegationVotesSelector = state => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter(v => v.isDelegating);
-}
+};
 
 export const allNestedVotesSelector = createSelector(
   allDirectVotesSelector,
@@ -38,7 +38,7 @@ export const allNestedVotesSelector = createSelector(
           totalVotes: vote.votes,
           totalDelegatedVotes: 0,
           totalDelegatedCapital: 0,
-        }
+        };
       }
 
       const directVoterDelegations = delegations.filter((delegationVote) => {
@@ -63,8 +63,8 @@ export const allNestedVotesSelector = createSelector(
         totalVotes,
         totalDelegatedVotes,
         totalDelegatedCapital,
-      }
-    })
+      };
+    });
 
     const allAye = directVotesWithNested.filter(v => v.aye);
     const allNay = directVotesWithNested.filter(v => v.aye === false);
@@ -72,6 +72,6 @@ export const allNestedVotesSelector = createSelector(
     return {
       allAye,
       allNay,
-    }
-  }
-)
+    };
+  },
+);
