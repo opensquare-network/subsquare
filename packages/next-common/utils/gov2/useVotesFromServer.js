@@ -26,7 +26,7 @@ function extractSplitVotes(vote = {}) {
       aye: false,
       votes: nayVotes,
     },
-  ]
+  ];
 }
 
 function extractSplitAbstainVotes(vote = {}) {
@@ -57,8 +57,8 @@ function extractSplitAbstainVotes(vote = {}) {
       aye: false,
       conviction: 0,
       votes: nayVotes,
-    }
-  ]
+    },
+  ];
 
 }
 
@@ -68,11 +68,11 @@ export default function useVotesFromServer(referendumIndex) {
 
   useEffect(() => {
     nextApi.fetch(`gov2/referenda/${ referendumIndex }/votes`).then(({ result: votes }) => setVotes(votes));
-  }, [referendumIndex])
+  }, [referendumIndex]);
 
   useEffect(() => {
     if (!votes) {
-      return
+      return;
     }
 
     const allVotes = (votes || []).reduce((result, vote) => {

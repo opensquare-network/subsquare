@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import {
   allAyeSelector,
   allNaySelector,
-  showVotesNumberSelector
+  showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 
 const Row = styled(Flex)`
@@ -49,7 +49,7 @@ const Value = styled.span`
 export default function TallyInfo({ tally }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const allAye = useSelector(allAyeSelector);
-  const allNay = useSelector(allNaySelector)
+  const allNay = useSelector(allNaySelector);
 
   const node = useChainSettings();
   const electorate = useMaybeFetchElectorate();
