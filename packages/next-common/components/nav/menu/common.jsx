@@ -13,6 +13,7 @@ export default function NavCommonMenu({ collapsed }) {
   const isMacOS = useIsMacOS();
   const { tracks, fellowshipTracks } = usePageProps();
   const commonMenu = getCommonMenu({ tracks, fellowshipTracks });
+  const routePathname = router.asPath.split("?")[0];
 
   return (
     <ul>
@@ -22,7 +23,12 @@ export default function NavCommonMenu({ collapsed }) {
             icon={item.icon}
             label={item.name}
             link={item.pathname}
-            active={item.pathname === router.asPath}
+            active={
+              item.pathname === routePathname ||
+              item?.extraMatchNavMenuActivePathnames?.includes?.(
+                router.pathname,
+              )
+            }
             collapsed={collapsed}
             hoverTooltip
           />
