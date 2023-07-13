@@ -60,7 +60,8 @@ export default function VotesPopup({
 
   const items = useMemo(() => {
     return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
+    // eslint-disable-next-line
+  }, [sliceFrom, sliceTo]);
 
   return (
     <BaseVotesPopup

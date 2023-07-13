@@ -68,7 +68,8 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
 
   const items = useMemo(() => {
     return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
+    // eslint-disable-next-line
+  }, [sliceFrom, sliceTo]);
 
   return (
     <BaseVotesPopup wide title="Calls" onClose={() => setShowVoteList(false)}>
