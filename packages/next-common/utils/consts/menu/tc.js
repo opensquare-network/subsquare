@@ -20,6 +20,7 @@ const techComm = {
       value: "techCommProposals",
       name: "Proposals",
       pathname: "/techcomm/proposals",
+      extraMatchNavMenuActivePathnames: ["/techcomm/proposal/[id]"],
     },
     {
       value: "techCommMembers",
