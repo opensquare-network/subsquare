@@ -8,7 +8,7 @@ import { MenuFellowship } from "@osn/icons/subsquare";
 
 export const name = "FELLOWSHIP";
 
-export function getFellowshipMenu(fellowshipTracks = []) {
+export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
   const menu = {
@@ -56,6 +56,9 @@ export function getFellowshipMenu(fellowshipTracks = []) {
       pathname: `/fellowship/track/${track.id}`,
       activeCount: track.activeCount,
       icon: `[${track.id}]`,
+      extraMatchNavMenuActivePathnames: [
+        track.id === currentTrackId && "/fellowship/referendum/[id]",
+      ].filter(Boolean),
     };
   };
 

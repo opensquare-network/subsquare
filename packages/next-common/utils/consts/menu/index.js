@@ -13,11 +13,15 @@ import treasuryCouncil from "./treasuryCouncil";
 import openTechCommittee from "./openTechCommittee";
 import { CHAIN } from "next-common/utils/constants";
 
-export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
+export function getHomeMenu({
+  tracks = [],
+  fellowshipTracks = [],
+  currentTrackId,
+} = {}) {
   if (isMoonChain()) {
     return [
       commonMenus,
-      getReferendaMenu(tracks),
+      getReferendaMenu(tracks, currentTrackId),
       democracy,
       treasury,
       council,
@@ -29,8 +33,8 @@ export function getHomeMenu({ tracks = [], fellowshipTracks = [] } = {}) {
 
   return [
     commonMenus,
-    getReferendaMenu(tracks),
-    getFellowshipMenu(fellowshipTracks),
+    getReferendaMenu(tracks, currentTrackId),
+    getFellowshipMenu(fellowshipTracks, currentTrackId),
     treasury,
     democracy,
     council,
@@ -62,8 +66,12 @@ export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
   return commonMenu.items;
 }
 
-export function getFeaturedMenu({ tracks = [], fellowshipTracks = [] }) {
-  const menu = getHomeMenu({ tracks, fellowshipTracks });
+export function getFeaturedMenu({
+  tracks = [],
+  fellowshipTracks = [],
+  currentTrackId,
+}) {
+  const menu = getHomeMenu({ tracks, fellowshipTracks, currentTrackId });
   // drop common menu
   const featureMenuData = menu.slice(1);
   return featureMenuData

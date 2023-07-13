@@ -6,7 +6,7 @@ import { MenuReferenda } from "@osn/icons/subsquare";
 
 export const name = "REFERENDA";
 
-export function getReferendaMenu(tracks = []) {
+export function getReferendaMenu(tracks = [], currentTrackId) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
 
   const menu = {
@@ -42,7 +42,8 @@ export function getReferendaMenu(tracks = []) {
       icon: `[${track.id}]`,
       extraMatchNavMenuActivePathnames: [
         `/referenda/track/${track.id}/statistics`,
-      ],
+        track.id === currentTrackId && "/referenda/referendum/[id]",
+      ].filter(Boolean),
     };
   };
 
