@@ -7,9 +7,10 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import DetailHeader from "components/detailHeader";
 
 export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -26,8 +27,9 @@ export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
+        header={<DetailHeader />}
+        breadcrumbs={<Back href={"/discussions"} text="Back to Discussions" />}
       >
-        <Back href={"/discussions"} text="Back to Discussions" />
         <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
         {CommentComponent}
       </DetailLayout>
