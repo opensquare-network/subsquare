@@ -1,36 +1,42 @@
+import styled from "styled-components";
+import Flex from "../../../styled/flex";
 import User from "../../../user";
 import { usePost } from "../../../../context/post";
-import clsx from "clsx";
-import { Children } from "react";
+
+const DividerWrapper = styled(Flex)`
+  flex-wrap: wrap;
+
+  > :not(:first-child) {
+    display: inline-flex;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      display: hidden;
+    }
+
+    ::before {
+      content: "·";
+      font-size: 12px;
+      color: var(--textTertiary);
+      margin: 0 8px;
+    }
+  }
+`;
 
 export default function PostMetaBase({ children, state }) {
   const post = usePost();
 
   return (
-    <div className="flex justify-between items-center flex-nowrap">
-      <div className="flex items-center flex-wrap">
+    <div className="flex items-center justify-between flex-nowrap">
+      <DividerWrapper>
         <User
           user={post.author}
           add={post.proposer || post.finder}
           fontSize={12}
         />
-
-        {Children.toArray(children).map((node, idx) => (
-          <div
-            key={idx}
-            className={clsx(
-              "flex items-center",
-              "max-sm:hidden",
-              "before:content-['·'] before:last:hidden before:mx-2 before:text-textTertiary",
-              "empty:hidden",
-            )}
-          >
-            {node}
-          </div>
-        ))}
-      </div>
-
-      <div className="flex items-center">{state}</div>
+        {children}
+      </DividerWrapper>
+      {state}
     </div>
   );
 }
