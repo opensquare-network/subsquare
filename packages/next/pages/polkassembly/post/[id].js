@@ -10,6 +10,7 @@ import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import PolkassemblyDetailHeader from "components/polkassembly/detailHeader";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(({ detail }) => {
   const polkassemblyId = detail?.polkassemblyId;
@@ -55,9 +56,17 @@ export const getServerSideProps = withLoginUser(async (context) => {
     return to404();
   }
 
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
     props: {
       detail,
+
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
     },
   };
 });
