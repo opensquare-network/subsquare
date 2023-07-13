@@ -1,23 +1,19 @@
-import { useState } from "react";
 import ArticleContent from "next-common/components/articleContent";
-import { EditablePanel } from "next-common/components/styled/panel";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
-import PostTitle from "next-common/components/detail/common/Title";
-import { KintsugiDemocracyProposalNavigation } from "next-common/components/detail/navigation/democracyProposal";
-import { KintsugiReferendumNavigation } from "next-common/components/detail/navigation/ReferendumNavigation";
-import PostMeta from "next-common/components/detail/container/Meta";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useDetailType } from "next-common/context/page";
-import MaliciousHead from "next-common/components/detail/maliciousHead";
-import ReferendumVoteEndCountDown from "next-common/components/democracy/referendum/voteEndCountDown";
+import DetailContentBase from "next-common/components/detail/common/detailBase";
+import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
+import { useSelector } from "react-redux";
+import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 
 export default function DetailItem({ onReply, votes, myVote }) {
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();
-  const [isEdit, setIsEdit] = useState(false);
+  const isEdit = useSelector(isEditingPostSelector);
+  const setIsEdit = useSetEdit();
 
   if (isEdit) {
     return (
@@ -29,19 +25,7 @@ export default function DetailItem({ onReply, votes, myVote }) {
   }
 
   return (
-    <EditablePanel>
-      {post?.isMalicious && <MaliciousHead />}
-      {
-        type === detailPageCategory.DEMOCRACY_REFERENDUM && <ReferendumVoteEndCountDown />
-      }
-      {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
-        <KintsugiDemocracyProposalNavigation post={post} />
-      )}
-      {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
-        <KintsugiReferendumNavigation post={post} />
-      )}
-      <PostTitle />
-      <PostMeta />
+    <DetailContentBase>
       <ArticleContent
         post={post}
         onReply={onReply}
@@ -49,6 +33,6 @@ export default function DetailItem({ onReply, votes, myVote }) {
         votes={votes}
         myVote={myVote}
       />
-    </EditablePanel>
+    </DetailContentBase>
   );
 }
