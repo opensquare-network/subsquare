@@ -106,10 +106,14 @@ function SubMenuItems({ className = "", items = [] }) {
   return (
     <ul className={className}>
       {items.map((item, idx) => {
-        const active = [
+        const matchActivePathnames = [
           ...(item?.extraMatchNavMenuActivePathnames ?? []),
           item.pathname,
-        ].includes(routePath);
+        ];
+
+        const active =
+          matchActivePathnames.includes(router.pathname) ||
+          matchActivePathnames.includes(routePath);
 
         return (
           <li key={idx}>

@@ -4,8 +4,12 @@ import { useNavSubmenuVisible } from "next-common/context/nav";
 import NavMenuGroup from "./group";
 
 export default function NavFeaturedMenu({ collapsed }) {
-  const { tracks, fellowshipTracks } = usePageProps();
-  const featuredMenu = getFeaturedMenu({ tracks, fellowshipTracks });
+  const { tracks, fellowshipTracks, detail } = usePageProps();
+  const featuredMenu = getFeaturedMenu({
+    tracks,
+    fellowshipTracks,
+    currentTrackId: detail?.track,
+  });
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
 
   return (

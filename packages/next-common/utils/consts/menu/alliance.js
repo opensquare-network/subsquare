@@ -7,6 +7,7 @@ const motions = {
   value: "allianceMotions",
   name: "Motions",
   pathname: "/alliance/motions",
+  extraMatchNavMenuActivePathnames: ["/alliance/motion/[id]"],
 };
 
 const members = {
@@ -25,6 +26,7 @@ const announcements = {
   value: "allianceAnnouncements",
   name: "Announcements",
   pathname: "/alliance/announcements",
+  extraMatchNavMenuActivePathnames: ["/alliance/announcement/[id]"],
 };
 
 const alliance = {

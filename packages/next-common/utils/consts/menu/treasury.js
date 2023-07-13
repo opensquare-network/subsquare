@@ -17,11 +17,13 @@ const treasury = {
       value: "proposals",
       name: "Proposals",
       pathname: "/treasury/proposals",
+      extraMatchNavMenuActivePathnames: ["/treasury/proposal/[id]"],
     },
     {
       value: "bounties",
       name: "Bounties",
       pathname: "/treasury/bounties",
+      extraMatchNavMenuActivePathnames: ["/treasury/bounties/[id]"],
       excludeToChains: [
         Chains.basilisk,
         Chains.hydradx,
@@ -40,6 +42,7 @@ const treasury = {
       value: "child-bounties",
       name: "Child Bounties",
       pathname: "/treasury/child-bounties",
+      extraMatchNavMenuActivePathnames: ["/treasury/child-bounties/[id]"],
       excludeToChains: getExcludeChains([
         Chains.polkadot,
         Chains.kusama,
@@ -52,6 +55,7 @@ const treasury = {
       value: "tips",
       name: "Tips",
       pathname: "/treasury/tips",
+      extraMatchNavMenuActivePathnames: ["/treasury/tips/[id]"],
       excludeToChains: [
         Chains.kintsugi,
         Chains.interlay,
