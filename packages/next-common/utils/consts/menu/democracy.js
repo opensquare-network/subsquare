@@ -18,18 +18,23 @@ const democracy = {
       value: "referenda",
       name: "Referenda",
       pathname: "/democracy/referenda",
-      extraMatchNavMenuActivePathnames: ["/democracy/statistics"],
+      extraMatchNavMenuActivePathnames: [
+        "/democracy/statistics",
+        "/democracy/referendum/[id]",
+      ],
     },
     {
       value: "democracyProposals",
       name: "Public Proposals",
       pathname: "/democracy/proposals",
+      extraMatchNavMenuActivePathnames: ["/democracy/proposal/[id]"],
     },
     {
       value: "democracyExternals",
       excludeToChains: [Chains.kintsugi, Chains.interlay],
       name: "External Proposals",
       pathname: "/democracy/externals",
+      extraMatchNavMenuActivePathnames: ["/democracy/external/[id]"],
     },
   ],
 };
