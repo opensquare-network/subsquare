@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { withTheme } from "styled-components";
 import { Headers } from "./headers";
 import DataRows from "./dataRows";
 import { EmptyTd, StyledTable } from "next-common/components/styled/table";
 import { SystemLoading } from "@osn/icons/subsquare";
+import isEqual from "lodash.isequal";
 
 function EmptyOrLoading({ loading, noDataText = "" }) {
   return (
@@ -40,13 +41,20 @@ function StyledList({
     tableBody = <DataRows rows={rows} columns={columns} />;
   }
 
+  // use to compare items(data source) changes
+  const [compareItems, setCompareItems] = useState([]);
   useEffect(() => {
-    if (scrollToFirstRowOnChange && items.length) {
+    if (!isEqual(items, compareItems)) {
+      setCompareItems(items);
+    }
+  }, [items]);
+  useEffect(() => {
+    if (scrollToFirstRowOnChange && compareItems.length) {
       if (tableBodyRef.current) {
         tableBodyRef.current.scrollTo(0, 0);
       }
     }
-  }, [items]);
+  }, [compareItems]);
 
   return (
     <StyledTable className={className}>
