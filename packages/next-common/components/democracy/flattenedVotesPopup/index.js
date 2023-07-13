@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
@@ -14,13 +14,15 @@ import { useSelector } from "react-redux";
 import {
   allAyeSelector,
   allNaySelector,
-  showVotesNumberSelector,
+  showVotesNumberSelector
 } from "next-common/store/reducers/democracy/votes/selectors";
 
-export default function VotesPopup({ setShowVoteList }) {
+export default function VotesPopup({
+  setShowVoteList,
+}) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const allAye = useSelector(allAyeSelector);
-  const allNay = useSelector(allNaySelector);
+  const allNay = useSelector(allNaySelector)
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
@@ -55,11 +57,6 @@ export default function VotesPopup({ setShowVoteList }) {
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
-  const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-    // eslint-disable-next-line
-  }, [sliceFrom, sliceTo]);
-
   return (
     <BaseVotesPopup
       title="Flattened View"
@@ -71,7 +68,10 @@ export default function VotesPopup({ setShowVoteList }) {
         ayesCount={allAye?.length || 0}
         naysCount={allNay?.length || 0}
       />
-      <VotesList items={items} loading={!showVotesNumber} />
+      <VotesList
+        items={votes.slice(sliceFrom, sliceTo)}
+        loading={!showVotesNumber}
+      />
 
       <Pagination {...pagination} />
     </BaseVotesPopup>

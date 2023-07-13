@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import noop from "lodash.noop";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import Pagination from "next-common/components/pagination";
@@ -16,12 +16,11 @@ import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 import { sortTotalVotes } from "../../../utils/democracy/votes/passed/common";
 import { useSelector } from "react-redux";
-import {
-  allNestedVotesSelector,
-  showVotesNumberSelector,
-} from "next-common/store/reducers/democracy/votes/selectors";
+import { allNestedVotesSelector, showVotesNumberSelector } from "next-common/store/reducers/democracy/votes/selectors";
 
-export default function NestedVotesPopup({ setShowVoteList = noop }) {
+export default function NestedVotesPopup({
+  setShowVoteList = noop,
+}) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const { allAye, allNay } = useSelector(allNestedVotesSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
@@ -60,11 +59,6 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
-  const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-    // eslint-disable-next-line
-  }, [sliceFrom, sliceTo]);
-
   return (
     <BaseVotesPopup title="Nested View" onClose={() => setShowVoteList(false)}>
       <VotesTab
@@ -74,7 +68,10 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
         naysCount={allDirectNays?.length || 0}
       />
 
-      <VotesList items={items} loading={!showVotesNumber} />
+      <VotesList
+        items={votes.slice(sliceFrom, sliceTo)}
+        loading={!showVotesNumber}
+      />
 
       <Pagination {...pagination} />
     </BaseVotesPopup>
