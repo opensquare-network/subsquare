@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@osn/eslint-config": "*",
-    "eslint": "7.32.0",
+    "eslint": "^8.44.0",
     "eslint-config-next": "^13.3.0",
     "raw-loader": "^4.0.2"
   }
