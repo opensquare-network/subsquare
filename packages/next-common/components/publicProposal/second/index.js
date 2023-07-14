@@ -10,13 +10,13 @@ import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useApi";
 import Tooltip from "../../tooltip";
 import SecondaryButton from "../../buttons/secondaryButton";
-import { GhostCard } from "../../styled/containers/ghostCard";
 import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
 import useMaxDeposits from "./useMaxDeposits";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
+import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 
 const SecondPopup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -191,13 +191,13 @@ export default function Second({
   return (
     <>
       <RightBarWrapper>
-        <GhostCard>
+        <SecondaryCardDetail>
           <Title className="!px-0">
             <div>Second</div>
             <div>{totalSeconds}</div>
           </Title>
           {secondsList}
-        </GhostCard>
+        </SecondaryCardDetail>
         {!node?.hideActionButtons && action}
       </RightBarWrapper>
       {showPopup && (
