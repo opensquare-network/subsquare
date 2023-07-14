@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import Comments from "next-common/components/comment";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
@@ -30,6 +29,16 @@ export default withLoginUserRedux(
 
     const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
+    const breadcrumbItems = [
+      {
+        content: "Discussions",
+        path: "/discussions",
+      },
+      {
+        content: "#" + detail?.postUid,
+      },
+    ];
+
     const desc = getMetaDesc(detail);
     return (
       <PostProvider post={detail}>
@@ -40,9 +49,7 @@ export default withLoginUserRedux(
             ogImage: getBannerUrl(detail?.bannerCid),
           }}
           header={<DetailHeader />}
-          breadcrumbs={
-            <Back href={"/discussions"} text="Back to Discussions" />
-          }
+          breadcrumbs={breadcrumbItems}
         >
           <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
           <Comments data={comments} />
