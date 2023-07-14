@@ -2,7 +2,7 @@ import React from "react";
 import BarChart from "../barChart";
 import startCase from "lodash.startcase";
 
-export default function AddressCountChart({ tracks }) {
+export default function DelegatedAddressChart({ tracks }) {
   const height = (tracks.length + 1) * 30;
 
   const categoryPercentage = 0.6;

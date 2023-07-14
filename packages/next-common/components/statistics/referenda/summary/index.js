@@ -1,29 +1,16 @@
-import React from "react";
-import styled from "styled-components";
-import { Header, Wrapper } from "../../styled";
-import Divider from "next-common/components/styled/layout/divider";
+import { StatisticsTitle } from "../../styled";
 import { DoughnutChart } from "./doughnetChart";
 import TrackList from "./trackList";
-
-const Content = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
 export default function ReferendaSummary({ summary }) {
   return (
-    <Wrapper>
-      <Header>All Referenda</Header>
-      <Divider />
-      <Header>Referendum Count</Header>
-      <Content>
+    <SecondaryCard>
+      <StatisticsTitle>Referendum Count</StatisticsTitle>
+      <div className="flex flex-wrap gap-6">
         <TrackList trackReferendaCounts={summary?.trackReferendaCounts} />
         <DoughnutChart trackReferendaCounts={summary?.trackReferendaCounts} />
-      </Content>
-    </Wrapper>
+      </div>
+    </SecondaryCard>
   );
 }
