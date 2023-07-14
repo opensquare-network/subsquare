@@ -9,12 +9,12 @@ import { ssrNextApi } from "next-common/services/nextApi";
 export default withLoginUserRedux(() => {
   const { data, isLoading } = useAllianceMembers();
   const list = [
-    ...(data?.fellow || [])?.map((address) => ({ address, role: "Fellow" })),
-    ...(data?.ally || [])?.map((address) => ({ address, role: "Ally" })),
-    ...(data?.retiring || [])?.map((address) => ({
+    ...(data?.fellow?.map?.((address) => ({ address, role: "Fellow" })) ?? []),
+    ...(data?.ally?.map?.((address) => ({ address, role: "Ally" })) ?? []),
+    ...(data?.retiring?.map?.((address) => ({
       address,
       role: "Retiring",
-    })),
+    })) ?? []),
   ];
 
   const category = "Members";
