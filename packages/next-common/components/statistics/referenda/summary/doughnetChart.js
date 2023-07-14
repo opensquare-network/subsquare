@@ -52,7 +52,7 @@ export function DoughnutChart({ trackReferendaCounts }) {
 
   return (
     <div className={clsx("flex justify-center flex-grow", "w-[200px]")}>
-      <div style={{ width: 240, height: 240 }}>
+      <div style={{ width: 200, height: 200 }}>
         <Doughnut data={data} options={options} />
       </div>
     </div>

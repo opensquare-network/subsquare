@@ -7,7 +7,7 @@ export default function ReferendaSummary({ summary }) {
   return (
     <SecondaryCard>
       <StatisticsTitle>Referendum Count</StatisticsTitle>
-      <div className="flex flex-wrap gap-6 max-sm:flex-col">
+      <div className="flex flex-wrap gap-6">
         <TrackList trackReferendaCounts={summary?.trackReferendaCounts} />
         <DoughnutChart trackReferendaCounts={summary?.trackReferendaCounts} />
       </div>
