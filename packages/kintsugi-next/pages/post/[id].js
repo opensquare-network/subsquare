@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import DetailItem from "components/detailItem";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -18,6 +17,16 @@ export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
     comments,
   });
 
+  const breadcrumbItems = [
+    {
+      content: "Discussions",
+      path: "/discussions",
+    },
+    {
+      content: "#" + detail?.postUid,
+    },
+  ];
+
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -28,7 +37,7 @@ export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
         header={<DetailHeader />}
-        breadcrumbs={<Back href={"/discussions"} text="Back to Discussions" />}
+        breadcrumbs={breadcrumbItems}
       >
         <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
         {CommentComponent}
