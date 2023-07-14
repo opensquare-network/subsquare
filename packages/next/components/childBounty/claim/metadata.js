@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { GhostCard } from "next-common/components/styled/containers/ghostCard";
-import { shadow_100 } from "next-common/styles/componentCss";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
@@ -11,14 +9,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import Anchor from "next-common/components/styled/anchor";
-
-const MyGhostCard = styled(GhostCard)`
-  background: var(--neutral100);
-  border: 1px solid var(--neutral300);
-  ${shadow_100};
-  border-radius: 6px;
-  color: var(--textPrimary);
-`;
+import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 
 const Info = styled.div`
   display: flex;
@@ -68,49 +59,51 @@ export default function Meta() {
     else return null;
   }, [lg, sm]);
 
-  return <MyGhostCard>
-    <StatisticTitleContainer>
-      <Flex>
-        <span>Overview</span>
-      </Flex>
-    </StatisticTitleContainer>
-    <Info>
-      <InfoItem>
-        <InfoItemName>Beneficiary</InfoItemName>
-        <InfoItemValue>
-          <User
-            add={onChain.beneficiary}
-            fontSize={14}
-            maxWidth={beneficiaryUserMaxWidth}
-          />
-        </InfoItemValue>
-      </InfoItem>
-      <InfoItem>
-        <InfoItemName>Value</InfoItemName>
-        <InfoItemValue>
-          <ValueDisplay
-            value={toPrecision(onChain.meta.value ?? 0, decimals)}
-            symbol={symbol}
-          />
-        </InfoItemValue>
-      </InfoItem>
-      <InfoItem>
-        <InfoItemName>Curator fee</InfoItemName>
-        <InfoItemValue>
-          <ValueDisplay
-            value={toPrecision(onChain.meta.fee ?? 0, decimals)}
-            symbol={symbol}
-          />
-        </InfoItemValue>
-      </InfoItem>
-      <InfoItem>
-        <InfoItemName>Parent bounty</InfoItemName>
-        <InfoItemValue>
-          <Anchor href={`/treasury/bounty/${onChain.parentBountyId}`}>
-            {`#${onChain.parentBountyId}`}
-          </Anchor>
-        </InfoItemValue>
-      </InfoItem>
-    </Info>
-  </MyGhostCard>;
+  return (
+    <SecondaryCardDetail>
+      <StatisticTitleContainer>
+        <Flex>
+          <span>Overview</span>
+        </Flex>
+      </StatisticTitleContainer>
+      <Info>
+        <InfoItem>
+          <InfoItemName>Beneficiary</InfoItemName>
+          <InfoItemValue>
+            <User
+              add={onChain.beneficiary}
+              fontSize={14}
+              maxWidth={beneficiaryUserMaxWidth}
+            />
+          </InfoItemValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoItemName>Value</InfoItemName>
+          <InfoItemValue>
+            <ValueDisplay
+              value={toPrecision(onChain.meta.value ?? 0, decimals)}
+              symbol={symbol}
+            />
+          </InfoItemValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoItemName>Curator fee</InfoItemName>
+          <InfoItemValue>
+            <ValueDisplay
+              value={toPrecision(onChain.meta.fee ?? 0, decimals)}
+              symbol={symbol}
+            />
+          </InfoItemValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoItemName>Parent bounty</InfoItemName>
+          <InfoItemValue>
+            <Anchor href={`/treasury/bounty/${onChain.parentBountyId}`}>
+              {`#${onChain.parentBountyId}`}
+            </Anchor>
+          </InfoItemValue>
+        </InfoItem>
+      </Info>
+    </SecondaryCardDetail>
+  );
 }
