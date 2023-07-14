@@ -1,9 +1,11 @@
 import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
-import ReferendaStatistics from "next-common/components/statistics/referenda";
+import DelegateeSummary from "next-common/components/statistics/referenda/delegateeSummary";
 import ReferendaSummary from "next-common/components/statistics/referenda/summary";
 import OpenGovTurnoutSummary from "next-common/components/statistics/referenda/turnoutSummary";
+import TrackDelegationSummary from "next-common/components/statistics/referenda/trackDelegationSummary";
+import DelegatedAddressSummary from "next-common/components/statistics/referenda/delegatedAddressSummary";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import {
   fellowshipTracksApi,
@@ -32,7 +34,7 @@ export default withLoginUserRedux(
             <div
               className={clsx(
                 "flex gap-4",
-                "[&_>_div]:min-w-[calc(50%-16px)]",
+                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:flex-1",
                 !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
               )}
             >
@@ -43,8 +45,20 @@ export default withLoginUserRedux(
 
           <div>
             <Header className="px-6 mb-4">Delegation</Header>
+            <div
+              className={clsx(
+                "flex gap-4",
+                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:flex-1",
+                !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
+              )}
+            >
+              <TrackDelegationSummary tracks={tracksStats} />
+              <DelegatedAddressSummary tracks={tracksStats} />
+            </div>
+          </div>
 
-            <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
+          <div>
+            <DelegateeSummary delegatee={delegatee} />
           </div>
         </div>
       </ReferendaLayout>
