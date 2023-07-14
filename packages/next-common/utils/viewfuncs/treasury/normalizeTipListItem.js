@@ -9,6 +9,7 @@ export const TipStateMap = {
   TipRetracted: "Retracted",
   TipClosed: "Closed",
   TipSlashed: "Slashed",
+  Removed: "Removed",
 };
 
 export function getTipState(state) {
