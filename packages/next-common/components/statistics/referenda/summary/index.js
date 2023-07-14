@@ -7,6 +7,7 @@ import TrackList from "./trackList";
 
 const Content = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 24px;
   @media screen and (max-width: 768px) {
     flex-direction: column;
