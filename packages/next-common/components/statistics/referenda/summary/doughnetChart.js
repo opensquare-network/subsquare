@@ -36,9 +36,6 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  @media screen and (min-width: 768px) {
-    padding: 56px 126px;
-  }
 `;
 
 export function DoughnutChart({ trackReferendaCounts }) {

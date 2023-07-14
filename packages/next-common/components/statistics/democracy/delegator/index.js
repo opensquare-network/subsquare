@@ -14,14 +14,13 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+`;
 
 const ListWrapper = styled.div`
   display: flex;
-  @media screen and (max-width: 768px) {
-    overflow-x: auto;
-    ${pretty_scroll_bar};
-  }
+  overflow-x: auto;
+  ${pretty_scroll_bar};
 `;
 
 const StyledList = styled(StyledListOrigin)`
