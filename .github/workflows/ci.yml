@@ -17,6 +17,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
+          cache: yarn
+          cache-dependency-path: yarn.lock
 
       - name: Yarn install
         uses: borales/actions-yarn@v4
