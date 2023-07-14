@@ -1,9 +1,9 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import styled from "styled-components";
 import { TrackColors } from "./colors";
 import startCase from "lodash.startcase";
+import clsx from "clsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,35 +30,31 @@ const options = {
   cutout: "80%",
 };
 
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-`;
-
 export function DoughnutChart({ trackReferendaCounts }) {
   const data = {
-    labels: trackReferendaCounts.map(item => startCase(item.name)),
+    labels: trackReferendaCounts.map((item) => startCase(item.name)),
     datasets: [
       {
         label: "Referendum Count",
-        data: trackReferendaCounts.map(item => item.count),
-        backgroundColor: trackReferendaCounts.map(item => TrackColors[item.name]),
-        borderColor: trackReferendaCounts.map(item => TrackColors[item.name]),
+        data: trackReferendaCounts.map((item) => item.count),
+        backgroundColor: trackReferendaCounts.map(
+          (item) => TrackColors[item.name],
+        ),
+        borderColor: trackReferendaCounts.map((item) => TrackColors[item.name]),
         borderWidth: 0,
-        name: trackReferendaCounts.map(item => startCase(item.name)),
-        percentage: trackReferendaCounts.map(item => `${(item.percent * 100).toFixed(2)}%`),
+        name: trackReferendaCounts.map((item) => startCase(item.name)),
+        percentage: trackReferendaCounts.map(
+          (item) => `${(item.percent * 100).toFixed(2)}%`,
+        ),
       },
     ],
   };
 
   return (
-    <Wrapper>
+    <div className={clsx("flex justify-center flex-grow", "w-[200px]")}>
       <div style={{ width: 240, height: 240 }}>
         <Doughnut data={data} options={options} />
       </div>
-    </Wrapper>
+    </div>
   );
 }

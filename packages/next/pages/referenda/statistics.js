@@ -10,11 +10,15 @@ import {
   gov2ReferendumsSummaryApi,
   gov2TracksApi,
 } from "next-common/services/url";
+import { Header } from "next-common/components/statistics/styled";
+import clsx from "clsx";
+import { useNavCollapsed } from "next-common/context/nav";
 
 export default withLoginUserRedux(
   ({ tracksStats, delegatee, summary, referendumsSummary }) => {
     const title = "OpenGov Statistics";
     const seoInfo = { title, desc: title };
+    const [navCollapsed] = useNavCollapsed();
 
     return (
       <ReferendaLayout
@@ -22,9 +26,27 @@ export default withLoginUserRedux(
         title={title}
         summaryData={referendumsSummary}
       >
-        <ReferendaSummary summary={summary} />
-        <OpenGovTurnoutSummary summary={summary} />
-        <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
+        <div className="space-y-6">
+          <div>
+            <Header className="px-6 mb-4">Referenda</Header>
+            <div
+              className={clsx(
+                "flex gap-4",
+                "[&_>_div]:min-w-[calc(50%-16px)]",
+                !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
+              )}
+            >
+              <ReferendaSummary summary={summary} />
+              <OpenGovTurnoutSummary summary={summary} />
+            </div>
+          </div>
+
+          <div>
+            <Header className="px-6 mb-4">Delegation</Header>
+
+            <ReferendaStatistics tracks={tracksStats} delegatee={delegatee} />
+          </div>
+        </div>
       </ReferendaLayout>
     );
   },

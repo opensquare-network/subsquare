@@ -1,15 +1,12 @@
-import React from "react";
-import Divider from "next-common/components/styled/layout/divider";
-import { Header, Wrapper } from "../../styled";
+import { StatisticsTitle } from "../../styled";
 import TurnoutChart from "./turnoutChart";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
 export default function OpenGovTurnoutSummary({ summary }) {
   return (
-    <Wrapper>
-      <Header>Turnout</Header>
-      <Divider />
-      <Header>Average Turnout Pct.</Header>
+    <SecondaryCard>
+      <StatisticsTitle>Average Turnout Pct.</StatisticsTitle>
       <TurnoutChart turnouts={summary?.trackTurnouts} />
-    </Wrapper>
+    </SecondaryCard>
   );
 }
