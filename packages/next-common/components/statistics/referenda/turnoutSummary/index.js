@@ -6,7 +6,10 @@ export default function OpenGovTurnoutSummary({ summary }) {
   return (
     <SecondaryCard>
       <StatisticsTitle>Average Turnout Pct.</StatisticsTitle>
-      <TurnoutChart turnouts={summary?.trackTurnouts} />
+      {/* NOTE: minus the padding manually, didn't found the way from chartjs docs */}
+      <div className="-mt-[17px]">
+        <TurnoutChart turnouts={summary?.trackTurnouts} />
+      </div>
     </SecondaryCard>
   );
 }
