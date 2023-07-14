@@ -1,5 +1,4 @@
 // collective voted list
-import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Flex from "next-common/components/styled/flex";
 import Statistics from "next-common/components/styled/paragraph/statistic";
@@ -10,6 +9,7 @@ import User from "next-common/components/user";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import AyeNay from "next-common/components/collective/AyeNay";
 import styled from "styled-components";
+import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 
 const TipperList = styled.div`
   margin-top: 16px;
@@ -69,7 +69,7 @@ export default function Voters({ votes = [], isLoadingVote = false, prime }) {
   }
 
   return (
-    <GhostCard>
+    <SecondaryCardDetail>
       <StatisticTitleContainer className="!px-0">
         <Flex>
           <span>Votes</span>
@@ -81,6 +81,6 @@ export default function Voters({ votes = [], isLoadingVote = false, prime }) {
       </StatisticTitleContainer>
       {voteList}
       <MemberLinks />
-    </GhostCard>
+    </SecondaryCardDetail>
   );
 }

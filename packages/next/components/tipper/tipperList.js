@@ -2,7 +2,6 @@ import styled from "styled-components";
 import User from "next-common/components/user";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import SymbolBalance from "next-common/components/values/symbolBalance";
-import { GhostCard } from "next-common/components/styled/containers/ghostCard";
 import Flex from "next-common/components/styled/flex";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
@@ -11,6 +10,7 @@ import useTipMeta from "next-common/utils/hooks/useTipMeta";
 import MemberLinks from "components/motion/vote/memberLinks";
 import useTipThreshold from "next-common/context/post/treasury/tip/tipThreshold";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
+import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 
 const NoTippers = styled.div`
   text-align: center;
@@ -74,7 +74,7 @@ export default function TipperList({ tipHash }) {
   const tips = tipMeta?.tips || [];
 
   return (
-    <GhostCard>
+    <SecondaryCardDetail>
       <StatisticTitleContainer className="!px-0">
         <Flex>
           <span>Tippers</span>
@@ -86,6 +86,6 @@ export default function TipperList({ tipHash }) {
       </StatisticTitleContainer>
       <Items tips={tips} windowWidth={windowWidth} />
       <MemberLinks />
-    </GhostCard>
+    </SecondaryCardDetail>
   );
 }
