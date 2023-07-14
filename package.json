@@ -15,19 +15,18 @@
   "devDependencies": {
     "autoprefixer": "^10.4.14",
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.2",
+    "lint-staged": "^13.2.3",
     "postcss": "^8.4.24",
+    "postinstall-postinstall": "^2.1.0",
+    "prettier": "^3.0.0",
     "pretty-quick": "^3.1.3",
     "tailwindcss": "^3.3.2"
   },
   "lint-staged": {
-    "**/*.jsx?": [
+    "**/*.{js,jsx}": [
+      "prettier --write",
       "eslint --fix"
     ]
-  },
-  "dependencies": {
-    "postinstall-postinstall": "^2.1.0",
-    "prettier": "^2.2.1"
   },
   "packageManager": "yarn@3.5.0"
 }
