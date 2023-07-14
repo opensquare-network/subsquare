@@ -43,13 +43,13 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
     normalizeTipListItem(chain, item),
   );
 
-  const category = "Treasury Tips";
+  const category = "Tips";
   const seoInfo = { title: "Treasury Tips", desc: "Treasury Tips" };
 
   return (
     <ListLayout
       seoInfo={seoInfo}
-      title={category}
+      title={seoInfo.title}
       summary={<TreasurySummary />}
       summaryFooter={
         !hideActionButtons && (

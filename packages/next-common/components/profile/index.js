@@ -146,6 +146,7 @@ export default withLoginUserRedux(({ route, summary, user, id }) => {
         {
           label: "Posted",
           url: `/user/${id}`,
+          exactMatch: false,
         },
       ]}
     >

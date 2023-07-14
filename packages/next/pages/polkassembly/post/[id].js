@@ -1,4 +1,3 @@
-import Back from "next-common/components/back";
 import DetailItem from "components/polkassembly/detailItem";
 import PolkassemblyComments from "components/polkassembly/comment";
 import usePolkassemblyPostData from "components/polkassembly/usePolkassemblyPostData";
@@ -18,6 +17,16 @@ export default withLoginUserRedux(({ detail }) => {
     polkassemblyId,
   });
 
+  const breadcrumbItems = [
+    {
+      content: "Polkassembly",
+      path: "/polkassembly/discussions",
+    },
+    {
+      content: "#" + polkassemblyId,
+    },
+  ];
+
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -28,12 +37,7 @@ export default withLoginUserRedux(({ detail }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
         header={<PolkassemblyDetailHeader />}
-        breadcrumbs={
-          <Back
-            href={"/polkassembly/discussions"}
-            text="Back to Polkassembly Discussions"
-          />
-        }
+        breadcrumbs={breadcrumbItems}
       >
         <DetailItem postReactions={postReactions} />
         <PolkassemblyComments
