@@ -8,6 +8,7 @@ import { useThemeSetting } from "next-common/context/theme";
 
 const Wrapper = styled.div`
   flex-grow: 1;
+  min-width: 300px;
 `;
 
 export default function ThresholdCurvesChart({
