@@ -13,14 +13,18 @@ function DemocracyReferendumState() {
   const state = usePostState();
   const args = getDemocracyStateArgs(onchain.state, onchain.timeline);
 
-  return <DemocracyReferendumTag state={state} args={args}/>;
+  return <DemocracyReferendumTag state={state} args={args} />;
 }
 
 export default function DemocracyReferendumMeta() {
-  return <PostMetaBase state={ <DemocracyReferendumState /> }>
-    <DemocracyTag />
-    <UpdatedTime />
-    <CommentsMeta />
-    <DetailLabels />
-  </PostMetaBase>;
+  return (
+    <PostMetaBase state={<DemocracyReferendumState />}>
+      <div>
+        <DemocracyTag />
+      </div>
+      <UpdatedTime />
+      <CommentsMeta />
+      <DetailLabels />
+    </PostMetaBase>
+  );
 }
