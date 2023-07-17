@@ -11,7 +11,7 @@ const DividerWrapper = styled(Flex)`
     align-items: center;
 
     @media (max-width: 768px) {
-      display: hidden;
+      display: none;
     }
 
     ::before {
