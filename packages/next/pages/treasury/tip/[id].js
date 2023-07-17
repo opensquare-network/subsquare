@@ -13,8 +13,8 @@ import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import TreasuryTipDetailLayout from "next-common/components/layout/treasuryLayout/tipDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -70,8 +70,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <TreasuryTipDetailLayout
-        detail={detail}
+      <DetailLayout
         breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
@@ -81,7 +80,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
         hasSider
       >
         {postContent}
-      </TreasuryTipDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });
