@@ -131,7 +131,7 @@ export default function MotionDetail({ onReply }) {
   }
 
   return (
-    <div>
+    <>
       <DetailContentBase>
         {!isEdit && <MotionHead motion={post} type={type} />}
         <ArticleContent
@@ -152,6 +152,6 @@ export default function MotionDetail({ onReply }) {
       <Business motion={post?.onchainData} />
       <Metadata />
       <Timeline />
-    </div>
+    </>
   );
 }
