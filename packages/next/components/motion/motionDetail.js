@@ -21,6 +21,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import MotionHead from "./head";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
@@ -132,6 +133,7 @@ export default function MotionDetail({ onReply }) {
   return (
     <div>
       <DetailContentBase>
+        {!isEdit && <MotionHead motion={post} type={type} />}
         <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
       </DetailContentBase>
       <Vote
