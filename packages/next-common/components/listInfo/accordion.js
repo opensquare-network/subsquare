@@ -12,7 +12,7 @@ export default function Accordion({
 
   return (
     <div>
-      <TitleContainer className="pt-6">
+      <TitleContainer className="!p-0 mb-6 max-sm:mb-4">
         {title}
         <ArrowUp
           role="button"
@@ -24,7 +24,7 @@ export default function Accordion({
         />
       </TitleContainer>
 
-      <div className={clsx(!open && "hidden", "p-6", "max-sm:py-4")}>
+      <div className={clsx(!open && "hidden")}>
         <div>{children}</div>
       </div>
     </div>

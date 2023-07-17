@@ -28,7 +28,7 @@ export default function Comments({
   return (
     <div>
       <Header>
-        <TitleContainer className={clsx("w-full pt-6", "max-sm:!block")}>
+        <TitleContainer className={clsx("w-full !px-0 mb-4", "max-sm:!block")}>
           <div className="max-sm:mb-4">Comments</div>
           {tabs}
         </TitleContainer>
@@ -45,7 +45,7 @@ export default function Comments({
       )}
       {!items?.length > 0 && <NoComment />}
       {!isLogin && (
-        <div className="px-6">
+        <div>
           <LoginButtons />
         </div>
       )}

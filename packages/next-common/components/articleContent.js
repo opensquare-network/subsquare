@@ -41,7 +41,13 @@ const BannerImage = styled.img`
   width: 100%;
 `;
 
-export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
+export default function ArticleContent({
+  votes,
+  myVote,
+  onReply,
+  setIsEdit,
+  className = "",
+}) {
   const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
   const post = usePost();
@@ -89,7 +95,7 @@ export default function ArticleContent({ votes, myVote, onReply, setIsEdit }) {
   const bannerUrl = getBannerUrl(post.bannerCid);
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {!post.content && (
         <NonEdited
           setIsEdit={setIsEdit}

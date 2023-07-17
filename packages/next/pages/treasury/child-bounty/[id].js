@@ -17,8 +17,8 @@ import NonNullPost from "next-common/components/nonNullPost";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import TreasuryChildBountyDetailLayout from "next-common/components/layout/treasuryLayout/childBountyDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -80,8 +80,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <TreasuryChildBountyDetailLayout
-        detail={detail}
+      <DetailLayout
         seoInfo={{
           title: detail?.title,
           desc,
@@ -91,7 +90,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
         hasSider={showRightSidePanel}
       >
         {postContent}
-      </TreasuryChildBountyDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

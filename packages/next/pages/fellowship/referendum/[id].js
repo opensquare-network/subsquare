@@ -25,7 +25,7 @@ import FellowshipReferendaDetail from "next-common/components/detail/fellowship"
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import FellowshipReferendaDetailLayout from "next-common/components/layout/fellowshipLayout/referendaDetail";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -103,14 +103,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <FellowshipReferendaDetailLayout
-        detail={detail}
-        breadcrumbs={breadcrumbs}
-        seoInfo={seoInfo}
-        hasSider
-      >
+      <DetailLayout breadcrumbs={breadcrumbs} seoInfo={seoInfo} hasSider>
         {postContent}
-      </FellowshipReferendaDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

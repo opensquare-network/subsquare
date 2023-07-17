@@ -5,7 +5,6 @@ import Timeline from "components/treasuryProposal/timeline";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import useUniversalComments from "components/universalComments";
-import TreasuryProposalDetailLayout from "next-common/components/layout/treasuryLayout/proposalDetail";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
@@ -13,6 +12,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -71,13 +71,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <TreasuryProposalDetailLayout
-        detail={detail}
-        seoInfo={seoInfo}
-        breadcrumbs={breadcrumbItems}
-      >
+      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbItems}>
         {postContent}
-      </TreasuryProposalDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

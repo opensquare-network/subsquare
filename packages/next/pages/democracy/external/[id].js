@@ -13,8 +13,8 @@ import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "components/external/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DemocracyProposalDetailLayout from "next-common/components/layout/democracyLayout/proposalDetailLayout";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function DemocracyExternalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -69,8 +69,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DemocracyProposalDetailLayout
-        detail={detail}
+      <DetailLayout
         seoInfo={{
           title: detail?.title,
           desc,
@@ -79,7 +78,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
         breadcrumbs={breadcrumbItems}
       >
         {postContent}
-      </DemocracyProposalDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });
