@@ -30,8 +30,8 @@ import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
-import ReferendaDetailLayout from "next-common/components/layout/referendaLayout/detail";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -119,14 +119,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <ReferendaDetailLayout
-        detail={detail}
-        seoInfo={seoInfo}
-        breadcrumbs={breadcrumbs}
-        hasSider
-      >
+      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbs} hasSider>
         {postContent}
-      </ReferendaDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });
