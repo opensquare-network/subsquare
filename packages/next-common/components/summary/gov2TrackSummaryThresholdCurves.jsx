@@ -4,15 +4,13 @@ import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
 import { ArrowExpend } from "@osn/icons/subsquare";
 import ThresholdCurvesGov2TrackSummaryLegend from "next-common/components/charts/thresholdCurve/legend/gov2TrackSummaryLegend";
 import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
-import {
-  SummaryItem,
-  SummaryItemTitle,
-} from "next-common/components/summary/styled";
+import { SummaryItemTitle } from "next-common/components/summary/styled";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
 
-const SummaryThresholdCurveItem = styled(SummaryItem)`
+const SummaryThresholdCurveItem = styled.div`
   height: 100%;
 `;
+
 const SummaryThresholdCurveItemTitle = styled(SummaryItemTitle)`
   display: flex;
   justify-content: space-between;
@@ -34,7 +32,7 @@ export default function Gov2TrackSummaryThresholdCurves({ period }) {
 
   return (
     <>
-      <SummaryThresholdCurveItem>
+      <SummaryThresholdCurveItem className="md:w-1/4">
         <SummaryThresholdCurveItemTitle>
           <span>Threshold Curves</span>
           <ArrowExpend
@@ -49,7 +47,7 @@ export default function Gov2TrackSummaryThresholdCurves({ period }) {
             {/* different height */}
             <div className="max-md:block hidden">
               <ThresholdCurvesChart
-                height={110}
+                height={56}
                 scalesX={false}
                 scalesY={false}
                 labels={chartLabels}

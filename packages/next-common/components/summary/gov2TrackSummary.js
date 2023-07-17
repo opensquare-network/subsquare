@@ -30,9 +30,9 @@ export default function Gov2TrackSummary({ summary, period }) {
   );
 
   return (
-    <div className={clsx("flex", "max-md:block max-md:space-y-4")}>
+    <div className={clsx("md:flex max-md:flex-col max-md:space-y-4")}>
       <Summary
-        className="!grid-cols-3 max-md:!grid-cols-2"
+        className="!grid-cols-3 max-md:!grid-cols-2 !w-auto grow"
         items={[
           {
             title: "Capacity",

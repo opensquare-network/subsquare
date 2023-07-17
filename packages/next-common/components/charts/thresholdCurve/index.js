@@ -6,10 +6,7 @@ import { emptyFunction } from "../../../utils";
 import hoverLinePlugin from "../plugins/hoverLine";
 import { useThemeSetting } from "next-common/context/theme";
 
-const Wrapper = styled.div`
-  flex-grow: 1;
-  min-width: 300px;
-`;
+const Wrapper = styled.div``;
 
 export default function ThresholdCurvesChart({
   width,
@@ -132,14 +129,8 @@ export default function ThresholdCurvesChart({
   beforeDrawOptions?.(options);
 
   return (
-    <Wrapper>
-      <Line
-        data={chartData}
-        options={options}
-        height={height}
-        width={width}
-        plugins={[hoverLinePlugin]}
-      />
+    <Wrapper style={{ height, width }}>
+      <Line data={chartData} options={options} plugins={[hoverLinePlugin]} />
     </Wrapper>
   );
 }
