@@ -9,6 +9,7 @@ import {
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavCollapsed } from "next-common/context/nav";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 /**
  * @typedef {{
@@ -28,7 +29,6 @@ import { useNavCollapsed } from "next-common/context/nav";
  * @typedef {Object} DetailLayoutProps
  * @property {JSX.Element | Breadcrumb[]} breadcrumbs - The breadcrumb items.
  * @property {SeoInfo} seoInfo - The SEO information.
- * @property {Object} detail - The post detail from server.
  * @property {JSX.Element} children - The children components.
  * @property {JSX.Element} header - The header element.
  * @property {boolean} hasSider - Indicates if the layout has a sider component.
@@ -43,7 +43,6 @@ export default function DetailLayout({
   header,
   children,
   hasSider,
-  detail,
 }) {
   const dispatch = useDispatch();
   const siderHeight = useSelector(layoutDetailSiderHeight);
@@ -59,13 +58,19 @@ export default function DetailLayout({
     <BaseLayout seoInfo={seoInfo}>
       <div
         className={clsx(
-          "bg-neutral100 px-6 flex-1 flex flex-col",
+          "bg-neutral200 px-6 flex-1 flex flex-col",
           "max-sm:px-0",
+          // navCollapsed ? "max-md:px-0" : "max-lg:px-0",
         )}
       >
         <div className={clsx("mx-auto py-6 max-w-[1200px] w-full")}>
           {breadcrumbs && (
-            <div className="mb-6 px-6">
+            <div
+              className={clsx(
+                "mb-6 px-12",
+                navCollapsed ? "max-md:px-6" : "max-lg:px-6",
+              )}
+            >
               {breadcrumbs?.length > 0 ? (
                 <Breadcrumb items={breadcrumbs} />
               ) : (
@@ -74,22 +79,32 @@ export default function DetailLayout({
             </div>
           )}
 
-          {header && <div className="px-6">{header}</div>}
+          {header && (
+            <div
+              className={clsx(
+                "px-12",
+                navCollapsed ? "max-md:px-6" : "max-lg:px-6",
+              )}
+            >
+              {header}
+            </div>
+          )}
 
           {/* set relative for right side(vote) component */}
           <div className="flex gap-x-6 mt-6 max-w-full relative">
-            <div
+            <NeutralPanel
               className={clsx(
-                "w-full space-y-6 max-sm:space-y-4",
-                detail && hasSider
-                  ? "max-w-[calc(100%-320px-48px)]"
-                  : "max-w-full",
-                navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
+                "w-full flex flex-col gap-y-12 p-12 max-sm:space-y-4",
+                "max-sm:!rounded-none",
+                hasSider ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
+                navCollapsed
+                  ? "max-md:max-w-full max-md:p-6"
+                  : "max-lg:max-w-full max-lg:p-6",
               )}
               style={{ minHeight: `${siderHeight}px` }}
             >
               {children}
-            </div>
+            </NeutralPanel>
           </div>
         </div>
       </div>

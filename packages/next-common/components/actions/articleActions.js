@@ -20,7 +20,7 @@ export default function ArticleActions({
 }) {
   const isLogin = useIsLogin();
   const post = usePost();
-  const isAuthor = useIsPostAuthor();
+  const isAuthor = true || useIsPostAuthor();
   const thumbsUp = useIsThumbUp();
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
     count: post?.reactions?.length,

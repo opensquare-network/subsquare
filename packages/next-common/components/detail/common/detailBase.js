@@ -38,7 +38,7 @@ export default function DetailContentBase({ children }) {
   }
 
   return (
-    <div className="px-6">
+    <div>
       {post?.isMalicious && <MaliciousHead />}
       {children}
     </div>
