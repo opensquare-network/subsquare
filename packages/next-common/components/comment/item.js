@@ -25,7 +25,6 @@ import clsx from "clsx";
 
 const Wrapper = styled.div`
   position: relative;
-  padding: 16px 24px;
 
   :hover {
     .edit {
