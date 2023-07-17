@@ -14,7 +14,7 @@ import {
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import ReferendaBusiness from "../../../components/gov2/business";
@@ -32,12 +32,15 @@ import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import Tabs from "next-common/components/tabs";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
   const dispatch = useDispatch();
   useSubReferendumInfo();
   const info = useReferendumInfo();
+
+  const [activeTabLabel, setActiveTabLabel] = useState("Business");
 
   useEffect(() => {
     return () => {
@@ -58,10 +61,28 @@ function ReferendumContent({ comments }) {
       <ReferendaDetail onReply={focusEditor} />
 
       <Gov2Sidebar />
-      <ReferendaBusiness />
-      <Gov2ReferendumMetadata info={info} />
 
-      <Timeline trackInfo={post?.onchainData?.trackInfo} />
+      <Tabs
+        activeTab={activeTabLabel}
+        onTabClick={(tab) => setActiveTabLabel(tab.label)}
+        tabsListExtra={
+          activeTabLabel === "Timeline" && <div>{/* TODO: v2, timeline */}</div>
+        }
+        tabs={[
+          {
+            label: "Business",
+            content: <ReferendaBusiness />,
+          },
+          {
+            label: "Metadata",
+            content: <Gov2ReferendumMetadata info={info} />,
+          },
+          {
+            label: "Timeline",
+            content: <Timeline trackInfo={post?.onchainData?.trackInfo} />,
+          },
+        ]}
+      />
 
       {CommentComponent}
     </>
