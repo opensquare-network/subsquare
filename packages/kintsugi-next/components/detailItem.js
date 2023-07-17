@@ -7,6 +7,7 @@ import DetailContentBase from "next-common/components/detail/common/detailBase";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import DetailHeader from "./detailHeader";
 
 export default function DetailItem({ onReply, votes, myVote }) {
   const type = useDetailType();
@@ -26,7 +27,9 @@ export default function DetailItem({ onReply, votes, myVote }) {
 
   return (
     <DetailContentBase>
+      <DetailHeader />
       <ArticleContent
+        className="mt-6"
         post={post}
         onReply={onReply}
         setIsEdit={setIsEdit}

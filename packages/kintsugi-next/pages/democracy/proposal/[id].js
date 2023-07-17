@@ -15,7 +15,7 @@ import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DemocracyProposalDetailLayout from "next-common/components/layout/democracyLayout/proposalDetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -99,8 +99,7 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DemocracyProposalDetailLayout
-        detail={detail}
+      <DetailLayout
         breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
@@ -110,7 +109,7 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
         hasSider
       >
         {postContent}
-      </DemocracyProposalDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });
