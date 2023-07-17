@@ -134,7 +134,12 @@ export default function MotionDetail({ onReply }) {
     <div>
       <DetailContentBase>
         {!isEdit && <MotionHead motion={post} type={type} />}
-        <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
+        <ArticleContent
+          className="mt-6"
+          post={post}
+          onReply={onReply}
+          setIsEdit={setIsEdit}
+        />
       </DetailContentBase>
       <Vote
         votes={votes}
