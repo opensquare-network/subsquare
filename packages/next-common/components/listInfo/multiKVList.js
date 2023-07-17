@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import styled from "styled-components";
-import Accordion from "./accordion";
 import Row from "./row";
 
 const Section = styled.div`
@@ -9,13 +8,13 @@ const Section = styled.div`
   }
 `;
 
-function MultiKVList({ data = [], title, showFold = true }) {
+function MultiKVList({ data = [] }) {
   if (!data || data?.length === 0) {
     return null;
   }
 
   return (
-    <Accordion title={title} showFold={showFold}>
+    <>
       {data.map((item, index) => (
         <Section key={index}>
           {item.map((row, index) => (
@@ -23,7 +22,7 @@ function MultiKVList({ data = [], title, showFold = true }) {
           ))}
         </Section>
       ))}
-    </Accordion>
+    </>
   );
 }
 
