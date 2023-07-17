@@ -11,7 +11,6 @@ import useUniversalComments from "../../../components/universalComments";
 import DetailItem from "../../../components/detailItem";
 import AnnouncementTimeline from "next-common/components/alliance/announcement/timeline";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailHeader from "next-common/components/detail/detailHeader";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -59,7 +58,6 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
           desc: getMetaDesc(announcement),
           ogImage: getBannerUrl(announcement?.bannerCid),
         }}
-        header={<DetailHeader />}
         breadcrumbs={breadcrumbItems}
       >
         {postContent}
