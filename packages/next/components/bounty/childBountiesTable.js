@@ -108,9 +108,8 @@ function ChildBountiesTable({ childBounties }) {
     <div>
       {childBounties.items.map((bounty, index) => {
         return (
-          <ChildBountyWrapper key={index} className="group">
+          <ChildBountyWrapper key={index}>
             <Row
-              className="group-last:border-b-0"
               row={[
                 `#${bounty.index}`,
                 <ChildBounty key="child-bounty">
