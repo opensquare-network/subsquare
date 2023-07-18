@@ -23,7 +23,6 @@ function BountyContent({ detail, childBounties, comments }) {
   });
 
   useSubscribePostDetail(detail?.bountyIndex);
-  console.log(childBounties);
 
   return (
     <>
