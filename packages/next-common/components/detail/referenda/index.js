@@ -9,6 +9,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import ReferendaPostMeta from "next-common/components/detail/common/openGov/meta";
 import ReferendaWhiteListNavigation from "next-common/components/detail/referenda/whitelistNavigation";
 import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
+import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCountdown";
 
 export default function ReferendaDetail({ onReply }) {
   const post = usePost();
@@ -19,6 +20,7 @@ export default function ReferendaDetail({ onReply }) {
     <DetailContentBase>
       {!isEditing && (
         <>
+          <TimeoutCountdown />
           <ReferendaWhiteListNavigation />
           <ReferendaReferendumNavigation />
         </>
