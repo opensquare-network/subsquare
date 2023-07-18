@@ -22,6 +22,7 @@ import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -196,6 +197,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
   return (
     <div>
       <DetailContentBase>
+        <TechcommMotionDetailHeader motion={motion} />
         <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
       </DetailContentBase>
 
