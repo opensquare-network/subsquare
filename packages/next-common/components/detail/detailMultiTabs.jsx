@@ -7,6 +7,8 @@ import { useTimelineData } from "next-common/context/post";
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
   call,
+  childBounties,
+  childBountiesCount,
   business,
   metadata,
   timeline,
@@ -16,6 +18,11 @@ export default function DetailMultiTabs({
 
   const tabs = [
     call && { label: "Call", content: call },
+    childBounties && {
+      label: "Child Bounties",
+      activeCount: childBountiesCount,
+      content: childBounties,
+    },
     business && { label: "Business", content: business },
     metadata && { label: "Metadata", content: metadata },
     timeline && {
