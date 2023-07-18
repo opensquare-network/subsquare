@@ -90,7 +90,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
         breadcrumbs={breadcrumbItems}
-        hasSider={showRightSidePanel}
+        hasSidebar={showRightSidePanel}
       >
         {postContent}
       </DetailLayout>

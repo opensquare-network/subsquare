@@ -113,7 +113,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbItems} hasSider>
+      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbItems} hasSidebar>
         {postContent}
       </DetailLayout>
     </PostProvider>

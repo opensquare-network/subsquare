@@ -3,8 +3,8 @@ import BaseLayout from "./baseLayoutV2";
 import Breadcrumb from "../_Breadcrumb";
 import { useSelector } from "react-redux";
 import {
-  layoutDetailSiderHeight,
-  setLayoutDetailSiderHeight,
+  layoutDetailSidebarHeight,
+  setLayoutDetailSidebarHeight,
 } from "next-common/store/reducers/layoutSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ import { NeutralPanel } from "../styled/containers/neutralPanel";
  * @property {SeoInfo} seoInfo - The SEO information.
  * @property {JSX.Element} children - The children components.
  * @property {JSX.Element} header - The header element.
- * @property {boolean} hasSider - Indicates if the layout has a sider component.
+ * @property {boolean} hasSidebar - Indicates if the layout has a sidebar component.
  */
 
 /**
@@ -42,13 +42,13 @@ export default function DetailLayout({
   breadcrumbs,
   header,
   children,
-  hasSider,
+  hasSidebar,
 }) {
   const dispatch = useDispatch();
-  const siderHeight = useSelector(layoutDetailSiderHeight);
+  const sidebarHeight = useSelector(layoutDetailSidebarHeight);
   useEffect(() => {
     return () => {
-      dispatch(setLayoutDetailSiderHeight(0));
+      dispatch(setLayoutDetailSidebarHeight(0));
     };
   }, []);
 
@@ -66,7 +66,7 @@ export default function DetailLayout({
         <div
           className={clsx(
             "mx-auto py-6 max-w-[1200px] w-full",
-            !hasSider && "max-w-[856px]",
+            !hasSidebar && "max-w-[856px]",
           )}
         >
           {breadcrumbs && (
@@ -101,12 +101,12 @@ export default function DetailLayout({
               className={clsx(
                 "w-full flex flex-col gap-y-12 p-12 max-sm:space-y-4",
                 "max-sm:!rounded-none",
-                hasSider ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
+                hasSidebar ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
                 navCollapsed
                   ? "max-md:max-w-full max-md:p-6"
                   : "max-lg:max-w-full max-lg:p-6",
               )}
-              style={{ minHeight: `${siderHeight}px` }}
+              style={{ minHeight: `${sidebarHeight}px` }}
             >
               {children}
             </NeutralPanel>
