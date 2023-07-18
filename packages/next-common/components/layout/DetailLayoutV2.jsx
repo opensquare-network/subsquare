@@ -97,19 +97,24 @@ export default function DetailLayout({
 
           {/* set relative for right side(vote) component */}
           <div className="flex gap-x-6 mt-6 max-w-full relative">
-            <NeutralPanel
+            <div
               className={clsx(
-                "w-full flex flex-col gap-y-12 p-12 max-sm:space-y-4",
-                "max-sm:!rounded-none",
+                "w-full",
                 hasSidebar ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
-                navCollapsed
-                  ? "max-md:max-w-full max-md:p-6"
-                  : "max-lg:max-w-full max-lg:p-6",
+                navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
               )}
               style={{ minHeight: `${sidebarHeight}px` }}
             >
-              {children}
-            </NeutralPanel>
+              <NeutralPanel
+                className={clsx(
+                  "w-full flex flex-col gap-y-12 p-12 max-sm:gap-y-4",
+                  "max-sm:!rounded-none",
+                  navCollapsed ? "max-md:p-6" : "max-lg:p-6",
+                )}
+              >
+                {children}
+              </NeutralPanel>
+            </div>
           </div>
         </div>
       </div>
