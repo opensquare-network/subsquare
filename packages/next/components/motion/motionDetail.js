@@ -22,6 +22,7 @@ import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import MotionHead from "./head";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
@@ -149,9 +150,11 @@ export default function MotionDetail({ onReply }) {
         onInBlock={updateVotes}
         isLoadingVote={isLoadingVote}
       />
-      <Business motion={post?.onchainData} />
-      <Metadata />
-      <Timeline />
+      <DetailMultiTabs
+        business={<Business motion={post?.onchainData} />}
+        metadata={<Metadata />}
+        timeline={<Timeline />}
+      />
     </>
   );
 }
