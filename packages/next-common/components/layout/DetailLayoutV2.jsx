@@ -63,7 +63,12 @@ export default function DetailLayout({
           // navCollapsed ? "max-md:px-0" : "max-lg:px-0",
         )}
       >
-        <div className={clsx("mx-auto py-6 max-w-[1200px] w-full")}>
+        <div
+          className={clsx(
+            "mx-auto py-6 max-w-[1200px] w-full",
+            !hasSider && "max-w-[856px]",
+          )}
+        >
           {breadcrumbs && (
             <div
               className={clsx(
