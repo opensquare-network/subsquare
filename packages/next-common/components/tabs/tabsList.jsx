@@ -4,7 +4,7 @@ import noop from "lodash.noop";
 export default function TabsList({
   tabs = [],
   extra,
-  activeTab,
+  activeTabLabel,
   onTabClick = noop,
 }) {
   return (
@@ -17,7 +17,7 @@ export default function TabsList({
             "hover:text-theme500",
           );
           const itemActiveClassName = "border-theme500 text-theme500";
-          const active = tab.active ?? activeTab === tab.label;
+          const active = tab.active ?? activeTabLabel === tab.label;
 
           return (
             <li key={idx}>

@@ -6,7 +6,7 @@ import noop from "lodash.noop";
 export default function Tabs({
   tabs = [],
   tabsListExtra,
-  activeTab = "",
+  activeTabLabel = "",
   onTabClick = noop,
 }) {
   return (
@@ -14,7 +14,7 @@ export default function Tabs({
       <TabsList
         tabs={tabs}
         extra={tabsListExtra}
-        activeTab={activeTab}
+        activeTabLabel={activeTabLabel}
         onTabClick={onTabClick}
       />
 
@@ -24,7 +24,7 @@ export default function Tabs({
         {tabs.map((tab, idx) => (
           <div
             key={idx}
-            className={clsx("hidden", activeTab === tab.label && "!block")}
+            className={clsx("hidden", activeTabLabel === tab.label && "!block")}
           >
             {tab.content}
           </div>

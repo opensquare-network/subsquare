@@ -63,11 +63,8 @@ function ReferendumContent({ comments }) {
       <Gov2Sidebar />
 
       <Tabs
-        activeTab={activeTabLabel}
+        activeTabLabel={activeTabLabel}
         onTabClick={(tab) => setActiveTabLabel(tab.label)}
-        tabsListExtra={
-          activeTabLabel === "Timeline" && <div>{/* TODO: v2, timeline */}</div>
-        }
         tabs={[
           {
             label: "Business",
