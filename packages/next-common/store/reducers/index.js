@@ -13,6 +13,7 @@ import referenda from "./referenda";
 import navReducer from "./navSlice";
 import democracy from "./democracy";
 import layoutReducer from "./layoutSlice";
+import treasury from "./treasury";
 
 export default combineReducers({
   toast: toastReducer,
@@ -28,4 +29,5 @@ export default combineReducers({
   ...referenda,
   ...democracy,
   layout: layoutReducer,
+  ...treasury,
 });
