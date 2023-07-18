@@ -116,7 +116,7 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        hasSider
+        hasSidebar
       >
         {postContent}
       </DetailLayout>

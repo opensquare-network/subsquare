@@ -32,7 +32,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
         breadcrumbs={breadcrumbItems}
-        hasSider
+        hasSidebar
       >
         {motion ? (
           <MotionContent motion={motion} comments={comments} />

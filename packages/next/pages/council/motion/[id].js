@@ -66,7 +66,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
         breadcrumbs={breadcrumbItems}
-        hasSider
+        hasSidebar
       >
         {postContent}
       </DetailLayout>

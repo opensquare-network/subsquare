@@ -80,7 +80,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        hasSider
+        hasSidebar
       >
         {postContent}
       </DetailLayout>
