@@ -13,7 +13,7 @@ export default function Timeline({ data = [], indent = true }) {
   }
 
   return (
-    <>
+    <div className="py-4">
       {data.map((item, index) => (
         <Fragment key={index}>
           {Array.isArray(item) ? (
@@ -23,6 +23,6 @@ export default function Timeline({ data = [], indent = true }) {
           )}
         </Fragment>
       ))}
-    </>
+    </div>
   );
 }
