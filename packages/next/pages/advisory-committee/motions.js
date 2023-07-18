@@ -4,9 +4,13 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toAdvisoryMotionsListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
-import HomeLayout from "next-common/components/layout/HomeLayout";
+import ListLayout from "next-common/components/layout/ListLayout";
+import { useChainSettings } from "next-common/context/chain";
+import ChainSocialLinks from "next-common/components/chain/socialLinks";
 
 export default withLoginUserRedux(({ motions, chain }) => {
+  const chainSettings = useChainSettings();
+
   const items = (motions.items || []).map((item) =>
     toAdvisoryMotionsListItem(chain, item),
   );
@@ -17,7 +21,12 @@ export default withLoginUserRedux(({ motions, chain }) => {
   };
 
   return (
-    <HomeLayout seoInfo={seoInfo}>
+    <ListLayout
+      title={chainSettings.name}
+      seoInfo={seoInfo}
+      description={chainSettings.description}
+      headContent={<ChainSocialLinks />}
+    >
       <PostList
         category={category}
         items={items}
@@ -27,7 +36,7 @@ export default withLoginUserRedux(({ motions, chain }) => {
           total: motions.total,
         }}
       />
-    </HomeLayout>
+    </ListLayout>
   );
 });
 
