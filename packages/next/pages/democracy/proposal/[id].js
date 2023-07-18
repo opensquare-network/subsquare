@@ -16,6 +16,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function PublicProposalContent({ comments }) {
   const post = usePost();
@@ -50,8 +51,10 @@ function PublicProposalContent({ comments }) {
         useAddressVotingBalance={useAddressBalance}
         atBlockHeight={secondsAtBlockHeight}
       />
-      <Metadata publicProposal={post?.onchainData} />
-      <Timeline />
+      <DetailMultiTabs
+        metadata={<Metadata publicProposal={post?.onchainData} />}
+        timeline={<Timeline />}
+      />
       {CommentComponent}
     </>
   );
