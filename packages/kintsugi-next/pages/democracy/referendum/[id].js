@@ -24,6 +24,7 @@ import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -74,14 +75,18 @@ function ReferendumContent({ publicProposal, comments }) {
         referendumIndex={post?.referendumIndex}
       />
 
-      <ReferendumMetadata
-        proposer={post?.proposer}
-        status={referendumStatus ?? {}}
-        call={post?.onchainData?.preImage?.call}
-        onchainData={post?.onchainData}
+      <DetailMultiTabs
+        metadata={
+          <ReferendumMetadata
+            proposer={post?.proposer}
+            status={referendumStatus ?? {}}
+            call={post?.onchainData?.preImage?.call}
+            onchainData={post?.onchainData}
+          />
+        }
+        timeline={<Timeline data={timelineData} />}
       />
 
-      <Timeline data={timelineData} />
       {CommentComponent}
     </>
   );
