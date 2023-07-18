@@ -33,12 +33,14 @@ import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import useReferendaBusinessData from "hooks/useReferendaBusinessData";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
   const dispatch = useDispatch();
   useSubReferendumInfo();
   const info = useReferendumInfo();
+  const businessData = useReferendaBusinessData();
 
   useEffect(() => {
     return () => {
@@ -61,7 +63,7 @@ function ReferendumContent({ comments }) {
       <Gov2Sidebar />
 
       <DetailMultiTabs
-        business={<ReferendaBusiness />}
+        business={!!businessData?.length && <ReferendaBusiness />}
         metadata={<Gov2ReferendumMetadata info={info} />}
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
