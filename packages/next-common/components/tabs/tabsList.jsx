@@ -30,6 +30,11 @@ export default function TabsList({
                 onClick={() => onTabClick(tab)}
               >
                 {tab.label}
+                {!!tab.activeCount && (
+                  <span className="ml-1 text-textTertiary text14Medium">
+                    {tab.activeCount}
+                  </span>
+                )}
               </div>
             </li>
           );

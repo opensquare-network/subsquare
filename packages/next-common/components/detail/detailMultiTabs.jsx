@@ -2,6 +2,7 @@
 
 import { cloneElement, useState } from "react";
 import Tabs from "../tabs";
+import { useTimelineData } from "next-common/context/post";
 
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
@@ -11,6 +12,7 @@ export default function DetailMultiTabs({
   timeline,
 }) {
   const [timelineCompact, setTimelineCompact] = useState(false);
+  const timelineData = useTimelineData();
 
   const tabs = [
     call && { label: "Call", content: call },
@@ -18,6 +20,7 @@ export default function DetailMultiTabs({
     metadata && { label: "Metadata", content: metadata },
     timeline && {
       label: "Timeline",
+      activeCount: timelineData?.length,
       content: cloneElement(timeline, {
         compact: timelineCompact,
       }),
