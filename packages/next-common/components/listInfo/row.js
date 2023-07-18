@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import React, { memo } from "react";
 import styled from "styled-components";
 
@@ -50,13 +49,13 @@ const Content = styled.div`
   }
 `;
 
-function Row({ row = [], className = "" }) {
+function Row({ row = [] }) {
   if (!row) {
     return null;
   }
 
   return (
-    <Wrapper className={clsx("last:border-b-0", className)}>
+    <Wrapper>
       {row.length === 1 && row[0]}
       {row.length === 2 && (
         <>
