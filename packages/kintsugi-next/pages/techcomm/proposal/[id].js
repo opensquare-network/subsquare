@@ -11,7 +11,6 @@ import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -77,7 +76,6 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
         breadcrumbs={breadcrumbItems}
-        header={<TechcommMotionDetailHeader motion={motion} />}
       >
         {postContent}
       </DetailLayout>
