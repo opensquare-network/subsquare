@@ -9,6 +9,7 @@ import { toPrecision } from "next-common/utils";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import FlexBetween from "next-common/components/styled/flexBetween";
 import Flex from "next-common/components/styled/flex";
+import Tooltip from "next-common/components/tooltip";
 
 const VoteWrapper = tw.div`flex flex-col gap-[2px]`;
 
@@ -64,8 +65,8 @@ function ConvictionLabel({ vote }) {
 function StandardVoteItem({ vote }) {
   const { symbol, decimals } = useChainSettings();
   return (
-    <VoteWrapper>
-      <Flex>
+    <Flex>
+      <VoteWrapper>
         <PartialVoteItem>
           {vote.aye ? <Aye /> : <Nay />}
           <ValueDisplay
@@ -73,11 +74,13 @@ function StandardVoteItem({ vote }) {
             symbol={symbol}
           />
         </PartialVoteItem>
-        <div className="w-[52px] text-right">
+      </VoteWrapper>
+      <div className="w-[64px] text-right">
+        <Tooltip content="Standard">
           <ConvictionLabel vote={vote} />
-        </div>
-      </Flex>
-    </VoteWrapper>
+        </Tooltip>
+      </div>
+    </Flex>
   );
 }
 
@@ -101,7 +104,9 @@ function SplitVoteItem({ vote }) {
           />
         </PartialVoteItem>
       </VoteWrapper>
-      <div className="w-[52px] text-right text-textTertiary">0.1x/s</div>
+      <div className="w-[64px] text-right text-textTertiary">
+        <Tooltip content="Split">0.1x/s</Tooltip>
+      </div>
     </Flex>
   );
 }
@@ -133,13 +138,15 @@ function SplitAbstainVoteItem({ vote }) {
           />
         </PartialVoteItem>
       </VoteWrapper>
-      <div className="w-[52px] text-right text-textTertiary">0.1x/sa</div>
+      <div className="w-[64px] text-right text-textTertiary">
+        <Tooltip content="SplitAbstain">0.1x/sa</Tooltip>
+      </div>
     </Flex>
   );
 }
 
 export default function VoteItem({ vote }) {
-  if (vote.isStandard) {
+  if (vote.isStandard || vote.isDelegating) {
     return <StandardVoteItem vote={vote} />;
   }
 

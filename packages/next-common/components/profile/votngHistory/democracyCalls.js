@@ -14,6 +14,7 @@ import { normalizeCall } from "./common";
 import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import dayjs from "dayjs";
+import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -32,8 +33,8 @@ export default function DemocracyCalls() {
   const [data, setData] = useState(EmptyList);
 
   const { columns } = useColumns([
-    { name: "Proposals", style: { textAlign: "left", minWidth: "230px" } },
-    { name: "Date", style: { textAlign: "left", minWidth: "128px" } },
+    { name: "Proposals", style: { textAlign: "left", minWidth: "180px" } },
+    { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
     {
       name: "Vote",
       style: { textAlign: "left", width: "128px", minWidth: "128px" },
@@ -72,13 +73,20 @@ export default function DemocracyCalls() {
           {item.proposal?.title}
         </Link>
       </Flex>,
-      <div key="date" className="text-textTertiary">
+      <div key="date" className="text-textTertiary whitespace-nowrap">
         <ExplorerLink indexer={item.indexer}>
           {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
         </ExplorerLink>
       </div>,
       <VoteItem key="vote" vote={normalizeCall(item)} />,
-      <DemocracyReferendumTag key="status" state={item.proposal?.state} />,
+      <DemocracyReferendumTag
+        key="status"
+        state={item.proposal?.state?.state}
+        args={getDemocracyStateArgs(
+          item.proposal?.state,
+          item.proposal?.timeline,
+        )}
+      />,
     ];
 
     return row;

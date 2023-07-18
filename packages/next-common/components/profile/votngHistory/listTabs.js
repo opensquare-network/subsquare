@@ -9,6 +9,9 @@ import { OpenGov } from "./moduleTab";
 
 const ListCard = styled(SecondaryCard)`
   margin-left: -24px;
+  a:hover {
+    text-decoration: underline;
+  }
 `;
 
 export default function ListTabs({ moduleTabIndex }) {

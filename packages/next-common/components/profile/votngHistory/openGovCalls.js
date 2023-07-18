@@ -15,6 +15,7 @@ import BigNumber from "bignumber.js";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import dayjs from "dayjs";
+import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -77,8 +78,8 @@ export default function OpenGovCalls() {
   const [data, setData] = useState(EmptyList);
 
   const { columns } = useColumns([
-    { name: "Proposals", style: { textAlign: "left", minWidth: "230px" } },
-    { name: "Date", style: { textAlign: "left", minWidth: "128px" } },
+    { name: "Proposals", style: { textAlign: "left", minWidth: "180px" } },
+    { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
     {
       name: "Vote",
       style: { textAlign: "left", width: "128px", minWidth: "128px" },
@@ -117,13 +118,17 @@ export default function OpenGovCalls() {
           {item.proposal?.title}
         </Link>
       </Flex>,
-      <div key="date" className="text-textTertiary">
+      <div key="date" className="text-textTertiary whitespace-nowrap">
         <ExplorerLink indexer={item.indexer}>
           {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
         </ExplorerLink>
       </div>,
       <VoteItem key="vote" vote={normalizeCall(item)} />,
-      <Gov2ReferendaTag key="status" state={item.proposal?.state?.name} />,
+      <Gov2ReferendaTag
+        key="status"
+        state={item.proposal?.state?.name}
+        args={getGov2ReferendumStateArgs(item.proposal?.state)}
+      />,
     ];
 
     return row;

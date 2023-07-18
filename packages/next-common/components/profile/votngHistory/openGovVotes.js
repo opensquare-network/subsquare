@@ -11,6 +11,7 @@ import { EmptyList } from "next-common/utils/constants";
 import VoteItem from "./voteItem";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import Link from "next/link";
+import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -69,7 +70,11 @@ export default function OpenGovVotes() {
         </Link>
       </Flex>,
       <VoteItem key="vote" vote={item} />,
-      <Gov2ReferendaTag key="status" state={item.proposal?.state?.name} />,
+      <Gov2ReferendaTag
+        key="status"
+        state={item.proposal?.state?.name}
+        args={getGov2ReferendumStateArgs(item.proposal?.state)}
+      />,
     ];
 
     return row;

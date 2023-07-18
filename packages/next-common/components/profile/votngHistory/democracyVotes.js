@@ -11,6 +11,7 @@ import { EmptyList } from "next-common/utils/constants";
 import VoteItem from "./voteItem";
 import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
 import Link from "next/link";
+import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -69,7 +70,14 @@ export default function DemocracyVotes() {
         </Link>
       </Flex>,
       <VoteItem key="vote" vote={item} />,
-      <DemocracyReferendumTag key="status" state={item.proposal?.state} />,
+      <DemocracyReferendumTag
+        key="status"
+        state={item.proposal?.state?.state}
+        args={getDemocracyStateArgs(
+          item.proposal?.state,
+          item.proposal?.timeline,
+        )}
+      />,
     ];
 
     return row;
