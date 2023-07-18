@@ -15,6 +15,7 @@ import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -29,8 +30,10 @@ function TreasuryTipContent({ comments }) {
     <>
       <TipDetail onReply={focusEditor} />
       <Tipper />
-      <Metadata tip={post?.onchainData} />
-      <Timeline tip={post?.onchainData} />
+      <DetailMultiTabs
+        metadata={<Metadata tip={post?.onchainData} />}
+        timeline={<Timeline tip={post?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );

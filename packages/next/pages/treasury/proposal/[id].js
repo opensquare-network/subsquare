@@ -13,6 +13,7 @@ import TreasuryProposalDetail from "next-common/components/detail/treasury/propo
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -25,8 +26,10 @@ function TreasuryProposalContent({ detail, comments }) {
   return (
     <>
       <TreasuryProposalDetail onReply={focusEditor} />
-      <Metadata treasuryProposal={detail?.onchainData} />
-      <Timeline treasuryProposal={detail?.onchainData} />
+      <DetailMultiTabs
+        metadata={<Metadata treasuryProposal={detail?.onchainData} />}
+        timeline={<Timeline treasuryProposal={detail?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );

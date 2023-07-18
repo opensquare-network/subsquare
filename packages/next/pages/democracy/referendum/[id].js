@@ -22,6 +22,7 @@ import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -55,15 +56,19 @@ function ReferendumContent({ comments }) {
 
       <Vote referendumIndex={post?.referendumIndex} />
 
-      <ReferendumMetadata
-        proposer={post?.proposer}
-        status={referendumStatus ?? {}}
-        call={post?.onchainData?.preImage?.call || post?.onchainData?.call}
-        shorten={post?.onchainData?.preImage?.shorten}
-        onchainData={post?.onchainData}
+      <DetailMultiTabs
+        metadata={
+          <ReferendumMetadata
+            proposer={post?.proposer}
+            status={referendumStatus ?? {}}
+            call={post?.onchainData?.preImage?.call || post?.onchainData?.call}
+            shorten={post?.onchainData?.preImage?.shorten}
+            onchainData={post?.onchainData}
+          />
+        }
+        timeline={<Timeline />}
       />
 
-      <Timeline />
       {CommentComponent}
     </>
   );

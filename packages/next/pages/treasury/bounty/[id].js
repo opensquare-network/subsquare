@@ -14,6 +14,7 @@ import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -22,13 +23,19 @@ function BountyContent({ detail, childBounties, comments }) {
   });
 
   useSubscribePostDetail(detail?.bountyIndex);
+  console.log(childBounties);
 
   return (
     <>
       <BountyDetail onReply={focusEditor} />
-      <Metadata meta={detail.onchainData?.meta} />
-      <ChildBountiesTable {...{ childBounties }} />
-      <Timeline bounty={detail?.onchainData} />
+      <DetailMultiTabs
+        childBounties={
+          !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />
+        }
+        childBountiesCount={childBounties.total}
+        metadata={<Metadata meta={detail.onchainData?.meta} />}
+        timeline={<Timeline bounty={detail?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );

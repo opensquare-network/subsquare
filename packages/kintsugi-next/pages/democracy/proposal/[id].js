@@ -16,6 +16,7 @@ import CheckUnFinalized from "next-common/components/democracy/publicProposal/ch
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -55,12 +56,21 @@ function PublicProposalContent({ referendum, comments }) {
         useAddressVotingBalance={useAddressVotingBalance}
         atBlockHeight={secondsAtBlockHeight}
       />
-      <Business treasuryProposals={treasuryProposals} />
-      <Metadata publicProposal={post?.onchainData} />
-      <Timeline
-        publicProposalTimeline={post?.onchainData?.timeline}
-        referendumTimeline={referendum?.onchainData?.timeline}
+      <DetailMultiTabs
+        business={
+          !!treasuryProposals?.length && (
+            <Business treasuryProposals={treasuryProposals} />
+          )
+        }
+        metadata={<Metadata publicProposal={post?.onchainData} />}
+        timeline={
+          <Timeline
+            publicProposalTimeline={post?.onchainData?.timeline}
+            referendumTimeline={referendum?.onchainData?.timeline}
+          />
+        }
       />
+
       {CommentComponent}
     </>
   );

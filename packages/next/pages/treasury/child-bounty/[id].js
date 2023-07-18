@@ -19,6 +19,7 @@ import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -36,8 +37,10 @@ function ChildBountyContent({ comments }) {
     <>
       <ChildBountyDetail onReply={focusEditor} />
       <Claim />
-      <Metadata meta={post?.onchainData?.meta} />
-      <Timeline onchainData={post?.onchainData} />
+      <DetailMultiTabs
+        metadata={<Metadata meta={post?.onchainData?.meta} />}
+        timeline={<Timeline onchainData={post?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );
