@@ -68,7 +68,12 @@ export default function Item({ data, isSecondLevel }) {
   const duration = useDuration(comment.createdAt);
 
   return (
-    <Wrapper className="group/comment-item">
+    <Wrapper
+      className={clsx(
+        "group/comment-item first:mt-0",
+        !isSecondLevel ? "mt-8" : "mt-4",
+      )}
+    >
       <InfoWrapper>
         <User user={comment.author} noEvent />
         <div>{duration}</div>
@@ -109,7 +114,7 @@ export default function Item({ data, isSecondLevel }) {
         <Divider
           className={clsx(
             "group-last/comment-item:hidden",
-            "ml-7 relative top-5",
+            "ml-7 relative top-4",
           )}
         />
       )}
