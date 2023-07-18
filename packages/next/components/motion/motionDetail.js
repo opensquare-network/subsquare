@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import MotionHead from "./head";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
@@ -31,6 +32,7 @@ export default function MotionDetail({ onReply }) {
   const api = useApi();
   const isMounted = useIsMounted();
   const post = usePost();
+  const motionBusinessData = useCouncilMotionBusinessData();
 
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
@@ -151,7 +153,11 @@ export default function MotionDetail({ onReply }) {
         isLoadingVote={isLoadingVote}
       />
       <DetailMultiTabs
-        business={<Business motion={post?.onchainData} />}
+        business={
+          !!motionBusinessData?.length && (
+            <Business motion={post?.onchainData} />
+          )
+        }
         metadata={<Metadata />}
         timeline={<Timeline />}
       />
