@@ -48,6 +48,27 @@ export const convictionToLockX = (conviction) => {
   }
 };
 
+export const convictionToLockXNumber = (conviction) => {
+  switch (conviction) {
+    case 0:
+      return 0.1;
+    case 1:
+      return 1;
+    case 2:
+      return 2;
+    case 3:
+      return 3;
+    case 4:
+      return 4;
+    case 5:
+      return 5;
+    case 6:
+      return 6;
+    default:
+      return 0.1;
+  }
+};
+
 export function getTallyVotesBarPercent(tally) {
   const ayes = tally?.ayes ?? 0;
   const nays = tally?.nays ?? 0;

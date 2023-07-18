@@ -67,7 +67,7 @@ export default function ValueDisplay({
   }
 
   return (
-    <div>
+    <div className="inline-flex items-center">
       <span>{Number(value)?.toLocaleString()} </span>
       {symbolContent}
     </div>

@@ -8,6 +8,7 @@ export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
         "bg-neutral200",
         "rounded p-1 h-12",
         small && "h-9",
+        "tabs-container",
       )}
     >
       {tabs?.map?.(({ tabId, tabTitle }) => (
@@ -21,6 +22,7 @@ export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
             "text-textTertiary",
             selectedTabId === tabId &&
               "!text-textPrimary bg-neutral100 shadow-100 rounded-sm",
+            "tab-item",
           )}
           onClick={() => setSelectedTabId(tabId)}
         >

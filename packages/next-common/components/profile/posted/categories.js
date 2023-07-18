@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { SecondaryCard } from "../styled/containers/secondaryCard";
-import { no_scroll_bar } from "../../styles/componentCss";
-import { useChain } from "../../context/chain";
-import VStack from "../styled/vStack";
+import { SecondaryCard } from "../../styled/containers/secondaryCard";
+import { no_scroll_bar } from "../../../styles/componentCss";
+import { useChain } from "../../../context/chain";
+import VStack from "../../styled/vStack";
 
 const CategoryWrapper = styled(SecondaryCard)``;
 

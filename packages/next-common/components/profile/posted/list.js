@@ -1,8 +1,8 @@
 import React from "react";
-import CommentList from "../commentList";
-import PostList from "../postList";
-import Flex from "../styled/flex";
-import Loading from "../loading";
+import CommentList from "../../commentList";
+import PostList from "../../postList";
+import Flex from "../../styled/flex";
+import Loading from "../../loading";
 
 export default function List({ items, pagination, isLoading, secondCategory }) {
   const list =
