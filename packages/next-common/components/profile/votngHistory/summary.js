@@ -29,7 +29,6 @@ export default function VotingHistorySummary({
   const [data, setData] = useState({});
 
   useEffect(() => {
-    console.log({ id, moduleTabIndex });
     const module = moduleTabIndex === OpenGov ? "referenda" : "democracy";
     nextApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
       if (result) {
@@ -59,7 +58,7 @@ export default function VotingHistorySummary({
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
         <Title>Voting History</Title>
         <ModuleTab
           moduleTabIndex={moduleTabIndex}
