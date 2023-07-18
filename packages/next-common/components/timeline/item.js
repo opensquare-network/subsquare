@@ -134,7 +134,7 @@ export default function Item({ data, foldable, isFold, setIsFold }) {
     <Wrapper
       foldable={foldable}
       isFold={isFold}
-      className="group/timeline-item"
+      className="group/timeline-item first:pt-4 last:pb-4"
     >
       <Left>
         <Cirtcle />

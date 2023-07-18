@@ -75,9 +75,5 @@ export default function ReferendumTimeline({ trackInfo }) {
     [timeline, trackInfo],
   );
 
-  return (
-    <div className="pt-4">
-      <Timeline data={timelineData} />
-    </div>
-  );
+  return <Timeline data={timelineData} />;
 }
