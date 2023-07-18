@@ -195,7 +195,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
   ) : null;
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-12">
       <DetailContentBase>
         <TechcommMotionDetailHeader motion={motion} />
         <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
