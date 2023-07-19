@@ -5,18 +5,13 @@ import VoteItem from "../voteItem";
 import dayjs from "dayjs";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import { normalizeCall } from "../common";
-import { useState } from "react";
-import DetailButton from "../detailButton";
+import { PostTitle } from "../common";
 
 function ItemHeader({ vote }) {
-  const [showDetail, setShowDetail] = useState(false);
-  console.log({ showDetail });
-
   return (
     <div>
       <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
-        <span className="text-textPrimary">{vote.proposal?.title}</span>
-        <DetailButton onClick={() => setShowDetail(true)} />
+        <PostTitle vote={vote} isGov2={false} />
       </div>
       <div className="flex justify-between pt-[12px] items-center">
         <div className="text-textTertiary whitespace-nowrap">

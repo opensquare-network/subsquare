@@ -3,25 +3,12 @@ import isNil from "lodash.isnil";
 import React from "react";
 import ReasonLink from "../reasonLink";
 import Link from "next/link";
+import { Index } from "./styled";
 
 const TitleWrapper = styled.div`
   flex: 1;
   overflow: hidden;
   color: var(--textPrimary);
-`;
-
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 140%;
-  ::after {
-    content: "·";
-    font-size: 16px;
-    line-height: 22.4px;
-    color: var(--textTertiary);
-    margin: 0 8px;
-  }
 `;
 
 const Title = styled.a`

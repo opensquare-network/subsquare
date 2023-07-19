@@ -3,12 +3,13 @@ import VoteItem from "../voteItem";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import DetailButton from "../detailButton";
+import { PostTitle } from "../common";
 
 function ItemHeader({ vote, setShowVoteDetail }) {
   return (
     <div>
       <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
-        <span className="text-textPrimary">{vote.proposal?.title}</span>
+        <PostTitle vote={vote} isGov2={true} />
         <DetailButton onClick={() => setShowVoteDetail(vote)} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">

@@ -3,10 +3,8 @@ import styled from "styled-components";
 import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
-import Flex from "next-common/components/styled/flex";
 import VoteItem from "./voteItem";
-import Link from "next/link";
-import { normalizeCall } from "./common";
+import { PostTitle, normalizeCall } from "./common";
 import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import dayjs from "dayjs";
@@ -39,11 +37,7 @@ export default function DemocracyCallsList({ data, fetchData }) {
   ]);
 
   const rows = (data?.items || []).map((item) => [
-    <Flex key="proposal">
-      <Link href={`/democracy/referendum/${item.referendumIndex}`}>
-        {item.proposal?.title}
-      </Link>
-    </Flex>,
+    <PostTitle key="proposal" vote={item} isGov2={false} />,
     <div key="date" className="text-textTertiary whitespace-nowrap">
       <ExplorerLink indexer={item.indexer}>
         {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}

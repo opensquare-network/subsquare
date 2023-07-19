@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import Link from "next/link";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
-import Flex from "next-common/components/styled/flex";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
 import VoteItem from "./voteItem";
 import DetailButton from "./detailButton";
+import { PostTitle } from "./common";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -44,11 +43,7 @@ export default function DemocracyVotesList({
   ]);
 
   const rows = (data?.items || []).map((item) => [
-    <Flex key="proposal">
-      <Link href={`/democracy/referendum/${item.referendumIndex}`}>
-        {item.proposal?.title}
-      </Link>
-    </Flex>,
+    <PostTitle key="proposal" vote={item} isGov2={false} />,
     <VoteItem key="vote" vote={item} />,
     <DemocracyReferendumTag
       key="status"

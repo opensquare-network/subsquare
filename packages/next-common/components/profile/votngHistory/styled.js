@@ -9,8 +9,24 @@ export const Title = styled.div`
 `;
 
 export const ListCard = styled(SecondaryCard)`
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
   margin-left: -24px;
   a:hover {
     text-decoration: underline;
+  }
+`;
+
+export const Index = styled.span`
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  ::after {
+    content: "·";
+    font-size: 16px;
+    line-height: 22.4px;
+    color: var(--textTertiary);
+    margin: 0 8px;
   }
 `;

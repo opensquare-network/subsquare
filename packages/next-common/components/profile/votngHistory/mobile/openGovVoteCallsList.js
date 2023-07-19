@@ -1,17 +1,9 @@
 import Pagination from "next-common/components/pagination";
 import OpenGovVoteCallListItem from "./openGovVoteCallListItem";
 
-export default function MobileOpenGovVoteCallsList({
-  data,
-  fetchData,
-  setShowVoteDetail,
-}) {
+export default function MobileOpenGovVoteCallsList({ data, fetchData }) {
   const listContent = (data?.items || []).map((item, index) => (
-    <OpenGovVoteCallListItem
-      key={index}
-      vote={item}
-      setShowVoteDetail={setShowVoteDetail}
-    />
+    <OpenGovVoteCallListItem key={index} vote={item} />
   ));
 
   return (

@@ -3,14 +3,12 @@ import styled from "styled-components";
 import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
-import Flex from "next-common/components/styled/flex";
 import VoteItem from "./voteItem";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
-import Link from "next/link";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import dayjs from "dayjs";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
-import { normalizeCall } from "./common";
+import { PostTitle, normalizeCall } from "./common";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -39,11 +37,7 @@ export default function OpenGovCallsList({ data, fetchData }) {
   ]);
 
   const rows = (data?.items || []).map((item) => [
-    <Flex key="proposal">
-      <Link href={`/referenda/referendum/${item.referendumIndex}`}>
-        {item.proposal?.title}
-      </Link>
-    </Flex>,
+    <PostTitle key="proposal" vote={item} isGov2={true} />,
     <div key="date" className="text-textTertiary whitespace-nowrap">
       <ExplorerLink indexer={item.indexer}>
         {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
