@@ -5,20 +5,24 @@ import VotesInfoGroup from "next-common/components/popup/nestedVotesPopup/votesI
 import StandardVoteTabs, { Aye, Nay } from "./standardVoteTabs";
 import DelegationsList from "next-common/components/popup/nestedVotesPopup/delegationsList";
 
-export function StandardVoteDetail({ vote }) {
+export function StandardVoteDetail({ vote, isGov2 }) {
   const [tabIndex, setTabIndex] = useState(vote.aye ? Aye : Nay);
   const [delegations, setDelegations] = useState([]);
 
   useEffect(() => {
+    let url = `democracy/referendums/${vote?.referendumIndex}/delegation-votes`;
+    if (isGov2) {
+      url = `gov2/referendums/${vote?.referendumIndex}/delegation-votes`;
+    }
     nextApi
-      .fetch(`gov2/referendums/${vote.referendumIndex}/delegation-votes`, {
-        target: vote.account,
+      .fetch(url, {
+        target: vote?.account,
       })
       .then(({ result }) => {
         if (!result) return;
         setDelegations(result);
       });
-  }, []);
+  }, [vote?.referendumIndex, vote?.account, isGov2]);
 
   const data = normalizedNestedVote(vote, delegations);
 

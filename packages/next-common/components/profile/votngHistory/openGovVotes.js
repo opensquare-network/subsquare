@@ -54,6 +54,7 @@ export default function OpenGovVotes() {
       )}
       {showVoteDetail !== null && (
         <VoteDetailPopup
+          isGov2={true}
           vote={showVoteDetail}
           setShowVoteDetail={setShowVoteDetail}
         />

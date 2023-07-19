@@ -54,6 +54,7 @@ export default function DemocracyVotes() {
       )}
       {showVoteDetail !== null && (
         <VoteDetailPopup
+          isGov2={false}
           vote={showVoteDetail}
           setShowVoteDetail={setShowVoteDetail}
         />
