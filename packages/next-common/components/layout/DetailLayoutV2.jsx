@@ -58,7 +58,7 @@ export default function DetailLayout({
     <BaseLayout seoInfo={seoInfo}>
       <div
         className={clsx(
-          "bg-neutral200 px-6 flex-1 flex flex-col",
+          "bg-pageBg px-6 flex-1 flex flex-col",
           "max-sm:px-0",
           // navCollapsed ? "max-md:px-0" : "max-lg:px-0",
         )}
