@@ -65,6 +65,7 @@ const AddressItem = styled.div`
 `;
 
 const NameWrapper = styled.div`
+  color: var(--textPrimary);
   flex-grow: 1;
 
   > :first-child {
@@ -74,7 +75,7 @@ const NameWrapper = styled.div`
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
-    color: #9da9bb;
+    color: var(--textTertiary);
   }
 `;
 

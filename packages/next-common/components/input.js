@@ -57,7 +57,7 @@ const InputWrapper = styled.input`
   all: unset;
   flex-grow: 1;
   display: block;
-  padding: 16px 24px;
+  padding: 10px 16px;
   font-size: 14px;
   color: var(--textPrimary);
   background: transparent !important;
@@ -96,8 +96,12 @@ const PostWrapper = styled.div`
 `;
 
 const SymbolWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background-color: var(--neutral200);
-  padding: 11px 16px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,6 +109,7 @@ const SymbolWrapper = styled.div`
   font-size: 14px;
   line-height: 100%;
   border-left: 1px solid var(--neutral400);
+  color: var(--textPrimary);
 `;
 const OuterWrapper = styled.div``;
 

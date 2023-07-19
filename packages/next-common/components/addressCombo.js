@@ -31,6 +31,7 @@ const Select = styled(Flex)`
 `;
 
 const NameWrapper = styled.div`
+  color: var(--textPrimary);
   flex-grow: 1;
   > :first-child {
     font-size: 14px;

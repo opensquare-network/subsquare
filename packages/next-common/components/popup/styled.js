@@ -21,6 +21,7 @@ export const Label = styled.div`
   font-size: 12px;
   line-height: 100%;
   margin-bottom: 8px;
+  color: var(--textPrimary);
 `;
 
 export const VotingStatusWrapper = styled.div`

@@ -47,6 +47,7 @@ const Select = styled(Flex)`
 `;
 
 const NameWrapper = styled.div`
+  color: var(--textPrimary);
   flex-grow: 1;
   > :first-child {
     font-size: 14px;
@@ -128,16 +129,12 @@ function Account({ account }) {
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
-            <div>
-              {addressEllipsis(normalizedAddr)}
-            </div>
+            <div>{addressEllipsis(normalizedAddr)}</div>
           </>
         ) : (
           <>
             <div>{account?.name}</div>
-            <div>
-              {addressEllipsis(normalizedAddr) ?? "--"}
-            </div>
+            <div>{addressEllipsis(normalizedAddr) ?? "--"}</div>
           </>
         )}
       </NameWrapper>
