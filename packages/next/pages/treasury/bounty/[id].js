@@ -12,8 +12,9 @@ import CheckUnFinalized from "components/bounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import TreasuryBountyDetailLayout from "next-common/components/layout/treasuryLayout/bountyDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -26,9 +27,14 @@ function BountyContent({ detail, childBounties, comments }) {
   return (
     <>
       <BountyDetail onReply={focusEditor} />
-      <Metadata meta={detail.onchainData?.meta} />
-      <ChildBountiesTable {...{ childBounties }} />
-      <Timeline bounty={detail?.onchainData} />
+      <DetailMultiTabs
+        childBounties={
+          !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />
+        }
+        childBountiesCount={childBounties.total}
+        metadata={<Metadata meta={detail.onchainData?.meta} />}
+        timeline={<Timeline bounty={detail?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );
@@ -71,8 +77,7 @@ export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <TreasuryBountyDetailLayout
-        detail={detail}
+      <DetailLayout
         breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
@@ -81,7 +86,7 @@ export default withLoginUserRedux(({ id, detail, childBounties, comments }) => {
         }}
       >
         {postContent}
-      </TreasuryBountyDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

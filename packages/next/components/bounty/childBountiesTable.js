@@ -2,7 +2,6 @@ import Row from "next-common/components/listInfo/row";
 import Anchor from "next-common/components/styled/anchor";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
-import Accordion from "next-common/components/listInfo/accordion";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import FlexBetween from "next-common/components/styled/flexBetween";
@@ -106,7 +105,7 @@ function ChildBountiesTable({ childBounties }) {
   }
 
   return (
-    <Accordion title="Child Bounties">
+    <div>
       {childBounties.items.map((bounty, index) => {
         return (
           <ChildBountyWrapper key={index}>
@@ -167,7 +166,7 @@ function ChildBountiesTable({ childBounties }) {
           View all
         </DomesticLink>
       )}
-    </Accordion>
+    </div>
   );
 }
 

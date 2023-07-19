@@ -25,7 +25,6 @@ import clsx from "clsx";
 
 const Wrapper = styled.div`
   position: relative;
-  padding: 16px 24px;
 
   :hover {
     .edit {
@@ -204,7 +203,10 @@ export default function Item({
       ref={refCommentTree}
       id={comment.height}
       highlight={highlight}
-      className="group/comment-item"
+      className={clsx(
+        "group/comment-item first:mt-0",
+        !isSecondLevel ? "mt-8" : "mt-4",
+      )}
     >
       <InfoWrapper>
         <User user={comment.author} />
@@ -307,7 +309,7 @@ export default function Item({
         <Divider
           className={clsx(
             "group-last/comment-item:hidden",
-            "ml-7 relative top-5",
+            "ml-7 relative top-4",
           )}
         />
       )}

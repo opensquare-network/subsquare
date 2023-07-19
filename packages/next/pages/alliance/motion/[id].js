@@ -2,12 +2,12 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider } from "next-common/context/post";
-import MotionDetailLayout from "next-common/components/layout/motionDetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import MotionContent from "../../../components/motion/motionContent";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
   const breadcrumbItems = [
@@ -25,22 +25,21 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 
   return (
     <PostProvider post={motion}>
-      <MotionDetailLayout
-        detail={motion}
+      <DetailLayout
         seoInfo={{
           title: motion?.title,
           desc: getMetaDesc(motion),
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
         breadcrumbs={breadcrumbItems}
-        hasSider
+        hasSidebar
       >
         {motion ? (
           <MotionContent motion={motion} comments={comments} />
         ) : (
           <CheckUnFinalized id={id} />
         )}
-      </MotionDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

@@ -21,6 +21,8 @@ import { useDetailType } from "next-common/context/page";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -193,25 +195,32 @@ export default function TechcommMotionDetail({ motion, onReply }) {
   ) : null;
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-12">
       <DetailContentBase>
+        <TechcommMotionDetailHeader motion={motion} />
         <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
       </DetailContentBase>
 
-      <MultiKVList title="Business" data={business} />
-
-      <CollectiveMetadata
-        index={motion?.motionIndex}
-        proposer={motion?.onchainData?.proposer}
-        threshold={motion?.onchainData?.threshold}
-        hash={motion?.hash}
-        call={motion?.onchainData?.proposal}
-      />
-
-      <Timeline
-        data={timelineData}
-        indent={false}
-        motionEndInfo={motionEndInfo}
+      <DetailMultiTabs
+        business={
+          !!business?.length && <MultiKVList title="Business" data={business} />
+        }
+        metadata={
+          <CollectiveMetadata
+            index={motion?.motionIndex}
+            proposer={motion?.onchainData?.proposer}
+            threshold={motion?.onchainData?.threshold}
+            hash={motion?.hash}
+            call={motion?.onchainData?.proposal}
+          />
+        }
+        timeline={
+          <Timeline
+            data={timelineData}
+            indent={false}
+            motionEndInfo={motionEndInfo}
+          />
+        }
       />
     </div>
   );

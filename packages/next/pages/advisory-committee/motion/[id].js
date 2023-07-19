@@ -4,13 +4,11 @@ import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import useUniversalComments from "components/universalComments";
-import DetailWithRightLayout from "next-common/components/layout/detailWithRightLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function AdvisoryCommitteeMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -32,7 +30,9 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
   let postContent;
 
   if (motion) {
-    postContent = <AdvisoryCommitteeMotionContent motion={motion} comments={comments} />;
+    postContent = (
+      <AdvisoryCommitteeMotionContent motion={motion} comments={comments} />
+    );
   } else {
     postContent = <CheckUnFinalized id={id} />;
   }
@@ -48,25 +48,23 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       path: "/advisory-committee/motions",
     },
     {
-      content: `#${ breadcrumbItemName }`,
+      content: `#${breadcrumbItemName}`,
     },
   ];
 
   return (
     <PostProvider post={motion}>
-      <DetailWithRightLayout
+      <DetailLayout
         seoInfo={{
           title: motion?.title,
           desc,
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
+        breadcrumbs={breadcrumbItems}
+        hasSidebar
       >
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
         {postContent}
-      </DetailWithRightLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

@@ -1,7 +1,6 @@
 import { extractTime } from "@polkadot/util";
 import dayjs from "dayjs";
 import CountDown from "next-common/components/summary/countDown";
-import DemocracySummaryFooter from "next-common/components/summary/democracySummaryFooter";
 import { SummaryGreyText } from "next-common/components/summary/styled";
 import Summary from "next-common/components/summary/v2/base";
 import Tooltip from "next-common/components/tooltip";
@@ -63,7 +62,6 @@ export default function DemocracySummary({ summary = {} }) {
           ),
         },
       ].filter(Boolean)}
-      footer={hasDemocracy && !isKintsugi && <DemocracySummaryFooter />}
     />
   );
 }

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useNavCollapsed } from "next-common/context/nav";
-import { setLayoutDetailSiderHeight } from "next-common/store/reducers/layoutSlice";
+import { setLayoutDetailSidebarHeight } from "next-common/store/reducers/layoutSlice";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
@@ -11,7 +11,7 @@ export function RightBarWrapper(props) {
   const dispatch = useDispatch();
   const ref = useRef();
   useEffect(() => {
-    dispatch(setLayoutDetailSiderHeight(ref.current.clientHeight));
+    dispatch(setLayoutDetailSidebarHeight(ref.current.clientHeight));
   }, []);
 
   const [navCollapsed] = useNavCollapsed();
@@ -24,8 +24,8 @@ export function RightBarWrapper(props) {
         "flex flex-col",
         "space-y-6",
         "absolute right-6 top-0 w-[320px] mt-0",
-        "max-md:static max-md:w-auto max-md:mt-4 max-md:p-6",
-        !navCollapsed && "max-lg:p-6 max-lg:static max-lg:w-auto max-lg:mt-4",
+        "max-md:static max-md:w-auto",
+        !navCollapsed && "max-lg:static max-lg:w-auto",
         props.className,
       )}
     >

@@ -4,7 +4,7 @@ import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 const EditorWrapper = styled(RichTextStyleWrapper)`
   > div:first-child {
     max-width: 100%;
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
 
     .editor-toolbar {
@@ -124,7 +124,8 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     }
 
     :last-child {
-      box-shadow: var(--neutral300) -1px 0px 0px 0px,
+      box-shadow:
+        var(--neutral300) -1px 0px 0px 0px,
         var(--neutral300) 1px 0px 0px 0px;
     }
   }

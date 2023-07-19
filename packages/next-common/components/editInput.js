@@ -21,7 +21,6 @@ const InputWrapper = styled(EditorWrapper)`
 
 const ButtonWrapper = styled.div`
   margin-top: 16px;
-  padding: 0 24px;
   display: flex;
   justify-content: flex-end;
 

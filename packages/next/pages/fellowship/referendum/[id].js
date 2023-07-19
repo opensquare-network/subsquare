@@ -25,7 +25,8 @@ import FellowshipReferendaDetail from "next-common/components/detail/fellowship"
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import FellowshipReferendaDetailLayout from "next-common/components/layout/fellowshipLayout/referendaDetail";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -43,8 +44,11 @@ function FellowshipContent({ comments }) {
     <>
       <FellowshipReferendaDetail onReply={focusEditor} />
       <FellowshipReferendumSideBar />
-      <Gov2ReferendumMetadata info={info} />
-      <Timeline trackInfo={post?.onchainData?.trackInfo} />
+      <DetailMultiTabs
+        metadata={<Gov2ReferendumMetadata info={info} />}
+        timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+      />
+
       {CommentComponent}
     </>
   );
@@ -103,14 +107,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <FellowshipReferendaDetailLayout
-        detail={detail}
-        breadcrumbs={breadcrumbs}
-        seoInfo={seoInfo}
-        hasSider
-      >
+      <DetailLayout breadcrumbs={breadcrumbs} seoInfo={seoInfo} hasSidebar>
         {postContent}
-      </FellowshipReferendaDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

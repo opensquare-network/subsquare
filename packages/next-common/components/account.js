@@ -10,6 +10,7 @@ import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 
 const NameWrapper = styled.div`
+  color: var(--textPrimary);
   flex-grow: 1;
   > :first-child {
     font-size: 14px;

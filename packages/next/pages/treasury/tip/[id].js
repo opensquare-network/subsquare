@@ -13,8 +13,9 @@ import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import TreasuryTipDetailLayout from "next-common/components/layout/treasuryLayout/tipDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -29,8 +30,10 @@ function TreasuryTipContent({ comments }) {
     <>
       <TipDetail onReply={focusEditor} />
       <Tipper />
-      <Metadata tip={post?.onchainData} />
-      <Timeline tip={post?.onchainData} />
+      <DetailMultiTabs
+        metadata={<Metadata tip={post?.onchainData} />}
+        timeline={<Timeline tip={post?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );
@@ -70,18 +73,17 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <TreasuryTipDetailLayout
-        detail={detail}
+      <DetailLayout
         breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        hasSider
+        hasSidebar
       >
         {postContent}
-      </TreasuryTipDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

@@ -30,14 +30,17 @@ import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
-import ReferendaDetailLayout from "next-common/components/layout/referendaLayout/detail";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import useReferendaBusinessData from "hooks/useReferendaBusinessData";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
   const dispatch = useDispatch();
   useSubReferendumInfo();
   const info = useReferendumInfo();
+  const businessData = useReferendaBusinessData();
 
   useEffect(() => {
     return () => {
@@ -58,10 +61,12 @@ function ReferendumContent({ comments }) {
       <ReferendaDetail onReply={focusEditor} />
 
       <Gov2Sidebar />
-      <ReferendaBusiness />
-      <Gov2ReferendumMetadata info={info} />
 
-      <Timeline trackInfo={post?.onchainData?.trackInfo} />
+      <DetailMultiTabs
+        business={!!businessData?.length && <ReferendaBusiness />}
+        metadata={<Gov2ReferendumMetadata info={info} />}
+        timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+      />
 
       {CommentComponent}
     </>
@@ -119,14 +124,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <ReferendaDetailLayout
-        detail={detail}
-        seoInfo={seoInfo}
-        breadcrumbs={breadcrumbs}
-        hasSider
-      >
+      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbs} hasSidebar>
         {postContent}
-      </ReferendaDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

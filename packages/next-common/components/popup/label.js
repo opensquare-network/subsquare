@@ -42,7 +42,7 @@ const TooltipDiv = styled.div`
 export default function PopupLabel({ text, status, tooltip }) {
   return (
     <TooltipWrapper>
-      <Label>{text}</Label>
+      <Label className="text-textPrimary">{text}</Label>
       {status ? (
         <StatusWrapper>
           <div>{status}</div>

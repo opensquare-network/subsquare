@@ -61,7 +61,7 @@ export default function Meta() {
 
   return (
     <SecondaryCardDetail>
-      <StatisticTitleContainer>
+      <StatisticTitleContainer className="!px-0">
         <Flex>
           <span>Overview</span>
         </Flex>

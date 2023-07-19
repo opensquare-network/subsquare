@@ -5,7 +5,11 @@ import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-import { checkInputValue, emptyFunction, isAddressInGroup } from "next-common/utils";
+import {
+  checkInputValue,
+  emptyFunction,
+  isAddressInGroup,
+} from "next-common/utils";
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
@@ -31,7 +35,7 @@ function PopupContent({
 
   const signerAccount = useSignerAccount(extensionAccounts);
 
-  const [inputTipValue, setInputTipValue] = useState();
+  const [inputTipValue, setInputTipValue] = useState("");
   const [tipping, setTipping] = useState(false);
   const { decimals } = useChainSettings();
   const [balance, loadingBalance] = useAddressBalance(
@@ -43,7 +47,10 @@ function PopupContent({
     signerAccount?.address,
   );
   const councilTippers = useCouncilMembers();
-  const isTipper = isAddressInGroup(signerAccount?.realAddress, councilTippers || []);
+  const isTipper = isAddressInGroup(
+    signerAccount?.realAddress,
+    councilTippers || [],
+  );
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doEndorse = async () => {

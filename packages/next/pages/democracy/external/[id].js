@@ -13,8 +13,9 @@ import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "components/external/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DemocracyProposalDetailLayout from "next-common/components/layout/democracyLayout/proposalDetailLayout";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function DemocracyExternalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -27,9 +28,11 @@ function DemocracyExternalContent({ detail, comments }) {
   return (
     <>
       <DetailItem onReply={focusEditor} />
-      <Business external={detail?.onchainData} />
-      <Metadata external={detail?.onchainData} />
-      <Timeline />
+      <DetailMultiTabs
+        business={<Business external={detail?.onchainData} />}
+        metadata={<Metadata external={detail?.onchainData} />}
+        timeline={<Timeline />}
+      />
       {CommentComponent}
     </>
   );
@@ -69,8 +72,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DemocracyProposalDetailLayout
-        detail={detail}
+      <DetailLayout
         seoInfo={{
           title: detail?.title,
           desc,
@@ -79,7 +81,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
         breadcrumbs={breadcrumbItems}
       >
         {postContent}
-      </DemocracyProposalDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

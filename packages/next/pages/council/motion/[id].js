@@ -4,7 +4,6 @@ import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import useUniversalComments from "components/universalComments";
-import MotionDetailLayout from "next-common/components/layout/motionDetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
@@ -12,6 +11,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import Chains from "next-common/utils/consts/chains";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -59,18 +59,17 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 
   return (
     <PostProvider post={motion}>
-      <MotionDetailLayout
-        detail={motion}
+      <DetailLayout
         seoInfo={{
           title: motion?.title,
           desc,
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
         breadcrumbs={breadcrumbItems}
-        hasSider
+        hasSidebar
       >
         {postContent}
-      </MotionDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

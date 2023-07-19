@@ -7,6 +7,8 @@ export const Wrapper = styled(PrimaryCard)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 0;
+  box-shadow: none;
 
   svg {
     path {

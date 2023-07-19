@@ -15,7 +15,8 @@ import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DemocracyProposalDetailLayout from "next-common/components/layout/democracyLayout/proposalDetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -55,12 +56,21 @@ function PublicProposalContent({ referendum, comments }) {
         useAddressVotingBalance={useAddressVotingBalance}
         atBlockHeight={secondsAtBlockHeight}
       />
-      <Business treasuryProposals={treasuryProposals} />
-      <Metadata publicProposal={post?.onchainData} />
-      <Timeline
-        publicProposalTimeline={post?.onchainData?.timeline}
-        referendumTimeline={referendum?.onchainData?.timeline}
+      <DetailMultiTabs
+        business={
+          !!treasuryProposals?.length && (
+            <Business treasuryProposals={treasuryProposals} />
+          )
+        }
+        metadata={<Metadata publicProposal={post?.onchainData} />}
+        timeline={
+          <Timeline
+            publicProposalTimeline={post?.onchainData?.timeline}
+            referendumTimeline={referendum?.onchainData?.timeline}
+          />
+        }
       />
+
       {CommentComponent}
     </>
   );
@@ -99,18 +109,17 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DemocracyProposalDetailLayout
-        detail={detail}
+      <DetailLayout
         breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        hasSider
+        hasSidebar
       >
         {postContent}
-      </DemocracyProposalDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

@@ -3,12 +3,13 @@ import BaseLayout from "./baseLayoutV2";
 import Breadcrumb from "../_Breadcrumb";
 import { useSelector } from "react-redux";
 import {
-  layoutDetailSiderHeight,
-  setLayoutDetailSiderHeight,
+  layoutDetailSidebarHeight,
+  setLayoutDetailSidebarHeight,
 } from "next-common/store/reducers/layoutSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavCollapsed } from "next-common/context/nav";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 /**
  * @typedef {{
@@ -28,10 +29,9 @@ import { useNavCollapsed } from "next-common/context/nav";
  * @typedef {Object} DetailLayoutProps
  * @property {JSX.Element | Breadcrumb[]} breadcrumbs - The breadcrumb items.
  * @property {SeoInfo} seoInfo - The SEO information.
- * @property {Object} detail - The post detail from server.
  * @property {JSX.Element} children - The children components.
  * @property {JSX.Element} header - The header element.
- * @property {boolean} hasSider - Indicates if the layout has a sider component.
+ * @property {boolean} hasSidebar - Indicates if the layout has a sidebar component.
  */
 
 /**
@@ -42,14 +42,13 @@ export default function DetailLayout({
   breadcrumbs,
   header,
   children,
-  hasSider,
-  detail,
+  hasSidebar,
 }) {
   const dispatch = useDispatch();
-  const siderHeight = useSelector(layoutDetailSiderHeight);
+  const sidebarHeight = useSelector(layoutDetailSidebarHeight);
   useEffect(() => {
     return () => {
-      dispatch(setLayoutDetailSiderHeight(0));
+      dispatch(setLayoutDetailSidebarHeight(0));
     };
   }, []);
 
@@ -59,13 +58,24 @@ export default function DetailLayout({
     <BaseLayout seoInfo={seoInfo}>
       <div
         className={clsx(
-          "bg-neutral100 px-6 flex-1 flex flex-col",
+          "bg-pageBg px-6 flex-1 flex flex-col",
           "max-sm:px-0",
+          // navCollapsed ? "max-md:px-0" : "max-lg:px-0",
         )}
       >
-        <div className={clsx("mx-auto py-6 max-w-[1200px] w-full")}>
+        <div
+          className={clsx(
+            "mx-auto py-6 max-w-[1200px] w-full",
+            !hasSidebar && "max-w-[856px]",
+          )}
+        >
           {breadcrumbs && (
-            <div className="mb-6 px-6">
+            <div
+              className={clsx(
+                "mb-6 px-12",
+                navCollapsed ? "max-md:px-6" : "max-lg:px-6",
+              )}
+            >
               {breadcrumbs?.length > 0 ? (
                 <Breadcrumb items={breadcrumbs} />
               ) : (
@@ -74,21 +84,36 @@ export default function DetailLayout({
             </div>
           )}
 
-          {header && <div className="px-6">{header}</div>}
+          {header && (
+            <div
+              className={clsx(
+                "px-12",
+                navCollapsed ? "max-md:px-6" : "max-lg:px-6",
+              )}
+            >
+              {header}
+            </div>
+          )}
 
           {/* set relative for right side(vote) component */}
           <div className="flex gap-x-6 mt-6 max-w-full relative">
             <div
               className={clsx(
-                "w-full space-y-6 max-sm:space-y-4",
-                detail && hasSider
-                  ? "max-w-[calc(100%-320px-48px)]"
-                  : "max-w-full",
+                "w-full",
+                hasSidebar ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
                 navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
               )}
-              style={{ minHeight: `${siderHeight}px` }}
+              style={{ minHeight: `${sidebarHeight}px` }}
             >
-              {children}
+              <NeutralPanel
+                className={clsx(
+                  "w-full flex flex-col gap-y-12 p-12 max-sm:gap-y-4",
+                  "max-sm:!rounded-none",
+                  navCollapsed ? "max-md:p-6" : "max-lg:p-6",
+                )}
+              >
+                {children}
+              </NeutralPanel>
             </div>
           </div>
         </div>

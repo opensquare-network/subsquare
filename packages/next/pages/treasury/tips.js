@@ -14,6 +14,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import ThemeButton from "next-common/components/buttons/themeButton";
 import { SystemPlus } from "@osn/icons/subsquare";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
+import useHasTips from "next-common/hooks/treasury/useHasTips";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -29,6 +30,7 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
   useEffect(() => setTips(ssrTips), [ssrTips]);
   const isMounted = useIsMounted();
   const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
+  const hasTips = useHasTips();
 
   const refreshPageData = useCallback(async () => {
     const { result } = await nextApi.fetch("treasury/tips");
@@ -52,7 +54,8 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
       title={seoInfo.title}
       summary={<TreasurySummary />}
       summaryFooter={
-        !hideActionButtons && (
+        !hideActionButtons &&
+        hasTips && (
           <div className="flex justify-end">
             <ThemeButton
               small

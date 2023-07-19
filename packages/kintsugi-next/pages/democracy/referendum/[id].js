@@ -11,7 +11,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import DemocracyReferendaDetailLayout from "next-common/components/layout/democracyLayout/referendaDetail";
 import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
@@ -24,7 +23,8 @@ import NonNullPost from "next-common/components/nonNullPost";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailHeader from "components/detailHeader";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -75,14 +75,18 @@ function ReferendumContent({ publicProposal, comments }) {
         referendumIndex={post?.referendumIndex}
       />
 
-      <ReferendumMetadata
-        proposer={post?.proposer}
-        status={referendumStatus ?? {}}
-        call={post?.onchainData?.preImage?.call}
-        onchainData={post?.onchainData}
+      <DetailMultiTabs
+        metadata={
+          <ReferendumMetadata
+            proposer={post?.proposer}
+            status={referendumStatus ?? {}}
+            call={post?.onchainData?.preImage?.call}
+            onchainData={post?.onchainData}
+          />
+        }
+        timeline={<Timeline data={timelineData} />}
       />
 
-      <Timeline data={timelineData} />
       {CommentComponent}
     </>
   );
@@ -131,15 +135,13 @@ export default withLoginUserRedux(
 
     return (
       <PostProvider post={detail}>
-        <DemocracyReferendaDetailLayout
-          detail={detail}
+        <DetailLayout
           seoInfo={seoInfo}
           breadcrumbs={breadcrumbItems}
-          hasSider
-          header={<DetailHeader />}
+          hasSidebar
         >
           {postContent}
-        </DemocracyReferendaDetailLayout>
+        </DetailLayout>
       </PostProvider>
     );
   },

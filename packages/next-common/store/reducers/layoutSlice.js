@@ -4,19 +4,19 @@ const layoutSlice = createSlice({
   name: "layout",
   initialState: {
     detail: {
-      siderHeight: 0,
+      sidebarHeight: 0,
     },
   },
   reducers: {
-    setLayoutDetailSiderHeight(state, { payload }) {
-      state.detail.siderHeight = payload;
+    setLayoutDetailSidebarHeight(state, { payload }) {
+      state.detail.sidebarHeight = payload;
     },
   },
 });
 
-export const { setLayoutDetailSiderHeight } = layoutSlice.actions;
+export const { setLayoutDetailSidebarHeight } = layoutSlice.actions;
 
-export const layoutDetailSiderHeight = (state) =>
-  state.layout.detail.siderHeight;
+export const layoutDetailSidebarHeight = (state) =>
+  state.layout.detail.sidebarHeight;
 
 export default layoutSlice.reducer;

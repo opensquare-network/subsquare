@@ -17,8 +17,9 @@ import NonNullPost from "next-common/components/nonNullPost";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import TreasuryChildBountyDetailLayout from "next-common/components/layout/treasuryLayout/childBountyDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -36,8 +37,10 @@ function ChildBountyContent({ comments }) {
     <>
       <ChildBountyDetail onReply={focusEditor} />
       <Claim />
-      <Metadata meta={post?.onchainData?.meta} />
-      <Timeline onchainData={post?.onchainData} />
+      <DetailMultiTabs
+        metadata={<Metadata meta={post?.onchainData?.meta} />}
+        timeline={<Timeline onchainData={post?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );
@@ -80,18 +83,17 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <TreasuryChildBountyDetailLayout
-        detail={detail}
+      <DetailLayout
         seoInfo={{
           title: detail?.title,
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
         breadcrumbs={breadcrumbItems}
-        hasSider={showRightSidePanel}
+        hasSidebar={showRightSidePanel}
       >
         {postContent}
-      </TreasuryChildBountyDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

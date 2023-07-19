@@ -16,12 +16,13 @@ import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
-import DemocracyReferendaDetailLayout from "next-common/components/layout/democracyLayout/referendaDetail";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -55,15 +56,19 @@ function ReferendumContent({ comments }) {
 
       <Vote referendumIndex={post?.referendumIndex} />
 
-      <ReferendumMetadata
-        proposer={post?.proposer}
-        status={referendumStatus ?? {}}
-        call={post?.onchainData?.preImage?.call || post?.onchainData?.call}
-        shorten={post?.onchainData?.preImage?.shorten}
-        onchainData={post?.onchainData}
+      <DetailMultiTabs
+        metadata={
+          <ReferendumMetadata
+            proposer={post?.proposer}
+            status={referendumStatus ?? {}}
+            call={post?.onchainData?.preImage?.call || post?.onchainData?.call}
+            shorten={post?.onchainData?.preImage?.shorten}
+            onchainData={post?.onchainData}
+          />
+        }
+        timeline={<Timeline />}
       />
 
-      <Timeline />
       {CommentComponent}
     </>
   );
@@ -108,14 +113,9 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 
   return (
     <PostProvider post={detail}>
-      <DemocracyReferendaDetailLayout
-        detail={detail}
-        seoInfo={seoInfo}
-        breadcrumbs={breadcrumbItems}
-        hasSider
-      >
+      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbItems} hasSidebar>
         {postContent}
-      </DemocracyReferendaDetailLayout>
+      </DetailLayout>
     </PostProvider>
   );
 });

@@ -13,7 +13,6 @@ import Cookies from "cookies";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import DetailHeader from "next-common/components/detail/detailHeader";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(
@@ -48,7 +47,6 @@ export default withLoginUserRedux(
             desc,
             ogImage: getBannerUrl(detail?.bannerCid),
           }}
-          header={<DetailHeader />}
           breadcrumbs={breadcrumbItems}
         >
           <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
