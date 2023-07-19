@@ -2,6 +2,7 @@ import { MenuFinancialCouncil } from "@osn/icons/subsquare";
 
 const treasuryCouncil = {
   name: "TREASURY COUNCIL",
+  pathname: "/treasury-council",
   icon: <MenuFinancialCouncil />,
   items: [
     {

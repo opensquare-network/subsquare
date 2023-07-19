@@ -17,19 +17,19 @@ export default function NavMenuGroup({
 }) {
   const { sm } = useScreenSize();
   const router = useRouter();
+  const firstPath = "/" + router.asPath.split("/").filter(Boolean)[0];
 
   const [submenuVisible, setSubmenuVisible] = useState(
     collapsed
       ? false
-      : router.asPath.startsWith(menu.pathname) || navSubmenuVisible[menu.name],
+      : firstPath === menu.pathname || navSubmenuVisible[menu.name],
   );
 
   useUpdateEffect(() => {
     setSubmenuVisible(
       collapsed
         ? false
-        : router.asPath.startsWith(menu.pathname) ||
-            navSubmenuVisible[menu.name],
+        : firstPath === menu.pathname || navSubmenuVisible[menu.name],
     );
   }, [collapsed]);
 
@@ -57,7 +57,7 @@ export default function NavMenuGroup({
               label={capitalize(menu.name)}
               activeCount={menu.activeCount}
               collapsed={collapsed}
-              active={router.asPath.startsWith(menu.pathname)}
+              active={firstPath === menu.pathname}
               extra={
                 <span>
                   <ArrowDown
