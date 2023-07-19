@@ -2,12 +2,16 @@ import { EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import DemocracyStatistics from "next-common/components/statistics/democracy";
-import AllVotesStatistics from "next-common/components/statistics/track/allVoteStatistics";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
 import BigNumber from "bignumber.js";
 import { useChainSettings } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
+import { Header } from "next-common/components/statistics/styled";
+import clsx from "clsx";
+import { useNavCollapsed } from "next-common/context/nav";
+import VoteTrend from "next-common/components/statistics/track/voteTrend";
+import AddressTrend from "next-common/components/statistics/track/addressTrend";
 
 export default withLoginUserRedux(
   ({ delegatee, delegators, summary, turnout, referendumsSummary }) => {
@@ -15,6 +19,7 @@ export default withLoginUserRedux(
 
     const title = "Democracy Statistics";
     const seoInfo = { title, desc: title };
+    const [navCollapsed] = useNavCollapsed();
 
     return (
       <DemocracyReferendaLayout
@@ -22,15 +27,38 @@ export default withLoginUserRedux(
         title={title}
         summaryData={referendumsSummary}
       >
-        <AllVotesStatistics turnout={turnout} />
-        <TurnoutStatistics turnout={turnout} />
-        {hasDemocracy !== false && (
-          <DemocracyStatistics
-            delegatee={delegatee}
-            delegators={delegators}
-            summary={summary}
-          />
-        )}
+        <div className="space-y-6">
+          <div>
+            <Header className="px-6 mb-4">Referenda</Header>
+            <div
+              className={clsx(
+                "flex gap-4 flex-wrap",
+                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-16px)] [&_>_div]:flex-1",
+                !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
+                !navCollapsed
+                  ? "[&_>_div]:max-md:max-w-full"
+                  : "[&_>_div]:max-sm:max-w-full",
+              )}
+            >
+              <VoteTrend turnout={turnout} />
+              <AddressTrend turnout={turnout} />
+              <TurnoutStatistics turnout={turnout} />
+            </div>
+          </div>
+
+          {hasDemocracy !== false && (
+            <div>
+              <Header className="px-6 mb-4">Delegation</Header>
+              <div>
+                <DemocracyStatistics
+                  delegatee={delegatee}
+                  delegators={delegators}
+                  summary={summary}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </DemocracyReferendaLayout>
     );
   },
