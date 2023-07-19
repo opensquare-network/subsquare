@@ -28,7 +28,11 @@ export function StandardVoteDetail({ vote, isGov2 }) {
 
   return (
     <div className="flex flex-col gap-[24px]">
-      <StandardVoteTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      <StandardVoteTabs
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        isAye={vote.aye}
+      />
       <VotesInfoGroup data={data} delegations={delegations} />
       <DelegationsList delegations={delegations} />
     </div>
