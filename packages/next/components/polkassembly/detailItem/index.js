@@ -1,6 +1,7 @@
 import ArticleContent from "./articleContent";
 import { usePost } from "next-common/context/post";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
+import PolkassemblyDetailHeader from "../detailHeader";
 
 export default function DetailItem({ postReactions }) {
   const post = usePost();
@@ -11,6 +12,7 @@ export default function DetailItem({ postReactions }) {
 
   return (
     <DetailContentBase>
+      <PolkassemblyDetailHeader />
       <ArticleContent post={post} postReactions={postReactions} />
     </DetailContentBase>
   );
