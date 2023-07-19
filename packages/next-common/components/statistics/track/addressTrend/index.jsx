@@ -4,7 +4,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { StatisticsTitle } from "../../styled";
 import DelegatedCheckBox from "../delegatedCheckBox";
 
-export default function TrackAddressTrend({ turnout }) {
+export default function AddressTrend({ turnout }) {
   const [delegatedChecked, setDelegatedChecked] = useState(true);
 
   return (

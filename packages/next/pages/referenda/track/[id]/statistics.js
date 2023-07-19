@@ -12,8 +12,8 @@ import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/
 import { Header } from "next-common/components/statistics/styled";
 import clsx from "clsx";
 import { useNavCollapsed } from "next-common/context/nav";
-import TrackVoteTrend from "next-common/components/statistics/track/voteTrend";
-import TrackAddressTrend from "next-common/components/statistics/track/addressTrend";
+import VoteTrend from "next-common/components/statistics/track/voteTrend";
+import AddressTrend from "next-common/components/statistics/track/addressTrend";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
 import DemocracyStatistics from "next-common/components/statistics/democracy";
 
@@ -52,8 +52,8 @@ export default withLoginUserRedux(
                   : "[&_>_div]:max-sm:max-w-full",
               )}
             >
-              <TrackVoteTrend turnout={turnout} />
-              <TrackAddressTrend turnout={turnout} />
+              <VoteTrend turnout={turnout} />
+              <AddressTrend turnout={turnout} />
               <TurnoutStatistics turnout={turnout} />
             </div>
           </div>
@@ -70,13 +70,6 @@ export default withLoginUserRedux(
             </div>
           </div>
         </div>
-        {/* <TrackStatistics
-          track={track}
-          turnout={turnout}
-          delegatee={delegatee}
-          delegators={delegators}
-          summary={summary}
-        /> */}
       </ReferendaTrackLayout>
     );
   },

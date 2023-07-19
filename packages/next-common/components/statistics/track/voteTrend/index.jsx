@@ -4,7 +4,7 @@ import { StatisticsTitle } from "../../styled";
 import DelegatedCheckBox from "../delegatedCheckBox";
 import VoteTrendChart from "./voteTrendChart";
 
-export default function TrackVoteTrend({ turnout }) {
+export default function VoteTrend({ turnout }) {
   const [delegatedChecked, setDelegatedChecked] = useState(true);
 
   return (
