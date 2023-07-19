@@ -9,7 +9,6 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import DetailHeader from "components/detailHeader";
 
 export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -36,7 +35,6 @@ export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        header={<DetailHeader />}
         breadcrumbs={breadcrumbItems}
       >
         <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
