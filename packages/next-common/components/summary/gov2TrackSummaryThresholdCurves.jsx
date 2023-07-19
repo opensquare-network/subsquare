@@ -45,26 +45,15 @@ export default function Gov2TrackSummaryThresholdCurves({ period }) {
         <div>
           <div className="mt-0.5">
             {/* different height */}
-            <div className="max-md:block hidden">
-              <ThresholdCurvesChart
-                height={56}
-                scalesX={false}
-                scalesY={false}
-                labels={chartLabels}
-                supportData={supportData}
-                approvalData={approvalData}
-              />
-            </div>
-            <div className="block max-md:hidden">
-              <ThresholdCurvesChart
-                height={56}
-                scalesX={false}
-                scalesY={false}
-                labels={chartLabels}
-                supportData={supportData}
-                approvalData={approvalData}
-              />
-            </div>
+            <ThresholdCurvesChart
+              height={56}
+              scalesX={false}
+              scalesY={false}
+              labels={chartLabels}
+              layoutPadding={2}
+              supportData={supportData}
+              approvalData={approvalData}
+            />
           </div>
 
           <div className="flex justify-center mt-0.5">
