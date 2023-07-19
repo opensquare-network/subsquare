@@ -55,7 +55,7 @@ export default function OpenGovVotesList({
       state={item.proposal?.state?.name}
       args={getGov2ReferendumStateArgs(item.proposal?.state)}
     />,
-    <DetailButton key="detail-btn" onClick={() => setShowVoteDetail(true)} />,
+    <DetailButton key="detail-btn" onClick={() => setShowVoteDetail(item)} />,
   ]);
 
   return (

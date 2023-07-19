@@ -6,11 +6,13 @@ import DemocracyVotesList from "./democracyVotesList";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import MobileDemocracyVotesList from "./mobile/democracyVotesList";
 import { ListCard } from "./styled";
+import VoteDetailPopup from "./voteDetailPopup";
 
 export default function DemocracyVotes() {
   const { id } = usePageProps();
   const [data, setData] = useState(EmptyList);
   const { width } = useWindowSize();
+  const [showVoteDetail, setShowVoteDetail] = useState(null);
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -33,11 +35,29 @@ export default function DemocracyVotes() {
     fetchData(data?.page, data?.pageSize);
   }, [fetchData, data?.page, data?.pageSize]);
 
-  return width > 1024 ? (
-    <ListCard>
-      <DemocracyVotesList data={data} fetchData={fetchData} />
-    </ListCard>
-  ) : (
-    <MobileDemocracyVotesList data={data} fetchData={fetchData} />
+  return (
+    <>
+      {width > 1024 ? (
+        <ListCard>
+          <DemocracyVotesList
+            data={data}
+            fetchData={fetchData}
+            setShowVoteDetail={setShowVoteDetail}
+          />
+        </ListCard>
+      ) : (
+        <MobileDemocracyVotesList
+          data={data}
+          fetchData={fetchData}
+          setShowVoteDetail={setShowVoteDetail}
+        />
+      )}
+      {showVoteDetail !== null && (
+        <VoteDetailPopup
+          vote={showVoteDetail}
+          setShowVoteDetail={setShowVoteDetail}
+        />
+      )}
+    </>
   );
 }

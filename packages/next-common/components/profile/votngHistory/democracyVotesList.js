@@ -58,7 +58,7 @@ export default function DemocracyVotesList({
         item.proposal?.timeline,
       )}
     />,
-    <DetailButton key="detail-btn" onClick={() => setShowVoteDetail(true)} />,
+    <DetailButton key="detail-btn" onClick={() => setShowVoteDetail(item)} />,
   ]);
 
   return (

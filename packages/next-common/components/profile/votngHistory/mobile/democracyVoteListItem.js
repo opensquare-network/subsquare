@@ -2,18 +2,14 @@ import { ListCard } from "../styled";
 import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import VoteItem from "../voteItem";
-import { useState } from "react";
 import DetailButton from "../detailButton";
 
-function ItemHeader({ vote }) {
-  const [showDetail, setShowDetail] = useState(false);
-  console.log({ showDetail });
-
+function ItemHeader({ vote, setShowVoteDetail }) {
   return (
     <div>
       <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
         <span className="text-textPrimary">{vote.proposal?.title}</span>
-        <DetailButton onClick={() => setShowDetail(true)} />
+        <DetailButton onClick={() => setShowVoteDetail(vote)} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">
         <DemocracyReferendumTag

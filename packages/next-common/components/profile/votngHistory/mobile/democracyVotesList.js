@@ -1,9 +1,17 @@
 import Pagination from "next-common/components/pagination";
 import DemocracyVoteListItem from "./democracyVoteListItem";
 
-export default function MobileDemocracyVotesList({ data, fetchData }) {
+export default function MobileDemocracyVotesList({
+  data,
+  fetchData,
+  setShowVoteDetail,
+}) {
   const listContent = (data?.items || []).map((item) => (
-    <DemocracyVoteListItem key={item.referendumIndex} vote={item} />
+    <DemocracyVoteListItem
+      key={item.referendumIndex}
+      vote={item}
+      setShowVoteDetail={setShowVoteDetail}
+    />
   ));
 
   return (
