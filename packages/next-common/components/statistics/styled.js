@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 
-export const Wrapper = styled.div`
+export const OriginWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 48px;
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-  }
+  padding: 24px;
   gap: 16px;
 
   background: var(--neutral100);
@@ -19,6 +16,9 @@ export const Wrapper = styled.div`
   border-radius: 8px;
 
   margin-top: 16px;
+`;
+export const Wrapper = tw(OriginWrapper)`
+max-sm:!rounded-none
 `;
 
 export const Header = styled.div`

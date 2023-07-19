@@ -6,10 +6,16 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
-import TrackStatistics from "next-common/components/statistics/track";
 import { EmptyList } from "next-common/utils/constants";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
+import { Header } from "next-common/components/statistics/styled";
+import clsx from "clsx";
+import { useNavCollapsed } from "next-common/context/nav";
+import TrackVoteTrend from "next-common/components/statistics/track/voteTrend";
+import TrackAddressTrend from "next-common/components/statistics/track/addressTrend";
+import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
+import DemocracyStatistics from "next-common/components/statistics/democracy";
 
 export default withLoginUserRedux(
   ({
@@ -24,6 +30,7 @@ export default withLoginUserRedux(
   }) => {
     const title = "OpenGov Statistics";
     const seoInfo = { title, desc: title };
+    const [navCollapsed] = useNavCollapsed();
 
     return (
       <ReferendaTrackLayout
@@ -32,13 +39,44 @@ export default withLoginUserRedux(
         summaryData={referendumsSummary}
         periodData={period}
       >
-        <TrackStatistics
+        <div className="space-y-6">
+          <div>
+            <Header className="px-6 mb-4">Referenda</Header>
+            <div
+              className={clsx(
+                "flex gap-4 flex-wrap",
+                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-16px)] [&_>_div]:flex-1",
+                !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
+                !navCollapsed
+                  ? "[&_>_div]:max-md:max-w-full"
+                  : "[&_>_div]:max-sm:max-w-full",
+              )}
+            >
+              <TrackVoteTrend turnout={turnout} />
+              <TrackAddressTrend turnout={turnout} />
+              <TurnoutStatistics turnout={turnout} />
+            </div>
+          </div>
+
+          <div>
+            <Header className="px-6 mb-4">Delegation</Header>
+            <div>
+              <DemocracyStatistics
+                apiRoot={`referenda/tracks/${track.id}`}
+                delegatee={delegatee}
+                delegators={delegators}
+                summary={summary}
+              />
+            </div>
+          </div>
+        </div>
+        {/* <TrackStatistics
           track={track}
           turnout={turnout}
           delegatee={delegatee}
           delegators={delegators}
           summary={summary}
-        />
+        /> */}
       </ReferendaTrackLayout>
     );
   },
