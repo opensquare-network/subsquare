@@ -5,10 +5,8 @@ import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
 import VoteItem from "./voteItem";
 import { PostTitle, normalizeCall } from "./common";
-import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
-import ExplorerLink from "next-common/components/links/explorerLink";
-import dayjs from "dayjs";
-import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
+import ReferendumTag from "./common/referendumTag";
+import CallDate from "./common/date";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -22,7 +20,7 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function DemocracyCallsList({ data, fetchData }) {
+export default function VoteCallsList({ data, isGov2, fetchData }) {
   const { columns } = useColumns([
     { name: "Proposals", style: { textAlign: "left", minWidth: "180px" } },
     { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
@@ -37,21 +35,10 @@ export default function DemocracyCallsList({ data, fetchData }) {
   ]);
 
   const rows = (data?.items || []).map((item) => [
-    <PostTitle key="proposal" vote={item} isGov2={false} />,
-    <div key="date" className="text-textTertiary whitespace-nowrap">
-      <ExplorerLink indexer={item.indexer}>
-        {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
-      </ExplorerLink>
-    </div>,
+    <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
+    <CallDate key="date" vote={item} />,
     <VoteItem key="vote" vote={normalizeCall(item)} />,
-    <DemocracyReferendumTag
-      key="status"
-      state={item.proposal?.state?.state}
-      args={getDemocracyStateArgs(
-        item.proposal?.state,
-        item.proposal?.timeline,
-      )}
-    />,
+    <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
   ]);
 
   return (

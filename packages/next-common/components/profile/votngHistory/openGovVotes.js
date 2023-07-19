@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { EmptyList } from "next-common/utils/constants";
-import OpenGovVotesList from "./openGovVotesList";
 import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import MobileOpenGovVotesList from "./mobile/openGovVoteList";
 import VoteDetailPopup from "./voteDetailPopup";
+import VotesList from "./votesList";
+import MobileVotesList from "./mobile/votesList";
 
 export default function OpenGovVotes() {
   const { id } = usePageProps();
@@ -39,15 +39,17 @@ export default function OpenGovVotes() {
     <>
       {width > 1024 ? (
         <ListCard>
-          <OpenGovVotesList
+          <VotesList
             data={data}
+            isGov2={true}
             fetchData={fetchData}
             setShowVoteDetail={setShowVoteDetail}
           />
         </ListCard>
       ) : (
-        <MobileOpenGovVotesList
+        <MobileVotesList
           data={data}
+          isGov2={true}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}
         />

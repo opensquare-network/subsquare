@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { EmptyList } from "next-common/utils/constants";
-import DemocracyVotesList from "./democracyVotesList";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import MobileDemocracyVotesList from "./mobile/democracyVotesList";
 import { ListCard } from "./styled";
 import VoteDetailPopup from "./voteDetailPopup";
+import VotesList from "./votesList";
+import MobileVotesList from "./mobile/votesList";
 
 export default function DemocracyVotes() {
   const { id } = usePageProps();
@@ -39,15 +39,17 @@ export default function DemocracyVotes() {
     <>
       {width > 1024 ? (
         <ListCard>
-          <DemocracyVotesList
+          <VotesList
             data={data}
+            isGov2={false}
             fetchData={fetchData}
             setShowVoteDetail={setShowVoteDetail}
           />
         </ListCard>
       ) : (
-        <MobileDemocracyVotesList
+        <MobileVotesList
           data={data}
+          isGov2={false}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}
         />

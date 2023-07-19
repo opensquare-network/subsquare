@@ -76,7 +76,7 @@ export default function ValueDisplay({
 
   return (
     <div className={clsx("inline-flex items-center", className)}>
-      <span>{Number(value)?.toLocaleString()} </span>
+      <span>{Number(value)?.toLocaleString()}&nbsp;</span>
       {symbolContent}
     </div>
   );

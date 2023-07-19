@@ -15,7 +15,7 @@ const VoteWrapper = tw.div`flex flex-col gap-[2px] max-md:grow`;
 
 const VoteTypeWrapper = tw.div`flex gap-[8px] items-center`;
 
-const ConvictionWrapper = tw.div`w-[64px] text-right text-textTertiary`;
+const ConvictionWrapper = tw.div`flex w-[64px] justify-end text-textTertiary items-center`;
 
 const PartialVoteItem = tw.div`flex justify-between md:w-[200px]`;
 

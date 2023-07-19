@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { EmptyList } from "next-common/utils/constants";
-import DemocracyCallsList from "./democracyCallsList";
 import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import MobileDemocracyVoteCallsList from "./mobile/democracyVoteCallsList";
+import VoteCallsList from "./voteCallsList";
+import MobileVoteCallsList from "./mobile/voteCallsList";
 
 export default function DemocracyCalls() {
   const { id } = usePageProps();
@@ -35,9 +35,9 @@ export default function DemocracyCalls() {
 
   return width > 1024 ? (
     <ListCard>
-      <DemocracyCallsList data={data} fetchData={fetchData} />
+      <VoteCallsList data={data} isGov2={false} fetchData={fetchData} />
     </ListCard>
   ) : (
-    <MobileDemocracyVoteCallsList data={data} fetchData={fetchData} />
+    <MobileVoteCallsList data={data} isGov2={false} fetchData={fetchData} />
   );
 }

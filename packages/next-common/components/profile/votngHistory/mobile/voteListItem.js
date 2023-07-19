@@ -1,31 +1,31 @@
 import { ListCard } from "../styled";
 import VoteItem from "../voteItem";
-import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
-import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import DetailButton from "../detailButton";
 import { PostTitle } from "../common";
+import ReferendumTag from "../common/referendumTag";
 
-function ItemHeader({ vote, setShowVoteDetail }) {
+function ItemHeader({ vote, isGov2, setShowVoteDetail }) {
   return (
     <div>
       <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
-        <PostTitle vote={vote} isGov2={true} />
+        <PostTitle vote={vote} isGov2={isGov2} />
         <DetailButton onClick={() => setShowVoteDetail(vote)} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">
-        <Gov2ReferendaTag
-          state={vote.proposal?.state?.name}
-          args={getGov2ReferendumStateArgs(vote.proposal?.state)}
-        />
+        <ReferendumTag vote={vote} isGov2={isGov2} />
       </div>
     </div>
   );
 }
 
-export default function OpenGovVoteListItem({ vote, setShowVoteDetail }) {
+export default function VoteListItem({ vote, isGov2, setShowVoteDetail }) {
   return (
     <ListCard>
-      <ItemHeader vote={vote} setShowVoteDetail={setShowVoteDetail} />
+      <ItemHeader
+        vote={vote}
+        isGov2={isGov2}
+        setShowVoteDetail={setShowVoteDetail}
+      />
       <div className="mt-[24px]">
         <VoteItem vote={vote} />
       </div>
