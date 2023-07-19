@@ -92,6 +92,7 @@ const AddressItem = styled.div`
 `;
 
 const NameWrapper = styled.div`
+  color: var(--textPrimary);
   flex-grow: 1;
 
   > :first-child {
@@ -101,7 +102,7 @@ const NameWrapper = styled.div`
   > :last-child {
     margin-top: 4px;
     font-size: 12px;
-    color: #9da9bb;
+    color: var(--textTertiary);
   }
 `;
 
@@ -207,7 +208,9 @@ export default function LinkedAddress() {
 
       let injector = wallet;
       if (
-        !getWallets().some(({ extensionName }) => extensionName === selectedWallet)
+        !getWallets().some(
+          ({ extensionName }) => extensionName === selectedWallet,
+        )
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         if (source) {
@@ -268,7 +271,11 @@ export default function LinkedAddress() {
       <ContentWrapper>
         {hasExtension ? (
           <div>
-            <InfoWrapper>{"Associate your account with an on-chain address using the Polkadot{.js} extension."}</InfoWrapper>
+            <InfoWrapper>
+              {
+                "Associate your account with an on-chain address using the Polkadot{.js} extension."
+              }
+            </InfoWrapper>
             <SecondaryButton onClick={showSelectWalletModal}>
               Select wallet
             </SecondaryButton>
