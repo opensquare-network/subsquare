@@ -29,10 +29,9 @@ const DetailDescriptionLabel = styled.div`
   ${gap_x(8)};
 `;
 
-export default function DelegationVotes({ data }) {
+export default function DelegationVotes({ data, delegations }) {
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
-  const directVoterDelegations = data.directVoterDelegations;
 
   const delegationItems = [
     {
@@ -42,7 +41,7 @@ export default function DelegationVotes({ data }) {
           <span>Votes</span>
         </DetailDescriptionLabel>
       ),
-      value: data.directVoterDelegations?.length ? (
+      value: delegations?.length ? (
         <ValueDisplay
           value={toPrecision(data.totalDelegatedVotes, chainSettings.decimals)}
           symbol={symbol}
@@ -58,7 +57,7 @@ export default function DelegationVotes({ data }) {
           <span>Delegators</span>
         </DetailDescriptionLabel>
       ),
-      value: directVoterDelegations?.length || 0,
+      value: delegations?.length || 0,
     },
     {
       label: (
@@ -67,7 +66,7 @@ export default function DelegationVotes({ data }) {
           <span>Capital</span>
         </DetailDescriptionLabel>
       ),
-      value: data.directVoterDelegations?.length ? (
+      value: delegations?.length ? (
         <ValueDisplay
           value={toPrecision(
             data.totalDelegatedCapital,

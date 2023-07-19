@@ -12,7 +12,7 @@ export default function NestedPopupDelegatedDetailPopup({
 }) {
   return (
     <BaseVotesPopup title="Delegated Detail" onClose={onClose}>
-      <VotesInfoGroup data={data} />
+      <VotesInfoGroup data={data} delegations={data.directVoterDelegations} />
       <DelegationsList delegations={data.directVoterDelegations} />
     </BaseVotesPopup>
   );

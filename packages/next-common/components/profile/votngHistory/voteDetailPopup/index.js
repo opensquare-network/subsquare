@@ -7,11 +7,11 @@ export default function VoteDetailPopup({ vote, setShowVoteDetail }) {
   let voteDetail = null;
 
   if (vote.isStandard) {
-    voteDetail = <StandardVoteDetail />;
+    voteDetail = <StandardVoteDetail vote={vote} />;
   } else if (vote.isSplit) {
-    voteDetail = <SplitVoteDetail />;
+    voteDetail = <SplitVoteDetail vote={vote} />;
   } else if (vote.isSplitAbstain) {
-    voteDetail = <SplitAbstainVoteDetail />;
+    voteDetail = <SplitAbstainVoteDetail vote={vote} />;
   }
 
   return (

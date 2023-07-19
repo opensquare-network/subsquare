@@ -24,10 +24,10 @@ function ItemHeader({ vote, setShowVoteDetail }) {
   );
 }
 
-export default function DemocracyVoteListItem({ vote }) {
+export default function DemocracyVoteListItem({ vote, setShowVoteDetail }) {
   return (
     <ListCard>
-      <ItemHeader vote={vote} />
+      <ItemHeader vote={vote} setShowVoteDetail={setShowVoteDetail} />
       <div className="mt-[24px]">
         <VoteItem vote={vote} />
       </div>

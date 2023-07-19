@@ -15,11 +15,11 @@ const DescriptionsGroup = styled.div`
   ${smcss(flex_col)};
 `;
 
-export default function VotesInfoGroup({ data }) {
+export default function VotesInfoGroup({ data, delegations }) {
   return (
     <DescriptionsGroup>
       <SelfVotes data={data} />
-      <DelegationVotes data={data} />
+      <DelegationVotes data={data} delegations={delegations} />
     </DescriptionsGroup>
   );
 }
