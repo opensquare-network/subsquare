@@ -10,10 +10,12 @@ import MobileVoteCallsList from "./mobile/voteCallsList";
 export default function DemocracyCalls() {
   const { id } = usePageProps();
   const [data, setData] = useState(EmptyList);
+  const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
 
   const fetchData = useCallback(
     (page, pageSize) => {
+      setIsLoading(true);
       nextApi
         .fetch(`users/${id}/democracy/vote-calls`, {
           page,
@@ -24,6 +26,9 @@ export default function DemocracyCalls() {
           if (result) {
             setData(result);
           }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     },
     [id],
@@ -35,9 +40,19 @@ export default function DemocracyCalls() {
 
   return width > 1024 ? (
     <ListCard>
-      <VoteCallsList data={data} isGov2={false} fetchData={fetchData} />
+      <VoteCallsList
+        data={data}
+        isGov2={false}
+        isLoading={isLoading}
+        fetchData={fetchData}
+      />
     </ListCard>
   ) : (
-    <MobileVoteCallsList data={data} isGov2={false} fetchData={fetchData} />
+    <MobileVoteCallsList
+      data={data}
+      isGov2={false}
+      isLoading={isLoading}
+      fetchData={fetchData}
+    />
   );
 }

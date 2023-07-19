@@ -23,6 +23,7 @@ const StyledList = styled(StyledListOrigin)`
 export default function VotesList({
   data,
   isGov2,
+  isLoading,
   fetchData,
   setShowVoteDetail,
 }) {
@@ -52,7 +53,7 @@ export default function VotesList({
   return (
     <>
       <ListWrapper>
-        <StyledList columns={columns} rows={rows} />
+        <StyledList loading={isLoading} columns={columns} rows={rows} />
       </ListWrapper>
       <Pagination
         {...data}

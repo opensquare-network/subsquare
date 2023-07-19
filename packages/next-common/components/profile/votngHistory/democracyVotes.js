@@ -11,11 +11,13 @@ import MobileVotesList from "./mobile/votesList";
 export default function DemocracyVotes() {
   const { id } = usePageProps();
   const [data, setData] = useState(EmptyList);
+  const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
 
   const fetchData = useCallback(
     (page, pageSize) => {
+      setIsLoading(true);
       nextApi
         .fetch(`users/${id}/democracy/votes`, {
           page,
@@ -26,6 +28,9 @@ export default function DemocracyVotes() {
           if (result) {
             setData(result);
           }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     },
     [id],
@@ -41,6 +46,7 @@ export default function DemocracyVotes() {
         <ListCard>
           <VotesList
             data={data}
+            isLoading={isLoading}
             isGov2={false}
             fetchData={fetchData}
             setShowVoteDetail={setShowVoteDetail}
@@ -49,6 +55,7 @@ export default function DemocracyVotes() {
       ) : (
         <MobileVotesList
           data={data}
+          isLoading={isLoading}
           isGov2={false}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}

@@ -11,11 +11,13 @@ import MobileVotesList from "./mobile/votesList";
 export default function OpenGovVotes() {
   const { id } = usePageProps();
   const [data, setData] = useState(EmptyList);
+  const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
 
   const fetchData = useCallback(
     (page, pageSize) => {
+      setIsLoading(true);
       nextApi
         .fetch(`users/${id}/referenda/votes`, {
           page,
@@ -26,6 +28,9 @@ export default function OpenGovVotes() {
           if (result) {
             setData(result);
           }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     },
     [id],
@@ -41,6 +46,7 @@ export default function OpenGovVotes() {
         <ListCard>
           <VotesList
             data={data}
+            isLoading={isLoading}
             isGov2={true}
             fetchData={fetchData}
             setShowVoteDetail={setShowVoteDetail}
@@ -49,6 +55,7 @@ export default function OpenGovVotes() {
       ) : (
         <MobileVotesList
           data={data}
+          isLoading={isLoading}
           isGov2={true}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}
