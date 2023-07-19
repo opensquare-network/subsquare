@@ -8,7 +8,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import PolkassemblyDetailHeader from "components/polkassembly/detailHeader";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 export default withLoginUserRedux(({ detail }) => {
@@ -36,7 +35,6 @@ export default withLoginUserRedux(({ detail }) => {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        header={<PolkassemblyDetailHeader />}
         breadcrumbs={breadcrumbItems}
       >
         <DetailItem postReactions={postReactions} />
