@@ -46,16 +46,12 @@ export default function Account({ account }) {
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
-            <div>
-              {addressEllipsis(address)}
-            </div>
+            <div>{addressEllipsis(address)}</div>
           </>
         ) : (
           <>
-            <div>{account?.name}</div>
-            <div>
-              {addressEllipsis(address) ?? "--"}
-            </div>
+            <div className="text-textPrimary">{account?.name}</div>
+            <div>{addressEllipsis(address) ?? "--"}</div>
           </>
         )}
       </NameWrapper>

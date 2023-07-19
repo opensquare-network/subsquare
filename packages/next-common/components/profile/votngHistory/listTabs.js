@@ -1,18 +1,9 @@
 import PageTabs from "next-common/components/pageTabs";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import styled from "styled-components";
 import OpenGovVotes from "./openGovVotes";
 import OpenGovCalls from "./openGovCalls";
 import DemocracyVotes from "./democracyVotes";
 import DemocracyCalls from "./democracyCalls";
 import { OpenGov } from "./moduleTab";
-
-const ListCard = styled(SecondaryCard)`
-  margin-left: -24px;
-  a:hover {
-    text-decoration: underline;
-  }
-`;
 
 export default function ListTabs({ moduleTabIndex }) {
   return (
@@ -21,27 +12,21 @@ export default function ListTabs({ moduleTabIndex }) {
         tabs={[
           {
             name: "All Votes",
-            content: (
-              <ListCard>
-                {moduleTabIndex === OpenGov ? (
-                  <OpenGovVotes />
-                ) : (
-                  <DemocracyVotes />
-                )}
-              </ListCard>
-            ),
+            content:
+              moduleTabIndex === OpenGov ? (
+                <OpenGovVotes />
+              ) : (
+                <DemocracyVotes />
+              ),
           },
           {
             name: "Calls",
-            content: (
-              <ListCard>
-                {moduleTabIndex === OpenGov ? (
-                  <OpenGovCalls />
-                ) : (
-                  <DemocracyCalls />
-                )}
-              </ListCard>
-            ),
+            content:
+              moduleTabIndex === OpenGov ? (
+                <OpenGovCalls />
+              ) : (
+                <DemocracyCalls />
+              ),
           },
         ]}
       />

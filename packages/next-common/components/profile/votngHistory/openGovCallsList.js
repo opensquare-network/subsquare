@@ -38,28 +38,24 @@ export default function OpenGovCallsList({ data, fetchData }) {
     },
   ]);
 
-  const rows = (data?.items || []).map((item) => {
-    const row = [
-      <Flex key="proposal">
-        <Link href={`/referenda/referendum/${item.referendumIndex}`}>
-          {item.proposal?.title}
-        </Link>
-      </Flex>,
-      <div key="date" className="text-textTertiary whitespace-nowrap">
-        <ExplorerLink indexer={item.indexer}>
-          {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
-        </ExplorerLink>
-      </div>,
-      <VoteItem key="vote" vote={normalizeCall(item)} />,
-      <Gov2ReferendaTag
-        key="status"
-        state={item.proposal?.state?.name}
-        args={getGov2ReferendumStateArgs(item.proposal?.state)}
-      />,
-    ];
-
-    return row;
-  });
+  const rows = (data?.items || []).map((item) => [
+    <Flex key="proposal">
+      <Link href={`/referenda/referendum/${item.referendumIndex}`}>
+        {item.proposal?.title}
+      </Link>
+    </Flex>,
+    <div key="date" className="text-textTertiary whitespace-nowrap">
+      <ExplorerLink indexer={item.indexer}>
+        {dayjs(item.indexer.blockTime).format("YYYY-MM-DD hh:mm:ss")}
+      </ExplorerLink>
+    </div>,
+    <VoteItem key="vote" vote={normalizeCall(item)} />,
+    <Gov2ReferendaTag
+      key="status"
+      state={item.proposal?.state?.name}
+      args={getGov2ReferendumStateArgs(item.proposal?.state)}
+    />,
+  ]);
 
   return (
     <>

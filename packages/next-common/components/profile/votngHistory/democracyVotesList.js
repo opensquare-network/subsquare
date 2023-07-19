@@ -8,6 +8,7 @@ import Flex from "next-common/components/styled/flex";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
 import VoteItem from "./voteItem";
+import DetailButton from "./detailButton";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -21,7 +22,11 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function DemocracyVotesList({ data, fetchData }) {
+export default function DemocracyVotesList({
+  data,
+  fetchData,
+  setShowVoteDetail,
+}) {
   const { columns } = useColumns([
     { name: "Proposals", style: { textAlign: "left", minWidth: "230px" } },
     {
@@ -32,28 +37,29 @@ export default function DemocracyVotesList({ data, fetchData }) {
       name: "Status",
       style: { textAlign: "right", width: "128px", minWidth: "128px" },
     },
+    {
+      name: "",
+      style: { textAlign: "right", width: "64px", minWidth: "64px" },
+    },
   ]);
 
-  const rows = (data?.items || []).map((item) => {
-    const row = [
-      <Flex key="proposal">
-        <Link href={`/democracy/referendum/${item.referendumIndex}`}>
-          {item.proposal?.title}
-        </Link>
-      </Flex>,
-      <VoteItem key="vote" vote={item} />,
-      <DemocracyReferendumTag
-        key="status"
-        state={item.proposal?.state?.state}
-        args={getDemocracyStateArgs(
-          item.proposal?.state,
-          item.proposal?.timeline,
-        )}
-      />,
-    ];
-
-    return row;
-  });
+  const rows = (data?.items || []).map((item) => [
+    <Flex key="proposal">
+      <Link href={`/democracy/referendum/${item.referendumIndex}`}>
+        {item.proposal?.title}
+      </Link>
+    </Flex>,
+    <VoteItem key="vote" vote={item} />,
+    <DemocracyReferendumTag
+      key="status"
+      state={item.proposal?.state?.state}
+      args={getDemocracyStateArgs(
+        item.proposal?.state,
+        item.proposal?.timeline,
+      )}
+    />,
+    <DetailButton key="detail-btn" onClick={() => setShowVoteDetail(true)} />,
+  ]);
 
   return (
     <>

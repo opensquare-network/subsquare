@@ -8,6 +8,7 @@ import Flex from "next-common/components/styled/flex";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import VoteItem from "./voteItem";
+import DetailButton from "./detailButton";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -21,7 +22,11 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function OpenGovVotesList({ data, fetchData }) {
+export default function OpenGovVotesList({
+  data,
+  fetchData,
+  setShowVoteDetail,
+}) {
   const { columns } = useColumns([
     { name: "Proposals", style: { textAlign: "left", minWidth: "230px" } },
     {
@@ -32,25 +37,26 @@ export default function OpenGovVotesList({ data, fetchData }) {
       name: "Status",
       style: { textAlign: "right", width: "128px", minWidth: "128px" },
     },
+    {
+      name: "",
+      style: { textAlign: "right", width: "64px", minWidth: "64px" },
+    },
   ]);
 
-  const rows = (data?.items || []).map((item) => {
-    const row = [
-      <Flex key="proposal">
-        <Link href={`/referenda/referendum/${item.referendumIndex}`}>
-          {item.proposal?.title}
-        </Link>
-      </Flex>,
-      <VoteItem key="vote" vote={item} />,
-      <Gov2ReferendaTag
-        key="status"
-        state={item.proposal?.state?.name}
-        args={getGov2ReferendumStateArgs(item.proposal?.state)}
-      />,
-    ];
-
-    return row;
-  });
+  const rows = (data?.items || []).map((item) => [
+    <Flex key="proposal">
+      <Link href={`/referenda/referendum/${item.referendumIndex}`}>
+        {item.proposal?.title}
+      </Link>
+    </Flex>,
+    <VoteItem key="vote" vote={item} />,
+    <Gov2ReferendaTag
+      key="status"
+      state={item.proposal?.state?.name}
+      args={getGov2ReferendumStateArgs(item.proposal?.state)}
+    />,
+    <DetailButton key="detail-btn" onClick={() => setShowVoteDetail(true)} />,
+  ]);
 
   return (
     <>

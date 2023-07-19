@@ -3,10 +3,14 @@ import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { EmptyList } from "next-common/utils/constants";
 import DemocracyVotesList from "./democracyVotesList";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import MobileDemocracyVotesList from "./mobile/democracyVotesList";
+import { ListCard } from "./styled";
 
 export default function DemocracyVotes() {
   const { id } = usePageProps();
   const [data, setData] = useState(EmptyList);
+  const { width } = useWindowSize();
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -29,5 +33,11 @@ export default function DemocracyVotes() {
     fetchData(data?.page, data?.pageSize);
   }, [fetchData, data?.page, data?.pageSize]);
 
-  return <DemocracyVotesList data={data} fetchData={fetchData} />;
+  return width > 1024 ? (
+    <ListCard>
+      <DemocracyVotesList data={data} fetchData={fetchData} />
+    </ListCard>
+  ) : (
+    <MobileDemocracyVotesList data={data} fetchData={fetchData} />
+  );
 }

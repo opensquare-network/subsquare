@@ -19,7 +19,7 @@ export const SummaryCard = styled(SecondaryCard)`
   flex: 1;
 `;
 
-export const SummaryTitle = tw.div`text12Medium text-textTertiary`;
+export const SummaryTitle = tw.div`whitespace-nowrap text12Medium text-textTertiary`;
 
 export const SummaryGreyText = styled.span`
   color: var(--textTertiary) !important;

@@ -7,17 +7,17 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
-import FlexBetween from "next-common/components/styled/flexBetween";
-import Flex from "next-common/components/styled/flex";
 import Tooltip from "next-common/components/tooltip";
 
-const VoteWrapper = tw.div`flex flex-col gap-[2px]`;
+const ItemWrapper = tw.div`flex max-md:justify-between max-md:grow`;
 
-const VoteTypeWrapper = tw.div`flex gap-[8px]`;
+const VoteWrapper = tw.div`flex flex-col gap-[2px] max-md:grow`;
 
-const PartialVoteItem = styled(FlexBetween)`
-  width: 200px;
-`;
+const VoteTypeWrapper = tw.div`flex gap-[8px] items-center`;
+
+const ConvictionWrapper = tw.div`w-[64px] text-right text-textTertiary`;
+
+const PartialVoteItem = tw.div`flex justify-between md:w-[200px]`;
 
 const ColoredAbstainIcon = styled(AbstainIcon)`
   path {
@@ -65,33 +65,35 @@ function ConvictionLabel({ vote }) {
 function StandardVoteItem({ vote }) {
   const { symbol, decimals } = useChainSettings();
   return (
-    <Flex>
+    <ItemWrapper>
       <VoteWrapper>
         <PartialVoteItem>
           {vote.aye ? <Aye /> : <Nay />}
           <ValueDisplay
+            className="text-textPrimary"
             value={toPrecision(vote.votes, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
       </VoteWrapper>
-      <div className="w-[64px] text-right">
+      <ConvictionWrapper>
         <Tooltip content="Standard">
           <ConvictionLabel vote={vote} />
         </Tooltip>
-      </div>
-    </Flex>
+      </ConvictionWrapper>
+    </ItemWrapper>
   );
 }
 
 function SplitVoteItem({ vote }) {
   const { symbol, decimals } = useChainSettings();
   return (
-    <Flex>
+    <ItemWrapper>
       <VoteWrapper>
         <PartialVoteItem>
           <Aye />
           <ValueDisplay
+            className="text-textPrimary"
             value={toPrecision(vote.ayeVotes, decimals)}
             symbol={symbol}
           />
@@ -99,26 +101,28 @@ function SplitVoteItem({ vote }) {
         <PartialVoteItem>
           <Nay />
           <ValueDisplay
+            className="text-textPrimary"
             value={toPrecision(vote.nayVotes, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
       </VoteWrapper>
-      <div className="w-[64px] text-right text-textTertiary">
+      <ConvictionWrapper>
         <Tooltip content="Split">0.1x/s</Tooltip>
-      </div>
-    </Flex>
+      </ConvictionWrapper>
+    </ItemWrapper>
   );
 }
 
 function SplitAbstainVoteItem({ vote }) {
   const { symbol, decimals } = useChainSettings();
   return (
-    <Flex>
+    <ItemWrapper>
       <VoteWrapper>
         <PartialVoteItem>
           <Aye />
           <ValueDisplay
+            className="text-textPrimary"
             value={toPrecision(vote.ayeVotes, decimals)}
             symbol={symbol}
           />
@@ -126,6 +130,7 @@ function SplitAbstainVoteItem({ vote }) {
         <PartialVoteItem>
           <Nay />
           <ValueDisplay
+            className="text-textPrimary"
             value={toPrecision(vote.nayVotes, decimals)}
             symbol={symbol}
           />
@@ -133,15 +138,16 @@ function SplitAbstainVoteItem({ vote }) {
         <PartialVoteItem>
           <Abstain />
           <ValueDisplay
+            className="text-textPrimary"
             value={toPrecision(vote.abstainVotes, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
       </VoteWrapper>
-      <div className="w-[64px] text-right text-textTertiary">
+      <ConvictionWrapper>
         <Tooltip content="SplitAbstain">0.1x/sa</Tooltip>
-      </div>
-    </Flex>
+      </ConvictionWrapper>
+    </ItemWrapper>
   );
 }
 
