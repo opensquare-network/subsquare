@@ -6,8 +6,6 @@ import { ListCard } from "./styled";
 import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
 import MobileVotesList from "./mobile/votesList";
-import { normalizeVote } from "./common/normalizedVote";
-import { useChain } from "next-common/context/chain";
 
 export default function DemocracyVotes() {
   const { id } = usePageProps();
@@ -16,7 +14,6 @@ export default function DemocracyVotes() {
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
-  const chain = useChain();
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -71,7 +68,7 @@ export default function DemocracyVotes() {
       {showVoteDetail !== null && (
         <VoteDetailPopup
           isGov2={false}
-          vote={normalizeVote(showVoteDetail, chain)}
+          vote={showVoteDetail}
           setShowVoteDetail={setShowVoteDetail}
         />
       )}

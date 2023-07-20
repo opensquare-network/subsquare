@@ -10,7 +10,6 @@ export function normalizeCall(vote, chain) {
       ...vote,
       isStandard: true,
       balance,
-      conviction: 1,
       aye: isAye,
       votes: balance,
     };

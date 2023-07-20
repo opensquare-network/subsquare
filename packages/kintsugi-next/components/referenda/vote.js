@@ -26,14 +26,13 @@ import {
   referendumStatusSelector,
   setIsLoadingReferendumStatus,
 } from "next-common/store/reducers/referendumSlice";
-import SubLink from "next-common/components/styled/subLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
 import TallyInfo from "next-common/components/referenda/tally/info";
-import CheckAllVotesPopup from "components/democracy/allVotesPopup";
 import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import capitalize from "lodash.capitalize";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
+import VotesLists from "./votesLists";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -135,7 +134,6 @@ function Vote({ referendumInfo, referendumIndex }) {
   const chain = useChain();
   const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
-  const [showVoteList, setShowVoteList] = useState(false);
   const api = useApi();
   const tally = useSubDemocracyTally();
 
@@ -242,12 +240,7 @@ function Vote({ referendumInfo, referendumIndex }) {
             <RejectStatus>Failing</RejectStatus>
           ))}
 
-        <SubLink
-          style={{ marginTop: 16 }}
-          onClick={() => setShowVoteList(true)}
-        >
-          Check all votes
-        </SubLink>
+        <VotesLists />
         <MyVote />
       </SecondaryCardDetail>
 
@@ -281,8 +274,6 @@ function Vote({ referendumInfo, referendumIndex }) {
           onInBlock={updateVoteProgress}
         />
       )}
-
-      {showVoteList && <CheckAllVotesPopup setShowVoteList={setShowVoteList} />}
     </RightBarWrapper>
   );
 }

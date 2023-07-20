@@ -37,6 +37,8 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
   const [nayPage, setNayPage] = useState(1);
   const pageSize = 50;
 
+  console.log({ allAye, allNay });
+
   let page;
   let votes;
   if (tabIndex === "Aye") {
@@ -120,7 +122,7 @@ function VotesList({ items = [], loading }) {
         key="capital"
         item={item}
         capital={toPrecision(item.vote.balance, chainSettings.decimals)}
-        conviction={item.vote.vote.conviction}
+        conviction={0}
       />,
     ];
 
