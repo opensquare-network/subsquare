@@ -1,7 +1,7 @@
 import DetailMultiTabCall from "next-common/components/detail/detailMultiTabCall";
 import { useOnchainData } from "next-common/context/post";
 
-export default function ReferendaCall() {
+export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
 

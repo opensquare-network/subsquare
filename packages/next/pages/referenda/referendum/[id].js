@@ -38,7 +38,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useReferendaBusinessData from "hooks/useReferendaBusinessData";
-import ReferendaCall from "next-common/components/gov2/referendum/call";
+import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -70,7 +70,7 @@ function ReferendumContent({ comments }) {
       <Gov2Sidebar />
 
       <DetailMultiTabs
-        call={proposal?.call && <ReferendaCall />}
+        call={proposal?.call && <Gov2ReferendumCall />}
         business={!!businessData?.length && <ReferendaBusiness />}
         metadata={<Gov2ReferendumMetadata info={info} />}
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
