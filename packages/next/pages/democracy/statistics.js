@@ -33,7 +33,7 @@ export default withLoginUserRedux(
             <div
               className={clsx(
                 "flex gap-4 flex-wrap",
-                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-16px)] [&_>_div]:flex-1",
+                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
                 !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
                 !navCollapsed
                   ? "[&_>_div]:max-md:max-w-full"
