@@ -60,7 +60,7 @@ export default function VotingHistorySummary({
   return (
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
-        <Title>Voting History</Title>
+        <Title>Votes</Title>
         {!isKintsugi && (
           <ModuleTab
             moduleTabIndex={moduleTabIndex}

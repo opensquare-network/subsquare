@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ user, id }) => {
   const router = useRouter();
 
   let tabContent = <Posted />;
-  if (router.asPath.startsWith(`/user/${id}/voting-history`)) {
+  if (router.asPath.startsWith(`/user/${id}/votes`)) {
     tabContent = <VotingHistory />;
   }
 
@@ -48,8 +48,8 @@ export default withLoginUserRedux(({ user, id }) => {
           exactMatch: false,
         },
         {
-          label: "Voting History",
-          url: `/user/${id}/voting-history`,
+          label: "Votes",
+          url: `/user/${id}/votes`,
         },
       ]}
     >
