@@ -32,7 +32,7 @@ import TallyInfo from "next-common/components/referenda/tally/info";
 import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import capitalize from "lodash.capitalize";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
-import VotesLists from "./votesLists";
+import VotesInfo from "./votesInfo";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -240,7 +240,7 @@ function Vote({ referendumInfo, referendumIndex }) {
             <RejectStatus>Failing</RejectStatus>
           ))}
 
-        <VotesLists />
+        <VotesInfo />
         <MyVote />
       </SecondaryCardDetail>
 
