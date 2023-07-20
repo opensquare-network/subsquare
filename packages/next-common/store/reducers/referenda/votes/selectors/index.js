@@ -12,70 +12,78 @@ export const showVotesNumberSelector = createSelector(
   },
 );
 
-export const allAyeSelector = state => {
+export const allAyeSelector = (state) => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => v.aye);
 };
 
-export const allNaySelector = state => {
+export const allNaySelector = (state) => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => v.aye === false);
 };
 
-export const allAbstainSelector = state => {
+export const allAbstainSelector = (state) => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => v.isAbstain);
 };
 
-export const allDirectVotesSelector = state => {
+export const allDirectVotesSelector = (state) => {
   const allVotes = state[name].allVotes || [];
-  return allVotes.filter(v => !v.isDelegating);
+  return allVotes.filter((v) => !v.isDelegating);
 };
 
-export const allDelegationVotesSelector = state => {
+export const allDelegationVotesSelector = (state) => {
   const allVotes = state[name].allVotes || [];
-  return allVotes.filter(v => v.isDelegating);
+  return allVotes.filter((v) => v.isDelegating);
+};
+
+export const normalizedNestedVote = (vote, delegations) => {
+  if (!vote.isStandard) {
+    return {
+      ...vote,
+      directVoterDelegations: [],
+      totalVotes: vote.votes,
+      totalDelegatedVotes: 0,
+      totalDelegatedCapital: 0,
+    };
+  }
+
+  let directVoterDelegations = delegations.filter(
+    (delegationVote) => delegationVote.target === vote.account,
+  );
+  const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
+    return new BigNumber(result).plus(d.votes).toString();
+  }, 0);
+  const totalVotes = new BigNumber(vote.votes)
+    .plus(allDelegationVotes)
+    .toString();
+  const totalDelegatedVotes = directVoterDelegations.reduce((result, d) => {
+    return BigNumber(result).plus(d.votes).toString();
+  }, 0);
+  const totalDelegatedCapital = directVoterDelegations.reduce((result, d) => {
+    return BigNumber(result).plus(d.balance).toString();
+  }, 0);
+
+  return {
+    ...vote,
+    directVoterDelegations,
+    totalVotes,
+    totalDelegatedVotes,
+    totalDelegatedCapital,
+  };
 };
 
 export const allNestedVotesSelector = createSelector(
   allDirectVotesSelector,
   allDelegationVotesSelector,
   (directVotes, delegations) => {
-    const directVotesWithNested = directVotes.map(v => {
-      if (!v.isStandard) {
-        return {
-          ...v,
-          directVoterDelegations: [],
-          totalVotes: v.votes,
-          totalDelegatedVotes: 0,
-          totalDelegatedCapital: 0,
-        };
-      }
+    const directVotesWithNested = directVotes.map((v) =>
+      normalizedNestedVote(v, delegations),
+    );
 
-      let directVoterDelegations = delegations.filter((delegationVote) => delegationVote.target === v.account);
-      const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
-        return new BigNumber(result).plus(d.votes).toString();
-      }, 0);
-      const totalVotes = new BigNumber(v.votes).plus(allDelegationVotes).toString();
-      const totalDelegatedVotes = directVoterDelegations.reduce((result, d) => {
-        return BigNumber(result).plus(d.votes).toString();
-      }, 0);
-      const totalDelegatedCapital = directVoterDelegations.reduce((result, d) => {
-        return BigNumber(result).plus(d.balance).toString();
-      }, 0);
-
-      return {
-        ...v,
-        directVoterDelegations,
-        totalVotes,
-        totalDelegatedVotes,
-        totalDelegatedCapital,
-      };
-    });
-
-    const allAye = directVotesWithNested.filter(v => v.aye);
-    const allNay = directVotesWithNested.filter(v => v.aye === false);
-    const allAbstain = directVotesWithNested.filter(v => v.isAbstain);
+    const allAye = directVotesWithNested.filter((v) => v.aye);
+    const allNay = directVotesWithNested.filter((v) => v.aye === false);
+    const allAbstain = directVotesWithNested.filter((v) => v.isAbstain);
 
     return {
       allAye,

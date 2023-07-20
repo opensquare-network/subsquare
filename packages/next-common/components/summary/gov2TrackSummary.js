@@ -5,7 +5,6 @@ import { SummaryGreyText } from "next-common/components/summary/styled";
 import Summary from "next-common/components/summary/v2/base";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import clsx from "clsx";
 import Gov2TrackSummaryThresholdCurves from "./gov2TrackSummaryThresholdCurves";
 
 export default function Gov2TrackSummary({ summary, period }) {
@@ -30,7 +29,7 @@ export default function Gov2TrackSummary({ summary, period }) {
   );
 
   return (
-    <div className={clsx("md:flex max-md:flex-col max-md:space-y-4")}>
+    <div className="flex max-md:flex-col max-md:space-y-4">
       <Summary
         className="!grid-cols-3 max-md:!grid-cols-2 !w-auto grow"
         items={[

@@ -38,7 +38,7 @@ function CallsVotesList({ items, theme, loading = false }) {
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left", width: 344 }}>
-              VOTERS
+              ACCOUNT
             </StyledTh>
             <StyledTh style={{ textAlign: "left", width: 160 }}>DATE</StyledTh>
             <StyledTh style={{ textAlign: "right", width: 168 }}>

@@ -17,9 +17,7 @@ import {
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 
-export default function VotesPopup({
-  setShowVoteList,
-}) {
+export default function VotesPopup({ setShowVoteList }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const allAye = useSelector(allAyeSelector);
   const allNay = useSelector(allNaySelector);
@@ -84,7 +82,7 @@ function VotesList({ loading, items = [] }) {
 
   const columns = [
     {
-      name: "VOTERS",
+      name: "ACCOUNT",
       style: { minWidth: 276, textAlign: "left" },
     },
     {

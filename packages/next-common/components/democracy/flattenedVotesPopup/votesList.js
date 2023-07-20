@@ -32,7 +32,7 @@ function VotesList({ items, theme, loading = false, tab, isOpenGov = false }) {
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left", width: 416 }}>
-              VOTERS
+              ACCOUNT
             </StyledTh>
             {hasLabel && (
               <StyledTh style={{ textAlign: "right", width: 128 }}>
