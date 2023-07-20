@@ -4,8 +4,8 @@ import TurnoutStatistics from "components/statistics/democracy/turnoutStatistics
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import { useNavCollapsed } from "next-common/context/nav";
-import VoteTrend from "next-common/components/statistics/track/voteTrend";
-import AddressTrend from "next-common/components/statistics/track/addressTrend";
+import VoteTrend from "components/statistics/democracy/voteTrend";
+import AddressTrend from "components/statistics/democracy/addressTrend";
 import { Header } from "next-common/components/statistics/styled";
 import clsx from "clsx";
 
