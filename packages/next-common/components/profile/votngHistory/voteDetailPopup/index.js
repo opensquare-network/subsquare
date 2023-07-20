@@ -6,7 +6,7 @@ import { SplitAbstainVoteDetail } from "./splitAbstainDetail";
 export default function VoteDetailPopup({ vote, isGov2, setShowVoteDetail }) {
   let voteDetail = null;
 
-  if (vote.isStandard) {
+  if (vote.isStandard || vote.isDelegating) {
     voteDetail = <StandardVoteDetail vote={vote} isGov2={isGov2} />;
   } else if (vote.isSplit) {
     voteDetail = <SplitVoteDetail vote={vote} />;
