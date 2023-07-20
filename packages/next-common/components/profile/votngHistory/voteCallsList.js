@@ -21,10 +21,10 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function VoteCallsList({ data, isLoading, isGov2, fetchData }) {
+export default function VoteCallsList({ data, isGov2, fetchData, page }) {
   const chain = useChain();
   const { columns } = useColumns([
-    { name: "Proposals", style: { textAlign: "left", minWidth: "180px" } },
+    { name: "Proposal", style: { textAlign: "left", minWidth: "180px" } },
     { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
     {
       name: "Vote",
@@ -46,10 +46,11 @@ export default function VoteCallsList({ data, isLoading, isGov2, fetchData }) {
   return (
     <>
       <ListWrapper>
-        <StyledList loading={isLoading} columns={columns} rows={rows} />
+        <StyledList loading={!data} columns={columns} rows={rows} />
       </ListWrapper>
       <Pagination
         {...data}
+        page={page}
         onPageChange={(e, page) => {
           e.stopPropagation();
           e.preventDefault();

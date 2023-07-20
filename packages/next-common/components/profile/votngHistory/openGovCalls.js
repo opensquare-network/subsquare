@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
-import { EmptyList } from "next-common/utils/constants";
 import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteCallsList from "./voteCallsList";
@@ -9,12 +8,15 @@ import MobileVoteCallsList from "./mobile/voteCallsList";
 
 export default function OpenGovCalls() {
   const { id } = usePageProps();
-  const [data, setData] = useState(EmptyList);
+  const [data, setData] = useState();
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
 
   const fetchData = useCallback(
     (page, pageSize) => {
+      setPage(page);
+
       setIsLoading(true);
       nextApi
         .fetch(`users/${id}/referenda/vote-calls`, {
@@ -35,8 +37,8 @@ export default function OpenGovCalls() {
   );
 
   useEffect(() => {
-    fetchData(data?.page, data?.pageSize);
-  }, [fetchData, data?.page, data?.pageSize]);
+    fetchData(1, 25);
+  }, [fetchData]);
 
   return width > 1024 ? (
     <ListCard>
@@ -45,6 +47,7 @@ export default function OpenGovCalls() {
         isGov2={true}
         isLoading={isLoading}
         fetchData={fetchData}
+        page={page}
       />
     </ListCard>
   ) : (
@@ -53,6 +56,7 @@ export default function OpenGovCalls() {
       isGov2={true}
       isLoading={isLoading}
       fetchData={fetchData}
+      page={page}
     />
   );
 }

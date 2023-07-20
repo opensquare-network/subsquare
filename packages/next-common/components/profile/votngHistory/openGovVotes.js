@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
-import { EmptyList } from "next-common/utils/constants";
 import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteDetailPopup from "./voteDetailPopup";
@@ -10,13 +9,16 @@ import MobileVotesList from "./mobile/votesList";
 
 export default function OpenGovVotes() {
   const { id } = usePageProps();
-  const [data, setData] = useState(EmptyList);
+  const [data, setData] = useState();
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
 
   const fetchData = useCallback(
     (page, pageSize) => {
+      setPage(page);
+
       setIsLoading(true);
       nextApi
         .fetch(`users/${id}/referenda/votes`, {
@@ -37,8 +39,8 @@ export default function OpenGovVotes() {
   );
 
   useEffect(() => {
-    fetchData(data?.page, data?.pageSize);
-  }, [fetchData, data?.page, data?.pageSize]);
+    fetchData(1, 25);
+  }, [fetchData]);
 
   return (
     <>
@@ -50,6 +52,7 @@ export default function OpenGovVotes() {
             isGov2={true}
             fetchData={fetchData}
             setShowVoteDetail={setShowVoteDetail}
+            page={page}
           />
         </ListCard>
       ) : (
@@ -59,6 +62,7 @@ export default function OpenGovVotes() {
           isGov2={true}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}
+          page={page}
         />
       )}
       {showVoteDetail !== null && (

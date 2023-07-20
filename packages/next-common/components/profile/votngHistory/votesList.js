@@ -23,12 +23,12 @@ const StyledList = styled(StyledListOrigin)`
 export default function VotesList({
   data,
   isGov2,
-  isLoading,
   fetchData,
   setShowVoteDetail,
+  page,
 }) {
   const { columns } = useColumns([
-    { name: "Proposals", style: { textAlign: "left", minWidth: "230px" } },
+    { name: "Proposal", style: { textAlign: "left", minWidth: "230px" } },
     {
       name: "Vote",
       style: { textAlign: "left", width: "128px", minWidth: "128px" },
@@ -53,10 +53,11 @@ export default function VotesList({
   return (
     <>
       <ListWrapper>
-        <StyledList loading={isLoading} columns={columns} rows={rows} />
+        <StyledList loading={!data} columns={columns} rows={rows} />
       </ListWrapper>
       <Pagination
         {...data}
+        page={page}
         onPageChange={(e, page) => {
           e.stopPropagation();
           e.preventDefault();

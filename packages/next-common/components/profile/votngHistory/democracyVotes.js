@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
-import { EmptyList } from "next-common/utils/constants";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { ListCard } from "./styled";
 import VoteDetailPopup from "./voteDetailPopup";
@@ -12,7 +11,8 @@ import { useChain } from "next-common/context/chain";
 
 export default function DemocracyVotes() {
   const { id } = usePageProps();
-  const [data, setData] = useState(EmptyList);
+  const [data, setData] = useState();
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
@@ -20,6 +20,8 @@ export default function DemocracyVotes() {
 
   const fetchData = useCallback(
     (page, pageSize) => {
+      setPage(page);
+
       setIsLoading(true);
       nextApi
         .fetch(`users/${id}/democracy/votes`, {
@@ -40,8 +42,8 @@ export default function DemocracyVotes() {
   );
 
   useEffect(() => {
-    fetchData(data?.page, data?.pageSize);
-  }, [fetchData, data?.page, data?.pageSize]);
+    fetchData(1, 25);
+  }, [fetchData]);
 
   return (
     <>
@@ -53,6 +55,7 @@ export default function DemocracyVotes() {
             isGov2={false}
             fetchData={fetchData}
             setShowVoteDetail={setShowVoteDetail}
+            page={page}
           />
         </ListCard>
       ) : (
@@ -62,6 +65,7 @@ export default function DemocracyVotes() {
           isGov2={false}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}
+          page={page}
         />
       )}
       {showVoteDetail !== null && (

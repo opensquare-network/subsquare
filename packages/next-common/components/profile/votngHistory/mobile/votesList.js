@@ -5,12 +5,12 @@ import LoadingList from "./loadingList";
 
 export default function MobileVotesList({
   data,
-  isLoading,
   isGov2,
   fetchData,
   setShowVoteDetail,
+  page,
 }) {
-  if (isLoading) {
+  if (!data) {
     return <LoadingList />;
   }
 
@@ -32,6 +32,7 @@ export default function MobileVotesList({
       <div className="flex flex-col gap-[16px]">{listContent}</div>
       <Pagination
         {...data}
+        page={page}
         onPageChange={(e, page) => {
           e.stopPropagation();
           e.preventDefault();
