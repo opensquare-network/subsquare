@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
-import { isLoadingVoteCallsSelector } from "next-common/store/reducers/referendumSlice";
+import { isLoadingVoteCallsSelector } from "next-common/store/reducers/democracy/voteCalls";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -120,7 +120,7 @@ function VotesList({ items = [], loading }) {
         key="capital"
         item={item}
         capital={toPrecision(item.vote.balance, chainSettings.decimals)}
-        conviction={item.vote.vote.conviction}
+        conviction={item.vote.vote?.conviction}
       />,
     ];
 
