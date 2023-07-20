@@ -1,5 +1,4 @@
 import React from "react";
-import Proposal from "../proposal";
 import KVList from "../listInfo/kvList";
 import User from "../user";
 import SymbolBalance from "../values/symbolBalance";
@@ -30,19 +29,6 @@ export default function Metadata({ publicProposal }) {
       <User add={publicProposal?.proposer} fontSize={14} key="user" />,
     ],
   ];
-
-  let call = publicProposal?.preImage?.call || publicProposal?.call;
-  if (call) {
-    metadata.push([
-      <Proposal
-        key={"index-proposal"}
-        call={call}
-        shorten={publicProposal.preImage?.shorten}
-        proposalIndex={publicProposal.proposalIndex}
-        referendumIndex={publicProposal.referendumIndex}
-      />,
-    ]);
-  }
 
   return <KVList title="Metadata" data={metadata} showFold />;
 }
