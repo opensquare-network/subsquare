@@ -6,7 +6,7 @@ export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
       className={clsx(
         "flex justify-between",
         "bg-neutral200",
-        "rounded p-1 h-12",
+        "rounded-lg p-1 h-12",
         small && "h-9",
       )}
     >
@@ -20,7 +20,7 @@ export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
             small && "py-0.5 w-[156px]",
             "text-textTertiary",
             selectedTabId === tabId &&
-              "!text-textPrimary bg-neutral100 shadow-100 rounded-sm",
+              "!text-textPrimary bg-neutral100 shadow-100 rounded",
           )}
           onClick={() => setSelectedTabId(tabId)}
         >
