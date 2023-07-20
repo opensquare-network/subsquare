@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import tw from "tailwind-styled-components";
 
 const Common = styled.span`
   padding: 2px 8px;
@@ -31,6 +32,11 @@ export const NegativeTag = styled(Common)`
 
 export const ClosedTag = styled(Common)`
   background: var(--neutral500);
+`;
+
+export const ThemedTag = tw(Common)`
+bg-theme100
+!text-theme500
 `;
 
 export const BaseTag = Common;
