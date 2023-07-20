@@ -1,4 +1,8 @@
-import { PostProvider, usePost } from "next-common/context/post";
+import {
+  PostProvider,
+  useOnchainData,
+  usePost,
+} from "next-common/context/post";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -34,6 +38,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useReferendaBusinessData from "hooks/useReferendaBusinessData";
+import ReferendaCall from "next-common/components/gov2/referendum/call";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -41,6 +46,8 @@ function ReferendumContent({ comments }) {
   useSubReferendumInfo();
   const info = useReferendumInfo();
   const businessData = useReferendaBusinessData();
+  const onchainData = useOnchainData();
+  const proposal = onchainData?.proposal ?? {};
 
   useEffect(() => {
     return () => {
@@ -63,6 +70,7 @@ function ReferendumContent({ comments }) {
       <Gov2Sidebar />
 
       <DetailMultiTabs
+        call={proposal?.call && <ReferendaCall />}
         business={!!businessData?.length && <ReferendaBusiness />}
         metadata={<Gov2ReferendumMetadata info={info} />}
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}

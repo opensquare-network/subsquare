@@ -1,6 +1,5 @@
 import KVList from "../../../listInfo/kvList";
 import React from "react";
-import Proposal from "../../../proposal";
 import isNil from "lodash.isnil";
 import { GreyText } from "./styled";
 import BlockPeriod from "./blockPeriod";
@@ -29,7 +28,6 @@ function getEnactmentValue(enactment = {}) {
 
 export default function Gov2ReferendumMetadata({ info }) {
   const onchainData = useOnchainData();
-  const proposal = onchainData?.proposal ?? {};
   const trackInfo = useTrack();
   const proposalHash = onchainData?.proposalHash;
 
@@ -65,16 +63,6 @@ export default function Gov2ReferendumMetadata({ info }) {
     ["Enact", getEnactmentValue(info?.enactment)],
     ["Proposal Hash", proposalHash],
   ];
-
-  if (proposal?.call) {
-    metadata.push([
-      <Proposal
-        key="preimage"
-        call={proposal.call}
-        shorten={proposal.shorten}
-      />,
-    ]);
-  }
 
   return <KVList title={"Metadata"} data={metadata} showFold={true} />;
 }
