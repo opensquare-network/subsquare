@@ -24,6 +24,7 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import MotionHead from "./head";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
+import CollectiveCall from "./call";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
@@ -153,6 +154,11 @@ export default function MotionDetail({ onReply }) {
         isLoadingVote={isLoadingVote}
       />
       <DetailMultiTabs
+        call={
+          post?.onchainData?.proposal && (
+            <CollectiveCall call={post.onchainData.proposal} />
+          )
+        }
         business={
           !!motionBusinessData?.length && (
             <Business motion={post?.onchainData} />
