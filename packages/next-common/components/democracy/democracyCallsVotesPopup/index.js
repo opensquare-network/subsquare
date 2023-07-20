@@ -120,7 +120,7 @@ function VotesList({ items = [], loading }) {
         key="capital"
         item={item}
         capital={toPrecision(item.vote.balance, chainSettings.decimals)}
-        conviction={item.vote.vote.conviction}
+        conviction={item.vote.vote?.conviction}
       />,
     ];
 
