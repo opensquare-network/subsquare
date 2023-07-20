@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 
 import InnerDataTable from "../table/innerDataTable";
@@ -11,6 +11,13 @@ import { hexIsValidUTF8 } from "../../utils/utf8validate";
 import { useChain } from "../../context/chain";
 import getChainSettings from "../../utils/consts/settings";
 import needCheckUtf8 from "./needCheckUtf8";
+import Popup from "../popup/wrapper/Popup";
+import { ThemedTag } from "../tags/state/styled";
+import { InfoDocs } from "@osn/icons/subsquare";
+import clsx from "clsx";
+import Tooltip from "../tooltip";
+import Tab from "../tab";
+import { useLocalStorage } from "usehooks-ts";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -69,27 +76,6 @@ const TagWrapper = styled.div`
   @media (max-width: 768px) {
     margin-top: 8px;
   }
-`;
-
-const TagItem = styled.div`
-  padding: 4px 8px;
-
-  &.tag {
-    background: var(--neutral200);
-  }
-
-  border-radius: 2px;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 100%;
-  color: var(--textSecondary);
-  cursor: pointer;
-  ${(p) =>
-    p.active &&
-    css`
-      background: var(--purple100) !important;
-      color: var(--purple500);
-    `}
 `;
 
 function convertProposalForTableView(proposal, chain) {
@@ -240,6 +226,10 @@ function convertProposalForJsonView(proposal, chain) {
   };
 }
 
+const tabs = [
+  { tabId: "table", tabTitle: "Table" },
+  { tabId: "json", tabTitle: "JSON" },
+];
 export default function Proposal({
   call = {},
   shorten,
@@ -248,23 +238,11 @@ export default function Proposal({
   referendumIndex,
 }) {
   const chain = useChain();
-  const [callType, setCallType] = useState("table");
-
-  useEffect(() => {
-    if (shorten) {
-      setCallType("table");
-      return;
-    }
-    const item = window.localStorage.getItem("callType");
-    if (item) {
-      setCallType(JSON.parse(item));
-    }
-  }, [shorten]);
-
-  const onClick = (value) => {
-    window.localStorage.setItem("callType", JSON.stringify(value));
-    setCallType(value);
-  };
+  const [detailPopupVisible, setDetailPopupVisible] = useState(false);
+  const [selectedTabId, setSelectedTabId] = useLocalStorage(
+    "callType",
+    tabs[0].tabId,
+  );
 
   let dataTableData;
   if (shorten) {
@@ -287,33 +265,46 @@ export default function Proposal({
       <HeaderWrapper>
         <Header className="text-textSecondary">Call</Header>
         <TagWrapper>
-          <TagItem
-            className="tag"
-            active={callType === "table"}
-            onClick={() => onClick("table")}
-          >
-            Table
-          </TagItem>
-          {!shorten && (
-            <TagItem
-              className="tag"
-              active={callType === "json"}
-              onClick={() => onClick("json")}
-            >
-              Json
-            </TagItem>
-          )}
+          <ThemedTag>{call?.section}</ThemedTag>
+          <ThemedTag>{call?.method}</ThemedTag>
+
+          <Tooltip content="Call Detail">
+            <InfoDocs
+              role="button"
+              className={clsx(
+                "w-4 h-4 relative top-[0.5px]",
+                "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
+                "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",
+              )}
+              onClick={() => setDetailPopupVisible(true)}
+            />
+          </Tooltip>
         </TagWrapper>
       </HeaderWrapper>
-      {callType === "table" && (
-        <ArgsWrapper className="wrapper text-textPrimary">
-          <InnerDataTable data={dataTableData} />
-        </ArgsWrapper>
-      )}
-      {callType === "json" && (
-        <ArgsWrapper className="wrapper">
-          <JsonView src={convertProposalForJsonView(call, chain)} />
-        </ArgsWrapper>
+
+      {detailPopupVisible && (
+        <Popup
+          title="Call Detail"
+          onClose={() => setDetailPopupVisible(false)}
+          className="w-[650px]"
+        >
+          <Tab
+            tabs={tabs}
+            selectedTabId={selectedTabId}
+            setSelectedTabId={setSelectedTabId}
+          />
+
+          {selectedTabId === "table" && (
+            <ArgsWrapper className="wrapper text-textPrimary">
+              <InnerDataTable data={dataTableData} />
+            </ArgsWrapper>
+          )}
+          {selectedTabId === "json" && (
+            <ArgsWrapper className="wrapper">
+              <JsonView src={convertProposalForJsonView(call, chain)} />
+            </ArgsWrapper>
+          )}
+        </Popup>
       )}
     </Wrapper>
   );

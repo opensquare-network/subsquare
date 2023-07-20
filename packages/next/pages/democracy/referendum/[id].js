@@ -23,10 +23,15 @@ import { useDispatch } from "react-redux";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import ReferendumCall from "next-common/components/democracy/call";
+import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
+  const onchainData = post?.onchainData;
   const dispatch = useDispatch();
+
+  const { timeline = [], preImage } = onchainData;
 
   useSubscribePostDetail(post?.referendumIndex);
 
@@ -40,6 +45,11 @@ function ReferendumContent({ comments }) {
     post?.onchainData,
     api,
   );
+  const proposal = referendumStatus?.proposal;
+
+  const { call: inlineCall } = useInlineCall(timeline, proposal);
+  const call = preImage?.call || inlineCall;
+
   useMaybeFetchElectorate(post?.onchainData, api);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
@@ -57,6 +67,15 @@ function ReferendumContent({ comments }) {
       <Vote referendumIndex={post?.referendumIndex} />
 
       <DetailMultiTabs
+        call={
+          (call || inlineCall) && (
+            <ReferendumCall
+              call={call || inlineCall}
+              shorten={post?.onchainData?.preImage?.shorten}
+              onchainData={post?.onchainData}
+            />
+          )
+        }
         metadata={
           <ReferendumMetadata
             proposer={post?.proposer}
