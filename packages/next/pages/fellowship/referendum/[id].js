@@ -7,7 +7,11 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
-import { PostProvider, usePost } from "next-common/context/post";
+import {
+  PostProvider,
+  useOnchainData,
+  usePost,
+} from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
@@ -27,11 +31,14 @@ import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFel
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
   useSubFellowshipReferendumInfo();
   const info = useFellowshipReferendumInfo();
+  const onchainData = useOnchainData();
+  const proposal = onchainData?.proposal ?? {};
 
   const { CommentComponent, focusEditor } = useUniversalComments({
     detail: post,
@@ -45,6 +52,7 @@ function FellowshipContent({ comments }) {
       <FellowshipReferendaDetail onReply={focusEditor} />
       <FellowshipReferendumSideBar />
       <DetailMultiTabs
+        call={proposal?.call && <Gov2ReferendumCall />}
         metadata={<Gov2ReferendumMetadata info={info} />}
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
