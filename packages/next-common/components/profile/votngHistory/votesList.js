@@ -7,6 +7,8 @@ import VoteItem from "./voteItem";
 import DetailButton from "./detailButton";
 import { PostTitle } from "./common";
 import ReferendumTag from "./common/referendumTag";
+import { useChain } from "next-common/context/chain";
+import { isKintsugiChain } from "next-common/utils/chain";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -27,7 +29,10 @@ export default function VotesList({
   setShowVoteDetail,
   page,
 }) {
-  const { columns } = useColumns([
+  const chain = useChain();
+  const isKintsugi = isKintsugiChain(chain);
+
+  const columnsDefinition = [
     { name: "Proposal", style: { textAlign: "left", minWidth: "230px" } },
     {
       name: "Vote",
@@ -37,18 +42,32 @@ export default function VotesList({
       name: "Status",
       style: { textAlign: "right", width: "128px", minWidth: "128px" },
     },
-    {
+  ];
+
+  if (!isKintsugi) {
+    columnsDefinition.push({
       name: "",
       style: { textAlign: "right", width: "64px", minWidth: "64px" },
-    },
-  ]);
+    });
+  }
 
-  const rows = (data?.items || []).map((item) => [
-    <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
-    <VoteItem key="vote" vote={item} />,
-    <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
-    <DetailButton key="detail" onClick={() => setShowVoteDetail(item)} />,
-  ]);
+  const { columns } = useColumns(columnsDefinition);
+
+  const rows = (data?.items || []).map((item) => {
+    const data = [
+      <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
+      <VoteItem key="vote" vote={item} />,
+      <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
+    ];
+
+    if (!isKintsugi) {
+      data.push(
+        <DetailButton key="detail" onClick={() => setShowVoteDetail(item)} />,
+      );
+    }
+
+    return data;
+  });
 
   return (
     <>

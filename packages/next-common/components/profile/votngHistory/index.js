@@ -2,12 +2,12 @@ import VotingHistorySummary from "./summary";
 import ListTabs from "./listTabs";
 import { useState } from "react";
 import { Democracy, OpenGov } from "./moduleTab";
-import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
+import { isKintsugiChain } from "next-common/utils/chain";
 
 export default function VotingHistory() {
   const chain = useChain();
-  const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
+  const isKintsugi = isKintsugiChain(chain);
   const [moduleTabIndex, setModuleTabIndex] = useState(
     isKintsugi ? Democracy : OpenGov,
   );
