@@ -34,7 +34,14 @@ export default function PostDataSource() {
   const type = useDetailType();
   const chain = useChain();
 
-  if (![Chains.kusama, Chains.polkadot, Chains.collectives].includes(chain)) {
+  if (
+    ![
+      Chains.kusama,
+      Chains.polkadot,
+      Chains.moonriver,
+      Chains.collectives,
+    ].includes(chain)
+  ) {
     return null;
   }
 
