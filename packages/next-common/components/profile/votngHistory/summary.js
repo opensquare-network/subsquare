@@ -22,6 +22,7 @@ function TextSummaryContent({ value }) {
 }
 
 export default function VotingHistorySummary({
+  isKintsugi,
   moduleTabIndex,
   setModuleTabIndex,
 }) {
@@ -60,10 +61,12 @@ export default function VotingHistorySummary({
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
         <Title>Voting History</Title>
-        <ModuleTab
-          moduleTabIndex={moduleTabIndex}
-          setModuleTabIndex={setModuleTabIndex}
-        />
+        {!isKintsugi && (
+          <ModuleTab
+            moduleTabIndex={moduleTabIndex}
+            setModuleTabIndex={setModuleTabIndex}
+          />
+        )}
       </div>
       <SecondaryCard>
         <SummaryItems items={items} />

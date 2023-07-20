@@ -7,6 +7,7 @@ import VoteItem from "./voteItem";
 import { PostTitle, normalizeCall } from "./common";
 import ReferendumTag from "./common/referendumTag";
 import CallDate from "./common/date";
+import { useChain } from "next-common/context/chain";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const StyledList = styled(StyledListOrigin)`
 `;
 
 export default function VoteCallsList({ data, isLoading, isGov2, fetchData }) {
+  const chain = useChain();
   const { columns } = useColumns([
     { name: "Proposals", style: { textAlign: "left", minWidth: "180px" } },
     { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
@@ -37,7 +39,7 @@ export default function VoteCallsList({ data, isLoading, isGov2, fetchData }) {
   const rows = (data?.items || []).map((item) => [
     <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
     <CallDate key="date" vote={item} />,
-    <VoteItem key="vote" vote={normalizeCall(item)} />,
+    <VoteItem key="vote" vote={normalizeCall(item, chain)} />,
     <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
   ]);
 

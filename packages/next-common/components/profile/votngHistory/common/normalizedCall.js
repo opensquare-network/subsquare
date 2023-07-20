@@ -1,7 +1,21 @@
 import BigNumber from "bignumber.js";
+import Chains from "next-common/utils/consts/chains";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
 
-export function normalizeCall(vote) {
+export function normalizeCall(vote, chain) {
+  const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
+  if (isKintsugi) {
+    const { balance, isAye } = vote.vote;
+    return {
+      ...vote,
+      isStandard: true,
+      balance,
+      conviction: 1,
+      aye: isAye,
+      votes: balance,
+    };
+  }
+
   if (vote.isStandard) {
     const {
       balance,

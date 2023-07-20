@@ -4,6 +4,7 @@ import { normalizeCall } from "../common";
 import { PostTitle } from "../common";
 import ReferendumTag from "../common/referendumTag";
 import CallDate from "../common/date";
+import { useChain } from "next-common/context/chain";
 
 function ItemHeader({ vote, isGov2 }) {
   return (
@@ -20,11 +21,13 @@ function ItemHeader({ vote, isGov2 }) {
 }
 
 export default function VoteCallListItem({ vote, isGov2 }) {
+  const chain = useChain();
+
   return (
     <ListCard>
       <ItemHeader vote={vote} isGov2={isGov2} />
       <div className="mt-[24px]">
-        <VoteItem vote={normalizeCall(vote)} />
+        <VoteItem vote={normalizeCall(vote, chain)} />
       </div>
     </ListCard>
   );
