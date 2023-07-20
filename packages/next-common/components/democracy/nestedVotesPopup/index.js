@@ -16,11 +16,12 @@ import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 import { sortTotalVotes } from "../../../utils/democracy/votes/passed/common";
 import { useSelector } from "react-redux";
-import { allNestedVotesSelector, showVotesNumberSelector } from "next-common/store/reducers/democracy/votes/selectors";
+import {
+  allNestedVotesSelector,
+  showVotesNumberSelector,
+} from "next-common/store/reducers/democracy/votes/selectors";
 
-export default function NestedVotesPopup({
-  setShowVoteList = noop,
-}) {
+export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const { allAye, allNay } = useSelector(allNestedVotesSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
@@ -87,7 +88,7 @@ function VotesList({ items = [], loading }) {
 
   const columns = [
     {
-      name: "VOTERS",
+      name: "ACCOUNT",
       style: { minWidth: 296, textAlign: "left" },
     },
     {
