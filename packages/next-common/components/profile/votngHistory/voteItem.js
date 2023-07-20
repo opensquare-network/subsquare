@@ -72,7 +72,7 @@ function StandardVoteItem({ vote }) {
           {vote.aye ? <Aye /> : <Nay />}
           <ValueDisplay
             className="text-textPrimary"
-            value={toPrecision(vote.votes, decimals)}
+            value={toPrecision(vote.balance, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
@@ -97,7 +97,7 @@ function SplitVoteItem({ vote }) {
           <Aye />
           <ValueDisplay
             className="text-textPrimary"
-            value={toPrecision(vote.ayeVotes, decimals)}
+            value={toPrecision(vote.ayeBalance, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
@@ -105,7 +105,7 @@ function SplitVoteItem({ vote }) {
           <Nay />
           <ValueDisplay
             className="text-textPrimary"
-            value={toPrecision(vote.nayVotes, decimals)}
+            value={toPrecision(vote.nayBalance, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
@@ -126,7 +126,7 @@ function SplitAbstainVoteItem({ vote }) {
           <Aye />
           <ValueDisplay
             className="text-textPrimary"
-            value={toPrecision(vote.ayeVotes, decimals)}
+            value={toPrecision(vote.ayeBalance, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
@@ -134,7 +134,7 @@ function SplitAbstainVoteItem({ vote }) {
           <Nay />
           <ValueDisplay
             className="text-textPrimary"
-            value={toPrecision(vote.nayVotes, decimals)}
+            value={toPrecision(vote.nayBalance, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
@@ -142,7 +142,7 @@ function SplitAbstainVoteItem({ vote }) {
           <Abstain />
           <ValueDisplay
             className="text-textPrimary"
-            value={toPrecision(vote.abstainVotes, decimals)}
+            value={toPrecision(vote.abstainBalance, decimals)}
             symbol={symbol}
           />
         </PartialVoteItem>
