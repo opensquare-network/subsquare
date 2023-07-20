@@ -19,7 +19,7 @@ export default function DetailMultiTabCall({
   const [detailCallVisible, setDetailCallVisible] = useState(false);
 
   const data = [
-    ["Proposal Hash", proposalHash],
+    proposalHash && ["Proposal Hash", proposalHash],
     [
       "Call",
       <div key={"call"} className="flex items-center gap-x-2 leading-[140%]">
@@ -38,7 +38,7 @@ export default function DetailMultiTabCall({
         />
       </div>,
     ],
-  ];
+  ].filter(Boolean);
 
   return (
     <div>
