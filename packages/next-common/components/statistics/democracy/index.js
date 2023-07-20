@@ -1,10 +1,9 @@
 import React from "react";
-import Divider from "next-common/components/styled/layout/divider";
 import DemocracyDelegatee from "./delegatee";
 import DemocracyDelegator from "./delegator";
 import PageTabs from "next-common/components/pageTabs";
 import DemocracySummary from "./summary";
-import { Header, Wrapper } from "../styled";
+import { Wrapper } from "../styled";
 
 export default function DemocracyStatistics({
   apiRoot,
@@ -24,12 +23,14 @@ export default function DemocracyStatistics({
   ];
 
   return (
-    <Wrapper>
-      <Header>Delegation</Header>
-      <Divider />
-      <DemocracySummary summary={summary} />
-      <Divider />
-      <PageTabs tabs={tabs} />
-    </Wrapper>
+    <div>
+      <Wrapper>
+        <DemocracySummary summary={summary} />
+      </Wrapper>
+
+      <Wrapper>
+        <PageTabs tabs={tabs} />
+      </Wrapper>
+    </div>
   );
 }
