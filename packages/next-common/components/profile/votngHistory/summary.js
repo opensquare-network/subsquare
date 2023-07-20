@@ -59,15 +59,15 @@ export default function VotingHistorySummary({
 
   return (
     <>
-      <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
-        <Title>Votes</Title>
-        {!isKintsugi && (
+      {!isKintsugi && (
+        <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
+          <Title>Votes</Title>
           <ModuleTab
             moduleTabIndex={moduleTabIndex}
             setModuleTabIndex={setModuleTabIndex}
           />
-        )}
-      </div>
+        </div>
+      )}
       <SecondaryCard>
         <SummaryItems items={items} />
       </SecondaryCard>
