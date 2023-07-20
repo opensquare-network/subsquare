@@ -53,9 +53,9 @@ const Nav = styled.div`
 const PAGE_OFFSET = 1;
 
 export default function Pagination({
-  page,
-  pageSize,
-  total,
+  page = 1,
+  pageSize = 10,
+  total = 0,
   onPageChange = null,
 }) {
   const totalPages = Math.ceil(total / pageSize)

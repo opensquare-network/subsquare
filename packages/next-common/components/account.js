@@ -51,7 +51,7 @@ export default function Account({ account }) {
           </>
         ) : (
           <>
-            <div>{account?.name}</div>
+            <div className="text-textPrimary">{account?.name}</div>
             <div>{addressEllipsis(address) ?? "--"}</div>
           </>
         )}
