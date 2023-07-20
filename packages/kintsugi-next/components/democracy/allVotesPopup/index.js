@@ -1,6 +1,8 @@
 "use client";
 
-import VotesTab, { tabs } from "next-common/components/democracy/flattenedVotesPopup/tab";
+import VotesTab, {
+  tabs,
+} from "next-common/components/democracy/flattenedVotesPopup/tab";
 import Pagination from "next-common/components/pagination";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -17,9 +19,7 @@ import {
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 
-export default function CheckAllVotesPopup({
-  setShowVoteList = () => {},
-}) {
+export default function CheckAllVotesPopup({ setShowVoteList = () => {} }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const allAye = useSelector(allAyeSelector);
   const allNay = useSelector(allNaySelector);
@@ -84,7 +84,7 @@ function VotesList({ items = [], loading }) {
 
   const columns = [
     {
-      name: "VOTERS",
+      name: "ACCOUNT",
       style: { width: 176, textAlign: "left" },
     },
     {

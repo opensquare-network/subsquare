@@ -94,7 +94,7 @@ function VotesList({ items = [], loading }) {
 
   const columns = [
     {
-      name: "VOTERS",
+      name: "ACCOUNT",
       style: { minWidth: 296, textAlign: "left" },
     },
     {

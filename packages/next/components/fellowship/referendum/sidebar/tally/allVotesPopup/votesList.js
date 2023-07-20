@@ -20,7 +20,7 @@ function VotesList({ items, theme, loading = false }) {
         <thead>
           <StyledTr>
             <StyledTh style={{ textAlign: "left", width: 176 }}>
-              VOTERS
+              ACCOUNT
             </StyledTh>
             <StyledTh style={{ width: "100%", textAlign: "right" }}>
               VOTES
