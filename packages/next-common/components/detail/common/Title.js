@@ -40,14 +40,9 @@ export default function PostTitle() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <TitleWrapper>
+    <TitleWrapper className="text-textPrimary">
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title
-        className={clsx(
-          "text-textPrimary",
-          isEditing && "!text-textDisabled select-none",
-        )}
-      >
+      <Title className={clsx(isEditing && "!text-textDisabled select-none")}>
         {title}
       </Title>
     </TitleWrapper>
