@@ -1,6 +1,8 @@
 import { useOnchainData } from "next-common/context/post";
 import KvList from "../listInfo/kvList";
 import Proposal from "../proposal";
+import extractKintsugiFields from "next-common/components/democracy/common/kintsugiCallFields";
+import { useChain } from "next-common/context/chain";
 
 export default function DemocracyPublicProposalCall({
   call,
@@ -9,6 +11,7 @@ export default function DemocracyPublicProposalCall({
   referendumIndex,
 }) {
   const onchainData = useOnchainData();
+  const chain = useChain();
 
   const data = [
     ["Hash", onchainData?.hash],
@@ -21,6 +24,7 @@ export default function DemocracyPublicProposalCall({
         referendumIndex={referendumIndex}
       />,
     ],
+    ...extractKintsugiFields(chain, call),
   ];
   return <KvList data={data} />;
 }

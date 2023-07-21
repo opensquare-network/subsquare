@@ -101,6 +101,7 @@ function ReferendumContent({ publicProposal, comments }) {
           />
         }
         timeline={<Timeline data={timelineData} />}
+        timelineCount={timelineData.length}
       />
 
       {CommentComponent}

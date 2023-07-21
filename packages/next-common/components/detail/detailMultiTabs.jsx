@@ -12,6 +12,7 @@ export default function DetailMultiTabs({
   business,
   metadata,
   timeline,
+  timelineCount,
 }) {
   const timelineData = useTimelineData();
   const [timelineModeTabId, setTimelineModeTabId] = useState("normal");
@@ -28,7 +29,7 @@ export default function DetailMultiTabs({
     metadata && { label: "Metadata", content: metadata },
     timeline && {
       label: "Timeline",
-      activeCount: timelineData?.length,
+      activeCount: timelineCount || timelineData?.length,
       content: (
         <div>
           <div className="sm:hidden">
