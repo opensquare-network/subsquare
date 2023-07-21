@@ -58,7 +58,6 @@ const Wrapper = styled.div`
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
 
   @media (max-width: 768px) {
     display: block;
