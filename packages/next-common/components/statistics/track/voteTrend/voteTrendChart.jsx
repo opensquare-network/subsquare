@@ -6,7 +6,7 @@ import { abbreviateBigNumber, toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import ReferendaSlider from "../../RefereundaSlider";
 
-export default function VoteTrendChart({ turnout, delegated }) {
+export default function VoteTrendChart({ turnout, delegated, height }) {
   const { decimals, symbol } = useChainSettings();
   const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
   const [rangeFrom, setRangeFrom] = useState(Math.max(0, rangeTo - 100));
@@ -102,6 +102,7 @@ export default function VoteTrendChart({ turnout, delegated }) {
   return (
     <>
       <BarChart
+        height={height}
         slider={slider}
         data={data}
         customLegend={customLegend}

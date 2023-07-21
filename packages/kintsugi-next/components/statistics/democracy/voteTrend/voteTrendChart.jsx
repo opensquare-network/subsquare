@@ -4,7 +4,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ReferendaSlider from "next-common/components/statistics/RefereundaSlider";
 import BarChart from "next-common/components/statistics/track/barChart";
 
-export default function VoteTrendChart({ turnout }) {
+export default function VoteTrendChart({ turnout, height }) {
   const { decimals, voteSymbol } = useChainSettings();
   const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
   const [rangeFrom, setRangeFrom] = useState(Math.max(0, rangeTo - 100));
@@ -50,6 +50,7 @@ export default function VoteTrendChart({ turnout }) {
 
   return (
     <BarChart
+      height={height}
       noLegend={true}
       slider={slider}
       data={data}

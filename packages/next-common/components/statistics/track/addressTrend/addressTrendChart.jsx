@@ -5,7 +5,7 @@ import BarChart from "../barChart";
 import { abbreviateBigNumber } from "next-common/utils";
 import ReferendaSlider from "../../RefereundaSlider";
 
-export default function AddressTrendChart({ turnout, delegated }) {
+export default function AddressTrendChart({ turnout, delegated, height }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
   const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
@@ -56,6 +56,7 @@ export default function AddressTrendChart({ turnout, delegated }) {
 
   return (
     <BarChart
+      height={height}
       slider={slider}
       data={data}
       options={{

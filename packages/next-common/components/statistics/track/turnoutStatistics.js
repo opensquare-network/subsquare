@@ -1,12 +1,15 @@
 import TurnoutPercentageChart from "./turnoutPercentageChart";
 import { StatisticsTitle } from "../styled";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import ChartCard from "next-common/components/styled/containers/chartCard";
 
 export default function TurnoutStatistics({ turnout }) {
   return (
-    <SecondaryCard className="max-sm:!rounded-none">
-      <StatisticsTitle>Turnout Pct.</StatisticsTitle>
-      <TurnoutPercentageChart turnout={turnout} />
-    </SecondaryCard>
+    <ChartCard
+      className="max-sm:!rounded-none"
+      enlargable
+      title={<StatisticsTitle className="mb-0">Turnout Pct.</StatisticsTitle>}
+      chart={<TurnoutPercentageChart turnout={turnout} />}
+      popupChart={<TurnoutPercentageChart height={454} turnout={turnout} />}
+    />
   );
 }
