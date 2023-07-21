@@ -3,7 +3,7 @@ import { abbreviateBigNumber } from "next-common/utils";
 import ReferendaSlider from "next-common/components/statistics/RefereundaSlider";
 import BarChart from "next-common/components/statistics/track/barChart";
 
-export default function AddressTrendChart({ turnout }) {
+export default function AddressTrendChart({ turnout, height }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
   const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
@@ -42,6 +42,7 @@ export default function AddressTrendChart({ turnout }) {
 
   return (
     <BarChart
+      height={height}
       noLegend={true}
       slider={slider}
       data={data}

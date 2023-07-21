@@ -1,14 +1,15 @@
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import VoteTrendChart from "./voteTrendChart";
 import { StatisticsTitle } from "next-common/components/statistics/styled";
+import ChartCard from "next-common/components/styled/containers/chartCard";
 
 export default function VoteTrend({ turnout }) {
   return (
-    <SecondaryCard className="max-sm:!rounded-none">
-      <StatisticsTitle className="flex justify-between items-center">
-        Vote Trend
-      </StatisticsTitle>
-      <VoteTrendChart turnout={turnout} />
-    </SecondaryCard>
+    <ChartCard
+      className="max-sm:!rounded-none"
+      enlargable
+      title={<StatisticsTitle className="mb-0">Vote Trend</StatisticsTitle>}
+      chart={<VoteTrendChart turnout={turnout} />}
+      popupChart={<VoteTrendChart height={454} turnout={turnout} />}
+    />
   );
 }
