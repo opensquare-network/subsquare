@@ -5,7 +5,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 
 export default function ChartCard({
   enlargable,
-  popupExtra,
+  popupHeadExtra,
   chart,
   popupChart,
   title,
@@ -41,12 +41,12 @@ export default function ChartCard({
           title={title}
           onClose={() => setOpen(false)}
         >
-          {popupExtra && (
+          {popupHeadExtra && (
             <div className="mb-2 flex justify-end">
-              <div>{popupExtra}</div>
+              <div>{popupHeadExtra}</div>
             </div>
           )}
-          {popupChart || chart}
+          <div className="!mt-6">{popupChart || chart}</div>
         </Popup>
       )}
     </SecondaryCard>
