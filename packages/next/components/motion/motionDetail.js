@@ -24,7 +24,7 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import MotionHead from "./head";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
-import CollectiveCall from "./call";
+import CollectiveCall from "next-common/components/collective/call";
 
 export default function MotionDetail({ onReply }) {
   const type = useDetailType();
