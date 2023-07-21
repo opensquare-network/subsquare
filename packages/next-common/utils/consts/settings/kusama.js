@@ -87,7 +87,6 @@ const kusama = {
   navLogoDark: ProjectLogoKusamaDark,
   group: MenuGroups.KusamaAndParachains,
   links,
-  hasGov2: true,
   hasReferenda: true,
   hasFellowship: true,
   hasStatescan: true,
@@ -99,7 +98,8 @@ const kusama = {
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   showAchainableLabels: true,
-  description: "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
+  description:
+    "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
   hideNewTreasuryProposalButton: true,
 };
 
