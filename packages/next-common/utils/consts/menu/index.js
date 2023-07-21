@@ -45,19 +45,6 @@ export function getHomeMenu({
   ];
 }
 
-export const allHomeMenuNames = getHomeMenu()
-  .map((menu) => menu.name)
-  .filter(Boolean);
-
-/**
- * @param {number} counts
- * @returns {'collapse' | 'expand'}
- * @description gt 3 collapse, otherwise expand
- */
-export function getHomeMenuGroupDefaultBehaviorByCounts(counts = 3) {
-  return counts > 3 ? "collapse" : "expand";
-}
-
 export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
   const [commonMenu] = getHomeMenu({ tracks, fellowshipTracks });
   commonMenu.items = commonMenu.items.filter(
