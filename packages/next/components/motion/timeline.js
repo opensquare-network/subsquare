@@ -57,7 +57,7 @@ export function makeMotionTimelineData(motion) {
   return timelineData;
 }
 
-export default function MotionTimeline() {
+export default function MotionTimeline({ compact }) {
   const motion = usePostOnChainData();
   const showMotionEnd = useShowMotionEnd(motion);
   const [timelineData, setTimelineData] = useState([]);
@@ -78,6 +78,7 @@ export default function MotionTimeline() {
       motionEndInfo={motionEndInfo}
       data={timelineData}
       indent={false}
+      compact={compact}
     />
   );
 }

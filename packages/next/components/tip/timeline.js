@@ -41,7 +41,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TipTimeline({ tip }) {
+export default function TipTimeline({ tip, compact }) {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "tipNew":
@@ -102,5 +102,5 @@ export default function TipTimeline({ tip }) {
     setTimelineData(data);
   }, [tip]);
 
-  return <Timeline data={timelineData} indent={false} />;
+  return <Timeline data={timelineData} indent={false} compact={compact} />;
 }

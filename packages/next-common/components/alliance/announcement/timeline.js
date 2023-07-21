@@ -17,7 +17,7 @@ function getData(item) {
   return args;
 }
 
-export default function AnnouncementTimeline({ data }) {
+export default function AnnouncementTimeline({ data, compact }) {
   const type = useDetailType();
 
   const { timeline = [], motion } = data;
@@ -42,5 +42,5 @@ export default function AnnouncementTimeline({ data }) {
     setTimelineData(sortTimeline([...data, ...motionTimeline].filter(Boolean)));
   }, [timeline, motion]);
 
-  return <Timeline data={timelineData} indent={false} />;
+  return <Timeline data={timelineData} indent={false} compact={compact} />;
 }
