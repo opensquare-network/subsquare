@@ -8,7 +8,7 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
 
-export default function BountyTimeline({ bounty }) {
+export default function BountyTimeline({ bounty, compact }) {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "BountyExtended":
@@ -72,5 +72,5 @@ export default function BountyTimeline({ bounty }) {
     setTimelineData(sortTimeline([...data, ...motions].filter(Boolean)));
   }, [bounty]);
 
-  return <Timeline data={timelineData} />;
+  return <Timeline data={timelineData} compact={compact} />;
 }

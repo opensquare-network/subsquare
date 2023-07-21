@@ -11,6 +11,7 @@ import useUniversalComments from "../../../components/universalComments";
 import DetailItem from "../../../components/detailItem";
 import AnnouncementTimeline from "next-common/components/alliance/announcement/timeline";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -23,7 +24,9 @@ function AnnouncementContent({ detail, comments }) {
   return (
     <>
       <DetailItem onReply={focusEditor} />
-      <AnnouncementTimeline data={detail?.onchainData} />
+      <DetailMultiTabs
+        timeline={<AnnouncementTimeline data={detail?.onchainData} />}
+      />
       {CommentComponent}
     </>
   );

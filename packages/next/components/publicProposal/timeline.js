@@ -40,7 +40,7 @@ export function makePublicProposalTimelineData(timeline) {
   return timelineData;
 }
 
-export default function PublicProposalTimeline() {
+export default function PublicProposalTimeline({ compact }) {
   const timeline = useTimelineData();
   const [timelineData, setTimelineData] = useState([]);
   useEffect(
@@ -48,5 +48,5 @@ export default function PublicProposalTimeline() {
     [timeline],
   );
 
-  return <Timeline data={timelineData} />;
+  return <Timeline data={timelineData} compact={compact} />;
 }

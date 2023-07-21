@@ -9,7 +9,7 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useCallback, useEffect, useState } from "react";
 
-export default function ChildBountyTimeline({ onchainData }) {
+export default function ChildBountyTimeline({ onchainData, compact }) {
   const getTimelineData = useCallback(
     (args, method, indexer) => {
       switch (method) {
@@ -93,6 +93,7 @@ export default function ChildBountyTimeline({ onchainData }) {
     <Timeline
       data={timelineData}
       type={detailPageCategory.TREASURY_CHILD_BOUNTY}
+      compact={compact}
     />
   );
 }

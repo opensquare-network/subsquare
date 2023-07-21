@@ -1,6 +1,12 @@
 import clsx from "clsx";
 
-export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
+export default function Tab({
+  small,
+  tabs,
+  selectedTabId,
+  setSelectedTabId,
+  className = "",
+}) {
   return (
     <div
       className={clsx(
@@ -9,6 +15,7 @@ export default function Tab({ small, tabs, selectedTabId, setSelectedTabId }) {
         "rounded-lg p-1 h-12",
         small && "h-9",
         "tabs-container",
+        className,
       )}
     >
       {tabs?.map?.(({ tabId, tabTitle }) => (

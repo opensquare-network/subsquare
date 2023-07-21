@@ -38,7 +38,7 @@ export function makeExternalTimelineData(timeline) {
   });
 }
 
-export default function ExternalTimeline() {
+export default function ExternalTimeline({ compact }) {
   const timeline = useTimelineData();
   const [timelineData, setTimelineData] = useState([]);
   useEffect(
@@ -46,5 +46,5 @@ export default function ExternalTimeline() {
     [timeline],
   );
 
-  return <Timeline data={timelineData} />;
+  return <Timeline data={timelineData} compact={compact} />;
 }

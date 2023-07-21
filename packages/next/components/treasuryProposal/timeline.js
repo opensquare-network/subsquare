@@ -49,7 +49,10 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
   ];
 }
 
-export default function TreasuryProposalTimeline({ treasuryProposal }) {
+export default function TreasuryProposalTimeline({
+  treasuryProposal,
+  compact,
+}) {
   const [timelineData, setTimelineData] = useState([]);
   const motionLink = isMoonChain()
     ? "/treasury-council/motion"
@@ -96,5 +99,5 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
     setTimelineData(sortTimeline([...data, ...motions, ...referendums]));
   }, [treasuryProposal, motionLink]);
 
-  return <Timeline data={timelineData} indent={false} />;
+  return <Timeline data={timelineData} indent={false} compact={compact} />;
 }

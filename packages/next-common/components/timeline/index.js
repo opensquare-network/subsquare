@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import Item from "./item";
 import FoldableItem from "./foldableItem";
 
-export default function Timeline({ data = [], indent = true }) {
+export default function Timeline({ data = [], indent = true, compact }) {
   let lastTimelineItem = data[data.length - 1];
   if (Array.isArray(lastTimelineItem)) {
     lastTimelineItem = lastTimelineItem[lastTimelineItem.length - 1];
@@ -17,9 +17,9 @@ export default function Timeline({ data = [], indent = true }) {
       {data.map((item, index) => (
         <Fragment key={index}>
           {Array.isArray(item) ? (
-            <FoldableItem data={item} indent={indent} />
+            <FoldableItem data={item} indent={indent} compact={compact} />
           ) : (
-            <Item data={item} />
+            <Item data={item} compact={compact} />
           )}
         </Fragment>
       ))}

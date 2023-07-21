@@ -39,7 +39,7 @@ export function makeReferendumTimelineData(timeline) {
   });
 }
 
-export default function ReferendumTimeline() {
+export default function ReferendumTimeline({ compact }) {
   const timeline = useTimelineData();
   const [timelineData, setTimelineData] = useState([]);
   useEffect(
@@ -47,5 +47,5 @@ export default function ReferendumTimeline() {
     [timeline],
   );
 
-  return <Timeline data={timelineData} />;
+  return <Timeline data={timelineData} compact={compact} />;
 }
