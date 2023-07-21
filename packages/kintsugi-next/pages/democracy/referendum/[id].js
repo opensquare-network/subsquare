@@ -25,6 +25,8 @@ import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDe
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
+import ReferendumCall from "next-common/components/democracy/call";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -42,6 +44,9 @@ function ReferendumContent({ publicProposal, comments }) {
     post?.onchainData,
     api,
   );
+
+  const proposal = referendumStatus?.proposal;
+
   useMaybeFetchElectorate(post?.onchainData, api);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
@@ -66,6 +71,9 @@ function ReferendumContent({ publicProposal, comments }) {
     ]);
   }, [publicProposal, post]);
 
+  const { call: inlineCall } = useInlineCall(timelineData, proposal);
+  const call = post?.onchainData?.preImage?.call || inlineCall;
+
   return (
     <>
       <DetailItem onReply={focusEditor} />
@@ -76,11 +84,19 @@ function ReferendumContent({ publicProposal, comments }) {
       />
 
       <DetailMultiTabs
+        call={
+          (call || inlineCall) && (
+            <ReferendumCall
+              call={call || inlineCall}
+              shorten={post?.onchainData?.preImage?.shorten}
+              onchainData={post?.onchainData}
+            />
+          )
+        }
         metadata={
           <ReferendumMetadata
             proposer={post?.proposer}
             status={referendumStatus ?? {}}
-            call={post?.onchainData?.preImage?.call}
             onchainData={post?.onchainData}
           />
         }
