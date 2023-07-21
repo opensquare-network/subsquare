@@ -25,7 +25,7 @@ export default function useReferendaBusinessData() {
   }
 
   const proposalId = args[0].value;
-  const business = [
+  return [
     [
       [
         "Link to",
@@ -35,8 +35,7 @@ export default function useReferendaBusinessData() {
           legacyBehavior
         >{`Treasury Proposal #${proposalId}`}</Link>,
       ],
+      ["Method", method],
     ],
   ];
-
-  return business;
 }
