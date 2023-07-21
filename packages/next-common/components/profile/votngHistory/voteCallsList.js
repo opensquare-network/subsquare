@@ -24,7 +24,10 @@ const StyledList = styled(StyledListOrigin)`
 export default function VoteCallsList({ data, isGov2, fetchData, page }) {
   const chain = useChain();
   const { columns } = useColumns([
-    { name: "Proposal", style: { textAlign: "left", minWidth: "180px" } },
+    {
+      name: "Proposal",
+      style: { textAlign: "left", minWidth: "180px", maxWidth: 384 },
+    },
     { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
     {
       name: "Vote",

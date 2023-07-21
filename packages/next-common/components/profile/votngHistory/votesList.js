@@ -33,7 +33,10 @@ export default function VotesList({
   const isKintsugi = isKintsugiChain(chain);
 
   const columnsDefinition = [
-    { name: "Proposal", style: { textAlign: "left", minWidth: "230px" } },
+    {
+      name: "Proposal",
+      style: { textAlign: "left", minWidth: "230px", maxWidth: 600 },
+    },
     {
       name: "Vote",
       style: { textAlign: "left", width: "128px", minWidth: "128px" },

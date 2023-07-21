@@ -14,7 +14,7 @@ export function PostTitle({ vote, isGov2 }) {
     url = `/referenda/referendum/${vote.referendumIndex}`;
   }
   return (
-    <div>
+    <div className="truncate max-w-[inherit]">
       <Index>{`#${vote.referendumIndex}`}</Index>
       <Link href={url}>
         <Title>{vote.proposal?.title}</Title>
