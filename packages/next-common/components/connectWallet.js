@@ -23,6 +23,7 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 20px;
   line-height: 28px;
+  color: var(--textPrimary);
 `;
 
 const ContentWrapper = styled.div`
@@ -43,6 +44,7 @@ const Label = styled.div`
   :not(:first-child) {
     margin-top: 16px;
   }
+  color: var(--textPrimary);
 `;
 
 const ButtonWrapper = styled.div`

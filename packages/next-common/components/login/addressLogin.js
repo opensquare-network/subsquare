@@ -27,6 +27,7 @@ const Label = styled.div`
   :not(:first-child) {
     margin-top: 16px;
   }
+  color: var(--textPrimary);
 `;
 
 const ButtonWrapper = styled.div`
