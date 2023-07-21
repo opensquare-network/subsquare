@@ -4,7 +4,7 @@ import React, { useCallback, useState } from "react";
 import BarChart from "../barChart";
 import ReferendaSlider from "../../RefereundaSlider";
 
-export default function TurnoutPercentageChartChart({ turnout }) {
+export default function TurnoutPercentageChartChart({ turnout, height }) {
   const categoryPercentage = 0.7;
   const barPercentage = 0.7;
   const [rangeTo, setRangeTo] = useState(turnout ? turnout.length - 1 : 0);
@@ -43,6 +43,7 @@ export default function TurnoutPercentageChartChart({ turnout }) {
 
   return (
     <BarChart
+      height={height}
       slider={slider}
       data={data}
       noLegend={true}
