@@ -21,7 +21,7 @@ const ChartScrollWrapper = styled.div`
 `;
 
 const ChartWrapper = styled.div`
-  height: 256px;
+  height: ${(p) => p.height}px;
   ${(p) =>
     p.minWidth &&
     css`
@@ -97,6 +97,7 @@ export default function BarChart({
   options: userOptions = {},
   minWidth,
   slider,
+  height = 256,
 }) {
   const options = useOptions(userOptions);
   const legendItems =
@@ -105,7 +106,7 @@ export default function BarChart({
   return (
     <Wrapper>
       <ChartScrollWrapper>
-        <ChartWrapper minWidth={minWidth}>
+        <ChartWrapper minWidth={minWidth} height={height}>
           <Bar data={data} options={options} />
         </ChartWrapper>
       </ChartScrollWrapper>
