@@ -4,8 +4,11 @@ import OpenGovCalls from "./openGovCalls";
 import DemocracyVotes from "./democracyVotes";
 import DemocracyCalls from "./democracyCalls";
 import { OpenGov } from "./moduleTab";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function ListTabs({ moduleTabIndex }) {
+  const { useVoteCall } = useChainSettings();
+
   return (
     <div className="ml-[24px]">
       <PageTabs
@@ -19,16 +22,18 @@ export default function ListTabs({ moduleTabIndex }) {
                 <DemocracyVotes />
               ),
           },
-          {
-            name: "Calls",
-            content:
-              moduleTabIndex === OpenGov ? (
-                <OpenGovCalls />
-              ) : (
-                <DemocracyCalls />
-              ),
-          },
-        ]}
+          useVoteCall
+            ? {
+                name: "Calls",
+                content:
+                  moduleTabIndex === OpenGov ? (
+                    <OpenGovCalls />
+                  ) : (
+                    <DemocracyCalls />
+                  ),
+              }
+            : null,
+        ].filter(Boolean)}
       />
     </div>
   );

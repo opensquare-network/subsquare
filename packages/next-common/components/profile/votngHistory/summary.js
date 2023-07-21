@@ -28,7 +28,7 @@ export default function VotingHistorySummary({
 }) {
   const { id } = usePageProps();
   const [data, setData] = useState({});
-  const { hasReferenda, hasFellowship } = useChainSettings();
+  const { hasReferenda, hasFellowship, useVoteCall } = useChainSettings();
   const hasGov2 = hasReferenda || hasFellowship;
 
   useEffect(() => {
@@ -45,10 +45,12 @@ export default function VotingHistorySummary({
       title: "All Votes",
       content: <CountSummaryContent count={data?.totalVotes || 0} />,
     },
-    {
-      title: "All Calls",
-      content: <CountSummaryContent count={data?.totalCalls || 0} />,
-    },
+    useVoteCall
+      ? {
+          title: "All Calls",
+          content: <CountSummaryContent count={data?.totalCalls || 0} />,
+        }
+      : null,
     {
       title: "Participation Rate",
       content: (
@@ -57,7 +59,7 @@ export default function VotingHistorySummary({
         />
       ),
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <>
