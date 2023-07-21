@@ -4,6 +4,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/publicProposal/metadata";
+import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
 import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
@@ -41,6 +42,8 @@ function PublicProposalContent({ comments }) {
     ? lastTimelineBlockHeight - 1
     : undefined;
 
+  const call = publicProposal?.preImage?.call || publicProposal?.call;
+
   return (
     <>
       <DetailItem onReply={focusEditor} />
@@ -52,6 +55,16 @@ function PublicProposalContent({ comments }) {
         atBlockHeight={secondsAtBlockHeight}
       />
       <DetailMultiTabs
+        call={
+          call && (
+            <DemocracyPublicProposalCall
+              call={call}
+              shorten={publicProposal.preImage?.shorten}
+              proposalIndex={publicProposal.proposalIndex}
+              referendumIndex={publicProposal.referendumIndex}
+            />
+          )
+        }
         metadata={<Metadata publicProposal={post?.onchainData} />}
         timeline={<Timeline />}
       />

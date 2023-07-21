@@ -4,6 +4,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Business from "components/external/business";
 import Metadata from "components/external/metadata";
+import DemocracyExternalProposalCall from "components/external/call";
 import Timeline from "components/external/timeline";
 import useUniversalComments from "components/universalComments";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -25,10 +26,23 @@ function DemocracyExternalContent({ detail, comments }) {
 
   useSubscribePostDetail(detail?.externalProposalHash);
 
+  const external = detail?.onchainData || {};
+  const call = external?.preImage?.call;
+
   return (
     <>
       <DetailItem onReply={focusEditor} />
       <DetailMultiTabs
+        call={
+          call && (
+            <DemocracyExternalProposalCall
+              call={call}
+              shorten={external.preImage.shorten}
+              motionIndex={external.motionIndex}
+              referendumIndex={external.referendumIndex}
+            />
+          )
+        }
         business={<Business external={detail?.onchainData} />}
         metadata={<Metadata external={detail?.onchainData} />}
         timeline={<Timeline />}

@@ -1,6 +1,5 @@
 import React from "react";
 import capitalize from "../../../utils/capitalize";
-import Proposal from "../../proposal";
 import KVList from "../../listInfo/kvList";
 import User from "../../user";
 import { useChain } from "../../../context/chain";
@@ -14,14 +13,12 @@ const keys = {
   index: "index",
   threshold: "threshold",
   hash: "hash",
-  call: "call",
 };
 
 export default function CollectiveMetadata({
   proposer,
   threshold,
   hash,
-  call,
   index,
   marketId,
   marketMetadata,
@@ -46,11 +43,10 @@ export default function CollectiveMetadata({
     [capitalize(keys.hash), hash],
   );
 
-  if (call) {
-    data.push([<Proposal call={call} key="proposal" />]);
-  }
-
-  if (chain === Chains.zeitgeist && detailPageCategory.ADVISORY_MOTION === detailType) {
+  if (
+    chain === Chains.zeitgeist &&
+    detailPageCategory.ADVISORY_MOTION === detailType
+  ) {
     data.push([
       <MarketMetadata
         key={"marketMetadata"}

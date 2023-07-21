@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import CollectiveMetadata from "next-common/components/collective/metadata";
+import CollectiveCall from "next-common/components/collective/call";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
@@ -202,6 +203,11 @@ export default function TechcommMotionDetail({ motion, onReply }) {
       </DetailContentBase>
 
       <DetailMultiTabs
+        call={
+          post?.onchainData?.proposal && (
+            <CollectiveCall call={post.onchainData.proposal} />
+          )
+        }
         business={
           !!business?.length && <MultiKVList title="Business" data={business} />
         }
