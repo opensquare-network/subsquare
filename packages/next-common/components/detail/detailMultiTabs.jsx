@@ -17,13 +17,13 @@ export default function DetailMultiTabs({
   const timelineData = useTimelineData();
 
   const tabs = [
+    business && { label: "Business", content: business },
     call && { label: "Call", content: call },
     childBounties && {
       label: "Child Bounties",
       activeCount: childBountiesCount,
       content: childBounties,
     },
-    business && { label: "Business", content: business },
     metadata && { label: "Metadata", content: metadata },
     timeline && {
       label: "Timeline",
