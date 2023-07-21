@@ -14,7 +14,7 @@ export default function DetailMultiTabs({
   timeline,
 }) {
   const timelineData = useTimelineData();
-  const [timelineModeTabId, setTimelineModeTabId] = useState("normal");
+  const [timelineModeTabId, setTimelineModeTabId] = useState("compact");
   const timelineCompact = timelineModeTabId === "compact";
 
   const tabs = [
