@@ -17,6 +17,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -45,6 +46,7 @@ function PublicProposalContent({ referendum, comments }) {
     : undefined;
 
   const treasuryProposals = publicProposal?.treasuryProposals;
+  const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
     <>
@@ -57,6 +59,16 @@ function PublicProposalContent({ referendum, comments }) {
         atBlockHeight={secondsAtBlockHeight}
       />
       <DetailMultiTabs
+        call={
+          call && (
+            <DemocracyPublicProposalCall
+              call={call}
+              shorten={publicProposal.preImage?.shorten}
+              proposalIndex={publicProposal.proposalIndex}
+              referendumIndex={publicProposal.referendumIndex}
+            />
+          )
+        }
         business={
           !!treasuryProposals?.length && (
             <Business treasuryProposals={treasuryProposals} />
