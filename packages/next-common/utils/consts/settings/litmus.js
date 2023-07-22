@@ -6,7 +6,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import { ProjectLogoLitmusDark } from "@osn/icons/subsquare";
+import { ProjectLogoLitmusLight } from "@osn/icons/subsquare";
 
 const DEFAULT_LITMUS_NODES = [
   {
@@ -51,15 +51,16 @@ const litmus = {
   headerLogo: Logo,
   darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
-  navLogo: ProjectLogoLitmusDark,
-  navLogoDark: ProjectLogoLitmusDark,
+  navLogo: ProjectLogoLitmusLight,
+  navLogoDark: ProjectLogoLitmusLight,
   links,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
   hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  description: "Litmus is a companion canary network to Litentry and connects to the Kusama ecosystem as parachain.",
+  description:
+    "Litmus is a companion canary network to Litentry and connects to the Kusama ecosystem as parachain.",
 };
 
 export default litmus;
