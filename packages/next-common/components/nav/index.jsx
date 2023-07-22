@@ -77,10 +77,12 @@ function NavDesktop() {
       <div>
         <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
-          <div className={clsx(navCollapsed && "hidden")}>
-            <ChainName />
-            <BrandingHint />
-          </div>
+          <Link href="/">
+            <div className={clsx(navCollapsed && "hidden")}>
+              <ChainName />
+              <BrandingHint />
+            </div>
+          </Link>
           <div>
             <ToggleMenuButton onClick={() => setNavCollapsed(!navCollapsed)}>
               <ArrowFold className={clsx(navCollapsed && "rotate-180")} />
@@ -129,10 +131,12 @@ function NavMobile() {
             <ArrowFold className={clsx(!menuVisible && "rotate-180")} />
           </ToggleMenuButton>
         </NavMobileToolbarItem>
-        <div className="text-center">
-          <ChainName />
-          <BrandingHint />
-        </div>
+        <Link href="/">
+          <div className="text-center">
+            <ChainName />
+            <BrandingHint />
+          </div>
+        </Link>
         <NavMobileToolbarItem>
           <div role="button" onClick={toolbarToggle}>
             <SystemMenu
