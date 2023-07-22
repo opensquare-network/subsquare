@@ -6,8 +6,8 @@ import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 const Options = styled(NeutralPanel)`
   position: absolute;
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
-  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
+  border-width: 1px;
+  border-style: solid;
   color: var(--textPrimary);
   border-radius: 4px;
   display: flex;
