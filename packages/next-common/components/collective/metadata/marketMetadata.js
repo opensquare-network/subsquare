@@ -8,7 +8,6 @@ import {
   flex,
   flex_col,
   items_center,
-  m_b,
   m_t,
   m_y,
   overflow_hidden,
@@ -29,6 +28,7 @@ import {
 import ExternalLink from "../../externalLink";
 import InnerDataTable from "../../table/innerDataTable";
 import WarningIcon from "../../../assets/imgs/icons/warning.svg";
+import isNil from "lodash.isnil";
 
 const JsonView = dynamic(() => import("../../jsonView"), { ssr: false });
 
@@ -42,7 +42,6 @@ const Wrapper = styled.div`
 const HeaderWrapper = styled.div`
   ${flex};
   ${items_center};
-  ${m_b(12)};
   ${smcss(block)};
 `;
 const HeaderTitle = styled.div`
@@ -78,6 +77,7 @@ const ViewWrapper = styled.div`
   ${rounded_4};
   border: 24px solid;
   border-color: var(--neutral200);
+  ${m_t(12)};
 `;
 
 const DataTableViewDescription = styled.div`
@@ -103,6 +103,23 @@ const UnavailableText = styled.p`
 
 export default function MarketMetadata({ id, metadata }) {
   const [view, setView] = useState("metadata");
+  if (isNil(id)) {
+    return null;
+  }
+
+  if (!metadata) {
+    return (
+      <Wrapper>
+        <HeaderWrapper>
+          <HeaderTitle>Market</HeaderTitle>
+          <TagsWrapper>
+            <WarningIcon />
+            <UnavailableText>Metadata unavailable</UnavailableText>
+          </TagsWrapper>
+        </HeaderWrapper>
+      </Wrapper>
+    );
+  }
 
   const questionLink = `https://app.zeitgeist.pm/markets/${id}`;
 
@@ -124,35 +141,26 @@ export default function MarketMetadata({ id, metadata }) {
     <Wrapper>
       <HeaderWrapper>
         <HeaderTitle>Market</HeaderTitle>
-        {metadata ? (
-          <TagsWrapper>
-            <TagButton
-              className={view === "metadata" && "active"}
-              onClick={() => setView("metadata")}
-            >
-              Metadata
-            </TagButton>
-            <TagButton
-              className={view === "data" && "active"}
-              onClick={() => setView("data")}
-            >
-              Data
-            </TagButton>
-          </TagsWrapper>
-        ) : (
-          <TagsWrapper>
-            <WarningIcon />
-            <UnavailableText>Metadata unavailable</UnavailableText>
-          </TagsWrapper>
-        )}
+        <TagsWrapper>
+          <TagButton
+            className={view === "metadata" && "active"}
+            onClick={() => setView("metadata")}
+          >
+            Metadata
+          </TagButton>
+          <TagButton
+            className={view === "data" && "active"}
+            onClick={() => setView("data")}
+          >
+            Data
+          </TagButton>
+        </TagsWrapper>
       </HeaderWrapper>
 
-      {metadata && (
-        <ViewWrapper>
-          {view === "metadata" && <InnerDataTable data={dataTableViewData} />}
-          {view === "data" && <JsonView src={metadata} />}
-        </ViewWrapper>
-      )}
+      <ViewWrapper>
+        {view === "metadata" && <InnerDataTable data={dataTableViewData} />}
+        {view === "data" && <JsonView src={metadata} />}
+      </ViewWrapper>
 
       <div />
     </Wrapper>
