@@ -85,7 +85,9 @@ const darwinia2 = {
       decimals: 18,
     },
   },
-  description: "Darwinia Provides Cross-Chain Smart Contract Platform And Message Port Network.",
+  description:
+    "Darwinia Provides Cross-Chain Smart Contract Platform And Message Port Network.",
+  useVoteCall: true,
 };
 
 export default darwinia2;

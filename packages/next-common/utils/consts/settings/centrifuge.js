@@ -63,6 +63,7 @@ const centrifuge = {
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
+  useVoteCall: true,
 };
 
 export default centrifuge;
