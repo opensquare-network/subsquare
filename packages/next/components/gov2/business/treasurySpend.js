@@ -5,16 +5,12 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import isNil from "lodash.isnil";
 import Link from "next/link";
 
-export default function getTreasurySpendBusiness(
-  onchain,
-  decimals,
-  symbol,
-) {
+export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
   const { amount, beneficiary } = onchain?.treasuryInfo || {};
 
-  const business = [[]];
+  const business = [];
   if (amount) {
-    business[0].push([
+    business.push([
       "Request",
       <ValueDisplay
         key="request"
@@ -24,27 +20,24 @@ export default function getTreasurySpendBusiness(
     ]);
   }
   if (beneficiary) {
-    business[0].push([
+    business.push([
       "Beneficiary",
-      <User
-        key="beneficiary"
-        add={beneficiary}
-        fontSize={14}
-      />,
+      <User key="beneficiary" add={beneficiary} fontSize={14} />,
     ]);
   }
 
   if (!isNil(onchain.treasuryProposalIndex)) {
-    business[0].push([
+    business.push([
       "Link to",
       <Link
         key="proposal-link"
         href={`/treasury/proposal/${onchain.treasuryProposalIndex}`}
-        legacyBehavior>{`Treasury Proposal #${onchain.treasuryProposalIndex}`}</Link>,
+        legacyBehavior
+      >{`Treasury Proposal #${onchain.treasuryProposalIndex}`}</Link>,
     ]);
   }
 
-  if (business[0].length <= 0) {
+  if (business.length <= 0) {
     return null;
   }
 

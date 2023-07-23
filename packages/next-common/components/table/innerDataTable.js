@@ -80,8 +80,8 @@ export default function InnerDataTable({ data, nested = false }) {
   if (React.isValidElement(data)) {
     return data;
   }
-  const formatValue = (fieldValue) =>
-    Array.isArray(fieldValue) ? (
+  const formatValue = (fieldValue) => {
+    return Array.isArray(fieldValue) ? (
       fieldValue.length > 0 ? (
         <StyledTd style={{ padding: 0 }}>
           <InnerDataTable data={fieldValue} nested />
@@ -108,6 +108,7 @@ export default function InnerDataTable({ data, nested = false }) {
         <BreakText>{fieldValue.toString()}</BreakText>
       </StyledTd>
     );
+  };
 
   if (Array.isArray(data) && data.length < 2) {
     return (

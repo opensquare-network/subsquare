@@ -262,7 +262,7 @@ export default function Proposal({
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Header className="text-textSecondary">Call</Header>
+        <Header className="text-textPrimary">Call</Header>
         <TagWrapper>
           <ThemedTag>{call?.section}</ThemedTag>
           <ThemedTag>{call?.method}</ThemedTag>

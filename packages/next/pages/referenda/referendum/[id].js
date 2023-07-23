@@ -21,7 +21,6 @@ import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metad
 import { useEffect } from "react";
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import ReferendaBusiness from "../../../components/gov2/business";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
 import BreadcrumbWrapper, {
@@ -37,7 +36,6 @@ import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import useReferendaBusinessData from "hooks/useReferendaBusinessData";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 
 function ReferendumContent({ comments }) {
@@ -45,7 +43,6 @@ function ReferendumContent({ comments }) {
   const dispatch = useDispatch();
   useSubReferendumInfo();
   const info = useReferendumInfo();
-  const businessData = useReferendaBusinessData();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
 
@@ -71,7 +68,6 @@ function ReferendumContent({ comments }) {
 
       <DetailMultiTabs
         call={proposal?.call && <Gov2ReferendumCall />}
-        business={!!businessData?.length && <ReferendaBusiness />}
         metadata={<Gov2ReferendumMetadata info={info} />}
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
