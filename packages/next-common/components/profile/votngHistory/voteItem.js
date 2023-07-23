@@ -64,7 +64,7 @@ function ConvictionLabel({ vote }) {
 }
 
 function StandardVoteItem({ vote }) {
-  const { symbol, decimals } = useChainSettings();
+  const { symbol, decimals, voteSymbol } = useChainSettings();
   return (
     <ItemWrapper>
       <VoteWrapper>
@@ -73,7 +73,7 @@ function StandardVoteItem({ vote }) {
           <ValueDisplay
             className="text-textPrimary"
             value={toPrecision(vote.balance, decimals)}
-            symbol={symbol}
+            symbol={voteSymbol || symbol}
           />
         </PartialVoteItem>
       </VoteWrapper>
@@ -89,7 +89,7 @@ function StandardVoteItem({ vote }) {
 }
 
 function SplitVoteItem({ vote }) {
-  const { symbol, decimals } = useChainSettings();
+  const { symbol, decimals, voteSymbol } = useChainSettings();
   return (
     <ItemWrapper>
       <VoteWrapper>
@@ -98,7 +98,7 @@ function SplitVoteItem({ vote }) {
           <ValueDisplay
             className="text-textPrimary"
             value={toPrecision(vote.ayeBalance, decimals)}
-            symbol={symbol}
+            symbol={voteSymbol || symbol}
           />
         </PartialVoteItem>
         <PartialVoteItem>
@@ -106,7 +106,7 @@ function SplitVoteItem({ vote }) {
           <ValueDisplay
             className="text-textPrimary"
             value={toPrecision(vote.nayBalance, decimals)}
-            symbol={symbol}
+            symbol={voteSymbol || symbol}
           />
         </PartialVoteItem>
       </VoteWrapper>
@@ -118,7 +118,7 @@ function SplitVoteItem({ vote }) {
 }
 
 function SplitAbstainVoteItem({ vote }) {
-  const { symbol, decimals } = useChainSettings();
+  const { symbol, decimals, voteSymbol } = useChainSettings();
   return (
     <ItemWrapper>
       <VoteWrapper>
@@ -127,7 +127,7 @@ function SplitAbstainVoteItem({ vote }) {
           <ValueDisplay
             className="text-textPrimary"
             value={toPrecision(vote.ayeBalance, decimals)}
-            symbol={symbol}
+            symbol={voteSymbol || symbol}
           />
         </PartialVoteItem>
         <PartialVoteItem>
@@ -135,7 +135,7 @@ function SplitAbstainVoteItem({ vote }) {
           <ValueDisplay
             className="text-textPrimary"
             value={toPrecision(vote.nayBalance, decimals)}
-            symbol={symbol}
+            symbol={voteSymbol || symbol}
           />
         </PartialVoteItem>
         <PartialVoteItem>
@@ -143,7 +143,7 @@ function SplitAbstainVoteItem({ vote }) {
           <ValueDisplay
             className="text-textPrimary"
             value={toPrecision(vote.abstainBalance, decimals)}
-            symbol={symbol}
+            symbol={voteSymbol || symbol}
           />
         </PartialVoteItem>
       </VoteWrapper>
