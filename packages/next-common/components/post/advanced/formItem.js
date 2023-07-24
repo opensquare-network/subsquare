@@ -20,7 +20,7 @@ function FormItem({
 }) {
   return (
     <div className={clsx("mb-4 last:mb-0", className)}>
-      <div className="flex items-end justify-between mb-4 px-6">
+      <div className="flex items-end justify-between mb-4">
         <div className="text16Bold text-textPrimary">{label}</div>
         {(labelExtra || labelExternal) && (
           <div className="text12Bold">{labelExtra || labelExternal}</div>
