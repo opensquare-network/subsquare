@@ -264,8 +264,10 @@ export default function Proposal({
       <HeaderWrapper>
         <Header className="text-textPrimary">Call</Header>
         <TagWrapper>
-          <ThemedTag>{call?.section}</ThemedTag>
-          <ThemedTag>{call?.method}</ThemedTag>
+          <span className="inline-flex gap-x-1">
+            <ThemedTag>{call?.section}</ThemedTag>
+            <ThemedTag>{call?.method}</ThemedTag>
+          </span>
 
           <Tooltip content="Call Detail">
             <InfoDocs
