@@ -46,14 +46,14 @@ const Left = styled.div`
 const Cirtcle = styled.div`
   height: 12px;
   width: 12px;
-  border: 3px solid var(--purple500);
+  border: 3px solid var(--theme500);
   border-radius: 50%;
   margin: 4px 0;
 `;
 
 const Bar = styled.div`
   width: 2px;
-  background-color: var(--purple300);
+  background-color: var(--theme300);
   margin: 0 auto;
   flex-grow: 1;
 `;
