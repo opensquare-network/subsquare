@@ -54,7 +54,7 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   div.on {
-    background: var(--purple500);
+    background: var(--theme500);
   }
 
   div ul.mention-list,

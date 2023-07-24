@@ -38,7 +38,7 @@ const Text = styled.div`
   color: var(--textTertiary);
   a {
     font-weight: bold;
-    color: var(--purple500);
+    color: var(--theme500);
   }
 `;
 

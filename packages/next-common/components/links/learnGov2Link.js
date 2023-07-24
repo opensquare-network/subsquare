@@ -24,7 +24,7 @@ export default function LearnGov2Link({ anchor = "" }) {
   return (
     <Link href={link}>
       How Governance V2 Works
-      <ExternalLinkIcon color="var(--purple500)" />
+      <ExternalLinkIcon color="var(--theme500)" />
     </Link>
   );
 }

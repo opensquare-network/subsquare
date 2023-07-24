@@ -81,14 +81,14 @@ const CellWrapper = styled.div`
   ${(p) =>
     p.isSelectedDay &&
     css`
-      border-color: var(--purple500);
+      border-color: var(--theme500);
 
       ${CellLabel} {
-        color: var(--purple500);
+        color: var(--theme500);
       }
 
       &:hover {
-        border-color: var(--purple500);
+        border-color: var(--theme500);
       }
     `}
 `;
@@ -256,7 +256,7 @@ export default function FullCalendarMonthDateCell({
                 ))}
               </CellEventGroup>
               <CellEventGroupSmSize>
-                <FullCalendarCategory color="var(--purple500)" />
+                <FullCalendarCategory color="var(--theme500)" />
               </CellEventGroupSmSize>
             </>
           )}

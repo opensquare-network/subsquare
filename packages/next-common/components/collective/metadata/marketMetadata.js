@@ -61,8 +61,8 @@ const TagButton = styled.button`
   line-height: 1;
 
   &.active {
-    background-color: var(--purple100);
-    color: var(--purple500);
+    background-color: var(--theme100);
+    color: var(--theme500);
   }
 `;
 const TagsWrapper = styled.div`
