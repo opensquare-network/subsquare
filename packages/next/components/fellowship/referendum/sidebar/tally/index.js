@@ -46,7 +46,7 @@ export default function FellowshipTally() {
 
   return (
     <SecondaryCardDetail>
-      <Title>
+      <Title className="!px-0">
         Tally
         <CurvePopup
           track={track}
