@@ -10,7 +10,7 @@ const Between = styled.div`
 `;
 
 const A = styled.a`
-  color: #6848ff;
+  color: var(--theme500);
 `;
 
 export default function LongText({ text, fileName = "hex" }) {

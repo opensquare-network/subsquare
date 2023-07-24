@@ -56,7 +56,7 @@ export const InfoWrapper = styled.div`
   background: var(--neutral200);
   border-radius: 4px;
   line-height: 150%;
-  color: #506176;
+  color: var(--textSecondary);
 `;
 
 export const Redirect = styled.div`

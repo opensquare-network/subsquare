@@ -28,7 +28,7 @@ const GreyItem = styled.div`
   margin-right: 12px;
 
   > .username {
-    color: #506176;
+    color: var(--textSecondary);
   }
 `;
 
