@@ -49,8 +49,10 @@ const collectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
+  noDemocracy: true,
   showAchainableLabels: true,
-  description: "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
+  description:
+    "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
 };
 
 export default collectives;

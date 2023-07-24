@@ -28,8 +28,7 @@ export default function VotingHistorySummary({
 }) {
   const { id } = usePageProps();
   const [data, setData] = useState({});
-  const { hasReferenda, hasFellowship, useVoteCall } = useChainSettings();
-  const hasGov2 = hasReferenda || hasFellowship;
+  const { hasReferenda, noDemocracy, useVoteCall } = useChainSettings();
 
   useEffect(() => {
     const module = moduleTabIndex === OpenGov ? "referenda" : "democracy";
@@ -63,7 +62,7 @@ export default function VotingHistorySummary({
 
   return (
     <>
-      {hasGov2 && (
+      {hasReferenda && !noDemocracy && (
         <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
           <Title>Votes</Title>
           <ModuleTab
