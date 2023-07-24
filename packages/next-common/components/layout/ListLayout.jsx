@@ -63,7 +63,7 @@ export default function ListLayout({
 
       {summary && (
         <>
-          <hr className="h-px my-4 bg-neutral300" />
+          <hr className="my-4 border-neutral300" />
           {summary}
         </>
       )}
@@ -141,7 +141,9 @@ function Tabs({ tabs = [] }) {
               >
                 {tab.label}
                 {isExternal && (
-                  <span className="ml-1 text-textTertiary text14Medium">↗</span>
+                  <span className="ml-1 text-textTertiary text14Medium">
+                    ↗
+                  </span>
                 )}
               </Link>
             ) : (
