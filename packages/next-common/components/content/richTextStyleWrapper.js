@@ -79,6 +79,14 @@ const RichTextStyleWrapper = styled.div`
     margin-top: 1em;
     margin-bottom: 1em;
   }
+
+  ol {
+    list-style-type: decimal;
+    padding-left: 2em !important;
+  }
+  ul {
+    padding-left: 2em !important;
+  }
 `;
 
 export default RichTextStyleWrapper;
