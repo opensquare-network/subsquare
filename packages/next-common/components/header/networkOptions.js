@@ -9,7 +9,7 @@ const Options = styled(NeutralPanel)`
   border-width: 1px;
   border-style: solid;
   color: var(--textPrimary);
-  border-radius: 4px;
+  border-radius: 8px;
   display: flex;
   gap: 8px;
   padding: 8px;
