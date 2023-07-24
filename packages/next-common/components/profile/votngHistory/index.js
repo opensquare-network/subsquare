@@ -5,10 +5,9 @@ import { Democracy, OpenGov } from "./moduleTab";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function VotingHistory() {
-  const { hasReferenda, hasFellowship } = useChainSettings();
-  const hasGov2 = hasReferenda || hasFellowship;
+  const { hasReferenda } = useChainSettings();
   const [moduleTabIndex, setModuleTabIndex] = useState(
-    hasGov2 ? OpenGov : Democracy,
+    hasReferenda ? OpenGov : Democracy,
   );
 
   return (

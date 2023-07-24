@@ -10,8 +10,11 @@ import { addressEllipsis } from "next-common/utils";
 import Posted from "./posted";
 import { useRouter } from "next/router";
 import VotingHistory from "./votngHistory";
+import { useChainSettings } from "next-common/context/chain";
 
 export default withLoginUserRedux(({ user, id }) => {
+  const { hasReferenda, noDemocracy } = useChainSettings();
+
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
 
@@ -31,6 +34,21 @@ export default withLoginUserRedux(({ user, id }) => {
     tabContent = <VotingHistory />;
   }
 
+  let tabs = [
+    {
+      label: "Posted",
+      url: `/user/${id}/posted`,
+      exactMatch: false,
+    },
+  ];
+
+  if (hasReferenda || !noDemocracy) {
+    tabs.push({
+      label: "Votes",
+      url: `/user/${id}/votes`,
+    });
+  }
+
   return (
     <ListLayout
       header={
@@ -41,17 +59,7 @@ export default withLoginUserRedux(({ user, id }) => {
           <Bio address={address} user={user} id={id} />
         </>
       }
-      tabs={[
-        {
-          label: "Posted",
-          url: `/user/${id}/posted`,
-          exactMatch: false,
-        },
-        {
-          label: "Votes",
-          url: `/user/${id}/votes`,
-        },
-      ]}
+      tabs={tabs}
     >
       {tabContent}
     </ListLayout>
