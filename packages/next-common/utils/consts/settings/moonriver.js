@@ -55,7 +55,9 @@ const moonriver = {
       decimals: 18,
     },
   },
-  description: "Solidity Smart Contracts on Kusama. Moonriver is a community-led cousin parachain on Kusama and will provide a permanently incentivized canary network for Moonbeam.",
+  description:
+    "Solidity Smart Contracts on Kusama. Moonriver is a community-led cousin parachain on Kusama and will provide a permanently incentivized canary network for Moonbeam.",
+  useVoteCall: true,
 };
 
 export default moonriver;
