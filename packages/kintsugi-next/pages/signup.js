@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import { PageTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import useForm from "next-common/utils/hooks/useForm";
@@ -233,9 +233,9 @@ export default withLoginUserRedux(({ loginUser }) => {
                 setAgreeError={setAgreeError}
               />
               <ButtonWrapper>
-                <SecondaryButton isFill type="submit" isLoading={loading}>
+                <PrimaryButton isFill type="submit" isLoading={loading}>
                   Sign up
-                </SecondaryButton>
+                </PrimaryButton>
               </ButtonWrapper>
             </FormWrapper>
             <LinkWrapper>
@@ -253,9 +253,9 @@ export default withLoginUserRedux(({ loginUser }) => {
                 ? "We sent you an email to verify your address. Click on the link in the email."
                 : "Sending an email to verify your address."}
             </InfoWrapper>
-            <SecondaryButton isFill onClick={() => router.replace("/")}>
+            <PrimaryButton isFill onClick={() => router.replace("/")}>
               Got it
-            </SecondaryButton>
+            </PrimaryButton>
             <GhostButton isFill onClick={sendVerifyEmail}>
               Resend
             </GhostButton>

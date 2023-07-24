@@ -17,7 +17,7 @@ import {
   Redirect,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
 
@@ -93,9 +93,9 @@ const Reset = withLoginUserRedux(() => {
                   <ErrorText>{errors?.message}</ErrorText>
                 )}
               </FormInputsWrapper>
-              <SecondaryButton isFill type="submit" isLoading={loading}>
+              <PrimaryButton isFill type="submit" isLoading={loading}>
                 Confirm
-              </SecondaryButton>
+              </PrimaryButton>
             </FormWrapper>
           </ContentCenterWrapper>
         )}
@@ -103,13 +103,13 @@ const Reset = withLoginUserRedux(() => {
           <ContentCenterWrapper>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
-            <SecondaryButton
+            <PrimaryButton
               isFill
               secondary
               onClick={() => router.replace("/login")}
             >
               Got it
-            </SecondaryButton>
+            </PrimaryButton>
             <Redirect>
               The page will be re-directed in
               <span className="sec">{countdown}s</span>

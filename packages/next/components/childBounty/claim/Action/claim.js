@@ -1,6 +1,6 @@
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
@@ -23,19 +23,19 @@ export default function Claim() {
 
   const { unlockAt } = status.pendingPayout || {};
 
-  return <>
-    <SecondaryButton
-      isFill
-      disabled={chainHeight < unlockAt}
-      onClick={() => setShowPopup(true)}>
-      Claim
-    </SecondaryButton>
+  return (
+    <>
+      <PrimaryButton
+        isFill
+        disabled={chainHeight < unlockAt}
+        onClick={() => setShowPopup(true)}
+      >
+        Claim
+      </PrimaryButton>
 
-    {showPopup && (
-      <Popup
-        childBounty={onChain}
-        onClose={() => setShowPopup(false)}
-      />
-    )}
-  </>;
+      {showPopup && (
+        <Popup childBounty={onChain} onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
 }

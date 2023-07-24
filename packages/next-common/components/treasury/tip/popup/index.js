@@ -14,7 +14,7 @@ import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
-import SecondaryButton from "../../../buttons/secondaryButton";
+import PrimaryButton from "../../../buttons/primaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
@@ -124,9 +124,9 @@ function PopupContent({
       <TipReason setValue={setReason} />
       {tabIndex === NewTip && <TipValue setValue={setInputValue} />}
       <PopupButtonWrapper>
-        <SecondaryButton isLoading={loading} onClick={submit}>
+        <PrimaryButton isLoading={loading} onClick={submit}>
           Submit
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </>
   );

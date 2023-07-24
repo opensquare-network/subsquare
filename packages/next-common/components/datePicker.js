@@ -11,8 +11,7 @@ import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
 import Background from "./styled/backgroundShade";
-import SecondaryButton from "./buttons/secondaryButton";
-
+import PrimaryButton from "./buttons/primaryButton";
 const CaretWrapper = styled.div`
   cursor: pointer;
   padding: 6px 7px 5px 7px;
@@ -418,7 +417,7 @@ export default function DatePicker({
                     />
                   </TimeWrapper>
                   <ButtonWrapper>
-                    <SecondaryButton
+                    <PrimaryButton
                       disabled={hour === "" || minute === ""}
                       onClick={() => {
                         if (!date) {
@@ -435,7 +434,7 @@ export default function DatePicker({
                       }}
                     >
                       Confirm
-                    </SecondaryButton>
+                    </PrimaryButton>
                   </ButtonWrapper>
                 </DateWrapper>
               </Background>

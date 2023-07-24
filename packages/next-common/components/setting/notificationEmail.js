@@ -9,7 +9,7 @@ import { EmailVerify, InputWrapper, Label } from "./styled";
 import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
 
 const CountdownWrapper = styled.div`
@@ -107,9 +107,9 @@ export default function NotificationEmail({ email, verified }) {
           <CountdownWrapper>{countdown}s</CountdownWrapper>
         ) : (
           (!verified || inputEmail !== email) && (
-            <SecondaryButton onClick={onResend} isLoading={resendLoading}>
+            <PrimaryButton onClick={onResend} isLoading={resendLoading}>
               Verify
-            </SecondaryButton>
+            </PrimaryButton>
           )
         )}
       </InputWrapper>

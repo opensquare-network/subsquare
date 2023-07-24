@@ -7,7 +7,6 @@ import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import { useDispatch, useSelector } from "react-redux";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
 import CloseTipPopup from "./closeTipPopup";
 import RetractTipPopup from "./retractTipPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -79,9 +78,9 @@ export default function Tipper() {
     action = (
       <>
         {closeTipAction}
-        <SecondaryButton isFill onClick={() => setShowEndorsePopup(true)}>
+        <PrimaryButton isFill onClick={() => setShowEndorsePopup(true)}>
           Endorse
-        </SecondaryButton>
+        </PrimaryButton>
         <Description>{retractTipAction}</Description>
       </>
     );

@@ -5,7 +5,7 @@ import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import { InputWrapper, Label } from "./styled";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import useForm from "../../utils/hooks/useForm";
 
 export default function Password() {
@@ -61,9 +61,9 @@ export default function Password() {
           }}
           error={changeErrors?.data?.newPassword}
         />
-        <SecondaryButton typt="submit" isLoading={changeLoading}>
+        <PrimaryButton typt="submit" isLoading={changeLoading}>
           Change
-        </SecondaryButton>
+        </PrimaryButton>
       </InputWrapper>
       {changeErrors?.message && !changeErrors?.data && (
         <ErrorText>{changeErrors?.message}</ErrorText>

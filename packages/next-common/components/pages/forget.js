@@ -16,7 +16,7 @@ import {
   Label,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
 
@@ -85,9 +85,9 @@ const Forget = withLoginUserRedux(() => {
               {errors?.message && !errors?.data && (
                 <ErrorText>{errors?.message}</ErrorText>
               )}
-              <SecondaryButton isFill type="submit" isLoading={loading}>
+              <PrimaryButton isFill type="submit" isLoading={loading}>
                 Confirm
-              </SecondaryButton>
+              </PrimaryButton>
             </FormWrapper>
           </ContentCenterWrapper>
         )}
@@ -98,9 +98,9 @@ const Forget = withLoginUserRedux(() => {
               The reset password link was sent to this email, if it exists in
               our database.
             </InfoWrapper>
-            <SecondaryButton isFill onClick={() => router.replace("/")}>
+            <PrimaryButton isFill onClick={() => router.replace("/")}>
               Confirm
-            </SecondaryButton>
+            </PrimaryButton>
           </ContentCenterWrapper>
         )}
       </Wrapper>

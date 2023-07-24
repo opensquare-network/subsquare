@@ -6,7 +6,7 @@ import { usePost } from "next-common/context/post";
 import { gov2VotingState } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import LearnGov2Link from "next-common/components/links/learnGov2Link";
 import { useChainSettings } from "next-common/context/chain";
 
@@ -23,14 +23,14 @@ export default function FellowshipReferendumSideBar() {
       <FellowshipTally />
       {isVoting && !hideActionButtons && (
         <InlineWrapper>
-          <SecondaryButton
+          <PrimaryButton
             style={{ width: "100%" }}
             onClick={() => {
               setShowVote(true);
             }}
           >
             Vote
-          </SecondaryButton>
+          </PrimaryButton>
         </InlineWrapper>
       )}
       {showVote && (

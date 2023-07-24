@@ -8,7 +8,7 @@ import { FormButtonsWrapper, FormInputsWrapper, FormWrapper } from "./styled";
 import Username from "./username";
 import Password from "./password";
 import GhostButton from "../buttons/ghostButton";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import useForm from "../../utils/hooks/useForm";
 import { updateUser, useUserDispatch } from "../../context/user";
 
@@ -67,9 +67,9 @@ export default function MailLogin({ setAddressLogin }) {
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>
-        <SecondaryButton isFill isLoading={loading} type="submit">
+        <PrimaryButton isFill isLoading={loading} type="submit">
           Login
-        </SecondaryButton>
+        </PrimaryButton>
         <GhostButton isFill onClick={setAddressLogin}>
           Login with web3 address
         </GhostButton>

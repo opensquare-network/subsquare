@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import GhostButton from "../buttons/ghostButton";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -30,9 +30,9 @@ export default function LoginButtons() {
       >
         Login
       </GhostButton>
-      <SecondaryButton onClick={() => router.push("/signup")}>
+      <PrimaryButton onClick={() => router.push("/signup")}>
         Sign up
-      </SecondaryButton>
+      </PrimaryButton>
     </Wrapper>
   );
 }

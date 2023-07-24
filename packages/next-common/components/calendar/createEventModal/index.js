@@ -5,10 +5,13 @@ import useSignerAccount from "../../../utils/hooks/useSignerAccount";
 import Title from "./title";
 import Link from "./link";
 import Description from "./description";
-import SecondaryButton from "../../buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import { newErrorToast, newSuccessToast } from "../../../store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "../../../store/reducers/toastSlice";
 import DateField from "./dateField";
 import DateSelectModal from "../dateSelectModal";
 import noop from "lodash.noop";
@@ -110,9 +113,9 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
       />
       <Link setValue={setLink} />
       <PopupButtonWrapper>
-        <SecondaryButton isLoading={isLoading} onClick={submit}>
+        <PrimaryButton isLoading={isLoading} onClick={submit}>
           Submit
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
       {showStartDateSelectModal && (
         <DateSelectModal

@@ -6,7 +6,7 @@ import nextApi from "../services/nextApi";
 import ErrorText from "./ErrorText";
 import { newErrorToast } from "../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../services/address";
-import SecondaryButton from "./buttons/secondaryButton";
+import PrimaryButton from "./buttons/primaryButton";
 import { stringToHex } from "@polkadot/util";
 import SelectWallet from "./wallet/selectWallet";
 import { CACHE_KEY } from "../utils/constants";
@@ -222,14 +222,14 @@ export default function ConnectWallet({ onClose, onLoggedIn }) {
 
         <ButtonWrapper>
           {selectedWallet && (
-            <SecondaryButton
+            <PrimaryButton
               isFill
               isLoading={loading}
               onClick={doWeb3Login}
               disabled={!selectedAccount}
             >
               Next
-            </SecondaryButton>
+            </PrimaryButton>
           )}
         </ButtonWrapper>
       </ContentWrapper>

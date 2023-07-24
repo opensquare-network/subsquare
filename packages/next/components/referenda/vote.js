@@ -16,7 +16,7 @@ import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "next-common/components/referenda/voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import MyVote from "./myVote";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import {
   flex,
   gap_x,
@@ -173,13 +173,13 @@ function Vote({ referendumIndex }) {
       </SecondaryCardDetail>
 
       {!isVoteFinished && !hideActionButtons && (
-        <SecondaryButton
+        <PrimaryButton
           onClick={() => {
             setShowVote(true);
           }}
         >
           Vote
-        </SecondaryButton>
+        </PrimaryButton>
       )}
       {showVote && (
         <Popup

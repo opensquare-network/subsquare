@@ -69,6 +69,8 @@ export const BackgroundButton = styled(CommonButton)`
 
 export const DisabledButton = styled(CommonButton)`
   cursor: not-allowed;
+  background-color: var(--neutral500);
+  color: var(--textPrimaryContrast);
 `;
 
 export default CommonButton;
