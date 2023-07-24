@@ -25,9 +25,8 @@ const CustomErrorMessage = styled(ErrorMessage)`
 const SuccessMessage = styled.div`
   padding: 10px 16px;
   margin-top: 9px;
-  //fixme: somehow theme won't work
-  background: rgba(76, 175, 80, 0.1);
-  color: #4caf50;
+  background: var(--green100);
+  color: var(--green500);
   border-radius: 4px;
   font-weight: 400;
   font-size: 14px;

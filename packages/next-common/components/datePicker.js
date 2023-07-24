@@ -132,10 +132,8 @@ const DateWrapper = styled.div`
   margin-top: -280px;
   padding: 24px;
   background: var(--neutral100);
-  border: 1px solid var(--neutral300)
-  box-shadow: 0px 6px 22px rgba(30, 33, 52, 0.11),
-    0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
-    0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282);
+  border: 1px solid var(--neutral300);
+  box-shadow: var(--shadow200);
   border-radius: 8px;
 
   h2 {
@@ -164,6 +162,7 @@ const DateWrapper = styled.div`
     padding: 20px 12px;
     border: 1px solid var(--neutral400);
     border-radius: 4px;
+    background-color: var(--neutral100);
   }
 
   .react-datepicker__header {
@@ -210,7 +209,7 @@ const DateWrapper = styled.div`
 
   .react-datepicker__day--today {
     font-weight: 600;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--neutral400);
     border-radius: 4px;
   }
 
@@ -237,52 +236,6 @@ const DateWrapper = styled.div`
       background: none;
     }
   }
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      .react-datepicker {
-        border-color: #363a4d !important;
-        user-select: none;
-      }
-      background: #212433;
-
-      color: white;
-      b {
-        color: white !important;
-      }
-      .react-datepicker {
-        background-color: #212433;
-      }
-      .react-datepicker__day--today {
-        color: white;
-        border-color: #575c72;
-      }
-      .react-datepicker__day,
-      .react-datepicker__day--selected {
-        color: white;
-        &:hover {
-          background-color: #272a3a;
-        }
-      }
-      .react-datepicker__day--outside-month {
-        color: rgba(255, 255, 255, 0.2);
-      }
-      .react-datepicker__day--disabled {
-        color: rgba(255, 255, 255, 0.15);
-      }
-      .react-datepicker__day--selected {
-        background-color: #272a3a;
-        color: white;
-      }
-      input,
-      .input,
-      .caret {
-        color: white;
-        border-color: #363a4d !important;
-      }
-      .caret {
-      }
-    `};
 `;
 
 const DateHeader = styled(Flex)`

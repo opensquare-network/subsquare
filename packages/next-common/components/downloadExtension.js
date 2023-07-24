@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 const StyledLink = styled.div`
   cursor: pointer;
   text-decoration: underline;
-  color: #2196f3;
+  color: var(--azure500);
 `;
 
 export default function DownloadExtension() {

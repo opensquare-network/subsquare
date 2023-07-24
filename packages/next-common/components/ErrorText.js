@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   font-size: 12px;
-  color: #f44336;
+  color: var(--red500);
   margin-top: 8px;
 `;
 

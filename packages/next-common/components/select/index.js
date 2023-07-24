@@ -21,12 +21,12 @@ const SelectWrapper = styled(FlexBetweenCenter)`
     p.disabled &&
     css`
       background-color: var(--neutral200);
-      color: #e0e5ed;
+      color: var(--textDisabled);
       cursor: default;
 
       svg {
         path {
-          stroke: #e0e5ed;
+          stroke: var(--textDisabled);
         }
       }
     `}

@@ -16,21 +16,18 @@ a {
   text-decoration: none;
 }
 
-hr {
-  border-top: none;
-  border-bottom-color: #ebeef4;
-}
-
 * {
   box-sizing: border-box;
 }
 
 #nprogress .bar {
-  background: #6848ff !important;
+  background: var(--theme500) !important;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px #6848ff, 0 0 5px #6848ff !important;
+  box-shadow:
+    0 0 10px var(--theme500),
+    0 0 5px var(--theme500) !important;
 }
 
 input::-webkit-outer-spin-button,

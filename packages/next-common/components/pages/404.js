@@ -3,6 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { useRouter } from "next/router";
 import NextHead from "next-common/components/nextHead";
 import { useThemeSetting } from "../../context/theme";
+import PrimaryButton from "../buttons/primaryButton";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -16,26 +17,6 @@ const Wrapper = styled.div`
     path {
       fill: var(--textDisabled);
     }
-  }
-  button {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 12px;
-    background: #6848ff;
-    border-radius: 4px;
-    flex: none;
-    order: 2;
-    flex-grow: 0;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-      Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-      sans-serif;
   }
 `;
 
@@ -85,14 +66,14 @@ const Page404 = function Custom404() {
         </svg>
         <H2>Page Not Found</H2>
         <P>You may have mistyped the address or the page may have moved.</P>
-        <button
+        <PrimaryButton
           onClick={() => {
             router.push("/");
           }}
         >
           {" "}
           Back to Home
-        </button>
+        </PrimaryButton>
       </Wrapper>
     </ThemeProvider>
   );

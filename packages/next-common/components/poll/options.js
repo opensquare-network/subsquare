@@ -28,24 +28,6 @@ const OptionWrapper = styled(GreyPanel)`
       background: var(--purple100);
       color: var(--purple500);
     `}
-  //todo : this needs to be fixed
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      border-color: #363a4d;
-      color: white;
-      :hover {
-        background: #272a3a;
-      }
-    `}
-    //todo : this needs to be fixed
-  ${(p) =>
-    p.selected &&
-    p?.theme === "dark" &&
-    css`
-      background: #272a3a;
-      color: #6848ff;
-    `}
 `;
 
 const Title = styled.div`

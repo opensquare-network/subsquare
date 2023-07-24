@@ -143,7 +143,7 @@ const NodeItem = styled.div`
     css`
       ::after {
         content: "";
-        background: #6848ff;
+        background: var(--theme500);
         height: 3px;
         position: absolute;
         bottom: 0;
