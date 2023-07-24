@@ -39,8 +39,8 @@ const dark = {
     gray400: "var(--neutral500)",
     gray500: "var(--textSecondary)",
     neutral100: "rgba(33,36,51,1)",
-    neutral200: "rgba(38, 41, 56, 1)",
-    neutral300: "#2e3141",
+    neutral200: "#1E2130",
+    neutral300: "#282B3B",
     neutral400: "rgba(54,58,77,1)",
     neutral500: "rgba(87,92,114,1)",
     tooltipBg: "rgba(0,0,0,0.800)",
@@ -59,7 +59,7 @@ const dark = {
       "0px 6px 22px rgba(30, 33, 52, 0.11), 0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718), 0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282)",
 
     // compat
-    pageBg: "#1C1F2E",
+    pageBg: "var(--neutral200)",
     darkBlue: "var(--purple500)",
   },
   chain: {
