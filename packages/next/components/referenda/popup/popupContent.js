@@ -16,7 +16,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { useChainSettings } from "next-common/context/chain";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { Aye, Nay, Split } from "./ayeNaySplitTab";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
@@ -154,9 +154,9 @@ export default function PopupContent({
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
-          <SecondaryButton isLoading={isLoading} onClick={doVote}>
+          <PrimaryButton isLoading={isLoading} onClick={doVote}>
             Confirm
-          </SecondaryButton>
+          </PrimaryButton>
         </div>
       )}
     </>

@@ -16,7 +16,7 @@ import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
 import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
-import SecondaryButton from "../../../buttons/secondaryButton";
+import PrimaryButton from "../../../buttons/primaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
@@ -127,13 +127,9 @@ function PopupContent({
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
       <PopupButtonWrapper>
-        <SecondaryButton
-          disabled={disabled}
-          isLoading={loading}
-          onClick={submit}
-        >
+        <PrimaryButton disabled={disabled} isLoading={loading} onClick={submit}>
           Submit
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </>
   );

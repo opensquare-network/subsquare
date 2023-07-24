@@ -16,7 +16,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Conviction from "./conviction";
 import VoteValue from "./voteValue";
 import Target from "./target";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import useSignerAccount from "../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 
@@ -126,9 +126,9 @@ export default function PopupContent({
       />
       <Conviction conviction={conviction} setConviction={setConviction} />
       <PopupButtonWrapper>
-        <SecondaryButton isLoading={isLoading} onClick={doDelegate}>
+        <PrimaryButton isLoading={isLoading} onClick={doDelegate}>
           Confirm
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </>
   );

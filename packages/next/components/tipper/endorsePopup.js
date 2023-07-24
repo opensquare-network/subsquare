@@ -13,7 +13,7 @@ import {
 import PopupWithAddress from "next-common/components/popupWithAddress";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { useChainSettings } from "next-common/context/chain";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -112,9 +112,9 @@ function PopupContent({
         setInputBalance={setInputTipValue}
       />
       <PopupButtonWrapper>
-        <SecondaryButton isLoading={tipping} onClick={doEndorse}>
+        <PrimaryButton isLoading={tipping} onClick={doEndorse}>
           Endorse
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </>
   );

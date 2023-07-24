@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BackgroundButton } from "./styled";
-import { Disabled } from "./secondaryButton";
+import { BackgroundButton, DisabledButton } from "./styled";
 import { LightLoading } from "./loading";
 
 const RawPositiveButton = styled(BackgroundButton)`
@@ -21,7 +20,7 @@ function ColorButton({
 }) {
   let TargetButton = positive ? RawPositiveButton : RawNegativeButton;
   if (disabled) {
-    TargetButton = Disabled;
+    TargetButton = DisabledButton;
   }
 
   const allProps = {

@@ -4,11 +4,11 @@ import { BackgroundButton, DisabledButton } from "./styled";
 import { LightLoading } from "./loading";
 
 const RawButton = styled(BackgroundButton)`
-  background-color: var(--purple500);
+  background-color: var(--theme500);
 `;
 
 const Disabled = styled(DisabledButton)`
-  background-color: var(--neutral500);
+  background-color: var(--theme300);
   color: var(--textPrimaryContrast);
 `;
 

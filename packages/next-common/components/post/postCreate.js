@@ -11,7 +11,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import EditorWrapper from "../editor/editorWrapper";
 import { shadow_100 } from "../../styles/componentCss";
 import { TitleContainer } from "../styled/containers/titleContainer";
@@ -197,13 +197,13 @@ export default function PostCreate() {
       />
 
       <ButtonWrapper>
-        <SecondaryButton
+        <PrimaryButton
           isLoading={creating}
           onClick={createPost}
           disabled={isDisableCreate}
         >
           Create
-        </SecondaryButton>
+        </PrimaryButton>
       </ButtonWrapper>
     </Wrapper>
   );

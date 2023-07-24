@@ -1,20 +1,20 @@
 import React from "react";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import { PopupButtonWrapper } from "../popup/wrapper";
 
 export default function VoteButton({ onClick, disabled, isSubmitting }) {
   return (
     <PopupButtonWrapper>
       {disabled ? (
-        <SecondaryButton disabled>Vote</SecondaryButton>
+        <PrimaryButton disabled>Vote</PrimaryButton>
       ) : (
-        <SecondaryButton
+        <PrimaryButton
           isLoading={isSubmitting}
           onClick={onClick}
           disabled={disabled}
         >
           Vote
-        </SecondaryButton>
+        </PrimaryButton>
       )}
     </PopupButtonWrapper>
   );

@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 const CommonButtonWrapper = styled.button`
   padding: 0 12px;
   height: 38px;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   text-align: center;
   display: inline-block;
@@ -25,8 +25,9 @@ const CommonButtonWrapper = styled.button`
   ${(p) =>
     p.small &&
     css`
-      height: 28px;
+      height: 26px;
       font-size: 12px;
+      border-radius: 4px;
     `}
 
   ${(p) =>
@@ -53,9 +54,9 @@ function CommonButton({
       disabled={disabled}
       {...props}
     >
-      <span className="w-full h-full inline-flex items-center justify-center">
-        {icon && !isLoading && <span className="mr-1.5">{icon}</span>}
-        <span>{children}</span>
+      <span className="w-full h-full inline-flex items-center justify-center gap-x-1.5">
+        {icon && !isLoading && icon}
+        {children}
       </span>
     </CommonButtonWrapper>
   );
@@ -68,6 +69,8 @@ export const BackgroundButton = styled(CommonButton)`
 
 export const DisabledButton = styled(CommonButton)`
   cursor: not-allowed;
+  background-color: var(--neutral500);
+  color: var(--textPrimaryContrast);
 `;
 
 export default CommonButton;

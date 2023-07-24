@@ -5,7 +5,7 @@ import Gov2Status from "./status";
 import Gov2Tally from "./tally";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { usePost } from "next-common/context/post";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import LearnGov2Link from "next-common/components/links/learnGov2Link";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import { useChainSettings } from "next-common/context/chain";
@@ -40,14 +40,14 @@ export default function Gov2Sidebar() {
 
       {isVoting && !hideActionButtons && (
         <InlineWrapper>
-          <SecondaryButton
+          <PrimaryButton
             style={{ width: "100%" }}
             onClick={() => {
               setShowVote(true);
             }}
           >
             Vote
-          </SecondaryButton>
+          </PrimaryButton>
         </InlineWrapper>
       )}
       {showVote && (

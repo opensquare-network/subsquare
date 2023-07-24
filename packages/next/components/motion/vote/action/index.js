@@ -5,7 +5,7 @@ import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsColl
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import Close from "./close";
 
 const Description = styled.div`
@@ -34,9 +34,9 @@ export default function Action({ setShowPopup }) {
   let action;
   if (userCanVote) {
     action = (
-      <SecondaryButton secondary isFill onClick={() => setShowPopup(true)}>
+      <PrimaryButton secondary isFill onClick={() => setShowPopup(true)}>
         Vote
-      </SecondaryButton>
+      </PrimaryButton>
     );
   } else {
     action = (
@@ -49,7 +49,7 @@ export default function Action({ setShowPopup }) {
 
   return (
     <>
-      { action }
+      {action}
       <Close />
     </>
   );

@@ -7,7 +7,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 
 export default function ConfirmEmail({ pin, email, identity, setErrors }) {
   const dispatch = useDispatch();
@@ -45,8 +45,8 @@ export default function ConfirmEmail({ pin, email, identity, setErrors }) {
   };
 
   return (
-    <SecondaryButton isFill isLoading={loading} onClick={submit}>
+    <PrimaryButton isFill isLoading={loading} onClick={submit}>
       Confirm
-    </SecondaryButton>
+    </PrimaryButton>
   );
 }

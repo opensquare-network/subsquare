@@ -17,7 +17,7 @@ import { addressEllipsis, isSameAddress } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
-import SecondaryButton from "./buttons/secondaryButton";
+import PrimaryButton from "./buttons/primaryButton";
 import { PrimaryCard } from "./styled/containers/primaryCard";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import Popup from "./popup/wrapper/Popup";
@@ -276,9 +276,9 @@ export default function LinkedAddress() {
                 "Associate your account with an on-chain address using the Polkadot{.js} extension."
               }
             </InfoWrapper>
-            <SecondaryButton onClick={showSelectWalletModal}>
+            <PrimaryButton onClick={showSelectWalletModal}>
               Select wallet
-            </SecondaryButton>
+            </PrimaryButton>
           </div>
         ) : (
           <DownloadExtension />

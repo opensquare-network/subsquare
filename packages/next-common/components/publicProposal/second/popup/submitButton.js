@@ -1,5 +1,5 @@
 import React from "react";
-import SecondaryButton from "../../../buttons/secondaryButton";
+import PrimaryButton from "../../../buttons/primaryButton";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
 
 export default function SubmitButton({
@@ -13,11 +13,11 @@ export default function SubmitButton({
   return (
     <PopupButtonWrapper>
       {balanceInsufficient || disabled ? (
-        <SecondaryButton disabled>Submit</SecondaryButton>
+        <PrimaryButton disabled>Submit</PrimaryButton>
       ) : (
-        <SecondaryButton isLoading={isSubmitting} onClick={onClick}>
+        <PrimaryButton isLoading={isSubmitting} onClick={onClick}>
           Submit
-        </SecondaryButton>
+        </PrimaryButton>
       )}
     </PopupButtonWrapper>
   );

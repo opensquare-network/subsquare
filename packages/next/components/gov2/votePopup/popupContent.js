@@ -19,7 +19,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
 
@@ -59,26 +59,22 @@ export default function PopupContent({
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
-  const { StandardVoteComponent, getStandardVoteTx } =
-    useStandardVote({
-      module: "convictionVoting",
-      referendumIndex,
-      isAye: tabIndex === Aye,
-      addressVoteDelegations: addressVote?.delegations,
-      isLoading,
-      votingBalance,
-    });
-  const { SplitVoteComponent, getSplitVoteTx } =
-    useSplitVote({
-      module: "convictionVoting",
-      referendumIndex,
-      isLoading,
-      votingBalance,
-    });
-  const {
-    SplitAbstainVoteComponent,
-    getSplitAbstainVoteTx,
-  } = useSplitAbstainVote({ referendumIndex, isLoading, votingBalance });
+  const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
+    module: "convictionVoting",
+    referendumIndex,
+    isAye: tabIndex === Aye,
+    addressVoteDelegations: addressVote?.delegations,
+    isLoading,
+    votingBalance,
+  });
+  const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
+    module: "convictionVoting",
+    referendumIndex,
+    isLoading,
+    votingBalance,
+  });
+  const { SplitAbstainVoteComponent, getSplitAbstainVoteTx } =
+    useSplitAbstainVote({ referendumIndex, isLoading, votingBalance });
 
   let voteComponent = null;
   let getVoteTx = null;
@@ -183,9 +179,9 @@ export default function PopupContent({
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
-          <SecondaryButton isLoading={isLoading} onClick={doVote}>
+          <PrimaryButton isLoading={isLoading} onClick={doVote}>
             Confirm
-          </SecondaryButton>
+          </PrimaryButton>
         </div>
       )}
     </>

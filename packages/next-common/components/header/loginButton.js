@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import { withTheme } from "styled-components";
 import { emptyFunction } from "../../utils";
 import PrimaryButton from "../buttons/primaryButton";
-import SecondaryButton from "../buttons/secondaryButton";
 
-function LoginButton({ theme }) {
+function LoginButton() {
   const router = useRouter();
 
   const gotoLogin = () => {
@@ -19,11 +18,7 @@ function LoginButton({ theme }) {
       .then(emptyFunction);
   };
 
-  if (theme.isDark) {
-    return <PrimaryButton onClick={gotoLogin}>Login</PrimaryButton>;
-  }
-
-  return <SecondaryButton onClick={gotoLogin}>Login</SecondaryButton>;
+  return <PrimaryButton onClick={gotoLogin}>Login</PrimaryButton>;
 }
 
 export default withTheme(LoginButton);

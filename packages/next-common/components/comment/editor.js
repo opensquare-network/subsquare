@@ -8,7 +8,7 @@ import { prettyHTML, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import GhostButton from "../buttons/ghostButton";
 import EditorWrapper from "../editor/editorWrapper";
 import { useChain } from "../../context/chain";
@@ -178,14 +178,14 @@ function Editor(
             Cancel
           </GhostButton>
         )}
-        <SecondaryButton
+        <PrimaryButton
           isLoading={loading}
           onClick={isEdit ? updateComment : createComment}
           disabled={isEmpty}
           title={isEmpty ? "cannot submit empty content" : ""}
         >
           {isEdit ? "Update" : isReply ? "Reply" : "Comment"}
-        </SecondaryButton>
+        </PrimaryButton>
       </ButtonWrapper>
     </Wrapper>
   );

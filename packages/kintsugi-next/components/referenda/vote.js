@@ -14,7 +14,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useDispatch, useSelector } from "react-redux";
@@ -245,14 +245,14 @@ function Vote({ referendumInfo, referendumIndex }) {
       </SecondaryCardDetail>
 
       {!referendumInfo?.finished && (
-        <SecondaryButton
+        <PrimaryButton
           isFill
           onClick={() => {
             setShowVote(true);
           }}
         >
           Vote
-        </SecondaryButton>
+        </PrimaryButton>
       )}
 
       <Guide>

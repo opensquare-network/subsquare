@@ -7,7 +7,7 @@ import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
 import GhostButton from "../buttons/ghostButton";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
@@ -102,9 +102,9 @@ export default function SidebarAccount() {
           <GhostButton onClick={() => router.push("/signup")}>
             Sign up
           </GhostButton>
-          <SecondaryButton onClick={() => router.push("/login")}>
+          <PrimaryButton onClick={() => router.push("/login")}>
             Login
-          </SecondaryButton>
+          </PrimaryButton>
         </ButtonWrapper>
       )}
       {user && (

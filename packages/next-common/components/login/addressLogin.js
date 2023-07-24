@@ -7,7 +7,7 @@ import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import { stringToHex } from "@polkadot/util";
 import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
@@ -213,14 +213,14 @@ export default function AddressLogin({ setMailLogin }) {
 
       <ButtonWrapper>
         {selectedWallet && (
-          <SecondaryButton
+          <PrimaryButton
             isFill
             isLoading={loading}
             onClick={doWeb3Login}
             disabled={!selectedAccount}
           >
             Next
-          </SecondaryButton>
+          </PrimaryButton>
         )}
         <LinkWrapper>
           <a onClick={setMailLogin}>Login </a>with username

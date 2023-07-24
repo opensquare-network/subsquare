@@ -10,7 +10,7 @@ import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
-import SecondaryButton from "../../buttons/secondaryButton";
+import PrimaryButton from "../../buttons/primaryButton";
 import Loading from "../../loading";
 import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
@@ -196,13 +196,13 @@ export default function PostLinkPopup({ setShow = noop }) {
         {discussionList}
       </Section>
       <PopupButtonWrapper>
-        <SecondaryButton
+        <PrimaryButton
           isLoading={isLoading}
           disabled={isLoadingList || !selectedDiscussion}
           onClick={bindDiscussion}
         >
           Confirm
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </Popup>
   );

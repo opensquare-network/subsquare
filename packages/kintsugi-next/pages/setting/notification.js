@@ -10,7 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { useRouter } from "next/router";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import {
   SettingSection,
   TitleContainer,
@@ -160,7 +160,7 @@ export default withLoginUserRedux(
             {subscriptionComponent}
             <Divider margin={24} />
             <ButtonWrapper>
-              <SecondaryButton
+              <PrimaryButton
                 disabled={
                   !isVerifiedUser ||
                   (!isNotificationChanged && !isSubscriptionChanged)
@@ -169,7 +169,7 @@ export default withLoginUserRedux(
                 isLoading={saving}
               >
                 Save
-              </SecondaryButton>
+              </PrimaryButton>
             </ButtonWrapper>
           </ContentWrapper>
         </SettingSection>

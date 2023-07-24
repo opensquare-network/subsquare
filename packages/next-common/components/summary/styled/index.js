@@ -82,14 +82,6 @@ export const Button = styled.div`
   }
 `;
 
-export const PrimaryButton = styled(Button)`
-  background-color: var(--purple500);
-  color: var(--textPrimaryContrast);
-  > svg path {
-    stroke: var(--textPrimaryContrast);
-  }
-`;
-
 export const SummaryDescription = styled.p`
   margin: 0;
   margin-top: 4px;

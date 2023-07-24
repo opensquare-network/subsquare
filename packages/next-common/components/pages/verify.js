@@ -12,7 +12,7 @@ import {
   InfoWrapper,
   Redirect,
 } from "next-common/components/login/styled";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
 
@@ -76,9 +76,9 @@ export default withLoginUserRedux(({ loginUser }) => {
           <ContentCenterWrapper>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your email has been verified.</InfoWrapper>
-            <SecondaryButton isFill onClick={() => router.replace("/")}>
+            <PrimaryButton isFill onClick={() => router.replace("/")}>
               Got it
-            </SecondaryButton>
+            </PrimaryButton>
             <Redirect>
               The page will be re-directed in
               <span className="sec">{countdown}s</span>

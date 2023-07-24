@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import Popup from "../../../components/popup/wrapper/Popup";
-import SecondaryButton from "../../buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import noop from "lodash.noop";
 import Day from "./day";
 import Time from "./time";
@@ -42,14 +42,14 @@ function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
       <Time defaultHour={hour} defaultMinute={minute} onChange={onTimeChange} />
 
       <PopupButtonWrapper>
-        <SecondaryButton
+        <PrimaryButton
           onClick={() => {
             onSelect(date);
             onClose();
           }}
         >
           Confirm
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </>
   );

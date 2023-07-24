@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import PopupLabel from "next-common/components/popup/label";
 import Input from "next-common/components/input";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 
@@ -87,9 +87,9 @@ function PopupContent({
       </div>
 
       <PopupButtonWrapper>
-        <SecondaryButton isLoading={calling} onClick={doDeposit}>
+        <PrimaryButton isLoading={calling} onClick={doDeposit}>
           Deposit
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </>
   );

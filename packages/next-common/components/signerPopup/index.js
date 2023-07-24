@@ -1,7 +1,7 @@
 import React from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import PopupWithAddress from "next-common/components/popupWithAddress";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
@@ -35,12 +35,12 @@ function PopupContent({
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
       <PopupButtonWrapper>
-        <SecondaryButton
+        <PrimaryButton
           isLoading={isLoading}
           onClick={() => actionCallback(api, signerAccount)}
         >
           {confirmText}
-        </SecondaryButton>
+        </PrimaryButton>
       </PopupButtonWrapper>
     </>
   );

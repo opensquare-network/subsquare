@@ -7,7 +7,7 @@ import {
   newSuccessToast,
 } from "../../store/reducers/toastSlice";
 import { InputWrapper, Label } from "./styled";
-import SecondaryButton from "../buttons/secondaryButton";
+import PrimaryButton from "../buttons/primaryButton";
 import {
   fetchAndUpdateUser,
   useUser,
@@ -154,13 +154,13 @@ export default function ProxyAddress() {
           }}
           disabled={isSet}
         />
-        <SecondaryButton
+        <PrimaryButton
           onClick={isSet ? onUnset : onSet}
           disabled={disabled}
           isLoading={isLoading}
         >
           {isSet ? "Unset" : "Set"}
-        </SecondaryButton>
+        </PrimaryButton>
       </InputWrapper>
       {errorMsg && <CustomErrorMessage>{errorMsg}</CustomErrorMessage>}
       {successMsg && <SuccessMessage>{successMsg}</SuccessMessage>}

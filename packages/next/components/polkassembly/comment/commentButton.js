@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SecondaryButton from "next-common/components/buttons/secondaryButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useChain } from "next-common/context/chain";
 import { getPolkassemblyLink } from "next-common/utils/polkassembly";
@@ -40,7 +40,7 @@ export default function PolkassemblyCommentButton({ detail, paId, btnRef }) {
   return (
     <Wrapper ref={btnRef}>
       <a href={link} target="_blank" rel="noreferrer">
-        <SecondaryButton>Comment on Polkassembly</SecondaryButton>
+        <PrimaryButton>Comment on Polkassembly</PrimaryButton>
       </a>
     </Wrapper>
   );

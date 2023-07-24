@@ -9,7 +9,7 @@ import { emptyFunction } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useApi";
 import Tooltip from "../../tooltip";
-import SecondaryButton from "../../buttons/secondaryButton";
+import PrimaryButton from "../../buttons/primaryButton";
 import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
@@ -170,9 +170,9 @@ export default function Second({
     action = <Description>This proposal has been canceled.</Description>;
   } else {
     action = (
-      <SecondaryButton isFill onClick={() => setShowPopup(true)}>
+      <PrimaryButton isFill onClick={() => setShowPopup(true)}>
         Second
-      </SecondaryButton>
+      </PrimaryButton>
     );
   }
 

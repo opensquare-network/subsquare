@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import dynamic from "next/dynamic";
 import GhostButton from "./buttons/ghostButton";
-import SecondaryButton from "./buttons/secondaryButton";
+import PrimaryButton from "./buttons/primaryButton";
 import EditorWrapper from "./editor/editorWrapper";
 
 const UniverseEditor = dynamic(
@@ -82,13 +82,13 @@ export default function EditInput({
             Cancel
           </GhostButton>
         )}
-        <SecondaryButton
+        <PrimaryButton
           isLoading={loading}
           onClick={onUpdate}
           disabled={isEmpty}
         >
           Update
-        </SecondaryButton>
+        </PrimaryButton>
       </ButtonWrapper>
     </Wrapper>
   );
