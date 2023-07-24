@@ -36,7 +36,7 @@ const SmallSelect = styled.div`
   border-style: solid;
   border-color: var(--neutral400);
   color: var(--textPrimary);
-  border-radius: 4px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,7 +52,7 @@ const Select = styled.div`
   border: 1px solid;
   border-color: var(--neutral400);
   color: var(--textPrimary);
-  border-radius: 4px;
+  border-radius: 8px;
   height: 38px;
   display: flex;
   align-items: center;

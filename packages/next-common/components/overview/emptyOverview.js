@@ -6,6 +6,7 @@ import { TitleContainer } from "../styled/containers/titleContainer";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { useChain } from "../../context/chain";
 import Chains from "../../utils/consts/chains";
+import PrimaryButton from "../buttons/primaryButton";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -42,35 +43,6 @@ const EmptyPanel = styled(NeutralPanel)`
     margin-bottom: 24px;
     max-width: 343px;
   }
-
-  > .button {
-    > svg {
-      margin-right: 8px;
-      min-width: 15px;
-    }
-
-    white-space: nowrap;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 12px;
-
-    position: static;
-    width: 153px;
-    min-width: 153px;
-    height: 38px;
-
-    background: var(--purple500);
-    border-radius: 4px;
-
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 100%;
-    text-align: center;
-    color: white;
-  }
 `;
 
 export default function EmptyOverview() {
@@ -90,9 +62,8 @@ export default function EmptyOverview() {
         <div className="title">Welcome to SubSquare</div>
         <div className="desc">{text}</div>
         {!isCentrifuge && (
-          <Link href={"/post/create"} className="button">
-            <Icon />
-            <span>New Discussion</span>
+          <Link href={"/post/create"}>
+            <PrimaryButton icon={<Icon />}>New Discussion</PrimaryButton>
           </Link>
         )}
       </EmptyPanel>

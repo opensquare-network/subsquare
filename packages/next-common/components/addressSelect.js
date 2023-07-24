@@ -20,7 +20,7 @@ const Wrapper = Relative;
 const Select = styled(Flex)`
   background: var(--neutral100);
   border: 1px solid var(--neutral400);
-  border-radius: 4px;
+  border-radius: 8px;
   height: 56px;
   padding: 0 16px;
   cursor: pointer;
@@ -67,7 +67,7 @@ const Options = styled.div`
   padding: 8px 0;
   background: var(--neutral100);
   ${shadow_200};
-  border-radius: 4px;
+  border-radius: 8px;
   max-height: 320px;
   overflow-y: auto;
   z-index: 1;

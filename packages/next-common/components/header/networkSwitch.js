@@ -18,7 +18,7 @@ const Select = styled.div`
   border: 1px solid;
   border-color: var(--neutral400);
   background-color: var(--neutral100);
-  border-radius: 4px;
+  border-radius: 8px;
   height: 38px;
   display: flex;
   align-items: center;
