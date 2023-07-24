@@ -82,6 +82,10 @@ const RichTextStyleWrapper = styled.div`
 
   ol {
     list-style-type: decimal;
+    padding-left: 2em !important;
+  }
+  ul {
+    padding-left: 2em !important;
   }
 `;
 
