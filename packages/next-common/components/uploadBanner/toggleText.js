@@ -5,7 +5,7 @@ import { p_12_medium } from "next-common/styles/componentCss";
 const Text = styled.button`
   user-select: none;
   ${p_12_medium};
-  color: var(--purple500);
+  color: var(--theme500);
   background-color: transparent;
   border: none;
 

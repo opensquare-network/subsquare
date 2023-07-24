@@ -23,7 +23,7 @@ export const FormToggler = styled.button`
   user-select: none;
   background-color: transparent;
   border: none;
-  color: var(--purple500);
+  color: var(--theme500);
   font-weight: 700;
   cursor: pointer;
 
@@ -65,7 +65,7 @@ export const PollFormOptionAddOptionButton = styled.button`
   background-color: transparent;
   border: none;
   ${p_12_medium};
-  color: var(--purple500);
+  color: var(--theme500);
   cursor: pointer;
 
   ${(p) => p.disabled && notAllowedCss}

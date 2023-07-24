@@ -28,7 +28,7 @@ const UploadArea = styled(Flex)`
   ${(p) =>
     p.active &&
     css`
-      border-color: var(--purple500);
+      border-color: var(--theme500);
     `}
 `;
 
@@ -80,7 +80,7 @@ const BannerPreview = styled(Flex)`
   ${(p) =>
     p.disabled &&
     css`
-      background-color: var(--neutral200); ;
+      background-color: var(--neutral200);
     `}
 
   img {

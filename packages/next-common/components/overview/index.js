@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 const Create = styled.a`
   display: flex;
   align-items: center;
-  color: var(--purple500);
+  color: var(--theme500);
   font-size: 14px;
   white-space: nowrap;
   svg {
@@ -92,7 +92,9 @@ export default function Overview({ overviewData, summaryData }) {
               link={item.link}
               items={item.items}
               type={item.type}
-              topRightCorner={item.category === "Discussions" && createDiscussion}
+              topRightCorner={
+                item.category === "Discussions" && createDiscussion
+              }
             />
           );
         }

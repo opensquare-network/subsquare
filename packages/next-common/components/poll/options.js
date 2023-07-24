@@ -25,8 +25,8 @@ const OptionWrapper = styled(GreyPanel)`
   ${(p) =>
     p.selected &&
     css`
-      background: var(--purple100);
-      color: var(--purple500);
+      background: var(--theme100);
+      color: var(--theme500);
     `}
 `;
 

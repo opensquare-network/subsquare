@@ -14,7 +14,7 @@ const Description = styled.div`
   color: var(--textTertiary);
 
   > span {
-    color: var(--purple500);
+    color: var(--theme500);
     cursor: pointer;
   }
 `;

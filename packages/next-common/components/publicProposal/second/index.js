@@ -80,7 +80,7 @@ const Description = styled.div`
   line-height: 140%;
   color: var(--textTertiary);
   > span {
-    color: var(--purple500);
+    color: var(--theme500);
     cursor: pointer;
   }
 `;

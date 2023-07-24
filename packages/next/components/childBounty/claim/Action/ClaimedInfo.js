@@ -6,10 +6,6 @@ const ClaimInfoText = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: var(--textTertiary);
-  > span {
-    color: var(--purple500);
-    cursor: pointer;
-  }
 `;
 
 export default function ClaimedInfo() {

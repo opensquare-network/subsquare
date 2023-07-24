@@ -126,7 +126,7 @@ const Guide = styled.p`
     font-size: 12px !important;
     display: flex;
     align-items: center;
-    color: var(--purple500) !important;
+    color: var(--theme500) !important;
   }
 `;
 

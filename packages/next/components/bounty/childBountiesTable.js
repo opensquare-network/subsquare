@@ -94,7 +94,7 @@ const DomesticLink = styled.a`
   width: 60px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--purple500);
+  color: var(--theme500);
   cursor: pointer;
 `;
 

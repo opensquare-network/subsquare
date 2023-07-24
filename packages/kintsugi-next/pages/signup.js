@@ -61,7 +61,7 @@ const LinkWrapper = styled.div`
 
   a {
     font-weight: bold;
-    color: var(--purple500);
+    color: var(--theme500);
   }
 `;
 
@@ -93,7 +93,7 @@ const Redirect = styled.div`
 
   .sec {
     font-weight: bold;
-    color: var(--purple500);
+    color: var(--theme500);
     margin-left: 8px;
   }
 `;
