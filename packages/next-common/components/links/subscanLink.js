@@ -1,11 +1,10 @@
 import React from "react";
-import LinkSubScanIcon from "../../assets/imgs/icons/link-subscan.svg";
-import LinkSubScanIconActive from "../../assets/imgs/icons/link-subscan-active.svg";
-import { SubscanLinkWrapper } from "./thirdPartyLink";
 import { useChain, useChainSettings } from "../../context/chain";
 import isNil from "lodash.isnil";
+import { LinkSubscan } from "@osn/icons/subsquare";
+import IconLink from "./iconLink";
 
-function SubScanLink({ indexer = {}, children }) {
+export default function SubScanLink({ indexer = {}, children }) {
   const chain = useChain();
   const { hasSubscan, subscanDomain } = useChainSettings();
   if (!hasSubscan) {
@@ -13,13 +12,13 @@ function SubScanLink({ indexer = {}, children }) {
   }
 
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
-  let url = `https://${ subscanDomain || chain }.subscan.io`;
+  let url = `https://${subscanDomain || chain}.subscan.io`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
-    url += `/extrinsic/${ blockHeight }-${ extrinsicIndex ?? index }`;
+    url += `/extrinsic/${blockHeight}-${extrinsicIndex ?? index}`;
   } else if (!isNil(eventIndex)) {
-    url += `/block/${ blockHeight }?tab=event&event=${ blockHeight }-${ eventIndex }`;
+    url += `/block/${blockHeight}?tab=event&event=${blockHeight}-${eventIndex}`;
   } else {
-    url += `/block/${ blockHeight }`;
+    url += `/block/${blockHeight}`;
   }
 
   if (children) {
@@ -30,31 +29,5 @@ function SubScanLink({ indexer = {}, children }) {
     );
   }
 
-  return (
-    <SubscanLinkWrapper href={url} target="_blank" rel="noreferrer">
-      <LinkSubScanIcon />
-      <LinkSubScanIconActive />
-    </SubscanLinkWrapper>
-  );
-}
-
-export default SubScanLink;
-
-export function SubScanAccountLink({ address }) {
-  const chain = useChain();
-  const { hasSubscan, subscanDomain } = useChainSettings();
-  if (!hasSubscan) {
-    return null;
-  }
-
-  return (
-    <SubscanLinkWrapper
-      href={`https://${subscanDomain || chain}.subscan.io/account/${address}`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <LinkSubScanIcon />
-      <LinkSubScanIconActive />
-    </SubscanLinkWrapper>
-  );
+  return <IconLink href={url} icon={<LinkSubscan />} />;
 }

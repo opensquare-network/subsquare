@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import SubScanLink from "./subscanLink";
-import isEmpty from "lodash.isempty";
-import Statescan from "./statescan";
-import Flex from "../styled/flex";
 import styled from "styled-components";
+import isEmpty from "lodash.isempty";
+import SubScanLink from "./subscanLink";
+import StatescanLink from "./statescanLink";
+import Flex from "../styled/flex";
 import { useChainSettings } from "next-common/context/chain";
 
 const Wrapper = styled(Flex)`
@@ -21,7 +21,7 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
   if (hasSubscan) {
     LinkComponent = SubScanLink;
   } else if (hasStatescan) {
-    LinkComponent = Statescan;
+    LinkComponent = StatescanLink;
   }
 
   return (
