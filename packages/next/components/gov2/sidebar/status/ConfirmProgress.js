@@ -5,14 +5,13 @@ import {
   ProgressTooltipFailContent,
   Tooltip,
 } from "./styled";
-import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useConfirm } from "next-common/context/post/gov2/track";
 import {
   calcConfirmStartPercentage,
   useConfirmStartPercentage,
   useConfirmEndPercentage,
   useConfirmRemaining,
+  useConfirmPercentage,
 } from "./useConfirmPercentage";
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
@@ -60,10 +59,25 @@ function Empty() {
   );
 }
 
-function ConfirmationStarted() {
-  const latestHeight = useSelector(latestHeightSelector);
+function ConfirmSingleProgress() {
+  const confirmPercentage = useConfirmPercentage();
 
-  const confirmPeriod = useConfirm();
+  return (
+    <ProgressGroup>
+      <ProgressBarWrapper>
+        <Progress
+          percentage={confirmPercentage}
+          fg="var(--green500)"
+          bg="var(--green100)"
+        />
+      </ProgressBarWrapper>
+
+      <ConfirmationInfo />
+    </ProgressGroup>
+  );
+}
+
+function ConfirmMultiProgress() {
   const confirmRemaining = useConfirmRemaining();
   const confirmStart = useConfirmingStarted();
   const confirmAbortedHeight = userConfirmingAborted();
@@ -71,26 +85,8 @@ function ConfirmationStarted() {
   const confirmEndPercentage = useConfirmEndPercentage();
   const decisionBlocks = useDecisionBlocks();
   const decisionSince = useDecidingSince();
-
   const confirmFailPairs = useConfirmTimelineFailPairs();
-
-  const confirmPercentage = useMemo(() => {
-    if (
-      isNil(latestHeight) ||
-      latestHeight <= confirmStart ||
-      (!isNil(confirmAbortedHeight) && confirmAbortedHeight > confirmStart)
-    ) {
-      return 0;
-    }
-
-    const finishHeight = confirmStart + confirmPeriod;
-    if (latestHeight >= finishHeight) {
-      return 100;
-    }
-
-    const gone = latestHeight - confirmStart;
-    return Number((gone / confirmPeriod) * 100).toFixed(2);
-  }, [latestHeight, confirmAbortedHeight, confirmStart, confirmPeriod]);
+  const confirmPercentage = useConfirmPercentage();
 
   const progressItems = useMemo(() => {
     const items = confirmFailPairs.map((pair) => {
@@ -157,10 +153,6 @@ function ConfirmationStarted() {
     decisionSince,
   ]);
 
-  if (isNil(confirmStart)) {
-    return null;
-  }
-
   return (
     <ProgressGroup>
       <ProgressBarWrapper>
@@ -172,10 +164,15 @@ function ConfirmationStarted() {
   );
 }
 
-export default function ConfirmProgress() {
+export default function ConfirmProgress({ mode = "zoom-in" }) {
   const confirmStart = useConfirmingStarted();
+
   if (confirmStart) {
-    return <ConfirmationStarted />;
+    if (mode === "zoom-in") {
+      return <ConfirmSingleProgress />;
+    } else if (mode === "zoom-out") {
+      return <ConfirmMultiProgress />;
+    }
   }
 
   return <Empty />;
