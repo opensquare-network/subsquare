@@ -261,7 +261,6 @@ export default function Proposal({
   } else {
     dataTableData = tableViewData;
   }
-  console.log(dataTableData);
 
   return (
     <Wrapper>
