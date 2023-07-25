@@ -1,3 +1,3 @@
 export function ensureProtocol(url) {
-  return !/^https?:\/\//i.test(url) ? `http://${url}` : url;
+  return !/^https?:\/\//i.test(url) ? `https://${url}` : url;
 }
