@@ -18,6 +18,7 @@ import clsx from "clsx";
 import Tooltip from "../tooltip";
 import Tab from "../tab";
 import { useLocalStorage } from "usehooks-ts";
+import ProposalChildCalls from "./childCalls";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -225,6 +226,24 @@ function convertProposalForJsonView(proposal, chain) {
   };
 }
 
+/**
+ * @description returns [[`section`, `method`], ...]
+ */
+function getChildCallSectionMethodPairs(call = {}) {
+  const pairs = [];
+
+  const args = call.args || [];
+  for (const arg of args) {
+    if (arg?.value?.length) {
+      for (const childCall of arg.value) {
+        pairs.push([childCall.section, childCall.method]);
+      }
+    }
+  }
+
+  return pairs;
+}
+
 const tabs = [
   { tabId: "table", tabTitle: "Table" },
   { tabId: "json", tabTitle: "JSON" },
@@ -242,6 +261,7 @@ export default function Proposal({
     "callType",
     tabs[0].tabId,
   );
+  const childCallSectionMethodPairs = getChildCallSectionMethodPairs(call);
 
   let dataTableData;
   if (shorten) {
@@ -282,6 +302,13 @@ export default function Proposal({
           </Tooltip>
         </TagWrapper>
       </HeaderWrapper>
+
+      {!!childCallSectionMethodPairs?.length && (
+        <HeaderWrapper>
+          <Header />
+          <ProposalChildCalls pairs={childCallSectionMethodPairs} />
+        </HeaderWrapper>
+      )}
 
       {detailPopupVisible && (
         <Popup
