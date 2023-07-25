@@ -226,24 +226,6 @@ function convertProposalForJsonView(proposal, chain) {
   };
 }
 
-/**
- * @description returns [[`section`, `method`], ...]
- */
-function getChildCallSectionMethodPairs(call = {}) {
-  const pairs = [];
-
-  const args = call.args || [];
-  for (const arg of args) {
-    if (arg?.value?.length) {
-      for (const childCall of arg.value) {
-        pairs.push([childCall.section, childCall.method]);
-      }
-    }
-  }
-
-  return pairs;
-}
-
 const tabs = [
   { tabId: "table", tabTitle: "Table" },
   { tabId: "json", tabTitle: "JSON" },
@@ -261,7 +243,8 @@ export default function Proposal({
     "callType",
     tabs[0].tabId,
   );
-  const childCallSectionMethodPairs = getChildCallSectionMethodPairs(call);
+
+  const tableViewData = convertProposalForTableView(call, chain);
 
   let dataTableData;
   if (shorten) {
@@ -276,8 +259,9 @@ export default function Proposal({
       ),
     };
   } else {
-    dataTableData = convertProposalForTableView(call, chain);
+    dataTableData = tableViewData;
   }
+  console.log(dataTableData);
 
   return (
     <Wrapper>
@@ -303,10 +287,10 @@ export default function Proposal({
         </TagWrapper>
       </HeaderWrapper>
 
-      {!!childCallSectionMethodPairs?.length && (
+      {!!tableViewData?.args?.calls?.length && (
         <HeaderWrapper>
           <Header />
-          <ProposalChildCalls pairs={childCallSectionMethodPairs} />
+          <ProposalChildCalls calls={tableViewData?.args?.calls} />
         </HeaderWrapper>
       )}
 

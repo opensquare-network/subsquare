@@ -3,22 +3,22 @@ import { BaseTag } from "../tags/state/styled";
 
 const seperateNumber = 5;
 
-export default function ProposalChildCalls({ pairs = [] }) {
+export default function ProposalChildCalls({ calls = [] }) {
   const [viewAll, setViewAll] = useState(false);
-  const isLarge = pairs.length > seperateNumber;
+  const isLarge = calls.length > seperateNumber;
 
   return (
     <div>
       <div className="mt-2 border-l border-dashed border-neutral500 pl-4 space-y-2">
-        {pairs.slice(0, seperateNumber).map((callPair, idx) => (
-          <ChildPair key={idx} pair={callPair} />
+        {calls.slice(0, seperateNumber).map((call, idx) => (
+          <ChildPair key={idx} call={call} />
         ))}
 
         {viewAll &&
           isLarge &&
-          pairs
+          calls
             .slice(seperateNumber)
-            .map((callPair, idx) => <ChildPair key={idx} pair={callPair} />)}
+            .map((call, idx) => <ChildPair key={idx} call={call} />)}
       </div>
 
       {isLarge && (
@@ -38,14 +38,15 @@ export default function ProposalChildCalls({ pairs = [] }) {
   );
 }
 
-function ChildPair({ pair = [] }) {
+function ChildPair({ call = {} }) {
   return (
     <div className="flex gap-x-1">
-      {pair.map((call, idx) => (
-        <BaseTag key={idx} className="bg-neutral200 !text-textPrimary">
-          {call}
-        </BaseTag>
-      ))}
+      <BaseTag className="bg-neutral200 !text-textPrimary">
+        {call.section}
+      </BaseTag>
+      <BaseTag className="bg-neutral200 !text-textPrimary">
+        {call.method}
+      </BaseTag>
     </div>
   );
 }
