@@ -2,6 +2,7 @@ import React from "react";
 import capitalize from "../../../utils/capitalize";
 import KVList from "../../listInfo/kvList";
 import User from "../../user";
+import Copyable from "next-common/components/copyable";
 
 const keys = {
   proposer: "proposer",
@@ -30,7 +31,7 @@ export default function CollectiveMetadata({
   }
   data.push(
     [capitalize(keys.threshold), threshold],
-    [capitalize(keys.hash), hash],
+    [capitalize(keys.hash), <Copyable key={keys.hash}>{hash}</Copyable>],
   );
 
   return <KVList title="Metadata" data={data} />;

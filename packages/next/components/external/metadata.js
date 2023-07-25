@@ -1,3 +1,4 @@
+import Copyable from "next-common/components/copyable";
 import KVList from "next-common/components/listInfo/kvList";
 
 export default function Metadata({ external }) {
@@ -6,7 +7,7 @@ export default function Metadata({ external }) {
   }
 
   const metadata = [
-    ["Hash", external.proposalHash],
+    ["Hash", <Copyable key="hash">{external.proposalHash}</Copyable>],
     ["Threshold", external.voteThreshold],
   ];
 

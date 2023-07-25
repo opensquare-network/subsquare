@@ -9,6 +9,7 @@ import AccountLinks from "../links/accountLinks";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import AchainableProfile from "./achainableProfile";
 import { useChainSettings } from "next-common/context/chain";
+import Copyable from "../copyable";
 
 const Wrapper = styled.div`
   padding: 24px;
@@ -66,7 +67,9 @@ const DisplayUserAddress = ({ address }) => {
   }
   return (
     <AddressWrapper>
-      <Tertiary>{address}</Tertiary>
+      <Copyable copyText={address}>
+        <Tertiary>{address}</Tertiary>
+      </Copyable>
       {!isEthereumAddress(address) && <AccountLinks address={address} />}
     </AddressWrapper>
   );

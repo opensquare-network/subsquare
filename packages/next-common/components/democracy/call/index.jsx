@@ -5,13 +5,14 @@ import { useChain } from "next-common/context/chain";
 import React from "react";
 import extractKintsugiFields from "next-common/components/democracy/common/kintsugiCallFields";
 import extractTreasuryFields from "next-common/components/democracy/call/treasury";
+import Copyable from "next-common/components/copyable";
 
 export default function ReferendumCall({ call, shorten, onchainData = {} }) {
   const hash = useDemocracyReferendumHash();
   const chain = useChain();
 
   const data = [
-    ["Hash", hash],
+    ["Hash", <Copyable key="hash">{hash}</Copyable>],
     [
       <Proposal
         key={"call"}
