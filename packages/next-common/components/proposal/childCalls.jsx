@@ -11,14 +11,14 @@ export default function ProposalChildCalls({ calls = [] }) {
     <div>
       <div className="mt-2 border-l border-dashed border-neutral500 pl-4 space-y-2">
         {calls.slice(0, seperateNumber).map((call, idx) => (
-          <ChildPair key={idx} call={call} />
+          <ChildCall key={idx} call={call} />
         ))}
 
         {viewAll &&
           isLarge &&
           calls
             .slice(seperateNumber)
-            .map((call, idx) => <ChildPair key={idx} call={call} />)}
+            .map((call, idx) => <ChildCall key={idx} call={call} />)}
       </div>
 
       {isLarge && (
@@ -38,7 +38,7 @@ export default function ProposalChildCalls({ calls = [] }) {
   );
 }
 
-function ChildPair({ call = {} }) {
+function ChildCall({ call = {} }) {
   return (
     <div className="flex gap-x-1">
       <BaseTag className="bg-neutral200 !text-textPrimary">
