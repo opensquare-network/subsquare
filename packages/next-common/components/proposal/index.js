@@ -18,6 +18,7 @@ import clsx from "clsx";
 import Tooltip from "../tooltip";
 import Tab from "../tab";
 import { useLocalStorage } from "usehooks-ts";
+import ProposalChildCalls from "./childCalls";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -243,6 +244,8 @@ export default function Proposal({
     tabs[0].tabId,
   );
 
+  const tableViewData = convertProposalForTableView(call, chain);
+
   let dataTableData;
   if (shorten) {
     dataTableData = {
@@ -256,7 +259,7 @@ export default function Proposal({
       ),
     };
   } else {
-    dataTableData = convertProposalForTableView(call, chain);
+    dataTableData = tableViewData;
   }
 
   return (
@@ -282,6 +285,13 @@ export default function Proposal({
           </Tooltip>
         </TagWrapper>
       </HeaderWrapper>
+
+      {!!tableViewData?.args?.calls?.length && (
+        <HeaderWrapper>
+          <Header />
+          <ProposalChildCalls calls={tableViewData?.args?.calls} />
+        </HeaderWrapper>
+      )}
 
       {detailPopupVisible && (
         <Popup
