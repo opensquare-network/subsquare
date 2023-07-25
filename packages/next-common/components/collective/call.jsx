@@ -7,13 +7,17 @@ import MarketMetadata from "next-common/components/collective/metadata/marketMet
 import React from "react";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
+import Copyable from "../copyable";
 
 export default function CollectiveCall({ call }) {
   const motion = usePostOnChainData();
   const chain = useChain();
   const detailType = useDetailType();
 
-  const data = [["Hash", motion.hash], [<Proposal key={"call"} call={call} />]];
+  const data = [
+    ["Hash", <Copyable key="hash">{motion.hash}</Copyable>],
+    [<Proposal key={"call"} call={call} />],
+  ];
 
   if (
     Chains.zeitgeist === chain &&

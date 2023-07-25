@@ -4,13 +4,17 @@ import { useOnchainData } from "next-common/context/post";
 import useReferendaBusinessData from "@subsquare/next/hooks/useReferendaBusinessData";
 import extractRemark from "next-common/components/gov2/referendum/call/remark";
 import React from "react";
+import Copyable from "next-common/components/copyable";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
 
   const data = [
-    ["Proposal Hash", onchainData?.proposalHash],
+    [
+      "Proposal Hash",
+      <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
+    ],
     [
       <Proposal
         key={"call"}

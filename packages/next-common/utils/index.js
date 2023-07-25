@@ -298,3 +298,7 @@ export function toPercentage(value = 0, decimals = 0) {
   const length = Math.pow(10, decimals);
   return Math.round(value * 100 * length) / length;
 }
+
+export function isHash(value) {
+  return value && value.length === 66 && value.startsWith("0x");
+}

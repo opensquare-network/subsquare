@@ -2,6 +2,7 @@ import User from "next-common/components/user";
 import KVList from "next-common/components/listInfo/kvList";
 import ReasonLink from "next-common/components/reasonLink";
 import { useEffect, useState } from "react";
+import Copyable from "next-common/components/copyable";
 
 export default function TipMetadata({ tip }) {
   const [metadata, setMetadata] = useState([]);
@@ -14,11 +15,8 @@ export default function TipMetadata({ tip }) {
             <ReasonLink text={tip?.meta?.reason} />
           </div>,
         ],
-        ["Hash", tip?.hash],
-        [
-          "Finder",
-          <User key="finder" add={tip?.finder} fontSize={14} />,
-        ],
+        ["Hash", <Copyable key="hash">{tip?.hash}</Copyable>],
+        ["Finder", <User key="finder" add={tip?.finder} fontSize={14} />],
         [
           "Beneficiary",
           <User key="beneficiary" add={tip?.meta?.who} fontSize={14} />,

@@ -1,6 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import InvalidPreImage from "./invalidPreImage";
+import Copyable from "../copyable";
+import { isHash } from "next-common/utils";
+import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 const Wrapper = styled.div`
   overflow-x: auto;
@@ -73,6 +76,19 @@ const StyledTd = styled.td`
   }
 `;
 
+function formatRawValue(value) {
+  const str = value.toString();
+  if (isPolkadotAddress(str) || isHash(str)) {
+    return (
+      <BreakText>
+        <Copyable>{str}</Copyable>
+      </BreakText>
+    );
+  }
+
+  return <BreakText>{str}</BreakText>;
+}
+
 export default function InnerDataTable({ data, nested = false }) {
   if (Object.keys(data)?.length === 0 && nested === false) {
     return <InvalidPreImage />;
@@ -105,7 +121,7 @@ export default function InnerDataTable({ data, nested = false }) {
       )
     ) : (
       <StyledTd style={{ minWidth: 320, padding: "10px 24px" }}>
-        <BreakText>{fieldValue.toString()}</BreakText>
+        {formatRawValue(fieldValue)}
       </StyledTd>
     );
   };

@@ -1,3 +1,4 @@
+import Copyable from "next-common/components/copyable";
 import KvList from "next-common/components/listInfo/kvList";
 import Proposal from "next-common/components/proposal";
 import { useOnchainData } from "next-common/context/post";
@@ -11,7 +12,7 @@ export default function DemocracyExternalProposalCall({
   const onchainData = useOnchainData();
 
   const data = [
-    ["Hash", onchainData?.proposalHash],
+    ["Hash", <Copyable key="hash">{onchainData?.proposalHash}</Copyable>],
     [
       <Proposal
         key={"call"}

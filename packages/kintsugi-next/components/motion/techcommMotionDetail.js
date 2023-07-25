@@ -24,6 +24,7 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
+import Copyable from "next-common/components/copyable";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -180,7 +181,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
             legacyBehavior
           >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
-        ["Hash", proposal.hash],
+        ["Hash", <Copyable key="hash">{proposal.hash}</Copyable>],
         [
           "Proposer",
           <User key="proposer" add={proposal?.proposer} fontSize={14} />,

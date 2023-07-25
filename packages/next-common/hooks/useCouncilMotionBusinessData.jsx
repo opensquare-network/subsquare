@@ -3,6 +3,7 @@ import Link from "next/link";
 import Flex from "next-common/components/styled/flex";
 import User from "next-common/components/user";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import Copyable from "next-common/components/copyable";
 
 export function useCouncilMotionBusinessData() {
   const motion = usePostOnChainData();
@@ -96,7 +97,7 @@ export function useCouncilMotionBusinessData() {
             6,
           )}`}</Link>,
         ],
-        ["Hash", external.proposalHash],
+        ["Hash", <Copyable key="hash">{external.proposalHash}</Copyable>],
         ["Threshold", external.voteThreshold],
       ]);
     });
@@ -116,7 +117,7 @@ export function useCouncilMotionBusinessData() {
             6,
           )}`}</Link>,
         ],
-        ["Hash", external.proposalHash],
+        ["Hash", <Copyable key="hash">{external.proposalHash}</Copyable>],
         ["Threshold", external.voteThreshold],
       ]);
     });

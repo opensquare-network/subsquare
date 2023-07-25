@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import { shortMotionId } from "next-common/utils/motion";
+import Copyable from "next-common/components/copyable";
 
 export default function Business({ external }) {
   if (!external) {
@@ -17,9 +18,10 @@ export default function Business({ external }) {
           <Link
             key="motion-link"
             href={`/council/motion/${motion.indexer.blockHeight}_${motion.hash}`}
-            legacyBehavior>{`Council Motion #${shortMotionId(motion)}`}</Link>,
+            legacyBehavior
+          >{`Council Motion #${shortMotionId(motion)}`}</Link>,
         ],
-        ["Hash", motion.hash],
+        ["Hash", <Copyable key="hash">{motion.hash}</Copyable>],
       ]);
     }
   }

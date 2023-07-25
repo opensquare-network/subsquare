@@ -12,6 +12,7 @@ import {
 import User from "../../user";
 import useDemocracyThreshold from "../../../context/post/democracy/referendum/threshold";
 import { useDemocracyReferendumHash } from "next-common/hooks/democracy/useDemocracyReferendumHash";
+import Copyable from "next-common/components/copyable";
 
 export default function ReferendumMetadata({
   proposer,
@@ -51,7 +52,7 @@ export default function ReferendumMetadata({
   useEffect(() => {
     const data = [
       ["Proposer", <User add={proposer} fontSize={14} key="user" />],
-      ["Hash", hash],
+      ["Hash", <Copyable key="hash">{hash}</Copyable>],
       [
         "Delay",
         <BlockValue

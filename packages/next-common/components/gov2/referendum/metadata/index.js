@@ -6,6 +6,7 @@ import BlockPeriod from "./blockPeriod";
 import UserBond from "./userBond";
 import { useTrack } from "../../../../context/post/gov2/track";
 import { useOnchainData } from "next-common/context/post";
+import Copyable from "next-common/components/copyable";
 
 function getEnactmentValue(enactment = {}) {
   let value = "";
@@ -61,7 +62,7 @@ export default function Gov2ReferendumMetadata({ info }) {
       <BlockPeriod block={trackInfo.confirmPeriod} key="confirmation-period" />,
     ],
     ["Enact", getEnactmentValue(info?.enactment)],
-    ["Proposal Hash", proposalHash],
+    ["Proposal Hash", <Copyable key="hash">{proposalHash}</Copyable>],
   ];
 
   return <KVList title={"Metadata"} data={metadata} showFold={true} />;

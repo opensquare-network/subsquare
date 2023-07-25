@@ -3,6 +3,7 @@ import KvList from "../listInfo/kvList";
 import Proposal from "../proposal";
 import extractKintsugiFields from "next-common/components/democracy/common/kintsugiCallFields";
 import { useChain } from "next-common/context/chain";
+import Copyable from "../copyable";
 
 export default function DemocracyPublicProposalCall({
   call,
@@ -14,7 +15,7 @@ export default function DemocracyPublicProposalCall({
   const chain = useChain();
 
   const data = [
-    ["Hash", onchainData?.hash],
+    ["Hash", <Copyable key="hash">{onchainData?.hash}</Copyable>],
     [
       <Proposal
         key={"call"}
