@@ -61,15 +61,22 @@ function Empty() {
 
 function ConfirmSingleProgress() {
   const confirmPercentage = useConfirmPercentage();
+  const confirmRemaining = useConfirmRemaining();
 
   return (
     <ProgressGroup>
       <ProgressBarWrapper>
-        <Progress
-          percentage={confirmPercentage}
-          fg="var(--green500)"
-          bg="var(--green100)"
-        />
+        <Tooltip
+          content={
+            confirmRemaining > 0 && <Remaining blocks={confirmRemaining} />
+          }
+        >
+          <Progress
+            percentage={confirmPercentage}
+            fg="var(--green500)"
+            bg="var(--green100)"
+          />
+        </Tooltip>
       </ProgressBarWrapper>
 
       <ConfirmationInfo />
