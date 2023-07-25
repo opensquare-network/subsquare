@@ -7,7 +7,6 @@ import Tooltip from "./tooltip";
 const Wrapper = styled.div`
   display: inline-flex;
   cursor: pointer;
-  align-items: center;
 `;
 
 export default function CopyButton({ copyText = "" }) {
