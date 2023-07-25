@@ -8,8 +8,6 @@ const Wrapper = styled.div`
   display: inline-flex;
   cursor: pointer;
   align-items: center;
-  width: 16px;
-  height: 16px;
 `;
 
 export default function CopyButton({ copyText = "" }) {
