@@ -13,7 +13,9 @@ import Tooltip from "next-common/components/tooltip";
 
 export default function Gov2Status() {
   const state = usePostState();
-  const [confirmationMode, setConfirmationMode] = useState("zoom-in");
+  const [confirmationMode, setConfirmationMode] = useState(
+    gov2State.Confirming === state ? "zoom-in" : "zoom-out",
+  );
 
   if (gov2State.Approved === state) {
     return (
