@@ -3,10 +3,12 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import {
   useConfirmingStarted,
   useDecidingSince,
+  userConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import { useConfirm } from "next-common/context/post/gov2/track";
 import isNil from "lodash.isnil";
 import { useDecisionBlocks } from "./useDecisionPercentage";
+import { useMemo } from "react";
 
 // get confirm remaining blocks
 export function useConfirmRemaining() {
@@ -56,4 +58,32 @@ export function calcConfirmStartPercentage(
   const percentage =
     ((confirmingStarted - decidingSince) / decisionBlocks) * 100;
   return percentage;
+}
+
+export function useConfirmPercentage() {
+  const latestHeight = useSelector(latestHeightSelector);
+
+  const confirmPeriod = useConfirm();
+  const confirmStart = useConfirmingStarted();
+  const confirmAbortedHeight = userConfirmingAborted();
+
+  const confirmPercentage = useMemo(() => {
+    if (
+      isNil(latestHeight) ||
+      latestHeight <= confirmStart ||
+      (!isNil(confirmAbortedHeight) && confirmAbortedHeight > confirmStart)
+    ) {
+      return 0;
+    }
+
+    const finishHeight = confirmStart + confirmPeriod;
+    if (latestHeight >= finishHeight) {
+      return 100;
+    }
+
+    const gone = latestHeight - confirmStart;
+    return Number((gone / confirmPeriod) * 100).toFixed(2);
+  }, [latestHeight, confirmAbortedHeight, confirmStart, confirmPeriod]);
+
+  return confirmPercentage;
 }

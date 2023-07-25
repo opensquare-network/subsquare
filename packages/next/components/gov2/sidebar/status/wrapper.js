@@ -10,11 +10,14 @@ const Title = styled(TitleContainer)`
   padding-right: 0;
 `;
 
-export default function StatusWrapper({ children }) {
+export default function StatusWrapper({ children, titleExtra }) {
   return (
     <Wrapper>
       <SecondaryCardDetail>
-        <Title>Status</Title>
+        <Title className="flex justify-between">
+          Status
+          {titleExtra}
+        </Title>
         {children}
       </SecondaryCardDetail>
     </Wrapper>
