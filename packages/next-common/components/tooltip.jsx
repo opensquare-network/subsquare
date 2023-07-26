@@ -28,6 +28,7 @@ export default function Tooltip({
   className,
   side,
   sideOffset = 2,
+  keepTooltipOpenAfterClick,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -54,9 +55,14 @@ export default function Tooltip({
     </RadixTooltip.Portal>
   );
 
+  const rootProps = { delayDuration: 0 };
+  if (keepTooltipOpenAfterClick) {
+    rootProps.open = open;
+  }
+
   return (
     <RadixTooltip.Provider>
-      <RadixTooltip.Root open={open} delayDuration={0}>
+      <RadixTooltip.Root {...rootProps}>
         <RadixTooltip.Trigger
           asChild
           onMouseEnter={() => setOpen(true)}
