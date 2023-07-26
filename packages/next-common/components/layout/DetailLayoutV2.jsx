@@ -100,7 +100,7 @@ export default function DetailLayout({
             <div
               className={clsx(
                 "w-full",
-                hasSidebar ? "max-w-[calc(100%-320px-48px)]" : "max-w-full",
+                hasSidebar ? "max-w-[calc(100%-320px-24px)]" : "max-w-full",
                 navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
               )}
               style={{ minHeight: `${sidebarHeight}px` }}

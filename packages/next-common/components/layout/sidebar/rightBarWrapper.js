@@ -23,7 +23,7 @@ export function RightBarWrapper(props) {
       className={clsx(
         "flex flex-col",
         "space-y-6",
-        "absolute right-6 top-0 w-[320px] mt-0",
+        "absolute right-0 top-0 w-[320px] mt-0",
         "max-md:static max-md:w-auto",
         !navCollapsed && "max-lg:static max-lg:w-auto",
         props.className,
