@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import CountDownOrigin from "../_CountDown";
 
 const size = 40;
 
@@ -7,51 +8,6 @@ const CircleWrapper = styled.div`
   position: relative;
   width: ${size}px;
   height: ${size}px;
-`;
-
-const BackCircle = styled.div`
-  position: absolute;
-  width: ${size}px;
-  height: ${size}px;
-  border-radius: 50%;
-  border: 8px solid var(--theme100);
-  background: var(--neutral100);
-`;
-
-const InnerCircleWrapper = styled.div`
-  position: absolute;
-  width: ${size}px;
-  height: ${size}px;
-`;
-
-const InnerCircle = styled.div`
-  position: absolute;
-  width: ${size - 2}px;
-  height: ${size - 2}px;
-  left: 1px;
-  top: 1px;
-  background: var(--neutral100);
-  border-radius: 50%;
-  border: 6px solid var(--theme500);
-`;
-
-const InnerCircleLeft = styled(InnerCircle)`
-  clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
-  transform: rotate(${(p) => p.turn}turn);
-`;
-const InnerCircleRight = styled(InnerCircle)`
-  clip-path: polygon(50% 0px, 101% 0px, 101% 100%, 50% 100%);
-  visibility: ${(p) => (p.overHalf ? "visible" : "hidden")};
-`;
-
-const InnerCircleMaskLeft = styled(BackCircle)`
-  clip-path: polygon(0px 0px, 50% 0px, 50% 100%, 0 100%);
-  visibility: ${(p) => (p.overHalf ? "hidden" : "visible")};
-`;
-
-const InnerCircleMaskRight = styled(BackCircle)`
-  clip-path: polygon(52% 0px, 100% 0px, 100% 100%, 52% 100%);
-  visibility: ${(p) => (p.overHalf ? "visible" : "hidden")};
 `;
 
 const PercentLable = styled.div`
@@ -69,20 +25,17 @@ const CountDown = ({ percent = 0 }) => {
   if (isNaN(percentInt) || percentInt < 0) {
     percentInt = 0;
   }
-  let turn = percentInt / 100;
-  if (percentInt > 100) {
-    turn = 1;
-  }
-  const overHalf = percentInt > 50;
+
   return (
     <CircleWrapper>
-      <BackCircle />
-      <InnerCircleWrapper>
-        <InnerCircleLeft turn={turn} overHalf={overHalf} />
-        <InnerCircleMaskLeft overHalf={overHalf} />
-        <InnerCircleMaskRight overHalf={overHalf} />
-        <InnerCircleRight overHalf={overHalf} />
-      </InnerCircleWrapper>
+      <CountDownOrigin
+        size={40}
+        width={6}
+        numerator={percent ?? 0}
+        denominator={100}
+        backgroundColor="var(--theme100)"
+        foregroundColor="var(--theme500)"
+      />
       <PercentLable>{`${percentInt}%`}</PercentLable>
     </CircleWrapper>
   );

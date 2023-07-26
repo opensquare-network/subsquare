@@ -28,6 +28,7 @@ export default function CountDown(props) {
     numerator = 0,
     denominator = 0,
     size = 12,
+    width,
     backgroundColor = "#FFF2D9",
     foregroundColor = "#F2B12F",
     tooltipContent,
@@ -47,7 +48,7 @@ export default function CountDown(props) {
 
   useEffect(() => {
     const outerRadius = size / 2;
-    const innerRadius = outerRadius / 2;
+    const innerRadius = width ? outerRadius - width : outerRadius / 2;
     const angle = (2 * Math.PI * percent) / 100;
 
     const svgEl = select(svgElement.current);
@@ -69,7 +70,7 @@ export default function CountDown(props) {
       .startAngle(angle)
       .endAngle(2 * Math.PI);
     svg.append("path").attr("d", arc2).style("stroke-width", "0");
-  }, [percent, size, svgElement]);
+  }, [percent, size, svgElement, width]);
 
   return (
     <Wrapper>
