@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 
@@ -28,6 +29,8 @@ export default function Tooltip({
   side,
   sideOffset = 2,
 }) {
+  const [open, setOpen] = React.useState(false);
+
   const tooltipTrigger = children ? (
     <div className={clsx("inline-block", className)}>{children}</div>
   ) : (
@@ -53,8 +56,14 @@ export default function Tooltip({
 
   return (
     <RadixTooltip.Provider>
-      <RadixTooltip.Root delayDuration={0}>
-        <RadixTooltip.Trigger asChild>{tooltipTrigger}</RadixTooltip.Trigger>
+      <RadixTooltip.Root open={open} delayDuration={0}>
+        <RadixTooltip.Trigger
+          asChild
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+        >
+          {tooltipTrigger}
+        </RadixTooltip.Trigger>
 
         {tooltipContent}
       </RadixTooltip.Root>
