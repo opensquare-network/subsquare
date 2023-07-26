@@ -25,7 +25,7 @@ export default function ProposalChildCalls({ calls = [] }) {
         <div className="mt-4">
           <span
             role="button"
-            className="text-theme500 text14Medium"
+            className="text-theme500 text12Medium"
             onClick={() => {
               setViewAll(!viewAll);
             }}
