@@ -2,9 +2,9 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import {
   ContentWrapper,
   InfoMessage,
-} from "next-common/components/settingV2/styled";
-import ProxyAddress from "next-common/components/settingV2/proxyAddress";
-import SettingLayout from "next-common/components/settingV2/settingLayout";
+} from "next-common/components/setting/styled";
+import ProxyAddress from "next-common/components/setting/proxyAddress";
+import SettingLayout from "next-common/components/layout/settingLayout";
 import {
   SettingSection,
   TitleContainer,

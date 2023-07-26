@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import Username from "next-common/components/settingV2/username";
-import Email from "next-common/components/settingV2/email";
-import Password from "next-common/components/settingV2/password";
-import Logout from "next-common/components/settingV2/logout";
+import Username from "next-common/components/setting/username";
+import Email from "next-common/components/setting/email";
+import Password from "next-common/components/setting/password";
+import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
-import SettingLayout from "next-common/components/settingV2/settingLayout";
+import SettingLayout from "next-common/components/layout/settingLayout";
 import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
-import { ContentWrapper } from "next-common/components/settingV2/styled";
+import { ContentWrapper } from "next-common/components/setting/styled";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 

@@ -16,14 +16,14 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
-import SettingLayout from "next-common/components/settingV2/settingLayout";
+import SettingLayout from "next-common/components/layout/settingLayout";
 import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
 import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import { CACHE_KEY } from "next-common/utils/constants";
 import useSubscription from "components/settings/useSubscription";
 import Cookies from "cookies";
-import NotificationEmail from "next-common/components/settingV2/notificationEmail";
-import { ContentWrapper } from "next-common/components/settingV2/styled";
+import NotificationEmail from "next-common/components/setting/notificationEmail";
+import { ContentWrapper } from "next-common/components/setting/styled";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 const ButtonWrapper = styled.div`

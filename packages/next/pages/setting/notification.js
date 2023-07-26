@@ -17,13 +17,13 @@ import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
 import {
   ContentWrapper,
   WarningMessage,
-} from "next-common/components/settingV2/styled";
-import SettingLayout from "next-common/components/settingV2/settingLayout";
+} from "next-common/components/setting/styled";
+import SettingLayout from "next-common/components/layout/settingLayout";
 import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
-import NotificationEmail from "next-common/components/settingV2/notificationEmail";
+import NotificationEmail from "next-common/components/setting/notificationEmail";
 import useSubscription from "components/settings/subscription/useSubscription";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
