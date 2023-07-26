@@ -4,9 +4,16 @@ import Input from "../input";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import { InputWrapper, Label } from "./styled";
-import PrimaryButton from "../buttons/primaryButton";
+import { InputWrapper } from "./styled";
+import ThemeButton from "../buttons/themeButton";
 import useForm from "../../utils/hooks/useForm";
+import styled from "styled-components";
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+`;
 
 export default function Password() {
   const dispatch = useDispatch();
@@ -33,8 +40,7 @@ export default function Password() {
   const { oldPassword, newPassword } = formData;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Label>Current password</Label>
+    <Form onSubmit={handleSubmit}>
       <InputWrapper>
         <Input
           placeholder="Please fill current password"
@@ -48,7 +54,6 @@ export default function Password() {
           error={changeErrors?.data?.oldPassword}
         />
       </InputWrapper>
-      <Label>New password</Label>
       <InputWrapper>
         <Input
           placeholder="Please fill new password"
@@ -61,13 +66,17 @@ export default function Password() {
           }}
           error={changeErrors?.data?.newPassword}
         />
-        <PrimaryButton typt="submit" isLoading={changeLoading}>
-          Change
-        </PrimaryButton>
       </InputWrapper>
       {changeErrors?.message && !changeErrors?.data && (
         <ErrorText>{changeErrors?.message}</ErrorText>
       )}
-    </form>
+      <ThemeButton
+        style={{ width: 72, height: 40 }}
+        type="submit"
+        isLoading={changeLoading}
+      >
+        Change
+      </ThemeButton>
+    </Form>
   );
 }

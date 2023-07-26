@@ -6,8 +6,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "../../store/reducers/toastSlice";
-import { InputWrapper, Label } from "./styled";
-import PrimaryButton from "../buttons/primaryButton";
+import { InputWrapper } from "./styled";
 import {
   fetchAndUpdateUser,
   useUser,
@@ -17,6 +16,7 @@ import ErrorMessage from "../styled/errorMessage";
 import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
+import ThemeButton from "../buttons/themeButton";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -102,7 +102,7 @@ export default function ProxyAddress() {
         setErrorMsg(
           `Proxy type: ${proxyTypes.join(
             ",",
-          )}. Proxy type should be Governance, Fellowship, Alliance, NonTransfer, or Any.`,
+          )}. Proxy type should be Governance, NonTransfer, or Any.`,
         );
         return;
       }
@@ -143,27 +143,25 @@ export default function ProxyAddress() {
   const disabled = isLoading || !inputAddress;
 
   return (
-    <div>
-      <Label>Proxied Address</Label>
-      <InputWrapper>
-        <Input
-          placeholder="Please fill address..."
-          value={inputAddress}
-          onChange={(e) => {
-            setInputAddres(e.target.value);
-          }}
-          disabled={isSet}
-        />
-        <PrimaryButton
-          onClick={isSet ? onUnset : onSet}
-          disabled={disabled}
-          isLoading={isLoading}
-        >
-          {isSet ? "Unset" : "Set"}
-        </PrimaryButton>
-      </InputWrapper>
+    <InputWrapper>
+      <Input
+        placeholder="Please fill address..."
+        value={inputAddress}
+        onChange={(e) => {
+          setInputAddres(e.target.value);
+        }}
+        disabled={isSet}
+      />
+      <ThemeButton
+        style={{ width: 55, height: 40 }}
+        onClick={isSet ? onUnset : onSet}
+        disabled={disabled}
+        isLoading={isLoading}
+      >
+        {isSet ? "Unset" : "Set"}
+      </ThemeButton>
       {errorMsg && <CustomErrorMessage>{errorMsg}</CustomErrorMessage>}
       {successMsg && <SuccessMessage>{successMsg}</SuccessMessage>}
-    </div>
+    </InputWrapper>
   );
 }

@@ -5,12 +5,12 @@ import Input from "../input";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import { EmailVerify, InputWrapper, Label } from "./styled";
+import { EmailVerify, InputWrapper } from "./styled";
 import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
-import PrimaryButton from "../buttons/primaryButton";
 import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
+import ThemeButton from "../buttons/themeButton";
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -18,8 +18,8 @@ const CountdownWrapper = styled.div`
   align-items: center;
   padding: 12px;
 
-  width: 80px;
-  height: 38px;
+  width: 72px;
+  height: 40px;
 
   border: 1px solid var(--neutral400);
   border-radius: 4px;
@@ -93,9 +93,9 @@ export default function NotificationEmail({ email, verified }) {
 
   return (
     <div>
-      <Label>Notification Email</Label>
       <InputWrapper>
         <Input
+          placeholder="Please fill Email..."
           defaultValue={inputEmail}
           post={emailVerified}
           onChange={(e) => {
@@ -107,9 +107,13 @@ export default function NotificationEmail({ email, verified }) {
           <CountdownWrapper>{countdown}s</CountdownWrapper>
         ) : (
           (!verified || inputEmail !== email) && (
-            <PrimaryButton onClick={onResend} isLoading={resendLoading}>
+            <ThemeButton
+              onClick={onResend}
+              isLoading={resendLoading}
+              style={{ width: 72, height: 40 }}
+            >
               Verify
-            </PrimaryButton>
+            </ThemeButton>
           )
         )}
       </InputWrapper>

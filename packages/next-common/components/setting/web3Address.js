@@ -1,19 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Label, InputWrapper } from "./styled";
-import User from "../user";
 import { addressEllipsis } from "../../utils";
+import Avatar from "../avatar";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import Identity from "../Identity";
 
 const AddressWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-
-  background: var(--neutral200);
-
-  border: 1px solid var(--neutral300);
-  border-radius: 4px;
+  gap: 16px;
 `;
 
 const FullAddress = styled.div`
@@ -32,17 +26,25 @@ const ShortAddress = styled.div`
   }
 `;
 
+const Address = styled.span`
+  color: var(--textPrimary);
+`;
+
 export default function Web3Address({ address }) {
+  const [identity, hasId] = useIdentityInfo(address);
+
   return (
-    <div>
-      <Label>Web3 Address</Label>
-      <InputWrapper>
-        <AddressWrapper>
-          <User add={address} />
+    <AddressWrapper>
+      <Avatar address={address} size={40} />
+      <div>
+        <Address>
+          {hasId ? <Identity identity={identity} /> : addressEllipsis(address)}
+        </Address>
+        <div>
           <FullAddress>{address}</FullAddress>
           <ShortAddress>{addressEllipsis(address)}</ShortAddress>
-        </AddressWrapper>
-      </InputWrapper>
-    </div>
+        </div>
+      </div>
+    </AddressWrapper>
   );
 }

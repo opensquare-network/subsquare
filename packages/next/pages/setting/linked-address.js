@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import SettingLayout from "next-common/components/settingV2/settingLayout";
+import SettingLayout from "next-common/components/layout/settingLayout";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 

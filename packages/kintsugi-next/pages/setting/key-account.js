@@ -1,7 +1,7 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ContentWrapper } from "next-common/components/settingV2/styled";
-import Web3Address from "next-common/components/settingV2/web3Address";
-import Logout from "next-common/components/settingV2/logout";
+import { ContentWrapper } from "next-common/components/setting/styled";
+import Web3Address from "next-common/components/setting/web3Address";
+import Logout from "next-common/components/setting/logout";
 import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
@@ -10,7 +10,7 @@ import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
-import SettingLayout from "next-common/components/settingV2/settingLayout";
+import SettingLayout from "next-common/components/layout/settingLayout";
 import { useChain } from "next-common/context/chain";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
