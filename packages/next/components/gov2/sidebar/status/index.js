@@ -13,8 +13,9 @@ import Tooltip from "next-common/components/tooltip";
 
 export default function Gov2Status() {
   const state = usePostState();
+  const isConfirming = gov2State.Confirming === state;
   const [confirmationMode, setConfirmationMode] = useState(
-    gov2State.Confirming === state ? "zoom-in" : "zoom-out",
+    isConfirming ? "zoom-in" : "zoom-out",
   );
 
   if (gov2State.Approved === state) {
@@ -51,27 +52,29 @@ export default function Gov2Status() {
   return (
     <StatusWrapper
       titleExtra={
-        <Tooltip
-          content={confirmationMode === "zoom-in" ? "Zoom Out" : "Zoom In"}
-        >
-          {confirmationMode === "zoom-in" ? (
-            <SystemZoomOut
-              role="button"
-              className="w-5 h-5 [&_path]:fill-textTertiary"
-              onClick={() => {
-                setConfirmationMode("zoom-out");
-              }}
-            />
-          ) : (
-            <SystemZoomIn
-              role="button"
-              className="w-5 h-5 [&_path]:fill-textTertiary"
-              onClick={() => {
-                setConfirmationMode("zoom-in");
-              }}
-            />
-          )}
-        </Tooltip>
+        isConfirming ? (
+          <Tooltip
+            content={confirmationMode === "zoom-in" ? "Zoom Out" : "Zoom In"}
+          >
+            {confirmationMode === "zoom-in" ? (
+              <SystemZoomOut
+                role="button"
+                className="w-5 h-5 [&_path]:fill-textTertiary"
+                onClick={() => {
+                  setConfirmationMode("zoom-out");
+                }}
+              />
+            ) : (
+              <SystemZoomIn
+                role="button"
+                className="w-5 h-5 [&_path]:fill-textTertiary"
+                onClick={() => {
+                  setConfirmationMode("zoom-in");
+                }}
+              />
+            )}
+          </Tooltip>
+        ) : null
       }
     >
       <DecisionProgress />
