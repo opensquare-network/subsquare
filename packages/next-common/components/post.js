@@ -170,7 +170,10 @@ export default function Post({ data, href, type }) {
   } else if (isGov2Referendum) {
     stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
   } else if (businessCategory.democracyReferenda === type) {
-    stateArgs = getDemocracyStateArgs(data.onchainData.state, data.onchainData.timeline);
+    stateArgs = getDemocracyStateArgs(
+      data.onchainData.state,
+      data.onchainData.timeline,
+    );
   }
 
   const duration = useDuration(data.time);
@@ -194,16 +197,16 @@ export default function Post({ data, href, type }) {
 
   if (isGov2Referendum) {
     if (data?.status === gov2State.Preparing) {
-      elapseIcon = <PreparingCountdown detail={ data } />;
+      elapseIcon = <PreparingCountdown detail={data} />;
     } else if (data?.status === gov2State.Deciding) {
-      elapseIcon = <DecisionCountdown detail={ data } />;
+      elapseIcon = <DecisionCountdown detail={data} />;
     } else if (data?.status === gov2State.Confirming) {
-      elapseIcon = <ConfirmCountdown detail={ data } />;
+      elapseIcon = <ConfirmCountdown detail={data} />;
     }
   }
 
   if (businessCategory.democracyReferenda === type) {
-    elapseIcon = <ReferendumElapse detail={ data } />;
+    elapseIcon = <ReferendumElapse detail={data} />;
   }
 
   const commentsCount =
@@ -232,24 +235,28 @@ export default function Post({ data, href, type }) {
 
   const { sm } = useScreenSize();
 
+  const postValue = data.onchainData?.isTreasury
+    ? data.onchainData?.treasuryInfo?.amount
+    : data.value;
+
   return (
     <Wrapper>
       <ContentWrapper>
         <HeadWrapper>
           <ListPostTitle data={data} href={href} />
 
-          {!isNil(data.value) && (
+          {!isNil(postValue) ? (
             <TitleExtra>
               <TitleExtraValue>
                 <ValueDisplay
-                  value={toPrecision(data.value, decimals)}
+                  value={toPrecision(postValue, decimals)}
                   symbol={symbol}
                 />
               </TitleExtraValue>
             </TitleExtra>
+          ) : (
+            method && <TitleExtra>{method}</TitleExtra>
           )}
-
-          {method && <TitleExtra>{method}</TitleExtra>}
         </HeadWrapper>
 
         <Divider margin={12} />
@@ -296,7 +303,7 @@ export default function Post({ data, href, type }) {
                 {`${commentsCount}`}
               </MobileHiddenInfo>
             )}
-            {(showTally && hasTally) && (
+            {showTally && hasTally && (
               <Flex>
                 <PostListCardVotesSummaryBar data={data} type={type} />
               </Flex>
