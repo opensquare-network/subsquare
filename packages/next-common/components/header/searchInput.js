@@ -17,8 +17,8 @@ const Input = styled(InputOrigin)`
   }
 
   &[data-focus="true"] {
-    background-color: var(--neutral100);
-    border-color: var(--neutral500);
+    background-color: var(--neutral100) !important;
+    border-color: var(--neutral500) !important;
   }
 `;
 
