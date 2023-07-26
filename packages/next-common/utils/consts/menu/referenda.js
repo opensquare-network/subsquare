@@ -18,6 +18,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
       Chains.moonbeam,
       Chains.polkadot,
       Chains.bifrost,
+      Chains.vara,
     ]),
     activeCount: totalActiveCount,
     icon: <MenuReferenda />,

@@ -9,6 +9,7 @@ const democracy = {
     Chains.development,
     Chains["westend-collectives"],
     Chains.collectives,
+    Chains.vara,
   ],
   archivedToChains: [Chains.kusama],
   icon: <MenuDemocracy />,

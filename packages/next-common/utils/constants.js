@@ -26,6 +26,7 @@ import darwinia2 from "./consts/settings/darwinia2";
 // import moonbeam from "./consts/settings/moonbeam";
 import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
+import vara from "./consts/settings/vara";
 
 /**
  * left + gap + main content
@@ -52,6 +53,7 @@ export const nodes = [
   centrifuge,
   collectives,
   // crab,
+  westendCollectives,
   crust,
   darwinia2,
   hydradx,
@@ -69,7 +71,7 @@ export const nodes = [
   turing,
   zeitgeist,
   rococo,
-  westendCollectives,
+  vara,
   ...optionalNodes,
 ];
 
