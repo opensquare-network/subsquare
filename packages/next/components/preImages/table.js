@@ -10,6 +10,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { ClosedTag } from "next-common/components/tags/state/styled";
+import DetailButton from "next-common/components/detailButton";
+import { useState } from "react";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -34,10 +36,20 @@ function parseStatus(status) {
 }
 
 function Hash({ hash }) {
+  const [showArgumentsDetail, setShowArgumentsDetail] = useState(false);
+  console.log({ showArgumentsDetail });
+
   return (
-    <Copyable copyText={hash}>
-      <span className="inline-block w-[96px] truncate">{hash}</span>
-    </Copyable>
+    <div className="flex">
+      <div className="flex items-center w-[160px]">
+        <Copyable copyText={hash}>
+          <span className="inline-block w-[96px] truncate">{hash}</span>
+        </Copyable>
+      </div>
+      <div className="flex items-centers mx-[16px]">
+        <DetailButton onClick={() => setShowArgumentsDetail(true)} />
+      </div>
+    </div>
   );
 }
 
@@ -60,25 +72,28 @@ function Deposit({ deposit }) {
 function Proposal({ proposal }) {
   const { section, method } = proposal;
   if (!section || !method) {
-    return null;
+    return <span className="text-red500 font-medium">Unable to decode</span>;
   }
-  return <span>{`${section}.${method}`}</span>;
+  return <span className="font-medium">{`${section}.${method}`}</span>;
 }
 
 export default function PreImagesTable({ data }) {
   const { columns } = useColumns([
     {
       name: "Hash",
-      style: { textAlign: "left", minWidth: "180px", maxWidth: 384 },
+      style: { textAlign: "left", width: "220px" },
     },
-    { name: "Arguments", style: { textAlign: "left", minWidth: "200px" } },
+    {
+      name: "Arguments",
+      style: { textAlign: "left", minWidth: "360px" },
+    },
     {
       name: "Depositor",
       style: { textAlign: "left", width: "128px", minWidth: "128px" },
     },
     {
       name: "Length",
-      style: { textAlign: "right", width: "128px", minWidth: "128px" },
+      style: { textAlign: "right", width: "128px", minWidth: "96px" },
     },
     {
       name: "Status",
