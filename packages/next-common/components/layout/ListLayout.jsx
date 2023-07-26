@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { isExternalLink } from "next-common/utils";
 import noop from "lodash.noop";
 import usePageTitle from "next-common/hooks/usePageTitle";
+import Divider from "../styled/layout/divider";
 
 /**
  * @typedef {{
@@ -63,14 +64,14 @@ export default function ListLayout({
 
       {summary && (
         <>
-          <hr className="my-4 border-neutral300" />
+          <Divider className="my-4" />
           {summary}
         </>
       )}
 
       {summaryFooter && (
         <>
-          <hr className="h-px my-4 bg-neutral300" />
+          <Divider className="my-4" />
           {summaryFooter}
         </>
       )}
