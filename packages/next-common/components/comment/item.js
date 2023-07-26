@@ -74,9 +74,7 @@ const IndentWrapper = styled.div`
 
 const FoldButton = styled.button`
   all: unset;
-  line-height: 20px;
-  height: 28px;
-  color: var(--textTertiary);
+  color: var(--textSecondary);
   &:hover {
     color: var(--textPrimary);
     cursor: pointer;
@@ -281,6 +279,7 @@ export default function Item({
       {comment.replies?.length > 0 && (
         <IndentWrapper quoted>
           <FoldButton
+            className="text14Medium"
             onClick={() => {
               setFolded(!folded);
             }}
