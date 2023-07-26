@@ -7,7 +7,7 @@ import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 
 const LinkedAddressComp = dynamic(
-  () => import("next-common/components/linkedAddressV2"),
+  () => import("next-common/components/linkedAddress"),
   {
     ssr: false,
   },

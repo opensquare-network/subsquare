@@ -7,19 +7,13 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import {
-  nodes,
-  pageHomeLayoutMainContentWidth,
-} from "next-common/utils/constants";
+import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
 import { addressEllipsis, isSameAddress } from "../utils";
 import { encodeAddressToChain } from "../services/address";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
-import PrimaryButton from "./buttons/primaryButton";
-import { PrimaryCard } from "./styled/containers/primaryCard";
-import { TitleContainer } from "./styled/containers/titleContainer";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
 import { stringToHex } from "@polkadot/util";
@@ -27,28 +21,7 @@ import { getWallets } from "../utils/consts/connect";
 import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
-
-const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  @media screen and (min-width: 1080px) {
-    padding-bottom: 16px;
-  }
-
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-`;
-
-const ContentWrapper = styled(PrimaryCard)`
-  input {
-    background: var(--neutral100);
-    border-color: var(--neutral400);
-    color: var(--textPrimary);
-  }
-`;
+import ThemeButton from "./buttons/themeButton";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -86,8 +59,8 @@ const AddressItem = styled.div`
   ${(p) =>
     p.linked &&
     css`
-      background: var(--neutral200);
-      border-color: var(--neutral200);
+      background: var(--neutral100);
+      border-color: var(--neutral400);
     `}
 `;
 
@@ -133,6 +106,7 @@ const NodesWrapper = styled.div`
 `;
 
 const NodeItem = styled.div`
+  color: var(--theme500);
   padding-bottom: 16px;
   font-size: 14px;
   font-weight: bold;
@@ -266,90 +240,87 @@ export default function LinkedAddress() {
   const availableAccounts = mergedAccounts || [];
 
   return (
-    <Wrapper>
-      <TitleContainer>Linked address</TitleContainer>
-      <ContentWrapper>
-        {hasExtension ? (
-          <div>
-            <InfoWrapper>
-              {
-                "Associate your account with an on-chain address using the Polkadot{.js} extension."
-              }
-            </InfoWrapper>
-            <PrimaryButton onClick={showSelectWalletModal}>
-              Select wallet
-            </PrimaryButton>
-          </div>
-        ) : (
-          <DownloadExtension />
-        )}
+    <>
+      {hasExtension ? (
         <div>
-          <NodesWrapper>
-            {nodes
-              .filter((node) => node.value === activeChain)
-              .map((item, index) => (
-                <NodeItem
-                  key={index}
-                  onClick={() => setActiveChain(item.value)}
-                  selected={item.value === activeChain}
-                >
-                  {item.name}
-                </NodeItem>
-              ))}
-          </NodesWrapper>
-          <AddressWrapper>
-            {availableAccounts.length === 0 && (
-              <EmptyList>No available addresses</EmptyList>
-            )}
-            {availableAccounts.length > 0 &&
-              availableAccounts.map((item, index) => {
-                let activeChainAddress = item.address;
-                if (isPolkadotAddress(item.address)) {
-                  activeChainAddress = encodeAddressToChain(
-                    item.address,
-                    activeChain,
-                  );
-                }
-
-                return (
-                  <AddressItem
-                    key={index}
-                    linked={isSameAddress(user?.address, activeChainAddress)}
-                  >
-                    <Avatar address={activeChainAddress} size={32} />
-                    <NameWrapper>
-                      <div>{item.name}</div>
-                      <div>{addressEllipsis(activeChainAddress)}</div>
-                    </NameWrapper>
-                    {isSameAddress(user?.address, activeChainAddress) ? (
-                      <LinkWrapper
-                        onClick={() => {
-                          unlinkAddress(activeChain, activeChainAddress);
-                        }}
-                      >
-                        <AddressLinkIcon />
-                        <div>Unlink</div>
-                      </LinkWrapper>
-                    ) : (
-                      <LinkWrapper
-                        onClick={() => {
-                          linkAddress(
-                            activeChain,
-                            activeChainAddress,
-                            item.meta?.source,
-                          );
-                        }}
-                      >
-                        <UnLinkIcon />
-                        <div>Link</div>
-                      </LinkWrapper>
-                    )}
-                  </AddressItem>
-                );
-              })}
-          </AddressWrapper>
+          <InfoWrapper>
+            {
+              "Associate your account with an on-chain address using the Polkadot{.js} extension."
+            }
+          </InfoWrapper>
+          <ThemeButton onClick={showSelectWalletModal}>
+            Select wallet
+          </ThemeButton>
         </div>
-      </ContentWrapper>
+      ) : (
+        <DownloadExtension />
+      )}
+      <div>
+        <NodesWrapper>
+          {nodes
+            .filter((node) => node.value === activeChain)
+            .map((item, index) => (
+              <NodeItem
+                key={index}
+                onClick={() => setActiveChain(item.value)}
+                selected={item.value === activeChain}
+              >
+                {item.name}
+              </NodeItem>
+            ))}
+        </NodesWrapper>
+        <AddressWrapper>
+          {availableAccounts.length === 0 && (
+            <EmptyList>No available addresses</EmptyList>
+          )}
+          {availableAccounts.length > 0 &&
+            availableAccounts.map((item, index) => {
+              let activeChainAddress = item.address;
+              if (isPolkadotAddress(item.address)) {
+                activeChainAddress = encodeAddressToChain(
+                  item.address,
+                  activeChain,
+                );
+              }
+
+              return (
+                <AddressItem
+                  key={index}
+                  linked={isSameAddress(user?.address, activeChainAddress)}
+                >
+                  <Avatar address={activeChainAddress} size={32} />
+                  <NameWrapper>
+                    <div>{item.name}</div>
+                    <div>{addressEllipsis(activeChainAddress)}</div>
+                  </NameWrapper>
+                  {isSameAddress(user?.address, activeChainAddress) ? (
+                    <LinkWrapper
+                      onClick={() => {
+                        unlinkAddress(activeChain, activeChainAddress);
+                      }}
+                    >
+                      <AddressLinkIcon />
+                      <div>Unlink</div>
+                    </LinkWrapper>
+                  ) : (
+                    <LinkWrapper
+                      onClick={() => {
+                        linkAddress(
+                          activeChain,
+                          activeChainAddress,
+                          item.meta?.source,
+                        );
+                      }}
+                    >
+                      <UnLinkIcon />
+                      <div>Link</div>
+                    </LinkWrapper>
+                  )}
+                </AddressItem>
+              );
+            })}
+        </AddressWrapper>
+      </div>
       {showSelectWallet && (
         <Popup title="Select wallet" onClose={() => setShowSelectWallet(false)}>
           <SelectWallet
@@ -363,6 +334,6 @@ export default function LinkedAddress() {
           />
         </Popup>
       )}
-    </Wrapper>
+    </>
   );
 }
