@@ -73,7 +73,6 @@ const IndentWrapper = styled.div`
 `;
 
 const FoldButton = styled.button`
-  all: unset;
   color: var(--textSecondary);
   &:hover {
     color: var(--textPrimary);
