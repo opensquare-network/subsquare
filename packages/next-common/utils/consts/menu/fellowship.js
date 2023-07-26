@@ -21,6 +21,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       Chains.moonbeam,
       Chains.bifrost,
       Chains["westend-collectives"],
+      Chains.vara,
     ]),
     activeCount: totalActiveCount,
     icon: <MenuFellowship />,

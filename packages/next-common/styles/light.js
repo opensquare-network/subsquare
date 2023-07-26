@@ -301,6 +301,17 @@ const light = {
       navigationTextTertiary: "var(--textTertiaryContrast)",
       navigationIcon: "var(--textSecondaryContrast)",
     },
+    vara: {
+      theme100: "rgba(11,234,179,0.10)",
+      theme300: "rgba(11,234,179,0.40)",
+      theme500: "rgba(11,234,179,1)",
+      navigationBg: "rgba(0,0,0,1)",
+      navigationActive: "rgba(255,255,255,0.10)",
+      navigationBorder: "rgba(255,255,255,0.12)",
+      navigationText: "var(--textPrimaryContrast)",
+      navigationTextTertiary: "var(--textTertiaryContrast)",
+      navigationIcon: "var(--textSecondaryContrast)",
+    },
   },
 };
 

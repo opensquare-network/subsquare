@@ -255,6 +255,14 @@ const dark = {
       navigationActive: "rgba(38,41,56,1)",
       navigationBorder: "var(--neutral300)",
     },
+    vara: {
+      theme100: "rgba(11,234,179,0.10)",
+      theme300: "rgba(11,234,179,0.40)",
+      theme500: "rgba(11,234,179,1)",
+      navigationBg: "rgba(33,36,51,1)",
+      navigationActive: "rgba(38,41,56,1)",
+      navigationBorder: "var(--neutral300)",
+    },
   },
 };
 
