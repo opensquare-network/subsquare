@@ -20,7 +20,7 @@ export default function CopyButton({ copyText = "" }) {
         setTimeout(() => setCopied(false), 2000);
       }}
     >
-      <Tooltip content={copied ? "Copied" : "Copy"}>
+      <Tooltip content={copied ? "Copied" : "Copy"} keepTooltipOpenAfterClick>
         {copied ? (
           <SystemCopied
             width={16}
