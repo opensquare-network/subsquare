@@ -1,13 +1,19 @@
 import isEmpty from "lodash.isempty";
 import BigNumber from "bignumber.js";
 import { usePageProps } from "next-common/context/page";
-import { votesSelector } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+
+function calcPercentage(numerator, denominator) {
+  return denominator.isZero()
+    ? 0
+    : numerator.div(denominator).times(100).toNumber();
+}
 
 export default function usePercentageBarData() {
   const { voteStats } = usePageProps();
-  const { allVotes = [] } = useSelector(votesSelector);
+  const allVotes = useSelector(allVotesSelector);
 
   let {
     directCapital,
@@ -23,46 +29,30 @@ export default function usePercentageBarData() {
     let delegatedCapital = new BigNumber(0);
     let directVotes = new BigNumber(0);
     let delegatedVotes = new BigNumber(0);
-    let directCapitalPercentage = 0;
-    let delegatedCapitalPercentage = 0;
-    let directVotesPercentage = 0;
-    let delegatedVotesPercentage = 0;
-
-    for (const vote of allVotes) {
-      directCapital = directCapital.plus(vote.balance);
-      delegatedCapital = delegatedCapital.plus(vote.totalDelegatedCapital);
-      directVotes = directVotes.plus(vote.votes);
-      delegatedVotes = delegatedVotes.plus(vote.totalDelegatedVotes);
+    for (const vote of allVotes || []) {
+      if (vote.isDelegating) {
+        directCapital = directCapital.plus(vote.balance);
+        directVotes = directVotes.plus(vote.votes);
+      } else {
+        delegatedCapital = delegatedCapital.plus(vote.balance);
+        delegatedVotes = delegatedVotes.plus(vote.votes);
+      }
     }
 
     const totalCapital = directCapital.plus(delegatedCapital);
     const totalVotes = directVotes.plus(delegatedVotes);
-
-    directCapitalPercentage = totalCapital.isZero()
-      ? 0
-      : directCapital.div(totalCapital).times(100).toNumber();
-
-    delegatedCapitalPercentage = totalCapital.isZero()
-      ? 0
-      : delegatedCapital.div(totalCapital).times(100).toNumber();
-
-    directVotesPercentage = totalVotes.isZero()
-      ? 0
-      : directVotes.div(totalVotes).times(100).toNumber();
-
-    delegatedVotesPercentage = totalVotes.isZero()
-      ? 0
-      : delegatedVotes.div(totalVotes).times(100).toNumber();
-
     return {
       directCapital,
       delegatedCapital,
       directVotes,
       delegatedVotes,
-      directCapitalPercentage,
-      delegatedCapitalPercentage,
-      directVotesPercentage,
-      delegatedVotesPercentage,
+      directCapitalPercentage: calcPercentage(directCapital, totalCapital),
+      delegatedCapitalPercentage: calcPercentage(
+        delegatedCapital,
+        totalCapital,
+      ),
+      directVotesPercentage: calcPercentage(directVotes, totalVotes),
+      delegatedVotesPercentage: calcPercentage(delegatedVotes, totalVotes),
     };
   }, [allVotes]);
 
@@ -77,21 +67,10 @@ export default function usePercentageBarData() {
     const totalCapital = directCapital.plus(delegatedCapital);
     const totalVotes = directVotes.plus(delegatedVotes);
 
-    directCapitalPercentage = totalCapital.isZero()
-      ? 0
-      : directCapital.div(totalCapital).times(100).toNumber();
-
-    delegatedCapitalPercentage = totalCapital.isZero()
-      ? 0
-      : delegatedCapital.div(totalCapital).times(100).toNumber();
-
-    directVotesPercentage = totalVotes.isZero()
-      ? 0
-      : directVotes.div(totalVotes).times(100).toNumber();
-
-    delegatedVotesPercentage = totalVotes.isZero()
-      ? 0
-      : delegatedVotes.div(totalVotes).times(100).toNumber();
+    directCapitalPercentage = calcPercentage(directCapital, totalCapital);
+    delegatedCapitalPercentage = calcPercentage(delegatedCapital, totalCapital);
+    directVotesPercentage = calcPercentage(directVotes, totalVotes);
+    delegatedVotesPercentage = calcPercentage(delegatedVotes, totalVotes);
   }
 
   if (directCapitalPercentage === 0 && delegatedCapitalPercentage === 0) {
