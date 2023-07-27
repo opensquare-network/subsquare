@@ -195,7 +195,7 @@ export default function usePreimage(hashOrBounded) {
     [api, hashOrBounded],
   );
 
-  const [optStatus] = useCall(
+  const [optStatus, , isStatusLoaded] = useCall(
     !inlineData && paramsStatus && api?.query.preimage?.statusFor,
     paramsStatus,
   );
@@ -209,14 +209,14 @@ export default function usePreimage(hashOrBounded) {
     [optStatus, resultPreimageHash],
   );
 
-  const [optBytes] = useCall(
+  const [optBytes, , isBytesLoaded] = useCall(
     paramsBytes && api?.query.preimage?.preimageFor,
     paramsBytes,
   );
 
   // extract all the preimage info we have retrieved
   return useMemo(
-    () =>
+    () => [
       resultPreimageFor
         ? optBytes
           ? createResult(resultPreimageFor, optBytes)
@@ -226,6 +226,16 @@ export default function usePreimage(hashOrBounded) {
           ? createResult(resultPreimageHash, inlineData)
           : resultPreimageHash
         : undefined,
-    [inlineData, optBytes, resultPreimageHash, resultPreimageFor],
+      isStatusLoaded,
+      isBytesLoaded,
+    ],
+    [
+      inlineData,
+      optBytes,
+      resultPreimageHash,
+      resultPreimageFor,
+      isStatusLoaded,
+      isBytesLoaded,
+    ],
   );
 }

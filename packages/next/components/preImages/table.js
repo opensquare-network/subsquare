@@ -60,12 +60,23 @@ function Deposit({ deposit }) {
   );
 }
 
-function Proposal({ proposal }) {
-  const { section, method } = proposal || {};
-  if (!section || !method) {
-    return <span className="text-red500 font-medium">Unable to decode</span>;
+function Proposal({ proposal, proposalError, proposalWarning }) {
+  if (proposalError) {
+    return <span className="text-red500 font-medium">{proposalError}</span>;
   }
-  return <span className="font-medium">{`${section}.${method}`}</span>;
+  if (proposalWarning) {
+    return (
+      <span className="text-orange500 font-medium">{proposalWarning}</span>
+    );
+  }
+  const { section, method, meta } = proposal || {};
+  const doc = meta?.docs[0]?.toJSON();
+  return (
+    <div className="flex flex-col">
+      <span className="font-medium">{`${section}.${method}`}</span>
+      <span className="text-textSecondary text-[12px]">{doc}</span>
+    </div>
+  );
 }
 
 export default function PreImagesTable({ data }) {
@@ -95,20 +106,22 @@ export default function PreImagesTable({ data }) {
   const rows = (data || []).map((item) => {
     return {
       useData: () => {
-        const preimage = usePreimage(item);
-        if (!preimage) {
-          return [];
-        }
-
+        const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(item);
         return [
           <Hash key="hash" hash={item} />,
-          <Proposal key="proposal" proposal={preimage.proposal} />,
-          preimage.deposit && (
+          isBytesLoaded && (
+            <Proposal
+              key="proposal"
+              proposal={preimage.proposal}
+              proposalError={preimage.proposalError}
+              proposalWarning={preimage.proposalWarning}
+            />
+          ),
+          isStatusLoaded && preimage.deposit && (
             <Deposit key="deposit" deposit={preimage.deposit} />
           ),
-          preimage.proposalLength &&
-            preimage.proposalLength?.toJSON()?.toLocaleString(),
-          preimage.statusName && (
+          isStatusLoaded && preimage.proposalLength?.toJSON()?.toLocaleString(),
+          isStatusLoaded && preimage.statusName && (
             <ClosedTag key="status" className="capitalize">
               {preimage.statusName}
             </ClosedTag>
@@ -125,6 +138,7 @@ export default function PreImagesTable({ data }) {
           columns={columns}
           rows={rows}
           noDataText="No current preimages"
+          loading={!data}
         />
       </ListWrapper>
     </SecondaryCard>

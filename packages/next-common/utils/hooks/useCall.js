@@ -4,6 +4,7 @@ import useIsMounted from "./useIsMounted";
 function useCall(fn, params = []) {
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const isMounted = useIsMounted();
   useEffect(() => {
     if (fn) {
@@ -12,6 +13,7 @@ function useCall(fn, params = []) {
         .then((value) => {
           if (isMounted.current) {
             setResult(value);
+            setLoaded(true);
           }
         })
         .finally(() => {
@@ -19,7 +21,7 @@ function useCall(fn, params = []) {
         });
     }
   }, [fn, ...params]);
-  return [result, loading];
+  return [result, loading, loaded];
 }
 
 export default useCall;
