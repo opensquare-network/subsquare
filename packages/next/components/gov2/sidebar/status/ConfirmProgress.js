@@ -26,6 +26,7 @@ import {
 import isNil from "lodash.isnil";
 import TimeDuration from "next-common/components/TimeDuration";
 import { useDecisionBlocks } from "./useDecisionPercentage";
+import { useZoomMode, zoomModes } from "./context/zoomContext";
 
 function ConfirmationInfo() {
   const confirmPeriod = useConfirm();
@@ -171,16 +172,17 @@ function ConfirmMultiProgress() {
   );
 }
 
-export default function ConfirmProgress({ mode = "zoom-in" }) {
+export default function ConfirmProgress() {
   const confirmStart = useConfirmingStarted();
+  const mode = useZoomMode();
 
-  if (confirmStart) {
-    if (mode === "zoom-in") {
-      return <ConfirmSingleProgress />;
-    } else if (mode === "zoom-out") {
-      return <ConfirmMultiProgress />;
-    }
+  if (!confirmStart) {
+    return <Empty />;
   }
 
-  return <Empty />;
+  if (mode === zoomModes.in) {
+    return <ConfirmSingleProgress />;
+  } else {
+    return <ConfirmMultiProgress />;
+  }
 }
