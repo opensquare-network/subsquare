@@ -3,7 +3,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getAnnouncementBreadcrumbName from "next-common/utils/alliance/announcementBread";
 import { PostProvider } from "next-common/context/post";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import NonNullPost from "next-common/components/nonNullPost";

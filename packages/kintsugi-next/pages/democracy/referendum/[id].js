@@ -23,7 +23,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import ReferendumCall from "next-common/components/democracy/call";

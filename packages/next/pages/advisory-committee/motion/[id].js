@@ -8,7 +8,7 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 function AdvisoryCommitteeMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
