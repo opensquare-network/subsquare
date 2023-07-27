@@ -80,6 +80,25 @@ const karura = {
   hasSubscan: true,
   useVoteCall: true,
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
+  cssVarsLight: {
+    theme100: "rgba(229,15,89,0.10)",
+    theme300: "rgba(229,15,89,0.40)",
+    theme500: "rgba(229,15,89,1)",
+    navigationBg: "rgba(0,0,0,1)",
+    navigationActive: "rgba(255,255,255,0.10)",
+    navigationBorder: "rgba(255,255,255,0.12)",
+    navigationText: "var(--textPrimaryContrast)",
+    navigationTextTertiary: "var(--textTertiaryContrast)",
+    navigationIcon: "var(--textSecondaryContrast)",
+  },
+  cssVarsDark: {
+    theme100: "rgba(229,15,89,0.10)",
+    theme300: "rgba(229,15,89,0.40)",
+    theme500: "rgba(229,15,89,1)",
+    navigationBg: "rgba(33,36,51,1)",
+    navigationActive: "rgba(38,41,56,1)",
+    navigationBorder: "var(--neutral300)",
+  },
 };
 
 export default karura;
