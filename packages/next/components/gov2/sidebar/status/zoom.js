@@ -8,11 +8,11 @@ import {
 } from "./context/zoomContext";
 import { Tooltip } from "./styled";
 import { SystemZoomIn, SystemZoomOut } from "@osn/icons/subsquare";
+import { useConfirmingStarted } from "next-common/context/post/gov2/referendum";
 
 function ZoomComponents() {
   const mode = useZoomMode();
   const dispatch = useZoomDispatch();
-  console.log("dispatch", dispatch);
   const isZoomIn = mode === zoomModes.in;
 
   return (
@@ -37,9 +37,12 @@ function ZoomComponents() {
 export default function Zoom() {
   const state = usePostState();
   const isConfirming = gov2State.Confirming === state;
-  if (!isConfirming) {
-    return null;
+  const confirmStart = useConfirmingStarted();
+
+  const confirmRejected = gov2State.Rejected === state && confirmStart;
+  if (isConfirming || confirmRejected) {
+    return <ZoomComponents />;
   }
 
-  return <ZoomComponents />;
+  return null;
 }

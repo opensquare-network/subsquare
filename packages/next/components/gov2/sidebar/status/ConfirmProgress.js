@@ -1,17 +1,15 @@
 import {
   ProgressBarWrapper,
   ProgressGroup,
-  ProgressInfo,
   ProgressTooltipFailContent,
   Tooltip,
 } from "./styled";
-import { useConfirm } from "next-common/context/post/gov2/track";
 import {
   calcConfirmStartPercentage,
-  useConfirmStartPercentage,
   useConfirmEndPercentage,
-  useConfirmRemaining,
   useConfirmPercentage,
+  useConfirmRemaining,
+  useConfirmStartPercentage,
 } from "./useConfirmPercentage";
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
@@ -27,19 +25,10 @@ import isNil from "lodash.isnil";
 import TimeDuration from "next-common/components/TimeDuration";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useZoomMode, zoomModes } from "./context/zoomContext";
-
-function ConfirmationInfo() {
-  const confirmPeriod = useConfirm();
-
-  return (
-    <ProgressInfo>
-      <span>Confirmation</span>
-      <span>
-        <TimeDuration blocks={confirmPeriod} />
-      </span>
-    </ProgressInfo>
-  );
-}
+import { usePostState } from "next-common/context/post";
+import { gov2State } from "next-common/utils/consts/state";
+import LastConfirmationProgress from "./confirmation/lastConfirmation";
+import ConfirmationInfo from "./confirmation/confirmationInfo";
 
 function Empty() {
   const confirmStart = useConfirmingStarted();
@@ -69,7 +58,12 @@ function ConfirmSingleProgress() {
       <ProgressBarWrapper>
         <Tooltip
           content={
-            confirmRemaining > 0 && <Remaining blocks={confirmRemaining} />
+            confirmRemaining > 0 && (
+              <Remaining
+                blocks={confirmRemaining}
+                percentage={confirmPercentage}
+              />
+            )
           }
         >
           <Progress
@@ -175,14 +169,19 @@ function ConfirmMultiProgress() {
 export default function ConfirmProgress() {
   const confirmStart = useConfirmingStarted();
   const mode = useZoomMode();
+  const state = usePostState();
 
   if (!confirmStart) {
     return <Empty />;
   }
 
-  if (mode === zoomModes.in) {
-    return <ConfirmSingleProgress />;
-  } else {
+  if (mode === zoomModes.out) {
     return <ConfirmMultiProgress />;
   }
+
+  if (gov2State.Rejected === state) {
+    return <LastConfirmationProgress />;
+  }
+
+  return <ConfirmSingleProgress />;
 }
