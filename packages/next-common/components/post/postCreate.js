@@ -13,7 +13,6 @@ import AdvancedForm from "next-common/components/post/advanced/form";
 import dynamic from "next/dynamic";
 import PrimaryButton from "../buttons/primaryButton";
 import EditorWrapper from "../editor/editorWrapper";
-import { shadow_100 } from "../../styles/componentCss";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useChain } from "../../context/chain";
 import { useUser } from "../../context/user";
@@ -26,9 +25,9 @@ const UniverseEditor = dynamic(
 );
 
 const Wrapper = styled(NeutralPanel)`
-  padding: 48px;
   color: var(--textPrimary);
-  ${shadow_100};
+  border: 0;
+  box-shadow: none;
   textarea:read-only,
   div.ql-disabled {
     background-color: var(--neutral200) !important;

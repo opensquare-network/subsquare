@@ -1,7 +1,5 @@
 import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { grey_400 } from "next-common/styles/colors";
-import { p_12_normal, p_14_normal } from "next-common/styles/componentCss";
 import Flex from "next-common/components/styled/flex";
 import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
@@ -21,7 +19,7 @@ const Wrapper = styled.div`
 const UploadArea = styled(Flex)`
   justify-content: center;
   border: 1px dashed;
-  border-color: ${grey_400};
+  border-color: var(--neutral500);
   height: 116px;
   border-radius: 4px;
 
@@ -39,7 +37,6 @@ const Tips = styled.ul`
 
   li {
     color: var(--textTertiary);
-    ${p_12_normal};
     &::before {
       content: "\\2022";
       padding: 0 8px;
@@ -47,16 +44,9 @@ const Tips = styled.ul`
   }
 `;
 
-const Hint = styled.span`
-  ${p_14_normal}
-  color: var(--textTertiary);
-  line-height: 19.6px;
-`;
-
 const SelectFile = styled.div`
   display: flex;
   align-items: center;
-  ${p_14_normal}
   color: var(--textSecondary);
   margin-left: 8px;
   line-height: 19.6px;
@@ -197,8 +187,10 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
                 </RemoveBannerButton>
               </BannerPreview>
             ) : (
-              <UploadTip>
-                <Hint>Drag and drop image or </Hint>
+              <UploadTip className="text14Medium">
+                <span className="text-textTertiary">
+                  Drag and drop image or{" "}
+                </span>
                 <SelectFile onClick={handleSelectFile}>
                   <UploadIcon />
                   Upload
@@ -208,7 +200,7 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
           </>
         )}
       </UploadArea>
-      <Tips>
+      <Tips className="text12Medium">
         <li>We recommend a 16:9 image.</li>
         <li>
           The banner will be displayed in the post list and as a shared preview
