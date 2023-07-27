@@ -39,7 +39,7 @@ function Empty() {
   return (
     <ProgressGroup>
       <ProgressBarWrapper>
-        <Tooltip content="Not started yet">
+        <Tooltip content="No confirmations">
           <Progress percentage={0} bg="var(--neutral200)" />
         </Tooltip>
       </ProgressBarWrapper>
