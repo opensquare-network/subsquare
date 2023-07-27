@@ -6,7 +6,7 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Cookies from "cookies";
 import useCommentComponent from "next-common/components/useCommentComponent";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 

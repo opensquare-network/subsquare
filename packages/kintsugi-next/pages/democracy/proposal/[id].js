@@ -15,7 +15,7 @@ import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
 

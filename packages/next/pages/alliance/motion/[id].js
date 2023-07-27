@@ -7,7 +7,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import MotionContent from "../../../components/motion/motionContent";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
   const breadcrumbItems = [

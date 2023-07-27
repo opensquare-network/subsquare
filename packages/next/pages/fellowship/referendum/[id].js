@@ -29,7 +29,7 @@ import FellowshipReferendaDetail from "next-common/components/detail/fellowship"
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 

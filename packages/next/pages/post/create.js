@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useIsLogin } from "next-common/context/user";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 export default withLoginUserRedux(() => {
   const router = useRouter();

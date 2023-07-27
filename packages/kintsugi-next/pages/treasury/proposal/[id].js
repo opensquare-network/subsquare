@@ -11,7 +11,7 @@ import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFi
 import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function TreasuryProposalContent({ detail, comments }) {

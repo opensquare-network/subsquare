@@ -16,7 +16,7 @@ import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
