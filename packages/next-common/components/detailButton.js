@@ -7,9 +7,13 @@ const Wrapper = styled.div`
   padding: 6px;
   border-radius: 4px;
   border: 1px solid var(--neutral400);
+  svg path {
+    fill: var(--textPrimary);
+  }
   ${(p) =>
     p.disabled &&
     css`
+      pointer-events: none;
       svg path {
         fill: var(--textDisabled);
       }
