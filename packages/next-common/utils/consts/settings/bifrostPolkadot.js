@@ -43,7 +43,27 @@ const bifrostPolkadot = {
   subscanDomain: "bifrost",
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  description: "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
+  description:
+    "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
+  cssVarsLight: {
+    theme100: "rgba(84,43,251,0.10)",
+    theme300: "rgba(84,43,251,0.40)",
+    theme500: "rgba(84,43,251,1)",
+    navigationBg: "rgba(0,0,0,1)",
+    navigationActive: "rgba(255,255,255,0.10)",
+    navigationBorder: "rgba(255,255,255,0.12)",
+    navigationText: "var(--textPrimaryContrast)",
+    navigationTextTertiary: "var(--textTertiaryContrast)",
+    navigationIcon: "var(--textSecondaryContrast)",
+  },
+  cssVarsDark: {
+    theme100: "rgba(84,43,251,0.10)",
+    theme300: "rgba(84,43,251,0.40)",
+    theme500: "rgba(84,43,251,1)",
+    navigationBg: "rgba(33,36,51,1)",
+    navigationActive: "rgba(38,41,56,1)",
+    navigationBorder: "var(--neutral300)",
+  },
 };
 
 export default bifrostPolkadot;

@@ -70,6 +70,25 @@ const turing = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   description: "The Web 3.0 Hub for Automated DeFi and Payments",
+  cssVarsLight: {
+    theme100: "rgba(168,44,190,0.10)",
+    theme300: "rgba(168,44,190,0.40)",
+    theme500: "rgba(168,44,190,1)",
+    navigationBg: "rgba(31,31,36,1)",
+    navigationActive: "rgba(255,255,255,0.04)",
+    navigationBorder: "rgba(255,255,255,0.06)",
+    navigationText: "var(--textPrimaryContrast)",
+    navigationTextTertiary: "var(--textTertiaryContrast)",
+    navigationIcon: "var(--textSecondaryContrast)",
+  },
+  cssVarsDark: {
+    theme100: "rgba(168,44,190,0.10)",
+    theme300: "rgba(168,44,190,0.40)",
+    theme500: "rgba(168,44,190,1)",
+    navigationBg: "rgba(33,36,51,1)",
+    navigationActive: "rgba(38,41,56,1)",
+    navigationBorder: "var(--neutral300)",
+  },
 };
 
 export default turing;

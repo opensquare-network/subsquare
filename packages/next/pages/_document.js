@@ -2,8 +2,10 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 import light from "next-common/styles/light";
 import dark from "next-common/styles/dark";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
+const chainSettings = getChainSettings(chain);
 
 function buildThemeVariables(theme) {
   if (!theme) return "";
@@ -47,10 +49,10 @@ export default class MyDocument extends Document {
           <style
             dangerouslySetInnerHTML={{
               __html: `
-                :root {${buildThemeVariables(light.base)}}
-                :root {${buildThemeVariables(light.chain[chain])}}
-                .dark:root {${buildThemeVariables(dark.base)}}
-                .dark:root {${buildThemeVariables(dark.chain[chain])}}
+                :root {${buildThemeVariables(light)}}
+                :root {${buildThemeVariables(chainSettings.cssVarsLight)}}
+                .dark:root {${buildThemeVariables(dark)}}
+                .dark:root {${buildThemeVariables(chainSettings.cssVarsDark)}}
 
                 body {
                   background-color: var(--pageBg);

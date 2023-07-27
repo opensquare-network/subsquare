@@ -6,7 +6,7 @@ const resolve = (dir) => path.resolve(__dirname, dir);
 /**
  * `light.neutral100` -> `{ neutral100: 'var(--neutral100)' }`
  */
-const twThemeVariables = Object.keys(light.base).reduce((value, key) => {
+const twThemeVariables = Object.keys(light).reduce((value, key) => {
   value[key] = `var(--${key})`;
   return value;
 }, {});
