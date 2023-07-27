@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.1
+date: 2023-07-27
+- Support [vara network](https://vara-network.io/).
+- Fix theme colors.
+- Hide votes tab for collectives chain.
+- Add account social links from identity on profile page.
+- Only show referenda confirmation bar toggle when confirming.
+- Fix delegation bar on referendum detail page.
+
+### 3.3.0
+date: 2023-07-23
+- [Big]New design development, including:
+  - Sidebar menu.
+  - List, detail, statistics, profile page refactor.
+  - Icons, theme color redesign.
+  - Other layout refactor.
+- [Medium] Support data subscription on proposal detail page, so we don't have to use callback when actions submitted.
+- [Medium] Add referenda/democracy votes history on user profile page.
+- Add voting countdown component for democracy referendum.
+- Enable fellowship for westend collectives.
+- Support login with Nova wallet.
+- Improve proposal call business extraction.
+- Fix democracy referendum vote finished height check.
+- Support timeline item link to block.
+- Fix markdown `ol` element view.
+
 ### 3.2.5
 date: 2023-07-04
 

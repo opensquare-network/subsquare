@@ -47,7 +47,6 @@ function MyApp({ Component, pageProps }) {
 
   const {
     loginUser,
-    homeExpandedMenus,
     themeMode,
     pageProperties,
     navCollapsed,
@@ -63,7 +62,6 @@ function MyApp({ Component, pageProps }) {
         <GlobalProvider
           user={loginUser}
           chain={process.env.NEXT_PUBLIC_CHAIN}
-          homeExpandedMenus={homeExpandedMenus}
           themeMode={themeMode}
           pageProperties={pageProperties}
           navCollapsed={navCollapsed}

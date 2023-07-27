@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
-import { PrimaryCard } from "../styled/containers/primaryCard";
 import { GreyPanel } from "../styled/containers/greyPanel";
 
 export const Wrapper = styled.div`
@@ -16,14 +15,12 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const ContentWrapper = styled(PrimaryCard)`
-  input {
-    background-color: var(--neutral100);
-    border-color: var(--neutral400);
-  }
-  button {
-    overflow: hidden;
-  }
+export const ContentWrapper = styled.div`
+  background-color: var(--neutral100);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--neutral300);
+  background: var(--neutral100);
 `;
 
 export const Label = styled.div`
@@ -39,28 +36,8 @@ export const Label = styled.div`
 export const InputWrapper = styled.div`
   width: 100%;
   display: flex;
-  align-items: flex-start;
-  > :first-child {
-    flex-grow: 1;
-  }
-  > :only-child {
-    margin-right: 96px;
-  }
-  > :not(:only-child):last-child {
-    width: 80px;
-    margin-left: 16px;
-  }
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    align-items: stretch;
-    > :only-child {
-      margin-right: 0;
-    }
-    > :not(:only-child):last-child {
-      margin-left: 0;
-      margin-top: 8px;
-    }
-  }
+  flex-direction: column;
+  gap: 16px;
 `;
 
 export const EmailVerify = styled.div`

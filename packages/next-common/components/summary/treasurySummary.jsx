@@ -98,7 +98,7 @@ export default function TreasurySummary() {
             </>
           ),
           suffix: (
-            <div className="max-sm:hidden">
+            <div className="flex max-sm:hidden">
               <CountDown percent={summary?.progress ?? 0} />
             </div>
           ),

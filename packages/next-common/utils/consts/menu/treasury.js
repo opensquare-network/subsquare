@@ -36,6 +36,7 @@ const treasury = {
         Chains.darwinia2,
         Chains.moonriver,
         Chains.moonbeam,
+        Chains.vara,
       ],
     },
     {
@@ -66,6 +67,7 @@ const treasury = {
         Chains.altair,
         Chains.moonriver,
         Chains.moonbeam,
+        Chains.vara,
       ],
     },
   ],

@@ -3,8 +3,10 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import VotesTab, {
   tabs,
 } from "next-common/components/democracy/flattenedVotesPopup/tab";
-import VotersList from "./votesList";
 import Pagination from "next-common/components/pagination";
+import StyledList from "next-common/components/styledList";
+import User from "next-common/components/user";
+import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -46,11 +48,50 @@ export default function VotesPopup({
         ayesCount={allAye?.length || 0}
         naysCount={allNay?.length || 0}
       />
-      <VotersList
+      <VotesList
         items={votes.slice(sliceFrom, sliceTo)}
         loading={isLoadingVotes}
       />
       <Pagination {...pagination} />
     </Popup>
+  );
+}
+
+function VotesList({ items = [], loading }) {
+  const columns = [
+    {
+      name: "ACCOUNT",
+      style: { minWidth: 176, textAlign: "left" },
+    },
+    {
+      name: "VOTES",
+      style: { textAlign: "right" },
+    },
+  ];
+
+  const rows = items.map((item) => {
+    const row = [
+      <User
+        key="user"
+        add={item.address}
+        fontSize={14}
+        maxWidth={176}
+        noTooltip={true}
+      />,
+      item.votes,
+    ];
+
+    return row;
+  });
+
+  return (
+    <PopupListWrapper>
+      <StyledList
+        items={items}
+        loading={loading}
+        columns={columns}
+        rows={rows}
+      />
+    </PopupListWrapper>
   );
 }

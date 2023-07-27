@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import nextApi from "../../services/nextApi";
-import { gov2ReferendumsVoteCallsApi, gov2ReferendumsVoteExtrinsicsApi } from "../../services/url";
+import {
+  gov2ReferendumsVoteCallsApi,
+  gov2ReferendumsVoteExtrinsicsApi,
+} from "../../services/url";
 import { openGovEmptyVotes as emptyVotes } from "../../utils/democracy/votes/passed/common";
 import Chains from "../../utils/consts/chains";
 import getKintElectorate from "../../utils/democracy/electorate/kintsugi";
@@ -11,15 +14,11 @@ const chain = process.env.NEXT_PUBLIC_CHAIN;
 const gov2ReferendumSlice = createSlice({
   name: "gov2Referendum",
   initialState: {
-    votes: emptyVotes,
     isLoadingVoteCalls: true,
     voteCalls: emptyVotes,
     issuance: null,
   },
   reducers: {
-    setVotes(state, { payload }) {
-      state.votes = payload;
-    },
     setIsLoadingVoteCalls(state, { payload }) {
       state.isLoadingVoteCalls = payload;
     },
@@ -32,19 +31,12 @@ const gov2ReferendumSlice = createSlice({
   },
 });
 
-export const {
-  setVoteCalls,
-  setIsLoadingVoteCalls,
-  setIssuance,
-} = gov2ReferendumSlice.actions;
+export const { setVoteCalls, setIsLoadingVoteCalls, setIssuance } =
+  gov2ReferendumSlice.actions;
 
-export const isLoadingVotesSelector = (state) =>
-  state.gov2Referendum.isLoadingVotes;
 export const isLoadingVoteCallsSelector = (state) =>
   state.gov2Referendum.isLoadingVoteCalls;
-export const votesSelector = (state) => state.gov2Referendum.votes;
-export const voteCallsSelector = (state) =>
-  state.gov2Referendum.voteCalls;
+export const voteCallsSelector = (state) => state.gov2Referendum.voteCalls;
 export const gov2IssuanceSelector = (state) => state.gov2Referendum.issuance;
 
 export const clearVoteCalls = () => async (dispatch) => {

@@ -1,27 +1,23 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { ButtonWrapper, Label } from "./styled";
-import GhostButton from "../buttons/ghostButton";
+import { ButtonWrapper } from "./styled";
 import { logoutUser, useUserDispatch } from "../../context/user";
+import ThemeGhostButton from "../buttons/themeGhostButton";
 
 export default function Logout() {
   const router = useRouter();
   const userDispatch = useUserDispatch();
 
   return (
-    <div>
-      <Label>Logout</Label>
-      <ButtonWrapper>
-        <GhostButton
-          isFill
-          onClick={async () => {
-            await logoutUser(userDispatch);
-            await router.replace("/");
-          }}
-        >
-          Logout my account
-        </GhostButton>
-      </ButtonWrapper>
-    </div>
+    <ButtonWrapper>
+      <ThemeGhostButton
+        onClick={async () => {
+          await logoutUser(userDispatch);
+          await router.replace("/");
+        }}
+      >
+        Logout my account
+      </ThemeGhostButton>
+    </ButtonWrapper>
   );
 }

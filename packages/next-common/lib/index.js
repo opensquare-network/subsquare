@@ -20,7 +20,6 @@ export function withLoginUser(getServerSideProps) {
     let options = {};
     const cookies = new Cookies(context.req, context.res);
     const themeMode = cookies.get(CACHE_KEY.themeMode);
-    const homeExpandedMenus = cookies.get(CACHE_KEY.homeExpandedMenus);
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const authToken = cookies.get(CACHE_KEY.authToken);
@@ -54,7 +53,6 @@ export function withLoginUser(getServerSideProps) {
         ...props.props,
         loginUser: user ?? null,
         themeMode: themeMode ?? null,
-        homeExpandedMenus: homeExpandedMenus || "",
         navCollapsed: navCollapsed || false,
         navSubmenuVisible: navSubmenuVisible || "{}",
         pageProperties: {

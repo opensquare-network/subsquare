@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const TextBox = styled.div`
   display: flex;
   padding: 12px 16px;
+  color: var(--textPrimary);
 
   background: var(--neutral200);
 
