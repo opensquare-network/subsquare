@@ -13,6 +13,7 @@ import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
 import usePreimage from "hooks/usePreimage";
 import { SystemLoadingDots } from "@osn/icons/subsquare";
+import PreimageDetailPopup from "./preImageDetailPopup";
 
 const FieldLoading = styled(SystemLoadingDots)`
   & ellipse {
@@ -32,9 +33,8 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-function Hash({ hash, noDetail }) {
+function Hash({ hash, proposal }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(false);
-  console.log({ showArgumentsDetail });
 
   return (
     <div className="flex">
@@ -45,10 +45,16 @@ function Hash({ hash, noDetail }) {
       </div>
       <div className="flex items-centers mx-[16px]">
         <DetailButton
-          disabled={noDetail}
+          disabled={!proposal}
           onClick={() => setShowArgumentsDetail(true)}
         />
       </div>
+      {showArgumentsDetail && (
+        <PreimageDetailPopup
+          setShow={setShowArgumentsDetail}
+          proposal={proposal}
+        />
+      )}
     </div>
   );
 }
@@ -120,15 +126,7 @@ export default function PreImagesTable({ data }) {
       useData: () => {
         const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(item);
         return [
-          <Hash
-            key="hash"
-            hash={item}
-            noDetail={
-              !isBytesLoaded ||
-              preimage.proposalError ||
-              preimage.proposalWarning
-            }
-          />,
+          <Hash key="hash" hash={item} proposal={preimage.proposal} />,
           isBytesLoaded ? (
             <Proposal
               key="proposal"
