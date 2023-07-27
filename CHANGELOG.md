@@ -2,8 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-### 3.3.1
+### 3.3.2
 date: 2023-07-27
+- Add OpenGov referendum confirmation toggle component, so we can see confirmation status in different views.
+- Correct referendum decision end calculation.
+- Fix tally support bar background color.
+- Fix create post page CSS.
+- Clean useless code.
+
+### 3.3.1
+date: 2023-07-26
 - Support [vara network](https://vara-network.io/).
 - Fix theme colors.
 - Hide votes tab for collectives chain.
