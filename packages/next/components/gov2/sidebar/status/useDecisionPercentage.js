@@ -6,14 +6,26 @@ import {
 } from "next-common/context/post/gov2/referendum";
 import { useDecision } from "next-common/context/post/gov2/track";
 import isNil from "lodash.isnil";
+import { useOnchainData, usePostState } from "next-common/context/post";
+import { gov2State } from "next-common/utils/consts/state";
 
 export function useDecisionEnd() {
   const trackDecision = useDecision();
   const decidingSince = useDecidingSince();
   const confirming = useConfirming();
+  const state = usePostState();
 
-  // note: referendum can still be deciding even after decision period gone, when it's still confirming.
-  return Math.max(decidingSince + trackDecision, confirming || 0);
+  const normalCase = decidingSince + trackDecision;
+  const onchain = useOnchainData();
+
+  if (onchain.rejected) {
+    return Math.max(normalCase, onchain.rejected[0]);
+  } else if (gov2State.Confirming === state) {
+    // note: referendum can still be deciding even after decision period gone, when it's still confirming.
+    return Math.max(normalCase, confirming || 0);
+  }
+
+  return normalCase;
 }
 
 export function useDecisionBlocks() {
