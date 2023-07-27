@@ -2,7 +2,6 @@ import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import styled from "styled-components";
 import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
-import Pagination from "next-common/components/pagination";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Copyable from "next-common/components/copyable";
 import User from "next-common/components/user";
@@ -12,6 +11,7 @@ import { toPrecision } from "next-common/utils";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
+import usePreimage from "hooks/usePreimage";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -24,16 +24,6 @@ const StyledList = styled(StyledListOrigin)`
   box-shadow: none;
   padding: 0;
 `;
-
-function parseStatus(status) {
-  const statusName = Object.keys(status || {})[0];
-  if (!statusName) return {};
-  const { deposit = [] } = status[statusName];
-  return {
-    statusName,
-    deposit,
-  };
-}
 
 function Hash({ hash }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(false);
@@ -55,13 +45,14 @@ function Hash({ hash }) {
 
 function Deposit({ deposit }) {
   const { symbol, decimals } = useChainSettings();
-  const [depositAddress, depositAmount] = deposit;
+  const { who, amount } = deposit;
+
   return (
     <div className="flex flex-col">
-      <User add={depositAddress} />
+      <User add={who} maxWidth={128} />
       <div className="ml-[28px] text-textSecondary text-[12px]">
         <ValueDisplay
-          value={toPrecision(depositAmount, decimals)}
+          value={toPrecision(amount.toJSON(), decimals)}
           symbol={symbol}
         />
       </div>
@@ -70,7 +61,7 @@ function Deposit({ deposit }) {
 }
 
 function Proposal({ proposal }) {
-  const { section, method } = proposal;
+  const { section, method } = proposal || {};
   if (!section || !method) {
     return <span className="text-red500 font-medium">Unable to decode</span>;
   }
@@ -101,19 +92,30 @@ export default function PreImagesTable({ data }) {
     },
   ]);
 
-  const rows = (data?.items || []).map((item) => {
-    const { statusName, deposit } = parseStatus(item.status);
-    return [
-      <Hash key="hash" hash={item.hash} />,
-      item.proposal && <Proposal proposal={item.proposal} />,
-      deposit && <Deposit key="deposit" deposit={deposit} />,
-      item.len?.toLocaleString(),
-      statusName && (
-        <ClosedTag key="status" className="capitalize">
-          {statusName}
-        </ClosedTag>
-      ),
-    ];
+  const rows = (data || []).map((item) => {
+    return {
+      useData: () => {
+        const preimage = usePreimage(item);
+        if (!preimage) {
+          return [];
+        }
+
+        return [
+          <Hash key="hash" hash={item} />,
+          <Proposal key="proposal" proposal={preimage.proposal} />,
+          preimage.deposit && (
+            <Deposit key="deposit" deposit={preimage.deposit} />
+          ),
+          preimage.proposalLength &&
+            preimage.proposalLength?.toJSON()?.toLocaleString(),
+          preimage.statusName && (
+            <ClosedTag key="status" className="capitalize">
+              {preimage.statusName}
+            </ClosedTag>
+          ),
+        ];
+      },
+    };
   });
 
   return (
@@ -125,7 +127,6 @@ export default function PreImagesTable({ data }) {
           noDataText="No current preimages"
         />
       </ListWrapper>
-      <Pagination {...data} />
     </SecondaryCard>
   );
 }
