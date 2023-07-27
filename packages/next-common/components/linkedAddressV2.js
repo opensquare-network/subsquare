@@ -22,10 +22,11 @@ import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import ThemeButton from "./buttons/themeButton";
+import { NeutralPanel } from "./styled/containers/neutralPanel";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 12px 16px;
   line-height: 150%;
   font-size: 14px;
@@ -121,8 +122,8 @@ const NodeItem = styled.div`
         height: 3px;
         position: absolute;
         bottom: 0;
-        left: 8px;
-        right: 8px;
+        left: 0px;
+        right: 0px;
       }
     `}
 `;
@@ -240,7 +241,7 @@ export default function LinkedAddress() {
   const availableAccounts = mergedAccounts || [];
 
   return (
-    <>
+    <NeutralPanel className="p-6">
       {hasExtension ? (
         <div>
           <InfoWrapper>
@@ -334,6 +335,6 @@ export default function LinkedAddress() {
           />
         </Popup>
       )}
-    </>
+    </NeutralPanel>
   );
 }
