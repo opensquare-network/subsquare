@@ -1,21 +1,11 @@
-import styled from "styled-components";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import NextHead from "next-common/components/nextHead";
 import PostCreate from "next-common/components/post/postCreate";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import BaseLayout from "next-common/components/layout/baseLayout";
 import { useIsLogin } from "next-common/context/user";
-import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-  max-width: 852px;
-  margin: auto;
-`;
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import DetailLayout from "next-common/components/layout/DetailLayoutV2";
 
 export default withLoginUserRedux(() => {
   const router = useRouter();
@@ -43,21 +33,27 @@ export default withLoginUserRedux(() => {
   ];
 
   return (
-    <BaseLayout>
-      <NextHead title={"Create post"} desc={""} />
-      <Wrapper>
-        <BreadcrumbWrapper>
-          <Breadcrumb items={breadcrumbItems} />
-        </BreadcrumbWrapper>
-
-        <PostCreate />
-      </Wrapper>
-    </BaseLayout>
+    <DetailLayout
+      breadcrumbs={breadcrumbItems}
+      seoInfo={{
+        title: "Create post",
+      }}
+    >
+      <PostCreate />
+    </DetailLayout>
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withLoginUser(async () => {
+  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
+    nextApi.fetch(gov2TracksApi),
+    nextApi.fetch(fellowshipTracksApi),
+  ]);
+
   return {
-    props: {},
+    props: {
+      tracks: tracks ?? [],
+      fellowshipTracks: fellowshipTracks ?? [],
+    },
   };
 });
