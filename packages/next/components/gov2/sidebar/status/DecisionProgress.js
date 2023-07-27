@@ -43,7 +43,12 @@ export default function DecisionProgress() {
       <ProgressBarWrapper>
         <Tooltip
           content={
-            decisionRemaining > 0 && <Remaining blocks={decisionRemaining} />
+            decisionRemaining > 0 && (
+              <Remaining
+                blocks={decisionRemaining}
+                percentage={decisionPercentage}
+              />
+            )
           }
         >
           <Progress percentage={decisionPercentage} />
