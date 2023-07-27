@@ -8,7 +8,6 @@ import TooltipOrigin from "next-common/components/tooltip";
 import { p_12_medium } from "next-common/styles/componentCss";
 import BigNumber from "bignumber.js";
 import Percentage from "next-common/components/referenda/tally/support/percentage";
-import { useThemeSetting } from "next-common/context/theme";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -72,7 +71,6 @@ export default function SupportBar({ supportPerbill }) {
   const [threshold, setThreshold] = useState(null);
   // progress max value in perbill
   const [progressMax, setProgressMax] = useState(null);
-  const { neutral200 } = useThemeSetting();
 
   useEffect(() => {
     if (supportThreshold) {
@@ -125,7 +123,7 @@ export default function SupportBar({ supportPerbill }) {
             )
           }
         >
-          <Progress percentage={barPercentage} bg={neutral200} />
+          <Progress percentage={barPercentage} bg="var(--neutral200)" />
         </Tooltip>
       </ProgressBarWrapper>
       <ul>
