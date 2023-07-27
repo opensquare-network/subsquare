@@ -35,6 +35,7 @@ export default function NavFeaturedMenu({ collapsed }) {
                 icon={menu.icon}
                 activeCount={menu.activeCount}
                 active={router.asPath === menu.pathname}
+                collapsed={collapsed}
               />
             ))}
         </li>
