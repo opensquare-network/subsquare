@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.1
+date: 2023-07-27
+- Support [vara network](https://vara-network.io/).
+- Fix theme colors.
+- Hide votes tab for collectives chain.
+- Add account social links from identity on profile page.
+- Only show referenda confirmation bar toggle when confirming.
+- Fix delegation bar on referendum detail page.
+
 ### 3.3.0
+date: 2023-07-23
 - [Big]New design development, including:
   - Sidebar menu.
   - List, detail, statistics, profile page refactor.
