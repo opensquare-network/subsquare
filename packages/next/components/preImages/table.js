@@ -12,6 +12,13 @@ import { ClosedTag } from "next-common/components/tags/state/styled";
 import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
 import usePreimage from "hooks/usePreimage";
+import { SystemLoadingDots } from "@osn/icons/subsquare";
+
+const FieldLoading = styled(SystemLoadingDots)`
+  & ellipse {
+    fill: var(--textTertiary);
+  }
+`;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -25,7 +32,7 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-function Hash({ hash }) {
+function Hash({ hash, noDetail }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(false);
   console.log({ showArgumentsDetail });
 
@@ -37,7 +44,10 @@ function Hash({ hash }) {
         </Copyable>
       </div>
       <div className="flex items-centers mx-[16px]">
-        <DetailButton onClick={() => setShowArgumentsDetail(true)} />
+        <DetailButton
+          disabled={noDetail}
+          onClick={() => setShowArgumentsDetail(true)}
+        />
       </div>
     </div>
   );
@@ -73,8 +83,10 @@ function Proposal({ proposal, proposalError, proposalWarning }) {
   const doc = meta?.docs[0]?.toJSON();
   return (
     <div className="flex flex-col">
-      <span className="font-medium">{`${section}.${method}`}</span>
-      <span className="text-textSecondary text-[12px]">{doc}</span>
+      <span className="font-medium leading-[20px]">{`${section}.${method}`}</span>
+      <span className="text-textSecondary text-[12px] leading-[16px]">
+        {doc}
+      </span>
     </div>
   );
 }
@@ -108,23 +120,46 @@ export default function PreImagesTable({ data }) {
       useData: () => {
         const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(item);
         return [
-          <Hash key="hash" hash={item} />,
-          isBytesLoaded && (
+          <Hash
+            key="hash"
+            hash={item}
+            noDetail={
+              !isBytesLoaded ||
+              preimage.proposalError ||
+              preimage.proposalWarning
+            }
+          />,
+          isBytesLoaded ? (
             <Proposal
               key="proposal"
               proposal={preimage.proposal}
               proposalError={preimage.proposalError}
               proposalWarning={preimage.proposalWarning}
             />
+          ) : (
+            <FieldLoading />
           ),
-          isStatusLoaded && preimage.deposit && (
-            <Deposit key="deposit" deposit={preimage.deposit} />
+          isStatusLoaded ? (
+            preimage.deposit && (
+              <Deposit key="deposit" deposit={preimage.deposit} />
+            )
+          ) : (
+            <FieldLoading />
           ),
-          isStatusLoaded && preimage.proposalLength?.toJSON()?.toLocaleString(),
-          isStatusLoaded && preimage.statusName && (
-            <ClosedTag key="status" className="capitalize">
-              {preimage.statusName}
-            </ClosedTag>
+          isStatusLoaded ? (
+            preimage.proposalLength?.toJSON()?.toLocaleString()
+          ) : (
+            <FieldLoading />
+          ),
+          isStatusLoaded ? (
+            preimage.statusName && (
+              <ClosedTag key="status" className="capitalize">
+                {preimage.statusName +
+                  (preimage.count ? ` / ${preimage.count}` : "")}
+              </ClosedTag>
+            )
+          ) : (
+            <FieldLoading />
           ),
         ];
       },

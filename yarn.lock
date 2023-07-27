@@ -1939,6 +1939,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@osn/icons@npm:^1.21.0":
+  version: 1.21.0
+  resolution: "@osn/icons@npm:1.21.0"
+  checksum: ef38978d20fb782067380eac54ce41fd63792c174b12a2080ab5bf49134026f777d0b37098bca8cde90b135f6a1b1aa701d63ee576dbf35fe7e03ab1a7f3df58
+  languageName: node
+  linkType: hard
+
 "@osn/polkadot-react-identicon@npm:^1.0.8":
   version: 1.0.8
   resolution: "@osn/polkadot-react-identicon@npm:1.0.8"
@@ -3240,7 +3247,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.20.0
+    "@osn/icons": ^1.21.0
     "@osn/previewer": ^0.12.5
     "@osn/rich-text-editor": ^0.1.56
     "@svgr/webpack": ^7.0.0

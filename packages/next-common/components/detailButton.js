@@ -1,5 +1,5 @@
 import { SystemMenu } from "@osn/icons/subsquare";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
   display: inline-flex;
@@ -7,11 +7,18 @@ const Wrapper = styled.div`
   padding: 6px;
   border-radius: 4px;
   border: 1px solid var(--neutral400);
+  ${(p) =>
+    p.disabled &&
+    css`
+      svg path {
+        fill: var(--textDisabled);
+      }
+    `}
 `;
 
-export default function DetailButton({ onClick }) {
+export default function DetailButton({ onClick, disabled }) {
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper disabled={disabled} onClick={onClick}>
       <SystemMenu width={16} height={16} />
     </Wrapper>
   );
