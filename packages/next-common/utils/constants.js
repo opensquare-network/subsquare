@@ -28,6 +28,11 @@ import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 
+/**
+ * left + gap + main content
+ */
+export const pageMaxWidth = 1184;
+
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
 
