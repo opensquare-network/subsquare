@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
 import AddressSelect from "../addressSelect";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
@@ -52,7 +51,7 @@ function rememberAccountName(account, chain) {
   localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
 }
 
-export default function AddressLogin({ setMailLogin }) {
+export default function AddressLogin({ setMailLogin, onClose, setView }) {
   const chain = useChain();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
@@ -62,7 +61,6 @@ export default function AddressLogin({ setMailLogin }) {
   const [selectedWallet, setSelectWallet] = useState("");
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
-  const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
 
   async function signWith(message, address, selectedWallet) {
@@ -122,14 +120,9 @@ export default function AddressLogin({ setMailLogin }) {
             );
 
             if (loginResult.email || dontRemindEmail) {
-              router.replace(router.query?.redirect || "/");
+              onClose?.();
             } else {
-              router.replace({
-                pathname: "/email",
-                query: {
-                  redirect: router.query?.redirect,
-                },
-              });
+              setView("email");
             }
           }
           if (loginError) {
@@ -223,7 +216,7 @@ export default function AddressLogin({ setMailLogin }) {
           </PrimaryButton>
         )}
         <LinkWrapper>
-          <a onClick={setMailLogin}>Login </a>with username
+          Login with <a onClick={setMailLogin}>account</a>
         </LinkWrapper>
       </ButtonWrapper>
     </>

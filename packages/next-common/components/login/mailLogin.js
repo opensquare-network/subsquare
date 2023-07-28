@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { FormButtonsWrapper, FormInputsWrapper, FormWrapper } from "./styled";
@@ -18,13 +16,10 @@ const ForgetPassword = styled.div`
   font-size: 12px;
 `;
 
-export default function MailLogin({ setAddressLogin }) {
+export default function MailLogin({ setAddressLogin, setView, onClose }) {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const userDispatch = useUserDispatch();
-
-  const { redirect } = router.query;
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -36,7 +31,7 @@ export default function MailLogin({ setAddressLogin }) {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         updateUser(res.result, userDispatch);
-        router.replace(redirect || "/");
+        onClose?.();
       } else if (res.error) {
         setErrors(res.error);
       }
@@ -63,7 +58,14 @@ export default function MailLogin({ setAddressLogin }) {
           <ErrorText>{errors?.message}</ErrorText>
         )}
         <ForgetPassword>
-          <Link href="/forget">Forget password?</Link>
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              setView("forgetPassword");
+            }}
+          >
+            Forget password?
+          </span>
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>

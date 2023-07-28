@@ -7,12 +7,13 @@ import User from "../user";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { shadow_200 } from "../../styles/componentCss";
-import LoginButton from "./loginButton";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Profile from "../../assets/imgs/icons/profile.svg";
+import PrimaryButton from "../buttons/primaryButton.js";
+import LoginPopup from "../login/popup.jsx";
 
 const Wrapper = Relative;
 
@@ -81,6 +82,7 @@ export default function HeaderAccount() {
   const windowSize = useWindowSize();
   const userDispatch = useUserDispatch();
   const isMounted = useIsMounted();
+  const [loginPopupOpen, setLoginPopupOpen] = useState(false);
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -89,11 +91,6 @@ export default function HeaderAccount() {
       setShow(false);
     }
   }, [windowSize]);
-
-  if (!user) {
-    const isLoginPage = router.pathname === "/login";
-    return isLoginPage ? null : <LoginButton />;
-  }
 
   const menu = isKeyRegisteredUser(user)
     ? accountMenuForKeyAccount
@@ -116,23 +113,40 @@ export default function HeaderAccount() {
   };
 
   return (
-    <Wrapper ref={ref}>
-      <AccountButton onClick={() => setShow(!show)}>
-        <User user={user} noEvent />
-      </AccountButton>
-      {show && (
-        <Menu>
-          {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
-          {menu.map((item, index) => (
-            <Fragment key={index}>
-              <Item onClick={() => handleAccountMenu(item)}>
-                {item.icon}
-                <span>{item.name}</span>
-              </Item>
-            </Fragment>
-          ))}
-        </Menu>
+    <>
+      <Wrapper ref={ref}>
+        {!user ? (
+          <PrimaryButton
+            onClick={() => {
+              setLoginPopupOpen(true);
+            }}
+          >
+            Login
+          </PrimaryButton>
+        ) : (
+          <AccountButton onClick={() => setShow(!show)}>
+            <User user={user} noEvent />
+          </AccountButton>
+        )}
+
+        {show && (
+          <Menu>
+            {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
+            {menu.map((item, index) => (
+              <Fragment key={index}>
+                <Item onClick={() => handleAccountMenu(item)}>
+                  {item.icon}
+                  <span>{item.name}</span>
+                </Item>
+              </Fragment>
+            ))}
+          </Menu>
+        )}
+      </Wrapper>
+
+      {loginPopupOpen && (
+        <LoginPopup onClose={() => setLoginPopupOpen(false)} />
       )}
-    </Wrapper>
+    </>
   );
 }
