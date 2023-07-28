@@ -90,7 +90,7 @@ export default function MailLogin({ setView, onClose }) {
         <span
           role="button"
           onClick={() => {
-            setView("signup");
+            setView("signUp");
           }}
           className="text-theme500"
         >

@@ -1,6 +1,6 @@
 ## Welcome to SubSquare
 
-Please read on to learn the rules and restrictions that govern your use of our website(s), products, services and applications (the “Services”). These Terms of Service (the “Terms”) are a binding contract between you and SubSquare. (“SubSquare,” “we” and “us”). Your use of the Services in any way means that you agree to all of these Terms, and these Terms will remain in effect while you use the Services. These Terms include the provisions in this document as well as those in the [Privacy Policy](/privacy).
+Please read on to learn the rules and restrictions that govern your use of our website(s), products, services and applications (the “Services”). These Terms of Service (the “Terms”) are a binding contract between you and SubSquare. (“SubSquare,” “we” and “us”). Your use of the Services in any way means that you agree to all of these Terms, and these Terms will remain in effect while you use the Services. These Terms include the provisions in this document as well as those in the Privacy Policy.
 
 Your use of or participation in certain Services may also be subject to additional policies, rules and/or conditions (“Additional Terms”), which are incorporated herein by reference, and you understand and agree that by using or participating in any such Services, you agree to also comply with these Additional Terms.
 
@@ -71,7 +71,7 @@ We’re always trying to improve our Services, so they may change over time. We 
 
 ## What if I want to stop using the Services?
 
-You’re free to do that at any time by contacting us at [hi@opensquare.network](mailto:hi@opensquare.network); please refer to our [Privacy Policy](/privacy), as well as the licenses above, to understand how we treat information you provide to us after you have stopped using our Services.
+You’re free to do that at any time by contacting us at [hi@opensquare.network](mailto:hi@opensquare.network); please refer to our Privacy Policy, as well as the licenses above, to understand how we treat information you provide to us after you have stopped using our Services.
 
 SubSquare is also free to terminate (or suspend access to) your use of the Services or your account for any reason in our discretion, including your breach of these Terms. SubSquare has the sole right to decide whether you are in violation of any of the restrictions set forth in these Terms.
 

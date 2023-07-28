@@ -8,7 +8,6 @@ import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
 import PrimaryButton from "../buttons/primaryButton";
 import { stringToHex } from "@polkadot/util";
-import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
 import { getWallets } from "../../utils/consts/connect";
@@ -215,16 +214,18 @@ export default function AddressLogin({ onClose, setView }) {
             Next
           </PrimaryButton>
         )}
-        <LinkWrapper>
+        <div className="text14Medium text-center text-textSecondary">
           Login with{" "}
-          <a
+          <span
+            className="text-theme500"
+            role="button"
             onClick={() => {
               setView("account");
             }}
           >
             account
-          </a>
-        </LinkWrapper>
+          </span>
+        </div>
       </ButtonWrapper>
     </div>
   );
