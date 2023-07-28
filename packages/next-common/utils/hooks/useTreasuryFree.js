@@ -9,8 +9,17 @@ const EMPTY_U8A_32 = new Uint8Array(32);
 
 export function useTreasuryAccount(api) {
   const [account, setAccount] = useState();
+  const chain = useChain();
 
   useEffect(() => {
+    if (Chains.kintsugi === chain) {
+      setAccount("a3cgeH7D28bBsHY4hGLzxkMFUcFQmjGgDa2kmxg3D9Z6AyhtL");
+      return;
+    } else if (Chains.interlay === chain) {
+      setAccount("wd9yNSwR7YL4Y4PEtY4pUxYR2jeVdsgwyoN8fwVc9196VMAt4");
+      return;
+    }
+
     if (!api) {
       return;
     }
@@ -35,7 +44,7 @@ export default function useTreasuryFree(api) {
   const treasuryAccount = useTreasuryAccount(api);
 
   useEffect(() => {
-    if (!treasuryAccount) {
+    if (!treasuryAccount || !api) {
       return;
     }
 
