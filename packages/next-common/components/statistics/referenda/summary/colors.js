@@ -17,6 +17,6 @@ export const TrackColors = {
 
   // bifrost
   system_staking_admin: "#5564EA",
-  slap_admin: "#5564EACC",
+  salp_admin: "#5564EACC",
   validator_election: "#5DB5D0",
 };
