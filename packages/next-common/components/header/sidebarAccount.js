@@ -6,12 +6,12 @@ import User from "next-common/components/user";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
-import GhostButton from "../buttons/ghostButton";
 import PrimaryButton from "../buttons/primaryButton";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 const Wrapper = styled.div``;
 
@@ -75,6 +75,7 @@ export default function SidebarAccount() {
   const router = useRouter();
   const node = useChainSettings();
   const userDispatch = useUserDispatch();
+  const { openLoginPopup } = useLoginPopup();
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
@@ -99,12 +100,7 @@ export default function SidebarAccount() {
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
-          <GhostButton onClick={() => router.push("/signup")}>
-            Sign up
-          </GhostButton>
-          <PrimaryButton onClick={() => router.push("/login")}>
-            Login
-          </PrimaryButton>
+          <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
         </ButtonWrapper>
       )}
       {user && (
