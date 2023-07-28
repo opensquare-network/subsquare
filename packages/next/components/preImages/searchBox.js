@@ -41,7 +41,7 @@ export default function SearchBox({ value, setValue }) {
       </div>
       <Input
         value={value}
-        placeholder="Search hash/argument"
+        placeholder="Search hash"
         onChange={(e) => setValue(e.target.value)}
       />
     </Wrapper>

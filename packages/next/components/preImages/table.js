@@ -67,6 +67,7 @@ function Deposit({ hash, deposit }) {
   const { who, amount } = deposit;
   const user = useUser();
 
+  //TODO: should also check preimage status to see if it's need to show unnote?
   const unnote = user?.address === who && (
     <>
       <DotSplitter />
