@@ -13,7 +13,6 @@ import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import PrimaryButton from "../buttons/primaryButton.js";
-import LoginPopup from "../login/popup.jsx";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 
 const Wrapper = Relative;
@@ -138,8 +137,6 @@ export default function HeaderAccount() {
           </Menu>
         )}
       </Wrapper>
-
-      <LoginPopup />
     </>
   );
 }
