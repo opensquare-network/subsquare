@@ -61,7 +61,7 @@ export default function MailLogin({ setAddressLogin, setView, onClose }) {
           <span
             className="cursor-pointer"
             onClick={() => {
-              setView("forgetPassword");
+              setView("forget");
             }}
           >
             Forget password?

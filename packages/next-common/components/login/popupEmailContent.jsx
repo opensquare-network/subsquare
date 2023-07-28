@@ -22,7 +22,7 @@ const Label = styled.div`
   font-size: 12px;
 `;
 
-export default function PopupEmailContent({ onClose = noop }) {
+export default function LoginPopupEmailContent({ onClose = noop }) {
   const chain = useChain();
   const loginUser = useUser();
   const address = loginUser?.address;

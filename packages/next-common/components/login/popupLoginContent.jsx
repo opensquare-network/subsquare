@@ -2,7 +2,7 @@ import { useState } from "react";
 import AddressLogin from "./addressLogin";
 import MailLogin from "./mailLogin";
 
-export default function PopupLoginContent({ onClose, setView }) {
+export default function LoginPopupLoginContent({ onClose, setView }) {
   const [addressLogin, setAddressLogin] = useState(true);
   const mailLogin = !addressLogin;
 

@@ -1,26 +1,27 @@
 import { useState } from "react";
 import Popup from "../popup/wrapper/Popup";
-import PopupEmailContent from "./popupEmailContent";
-import PopupLoginContent from "./popupLoginContent";
+import LoginPopupEmailContent from "./popupEmailContent";
+import LoginPopupLoginContent from "./popupLoginContent";
+import LoginPopupForgetContent from "./popupForgetContent";
 
 /**
  * @param {Parameters<Popup>[0]} props
  */
 export default function LoginPopup(props = {}) {
-  // login, email, forgetPassword
+  // login, email, forget
   const [view, setView] = useState("login");
 
   return (
     <Popup wide {...props} className="!p-12">
       {view === "login" && (
-        <PopupLoginContent onClose={props.onClose} setView={setView} />
+        <LoginPopupLoginContent onClose={props.onClose} setView={setView} />
       )}
 
       {view === "email" && (
-        <PopupEmailContent onClose={props.onClose} setView={setView} />
+        <LoginPopupEmailContent onClose={props.onClose} setView={setView} />
       )}
 
-      {view === "forgetPassword" && <div>forget</div>}
+      {view === "forget" && <LoginPopupForgetContent onClose={props.onClose} />}
     </Popup>
   );
 }
