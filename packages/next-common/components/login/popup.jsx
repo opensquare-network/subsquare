@@ -24,7 +24,12 @@ export default function LoginPopup(props = {}) {
 
   return (
     loginPopupOpen && (
-      <Popup wide {...props} className="!p-12" onClose={closeLoginPopup}>
+      <Popup
+        wide
+        {...props}
+        className="!p-12 max-sm:!p-6"
+        onClose={closeLoginPopup}
+      >
         {view === "web3" && <LoginPopupWeb3LoginContent setView={setView} />}
 
         {view === "account" && (
