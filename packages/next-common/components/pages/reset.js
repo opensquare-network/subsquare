@@ -38,7 +38,7 @@ const Reset = withLoginUserRedux(() => {
   const { countdown, counting: success, startCountdown } = useCountdown(3);
 
   if (success && countdown === 0) {
-    router.replace("/login");
+    router.replace("/");
   }
 
   const { formData, handleInputChange, handleSubmit } = useForm(
@@ -103,12 +103,8 @@ const Reset = withLoginUserRedux(() => {
           <ContentCenterWrapper>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
-            <PrimaryButton
-              isFill
-              secondary
-              onClick={() => router.replace("/login")}
-            >
-              Got it
+            <PrimaryButton isFill secondary onClick={() => router.replace("/")}>
+              Back to Overview
             </PrimaryButton>
             <Redirect>
               The page will be re-directed in
