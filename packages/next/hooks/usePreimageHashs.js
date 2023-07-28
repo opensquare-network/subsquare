@@ -9,7 +9,8 @@ export default function usePreimageHashs() {
       {
         args: [hash],
       },
+      status,
     ] = item;
-    return hash.toJSON();
+    return [hash.toJSON(), status.toJSON()];
   });
 }

@@ -98,6 +98,16 @@ function Proposal({ proposal, proposalError, proposalWarning }) {
   );
 }
 
+function parseStatus(status) {
+  const statusName = Object.keys(status || {})[0];
+  if (!statusName) return {};
+  const { deposit = [] } = status[statusName];
+  return {
+    statusName,
+    deposit,
+  };
+}
+
 export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
   const user = useUser();
   const { columns } = useColumns([
@@ -124,25 +134,26 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
   ]);
 
   const rows = (data || [])
-    .filter((item) => item.includes(searchValue.toLowerCase()))
-    .map((item) => {
+    .filter(([hash, status]) => {
+      if (!hash.includes(searchValue.toLowerCase())) {
+        return false;
+      }
+
+      const { deposit } = parseStatus(status);
+      const [who] = deposit || [];
+      if (isMyDepositOn && user && who !== user.address) {
+        return false;
+      }
+
+      return true;
+    })
+    .map(([hash]) => {
       return {
         useData: () => {
-          const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(item);
-
-          if (
-            isMyDepositOn &&
-            user &&
-            isStatusLoaded &&
-            preimage.deposit?.who !== user.address
-          ) {
-            // TODO:
-            // 1) hide this row
-            // 2) if this row is the last row, show "no data" text
-          }
+          const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
           return [
-            <Hash key="hash" hash={item} proposal={preimage.proposal} />,
+            <Hash key="hash" hash={hash} proposal={preimage.proposal} />,
             isBytesLoaded ? (
               <Proposal
                 key="proposal"
