@@ -97,7 +97,7 @@ function Proposal({ proposal, proposalError, proposalWarning }) {
   );
 }
 
-export default function PreImagesTable({ data }) {
+export default function PreImagesTable({ data, searchValue }) {
   const { columns } = useColumns([
     {
       name: "Hash",
@@ -121,48 +121,50 @@ export default function PreImagesTable({ data }) {
     },
   ]);
 
-  const rows = (data || []).map((item) => {
-    return {
-      useData: () => {
-        const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(item);
-        return [
-          <Hash key="hash" hash={item} proposal={preimage.proposal} />,
-          isBytesLoaded ? (
-            <Proposal
-              key="proposal"
-              proposal={preimage.proposal}
-              proposalError={preimage.proposalError}
-              proposalWarning={preimage.proposalWarning}
-            />
-          ) : (
-            <FieldLoading />
-          ),
-          isStatusLoaded ? (
-            preimage.deposit && (
-              <Deposit key="deposit" deposit={preimage.deposit} />
-            )
-          ) : (
-            <FieldLoading />
-          ),
-          isStatusLoaded ? (
-            preimage.proposalLength?.toJSON()?.toLocaleString()
-          ) : (
-            <FieldLoading />
-          ),
-          isStatusLoaded ? (
-            preimage.statusName && (
-              <ClosedTag key="status" className="capitalize">
-                {preimage.statusName +
-                  (preimage.count ? ` / ${preimage.count}` : "")}
-              </ClosedTag>
-            )
-          ) : (
-            <FieldLoading />
-          ),
-        ];
-      },
-    };
-  });
+  const rows = (data || [])
+    .filter((item) => item.includes(searchValue.toLowerCase()))
+    .map((item) => {
+      return {
+        useData: () => {
+          const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(item);
+          return [
+            <Hash key="hash" hash={item} proposal={preimage.proposal} />,
+            isBytesLoaded ? (
+              <Proposal
+                key="proposal"
+                proposal={preimage.proposal}
+                proposalError={preimage.proposalError}
+                proposalWarning={preimage.proposalWarning}
+              />
+            ) : (
+              <FieldLoading />
+            ),
+            isStatusLoaded ? (
+              preimage.deposit && (
+                <Deposit key="deposit" deposit={preimage.deposit} />
+              )
+            ) : (
+              <FieldLoading />
+            ),
+            isStatusLoaded ? (
+              preimage.proposalLength?.toJSON()?.toLocaleString()
+            ) : (
+              <FieldLoading />
+            ),
+            isStatusLoaded ? (
+              preimage.statusName && (
+                <ClosedTag key="status" className="capitalize">
+                  {preimage.statusName +
+                    (preimage.count ? ` / ${preimage.count}` : "")}
+                </ClosedTag>
+              )
+            ) : (
+              <FieldLoading />
+            ),
+          ];
+        },
+      };
+    });
 
   return (
     <SecondaryCard>

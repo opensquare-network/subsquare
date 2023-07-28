@@ -212,6 +212,7 @@ export default function usePreimage(hashOrBounded) {
   const [optBytes, , isBytesLoaded] = useCall(
     paramsBytes && api?.query.preimage?.preimageFor,
     paramsBytes,
+    { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },
   );
 
   // extract all the preimage info we have retrieved
