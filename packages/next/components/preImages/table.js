@@ -15,6 +15,8 @@ import usePreimage from "hooks/usePreimage";
 import { SystemLoadingDots } from "@osn/icons/subsquare";
 import PreimageDetailPopup from "./preImageDetailPopup";
 import { useUser } from "next-common/context/user";
+import DotSplitter from "next-common/components/dotSplitter";
+import UnnoteButton from "./unnoteButton";
 
 const FieldLoading = styled(SystemLoadingDots)`
   & ellipse {
@@ -60,18 +62,28 @@ function Hash({ hash, proposal }) {
   );
 }
 
-function Deposit({ deposit }) {
+function Deposit({ hash, deposit }) {
   const { symbol, decimals } = useChainSettings();
   const { who, amount } = deposit;
+  const user = useUser();
+
+  const unnote = user?.address === who && (
+    <>
+      <DotSplitter />
+      <UnnoteButton hash={hash} />
+    </>
+  );
 
   return (
     <div className="flex flex-col">
       <User add={who} maxWidth={128} />
-      <div className="ml-[28px] text-textSecondary text-[12px]">
+      <div className="flex ml-[28px] text-textSecondary text-[12px]">
         <ValueDisplay
+          className="whitespace-nowrap"
           value={toPrecision(amount.toJSON(), decimals)}
           symbol={symbol}
         />
+        {unnote}
       </div>
     </div>
   );
@@ -166,7 +178,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
             ),
             isStatusLoaded ? (
               preimage.deposit && (
-                <Deposit key="deposit" deposit={preimage.deposit} />
+                <Deposit key="deposit" deposit={preimage.deposit} hash={hash} />
               )
             ) : (
               <FieldLoading />

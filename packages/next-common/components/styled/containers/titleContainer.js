@@ -5,6 +5,7 @@ import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 // used for card titles, list page titles
 export const TitleContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   font-weight: bold;
