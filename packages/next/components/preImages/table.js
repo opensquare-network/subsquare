@@ -14,6 +14,7 @@ import { useState } from "react";
 import usePreimage from "hooks/usePreimage";
 import { SystemLoadingDots } from "@osn/icons/subsquare";
 import PreimageDetailPopup from "./preImageDetailPopup";
+import { useUser } from "next-common/context/user";
 
 const FieldLoading = styled(SystemLoadingDots)`
   & ellipse {
@@ -97,7 +98,8 @@ function Proposal({ proposal, proposalError, proposalWarning }) {
   );
 }
 
-export default function PreImagesTable({ data, searchValue }) {
+export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
+  const user = useUser();
   const { columns } = useColumns([
     {
       name: "Hash",
@@ -127,6 +129,18 @@ export default function PreImagesTable({ data, searchValue }) {
       return {
         useData: () => {
           const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(item);
+
+          if (
+            isMyDepositOn &&
+            user &&
+            isStatusLoaded &&
+            preimage.deposit?.who !== user.address
+          ) {
+            // TODO:
+            // 1) hide this row
+            // 2) if this row is the last row, show "no data" text
+          }
+
           return [
             <Hash key="hash" hash={item} proposal={preimage.proposal} />,
             isBytesLoaded ? (
