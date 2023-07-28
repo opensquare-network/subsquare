@@ -14,4 +14,9 @@ export const TrackColors = {
   small_spender: "#E9598C99",
   medium_spender: "#E9598C66",
   big_spender: "#E9598C33",
+
+  // bifrost
+  system_staking_admin: "#5564EA",
+  slap_admin: "#5564EACC",
+  validator_election: "#5DB5D0",
 };
