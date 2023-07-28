@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CountDown from "./countDown";
 import {
@@ -8,7 +8,6 @@ import {
 } from "../../utils";
 import useApi from "../../utils/hooks/useApi";
 import useTreasuryFree from "../../utils/hooks/useTreasuryFree";
-import useTreasuryBurn from "../../utils/hooks/useTreasuryBurn";
 import {
   blockTimeSelector,
   latestHeightSelector,
@@ -18,6 +17,8 @@ import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import { useChainSettings } from "../../context/chain";
 import Summary from "./v2/base";
 import clsx from "clsx";
+import TreasuryBurn from "./treasurySummaryItems/burn";
+import { isKintsugiChain } from "next-common/utils/chain";
 
 export default function TreasurySummary() {
   const [summary, setSummary] = useState({});
@@ -30,7 +31,6 @@ export default function TreasurySummary() {
   const symbol = node?.symbol;
 
   const free = useTreasuryFree(api);
-  const nextBurn = useTreasuryBurn(api, free);
   const isMounted = useIsMountedBool();
 
   useEffect(() => {
@@ -52,6 +52,35 @@ export default function TreasurySummary() {
     }
   }, [api, blockHeight]);
 
+  const spendPeriodsItem = {
+    title: "Spend Period",
+    content: (
+      <>
+        {(summary?.spendPeriod || []).map((item, index) => (
+          <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+            {item}
+          </span>
+        ))}
+        {(summary?.totalPeriod || []).map((item, index) => (
+          <span
+            className={clsx(
+              index % 2 === 1 ? "unit total" : "total",
+              "max-sm:hidden",
+            )}
+            key={index}
+          >
+            {item}
+          </span>
+        ))}
+      </>
+    ),
+    suffix: (
+      <div className="flex max-sm:hidden">
+        <CountDown percent={summary?.progress ?? 0} />
+      </div>
+    ),
+  };
+
   return (
     <Summary
       items={[
@@ -66,44 +95,10 @@ export default function TreasurySummary() {
         },
         {
           title: "Next Burn",
-          content: (
-            <>
-              <span>
-                {abbreviateBigNumber(toPrecision(nextBurn, decimals))}
-              </span>
-              <span className="unit upper">{symbol}</span>
-            </>
-          ),
+          content: <TreasuryBurn free={free} />,
         },
-        {
-          title: "Spend Period",
-          content: (
-            <>
-              {(summary?.spendPeriod || []).map((item, index) => (
-                <span className={index % 2 === 1 ? "unit" : ""} key={index}>
-                  {item}
-                </span>
-              ))}
-              {(summary?.totalPeriod || []).map((item, index) => (
-                <span
-                  className={clsx(
-                    index % 2 === 1 ? "unit total" : "total",
-                    "max-sm:hidden",
-                  )}
-                  key={index}
-                >
-                  {item}
-                </span>
-              ))}
-            </>
-          ),
-          suffix: (
-            <div className="flex max-sm:hidden">
-              <CountDown percent={summary?.progress ?? 0} />
-            </div>
-          ),
-        },
-      ]}
+        isKintsugiChain ? null : spendPeriodsItem,
+      ].filter(Boolean)}
     />
   );
 }

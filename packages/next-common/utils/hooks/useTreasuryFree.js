@@ -16,7 +16,7 @@ export function useTreasuryAccount(api) {
       setAccount("a3cgeH7D28bBsHY4hGLzxkMFUcFQmjGgDa2kmxg3D9Z6AyhtL");
       return;
     } else if (Chains.interlay === chain) {
-      setAccount("wd9yNSwR6MBFkRwRa8TERLE1eCNPPjULL7JTiAyAuc7yq2mbZ");
+      setAccount("wd9yNSwR7YL4Y4PEtY4pUxYR2jeVdsgwyoN8fwVc9196VMAt4");
       return;
     }
 
