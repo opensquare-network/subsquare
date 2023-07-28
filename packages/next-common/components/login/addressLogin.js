@@ -51,7 +51,7 @@ function rememberAccountName(account, chain) {
   localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
 }
 
-export default function AddressLogin({ setMailLogin, onClose, setView }) {
+export default function AddressLogin({ onClose, setView }) {
   const chain = useChain();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
@@ -178,7 +178,7 @@ export default function AddressLogin({ setMailLogin, onClose, setView }) {
   );
 
   return (
-    <>
+    <div className="space-y-6">
       <SelectWallet
         selectedWallet={selectedWallet}
         setSelectWallet={setSelectWallet}
@@ -216,9 +216,16 @@ export default function AddressLogin({ setMailLogin, onClose, setView }) {
           </PrimaryButton>
         )}
         <LinkWrapper>
-          Login with <a onClick={setMailLogin}>account</a>
+          Login with{" "}
+          <a
+            onClick={() => {
+              setView("account");
+            }}
+          >
+            account
+          </a>
         </LinkWrapper>
       </ButtonWrapper>
-    </>
+    </div>
   );
 }

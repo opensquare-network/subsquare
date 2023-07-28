@@ -16,7 +16,7 @@ const ForgetPassword = styled.div`
   font-size: 12px;
 `;
 
-export default function MailLogin({ setAddressLogin, setView, onClose }) {
+export default function MailLogin({ setView, onClose }) {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const userDispatch = useUserDispatch();
@@ -72,7 +72,13 @@ export default function MailLogin({ setAddressLogin, setView, onClose }) {
         <PrimaryButton isFill isLoading={loading} type="submit">
           Login
         </PrimaryButton>
-        <GhostButton isFill onClick={setAddressLogin}>
+        <GhostButton
+          isFill
+          onClick={(event) => {
+            event.preventDefault();
+            setView("web3");
+          }}
+        >
           Login with web3 address
         </GhostButton>
       </FormButtonsWrapper>
