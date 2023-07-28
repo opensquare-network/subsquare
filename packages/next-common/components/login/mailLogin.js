@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import nextApi from "../../services/nextApi";
@@ -82,6 +84,19 @@ export default function MailLogin({ setView, onClose }) {
           Login with web3 address
         </GhostButton>
       </FormButtonsWrapper>
+
+      <div className="text-center text14Medium text-textSecondary">
+        Don't have an account?{" "}
+        <span
+          role="button"
+          onClick={() => {
+            setView("signup");
+          }}
+          className="text-theme500"
+        >
+          Sign up
+        </span>
+      </div>
     </FormWrapper>
   );
 }
