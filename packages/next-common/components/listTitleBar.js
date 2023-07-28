@@ -17,9 +17,13 @@ export default function ListTitleBar({
   return (
     <TitleContainer>
       <div>
-        <Link href={link || ""} passHref legacyBehavior>
-          <TitleLink>{title}</TitleLink>
-        </Link>
+        {link ? (
+          <Link href={link || ""} passHref legacyBehavior>
+            <TitleLink>{title}</TitleLink>
+          </Link>
+        ) : (
+          <span>{title}</span>
+        )}
 
         {!!titleCount && (
           <small className="text-textTertiary ml-2 text14Medium">
