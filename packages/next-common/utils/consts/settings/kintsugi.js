@@ -16,12 +16,20 @@ const DEFAULT_KINTSUGI_NODES =
       ]
     : [
         {
-          name: "OnFinality",
-          url: "wss://kintsugi.api.onfinality.io/public-ws",
+          name: "Dwellir",
+          url: "wss://kintsugi-rpc.dwellir.com/",
         },
         {
           name: "Kintsugi Labs",
           url: "wss://api-kusama.interlay.io/parachain",
+        },
+        {
+          name: "OnFinality",
+          url: "wss://kintsugi.api.onfinality.io/public-ws",
+        },
+        {
+          name: "LuckyFriday",
+          url: "wss://rpc-kintsugi.luckyfriday.io/",
         },
       ];
 
