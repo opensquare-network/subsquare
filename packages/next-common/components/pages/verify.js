@@ -12,9 +12,9 @@ import {
   InfoWrapper,
   Redirect,
 } from "next-common/components/login/styled";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import BaseLayout from "../layout/baseLayout";
+import GhostButton from "../buttons/ghostButton";
 
 const Wrapper = styled.div`
   padding: 32px 0;
@@ -33,7 +33,9 @@ export default withLoginUserRedux(({ loginUser }) => {
   const { countdown, counting: success, startCountdown } = useCountdown(3);
 
   if (success && countdown === 0) {
-    router.replace(loginUser ? "/" : "/login");
+    if (loginUser) {
+      router.replace("/");
+    }
   }
 
   useEffect(() => {
@@ -76,9 +78,9 @@ export default withLoginUserRedux(({ loginUser }) => {
           <ContentCenterWrapper>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your email has been verified.</InfoWrapper>
-            <PrimaryButton isFill onClick={() => router.replace("/")}>
-              Got it
-            </PrimaryButton>
+            <GhostButton isFill onClick={() => router.replace("/")}>
+              Back to Overview
+            </GhostButton>
             <Redirect>
               The page will be re-directed in
               <span className="sec">{countdown}s</span>
