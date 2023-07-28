@@ -9,6 +9,9 @@ import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
 import clsx from "clsx";
 import isNil from "lodash.isnil";
 import dynamic from "next/dynamic";
+import FoldButton from "./foldButton";
+import { useState } from "react";
+import GhostButton from "next-common/components/buttons/ghostButton";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -34,21 +37,23 @@ function CallPanel({ call, callIndex }) {
   const { args } = meta || {};
 
   return (
-    <IndentPanel>
+    <div>
       <div className="flex flex-col px-[16px] py-[8px] bg-neutral200 rounded-[4px]">
         <span className="font-medium leading-[20px] text-textTertiary">
           {isNil(callIndex) ? "call: Call" : `${callIndex}: Call: Call`}
         </span>
         <span className="font-medium leading-[20px]">{`${section}.${method}`}</span>
       </div>
-      <CallArgsPanel argsEntries={argsEntries} args={args} />
-    </IndentPanel>
+      <IndentPanel>
+        <CallArgsPanel argsEntries={argsEntries} args={args} />
+      </IndentPanel>
+    </div>
   );
 }
 
 function CallArgsPanel({ argsEntries, args }) {
   return (
-    <IndentPanel className="gap-[8px]">
+    <div className="flex flex-col gap-[8px]">
       {(argsEntries || []).map(([argName, argValue], i) => (
         <ValuePanel
           key={argName}
@@ -58,17 +63,25 @@ function CallArgsPanel({ argsEntries, args }) {
           typeName={args?.[i].typeName.toJSON()}
         />
       ))}
-    </IndentPanel>
+    </div>
   );
 }
 
 function CallsPanel({ name, type, calls }) {
+  const [folded, setFolded] = useState(false);
   return (
     <div className="flex flex-col">
-      <span className="font-medium">{`${name}: ${type}`}</span>
-      {calls.map((call, i) => (
-        <CallPanel key={`call-${i}`} callIndex={i} call={call} />
-      ))}
+      <div className="flex justify-between items-center">
+        <span className="font-medium">{`${name}: ${type}`}</span>
+        <FoldButton setFolded={setFolded} folded={folded} />
+      </div>
+      {!folded && (
+        <IndentPanel className="gap-[8px]">
+          {calls.map((call, i) => (
+            <CallPanel key={`call-${i}`} callIndex={i} call={call} />
+          ))}
+        </IndentPanel>
+      )}
     </div>
   );
 }
@@ -103,7 +116,11 @@ function ValuePanel({ name, type, typeName, value }) {
       </span>
     );
   } else {
-    valueComponent = <span className="break-all">{val.toString()}</span>;
+    valueComponent = (
+      <span className="break-all">
+        {val instanceof Object ? JSON.stringify(val) : val?.toString()}
+      </span>
+    );
   }
 
   return (
@@ -131,7 +148,12 @@ export default function PreimageDetailPopup({ proposal, setShow }) {
             {doc}
           </span>
         </div>
-        <CallArgsPanel argsEntries={argsEntries} args={args} />
+        <IndentPanel>
+          <CallArgsPanel argsEntries={argsEntries} args={args} />
+        </IndentPanel>
+      </div>
+      <div className="flex justify-end">
+        <GhostButton onClick={() => setShow(false)}>Close</GhostButton>
       </div>
     </BaseVotesPopup>
   );
