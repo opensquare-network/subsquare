@@ -1,12 +1,12 @@
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import AddressLogin from "./addressLogin";
 
-export default function LoginPopupWeb3LoginContent({ onClose, setView }) {
+export default function LoginPopupWeb3LoginContent({ setView }) {
   return (
     <div>
       <PageTitleContainer>Login</PageTitleContainer>
 
-      <AddressLogin onClose={onClose} setView={setView} />
+      <AddressLogin setView={setView} />
     </div>
   );
 }

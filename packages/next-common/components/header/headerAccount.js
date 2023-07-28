@@ -14,6 +14,7 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import PrimaryButton from "../buttons/primaryButton.js";
 import LoginPopup from "../login/popup.jsx";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 
 const Wrapper = Relative;
 
@@ -82,7 +83,7 @@ export default function HeaderAccount() {
   const windowSize = useWindowSize();
   const userDispatch = useUserDispatch();
   const isMounted = useIsMounted();
-  const [loginPopupOpen, setLoginPopupOpen] = useState(false);
+  const { openLoginPopup } = useLoginPopup();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -116,13 +117,7 @@ export default function HeaderAccount() {
     <>
       <Wrapper ref={ref}>
         {!user ? (
-          <PrimaryButton
-            onClick={() => {
-              setLoginPopupOpen(true);
-            }}
-          >
-            Login
-          </PrimaryButton>
+          <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
         ) : (
           <AccountButton onClick={() => setShow(!show)}>
             <User user={user} noEvent />
@@ -144,9 +139,7 @@ export default function HeaderAccount() {
         )}
       </Wrapper>
 
-      {loginPopupOpen && (
-        <LoginPopup onClose={() => setLoginPopupOpen(false)} />
-      )}
+      <LoginPopup />
     </>
   );
 }

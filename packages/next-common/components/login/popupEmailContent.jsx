@@ -12,9 +12,9 @@ import CheckboxIcon from "../icons/checkbox";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { useChain } from "next-common/context/chain";
 import { useUser } from "next-common/context/user";
-import noop from "lodash.noop";
 import { useLocalStorage } from "usehooks-ts";
 import { GreyPanel } from "../styled/containers/greyPanel";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 const Label = styled.div`
   margin-bottom: 8px;
@@ -22,7 +22,7 @@ const Label = styled.div`
   font-size: 12px;
 `;
 
-export default function LoginPopupEmailContent({ onClose = noop }) {
+export default function LoginPopupEmailContent() {
   const chain = useChain();
   const loginUser = useUser();
   const address = loginUser?.address;
@@ -35,6 +35,7 @@ export default function LoginPopupEmailContent({ onClose = noop }) {
     CACHE_KEY.dontRemindEmail,
     false,
   );
+  const { closeLoginPopup } = useLoginPopup();
 
   const identity = useIdentity(address, chain);
 
@@ -83,7 +84,7 @@ export default function LoginPopupEmailContent({ onClose = noop }) {
           identity={identity}
           setErrors={setErrors}
         />
-        <GhostButton isFill onClick={onClose}>
+        <GhostButton isFill onClick={closeLoginPopup}>
           Skip
         </GhostButton>
         <span

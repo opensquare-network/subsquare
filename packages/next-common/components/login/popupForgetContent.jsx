@@ -14,12 +14,14 @@ import PrimaryButton from "../buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { useDispatch } from "react-redux";
 import GhostButton from "../buttons/ghostButton";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
-export default function LoginPopupForgetContent({ onClose }) {
+export default function LoginPopupForgetContent() {
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
+  const { closeLoginPopup } = useLoginPopup();
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -82,7 +84,7 @@ export default function LoginPopupForgetContent({ onClose }) {
           <GhostButton
             isFill
             onClick={() => {
-              onClose?.();
+              closeLoginPopup();
             }}
           >
             Close

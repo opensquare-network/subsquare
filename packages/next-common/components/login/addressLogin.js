@@ -17,6 +17,7 @@ import ErrorMessage from "../styled/errorMessage";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 const Label = styled.div`
   font-weight: bold;
@@ -50,7 +51,7 @@ function rememberAccountName(account, chain) {
   localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
 }
 
-export default function AddressLogin({ onClose, setView }) {
+export default function AddressLogin({ setView }) {
   const chain = useChain();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
@@ -61,6 +62,7 @@ export default function AddressLogin({ onClose, setView }) {
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
+  const { closeLoginPopup } = useLoginPopup();
 
   async function signWith(message, address, selectedWallet) {
     if (selectedWallet === WalletTypes.METAMASK) {
@@ -119,7 +121,7 @@ export default function AddressLogin({ onClose, setView }) {
             );
 
             if (loginResult.email || dontRemindEmail) {
-              onClose?.();
+              closeLoginPopup();
             } else {
               setView("email");
             }

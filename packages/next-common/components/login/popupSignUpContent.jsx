@@ -14,6 +14,7 @@ import UserPolicy from "next-common/components/userPolicy";
 import Input from "../input";
 import useForm from "next-common/utils/hooks/useForm";
 import tw from "tailwind-styled-components";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 const Title = tw.div`
   text20Bold
@@ -54,7 +55,7 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default function LoginPopupSignUpContent({ onClose, setView }) {
+export default function LoginPopupSignUpContent({ setView }) {
   const loginUser = useUser();
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(!!loginUser);
@@ -64,6 +65,7 @@ export default function LoginPopupSignUpContent({ onClose, setView }) {
   const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
   const { counting: emailSent, startCountdown } = useCountdown(3);
+  const { closeLoginPopup } = useLoginPopup();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -209,7 +211,7 @@ export default function LoginPopupSignUpContent({ onClose, setView }) {
           <GhostButton
             isFill
             onClick={() => {
-              onClose?.();
+              closeLoginPopup();
             }}
           >
             Close

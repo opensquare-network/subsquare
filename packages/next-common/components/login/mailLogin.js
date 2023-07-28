@@ -11,6 +11,7 @@ import GhostButton from "../buttons/ghostButton";
 import PrimaryButton from "../buttons/primaryButton";
 import useForm from "../../utils/hooks/useForm";
 import { updateUser, useUserDispatch } from "../../context/user";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -18,10 +19,11 @@ const ForgetPassword = styled.div`
   font-size: 12px;
 `;
 
-export default function MailLogin({ setView, onClose }) {
+export default function MailLogin({ setView }) {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const userDispatch = useUserDispatch();
+  const { closeLoginPopup } = useLoginPopup();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -33,7 +35,7 @@ export default function MailLogin({ setView, onClose }) {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         updateUser(res.result, userDispatch);
-        onClose?.();
+        closeLoginPopup();
       } else if (res.error) {
         setErrors(res.error);
       }

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Popup from "../popup/wrapper/Popup";
 import LoginPopupEmailContent from "./popupEmailContent";
 import LoginPopupForgetContent from "./popupForgetContent";
 import LoginPopupWeb3LoginContent from "./popupWeb3LoginContent";
 import LoginPopupAccountLoginContent from "./popupAccountLoginContent";
 import LoginPopupSignUpContent from "./popupSignUpContent";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 /**
  * @param {Parameters<Popup>[0]} props
@@ -12,29 +13,30 @@ import LoginPopupSignUpContent from "./popupSignUpContent";
 export default function LoginPopup(props = {}) {
   // web3, account, email, forget, signUp
   const [view, setView] = useState("web3");
+  const { loginPopupOpen, closeLoginPopup } = useLoginPopup();
+
+  useEffect(() => {
+    // reset to web3
+    if (!loginPopupOpen) {
+      setView("web3");
+    }
+  }, [loginPopupOpen]);
 
   return (
-    <Popup wide {...props} className="!p-12">
-      {view === "web3" && (
-        <LoginPopupWeb3LoginContent onClose={props.onClose} setView={setView} />
-      )}
+    loginPopupOpen && (
+      <Popup wide {...props} className="!p-12" onClose={closeLoginPopup}>
+        {view === "web3" && <LoginPopupWeb3LoginContent setView={setView} />}
 
-      {view === "account" && (
-        <LoginPopupAccountLoginContent
-          onClose={props.onClose}
-          setView={setView}
-        />
-      )}
+        {view === "account" && (
+          <LoginPopupAccountLoginContent setView={setView} />
+        )}
 
-      {view === "email" && (
-        <LoginPopupEmailContent onClose={props.onClose} setView={setView} />
-      )}
+        {view === "email" && <LoginPopupEmailContent setView={setView} />}
 
-      {view === "forget" && <LoginPopupForgetContent onClose={props.onClose} />}
+        {view === "forget" && <LoginPopupForgetContent />}
 
-      {view === "signUp" && (
-        <LoginPopupSignUpContent onClose={props.onClose} setView={setView} />
-      )}
-    </Popup>
+        {view === "signUp" && <LoginPopupSignUpContent setView={setView} />}
+      </Popup>
+    )
   );
 }
