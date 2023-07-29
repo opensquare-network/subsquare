@@ -15,7 +15,6 @@ import ExternalNavigation from "next-common/components/detail/navigation/externa
 import TreasuryProposalNavigation from "next-common/components/detail/navigation/treasuryProposalNavigation";
 import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
 import AnnouncementNavigation from "next-common/components/detail/navigation/announcementNavigation";
-import MaliciousHead from "next-common/components/detail/maliciousHead";
 import ReferendumVoteEndCountDown from "next-common/components/democracy/referendum/voteEndCountDown";
 import { usePost } from "next-common/context/post";
 import { useDetailType } from "next-common/context/page";
@@ -31,7 +30,6 @@ export default function DetailHeader({ countDown = null }) {
   return (
     !isEditing && (
       <>
-        {post?.isMalicious && <MaliciousHead />}
         {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
           <ReferendumVoteEndCountDown />
         )}
