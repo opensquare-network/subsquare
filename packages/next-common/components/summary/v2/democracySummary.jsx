@@ -10,6 +10,15 @@ import Chains from "next-common/utils/consts/chains";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
 import { Fragment, useMemo } from "react";
 import useNextLaunchTimestamp from "next-common/hooks/democracy/kintsugi/useNextLaunchTimestamp";
+import useLaunchPeriod from "next-common/hooks/democracy/useLaunchPeriod";
+import { useSelector } from "react-redux";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "next-common/store/reducers/chainSlice";
+import { estimateBlocksTime } from "next-common/utils";
+import useApi from "next-common/utils/hooks/useApi";
+import useLaunchProgress from "next-common/hooks/democracy/useLaunchProgress";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -18,7 +27,9 @@ export default function DemocracySummary({ summary = {} }) {
   const summaryData = useDemocracySummaryData(summary);
 
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
-  const showLaunchPeriod = !isKintsugi && hasDemocracy;
+  const progress = useLaunchProgress();
+  const api = useApi();
+  const showLaunchPeriod = !isKintsugi && hasDemocracy && api;
 
   return (
     <Summary
@@ -50,8 +61,8 @@ export default function DemocracySummary({ summary = {} }) {
 
         showLaunchPeriod && {
           title: "Launch Period",
-          content: <LaunchPeriod summary={summaryData} />,
-          suffix: <CountDown percent={summaryData?.progress ?? 0} />,
+          content: <LaunchPeriod />,
+          suffix: <CountDown percent={progress ?? 0} />,
         },
 
         isKintsugi && {
@@ -67,15 +78,27 @@ export default function DemocracySummary({ summary = {} }) {
   );
 }
 
-function LaunchPeriod({ summary }) {
+function LaunchPeriod() {
+  const launchPeriod = useLaunchPeriod();
+  const blockHeight = useSelector(latestHeightSelector);
+  const goneBlocks = blockHeight % launchPeriod;
+  const blockTime = useSelector(blockTimeSelector);
+  const timeArray = estimateBlocksTime(launchPeriod - goneBlocks, blockTime);
+  const total = estimateBlocksTime(launchPeriod, blockTime);
+
+  if (!launchPeriod || !blockHeight) {
+    return null;
+  }
+
   return (
     <>
-      {(summary?.launchPeriod || []).map((item, index) => (
+      {(timeArray || []).map((item, index) => (
         <span className={index % 2 === 1 ? "unit" : ""} key={index}>
           {item}
         </span>
       ))}
-      {(summary?.totalPeriod || []).map((item, index) => (
+      <span className="total">/</span>
+      {(total || []).map((item, index) => (
         <span className={index % 2 === 1 ? "unit total" : "total"} key={index}>
           {item}
         </span>

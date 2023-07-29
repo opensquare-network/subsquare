@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import useApi from "../utils/hooks/useApi";
-import { estimateBlocksTime } from "../utils";
 import { useSelector } from "react-redux";
 import {
   blockTimeSelector,
   latestHeightSelector,
 } from "../store/reducers/chainSlice";
-import BigNumber from "bignumber.js";
 import { useChain } from "../context/chain";
 
 async function referendumsActive(api) {
@@ -30,28 +28,6 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
   const blockTime = useSelector(blockTimeSelector);
   const blockHeight = useSelector(latestHeightSelector);
 
-  const getLaunchPeriod = async function () {
-    if (api && blockHeight && api.consts.democracy?.launchPeriod) {
-      const launchPeriod = api.consts.democracy.launchPeriod.toNumber();
-      const goneBlocks = new BigNumber(blockHeight)
-        .mod(launchPeriod)
-        .toNumber();
-      const progress = new BigNumber(goneBlocks)
-        .div(launchPeriod)
-        .multipliedBy(100)
-        .toNumber();
-      const TimeArray = estimateBlocksTime(
-        launchPeriod - goneBlocks,
-        blockTime,
-      );
-      return {
-        progress,
-        launchPeriod: TimeArray,
-        totalPeriod: ["/"].concat(estimateBlocksTime(launchPeriod, blockTime)),
-      };
-    }
-  };
-
   useEffect(() => {
     if (!api) {
       return;
@@ -62,14 +38,12 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
       referendumsActive(api),
       api?.query.democracy?.publicPropCount(),
       api?.query.democracy?.referendumCount(),
-      getLaunchPeriod(),
     ]).then(
       ([
         activeProposals,
         activeReferendums,
         publicPropCountResponse,
         referendumCountResponse,
-        period,
       ]) => {
         setSummary({
           ...summary,
@@ -77,7 +51,6 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
           referendumCount: (activeReferendums || []).length,
           publicPropCount: publicPropCountResponse?.toJSON() || 0,
           referendumTotal: referendumCountResponse?.toJSON() || 0,
-          ...period,
         });
       },
     );
