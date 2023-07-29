@@ -9,6 +9,7 @@ import { useDemocracySummaryData } from "next-common/hooks/useDemoracySummaryDat
 import Chains from "next-common/utils/consts/chains";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
 import { Fragment, useMemo } from "react";
+import useNextLaunchTimestamp from "next-common/hooks/democracy/kintsugi/useNextLaunchTimestamp";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -83,9 +84,10 @@ function LaunchPeriod({ summary }) {
   );
 }
 
-function NextLaunchTime({ nextLaunchTimestamp = 0 }) {
+function NextLaunchTime() {
   const latestBlockTime = useLatestBlockTime();
 
+  const nextLaunchTimestamp = useNextLaunchTimestamp();
   const nextLaunchTimestampMilliseconds = nextLaunchTimestamp * 1000;
   const offset = nextLaunchTimestampMilliseconds - latestBlockTime;
   const time = useEstimateTime(offset);

@@ -14,7 +14,9 @@ async function referendumsActive(api) {
     return [];
   }
   const ids = await api.derive.democracy?.referendumIds();
-  const referendumInfos = await api.query.democracy?.referendumInfoOf.multi(ids);
+  const referendumInfos = await api.query.democracy?.referendumInfoOf.multi(
+    ids,
+  );
   return (referendumInfos || []).filter((referendumInfo) => {
     const info = referendumInfo.toJSON();
     return info?.ongoing;
@@ -61,7 +63,6 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
       api?.query.democracy?.publicPropCount(),
       api?.query.democracy?.referendumCount(),
       getLaunchPeriod(),
-      api?.query.democracy?.nextLaunchTimestamp?.(),
     ]).then(
       ([
         activeProposals,
@@ -69,7 +70,6 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
         publicPropCountResponse,
         referendumCountResponse,
         period,
-        nextLaunchTimestampResponse,
       ]) => {
         setSummary({
           ...summary,
@@ -78,7 +78,6 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
           publicPropCount: publicPropCountResponse?.toJSON() || 0,
           referendumTotal: referendumCountResponse?.toJSON() || 0,
           ...period,
-          nextLaunchTimestamp: nextLaunchTimestampResponse?.toJSON?.(),
         });
       },
     );
