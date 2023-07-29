@@ -9,7 +9,7 @@ import React from "react";
 export default function Malicious({ children }) {
   return (
     <MaliciousWrapper>
-      <WarningText>
+      <WarningText className="font-medium">
         <IconWrapper>
           <WarningIcon />
         </IconWrapper>
