@@ -30,7 +30,7 @@ export default function usePercentageBarData() {
     let directVotes = new BigNumber(0);
     let delegatedVotes = new BigNumber(0);
     for (const vote of allVotes || []) {
-      if (vote.isDelegating) {
+      if (!vote.isDelegating) {
         directCapital = directCapital.plus(vote.balance);
         directVotes = directVotes.plus(vote.votes);
       } else {
