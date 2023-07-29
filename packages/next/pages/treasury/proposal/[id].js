@@ -14,6 +14,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import useTreasuryTimelineData from "../../../components/treasuryProposal/useTimelineData";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -22,13 +23,15 @@ function TreasuryProposalContent({ detail, comments }) {
   });
 
   useSubscribePostDetail(detail?.proposalIndex);
+  const timelineData = useTreasuryTimelineData(detail?.onchainData);
 
   return (
     <>
       <TreasuryProposalDetail onReply={focusEditor} />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
-        timeline={<Timeline treasuryProposal={detail?.onchainData} />}
+        timeline={<Timeline timelineData={timelineData} />}
+        timelineCount={timelineData.length}
       />
       {CommentComponent}
     </>
