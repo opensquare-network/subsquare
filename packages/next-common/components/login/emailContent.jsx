@@ -8,7 +8,6 @@ import useIdentity from "next-common/utils/hooks/useIdentity";
 import GhostButton from "../buttons/ghostButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { CACHE_KEY } from "../../utils/constants";
-import CheckboxIcon from "../icons/checkbox";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { useChain } from "next-common/context/chain";
 import { useUser } from "next-common/context/user";
@@ -16,6 +15,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { GreyPanel } from "../styled/containers/greyPanel";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useRouter } from "next/router";
+import { SystemCheckboxOff, SystemCheckboxOn } from "@osn/icons/subsquare";
 
 const Label = styled.div`
   margin-bottom: 8px;
@@ -107,7 +107,11 @@ export default function LoginEmailContent() {
             setDontRemindEmail(!dontRemindEmail);
           }}
         >
-          <CheckboxIcon checked={dontRemindEmail} />
+          {dontRemindEmail ? (
+            <SystemCheckboxOn className="w-5 h-5 [&_rect]:fill-theme500" />
+          ) : (
+            <SystemCheckboxOff className="w-5 h-5" />
+          )}
           <span>Don{"'"}t remind me next time</span>
         </span>
       </div>
