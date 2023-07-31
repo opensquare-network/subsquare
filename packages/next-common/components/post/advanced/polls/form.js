@@ -6,16 +6,13 @@ import React, {
   useState,
 } from "react";
 import Input from "../../../input";
-import {
-  PollFormAnonymousFormItem,
-  PollFormOptionAddOptionButton,
-} from "../elements";
 import Select from "../../../select";
 import Toggle from "../../../toggle";
 import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
 import DatePicker from "../../../datePicker";
 import dayjs from "dayjs";
+import clsx from "clsx";
 
 function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
   const [endTime, setEndTime] = useState(null);
@@ -103,12 +100,16 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       <FormItem
         label="Option"
         labelExternal={
-          <PollFormOptionAddOptionButton
+          <button
             disabled={disabled}
             onClick={handleAddOption}
+            className={clsx(
+              "text12Medium text-theme500",
+              disabled && "cursor-not-allowed !text-textDisabled",
+            )}
           >
             Add an option
-          </PollFormOptionAddOptionButton>
+          </button>
         }
       >
         <InputOptions
@@ -145,8 +146,10 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
       </FormItem>
 
       <FormItem label="Setting">
-        <PollFormAnonymousFormItem>
-          <div>Anonymous (Voters&apos; names will not be displayed)</div>
+        <div className="flex items-center justify-between">
+          <div className="text14Medium">
+            Anonymous (Voters&apos; names will not be displayed)
+          </div>
           <Toggle
             disabled={disabled}
             isOn={value.anonymous}
@@ -157,7 +160,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
               });
             }}
           />
-        </PollFormAnonymousFormItem>
+        </div>
       </FormItem>
     </div>
   );

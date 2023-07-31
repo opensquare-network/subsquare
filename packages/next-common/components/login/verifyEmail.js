@@ -78,7 +78,7 @@ export default function VerifyEmail({ pin, setPin, email, errors, setErrors }) {
 
   return (
     <>
-      <FlexBetween>
+      <FlexBetween className="mb-2">
         <Label>Verify Email</Label>
         {verifySent ? (
           <Text>{countdown}s</Text>

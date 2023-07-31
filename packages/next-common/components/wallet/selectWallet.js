@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { getWallets } from "../../utils/consts/connect";
-import styled from "styled-components";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
@@ -21,18 +20,6 @@ import {
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
-
-const WalletOptions = styled.ul`
-  all: unset;
-
-  li:first-child {
-    margin-top: 24px;
-  }
-
-  li:not(:first-child) {
-    margin-top: 8px;
-  }
-`;
 
 export default function SelectWallet({
   selectedWallet,
@@ -219,7 +206,7 @@ export default function SelectWallet({
   );
 
   return (
-    <WalletOptions>
+    <div className="space-y-2">
       {getWallets().map((wallet, index) => {
         if (wallet.extensionName === WalletTypes.METAMASK) {
           return (
@@ -255,6 +242,6 @@ export default function SelectWallet({
           />
         );
       })}
-    </WalletOptions>
+    </div>
   );
 }

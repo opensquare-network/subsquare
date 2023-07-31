@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Flex from "../styled/flex";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
-import { WalletOption } from "./styled";
+import WalletOption from "./walletOption";
 import { getMetaMaskEthereum } from "next-common/utils/metamask";
 
 export function MetaMaskWallet({

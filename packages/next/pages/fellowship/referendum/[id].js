@@ -29,7 +29,7 @@ import FellowshipReferendaDetail from "next-common/components/detail/fellowship"
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 
@@ -53,7 +53,9 @@ function FellowshipContent({ comments }) {
       <FellowshipReferendumSideBar />
       <DetailMultiTabs
         call={proposal?.call && <Gov2ReferendumCall />}
-        metadata={<Gov2ReferendumMetadata info={info} />}
+        metadata={
+          <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
+        }
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
 

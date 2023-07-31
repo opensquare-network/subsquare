@@ -12,8 +12,16 @@ import {
 
 const DEFAULT_INTERLAY_NODES = [
   {
+    name: "Dwellir",
+    url: "wss://interlay-rpc.dwellir.com/",
+  },
+  {
     name: "Kintsugi Labs",
     url: "wss://api.interlay.io/parachain",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-interlay.luckyfriday.io/",
   },
   {
     name: "OnFinality",
@@ -72,6 +80,22 @@ const interlay = {
   description:
     "Interlay is building the safest and easiest way to use Bitcoin in decentralized finance: a one-stop-shop for all things Bitcoin finance, including trading, lending, and staking.",
   useVoteCall: true,
+  cssVarsLight: {
+    theme100: "rgba(7,90,188,0.10)",
+    theme300: "rgba(7,90,188,0.40)",
+    theme500: "rgba(7,90,188,1)",
+    navigationBg: "rgba(255,255,255,1)",
+    navigationActive: "rgba(246,247,250,1)",
+    navigationBorder: "rgba(235,238,244,1)",
+  },
+  cssVarsDark: {
+    theme100: "rgba(7,90,188,0.10)",
+    theme300: "rgba(7,90,188,0.40)",
+    theme500: "rgba(7,90,188,1)",
+    navigationBg: "rgba(33,36,51,1)",
+    navigationActive: "rgba(38,41,56,1)",
+    navigationBorder: "var(--neutral300)",
+  },
 };
 
 export default interlay;

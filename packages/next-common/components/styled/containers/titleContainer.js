@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { GreyPanel } from "./greyPanel";
-import { pageHomeLayoutMainContentWidth } from "next-common/utils/constants";
 
 // used for card titles, list page titles
 export const TitleContainer = styled.div`
@@ -56,7 +55,6 @@ export const NoticeWrapper = styled(GreyPanel)`
 `;
 
 export const SettingSection = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

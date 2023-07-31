@@ -33,11 +33,6 @@ import vara from "./consts/settings/vara";
  */
 export const pageMaxWidth = 1184;
 
-/**
- * home layout main content width
- */
-export const pageHomeLayoutMainContentWidth = 932;
-
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
 

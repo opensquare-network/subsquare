@@ -74,13 +74,13 @@ export function useThemeSetting() {
   const [mode] = useThemeMode();
 
   /**
-   * @type {typeof light.base & typeof light.chain.kusama}
+   * @type {typeof light & typeof chainSettings.cssVarsLight}
    */
-  const mergedLight = { ...light.base, ...light.chain[chainSettings.value] };
+  const mergedLight = { ...light, ...chainSettings.cssVarsLight };
   /**
-   * @type {typeof light.base & typeof light.chain.kusama}
+   * @type {typeof dark & typeof chainSettings.cssVarsDark}
    */
-  const mergedDark = { ...dark.base, ...dark.chain[chainSettings.value] };
+  const mergedDark = { ...dark, ...chainSettings.cssVarsDark };
 
   return mode === "dark" ? mergedDark : mergedLight;
 }

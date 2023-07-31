@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Input from "next-common/components/input";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -9,7 +8,6 @@ import ErrorText from "next-common/components/ErrorText";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
-  ContentCenterWrapper,
   FormInputsWrapper,
   FormWrapper,
   InfoWrapper,
@@ -19,15 +17,7 @@ import {
 import useForm from "../../utils/hooks/useForm";
 import PrimaryButton from "../buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
-import BaseLayout from "../layout/baseLayout";
-
-const Wrapper = styled.div`
-  padding: 32px 0;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
+import { LoginCard } from "../styled/containers/loginCard";
 
 const Reset = withLoginUserRedux(() => {
   const [errors, setErrors] = useState();
@@ -38,7 +28,7 @@ const Reset = withLoginUserRedux(() => {
   const { countdown, counting: success, startCountdown } = useCountdown(3);
 
   if (success && countdown === 0) {
-    router.replace("/login");
+    router.replace("/");
   }
 
   const { formData, handleInputChange, handleSubmit } = useForm(
@@ -70,11 +60,11 @@ const Reset = withLoginUserRedux(() => {
   const { newPassword } = formData;
 
   return (
-    <BaseLayout>
+    <>
       <NextHead title={"Reset password"} desc={"Reset password"} />
-      <Wrapper>
+      <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
-          <ContentCenterWrapper>
+          <>
             <PageTitleContainer>Reset Password</PageTitleContainer>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
@@ -97,27 +87,23 @@ const Reset = withLoginUserRedux(() => {
                 Confirm
               </PrimaryButton>
             </FormWrapper>
-          </ContentCenterWrapper>
+          </>
         )}
         {success && (
-          <ContentCenterWrapper>
+          <>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
-            <PrimaryButton
-              isFill
-              secondary
-              onClick={() => router.replace("/login")}
-            >
-              Got it
+            <PrimaryButton isFill secondary onClick={() => router.replace("/")}>
+              Back to Overview
             </PrimaryButton>
             <Redirect>
               The page will be re-directed in
               <span className="sec">{countdown}s</span>
             </Redirect>
-          </ContentCenterWrapper>
+          </>
         )}
-      </Wrapper>
-    </BaseLayout>
+      </LoginCard>
+    </>
   );
 });
 

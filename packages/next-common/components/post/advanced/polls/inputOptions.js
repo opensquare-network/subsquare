@@ -1,6 +1,5 @@
 import Input from "../../../input";
 import { Trash } from "../../../icons";
-import { PollFormOptionFormItem } from "../elements";
 import React, { forwardRef, useImperativeHandle } from "react";
 
 function InputOptions({ disabled, value, onChange = () => {} }, ref) {
@@ -24,7 +23,7 @@ function InputOptions({ disabled, value, onChange = () => {} }, ref) {
   }));
 
   return (
-    <PollFormOptionFormItem>
+    <div className="space-y-2">
       {options.map((v, idx) => (
         <Input
           disabled={disabled}
@@ -45,7 +44,7 @@ function InputOptions({ disabled, value, onChange = () => {} }, ref) {
           }
         />
       ))}
-    </PollFormOptionFormItem>
+    </div>
   );
 }
 

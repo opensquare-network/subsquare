@@ -1,7 +1,7 @@
+/* eslint-disable react/no-unescaped-entities */
+
 import React, { useState } from "react";
 import styled from "styled-components";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
 import { FormButtonsWrapper, FormInputsWrapper, FormWrapper } from "./styled";
@@ -11,6 +11,8 @@ import GhostButton from "../buttons/ghostButton";
 import PrimaryButton from "../buttons/primaryButton";
 import useForm from "../../utils/hooks/useForm";
 import { updateUser, useUserDispatch } from "../../context/user";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import Link from "next/link";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -18,13 +20,11 @@ const ForgetPassword = styled.div`
   font-size: 12px;
 `;
 
-export default function MailLogin({ setAddressLogin }) {
+export default function MailLogin({ setView }) {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const userDispatch = useUserDispatch();
-
-  const { redirect } = router.query;
+  const { closeLoginPopup } = useLoginPopup();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -36,7 +36,7 @@ export default function MailLogin({ setAddressLogin }) {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         updateUser(res.result, userDispatch);
-        router.replace(redirect || "/");
+        closeLoginPopup();
       } else if (res.error) {
         setErrors(res.error);
       }
@@ -63,17 +63,30 @@ export default function MailLogin({ setAddressLogin }) {
           <ErrorText>{errors?.message}</ErrorText>
         )}
         <ForgetPassword>
-          <Link href="/forget">Forget password?</Link>
+          <Link href={"/forget"}>Forget password?</Link>
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>
         <PrimaryButton isFill isLoading={loading} type="submit">
           Login
         </PrimaryButton>
-        <GhostButton isFill onClick={setAddressLogin}>
+        <GhostButton
+          isFill
+          onClick={(event) => {
+            event.preventDefault();
+            setView("web3");
+          }}
+        >
           Login with web3 address
         </GhostButton>
       </FormButtonsWrapper>
+
+      <div className="text-center text14Medium text-textSecondary">
+        Don't have an account?{" "}
+        <Link href={"/signup"} className="text-theme500">
+          Sign up
+        </Link>
+      </div>
     </FormWrapper>
   );
 }

@@ -55,9 +55,7 @@ export function calcConfirmStartPercentage(
     return 0;
   }
 
-  const percentage =
-    ((confirmingStarted - decidingSince) / decisionBlocks) * 100;
-  return percentage;
+  return ((confirmingStarted - decidingSince) / decisionBlocks) * 100;
 }
 
 export function useConfirmPercentage() {
@@ -67,7 +65,7 @@ export function useConfirmPercentage() {
   const confirmStart = useConfirmingStarted();
   const confirmAbortedHeight = userConfirmingAborted();
 
-  const confirmPercentage = useMemo(() => {
+  return useMemo(() => {
     if (
       isNil(latestHeight) ||
       latestHeight <= confirmStart ||
@@ -84,6 +82,4 @@ export function useConfirmPercentage() {
     const gone = latestHeight - confirmStart;
     return Number((gone / confirmPeriod) * 100).toFixed(2);
   }, [latestHeight, confirmAbortedHeight, confirmStart, confirmPeriod]);
-
-  return confirmPercentage;
 }

@@ -16,12 +16,20 @@ const DEFAULT_KINTSUGI_NODES =
       ]
     : [
         {
-          name: "OnFinality",
-          url: "wss://kintsugi.api.onfinality.io/public-ws",
+          name: "Dwellir",
+          url: "wss://kintsugi-rpc.dwellir.com/",
         },
         {
           name: "Kintsugi Labs",
           url: "wss://api-kusama.interlay.io/parachain",
+        },
+        {
+          name: "LuckyFriday",
+          url: "wss://rpc-kintsugi.luckyfriday.io/",
+        },
+        {
+          name: "OnFinality",
+          url: "wss://kintsugi.api.onfinality.io/public-ws",
         },
       ];
 
@@ -75,6 +83,25 @@ const kintsugi = {
   description:
     "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
   useVoteCall: true,
+  cssVarsLight: {
+    theme100: "rgba(247,205,69,0.10)",
+    theme300: "rgba(247,205,69,0.40)",
+    theme500: "rgba(247,205,69,1)",
+    navigationBg: "rgba(4,19,51,1)",
+    navigationActive: "rgba(255,255,255,0.06)",
+    navigationBorder: "rgba(255,255,255,0.08)",
+    navigationText: "var(--textPrimaryContrast)",
+    navigationTextTertiary: "var(--textTertiaryContrast)",
+    navigationIcon: "var(--textSecondaryContrast)",
+  },
+  cssVarsDark: {
+    theme100: "rgba(247,205,69,0.10)",
+    theme300: "rgba(247,205,69,0.40)",
+    theme500: "rgba(247,205,69,1)",
+    navigationBg: "rgba(33,36,51,1)",
+    navigationActive: "rgba(38,41,56,1)",
+    navigationBorder: "var(--neutral300)",
+  },
 };
 
 export default kintsugi;

@@ -11,7 +11,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import Chains from "next-common/utils/consts/chains";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({

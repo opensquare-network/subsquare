@@ -1,9 +1,9 @@
 import KVList from "../../../listInfo/kvList";
 import React from "react";
 import isNil from "lodash.isnil";
-import { GreyText } from "./styled";
+import { GreyText, ValueWrapper } from "./styled";
 import BlockPeriod from "./blockPeriod";
-import UserBond from "./userBond";
+import UserBond, { DecisionUserBond } from "./userBond";
 import { useTrack } from "../../../../context/post/gov2/track";
 import { useOnchainData } from "next-common/context/post";
 import Copyable from "next-common/components/copyable";
@@ -27,7 +27,7 @@ function getEnactmentValue(enactment = {}) {
   return `${key}: ${localeValue}`;
 }
 
-export default function Gov2ReferendumMetadata({ info }) {
+export default function Gov2ReferendumMetadata({ info, pallet = "referenda" }) {
   const onchainData = useOnchainData();
   const trackInfo = useTrack();
   const proposalHash = onchainData?.proposalHash;
@@ -44,9 +44,10 @@ export default function Gov2ReferendumMetadata({ info }) {
     [
       "Decision",
       info?.decisionDeposit ? (
-        <UserBond
+        <DecisionUserBond
           address={info?.decisionDeposit?.who}
           bond={info?.decisionDeposit?.amount}
+          pallet={pallet}
           key="decision-bond"
         />
       ) : (
@@ -61,8 +62,18 @@ export default function Gov2ReferendumMetadata({ info }) {
       "Confirming Period",
       <BlockPeriod block={trackInfo.confirmPeriod} key="confirmation-period" />,
     ],
-    ["Enact", getEnactmentValue(info?.enactment)],
-    ["Proposal Hash", <Copyable key="hash">{proposalHash}</Copyable>],
+    [
+      "Enact",
+      <ValueWrapper key="enactment">
+        {getEnactmentValue(info?.enactment)}
+      </ValueWrapper>,
+    ],
+    [
+      "Proposal Hash",
+      <ValueWrapper key="proposal-hash">
+        <Copyable key="hash">{proposalHash}</Copyable>
+      </ValueWrapper>,
+    ],
   ];
 
   return <KVList title={"Metadata"} data={metadata} showFold={true} />;

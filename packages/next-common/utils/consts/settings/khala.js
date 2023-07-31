@@ -45,6 +45,25 @@ const khala = {
   description:
     "Khala Network is the canary network of Phala launched on Kusama and is responsible for the technical and economic testing of Phala Network.",
   useVoteCall: true,
+  cssVarsLight: {
+    theme100: "rgba(2,255,255,0.10)",
+    theme300: "rgba(2,255,255,0.40)",
+    theme500: "rgba(2,255,255,1)",
+    navigationBg: "rgba(0,0,0,1)",
+    navigationActive: "rgba(255,255,255,0.10)",
+    navigationBorder: "rgba(255,255,255,0.12)",
+    navigationText: "var(--textPrimaryContrast)",
+    navigationTextTertiary: "var(--textTertiaryContrast)",
+    navigationIcon: "var(--textSecondaryContrast)",
+  },
+  cssVarsDark: {
+    theme100: "rgba(2,255,255,0.10)",
+    theme300: "rgba(2,255,255,0.40)",
+    theme500: "rgba(2,255,255,1)",
+    navigationBg: "rgba(33,36,51,1)",
+    navigationActive: "rgba(38,41,56,1)",
+    navigationBorder: "var(--neutral300)",
+  },
 };
 
 export default khala;

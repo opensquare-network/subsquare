@@ -23,6 +23,7 @@ import {
 } from "next-common/store/reducers/chainSlice";
 import clsx from "clsx";
 import { useNavCollapsed } from "next-common/context/nav";
+import LoginPopup from "../login/popup";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -92,6 +93,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
       <CMDKPalette />
       <Toast />
       <CookiesConsent />
+      <LoginPopup />
     </>
   );
 }

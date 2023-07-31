@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import PollForm from "./polls/form";
-import { FormTitleWrapper, FormTitle, FormToggler } from "./elements";
+import clsx from "clsx";
 
 function AdvancedForm(props = {}, ref) {
   const {
@@ -38,12 +38,19 @@ function AdvancedForm(props = {}, ref) {
 
   return (
     <>
-      <FormTitleWrapper>
-        <FormTitle>Advanced</FormTitle>
-        <FormToggler disabled={disabled} onClick={handleToggle}>
+      <div className="flex justify-between items-center my-6">
+        <div className="text14Bold">Advanced</div>
+        <button
+          className={clsx(
+            "text14Medium select-none text-theme500",
+            disabled && "cursor-not-allowed text-textDisabled",
+          )}
+          disabled={disabled}
+          onClick={handleToggle}
+        >
           {isAdvanced ? "Cancel" : "Create a poll"}
-        </FormToggler>
-      </FormTitleWrapper>
+        </button>
+      </div>
 
       <PollForm
         ref={pollForm}

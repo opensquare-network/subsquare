@@ -101,6 +101,25 @@ const kusama = {
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
   hideNewTreasuryProposalButton: true,
+  cssVarsLight: {
+    theme100: "rgba(230,0,122,0.10)",
+    theme300: "rgba(230,0,122,0.40)",
+    theme500: "rgba(230,0,122,1)",
+    navigationBg: "rgba(0,0,0,1)",
+    navigationActive: "rgba(255,255,255,0.10)",
+    navigationBorder: "rgba(255,255,255,0.12)",
+    navigationText: "var(--textPrimaryContrast)",
+    navigationTextTertiary: "var(--textTertiaryContrast)",
+    navigationIcon: "var(--textSecondaryContrast)",
+  },
+  cssVarsDark: {
+    theme100: "rgba(230,0,122,0.10)",
+    theme300: "rgba(230,0,122,0.40)",
+    theme500: "rgba(230,0,122,1)",
+    navigationBg: "rgba(33,36,51,1)",
+    navigationActive: "rgba(38,41,56,1)",
+    navigationBorder: "var(--neutral300)",
+  },
 };
 
 export default kusama;

@@ -15,7 +15,7 @@ import CheckUnFinalized from "components/external/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 
 function DemocracyExternalContent({ detail, comments }) {

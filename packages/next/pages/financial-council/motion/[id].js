@@ -10,7 +10,7 @@ import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import DetailLayout from "next-common/components/layout/DetailLayoutV2";
+import DetailLayout from "next-common/components/layout/DetailLayout";
 
 function FinancialMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({

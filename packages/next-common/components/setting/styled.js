@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import { pageHomeLayoutMainContentWidth } from "../../utils/constants";
 import { GreyPanel } from "../styled/containers/greyPanel";
 
 export const Wrapper = styled.div`
-  max-width: ${pageHomeLayoutMainContentWidth}px;
   @media screen and (max-width: 1024px) {
     max-width: 960px;
   }

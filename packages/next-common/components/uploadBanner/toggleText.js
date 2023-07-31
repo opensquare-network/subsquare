@@ -1,25 +1,4 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { p_12_medium } from "next-common/styles/componentCss";
-
-const Text = styled.button`
-  user-select: none;
-  ${p_12_medium};
-  color: var(--theme500);
-  background-color: transparent;
-  border: none;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  ${(p) =>
-    p.disabled &&
-    css`
-      color: var(--textTertiary);
-      cursor: not-allowed !important;
-    `}
-`;
+import clsx from "clsx";
 
 function ToggleText({
   disabled = false,
@@ -35,9 +14,16 @@ function ToggleText({
   };
 
   return (
-    <Text disabled={disabled} onClick={handleSwitch}>
+    <button
+      className={clsx(
+        "text14Medium select-none text-theme500",
+        disabled && "cursor-not-allowed !text-textDisabled",
+      )}
+      disabled={disabled}
+      onClick={handleSwitch}
+    >
       {isSetBanner ? "Cancel" : "Set Banner"}
-    </Text>
+    </button>
   );
 }
 

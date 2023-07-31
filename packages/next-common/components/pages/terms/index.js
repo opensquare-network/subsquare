@@ -3,14 +3,11 @@ import styled from "styled-components";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import termsMd from "./terms-of-service.md";
-import BaseLayout from "../../layout/baseLayout";
-import Back from "../../back";
 import { MarkdownPreviewer } from "@osn/previewer";
-
-const Wrapper = styled.div`
-  margin: 0 auto;
-  max-width: 852px;
-`;
+import {
+  ProjectIconSubsquareDark,
+  ProjectIconSubsquareLight,
+} from "@osn/icons/subsquare";
 
 const Content = styled.div`
   margin-top: 16px;
@@ -38,16 +35,19 @@ const Title = styled.h1`
 
 const Terms = withLoginUserRedux(() => {
   return (
-    <BaseLayout>
+    <>
       <NextHead title="Terms of Service" desc="Terms of Service" />
-      <Wrapper>
-        <Back text="Back" href="signup" />
+      <div className="mt-[12vh] mx-auto max-w-[856px] pb-6">
         <Content>
+          <div className="mb-6">
+            <ProjectIconSubsquareLight className="w-10 h-10 dark:hidden" />
+            <ProjectIconSubsquareDark className="w-10 h-10 hidden dark:block" />
+          </div>
           <Title>Terms of Service</Title>
           <MarkdownPreviewer content={termsMd} />
         </Content>
-      </Wrapper>
-    </BaseLayout>
+      </div>
+    </>
   );
 });
 
