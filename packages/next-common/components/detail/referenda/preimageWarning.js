@@ -15,7 +15,7 @@ function Warning() {
   }
 
   if (status.isEmpty) {
-    return <Malicious>Preimage not found</Malicious>;
+    return <Malicious>Preimage not found on chain</Malicious>;
   }
 }
 
