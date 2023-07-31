@@ -53,7 +53,9 @@ function FellowshipContent({ comments }) {
       <FellowshipReferendumSideBar />
       <DetailMultiTabs
         call={proposal?.call && <Gov2ReferendumCall />}
-        metadata={<Gov2ReferendumMetadata info={info} />}
+        metadata={
+          <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
+        }
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
 
