@@ -1,15 +1,14 @@
-import { getTimelineStatus } from "utils";
-import flatten from "lodash.flatten";
-import User from "next-common/components/user";
-import Timeline from "next-common/components/timeline";
-import { createMotionTimelineData } from "utils/timeline/motion";
-import sortTimeline from "next-common/utils/timeline/sort";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { createReferendumTimelineData } from "utils/timeline/referendum";
-import SymbolBalance from "next-common/components/values/symbolBalance";
-import formatTime from "next-common/utils/viewfuncs/formatDate";
-import { useEffect, useState } from "react";
 import isMoonChain from "next-common/utils/isMoonChain";
+import { useEffect, useState } from "react";
+import flatten from "lodash.flatten";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { getTimelineStatus } from "../../utils";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { createMotionTimelineData } from "../../utils/timeline/motion";
+import { createReferendumTimelineData } from "../../utils/timeline/referendum";
+import sortTimeline from "next-common/utils/timeline/sort";
+import User from "next-common/components/user";
+import SymbolBalance from "next-common/components/values/symbolBalance";
 
 function getTimelineData(args, method) {
   switch (method) {
@@ -49,10 +48,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
   ];
 }
 
-export default function TreasuryProposalTimeline({
-  treasuryProposal,
-  compact,
-}) {
+export default function useTreasuryTimelineData(treasuryProposal) {
   const [timelineData, setTimelineData] = useState([]);
   const motionLink = isMoonChain()
     ? "/treasury-council/motion"
@@ -99,5 +95,5 @@ export default function TreasuryProposalTimeline({
     setTimelineData(sortTimeline([...data, ...motions, ...referendums]));
   }, [treasuryProposal, motionLink]);
 
-  return <Timeline data={timelineData} indent={false} compact={compact} />;
+  return timelineData;
 }

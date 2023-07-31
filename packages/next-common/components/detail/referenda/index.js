@@ -10,6 +10,7 @@ import ReferendaPostMeta from "next-common/components/detail/common/openGov/meta
 import ReferendaWhiteListNavigation from "next-common/components/detail/referenda/whitelistNavigation";
 import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
 import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCountdown";
+import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 
 export default function ReferendaDetail({ onReply }) {
   const post = usePost();
@@ -20,6 +21,7 @@ export default function ReferendaDetail({ onReply }) {
     <DetailContentBase>
       {!isEditing && (
         <>
+          <PreimageWarning />
           <TimeoutCountdown />
           <ReferendaWhiteListNavigation />
           <ReferendaReferendumNavigation />

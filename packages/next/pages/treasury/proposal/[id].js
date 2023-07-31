@@ -1,7 +1,6 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Timeline from "components/treasuryProposal/timeline";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import useUniversalComments from "components/universalComments";
@@ -14,6 +13,8 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import useTreasuryTimelineData from "../../../components/treasuryProposal/useTimelineData";
+import Timeline from "next-common/components/timeline";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -22,13 +23,15 @@ function TreasuryProposalContent({ detail, comments }) {
   });
 
   useSubscribePostDetail(detail?.proposalIndex);
+  const timelineData = useTreasuryTimelineData(detail?.onchainData);
 
   return (
     <>
       <TreasuryProposalDetail onReply={focusEditor} />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
-        timeline={<Timeline treasuryProposal={detail?.onchainData} />}
+        timeline={<Timeline data={timelineData} indent={false} />}
+        timelineCount={timelineData.length}
       />
       {CommentComponent}
     </>

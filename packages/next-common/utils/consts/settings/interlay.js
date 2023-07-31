@@ -12,8 +12,16 @@ import {
 
 const DEFAULT_INTERLAY_NODES = [
   {
+    name: "Dwellir",
+    url: "wss://interlay-rpc.dwellir.com/",
+  },
+  {
     name: "Kintsugi Labs",
     url: "wss://api.interlay.io/parachain",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-interlay.luckyfriday.io/",
   },
   {
     name: "OnFinality",
