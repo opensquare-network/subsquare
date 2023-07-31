@@ -22,7 +22,10 @@ const Label = styled.div`
   font-size: 12px;
 `;
 
-export default function LoginPopupEmailContent() {
+/**
+ * @description AKA remind email
+ */
+export default function LoginEmailContent() {
   const chain = useChain();
   const loginUser = useUser();
   const address = loginUser?.address;

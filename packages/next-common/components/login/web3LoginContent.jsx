@@ -1,12 +1,12 @@
 import { PageTitleContainer } from "../styled/containers/titleContainer";
-import MailLogin from "./mailLogin";
+import AddressLogin from "./addressLogin";
 
-export default function LoginPopupAccountLoginContent({ setView }) {
+export default function LoginWeb3LoginContent({ setView }) {
   return (
     <div>
       <PageTitleContainer>Login</PageTitleContainer>
 
-      <MailLogin setView={setView} />
+      <AddressLogin setView={setView} />
     </div>
   );
 }
