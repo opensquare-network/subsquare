@@ -208,7 +208,7 @@ export default withLoginUserRedux(({ loginUser }) => {
             </FormWrapper>
             <div className="text14Medium text-center text-textSecondary">
               Already have a account?{" "}
-              <Link className="text-theme500" href="/login">
+              <Link className="text-theme500" href="/login" replace>
                 Login
               </Link>
             </div>
