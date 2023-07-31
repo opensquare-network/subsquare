@@ -37,7 +37,7 @@ const Privacy = withLoginUserRedux(() => {
   return (
     <>
       <NextHead title="Privacy Policy" desc="Privacy Policy" />
-      <div className="mt-[12vh] mx-auto max-w-[856px]">
+      <div className="mt-[12vh] mx-auto max-w-[856px] pb-6">
         <Content>
           <div className="mb-6">
             <ProjectIconSubsquareLight className="w-10 h-10 dark:hidden" />

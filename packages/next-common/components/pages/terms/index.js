@@ -37,7 +37,7 @@ const Terms = withLoginUserRedux(() => {
   return (
     <>
       <NextHead title="Terms of Service" desc="Terms of Service" />
-      <div className="mt-[12vh] mx-auto max-w-[856px]">
+      <div className="mt-[12vh] mx-auto max-w-[856px] pb-6">
         <Content>
           <div className="mb-6">
             <ProjectIconSubsquareLight className="w-10 h-10 dark:hidden" />
