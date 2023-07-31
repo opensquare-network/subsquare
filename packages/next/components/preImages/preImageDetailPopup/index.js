@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import FoldButton from "./foldButton";
 import { useState } from "react";
 import GhostButton from "next-common/components/buttons/ghostButton";
+import { getTypeDef } from "@polkadot/types/create";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -61,8 +62,43 @@ function CallArgsPanel({ argsEntries, args }) {
           value={argValue}
           type={args?.[i].type.toJSON()}
           typeName={args?.[i].typeName.toJSON()}
+          registry={args?.[i].registry}
         />
       ))}
+    </div>
+  );
+}
+
+function ArrayPanel({ registry, name, type, values }) {
+  let sub;
+  try {
+    const t = getTypeDef(registry.createType(type).toRawType());
+    ({ sub } = t);
+    if (!sub) {
+      return null;
+    }
+    sub = Array.isArray(sub) ? sub : [sub];
+  } catch (e) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col">
+      <div className="flex justify-between items-center">
+        <span className="font-medium"> {name ? `${name}: ${type}` : type}</span>
+      </div>
+      <IndentPanel className="gap-[8px]">
+        {values.map((value, i) => (
+          <ValuePanel
+            key={`value-${i}`}
+            name={`${i}`}
+            type={sub[i].type}
+            typeName={sub[i].type}
+            value={value}
+            registry={registry}
+          />
+        ))}
+      </IndentPanel>
     </div>
   );
 }
@@ -86,7 +122,121 @@ function CallsPanel({ name, type, calls }) {
   );
 }
 
-function ValuePanel({ name, type, typeName, value }) {
+function TuplePanel({ registry, name, type, values }) {
+  let sub;
+  try {
+    const t = getTypeDef(registry.createType(type).toRawType());
+    ({ sub } = t);
+    if (!sub) {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col">
+      <span className="font-medium truncate">
+        {name ? `${name}: ${type}` : type}
+      </span>
+      <IndentPanel className="gap-[8px]">
+        {(sub || []).map((item) => (
+          <ValuePanel
+            key={item.name}
+            name={item.name}
+            value={values[item.name]}
+            type={item.type}
+            typeName={item.type}
+            registry={registry}
+          />
+        ))}
+      </IndentPanel>
+    </div>
+  );
+}
+
+function StructPanel({ registry, name, type, typeName, value }) {
+  if (value.size > 0) {
+    return (
+      <TuplePanel
+        registry={registry}
+        name={name}
+        type={type}
+        typeName={typeName}
+        values={value}
+      />
+    );
+  }
+
+  let sub;
+  try {
+    const t = getTypeDef(registry.createType(type).toRawType());
+    ({ sub } = t);
+    if (!sub) {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+
+  let subName, subType;
+
+  if (!Array.isArray(sub)) {
+    ({ name: subName, type: subType } = sub);
+    return (
+      <div className="flex flex-col">
+        <span className="font-medium truncate">
+          {name ? `${name}: ${type}` : type}
+        </span>
+        <IndentPanel className="gap-[8px]">
+          <ValuePanel
+            name={subName}
+            value={value.value}
+            type={subType}
+            typeName={subType}
+            registry={registry}
+          />
+        </IndentPanel>
+      </div>
+    );
+  } else if (value.type) {
+    ({ name: subName, type: subType } = sub.find(
+      (item) => item.name === value.type.toString(),
+    ));
+  } else {
+    return (
+      <ValuePanel
+        // registry={registry} //TODO: dirty fix recursive call
+        name={name}
+        type={type}
+        typeName={typeName}
+        value={value}
+      />
+    );
+  }
+
+  return (
+    <div className="flex flex-col">
+      <div className="flex flex-col px-[16px] py-[8px] bg-neutral200 rounded-[4px]">
+        <span className="text-textTertiary">
+          {name ? `${name}: ${type}` : type}
+        </span>
+        <div>{subName}</div>
+      </div>
+      <IndentPanel className="gap-[8px]">
+        <ValuePanel
+          registry={registry}
+          name={subName}
+          typeName={subType}
+          type={subType}
+          value={value.value}
+        />
+      </IndentPanel>
+    </div>
+  );
+}
+
+function ValuePanel({ registry, name, type, typeName, value }) {
   const { symbol, decimals } = useChainSettings();
 
   if (type === "Vec<Call>") {
@@ -116,6 +266,29 @@ function ValuePanel({ name, type, typeName, value }) {
       </span>
     );
   } else {
+    if (val instanceof Object && registry) {
+      if (Array.isArray(value)) {
+        return (
+          <ArrayPanel
+            registry={registry}
+            name={name}
+            type={type}
+            values={value}
+          />
+        );
+      }
+
+      return (
+        <StructPanel
+          registry={registry}
+          name={name}
+          type={type}
+          typeName={typeName}
+          value={value}
+        />
+      );
+    }
+
     valueComponent = (
       <span className="break-all">
         {val instanceof Object ? JSON.stringify(val) : val?.toString()}
@@ -126,7 +299,7 @@ function ValuePanel({ name, type, typeName, value }) {
   return (
     <div className="flex flex-col px-[16px] py-[8px] bg-neutral200 rounded-[4px]">
       <span className="text-textTertiary">
-        {name}: {type}
+        {name ? `${name}: ${type}` : type}
       </span>
       <div>{valueComponent}</div>
     </div>
@@ -134,7 +307,6 @@ function ValuePanel({ name, type, typeName, value }) {
 }
 
 export default function PreimageDetailPopup({ proposal, setShow }) {
-  console.log(proposal);
   const { section, method, meta, argsEntries } = proposal || {};
   const { docs, args } = meta || {};
   const doc = docs[0]?.toJSON();
