@@ -1,26 +1,21 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import PostCreate from "next-common/components/post/postCreate";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useIsLogin } from "next-common/context/user";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 export default withLoginUserRedux(() => {
-  const router = useRouter();
   const isLogin = useIsLogin();
+  const { openLoginPopup } = useLoginPopup();
 
   useEffect(() => {
     if (!isLogin) {
-      router.push({
-        pathname: "/login",
-        query: {
-          redirect: router.route,
-        },
-      });
+      openLoginPopup();
     }
-  }, [isLogin, router]);
+  }, [isLogin, openLoginPopup]);
 
   const breadcrumbItems = [
     {

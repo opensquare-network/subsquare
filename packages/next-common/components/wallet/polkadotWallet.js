@@ -3,7 +3,7 @@ import Flex from "../styled/flex";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
 import useInjectedWeb3 from "./useInjectedWeb3";
-import { WalletOption } from "./styled";
+import WalletOption from "./walletOption";
 
 export default function PolkadotWallet({
   wallet,

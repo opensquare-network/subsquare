@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useRouter } from "next/router";
 import Input from "next-common/components/input";
 import nextApi from "next-common/services/nextApi";
@@ -9,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
 import {
-  ContentCenterWrapper,
   FormInputsWrapper,
   FormWrapper,
   InfoWrapper,
@@ -18,17 +16,7 @@ import {
 import useForm from "../../utils/hooks/useForm";
 import PrimaryButton from "../buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
-import BaseLayout from "../layout/baseLayout";
-
-const Wrapper = styled.div`
-  padding: 32px 0 6px;
-  min-height: calc(100vh - 64px - 26px - 26px);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: 14px;
-`;
+import { LoginCard } from "../styled/containers/loginCard";
 
 const Forget = withLoginUserRedux(() => {
   const dispatch = useDispatch();
@@ -63,11 +51,11 @@ const Forget = withLoginUserRedux(() => {
   const { email } = formData;
 
   return (
-    <BaseLayout>
+    <>
       <NextHead title={"Forget password"} desc={"Forget password"} />
-      <Wrapper>
+      <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
-          <ContentCenterWrapper>
+          <>
             <PageTitleContainer>Reset Password</PageTitleContainer>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
@@ -89,10 +77,10 @@ const Forget = withLoginUserRedux(() => {
                 Confirm
               </PrimaryButton>
             </FormWrapper>
-          </ContentCenterWrapper>
+          </>
         )}
         {success && (
-          <ContentCenterWrapper>
+          <>
             <PageTitleContainer>Reset Password</PageTitleContainer>
             <InfoWrapper>
               The reset password link was sent to this email, if it exists in
@@ -101,10 +89,10 @@ const Forget = withLoginUserRedux(() => {
             <PrimaryButton isFill onClick={() => router.replace("/")}>
               Confirm
             </PrimaryButton>
-          </ContentCenterWrapper>
+          </>
         )}
-      </Wrapper>
-    </BaseLayout>
+      </LoginCard>
+    </>
   );
 });
 

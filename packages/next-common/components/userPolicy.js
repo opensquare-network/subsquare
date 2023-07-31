@@ -2,17 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import ErrorText from "next-common/components/ErrorText";
-import CheckBoxOn from "../assets/imgs/icons/check-box-on.svg";
-import CheckBoxOff from "../assets/imgs/icons/check-box-off.svg";
-
-const CheckBoxOffIcon = styled(CheckBoxOff)`
-  rect {
-    fill: var(--neutral400);
-  }
-  path {
-    stroke: var(--textPrimaryContrast);
-  }
-`;
+import { SystemCheckboxOff, SystemCheckboxOn } from "@osn/icons/subsquare";
 
 const Wrapper = styled.div`
   margin-top: 16px !important;
@@ -26,32 +16,31 @@ const ClickWrapper = styled.div`
   align-items: flex-start;
 `;
 
-const CheckBoxWrapper = styled.span`
-  margin-top: 3px;
-  margin-right: 8px;
-  cursor: pointer;
-`;
-
 const Text = styled.div`
   font-size: 14px;
   line-height: 140%;
   color: var(--textTertiary);
   a {
-    font-weight: bold;
     color: var(--theme500);
   }
 `;
 
 function CheckBox({ checked, setChecked, setAgreeError }) {
   return (
-    <CheckBoxWrapper
+    <span
+      role="checkbox"
+      className="mr-2"
       onClick={() => {
         setChecked(!checked);
         setAgreeError(null);
       }}
     >
-      {checked ? <CheckBoxOn /> : <CheckBoxOffIcon />}
-    </CheckBoxWrapper>
+      {checked ? (
+        <SystemCheckboxOn className="w-5 h-5 [&_rect]:fill-theme500" />
+      ) : (
+        <SystemCheckboxOff className="w-5 h-5" />
+      )}
+    </span>
   );
 }
 
@@ -71,11 +60,19 @@ export default function UserPolicy({
         />
         <Text>
           I have read and agree to the{" "}
-          <Link onClick={(e) => e.stopPropagation()} href="/terms">
+          <Link
+            onClick={(e) => e.stopPropagation()}
+            href="/terms"
+            target="_blank"
+          >
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link onClick={(e) => e.stopPropagation()} href="/privacy">
+          <Link
+            onClick={(e) => e.stopPropagation()}
+            href="/privacy"
+            target="_blank"
+          >
             Privacy Policy
           </Link>
           .

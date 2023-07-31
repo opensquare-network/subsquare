@@ -3,10 +3,11 @@ import styled from "styled-components";
 import Item from "./item";
 import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
-import LoginButtons from "./loginButtons";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useIsLogin } from "../../context/user";
 import clsx from "clsx";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import PrimaryButton from "../buttons/primaryButton";
 
 const Header = styled.div`
   display: flex;
@@ -24,6 +25,7 @@ export default function Comments({
   tabs = null,
 }) {
   const isLogin = useIsLogin();
+  const { openLoginPopup } = useLoginPopup();
 
   return (
     <div>
@@ -45,8 +47,8 @@ export default function Comments({
       )}
       {!items?.length > 0 && <NoComment />}
       {!isLogin && (
-        <div>
-          <LoginButtons />
+        <div className="flex justify-end">
+          <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
         </div>
       )}
     </div>

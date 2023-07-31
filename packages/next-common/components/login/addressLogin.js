@@ -9,7 +9,6 @@ import { newErrorToast } from "../../store/reducers/toastSlice";
 import { encodeAddressToChain } from "../../services/address";
 import PrimaryButton from "../buttons/primaryButton";
 import { stringToHex } from "@polkadot/util";
-import { LinkWrapper } from "./styled";
 import SelectWallet from "../wallet/selectWallet";
 import { CACHE_KEY } from "../../utils/constants";
 import { getWallets } from "../../utils/consts/connect";
@@ -19,6 +18,7 @@ import ErrorMessage from "../styled/errorMessage";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 const Label = styled.div`
   font-weight: bold;
@@ -52,7 +52,7 @@ function rememberAccountName(account, chain) {
   localStorage.setItem(CACHE_KEY.accountMap, JSON.stringify(accountMap));
 }
 
-export default function AddressLogin({ setMailLogin }) {
+export default function AddressLogin({ setView }) {
   const chain = useChain();
   const [wallet, setWallet] = useState();
   const [accounts, setAccounts] = useState([]);
@@ -64,6 +64,8 @@ export default function AddressLogin({ setMailLogin }) {
   const userDispatch = useUserDispatch();
   const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
+  const { closeLoginPopup } = useLoginPopup();
+  const isLoginPage = router.pathname === "/login";
 
   async function signWith(message, address, selectedWallet) {
     if (selectedWallet === WalletTypes.METAMASK) {
@@ -122,14 +124,22 @@ export default function AddressLogin({ setMailLogin }) {
             );
 
             if (loginResult.email || dontRemindEmail) {
-              router.replace(router.query?.redirect || "/");
+              if (isLoginPage) {
+                router.replace(router.query?.redirect || "/");
+              } else {
+                closeLoginPopup();
+              }
             } else {
-              router.replace({
-                pathname: "/email",
-                query: {
-                  redirect: router.query?.redirect,
-                },
-              });
+              if (isLoginPage) {
+                router.replace({
+                  pathname: "/email",
+                  query: {
+                    redirect: router.query?.redirect,
+                  },
+                });
+              } else {
+                setView("email");
+              }
             }
           }
           if (loginError) {
@@ -185,7 +195,7 @@ export default function AddressLogin({ setMailLogin }) {
   );
 
   return (
-    <>
+    <div className="space-y-6">
       <SelectWallet
         selectedWallet={selectedWallet}
         setSelectWallet={setSelectWallet}
@@ -222,10 +232,19 @@ export default function AddressLogin({ setMailLogin }) {
             Next
           </PrimaryButton>
         )}
-        <LinkWrapper>
-          <a onClick={setMailLogin}>Login </a>with username
-        </LinkWrapper>
+        <div className="text14Medium text-center text-textSecondary">
+          Login with{" "}
+          <span
+            className="text-theme500"
+            role="button"
+            onClick={() => {
+              setView("account");
+            }}
+          >
+            account
+          </span>
+        </div>
       </ButtonWrapper>
-    </>
+    </div>
   );
 }

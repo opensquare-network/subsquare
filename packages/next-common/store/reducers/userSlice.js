@@ -5,6 +5,7 @@ const userSlice = createSlice({
   initialState: {
     user: undefined,
     isEditingPost: false,
+    loginOpen: false,
   },
   reducers: {
     setUser: (state, { payload }) => {
@@ -13,10 +14,14 @@ const userSlice = createSlice({
     setEditingPost: (state, { payload }) => {
       state.isEditingPost = payload;
     },
+    setLoginOpen: (state, { payload }) => {
+      state.loginOpen = payload;
+    },
   },
 });
 
 export const isEditingPostSelector = (state) => state.user?.isEditingPost;
-export const { setUser, setEditingPost } = userSlice.actions;
+export const loginOpenSelector = (state) => state.user?.loginOpen;
+export const { setUser, setEditingPost, setLoginOpen } = userSlice.actions;
 
 export default userSlice.reducer;
