@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import AddressSelect from "../addressSelect";
 import nextApi from "../../services/nextApi";
 import ErrorText from "../ErrorText";
@@ -61,8 +62,10 @@ export default function AddressLogin({ setView }) {
   const [selectedWallet, setSelectWallet] = useState("");
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
+  const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
   const { closeLoginPopup } = useLoginPopup();
+  const isLoginPage = router.pathname === "/login";
 
   async function signWith(message, address, selectedWallet) {
     if (selectedWallet === WalletTypes.METAMASK) {
@@ -121,9 +124,22 @@ export default function AddressLogin({ setView }) {
             );
 
             if (loginResult.email || dontRemindEmail) {
-              closeLoginPopup();
+              if (isLoginPage) {
+                router.replace(router.query?.redirect || "/");
+              } else {
+                closeLoginPopup();
+              }
             } else {
-              setView("email");
+              if (isLoginPage) {
+                router.replace({
+                  pathname: "/email",
+                  query: {
+                    redirect: router.query?.redirect,
+                  },
+                });
+              } else {
+                setView("email");
+              }
             }
           }
           if (loginError) {

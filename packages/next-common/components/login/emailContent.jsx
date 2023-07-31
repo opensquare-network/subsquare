@@ -15,6 +15,7 @@ import { useUser } from "next-common/context/user";
 import { useLocalStorage } from "usehooks-ts";
 import { GreyPanel } from "../styled/containers/greyPanel";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import { useRouter } from "next/router";
 
 const Label = styled.div`
   margin-bottom: 8px;
@@ -39,18 +40,28 @@ export default function LoginEmailContent() {
     false,
   );
   const { closeLoginPopup } = useLoginPopup();
+  const router = useRouter();
+  const isEmailPage = router.pathname === "/email";
 
   const identity = useIdentity(address, chain);
 
+  function handleSkip() {
+    if (isEmailPage) {
+      router.replace(router.query?.redirect || "/");
+    } else {
+      closeLoginPopup();
+    }
+  }
+
   return (
     <div className="space-y-6">
-      <PageTitleContainer>Login with Web3 address</PageTitleContainer>
+      <PageTitleContainer>Login to SubSquare</PageTitleContainer>
 
-      <GreyPanel className="text14Medium px-4 py-2.5 !rounded-lg">
+      <GreyPanel className="text14Medium px-4 py-2.5 !rounded-lg text-textSecondary">
         Set email for receiving notifications
       </GreyPanel>
 
-      <div>
+      <div className="space-y-2">
         <Label>Web3 address</Label>
         <div className="[&_div]:rounded-lg">
           <Option item={{ address, name: accountName }} selected />
@@ -87,7 +98,7 @@ export default function LoginEmailContent() {
           identity={identity}
           setErrors={setErrors}
         />
-        <GhostButton isFill onClick={closeLoginPopup}>
+        <GhostButton isFill onClick={handleSkip}>
           Skip
         </GhostButton>
         <span

@@ -60,11 +60,19 @@ export default function UserPolicy({
         />
         <Text>
           I have read and agree to the{" "}
-          <Link onClick={(e) => e.stopPropagation()} href="/terms">
+          <Link
+            onClick={(e) => e.stopPropagation()}
+            href="/terms"
+            target="_blank"
+          >
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link onClick={(e) => e.stopPropagation()} href="/privacy">
+          <Link
+            onClick={(e) => e.stopPropagation()}
+            href="/privacy"
+            target="_blank"
+          >
             Privacy Policy
           </Link>
           .

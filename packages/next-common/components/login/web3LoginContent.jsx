@@ -3,8 +3,8 @@ import AddressLogin from "./addressLogin";
 
 export default function LoginWeb3LoginContent({ setView }) {
   return (
-    <div>
-      <PageTitleContainer>Login</PageTitleContainer>
+    <div className="space-y-6">
+      <PageTitleContainer>Login to SubSquare</PageTitleContainer>
 
       <AddressLogin setView={setView} />
     </div>

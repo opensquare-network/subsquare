@@ -3,8 +3,8 @@ import MailLogin from "./mailLogin";
 
 export default function LoginAccountLoginContent({ setView }) {
   return (
-    <div>
-      <PageTitleContainer>Login</PageTitleContainer>
+    <div className="space-y-6">
+      <PageTitleContainer>Login to SubSquare</PageTitleContainer>
 
       <MailLogin setView={setView} />
     </div>

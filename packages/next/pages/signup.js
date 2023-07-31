@@ -15,39 +15,7 @@ import UserPolicy from "next-common/components/userPolicy";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import useForm from "next-common/utils/hooks/useForm";
-import BaseLayout from "next-common/components/layout/baseLayout";
-
-const Wrapper = styled.div`
-  padding: 32px 0 6px;
-  min-height: calc(100vh - 64px - 26px - 26px);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: 14px;
-`;
-
-const ContentWrapper = styled.div`
-  background: var(--neutral100);
-  border: 1px solid var(--neutral300);
-  box-shadow: var(--shadow100);
-  border-radius: 6px;
-  width: 400px;
-  margin: 0 auto;
-  padding: 48px;
-
-  > :not(:first-child) {
-    margin-top: 24px;
-  }
-
-  > button:last-child {
-    margin-top: 12px;
-  }
-
-  @media screen and (max-width: 392px) {
-    width: 100%;
-  }
-`;
+import { LoginCard } from "next-common/components/styled/containers/loginCard";
 
 const Title = styled.div`
   font-weight: bold;
@@ -60,16 +28,6 @@ const Title = styled.div`
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
     margin-top: 12px;
-  }
-`;
-
-const LinkWrapper = styled.div`
-  color: var(--textSecondary);
-  text-align: center;
-
-  a {
-    font-weight: bold;
-    color: var(--theme500);
   }
 `;
 
@@ -192,11 +150,12 @@ export default withLoginUserRedux(({ loginUser }) => {
   });
 
   return (
-    <BaseLayout>
+    <>
       <NextHead title={"Signup"} desc={"Signup"} />
-      <Wrapper>
+
+      <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
-          <ContentWrapper>
+          <>
             <Title>Sign up</Title>
             <FormWrapper onSubmit={handleSubmit}>
               <InputWrapper>
@@ -247,35 +206,44 @@ export default withLoginUserRedux(({ loginUser }) => {
                 </PrimaryButton>
               </ButtonWrapper>
             </FormWrapper>
-            <LinkWrapper>
-              Already have a account? <Link href="/login">Login</Link>
-            </LinkWrapper>
-          </ContentWrapper>
+            <div className="text14Medium text-center text-textSecondary">
+              Already have a account?{" "}
+              <Link className="text-theme500" href="/login">
+                Login
+              </Link>
+            </div>
+          </>
         )}
         {success && (
-          <ContentWrapper>
+          <>
             <Title>{emailSent ? "Congrats." : "Sending..."}</Title>
             <InfoWrapper>
               {emailSent
                 ? "We sent you an email to verify your address. Click on the link in the email."
                 : "Sending an email to verify your address."}
             </InfoWrapper>
-            <PrimaryButton isFill secondary onClick={() => router.replace("/")}>
-              Got it
-            </PrimaryButton>
-            <GhostButton isFill onClick={sendVerifyEmail}>
-              Resend
-            </GhostButton>
-            {emailSent && (
-              <Redirect>
-                The page will be re-directed in
-                <span className="sec">{countdown}s</span>
-              </Redirect>
-            )}
-          </ContentWrapper>
+            <div className="space-y-2">
+              <PrimaryButton
+                isFill
+                secondary
+                onClick={() => router.replace("/")}
+              >
+                Got it
+              </PrimaryButton>
+              <GhostButton isFill onClick={sendVerifyEmail}>
+                Resend
+              </GhostButton>
+              {emailSent && (
+                <Redirect>
+                  The page will be re-directed in
+                  <span className="sec">{countdown}s</span>
+                </Redirect>
+              )}
+            </div>
+          </>
         )}
-      </Wrapper>
-    </BaseLayout>
+      </LoginCard>
+    </>
   );
 });
 
