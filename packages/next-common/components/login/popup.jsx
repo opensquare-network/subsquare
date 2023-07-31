@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import Popup from "../popup/wrapper/Popup";
 import LoginPopupEmailContent from "./popupEmailContent";
-import LoginPopupForgetContent from "./popupForgetContent";
 import LoginPopupWeb3LoginContent from "./popupWeb3LoginContent";
 import LoginPopupAccountLoginContent from "./popupAccountLoginContent";
-import LoginPopupSignUpContent from "./popupSignUpContent";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 /**
  * @param {Parameters<Popup>[0]} props
  */
 export default function LoginPopup(props = {}) {
-  // web3, account, email, forget, signUp
+  // web3, account, email
   const [view, setView] = useState("web3");
   const { loginPopupOpen, closeLoginPopup } = useLoginPopup();
 
@@ -36,11 +34,8 @@ export default function LoginPopup(props = {}) {
           <LoginPopupAccountLoginContent setView={setView} />
         )}
 
+        {/* aka remind email */}
         {view === "email" && <LoginPopupEmailContent setView={setView} />}
-
-        {view === "forget" && <LoginPopupForgetContent />}
-
-        {view === "signUp" && <LoginPopupSignUpContent setView={setView} />}
       </Popup>
     )
   );

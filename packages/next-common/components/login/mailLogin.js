@@ -12,6 +12,7 @@ import PrimaryButton from "../buttons/primaryButton";
 import useForm from "../../utils/hooks/useForm";
 import { updateUser, useUserDispatch } from "../../context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import Link from "next/link";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -62,14 +63,7 @@ export default function MailLogin({ setView }) {
           <ErrorText>{errors?.message}</ErrorText>
         )}
         <ForgetPassword>
-          <span
-            className="cursor-pointer"
-            onClick={() => {
-              setView("forget");
-            }}
-          >
-            Forget password?
-          </span>
+          <Link href={"/forget"}>Forget password?</Link>
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>
@@ -89,15 +83,9 @@ export default function MailLogin({ setView }) {
 
       <div className="text-center text14Medium text-textSecondary">
         Don't have an account?{" "}
-        <span
-          role="button"
-          onClick={() => {
-            setView("signUp");
-          }}
-          className="text-theme500"
-        >
+        <Link href={"/signup"} className="text-theme500">
           Sign up
-        </span>
+        </Link>
       </div>
     </FormWrapper>
   );
