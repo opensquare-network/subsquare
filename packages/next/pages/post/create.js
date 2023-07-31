@@ -15,7 +15,7 @@ export default withLoginUserRedux(() => {
     if (!isLogin) {
       openLoginPopup();
     }
-  }, [isLogin]);
+  }, [isLogin, openLoginPopup]);
 
   const breadcrumbItems = [
     {
