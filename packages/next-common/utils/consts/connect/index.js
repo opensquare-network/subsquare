@@ -1,18 +1,20 @@
-import PolkadotLogo from "../../../assets/icons/wallet/polkadot.svg";
-import SubWalletLogo from "../../../assets/icons/wallet/subWallet.svg";
-import TalismanLogo from "../../../assets/icons/wallet/talisman.svg";
-import MetaMaskLogo from "../../../assets/icons/wallet/metamask.svg";
-import PolkagateLogo from "../../../assets/icons/wallet/polkagate.svg";
-import NovaLogo from "../../../assets/icons/wallet/nova.svg";
 import WalletTypes from "../walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
+import {
+  WalletMetamask,
+  WalletNova,
+  WalletPolkadotjs,
+  WalletPolkagate,
+  WalletSubwallet,
+  WalletTailsman,
+} from "@osn/icons/subsquare";
 
 const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
   title: "Polkadot.js",
   installUrl:
     "https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd",
-  logo: PolkadotLogo,
+  logo: WalletPolkadotjs,
 };
 
 const subWalletJs = {
@@ -20,7 +22,7 @@ const subWalletJs = {
   title: "SubWallet",
   installUrl:
     "https://chrome.google.com/webstore/detail/subwallet/onhogfjeacnfoofkfgppdlbmlmnplgbn",
-  logo: SubWalletLogo,
+  logo: WalletSubwallet,
 };
 
 const talisman = {
@@ -28,7 +30,7 @@ const talisman = {
   title: "Talisman",
   installUrl:
     "https://chrome.google.com/webstore/detail/talisman-wallet/fijngjgcjhjmmpcmkeiomlglpeiijkld",
-  logo: TalismanLogo,
+  logo: WalletTailsman,
 };
 
 const metamask = {
@@ -36,7 +38,7 @@ const metamask = {
   title: "MetaMask",
   installUrl:
     "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
-  logo: MetaMaskLogo,
+  logo: WalletMetamask,
 };
 
 const polkagate = {
@@ -44,14 +46,14 @@ const polkagate = {
   title: "PolkaGate",
   installUrl:
     "https://chrome.google.com/webstore/detail/polkagate-the-gateway-to/ginchbkmljhldofnbjabmeophlhdldgp",
-  logo: PolkagateLogo,
+  logo: WalletPolkagate,
 };
 
 const nova = {
   extensionName: WalletTypes.NOVA,
   title: "Nova",
   installUrl: "https://novawallet.io/",
-  logo: NovaLogo,
+  logo: WalletNova,
 };
 
 export function getWallets() {

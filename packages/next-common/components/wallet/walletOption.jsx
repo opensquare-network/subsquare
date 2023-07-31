@@ -19,6 +19,8 @@ export default function WalletOption(props) {
           : "bg-neutral200 border-neutral200 cursor-not-allowed pointer-events-none select-none text-textTertiary",
         props.selected && "bg-neutral300 border-neutral300",
 
+        // wallet logo svg
+        "[&>div_svg]:w-10 [&_svg]:h-10",
         "[&_span.wallet-not-installed]:text12Medium",
 
         props.className,
