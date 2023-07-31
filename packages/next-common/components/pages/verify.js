@@ -20,9 +20,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   const { countdown, counting: success, startCountdown } = useCountdown(3);
 
   if (success && countdown === 0) {
-    if (loginUser) {
-      router.replace("/");
-    }
+    router.replace(loginUser ? "/" : "/login");
   }
 
   useEffect(() => {
