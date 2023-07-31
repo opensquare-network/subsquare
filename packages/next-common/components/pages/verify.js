@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
@@ -7,22 +6,10 @@ import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
-import {
-  ContentCenterWrapper,
-  InfoWrapper,
-  Redirect,
-} from "next-common/components/login/styled";
+import { InfoWrapper, Redirect } from "next-common/components/login/styled";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
-import BaseLayout from "../layout/baseLayout";
 import GhostButton from "../buttons/ghostButton";
-
-const Wrapper = styled.div`
-  padding: 32px 0;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
+import { LoginCard } from "../styled/containers/loginCard";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const [errors, setErrors] = useState();
@@ -64,18 +51,18 @@ export default withLoginUserRedux(({ loginUser }) => {
   }, [email, token, router, isMounted, startCountdown]);
 
   return (
-    <BaseLayout>
+    <>
       <NextHead title={"Verify email"} desc={"Verify email"} />
-      <Wrapper>
+      <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
-          <ContentCenterWrapper>
+          <>
             <PageTitleContainer>Verify Email</PageTitleContainer>
             {loading && <InfoWrapper>Please wait for a moment...</InfoWrapper>}
             {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
-          </ContentCenterWrapper>
+          </>
         )}
         {success && (
-          <ContentCenterWrapper>
+          <>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your email has been verified.</InfoWrapper>
             <GhostButton isFill onClick={() => router.replace("/")}>
@@ -85,9 +72,9 @@ export default withLoginUserRedux(({ loginUser }) => {
               The page will be re-directed in
               <span className="sec">{countdown}s</span>
             </Redirect>
-          </ContentCenterWrapper>
+          </>
         )}
-      </Wrapper>
-    </BaseLayout>
+      </LoginCard>
+    </>
   );
 });
