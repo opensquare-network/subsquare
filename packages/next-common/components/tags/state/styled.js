@@ -2,6 +2,8 @@ import styled from "styled-components";
 import tw from "tailwind-styled-components";
 
 const Common = styled.span`
+  display: inline-flex;
+  align-items: center;
   padding: 2px 8px;
   font-size: 12px;
   line-height: 16px;
