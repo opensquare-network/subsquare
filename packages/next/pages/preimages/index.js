@@ -30,7 +30,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      title: "Preimages",
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
     },
