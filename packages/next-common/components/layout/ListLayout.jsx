@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import BaseLayout from "./baseLayoutV2";
+import BaseLayout from "./baseLayout";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isExternalLink } from "next-common/utils";
