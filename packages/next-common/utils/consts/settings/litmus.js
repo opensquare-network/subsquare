@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/litmus.svg";
-import DarkModeLogo from "../../../assets/header-logos/litmus-dark.svg";
 import Avatar from "../../../assets/icons/chain/litmus.png";
 
 import Chains from "../chains";
@@ -48,8 +46,6 @@ const litmus = {
   ss58Format: 131,
   snsCoverCid: "bafybeiexfrkdte6eruqghlc66xpnfoyadkgq5we3ql5elqjwgdzbxmez6q",
   endpoints: DEFAULT_LITMUS_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoLitmusLight,
   navLogoDark: ProjectLogoLitmusLight,

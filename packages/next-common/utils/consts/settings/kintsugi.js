@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/kintsugi.svg";
-import DarkModeLogo from "../../../assets/header-logos/kintsugi-dark.svg";
 import Avatar from "../../../assets/icons/chain/kintsugi.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
@@ -71,8 +69,6 @@ const kintsugi = {
   ss58Format: 2092,
   snsCoverCid: "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
   endpoints: DEFAULT_KINTSUGI_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoKintsugiDark,
   navLogoDark: ProjectLogoKintsugiDark,

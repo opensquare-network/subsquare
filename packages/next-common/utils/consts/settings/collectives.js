@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/collectives.svg";
-import DarkModeLogo from "../../../assets/header-logos/collectives-dark.svg";
 import Avatar from "../../../assets/icons/chain/collectives.png";
 import DarkAvatar from "../../../assets/icons/chain/collectives-dark.png";
 
@@ -39,8 +37,6 @@ const collectives = {
   ss58Format: 0,
   snsCoverCid: "bafybeigyl3p7ikczpt4an4diyynbqsco6oqxza47vf3o2jeinkumm5pwby",
   endpoints: collectivesEndpoints,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoPolkadotCollectivesLight,

@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/polkadot.svg";
-import DarkModeLogo from "../../../assets/header-logos/polkadot-dark.svg";
 import Avatar from "../../../assets/icons/chain/polkadot.png";
 
 import capitalize from "../../capitalize";
@@ -86,8 +84,6 @@ const polkadot = {
   blockTime: 6000,
   snsCoverCid: "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe",
   endpoints: defaultPolkadotNodes,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoPolkadotLight,
   navLogoDark: ProjectLogoPolkadotDark,

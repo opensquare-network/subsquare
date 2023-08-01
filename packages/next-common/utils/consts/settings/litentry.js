@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/litentry.svg";
-import DarkModeLogo from "../../../assets/header-logos/litentry-dark.svg";
 import Avatar from "../../../assets/icons/chain/litentry.png";
 
 import Chains from "../chains";
@@ -60,8 +58,6 @@ const litentry = {
   ss58Format: 31,
   snsCoverCid: "bafybeiej7his75nmaf2yhm6n3sqxf3ew2kvkyb7q37pbt37b72jwvs5cu4",
   endpoints: DEFAULT_LITENTRY_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoLitentryDark,
   navLogoDark: ProjectLogoLitentryDark,

@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/moonbeam.svg";
-import DarkModeLogo from "../../../assets/header-logos/moonbeam-dark.svg";
 import Avatar from "../../../assets/icons/chain/moonbeam.png";
 
 import Chains from "../chains";
@@ -30,8 +28,6 @@ const moonbeam = {
   ss58Format: 18,
   snsCoverCid: "QmQ2r48Wf6yu8d9k9VEejvcRoxNDVuiqW12ui7RCiXgWQg",
   endpoints: DEFAULT_MOONBEAM_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoMoonbeamDark,
   navLogoDark: ProjectLogoMoonbeamDark,

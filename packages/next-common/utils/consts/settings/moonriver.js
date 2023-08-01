@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/moonriver.svg";
-import DarkModeLogo from "../../../assets/header-logos/moonriver-dark.svg";
 import Avatar from "../../../assets/icons/chain/moonriver.png";
 
 import Chains from "../chains";
@@ -30,8 +28,6 @@ const moonriver = {
   ss58Format: 18,
   snsCoverCid: "QmR2LSfa9e46C1Wc5LTZ2oRm9wkdaxfX4SyhYXVohcsdrB",
   endpoints: DEFAULT_MOONRIVER_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   navLogo: ProjectLogoMoonriverDark,
   navLogoDark: ProjectLogoMoonriverDark,
   avatar: Avatar,
