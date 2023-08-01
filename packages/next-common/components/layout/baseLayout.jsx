@@ -5,7 +5,7 @@ import Header from "../header/v2";
 import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
-import Footer from "./footer/v2";
+import Footer from "./footer";
 import useApi from "next-common/utils/hooks/useApi";
 import {
   useBlockTime,
