@@ -10,7 +10,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
-import usePreimage from "hooks/usePreimage";
+import usePreimage from "next-common/hooks/usePreimage";
 import { SystemLoadingDots } from "@osn/icons/subsquare";
 import PreimageDetailPopup from "./preImageDetailPopup";
 import { useUser } from "next-common/context/user";
