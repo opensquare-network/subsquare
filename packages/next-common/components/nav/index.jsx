@@ -3,7 +3,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
-import HeaderDrawer from "../header/v2/drawer";
+import HeaderDrawer from "../header/drawer";
 import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { useNavCollapsed } from "next-common/context/nav";

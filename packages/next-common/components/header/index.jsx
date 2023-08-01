@@ -1,8 +1,8 @@
 import { useChainSettings } from "next-common/context/chain";
-import HeaderAccount from "../headerAccount";
-import NetworkSwitch from "../networkSwitch";
-import NodeSwitch from "../nodeSwitch";
-import SearchInput from "../searchInput";
+import HeaderAccount from "./headerAccount";
+import NetworkSwitch from "./networkSwitch";
+import NodeSwitch from "./nodeSwitch";
+import SearchInput from "./searchInput";
 
 export default function Header() {
   const chainSettings = useChainSettings();

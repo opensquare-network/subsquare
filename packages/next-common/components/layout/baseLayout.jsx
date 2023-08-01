@@ -1,7 +1,7 @@
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import CMDKPalette from "../cmdk/cmdkPalette";
 import CookiesConsent from "../cookiesConsent";
-import Header from "../header/v2";
+import Header from "../header";
 import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
