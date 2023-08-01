@@ -16,6 +16,11 @@ import PreimageDetailPopup from "./preImageDetailPopup";
 import { useUser } from "next-common/context/user";
 import DotSplitter from "next-common/components/dotSplitter";
 import UnnoteButton from "./unnoteButton";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  preImagesTriggerUpdateSelector,
+  setPreImagesTriggerUpdate,
+} from "next-common/store/reducers/preImagesSlice";
 
 const FieldLoading = styled(SystemLoadingDots)`
   & ellipse {
@@ -53,7 +58,7 @@ function Hash({ hash, proposal, setShowArgumentsDetail }) {
   );
 }
 
-function Deposit({ hash, deposit, count, status }) {
+function Deposit({ hash, deposit, count, status, onUnnoteInBlock }) {
   const { symbol, decimals } = useChainSettings();
   const { who, amount } = deposit;
   const user = useUser();
@@ -63,7 +68,7 @@ function Deposit({ hash, deposit, count, status }) {
     user?.address === who && (
       <>
         <DotSplitter />
-        <UnnoteButton hash={hash} />
+        <UnnoteButton hash={hash} onInBlock={onUnnoteInBlock} />
       </>
     );
 
@@ -164,6 +169,8 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
     .map(([hash]) => {
       return {
         useData: () => {
+          const dispatch = useDispatch();
+          const triggerUpdate = useSelector(preImagesTriggerUpdateSelector);
           const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
           return [
@@ -192,6 +199,10 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
                   hash={hash}
                   count={preimage.count}
                   status={preimage.statusName}
+                  onUnnoteInBlock={() =>
+                    dispatch(setPreImagesTriggerUpdate(Date.now()))
+                  }
+                  triggerUpdate={triggerUpdate}
                 />
               )
             ) : (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import UnnotePopup from "./unnotePopup";
 
-export default function UnnoteButton({ hash }) {
+export default function UnnoteButton({ hash, onInBlock }) {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <>
@@ -12,7 +12,11 @@ export default function UnnoteButton({ hash }) {
         Unnote
       </span>
       {showPopup && (
-        <UnnotePopup hash={hash} onClose={() => setShowPopup(false)} />
+        <UnnotePopup
+          hash={hash}
+          onClose={() => setShowPopup(false)}
+          onInBlock={onInBlock}
+        />
       )}
     </>
   );
