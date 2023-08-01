@@ -46,6 +46,7 @@ export default function PostContent() {
           )}
         >
           <GhostButton
+            small
             onClick={() => {
               setPostContentCollapsed(!postContentCollapsed);
             }}
