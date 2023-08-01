@@ -46,6 +46,7 @@ export const Label = styled.div`
   font-size: 12px;
   margin-bottom: 8px;
   line-height: 12px;
+  color: var(--textPrimary);
   :not(:first-child) {
     margin-top: 16px;
   }
