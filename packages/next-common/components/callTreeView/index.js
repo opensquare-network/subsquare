@@ -34,7 +34,7 @@ function IndentPanel({ className, children }) {
 }
 
 function CallPanel({ call, callIndex }) {
-  const [folded, setFolded] = useState(true);
+  const [folded, setFolded] = useState(false);
   const { section, method, meta, argsEntries } = call || {};
   const { args } = meta || {};
 
@@ -217,7 +217,7 @@ function ValuePanel({ registry, name, type, typeName, value }) {
     valueComponent = hexIsValidUTF8(hex) ? (
       <span className="break-all whitespace-pre-wrap">{hexToString(hex)}</span>
     ) : (
-      <div className="break-all">
+      <div className="!break-all">
         <LongText text={hex} />
       </div>
     );
