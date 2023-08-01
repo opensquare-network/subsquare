@@ -53,17 +53,19 @@ function Hash({ hash, proposal, setShowArgumentsDetail }) {
   );
 }
 
-function Deposit({ hash, deposit, status }) {
+function Deposit({ hash, deposit, count, status }) {
   const { symbol, decimals } = useChainSettings();
   const { who, amount } = deposit;
   const user = useUser();
 
-  const unnote = status.toLowerCase() === "noted" && user?.address === who && (
-    <>
-      <DotSplitter />
-      <UnnoteButton hash={hash} />
-    </>
-  );
+  const unnote = count === 0 &&
+    status.toLowerCase() === "unrequested" &&
+    user?.address === who && (
+      <>
+        <DotSplitter />
+        <UnnoteButton hash={hash} />
+      </>
+    );
 
   return (
     <div className="flex flex-col">
@@ -188,6 +190,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
                   key="deposit"
                   deposit={preimage.deposit}
                   hash={hash}
+                  count={preimage.count}
                   status={preimage.statusName}
                 />
               )
