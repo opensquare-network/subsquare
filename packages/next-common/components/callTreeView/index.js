@@ -90,8 +90,8 @@ function ArrayPanel({ registry, name, type, values, sub }) {
           <ValuePanel
             key={`value-${i}`}
             name={`${i}`}
-            type={sub[i].type}
-            typeName={sub[i].type}
+            type={sub[i]?.type}
+            typeName={sub[i]?.type}
             value={value}
             registry={registry}
           />
