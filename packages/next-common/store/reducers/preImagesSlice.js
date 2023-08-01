@@ -3,18 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const preImagesSlice = createSlice({
   name: "preImages",
   initialState: {
-    preImagesTriggerUpdate: [],
+    trigger: 0,
   },
   reducers: {
-    setPreImagesTriggerUpdate(state, { payload }) {
-      state.preImagesTriggerUpdate = payload;
+    incTrigger(state) {
+      state.trigger += 1;
     },
   },
 });
 
-export const { setPreImagesTriggerUpdate } = preImagesSlice.actions;
+export const { incTrigger: incPreImagesTrigger } = preImagesSlice.actions;
 
-export const preImagesTriggerUpdateSelector = (state) =>
-  state.preImages.preImagesTriggerUpdate;
+export const preImagesTriggerSelector = (state) => state.preImages.trigger;
 
 export default preImagesSlice.reducer;

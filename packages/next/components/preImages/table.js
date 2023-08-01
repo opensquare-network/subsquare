@@ -18,8 +18,8 @@ import DotSplitter from "next-common/components/dotSplitter";
 import UnnoteButton from "./unnoteButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  preImagesTriggerUpdateSelector,
-  setPreImagesTriggerUpdate,
+  incPreImagesTrigger,
+  preImagesTriggerSelector,
 } from "next-common/store/reducers/preImagesSlice";
 
 const FieldLoading = styled(SystemLoadingDots)`
@@ -170,7 +170,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
       return {
         useData: () => {
           const dispatch = useDispatch();
-          const triggerUpdate = useSelector(preImagesTriggerUpdateSelector);
+          const triggerUpdate = useSelector(preImagesTriggerSelector);
           const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
           return [
@@ -199,9 +199,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
                   hash={hash}
                   count={preimage.count}
                   status={preimage.statusName}
-                  onUnnoteInBlock={() =>
-                    dispatch(setPreImagesTriggerUpdate(Date.now()))
-                  }
+                  onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
                   triggerUpdate={triggerUpdate}
                 />
               )
