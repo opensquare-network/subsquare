@@ -51,7 +51,7 @@ export default function PostContent() {
               setPostContentCollapsed(!postContentCollapsed);
             }}
           >
-            View {postContentCollapsed ? "All" : "Less"}
+            Show {postContentCollapsed ? "More" : "Less"}
           </GhostButton>
         </div>
       )}
