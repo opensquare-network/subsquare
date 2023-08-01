@@ -4,7 +4,6 @@ import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/v2/drawer";
-import { useIsDark } from "next-common/context/theme";
 import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -40,17 +39,16 @@ function BrandingHint() {
 
 function ChainLogo({ className = "" }) {
   const chainSettings = useChainSettings();
-  const isDark = useIsDark();
-  const NavLogo = isDark ? chainSettings.navLogoDark : chainSettings.navLogo;
 
-  if (!NavLogo) {
+  if (!chainSettings.navLogo || !chainSettings.navLogoDark) {
     return null;
   }
 
   return (
     <div className={className}>
       <Link href="/">
-        <NavLogo />
+        <chainSettings.navLogo className="dark:hidden" />
+        <chainSettings.navLogoDark className="hidden dark:block" />
       </Link>
     </div>
   );
