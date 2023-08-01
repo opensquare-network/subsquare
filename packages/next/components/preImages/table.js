@@ -36,9 +36,7 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-function Hash({ hash, proposal }) {
-  const [showArgumentsDetail, setShowArgumentsDetail] = useState(false);
-
+function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
     <div className="flex">
       <div className="flex items-center w-[160px]">
@@ -49,15 +47,9 @@ function Hash({ hash, proposal }) {
       <div className="flex items-centers mx-[16px]">
         <DetailButton
           disabled={!proposal}
-          onClick={() => setShowArgumentsDetail(true)}
+          onClick={() => setShowArgumentsDetail(proposal)}
         />
       </div>
-      {showArgumentsDetail && (
-        <PreimageDetailPopup
-          setShow={setShowArgumentsDetail}
-          proposal={proposal}
-        />
-      )}
     </div>
   );
 }
@@ -90,7 +82,12 @@ function Deposit({ hash, deposit }) {
   );
 }
 
-function Proposal({ proposal, proposalError, proposalWarning }) {
+function Proposal({
+  proposal,
+  proposalError,
+  proposalWarning,
+  setShowArgumentsDetail,
+}) {
   if (proposalError) {
     return <span className="text-red500 font-medium">{proposalError}</span>;
   }
@@ -103,7 +100,10 @@ function Proposal({ proposal, proposalError, proposalWarning }) {
   const doc = meta?.docs[0]?.toJSON();
   return (
     <div className="flex flex-col">
-      <span className="font-medium leading-[20px]">{`${section}.${method}`}</span>
+      <span
+        className="font-medium leading-[20px] hover:underline cursor-pointer"
+        onClick={() => setShowArgumentsDetail(proposal)}
+      >{`${section}.${method}`}</span>
       <span className="text-textSecondary text-[12px] leading-[16px]">
         {doc}
       </span>
@@ -123,6 +123,7 @@ function parseStatus(status) {
 
 export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
   const user = useUser();
+  const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const { columns } = useColumns([
     {
       name: "Hash",
@@ -166,13 +167,19 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
           const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
           return [
-            <Hash key="hash" hash={hash} proposal={preimage.proposal} />,
+            <Hash
+              key="hash"
+              hash={hash}
+              proposal={preimage.proposal}
+              setShowArgumentsDetail={setShowArgumentsDetail}
+            />,
             isBytesLoaded ? (
               <Proposal
                 key="proposal"
                 proposal={preimage.proposal}
                 proposalError={preimage.proposalError}
                 proposalWarning={preimage.proposalWarning}
+                setShowArgumentsDetail={setShowArgumentsDetail}
               />
             ) : (
               <FieldLoading />
@@ -214,6 +221,12 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
           loading={!data}
         />
       </ListWrapper>
+      {showArgumentsDetail && (
+        <PreimageDetailPopup
+          setShow={() => setShowArgumentsDetail(null)}
+          proposal={showArgumentsDetail}
+        />
+      )}
     </SecondaryCard>
   );
 }

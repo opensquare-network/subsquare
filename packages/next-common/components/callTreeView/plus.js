@@ -3,11 +3,13 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: inline-flex;
-  padding: 2px;
-  border-radius: 4px;
-  border: 1px solid var(--neutral400);
   svg path {
-    fill: var(--textPrimary);
+    fill: var(--textTertiary);
+  }
+  :hover {
+    svg path {
+      fill: var(--textPrimary);
+    }
   }
 `;
 

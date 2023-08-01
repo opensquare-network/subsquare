@@ -18,6 +18,7 @@ const LongText = dynamic(() => import("next-common/components/longText"), {
 });
 
 const accountTypes = ["MultiAddress", "AccountId32"];
+const hashTypes = ["H256", "[u8;32]"];
 
 function IndentPanel({ className, children }) {
   return (
@@ -33,20 +34,28 @@ function IndentPanel({ className, children }) {
 }
 
 function CallPanel({ call, callIndex }) {
+  const [folded, setFolded] = useState(true);
   const { section, method, meta, argsEntries } = call || {};
   const { args } = meta || {};
 
   return (
     <div>
-      <div className="flex flex-col px-[16px] py-[8px] bg-neutral200 rounded-[4px]">
-        <span className="font-medium leading-[20px] text-textTertiary">
-          {isNil(callIndex) ? "call: Call" : `${callIndex}: Call: Call`}
-        </span>
-        <span className="font-medium leading-[20px]">{`${section}.${method}`}</span>
+      <div className="flex px-[16px] py-[8px] bg-neutral200 rounded-[4px] justify-between">
+        <div className="flex flex-col">
+          <span className="font-medium leading-[20px] text-textTertiary">
+            {isNil(callIndex) ? "call: Call" : `${callIndex}: Call: Call`}
+          </span>
+          <span className="font-medium leading-[20px] truncate">{`${section}.${method}`}</span>
+        </div>
+        <div className="flex flex-col justify-end">
+          <FoldButton setFolded={setFolded} folded={folded} />
+        </div>
       </div>
-      <IndentPanel>
-        <CallArgsPanel argsEntries={argsEntries} args={args} />
-      </IndentPanel>
+      {!folded && (
+        <IndentPanel>
+          <CallArgsPanel argsEntries={argsEntries} args={args} />
+        </IndentPanel>
+      )}
     </div>
   );
 }
@@ -72,7 +81,9 @@ function ArrayPanel({ registry, name, type, values, sub }) {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-center">
-        <span className="font-medium"> {name ? `${name}: ${type}` : type}</span>
+        <span className="font-medium truncate">
+          {name ? `${name}: ${type}` : type}
+        </span>
       </div>
       <IndentPanel className="gap-[8px]">
         {values.map((value, i) => (
@@ -91,20 +102,14 @@ function ArrayPanel({ registry, name, type, values, sub }) {
 }
 
 function CallsPanel({ name, type, calls }) {
-  const [folded, setFolded] = useState(false);
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between items-center">
-        <span className="font-medium">{`${name}: ${type}`}</span>
-        <FoldButton setFolded={setFolded} folded={folded} />
-      </div>
-      {!folded && (
-        <IndentPanel className="gap-[8px]">
-          {calls.map((call, i) => (
-            <CallPanel key={`call-${i}`} callIndex={i} call={call} />
-          ))}
-        </IndentPanel>
-      )}
+      <span className="font-medium truncate">{`${name}: ${type}`}</span>
+      <IndentPanel className="gap-[8px]">
+        {calls.map((call, i) => (
+          <CallPanel key={`call-${i}`} callIndex={i} call={call} />
+        ))}
+      </IndentPanel>
     </div>
   );
 }
@@ -209,12 +214,12 @@ function ValuePanel({ registry, name, type, typeName, value }) {
     );
   } else if (type === "Bytes") {
     const hex = val.toString();
-    valueComponent = (
-      <span className="break-all">
-        {hexIsValidUTF8(hex) ? hexToString(hex) : <LongText text={hex} />}
-      </span>
+    valueComponent = hexIsValidUTF8(hex) ? (
+      <span className="break-all whitespace-pre-wrap">{hexToString(hex)}</span>
+    ) : (
+      <LongText text={hex} />
     );
-  } else if (["H256", "[u8;32]"].includes(type)) {
+  } else if (hashTypes.includes(type)) {
     valueComponent = <Copyable>{val}</Copyable>;
   } else {
     if (val instanceof Object && registry) {
