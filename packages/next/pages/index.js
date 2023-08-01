@@ -1,7 +1,10 @@
 import OverviewPostList from "next-common/components/overview/postList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toAdvisoryMotionsListItem, toFinancialMotionsListItem } from "utils/viewfuncs";
+import {
+  toAdvisoryMotionsListItem,
+  toFinancialMotionsListItem,
+} from "utils/viewfuncs";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
@@ -25,10 +28,9 @@ import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
-import normalizeTreasuryCouncilMotionListItem
-  from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
-import normalizeOpenTechCommProposalListItem
-  from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
+import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import useAccountVotes from "next-common/hooks/referenda/votes/useAccountVotes";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -37,6 +39,10 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isCollectives = isCollectivesChain(chain);
   const isZeitgeist = chain === Chains.zeitgeist;
   const chainSettings = useChainSettings();
+  const { isLoading, votes } = useAccountVotes(
+    "ESgz7GLVW7BL5DhRgpVnxSXVwaKt4ytWcrf52TY1GQD1cEb",
+  );
+  console.log(isLoading, votes);
 
   const discussionsCategory = [
     {
@@ -62,15 +68,13 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     });
   }
   if (chainSettings.hasFellowship) {
-    overviewData.push(
-      {
-        category: businessCategory.fellowship,
-        link: "/fellowship",
-        items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
-          normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-        ),
-      },
-    );
+    overviewData.push({
+      category: businessCategory.fellowship,
+      link: "/fellowship",
+      items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
+        normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+      ),
+    });
   }
 
   if (isCollectives) {
