@@ -217,7 +217,9 @@ function ValuePanel({ registry, name, type, typeName, value }) {
     valueComponent = hexIsValidUTF8(hex) ? (
       <span className="break-all whitespace-pre-wrap">{hexToString(hex)}</span>
     ) : (
-      <LongText text={hex} />
+      <div className="break-all">
+        <LongText text={hex} />
+      </div>
     );
   } else if (hashTypes.includes(type)) {
     valueComponent = <Copyable>{val}</Copyable>;
