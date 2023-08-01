@@ -90,8 +90,8 @@ function ArrayPanel({ registry, name, type, values, sub }) {
           <ValuePanel
             key={`value-${i}`}
             name={`${i}`}
-            type={sub[i]?.type}
-            typeName={sub[i]?.type}
+            type={(sub[i] || sub[0])?.type}
+            typeName={(sub[i] || sub[0])?.type}
             value={value}
             registry={registry}
           />
@@ -177,15 +177,17 @@ function StructPanel({ registry, name, type, typeName, value, sub }) {
         </span>
         <div>{subName}</div>
       </div>
-      <IndentPanel className="gap-[8px]">
-        <ValuePanel
-          registry={registry}
-          name={subName}
-          typeName={subType}
-          type={subType}
-          value={value.value}
-        />
-      </IndentPanel>
+      {!value.isNone && (
+        <IndentPanel className="gap-[8px]">
+          <ValuePanel
+            registry={registry}
+            name={subName}
+            typeName={subType}
+            type={subType}
+            value={value.value}
+          />
+        </IndentPanel>
+      )}
     </div>
   );
 }
@@ -222,7 +224,7 @@ function ValuePanel({ registry, name, type, typeName, value }) {
       </div>
     );
   } else if (hashTypes.includes(type)) {
-    valueComponent = <Copyable>{val}</Copyable>;
+    valueComponent = <Copyable size={14}>{val}</Copyable>;
   } else {
     if (val instanceof Object && registry) {
       let sub;
