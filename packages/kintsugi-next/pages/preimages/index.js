@@ -1,6 +1,4 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import usePreimageHashs from "next-common/hooks/usePreimageHashs";
@@ -23,15 +21,7 @@ export default withLoginUserRedux(() => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
-
   return {
-    props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
-    },
+    props: {},
   };
 });
