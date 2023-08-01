@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.3
+date: 2023-08-01
+- Support login popup and refactor various login related pages.
+- Fix kintsugi/interlay treasury balance.
+- Refactor kintsugi/interlay democracy next launch related code.
+- Add warning components when OpenGov referendum preimage is missing.
+- Fix timeline count for OpenGov referendum, treasury proposal and bounty.
+- Support OpenGov referendum decision deposit refund.
+- Fix project logo dark mode color on navigation panel.
+
 ### 3.3.2
 date: 2023-07-27
 - Add OpenGov referendum confirmation toggle component, so we can see confirmation status in different views.
