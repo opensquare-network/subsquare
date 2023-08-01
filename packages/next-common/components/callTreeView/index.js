@@ -34,7 +34,7 @@ function IndentPanel({ className, children }) {
 }
 
 function CallPanel({ call, callIndex }) {
-  const [folded, setFolded] = useState(false);
+  const [folded, setFolded] = useState(true);
   const { section, method, meta, argsEntries } = call || {};
   const { args } = meta || {};
 

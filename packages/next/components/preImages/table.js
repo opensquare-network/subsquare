@@ -8,7 +8,6 @@ import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import { ClosedTag } from "next-common/components/tags/state/styled";
 import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
 import usePreimage from "hooks/usePreimage";
@@ -54,13 +53,12 @@ function Hash({ hash, proposal, setShowArgumentsDetail }) {
   );
 }
 
-function Deposit({ hash, deposit }) {
+function Deposit({ hash, deposit, status }) {
   const { symbol, decimals } = useChainSettings();
   const { who, amount } = deposit;
   const user = useUser();
 
-  //TODO: should also check preimage status to see if it's need to show unnote?
-  const unnote = user?.address === who && (
+  const unnote = status.toLowerCase() === "noted" && user?.address === who && (
     <>
       <DotSplitter />
       <UnnoteButton hash={hash} />
@@ -186,7 +184,12 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
             ),
             isStatusLoaded ? (
               preimage.deposit && (
-                <Deposit key="deposit" deposit={preimage.deposit} hash={hash} />
+                <Deposit
+                  key="deposit"
+                  deposit={preimage.deposit}
+                  hash={hash}
+                  status={preimage.statusName}
+                />
               )
             ) : (
               <FieldLoading />
@@ -198,10 +201,13 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
             ),
             isStatusLoaded ? (
               preimage.statusName && (
-                <ClosedTag key="status" className="capitalize">
+                <span
+                  key="status"
+                  className="capitalize text-textTertiary font-medium"
+                >
                   {preimage.statusName +
-                    (preimage.count ? ` / ${preimage.count}` : "")}
-                </ClosedTag>
+                    (preimage.count ? `(${preimage.count})` : "")}
+                </span>
               )
             ) : (
               <FieldLoading />
