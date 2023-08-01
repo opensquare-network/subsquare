@@ -41,7 +41,7 @@ export default function PostContent() {
             "absolute bottom-0 right-0 left-0",
             !postContentCollapsed && "!static",
             postContentCollapsed
-              ? "pt-12 bg-gradient-to-b from-transparent to-neutral100"
+              ? "pt-12 pb-4 bg-gradient-to-b from-transparent via-neutral100-80 to-neutral100"
               : "mt-4",
           )}
         >
