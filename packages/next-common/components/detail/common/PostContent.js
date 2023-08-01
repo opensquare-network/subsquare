@@ -4,17 +4,18 @@ import { usePost } from "../../../context/post";
 import clsx from "clsx";
 import GhostButton from "next-common/components/buttons/ghostButton";
 
+const collapsedHeight = 640;
+
 export default function PostContent() {
   const post = usePost();
   const ref = useRef(null);
-  const [showCollapse, setShowCollapse] = useState(false);
-  // assume is long content by default to avoid flicker
-  const [collapsed, setCollapsed] = useState(true);
+  const [showToggleButton, setShowToggleButton] = useState(false);
+  // assume is long content by default to AVOID flicker
+  const [postContentCollapsed, setPostContentCollapsed] = useState(true);
 
   useEffect(() => {
-    const shouldCollapse = ref.current?.clientHeight >= 640;
-    setShowCollapse(shouldCollapse);
-    setCollapsed(shouldCollapse);
+    const shouldCollapse = ref.current?.clientHeight >= collapsedHeight;
+    setShowToggleButton(shouldCollapse);
   }, [ref]);
 
   return (
@@ -23,7 +24,7 @@ export default function PostContent() {
       className={clsx(
         "flex flex-col",
         "relative",
-        collapsed && "max-h-[640px] overflow-hidden",
+        postContentCollapsed && "max-h-[640px] overflow-hidden",
       )}
     >
       {post.contentType === "markdown" && (
@@ -33,25 +34,24 @@ export default function PostContent() {
         <HtmlPreviewer content={post.content || ""} />
       )}
 
-      {!showCollapse && (
+      {showToggleButton && (
         <div
           className={clsx(
+            "flex justify-center",
             "absolute bottom-0 right-0 left-0",
-            !collapsed && "!static",
-            collapsed
+            !postContentCollapsed && "!static",
+            postContentCollapsed
               ? "pt-12 bg-gradient-to-b from-transparent to-neutral100"
               : "mt-4",
           )}
         >
-          <div className="text-center">
-            <GhostButton
-              onClick={() => {
-                setCollapsed(!collapsed);
-              }}
-            >
-              View {collapsed ? "All" : "Less"}
-            </GhostButton>
-          </div>
+          <GhostButton
+            onClick={() => {
+              setPostContentCollapsed(!postContentCollapsed);
+            }}
+          >
+            View {postContentCollapsed ? "All" : "Less"}
+          </GhostButton>
         </div>
       )}
     </div>
