@@ -11,6 +11,7 @@ export function useAddressVotingBalance(api, address) {
 
   const refresh = useCallback(() => {
     if (!api || !address) {
+      setBalance(0);
       return;
     }
 
