@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/bifrost-polkadot.svg";
-import DarkModeLogo from "../../../assets/header-logos/bifrost-polkadot-dark.svg";
 import Avatar from "../../../assets/icons/chain/bifrost-polkadot.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
@@ -33,8 +31,6 @@ const bifrostPolkadot = {
   ss58Format: 6,
   snsCoverCid: "bafybeicykjzlwi3rjs637txy4fn2m6qbjofjwlypgmthbbb7i3f522xjzy",
   endpoints: DEFAULT_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoBifrostPolkadotLight,
   navLogoDark: ProjectLogoBifrostPolkadotDark,

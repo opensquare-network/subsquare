@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/westend-collectives.svg";
-import DarkModeLogo from "../../../assets/header-logos/westend-collectives-dark.svg";
 import Avatar from "../../../assets/icons/chain/westend-collectives.png";
 import DarkAvatar from "../../../assets/icons/chain/westend-collectives-dark.png";
 
@@ -35,8 +33,6 @@ const westendCollectives = {
   ss58Format: 42,
   snsCoverCid: "bafybeibtr7oelilpotm26qrnnp34ztbnde7ouu5fdflcx6f6dj6foyb5eq",
   endpoints: westendCollectivesEndpoints,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoWestendCollectivesLight,

@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/zeitgeist.svg";
-import DarkModeLogo from "../../../assets/header-logos/zeitgeist-dark.svg";
 import Avatar from "../../../assets/icons/chain/zeitgeist.png";
 import DarkAvatar from "../../../assets/icons/chain/zeitgeist-dark.png";
 
@@ -54,8 +52,6 @@ const zeitgeist = {
   blockTime: 12000,
   snsCoverCid: "bafybeifwpcjcbym2df3zuh63p4nowvh53d6hgludiwvlsnusxckyke5sri",
   endpoints: defaultNodes,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoZeigeistDark,

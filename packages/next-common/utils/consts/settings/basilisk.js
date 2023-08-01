@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/basilisk.svg";
-import DarkModeLogo from "../../../assets/header-logos/basilisk-dark.svg";
 import Avatar from "../../../assets/icons/chain/basilisk.png";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
@@ -52,8 +50,6 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoBasiliskDark,
   navLogoDark: ProjectLogoBasiliskDark,
@@ -63,7 +59,8 @@ const basilisk = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   useVoteCall: true,
-  description: "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
+  description:
+    "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
 };
 
 export default basilisk;

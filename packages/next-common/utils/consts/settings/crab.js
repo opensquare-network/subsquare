@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/crab.svg";
-import DarkModeLogo from "../../../assets/header-logos/crab-dark.svg";
 import Avatar from "../../../assets/icons/chain/crab.png";
 
 import Chains from "../chains";
@@ -33,8 +31,6 @@ const crab = {
   blockTime: 6000,
   snsCoverCid: "bafybeihxlzbqo54y5llxp4p5kd77bgxpgjppfk33gfgdbo6kjraxclefcu",
   endpoints: DEFAULT_CRAB_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,

@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/acala.svg";
-import DarkModeLogo from "../../../assets/header-logos/acala-dark.svg";
 import Avatar from "../../../assets/icons/chain/acala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
@@ -72,8 +70,6 @@ const acala = {
   ss58Format: 10,
   snsCoverCid: "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy",
   endpoints: DEFAULT_ACALA_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoAcalaLight,
   navLogoDark: ProjectLogoAcalaDark,

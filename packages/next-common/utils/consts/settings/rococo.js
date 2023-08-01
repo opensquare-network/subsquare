@@ -1,6 +1,4 @@
 import capitalize from "../../capitalize";
-import Logo from "../../../assets/header-logos/rococo.svg";
-import DarkModeLogo from "../../../assets/header-logos/rococo-dark.svg";
 import Avatar from "../../../assets/icons/chain/rococo.png";
 import MenuGroups from "./menuGroups";
 import Chains from "../chains";
@@ -37,8 +35,6 @@ const rococo = {
   blockTime: 6000,
   snsCoverCid: "bafybeia7np32r7cq2ykeeopfyxfgxhhsi2e4tl4bew4zjwu2zixiw2rx74",
   endpoints: defaultRococoNodes,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   navLogo: ProjectLogoRococoLight,
   navLogoDark: ProjectLogoRococoDark,

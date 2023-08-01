@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/centrifuge.svg";
-import DarkModeLogo from "../../../assets/header-logos/centrifuge-dark.svg";
 import Avatar from "../../../assets/icons/chain/centrifuge.png";
 import DarkAvatar from "../../../assets/icons/chain/centrifuge-dark.png";
 
@@ -52,8 +50,6 @@ const centrifuge = {
   ss58Format: 36,
   snsCoverCid: "bafybeigik7gv4e2tasibkgjhvlfyjzdlbw4p33x6o64jhdypmgqhmo3a54",
   endpoints: defaultNodes,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoCentrifugeLight,

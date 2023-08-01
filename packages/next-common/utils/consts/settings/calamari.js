@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/calamari.svg";
-import DarkModeLogo from "../../../assets/header-logos/calamari-dark.svg";
 import Avatar from "../../../assets/icons/chain/calamari.png";
 
 import Chains from "../chains";
@@ -32,13 +30,12 @@ const calamari = {
   ss58Format: 78,
   snsCoverCid: "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
   endpoints: DEFAULT_CALAMARI_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  description: "Calamari Network is the canary network of Manta Network, and empowers web2 and web3 applications with trustless, private on-chain identity and transaction services.",
+  description:
+    "Calamari Network is the canary network of Manta Network, and empowers web2 and web3 applications with trustless, private on-chain identity and transaction services.",
 };
 
 export default calamari;

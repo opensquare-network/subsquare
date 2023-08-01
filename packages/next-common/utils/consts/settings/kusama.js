@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/kusama.svg";
-import DarkModeLogo from "../../../assets/header-logos/kusama-dark.svg";
 import Avatar from "../../../assets/icons/chain/kusama.png";
 import DarkAvatar from "../../../assets/icons/chain/kusama-dark.png";
 import MenuGroups from "./menuGroups";
@@ -79,8 +77,6 @@ const kusama = {
   blockTime: 6000,
   snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
   endpoints: DEFAULT_KUSAMA_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoKusamaDark,

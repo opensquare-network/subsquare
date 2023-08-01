@@ -1,5 +1,3 @@
-import Logo from "../../../assets/header-logos/crust.svg";
-import DarkModeLogo from "../../../assets/header-logos/crust-dark.svg";
 import Avatar from "../../../assets/icons/chain/crust.png";
 import DarkAvatar from "../../../assets/icons/chain/crust-dark.png";
 
@@ -66,8 +64,6 @@ const crust = {
   blockTime: 6000,
   snsCoverCid: "bafybeicb77dwocjcssmcb75irbsvxly4ep335pky2r7tvwsjnoyzpl3c3y",
   endpoints: DEFAULT_CRUST_NODES,
-  headerLogo: Logo,
-  darkHeaderLogo: DarkModeLogo,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   navLogo: ProjectLogoCrustDark,
