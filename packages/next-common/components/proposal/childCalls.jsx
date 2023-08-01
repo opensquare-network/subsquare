@@ -4,7 +4,7 @@ import { BaseTag } from "../tags/state/styled";
 const seperateNumber = 5;
 
 export default function ProposalChildCalls({ calls = [] }) {
-  const [viewAll, setViewAll] = useState(false);
+  const [isShowMore, setIsShowMore] = useState(false);
   const isLarge = calls.length > seperateNumber;
 
   return (
@@ -14,7 +14,7 @@ export default function ProposalChildCalls({ calls = [] }) {
           <ChildCall key={idx} call={call} />
         ))}
 
-        {viewAll &&
+        {isShowMore &&
           isLarge &&
           calls
             .slice(seperateNumber)
@@ -27,10 +27,10 @@ export default function ProposalChildCalls({ calls = [] }) {
             role="button"
             className="text-theme500 text12Medium"
             onClick={() => {
-              setViewAll(!viewAll);
+              setIsShowMore(!isShowMore);
             }}
           >
-            {viewAll ? "Hide" : "View All"}
+            Show {isShowMore ? "Less" : "More"}
           </span>
         </div>
       )}
