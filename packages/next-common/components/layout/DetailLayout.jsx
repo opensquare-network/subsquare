@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import BaseLayout from "./baseLayoutV2";
+import BaseLayout from "./baseLayout";
 import Breadcrumb from "../_Breadcrumb";
 import { useSelector } from "react-redux";
 import {
