@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import FoldButton from "./foldButton";
 import { useState } from "react";
 import { getTypeDef } from "@polkadot/types/create";
+import Copyable from "../copyable";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -213,6 +214,8 @@ function ValuePanel({ registry, name, type, typeName, value }) {
         {hexIsValidUTF8(hex) ? hexToString(hex) : <LongText text={hex} />}
       </span>
     );
+  } else if (["H256", "[u8;32]"].includes(type)) {
+    valueComponent = <Copyable>{val}</Copyable>;
   } else {
     if (val instanceof Object && registry) {
       let sub;
