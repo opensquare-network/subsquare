@@ -4,7 +4,7 @@ import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
 import VoteItem from "./voteItem";
-import DetailButton from "./detailButton";
+import DetailButton from "next-common/components/detailButton";
 import { PostTitle } from "./common";
 import ReferendumTag from "./common/referendumTag";
 import { useChain } from "next-common/context/chain";
