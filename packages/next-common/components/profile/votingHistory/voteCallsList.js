@@ -1,14 +1,16 @@
-import styled from "styled-components";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import styled from "styled-components";
 import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
-import VoteItem from "./voteItem";
-import DetailButton from "./detailButton";
-import { PostTitle } from "./common";
-import ReferendumTag from "./common/referendumTag";
+import {
+  ReferendumTag,
+  PostTitle,
+  normalizeCall,
+  CallDate,
+  VoteItem,
+} from "./common";
 import { useChain } from "next-common/context/chain";
-import { isKintsugiChain } from "next-common/utils/chain";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -22,21 +24,14 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function VotesList({
-  data,
-  isGov2,
-  fetchData,
-  setShowVoteDetail,
-  page,
-}) {
+export default function VoteCallsList({ data, isGov2, fetchData, page }) {
   const chain = useChain();
-  const isKintsugi = isKintsugiChain(chain);
-
-  const columnsDefinition = [
+  const { columns } = useColumns([
     {
       name: "Proposal",
-      style: { textAlign: "left", minWidth: "230px", maxWidth: 600 },
+      style: { textAlign: "left", minWidth: "180px", maxWidth: 384 },
     },
+    { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
     {
       name: "Vote",
       style: { textAlign: "left", width: "128px", minWidth: "128px" },
@@ -45,32 +40,14 @@ export default function VotesList({
       name: "Status",
       style: { textAlign: "right", width: "128px", minWidth: "128px" },
     },
-  ];
+  ]);
 
-  if (!isKintsugi) {
-    columnsDefinition.push({
-      name: "",
-      style: { textAlign: "right", width: "64px", minWidth: "64px" },
-    });
-  }
-
-  const { columns } = useColumns(columnsDefinition);
-
-  const rows = (data?.items || []).map((item) => {
-    const data = [
-      <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
-      <VoteItem key="vote" vote={item} />,
-      <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
-    ];
-
-    if (!isKintsugi) {
-      data.push(
-        <DetailButton key="detail" onClick={() => setShowVoteDetail(item)} />,
-      );
-    }
-
-    return data;
-  });
+  const rows = (data?.items || []).map((item) => [
+    <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
+    <CallDate key="date" vote={item} />,
+    <VoteItem key="vote" vote={normalizeCall(item, chain)} />,
+    <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
+  ]);
 
   return (
     <>

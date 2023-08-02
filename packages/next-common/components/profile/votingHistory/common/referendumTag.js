@@ -3,7 +3,7 @@ import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 
-export default function ReferendumTag({ vote, isGov2 }) {
+export function ReferendumTag({ vote, isGov2 }) {
   if (isGov2) {
     return (
       <Gov2ReferendaTag

@@ -1,9 +1,11 @@
 import { ListCard } from "../styled";
-import VoteItem from "../voteItem";
-import { normalizeCall } from "../common";
-import { PostTitle } from "../common";
-import ReferendumTag from "../common/referendumTag";
-import CallDate from "../common/date";
+import {
+  PostTitle,
+  ReferendumTag,
+  CallDate,
+  normalizeCall,
+  VoteItem,
+} from "../common";
 import { useChain } from "next-common/context/chain";
 
 function ItemHeader({ vote, isGov2 }) {

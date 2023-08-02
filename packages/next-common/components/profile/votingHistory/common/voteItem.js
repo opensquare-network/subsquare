@@ -154,7 +154,8 @@ function SplitAbstainVoteItem({ vote }) {
   );
 }
 
-export default function VoteItem({ vote }) {
+export function VoteItem({ vote }) {
+  console.log(vote);
   if (vote.isStandard || vote.isDelegating) {
     return <StandardVoteItem vote={vote} />;
   }
