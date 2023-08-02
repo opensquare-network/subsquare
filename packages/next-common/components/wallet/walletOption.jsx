@@ -4,7 +4,7 @@ import clsx from "clsx";
 /**
  * @param {React.HTMLAttributes<HTMLDivElement> & {installed: boolean, selected: boolean}} props
  */
-export default function WalletOption(props) {
+export default function WalletOption({ selected, installed, ...props }) {
   return (
     <div
       {...props}
@@ -14,10 +14,10 @@ export default function WalletOption(props) {
         "text14Bold text-textPrimary",
         "rounded-lg border",
         // disabled
-        props.installed
+        installed
           ? "cursor-pointer hover:bg-neutral300 hover:border-neutral300"
           : "bg-neutral200 border-neutral200 cursor-not-allowed pointer-events-none select-none text-textTertiary",
-        props.selected && "bg-neutral300 border-neutral300",
+        selected && "bg-neutral300 border-neutral300",
 
         // wallet logo svg
         "[&>div_svg]:w-10 [&_svg]:h-10",
