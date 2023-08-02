@@ -8,7 +8,7 @@ export default function Header() {
   const chainSettings = useChainSettings();
 
   return (
-    <header className="h-[72px] py-4 px-6 flex gap-x-6 border-b border-neutral300 bg-neutral100">
+    <header className="py-4 px-6 flex gap-x-6 border-b border-neutral300 bg-neutral100">
       <div className="flex-1">
         <SearchInput />
       </div>
