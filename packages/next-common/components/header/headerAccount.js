@@ -14,24 +14,9 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
+import GhostButton from "../buttons/ghostButton.js";
 
 const Wrapper = Relative;
-
-const AccountButton = styled(Flex)`
-  background: var(--neutral100);
-  justify-content: center;
-  border: 1px solid var(--neutral400);
-  border-color: var(--neutral400);
-  > div > span:last-child {
-    color: var(--textPrimaryContrast);
-  }
-
-  border-radius: 8px;
-  padding: 0 12px;
-  height: 38px;
-  cursor: pointer;
-  font-weight: 500;
-`;
 
 const Menu = styled.div`
   ${shadow_200};
@@ -118,9 +103,9 @@ export default function HeaderAccount() {
         {!user ? (
           <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
         ) : (
-          <AccountButton onClick={() => setShow(!show)}>
+          <GhostButton onClick={() => setShow(!show)}>
             <User user={user} noEvent />
-          </AccountButton>
+          </GhostButton>
         )}
 
         {show && (

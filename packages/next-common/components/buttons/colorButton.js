@@ -5,10 +5,11 @@ import { LightLoading } from "./loading";
 
 const RawPositiveButton = styled(BackgroundButton)`
   background-color: var(--green500);
+  border-color: var(--green500);
 `;
 
 const RawNegativeButton = styled(BackgroundButton)`
-  background-color: var(--red500);
+  border-color: var(--red500);
 `;
 
 function ColorButton({

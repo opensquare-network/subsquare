@@ -10,6 +10,8 @@ const CommonButtonWrapper = styled.button`
   box-sizing: border-box;
   font-weight: 500;
   font-size: 14px;
+  border-width: 1px;
+  border-style: solid;
   ${(p) =>
     p.isFill &&
     css`
@@ -54,10 +56,10 @@ function CommonButton({
       disabled={disabled}
       {...props}
     >
-      <span className="w-full h-full inline-flex items-center justify-center gap-x-1.5">
+      <div className="w-full h-full flex items-center justify-center gap-x-1.5">
         {icon && !isLoading && icon}
         {children}
-      </span>
+      </div>
     </CommonButtonWrapper>
   );
 }
@@ -70,6 +72,7 @@ export const BackgroundButton = styled(CommonButton)`
 export const DisabledButton = styled(CommonButton)`
   cursor: not-allowed;
   background-color: var(--neutral500);
+  border-color: var(--neutral500);
   color: var(--textPrimaryContrast);
 `;
 
