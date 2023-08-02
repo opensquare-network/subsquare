@@ -10,13 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import pick from "lodash.pick";
-import { SystemLoadingDots } from "@osn/icons/subsquare";
-
-const FieldLoading = styled(SystemLoadingDots)`
-  & ellipse {
-    fill: var(--textTertiary);
-  }
-`;
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -113,9 +107,7 @@ export default function VotesList({ votes, isGov2 }) {
               isGov2={isGov2}
             />
           ) : (
-            <div className="inline-flex">
-              <FieldLoading />
-            </div>
+            <FieldLoading />
           ),
         ];
       },
