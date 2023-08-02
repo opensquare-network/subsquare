@@ -31,7 +31,7 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         images,
       }}
       twitter={{
-        site: "@site",
+        site: "@OpensquareN",
         title: title ?? "SubSquare",
         cardType: "summary",
         image: images[0]?.url,
