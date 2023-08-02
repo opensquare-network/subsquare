@@ -79,7 +79,7 @@ const Options = styled(NeutralPanel)`
   position: absolute;
   right: 0;
   margin-top: 4px;
-  padding: 8px 0;
+  padding: 8px;
   width: 100%;
   z-index: 1;
   color: var(--textPrimary);
@@ -98,6 +98,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   padding: 6px 12px;
+  border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
