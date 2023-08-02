@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 const CommonButtonWrapper = styled.button`
-  padding: 0 12px;
+  padding: 0 16px;
   height: 38px;
   border-radius: 8px;
   cursor: pointer;
