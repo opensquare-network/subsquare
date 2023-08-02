@@ -1,29 +1,22 @@
 import React from "react";
 
 import styled, { css } from "styled-components";
-import LoadingIcon from "../assets/imgs/icons/loading.svg";
+import { SystemLoading } from "@osn/icons/subsquare";
 
-const ColorLoadingIcon = styled(LoadingIcon)`
+const ColorLoadingIcon = styled(SystemLoading)`
   > path {
     // default color is textPlaceholder
-    fill: var(--textDisabled);
+    stroke: var(--textDisabled);
   }
   ${(p) =>
     p.color &&
     css`
       > path {
-        fill: ${p.color};
+        stroke: ${p.color};
       }
     `}
 `;
 
 export default function Loading({ size = 12, color }) {
-  return (
-    <ColorLoadingIcon
-      width={size}
-      height={size}
-      color={color}
-      viewBox="0 0 14 14"
-    />
-  );
+  return <ColorLoadingIcon width={size} height={size} color={color} />;
 }
