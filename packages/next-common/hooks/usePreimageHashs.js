@@ -4,10 +4,13 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useSelector } from "react-redux";
 
 export default function usePreimageHashs() {
-  useSelector(preImagesTriggerSelector);
+  const trigger = useSelector(preImagesTriggerSelector);
 
   const api = useApi();
-  const [allStatus] = useCall(api?.query.preimage?.statusFor.entries, []);
+  const [allStatus] = useCall(api?.query.preimage?.statusFor.entries, [], {
+    trigger,
+  });
+
   return allStatus?.map((item) => {
     const [
       {

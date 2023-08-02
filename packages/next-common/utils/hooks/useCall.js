@@ -3,7 +3,7 @@ import useIsMounted from "./useIsMounted";
 
 const callCache = {};
 
-function useCall(fn, params = [], { cacheKey = "" } = {}) {
+function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -22,7 +22,9 @@ function useCall(fn, params = [], { cacheKey = "" } = {}) {
       setLoading(true);
       fn(...params)
         .then((value) => {
-          callCache[cacheKey] = value;
+          if (cacheKey) {
+            callCache[cacheKey] = value;
+          }
           if (isMounted.current) {
             setResult(value);
             setLoaded(true);
@@ -32,7 +34,7 @@ function useCall(fn, params = [], { cacheKey = "" } = {}) {
           setLoading(false);
         });
     }
-  }, [fn, ...params]);
+  }, [fn, cacheKey, trigger, ...params]);
   return [result, loading, loaded];
 }
 

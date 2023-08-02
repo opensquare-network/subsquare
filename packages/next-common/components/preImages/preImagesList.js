@@ -3,16 +3,18 @@ import PreImagesTable from "./table";
 import SearchBox from "./searchBox";
 import { useState } from "react";
 import MyDeposit from "./myDeposit";
-import { useUser } from "next-common/context/user";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function PreImagesList({ data }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
-  const user = useUser();
+  const realAddress = useRealAddress();
 
   const titleExtra = (
     <div className="flex items-center gap-[24px]">
-      {user && <MyDeposit isOn={isMyDepositOn} setIsOn={setIsMyDepositOn} />}
+      {realAddress && (
+        <MyDeposit isOn={isMyDepositOn} setIsOn={setIsMyDepositOn} />
+      )}
       <SearchBox value={searchValue} setValue={setSearchValue} />
     </div>
   );
@@ -27,7 +29,7 @@ export default function PreImagesList({ data }) {
       <PreImagesTable
         data={data}
         searchValue={searchValue}
-        isMyDepositOn={user && isMyDepositOn}
+        isMyDepositOn={realAddress && isMyDepositOn}
       />
     </div>
   );
