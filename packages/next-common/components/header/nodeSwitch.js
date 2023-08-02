@@ -75,7 +75,7 @@ const Select = styled.div`
 `;
 
 const Options = styled(NeutralPanel)`
-  border-radius: 4px;
+  border-radius: 8px;
   position: absolute;
   right: 0;
   margin-top: 4px;
