@@ -1,5 +1,5 @@
 import Link from "next/link";
-import TriangleRight from "public/imgs/icons/arrow-triangle-right.svg";
+import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
 import { getUniqueMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import MotionNavigationItem from "./motionNavigationItem";
@@ -87,7 +87,10 @@ export default function DemocracyNavigate({ motion }) {
       {referendumIndex !== undefined && (
         <div>
           <TriangleRight />
-          <Link href={`/democracy/referendum/${referendumIndex}`} legacyBehavior>
+          <Link
+            href={`/democracy/referendum/${referendumIndex}`}
+            legacyBehavior
+          >
             {`Referendum #${referendumIndex}`}
           </Link>
         </div>
