@@ -56,9 +56,14 @@ export default function VotesList({
 
   const rows = (data?.items || []).map((item) => {
     const data = [
-      <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
+      <PostTitle
+        key="proposal"
+        referendumIndex={item.referendumIndex}
+        title={item.proposal?.title}
+        isGov2={isGov2}
+      />,
       <VoteItem key="vote" vote={item} />,
-      <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
+      <ReferendumTag key="tag" proposal={item.proposal} isGov2={isGov2} />,
     ];
 
     if (!isKintsugi) {

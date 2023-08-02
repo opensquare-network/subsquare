@@ -43,10 +43,15 @@ export default function VoteCallsList({ data, isGov2, fetchData, page }) {
   ]);
 
   const rows = (data?.items || []).map((item) => [
-    <PostTitle key="proposal" vote={item} isGov2={isGov2} />,
+    <PostTitle
+      key="proposal"
+      referendumIndex={item.referendumIndex}
+      title={item.proposal?.title}
+      isGov2={isGov2}
+    />,
     <CallDate key="date" vote={item} />,
     <VoteItem key="vote" vote={normalizeCall(item, chain)} />,
-    <ReferendumTag key="tag" vote={item} isGov2={isGov2} />,
+    <ReferendumTag key="tag" proposal={item.proposal} isGov2={isGov2} />,
   ]);
 
   return (

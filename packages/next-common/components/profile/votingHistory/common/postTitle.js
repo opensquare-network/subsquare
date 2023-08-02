@@ -8,16 +8,16 @@ const Title = styled.span`
   font-weight: 500;
 `;
 
-export function PostTitle({ vote, isGov2 }) {
-  let url = `/democracy/referendum/${vote.referendumIndex}`;
+export function PostTitle({ referendumIndex, title, isGov2 }) {
+  let url = `/democracy/referendum/${referendumIndex}`;
   if (isGov2) {
-    url = `/referenda/referendum/${vote.referendumIndex}`;
+    url = `/referenda/referendum/${referendumIndex}`;
   }
   return (
     <div className="truncate max-w-[inherit]">
-      <Index>{`#${vote.referendumIndex}`}</Index>
-      <Link href={url} title={vote.proposal?.title}>
-        <Title>{vote.proposal?.title}</Title>
+      <Index>{`#${referendumIndex}`}</Index>
+      <Link href={url} title={title}>
+        <Title>{title}</Title>
       </Link>
     </div>
   );

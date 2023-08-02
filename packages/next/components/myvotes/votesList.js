@@ -7,6 +7,16 @@ import {
   ReferendumTag,
   VoteItem,
 } from "next-common/components/profile/votingHistory/common";
+import { useEffect, useState } from "react";
+import nextApi from "next-common/services/nextApi";
+import pick from "lodash.pick";
+import { SystemLoadingDots } from "@osn/icons/subsquare";
+
+const FieldLoading = styled(SystemLoadingDots)`
+  & ellipse {
+    fill: var(--textTertiary);
+  }
+`;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -70,13 +80,43 @@ export default function VotesList({ votes, isGov2 }) {
   const rows = (votes || []).map((item) => {
     return {
       useData: () => {
-        console.log(item);
+        const [referendumPost, setReferendumPost] = useState();
+
+        useEffect(() => {
+          nextApi
+            .fetch(`gov2/referendums/${item.referendumIndex}`)
+            .then(({ result }) => {
+              if (result) {
+                setReferendumPost(pick(result || {}, ["title", "onchainData"]));
+              }
+            });
+        }, []);
+
         const vote = normalizeVote(item.vote);
 
         return [
-          <PostTitle key="proposal" vote={vote} isGov2={isGov2} />,
+          referendumPost ? (
+            <PostTitle
+              key="proposal"
+              referendumIndex={item.referendumIndex}
+              title={referendumPost.title}
+              isGov2={isGov2}
+            />
+          ) : (
+            <FieldLoading />
+          ),
           <VoteItem key="vote" vote={vote} />,
-          <ReferendumTag key="tag" vote={vote} isGov2={isGov2} />,
+          referendumPost ? (
+            <ReferendumTag
+              key="tag"
+              proposal={referendumPost.onchainData}
+              isGov2={isGov2}
+            />
+          ) : (
+            <div className="inline-flex">
+              <FieldLoading />
+            </div>
+          ),
         ];
       },
     };

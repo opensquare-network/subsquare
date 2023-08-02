@@ -11,13 +11,17 @@ function ItemHeader({ vote, isGov2, setShowVoteDetail }) {
   return (
     <div>
       <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
-        <PostTitle vote={vote} isGov2={isGov2} />
+        <PostTitle
+          referendumIndex={vote.referendumIndex}
+          title={vote.proposal?.title}
+          isGov2={isGov2}
+        />
         {!isKintsugi && (
           <DetailButton onClick={() => setShowVoteDetail(vote)} />
         )}
       </div>
       <div className="flex justify-end pt-[12px] items-center">
-        <ReferendumTag vote={vote} isGov2={isGov2} />
+        <ReferendumTag proposal={vote.proposal} isGov2={isGov2} />,
       </div>
     </div>
   );
