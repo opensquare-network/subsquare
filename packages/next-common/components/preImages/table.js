@@ -13,7 +13,6 @@ import { useState } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
 import { SystemLoadingDots } from "@osn/icons/subsquare";
 import PreimageDetailPopup from "./preImageDetailPopup";
-import { useUser } from "next-common/context/user";
 import DotSplitter from "next-common/components/dotSplitter";
 import UnnoteButton from "./unnoteButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +20,7 @@ import {
   incPreImagesTrigger,
   preImagesTriggerSelector,
 } from "next-common/store/reducers/preImagesSlice";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const FieldLoading = styled(SystemLoadingDots)`
   & ellipse {
@@ -61,11 +61,11 @@ function Hash({ hash, proposal, setShowArgumentsDetail }) {
 function Deposit({ hash, deposit, count, status, onUnnoteInBlock }) {
   const { symbol, decimals } = useChainSettings();
   const { who, amount } = deposit;
-  const user = useUser();
+  const realAddress = useRealAddress();
 
   const unnote = count === 0 &&
     status.toLowerCase() === "unrequested" &&
-    user?.address === who && (
+    realAddress === who && (
       <>
         <DotSplitter />
         <UnnoteButton hash={hash} onInBlock={onUnnoteInBlock} />
@@ -127,7 +127,7 @@ function parseStatus(status) {
 }
 
 export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
-  const user = useUser();
+  const realAddress = useRealAddress();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const { columns } = useColumns([
     {
@@ -160,7 +160,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
 
       const { deposit } = parseStatus(status);
       const [who] = deposit || [];
-      if (isMyDepositOn && user && who !== user.address) {
+      if (isMyDepositOn && who !== realAddress) {
         return false;
       }
 
