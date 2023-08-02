@@ -25,13 +25,13 @@ export default function CopyButton({ copyText = "", size = 16 }) {
           <SystemCopied
             width={size}
             height={size}
-            className="[&_path]:fill-textSecondary"
+            className="[&_path]:fill-textSecondary [&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary"
           />
         ) : (
           <SystemCopy
             width={size}
             height={size}
-            className="[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary"
+            className="[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary [&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary"
           />
         )}
       </Tooltip>
