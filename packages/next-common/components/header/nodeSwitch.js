@@ -85,6 +85,7 @@ const Options = styled(NeutralPanel)`
   color: var(--textPrimary);
   border: 1px solid;
   border-color: var(--neutral300);
+  box-shadow: var(--shadow200);
 
   ${(p) =>
     p.small &&
