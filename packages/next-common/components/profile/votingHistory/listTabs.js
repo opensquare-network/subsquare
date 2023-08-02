@@ -3,7 +3,7 @@ import OpenGovVotes from "./openGovVotes";
 import OpenGovCalls from "./openGovCalls";
 import DemocracyVotes from "./democracyVotes";
 import DemocracyCalls from "./democracyCalls";
-import { OpenGov } from "./moduleTab";
+import { OpenGov } from "./common";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function ListTabs({ moduleTabIndex }) {

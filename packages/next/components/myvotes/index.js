@@ -1,11 +1,27 @@
-import MyVotesList from "./myVotesList";
-import Summary from "./summary";
+import {
+  Democracy,
+  OpenGov,
+} from "next-common/components/profile/votingHistory/common";
+import { useChainSettings } from "next-common/context/chain";
+import { useState } from "react";
+import MyOpenGovVotes from "./myOpenGovVotes";
+import MyDemocracyVotes from "./myDemoracyVotes";
 
-export default function MyVotes({ isLoading, votes }) {
-  return (
-    <div className="flex flex-col gap-[16px]">
-      <Summary votes={votes.map((item) => item.vote)} />
-      <MyVotesList isLoading={isLoading} votes={votes} />
-    </div>
+export default function MyVotes() {
+  const { hasReferenda } = useChainSettings();
+  const [moduleTabIndex, setModuleTabIndex] = useState(
+    hasReferenda ? OpenGov : Democracy,
+  );
+
+  return moduleTabIndex === OpenGov ? (
+    <MyOpenGovVotes
+      moduleTabIndex={moduleTabIndex}
+      setModuleTabIndex={setModuleTabIndex}
+    />
+  ) : (
+    <MyDemocracyVotes
+      moduleTabIndex={moduleTabIndex}
+      setModuleTabIndex={setModuleTabIndex}
+    />
   );
 }

@@ -11,25 +11,18 @@ import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import MyVotes from "components/myvotes";
-import useAccountVotes from "next-common/hooks/referenda/votes/useAccountVotes";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-// import useAccountDemocracyVotes from "next-common/hooks/democracy/votes/useAccountDemocracyVotes";
 
 export default withLoginUserRedux(({ overview }) => {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
   const router = useRouter();
-  const realAddress = useRealAddress();
 
   useEffect(() => {
     if (!user?.address) {
       router.push("/");
     }
   }, [user, router]);
-
-  const { isLoading, votes } = useAccountVotes(realAddress);
-  console.log(isLoading, votes);
 
   const SummaryComponent = isCollectivesChain(chain)
     ? AllianceOverviewSummary
@@ -58,7 +51,7 @@ export default withLoginUserRedux(({ overview }) => {
       summary={<SummaryComponent summaryData={overview?.summary} />}
       tabs={tabs}
     >
-      <MyVotes isLoading={isLoading} votes={votes} />
+      <MyVotes />
     </ListLayout>
   );
 });

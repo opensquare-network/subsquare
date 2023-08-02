@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import pick from "lodash.pick";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { normalizeVote } from "./common";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -23,35 +24,6 @@ const StyledList = styled(StyledListOrigin)`
   box-shadow: none;
   padding: 0;
 `;
-
-function normalizeVote(vote) {
-  if (vote.isStandard) {
-    const { balance, vote: _vote } = vote.asStandard;
-    return {
-      isStandard: true,
-      balance: balance.toNumber(),
-      conviction: _vote.conviction.toNumber(),
-      aye: _vote.isAye,
-    };
-  } else if (vote.isSplit) {
-    const { aye, nay } = vote.asSplit;
-    return {
-      isSplit: true,
-      ayeBalance: aye.toNumber(),
-      nayBalance: nay.toNumber(),
-    };
-  } else if (vote.isSplitAbstain) {
-    const { aye, nay, abstain } = vote.asSplitAbstain;
-    return {
-      isSplitAbstain: true,
-      ayeBalance: aye.toNumber(),
-      nayBalance: nay.toNumber(),
-      abstainBalance: abstain.toNumber(),
-    };
-  }
-
-  return {};
-}
 
 export default function VotesList({ votes, isGov2 }) {
   const columnsDefinition = [
@@ -77,13 +49,15 @@ export default function VotesList({ votes, isGov2 }) {
         const [referendumPost, setReferendumPost] = useState();
 
         useEffect(() => {
-          nextApi
-            .fetch(`gov2/referendums/${item.referendumIndex}`)
-            .then(({ result }) => {
-              if (result) {
-                setReferendumPost(pick(result || {}, ["title", "onchainData"]));
-              }
-            });
+          let url = `democracy/referendums/${item.referendumIndex}`;
+          if (isGov2) {
+            url = `gov2/referendums/${item.referendumIndex}`;
+          }
+          nextApi.fetch(url).then(({ result }) => {
+            if (result) {
+              setReferendumPost(pick(result || {}, ["title", "onchainData"]));
+            }
+          });
         }, []);
 
         const vote = normalizeVote(item.vote);
@@ -93,7 +67,7 @@ export default function VotesList({ votes, isGov2 }) {
             <PostTitle
               key="proposal"
               referendumIndex={item.referendumIndex}
-              title={referendumPost.title}
+              title={referendumPost?.title}
               isGov2={isGov2}
             />
           ) : (
@@ -103,7 +77,7 @@ export default function VotesList({ votes, isGov2 }) {
           referendumPost ? (
             <ReferendumTag
               key="tag"
-              proposal={referendumPost.onchainData}
+              proposal={referendumPost?.onchainData}
               isGov2={isGov2}
             />
           ) : (

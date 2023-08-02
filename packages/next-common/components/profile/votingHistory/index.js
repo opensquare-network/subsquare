@@ -1,7 +1,7 @@
 import VotingHistorySummary from "./summary";
 import ListTabs from "./listTabs";
 import { useState } from "react";
-import { Democracy, OpenGov } from "./moduleTab";
+import { Democracy, OpenGov } from "./common";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function VotingHistory() {

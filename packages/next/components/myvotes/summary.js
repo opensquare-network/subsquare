@@ -6,6 +6,7 @@ import { Title } from "./styled";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -38,10 +39,11 @@ function sumVoteBalance(votes) {
   }, 0);
 }
 
-export default function Summary({ votes }) {
+export default function Summary({ votes, moduleTabIndex, setModuleTabIndex }) {
   const { symbol, decimals } = useChainSettings();
   const totalBalance = sumVoteBalance(votes);
   const totalValue = toPrecision(totalBalance, decimals);
+  const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const items = [
     {
@@ -68,6 +70,12 @@ export default function Summary({ votes }) {
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
         <Title>My Votes</Title>
+        {hasReferenda && !noDemocracyModule && (
+          <ModuleTab
+            moduleTabIndex={moduleTabIndex}
+            setModuleTabIndex={setModuleTabIndex}
+          />
+        )}
       </div>
       <SecondaryCard>
         <SummaryItems items={items} />

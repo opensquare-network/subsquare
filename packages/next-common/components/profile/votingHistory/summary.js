@@ -3,7 +3,7 @@ import SummaryItems from "next-common/components/summary/summaryItems";
 import styled from "styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "./styled";
-import ModuleTab, { OpenGov } from "./moduleTab";
+import { ModuleTab, OpenGov } from "./common";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";

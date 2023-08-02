@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function ModuleTab({ moduleTabIndex, setModuleTabIndex }) {
+export function ModuleTab({ moduleTabIndex, setModuleTabIndex }) {
   return (
     <Wrapper>
       <Tab
