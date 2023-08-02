@@ -8,6 +8,7 @@ import {
   LinkElement,
   LinkMedium,
   LinkYoutube,
+  LinkReddit,
 } from "@osn/icons/subsquare";
 import ExternalLink from "../externalLink";
 import clsx from "clsx";
@@ -21,6 +22,7 @@ const iconMap = {
   element: LinkElement,
   medium: LinkMedium,
   youtube: LinkYoutube,
+  reddit: LinkReddit,
 };
 
 export default function ChainSocialLinks({ className }) {
