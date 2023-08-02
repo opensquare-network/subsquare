@@ -203,9 +203,13 @@ function User({
       {showAvatar && (
         <AvatarWrapper>
           {address ? (
-            <Avatar address={address} size={20} />
+            <Avatar address={address} size={fontSize * (20 / 14)} />
           ) : (
-            <Gravatar email={user?.email} emailMd5={user?.emailMd5} size={20} />
+            <Gravatar
+              email={user?.email}
+              emailMd5={user?.emailMd5}
+              size={fontSize * (20 / 14)}
+            />
           )}
         </AvatarWrapper>
       )}

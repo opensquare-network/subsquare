@@ -1,5 +1,5 @@
 import { ListCard } from "../styled";
-import DetailButton from "../detailButton";
+import DetailButton from "next-common/components/detailButton";
 import { PostTitle, ReferendumTag, VoteItem } from "../common";
 import { useChain } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";

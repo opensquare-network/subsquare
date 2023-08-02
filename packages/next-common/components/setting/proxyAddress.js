@@ -16,7 +16,7 @@ import ErrorMessage from "../styled/errorMessage";
 import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
-import ThemeButton from "../buttons/themeButton";
+import PrimaryButton from "../buttons/primaryButton";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -152,14 +152,14 @@ export default function ProxyAddress() {
         }}
         disabled={isSet}
       />
-      <ThemeButton
+      <PrimaryButton
         style={{ width: 55, height: 40 }}
         onClick={isSet ? onUnset : onSet}
         disabled={disabled}
         isLoading={isLoading}
       >
         {isSet ? "Unset" : "Set"}
-      </ThemeButton>
+      </PrimaryButton>
       {errorMsg && <CustomErrorMessage>{errorMsg}</CustomErrorMessage>}
       {successMsg && <SuccessMessage>{successMsg}</SuccessMessage>}
     </InputWrapper>

@@ -1,6 +1,13 @@
 import { u8aToHex } from "@polkadot/util";
-const balanceTypes = ["Balance", "Compact<BalanceOf>", "Compact<Balance>"];
-const numTypes = ["Compact<u128>", "u128", "u64", "Compact<u64>"];
+
+export const balanceTypes = [
+  "Balance",
+  "BalanceOf",
+  "Compact<BalanceOf>",
+  "Compact<Balance>",
+];
+
+export const numTypes = ["Compact<u128>", "u128", "u64", "Compact<u64>"];
 
 function normalizeArgValue(type, name, value) {
   if (balanceTypes.includes(type) || numTypes.includes(type)) {

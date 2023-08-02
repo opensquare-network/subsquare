@@ -6,12 +6,13 @@ import { DarkLoading } from "./loading";
 const RawButton = styled(CommonButton)`
   background-color: var(--neutral100);
   color: var(--textPrimary);
-  border: 1px solid var(--neutral400);
+  border-color: var(--neutral400);
 `;
 
 const Disabled = styled(DisabledButton)`
   background-color: var(--neutral500);
   color: var(--textTertiary);
+  border-color: var(--neutral500);
 `;
 
 export default function GhostButton({

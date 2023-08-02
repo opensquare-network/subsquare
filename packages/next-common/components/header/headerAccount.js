@@ -6,46 +6,30 @@ import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import User from "../user";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
-import { shadow_200 } from "../../styles/componentCss";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
 import { logoutUser, useUser, useUserDispatch } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import Profile from "../../assets/imgs/icons/profile.svg";
 import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
+import GhostButton from "../buttons/ghostButton.js";
+import { SystemProfile } from "@osn/icons/subsquare";
 
 const Wrapper = Relative;
 
-const AccountButton = styled(Flex)`
-  background: var(--neutral100);
-  justify-content: center;
-  border: 1px solid var(--neutral400);
-  border-color: var(--neutral400);
-  > div > span:last-child {
-    color: var(--textPrimaryContrast);
-  }
-
-  border-radius: 4px;
-  padding: 0 12px;
-  height: 38px;
-  cursor: pointer;
-  font-weight: 500;
-`;
-
 const Menu = styled.div`
-  ${shadow_200};
-  border-radius: 4px;
+  border-radius: 8px;
   position: absolute;
   right: 0;
   margin-top: 4px;
-  padding: 8px 0;
+  padding: 8px;
   z-index: 999999;
   background: var(--neutral100);
-  border-width: ${(props) => (props.theme.isDark ? 1 : 0)}px;
-  border-style: ${(props) => (props.theme.isDark ? "solid" : "none")};
+  border-width: 1px;
+  border-style: solid;
   border-color: var(--neutral300);
   color: var(--textPrimary);
+  box-shadow: var(--shadow200);
 `;
 
 const Item = styled(Flex)`
@@ -53,6 +37,7 @@ const Item = styled(Flex)`
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
   :hover {
@@ -68,7 +53,7 @@ const Item = styled(Flex)`
 function ProfileMenuItem({ onClick }) {
   return (
     <Item onClick={onClick}>
-      <Profile />
+      <SystemProfile className="[&_path]:fill-textSecondary" />
       <span>Profile</span>
     </Item>
   );
@@ -118,9 +103,9 @@ export default function HeaderAccount() {
         {!user ? (
           <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
         ) : (
-          <AccountButton onClick={() => setShow(!show)}>
+          <GhostButton onClick={() => setShow(!show)}>
             <User user={user} noEvent />
-          </AccountButton>
+          </GhostButton>
         )}
 
         {show && (
