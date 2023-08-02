@@ -1,18 +1,17 @@
 import React from "react";
-import Settings from "../../assets/imgs/icons/settings.svg";
-import Logout from "../../assets/imgs/icons/logout.svg";
+import { SystemLogout, SystemSetting } from "@osn/icons/subsquare";
 
 const logoutSetting = {
   value: "logout",
   name: "Logout",
-  icon: <Logout />,
+  icon: <SystemLogout className="[&_path]:fill-textSecondary" />,
 };
 
 export const accountMenu = [
   {
     value: "settings",
     name: "Settings",
-    icon: <Settings />,
+    icon: <SystemSetting className="[&_path]:stroke-textSecondary" />,
     pathname: "/setting/account",
   },
   logoutSetting,
@@ -22,7 +21,7 @@ export const accountMenuForKeyAccount = [
   {
     value: "settings",
     name: "Settings",
-    icon: <Settings />,
+    icon: <SystemSetting className="[&_path]:stroke-textSecondary" />,
     pathname: "/setting/key-account",
   },
   logoutSetting,
