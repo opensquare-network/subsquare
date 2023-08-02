@@ -22,17 +22,17 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
 
   return (
     <NextSeo
-      title={`${title ?? "SubSquare"}`}
+      title={title}
       description={description}
       openGraph={{
         url: `${siteUrl}${route.asPath}`,
-        title: title ?? "SubSquare",
+        title: title,
         description: desc,
         images,
       }}
       twitter={{
         site: "@OpensquareN",
-        title: title ?? "SubSquare",
+        title: title,
         cardType: "summary_large_image",
         image: images[0]?.url,
       }}
