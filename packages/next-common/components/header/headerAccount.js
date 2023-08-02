@@ -26,7 +26,7 @@ const AccountButton = styled(Flex)`
     color: var(--textPrimaryContrast);
   }
 
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 0 12px;
   height: 38px;
   cursor: pointer;
