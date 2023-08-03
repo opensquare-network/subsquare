@@ -3,23 +3,17 @@ import { useThemeSetting } from "next-common/context/theme";
 import { StyledTd } from "./styled";
 import RowSplitter from "./rowSplitter";
 import styled, { css } from "styled-components";
-import noop from "lodash.noop";
 
 const StyledTr = styled.tr`
-  ${({ clickable }) =>
-    clickable &&
-    css`
-      cursor: pointer;
-    `}
+  ${({ clickable }) => clickable && css`
+    cursor: pointer;
+  `}
 `;
 
 function DataRow({ row, columns }) {
-  const { onClick, useData = noop } = row;
-  const data = useData();
-
   return (
-    <StyledTr clickable={!!onClick} onClick={onClick}>
-      {(data || row)?.map((val, i) => (
+    <StyledTr clickable={!!row.onClick} onClick={row.onClick}>
+      {row?.map((val, i) => (
         <StyledTd
           key={i}
           style={columns[i].style}

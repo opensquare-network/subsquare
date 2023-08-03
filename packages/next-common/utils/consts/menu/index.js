@@ -12,7 +12,6 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import treasuryCouncil from "./treasuryCouncil";
 import openTechCommittee from "./openTechCommittee";
 import { CHAIN } from "next-common/utils/constants";
-import preImages from "./preImages";
 
 export function getHomeMenu({
   tracks = [],
@@ -29,7 +28,6 @@ export function getHomeMenu({
       treasuryCouncil,
       techComm,
       openTechCommittee,
-      preImages,
     ];
   }
 
@@ -44,7 +42,6 @@ export function getHomeMenu({
     financialCouncil,
     advisoryCommittee,
     alliance,
-    preImages,
   ];
 }
 
@@ -74,10 +71,10 @@ export function getFeaturedMenu({
         return null;
       }
 
-      return {
-        ...m,
-        items: m.items?.filter?.((i) => !i?.excludeToChains?.includes?.(CHAIN)),
-      };
+      m.items =
+        m.items?.filter?.((i) => !i?.excludeToChains?.includes?.(CHAIN)) ?? [];
+
+      return m;
     })
     .filter(Boolean);
 }

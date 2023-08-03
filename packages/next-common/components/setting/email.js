@@ -7,7 +7,7 @@ import { newSuccessToast } from "../../store/reducers/toastSlice";
 import { EmailVerify, InputWrapper } from "./styled";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
-import PrimaryButton from "../buttons/primaryButton";
+import ThemeButton from "../buttons/themeButton";
 
 export default function Email({ email, verified }) {
   const dispatch = useDispatch();
@@ -46,9 +46,9 @@ export default function Email({ email, verified }) {
           }
         />
         {!verified && (
-          <PrimaryButton onClick={onResend} isLoading={resendLoading}>
+          <ThemeButton onClick={onResend} isLoading={resendLoading}>
             Resend
-          </PrimaryButton>
+          </ThemeButton>
         )}
       </InputWrapper>
       {resendErrors?.message && !resendErrors?.data && (

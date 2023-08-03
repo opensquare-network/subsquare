@@ -5,12 +5,10 @@ import { LightLoading } from "./loading";
 
 const RawButton = styled(BackgroundButton)`
   background-color: var(--theme500);
-  border: none;
 `;
 
 const Disabled = styled(DisabledButton)`
   background-color: var(--theme300);
-  border: none;
   color: var(--textPrimaryContrast);
 `;
 

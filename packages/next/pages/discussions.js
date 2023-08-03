@@ -6,7 +6,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { useChain } from "next-common/context/chain";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import ThemeButton from "next-common/components/buttons/themeButton";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 
@@ -26,7 +26,7 @@ export default withLoginUserRedux(({ posts }) => {
       title={category}
       summaryFooter={
         <div className="flex justify-end">
-          <PrimaryButton
+          <ThemeButton
             small
             icon={
               <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
@@ -34,7 +34,7 @@ export default withLoginUserRedux(({ posts }) => {
             onClick={() => router.push("/post/create")}
           >
             New Post
-          </PrimaryButton>
+          </ThemeButton>
         </div>
       }
     >

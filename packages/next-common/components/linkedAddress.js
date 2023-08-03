@@ -21,7 +21,7 @@ import { getWallets } from "../utils/consts/connect";
 import { fetchAndUpdateUser, useUser, useUserDispatch } from "../context/user";
 import { useChain } from "../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
-import PrimaryButton from "./buttons/primaryButton";
+import ThemeButton from "./buttons/themeButton";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 
 const InfoWrapper = styled.div`
@@ -249,9 +249,9 @@ export default function LinkedAddress() {
               "Associate your account with an on-chain address using the Polkadot{.js} extension."
             }
           </InfoWrapper>
-          <PrimaryButton onClick={showSelectWalletModal}>
+          <ThemeButton onClick={showSelectWalletModal}>
             Select wallet
-          </PrimaryButton>
+          </ThemeButton>
         </div>
       ) : (
         <DownloadExtension />

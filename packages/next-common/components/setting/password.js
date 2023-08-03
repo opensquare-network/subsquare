@@ -5,7 +5,7 @@ import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import { InputWrapper } from "./styled";
-import PrimaryButton from "../buttons/primaryButton";
+import ThemeButton from "../buttons/themeButton";
 import useForm from "../../utils/hooks/useForm";
 import styled from "styled-components";
 
@@ -70,13 +70,13 @@ export default function Password() {
       {changeErrors?.message && !changeErrors?.data && (
         <ErrorText>{changeErrors?.message}</ErrorText>
       )}
-      <PrimaryButton
+      <ThemeButton
         style={{ width: 72, height: 40 }}
         type="submit"
         isLoading={changeLoading}
       >
         Change
-      </PrimaryButton>
+      </ThemeButton>
     </Form>
   );
 }

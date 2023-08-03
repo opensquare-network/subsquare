@@ -53,7 +53,7 @@ export default function CMDKPalette() {
   }
 
   const foldedMenu = homeMenus
-    .filter((menu) => menu.name)
+    .filter((menu) => menu.name && menu.items?.length)
     .filter(filterExcludeChains)
     .map((menu) => {
       const items = (menu.items || []).filter(filterExcludeChains);
@@ -69,7 +69,7 @@ export default function CMDKPalette() {
           {
             id: m.name,
             heading: m.name,
-            items: m.items?.map((i, idx) => {
+            items: m.items.map((i, idx) => {
               return {
                 id: m.name + "-" + i.name + `-${idx}`,
                 children: i.name,
@@ -109,19 +109,6 @@ export default function CMDKPalette() {
                 };
               }),
               ...foldedMenu.map((m) => {
-                if (!m.items || m.items.length === 0) {
-                  return {
-                    id: m.name,
-                    children: m.name,
-                    icon: () => (
-                      <span className="[&_svg_path]:fill-textSecondary">
-                        {m.icon}
-                      </span>
-                    ),
-                    href: m.pathname,
-                  };
-                }
-
                 return {
                   id: m.name,
                   children: m.name?.toLowerCase(),

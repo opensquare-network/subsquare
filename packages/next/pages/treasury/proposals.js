@@ -12,7 +12,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import ThemeButton from "next-common/components/buttons/themeButton";
 import { SystemPlus } from "@osn/icons/subsquare";
 
 const Popup = dynamic(
@@ -64,7 +64,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
         !hideNewTreasuryProposalButton &&
         !noTreasuryPrecompile && (
           <div className="flex justify-end">
-            <PrimaryButton
+            <ThemeButton
               small
               icon={
                 <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
@@ -72,7 +72,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
               onClick={() => setShowPopup(true)}
             >
               New Proposal
-            </PrimaryButton>
+            </ThemeButton>
           </div>
         )
       }

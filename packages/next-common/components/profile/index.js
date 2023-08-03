@@ -9,7 +9,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import { addressEllipsis } from "next-common/utils";
 import Posted from "./posted";
 import { useRouter } from "next/router";
-import VotingHistory from "./votingHistory";
+import VotingHistory from "./votngHistory";
 import { useChainSettings } from "next-common/context/chain";
 
 export default withLoginUserRedux(({ user, id }) => {

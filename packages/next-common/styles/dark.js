@@ -40,7 +40,6 @@ const dark = {
   gray400: "var(--neutral500)",
   gray500: "var(--textSecondary)",
   neutral100: "rgba(33,36,51,1)",
-  "neutral100-80": "rgba(33,36,51,0.8)",
   neutral200: "#1E2130",
   neutral300: "#282B3B",
   neutral400: "rgba(54,58,77,1)",

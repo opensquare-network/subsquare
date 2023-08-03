@@ -39,14 +39,14 @@ const Wrapper = styled.div`
   ${(p) =>
     p.size === "small" &&
     css`
-      width: 32px;
-      height: 20px;
+      width: 30px;
+      height: 18px;
       > div {
         width: 12px;
         height: 12px;
-        top: 4px;
-        left: 4px;
-        border-radius: 8px;
+        top: 3px;
+        left: 3px;
+        border-radius: 6px;
       }
       ${(p) =>
         p.active &&

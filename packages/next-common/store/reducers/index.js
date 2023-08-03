@@ -14,7 +14,6 @@ import navReducer from "./navSlice";
 import democracy from "./democracy";
 import layoutReducer from "./layoutSlice";
 import treasury from "./treasury";
-import preImagesReducer from "./preImagesSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -31,5 +30,4 @@ export default combineReducers({
   ...democracy,
   layout: layoutReducer,
   ...treasury,
-  preImages: preImagesReducer,
 });

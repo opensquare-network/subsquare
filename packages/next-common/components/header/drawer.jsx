@@ -51,7 +51,7 @@ const Item = styled(Flex)`
 
 const UserWrapper = styled(Flex)`
   border: 1px solid var(--neutral400);
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 0 12px;
   height: 38px;
   font-weight: 500;

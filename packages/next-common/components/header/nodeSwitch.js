@@ -75,17 +75,16 @@ const Select = styled.div`
 `;
 
 const Options = styled(NeutralPanel)`
-  border-radius: 8px;
+  border-radius: 4px;
   position: absolute;
   right: 0;
   margin-top: 4px;
-  padding: 8px;
+  padding: 8px 0;
   width: 100%;
   z-index: 1;
   color: var(--textPrimary);
   border: 1px solid;
   border-color: var(--neutral300);
-  box-shadow: var(--shadow200);
 
   ${(p) =>
     p.small &&
@@ -99,7 +98,6 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   padding: 6px 12px;
-  border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;

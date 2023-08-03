@@ -3,7 +3,7 @@ import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 import isNil from "lodash.isnil";
 import clsx from "clsx";
 import { SystemClose } from "@osn/icons/subsquare";
-import PrimaryButton from "../buttons/primaryButton";
+import ThemeButton from "../buttons/themeButton";
 
 export default function CookiesConsent() {
   const [show, setShow] = useState(false);
@@ -57,7 +57,7 @@ export default function CookiesConsent() {
         </p>
 
         <div className="flex justify-end">
-          <PrimaryButton onClick={handleAccept}>Got it</PrimaryButton>
+          <ThemeButton onClick={handleAccept}>Got it</ThemeButton>
         </div>
       </div>
     </div>
