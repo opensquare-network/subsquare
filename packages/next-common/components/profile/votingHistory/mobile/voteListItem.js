@@ -21,7 +21,7 @@ function ItemHeader({ vote, isGov2, setShowVoteDetail }) {
         )}
       </div>
       <div className="flex justify-end pt-[12px] items-center">
-        <ReferendumTag proposal={vote.proposal} isGov2={isGov2} />,
+        <ReferendumTag proposal={vote.proposal} isGov2={isGov2} />
       </div>
     </div>
   );

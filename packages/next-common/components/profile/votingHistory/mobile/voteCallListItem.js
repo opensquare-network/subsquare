@@ -20,7 +20,7 @@ function ItemHeader({ vote, isGov2 }) {
       </div>
       <div className="flex justify-between pt-[12px] items-center">
         <CallDate vote={vote} />
-        <ReferendumTag proposal={vote.proposal} isGov2={isGov2} />,
+        <ReferendumTag proposal={vote.proposal} isGov2={isGov2} />
       </div>
     </div>
   );
