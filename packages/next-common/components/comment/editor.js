@@ -167,7 +167,7 @@ function Editor(
         />
       </Relative>
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
-      <ButtonWrapper className="px-6">
+      <ButtonWrapper>
         {(isEdit || isReply) && (
           <GhostButton
             onClick={() => {

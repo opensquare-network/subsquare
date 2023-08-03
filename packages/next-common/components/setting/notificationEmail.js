@@ -10,7 +10,7 @@ import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
-import ThemeButton from "../buttons/themeButton";
+import PrimaryButton from "../buttons/primaryButton";
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -107,13 +107,13 @@ export default function NotificationEmail({ email, verified }) {
           <CountdownWrapper>{countdown}s</CountdownWrapper>
         ) : (
           (!verified || inputEmail !== email) && (
-            <ThemeButton
+            <PrimaryButton
               onClick={onResend}
               isLoading={resendLoading}
               style={{ width: 72, height: 40 }}
             >
               Verify
-            </ThemeButton>
+            </PrimaryButton>
           )
         )}
       </InputWrapper>

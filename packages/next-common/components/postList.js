@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import Post from "next-common/components/post";
 import Pagination from "next-common/components/pagination/index.js";
-import { TitleContainer } from "./styled/containers/titleContainer";
 import { EmptyList } from "./emptyList";
-import Link from "next/link";
+import ListTitleBar from "./listTitleBar";
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,12 +11,6 @@ const Wrapper = styled.div`
 
   > :not(:first-child) {
     margin-top: 16px;
-  }
-`;
-
-const TitleLink = styled.a`
-  &:hover {
-    text-decoration: underline;
   }
 `;
 
@@ -34,20 +27,13 @@ export default function PostList({
 }) {
   return (
     <Wrapper>
-      <TitleContainer>
-        <div>
-          <Link href={link || ""} passHref legacyBehavior>
-            <TitleLink>{title ?? category}</TitleLink>
-          </Link>
+      <ListTitleBar
+        title={title ?? category}
+        titleCount={titleCount}
+        titleExtra={titleExtra ?? topRightCorner}
+        link={link}
+      />
 
-          {!!titleCount && (
-            <small className="text-textTertiary ml-2 text14Medium">
-              {titleCount}
-            </small>
-          )}
-        </div>
-        {titleExtra || topRightCorner}
-      </TitleContainer>
       {summary}
 
       {items?.length > 0 ? (

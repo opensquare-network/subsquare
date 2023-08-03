@@ -7,6 +7,7 @@ export default function useAccountVotes(address) {
   const [votes, setVotes] = useState();
 
   useEffect(() => {
+    console.log(api, address);
     if (!api || !api.query.convictionVoting || !address) {
       setIsLoading(false);
       if (!address) {
@@ -14,6 +15,8 @@ export default function useAccountVotes(address) {
       }
       return;
     }
+
+    console.log("fetch votes");
 
     setIsLoading(true);
     api.query.convictionVoting.votingFor

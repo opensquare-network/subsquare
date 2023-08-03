@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { ButtonWrapper } from "./styled";
 import { logoutUser, useUserDispatch } from "../../context/user";
-import ThemeGhostButton from "../buttons/themeGhostButton";
+import GhostButton from "../buttons/ghostButton";
 
 export default function Logout() {
   const router = useRouter();
@@ -10,14 +10,15 @@ export default function Logout() {
 
   return (
     <ButtonWrapper>
-      <ThemeGhostButton
+      <GhostButton
+        className="!border-theme500 !text-theme500"
         onClick={async () => {
           await logoutUser(userDispatch);
           await router.replace("/");
         }}
       >
         Logout my account
-      </ThemeGhostButton>
+      </GhostButton>
     </ButtonWrapper>
   );
 }

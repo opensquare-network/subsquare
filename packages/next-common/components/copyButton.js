@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   cursor: pointer;
 `;
 
-export default function CopyButton({ copyText = "" }) {
+export default function CopyButton({ copyText = "", size = 16 }) {
   const [copied, setCopied] = useState(false);
 
   return (
@@ -23,15 +23,15 @@ export default function CopyButton({ copyText = "" }) {
       <Tooltip content={copied ? "Copied" : "Copy"} keepTooltipOpenAfterClick>
         {copied ? (
           <SystemCopied
-            width={16}
-            height={16}
-            className="[&_path]:fill-textSecondary"
+            width={size}
+            height={size}
+            className="[&_path]:fill-textSecondary [&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary"
           />
         ) : (
           <SystemCopy
-            width={16}
-            height={16}
-            className="[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary"
+            width={size}
+            height={size}
+            className="[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary [&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary"
           />
         )}
       </Tooltip>

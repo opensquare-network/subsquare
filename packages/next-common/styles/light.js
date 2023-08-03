@@ -38,6 +38,7 @@ const light = {
   gray400: "var(--neutral500)",
   gray500: "var(--textSecondary)",
   neutral100: "rgba(255,255,255,1)",
+  "neutral100-80": "rgba(255,255,255,0.8)",
   neutral200: "rgba(246,247,250,1)",
   neutral300: "rgba(235,238,244,1)",
   neutral400: "rgba(224,228,235,1)",

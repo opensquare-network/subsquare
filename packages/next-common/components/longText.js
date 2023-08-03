@@ -13,8 +13,8 @@ const A = styled.a`
   color: var(--theme500);
 `;
 
-export default function LongText({ text, fileName = "hex" }) {
-  if (text?.length <= 200) {
+export default function LongText({ text, fileName = "hex", maxLength = 200 }) {
+  if (text?.length <= maxLength) {
     return text;
   }
   const blob = new Blob([text], { type: "text/plain" });
