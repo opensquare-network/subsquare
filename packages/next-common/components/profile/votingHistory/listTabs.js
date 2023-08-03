@@ -3,7 +3,7 @@ import OpenGovVotes from "./openGovVotes";
 import OpenGovCalls from "./openGovCalls";
 import DemocracyVotes from "./democracyVotes";
 import DemocracyCalls from "./democracyCalls";
-import { OpenGov } from "./common";
+import { Referenda } from "./common";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function ListTabs({ moduleTabIndex }) {
@@ -16,7 +16,7 @@ export default function ListTabs({ moduleTabIndex }) {
           {
             name: "All Votes",
             content:
-              moduleTabIndex === OpenGov ? (
+              moduleTabIndex === Referenda ? (
                 <OpenGovVotes />
               ) : (
                 <DemocracyVotes />
@@ -26,7 +26,7 @@ export default function ListTabs({ moduleTabIndex }) {
             ? {
                 name: "Calls",
                 content:
-                  moduleTabIndex === OpenGov ? (
+                  moduleTabIndex === Referenda ? (
                     <OpenGovCalls />
                   ) : (
                     <DemocracyCalls />

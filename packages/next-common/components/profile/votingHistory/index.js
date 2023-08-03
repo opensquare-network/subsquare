@@ -1,13 +1,13 @@
 import VotingHistorySummary from "./summary";
 import ListTabs from "./listTabs";
 import { useState } from "react";
-import { Democracy, OpenGov } from "./common";
+import { Democracy, Referenda } from "./common";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function VotingHistory() {
   const { hasReferenda } = useChainSettings();
   const [moduleTabIndex, setModuleTabIndex] = useState(
-    hasReferenda ? OpenGov : Democracy,
+    hasReferenda ? Referenda : Democracy,
   );
 
   return (

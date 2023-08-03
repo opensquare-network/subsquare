@@ -2,7 +2,6 @@ import React from "react";
 import Tab from "next-common/components/tab";
 import styled from "styled-components";
 
-export const OpenGov = "OpenGov";
 export const Referenda = "Referenda";
 export const Democracy = "Democracy";
 
@@ -41,12 +40,12 @@ export function ModuleTab({ moduleTabIndex, setModuleTabIndex }) {
         small
         tabs={[
           {
-            tabId: OpenGov,
-            tabTitle: "OpenGov",
+            tabId: Referenda,
+            tabTitle: Referenda,
           },
           {
             tabId: Democracy,
-            tabTitle: "Democracy",
+            tabTitle: Democracy,
           },
         ]}
         selectedTabId={moduleTabIndex}
