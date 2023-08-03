@@ -38,7 +38,7 @@ export default withLoginUserRedux(({ overview }) => {
   if (user?.address) {
     tabs.push({
       label: "My Votes",
-      url: "/myvotes",
+      url: "/votes",
     });
   }
 
