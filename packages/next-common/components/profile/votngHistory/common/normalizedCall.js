@@ -39,6 +39,8 @@ export function normalizeCall(vote, chain) {
       nay,
       ayeVotes: new BigNumber(aye).times(0.1).toFixed(),
       nayVotes: new BigNumber(nay).times(0.1).toFixed(),
+      ayeBalance: aye,
+      nayBalance: nay,
     };
   }
 
@@ -52,6 +54,9 @@ export function normalizeCall(vote, chain) {
       ayeVotes: new BigNumber(aye).times(0.1).toFixed(),
       nayVotes: new BigNumber(nay).times(0.1).toFixed(),
       abstainVotes: new BigNumber(abstain).times(0.1).toFixed(),
+      ayeBalance: aye,
+      nayBalance: nay,
+      abstainBalance: abstain,
     };
   }
 
