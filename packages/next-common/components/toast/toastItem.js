@@ -9,6 +9,7 @@ import Loading from "../loading";
 import ToastSuccessIcon from "../../assets/imgs/icons/toast-success.svg";
 import ToastErrorIcon from "../../assets/imgs/icons/toast-error.svg";
 import ToastWarningIcon from "../../assets/imgs/icons/toast-warning.svg";
+import ToastRejectIcon from "../../assets/imgs/icons/toast-reject.svg";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -101,12 +102,10 @@ const ToastItem = ({ type, message, id, sticky, timeout }) => {
         ) : null}
       </IconWrapper>
       <div>{message}</div>
-      <img
-        src={"/imgs/icons/toast-reject.svg"}
+      <ToastRejectIcon
         onClick={() => {
           dispatch(removeToast(id));
         }}
-        alt=""
       />
     </Wrapper>
   );
