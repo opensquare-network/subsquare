@@ -5,6 +5,7 @@ import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
+import { SystemMore } from "@osn/icons/subsquare";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -78,12 +79,11 @@ export default function ContentMenu({
 
   return (
     <Wrapper className="edit" active={show || alwaysShow} ref={ref}>
-      <img
-        alt=""
-        src="/imgs/icons/more.svg"
-        onClick={() => setShow(!show)}
-        width={24}
-        height={24}
+      <SystemMore
+        className="w-4 h-4 [&_path]:fill-textTertiary cursor-pointer"
+        onClick={() => {
+          setShow(!show);
+        }}
       />
       {show && (
         <OptionWrapper>
