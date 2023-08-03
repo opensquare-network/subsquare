@@ -1,6 +1,6 @@
 import {
   Democracy,
-  OpenGov,
+  Referenda,
 } from "next-common/components/profile/votingHistory/common";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
@@ -10,10 +10,10 @@ import MyDemocracyVotes from "./myDemocracyVotes";
 export default function MyVotes() {
   const { hasReferenda } = useChainSettings();
   const [moduleTabIndex, setModuleTabIndex] = useState(
-    hasReferenda ? OpenGov : Democracy,
+    hasReferenda ? Referenda : Democracy,
   );
 
-  return moduleTabIndex === OpenGov ? (
+  return moduleTabIndex === Referenda ? (
     <MyOpenGovVotes
       moduleTabIndex={moduleTabIndex}
       setModuleTabIndex={setModuleTabIndex}
