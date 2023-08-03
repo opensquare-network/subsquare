@@ -3,6 +3,7 @@ import Tab from "next-common/components/tab";
 import styled from "styled-components";
 
 export const OpenGov = "OpenGov";
+export const Referenda = "Referenda";
 export const Democracy = "Democracy";
 
 const Wrapper = styled.div`
