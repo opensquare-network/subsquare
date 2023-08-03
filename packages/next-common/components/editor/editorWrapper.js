@@ -18,12 +18,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     padding: 6px 8px;
   }
 
-  > div:first-child {
-    border-color: var(--neutral400);
-    &:hover {
-      border-color: var(--neutral500);
-    }
-  }
   textarea {
     background: var(--neutral100);
     color: var(--textPrimary);
@@ -79,25 +73,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     }
   }
 
-  div button {
-    //todo: add a className in editor repo later
-    color: var(--textTertiary);
-    &:hover {
-      color: var(--textSecondary);
-    }
-  }
-
-  div.modal {
-    background-color: var(--neutral100) !important;
-    border-color: var(--neutral300) !important;
-  }
-
-  .modal textarea {
-    background-color: var(--neutral100) !important;
-    border-color: var(--neutral300) !important;
-    color: var(--textPrimary) !important;
-  }
-
   button svg {
     path {
       fill: var(--textSecondary);
@@ -106,11 +81,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
 
   button:hover svg path {
     fill: var(--textPrimary) !important;
-  }
-
-  .modal p,
-  span.ql-picker-options {
-    background-color: var(--neutral100);
   }
 
   .html-body,
