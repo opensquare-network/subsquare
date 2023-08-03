@@ -12,10 +12,7 @@ import nextApi from "next-common/services/nextApi";
 import pick from "lodash.pick";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { normalizeVote } from "./common";
-import RemoveButton from "next-common/components/removeButton";
-import RemoveReferendumVotePopup from "./removeReferendumVotePopup";
-import { useDispatch } from "react-redux";
-import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
+import RemoveVoteButton from "./removeVoteButton";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -30,9 +27,6 @@ const StyledList = styled(StyledListOrigin)`
 `;
 
 export default function VotesList({ votes, isGov2 }) {
-  const dispatch = useDispatch();
-  const [removeReferendum, setRemoveReferendum] = useState();
-
   const columnsDefinition = [
     {
       name: "Proposal",
@@ -94,10 +88,7 @@ export default function VotesList({ votes, isGov2 }) {
           ) : (
             <FieldLoading />
           ),
-          <RemoveButton
-            key="action"
-            onClick={() => setRemoveReferendum(item)}
-          />,
+          <RemoveVoteButton key="action" vote={item} isGov2={isGov2} />,
         ];
 
         row.key = item.referendumIndex;
@@ -110,15 +101,6 @@ export default function VotesList({ votes, isGov2 }) {
   return (
     <ListWrapper>
       <StyledList loading={!votes} columns={columns} rows={rows} />
-      {removeReferendum && (
-        <RemoveReferendumVotePopup
-          isGov2={isGov2}
-          referendumIndex={removeReferendum.referendumIndex}
-          trackId={removeReferendum.trackId}
-          onClose={() => setRemoveReferendum()}
-          onInBlock={() => dispatch(incMyVotesTrigger())}
-        />
-      )}
     </ListWrapper>
   );
 }
