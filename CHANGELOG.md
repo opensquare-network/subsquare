@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.4
+date: 2023-08-02
+- Feature: add preimages page.
+- Feature: add show more/less for long post.
+- Fix: twitter summary card preview for various chains.
+- Refactor: remove useless code and icons on public directory.
+- Refactor: rename v2 files.
+- Subscribe interlay/kintsugi locked balance instead of multiple times query.
+- Fix invalid icons.
+- Chore: disable tailwind built in colors.
+- Improve lots of styles, including search box, borders, header, shadow, etc.
+
 ### 3.3.3
 date: 2023-08-01
 - Support login popup and refactor various login related pages.
