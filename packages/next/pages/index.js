@@ -31,8 +31,6 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
 import { useUser } from "next-common/context/user";
-// import useAccountVotes from "next-common/hooks/referenda/votes/useAccountVotes";
-// import useAccountDemocracyVotes from "next-common/hooks/democracy/votes/useAccountDemocracyVotes";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -42,12 +40,6 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isZeitgeist = chain === Chains.zeitgeist;
   const chainSettings = useChainSettings();
   const user = useUser();
-
-  // useAccountVotes("ESgz7GLVW7BL5DhRgpVnxSXVwaKt4ytWcrf52TY1GQD1cEb");
-  // const { isLoading, votes } = useAccountDemocracyVotes(
-  //   "ESgz7GLVW7BL5DhRgpVnxSXVwaKt4ytWcrf52TY1GQD1cEb",
-  // );
-  // console.log(isLoading, votes);
 
   const discussionsCategory = [
     {

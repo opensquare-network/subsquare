@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import pick from "lodash.pick";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import RemoveVoteButton from "../removeVoteButton";
 
 function ItemHeader({ vote, isGov2 }) {
   const [referendumPost, setReferendumPost] = useState();
@@ -27,7 +28,7 @@ function ItemHeader({ vote, isGov2 }) {
 
   return (
     <div>
-      <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
+      <div className="flex items-center justify-between pb-[12px] border-b border-b-neutral-300">
         {referendumPost ? (
           <PostTitle
             referendumIndex={vote.referendumIndex}
@@ -37,6 +38,7 @@ function ItemHeader({ vote, isGov2 }) {
         ) : (
           <FieldLoading />
         )}
+        <RemoveVoteButton key="action" vote={vote} isGov2={isGov2} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">
         {referendumPost ? (
