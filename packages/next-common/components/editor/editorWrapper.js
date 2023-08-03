@@ -7,16 +7,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     border-radius: 12px;
     overflow: hidden;
 
-    .editor-toolbar {
-      display: flex;
-      justify-content: space-between;
-      border-color: var(--neutral300) !important;
-
-      > div:first-child {
-        position: static;
-      }
-    }
-
     /* switch markdown toggle */
     > div:nth-child(2) {
       padding: 12px 24px;
@@ -89,44 +79,11 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     }
   }
 
-  .editor-toolbar-buttons button {
-    background-color: var(--neutral200) !important;
-  }
-
-  .editor-toolbar-buttons button.active {
-    box-shadow: var(--neutral100) 0px 1px 0px 0px;
-  }
-
-  .editor-toolbar {
-    /* left side: write and preview button */
-    > div:first-child {
-      button {
-        padding: 12px 24px;
-      }
-    }
-  }
   div button {
     //todo: add a className in editor repo later
     color: var(--textTertiary);
     &:hover {
       color: var(--textSecondary);
-    }
-  }
-
-  div button.active {
-    background-color: var(--neutral100) !important;
-    border-color: var(--neutral100) !important;
-    color: var(--textPrimary) !important;
-    box-shadow: 1px 0 0 0 var(--neutral300);
-
-    + button {
-      box-shadow: 1px 0 0 0 var(--neutral300);
-    }
-
-    :last-child {
-      box-shadow:
-        var(--neutral300) -1px 0px 0px 0px,
-        var(--neutral300) 1px 0px 0px 0px;
     }
   }
 
@@ -139,21 +96,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     background-color: var(--neutral100) !important;
     border-color: var(--neutral300) !important;
     color: var(--textPrimary) !important;
-  }
-
-  .editor-toolbar,
-  .ql-toolbar.ql-snow,
-  span.ql-formats {
-    background-color: var(--neutral200) !important;
-    border-color: var(--neutral400) !important;
-  }
-
-  .editor-toolbar > div {
-    border-color: var(--neutral400) !important;
-  }
-
-  .editor-toolbar-buttons > div {
-    background-color: var(--neutral400) !important;
   }
 
   button svg {
@@ -190,10 +132,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
 
   > div > div > div + div {
     border-color: var(--neutral400) !important;
-  }
-
-  span.ql-formats button:last-child {
-    box-shadow: none;
   }
 `;
 export default EditorWrapper;
