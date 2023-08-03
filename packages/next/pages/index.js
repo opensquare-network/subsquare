@@ -30,8 +30,9 @@ import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
-import useAccountVotes from "next-common/hooks/referenda/votes/useAccountVotes";
-import useAccountDemocracyVotes from "next-common/hooks/democracy/votes/useAccountDemocracyVotes";
+import { useUser } from "next-common/context/user";
+// import useAccountVotes from "next-common/hooks/referenda/votes/useAccountVotes";
+// import useAccountDemocracyVotes from "next-common/hooks/democracy/votes/useAccountDemocracyVotes";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -40,11 +41,13 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isCollectives = isCollectivesChain(chain);
   const isZeitgeist = chain === Chains.zeitgeist;
   const chainSettings = useChainSettings();
-  useAccountVotes("ESgz7GLVW7BL5DhRgpVnxSXVwaKt4ytWcrf52TY1GQD1cEb");
-  const { isLoading, votes } = useAccountDemocracyVotes(
-    "ESgz7GLVW7BL5DhRgpVnxSXVwaKt4ytWcrf52TY1GQD1cEb",
-  );
-  console.log(isLoading, votes);
+  const user = useUser();
+
+  // useAccountVotes("ESgz7GLVW7BL5DhRgpVnxSXVwaKt4ytWcrf52TY1GQD1cEb");
+  // const { isLoading, votes } = useAccountDemocracyVotes(
+  //   "ESgz7GLVW7BL5DhRgpVnxSXVwaKt4ytWcrf52TY1GQD1cEb",
+  // );
+  // console.log(isLoading, votes);
 
   const discussionsCategory = [
     {
@@ -230,6 +233,21 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
+  let tabs = [
+    {
+      label: "Overview",
+      url: "/",
+      exactMatch: false,
+    },
+  ];
+
+  if (user?.address) {
+    tabs.push({
+      label: "My Votes",
+      url: "/myvotes",
+    });
+  }
+
   return (
     <ListLayout
       title={chainSettings.name}
@@ -237,6 +255,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       description={chainSettings.description}
       headContent={<ChainSocialLinks />}
       summary={<SummaryComponent summaryData={overview?.summary} />}
+      tabs={tabs}
     >
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>

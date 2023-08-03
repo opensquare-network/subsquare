@@ -6,11 +6,13 @@ import { LightLoading } from "./loading";
 const RawButton = styled(CommonButton)`
   background-color: var(--red500);
   color: var(--textPrimaryContrast);
+  border-color: var(--red500);
 `;
 
 export const Disabled = styled(DisabledButton)`
   background-color: var(--neutral500);
   color: var(--textPrimaryContrast);
+  border-color: var(--neutral500);
 `;
 
 export default function DangerButton({
