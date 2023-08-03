@@ -5,7 +5,7 @@ import {
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 import MyOpenGovVotes from "./myOpenGovVotes";
-import MyDemocracyVotes from "./myDemoracyVotes";
+import MyDemocracyVotes from "./myDemocracyVotes";
 
 export default function MyVotes() {
   const { hasReferenda } = useChainSettings();
