@@ -1,10 +1,13 @@
+import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
 import useApi from "next-common/utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function useAccountDemocracyVotes(address) {
   const api = useApi();
   const [isLoading, setIsLoading] = useState(false);
   const [votes, setVotes] = useState();
+  const trigger = useSelector(myVotesTriggerSelector);
 
   useEffect(() => {
     if (!api || !api.query.democracy || !address) {
@@ -31,7 +34,7 @@ export default function useAccountDemocracyVotes(address) {
         setVotes(votes);
       })
       .finally(() => setIsLoading(false));
-  }, [api, address]);
+  }, [api, address, trigger]);
 
   return {
     isLoading,
