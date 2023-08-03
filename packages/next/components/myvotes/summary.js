@@ -51,16 +51,18 @@ export default function Summary({ votes, moduleTabIndex, setModuleTabIndex }) {
       content: <CountSummaryContent count={votes?.length || 0} />,
     },
     {
-      title: "Unlockable / Total",
+      title: "Total",
       content: (
         <TextSummaryContent
-          value={
-            <div className="flex gap-[4px]">
-              <ValueDisplay value={0} symbol={symbol} />
-              <span className="text-textDisabled">/</span>
-              <ValueDisplay value={totalValue} symbol={symbol} />
-            </div>
-          }
+          value={<ValueDisplay value={totalValue} symbol={symbol} />}
+        />
+      ),
+    },
+    {
+      title: "Unlockable",
+      content: (
+        <TextSummaryContent
+          value={<ValueDisplay value={0} symbol={symbol} />}
         />
       ),
     },

@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
+import { useSelector } from "react-redux";
+import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
 
 export default function useAccountVotes(address) {
   const api = useApi();
   const [isLoading, setIsLoading] = useState(false);
   const [votes, setVotes] = useState();
+  const trigger = useSelector(myVotesTriggerSelector);
 
   useEffect(() => {
-    console.log(api, address);
     if (!api || !api.query.convictionVoting || !address) {
       setIsLoading(false);
       if (!address) {
@@ -15,8 +17,6 @@ export default function useAccountVotes(address) {
       }
       return;
     }
-
-    console.log("fetch votes");
 
     setIsLoading(true);
     api.query.convictionVoting.votingFor
@@ -39,7 +39,7 @@ export default function useAccountVotes(address) {
         setVotes(votes);
       })
       .finally(() => setIsLoading(false));
-  }, [api, address]); // todo: we many need a trigger as another dependency to update votes
+  }, [api, address, trigger]);
 
   return {
     isLoading,

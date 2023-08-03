@@ -167,7 +167,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
           const triggerUpdate = useSelector(preImagesTriggerSelector);
           const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
-          return [
+          const row = [
             <Hash
               key="hash"
               hash={hash}
@@ -219,6 +219,10 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
               <FieldLoading />
             ),
           ];
+
+          row.key = hash;
+
+          return row;
         },
       };
     });
