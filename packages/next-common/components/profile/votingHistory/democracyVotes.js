@@ -6,6 +6,7 @@ import { ListCard } from "./styled";
 import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
 import MobileVotesList from "./mobile/votesList";
+import isNil from "lodash.isnil";
 
 export default function DemocracyVotes() {
   const { id } = usePageProps();
@@ -41,6 +42,10 @@ export default function DemocracyVotes() {
   useEffect(() => {
     fetchData(1, 25);
   }, [fetchData]);
+
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
     <>

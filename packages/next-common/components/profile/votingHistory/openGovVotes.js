@@ -6,6 +6,7 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
 import MobileVotesList from "./mobile/votesList";
+import isNil from "lodash.isnil";
 
 export default function OpenGovVotes() {
   const { id } = usePageProps();
@@ -41,6 +42,10 @@ export default function OpenGovVotes() {
   useEffect(() => {
     fetchData(1, 25);
   }, [fetchData]);
+
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
     <>

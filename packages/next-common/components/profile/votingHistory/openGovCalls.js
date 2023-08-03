@@ -5,6 +5,7 @@ import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteCallsList from "./voteCallsList";
 import MobileVoteCallsList from "./mobile/voteCallsList";
+import isNil from "lodash.isnil";
 
 export default function OpenGovCalls() {
   const { id } = usePageProps();
@@ -39,6 +40,10 @@ export default function OpenGovCalls() {
   useEffect(() => {
     fetchData(1, 25);
   }, [fetchData]);
+
+  if (isNil(width)) {
+    return null;
+  }
 
   return width > 1024 ? (
     <ListCard>
