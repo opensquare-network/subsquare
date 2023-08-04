@@ -2,17 +2,6 @@ import styled from "styled-components";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
 const EditorWrapper = styled(RichTextStyleWrapper)`
-  > div:first-child {
-    max-width: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-
-    /* switch markdown toggle */
-    > div:nth-child(2) {
-      padding: 12px 24px;
-    }
-  }
-
   /* plus padding */
   div.osn-previewer {
     padding: 6px 8px;
@@ -22,23 +11,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
     background: var(--neutral100);
     color: var(--textPrimary);
     padding: 16px 24px;
-  }
-
-  svg[width="26"] {
-    path {
-      fill: var(--textPrimary);
-    }
-    rect {
-      stroke: var(--textPrimary);
-    }
-  }
-
-  div.off {
-    background: var(--neutral500);
-  }
-
-  div.on {
-    background: var(--theme500);
   }
 
   div ul.mention-list,
@@ -95,13 +67,5 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   caret-color: var(--textPrimary) !important;
-
-  > div > div {
-    border-color: var(--neutral300);
-  }
-
-  > div > div > div + div {
-    border-color: var(--neutral400) !important;
-  }
 `;
 export default EditorWrapper;
