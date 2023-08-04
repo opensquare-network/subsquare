@@ -6,7 +6,7 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 import { normalizeVote } from "../common";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-// import RemoveVoteButton from "../removeVoteButton";
+import RemoveVoteButton from "../removeVoteButton";
 import useVotedPost from "../useVotedPost";
 
 function ItemHeader({ vote, isGov2 }) {
@@ -24,7 +24,7 @@ function ItemHeader({ vote, isGov2 }) {
         ) : (
           <FieldLoading />
         )}
-        {/* <RemoveVoteButton key="action" vote={vote} isGov2={isGov2} /> */}
+        <RemoveVoteButton key="action" vote={vote} isGov2={isGov2} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">
         {referendumPost ? (
