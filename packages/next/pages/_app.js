@@ -6,7 +6,7 @@ import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
 import { store } from "next-common/store";
-import "next-common/styles/richTextStyles.scss";
+// import "next-common/styles/richTextStyles.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "next-common/services/websocket";
 import React, { useEffect } from "react";

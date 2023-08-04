@@ -10,19 +10,13 @@ import { Label, LabelWrapper } from "./styled";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
-import dynamic from "next/dynamic";
 import PrimaryButton from "../buttons/primaryButton";
-import EditorWrapper from "../editor/editorWrapper";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useChain } from "../../context/chain";
 import { useUser } from "../../context/user";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import PostLabel from "./postLabel";
-
-const UniverseEditor = dynamic(
-  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false },
-);
+import Editor from "../editor";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -57,10 +51,6 @@ const ButtonWrapper = styled.div`
   > :not(:first-child) {
     margin-left: 12px;
   }
-`;
-
-const InputWrapper = styled(EditorWrapper)`
-  position: relative;
 `;
 
 const UploaderWrapper = styled.div`
@@ -171,17 +161,15 @@ export default function PostCreate() {
         <Label>Issue</Label>
       </LabelWrapper>
 
-      <InputWrapper>
-        <UniverseEditor
-          value={content}
-          onChange={setContent}
-          contentType={contentType}
-          setContentType={setContentType}
-          loadSuggestions={() => []}
-          minHeight={300}
-          setQuillRef={() => {}}
-        />
-      </InputWrapper>
+      <Editor
+        value={content}
+        onChange={setContent}
+        contentType={contentType}
+        setContentType={setContentType}
+        loadSuggestions={() => []}
+        minHeight={300}
+        setQuillRef={() => {}}
+      />
       {errors?.data?.content?.[0] && (
         <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
       )}

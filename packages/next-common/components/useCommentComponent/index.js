@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Comments from "next-common/components/comment/index";
-import Editor from "next-common/components/comment/editor";
+import CommentEditor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor } from "next-common/utils/post";
 import { useUser } from "../../context/user";
@@ -24,7 +24,7 @@ export default function useCommentComponent({ detail, comments, tabs = null }) {
     <div>
       <Comments data={comments} tabs={tabs} />
       {loginUser && (
-        <Editor
+        <CommentEditor
           postId={postId}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}

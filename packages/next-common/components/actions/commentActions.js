@@ -4,7 +4,7 @@ import useThumbsUp from "../thumbsUp";
 import ReplyButton from "./replyButton";
 import ThumbUpList from "./thumbUpList";
 import { Wrapper } from "./styled";
-import Editor from "../comment/editor";
+import CommentEditor from "../comment/editor";
 import { usePost } from "next-common/context/post";
 import { useUser } from "next-common/context/user";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -89,7 +89,7 @@ export default function CommentActions({
       </Wrapper>
       <ThumbUpList showThumbsUpList={showThumbsUpList} reactions={reactions} />
       {isReply && (
-        <Editor
+        <CommentEditor
           postId={postId}
           commentId={replyToCommentId}
           ref={editorWrapperRef}

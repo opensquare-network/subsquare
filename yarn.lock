@@ -2028,9 +2028,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/rich-text-editor@npm:^0.1.56":
-  version: 0.1.56
-  resolution: "@osn/rich-text-editor@npm:0.1.56"
+"@osn/rich-text-editor@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@osn/rich-text-editor@npm:0.5.0"
   dependencies:
     lodash: ^4.17.21
     marked: ^4.0.15
@@ -2041,7 +2041,7 @@ __metadata:
     "@osn/previewer": ^0.10.3
     react: ^17.0.2
     styled-components: ^5.3.1
-  checksum: be802462ad4f75aa60571de07db31d85555cbbe813af5502d3db69d6a7629c5d0ad6202edf7bbeb5cd4b3c19fbc6e0f298e6680905543053307ad068304a58d5
+  checksum: 45672501f4aeecf39f6baacced11f0b80c70e7611e7ac3eb02ee8a1bc327877e834867920e75d7bf09f4011874fd998f1ce620aace82402c37a18bf94ccbaafd
   languageName: node
   linkType: hard
 
@@ -3273,7 +3273,7 @@ __metadata:
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.26.1
     "@osn/previewer": ^0.12.5
-    "@osn/rich-text-editor": ^0.1.56
+    "@osn/rich-text-editor": ^0.5.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1

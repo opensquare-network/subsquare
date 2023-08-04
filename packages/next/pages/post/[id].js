@@ -3,7 +3,7 @@ import Comments from "next-common/components/comment";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Editor from "next-common/components/comment/editor";
+import CommentEditor from "next-common/components/comment/editor";
 import { useRef, useState } from "react";
 import { getFocusEditor } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -52,7 +52,7 @@ export default withLoginUserRedux(
           <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
           <Comments data={comments} />
           {loginUser && (
-            <Editor
+            <CommentEditor
               postId={postId}
               ref={editorWrapperRef}
               setQuillRef={setQuillRef}

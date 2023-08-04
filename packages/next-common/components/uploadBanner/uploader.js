@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Flex from "next-common/components/styled/flex";
-import nextApi from "next-common/services/nextApi";
 import Loading from "next-common/components/loading";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import DeleteIcon from "next-common/assets/imgs/icons/delete.svg";
 import UploadIcon from "next-common/assets/imgs/icons/upload.svg";
 import { getBannerUrl } from "../../utils/banner";
+import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 
 const Wrapper = styled.div`
   position: relative;
@@ -96,7 +96,7 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(imageCid || null);
-  const [uploading, setUploading] = useState(false);
+  const { uploading, upload } = useUploadToIpfs();
 
   const handleSelectFile = () => {
     inputEl.current?.click();
@@ -138,11 +138,7 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
         return;
       }
 
-      setUploading(true);
-      const formData = new FormData();
-      formData.append("file", image, image.name);
-      nextApi
-        .postFormData("ipfs/files", formData)
+      upload(image)
         .then(({ result, error }) => {
           if (result) {
             setCurrentBanner(result.cid);
@@ -153,7 +149,6 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
           }
         })
         .finally(() => {
-          setUploading(false);
           resetSelectedFile();
         });
     }
