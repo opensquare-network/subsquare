@@ -22,7 +22,6 @@ const StyledList = styled(StyledListOrigin)`
 
 export default function VotesList({
   data,
-  isGov2,
   fetchData,
   setShowVoteDetail,
   page,
@@ -60,10 +59,9 @@ export default function VotesList({
         key="proposal"
         referendumIndex={item.referendumIndex}
         title={item.proposal?.title}
-        isGov2={isGov2}
       />,
       <VoteItem key="vote" vote={item} />,
-      <ReferendumTag key="tag" proposal={item.proposal} isGov2={isGov2} />,
+      <ReferendumTag key="tag" proposal={item.proposal} />,
     ];
 
     if (!isKintsugi) {

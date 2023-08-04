@@ -24,7 +24,7 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function VotesList({ votes, isGov2 }) {
+export default function VotesList({ votes }) {
   const columnsDefinition = [
     {
       name: "Proposal",
@@ -59,22 +59,17 @@ export default function VotesList({ votes, isGov2 }) {
               key="proposal"
               referendumIndex={item.referendumIndex}
               title={referendumPost?.title}
-              isGov2={isGov2}
             />
           ) : (
             <FieldLoading />
           ),
           <VoteItem key="vote" vote={vote} />,
           referendumPost ? (
-            <ReferendumTag
-              key="tag"
-              proposal={referendumPost?.onchainData}
-              isGov2={isGov2}
-            />
+            <ReferendumTag key="tag" proposal={referendumPost?.onchainData} />
           ) : (
             <FieldLoading />
           ),
-          <RemoveVoteButton key="action" vote={item} isGov2={isGov2} />,
+          <RemoveVoteButton key="action" vote={item} />,
         ];
 
         row.key = item.referendumIndex;

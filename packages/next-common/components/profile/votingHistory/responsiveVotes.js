@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { ListCard } from "./styled";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
 import MobileVotesList from "./mobile/votesList";
 import isNil from "lodash.isnil";
+import { useIsReferenda } from "./common";
 
-export default function DemocracyVotes() {
+export default function ResponsiveVotes() {
   const { id } = usePageProps();
   const [data, setData] = useState();
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
+  const isReferenda = useIsReferenda();
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -22,7 +24,7 @@ export default function DemocracyVotes() {
 
       setIsLoading(true);
       nextApi
-        .fetch(`users/${id}/democracy/votes`, {
+        .fetch(`users/${id}/${isReferenda ? "referenda" : "democracy"}/votes`, {
           page,
           pageSize,
           includesTitle: 1,
@@ -36,7 +38,7 @@ export default function DemocracyVotes() {
           setIsLoading(false);
         });
     },
-    [id],
+    [id, isReferenda],
   );
 
   useEffect(() => {
@@ -54,7 +56,6 @@ export default function DemocracyVotes() {
           <VotesList
             data={data}
             isLoading={isLoading}
-            isGov2={false}
             fetchData={fetchData}
             setShowVoteDetail={setShowVoteDetail}
             page={page}
@@ -64,7 +65,6 @@ export default function DemocracyVotes() {
         <MobileVotesList
           data={data}
           isLoading={isLoading}
-          isGov2={false}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}
           page={page}
@@ -72,7 +72,6 @@ export default function DemocracyVotes() {
       )}
       {showVoteDetail !== null && (
         <VoteDetailPopup
-          isGov2={false}
           vote={showVoteDetail}
           setShowVoteDetail={setShowVoteDetail}
         />

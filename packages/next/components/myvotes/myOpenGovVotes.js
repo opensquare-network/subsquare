@@ -6,7 +6,7 @@ import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { setMyVotedPosts } from "next-common/store/reducers/myVotesSlice";
 
-export default function MyOpenGovVotes({ moduleTabIndex, setModuleTabIndex }) {
+export default function MyOpenGovVotes() {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
 
@@ -30,12 +30,5 @@ export default function MyOpenGovVotes({ moduleTabIndex, setModuleTabIndex }) {
       });
   }, [dispatch, votes]);
 
-  return (
-    <CommonVotes
-      moduleTabIndex={moduleTabIndex}
-      setModuleTabIndex={setModuleTabIndex}
-      votes={votes}
-      isLoading={isLoading}
-    />
-  );
+  return <CommonVotes votes={votes} isLoading={isLoading} />;
 }

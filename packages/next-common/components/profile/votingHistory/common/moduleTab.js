@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Tab from "next-common/components/tab";
 import styled from "styled-components";
 
@@ -33,7 +33,29 @@ const Wrapper = styled.div`
   }
 `;
 
-export function ModuleTab({ moduleTabIndex, setModuleTabIndex }) {
+export const ModuleTabContext = React.createContext();
+
+export function ModuleTabProvider({ defaultTab, children }) {
+  const [moduleTabIndex, setModuleTabIndex] = React.useState(defaultTab);
+  return (
+    <ModuleTabContext.Provider value={{ moduleTabIndex, setModuleTabIndex }}>
+      {children}
+    </ModuleTabContext.Provider>
+  );
+}
+
+export function useModuleTab() {
+  const { moduleTabIndex } = useContext(ModuleTabContext);
+  return moduleTabIndex;
+}
+
+export function useIsReferenda() {
+  const moduleTabIndex = useModuleTab();
+  return moduleTabIndex === Referenda;
+}
+
+export function ModuleTab() {
+  const { moduleTabIndex, setModuleTabIndex } = useContext(ModuleTabContext);
   return (
     <Wrapper>
       <Tab

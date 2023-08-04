@@ -4,7 +4,7 @@ import RemoveReferendumVotePopup from "./removeReferendumVotePopup";
 import { useDispatch } from "react-redux";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 
-export default function RemoveVoteButton({ vote, isGov2 }) {
+export default function RemoveVoteButton({ vote }) {
   const dispatch = useDispatch();
   const [removeReferendum, setRemoveReferendum] = useState();
 
@@ -13,7 +13,6 @@ export default function RemoveVoteButton({ vote, isGov2 }) {
       <RemoveButton onClick={() => setRemoveReferendum(vote)} />
       {removeReferendum && (
         <RemoveReferendumVotePopup
-          isGov2={isGov2}
           votes={[vote]}
           onClose={() => setRemoveReferendum()}
           onInBlock={() => dispatch(incMyVotesTrigger())}
