@@ -33,7 +33,7 @@ function Editor(props, ref) {
   function onDrop(e) {
     e.preventDefault();
     setDragging(false);
-    const { files } = e.target;
+    const { files } = e.dataTransfer;
     upload(files);
   }
 
