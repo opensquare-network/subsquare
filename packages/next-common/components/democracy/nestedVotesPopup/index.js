@@ -113,6 +113,7 @@ function VotesList({ items = [], loading }) {
         fontSize={14}
         noTooltip
         maxWidth={296}
+        linkToVotesPage
       />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay

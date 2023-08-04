@@ -101,6 +101,7 @@ function VotesList({ items = [], loading }) {
         fontSize={14}
         noTooltip
         maxWidth={176}
+        linkToVotesPage
       />,
       <ValueDisplay
         key="value"

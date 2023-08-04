@@ -105,6 +105,7 @@ function VotesList({ loading, items = [] }) {
         fontSize={14}
         noTooltip
         maxWidth={276}
+        linkToVotesPage
       />,
       <CapitalTableItem
         key="capital"

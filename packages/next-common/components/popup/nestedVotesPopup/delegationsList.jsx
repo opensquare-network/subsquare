@@ -98,6 +98,7 @@ function DetailDelegatorList({ items = [] }) {
         fontSize={14}
         noTooltip
         maxWidth={296}
+        linkToVotesPage
       />,
       <CapitalTableItem
         key="capital"
