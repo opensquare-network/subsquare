@@ -127,7 +127,7 @@ function Editor(props, ref) {
         toggleBarLeft={
           !isPreview &&
           props.contentType === "markdown" && (
-            <div className="text-textTertiary text12Medium">
+            <div className="text-textTertiary text12Medium max-sm:hidden">
               {uploading ? (
                 <span className="inline-flex items-center">
                   <SystemLoading className="w-3.5 h-3.5 mr-1 [&_path]:stroke-textTertiary" />{" "}
