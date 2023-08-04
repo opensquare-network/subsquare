@@ -3,7 +3,7 @@ export function normalizeVote(vote) {
     const { balance, vote: _vote } = vote.asStandard;
     return {
       isStandard: true,
-      balance: BigInt(balance.toJSON()),
+      balance: balance.toBigInt(),
       conviction: _vote.conviction.toNumber(),
       aye: _vote.isAye,
     };
@@ -11,16 +11,16 @@ export function normalizeVote(vote) {
     const { aye, nay } = vote.asSplit;
     return {
       isSplit: true,
-      ayeBalance: BigInt(aye.toJSON()),
-      nayBalance: BigInt(nay.toJSON()),
+      ayeBalance: aye.toBigInt(),
+      nayBalance: nay.toBigInt(),
     };
   } else if (vote.isSplitAbstain) {
     const { aye, nay, abstain } = vote.asSplitAbstain;
     return {
       isSplitAbstain: true,
-      ayeBalance: BigInt(aye.toJSON()),
-      nayBalance: BigInt(nay.toJSON()),
-      abstainBalance: BigInt(abstain.toJSON()),
+      ayeBalance: aye.toBigInt(),
+      nayBalance: nay.toBigInt(),
+      abstainBalance: abstain.toBigInt(),
     };
   }
 
@@ -30,15 +30,13 @@ export function normalizeVote(vote) {
 export function getVoteBalance(vote) {
   if (vote.isStandard) {
     const { balance } = vote.asStandard;
-    return BigInt(balance.toJSON());
+    return balance.toBigInt();
   } else if (vote.isSplit) {
     const { aye, nay } = vote.asSplit;
-    return BigInt(aye.toJSON()) + BigInt(nay.toJSON());
+    return aye.toBigInt() + nay.toBigInt();
   } else if (vote.isSplitAbstain) {
     const { aye, nay, abstain } = vote.asSplitAbstain;
-    return (
-      BigInt(aye.toJSON()) + BigInt(nay.toJSON()) + BigInt(abstain.toJSON())
-    );
+    return aye.toBigInt() + nay.toBigInt() + abstain.toBigInt();
   }
 
   return BigInt(0);
