@@ -3,9 +3,10 @@
 import styled from "styled-components";
 import EditorWrapper from "./editorWrapper";
 import dynamic from "next/dynamic";
-import { forwardRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import clsx from "clsx";
+import { SystemLoading } from "@osn/icons/subsquare";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -20,6 +21,7 @@ const Wrapper = styled(EditorWrapper)``;
 function Editor(props, ref) {
   const [dragging, setDragging] = useState(false);
   const { uploading, upload } = useUploadToIpfs();
+  const inputRef = useRef();
 
   function onDragOver(event) {
     event.preventDefault();
@@ -30,12 +32,18 @@ function Editor(props, ref) {
     setDragging(false);
   }
 
+  function onSelectFile(e) {
+    e.preventDefault();
+    const { files } = e.target;
+    uploadImage(files);
+  }
+
   function onDrop(event) {
     event.preventDefault();
     setDragging(false);
     const { files } = event.dataTransfer;
 
-    handleUploadImage(files);
+    uploadImage(files);
   }
 
   function onPaste(event) {
@@ -50,11 +58,10 @@ function Editor(props, ref) {
       event.preventDefault();
     }
 
-    handleUploadImage(files);
+    uploadImage(files);
   }
 
-  // handle drop and paste
-  function handleUploadImage(files) {
+  function uploadImage(files) {
     const image = files?.[0];
     if (image) {
       if (/image\/\w+/.exec(image.type)) {
@@ -98,12 +105,33 @@ function Editor(props, ref) {
         toggleBarLeft={
           props.contentType === "markdown" && (
             <div className="text-textTertiary text12Medium">
-              {uploading
-                ? "Uploading..."
-                : "Attach files by dragging & dropping or pasting item."}
+              {uploading ? (
+                <span className="inline-flex items-center">
+                  <SystemLoading className="w-3.5 h-3.5 mr-1 [&_path]:stroke-textTertiary" />{" "}
+                  Uploading...
+                </span>
+              ) : (
+                <span
+                  className="cursor-pointer"
+                  onClick={() => {
+                    inputRef.current?.click?.();
+                  }}
+                >
+                  Attach files by dragging & dropping, selecting or pasting
+                  item.
+                </span>
+              )}
             </div>
           )
         }
+      />
+
+      <input
+        className="hidden"
+        type="file"
+        ref={inputRef}
+        accept="image/*"
+        onChange={onSelectFile}
       />
     </Wrapper>
   );
