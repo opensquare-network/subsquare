@@ -10,7 +10,7 @@ function ItemHeader({ vote, isGov2, setShowVoteDetail }) {
 
   return (
     <div>
-      <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
+      <div className="flex justify-between items-center pb-[12px] border-b border-b-neutral-300">
         <PostTitle
           referendumIndex={vote.referendumIndex}
           title={vote.proposal?.title}

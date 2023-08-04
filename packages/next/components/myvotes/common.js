@@ -26,3 +26,18 @@ export function normalizeVote(vote) {
 
   return {};
 }
+
+export function getVoteBalance(vote) {
+  if (vote.isStandard) {
+    const { balance } = vote.asStandard;
+    return balance.toNumber();
+  } else if (vote.isSplit) {
+    const { aye, nay } = vote.asSplit;
+    return aye.toNumber() + nay.toNumber();
+  } else if (vote.isSplitAbstain) {
+    const { aye, nay, abstain } = vote.asSplitAbstain;
+    return aye.toNumber() + nay.toNumber() + abstain.toNumber();
+  }
+
+  return 0;
+}

@@ -7,12 +7,10 @@ import {
   ReferendumTag,
   VoteItem,
 } from "next-common/components/profile/votingHistory/common";
-import { useEffect, useState } from "react";
-import nextApi from "next-common/services/nextApi";
-import pick from "lodash.pick";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { normalizeVote } from "./common";
 import RemoveVoteButton from "./removeVoteButton";
+import useVotedPost from "./useVotedPost";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -51,19 +49,7 @@ export default function VotesList({ votes, isGov2 }) {
   const rows = (votes || []).map((item) => {
     return {
       useData: () => {
-        const [referendumPost, setReferendumPost] = useState();
-
-        useEffect(() => {
-          let url = `democracy/referendums/${item.referendumIndex}`;
-          if (isGov2) {
-            url = `gov2/referendums/${item.referendumIndex}`;
-          }
-          nextApi.fetch(url).then(({ result }) => {
-            if (result) {
-              setReferendumPost(pick(result || {}, ["title", "onchainData"]));
-            }
-          });
-        }, []);
+        const referendumPost = useVotedPost(item.referendumIndex);
 
         const vote = normalizeVote(item.vote);
 

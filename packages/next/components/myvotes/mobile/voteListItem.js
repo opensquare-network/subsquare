@@ -5,26 +5,12 @@ import {
   VoteItem,
 } from "next-common/components/profile/votingHistory/common";
 import { normalizeVote } from "../common";
-import { useEffect, useState } from "react";
-import nextApi from "next-common/services/nextApi";
-import pick from "lodash.pick";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import RemoveVoteButton from "../removeVoteButton";
+// import RemoveVoteButton from "../removeVoteButton";
+import useVotedPost from "../useVotedPost";
 
 function ItemHeader({ vote, isGov2 }) {
-  const [referendumPost, setReferendumPost] = useState();
-
-  useEffect(() => {
-    let url = `democracy/referendums/${vote.referendumIndex}`;
-    if (isGov2) {
-      url = `gov2/referendums/${vote.referendumIndex}`;
-    }
-    nextApi.fetch(url).then(({ result }) => {
-      if (result) {
-        setReferendumPost(pick(result || {}, ["title", "onchainData"]));
-      }
-    });
-  }, [vote.referendumIndex, isGov2]);
+  const referendumPost = useVotedPost(vote.referendumIndex);
 
   return (
     <div>
@@ -38,7 +24,7 @@ function ItemHeader({ vote, isGov2 }) {
         ) : (
           <FieldLoading />
         )}
-        <RemoveVoteButton key="action" vote={vote} isGov2={isGov2} />
+        {/* <RemoveVoteButton key="action" vote={vote} isGov2={isGov2} /> */}
       </div>
       <div className="flex justify-end pt-[12px] items-center">
         {referendumPost ? (

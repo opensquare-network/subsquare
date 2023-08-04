@@ -19,12 +19,10 @@ export const ListCard = styled(SecondaryCard)`
 `;
 
 export const Index = styled.span`
-  font-size: 14px;
   font-style: normal;
   font-weight: 500;
   ::after {
     content: "·";
-    font-size: 16px;
     line-height: 22.4px;
     color: var(--textTertiary);
     margin: 0 8px;
