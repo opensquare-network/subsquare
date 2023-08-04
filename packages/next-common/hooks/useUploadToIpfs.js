@@ -7,21 +7,16 @@ export function useUploadToIpfs() {
   const [uploading, setUploading] = useState(false);
   const dispatch = useDispatch();
 
-  async function upload(files) {
+  async function upload(file) {
     if (uploading) {
       return;
     }
 
-    if (files && files.length) {
-      const image = files[0];
-      if (!/image\/\w+/.exec(image.type)) {
-        return;
-      }
-
+    if (file) {
       setUploading(true);
 
       const formData = new FormData();
-      formData.append("file", image, image.name);
+      formData.append("file", file, file.name);
 
       return nextApi
         .postFormData("ipfs/files", formData)
