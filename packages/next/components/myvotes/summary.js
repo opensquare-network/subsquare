@@ -7,6 +7,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
+import { getVoteBalance } from "./common";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -23,20 +24,7 @@ function TextSummaryContent({ value }) {
 }
 
 function sumVoteBalance(votes) {
-  return (votes || []).reduce((acc, vote) => {
-    if (vote.isStandard) {
-      const { balance } = vote.asStandard;
-      return acc + balance.toNumber();
-    } else if (vote.isSplit) {
-      const { aye, nay } = vote.asSplit;
-      return acc + aye.toNumber() + nay.toNumber();
-    } else if (vote.isSplitAbstain) {
-      const { aye, nay, abstain } = vote.asSplitAbstain;
-      return acc + aye.toNumber() + nay.toNumber() + abstain.toNumber();
-    }
-
-    return acc;
-  }, 0);
+  return (votes || []).reduce((acc, vote) => acc + getVoteBalance(vote), 0);
 }
 
 export default function Summary({ votes, moduleTabIndex, setModuleTabIndex }) {

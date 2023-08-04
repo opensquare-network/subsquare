@@ -14,8 +14,7 @@ export default function RemoveVoteButton({ vote, isGov2 }) {
       {removeReferendum && (
         <RemoveReferendumVotePopup
           isGov2={isGov2}
-          referendumIndex={removeReferendum.referendumIndex}
-          trackId={removeReferendum.trackId}
+          votes={[vote]}
           onClose={() => setRemoveReferendum()}
           onInBlock={() => dispatch(incMyVotesTrigger())}
         />
