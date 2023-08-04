@@ -62,11 +62,11 @@ function Editor(props, ref) {
 
         upload(image).then((response) => {
           if (props.contentType === "markdown") {
-            if (response?.result?.cid) {
-              props.onChange(
-                props.value.replace(
+            if (response?.result?.url) {
+              props.onChange((value) =>
+                value.replace(
                   placeholder,
-                  `\n![${image.name}](${response.result.cid})\n`,
+                  `\n![${image.name}](${response.result.url})\n`,
                 ),
               );
             }
