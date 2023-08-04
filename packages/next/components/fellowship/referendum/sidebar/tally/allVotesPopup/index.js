@@ -77,6 +77,7 @@ function VotesList({ items = [], loading }) {
         fontSize={14}
         maxWidth={176}
         noTooltip={true}
+        linkToVotesPage
       />,
       item.votes,
     ];
