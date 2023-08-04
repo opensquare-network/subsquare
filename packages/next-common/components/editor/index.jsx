@@ -34,7 +34,8 @@ function Editor(props, ref) {
     event.preventDefault();
     setDragging(false);
     const { files } = event.dataTransfer;
-    handleUploadImage(event, files);
+
+    handleUploadImage(files);
   }
 
   function onPaste(event) {
@@ -44,15 +45,19 @@ function Editor(props, ref) {
       .filter((item) => item.kind === "file")
       .map((item) => item.getAsFile());
 
-    handleUploadImage(event, files);
+    // if has file, then prevent pasting
+    if (files.length) {
+      event.preventDefault();
+    }
+
+    handleUploadImage(files);
   }
 
   // handle drop and paste
-  function handleUploadImage(event, files) {
+  function handleUploadImage(files) {
     const image = files?.[0];
     if (image) {
       if (/image\/\w+/.exec(image.type)) {
-        event.preventDefault();
         let placeholder = "";
 
         if (props.contentType === "markdown") {
