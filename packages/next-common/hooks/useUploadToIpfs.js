@@ -7,7 +7,7 @@ export function useUploadToIpfs() {
   const [uploading, setUploading] = useState(false);
   const dispatch = useDispatch();
 
-  function upload(files) {
+  async function upload(files) {
     if (files && files.length) {
       const image = files[0];
       if (!/image\/\w+/.exec(image.type)) {

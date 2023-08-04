@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
-import dynamic from "next/dynamic";
 import GhostButton from "./buttons/ghostButton";
 import PrimaryButton from "./buttons/primaryButton";
-import EditorWrapper from "./editor/editorWrapper";
-
-const UniverseEditor = dynamic(
-  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false },
-);
+import Editor from "./editor";
 
 const Wrapper = styled.div`
   margin-top: 8px;
-`;
-
-const InputWrapper = styled(EditorWrapper)`
-  position: relative;
 `;
 
 const ButtonWrapper = styled.div`
@@ -63,18 +53,16 @@ export default function EditInput({
 
   return (
     <Wrapper>
-      <InputWrapper>
-        <UniverseEditor
-          value={content}
-          onChange={setContent}
-          contentType={contentType}
-          setContentType={setContentType}
-          loadSuggestions={() => []}
-          minHeight={100}
-          previewerPlugins={[]}
-          setQuillRef={() => {}}
-        />
-      </InputWrapper>
+      <Editor
+        value={content}
+        onChange={setContent}
+        contentType={contentType}
+        setContentType={setContentType}
+        loadSuggestions={() => []}
+        minHeight={100}
+        previewerPlugins={[]}
+        setQuillRef={() => {}}
+      />
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {!loading && (
