@@ -87,10 +87,17 @@ function Editor(props, ref) {
     if (image) {
       if (/image\/\w+/.exec(image.type)) {
         let placeholder = "";
+        let placeholderPrefix = "";
 
         if (props.contentType === "markdown") {
-          placeholder = `\n![Uploading ${image.name}...]()\n`;
-          props.onChange((props.value || "") + placeholder);
+          if (props.value) {
+            placeholderPrefix = "\n";
+          }
+
+          placeholder = `![Uploading ${image.name}...]()`;
+          props.onChange(
+            (props.value || "") + `${placeholderPrefix}${placeholder}\n`,
+          );
         }
 
         upload(image).then((response) => {
@@ -99,7 +106,7 @@ function Editor(props, ref) {
               props.onChange((value) =>
                 value.replace(
                   placeholder,
-                  `\n![${image.name}](${response.result.url})\n`,
+                  `![${image.name}](${response.result.url})`,
                 ),
               );
             }
