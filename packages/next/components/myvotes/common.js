@@ -41,5 +41,5 @@ export function getVoteBalance(vote) {
     );
   }
 
-  return 0;
+  return BigInt(0);
 }
