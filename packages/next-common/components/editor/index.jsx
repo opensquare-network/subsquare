@@ -22,13 +22,25 @@ function Editor(props, ref) {
   const [dragging, setDragging] = useState(false);
   const { uploading, upload } = useUploadToIpfs();
   const inputRef = useRef();
+  const [isPreview, setIsPreview] = useState(false);
 
   function onDragOver(event) {
     event.preventDefault();
+
+    if (isPreview) {
+      return;
+    }
+
     setDragging(true);
   }
+
   function onDragLeave(event) {
     event.preventDefault();
+
+    if (isPreview) {
+      return;
+    }
+
     setDragging(false);
   }
 
@@ -40,6 +52,11 @@ function Editor(props, ref) {
 
   function onDrop(event) {
     event.preventDefault();
+
+    if (isPreview) {
+      return;
+    }
+
     setDragging(false);
     const { files } = event.dataTransfer;
 
@@ -47,6 +64,10 @@ function Editor(props, ref) {
   }
 
   function onPaste(event) {
+    if (isPreview) {
+      return;
+    }
+
     const { items } = event.clipboardData;
 
     const files = Array.from(items)
@@ -102,7 +123,9 @@ function Editor(props, ref) {
     >
       <UniverseEditor
         {...props}
+        onChangePreviewMode={setIsPreview}
         toggleBarLeft={
+          !isPreview &&
           props.contentType === "markdown" && (
             <div className="text-textTertiary text12Medium">
               {uploading ? (
