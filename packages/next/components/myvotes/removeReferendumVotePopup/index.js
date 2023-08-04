@@ -15,6 +15,7 @@ import { usePageProps } from "next-common/context/page";
 import startCase from "lodash.startcase";
 import useVotedPost from "../useVotedPost";
 import { PostTitle } from "next-common/components/profile/votingHistory/common";
+import isNil from "lodash.isnil";
 
 function ReferendumTitle({ trackId, referendumIndex }) {
   const { tracks } = usePageProps();
@@ -29,10 +30,16 @@ function ReferendumTitle({ trackId, referendumIndex }) {
       />
     );
   }
-  const trackName = startCase(
-    tracks.find((t) => t.id === trackId)?.name || `Track ${trackId}`,
-  );
-  return <span>{`[${trackName}] Referendum #${referendumIndex}`}</span>;
+  let trackPrefix = "";
+  if (!isNil(trackId)) {
+    const track = tracks.find((t) => t.id === trackId);
+    if (track) {
+      trackPrefix = `[${startCase(track.name)}] `;
+    } else {
+      trackPrefix = `[Track ${trackId}] `;
+    }
+  }
+  return <span>{`${trackPrefix} Referendum #${referendumIndex}`}</span>;
 }
 
 function ReferendumList({ votes }) {

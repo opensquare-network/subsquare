@@ -24,7 +24,10 @@ function TextSummaryContent({ value }) {
 }
 
 function sumVoteBalance(votes) {
-  return (votes || []).reduce((acc, vote) => acc + getVoteBalance(vote), 0);
+  return (votes || []).reduce(
+    (acc, vote) => acc + getVoteBalance(vote),
+    BigInt(0),
+  );
 }
 
 export default function Summary({ votes, moduleTabIndex, setModuleTabIndex }) {
