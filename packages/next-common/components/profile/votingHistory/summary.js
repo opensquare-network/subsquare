@@ -3,7 +3,7 @@ import SummaryItems from "next-common/components/summary/summaryItems";
 import styled from "styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "./styled";
-import { ModuleTab, Referenda, useModuleTab } from "./common";
+import { ModuleTab, useIsReferenda } from "./common";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
@@ -26,16 +26,16 @@ export default function VotingHistorySummary() {
   const { id } = usePageProps();
   const [data, setData] = useState({});
   const { hasReferenda, noDemocracy, useVoteCall } = useChainSettings();
-  const { moduleTabIndex } = useModuleTab();
+  const isReferenda = useIsReferenda();
 
   useEffect(() => {
-    const module = moduleTabIndex === Referenda ? "referenda" : "democracy";
+    const module = isReferenda ? "referenda" : "democracy";
     nextApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
       if (result) {
         setData(result);
       }
     });
-  }, [id, moduleTabIndex]);
+  }, [id, isReferenda]);
 
   const items = [
     {
