@@ -3,7 +3,7 @@ import VoteCallListItem from "./voteCallListItem";
 import EmptyList from "./emptyList";
 import LoadingList from "./loadingList";
 
-export default function MobileVoteCallsList({ data, isGov2, fetchData, page }) {
+export default function MobileVoteCallsList({ data, fetchData, page }) {
   if (!data) {
     return <LoadingList />;
   }
@@ -13,7 +13,7 @@ export default function MobileVoteCallsList({ data, isGov2, fetchData, page }) {
   }
 
   const listContent = (data?.items || []).map((item, index) => (
-    <VoteCallListItem key={index} vote={item} isGov2={isGov2} />
+    <VoteCallListItem key={index} vote={item} />
   ));
 
   return (

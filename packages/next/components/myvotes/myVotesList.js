@@ -1,10 +1,8 @@
 import { Title } from "./styled";
-import OpenGovVotes from "./openGovVotes";
-import DemocracyVotes from "./democracyVotes";
-import { Referenda } from "next-common/components/profile/votingHistory/common";
+import ResponsiveVotes from "./responsiveVotes";
 // import RemoveAllExpiredButton from "./removeAllExpiredButton";
 
-export default function MyVotesList({ votes, moduleTabIndex }) {
+export default function MyVotesList({ votes }) {
   return (
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
@@ -15,15 +13,10 @@ export default function MyVotesList({ votes, moduleTabIndex }) {
         {/* <div>
           <RemoveAllExpiredButton
             votes={votes}
-            isGov2={moduleTabIndex === Referenda}
           />
         </div> */}
       </div>
-      {moduleTabIndex === Referenda ? (
-        <OpenGovVotes votes={votes} />
-      ) : (
-        <DemocracyVotes votes={votes} />
-      )}
+      <ResponsiveVotes votes={votes} />
     </>
   );
 }

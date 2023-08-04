@@ -2,7 +2,7 @@ import { SystemClose } from "@osn/icons/subsquare";
 import { useState } from "react";
 import RemoveReferendumVotePopup from "./removeReferendumVotePopup";
 
-export default function RemoveAllExpiredButton({ votes, isGov2 }) {
+export default function RemoveAllExpiredButton({ votes }) {
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   return (
     <>
@@ -15,7 +15,6 @@ export default function RemoveAllExpiredButton({ votes, isGov2 }) {
       </div>
       {showRemovePopup && (
         <RemoveReferendumVotePopup
-          isGov2={isGov2}
           votes={votes}
           onClose={() => setShowRemovePopup(false)}
         />

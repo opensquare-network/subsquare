@@ -3,7 +3,7 @@ import SummaryItems from "next-common/components/summary/summaryItems";
 import styled from "styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "./styled";
-import { ModuleTab, Referenda } from "./common";
+import { ModuleTab, useIsReferenda } from "./common";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
@@ -22,22 +22,20 @@ function TextSummaryContent({ value }) {
   return <ValueWrapper>{value}</ValueWrapper>;
 }
 
-export default function VotingHistorySummary({
-  moduleTabIndex,
-  setModuleTabIndex,
-}) {
+export default function VotingHistorySummary() {
   const { id } = usePageProps();
   const [data, setData] = useState({});
   const { hasReferenda, noDemocracy, useVoteCall } = useChainSettings();
+  const isReferenda = useIsReferenda();
 
   useEffect(() => {
-    const module = moduleTabIndex === Referenda ? "referenda" : "democracy";
+    const module = isReferenda ? "referenda" : "democracy";
     nextApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
       if (result) {
         setData(result);
       }
     });
-  }, [id, moduleTabIndex]);
+  }, [id, isReferenda]);
 
   const items = [
     {
@@ -65,10 +63,7 @@ export default function VotingHistorySummary({
       {hasReferenda && !noDemocracy && (
         <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
           <Title>Votes</Title>
-          <ModuleTab
-            moduleTabIndex={moduleTabIndex}
-            setModuleTabIndex={setModuleTabIndex}
-          />
+          <ModuleTab />
         </div>
       )}
       <SecondaryCard>

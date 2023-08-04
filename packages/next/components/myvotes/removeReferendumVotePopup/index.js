@@ -14,7 +14,10 @@ import { useChainSettings } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
 import startCase from "lodash.startcase";
 import useVotedPost from "../useVotedPost";
-import { PostTitle } from "next-common/components/profile/votingHistory/common";
+import {
+  PostTitle,
+  useIsReferenda,
+} from "next-common/components/profile/votingHistory/common";
 import isNil from "lodash.isnil";
 
 function ReferendumTitle({ trackId, referendumIndex }) {
@@ -70,7 +73,6 @@ function ReferendumList({ votes }) {
 
 export default function RemoveReferendumVotePopup({
   votes,
-  isGov2,
   onClose,
   isLoading,
   setIsLoading = emptyFunction,
@@ -79,6 +81,7 @@ export default function RemoveReferendumVotePopup({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+  const isReferenda = useIsReferenda();
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -101,14 +104,14 @@ export default function RemoveReferendumVotePopup({
 
       if (votes?.length === 1) {
         const { trackId, referendumIndex } = votes[0];
-        if (isGov2) {
+        if (isReferenda) {
           tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
         } else {
           tx = api.tx.democracy.removeVote(referendumIndex);
         }
       } else if (votes?.length > 1) {
         const txs = votes.map(({ trackId, referendumIndex }) => {
-          if (isGov2) {
+          if (isReferenda) {
             return api.tx.convictionVoting.removeVote(trackId, referendumIndex);
           } else {
             return api.tx.democracy.removeVote(referendumIndex);
@@ -141,7 +144,7 @@ export default function RemoveReferendumVotePopup({
       onInBlock,
       onSubmitted,
       onClose,
-      isGov2,
+      isReferenda,
       votes,
       setIsLoading,
     ],

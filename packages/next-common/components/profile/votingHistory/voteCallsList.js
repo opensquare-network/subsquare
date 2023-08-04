@@ -24,7 +24,7 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function VoteCallsList({ data, isGov2, fetchData, page }) {
+export default function VoteCallsList({ data, fetchData, page }) {
   const chain = useChain();
   const { columns } = useColumns([
     {
@@ -47,11 +47,10 @@ export default function VoteCallsList({ data, isGov2, fetchData, page }) {
       key="proposal"
       referendumIndex={item.referendumIndex}
       title={item.proposal?.title}
-      isGov2={isGov2}
     />,
     <CallDate key="date" vote={item} />,
     <VoteItem key="vote" vote={normalizeCall(item, chain)} />,
-    <ReferendumTag key="tag" proposal={item.proposal} isGov2={isGov2} />,
+    <ReferendumTag key="tag" proposal={item.proposal} />,
   ]);
 
   return (

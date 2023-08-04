@@ -6,13 +6,15 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteCallsList from "./voteCallsList";
 import MobileVoteCallsList from "./mobile/voteCallsList";
 import isNil from "lodash.isnil";
+import { useIsReferenda } from "./common";
 
-export default function DemocracyCalls() {
+export default function ResponsiveCalls() {
   const { id } = usePageProps();
   const [data, setData] = useState();
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
+  const isReferenda = useIsReferenda();
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -20,11 +22,14 @@ export default function DemocracyCalls() {
 
       setIsLoading(true);
       nextApi
-        .fetch(`users/${id}/democracy/vote-calls`, {
-          page,
-          pageSize,
-          includesTitle: 1,
-        })
+        .fetch(
+          `users/${id}/${isReferenda ? "referenda" : "democracy"}/vote-calls`,
+          {
+            page,
+            pageSize,
+            includesTitle: 1,
+          },
+        )
         .then(({ result }) => {
           if (result) {
             setData(result);
@@ -34,7 +39,7 @@ export default function DemocracyCalls() {
           setIsLoading(false);
         });
     },
-    [id],
+    [id, isReferenda],
   );
 
   useEffect(() => {
@@ -49,7 +54,6 @@ export default function DemocracyCalls() {
     <ListCard>
       <VoteCallsList
         data={data}
-        isGov2={false}
         isLoading={isLoading}
         fetchData={fetchData}
         page={page}
@@ -58,7 +62,6 @@ export default function DemocracyCalls() {
   ) : (
     <MobileVoteCallsList
       data={data}
-      isGov2={false}
       isLoading={isLoading}
       fetchData={fetchData}
       page={page}

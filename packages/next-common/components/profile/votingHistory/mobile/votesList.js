@@ -5,7 +5,6 @@ import LoadingList from "./loadingList";
 
 export default function MobileVotesList({
   data,
-  isGov2,
   fetchData,
   setShowVoteDetail,
   page,
@@ -22,7 +21,6 @@ export default function MobileVotesList({
     <VoteListItem
       key={item.referendumIndex}
       vote={item}
-      isGov2={isGov2}
       setShowVoteDetail={setShowVoteDetail}
     />
   ));

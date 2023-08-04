@@ -30,7 +30,7 @@ function sumVoteBalance(votes) {
   );
 }
 
-export default function Summary({ votes, moduleTabIndex, setModuleTabIndex }) {
+export default function Summary({ votes }) {
   const { symbol, decimals } = useChainSettings();
   const totalBalance = sumVoteBalance(votes);
   const totalValue = toPrecision(totalBalance, decimals);
@@ -63,12 +63,7 @@ export default function Summary({ votes, moduleTabIndex, setModuleTabIndex }) {
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
         <Title>My Votes</Title>
-        {hasReferenda && !noDemocracyModule && (
-          <ModuleTab
-            moduleTabIndex={moduleTabIndex}
-            setModuleTabIndex={setModuleTabIndex}
-          />
-        )}
+        {hasReferenda && !noDemocracyModule && <ModuleTab />}
       </div>
       <SecondaryCard>
         <SummaryItems items={items} />

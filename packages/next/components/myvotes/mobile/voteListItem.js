@@ -9,7 +9,7 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemoveVoteButton from "../removeVoteButton";
 import useVotedPost from "../useVotedPost";
 
-function ItemHeader({ vote, isGov2 }) {
+function ItemHeader({ vote }) {
   const referendumPost = useVotedPost(vote.referendumIndex);
 
   return (
@@ -19,19 +19,15 @@ function ItemHeader({ vote, isGov2 }) {
           <PostTitle
             referendumIndex={vote.referendumIndex}
             title={referendumPost?.title}
-            isGov2={isGov2}
           />
         ) : (
           <FieldLoading />
         )}
-        <RemoveVoteButton key="action" vote={vote} isGov2={isGov2} />
+        <RemoveVoteButton key="action" vote={vote} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">
         {referendumPost ? (
-          <ReferendumTag
-            proposal={referendumPost?.onchainData}
-            isGov2={isGov2}
-          />
+          <ReferendumTag proposal={referendumPost?.onchainData} />
         ) : (
           <FieldLoading />
         )}
@@ -40,11 +36,11 @@ function ItemHeader({ vote, isGov2 }) {
   );
 }
 
-export default function VoteListItem({ vote, isGov2 }) {
+export default function VoteListItem({ vote }) {
   const normalizedVote = normalizeVote(vote.vote);
   return (
     <ListCard>
-      <ItemHeader vote={vote} isGov2={isGov2} />
+      <ItemHeader vote={vote} />
       <div className="mt-[24px]">
         <VoteItem vote={normalizedVote} />
       </div>

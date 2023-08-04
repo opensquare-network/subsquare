@@ -1,12 +1,9 @@
 import PageTabs from "next-common/components/pageTabs";
-import OpenGovVotes from "./openGovVotes";
-import OpenGovCalls from "./openGovCalls";
-import DemocracyVotes from "./democracyVotes";
-import DemocracyCalls from "./democracyCalls";
-import { Referenda } from "./common";
 import { useChainSettings } from "next-common/context/chain";
+import ResponsiveVotes from "./responsiveVotes";
+import ResponsiveCalls from "./responsiveCalls";
 
-export default function ListTabs({ moduleTabIndex }) {
+export default function ListTabs() {
   const { useVoteCall } = useChainSettings();
 
   return (
@@ -15,22 +12,12 @@ export default function ListTabs({ moduleTabIndex }) {
         tabs={[
           {
             name: "All Votes",
-            content:
-              moduleTabIndex === Referenda ? (
-                <OpenGovVotes />
-              ) : (
-                <DemocracyVotes />
-              ),
+            content: <ResponsiveVotes />,
           },
           useVoteCall
             ? {
                 name: "Calls",
-                content:
-                  moduleTabIndex === Referenda ? (
-                    <OpenGovCalls />
-                  ) : (
-                    <DemocracyCalls />
-                  ),
+                content: <ResponsiveCalls />,
               }
             : null,
         ].filter(Boolean)}

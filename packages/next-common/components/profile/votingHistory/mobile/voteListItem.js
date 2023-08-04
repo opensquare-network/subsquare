@@ -4,7 +4,7 @@ import { PostTitle, ReferendumTag, VoteItem } from "../common";
 import { useChain } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";
 
-function ItemHeader({ vote, isGov2, setShowVoteDetail }) {
+function ItemHeader({ vote, setShowVoteDetail }) {
   const chain = useChain();
   const isKintsugi = isKintsugiChain(chain);
 
@@ -14,27 +14,22 @@ function ItemHeader({ vote, isGov2, setShowVoteDetail }) {
         <PostTitle
           referendumIndex={vote.referendumIndex}
           title={vote.proposal?.title}
-          isGov2={isGov2}
         />
         {!isKintsugi && (
           <DetailButton onClick={() => setShowVoteDetail(vote)} />
         )}
       </div>
       <div className="flex justify-end pt-[12px] items-center">
-        <ReferendumTag proposal={vote.proposal} isGov2={isGov2} />
+        <ReferendumTag proposal={vote.proposal} />
       </div>
     </div>
   );
 }
 
-export default function VoteListItem({ vote, isGov2, setShowVoteDetail }) {
+export default function VoteListItem({ vote, setShowVoteDetail }) {
   return (
     <ListCard>
-      <ItemHeader
-        vote={vote}
-        isGov2={isGov2}
-        setShowVoteDetail={setShowVoteDetail}
-      />
+      <ItemHeader vote={vote} setShowVoteDetail={setShowVoteDetail} />
       <div className="mt-[24px]">
         <VoteItem vote={vote} />
       </div>
