@@ -21,31 +21,59 @@ function Editor(props, ref) {
   const [dragging, setDragging] = useState(false);
   const { uploading, upload } = useUploadToIpfs();
 
-  function onDragOver(e) {
-    e.preventDefault();
+  function onDragOver(event) {
+    event.preventDefault();
     setDragging(true);
   }
-  function onDragLeave(e) {
-    e.preventDefault();
+  function onDragLeave(event) {
+    event.preventDefault();
     setDragging(false);
   }
 
-  function onDrop(e) {
-    e.preventDefault();
+  function onDrop(event) {
+    event.preventDefault();
     setDragging(false);
-    const { files } = e.dataTransfer;
-    upload(files);
+    const { files } = event.dataTransfer;
+    handleUploadImage(event, files);
   }
 
-  function onPaste(e) {
-    e.preventDefault();
-    const { items } = e.clipboardData;
+  function onPaste(event) {
+    const { items } = event.clipboardData;
 
     const files = Array.from(items)
       .filter((item) => item.kind === "file")
       .map((item) => item.getAsFile());
 
-    upload(files);
+    handleUploadImage(event, files);
+  }
+
+  // handle drop and paste
+  function handleUploadImage(event, files) {
+    const image = files?.[0];
+    if (image) {
+      if (/image\/\w+/.exec(image.type)) {
+        event.preventDefault();
+        let placeholder = "";
+
+        if (props.contentType === "markdown") {
+          placeholder = `\n![Uploading ${image.name}...]()\n`;
+          props.onChange((props.value || "") + placeholder);
+        }
+
+        upload(image).then((response) => {
+          if (props.contentType === "markdown") {
+            if (response?.result?.cid) {
+              props.onChange(
+                props.value.replace(
+                  placeholder,
+                  `\n![${image.name}](${response.result.cid})\n`,
+                ),
+              );
+            }
+          }
+        });
+      }
+    }
   }
 
   return (
