@@ -1,9 +1,7 @@
-import {
-  useIsReferenda,
-  VoteItem,
-} from "next-common/components/profile/votingHistory/common";
+import { VoteItem } from "next-common/components/profile/votingHistory/common";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
+import { normalizeVote } from "../common";
 import useVoteExpiration from "./useVoteExpiration";
 
 const Wrapper = styled(Flex)`
@@ -13,10 +11,6 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function MyVoteItem({ vote }) {
-  console.log("vote", vote);
-  const isReferenda = useIsReferenda();
-  console.log("isReferenda", isReferenda);
-  // const { timeline } = referendum;
   // todo: fetch referendum timeline, so we can know the vote finished height
   // todo: calc the expired info
 
@@ -24,7 +18,7 @@ export default function MyVoteItem({ vote }) {
 
   return (
     <Wrapper>
-      <VoteItem key="vote" vote={vote} />
+      <VoteItem key="vote" vote={normalizeVote(vote.vote)} />
       <div>hello world</div>
     </Wrapper>
   );

@@ -7,7 +7,6 @@ import {
   ReferendumTag,
 } from "next-common/components/profile/votingHistory/common";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import { normalizeVote } from "./common";
 import RemoveVoteButton from "./removeVoteButton";
 import useVotedPost from "./useVotedPost";
 import MyVoteItem from "./vote";
@@ -51,7 +50,7 @@ export default function VotesList({ votes }) {
       useData: () => {
         const referendumPost = useVotedPost(item.referendumIndex);
 
-        const vote = normalizeVote(item.vote);
+        // const vote = normalizeVote(item.vote);
 
         const row = [
           referendumPost ? (
@@ -65,7 +64,7 @@ export default function VotesList({ votes }) {
           ),
           <MyVoteItem
             key="vote"
-            vote={vote}
+            vote={item}
             referendum={referendumPost?.onchainData}
           />,
           referendumPost ? (

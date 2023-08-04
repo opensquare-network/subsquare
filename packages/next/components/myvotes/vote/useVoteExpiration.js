@@ -6,10 +6,13 @@ import { useEffect, useState } from "react";
 //
 // }
 
-export default function useVoteExpiration(vote) {
+export default function useVoteExpiration(voteItem) {
+  console.log("voteItem", voteItem);
+  const { vote, referendumInfo } = voteItem;
   const isReferenda = useIsReferenda();
   const pallet = isReferenda ? "convictionVoting" : "democracy";
   const api = useApi();
+  console.log("referendumInfo", referendumInfo);
 
   const [period, setPeriod] = useState();
 
