@@ -11,6 +11,7 @@ export default function MyOpenGovVotes() {
   const realAddress = useRealAddress();
 
   const { isLoading, votes } = useAccountVotes(realAddress);
+  console.log("votes", votes);
 
   useEffect(() => {
     if (!votes || !votes.length) {
