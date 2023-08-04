@@ -8,6 +8,10 @@ export function useUploadToIpfs() {
   const dispatch = useDispatch();
 
   async function upload(files) {
+    if (uploading) {
+      return;
+    }
+
     if (files && files.length) {
       const image = files[0];
       if (!/image\/\w+/.exec(image.type)) {
