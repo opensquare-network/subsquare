@@ -130,6 +130,7 @@ function User({
   maxWidth: propMaxWidth,
   noTooltip = false,
   color,
+  linkToVotesPage = false,
 }) {
   const settings = useChainSettings();
   const address = add ?? user?.address;
@@ -198,6 +199,11 @@ function User({
     elmUsername
   );
 
+  let linkUserPage = `/user/${address ?? user?.username}`;
+  if (linkToVotesPage) {
+    linkUserPage = `${linkUserPage}/votes`;
+  }
+
   return (
     <Wrapper noEvent={noEvent} color={color}>
       {showAvatar && (
@@ -213,7 +219,7 @@ function User({
           )}
         </AvatarWrapper>
       )}
-      <Link href={`/user/${address ?? user?.username}`} passHref legacyBehavior>
+      <Link href={linkUserPage} passHref legacyBehavior>
         <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
           {address ? (
             identity && identity?.info?.status !== "NO_ID" ? (

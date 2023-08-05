@@ -15,7 +15,8 @@ export default withLoginUserRedux(() => {
     if (!isLogin) {
       openLoginPopup();
     }
-  }, [isLogin, openLoginPopup]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin]);
 
   const breadcrumbItems = [
     {
