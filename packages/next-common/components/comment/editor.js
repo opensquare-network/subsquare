@@ -6,19 +6,13 @@ import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import { prettyHTML, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import dynamic from "next/dynamic";
 import IdentityOrAddr from "../IdentityOrAddr";
 import PrimaryButton from "../buttons/primaryButton";
 import GhostButton from "../buttons/ghostButton";
-import EditorWrapper from "../editor/editorWrapper";
 import { useChain } from "../../context/chain";
 import { useDetailType } from "../../context/page";
 import noop from "lodash.noop";
-
-const UniverseEditor = dynamic(
-  () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false },
-);
+import Editor from "../editor";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -27,10 +21,6 @@ const Wrapper = styled.div`
     css`
       margin-top: 8px;
     `}
-`;
-
-const Relative = styled(EditorWrapper)`
-  position: relative;
 `;
 
 const ButtonWrapper = styled(Flex)`
@@ -46,7 +36,7 @@ function escapeLinkText(text) {
   return text.replace(/\\/g, "\\\\").replace(/([[\]])/g, "\\$1");
 }
 
-function Editor(
+function CommentEditor(
   {
     postId,
     isEdit,
@@ -153,19 +143,18 @@ function Editor(
 
   return (
     <Wrapper isEdit={isEdit} isReply={isReply}>
-      <Relative ref={ref}>
-        <UniverseEditor
-          value={content}
-          onChange={setContent}
-          contentType={contentType}
-          setContentType={setContentType}
-          loadSuggestions={loadSuggestions}
-          minHeight={100}
-          identifier={<IdentityOrAddr />}
-          setQuillRef={setQuillRef}
-          previewerPlugins={[]}
-        />
-      </Relative>
+      <Editor
+        ref={ref}
+        value={content}
+        onChange={setContent}
+        contentType={contentType}
+        setContentType={setContentType}
+        loadSuggestions={loadSuggestions}
+        minHeight={100}
+        identifier={<IdentityOrAddr />}
+        setQuillRef={setQuillRef}
+        previewerPlugins={[]}
+      />
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {(isEdit || isReply) && (
@@ -191,4 +180,4 @@ function Editor(
   );
 }
 
-export default React.forwardRef(Editor);
+export default React.forwardRef(CommentEditor);

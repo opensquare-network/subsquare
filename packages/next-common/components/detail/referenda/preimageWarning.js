@@ -24,9 +24,11 @@ export default function PreimageWarning() {
   if (
     [
       gov2State.Rejected,
+      gov2State.Approved,
       gov2State.TimedOut,
       gov2State.Killed,
       gov2State.Cancelled,
+      gov2State.Executed,
     ].includes(state)
   ) {
     return null;
