@@ -62,11 +62,7 @@ export default function VotesList({ votes }) {
           ) : (
             <FieldLoading />
           ),
-          <MyVoteItem
-            key="vote"
-            vote={item}
-            referendum={referendumPost?.onchainData}
-          />,
+          <MyVoteItem key="vote" vote={item} />,
           referendumPost ? (
             <ReferendumTag key="tag" proposal={referendumPost?.onchainData} />
           ) : (

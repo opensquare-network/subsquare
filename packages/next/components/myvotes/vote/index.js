@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import { normalizeVote } from "../common";
 import useVoteExpiration from "./useVoteExpiration";
+import VoteLock from "./lock";
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -11,15 +12,12 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function MyVoteItem({ vote }) {
-  // todo: fetch referendum timeline, so we can know the vote finished height
-  // todo: calc the expired info
-
-  useVoteExpiration(vote);
+  const endInfo = useVoteExpiration(vote);
 
   return (
     <Wrapper>
       <VoteItem key="vote" vote={normalizeVote(vote.vote)} />
-      <div>hello world</div>
+      <VoteLock lockInfo={endInfo} />
     </Wrapper>
   );
 }
