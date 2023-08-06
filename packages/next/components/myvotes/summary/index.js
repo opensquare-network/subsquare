@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import calcNotExpired from "./calcNotExpired";
 import BigNumber from "bignumber.js";
+import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -50,6 +51,14 @@ export default function Summary({ votes, priors = [] }) {
   const totalExpired = new BigNumber(totalLockedBalance)
     .minus(totalNotExpired)
     .toString();
+
+  const voteExpiredReferenda = getVoteExpiredReferenda(
+    votes,
+    period,
+    isReferenda,
+    latestHeight,
+  );
+  console.log("voteExpiredReferenda", voteExpiredReferenda);
 
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 
