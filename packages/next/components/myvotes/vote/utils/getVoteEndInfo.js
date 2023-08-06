@@ -55,6 +55,7 @@ export default function getVoteEndInfo(voteInfo, period, isReferenda) {
   return {
     hasLock: true,
     period,
+    balance: standard.balance.toString(),
     voteEnd: referendumEndInfo.end,
     lockEnd,
   };

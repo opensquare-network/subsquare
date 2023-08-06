@@ -2,10 +2,20 @@ import React from "react";
 import SummaryItems from "next-common/components/summary/summaryItems";
 import styled from "styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { Title } from "./styled";
+import { Title } from "../styled";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { ModuleTab } from "next-common/components/profile/votingHistory/common";
+import {
+  ModuleTab,
+  useIsReferenda,
+} from "next-common/components/profile/votingHistory/common";
+import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
+import calcTotalVotes from "./calcTotalVotes";
+import { toPrecision } from "next-common/utils";
+import { useSelector } from "react-redux";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import calcNotExpired from "./calcNotExpired";
+import BigNumber from "bignumber.js";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -22,10 +32,20 @@ function TextSummaryContent({ value }) {
 }
 
 export default function Summary({ votes }) {
-  const { symbol } = useChainSettings();
-  console.log("votes", votes);
-  // const totalBalance = sumVoteBalance(votes);
-  // const totalValue = toPrecision(totalBalance, decimals);
+  const { symbol, decimals } = useChainSettings();
+  const isReferenda = useIsReferenda();
+  const period = useVoteLockingPeriod(
+    isReferenda ? "convictionVoting" : "democracy",
+  );
+  const latestHeight = useSelector(latestHeightSelector);
+
+  const totalLockedBalance = calcTotalVotes(votes, period, isReferenda);
+  const totalNotExpired = calcNotExpired(
+    votes,
+    period,
+    isReferenda,
+    latestHeight,
+  );
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const items = [
@@ -34,10 +54,15 @@ export default function Summary({ votes }) {
       content: <CountSummaryContent count={votes?.length || 0} />,
     },
     {
-      title: "Total",
+      title: "Total Locked",
       content: (
         <TextSummaryContent
-          value={<ValueDisplay value={1} symbol={symbol} />}
+          value={
+            <ValueDisplay
+              value={toPrecision(totalLockedBalance, decimals)}
+              symbol={symbol}
+            />
+          }
         />
       ),
     },
@@ -45,7 +70,14 @@ export default function Summary({ votes }) {
       title: "Unlockable",
       content: (
         <TextSummaryContent
-          value={<ValueDisplay value={0} symbol={symbol} />}
+          value={
+            <ValueDisplay
+              value={new BigNumber(totalLockedBalance)
+                .minus(totalNotExpired)
+                .toString()}
+              symbol={symbol}
+            />
+          }
         />
       ),
     },

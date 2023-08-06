@@ -1,19 +1,12 @@
 import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
-import { useEffect, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import getVoteEndInfo from "./utils/getVoteEndInfo";
+import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
 
 export default function useVoteExpiration(voteItem) {
   const isReferenda = useIsReferenda();
-  const [period, setPeriod] = useState();
-  const api = useApi();
-
-  useEffect(() => {
-    const pallet = isReferenda ? "convictionVoting" : "democracy";
-    if (api) {
-      setPeriod(api.consts?.[pallet]?.voteLockingPeriod.toNumber());
-    }
-  }, [api, isReferenda]);
+  const period = useVoteLockingPeriod(
+    isReferenda ? "convictionVoting" : "democracy",
+  );
 
   return getVoteEndInfo(voteItem, period, isReferenda);
 }
