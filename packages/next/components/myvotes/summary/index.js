@@ -31,7 +31,7 @@ function TextSummaryContent({ value }) {
   return <ValueWrapper>{value}</ValueWrapper>;
 }
 
-export default function Summary({ votes }) {
+export default function Summary({ votes, priors = [] }) {
   const { symbol, decimals } = useChainSettings();
   const isReferenda = useIsReferenda();
   const period = useVoteLockingPeriod(
@@ -39,14 +39,14 @@ export default function Summary({ votes }) {
   );
   const latestHeight = useSelector(latestHeightSelector);
 
-  const totalLockedBalance = calcTotalVotes(votes, period, isReferenda);
+  const totalLockedBalance = calcTotalVotes(votes, priors, period, isReferenda);
   const totalNotExpired = calcNotExpired(
     votes,
+    priors,
     period,
     isReferenda,
     latestHeight,
   );
-  // fixme: we should also calc prior lock
 
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 

@@ -14,6 +14,7 @@ async function queryReferendumInfo(api, referendumIndex) {
 async function queryVotesAndReferendumInfo(api, address) {
   const entries = await api.query.convictionVoting.votingFor.entries(address);
   const votes = [];
+  const priors = [];
   for (const [storageKey, votingOf] of entries) {
     const trackId = storageKey.args[1].toNumber();
     if (votingOf.isDelegating) {
@@ -26,6 +27,19 @@ async function queryVotesAndReferendumInfo(api, address) {
       const accountVote = vote[1];
       votes.push({ trackId, referendumIndex, vote: accountVote });
     }
+
+    const trackPrior = priors.find(
+      ({ trackId: priorTrackId }) => priorTrackId === trackId,
+    );
+    if (!trackPrior) {
+      priors.push({
+        trackId,
+        prior: {
+          unlockAt: casting.prior[0].toNumber(),
+          balance: casting.prior[1].toString(),
+        },
+      });
+    }
   }
 
   const promises = [];
@@ -34,7 +48,7 @@ async function queryVotesAndReferendumInfo(api, address) {
   }
   const infoArr = await Promise.all(promises);
 
-  return votes.map((vote) => {
+  const normalizedVotes = votes.map((vote) => {
     const referendumInfo = infoArr.find(
       (info) => info.referendumIndex === vote.referendumIndex,
     );
@@ -43,12 +57,18 @@ async function queryVotesAndReferendumInfo(api, address) {
       ...referendumInfo,
     };
   });
+
+  return {
+    votes: normalizedVotes,
+    priors,
+  };
 }
 
 export default function useAccountVotes(address) {
   const api = useApi();
   const [isLoading, setIsLoading] = useState(false);
   const [votes, setVotes] = useState();
+  const [priors, setPriors] = useState();
   const trigger = useSelector(myVotesTriggerSelector);
 
   useEffect(() => {
@@ -62,12 +82,16 @@ export default function useAccountVotes(address) {
 
     setIsLoading(true);
     queryVotesAndReferendumInfo(api, address)
-      .then((votes) => setVotes(votes))
+      .then(({ votes, priors }) => {
+        setVotes(votes);
+        setPriors(priors);
+      })
       .finally(() => setIsLoading(false));
   }, [api, address, trigger]);
 
   return {
     isLoading,
     votes,
+    priors,
   };
 }
