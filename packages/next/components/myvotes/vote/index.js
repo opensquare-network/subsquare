@@ -12,12 +12,12 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function MyVoteItem({ vote }) {
-  const endInfo = useVoteExpiration(vote);
+  const lockInfo = useVoteExpiration(vote);
 
   return (
     <Wrapper>
       <VoteItem key="vote" vote={normalizeVote(vote.vote)} />
-      <VoteLock lockInfo={endInfo} />
+      <VoteLock lockInfo={lockInfo} />
     </Wrapper>
   );
 }

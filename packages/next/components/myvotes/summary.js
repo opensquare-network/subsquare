@@ -5,9 +5,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { Title } from "./styled";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
-import { getVoteBalance } from "./common";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -23,17 +21,11 @@ function TextSummaryContent({ value }) {
   return <ValueWrapper>{value}</ValueWrapper>;
 }
 
-function sumVoteBalance(votes) {
-  return (votes || []).reduce(
-    (acc, vote) => acc + getVoteBalance(vote),
-    BigInt(0),
-  );
-}
-
 export default function Summary({ votes }) {
-  const { symbol, decimals } = useChainSettings();
-  const totalBalance = sumVoteBalance(votes);
-  const totalValue = toPrecision(totalBalance, decimals);
+  const { symbol } = useChainSettings();
+  console.log("votes", votes);
+  // const totalBalance = sumVoteBalance(votes);
+  // const totalValue = toPrecision(totalBalance, decimals);
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const items = [
@@ -45,7 +37,7 @@ export default function Summary({ votes }) {
       title: "Total",
       content: (
         <TextSummaryContent
-          value={<ValueDisplay value={totalValue} symbol={symbol} />}
+          value={<ValueDisplay value={1} symbol={symbol} />}
         />
       ),
     },
