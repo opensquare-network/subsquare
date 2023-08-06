@@ -47,6 +47,9 @@ export default function Summary({ votes, priors = [] }) {
     isReferenda,
     latestHeight,
   );
+  const totalExpired = new BigNumber(totalLockedBalance)
+    .minus(totalNotExpired)
+    .toString();
 
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 
@@ -74,9 +77,7 @@ export default function Summary({ votes, priors = [] }) {
         <TextSummaryContent
           value={
             <ValueDisplay
-              value={new BigNumber(totalLockedBalance)
-                .minus(totalNotExpired)
-                .toString()}
+              value={toPrecision(totalExpired, decimals)}
               symbol={symbol}
             />
           }

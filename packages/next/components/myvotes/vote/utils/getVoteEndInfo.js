@@ -14,14 +14,14 @@ function getReferendaEndInfo(referendumInfo) {
 }
 
 function getDemocracyEndInfo(referendumInfo) {
-  if (!referendumInfo.finished) {
+  if (!referendumInfo || !referendumInfo.finished) {
     return noResultObj;
   }
 
   return {
     hasResult: true,
-    approved: referendumInfo.approved,
-    end: referendumInfo.end,
+    approved: referendumInfo.finished.approved,
+    end: referendumInfo.finished.end,
   };
 }
 
