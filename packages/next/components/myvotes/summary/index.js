@@ -46,6 +46,8 @@ export default function Summary({ votes }) {
     isReferenda,
     latestHeight,
   );
+  // fixme: we should also calc prior lock
+
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const items = [
