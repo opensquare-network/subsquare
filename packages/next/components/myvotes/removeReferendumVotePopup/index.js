@@ -11,38 +11,22 @@ import PopupLabel from "next-common/components/popup/label";
 import { getVoteBalance } from "../common";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { usePageProps } from "next-common/context/page";
-import startCase from "lodash.startcase";
-import useVotedPost from "../useVotedPost";
 import {
   PostTitle,
   useIsReferenda,
 } from "next-common/components/profile/votingHistory/common";
-import isNil from "lodash.isnil";
+import useReferendumTitle from "../useReferendumTitle";
 
 function ReferendumTitle({ trackId, referendumIndex }) {
-  const { tracks } = usePageProps();
-  const post = useVotedPost(referendumIndex);
-  if (post) {
-    return (
-      <PostTitle
-        referendumIndex={referendumIndex}
-        title={post.title}
-        className="w-[260px]"
-        noLink
-      />
-    );
-  }
-  let trackPrefix = "";
-  if (!isNil(trackId)) {
-    const track = tracks.find((t) => t.id === trackId);
-    if (track) {
-      trackPrefix = `[${startCase(track.name)}] `;
-    } else {
-      trackPrefix = `[Track ${trackId}] `;
-    }
-  }
-  return <span>{`${trackPrefix} Referendum #${referendumIndex}`}</span>;
+  const title = useReferendumTitle({ trackId, referendumIndex });
+  return (
+    <PostTitle
+      referendumIndex={referendumIndex}
+      title={title}
+      className="w-[260px]"
+      noLink
+    />
+  );
 }
 
 function ReferendumList({ votes }) {

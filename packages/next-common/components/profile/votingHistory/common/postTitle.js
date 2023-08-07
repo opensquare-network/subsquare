@@ -16,7 +16,9 @@ export function PostTitle({ referendumIndex, title, noLink, className }) {
     url = `/referenda/referendum/${referendumIndex}`;
   }
   return (
-    <div className={clsx("truncate max-w-[inherit]", className)}>
+    <div
+      className={clsx("truncate max-w-[inherit] text-textPrimary", className)}
+    >
       <Index>{`#${referendumIndex}`}</Index>
       {noLink ? (
         <Title>{title}</Title>
