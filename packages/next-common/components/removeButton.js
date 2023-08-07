@@ -7,6 +7,9 @@ const Wrapper = styled.div`
   padding: 6px;
   border-radius: 4px;
   border: 1px solid var(--neutral400);
+  svg path {
+    fill: var(--textPrimary);
+  }
 `;
 
 export default function RemoveButton({ onClick }) {

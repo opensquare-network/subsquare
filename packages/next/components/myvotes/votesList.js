@@ -10,6 +10,7 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemoveVoteButton from "./removeVoteButton";
 import useVotedPost from "./useVotedPost";
 import MyVoteItem from "./vote";
+import useReferendumTitle from "./useReferendumTitle";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -49,19 +50,20 @@ export default function VotesList({ votes }) {
     return {
       useData: () => {
         const referendumPost = useVotedPost(item.referendumIndex);
+        const title = useReferendumTitle({
+          trackId: item.trackId,
+          referendumIndex: item.referendumIndex,
+        });
 
         // const vote = normalizeVote(item.vote);
 
         const row = [
-          referendumPost ? (
-            <PostTitle
-              key="proposal"
-              referendumIndex={item.referendumIndex}
-              title={referendumPost?.title}
-            />
-          ) : (
-            <FieldLoading />
-          ),
+          <PostTitle
+            key="proposal"
+            referendumIndex={item.referendumIndex}
+            title={title}
+            noLink={!referendumPost}
+          />,
           <MyVoteItem key="vote" vote={item} />,
           referendumPost ? (
             <ReferendumTag key="tag" proposal={referendumPost?.onchainData} />

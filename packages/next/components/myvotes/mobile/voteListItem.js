@@ -10,21 +10,23 @@ import RemoveVoteButton from "../removeVoteButton";
 import useVotedPost from "../useVotedPost";
 import useVoteExpiration from "../vote/useVoteExpiration";
 import VoteLock from "../vote/lock";
+import useReferendumTitle from "../useReferendumTitle";
 
 function ItemHeader({ vote }) {
   const referendumPost = useVotedPost(vote.referendumIndex);
+  const title = useReferendumTitle({
+    trackId: vote.trackId,
+    referendumIndex: vote.referendumIndex,
+  });
 
   return (
     <div>
-      <div className="flex items-center justify-between pb-[12px] border-b border-b-neutral-300">
-        {referendumPost ? (
-          <PostTitle
-            referendumIndex={vote.referendumIndex}
-            title={referendumPost?.title}
-          />
-        ) : (
-          <FieldLoading />
-        )}
+      <div className="flex items-center justify-between pb-[12px] border-b border-b-neutral300">
+        <PostTitle
+          referendumIndex={vote.referendumIndex}
+          title={title}
+          noLink={!referendumPost}
+        />
         <RemoveVoteButton key="action" vote={vote} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">
@@ -45,7 +47,7 @@ export default function VoteListItem({ vote }) {
   return (
     <ListCard>
       <ItemHeader vote={vote} />
-      <div className="mt-[24px]">
+      <div className="flex flex-col mt-[24px] gap-2">
         <VoteItem vote={normalizedVote} />
         <VoteLock lockInfo={lockInfo} />
       </div>
