@@ -8,6 +8,8 @@ import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
 import ClearExpiredVotePopup from "../clearExpiredVotePopup";
+import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
+import { useDispatch } from "react-redux";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -32,6 +34,7 @@ export default function VoteSummary({
   const { symbol, decimals } = useChainSettings();
   const { hasReferenda, noDemocracyModule } = useChainSettings();
   const [showClearExpired, setShowClearExpired] = useState(false);
+  const dispatch = useDispatch();
 
   const items = [
     {
@@ -89,6 +92,7 @@ export default function VoteSummary({
         <ClearExpiredVotePopup
           votes={voteExpiredReferenda}
           onClose={() => setShowClearExpired(false)}
+          onInBlock={() => dispatch(incMyVotesTrigger())}
         />
       )}
     </>
