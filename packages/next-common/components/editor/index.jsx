@@ -7,6 +7,7 @@ import { forwardRef, useRef, useState } from "react";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import clsx from "clsx";
 import { SystemLoading } from "@osn/icons/subsquare";
+import { useEventListener } from "usehooks-ts";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -23,6 +24,21 @@ function Editor(props, ref) {
   const { uploading, upload } = useUploadToIpfs();
   const inputRef = useRef();
   const [isPreview, setIsPreview] = useState(false);
+  const textAreaRef = useRef(null);
+  const [lastCaretPosition, setLastCursorPosition] = useState(0);
+
+  function saveLastCaretPosition(e) {
+    const start = e.target.selectionStart;
+    if (start) {
+      setLastCursorPosition(start);
+    }
+  }
+
+  useEventListener(
+    "selectionchange",
+    saveLastCaretPosition,
+    textAreaRef.current,
+  );
 
   function onDragOver(event) {
     event.preventDefault();
@@ -82,22 +98,48 @@ function Editor(props, ref) {
     uploadImage(files);
   }
 
+  function getPositionRangeText() {
+    const text = props.value.slice(0, lastCaretPosition);
+    return text;
+  }
+
+  function checkPositionIsNewLine() {
+    const textarea = textAreaRef.current;
+    const start = lastCaretPosition;
+    const lines = textarea.value.slice(0, start).split("\n");
+    const currentLine = lines[lines.length - 1];
+
+    return currentLine === "";
+  }
+
   function uploadImage(files) {
     const image = files?.[0];
     if (image) {
       if (/image\/\w+/.exec(image.type)) {
-        let placeholder = "";
+        const textarea = textAreaRef.current;
+        let placeholderUploading = "";
         let placeholderPrefix = "";
 
         if (props.contentType === "markdown") {
-          if (props.value) {
+          if (!checkPositionIsNewLine()) {
             placeholderPrefix = "\n";
           }
+          placeholderUploading = `![Uploading ${image.name}...]()`;
 
-          placeholder = `![Uploading ${image.name}...]()`;
-          props.onChange(
-            (props.value || "") + `${placeholderPrefix}${placeholder}\n`,
+          const rangeTextStr = getPositionRangeText();
+          const replaceTextStr = `${rangeTextStr}${placeholderPrefix}${placeholderUploading}\n`;
+
+          props.onChange((value) =>
+            (value || "").replace(rangeTextStr, replaceTextStr),
           );
+
+          // update textarea cursor position
+          Promise.resolve().then(() => {
+            setLastCursorPosition(rangeTextStr.length + replaceTextStr.length);
+            textarea.selectionStart = textarea.selectionEnd =
+              replaceTextStr.length;
+            textarea?.focus?.();
+          });
         }
 
         upload(image).then((response) => {
@@ -105,7 +147,7 @@ function Editor(props, ref) {
             if (response?.result?.url) {
               props.onChange((value) =>
                 value.replace(
-                  placeholder,
+                  placeholderUploading,
                   `![${image.name}](${response.result.url})`,
                 ),
               );
@@ -130,6 +172,9 @@ function Editor(props, ref) {
     >
       <UniverseEditor
         {...props}
+        setTextAreaRef={(textarea) => {
+          textAreaRef.current = textarea;
+        }}
         onChangePreviewMode={setIsPreview}
         toggleBarLeft={
           !isPreview &&
