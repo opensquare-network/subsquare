@@ -7,7 +7,29 @@ import RadioOptionGroup from "next-common/components/radioOptionGroup";
 import nextApi from "next-common/services/nextApi";
 import { usePost } from "next-common/context/post";
 import { useDispatch } from "react-redux";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
+
+const options = [
+  {
+    value: "malicious",
+    label: "This proposal is malicious",
+  },
+  {
+    value: "abusive",
+    label: "This proposal includes abusive or hateful content",
+  },
+  {
+    value: "spam",
+    label: "It appears that the proposer's account is hacked",
+  },
+  {
+    value: "duplicate",
+    label: "It’s a duplicated proposal",
+  },
+];
 
 export default function ReportPopup({ setShow = noop }) {
   const dispatch = useDispatch();
@@ -15,26 +37,12 @@ export default function ReportPopup({ setShow = noop }) {
   const [selectedOption, setSelectedOption] = useState("malicious");
   const post = usePost();
 
-  const options = [
-    {
-      value: "malicious",
-      label: "This proposal is malicious",
-    },
-    {
-      value: "abusive",
-      label: "This proposal includes abusive or hateful content",
-    },
-    {
-      value: "spam",
-      label: "It appears that the proposer's account is hacked",
-    },
-    {
-      value: "duplicate",
-      label: "It’s a duplicated proposal",
-    },
-  ];
-
   const doReport = useCallback(async () => {
+    if (!post) {
+      dispatch(newErrorToast("Cannot read the current post"));
+      return;
+    }
+
     setIsLoading(true);
     try {
       const reason = options.find(
@@ -60,14 +68,14 @@ export default function ReportPopup({ setShow = noop }) {
       }
 
       if (error) {
-        dispatch(newSuccessToast(error.message));
+        dispatch(newErrorToast(error.message));
       }
 
       setShow(false);
     } finally {
       setIsLoading(false);
     }
-  }, [post, selectedOption]);
+  }, [dispatch, post, selectedOption]);
 
   return (
     <Popup title="Report" onClose={() => setShow(false)}>
