@@ -17,6 +17,7 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import calcNotExpired from "./calcNotExpired";
 import BigNumber from "bignumber.js";
 import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
+import useMyClassLocksFor from "./useMyClassLocksFor";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -59,6 +60,9 @@ export default function Summary({ votes, priors = [] }) {
     latestHeight,
   );
   console.log("voteExpiredReferenda", voteExpiredReferenda);
+
+  const classLocks = useMyClassLocksFor();
+  console.log("classLocks", classLocks);
 
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 

@@ -13,6 +13,7 @@ async function queryReferendumInfo(api, referendumIndex) {
 
 async function queryVotesAndReferendumInfo(api, address) {
   const entries = await api.query.convictionVoting.votingFor.entries(address);
+  await api.query.convictionVoting;
   const votes = [];
   const priors = [];
   for (const [storageKey, votingOf] of entries) {
