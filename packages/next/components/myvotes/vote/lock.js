@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
 
 export const CountDownWrapper = styled(NoticeWrapper)`
+  width: 100%;
   justify-content: left;
   gap: 8px;
   margin: 0;
