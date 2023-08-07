@@ -8,6 +8,8 @@ import { normalizeVote } from "../common";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemoveVoteButton from "../removeVoteButton";
 import useVotedPost from "../useVotedPost";
+import useVoteExpiration from "../vote/useVoteExpiration";
+import VoteLock from "../vote/lock";
 
 function ItemHeader({ vote }) {
   const referendumPost = useVotedPost(vote.referendumIndex);
@@ -37,12 +39,15 @@ function ItemHeader({ vote }) {
 }
 
 export default function VoteListItem({ vote }) {
+  const lockInfo = useVoteExpiration(vote);
+  console.log("lockInfo", lockInfo);
   const normalizedVote = normalizeVote(vote.vote);
   return (
     <ListCard>
       <ItemHeader vote={vote} />
       <div className="mt-[24px]">
         <VoteItem vote={normalizedVote} />
+        <VoteLock lockInfo={lockInfo} />
       </div>
     </ListCard>
   );

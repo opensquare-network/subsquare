@@ -9,8 +9,7 @@ import { setMyVotedPosts } from "next-common/store/reducers/myVotesSlice";
 export default function MyOpenGovVotes() {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
-
-  const { isLoading, votes } = useAccountVotes(realAddress);
+  const { isLoading, votes, priors } = useAccountVotes(realAddress);
 
   useEffect(() => {
     if (!votes || !votes.length) {
@@ -30,5 +29,5 @@ export default function MyOpenGovVotes() {
       });
   }, [dispatch, votes]);
 
-  return <CommonVotes votes={votes} isLoading={isLoading} />;
+  return <CommonVotes votes={votes} priors={priors} isLoading={isLoading} />;
 }

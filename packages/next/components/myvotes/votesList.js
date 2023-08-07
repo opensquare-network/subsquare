@@ -5,12 +5,11 @@ import useColumns from "next-common/components/styledList/useColumns";
 import {
   PostTitle,
   ReferendumTag,
-  VoteItem,
 } from "next-common/components/profile/votingHistory/common";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import { normalizeVote } from "./common";
 import RemoveVoteButton from "./removeVoteButton";
 import useVotedPost from "./useVotedPost";
+import MyVoteItem from "./vote";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -51,7 +50,7 @@ export default function VotesList({ votes }) {
       useData: () => {
         const referendumPost = useVotedPost(item.referendumIndex);
 
-        const vote = normalizeVote(item.vote);
+        // const vote = normalizeVote(item.vote);
 
         const row = [
           referendumPost ? (
@@ -63,7 +62,7 @@ export default function VotesList({ votes }) {
           ) : (
             <FieldLoading />
           ),
-          <VoteItem key="vote" vote={vote} />,
+          <MyVoteItem key="vote" vote={item} />,
           referendumPost ? (
             <ReferendumTag key="tag" proposal={referendumPost?.onchainData} />
           ) : (
