@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import EditorWrapper from "./editorWrapper";
 import dynamic from "next/dynamic";
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import clsx from "clsx";
 import { SystemLoading } from "@osn/icons/subsquare";
@@ -29,6 +29,12 @@ function Editor(props, ref) {
 
   function saveLastCaretPosition(e) {
     const start = e.target.selectionStart;
+
+    // NOTE1: do not update the cursor position if the cursor is at the end of the text
+    if (start === props.value.length) {
+      return;
+    }
+
     if (start) {
       setLastCursorPosition(start);
     }
@@ -39,6 +45,15 @@ function Editor(props, ref) {
     saveLastCaretPosition,
     textAreaRef.current,
   );
+
+  useEffect(() => {
+    if (!uploading) {
+      const textarea = textAreaRef.current;
+      if (textarea) {
+        textarea.selectionStart = textarea.selectionEnd = lastCaretPosition;
+      }
+    }
+  }, [uploading, lastCaretPosition, textAreaRef]);
 
   function onDragOver(event) {
     event.preventDefault();
@@ -145,11 +160,16 @@ function Editor(props, ref) {
         upload(image).then((response) => {
           if (props.contentType === "markdown") {
             if (response?.result?.url) {
+              const imageResult = `![${image.name}](${response.result.url})`;
+
               props.onChange((value) =>
-                value.replace(
-                  placeholderUploading,
-                  `![${image.name}](${response.result.url})`,
-                ),
+                value.replace(placeholderUploading, imageResult),
+              );
+
+              // NOTE1: adjust cursor position after image uploaded
+              setLastCursorPosition(
+                (value) =>
+                  value + imageResult.length - placeholderUploading.length,
               );
             }
           }
