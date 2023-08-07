@@ -3,8 +3,7 @@ import { useUser } from "next-common/context/user";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybeLoginPolkadot from "./maybeLoginPolkadot";
 import MaybeLoginMetamask from "./maybeLoginMetamask";
-import ConnectWallet from "../connectWallet";
-import { emptyFunction } from "next-common/utils";
+import LoginPopup from "../login/popup";
 
 export default function PopupWithAddress({
   Component,
@@ -17,12 +16,7 @@ export default function PopupWithAddress({
   const lastLoginExtension = localStorage.lastLoginExtension;
 
   if (!loginUser) {
-    return (
-      <ConnectWallet
-        onClose={onClose}
-        onLoggedIn={autoCloseAfterLogin ? onClose : emptyFunction}
-      />
-    );
+    return <LoginPopup onClose={onClose} />;
   }
 
   if (lastLoginExtension === WalletTypes.METAMASK) {
