@@ -14,10 +14,13 @@ shadow-100
 `;
 
 export const OptionItem = tw.div`
+flex
+items-center
 text14Medium
 text-textPrimary
 cursor-pointer
 rounded-md
-p-2 
+p-2
 hover:bg-neutral200
+[&_path]:fill-textSecondary
 `;

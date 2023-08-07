@@ -5,7 +5,14 @@ import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
-import { SystemMore } from "@osn/icons/subsquare";
+import {
+  SystemCopied,
+  SystemCopy,
+  SystemEdit,
+  SystemFlag,
+  SystemLink,
+  SystemMore,
+} from "@osn/icons/subsquare";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -27,9 +34,11 @@ const Wrapper = styled.div`
 
 export default function ContentMenu({
   edit,
+  report,
   setIsEdit,
   setShowLinkPopup,
   setShowUnlinkPopup,
+  setShowReportPopup,
   copy = false,
   onCopy,
   alwaysShow,
@@ -61,7 +70,10 @@ export default function ContentMenu({
         setShow(false);
       }}
     >
-      Link
+      <div className="mr-2">
+        <SystemLink />
+      </div>
+      <span>Link</span>
     </OptionItem>
   );
   if (post?.isBoundDiscussion) {
@@ -72,10 +84,60 @@ export default function ContentMenu({
           setShow(false);
         }}
       >
-        Unlink
+        <div className="mr-2">
+          <SystemLink />
+        </div>
+        <span>Unlink</span>
       </OptionItem>
     );
   }
+
+  const editMenuItem = (
+    <OptionItem
+      onClick={() => {
+        setIsEdit(true);
+        setShow(false);
+      }}
+    >
+      <div className="mr-2">
+        <SystemEdit />
+      </div>
+      <span>Edit</span>
+    </OptionItem>
+  );
+
+  const copyMenuItem = (
+    <OptionItem
+      onClick={() => {
+        try {
+          onCopy && onCopy();
+        } catch (e) {
+          // fixme: we should not ignore
+        } finally {
+          setCopyState(true);
+        }
+      }}
+    >
+      <div className="mr-2">
+        {copyState ? <SystemCopied /> : <SystemCopy />}
+      </div>
+      <span>{copyState ? "Copied" : "Copy Link"}</span>
+    </OptionItem>
+  );
+
+  const reportMenuItem = (
+    <OptionItem
+      onClick={() => {
+        setShow(false);
+        setShowReportPopup(true);
+      }}
+    >
+      <div className="mr-2">
+        <SystemFlag />
+      </div>
+      <span>Report</span>
+    </OptionItem>
+  );
 
   return (
     <Wrapper className="edit" active={show || alwaysShow} ref={ref}>
@@ -90,31 +152,11 @@ export default function ContentMenu({
           {edit && (
             <>
               {hasLinkMenu && linkOrUnlinkMenuItem}
-              <OptionItem
-                onClick={() => {
-                  setIsEdit(true);
-                  setShow(false);
-                }}
-              >
-                Edit
-              </OptionItem>
+              {editMenuItem}
             </>
           )}
-          {copy && (
-            <OptionItem
-              onClick={() => {
-                try {
-                  onCopy && onCopy();
-                } catch (e) {
-                  // fixme: we should not ignore
-                } finally {
-                  setCopyState(true);
-                }
-              }}
-            >
-              {copyState ? "Copied" : "Copy Link"}
-            </OptionItem>
-          )}
+          {copy && copyMenuItem}
+          {report && reportMenuItem}
         </OptionWrapper>
       )}
     </Wrapper>
