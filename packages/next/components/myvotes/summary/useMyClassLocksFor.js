@@ -32,16 +32,20 @@ async function queryNoVoteTracks(api, address, latestHeight) {
     const prior = entry[1].asCasting.prior;
     const balance = prior[1].toString();
     const unlockAt = prior[0].toNumber();
-    if (new BigNumber(balance).lte(0) || latestHeight >= unlockAt) {
-      trackLock.push({
-        trackId,
-        locked,
-        prior: {
-          unlockAt,
-          balance,
-        },
-      });
+    let unLockable = locked;
+    if (latestHeight < unlockAt) {
+      unLockable = new BigNumber(unLockable).minus(balance).toString();
     }
+
+    trackLock.push({
+      trackId,
+      locked,
+      unLockable,
+      prior: {
+        unlockAt,
+        balance,
+      },
+    });
   }
 
   return trackLock;
