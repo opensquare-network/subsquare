@@ -4,53 +4,30 @@ import { useDispatch } from "react-redux";
 
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction, toPrecision } from "next-common/utils";
+import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
-import { getVoteBalance } from "../common";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
-import {
-  PostTitle,
-  useIsReferenda,
-} from "next-common/components/profile/votingHistory/common";
-import useReferendumTitle from "../useReferendumTitle";
+import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
 
-function ReferendumTitle({ trackId, referendumIndex }) {
-  const title = useReferendumTitle({ trackId, referendumIndex });
-  return (
-    <PostTitle
-      referendumIndex={referendumIndex}
-      title={title}
-      className="w-[260px]"
-      noLink
-    />
+function ExtraInfo({ votes }) {
+  const relatedReferenda = Array.from(
+    new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
   );
-}
+  relatedReferenda.sort((a, b) => a - b);
 
-function ReferendumList({ votes }) {
-  const { symbol, decimals } = useChainSettings();
   return (
     <div>
-      <PopupLabel text="Current Voting" />
-      {votes?.map(({ trackId, referendumIndex, vote }) => (
-        <div
-          key={referendumIndex}
-          className="flex justify-between items-center py-[12px] text-[12px] font-medium text-textPrimary border-b border-neutral300"
-        >
-          <ReferendumTitle
-            trackId={trackId}
-            referendumIndex={referendumIndex}
-          />
-          <div className="flex items-center">
-            <ValueDisplay
-              value={toPrecision(getVoteBalance(vote), decimals)}
-              symbol={symbol}
-            />
-          </div>
-        </div>
-      ))}
+      <PopupLabel text="Related referenda" />
+      <div className="text-[12px] font-medium text-textPrimary">
+        {relatedReferenda.length ? (
+          relatedReferenda
+            .map((referendumIndex) => `#${referendumIndex}`)
+            .join(", ")
+        ) : (
+          <span className="text-textTertiary">None</span>
+        )}
+      </div>
     </div>
   );
 }
@@ -140,7 +117,7 @@ export default function RemoveReferendumVotePopup({
       actionCallback={doRemoveVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={<ReferendumList votes={votes} />}
+      extraContent={<ExtraInfo votes={votes} />}
     />
   );
 }
