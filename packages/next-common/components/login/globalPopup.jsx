@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import LoginPopup from "./popup";
 
-export default function GlobalLoginPopup() {
+export default function LoginGlobalPopup() {
   const { loginPopupOpen, closeLoginPopup } = useLoginPopup();
   const router = useRouter();
 
