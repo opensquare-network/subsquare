@@ -1,12 +1,15 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { Title } from "../styled";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
+import ClearExpiredVotePopup from "../clearExpiredVotePopup";
+import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
+import { useDispatch } from "react-redux";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -26,9 +29,12 @@ export default function VoteSummary({
   votesLength = 0,
   totalLocked,
   unLockable,
+  voteExpiredReferenda,
 }) {
   const { symbol, decimals } = useChainSettings();
   const { hasReferenda, noDemocracyModule } = useChainSettings();
+  const [showClearExpired, setShowClearExpired] = useState(false);
+  const dispatch = useDispatch();
 
   const items = [
     {
@@ -53,10 +59,20 @@ export default function VoteSummary({
       content: (
         <TextSummaryContent
           value={
-            <ValueDisplay
-              value={toPrecision(unLockable, decimals)}
-              symbol={symbol}
-            />
+            <div className="flex flex-col">
+              <ValueDisplay
+                value={toPrecision(unLockable, decimals)}
+                symbol={symbol}
+              />
+              {!unLockable.isZero() && (
+                <div
+                  className="cursor-pointer text-theme500 text-[12px]"
+                  onClick={() => setShowClearExpired(true)}
+                >
+                  Clear expired votes
+                </div>
+              )}
+            </div>
           }
         />
       ),
@@ -72,6 +88,13 @@ export default function VoteSummary({
       <SecondaryCard>
         <SummaryItems items={items} />
       </SecondaryCard>
+      {showClearExpired && (
+        <ClearExpiredVotePopup
+          votes={voteExpiredReferenda}
+          onClose={() => setShowClearExpired(false)}
+          onInBlock={() => dispatch(incMyVotesTrigger())}
+        />
+      )}
     </>
   );
 }

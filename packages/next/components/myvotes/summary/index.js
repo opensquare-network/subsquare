@@ -25,9 +25,7 @@ export default function Summary({ votes, priors = [] }) {
     isReferenda,
     latestHeight,
   );
-  const totalExpired = new BigNumber(totalLockedBalance)
-    .minus(totalNotExpired)
-    .toString();
+  const totalExpired = new BigNumber(totalLockedBalance).minus(totalNotExpired);
 
   const voteExpiredReferenda = getVoteExpiredReferenda(
     votes,
@@ -46,6 +44,7 @@ export default function Summary({ votes, priors = [] }) {
       votesLength={votes?.length}
       totalLocked={totalLockedBalance}
       unLockable={totalExpired}
+      voteExpiredReferenda={voteExpiredReferenda}
     />
   );
 }

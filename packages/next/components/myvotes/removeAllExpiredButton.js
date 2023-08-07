@@ -1,8 +1,11 @@
 import { SystemClose } from "@osn/icons/subsquare";
 import { useState } from "react";
 import RemoveReferendumVotePopup from "./removeReferendumVotePopup";
+import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
+import { useDispatch } from "react-redux";
 
 export default function RemoveAllExpiredButton({ votes }) {
+  const dispatch = useDispatch();
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   return (
     <>
@@ -17,6 +20,7 @@ export default function RemoveAllExpiredButton({ votes }) {
         <RemoveReferendumVotePopup
           votes={votes}
           onClose={() => setShowRemovePopup(false)}
+          onInBlock={() => dispatch(incMyVotesTrigger())}
         />
       )}
     </>
