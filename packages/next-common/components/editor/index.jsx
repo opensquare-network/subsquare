@@ -30,11 +30,6 @@ function Editor(props, ref) {
   function saveLastCaretPosition(e) {
     const start = e.target.selectionStart;
 
-    // NOTE1: do not update the cursor position if the cursor is at the end of the text
-    if (start === props.value.length) {
-      return;
-    }
-
     if (start) {
       setLastCursorPosition(start);
     }
@@ -53,7 +48,7 @@ function Editor(props, ref) {
         textarea.selectionStart = textarea.selectionEnd = lastCaretPosition;
       }
     }
-  }, [uploading, lastCaretPosition, textAreaRef]);
+  }, [uploading, textAreaRef]);
 
   function onDragOver(event) {
     event.preventDefault();
@@ -166,7 +161,7 @@ function Editor(props, ref) {
                 value.replace(placeholderUploading, imageResult),
               );
 
-              // NOTE1: adjust cursor position after image uploaded
+              // update cursor position, diff to placeholderUploading and imageResult
               setLastCursorPosition(
                 (value) =>
                   value + imageResult.length - placeholderUploading.length,
