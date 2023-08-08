@@ -44,10 +44,10 @@ export default function ReferendaSummary({ votes, priors = [] }) {
     totalLockedBalance,
     ...(classLocks || []).map((lock) => lock.locked),
   );
-  const unLockable = BigNumber.min(
-    totalExpired,
+  const unLockableByClassLocks = BigNumber.min(
     ...(classLocks || []).map((lock) => lock.unLockable),
   );
+  const unLockable = BigNumber.max(totalExpired, unLockableByClassLocks);
 
   return (
     <>
@@ -60,6 +60,7 @@ export default function ReferendaSummary({ votes, priors = [] }) {
       {showClearExpired && (
         <ClearExpiredReferendaVotePopup
           votes={voteExpiredReferenda}
+          classLocks={classLocks}
           onClose={() => setShowClearExpired(false)}
           onInBlock={() => dispatch(incMyVotesTrigger())}
         />

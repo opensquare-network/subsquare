@@ -9,6 +9,7 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
+import BigNumber from "bignumber.js";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
   return (
@@ -29,7 +30,8 @@ function ExtraInfo({ relatedReferenda, relatedTracks }) {
 }
 
 export default function ClearExpiredReferendaVotePopup({
-  votes,
+  votes = [],
+  classLocks = [],
   onClose,
   isLoading,
   setIsLoading = emptyFunction,
@@ -44,9 +46,13 @@ export default function ClearExpiredReferendaVotePopup({
   );
   relatedReferenda.sort((a, b) => a - b);
 
-  const relatedTracks = Array.from(
-    new Set((votes || []).map(({ trackId }) => trackId)),
-  );
+  const tracks = [
+    ...(votes || []).map(({ trackId }) => trackId),
+    ...classLocks
+      .filter((lock) => new BigNumber(lock.unLockable).gt(0))
+      .map((lock) => lock.trackId),
+  ];
+  const relatedTracks = Array.from(new Set(tracks));
   relatedTracks.sort((a, b) => a - b);
 
   const showErrorToast = useCallback(
@@ -64,22 +70,27 @@ export default function ClearExpiredReferendaVotePopup({
         return showErrorToast("Please login first");
       }
 
-      if (!votes?.length) {
-        return showErrorToast("No votes selected");
+      if (!votes?.length && relatedTracks.length <= 0) {
+        return showErrorToast("No unLockable balance");
       }
 
       const signerAddress = signerAccount.address;
       const realAddress = signerAccount.proxyAddress || signerAddress;
 
       let tx;
-
       const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
         api.tx.convictionVoting.removeVote(trackId, referendumIndex),
       );
       const txsUnlock = relatedTracks.map((trackId) =>
         api.tx.convictionVoting.unlock(trackId, realAddress),
       );
-      tx = api.tx.utility.batch([...txsRemoveVote, ...txsUnlock]);
+
+      const allTxs = [...txsRemoveVote, ...txsUnlock];
+      if (allTxs.length === 1) {
+        tx = allTxs[0];
+      } else {
+        tx = api.tx.utility.batch(allTxs);
+      }
 
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
