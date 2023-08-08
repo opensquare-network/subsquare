@@ -42,7 +42,6 @@ function ItemHeader({ vote }) {
 
 export default function VoteListItem({ vote }) {
   const lockInfo = useVoteExpiration(vote);
-  console.log("lockInfo", lockInfo);
   const normalizedVote = normalizeVote(vote.vote);
   return (
     <ListCard>
