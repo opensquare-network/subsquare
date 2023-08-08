@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -12,13 +12,11 @@ import RelatedReferenda from "../popupCommon/relatedReferenda";
 export default function ClearExpiredDemocracyVotePopup({
   votes,
   onClose,
-  isLoading,
-  setIsLoading = emptyFunction,
-  onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+  const [isLoading, setIsLoading] = useState(false);
 
   const relatedReferenda = Array.from(
     new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
@@ -64,7 +62,6 @@ export default function ClearExpiredDemocracyVotePopup({
         setLoading: setIsLoading,
         dispatch,
         onInBlock,
-        onSubmitted,
         onClose,
         signerAddress,
         isMounted,
@@ -75,7 +72,6 @@ export default function ClearExpiredDemocracyVotePopup({
       isMounted,
       showErrorToast,
       onInBlock,
-      onSubmitted,
       onClose,
       votes,
       setIsLoading,
