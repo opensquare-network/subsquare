@@ -7,29 +7,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
-import PopupLabel from "next-common/components/popup/label";
-
-function ExtraInfo({ votes }) {
-  const relatedReferenda = Array.from(
-    new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
-  );
-  relatedReferenda.sort((a, b) => a - b);
-
-  return (
-    <div>
-      <PopupLabel text="Related referenda" />
-      <div className="text-[12px] font-medium text-textPrimary">
-        {relatedReferenda.length ? (
-          relatedReferenda
-            .map((referendumIndex) => `#${referendumIndex}`)
-            .join(", ")
-        ) : (
-          <span className="text-textTertiary">None</span>
-        )}
-      </div>
-    </div>
-  );
-}
+import RelatedReferenda from "../popupCommon/relatedReferenda";
 
 export default function RemoveDemocracyVotePopup({
   votes,
@@ -41,6 +19,11 @@ export default function RemoveDemocracyVotePopup({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+
+  const relatedReferenda = Array.from(
+    new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
+  );
+  relatedReferenda.sort((a, b) => a - b);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -106,7 +89,7 @@ export default function RemoveDemocracyVotePopup({
       actionCallback={doRemoveVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={<ExtraInfo votes={votes} />}
+      extraContent={<RelatedReferenda relatedReferenda={relatedReferenda} />}
     />
   );
 }

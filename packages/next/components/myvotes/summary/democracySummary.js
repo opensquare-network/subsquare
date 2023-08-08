@@ -10,7 +10,7 @@ import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
 import VoteSummary from "./summary";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import { useDispatch } from "react-redux";
-import ClearExpiredDemocracyVotePopup from "../clearExpiredReferendaVotePopup";
+import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
 
 export default function DemocracySummary({ votes, priors = [] }) {
   const dispatch = useDispatch();

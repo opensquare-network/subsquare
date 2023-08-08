@@ -9,7 +9,7 @@ import BigNumber from "bignumber.js";
 import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
 import useMyClassLocksFor from "./useMyClassLocksFor";
 import VoteSummary from "./summary";
-import ClearExpiredReferendaVotePopup from "../clearExpiredDemocracyVotePopup";
+import ClearExpiredReferendaVotePopup from "../clearExpiredReferendaVotePopup";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import { useDispatch } from "react-redux";
 
