@@ -46,7 +46,8 @@ export default function ReferendaSummary({ votes, priors = [] }) {
   );
   const unLockableByClassLocks = BigNumber.min(
     ...(classLocks || []).map((lock) => lock.unLockable),
-  );
+    0,
+  ).toString();
   const unLockable = BigNumber.max(totalExpired, unLockableByClassLocks);
 
   return (
@@ -56,6 +57,7 @@ export default function ReferendaSummary({ votes, priors = [] }) {
         totalLocked={locked}
         unLockable={unLockable}
         setShowClearExpired={setShowClearExpired}
+        actionTitle={voteExpiredReferenda.length <= 0 ? "Unlock" : null}
       />
       {showClearExpired && (
         <ClearExpiredReferendaVotePopup
