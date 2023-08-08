@@ -28,7 +28,9 @@ export default function ReferendaSummary({ votes, priors = [] }) {
     isReferenda,
     latestHeight,
   );
-  const totalExpired = new BigNumber(totalLockedBalance).minus(totalNotExpired);
+  const totalExpired = new BigNumber(totalLockedBalance)
+    .minus(totalNotExpired)
+    .toString();
 
   const voteExpiredReferenda = getVoteExpiredReferenda(
     votes,
@@ -36,18 +38,23 @@ export default function ReferendaSummary({ votes, priors = [] }) {
     isReferenda,
     latestHeight,
   );
-  console.log("voteExpiredReferenda", voteExpiredReferenda);
 
   const classLocks = useMyClassLocksFor();
-  console.log("classLocks", classLocks);
+  const locked = BigNumber.max(
+    totalLockedBalance,
+    ...(classLocks || []).map((lock) => lock.locked),
+  );
+  const unLockable = BigNumber.min(
+    totalExpired,
+    ...(classLocks || []).map((lock) => lock.unLockable),
+  );
 
-  // fixme: we may divide this component into 2 for OpenGov and democracy
   return (
     <>
       <VoteSummary
         votesLength={votes?.length}
-        totalLocked={totalLockedBalance}
-        unLockable={totalExpired}
+        totalLocked={locked}
+        unLockable={unLockable}
         setShowClearExpired={setShowClearExpired}
       />
       {showClearExpired && (

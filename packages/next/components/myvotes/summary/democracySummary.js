@@ -35,9 +35,7 @@ export default function DemocracySummary({ votes, priors = [] }) {
     isReferenda,
     latestHeight,
   );
-  console.log("voteExpiredReferenda", voteExpiredReferenda);
 
-  // fixme: we may divide this component into 2 for OpenGov and democracy
   return (
     <>
       <VoteSummary
