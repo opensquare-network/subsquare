@@ -282,8 +282,8 @@ const getCommentSource = (comment, chain) => {
   if (comment?.openTechCommittee) {
     const motionId = getMotionId(comment?.openTechCommittee);
     return [
-      "Open Tech. Comm. Motions",
-      comment?.openTechCommittee?.title || `Motion #${motionId}`,
+      "Open Tech. Comm. Proposals",
+      comment?.openTechCommittee?.title || `Proposal #${motionId}`,
       `/open-techcomm/proposal/${motionId}`,
     ];
   }
