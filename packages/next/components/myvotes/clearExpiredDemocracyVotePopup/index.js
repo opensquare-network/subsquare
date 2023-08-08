@@ -8,11 +8,8 @@ import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
-import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
-  const isReferenda = useIsReferenda();
-
   return (
     <>
       <div>
@@ -27,23 +24,21 @@ function ExtraInfo({ relatedReferenda, relatedTracks }) {
           )}
         </div>
       </div>
-      {isReferenda && (
-        <div>
-          <PopupLabel text="Unlock tracks" />
-          <div className="text-[12px] font-medium text-textPrimary">
-            {relatedTracks.length ? (
-              relatedTracks.map((trackId) => `#${trackId}`).join(", ")
-            ) : (
-              <span className="text-textTertiary">None</span>
-            )}
-          </div>
+      <div>
+        <PopupLabel text="Unlock tracks" />
+        <div className="text-[12px] font-medium text-textPrimary">
+          {relatedTracks.length ? (
+            relatedTracks.map((trackId) => `#${trackId}`).join(", ")
+          ) : (
+            <span className="text-textTertiary">None</span>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 }
 
-export default function ClearExpiredVotePopup({
+export default function ClearExpiredReferendaVotePopup({
   votes,
   onClose,
   isLoading,
@@ -53,7 +48,6 @@ export default function ClearExpiredVotePopup({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const isReferenda = useIsReferenda();
 
   const relatedReferenda = Array.from(
     new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
@@ -80,30 +74,22 @@ export default function ClearExpiredVotePopup({
         return showErrorToast("Please login first");
       }
 
+      if (!votes?.length) {
+        return showErrorToast("No votes selected");
+      }
+
       const signerAddress = signerAccount.address;
       const realAddress = signerAccount.proxyAddress || signerAddress;
 
       let tx;
 
-      if (votes?.length) {
-        if (isReferenda) {
-          const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
-            api.tx.convictionVoting.removeVote(trackId, referendumIndex),
-          );
-          const txsUnlock = relatedTracks.map((trackId) =>
-            api.tx.convictionVoting.unlock(trackId, realAddress),
-          );
-          tx = api.tx.utility.batch([...txsRemoveVote, ...txsUnlock]);
-        } else {
-          const txsRemoveVote = votes.map(({ referendumIndex }) =>
-            api.tx.democracy.removeVote(referendumIndex),
-          );
-          const txUnlock = api.tx.democracy.unlock(realAddress);
-          tx = api.tx.utility.batch([...txsRemoveVote, txUnlock]);
-        }
-      } else {
-        return showErrorToast("No votes selected");
-      }
+      const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
+        api.tx.convictionVoting.removeVote(trackId, referendumIndex),
+      );
+      const txsUnlock = relatedTracks.map((trackId) =>
+        api.tx.convictionVoting.unlock(trackId, realAddress),
+      );
+      tx = api.tx.utility.batch([...txsRemoveVote, ...txsUnlock]);
 
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -127,7 +113,6 @@ export default function ClearExpiredVotePopup({
       onInBlock,
       onSubmitted,
       onClose,
-      isReferenda,
       votes,
       setIsLoading,
       relatedTracks,

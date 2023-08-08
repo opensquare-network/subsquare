@@ -1,15 +1,12 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { Title } from "../styled";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
-import ClearExpiredVotePopup from "../clearExpiredVotePopup";
-import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
-import { useDispatch } from "react-redux";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -25,16 +22,14 @@ function TextSummaryContent({ value }) {
   return <ValueWrapper>{value}</ValueWrapper>;
 }
 
-export default function VoteSummary({
+export default function ReferendaVoteSummary({
   votesLength = 0,
   totalLocked,
   unLockable,
-  voteExpiredReferenda,
+  setShowClearExpired,
 }) {
   const { symbol, decimals } = useChainSettings();
   const { hasReferenda, noDemocracyModule } = useChainSettings();
-  const [showClearExpired, setShowClearExpired] = useState(false);
-  const dispatch = useDispatch();
 
   const items = [
     {
@@ -88,13 +83,6 @@ export default function VoteSummary({
       <SecondaryCard>
         <SummaryItems items={items} />
       </SecondaryCard>
-      {showClearExpired && (
-        <ClearExpiredVotePopup
-          votes={voteExpiredReferenda}
-          onClose={() => setShowClearExpired(false)}
-          onInBlock={() => dispatch(incMyVotesTrigger())}
-        />
-      )}
     </>
   );
 }

@@ -1,10 +1,11 @@
 import useAccountVotes from "next-common/hooks/referenda/votes/useAccountVotes";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import CommonVotes from "./commonVotes";
 import { useEffect } from "react";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { setMyVotedPosts } from "next-common/store/reducers/myVotesSlice";
+import MyVotesList from "./myVotesList";
+import ReferendaSummary from "./summary/referendaSummary";
 
 export default function MyOpenGovVotes() {
   const dispatch = useDispatch();
@@ -30,5 +31,10 @@ export default function MyOpenGovVotes() {
       });
   }, [dispatch, votes]);
 
-  return <CommonVotes votes={votes} priors={priors} isLoading={isLoading} />;
+  return (
+    <div className="flex flex-col gap-[16px]">
+      <ReferendaSummary votes={votes} priors={priors} />
+      <MyVotesList isLoading={isLoading} votes={votes} />
+    </div>
+  );
 }
