@@ -8,7 +8,6 @@ import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
-import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
 
 function ExtraInfo({ votes }) {
   const relatedReferenda = Array.from(
@@ -32,7 +31,7 @@ function ExtraInfo({ votes }) {
   );
 }
 
-export default function RemoveReferendumVotePopup({
+export default function RemoveDemocracyVotePopup({
   votes,
   onClose,
   isLoading,
@@ -42,7 +41,6 @@ export default function RemoveReferendumVotePopup({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const isReferenda = useIsReferenda();
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -64,20 +62,12 @@ export default function RemoveReferendumVotePopup({
       let tx;
 
       if (votes?.length === 1) {
-        const { trackId, referendumIndex } = votes[0];
-        if (isReferenda) {
-          tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
-        } else {
-          tx = api.tx.democracy.removeVote(referendumIndex);
-        }
+        const { referendumIndex } = votes[0];
+        tx = api.tx.democracy.removeVote(referendumIndex);
       } else if (votes?.length > 1) {
-        const txs = votes.map(({ trackId, referendumIndex }) => {
-          if (isReferenda) {
-            return api.tx.convictionVoting.removeVote(trackId, referendumIndex);
-          } else {
-            return api.tx.democracy.removeVote(referendumIndex);
-          }
-        });
+        const txs = votes.map(({ referendumIndex }) =>
+          api.tx.democracy.removeVote(referendumIndex),
+        );
         tx = api.tx.utility.batch(txs);
       } else {
         return showErrorToast("No votes selected");
@@ -105,7 +95,6 @@ export default function RemoveReferendumVotePopup({
       onInBlock,
       onSubmitted,
       onClose,
-      isReferenda,
       votes,
       setIsLoading,
     ],
