@@ -5,7 +5,7 @@ export default function RelatedReferenda({ relatedReferenda }) {
   return (
     <div>
       <PopupLabel text="Related referenda" />
-      <div className="text-[12px] font-medium text-textPrimary">
+      <div className="text-[12px] font-medium text-textPrimary py-[12px] border-b border-b-neutral300">
         {relatedReferenda.length ? (
           relatedReferenda
             .map((referendumIndex) => `#${referendumIndex}`)

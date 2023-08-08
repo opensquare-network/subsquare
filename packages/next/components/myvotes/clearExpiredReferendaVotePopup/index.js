@@ -16,7 +16,7 @@ function ExtraInfo({ relatedReferenda, relatedTracks }) {
       <RelatedReferenda relatedReferenda={relatedReferenda} />
       <div>
         <PopupLabel text="Unlock tracks" />
-        <div className="text-[12px] font-medium text-textPrimary">
+        <div className="text-[12px] font-medium text-textPrimary py-[12px] border-b border-b-neutral300">
           {relatedTracks.length ? (
             relatedTracks.map((trackId) => `#${trackId}`).join(", ")
           ) : (
