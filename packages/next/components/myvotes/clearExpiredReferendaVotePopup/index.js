@@ -111,7 +111,6 @@ export default function ClearExpiredReferendaVotePopup({
       onInBlock,
       onClose,
       votes,
-      setIsLoading,
       relatedTracks,
     ],
   );

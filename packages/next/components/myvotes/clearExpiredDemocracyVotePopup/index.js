@@ -67,15 +67,7 @@ export default function ClearExpiredDemocracyVotePopup({
         isMounted,
       });
     },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onInBlock,
-      onClose,
-      votes,
-      setIsLoading,
-    ],
+    [dispatch, isMounted, showErrorToast, onInBlock, onClose, votes],
   );
 
   return (
