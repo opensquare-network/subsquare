@@ -27,6 +27,7 @@ export default function ReferendaVoteSummary({
   totalLocked,
   unLockable,
   setShowClearExpired,
+  actionTitle,
 }) {
   const { symbol, decimals } = useChainSettings();
   const { hasReferenda, noDemocracyModule } = useChainSettings();
@@ -64,7 +65,7 @@ export default function ReferendaVoteSummary({
                   className="cursor-pointer text-theme500 text-[12px]"
                   onClick={() => setShowClearExpired(true)}
                 >
-                  Clear expired votes
+                  {actionTitle || "Clear expired votes"}
                 </div>
               )}
             </div>
