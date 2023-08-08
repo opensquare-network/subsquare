@@ -1,4 +1,5 @@
 import { noLockObj, noResultObj } from "./consts";
+import getDemocracyEndInfo from "./democracy/endInfo";
 
 function getReferendaEndInfo(referendumInfo) {
   const { rejected, approved } = referendumInfo;
@@ -10,18 +11,6 @@ function getReferendaEndInfo(referendumInfo) {
     hasResult: true,
     approved: !!approved,
     end: (approved || rejected)[0],
-  };
-}
-
-function getDemocracyEndInfo(referendumInfo) {
-  if (!referendumInfo || !referendumInfo.finished) {
-    return noResultObj;
-  }
-
-  return {
-    hasResult: true,
-    approved: referendumInfo.finished.approved,
-    end: referendumInfo.finished.end,
   };
 }
 
