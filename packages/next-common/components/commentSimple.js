@@ -208,6 +208,20 @@ const getCommentSource = (comment, chain) => {
       `/techcomm/proposal/${getMotionId(comment?.techCommMotion, chain)}`,
     ];
   }
+  if (comment?.referendaReferendum) {
+    return [
+      "OpenGov Referenda",
+      comment?.referendaReferendum?.title,
+      `/referenda/referendum/${comment?.referendaReferendum?.referendumIndex}`,
+    ];
+  }
+  if (comment?.fellowshipReferendum) {
+    return [
+      "OpenGov Fellowships",
+      comment?.fellowshipReferendum?.title,
+      `/fellowship/referendum/${comment?.fellowshipReferendum?.referendumIndex}`,
+    ];
+  }
   return ["Unknown"];
 };
 
@@ -248,10 +262,10 @@ export default function CommentSimple({ data }) {
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
-            <div style={{ whiteSpace: "nowrap" }}>{type}</div>
+            <Info>{type}</Info>
             <AutHideInfo>
               <Anchor href={route} passHref>
-                {title}
+                {title || "Untitled"}
               </Anchor>
             </AutHideInfo>
             {data.updatedAt && <Info>{duration}</Info>}
