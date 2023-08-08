@@ -7,38 +7,9 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
-import PopupLabel from "next-common/components/popup/label";
+import RelatedReferenda from "../popupCommon/relatedReferenda";
 
-function ExtraInfo({ relatedReferenda, relatedTracks }) {
-  return (
-    <>
-      <div>
-        <PopupLabel text="Related referenda" />
-        <div className="text-[12px] font-medium text-textPrimary">
-          {relatedReferenda.length ? (
-            relatedReferenda
-              .map((referendumIndex) => `#${referendumIndex}`)
-              .join(", ")
-          ) : (
-            <span className="text-textTertiary">None</span>
-          )}
-        </div>
-      </div>
-      <div>
-        <PopupLabel text="Unlock tracks" />
-        <div className="text-[12px] font-medium text-textPrimary">
-          {relatedTracks.length ? (
-            relatedTracks.map((trackId) => `#${trackId}`).join(", ")
-          ) : (
-            <span className="text-textTertiary">None</span>
-          )}
-        </div>
-      </div>
-    </>
-  );
-}
-
-export default function ClearExpiredReferendaVotePopup({
+export default function ClearExpiredDemocracyVotePopup({
   votes,
   onClose,
   isLoading,
@@ -53,11 +24,6 @@ export default function ClearExpiredReferendaVotePopup({
     new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
   );
   relatedReferenda.sort((a, b) => a - b);
-
-  const relatedTracks = Array.from(
-    new Set((votes || []).map(({ trackId }) => trackId)),
-  );
-  relatedTracks.sort((a, b) => a - b);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -83,13 +49,11 @@ export default function ClearExpiredReferendaVotePopup({
 
       let tx;
 
-      const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
-        api.tx.convictionVoting.removeVote(trackId, referendumIndex),
+      const txsRemoveVote = votes.map(({ referendumIndex }) =>
+        api.tx.democracy.removeVote(referendumIndex),
       );
-      const txsUnlock = relatedTracks.map((trackId) =>
-        api.tx.convictionVoting.unlock(trackId, realAddress),
-      );
-      tx = api.tx.utility.batch([...txsRemoveVote, ...txsUnlock]);
+      const txUnlock = api.tx.democracy.unlock(realAddress);
+      tx = api.tx.utility.batch([...txsRemoveVote, txUnlock]);
 
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -115,7 +79,6 @@ export default function ClearExpiredReferendaVotePopup({
       onClose,
       votes,
       setIsLoading,
-      relatedTracks,
     ],
   );
 
@@ -125,12 +88,7 @@ export default function ClearExpiredReferendaVotePopup({
       actionCallback={doClearExpiredVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={
-        <ExtraInfo
-          relatedReferenda={relatedReferenda}
-          relatedTracks={relatedTracks}
-        />
-      }
+      extraContent={<RelatedReferenda relatedReferenda={relatedReferenda} />}
     />
   );
 }
