@@ -50,14 +50,14 @@ function OpenGovGroupContent({ summaryData }) {
 
   return (
     <ContentWrapper>
-      {
-        hasReferenda && <SummaryTypeGroup
+      {hasReferenda && (
+        <SummaryTypeGroup
           label="R"
           tooltip="Active referenda"
           href="/referenda"
-          value={ activeGov2ReferendaCount }
+          value={activeGov2ReferendaCount}
         />
-      }
+      )}
       {hasFellowship && (
         <SummaryTypeGroup
           label="F"
@@ -189,7 +189,7 @@ function CouncilGroupContent({ summaryData }) {
 export default function OverviewSummary({ summaryData }) {
   const showCouncil = useMenuHasCouncil();
   const showTC = useMenuHasTechComm();
-  const { hasFellowship, hasReferenda } = useChainSettings();
+  const { hasFellowship, hasReferenda, noDemocracyModule } = useChainSettings();
 
   const items = [];
   if (hasReferenda || hasFellowship) {
@@ -199,22 +199,26 @@ export default function OverviewSummary({ summaryData }) {
     });
   }
 
-  items.push(
-    {
+  if (!noDemocracyModule) {
+    items.push({
       title: "Democracy",
       content: <DemocracyGroupContent summaryData={summaryData} />,
-    },
-    {
-      title: "Treasury",
-      content: <TreasuryGroupContent summaryData={summaryData} />,
-    },
-    {
+    });
+  }
+
+  items.push({
+    title: "Treasury",
+    content: <TreasuryGroupContent summaryData={summaryData} />,
+  });
+
+  if (!noDemocracyModule) {
+    items.push({
       title: `${showCouncil ? "Council" : ""}${
         showTC && showCouncil ? " / " : ""
       }${showTC ? "T.C." : ""}`,
       content: <CouncilGroupContent summaryData={summaryData} />,
-    },
-  );
+    });
+  }
 
   return (
     <Summary
