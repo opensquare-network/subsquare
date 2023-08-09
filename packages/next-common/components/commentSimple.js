@@ -15,6 +15,9 @@ import IdentityOrAddr from "./IdentityOrAddr";
 import { prettyHTML } from "../utils/viewfuncs";
 import useDuration from "../utils/hooks/useDuration";
 import { useChain } from "../context/chain";
+import { hashEllipsis, textEllipsis } from "next-common/utils";
+import isMoonChain from "next-common/utils/isMoonChain";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -135,10 +138,11 @@ const ContentWrapper = styled.div`
 
 const getCommentSource = (comment, chain) => {
   if (comment?.financialMotion) {
+    const hash = comment?.financialMotion.hash;
     return [
       "Financial Motion",
-      comment.financialMotion.title,
-      `/financial-council/motion/${comment?.financialMotion.indexer.blockHeight}_${comment?.financialMotion.hash}`,
+      comment.financialMotion.title || `Motion #${hashEllipsis(hash)}`,
+      `/financial-council/motion/${comment?.financialMotion.indexer.blockHeight}_${hash}`,
     ];
   }
 
@@ -146,68 +150,145 @@ const getCommentSource = (comment, chain) => {
     return ["Discussion", comment.post.title, `/post/${comment.post.postUid}`];
   }
   if (comment?.motion) {
-    return [
-      "Council Motions",
-      comment?.motion.title,
-      `/council/motion/${getMotionId(comment?.motion, chain)}`,
-    ];
+    const motionId = getMotionId(comment?.motion);
+
+    const isMoon = isMoonChain(chain);
+    if (isMoon) {
+      return [
+        "Treasury Council Motion",
+        comment?.motion.title || `Treasury motion #${motionId}`,
+        `/treasury-council/motion/${motionId}`,
+      ];
+    } else {
+      return [
+        "Council Motions",
+        comment?.motion.title || `Motion #${motionId}`,
+        `/council/motion/${motionId}`,
+      ];
+    }
   }
   if (comment?.tip) {
+    const tipHash = comment?.tip.hash;
     return [
       "Treasury Tips",
-      comment?.tip.title,
-      `/treasury/tip/${comment?.tip.height}_${comment?.tip.hash}`,
+      comment?.tip.title || `Tip #${hashEllipsis(tipHash)}`,
+      `/treasury/tip/${comment?.tip.height}_${tipHash}`,
     ];
   }
   if (comment?.childBounty) {
+    const index = comment?.childBounty.index;
     return [
       "Treasury Child Bounties",
-      comment?.childBounty.title,
-      `/treasury/bounty/${comment?.childBounty?.bountyIndex}`,
+      comment?.childBounty.title || `Child bounty #${index}`,
+      `/treasury/child-bounty/${index}`,
     ];
   }
   if (comment?.bounty) {
+    const bountyIndex = comment?.bounty.bountyIndex;
     return [
       "Treasury Bounties",
-      comment?.bounty.title,
-      `/treasury/bounty/${comment?.bounty.bountyIndex}`,
+      comment?.bounty.title || `Bounty #${bountyIndex}`,
+      `/treasury/bounty/${bountyIndex}`,
     ];
   }
   if (comment?.treasuryProposal) {
+    const proposalIndex = comment?.treasuryProposal.proposalIndex;
     return [
       "Treasury Proposals",
-      comment?.treasuryProposal.title,
-      `/treasury/proposal/${comment?.treasuryProposal.proposalIndex}`,
+      comment?.treasuryProposal.title || `Proposal #${proposalIndex}`,
+      `/treasury/proposal/${proposalIndex}`,
     ];
   }
-  if (comment?.democracy?.proposalIndex) {
+  if (!isNil(comment?.democracy?.proposalIndex)) {
+    const proposalIndex = comment?.democracy?.proposalIndex;
     return [
       "Democracy Public Proposals",
-      comment?.democracy?.title,
-      `/democracy/proposal/${comment?.democracy?.proposalIndex}`,
+      comment?.democracy?.title || `Proposal #${proposalIndex}`,
+      `/democracy/proposal/${proposalIndex}`,
     ];
   }
   if (comment?.democracy?.externalProposalHash) {
     return [
       "Democracy External Proposals",
-      comment.democracy.title,
+      comment.democracy.title ||
+        `Proposal #${hashEllipsis(comment?.democracy.externalProposalHash)}`,
       `/democracy/external/${comment?.democracy.indexer.blockHeight}_${comment?.democracy.externalProposalHash}`,
     ];
   }
-  if (comment?.democracy?.referendumIndex > -1) {
+  if (!isNil(comment?.democracy?.referendumIndex)) {
+    const referendumIndex = comment?.democracy?.referendumIndex;
     return [
       "Democracy Referendums",
-      comment?.democracy?.title,
-      `/democracy/referendum/${comment?.democracy?.referendumIndex}`,
+      comment?.democracy?.title || `Referendum #${referendumIndex}`,
+      `/democracy/referendum/${referendumIndex}`,
     ];
   }
   if (comment?.techCommMotion) {
+    const motionId = getMotionId(comment?.techCommMotion);
     return [
       "Tech. Comm. Proposals",
-      comment?.techCommMotion?.title,
-      `/techcomm/proposal/${getMotionId(comment?.techCommMotion, chain)}`,
+      comment?.techCommMotion?.title || `Proposal #${motionId}`,
+      `/techcomm/proposal/${motionId}`,
     ];
   }
+  if (comment?.referendaReferendum) {
+    const referendumIndex = comment?.referendaReferendum?.referendumIndex;
+    return [
+      "OpenGov Referenda",
+      comment?.referendaReferendum?.title || `Referendum #${referendumIndex}`,
+      `/referenda/referendum/${referendumIndex}`,
+    ];
+  }
+  if (comment?.fellowshipReferendum) {
+    const referendumIndex = comment?.fellowshipReferendum?.referendumIndex;
+    return [
+      "OpenGov Fellowships",
+      comment?.fellowshipReferendum?.title || `Fellowship #${referendumIndex}`,
+      `/fellowship/referendum/${referendumIndex}`,
+    ];
+  }
+  if (comment?.moonCouncil) {
+    const motionId = getMotionId(comment?.moonCouncil);
+    return [
+      "Council Motions",
+      comment?.motion.title || `Motion #${motionId}`,
+      `/council/motion/${motionId}`,
+    ];
+  }
+  if (comment?.advisoryCommitteeMotion) {
+    const motionId = getMotionId(comment?.advisoryCommitteeMotion);
+    return [
+      "Advisory Committee Motions",
+      comment?.advisoryCommitteeMotion?.title || `Motion #${motionId}`,
+      `/advisory-committee/motion/${motionId}`,
+    ];
+  }
+  if (comment?.allianceMotion) {
+    const motionId = getMotionId(comment?.allianceMotion);
+    return [
+      "Alliance Motions",
+      comment?.allianceMotion?.title || `Motion #${motionId}`,
+      `/alliance/motion/${motionId}`,
+    ];
+  }
+  if (comment?.allianceAnnouncement) {
+    const cid = comment?.allianceAnnouncement.cid;
+    return [
+      "Alliance Announcements",
+      comment?.allianceAnnouncement?.title ||
+        `Announcement #${textEllipsis(cid, 4, 4)}`,
+      `/alliance/announcement/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
+    ];
+  }
+  if (comment?.openTechCommittee) {
+    const motionId = getMotionId(comment?.openTechCommittee);
+    return [
+      "Open Tech. Comm. Proposals",
+      comment?.openTechCommittee?.title || `Proposal #${motionId}`,
+      `/open-techcomm/proposal/${motionId}`,
+    ];
+  }
+
   return ["Unknown"];
 };
 
@@ -248,10 +329,10 @@ export default function CommentSimple({ data }) {
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
-            <div style={{ whiteSpace: "nowrap" }}>{type}</div>
+            <Info>{type}</Info>
             <AutHideInfo>
               <Anchor href={route} passHref>
-                {title}
+                {title || "Untitled"}
               </Anchor>
             </AutHideInfo>
             {data.updatedAt && <Info>{duration}</Info>}
