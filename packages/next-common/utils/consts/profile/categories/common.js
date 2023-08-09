@@ -88,39 +88,39 @@ const commonCategories = [
     id: "collectives",
     name: "Collective",
     children: [
-      ...(
-        isMoonChain() ? [
-          {
-            id: "councilMotions",
-            name: "Council Motions",
-            categoryName: "Council motions",
-            categoryId: businessCategory.councilMotions,
-            routePath: "council/motions",
-            apiPath: "moon-council-motions",
-            formatter: normalizeCouncilMotionListItem,
-          },
-          {
-            id: "treasuryCouncilMotions",
-            name: "Treasury Council Motions",
-            categoryName: "Treasury Council motions",
-            categoryId: businessCategory.treasuryCouncilMotions,
-            routePath: "treasury-council/motions",
-            apiPath: "council-motions",
-            formatter: normalizeTreasuryCouncilMotionListItem,
-          },
-        ] : [
-          {
-            id: "councilMotions",
-            name: "Council Motions",
-            categoryName: "Council motions",
-            categoryId: businessCategory.councilMotions,
-            routePath: "council/motions",
-            apiPath: "council-motions",
-            formatter: normalizeCouncilMotionListItem,
-            excludeChains: [Chains.kintsugi, Chains.interlay],
-          },
-        ]
-      ),
+      ...(isMoonChain()
+        ? [
+            {
+              id: "councilMotions",
+              name: "Council Motions",
+              categoryName: "Council motions",
+              categoryId: businessCategory.councilMotions,
+              routePath: "council/motions",
+              apiPath: "moon-council-motions",
+              formatter: normalizeCouncilMotionListItem,
+            },
+            {
+              id: "treasuryCouncilMotions",
+              name: "Treasury Council Motions",
+              categoryName: "Treasury Council motions",
+              categoryId: businessCategory.treasuryCouncilMotions,
+              routePath: "treasury-council/motions",
+              apiPath: "council-motions",
+              formatter: normalizeTreasuryCouncilMotionListItem,
+            },
+          ]
+        : [
+            {
+              id: "councilMotions",
+              name: "Council Motions",
+              categoryName: "Council motions",
+              categoryId: businessCategory.councilMotions,
+              routePath: "council/motions",
+              apiPath: "council-motions",
+              formatter: normalizeCouncilMotionListItem,
+              excludeChains: [Chains.kintsugi, Chains.interlay],
+            },
+          ]),
       {
         id: "techCommProposals",
         name: "Tech. Comm. Proposals",
@@ -130,19 +130,19 @@ const commonCategories = [
         apiPath: "techcomm-proposals",
         formatter: normalizeTechCommMotionListItem,
       },
-      ...(
-        isMoonChain() ? [
-          {
-            id: "openTechCommProposals",
-            name: "Open Tech. Comm. Proposals",
-            categoryName: "Open Tech. Comm. proposals",
-            categoryId: businessCategory.openTechCommitteeProposals,
-            routePath: "open-techcomm/proposals",
-            apiPath: "open-techcomm-proposals",
-            formatter: normalizeOpenTechCommProposalListItem,
-          },
-        ] : []
-      ),
+      ...(isMoonChain()
+        ? [
+            {
+              id: "openTechCommProposals",
+              name: "Open Tech. Comm. Proposals",
+              categoryName: "Open Tech. Comm. proposals",
+              categoryId: businessCategory.openTechCommitteeProposals,
+              routePath: "open-techcomm/proposals",
+              apiPath: "open-techcomm-proposals",
+              formatter: normalizeOpenTechCommProposalListItem,
+            },
+          ]
+        : []),
     ],
   },
   {

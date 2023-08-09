@@ -42,6 +42,7 @@ export const StatusWrapper = styled(GreyPanel)`
   min-height: 38px;
   font-size: 14px;
   line-height: 100%;
+  color: var(--textPrimary);
   > div.value {
     display: flex;
     font-weight: 500;

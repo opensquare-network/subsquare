@@ -25,6 +25,7 @@ const getCategoryByRoute = (route, categories = []) => {
 
 export default function Posted() {
   const { route, summary, id } = usePageProps();
+  const postedRoute = route.replace(/^posted\//, "");
 
   const overview = {
     ...summary,
@@ -54,10 +55,10 @@ export default function Posted() {
   const [isLoading, setIsLoading] = useState(true);
   const categories = getProfileCategories(chain);
   const [firstCategory, setFirstCategory] = useState(
-    getCategoryByRoute(route, categories)[0],
+    getCategoryByRoute(postedRoute, categories)[0],
   );
   const [secondCategory, setSecondCategory] = useState(
-    getCategoryByRoute(route, categories)[1],
+    getCategoryByRoute(postedRoute, categories)[1],
   );
   const router = useRouter();
 
