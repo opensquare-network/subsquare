@@ -15,7 +15,7 @@ import IdentityOrAddr from "./IdentityOrAddr";
 import { prettyHTML } from "../utils/viewfuncs";
 import useDuration from "../utils/hooks/useDuration";
 import { useChain } from "../context/chain";
-import { hashEllipsis } from "next-common/utils";
+import { hashEllipsis, textEllipsis } from "next-common/utils";
 import isMoonChain from "next-common/utils/isMoonChain";
 import isNil from "lodash.isnil";
 
@@ -276,7 +276,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Alliance Announcements",
       comment?.allianceAnnouncement?.title ||
-        `Announcement #${hashEllipsis(cid)}`,
+        `Announcement #${textEllipsis(cid, 4, 4)}`,
       `/alliance/announcement/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
     ];
   }
