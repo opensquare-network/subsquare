@@ -11,6 +11,8 @@ import VoteSummary from "./summary";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import { useDispatch } from "react-redux";
 import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
+import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
+import calcDemocracyVotingLocked from "./democracy/calcVotingLocked";
 
 export default function DemocracySummary({ votes, priors = [] }) {
   const dispatch = useDispatch();
@@ -19,7 +21,13 @@ export default function DemocracySummary({ votes, priors = [] }) {
   const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
 
-  const totalLockedBalance = calcTotalVotes(votes, priors, period, isReferenda);
+  const totalVoteEndLockedBalance = calcTotalVotes(
+    votes,
+    priors,
+    period,
+    isReferenda,
+  );
+  const totalVotingLocked = calcDemocracyVotingLocked(votes);
   const totalNotExpired = calcNotExpired(
     votes,
     priors,
@@ -27,7 +35,9 @@ export default function DemocracySummary({ votes, priors = [] }) {
     isReferenda,
     latestHeight,
   );
-  const totalExpired = new BigNumber(totalLockedBalance).minus(totalNotExpired);
+  const totalVoteEndExpired = new BigNumber(totalVoteEndLockedBalance).minus(
+    totalNotExpired,
+  );
 
   const voteExpiredReferenda = getVoteExpiredReferenda(
     votes,
@@ -36,12 +46,21 @@ export default function DemocracySummary({ votes, priors = [] }) {
     latestHeight,
   );
 
+  // This value indicate the total balance locked by democracy vote
+  const democracLockBalance = useBalanceDemocracLock();
+
+  const totalLocked = BigNumber.max(
+    totalVoteEndLockedBalance,
+    totalVotingLocked,
+    democracLockBalance,
+  ).toString();
+
   return (
     <>
       <VoteSummary
         votesLength={votes?.length}
-        totalLocked={totalLockedBalance}
-        unLockable={totalExpired}
+        totalLocked={totalLocked}
+        unLockable={totalVoteEndExpired}
         setShowClearExpired={setShowClearExpired}
       />
       {showClearExpired && (
