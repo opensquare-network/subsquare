@@ -17,6 +17,7 @@ import useDuration from "../utils/hooks/useDuration";
 import { useChain } from "../context/chain";
 import { hashEllipsis } from "next-common/utils";
 import isMoonChain from "next-common/utils/isMoonChain";
+import isNil from "lodash.isnil";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -179,7 +180,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Child Bounties",
       comment?.childBounty.title || `Child bounty #${index}`,
-      `/treasury/bounty/${index}`,
+      `/treasury/child-bounty/${index}`,
     ];
   }
   if (comment?.bounty) {
@@ -198,7 +199,7 @@ const getCommentSource = (comment, chain) => {
       `/treasury/proposal/${proposalIndex}`,
     ];
   }
-  if (comment?.democracy?.proposalIndex) {
+  if (!isNil(comment?.democracy?.proposalIndex)) {
     const proposalIndex = comment?.democracy?.proposalIndex;
     return [
       "Democracy Public Proposals",
@@ -214,7 +215,7 @@ const getCommentSource = (comment, chain) => {
       `/democracy/external/${comment?.democracy.indexer.blockHeight}_${comment?.democracy.externalProposalHash}`,
     ];
   }
-  if (comment?.democracy?.referendumIndex > -1) {
+  if (!isNil(comment?.democracy?.referendumIndex)) {
     const referendumIndex = comment?.democracy?.referendumIndex;
     return [
       "Democracy Referendums",
