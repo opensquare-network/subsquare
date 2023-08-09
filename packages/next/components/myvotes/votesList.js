@@ -55,14 +55,11 @@ export default function VotesList({ votes }) {
           referendumIndex: item.referendumIndex,
         });
 
-        // const vote = normalizeVote(item.vote);
-
         const row = [
           <PostTitle
             key="proposal"
             referendumIndex={item.referendumIndex}
             title={title}
-            noLink={!referendumPost}
           />,
           <MyVoteItem key="vote" vote={item} />,
           referendumPost ? (
