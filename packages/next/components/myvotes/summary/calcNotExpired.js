@@ -9,6 +9,11 @@ export default function calcNotExpired(
   latestHeight,
 ) {
   const maxVotesNotExpired = votes.reduce((result, voteItem) => {
+    const { referendumInfo } = voteItem;
+    if (referendumInfo.ongoing) {
+      return result;
+    }
+
     const itemLock = getVoteEndInfo(voteItem, period, isReferenda);
     const { hasLock, lockEnd, balance } = itemLock;
 

@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
 import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
 import calcTotalVotes from "./calcTotalVotes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import calcNotExpired from "./calcNotExpired";
 import BigNumber from "bignumber.js";
 import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
 import VoteSummary from "./summary";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
-import { useDispatch } from "react-redux";
 import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
 import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
 import calcDemocracyVotingLocked from "./democracy/calcVotingLocked";
@@ -28,16 +27,19 @@ export default function DemocracySummary({ votes, priors = [] }) {
     isReferenda,
   );
   const totalVotingLocked = calcDemocracyVotingLocked(votes);
-  const totalNotExpired = calcNotExpired(
+  // This value indicate all un-expired balance by the votes to the vote ended referenda.
+  const totalVoteEndNotExpired = calcNotExpired(
     votes,
     priors,
     period,
     isReferenda,
     latestHeight,
   );
-  const totalVoteEndExpired = new BigNumber(totalVoteEndLockedBalance).minus(
-    totalNotExpired,
-  );
+  // todo: we should also take delegation locked balance into account.
+  const totalLockedWhichCantBeUnlock = BigNumber.max(
+    totalVotingLocked,
+    totalVoteEndNotExpired,
+  ).toString();
 
   const voteExpiredReferenda = getVoteExpiredReferenda(
     votes,
@@ -54,14 +56,18 @@ export default function DemocracySummary({ votes, priors = [] }) {
     totalVotingLocked,
     democracLockBalance,
   ).toString();
+  const unLockable = BigNumber(democracLockBalance).minus(
+    totalLockedWhichCantBeUnlock,
+  );
 
   return (
     <>
       <VoteSummary
         votesLength={votes?.length}
         totalLocked={totalLocked}
-        unLockable={totalVoteEndExpired}
+        unLockable={unLockable}
         setShowClearExpired={setShowClearExpired}
+        actionTitle={voteExpiredReferenda.length <= 0 ? "Unlock" : null}
       />
       {showClearExpired && (
         <ClearExpiredDemocracyVotePopup
