@@ -1,10 +1,8 @@
 import React from "react";
 import PopupLabel from "next-common/components/popup/label";
-import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
 
 export default function RelatedReferenda({ relatedReferenda }) {
-  const isReferenda = useIsReferenda();
-  if (isReferenda && (!relatedReferenda || relatedReferenda?.length <= 0)) {
+  if (!relatedReferenda || relatedReferenda?.length <= 0) {
     return null;
   }
 
