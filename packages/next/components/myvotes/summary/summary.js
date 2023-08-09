@@ -4,7 +4,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { Title } from "../styled";
-import { ModuleTab } from "next-common/components/profile/votingHistory/common";
+import {
+  Democracy,
+  ModuleTab,
+  Referenda,
+} from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
 import ClearExpiredVotePopup from "../clearExpiredVotePopup";
@@ -83,7 +87,9 @@ export default function VoteSummary({
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
         <Title>My Votes</Title>
-        {hasReferenda && !noDemocracyModule && <ModuleTab />}
+        {hasReferenda && !noDemocracyModule && (
+          <ModuleTab tabIds={[Referenda, Democracy]} />
+        )}
       </div>
       <SecondaryCard>
         <SummaryItems items={items} />

@@ -6,8 +6,10 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
 import MobileVotesList from "./mobile/votesList";
+import MobileFellowshipVotesList from "./mobile/fellowshipVotesList";
 import isNil from "lodash.isnil";
-import { useIsReferenda } from "./common";
+import { useIsFellowship, useModuleName } from "./common";
+import FellowshipVotesList from "./fellowshipVotesList";
 
 export default function ResponsiveVotes() {
   const { id } = usePageProps();
@@ -16,7 +18,12 @@ export default function ResponsiveVotes() {
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
-  const isReferenda = useIsReferenda();
+  const module = useModuleName();
+  const isFellowship = useIsFellowship();
+
+  useEffect(() => {
+    setData();
+  }, [module]);
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -24,7 +31,7 @@ export default function ResponsiveVotes() {
 
       setIsLoading(true);
       nextApi
-        .fetch(`users/${id}/${isReferenda ? "referenda" : "democracy"}/votes`, {
+        .fetch(`users/${id}/${module}/votes`, {
           page,
           pageSize,
           includesTitle: 1,
@@ -38,7 +45,7 @@ export default function ResponsiveVotes() {
           setIsLoading(false);
         });
     },
-    [id, isReferenda],
+    [id, module],
   );
 
   useEffect(() => {
@@ -49,11 +56,16 @@ export default function ResponsiveVotes() {
     return null;
   }
 
+  const VotesListComponent = isFellowship ? FellowshipVotesList : VotesList;
+  const MobileVotesListComponent = isFellowship
+    ? MobileFellowshipVotesList
+    : MobileVotesList;
+
   return (
     <>
       {width > 1024 ? (
         <ListCard>
-          <VotesList
+          <VotesListComponent
             data={data}
             isLoading={isLoading}
             fetchData={fetchData}
@@ -62,7 +74,7 @@ export default function ResponsiveVotes() {
           />
         </ListCard>
       ) : (
-        <MobileVotesList
+        <MobileVotesListComponent
           data={data}
           isLoading={isLoading}
           fetchData={fetchData}

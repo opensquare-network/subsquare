@@ -2,11 +2,12 @@ import { DemocracyReferendumTag } from "next-common/components/tags/state/democr
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
-import { useIsReferenda } from "./moduleTab";
+import { useIsFellowship, useIsReferenda } from "./moduleTab";
 
 export function ReferendumTag({ proposal }) {
   const isReferenda = useIsReferenda();
-  if (isReferenda) {
+  const isFellowship = useIsFellowship();
+  if (isReferenda || isFellowship) {
     return (
       <Gov2ReferendaTag
         state={proposal?.state?.name}

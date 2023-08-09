@@ -3,10 +3,8 @@ import {
   PostTitle,
   ReferendumTag,
   CallDate,
-  normalizeCall,
-  VoteItem,
+  FellowshipVoteItem,
 } from "../common";
-import { useChain } from "next-common/context/chain";
 
 function ItemHeader({ vote }) {
   return (
@@ -25,14 +23,12 @@ function ItemHeader({ vote }) {
   );
 }
 
-export default function VoteCallListItem({ vote }) {
-  const chain = useChain();
-
+export default function FellowshipVoteCallListItem({ vote }) {
   return (
     <ListCard>
       <ItemHeader vote={vote} />
       <div className="mt-[24px]">
-        <VoteItem vote={normalizeCall(vote, chain)} />
+        <FellowshipVoteItem vote={vote} />
       </div>
     </ListCard>
   );
