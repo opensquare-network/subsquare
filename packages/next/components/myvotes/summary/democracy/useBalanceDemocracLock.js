@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function useBalanceDemocracLock() {
   const api = useApi();
   const realAddress = useRealAddress();
-  const [democracyLock, setDemocracLock] = useState();
+  const [democracyLock, setDemocracLock] = useState(0);
 
   useEffect(() => {
     if (!api || !realAddress) {

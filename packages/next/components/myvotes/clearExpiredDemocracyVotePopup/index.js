@@ -38,10 +38,6 @@ export default function ClearExpiredDemocracyVotePopup({
         return showErrorToast("Please login first");
       }
 
-      if (!votes?.length) {
-        return showErrorToast("No votes selected");
-      }
-
       const signerAddress = signerAccount.address;
       const realAddress = signerAccount.proxyAddress || signerAddress;
 
@@ -70,9 +66,10 @@ export default function ClearExpiredDemocracyVotePopup({
     [dispatch, isMounted, showErrorToast, onInBlock, onClose, votes],
   );
 
+  const title = relatedReferenda.length <= 0 ? "Unlock" : "Clear Expired Votes";
   return (
     <SignerPopup
-      title="Clear Expired Votes"
+      title={title}
       actionCallback={doClearExpiredVote}
       onClose={onClose}
       isLoading={isLoading}
