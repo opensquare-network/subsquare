@@ -7,9 +7,13 @@ export default function getVoteExpiredReferenda(
   latestHeight,
 ) {
   return votes.reduce((result, vote) => {
+    const { referendumInfo } = vote;
+    if (referendumInfo.ongoing) {
+      return result;
+    }
+
     const itemLock = getVoteEndInfo(vote, period, isReferenda);
     const { hasLock, lockEnd } = itemLock;
-
     if (!hasLock || latestHeight >= lockEnd) {
       return [
         ...result,
