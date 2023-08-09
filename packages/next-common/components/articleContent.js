@@ -20,6 +20,7 @@ import fetchAndUpdatePost from "../context/post/update";
 import { useDetailType } from "../context/page";
 import PostLinkPopup from "./linkPost/postLinkPopup";
 import PostUnlinkPopup from "./linkPost/postUnlinkPopup";
+import ReportPopup from "./reportPopup";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -54,6 +55,7 @@ export default function ArticleContent({
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showLinkPopup, setShowLinkPopup] = useState(false);
   const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
+  const [showReportPopup, setShowReportPopup] = useState(false);
 
   const isLogin = useIsLogin();
   const type = useDetailType();
@@ -120,9 +122,11 @@ export default function ArticleContent({
         onReply={onReply}
         setShowLinkPopup={setShowLinkPopup}
         setShowUnlinkPopup={setShowUnlinkPopup}
+        setShowReportPopup={setShowReportPopup}
       />
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
       {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
+      {showReportPopup && <ReportPopup setShow={setShowReportPopup} />}
     </Wrapper>
   );
 }

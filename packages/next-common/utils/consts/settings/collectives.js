@@ -46,6 +46,7 @@ const collectives = {
   hasStatescan: true,
   hasFellowship: true,
   noDemocracy: true,
+  noDemocracyModule: true,
   showAchainableLabels: true,
   description:
     "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",

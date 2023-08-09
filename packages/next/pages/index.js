@@ -225,7 +225,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
-  let tabs = [
+  const tabs = [
     {
       label: "Overview",
       url: "/",
@@ -233,11 +233,13 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     },
   ];
 
-  if (user?.address) {
-    tabs.push({
-      label: "My Votes",
-      url: "/votes",
-    });
+  if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
+    if (user?.address) {
+      tabs.push({
+        label: "My Votes",
+        url: "/votes",
+      });
+    }
   }
 
   return (
