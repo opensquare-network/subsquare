@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -7,42 +7,21 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
-import PopupLabel from "next-common/components/popup/label";
-import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
+import RelatedReferenda from "../popupCommon/relatedReferenda";
 
-function ExtraInfo({ votes }) {
-  const relatedReferenda = Array.from(
-    new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
-  );
-  relatedReferenda.sort((a, b) => a - b);
-
-  return (
-    <div>
-      <PopupLabel text="Related referenda" />
-      <div className="text-[12px] font-medium text-textPrimary">
-        {relatedReferenda.length ? (
-          relatedReferenda
-            .map((referendumIndex) => `#${referendumIndex}`)
-            .join(", ")
-        ) : (
-          <span className="text-textTertiary">None</span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default function RemoveReferendumVotePopup({
+export default function RemoveReferendaVotePopup({
   votes,
   onClose,
-  isLoading,
-  setIsLoading = emptyFunction,
-  onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const isReferenda = useIsReferenda();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const relatedReferenda = Array.from(
+    new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
+  );
+  relatedReferenda.sort((a, b) => a - b);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -65,19 +44,11 @@ export default function RemoveReferendumVotePopup({
 
       if (votes?.length === 1) {
         const { trackId, referendumIndex } = votes[0];
-        if (isReferenda) {
-          tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
-        } else {
-          tx = api.tx.democracy.removeVote(referendumIndex);
-        }
+        tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
       } else if (votes?.length > 1) {
-        const txs = votes.map(({ trackId, referendumIndex }) => {
-          if (isReferenda) {
-            return api.tx.convictionVoting.removeVote(trackId, referendumIndex);
-          } else {
-            return api.tx.democracy.removeVote(referendumIndex);
-          }
-        });
+        const txs = votes.map(({ trackId, referendumIndex }) =>
+          api.tx.convictionVoting.removeVote(trackId, referendumIndex),
+        );
         tx = api.tx.utility.batch(txs);
       } else {
         return showErrorToast("No votes selected");
@@ -92,23 +63,12 @@ export default function RemoveReferendumVotePopup({
         setLoading: setIsLoading,
         dispatch,
         onInBlock,
-        onSubmitted,
         onClose,
         signerAddress,
         isMounted,
       });
     },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onInBlock,
-      onSubmitted,
-      onClose,
-      isReferenda,
-      votes,
-      setIsLoading,
-    ],
+    [dispatch, isMounted, showErrorToast, onInBlock, onClose, votes],
   );
 
   return (
@@ -117,7 +77,7 @@ export default function RemoveReferendumVotePopup({
       actionCallback={doRemoveVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={<ExtraInfo votes={votes} />}
+      extraContent={<RelatedReferenda relatedReferenda={relatedReferenda} />}
     />
   );
 }

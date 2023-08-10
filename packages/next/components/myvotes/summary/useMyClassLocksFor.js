@@ -58,7 +58,7 @@ export default function useMyClassLocksFor() {
   const [trackLocks, setTrackLocks] = useState();
 
   useEffect(() => {
-    if (!api) {
+    if (!api || !realAddress || !latestHeight) {
       return;
     }
 

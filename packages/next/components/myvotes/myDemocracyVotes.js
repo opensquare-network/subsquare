@@ -1,10 +1,11 @@
 import useAccountDemocracyVotes from "next-common/hooks/democracy/votes/useAccountDemocracyVotes";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import CommonVotes from "./commonVotes";
 import { useEffect } from "react";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { setMyVotedPosts } from "next-common/store/reducers/myVotesSlice";
+import DemocracySummary from "./summary/democracySummary";
+import MyVotesList from "./myVotesList";
 
 export default function MyDemocracyVotes() {
   const dispatch = useDispatch();
@@ -29,5 +30,10 @@ export default function MyDemocracyVotes() {
       });
   }, [dispatch, votes]);
 
-  return <CommonVotes votes={votes} priors={priors} isLoading={isLoading} />;
+  return (
+    <div className="flex flex-col gap-[16px]">
+      <DemocracySummary votes={votes} priors={priors} />
+      <MyVotesList isLoading={isLoading} votes={votes} />
+    </div>
+  );
 }

@@ -22,11 +22,7 @@ function ItemHeader({ vote }) {
   return (
     <div>
       <div className="flex items-center justify-between pb-[12px] border-b border-b-neutral300">
-        <PostTitle
-          referendumIndex={vote.referendumIndex}
-          title={title}
-          noLink={!referendumPost}
-        />
+        <PostTitle referendumIndex={vote.referendumIndex} title={title} />
         <RemoveVoteButton key="action" vote={vote} />
       </div>
       <div className="flex justify-end pt-[12px] items-center">
@@ -42,7 +38,6 @@ function ItemHeader({ vote }) {
 
 export default function VoteListItem({ vote }) {
   const lockInfo = useVoteExpiration(vote);
-  console.log("lockInfo", lockInfo);
   const normalizedVote = normalizeVote(vote.vote);
   return (
     <ListCard>
