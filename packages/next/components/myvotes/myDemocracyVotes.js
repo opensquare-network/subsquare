@@ -6,11 +6,13 @@ import { useDispatch } from "react-redux";
 import { setMyVotedPosts } from "next-common/store/reducers/myVotesSlice";
 import DemocracySummary from "./summary/democracySummary";
 import MyVotesList from "./myVotesList";
+import useFetchMyDemocracyVoting from "./democracy/useFetchMyDemocracyVoting";
 
 export default function MyDemocracyVotes() {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
   const { isLoading, votes, priors } = useAccountDemocracyVotes(realAddress);
+  useFetchMyDemocracyVoting();
 
   useEffect(() => {
     if (!votes || !votes.length) {
