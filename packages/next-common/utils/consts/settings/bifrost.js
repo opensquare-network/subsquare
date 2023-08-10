@@ -47,6 +47,7 @@ const links = [
 
 const bifrost = {
   value: "bifrost",
+  domain: "bifrost-kusama",
   name: "Bifrost Kusama",
   hideHeight: false,
   identity: "bifrost",
