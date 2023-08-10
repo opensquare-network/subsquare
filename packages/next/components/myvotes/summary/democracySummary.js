@@ -11,8 +11,10 @@ import VoteSummary from "./summary";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
 import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
-import calcDemocracyVotingLocked from "./democracy/calcVotingLocked";
-import { myDemocracyDelegationLockSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
+import {
+  myDemocracyDelegationLockSelector,
+  myDemocracyVotingLockSelector,
+} from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
 
 export default function DemocracySummary({ votes, priors = [] }) {
   const dispatch = useDispatch();
@@ -21,6 +23,7 @@ export default function DemocracySummary({ votes, priors = [] }) {
   const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
   const delegationLock = useSelector(myDemocracyDelegationLockSelector);
+  const directVotingLock = useSelector(myDemocracyVotingLockSelector);
 
   const totalVoteEndLockedBalance = calcTotalVotes(
     votes,
@@ -28,7 +31,6 @@ export default function DemocracySummary({ votes, priors = [] }) {
     period,
     isReferenda,
   );
-  const totalVotingLocked = calcDemocracyVotingLocked(votes);
   // This value indicate all un-expired balance by the votes to the vote ended referenda.
   const totalVoteEndNotExpired = calcNotExpired(
     votes,
@@ -37,9 +39,8 @@ export default function DemocracySummary({ votes, priors = [] }) {
     isReferenda,
     latestHeight,
   );
-  // todo: we should also take delegation locked balance into account.
   const totalLockedWhichCantBeUnlock = BigNumber.max(
-    totalVotingLocked,
+    directVotingLock,
     totalVoteEndNotExpired,
     delegationLock,
   ).toString();
@@ -56,7 +57,7 @@ export default function DemocracySummary({ votes, priors = [] }) {
 
   const totalLocked = BigNumber.max(
     totalVoteEndLockedBalance,
-    totalVotingLocked,
+    directVotingLock,
     democracLockBalance,
   ).toString();
   const unLockable = BigNumber(democracLockBalance).minus(
