@@ -24,5 +24,6 @@ export const {
 } = myReferendaVotingSlice.actions;
 
 export const myReferendaVotingSelector = (state) => state[name].voting;
+export const myReferendaTrackLocksSelector = (state) => state[name].classLocks;
 
 export default myReferendaVotingSlice.reducer;
