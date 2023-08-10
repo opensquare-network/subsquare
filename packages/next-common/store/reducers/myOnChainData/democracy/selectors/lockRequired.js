@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import getOngoingVoteLock from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/getOngoingVoteLock";
+import getOnChainVoteLock from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/getOngoingVoteLock";
 import BigNumber from "bignumber.js";
 import { democracyLockingPeriodSelector } from "next-common/store/reducers/democracy/info";
 import getFinishedVoteLock from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/getFinishedVoteLock";
@@ -15,7 +15,7 @@ export const democracyLockRequiredSelector = createSelector(
       return 0;
     }
 
-    const { prior, votes, isDelegating, balance } = voting;
+    const { prior, votes = [], isDelegating, balance } = voting;
 
     const delegatingRequired = isDelegating ? balance : 0;
 
@@ -25,7 +25,7 @@ export const democracyLockRequiredSelector = createSelector(
     const votesLockRequired = votes.reduce((result, voteItem) => {
       const { vote, referendumInfo } = voteItem;
       if (referendumInfo.ongoing) {
-        const voteLock = getOngoingVoteLock(vote);
+        const voteLock = getOnChainVoteLock(vote);
         return new BigNumber(result).plus(voteLock).toString();
       } else if (referendumInfo && referendumInfo.finished) {
         const voteLockRequired = getFinishedVoteLock(

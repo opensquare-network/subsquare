@@ -12,6 +12,7 @@ import VoteSummary from "./summary";
 import ClearExpiredReferendaVotePopup from "../clearExpiredReferendaVotePopup";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import { useDispatch } from "react-redux";
+import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/lock";
 
 export default function ReferendaSummary({ votes, priors = [] }) {
   const dispatch = useDispatch();
@@ -19,6 +20,10 @@ export default function ReferendaSummary({ votes, priors = [] }) {
   const period = useVoteLockingPeriod("convictionVoting");
   const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
+
+  // Locked balance calculated from on-chain voting data
+  const lockFromOnChainData = useSelector(referendaLockFromOnChainDataSelector);
+  console.log("lockFromOnChainData", lockFromOnChainData);
 
   const totalLockedBalance = calcTotalVotes(votes, priors, period, isReferenda);
   const totalNotExpired = calcNotExpired(
@@ -41,7 +46,7 @@ export default function ReferendaSummary({ votes, priors = [] }) {
 
   const classLocks = useMyClassLocksFor();
   const locked = BigNumber.max(
-    totalLockedBalance,
+    lockFromOnChainData,
     ...(classLocks || []).map((lock) => lock.locked),
   );
   const unLockableByClassLocks = BigNumber.min(
