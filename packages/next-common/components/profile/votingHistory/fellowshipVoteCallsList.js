@@ -1,6 +1,3 @@
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
-import styled from "styled-components";
-import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
 import {
@@ -9,18 +6,7 @@ import {
   CallDate,
   FellowshipVoteItem,
 } from "./common";
-
-const ListWrapper = styled.div`
-  display: flex;
-  overflow-x: auto;
-  ${pretty_scroll_bar};
-`;
-
-const StyledList = styled(StyledListOrigin)`
-  border: none;
-  box-shadow: none;
-  padding: 0;
-`;
+import { ListWrapper, StyledList } from "./common/styled";
 
 export default function FellowshipVoteCallsList({ data, fetchData, page }) {
   const { columns } = useColumns([
