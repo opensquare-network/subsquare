@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
-import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
 import { useDispatch, useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import calcNotExpired from "./calcNotExpired";
@@ -15,11 +14,12 @@ import {
   myDemocracyDelegationLockSelector,
   myDemocracyVotingLockSelector,
 } from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
+import { democracyLockingPeriodSelector } from "next-common/store/reducers/democracy/info";
 
 export default function DemocracySummary({ votes, priors = [] }) {
   const dispatch = useDispatch();
   const isReferenda = useIsReferenda();
-  const period = useVoteLockingPeriod("democracy");
+  const period = useSelector(democracyLockingPeriodSelector);
   const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
   const delegationLock = useSelector(myDemocracyDelegationLockSelector);
