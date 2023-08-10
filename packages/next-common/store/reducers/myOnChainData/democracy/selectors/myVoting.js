@@ -41,3 +41,29 @@ export const myDemocracyVotingLockSelector = createSelector(
     }, 0);
   },
 );
+
+export const democracyLockFromOnChainDataSelector = createSelector(
+  myDemocracyVotingSelector,
+  (voting) => {
+    if (!voting) {
+      return 0;
+    }
+
+    const { votes, prior } = voting;
+    const votesLocked = votes.reduce((result, { vote }) => {
+      const { isStandard, isSplit } = vote;
+      if (isStandard) {
+        return new BigNumber(result).plus(vote.balance).toString();
+      } else if (isSplit) {
+        return new BigNumber(result)
+          .plus(vote.ayeBalance)
+          .plus(vote.nayBalance)
+          .toString();
+      }
+
+      return result;
+    }, 0);
+
+    return BigNumber.max(votesLocked, prior.balance).toString();
+  },
+);
