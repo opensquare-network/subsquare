@@ -11,8 +11,8 @@ import useMyClassLocksFor from "./useMyClassLocksFor";
 import VoteSummary from "./summary";
 import ClearExpiredReferendaVotePopup from "../clearExpiredReferendaVotePopup";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
-import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/lock";
 import { maxTracksLockSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/classLocks";
+import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalOnChainLock";
 
 export default function ReferendaSummary({ votes, priors = [] }) {
   const dispatch = useDispatch();
