@@ -47,7 +47,12 @@ export default function ClearExpiredDemocracyVotePopup({
         api.tx.democracy.removeVote(referendumIndex),
       );
       const txUnlock = api.tx.democracy.unlock(realAddress);
-      tx = api.tx.utility.batch([...txsRemoveVote, txUnlock]);
+      const allTx = [...txsRemoveVote, txUnlock];
+      if (allTx.length > 1) {
+        tx = api.tx.utility.batch([...txsRemoveVote, txUnlock]);
+      } else {
+        tx = allTx[0];
+      }
 
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);

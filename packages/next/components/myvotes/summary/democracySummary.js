@@ -12,6 +12,7 @@ import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
 import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
 import calcDemocracyVotingLocked from "./democracy/calcVotingLocked";
+import { myDemocracyDelegationLockSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
 
 export default function DemocracySummary({ votes, priors = [] }) {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function DemocracySummary({ votes, priors = [] }) {
   const period = useVoteLockingPeriod("democracy");
   const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
+  const delegationLock = useSelector(myDemocracyDelegationLockSelector);
 
   const totalVoteEndLockedBalance = calcTotalVotes(
     votes,
@@ -39,6 +41,7 @@ export default function DemocracySummary({ votes, priors = [] }) {
   const totalLockedWhichCantBeUnlock = BigNumber.max(
     totalVotingLocked,
     totalVoteEndNotExpired,
+    delegationLock,
   ).toString();
 
   const voteExpiredReferenda = getVoteExpiredReferenda(
