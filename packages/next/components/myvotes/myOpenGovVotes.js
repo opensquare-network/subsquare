@@ -6,11 +6,15 @@ import { useDispatch } from "react-redux";
 import { setMyVotedPosts } from "next-common/store/reducers/myVotesSlice";
 import MyVotesList from "./myVotesList";
 import ReferendaSummary from "./summary/referendaSummary";
+import useFetchMyReferendaVoting from "./referenda/useFetchMyReferendaVoting";
+import useSubClassLocks from "./referenda/useSubClassLocks";
 
 export default function MyOpenGovVotes() {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
   const { isLoading, votes, priors } = useAccountVotes(realAddress);
+  useFetchMyReferendaVoting();
+  useSubClassLocks();
 
   useEffect(() => {
     if (!votes || !votes.length) {

@@ -5,19 +5,13 @@ import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setMyDemocracyVoting } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
+import normalizePrior from "../utils/normalizePrior";
 
 async function queryReferendumInfo(api, referendumIndex) {
   const info = await api.query.democracy.referendumInfoOf(referendumIndex);
   return {
     referendumIndex,
     referendumInfo: info.toJSON(),
-  };
-}
-
-function normalizePrior(prior) {
-  return {
-    unlockAt: prior[0].toNumber(),
-    balance: prior[1].toString(),
   };
 }
 
@@ -53,7 +47,7 @@ async function getDirectVotesInfo(api, voting) {
   };
 }
 
-function getDelegatingVotesInfo(api, voting) {
+function getDelegatingVotesInfo(voting) {
   const delegating = voting.asDelegating;
   return {
     isDelegating: true,
@@ -69,7 +63,7 @@ async function queryVotesAndReferendaInfo(api, address) {
   if (voting.isDirect) {
     return await getDirectVotesInfo(api, voting);
   } else if (voting.isDelegating) {
-    return getDelegatingVotesInfo(api, voting);
+    return getDelegatingVotesInfo(voting);
   }
 
   throw new Error("Unknown voting type when get my democracy votes info");
