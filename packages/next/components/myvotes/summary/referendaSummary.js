@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
 import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
 import calcTotalVotes from "./calcTotalVotes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import calcNotExpired from "./calcNotExpired";
 import BigNumber from "bignumber.js";
@@ -11,8 +11,8 @@ import useMyClassLocksFor from "./useMyClassLocksFor";
 import VoteSummary from "./summary";
 import ClearExpiredReferendaVotePopup from "../clearExpiredReferendaVotePopup";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
-import { useDispatch } from "react-redux";
 import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/lock";
+import { maxTracksLockSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/classLocks";
 
 export default function ReferendaSummary({ votes, priors = [] }) {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ export default function ReferendaSummary({ votes, priors = [] }) {
 
   // Locked balance calculated from on-chain voting data
   const lockFromOnChainData = useSelector(referendaLockFromOnChainDataSelector);
-  console.log("lockFromOnChainData", lockFromOnChainData);
+  const maxTracksLock = useSelector(maxTracksLockSelector);
 
   const totalLockedBalance = calcTotalVotes(votes, priors, period, isReferenda);
   const totalNotExpired = calcNotExpired(
@@ -45,10 +45,7 @@ export default function ReferendaSummary({ votes, priors = [] }) {
   );
 
   const classLocks = useMyClassLocksFor();
-  const locked = BigNumber.max(
-    lockFromOnChainData,
-    ...(classLocks || []).map((lock) => lock.locked),
-  );
+  const locked = BigNumber.max(lockFromOnChainData, maxTracksLock);
   const unLockableByClassLocks = BigNumber.min(
     ...(classLocks || []).map((lock) => lock.unLockable),
     0,
