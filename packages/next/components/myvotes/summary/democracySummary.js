@@ -1,68 +1,41 @@
 import React, { useState } from "react";
-import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
 import { useDispatch, useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import calcNotExpired from "./calcNotExpired";
 import BigNumber from "bignumber.js";
-import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
 import VoteSummary from "./summary";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
 import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
 import {
   democracyLockFromOnChainDataSelector,
-  myDemocracyDelegationLockSelector,
-  myDemocracyVotingLockSelector,
+  democracyVotesLengthSelector,
 } from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
-import { democracyLockingPeriodSelector } from "next-common/store/reducers/democracy/info";
+import { democracyLockRequiredSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/lockRequired";
+import democracyVoteExpiredReferendaSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/expiredReferenda";
 
-export default function DemocracySummary({ votes, priors = [] }) {
+export default function DemocracySummary() {
   const dispatch = useDispatch();
-  const isReferenda = useIsReferenda();
-  const period = useSelector(democracyLockingPeriodSelector);
-  const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
-  const delegationLock = useSelector(myDemocracyDelegationLockSelector);
-  const directVotingLock = useSelector(myDemocracyVotingLockSelector);
-  // Locked balance calculated from
+
+  // Locked balance calculated from on-chain voting data
   const lockFromOnChain = useSelector(democracyLockFromOnChainDataSelector);
-
-  // This value indicate all un-expired balance by the votes to the vote ended referenda.
-  const totalVoteEndNotExpired = calcNotExpired(
-    votes,
-    priors,
-    period,
-    isReferenda,
-    latestHeight,
+  const lockRequired = useSelector(democracyLockRequiredSelector);
+  const voteExpiredReferenda = useSelector(
+    democracyVoteExpiredReferendaSelector,
   );
-  const totalLockedWhichCantBeUnlock = BigNumber.max(
-    directVotingLock,
-    totalVoteEndNotExpired,
-    delegationLock,
-  ).toString();
-
-  const voteExpiredReferenda = getVoteExpiredReferenda(
-    votes,
-    period,
-    isReferenda,
-    latestHeight,
-  );
+  const votesCount = useSelector(democracyVotesLengthSelector);
 
   // This value indicate the total balance locked by democracy vote
   const democracLockBalance = useBalanceDemocracLock();
-
   const totalLocked = BigNumber.max(
     lockFromOnChain,
     democracLockBalance,
   ).toString();
-  const unLockable = BigNumber(democracLockBalance).minus(
-    totalLockedWhichCantBeUnlock,
-  );
+  const unLockable = BigNumber(democracLockBalance).minus(lockRequired);
 
   return (
     <>
       <VoteSummary
-        votesLength={votes?.length}
+        votesLength={votesCount}
         totalLocked={totalLocked}
         unLockable={unLockable}
         setShowClearExpired={setShowClearExpired}

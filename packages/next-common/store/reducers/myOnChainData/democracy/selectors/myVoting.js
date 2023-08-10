@@ -1,6 +1,7 @@
 import { myDemocracyVotingSelector } from "../myDemocracyVoting";
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
+import getOngoingVoteLock from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/getOngoingVoteLock";
 
 export const myDemocracyDelegationLockSelector = createSelector(
   myDemocracyVotingSelector,
@@ -27,17 +28,8 @@ export const myDemocracyVotingLockSelector = createSelector(
     });
 
     return ongoingVotes.reduce((result, { vote }) => {
-      const { isStandard, isSplit } = vote;
-      if (isStandard) {
-        return new BigNumber(result).plus(vote.balance).toString();
-      } else if (isSplit) {
-        return new BigNumber(result)
-          .plus(vote.ayeBalance)
-          .plus(vote.nayBalance)
-          .toString();
-      }
-
-      return result;
+      const voteLock = getOngoingVoteLock(vote);
+      return new BigNumber(result).plus(voteLock).toString();
     }, 0);
   },
 );
@@ -51,19 +43,22 @@ export const democracyLockFromOnChainDataSelector = createSelector(
 
     const { votes, prior } = voting;
     const votesLocked = votes.reduce((result, { vote }) => {
-      const { isStandard, isSplit } = vote;
-      if (isStandard) {
-        return new BigNumber(result).plus(vote.balance).toString();
-      } else if (isSplit) {
-        return new BigNumber(result)
-          .plus(vote.ayeBalance)
-          .plus(vote.nayBalance)
-          .toString();
-      }
-
-      return result;
+      const voteLock = getOngoingVoteLock(vote);
+      return new BigNumber(result).plus(voteLock).toString();
     }, 0);
 
     return BigNumber.max(votesLocked, prior.balance).toString();
+  },
+);
+
+export const democracyVotesLengthSelector = createSelector(
+  myDemocracyVotingSelector,
+  (voting) => {
+    if (!voting) {
+      return 0;
+    }
+
+    const { votes = [] } = voting;
+    return votes.length;
   },
 );
