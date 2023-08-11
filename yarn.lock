@@ -7458,6 +7458,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.orderby@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.orderby@npm:4.6.0"
+  checksum: 2e0430b07eb575e9cef9c0a8937db82857bb741d0680baf58f99d4731092c11b103f95cbeeb9cdd207514701bd925b5c71eb81044df97b7e36a3735a3484fb8f
+  languageName: node
+  linkType: hard
+
 "lodash.partition@npm:^4.6.0":
   version: 4.6.0
   resolution: "lodash.partition@npm:4.6.0"
@@ -7985,6 +7992,7 @@ __metadata:
     lodash.isequal: ^4.5.0
     lodash.isnil: ^4.0.0
     lodash.noop: ^3.0.1
+    lodash.orderby: ^4.6.0
     lodash.range: ^3.2.0
     lodash.set: ^4.3.2
     lodash.startcase: ^4.4.0
