@@ -30,7 +30,21 @@ export default function DemocracySummary() {
     lockFromOnChain,
     democracLockBalance,
   ).toString();
-  const unLockable = BigNumber(democracLockBalance).minus(lockRequired);
+  const unLockable = BigNumber(democracLockBalance)
+    .minus(lockRequired)
+    .toString();
+
+  let actionComponent = null;
+  if (new BigNumber(unLockable).gt(0)) {
+    actionComponent = (
+      <div
+        className="cursor-pointer text-theme500 text-[12px]"
+        onClick={() => setShowClearExpired(true)}
+      >
+        {voteExpiredReferenda.length <= 0 ? "Unlock" : "Clear expired votes"}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -38,8 +52,7 @@ export default function DemocracySummary() {
         votesLength={votesCount}
         totalLocked={totalLocked}
         unLockable={unLockable}
-        setShowClearExpired={setShowClearExpired}
-        actionTitle={voteExpiredReferenda.length <= 0 ? "Unlock" : null}
+        actionComponent={actionComponent}
       />
       {showClearExpired && (
         <ClearExpiredDemocracyVotePopup
