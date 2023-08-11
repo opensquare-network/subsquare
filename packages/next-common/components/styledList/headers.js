@@ -1,5 +1,4 @@
 import React from "react";
-import { useThemeSetting } from "next-common/context/theme";
 import RowSplitter from "./rowSplitter";
 import { StyledTh } from "./styled";
 import styled from "styled-components";
@@ -11,8 +10,6 @@ const ThWrapper = styled.div`
 `;
 
 export function Headers({ columns }) {
-  const theme = useThemeSetting();
-
   return (
     <thead>
       <tr>
@@ -22,7 +19,7 @@ export function Headers({ columns }) {
           </StyledTh>
         ))}
       </tr>
-      <RowSplitter backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"} />
+      <RowSplitter backgroundColor="var(--neutral300)" />
     </thead>
   );
 }
