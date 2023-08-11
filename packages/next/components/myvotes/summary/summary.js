@@ -22,9 +22,21 @@ function TextSummaryContent({ value }) {
   return <ValueWrapper>{value}</ValueWrapper>;
 }
 
+function TokenValueContent({ value }) {
+  const { symbol, decimals } = useChainSettings();
+  return (
+    <TextSummaryContent
+      value={
+        <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
+      }
+    />
+  );
+}
+
 export default function ReferendaVoteSummary({
   votesLength = 0,
   totalLocked,
+  delegated,
   unLockable,
   actionComponent,
 }) {
@@ -38,16 +50,11 @@ export default function ReferendaVoteSummary({
     },
     {
       title: "Total Locked",
-      content: (
-        <TextSummaryContent
-          value={
-            <ValueDisplay
-              value={toPrecision(totalLocked, decimals)}
-              symbol={symbol}
-            />
-          }
-        />
-      ),
+      content: <TokenValueContent value={totalLocked} />,
+    },
+    {
+      title: "Delegated",
+      content: <TokenValueContent value={delegated} />,
     },
     {
       title: "Unlockable",

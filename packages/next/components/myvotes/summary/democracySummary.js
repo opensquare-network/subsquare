@@ -11,6 +11,7 @@ import {
 } from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
 import { democracyLockRequiredSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/lockRequired";
 import democracyVoteExpiredReferendaSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/expiredReferenda";
+import myDemocracyDelegatedSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/delegated";
 
 export default function DemocracySummary() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function DemocracySummary() {
     democracyVoteExpiredReferendaSelector,
   );
   const votesCount = useSelector(democracyVotesLengthSelector);
+  const delegated = useSelector(myDemocracyDelegatedSelector);
 
   // This value indicate the total balance locked by democracy vote
   const democracLockBalance = useBalanceDemocracLock();
@@ -51,6 +53,7 @@ export default function DemocracySummary() {
       <VoteSummary
         votesLength={votesCount}
         totalLocked={totalLocked}
+        delegated={delegated}
         unLockable={unLockable}
         actionComponent={actionComponent}
       />
