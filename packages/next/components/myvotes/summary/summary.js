@@ -7,6 +7,7 @@ import { Title } from "../styled";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
+import BigNumber from "bignumber.js";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -52,10 +53,12 @@ export default function ReferendaVoteSummary({
       title: "Total Locked",
       content: <TokenValueContent value={totalLocked} />,
     },
-    {
-      title: "Delegated",
-      content: <TokenValueContent value={delegated} />,
-    },
+    new BigNumber(delegated).gt(0)
+      ? {
+          title: "Delegated",
+          content: <TokenValueContent value={delegated} />,
+        }
+      : null,
     {
       title: "Unlockable",
       content: (
@@ -72,7 +75,7 @@ export default function ReferendaVoteSummary({
         />
       ),
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <>
