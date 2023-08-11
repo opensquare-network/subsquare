@@ -13,7 +13,7 @@ import useFetchReferendaLockingPeriod from "./referenda/useFetchReferendaLocking
 export default function MyOpenGovVotes() {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
-  const { isLoading, votes } = useAccountVotes(realAddress);
+  const { votes } = useAccountVotes(realAddress);
   useFetchMyReferendaVoting();
   useSubClassLocks();
   useFetchReferendaLockingPeriod();
@@ -39,7 +39,7 @@ export default function MyOpenGovVotes() {
   return (
     <div className="flex flex-col gap-[16px]">
       <ReferendaSummary />
-      <MyVotesList isLoading={isLoading} votes={votes} />
+      <MyVotesList votes={votes} />
     </div>
   );
 }
