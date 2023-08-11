@@ -44,6 +44,7 @@ function ChainLogo({ className = "" }) {
     return null;
   }
 
+  // NOTE: workaround, should find some React way to check is same source
   const logo =
     // check is same source
     chainSettings.navLogo === chainSettings.navLogoDark ? (
