@@ -8,13 +8,15 @@ import MyVotesList from "./myVotesList";
 import ReferendaSummary from "./summary/referendaSummary";
 import useFetchMyReferendaVoting from "./referenda/useFetchMyReferendaVoting";
 import useSubClassLocks from "./referenda/useSubClassLocks";
+import useFetchReferendaLockingPeriod from "./referenda/useFetchReferendaLockingPeriod";
 
 export default function MyOpenGovVotes() {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
-  const { isLoading, votes, priors } = useAccountVotes(realAddress);
+  const { isLoading, votes } = useAccountVotes(realAddress);
   useFetchMyReferendaVoting();
   useSubClassLocks();
+  useFetchReferendaLockingPeriod();
 
   useEffect(() => {
     if (!votes || !votes.length) {
@@ -36,7 +38,7 @@ export default function MyOpenGovVotes() {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <ReferendaSummary votes={votes} priors={priors} />
+      <ReferendaSummary votes={votes} />
       <MyVotesList isLoading={isLoading} votes={votes} />
     </div>
   );
