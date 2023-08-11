@@ -71,7 +71,7 @@ export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
             href={
               activeNode.value === item.value
                 ? null
-                : `https://${item.value}.subsquare.io`
+                : `https://${item.domain || item.value}.subsquare.io`
             }
           >
             <ChainIcon chain={item.value} />
