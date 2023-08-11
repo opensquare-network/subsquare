@@ -14,15 +14,24 @@ export default function useSubClassLocks() {
       return;
     }
 
-    api?.query?.convictionVoting?.classLocksFor(address, (rawLocks) => {
-      const normalized = rawLocks.map((rawLock) => {
-        return {
-          trackId: rawLock[0].toNumber(),
-          locked: rawLock[1].toString(),
-        };
-      });
+    let unsub;
+    api?.query?.convictionVoting
+      ?.classLocksFor(address, (rawLocks) => {
+        const normalized = rawLocks.map((rawLock) => {
+          return {
+            trackId: rawLock[0].toNumber(),
+            locked: rawLock[1].toString(),
+          };
+        });
 
-      dispatch(setMyReferendaClassLocks(normalized));
-    });
+        dispatch(setMyReferendaClassLocks(normalized));
+      })
+      .then((result) => (unsub = result));
+
+    return () => {
+      if (unsub) {
+        unsub();
+      }
+    };
   }, [api, address, dispatch]);
 }
