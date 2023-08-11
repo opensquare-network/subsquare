@@ -2,7 +2,7 @@ import KvList from "next-common/components/listInfo/kvList";
 import Proposal from "next-common/components/proposal";
 import { useOnchainData } from "next-common/context/post";
 import useReferendaBusinessData from "@subsquare/next/hooks/useReferendaBusinessData";
-import extractRemark from "next-common/components/gov2/referendum/call/remark";
+import extractRemarks from "next-common/components/gov2/referendum/call/remark";
 import React from "react";
 import Copyable from "next-common/components/copyable";
 
@@ -29,12 +29,12 @@ export default function Gov2ReferendumCall() {
     data.push(...businessData);
   }
 
-  let remark = extractRemark(proposal?.call);
-  if (remark) {
+  let remarks = extractRemarks(proposal?.call);
+  for (let i = 0; i < remarks.length; i++) {
     data.push([
-      "Remark",
-      <p className="whitespace-pre-wrap" key="remark">
-        {remark}
+      `Remark ${i + 1}`,
+      <p className="whitespace-pre-wrap" key={`remark-${i}`}>
+        {remarks[i]}
       </p>,
     ]);
   }
