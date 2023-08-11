@@ -11,7 +11,7 @@ function getVotingLock(voting) {
   } else {
     votesLocked = votes.reduce((result, { vote }) => {
       const voteLock = getOnChainVoteLock(vote);
-      return new BigNumber(result).plus(voteLock).toString();
+      return BigNumber.max(result, voteLock).toString();
     }, 0);
   }
 
@@ -21,8 +21,7 @@ function getVotingLock(voting) {
 export const referendaLockFromOnChainDataSelector = createSelector(
   myReferendaVotingSelector,
   (votingArr) => {
-    return votingArr.reduce((result, voting) => {
-      return BigNumber.max(result, getVotingLock(voting)).toString();
-    }, 0);
+    const locksByTrack = votingArr.map((voting) => getVotingLock(voting));
+    return BigNumber.max(...locksByTrack, 0).toString();
   },
 );

@@ -21,7 +21,7 @@ function getEachTrackRequiredLock(voting, latestHeight, lockingPeriod) {
       return result;
     } else if (referendumInfo.ongoing) {
       const voteLock = getOnChainVoteLock(vote);
-      return new BigNumber(result).plus(voteLock).toString();
+      return BigNumber.max(result, voteLock).toString();
     } else {
       const voteLock = getFinishedVoteLock(
         vote,
@@ -29,7 +29,7 @@ function getEachTrackRequiredLock(voting, latestHeight, lockingPeriod) {
         latestHeight,
         lockingPeriod,
       );
-      return new BigNumber(result).plus(voteLock).toString();
+      return BigNumber.max(result, voteLock).toString();
     }
   }, 0);
 

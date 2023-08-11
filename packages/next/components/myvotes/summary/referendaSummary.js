@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
-import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
 import { useDispatch, useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
 import useMyClassLocksFor from "./useMyClassLocksFor";
 import VoteSummary from "./summary";
 import ClearExpiredReferendaVotePopup from "../clearExpiredReferendaVotePopup";
@@ -12,25 +8,17 @@ import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import { maxTracksLockSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/classLocks";
 import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalOnChainLock";
 import { totalReferendaLockRequiredSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalLockRequired";
+import { voteExpiredReferendaSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/voteExpiredReferenda";
 
 export default function ReferendaSummary({ votes }) {
   const dispatch = useDispatch();
-  const isReferenda = useIsReferenda();
-  const period = useVoteLockingPeriod("convictionVoting");
-  const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
 
   // Locked balance calculated from on-chain voting data
   const lockFromOnChainData = useSelector(referendaLockFromOnChainDataSelector);
   const maxTracksLock = useSelector(maxTracksLockSelector);
   const lockRequired = useSelector(totalReferendaLockRequiredSelector);
-
-  const voteExpiredReferenda = getVoteExpiredReferenda(
-    votes,
-    period,
-    isReferenda,
-    latestHeight,
-  );
+  const voteExpiredReferenda = useSelector(voteExpiredReferendaSelector);
 
   const classLocks = useMyClassLocksFor();
   const locked = BigNumber.max(lockFromOnChainData, maxTracksLock);
