@@ -2,22 +2,12 @@ import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import { useOnchainData, usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
 import { useDecisionDeposit } from "next-common/context/post/gov2/referendum";
-import useApi from "next-common/utils/hooks/useApi";
 import { useSelector } from "react-redux";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
-
-function useUndecidingTimeout() {
-  const api = useApi();
-
-  if (api) {
-    return api.consts.referenda.undecidingTimeout.toNumber();
-  }
-
-  return null;
-}
+import useUndecidingTimeout from "next-common/hooks/referenda/useUndecidingTimeout";
 
 function Countdown() {
   const timeout = useUndecidingTimeout();

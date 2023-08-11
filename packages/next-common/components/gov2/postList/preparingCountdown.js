@@ -6,6 +6,7 @@ import Wrapper from "./wrapper";
 import CountDown from "../../_CountDown";
 import TimeDuration from "../../TimeDuration";
 import usePercentage from "./usePercentage";
+import TimeoutCountDown from "next-common/components/gov2/postList/timeoutCountDown";
 
 export default function PreparingCountdown({ detail }) {
   const latestHeight = useSelector(latestHeightSelector);
@@ -19,6 +20,10 @@ export default function PreparingCountdown({ detail }) {
 
   const remaining = getRemaining(latestHeight, submitted, preparePeriod);
   const preparePercentage = usePercentage(submitted, preparePeriod);
+
+  if (remaining <= 0) {
+    return <TimeoutCountDown detail={detail} />;
+  }
 
   return (
     <Wrapper>
