@@ -38,7 +38,7 @@ export default function MyOpenGovVotes() {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <ReferendaSummary votes={votes} />
+      <ReferendaSummary />
       <MyVotesList isLoading={isLoading} votes={votes} />
     </div>
   );
