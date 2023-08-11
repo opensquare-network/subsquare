@@ -11,6 +11,10 @@ import orderBy from "lodash.orderby";
 
 function shouldUnlockTrack(trackData, latestHeight, lockingPeriod) {
   const { trackLock, voting } = trackData;
+  if (!voting) {
+    return true;
+  }
+
   const requiredLock = getTrackRequiredLock(
     voting,
     latestHeight,
