@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import styled, { withTheme } from "styled-components";
-import { useThemeSetting } from "../../context/theme";
 import Loading from "../loading";
 
 const StyledTable = styled.table`
@@ -78,21 +77,17 @@ function DataRow({ row, columns }) {
 }
 
 function DataRows({ rows, columns }) {
-  const theme = useThemeSetting();
-
   return rows.map((row, index) => (
     <Fragment key={index}>
       <DataRow row={row} columns={columns} />
       {index !== rows.length - 1 && (
-        <RowSplitter backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"} />
+        <RowSplitter backgroundColor="var(--neutral300)" />
       )}
     </Fragment>
   ));
 }
 
 function Headers({ columns }) {
-  const theme = useThemeSetting();
-
   return (
     <thead>
       <tr>
@@ -108,7 +103,7 @@ function Headers({ columns }) {
         ))}
       </tr>
       <RowSplitter
-        backgroundColor={theme.isDark ? "#272A3A" : "#F6F7FA"}
+        backgroundColor="var(--neutral300)"
         padding={"16px 0 4px 0"}
       />
     </thead>
