@@ -28,7 +28,12 @@ export default function VotesList({ votes }) {
   const columnsDefinition = [
     {
       name: "Proposal",
-      style: { textAlign: "left", minWidth: "230px", maxWidth: 600 },
+      style: {
+        textAlign: "left",
+        minWidth: "230px",
+        maxWidth: 600,
+        paddingRight: 16,
+      },
     },
     {
       name: "Vote for",
