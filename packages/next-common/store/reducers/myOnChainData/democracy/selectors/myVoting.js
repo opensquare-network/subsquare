@@ -1,7 +1,7 @@
 import { myDemocracyVotingSelector } from "../myDemocracyVoting";
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
-import getOnChainVoteLock from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/getOngoingVoteLock";
+import getOnChainVoteLock from "./utils/getOngoingVoteLock";
 
 export const democracyLockFromOnChainDataSelector = createSelector(
   myDemocracyVotingSelector,
@@ -17,7 +17,7 @@ export const democracyLockFromOnChainDataSelector = createSelector(
     } else {
       votesLocked = votes.reduce((result, { vote }) => {
         const voteLock = getOnChainVoteLock(vote);
-        return new BigNumber(result).plus(voteLock).toString();
+        return BigNumber.max(result, voteLock).toString();
       }, 0);
     }
 

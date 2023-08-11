@@ -32,9 +32,7 @@ export default function DemocracySummary() {
     lockFromOnChain,
     democracLockBalance,
   ).toString();
-  const unLockable = BigNumber(democracLockBalance)
-    .minus(lockRequired)
-    .toString();
+  const unLockable = BigNumber(totalLocked).minus(lockRequired).toString();
 
   let actionComponent = null;
   if (new BigNumber(unLockable).gt(0)) {

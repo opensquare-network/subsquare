@@ -18,9 +18,7 @@ export default function ClearExpiredDemocracyVotePopup({
   const isMounted = useIsMounted();
   const [isLoading, setIsLoading] = useState(false);
 
-  const relatedReferenda = Array.from(
-    new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
-  );
+  const relatedReferenda = [...new Set(votes)];
   relatedReferenda.sort((a, b) => a - b);
 
   const showErrorToast = useCallback(
@@ -43,7 +41,7 @@ export default function ClearExpiredDemocracyVotePopup({
 
       let tx;
 
-      const txsRemoveVote = votes.map(({ referendumIndex }) =>
+      const txsRemoveVote = relatedReferenda.map((referendumIndex) =>
         api.tx.democracy.removeVote(referendumIndex),
       );
       const txUnlock = api.tx.democracy.unlock(realAddress);
