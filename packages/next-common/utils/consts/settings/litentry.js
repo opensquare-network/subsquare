@@ -4,10 +4,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectLogoLitentryDark,
-  ProjectLogoLitentryLight,
-} from "@osn/icons/subsquare";
+import { ProjectLogoLitentryDark } from "@osn/icons/subsquare";
 
 const DEFAULT_LITENTRY_NODES = [
   {
@@ -62,7 +59,7 @@ const litentry = {
   snsCoverCid: "bafybeiej7his75nmaf2yhm6n3sqxf3ew2kvkyb7q37pbt37b72jwvs5cu4",
   endpoints: DEFAULT_LITENTRY_NODES,
   avatar: Avatar,
-  navLogo: ProjectLogoLitentryLight,
+  navLogo: ProjectLogoLitentryDark,
   navLogoDark: ProjectLogoLitentryDark,
   links,
   group: MenuGroups.PolkadotAndParachains,
