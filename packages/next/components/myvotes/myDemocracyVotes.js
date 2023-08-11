@@ -12,7 +12,7 @@ import useFetchDemocracyLockingPeriod from "./democracy/useFetchDemocracyLocking
 export default function MyDemocracyVotes() {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
-  const { isLoading, votes } = useAccountDemocracyVotes(realAddress);
+  const { votes } = useAccountDemocracyVotes(realAddress);
   useFetchMyDemocracyVoting();
   useFetchDemocracyLockingPeriod();
 
@@ -37,7 +37,7 @@ export default function MyDemocracyVotes() {
   return (
     <div className="flex flex-col gap-[16px]">
       <DemocracySummary />
-      <MyVotesList isLoading={isLoading} votes={votes} />
+      <MyVotesList votes={votes} />
     </div>
   );
 }
