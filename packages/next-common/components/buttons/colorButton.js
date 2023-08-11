@@ -9,6 +9,7 @@ const RawPositiveButton = styled(BackgroundButton)`
 `;
 
 const RawNegativeButton = styled(BackgroundButton)`
+  background-color: var(--red500);
   border-color: var(--red500);
 `;
 
