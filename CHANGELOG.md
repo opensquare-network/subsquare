@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.5
+date: 2023-08-12
+- Feature: support upload images by OpenSquare editor.
+- Feature: support scam reporting for various posts.
+- Fix locking period color on dark mode.
+- Polish: remove democracy and collectives statistics from summary panel.
+- Polish: show referendum timeout countdown on referenda list when referenda preparation phase passed but no decision deposit put.
+- Polish: show multiple remarks if referenda call has multiple `system#remark` or `system#remarkWithEvent` calls.
+- Refactor: reuse login popup.
+- Fix the mis-behavior when click outside popup.
+- Change users link to profile votes page on votes popup.
+- Fix reddit icon.
+
+
 ### 3.3.4
 date: 2023-08-02
 - Feature: add preimages page.
