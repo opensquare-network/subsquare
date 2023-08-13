@@ -3,7 +3,10 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect } from "react";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
-import { setMyVotedPosts } from "next-common/store/reducers/myVotesSlice";
+import {
+  setMyVotedPosts,
+  setMyVotedPostsLoading,
+} from "next-common/store/reducers/myVotesSlice";
 import DemocracySummary from "./summary/democracySummary";
 import MyVotesList from "./myVotesList";
 import useFetchMyDemocracyVoting from "./democracy/useFetchMyDemocracyVoting";
@@ -25,12 +28,16 @@ export default function MyDemocracyVotes() {
       .map((vote) => `referendum_index=${vote.referendumIndex}`)
       .join("&");
 
+    dispatch(setMyVotedPostsLoading(true));
     nextApi
       .fetch(`democracy/referendums?${q}&page_size=${votes.length}`)
       .then(({ result }) => {
         if (result) {
           dispatch(setMyVotedPosts(result.items));
         }
+      })
+      .finally(() => {
+        dispatch(setMyVotedPostsLoading(false));
       });
   }, [dispatch, votes]);
 

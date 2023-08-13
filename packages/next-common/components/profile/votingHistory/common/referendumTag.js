@@ -3,10 +3,10 @@ import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import { useIsReferenda } from "./moduleTab";
+import capitalize from "lodash.capitalize";
 
-export function ReferendumTag({ proposal }) {
-  const isReferenda = useIsReferenda();
-  if (isReferenda) {
+function OpenGovReferendaTag({ proposal, vote }) {
+  if (proposal?.state?.name) {
     return (
       <Gov2ReferendaTag
         state={proposal?.state?.name}
@@ -15,10 +15,43 @@ export function ReferendumTag({ proposal }) {
     );
   }
 
-  return (
-    <DemocracyReferendumTag
-      state={proposal?.state?.state}
-      args={getDemocracyStateArgs(proposal?.state, proposal?.timeline)}
-    />
-  );
+  const { referendumInfo } = vote || {};
+  if (referendumInfo) {
+    return (
+      <Gov2ReferendaTag state={capitalize(Object.keys(referendumInfo)[0])} />
+    );
+  }
+
+  return null;
+}
+
+function DemocracyTag({ proposal, vote }) {
+  if (proposal?.state?.state) {
+    return (
+      <DemocracyReferendumTag
+        state={proposal?.state?.state}
+        args={getDemocracyStateArgs(proposal?.state, proposal?.timeline)}
+      />
+    );
+  }
+
+  const { referendumInfo } = vote || {};
+  if (referendumInfo) {
+    return (
+      <DemocracyReferendumTag
+        state={capitalize(Object.keys(referendumInfo)[0])}
+      />
+    );
+  }
+
+  return null;
+}
+
+export function ReferendumTag({ proposal, vote }) {
+  const isReferenda = useIsReferenda();
+  if (isReferenda) {
+    return <OpenGovReferendaTag proposal={proposal} vote={vote} />;
+  }
+
+  return <DemocracyTag proposal={proposal} vote={vote} />;
 }
