@@ -6,7 +6,10 @@ import { useEffect } from "react";
 import normalizePrior from "../utils/normalizePrior";
 import normalizeReferendaVote from "./normalizeVote";
 import queryReferendumInfo from "./queryReferendumInfo";
-import { setMyReferendaVoting } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import {
+  setIsLoadingReferendaVoting,
+  setMyReferendaVoting,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 
 function getDelegatingInfo(voting) {
   const delegating = voting.asDelegating;
@@ -82,8 +85,13 @@ export default function useFetchMyReferendaVoting() {
       return;
     }
 
-    queryVotesAndReferendaInfo(api, address).then((voting) => {
-      dispatch(setMyReferendaVoting(voting));
-    });
+    dispatch(setIsLoadingReferendaVoting(true));
+    queryVotesAndReferendaInfo(api, address)
+      .then((voting) => {
+        dispatch(setMyReferendaVoting(voting));
+      })
+      .finally(() => {
+        dispatch(setIsLoadingReferendaVoting(false));
+      });
   }, [api, address, dispatch, trigger]);
 }
