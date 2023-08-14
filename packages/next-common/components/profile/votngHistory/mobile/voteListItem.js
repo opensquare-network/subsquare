@@ -12,7 +12,7 @@ function ItemHeader({ vote, isGov2, setShowVoteDetail }) {
 
   return (
     <div>
-      <div className="flex justify-between pb-[12px] border-b border-b-neutral-300">
+      <div className="flex justify-between pb-[12px] border-b border-b-neutral300 gap-x-6">
         <PostTitle vote={vote} isGov2={isGov2} />
         {!isKintsugi && (
           <DetailButton onClick={() => setShowVoteDetail(vote)} />
