@@ -6,7 +6,7 @@ const resolve = (dir) => path.resolve(__dirname, dir);
 /**
  * `light.neutral100` -> `{ neutral100: 'var(--neutral100)' }`
  */
-const twThemeVariables = Object.keys(light).reduce((value, key) => {
+const twColorVariables = Object.keys(light).reduce((value, key) => {
   value[key] = `var(--${key})`;
   return value;
 }, {});
@@ -26,10 +26,13 @@ module.exports = {
       lg: "1280px",
       pad: "1080px",
     },
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      inherit: "inherit",
+      ...twColorVariables,
+    },
     extend: {
-      colors: {
-        ...twThemeVariables,
-      },
       borderRadius: {
         "2xl": "14px",
         "3xl": "16px",
@@ -39,8 +42,6 @@ module.exports = {
         200: "0px 6px 22px rgba(30, 33, 52, 0.11), 0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718), 0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282)",
       },
     },
-    // TODO: v2, disable all tw colors
-    // colors: {},
   },
   plugins: [
     require("./packages/next-common/styles/tailwind-plugins/scrollbar"),
