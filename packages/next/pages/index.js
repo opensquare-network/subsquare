@@ -47,7 +47,7 @@ function SubscribeTip() {
           height={20}
         />
       </div>
-      <span className="text-[14px] leading-[20px] whitespace-nowrap">
+      <span className="text-[14px] leading-[20px] whitespace-nowrap text-textSecondary">
         <span className="text-theme500 font-medium">Subscribe</span> on-chain
         events
       </span>
