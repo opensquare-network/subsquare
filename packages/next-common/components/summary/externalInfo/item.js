@@ -20,7 +20,7 @@ const Wrapper = styled.a`
 export default function Item({ title, href }) {
   return (
     <Wrapper href={href} target="_blank">
-      <span>{title}</span>
+      <span className="text-textPrimary">{title}</span>
       <div className="inline-flex text-textTertiary">↗</div>
     </Wrapper>
   );

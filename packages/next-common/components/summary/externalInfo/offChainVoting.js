@@ -1,15 +1,15 @@
-import Item from "./item";
+import { usePageProps } from "next-common/context/page";
+import List from "./list";
 
 export default function OffChainVoting() {
+  const { activeOffChainVotingPosts } = usePageProps();
   return (
-    <div className="flex flex-col gap-[8px]">
-      <span className="text-[12px] font-medium leading-[16px]">
-        Active off-chain voting
-      </span>
-      <Item
-        title="Sportsgeist P2P-Sportbetting Proposal"
-        href="https://voting.opensquare.io"
-      />
-    </div>
+    <List
+      title="Active off-chain voting"
+      items={(activeOffChainVotingPosts || []).map((item) => ({
+        title: item.title,
+        href: `${process.env.NEXT_PUBLIC_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_VOTING_SPACE_NAME}/proposal/${item.cid}`,
+      }))}
+    />
   );
 }
