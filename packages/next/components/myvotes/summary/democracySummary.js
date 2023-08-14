@@ -12,6 +12,7 @@ import {
 import { democracyLockRequiredSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/lockRequired";
 import democracyVoteExpiredReferendaSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/expiredReferenda";
 import myDemocracyDelegatedSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/delegated";
+import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 
 export default function DemocracySummary() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export default function DemocracySummary() {
   );
   const votesCount = useSelector(democracyVotesLengthSelector);
   const delegated = useSelector(myDemocracyDelegatedSelector);
+  const democracyVoting = useSelector(myDemocracyVotingSelector);
 
   // This value indicate the total balance locked by democracy vote
   const democracLockBalance = useBalanceDemocracLock();
@@ -35,7 +37,7 @@ export default function DemocracySummary() {
   const unLockable = BigNumber(totalLocked).minus(lockRequired).toString();
 
   let actionComponent = null;
-  if (new BigNumber(unLockable).gt(0)) {
+  if (democracyVoting && voteExpiredReferenda.length > 0) {
     actionComponent = (
       <div
         className="cursor-pointer text-theme500 text-[12px]"
@@ -52,8 +54,9 @@ export default function DemocracySummary() {
         votesLength={votesCount}
         totalLocked={totalLocked}
         delegated={delegated}
-        unLockable={unLockable}
+        unLockable={democracyVoting ? unLockable : 0}
         actionComponent={actionComponent}
+        isLoading={!democracyVoting}
       />
       {showClearExpired && (
         <ClearExpiredDemocracyVotePopup

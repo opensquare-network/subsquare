@@ -4,7 +4,6 @@ import {
   ReferendumTag,
   VoteItem,
 } from "next-common/components/profile/votingHistory/common";
-import { normalizeVote } from "../common";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemoveVoteButton from "../removeVoteButton";
 import useVotedPost from "../useVotedPost";
@@ -38,7 +37,7 @@ function ItemHeader({ vote }) {
 
 export default function VoteListItem({ vote }) {
   const lockInfo = useVoteExpiration(vote);
-  const normalizedVote = normalizeVote(vote.vote);
+  const normalizedVote = vote.vote;
   return (
     <ListCard>
       <ItemHeader vote={vote} />

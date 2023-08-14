@@ -11,6 +11,8 @@ import RemoveVoteButton from "./removeVoteButton";
 import useVotedPost from "./useVotedPost";
 import MyVoteItem from "./vote";
 import useReferendumTitle from "./useReferendumTitle";
+import { useSelector } from "react-redux";
+import { myVotedPostsLoading } from "next-common/store/reducers/myVotesSlice";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -54,6 +56,7 @@ export default function VotesList({ votes }) {
   const rows = (votes || []).map((item) => {
     return {
       useData: () => {
+        const isPostsLoading = useSelector(myVotedPostsLoading);
         const referendumPost = useVotedPost(item.referendumIndex);
         const title = useReferendumTitle({
           trackId: item.trackId,
@@ -67,10 +70,14 @@ export default function VotesList({ votes }) {
             title={title}
           />,
           <MyVoteItem key="vote" vote={item} />,
-          referendumPost ? (
-            <ReferendumTag key="tag" proposal={referendumPost?.onchainData} />
-          ) : (
+          isPostsLoading ? (
             <FieldLoading />
+          ) : (
+            <ReferendumTag
+              key="tag"
+              proposal={referendumPost?.onchainData}
+              vote={item}
+            />
           ),
           <RemoveVoteButton key="action" vote={item} />,
         ];

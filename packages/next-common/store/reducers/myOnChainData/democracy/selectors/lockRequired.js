@@ -26,7 +26,7 @@ export const democracyLockRequiredSelector = createSelector(
       const { vote, referendumInfo } = voteItem;
       if (referendumInfo.ongoing) {
         const voteLock = getOnChainVoteLock(vote);
-        return new BigNumber(result).plus(voteLock).toString();
+        return BigNumber.max(result, voteLock).toString();
       } else if (referendumInfo && referendumInfo.finished) {
         const voteLockRequired = getFinishedVoteLock(
           vote,
@@ -34,7 +34,7 @@ export const democracyLockRequiredSelector = createSelector(
           latestHeight,
           lockingPeriod,
         );
-        return new BigNumber(result).plus(voteLockRequired).toString();
+        return BigNumber.max(result, voteLockRequired).toString();
       } else {
         return result;
       }

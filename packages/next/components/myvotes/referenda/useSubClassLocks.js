@@ -2,7 +2,10 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { setMyReferendaClassLocks } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import {
+  setIsLoadingClassLocks,
+  setMyReferendaClassLocks,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 
 export default function useSubClassLocks() {
   const address = useRealAddress();
@@ -15,8 +18,11 @@ export default function useSubClassLocks() {
     }
 
     let unsub;
+    dispatch(setIsLoadingClassLocks(true));
+    console.log("classLocks loading here");
     api?.query?.convictionVoting
       ?.classLocksFor(address, (rawLocks) => {
+        console.log("classLocks here");
         const normalized = rawLocks.map((rawLock) => {
           return {
             trackId: rawLock[0].toNumber(),
@@ -26,7 +32,10 @@ export default function useSubClassLocks() {
 
         dispatch(setMyReferendaClassLocks(normalized));
       })
-      .then((result) => (unsub = result));
+      .then((result) => (unsub = result))
+      .finally(() => {
+        dispatch(setIsLoadingClassLocks(false));
+      });
 
     return () => {
       if (unsub) {

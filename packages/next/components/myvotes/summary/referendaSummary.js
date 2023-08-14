@@ -12,6 +12,7 @@ import unlockTracksSelector from "next-common/store/reducers/myOnChainData/refer
 import unlockTracks from "next-common/store/reducers/myOnChainData/referenda/selectors/unlockTracks";
 import referendaVotesLengthSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/votesLength";
 import myReferendaDelegatedSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/delegated";
+import { isLoadingReferendaSummarySelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 
 export default function ReferendaSummary() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export default function ReferendaSummary() {
   const tracksToUnlock = useSelector(unlockTracksSelector);
   const votesCount = useSelector(referendaVotesLengthSelector);
   const delegated = useSelector(myReferendaDelegatedSelector);
+  const loadingSummary = useSelector(isLoadingReferendaSummarySelector);
 
   const locked = BigNumber.max(lockFromOnChainData, maxTracksLock);
   const unLockable = BigNumber(lockFromOnChainData)
@@ -46,6 +48,7 @@ export default function ReferendaSummary() {
   return (
     <>
       <VoteSummary
+        isLoading={loadingSummary}
         votesLength={votesCount}
         totalLocked={locked}
         delegated={delegated}

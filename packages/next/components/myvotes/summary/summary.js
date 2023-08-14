@@ -8,6 +8,7 @@ import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
 import BigNumber from "bignumber.js";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -34,12 +35,21 @@ function TokenValueContent({ value }) {
   );
 }
 
+function LoadableContent({ isLoading = false, children }) {
+  if (isLoading) {
+    return <FieldLoading />;
+  }
+
+  return <>{children}</>;
+}
+
 export default function ReferendaVoteSummary({
   votesLength = 0,
   totalLocked,
   delegated,
   unLockable,
   actionComponent,
+  isLoading = false,
 }) {
   const { symbol, decimals } = useChainSettings();
   const { hasReferenda, noDemocracyModule } = useChainSettings();
@@ -47,11 +57,19 @@ export default function ReferendaVoteSummary({
   const items = [
     {
       title: "All Votes",
-      content: <CountSummaryContent count={votesLength} />,
+      content: (
+        <LoadableContent isLoading={isLoading}>
+          <CountSummaryContent count={votesLength} />
+        </LoadableContent>
+      ),
     },
     {
       title: "Total Locked",
-      content: <TokenValueContent value={totalLocked} />,
+      content: (
+        <LoadableContent isLoading={isLoading}>
+          <TokenValueContent value={totalLocked} />
+        </LoadableContent>
+      ),
     },
     new BigNumber(delegated).gt(0)
       ? {
@@ -62,17 +80,19 @@ export default function ReferendaVoteSummary({
     {
       title: "Unlockable",
       content: (
-        <TextSummaryContent
-          value={
-            <div className="flex flex-col">
-              <ValueDisplay
-                value={toPrecision(unLockable, decimals)}
-                symbol={symbol}
-              />
-              {actionComponent}
-            </div>
-          }
-        />
+        <LoadableContent isLoading={isLoading}>
+          <TextSummaryContent
+            value={
+              <div className="flex flex-col">
+                <ValueDisplay
+                  value={toPrecision(unLockable, decimals)}
+                  symbol={symbol}
+                />
+                {actionComponent}
+              </div>
+            }
+          />
+        </LoadableContent>
       ),
     },
   ].filter(Boolean);
