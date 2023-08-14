@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -18,8 +18,11 @@ export default function ClearExpiredDemocracyVotePopup({
   const isMounted = useIsMounted();
   const [isLoading, setIsLoading] = useState(false);
 
-  const relatedReferenda = [...new Set(votes)];
-  relatedReferenda.sort((a, b) => a - b);
+  const relatedReferenda = useMemo(() => {
+    const referenda = [...new Set(votes)];
+    referenda.sort((a, b) => a - b);
+    return referenda;
+  }, [votes]);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -66,7 +69,7 @@ export default function ClearExpiredDemocracyVotePopup({
         isMounted,
       });
     },
-    [dispatch, isMounted, showErrorToast, onInBlock, onClose, votes],
+    [dispatch, isMounted, showErrorToast, onInBlock, onClose, relatedReferenda],
   );
 
   const title = relatedReferenda.length <= 0 ? "Unlock" : "Clear Expired Votes";
