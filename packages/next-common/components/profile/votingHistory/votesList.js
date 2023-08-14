@@ -49,6 +49,8 @@ export default function VotesList({
     },
   ];
 
+  //
+
   if (!isKintsugi) {
     columnsDefinition.push({
       name: "",
