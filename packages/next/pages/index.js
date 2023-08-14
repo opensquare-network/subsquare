@@ -32,6 +32,7 @@ import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
 import Link from "next/link";
 import { SystemTip } from "@osn/icons/subsquare";
+import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 
 function SubscribeTip() {
   return (
@@ -269,6 +270,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       description={chainSettings.description}
       headContent={headContent}
       summary={<SummaryComponent summaryData={overview?.summary} />}
+      summaryFooter={<OffChainVoting />}
     >
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
