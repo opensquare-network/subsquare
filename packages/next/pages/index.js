@@ -30,6 +30,7 @@ import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import { useUser } from "next-common/context/user";
 import Link from "next/link";
 import { SystemTip } from "@osn/icons/subsquare";
 
@@ -61,6 +62,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isCollectives = isCollectivesChain(chain);
   const isZeitgeist = chain === Chains.zeitgeist;
   const chainSettings = useChainSettings();
+  const user = useUser();
 
   const discussionsCategory = [
     {
@@ -246,6 +248,22 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
+  const tabs = [
+    {
+      label: "Overview",
+      url: "/",
+      exactMatch: false,
+    },
+  ];
+
+  if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
+    if (user?.address) {
+      tabs.push({
+        label: "My Votes",
+        url: "/votes",
+      });
+    }
+  }
   const titleExtra = (
     <div className="max-md:hidden transition-all h-[32px] w-[32px] hover:w-[224px] [&_span]:hidden [&_span]:hover:inline">
       <SubscribeTip />
@@ -269,6 +287,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       description={chainSettings.description}
       headContent={headContent}
       summary={<SummaryComponent summaryData={overview?.summary} />}
+      tabs={tabs}
     >
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>

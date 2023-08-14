@@ -1,0 +1,81 @@
+import { useCallback, useEffect, useState } from "react";
+import nextApi from "next-common/services/nextApi";
+import { usePageProps } from "next-common/context/page";
+import { ListCard } from "./styled";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import VoteDetailPopup from "./voteDetailPopup";
+import VotesList from "./votesList";
+import MobileVotesList from "./mobile/votesList";
+import isNil from "lodash.isnil";
+import { useIsReferenda } from "./common";
+
+export default function ResponsiveVotes() {
+  const { id } = usePageProps();
+  const [data, setData] = useState();
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const { width } = useWindowSize();
+  const [showVoteDetail, setShowVoteDetail] = useState(null);
+  const isReferenda = useIsReferenda();
+
+  const fetchData = useCallback(
+    (page, pageSize) => {
+      setPage(page);
+
+      setIsLoading(true);
+      nextApi
+        .fetch(`users/${id}/${isReferenda ? "referenda" : "democracy"}/votes`, {
+          page,
+          pageSize,
+          includesTitle: 1,
+        })
+        .then(({ result }) => {
+          if (result) {
+            setData(result);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [id, isReferenda],
+  );
+
+  useEffect(() => {
+    fetchData(1, 25);
+  }, [fetchData]);
+
+  if (isNil(width)) {
+    return null;
+  }
+
+  return (
+    <>
+      {width > 1024 ? (
+        <ListCard>
+          <VotesList
+            data={data}
+            isLoading={isLoading}
+            fetchData={fetchData}
+            setShowVoteDetail={setShowVoteDetail}
+            page={page}
+          />
+        </ListCard>
+      ) : (
+        <MobileVotesList
+          data={data}
+          isLoading={isLoading}
+          fetchData={fetchData}
+          setShowVoteDetail={setShowVoteDetail}
+          page={page}
+        />
+      )}
+      {showVoteDetail !== null && (
+        <VoteDetailPopup
+          vote={showVoteDetail}
+          setShowVoteDetail={setShowVoteDetail}
+        />
+      )}
+    </>
+  );
+}

@@ -33,7 +33,7 @@ function DataRow({ row, columns }) {
 
 export default function DataRows({ rows, columns }) {
   return (rows || []).map((row, index) => (
-    <Fragment key={index}>
+    <Fragment key={row.key ?? index}>
       <DataRow row={row} columns={columns} />
       {index !== rows.length - 1 && (
         <RowSplitter backgroundColor="var(--neutral300)" />
