@@ -19,10 +19,8 @@ export default function useSubClassLocks() {
 
     let unsub;
     dispatch(setIsLoadingClassLocks(true));
-    console.log("classLocks loading here");
     api?.query?.convictionVoting
       ?.classLocksFor(address, (rawLocks) => {
-        console.log("classLocks here");
         const normalized = rawLocks.map((rawLock) => {
           return {
             trackId: rawLock[0].toNumber(),
