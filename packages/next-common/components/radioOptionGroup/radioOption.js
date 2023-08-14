@@ -1,9 +1,10 @@
+import noop from "lodash.noop";
 import RadioButton from "./radioButton";
 
-export default function RadioOption({ checked, label, onClick }) {
+export default function RadioOption({ checked, label, onClick = noop }) {
   return (
-    <div className="flex gap-2">
-      <RadioButton checked={checked} onClick={onClick} />
+    <div className="flex gap-2 cursor-pointer" onClick={onClick}>
+      <RadioButton checked={checked} />
       <span>{label}</span>
     </div>
   );
