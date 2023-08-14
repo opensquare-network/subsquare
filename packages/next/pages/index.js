@@ -36,7 +36,7 @@ import { SystemTip } from "@osn/icons/subsquare";
 function SubscribeTip() {
   return (
     <Link
-      className="flex gap-1 items-center p-[6px] bg-neutral200 rounded-[16px] transition-all h-[32px] w-[32px] overflow-hidden hover:w-[224px] [&_span]:hover:inline"
+      className="flex gap-1 items-center p-[6px] bg-neutral200 rounded-[16px] overflow-hidden"
       href="/setting/notification"
     >
       <div className="inline-flex">
@@ -46,7 +46,7 @@ function SubscribeTip() {
           height={20}
         />
       </div>
-      <span className="hidden text-[14px] whitespace-nowrap">
+      <span className="text-[14px] leading-[20px] whitespace-nowrap">
         <span className="text-theme500 font-medium">Subscribe</span> on-chain
         events
       </span>
@@ -246,13 +246,28 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
+  const titleExtra = (
+    <div className="max-md:hidden transition-all h-[32px] w-[32px] hover:w-[224px] [&_span]:hidden [&_span]:hover:inline">
+      <SubscribeTip />
+    </div>
+  );
+
+  const headContent = (
+    <div className="flex flex-col gap-[16px]">
+      <ChainSocialLinks />
+      <div className="md:hidden">
+        <SubscribeTip />
+      </div>
+    </div>
+  );
+
   return (
     <ListLayout
       title={chainSettings.name}
-      titleExtra={<SubscribeTip />}
+      titleExtra={titleExtra}
       seoInfo={{ title: "" }}
       description={chainSettings.description}
-      headContent={<ChainSocialLinks />}
+      headContent={headContent}
       summary={<SummaryComponent summaryData={overview?.summary} />}
     >
       <OverviewPostList overviewData={filteredOverviewData} />
