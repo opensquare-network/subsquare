@@ -51,7 +51,7 @@ const bifrost = {
   name: "Bifrost Kusama",
   hideHeight: false,
   identity: "bifrost",
-  symbol: "bnc",
+  symbol: "BNC",
   decimals: 12,
   hasElections: false,
   ss58Format: 6,
