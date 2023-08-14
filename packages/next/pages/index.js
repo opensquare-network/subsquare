@@ -1,7 +1,10 @@
 import OverviewPostList from "next-common/components/overview/postList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toAdvisoryMotionsListItem, toFinancialMotionsListItem } from "utils/viewfuncs";
+import {
+  toAdvisoryMotionsListItem,
+  toFinancialMotionsListItem,
+} from "utils/viewfuncs";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
@@ -25,10 +28,31 @@ import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
-import normalizeTreasuryCouncilMotionListItem
-  from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
-import normalizeOpenTechCommProposalListItem
-  from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
+import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import Link from "next/link";
+import { SystemTip } from "@osn/icons/subsquare";
+
+function SubscribeTip() {
+  return (
+    <Link
+      className="flex gap-1 items-center p-[6px] bg-neutral200 rounded-[16px] transition-all h-[32px] w-[32px] overflow-hidden hover:w-[224px] [&_span]:hover:inline"
+      href="/setting/notification"
+    >
+      <div className="inline-flex">
+        <SystemTip
+          className="[&_path]:fill-textTertiary"
+          width={20}
+          height={20}
+        />
+      </div>
+      <span className="hidden text-[14px] whitespace-nowrap">
+        <span className="text-theme500 font-medium">Subscribe</span> on-chain
+        events
+      </span>
+    </Link>
+  );
+}
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -62,15 +86,13 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     });
   }
   if (chainSettings.hasFellowship) {
-    overviewData.push(
-      {
-        category: businessCategory.fellowship,
-        link: "/fellowship",
-        items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
-          normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-        ),
-      },
-    );
+    overviewData.push({
+      category: businessCategory.fellowship,
+      link: "/fellowship",
+      items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
+        normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+      ),
+    });
   }
 
   if (isCollectives) {
@@ -227,6 +249,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   return (
     <ListLayout
       title={chainSettings.name}
+      titleExtra={<SubscribeTip />}
       seoInfo={{ title: "" }}
       description={chainSettings.description}
       headContent={<ChainSocialLinks />}

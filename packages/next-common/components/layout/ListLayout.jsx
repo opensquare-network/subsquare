@@ -36,6 +36,7 @@ export default function ListLayout({
   seoInfo: seoInfoProp = {},
   children,
   title,
+  titleExtra,
   description,
   headContent,
   summary,
@@ -56,6 +57,7 @@ export default function ListLayout({
     <div>
       <div className="flex justify-between items-baseline">
         <h3 className="text20Bold text-textPrimary">{title}</h3>
+        {titleExtra}
       </div>
 
       <p className="text14Medium text-textTertiary">{description}</p>
