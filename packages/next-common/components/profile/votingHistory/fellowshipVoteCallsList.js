@@ -3,24 +3,16 @@ import Pagination from "next-common/components/pagination";
 import {
   ReferendumTag,
   PostTitle,
-  normalizeCall,
   CallDate,
-  VoteItem,
+  FellowshipVoteItem,
 } from "./common";
-import { useChain } from "next-common/context/chain";
 import { ListWrapper, StyledList } from "./common/styled";
 
-export default function VoteCallsList({ data, fetchData, page }) {
-  const chain = useChain();
+export default function FellowshipVoteCallsList({ data, fetchData, page }) {
   const { columns } = useColumns([
     {
       name: "Proposal",
-      style: {
-        textAlign: "left",
-        minWidth: "180px",
-        maxWidth: 384,
-        paddingRight: 16,
-      },
+      style: { textAlign: "left", minWidth: "180px", maxWidth: 384 },
     },
     { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
     {
@@ -40,7 +32,7 @@ export default function VoteCallsList({ data, fetchData, page }) {
       title={item.proposal?.title}
     />,
     <CallDate key="date" vote={item} />,
-    <VoteItem key="vote" vote={normalizeCall(item, chain)} />,
+    <FellowshipVoteItem key="vote" vote={item} />,
     <ReferendumTag key="tag" proposal={item.proposal} />,
   ]);
 

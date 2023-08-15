@@ -10,7 +10,7 @@ export const gov2ReferendumsTracksApi = (trackId) =>
 export const gov2ReferendumsApi = "gov2/referendums";
 export const gov2ReferendumsDetailApi = (index) =>
   gov2ReferendumsApi + `/${index}`;
-  export const gov2ReferendumsVoteExtrinsicsApi = (index) =>
+export const gov2ReferendumsVoteExtrinsicsApi = (index) =>
   gov2ReferendumsApi + `/${index}/vote-extrinsics`;
 export const gov2ReferendumsVoteCallsApi = (index) =>
   gov2ReferendumsApi + `/${index}/vote-calls`;

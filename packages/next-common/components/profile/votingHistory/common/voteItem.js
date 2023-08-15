@@ -28,7 +28,7 @@ const ColoredAbstainIcon = styled(AbstainIcon)`
 
 const VoteText = styled.span``;
 
-function Aye() {
+export function Aye() {
   return (
     <VoteTypeWrapper>
       <AyeIcon />
@@ -37,7 +37,7 @@ function Aye() {
   );
 }
 
-function Nay() {
+export function Nay() {
   return (
     <VoteTypeWrapper>
       <NayIcon />
