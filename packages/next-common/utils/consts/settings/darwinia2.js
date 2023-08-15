@@ -1,11 +1,11 @@
-import Avatar from "../../../assets/icons/chain/darwinia2.png";
-
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
 import {
+  ProjectIconDarwinia2Dark,
+  ProjectIconDarwinia2Light,
   ProjectLogoDarwinia2Dark,
   ProjectLogoDarwinia2Light,
 } from "@osn/icons/subsquare";
@@ -62,7 +62,8 @@ const darwinia2 = {
   ss58Format: 18,
   snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",
   endpoints: DEFAULT_DARWINIA_NODES,
-  avatar: Avatar,
+  avatar: ProjectIconDarwinia2Light,
+  darkAvatar: ProjectIconDarwinia2Dark,
   navLogo: ProjectLogoDarwinia2Light,
   navLogoDark: ProjectLogoDarwinia2Dark,
   links,
