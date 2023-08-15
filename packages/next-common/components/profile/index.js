@@ -13,7 +13,7 @@ import VotingHistory from "./votingHistory";
 import { useChainSettings } from "next-common/context/chain";
 
 export default withLoginUserRedux(({ user, id }) => {
-  const { hasReferenda, noDemocracy } = useChainSettings();
+  const { hasReferenda, hasFellowship, noDemocracy } = useChainSettings();
 
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ user, id }) => {
     },
   ];
 
-  if (hasReferenda || !noDemocracy) {
+  if (hasReferenda || hasFellowship || !noDemocracy) {
     tabs.push({
       label: "Votes",
       url: `/user/${id}/votes`,

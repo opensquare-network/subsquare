@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Index } from "../styled";
 import styled from "styled-components";
 import clsx from "clsx";
-import { useIsReferenda } from "./moduleTab";
+import { useModuleName } from "./moduleTab";
 
 const Title = styled.span`
   font-style: normal;
@@ -10,11 +10,8 @@ const Title = styled.span`
 `;
 
 export function PostTitle({ referendumIndex, title, noLink, className }) {
-  const isReferenda = useIsReferenda();
-  let url = `/democracy/referendum/${referendumIndex}`;
-  if (isReferenda) {
-    url = `/referenda/referendum/${referendumIndex}`;
-  }
+  const module = useModuleName();
+  const url = `/${module}/referendum/${referendumIndex}`;
   return (
     <div
       className={clsx("truncate max-w-[inherit] text-textPrimary", className)}

@@ -4,18 +4,17 @@ import { normalizedNestedVote } from "next-common/store/reducers/referenda/votes
 import VotesInfoGroup from "next-common/components/popup/nestedVotesPopup/votesInfoGroup";
 import StandardVoteTabs, { Aye, Nay } from "./standardVoteTabs";
 import DelegationsList from "next-common/components/popup/nestedVotesPopup/delegationsList";
-import { useIsReferenda } from "../common";
+import { useModuleName } from "../common";
 
 export function StandardVoteDetail({ vote }) {
-  const isReferenda = useIsReferenda();
+  const module = useModuleName();
   const [tabIndex, setTabIndex] = useState(vote.aye ? Aye : Nay);
   const [delegations, setDelegations] = useState([]);
 
   useEffect(() => {
-    let url = `democracy/referendums/${vote?.referendumIndex}/delegation-votes`;
-    if (isReferenda) {
-      url = `gov2/referendums/${vote?.referendumIndex}/delegation-votes`;
-    }
+    const url = `${module === "referenda" ? "gov2" : module}/referendums/${
+      vote?.referendumIndex
+    }/delegation-votes`;
     nextApi
       .fetch(url, {
         target: vote?.account,
@@ -24,7 +23,7 @@ export function StandardVoteDetail({ vote }) {
         if (!result) return;
         setDelegations(result);
       });
-  }, [vote?.referendumIndex, vote?.account, isReferenda]);
+  }, [vote?.referendumIndex, vote?.account, module]);
 
   const data = normalizedNestedVote(vote, delegations);
 

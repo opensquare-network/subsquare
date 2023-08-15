@@ -4,9 +4,11 @@ import { usePageProps } from "next-common/context/page";
 import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteCallsList from "./voteCallsList";
+import FellowshipVoteCallsList from "./fellowshipVoteCallsList";
 import MobileVoteCallsList from "./mobile/voteCallsList";
+import MobileFellowshipVoteCallsList from "./mobile/fellowshipVoteCallsList";
 import isNil from "lodash.isnil";
-import { useIsReferenda } from "./common";
+import { useIsFellowship, useModuleName } from "./common";
 
 export default function ResponsiveCalls() {
   const { id } = usePageProps();
@@ -14,7 +16,12 @@ export default function ResponsiveCalls() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
-  const isReferenda = useIsReferenda();
+  const module = useModuleName();
+  const isFellowship = useIsFellowship();
+
+  useEffect(() => {
+    setData();
+  }, [module]);
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -22,14 +29,11 @@ export default function ResponsiveCalls() {
 
       setIsLoading(true);
       nextApi
-        .fetch(
-          `users/${id}/${isReferenda ? "referenda" : "democracy"}/vote-calls`,
-          {
-            page,
-            pageSize,
-            includesTitle: 1,
-          },
-        )
+        .fetch(`users/${id}/${module}/vote-calls`, {
+          page,
+          pageSize,
+          includesTitle: 1,
+        })
         .then(({ result }) => {
           if (result) {
             setData(result);
@@ -39,7 +43,7 @@ export default function ResponsiveCalls() {
           setIsLoading(false);
         });
     },
-    [id, isReferenda],
+    [id, module],
   );
 
   useEffect(() => {
@@ -50,9 +54,16 @@ export default function ResponsiveCalls() {
     return null;
   }
 
+  const VoteCallsListComponent = isFellowship
+    ? FellowshipVoteCallsList
+    : VoteCallsList;
+  const MobileVoteCallsListComponent = isFellowship
+    ? MobileFellowshipVoteCallsList
+    : MobileVoteCallsList;
+
   return width > 1024 ? (
     <ListCard>
-      <VoteCallsList
+      <VoteCallsListComponent
         data={data}
         isLoading={isLoading}
         fetchData={fetchData}
@@ -60,7 +71,7 @@ export default function ResponsiveCalls() {
       />
     </ListCard>
   ) : (
-    <MobileVoteCallsList
+    <MobileVoteCallsListComponent
       data={data}
       isLoading={isLoading}
       fetchData={fetchData}
