@@ -16,27 +16,29 @@ export default function ReasonLink({ text, hideText = false }) {
   return (
     <span>
       {!hideText && <span>{text}</span>}
-      <span className="inline-flex ml-2 space-x-2 relative top-1">
-        {links.map((link) => {
-          let SvgIcon;
-          try {
-            SvgIcon = getLinkIcon(link);
-          } catch (e) {
-            SvgIcon = defaultLinkSvg;
-          }
+      {!!links?.length && (
+        <span className="inline-flex ml-2 space-x-2 relative top-1">
+          {links.map((link) => {
+            let SvgIcon;
+            try {
+              SvgIcon = getLinkIcon(link);
+            } catch (e) {
+              SvgIcon = defaultLinkSvg;
+            }
 
-          return (
-            <Link
-              key={link}
-              className="inline-flex items-center"
-              href={link}
-              target="_blank"
-            >
-              <SvgIcon />
-            </Link>
-          );
-        })}
-      </span>
+            return (
+              <Link
+                key={link}
+                className="inline-flex items-center"
+                href={link}
+                target="_blank"
+              >
+                <SvgIcon />
+              </Link>
+            );
+          })}
+        </span>
+      )}
     </span>
   );
 }
