@@ -14,7 +14,7 @@ import {
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
-import { useChainSettings } from "../../context/chain";
+import { useChain, useChainSettings } from "../../context/chain";
 import Summary from "./v2/base";
 import clsx from "clsx";
 import TreasuryBurn from "./treasurySummaryItems/burn";
@@ -22,6 +22,7 @@ import { isKintsugiChain } from "next-common/utils/chain";
 
 export default function TreasurySummary() {
   const [summary, setSummary] = useState({});
+  const chain = useChain();
   const api = useApi();
   const node = useChainSettings();
   const blockTime = useSelector(blockTimeSelector);
@@ -97,7 +98,7 @@ export default function TreasurySummary() {
           title: "Next Burn",
           content: <TreasuryBurn free={free} />,
         },
-        isKintsugiChain ? null : spendPeriodsItem,
+        isKintsugiChain(chain) ? null : spendPeriodsItem,
       ].filter(Boolean)}
     />
   );
