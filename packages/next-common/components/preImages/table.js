@@ -11,7 +11,6 @@ import { toPrecision } from "next-common/utils";
 import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
-import { SystemLoadingDots } from "@osn/icons/subsquare";
 import PreimageDetailPopup from "./preImageDetailPopup";
 import DotSplitter from "next-common/components/dotSplitter";
 import UnnoteButton from "./unnoteButton";
@@ -21,12 +20,7 @@ import {
   preImagesTriggerSelector,
 } from "next-common/store/reducers/preImagesSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-
-const FieldLoading = styled(SystemLoadingDots)`
-  & ellipse {
-    fill: var(--textTertiary);
-  }
-`;
+import FieldLoading from "../icons/fieldLoading";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -173,7 +167,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
           const triggerUpdate = useSelector(preImagesTriggerSelector);
           const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
-          return [
+          const row = [
             <Hash
               key="hash"
               hash={hash}
@@ -225,6 +219,10 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
               <FieldLoading />
             ),
           ];
+
+          row.key = hash;
+
+          return row;
         },
       };
     });

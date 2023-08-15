@@ -13,6 +13,7 @@ function PopupContent({
   actionCallback = emptyFunction,
   isLoading = false,
   confirmText = "Confirm",
+  extraContent = null,
 }) {
   const api = useApi();
   const signerAccount = useSignerAccount(extensionAccounts);
@@ -34,6 +35,7 @@ function PopupContent({
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
+      {extraContent}
       <PopupButtonWrapper>
         <PrimaryButton
           isLoading={isLoading}

@@ -22,7 +22,7 @@ const bifrostPolkadot = {
   name: "Bifrost Polkadot",
   hideHeight: false,
   identity: "bifrost-polkadot",
-  symbol: "bnc",
+  symbol: "BNC",
   decimals: 12,
   hasElections: false,
   ss58Format: 6,

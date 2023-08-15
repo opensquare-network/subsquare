@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.0
+date: 2023-08-14
+- [Big]Support on-chain votes management, including support for referenda and democracy.
+- Fix countdown component default color.
+- Add on-chain events subscription warning tip on overview panel.
+- Fix styles.
+
 ### 3.3.5
 date: 2023-08-12
 - Feature: support upload images by OpenSquare editor.

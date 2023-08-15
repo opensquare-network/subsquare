@@ -30,6 +30,7 @@ import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import { useUser } from "next-common/context/user";
 import Link from "next/link";
 import { SystemTip } from "@osn/icons/subsquare";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
@@ -49,7 +50,7 @@ function SubscribeTip() {
           height={20}
         />
       </div>
-      <span className="text-[14px] leading-[20px] whitespace-nowrap">
+      <span className="text-[14px] leading-[20px] whitespace-nowrap text-textSecondary">
         <span className="text-theme500 font-medium">Subscribe</span> on-chain
         events
       </span>
@@ -64,6 +65,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const isCollectives = isCollectivesChain(chain);
   const isZeitgeist = chain === Chains.zeitgeist;
   const chainSettings = useChainSettings();
+  const user = useUser();
 
   const discussionsCategory = [
     {
@@ -249,6 +251,22 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
+  const tabs = [
+    {
+      label: "Overview",
+      url: "/",
+      exactMatch: false,
+    },
+  ];
+
+  if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
+    if (user?.address) {
+      tabs.push({
+        label: "My Votes",
+        url: "/votes",
+      });
+    }
+  }
   const titleExtra = (
     <div className="max-md:hidden transition-all h-[32px] w-[32px] hover:w-[224px] [&_span]:hidden [&_span]:hover:inline">
       <SubscribeTip />
@@ -280,6 +298,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       headContent={headContent}
       summary={<SummaryComponent summaryData={overview?.summary} />}
       summaryFooter={externalInfo}
+      tabs={tabs}
     >
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
