@@ -38,9 +38,6 @@ const Select = styled.div`
       color: var(--textPrimary);
     }
   }
-  > img.logo {
-    flex: 0 0 24px;
-  }
 `;
 
 const NetworkBlock = styled.div`
