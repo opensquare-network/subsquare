@@ -21,8 +21,9 @@ const StyledThumb = styled.div`
   background: var(--neutral100);
   width: 20px;
   height: 20px;
-  box-shadow: var(--shadow200);
+  box-shadow: var(--shadow100);
   border-radius: 4px;
+  border: 1px solid var(--neutral300);
   &:focus-visible {
     outline: none;
   }
