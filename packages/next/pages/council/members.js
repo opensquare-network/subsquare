@@ -11,14 +11,9 @@ export default withLoginUserRedux(() => {
   const category = "Council Members";
   const seoInfo = { title: category, desc: category };
 
-  let members = <Members category={category} />;
+  let members = <Members />;
   if (isMoonChain()) {
-    members = (
-      <MembersNoElections
-        category={category}
-        type={detailPageCategory.COUNCIL_MOTION}
-      />
-    );
+    members = <MembersNoElections type={detailPageCategory.COUNCIL_MOTION} />;
   }
 
   return (
