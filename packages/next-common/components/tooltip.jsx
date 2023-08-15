@@ -3,17 +3,12 @@ import styled from "styled-components";
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
-import { cursor_pointer } from "next-common/styles/tailwindcss";
 import clsx from "clsx";
 
 const QuestionIcon = styled(Icon)`
   path {
     fill: var(--textDisabled);
   }
-`;
-
-const LabelWrapper = styled.div`
-  ${cursor_pointer};
 `;
 
 /**
@@ -35,7 +30,7 @@ export default function Tooltip({
   const tooltipTrigger = children ? (
     <div className={clsx("inline-block", className)}>{children}</div>
   ) : (
-    <LabelWrapper>{label ? label : <QuestionIcon />}</LabelWrapper>
+    <div className="cursor-pointer">{label ? label : <QuestionIcon />}</div>
   );
 
   const tooltipContent = content && (
