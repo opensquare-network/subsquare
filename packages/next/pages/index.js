@@ -328,7 +328,7 @@ export const getServerSideProps = withLoginUser(async () => {
       process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL,
     );
     ({ result: activeOffChainVotingPosts } = await offChainVotingApi.fetch(
-      `/api/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposals/closed`,
+      `/api/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposals/active`,
     ));
   }
 
