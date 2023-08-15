@@ -13,7 +13,7 @@ export function FellowshipVoteItem({ vote }) {
       <VoteWrapper>
         <PartialVoteItem>
           {vote.isAye ? <Aye /> : <Nay />}
-          <span>{vote.votes}</span>
+          <span className="text-textPrimary">{vote.votes}</span>
         </PartialVoteItem>
       </VoteWrapper>
     </ItemWrapper>
