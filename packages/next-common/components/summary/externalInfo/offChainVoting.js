@@ -18,7 +18,7 @@ export default function OffChainVoting() {
         <span>No active off-chain voting</span>
         <NewProposal
           target="_blank"
-          href={`https://voting.opensquare.io/space/${process.env.NEXT_PUBLIC_VOTING_SPACE_NAME}/create`}
+          href={`${process.env.NEXT_PUBLIC_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_VOTING_SPACE_NAME}/create`}
         >
           + New Proposal
         </NewProposal>
