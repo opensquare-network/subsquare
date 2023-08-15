@@ -11,7 +11,7 @@ import { useChain } from "next-common/context/chain";
 function ItemHeader({ vote }) {
   return (
     <div>
-      <div className="flex justify-between pb-[12px] border-b border-b-neutral300">
+      <div className="flex justify-between pb-[12px] border-b border-b-neutral300 gap-x-6">
         <PostTitle
           referendumIndex={vote.referendumIndex}
           title={vote.proposal?.title}

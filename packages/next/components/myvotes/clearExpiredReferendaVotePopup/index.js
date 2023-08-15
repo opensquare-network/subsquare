@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -9,7 +8,6 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
-import BigNumber from "bignumber.js";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
   return (
@@ -31,7 +29,7 @@ function ExtraInfo({ relatedReferenda, relatedTracks }) {
 
 export default function ClearExpiredReferendaVotePopup({
   votes = [],
-  classLocks = [],
+  unlockTracks = [],
   onClose,
   onInBlock = emptyFunction,
 }) {
@@ -43,15 +41,6 @@ export default function ClearExpiredReferendaVotePopup({
     new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
   );
   relatedReferenda.sort((a, b) => a - b);
-
-  const tracks = [
-    ...(votes || []).map(({ trackId }) => trackId),
-    ...classLocks
-      .filter((lock) => new BigNumber(lock.unLockable).gt(0))
-      .map((lock) => lock.trackId),
-  ];
-  const relatedTracks = Array.from(new Set(tracks));
-  relatedTracks.sort((a, b) => a - b);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -68,7 +57,7 @@ export default function ClearExpiredReferendaVotePopup({
         return showErrorToast("Please login first");
       }
 
-      if (!votes?.length && relatedTracks.length <= 0) {
+      if (!votes?.length && unlockTracks.length <= 0) {
         return showErrorToast("No unLockable balance");
       }
 
@@ -79,7 +68,7 @@ export default function ClearExpiredReferendaVotePopup({
       const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
         api.tx.convictionVoting.removeVote(trackId, referendumIndex),
       );
-      const txsUnlock = relatedTracks.map((trackId) =>
+      const txsUnlock = unlockTracks.map((trackId) =>
         api.tx.convictionVoting.unlock(trackId, realAddress),
       );
 
@@ -111,7 +100,7 @@ export default function ClearExpiredReferendaVotePopup({
       onInBlock,
       onClose,
       votes,
-      relatedTracks,
+      unlockTracks,
     ],
   );
 
@@ -124,7 +113,7 @@ export default function ClearExpiredReferendaVotePopup({
       extraContent={
         <ExtraInfo
           relatedReferenda={relatedReferenda}
-          relatedTracks={relatedTracks}
+          relatedTracks={unlockTracks}
         />
       }
     />

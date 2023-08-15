@@ -1,73 +1,62 @@
 import React, { useState } from "react";
-import { useIsReferenda } from "next-common/components/profile/votingHistory/common";
-import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
-import calcTotalVotes from "./calcTotalVotes";
 import { useDispatch, useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import calcNotExpired from "./calcNotExpired";
 import BigNumber from "bignumber.js";
-import getVoteExpiredReferenda from "./getVoteExpiredReferenda";
 import VoteSummary from "./summary";
 import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
 import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
-import calcDemocracyVotingLocked from "./democracy/calcVotingLocked";
+import {
+  democracyLockFromOnChainDataSelector,
+  democracyVotesLengthSelector,
+} from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
+import { democracyLockRequiredSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/lockRequired";
+import democracyVoteExpiredReferendaSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/expiredReferenda";
+import myDemocracyDelegatedSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/delegated";
+import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 
-export default function DemocracySummary({ votes, priors = [] }) {
+export default function DemocracySummary() {
   const dispatch = useDispatch();
-  const isReferenda = useIsReferenda();
-  const period = useVoteLockingPeriod("democracy");
-  const latestHeight = useSelector(latestHeightSelector);
   const [showClearExpired, setShowClearExpired] = useState(false);
 
-  const totalVoteEndLockedBalance = calcTotalVotes(
-    votes,
-    priors,
-    period,
-    isReferenda,
+  // Locked balance calculated from on-chain voting data
+  const lockFromOnChain = useSelector(democracyLockFromOnChainDataSelector);
+  const lockRequired = useSelector(democracyLockRequiredSelector);
+  const voteExpiredReferenda = useSelector(
+    democracyVoteExpiredReferendaSelector,
   );
-  const totalVotingLocked = calcDemocracyVotingLocked(votes);
-  // This value indicate all un-expired balance by the votes to the vote ended referenda.
-  const totalVoteEndNotExpired = calcNotExpired(
-    votes,
-    priors,
-    period,
-    isReferenda,
-    latestHeight,
-  );
-  // todo: we should also take delegation locked balance into account.
-  const totalLockedWhichCantBeUnlock = BigNumber.max(
-    totalVotingLocked,
-    totalVoteEndNotExpired,
-  ).toString();
-
-  const voteExpiredReferenda = getVoteExpiredReferenda(
-    votes,
-    period,
-    isReferenda,
-    latestHeight,
-  );
+  const votesCount = useSelector(democracyVotesLengthSelector);
+  const delegated = useSelector(myDemocracyDelegatedSelector);
+  const democracyVoting = useSelector(myDemocracyVotingSelector);
 
   // This value indicate the total balance locked by democracy vote
   const democracLockBalance = useBalanceDemocracLock();
-
   const totalLocked = BigNumber.max(
-    totalVoteEndLockedBalance,
-    totalVotingLocked,
+    lockFromOnChain,
     democracLockBalance,
   ).toString();
-  const unLockable = BigNumber(democracLockBalance).minus(
-    totalLockedWhichCantBeUnlock,
-  );
+  const unLockable = BigNumber(totalLocked).minus(lockRequired).toString();
+
+  let actionComponent = null;
+  if (democracyVoting && voteExpiredReferenda.length > 0) {
+    actionComponent = (
+      <div
+        className="cursor-pointer text-theme500 text-[12px]"
+        onClick={() => setShowClearExpired(true)}
+      >
+        {voteExpiredReferenda.length <= 0 ? "Unlock" : "Clear expired votes"}
+      </div>
+    );
+  }
 
   return (
     <>
       <VoteSummary
-        votesLength={votes?.length}
+        votesLength={votesCount}
         totalLocked={totalLocked}
-        unLockable={unLockable}
-        setShowClearExpired={setShowClearExpired}
-        actionTitle={voteExpiredReferenda.length <= 0 ? "Unlock" : null}
+        delegated={delegated}
+        unLockable={democracyVoting ? unLockable : 0}
+        actionComponent={actionComponent}
+        isLoading={!democracyVoting}
       />
       {showClearExpired && (
         <ClearExpiredDemocracyVotePopup

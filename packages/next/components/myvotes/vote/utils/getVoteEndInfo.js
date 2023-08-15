@@ -33,18 +33,15 @@ export default function getVoteEndInfo(voteInfo, period, isReferenda) {
     return noLockObj;
   }
 
-  const standard = vote.asStandard;
-  const aye = standard.vote.isAye;
-  if (referendumEndInfo.approved !== aye) {
+  if (referendumEndInfo.approved !== vote.aye) {
     return noLockObj;
   }
 
-  const conviction = standard.vote.conviction.toNumber();
-  const lockEnd = referendumEndInfo.end + conviction * period;
+  const lockEnd = referendumEndInfo.end + vote.conviction * period;
   return {
     hasLock: true,
     period,
-    balance: standard.balance.toString(),
+    balance: vote.balance,
     voteEnd: referendumEndInfo.end,
     lockEnd,
   };

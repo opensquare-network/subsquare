@@ -42,11 +42,10 @@ export default function RemoveDemocracyVotePopup({
 
       let tx;
 
-      if (votes?.length === 1) {
-        const { referendumIndex } = votes[0];
-        tx = api.tx.democracy.removeVote(referendumIndex);
-      } else if (votes?.length > 1) {
-        const txs = votes.map(({ referendumIndex }) =>
+      if (relatedReferenda.length === 1) {
+        tx = api.tx.democracy.removeVote(relatedReferenda[0]);
+      } else if (relatedReferenda?.length > 1) {
+        const txs = relatedReferenda.map((referendumIndex) =>
           api.tx.democracy.removeVote(referendumIndex),
         );
         tx = api.tx.utility.batch(txs);
@@ -68,7 +67,7 @@ export default function RemoveDemocracyVotePopup({
         isMounted,
       });
     },
-    [dispatch, isMounted, showErrorToast, onInBlock, onClose, votes],
+    [dispatch, isMounted, showErrorToast, onInBlock, onClose, relatedReferenda],
   );
 
   return (

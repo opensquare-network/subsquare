@@ -11,6 +11,8 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
+import BigNumber from "bignumber.js";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -26,12 +28,32 @@ function TextSummaryContent({ value }) {
   return <ValueWrapper>{value}</ValueWrapper>;
 }
 
+function TokenValueContent({ value }) {
+  const { symbol, decimals } = useChainSettings();
+  return (
+    <TextSummaryContent
+      value={
+        <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
+      }
+    />
+  );
+}
+
+function LoadableContent({ isLoading = false, children }) {
+  if (isLoading) {
+    return <FieldLoading />;
+  }
+
+  return <>{children}</>;
+}
+
 export default function ReferendaVoteSummary({
   votesLength = 0,
   totalLocked,
+  delegated,
   unLockable,
-  setShowClearExpired,
-  actionTitle,
+  actionComponent,
+  isLoading = false,
 }) {
   const { symbol, decimals } = useChainSettings();
   const { hasReferenda, noDemocracyModule } = useChainSettings();
@@ -39,45 +61,45 @@ export default function ReferendaVoteSummary({
   const items = [
     {
       title: "All Votes",
-      content: <CountSummaryContent count={votesLength} />,
+      content: (
+        <LoadableContent isLoading={isLoading}>
+          <CountSummaryContent count={votesLength} />
+        </LoadableContent>
+      ),
     },
     {
       title: "Total Locked",
       content: (
-        <TextSummaryContent
-          value={
-            <ValueDisplay
-              value={toPrecision(totalLocked, decimals)}
-              symbol={symbol}
-            />
-          }
-        />
+        <LoadableContent isLoading={isLoading}>
+          <TokenValueContent value={totalLocked} />
+        </LoadableContent>
       ),
     },
+    new BigNumber(delegated).gt(0)
+      ? {
+          title: "Delegated",
+          content: <TokenValueContent value={delegated} />,
+        }
+      : null,
     {
       title: "Unlockable",
       content: (
-        <TextSummaryContent
-          value={
-            <div className="flex flex-col">
-              <ValueDisplay
-                value={toPrecision(unLockable, decimals)}
-                symbol={symbol}
-              />
-              {!unLockable.isZero() && (
-                <div
-                  className="cursor-pointer text-theme500 text-[12px]"
-                  onClick={() => setShowClearExpired(true)}
-                >
-                  {actionTitle || "Clear expired votes"}
-                </div>
-              )}
-            </div>
-          }
-        />
+        <LoadableContent isLoading={isLoading}>
+          <TextSummaryContent
+            value={
+              <div className="flex flex-col">
+                <ValueDisplay
+                  value={toPrecision(unLockable, decimals)}
+                  symbol={symbol}
+                />
+                {actionComponent}
+              </div>
+            }
+          />
+        </LoadableContent>
       ),
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <>

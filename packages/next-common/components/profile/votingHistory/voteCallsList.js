@@ -15,7 +15,12 @@ export default function VoteCallsList({ data, fetchData, page }) {
   const { columns } = useColumns([
     {
       name: "Proposal",
-      style: { textAlign: "left", minWidth: "180px", maxWidth: 384 },
+      style: {
+        textAlign: "left",
+        minWidth: "180px",
+        maxWidth: 384,
+        paddingRight: 16,
+      },
     },
     { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
     {

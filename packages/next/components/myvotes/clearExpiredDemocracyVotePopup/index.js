@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -18,10 +18,11 @@ export default function ClearExpiredDemocracyVotePopup({
   const isMounted = useIsMounted();
   const [isLoading, setIsLoading] = useState(false);
 
-  const relatedReferenda = Array.from(
-    new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
-  );
-  relatedReferenda.sort((a, b) => a - b);
+  const relatedReferenda = useMemo(() => {
+    const referenda = [...new Set(votes)];
+    referenda.sort((a, b) => a - b);
+    return referenda;
+  }, [votes]);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -43,11 +44,16 @@ export default function ClearExpiredDemocracyVotePopup({
 
       let tx;
 
-      const txsRemoveVote = votes.map(({ referendumIndex }) =>
+      const txsRemoveVote = relatedReferenda.map((referendumIndex) =>
         api.tx.democracy.removeVote(referendumIndex),
       );
       const txUnlock = api.tx.democracy.unlock(realAddress);
-      tx = api.tx.utility.batch([...txsRemoveVote, txUnlock]);
+      const allTx = [...txsRemoveVote, txUnlock];
+      if (allTx.length > 1) {
+        tx = api.tx.utility.batch([...txsRemoveVote, txUnlock]);
+      } else {
+        tx = allTx[0];
+      }
 
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -63,7 +69,7 @@ export default function ClearExpiredDemocracyVotePopup({
         isMounted,
       });
     },
-    [dispatch, isMounted, showErrorToast, onInBlock, onClose, votes],
+    [dispatch, isMounted, showErrorToast, onInBlock, onClose, relatedReferenda],
   );
 
   const title = relatedReferenda.length <= 0 ? "Unlock" : "Clear Expired Votes";

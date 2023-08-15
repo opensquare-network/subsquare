@@ -1,10 +1,7 @@
 import Avatar from "../../../assets/icons/chain/bifrost-polkadot.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectLogoBifrostPolkadotDark,
-  ProjectLogoBifrostPolkadotLight,
-} from "@osn/icons/subsquare";
+import { ProjectLogoBifrostPolkadotDark } from "@osn/icons/subsquare";
 import bifrost from "./bifrost";
 
 const DEFAULT_NODES = [
@@ -25,14 +22,14 @@ const bifrostPolkadot = {
   name: "Bifrost Polkadot",
   hideHeight: false,
   identity: "bifrost-polkadot",
-  symbol: "bnc",
+  symbol: "BNC",
   decimals: 12,
   hasElections: false,
   ss58Format: 6,
   snsCoverCid: "bafybeicykjzlwi3rjs637txy4fn2m6qbjofjwlypgmthbbb7i3f522xjzy",
   endpoints: DEFAULT_NODES,
   avatar: Avatar,
-  navLogo: ProjectLogoBifrostPolkadotLight,
+  navLogo: ProjectLogoBifrostPolkadotDark,
   navLogoDark: ProjectLogoBifrostPolkadotDark,
   links,
   group: MenuGroups.PolkadotAndParachains,

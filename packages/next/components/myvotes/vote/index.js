@@ -1,7 +1,6 @@
 import { VoteItem } from "next-common/components/profile/votingHistory/common";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
-import { normalizeVote } from "../common";
 import useVoteExpiration from "./useVoteExpiration";
 import VoteLock from "./lock";
 
@@ -16,7 +15,7 @@ export default function MyVoteItem({ vote }) {
 
   return (
     <Wrapper>
-      <VoteItem key="vote" vote={normalizeVote(vote.vote)} />
+      <VoteItem key="vote" vote={vote.vote} />
       <VoteLock lockInfo={lockInfo} />
     </Wrapper>
   );

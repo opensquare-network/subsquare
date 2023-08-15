@@ -44,12 +44,21 @@ function ChainLogo({ className = "" }) {
     return null;
   }
 
-  return (
-    <div className={className}>
-      <Link href="/">
+  // NOTE: workaround, should find some React way to check is same source
+  const logo =
+    // check is same source
+    chainSettings.navLogo === chainSettings.navLogoDark ? (
+      <chainSettings.navLogo />
+    ) : (
+      <>
         <chainSettings.navLogo className="dark:hidden" />
         <chainSettings.navLogoDark className="hidden dark:block" />
-      </Link>
+      </>
+    );
+
+  return (
+    <div className={className}>
+      <Link href="/">{logo}</Link>
     </div>
   );
 }

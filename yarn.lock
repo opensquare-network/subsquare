@@ -1963,10 +1963,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.26.1":
-  version: 1.26.1
-  resolution: "@osn/icons@npm:1.26.1"
-  checksum: 908d6511ea111fb9f858b44ba2de6606e343f99e4a9f194a7e3df7e99435f76c5b17062765e93bb3ad6d5dcd6534d7f0b519b327cd0c563d635c4ef492b70ebf
+"@osn/icons@npm:^1.26.2":
+  version: 1.26.2
+  resolution: "@osn/icons@npm:1.26.2"
+  checksum: 6307a925f5fca584df4e653ea21768917813866e9c5ec1a271f81c962062d514b4fd687d66b947b7b1d9af3526b59f41d917ace8d80c85e876328861d8dfb6af
+  languageName: node
+  linkType: hard
+
+"@osn/icons@npm:^1.27.2":
+  version: 1.27.2
+  resolution: "@osn/icons@npm:1.27.2"
+  checksum: bdfed8041f9e655e7a3e840d1196a473e29296a2a80f08e0c895d66089e2d4a670e5fc799dab9550647b49c1956890a79cba977559df482dc9af135ebb7aec69
   languageName: node
   linkType: hard
 
@@ -2028,9 +2035,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/rich-text-editor@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@osn/rich-text-editor@npm:0.6.0"
+"@osn/rich-text-editor@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "@osn/rich-text-editor@npm:0.6.1"
   dependencies:
     lodash: ^4.17.21
     marked: ^4.0.15
@@ -2041,7 +2048,7 @@ __metadata:
     "@osn/previewer": ^0.10.3
     react: ^17.0.2
     styled-components: ^5.3.1
-  checksum: 83675260c802f56b2eccc602d3feb91e99c66f4adbb15bf3866fea2d9bd0afbe643c4175ad9f5ad48a0f92469970dcd68c66a18582c9b9a303a4d595ba3e50a5
+  checksum: 5561ff9b6626b8c56bd8ded4c0b1437d945bdd58bbc2961650664cbf02e4b9eff8e245b2cf835ca00e304abba9a93cd05cf07cccb4e812cb310091c511e75cc6
   languageName: node
   linkType: hard
 
@@ -3238,7 +3245,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.26.1
+    "@osn/icons": ^1.26.2
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3271,9 +3278,9 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.26.1
+    "@osn/icons": ^1.27.2
     "@osn/previewer": ^0.12.5
-    "@osn/rich-text-editor": ^0.6.0
+    "@osn/rich-text-editor": ^0.6.1
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -7458,6 +7465,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.orderby@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.orderby@npm:4.6.0"
+  checksum: 2e0430b07eb575e9cef9c0a8937db82857bb741d0680baf58f99d4731092c11b103f95cbeeb9cdd207514701bd925b5c71eb81044df97b7e36a3735a3484fb8f
+  languageName: node
+  linkType: hard
+
 "lodash.partition@npm:^4.6.0":
   version: 4.6.0
   resolution: "lodash.partition@npm:4.6.0"
@@ -7947,7 +7961,7 @@ __metadata:
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.26.1
+    "@osn/icons": ^1.26.2
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^0.12.5
     "@osn/provider-options": 1.1.0
@@ -7985,6 +7999,7 @@ __metadata:
     lodash.isequal: ^4.5.0
     lodash.isnil: ^4.0.0
     lodash.noop: ^3.0.1
+    lodash.orderby: ^4.6.0
     lodash.range: ^3.2.0
     lodash.set: ^4.3.2
     lodash.startcase: ^4.4.0

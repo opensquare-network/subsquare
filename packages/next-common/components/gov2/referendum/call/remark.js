@@ -1,32 +1,33 @@
 import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
 import { hexToString } from "@polkadot/util";
 
-function findRemarkCall(call) {
+function isRemark(section, method) {
+  return "system" === section && ["remark", "remarkWithEvent"].includes(method);
+}
+
+function findRemarkCalls(call) {
   const { section, method, args } = call;
-  if ("system" === section && "remark" === method) {
-    return call;
+  if (isRemark(section, method)) {
+    return [call];
   }
 
   if ("utility" === section && ["batch", "forceBatch"].includes(method)) {
     const calls = args[0].value;
-    // todo: there maybe multiple remarks
-    return calls.find(
-      (call) => "system" === call.section && "remark" === call.method,
-    );
+    return calls.filter((call) => isRemark(call.section, call.method));
   }
 
-  return null;
+  return [];
 }
 
-export default function extractRemark(call = {}) {
-  const remarkCall = findRemarkCall(call);
-  if (!remarkCall) {
-    return null;
+export default function extractRemarks(call = {}) {
+  const remarkCalls = findRemarkCalls(call);
+  const remarks = [];
+  for (const call of remarkCalls) {
+    const value = call.args[0].value;
+    if (hexIsValidUTF8(value)) {
+      remarks.push(hexToString(value));
+    }
   }
 
-  const value = remarkCall.args[0].value;
-  if (hexIsValidUTF8(value)) {
-    return hexToString(value);
-  }
-  return value;
+  return remarks;
 }

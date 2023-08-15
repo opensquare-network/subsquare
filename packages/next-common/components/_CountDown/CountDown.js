@@ -29,8 +29,8 @@ export default function CountDown(props) {
     denominator = 0,
     size = 12,
     width,
-    backgroundColor = "#FFF2D9",
-    foregroundColor = "#F2B12F",
+    backgroundColor = "var(--orange100)",
+    foregroundColor = "var(--orange500)",
     tooltipContent,
   } = props ?? {};
 
