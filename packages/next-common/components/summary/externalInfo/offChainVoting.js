@@ -18,7 +18,7 @@ export default function OffChainVoting() {
         <span>No active off-chain voting</span>
         <NewProposal
           target="_blank"
-          href={`${process.env.NEXT_PUBLIC_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_VOTING_SPACE_NAME}/create`}
+          href={`${process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/create`}
         >
           + New Proposal
         </NewProposal>
@@ -31,7 +31,7 @@ export default function OffChainVoting() {
       title="Active off-chain voting"
       items={(activeOffChainVotingPosts || []).map((item) => ({
         title: item.title,
-        href: `${process.env.NEXT_PUBLIC_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_VOTING_SPACE_NAME}/proposal/${item.cid}`,
+        href: `${process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposal/${item.cid}`,
       }))}
     />
   );

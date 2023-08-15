@@ -324,9 +324,11 @@ export const getServerSideProps = withLoginUser(async () => {
 
   let activeOffChainVotingPosts = null;
   if (hasDefinedOffChainVoting()) {
-    const offChainVotingApi = new Api(process.env.NEXT_PUBLIC_VOTING_SITE_URL);
+    const offChainVotingApi = new Api(
+      process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL,
+    );
     ({ result: activeOffChainVotingPosts } = await offChainVotingApi.fetch(
-      `/api/${process.env.NEXT_PUBLIC_VOTING_SPACE_NAME}/proposals/closed`,
+      `/api/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposals/closed`,
     ));
   }
 

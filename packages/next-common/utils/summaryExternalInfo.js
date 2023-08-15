@@ -1,7 +1,7 @@
 export function hasDefinedOffChainVoting() {
   return (
-    process.env.NEXT_PUBLIC_VOTING_SITE_URL &&
-    process.env.NEXT_PUBLIC_VOTING_SPACE_NAME
+    process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL &&
+    process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE
   );
 }
 
