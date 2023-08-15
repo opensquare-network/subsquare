@@ -10,9 +10,11 @@ export default function List({ title, items }) {
       <span className="text-[12px] font-medium leading-[16px] text-textTertiary">
         {title}
       </span>
-      {(items || []).map(({ title, href }, index) => (
-        <Item key={index} title={title} href={href} />
-      ))}
+      <ul>
+        {(items || []).map(({ title, href }, index) => (
+          <Item key={index} title={title} href={href} />
+        ))}
+      </ul>
     </div>
   );
 }
