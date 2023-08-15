@@ -7,9 +7,9 @@ export default function List({ title, items }) {
 
   return (
     <div className="flex flex-col gap-[8px]">
-      <span className="text-[12px] font-medium leading-[16px] text-textTertiary">
+      <h6 className="text-[12px] font-medium leading-[16px] text-textTertiary">
         {title}
-      </span>
+      </h6>
       <ul>
         {(items || []).map(({ title, href }, index) => (
           <Item key={index} title={title} href={href} />
