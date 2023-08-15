@@ -33,6 +33,9 @@ import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/c
 import { useUser } from "next-common/context/user";
 import Link from "next/link";
 import { SystemTip } from "@osn/icons/subsquare";
+import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
+import Bounties from "next-common/components/summary/externalInfo/bounties";
+import Api from "next-common/services/api";
 
 function SubscribeTip() {
   return (
@@ -279,6 +282,13 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
     </div>
   );
 
+  const externalInfo = (
+    <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+      <OffChainVoting />
+      <Bounties />
+    </div>
+  );
+
   return (
     <ListLayout
       title={chainSettings.name}
@@ -287,6 +297,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       description={chainSettings.description}
       headContent={headContent}
       summary={<SummaryComponent summaryData={overview?.summary} />}
+      summaryFooter={externalInfo}
       tabs={tabs}
     >
       <OverviewPostList overviewData={filteredOverviewData} />
@@ -302,11 +313,30 @@ export const getServerSideProps = withLoginUser(async () => {
     nextApi.fetch(fellowshipTracksApi),
   ]);
 
+  let activeOffChainVotingPosts = null;
+  if (process.env.NEXT_PUBLIC_VOTING_SITE_URL) {
+    const offChainVotingApi = new Api(process.env.NEXT_PUBLIC_VOTING_SITE_URL);
+    ({ result: activeOffChainVotingPosts } = await offChainVotingApi.fetch(
+      `/api/${process.env.NEXT_PUBLIC_VOTING_SPACE_NAME}/proposals/closed`,
+    ));
+  }
+
+  let activeBountyPosts = null;
+  if (process.env.NEXT_PUBLIC_BOUNTIES_API_URL) {
+    const bountiesApi = new Api(process.env.NEXT_PUBLIC_BOUNTIES_API_URL);
+    ({ result: activeBountyPosts } = await bountiesApi.fetch("child-bounties"));
+  }
+
   return {
     props: {
       overview: result ?? null,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
+      activeOffChainVotingPosts: activeOffChainVotingPosts?.items ?? [],
+      activeBountyPosts:
+        activeBountyPosts?.items?.filter(
+          (item) => item.network === process.env.CHAIN,
+        ) ?? [],
     },
   };
 });
