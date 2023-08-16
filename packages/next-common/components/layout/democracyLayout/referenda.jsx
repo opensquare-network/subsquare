@@ -3,6 +3,7 @@ import ListLayout from "../ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import { useUser } from "next-common/context/user";
 
 /**
  * @param {import("../ListLayout").ListLayoutProps & {summaryData}} props
@@ -12,6 +13,7 @@ export default function DemocracyReferendaLayout({ summaryData, ...props }) {
   const chainSettings = useChainSettings();
   const hasDemocracy = chainSettings.hasDemocracy !== false;
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
+  const user = useUser();
 
   return (
     <ListLayout
@@ -20,8 +22,14 @@ export default function DemocracyReferendaLayout({ summaryData, ...props }) {
       summaryFooter={hasDemocracy && !isKintsugi && <DemocracySummaryFooter />}
       tabs={[
         { label: "Referenda", url: "/democracy/referenda" },
+        !isKintsugi &&
+          !chainSettings.noDemocracyModule &&
+          user?.address && {
+            label: "My Votes",
+            url: "/democracy/votes",
+          },
         { label: "Statistics", url: "/democracy/statistics" },
-      ]}
+      ].filter(Boolean)}
       {...props}
     >
       {props.children}
