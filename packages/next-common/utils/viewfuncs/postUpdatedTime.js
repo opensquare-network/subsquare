@@ -6,8 +6,7 @@ export function getPostLastActivityAt(post) {
   const latestTime = Math.max(
     new Date(post.createdAt || 0),
     new Date(post.updatedAt || 0),
-    new Date(post.originalCreatedAt || 0),
-    new Date(post.originalUpdatedAt || 0),
+    new Date(post.indexer?.blockTime || 0),
     new Date(post.lastActivityAt || 0),
   );
 
