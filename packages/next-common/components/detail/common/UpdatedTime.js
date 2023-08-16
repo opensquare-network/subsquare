@@ -6,10 +6,12 @@ import { usePost } from "../../../context/post";
 
 export default function UpdatedTime() {
   const post = usePost();
-  let postUpdatedTime = post.updatedAt;
-  if (post.createdAt === post.updatedAt) {
-    postUpdatedTime = post?.indexer?.blockTime ?? post.createdAt;
-  }
+  let postUpdatedTime = Math.max(
+    new Date(post.createdAt || 0),
+    new Date(post.updatedAt || 0),
+    new Date(post.originalCreatedAt || 0),
+    new Date(post.originalUpdatedAt || 0),
+  );
 
   if (!postUpdatedTime) {
     return null;
