@@ -1,7 +1,7 @@
 import { Title } from "./styled";
 import ResponsiveVotes from "./responsiveVotes";
 
-export default function MyVotesList({ votes }) {
+export default function MyVotesList({ votes, isLoading }) {
   return (
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
@@ -10,7 +10,7 @@ export default function MyVotesList({ votes }) {
           <span className="text-textTertiary">{votes?.length || 0}</span>
         </div>
       </div>
-      <ResponsiveVotes votes={votes} />
+      <ResponsiveVotes votes={votes} isLoading={isLoading} />
     </>
   );
 }

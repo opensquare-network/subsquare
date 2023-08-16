@@ -26,7 +26,7 @@ const StyledList = styled(StyledListOrigin)`
   padding: 0;
 `;
 
-export default function VotesList({ votes }) {
+export default function VotesList({ votes, isLoading }) {
   const columnsDefinition = [
     {
       name: "Proposal",
@@ -91,7 +91,7 @@ export default function VotesList({ votes }) {
 
   return (
     <ListWrapper>
-      <StyledList loading={!votes} columns={columns} rows={rows} />
+      <StyledList loading={isLoading} columns={columns} rows={rows} />
     </ListWrapper>
   );
 }

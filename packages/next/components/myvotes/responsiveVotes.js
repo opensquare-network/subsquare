@@ -4,7 +4,7 @@ import VotesList from "./votesList";
 import MobileVotesList from "./mobile/votesList";
 import isNil from "lodash.isnil";
 
-export default function ResponsiveVotes({ votes }) {
+export default function ResponsiveVotes({ votes, isLoading }) {
   const { width } = useWindowSize();
 
   if (isNil(width)) {
@@ -13,9 +13,9 @@ export default function ResponsiveVotes({ votes }) {
 
   return width > 1024 ? (
     <ListCard>
-      <VotesList votes={votes} />
+      <VotesList votes={votes} isLoading={isLoading} />
     </ListCard>
   ) : (
-    <MobileVotesList votes={votes} />
+    <MobileVotesList votes={votes} isLoading={isLoading} />
   );
 }
