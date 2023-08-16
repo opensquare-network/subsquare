@@ -21,6 +21,7 @@ import { useDetailType } from "../context/page";
 import PostLinkPopup from "./linkPost/postLinkPopup";
 import PostUnlinkPopup from "./linkPost/postUnlinkPopup";
 import ReportPopup from "./reportPopup";
+import { isPostEdited } from "next-common/utils/post";
 
 const Wrapper = styled(RichTextStyleWrapper)`
   :hover {
@@ -107,7 +108,7 @@ export default function ArticleContent({
       )}
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
       <PostContent />
-      {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
+      {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
       {post.poll && (
         <>
           <Divider margin={16} />
