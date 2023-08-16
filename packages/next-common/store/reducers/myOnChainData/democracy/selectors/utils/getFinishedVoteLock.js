@@ -15,6 +15,7 @@ export default function getFinishedVoteLock(
     return 0;
   }
 
-  const expiredAt = conviction * lockingPeriod + end;
+  const periodsArr = [0, 1, 2, 4, 8, 16, 32];
+  const expiredAt = periodsArr[conviction] * lockingPeriod + end;
   return latestHeight >= expiredAt ? 0 : balance;
 }
