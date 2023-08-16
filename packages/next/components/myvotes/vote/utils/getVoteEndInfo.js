@@ -37,7 +37,8 @@ export default function getVoteEndInfo(voteInfo, period, isReferenda) {
     return noLockObj;
   }
 
-  const lockEnd = referendumEndInfo.end + vote.conviction * period;
+  const periodsArr = [0, 1, 2, 4, 8, 16, 32];
+  const lockEnd = referendumEndInfo.end + periodsArr[vote.conviction] * period;
   return {
     hasLock: true,
     period,

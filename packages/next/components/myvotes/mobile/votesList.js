@@ -2,8 +2,8 @@ import VoteListItem from "./voteListItem";
 import EmptyList from "next-common/components/profile/votingHistory/mobile/emptyList";
 import LoadingList from "next-common/components/profile/votingHistory/mobile/loadingList";
 
-export default function MobileVotesList({ votes }) {
-  if (!votes) {
+export default function MobileVotesList({ votes, isLoading }) {
+  if (isLoading) {
     return <LoadingList />;
   }
 

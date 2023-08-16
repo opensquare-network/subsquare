@@ -11,10 +11,12 @@ import useFetchMyReferendaVoting from "./referenda/useFetchMyReferendaVoting";
 import useSubClassLocks from "./referenda/useSubClassLocks";
 import useFetchReferendaLockingPeriod from "./referenda/useFetchReferendaLockingPeriod";
 import myReferendaVotesSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/votes";
+import { isLoadingReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 
 export default function MyOpenGovVotes() {
   const dispatch = useDispatch();
   const referendaVotes = useSelector(myReferendaVotesSelector);
+  const isLoading = useSelector(isLoadingReferendaVotingSelector);
   useFetchMyReferendaVoting();
   useSubClassLocks();
   useFetchReferendaLockingPeriod();
@@ -44,7 +46,7 @@ export default function MyOpenGovVotes() {
   return (
     <div className="flex flex-col gap-[16px]">
       <ReferendaSummary />
-      <MyVotesList votes={referendaVotes} />
+      <MyVotesList votes={referendaVotes} isLoading={isLoading} />
     </div>
   );
 }

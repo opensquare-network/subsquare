@@ -10,10 +10,12 @@ import MyVotesList from "./myVotesList";
 import useFetchMyDemocracyVoting from "./democracy/useFetchMyDemocracyVoting";
 import useFetchDemocracyLockingPeriod from "./democracy/useFetchDemocracyLockingPeriod";
 import myDemocracyVotesSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/votes";
+import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 
 export default function MyDemocracyVotes() {
   const dispatch = useDispatch();
   const myDemocracyVotes = useSelector(myDemocracyVotesSelector);
+  const voting = useSelector(myDemocracyVotingSelector);
   useFetchMyDemocracyVoting();
   useFetchDemocracyLockingPeriod();
 
@@ -42,7 +44,7 @@ export default function MyDemocracyVotes() {
   return (
     <div className="flex flex-col gap-[16px]">
       <DemocracySummary />
-      <MyVotesList votes={myDemocracyVotes} />
+      <MyVotesList votes={myDemocracyVotes} isLoading={!voting} />
     </div>
   );
 }
