@@ -4,7 +4,18 @@ import { Democracy, Fellowship, ModuleTabProvider, Referenda } from "./common";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function VotingHistory() {
-  const { hasReferenda, hasFellowship } = useChainSettings();
+  const { hasReferenda, hasFellowship, noDemocracy } = useChainSettings();
+
+  const availableTabs = [];
+  if (hasReferenda) {
+    availableTabs.push({ tabId: Referenda, tabTitle: Referenda });
+  }
+  if (hasFellowship) {
+    availableTabs.push({ tabId: Fellowship, tabTitle: Fellowship });
+  }
+  if (!noDemocracy) {
+    availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
+  }
 
   let defaultTab;
   if (hasReferenda) {
@@ -16,7 +27,7 @@ export default function VotingHistory() {
   }
 
   return (
-    <ModuleTabProvider defaultTab={defaultTab}>
+    <ModuleTabProvider availableTabs={availableTabs} defaultTab={defaultTab}>
       <div className="flex flex-col gap-[18px]">
         <VotingHistorySummary />
         <ListTabs />
