@@ -138,3 +138,10 @@ export function getOnReply(
     });
   };
 }
+
+export function isPostEdited(post) {
+  if (post?.refToPost) {
+    return post?.refToPost?.updatedAt !== post?.refToPost?.createdAt;
+  }
+  return post?.updatedAt !== post?.createdAt;
+}

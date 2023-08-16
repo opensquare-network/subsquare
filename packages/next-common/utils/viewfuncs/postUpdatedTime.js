@@ -3,8 +3,11 @@ export function getPostLastActivityAt(post) {
     return;
   }
 
-  if (post.createdAt === post.lastActivityAt) {
-    return post?.indexer?.blockTime ?? post.createdAt;
-  }
-  return post.lastActivityAt;
+  const lastTime = Math.max(
+    new Date(post.createdAt),
+    new Date(post.updatedAt),
+    new Date(post.lastActivityAt),
+  );
+
+  return new Date(lastTime).toISOString();
 }
