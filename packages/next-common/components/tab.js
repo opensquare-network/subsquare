@@ -7,6 +7,10 @@ export default function Tab({
   setSelectedTabId,
   className = "",
 }) {
+  if (!tabs || !tabs.length) {
+    return null;
+  }
+
   return (
     <div
       className={clsx(

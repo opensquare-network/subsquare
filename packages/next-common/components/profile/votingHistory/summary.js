@@ -3,13 +3,7 @@ import SummaryItems from "next-common/components/summary/summaryItems";
 import styled from "styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "./styled";
-import {
-  Democracy,
-  Fellowship,
-  ModuleTab,
-  Referenda,
-  useModuleName,
-} from "./common";
+import { ModuleTab, useAvailableModuleTabs, useModuleName } from "./common";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
@@ -31,9 +25,9 @@ function TextSummaryContent({ value }) {
 export default function VotingHistorySummary() {
   const { id } = usePageProps();
   const [data, setData] = useState({});
-  const { hasReferenda, hasFellowship, noDemocracy, useVoteCall } =
-    useChainSettings();
+  const { useVoteCall } = useChainSettings();
   const module = useModuleName();
+  const availableTabs = useAvailableModuleTabs();
 
   useEffect(() => {
     nextApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
@@ -64,23 +58,12 @@ export default function VotingHistorySummary() {
     },
   ].filter(Boolean);
 
-  const tabIds = [];
-  if (hasReferenda) {
-    tabIds.push(Referenda);
-  }
-  if (hasFellowship) {
-    tabIds.push(Fellowship);
-  }
-  if (!noDemocracy) {
-    tabIds.push(Democracy);
-  }
-
   return (
     <>
-      {tabIds.length > 1 && (
+      {availableTabs?.length > 1 && (
         <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
           <Title>Votes</Title>
-          <ModuleTab tabIds={tabIds} />
+          <ModuleTab />
         </div>
       )}
       <SecondaryCard>

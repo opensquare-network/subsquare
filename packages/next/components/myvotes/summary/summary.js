@@ -4,11 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { Title } from "../styled";
-import {
-  Democracy,
-  ModuleTab,
-  Referenda,
-} from "next-common/components/profile/votingHistory/common";
+import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
 import BigNumber from "bignumber.js";
@@ -56,7 +52,6 @@ export default function ReferendaVoteSummary({
   isLoading = false,
 }) {
   const { symbol, decimals } = useChainSettings();
-  const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const items = [
     {
@@ -105,9 +100,7 @@ export default function ReferendaVoteSummary({
     <>
       <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
         <Title>My Votes</Title>
-        {hasReferenda && !noDemocracyModule && (
-          <ModuleTab tabIds={[Referenda, Democracy]} />
-        )}
+        <ModuleTab />
       </div>
       <SecondaryCard>
         <SummaryItems items={items} />

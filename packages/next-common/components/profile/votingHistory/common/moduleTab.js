@@ -37,55 +37,69 @@ const Wrapper = styled.div`
 
 export const ModuleTabContext = React.createContext();
 
-export function ModuleTabProvider({ defaultTab, children }) {
-  const [moduleTabIndex, setModuleTabIndex] = React.useState(defaultTab);
+export function ModuleTabProvider({
+  availableTabs = [],
+  defaultTab,
+  children,
+}) {
+  const [selectedTabId, setSelectedTabId] = React.useState(defaultTab);
   return (
-    <ModuleTabContext.Provider value={{ moduleTabIndex, setModuleTabIndex }}>
+    <ModuleTabContext.Provider
+      value={{ availableTabs, selectedTabId, setSelectedTabId }}
+    >
       {children}
     </ModuleTabContext.Provider>
   );
 }
 
 export function useModuleTab() {
-  const { moduleTabIndex } = useContext(ModuleTabContext);
-  return moduleTabIndex;
+  const { selectedTabId } = useContext(ModuleTabContext);
+  return selectedTabId;
 }
 
 export function useIsReferenda() {
-  const moduleTabIndex = useModuleTab();
-  return moduleTabIndex === Referenda;
+  const selectedTabId = useModuleTab();
+  return selectedTabId === Referenda;
 }
 
 export function useIsFellowship() {
-  const moduleTabIndex = useModuleTab();
-  return moduleTabIndex === Fellowship;
+  const selectedTabId = useModuleTab();
+  return selectedTabId === Fellowship;
 }
 
 export function useModuleName() {
-  const moduleTabIndex = useModuleTab();
-  if (moduleTabIndex === Referenda) {
+  const selectedTabId = useModuleTab();
+  if (selectedTabId === Referenda) {
     return "referenda";
-  } else if (moduleTabIndex === Fellowship) {
+  } else if (selectedTabId === Fellowship) {
     return "fellowship";
-  } else if (moduleTabIndex === Democracy) {
+  } else if (selectedTabId === Democracy) {
     return "democracy";
   } else {
     throw new Error("Invalid module tab index");
   }
 }
 
-export function ModuleTab({ tabIds }) {
-  const { moduleTabIndex, setModuleTabIndex } = useContext(ModuleTabContext);
+export function useAvailableModuleTabs() {
+  const { availableTabs } = useContext(ModuleTabContext);
+  return availableTabs;
+}
+
+export function ModuleTab() {
+  const { availableTabs, selectedTabId, setSelectedTabId } =
+    useContext(ModuleTabContext);
+
+  if (!(availableTabs?.length > 1)) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <Tab
         small
-        tabs={(tabIds || []).map((tabId) => ({
-          tabId,
-          tabTitle: tabId,
-        }))}
-        selectedTabId={moduleTabIndex}
-        setSelectedTabId={setModuleTabIndex}
+        tabs={availableTabs}
+        selectedTabId={selectedTabId}
+        setSelectedTabId={setSelectedTabId}
       />
     </Wrapper>
   );

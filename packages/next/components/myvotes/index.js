@@ -7,11 +7,25 @@ import { useChainSettings } from "next-common/context/chain";
 import ModuleVotes from "./moduleVotes";
 
 export default function MyVotes() {
-  const { hasReferenda } = useChainSettings();
-  const defaultTab = hasReferenda ? Referenda : Democracy;
+  const { hasReferenda, noDemocracyModule } = useChainSettings();
+
+  const availableTabs = [];
+  if (hasReferenda) {
+    availableTabs.push({ tabId: Referenda, tabTitle: Referenda });
+  }
+  if (!noDemocracyModule) {
+    availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
+  }
+
+  let defaultTab;
+  if (hasReferenda) {
+    defaultTab = Referenda;
+  } else {
+    defaultTab = Democracy;
+  }
 
   return (
-    <ModuleTabProvider defaultTab={defaultTab}>
+    <ModuleTabProvider availableTabs={availableTabs} defaultTab={defaultTab}>
       <ModuleVotes />
     </ModuleTabProvider>
   );
