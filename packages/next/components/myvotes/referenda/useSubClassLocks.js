@@ -13,7 +13,7 @@ export default function useSubClassLocks() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!api) {
+    if (!api || !api.query.convictionVoting || !address) {
       return;
     }
 
