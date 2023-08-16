@@ -5,7 +5,7 @@ export default function getFinishedVoteLock(
   lockingPeriod,
 ) {
   const { isSplit, aye, balance, conviction } = vote;
-  const { approved, end } = referendumInfo;
+  const { approved, end } = referendumInfo.finished;
 
   if (isSplit) {
     return 0;
