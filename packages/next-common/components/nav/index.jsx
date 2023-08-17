@@ -168,11 +168,11 @@ function NavMobile() {
         <NavMenu />
       </NavMobileFloatContainer>
 
-      <NavMobileFloatContainer
-        className={clsx("bg-neutral100", toolbarVisible ? "block" : "hidden")}
-      >
-        <HeaderDrawer />
-      </NavMobileFloatContainer>
+      {toolbarVisible && (
+        <NavMobileFloatContainer className={clsx("bg-neutral100")}>
+          <HeaderDrawer />
+        </NavMobileFloatContainer>
+      )}
     </nav>
   );
 }
