@@ -1,11 +1,13 @@
-import Avatar from "../../../assets/icons/chain/moonriver.png";
-
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
-import { ProjectLogoMoonriverDark } from "@osn/icons/subsquare";
+import {
+  ProjectIconMoonriverDark,
+  ProjectIconMoonriverLight,
+  ProjectLogoMoonriverDark,
+} from "@osn/icons/subsquare";
 
 export const DEFAULT_MOONRIVER_NODES = [
   {
@@ -30,7 +32,8 @@ const moonriver = {
   endpoints: DEFAULT_MOONRIVER_NODES,
   navLogo: ProjectLogoMoonriverDark,
   navLogoDark: ProjectLogoMoonriverDark,
-  avatar: Avatar,
+  avatar: ProjectIconMoonriverLight,
+  darkAvatar: ProjectIconMoonriverDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
