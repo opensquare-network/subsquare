@@ -7,6 +7,7 @@ import FlexBetween from "../styled/flexBetween";
 const Label = styled.div`
   font-weight: bold;
   font-size: 12px;
+  color: var(--textPrimary);
 `;
 
 const SubButton = styled.button`
