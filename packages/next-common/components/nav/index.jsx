@@ -162,11 +162,11 @@ function NavMobile() {
         </NavMobileToolbarItem>
       </div>
 
-      <NavMobileFloatContainer
-        className={clsx("bg-navigationBg", menuVisible ? "block" : "hidden")}
-      >
-        <NavMenu />
-      </NavMobileFloatContainer>
+      {menuVisible && (
+        <NavMobileFloatContainer className={clsx("bg-navigationBg")}>
+          <NavMenu />
+        </NavMobileFloatContainer>
+      )}
 
       {toolbarVisible && (
         <NavMobileFloatContainer className={clsx("bg-neutral100")}>
