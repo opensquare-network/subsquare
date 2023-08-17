@@ -1,10 +1,10 @@
-import Avatar from "../../../assets/icons/chain/polkadot.png";
-
 import capitalize from "../../capitalize";
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import {
+  ProjectIconPolkadotDark,
+  ProjectIconPolkadotLight,
   ProjectLogoPolkadotDark,
   ProjectLogoPolkadotLight,
 } from "@osn/icons/subsquare";
@@ -84,7 +84,8 @@ const polkadot = {
   blockTime: 6000,
   snsCoverCid: "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe",
   endpoints: defaultPolkadotNodes,
-  avatar: Avatar,
+  avatar: ProjectIconPolkadotLight,
+  darkAvatar: ProjectIconPolkadotDark,
   navLogo: ProjectLogoPolkadotLight,
   navLogoDark: ProjectLogoPolkadotDark,
   group: MenuGroups.PolkadotAndParachains,

@@ -1,11 +1,13 @@
-import Avatar from "../../../assets/icons/chain/moonbeam.png";
-
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
-import { ProjectLogoMoonbeamDark } from "@osn/icons/subsquare";
+import {
+  ProjectIconMoonbeamDark,
+  ProjectIconMoonbeamLight,
+  ProjectLogoMoonbeamDark,
+} from "@osn/icons/subsquare";
 
 export const DEFAULT_MOONBEAM_NODES = [
   {
@@ -28,7 +30,8 @@ const moonbeam = {
   ss58Format: 18,
   snsCoverCid: "QmQ2r48Wf6yu8d9k9VEejvcRoxNDVuiqW12ui7RCiXgWQg",
   endpoints: DEFAULT_MOONBEAM_NODES,
-  avatar: Avatar,
+  avatar: ProjectIconMoonbeamLight,
+  darkAvatar: ProjectIconMoonbeamDark,
   navLogo: ProjectLogoMoonbeamDark,
   navLogoDark: ProjectLogoMoonbeamDark,
   group: MenuGroups.PolkadotAndParachains,

@@ -1,7 +1,10 @@
-import Avatar from "../../../assets/icons/chain/karura.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import { ProjectLogoKaruraDark } from "@osn/icons/subsquare";
+import {
+  ProjectIconKaruraDark,
+  ProjectIconKaruraLight,
+  ProjectLogoKaruraDark,
+} from "@osn/icons/subsquare";
 
 export const DEFAULT_KARURA_NODES = [
   {
@@ -67,7 +70,8 @@ const karura = {
   ss58Format: 8,
   snsCoverCid: "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny",
   endpoints: DEFAULT_KARURA_NODES,
-  avatar: Avatar,
+  avatar: ProjectIconKaruraLight,
+  darkAvatar: ProjectIconKaruraDark,
   navLogo: ProjectLogoKaruraDark,
   navLogoDark: ProjectLogoKaruraDark,
   links,

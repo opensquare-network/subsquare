@@ -1,10 +1,12 @@
-import Avatar from "../../../assets/icons/chain/litentry.png";
-
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import { ProjectLogoLitentryDark } from "@osn/icons/subsquare";
+import {
+  ProjectIconLitentryDark,
+  ProjectIconLitentryLight,
+  ProjectLogoLitentryDark,
+} from "@osn/icons/subsquare";
 
 const DEFAULT_LITENTRY_NODES = [
   {
@@ -58,7 +60,8 @@ const litentry = {
   ss58Format: 31,
   snsCoverCid: "bafybeiej7his75nmaf2yhm6n3sqxf3ew2kvkyb7q37pbt37b72jwvs5cu4",
   endpoints: DEFAULT_LITENTRY_NODES,
-  avatar: Avatar,
+  avatar: ProjectIconLitentryLight,
+  darkAvatar: ProjectIconLitentryDark,
   navLogo: ProjectLogoLitentryDark,
   navLogoDark: ProjectLogoLitentryDark,
   links,

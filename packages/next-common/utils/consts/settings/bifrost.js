@@ -1,7 +1,10 @@
-import Avatar from "../../../assets/icons/chain/bifrost-kusama.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import { ProjectLogoBifrostKusamaDark } from "@osn/icons/subsquare";
+import {
+  ProjectIconBifrostKusamaDark,
+  ProjectIconBifrostKusamaLight,
+  ProjectLogoBifrostKusamaDark,
+} from "@osn/icons/subsquare";
 
 const DEFAULT_BIFROST_NODES = [
   {
@@ -57,7 +60,8 @@ const bifrost = {
   ss58Format: 6,
   snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
   endpoints: DEFAULT_BIFROST_NODES,
-  avatar: Avatar,
+  avatar: ProjectIconBifrostKusamaLight,
+  darkAvatar: ProjectIconBifrostKusamaDark,
   navLogo: ProjectLogoBifrostKusamaDark,
   navLogoDark: ProjectLogoBifrostKusamaDark,
   links,

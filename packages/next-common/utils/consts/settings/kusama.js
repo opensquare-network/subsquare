@@ -1,8 +1,10 @@
-import Avatar from "../../../assets/icons/chain/kusama.png";
-import DarkAvatar from "../../../assets/icons/chain/kusama-dark.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import { ProjectLogoKusamaDark } from "@osn/icons/subsquare";
+import {
+  ProjectIconKusamaDark,
+  ProjectIconKusamaLight,
+  ProjectLogoKusamaDark,
+} from "@osn/icons/subsquare";
 
 const DEFAULT_KUSAMA_NODES = [
   {
@@ -77,8 +79,8 @@ const kusama = {
   blockTime: 6000,
   snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
   endpoints: DEFAULT_KUSAMA_NODES,
-  avatar: Avatar,
-  darkAvatar: DarkAvatar,
+  avatar: ProjectIconKusamaLight,
+  darkAvatar: ProjectIconKusamaDark,
   navLogo: ProjectLogoKusamaDark,
   navLogoDark: ProjectLogoKusamaDark,
   group: MenuGroups.KusamaAndParachains,

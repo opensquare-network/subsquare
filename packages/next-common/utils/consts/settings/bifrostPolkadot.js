@@ -1,7 +1,10 @@
-import Avatar from "../../../assets/icons/chain/bifrost-polkadot.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import { ProjectLogoBifrostPolkadotDark } from "@osn/icons/subsquare";
+import {
+  ProjectIconBifrostPolkadotDark,
+  ProjectIconBifrostPolkadotLight,
+  ProjectLogoBifrostPolkadotDark,
+} from "@osn/icons/subsquare";
 import bifrost from "./bifrost";
 
 const DEFAULT_NODES = [
@@ -28,7 +31,8 @@ const bifrostPolkadot = {
   ss58Format: 6,
   snsCoverCid: "bafybeicykjzlwi3rjs637txy4fn2m6qbjofjwlypgmthbbb7i3f522xjzy",
   endpoints: DEFAULT_NODES,
-  avatar: Avatar,
+  avatar: ProjectIconBifrostPolkadotLight,
+  darkAvatar: ProjectIconBifrostPolkadotDark,
   navLogo: ProjectLogoBifrostPolkadotDark,
   navLogoDark: ProjectLogoBifrostPolkadotDark,
   links,
