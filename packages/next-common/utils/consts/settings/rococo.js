@@ -1,10 +1,9 @@
 import capitalize from "../../capitalize";
+import Avatar from "../../../assets/icons/chain/rococo.png";
 import MenuGroups from "./menuGroups";
 import Chains from "../chains";
 import { defaultPostLabels } from "./common";
 import {
-  ProjectIconRococoDark,
-  ProjectIconRococoLight,
   ProjectLogoRococoDark,
   ProjectLogoRococoLight,
 } from "@osn/icons/subsquare";
@@ -36,8 +35,7 @@ const rococo = {
   blockTime: 6000,
   snsCoverCid: "bafybeia7np32r7cq2ykeeopfyxfgxhhsi2e4tl4bew4zjwu2zixiw2rx74",
   endpoints: defaultRococoNodes,
-  avatar: ProjectIconRococoLight,
-  darkAvatar: ProjectIconRococoDark,
+  avatar: Avatar,
   navLogo: ProjectLogoRococoLight,
   navLogoDark: ProjectLogoRococoDark,
   links,

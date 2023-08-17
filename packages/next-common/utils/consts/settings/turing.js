@@ -1,12 +1,10 @@
+import Avatar from "../../../assets/icons/chain/turing.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconTuringDark,
-  ProjectIconTuringLight,
-  ProjectLogoTuringDark,
-} from "@osn/icons/subsquare";
+import { ProjectLogoTuringDark } from "@osn/icons/subsquare";
 
 export const DEFAULT_TURING_NODES = [
   {
@@ -60,8 +58,7 @@ const turing = {
   ss58Format: 51,
   snsCoverCid: "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
   endpoints: DEFAULT_TURING_NODES,
-  avatar: ProjectIconTuringLight,
-  darkAvatar: ProjectIconTuringDark,
+  avatar: Avatar,
   navLogo: ProjectLogoTuringDark,
   navLogoDark: ProjectLogoTuringDark,
   links,

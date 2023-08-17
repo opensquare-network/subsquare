@@ -1,11 +1,8 @@
+import Avatar from "../../../assets/icons/chain/kintsugi.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
-import {
-  ProjectIconKintsugiDark,
-  ProjectIconKintsugiLight,
-  ProjectLogoKintsugiDark,
-} from "@osn/icons/subsquare";
+import { ProjectLogoKintsugiDark } from "@osn/icons/subsquare";
 
 const DEFAULT_KINTSUGI_NODES =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
@@ -72,8 +69,7 @@ const kintsugi = {
   ss58Format: 2092,
   snsCoverCid: "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
   endpoints: DEFAULT_KINTSUGI_NODES,
-  avatar: ProjectIconKintsugiLight,
-  darkAvatar: ProjectIconKintsugiDark,
+  avatar: Avatar,
   navLogo: ProjectLogoKintsugiDark,
   navLogoDark: ProjectLogoKintsugiDark,
   links,

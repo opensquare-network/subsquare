@@ -1,9 +1,9 @@
+import Avatar from "../../../assets/icons/chain/interlay.png";
+import DarkAvatar from "../../../assets/icons/chain/interlay-dark.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
 import {
-  ProjectIconInterlayDark,
-  ProjectIconInterlayLight,
   ProjectLogoInterlayDark,
   ProjectLogoInterlayLight,
 } from "@osn/icons/subsquare";
@@ -65,8 +65,8 @@ const interlay = {
   ss58Format: 2032,
   snsCoverCid: "bafybeifqabzy3677ms2jihcb4ed4kxcvbjtxskctjboidcoy7pbosqrqyi",
   endpoints: DEFAULT_INTERLAY_NODES,
-  avatar: ProjectIconInterlayLight,
-  darkAvatar: ProjectIconInterlayDark,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
   navLogo: ProjectLogoInterlayLight,
   navLogoDark: ProjectLogoInterlayDark,
   links,

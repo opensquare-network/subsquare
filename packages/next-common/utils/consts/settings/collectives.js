@@ -1,9 +1,10 @@
+import Avatar from "../../../assets/icons/chain/collectives.png";
+import DarkAvatar from "../../../assets/icons/chain/collectives-dark.png";
+
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
 import {
-  ProjectIconPolkadotCollectivesDark,
-  ProjectIconPolkadotCollectivesLight,
   ProjectLogoPolkadotCollectivesDark,
   ProjectLogoPolkadotCollectivesLight,
 } from "@osn/icons/subsquare";
@@ -36,8 +37,8 @@ const collectives = {
   ss58Format: 0,
   snsCoverCid: "bafybeigyl3p7ikczpt4an4diyynbqsco6oqxza47vf3o2jeinkumm5pwby",
   endpoints: collectivesEndpoints,
-  avatar: ProjectIconPolkadotCollectivesLight,
-  darkAvatar: ProjectIconPolkadotCollectivesDark,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
   navLogo: ProjectLogoPolkadotCollectivesLight,
   navLogoDark: ProjectLogoPolkadotCollectivesDark,
   group: MenuGroups.PolkadotAndParachains,

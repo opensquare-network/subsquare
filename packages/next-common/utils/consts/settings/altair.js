@@ -1,13 +1,10 @@
 import Chains from "../chains";
 import capitalize from "../../capitalize";
+import Avatar from "../../../assets/icons/chain/altair.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
-import {
-  ProjectIconAltairDark,
-  ProjectIconAltairLight,
-  ProjectLogoAltairDark,
-} from "@osn/icons/subsquare";
+import { ProjectLogoAltairDark } from "@osn/icons/subsquare";
 
 const nodes = [
   {
@@ -37,8 +34,7 @@ const altair = {
   ss58Format: 136,
   snsCoverCid: "bafybeidmyuzahzhhsxk5yeofehqj3y2yhj5wn5n4xqblx3j4kczytvnvs4",
   endpoints: nodes,
-  avatar: ProjectIconAltairLight,
-  darkAvatar: ProjectIconAltairDark,
+  avatar: Avatar,
   navLogo: ProjectLogoAltairDark,
   navLogoDark: ProjectLogoAltairDark,
   links,

@@ -1,8 +1,7 @@
 import Chains from "next-common/utils/consts/chains";
 import capitalize from "next-common/utils/capitalize";
+import Avatar from "../../../assets/icons/chain/vara.png";
 import {
-  ProjectIconVaraDark,
-  ProjectIconVaraLight,
   ProjectLogoVaraDark,
   ProjectLogoVaraLight,
 } from "@osn/icons/subsquare";
@@ -57,8 +56,7 @@ const vara = {
   snsCoverCid: "bafybeigeeecghmad3ap7alskf5mlifu7got2rbwcyya7qh6m6opgnd34gq",
   endpoints: nodes,
   links,
-  avatar: ProjectIconVaraLight,
-  darkAvatar: ProjectIconVaraDark,
+  avatar: Avatar,
   navLogo: ProjectLogoVaraLight,
   navLogoDark: ProjectLogoVaraDark,
   group: MenuGroups.Solochain,

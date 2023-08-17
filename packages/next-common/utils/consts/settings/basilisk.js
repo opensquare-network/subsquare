@@ -1,10 +1,7 @@
+import Avatar from "../../../assets/icons/chain/basilisk.png";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
-import {
-  ProjectIconBasiliskDark,
-  ProjectIconBasiliskLight,
-  ProjectLogoBasiliskDark,
-} from "@osn/icons/subsquare";
+import { ProjectLogoBasiliskDark } from "@osn/icons/subsquare";
 
 const DEFAULT_BASILISK_NODES = [
   {
@@ -53,8 +50,7 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
-  avatar: ProjectIconBasiliskLight,
-  darkAvatar: ProjectIconBasiliskDark,
+  avatar: Avatar,
   navLogo: ProjectLogoBasiliskDark,
   navLogoDark: ProjectLogoBasiliskDark,
   endpoints: DEFAULT_BASILISK_NODES,

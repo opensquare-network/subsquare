@@ -1,10 +1,7 @@
+import Avatar from "../../../assets/icons/chain/phala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconPhalaDark,
-  ProjectIconPhalaLight,
-  ProjectLogoPhalaDark,
-} from "@osn/icons/subsquare";
+import { ProjectLogoPhalaDark } from "@osn/icons/subsquare";
 
 const DEFAULT_PHALA_NODES = [
   {
@@ -54,8 +51,7 @@ const phala = {
   ss58Format: 30,
   snsCoverCid: "bafybeibte36v2qk5wg352hk7ewvkuhoke6iwb7l5gvjt7wy446yayxjie4",
   endpoints: DEFAULT_PHALA_NODES,
-  avatar: ProjectIconPhalaLight,
-  darkAvatar: ProjectIconPhalaDark,
+  avatar: Avatar,
   navLogo: ProjectLogoPhalaDark,
   navLogoDark: ProjectLogoPhalaDark,
   links,
