@@ -11,7 +11,7 @@ export default function ChainIcon({ chain }) {
   darkAvatar = darkAvatar ?? avatar;
 
   return (
-    <div className="flex items-center w-6 h-6">
+    <span className="inline-flex items-center w-6 h-6">
       {avatar?.src ? (
         <Img src={avatar.src} className="dark:hidden" />
       ) : (
@@ -22,6 +22,6 @@ export default function ChainIcon({ chain }) {
       ) : (
         <chainSetting.darkAvatar className="logo hidden dark:block" />
       )}
-    </div>
+    </span>
   );
 }
