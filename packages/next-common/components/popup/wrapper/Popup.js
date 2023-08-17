@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import * as Dialog from "@radix-ui/react-dialog";
 import noop from "lodash.noop";
 import clsx from "clsx";
 import { SystemClose } from "@osn/icons/subsquare";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
 
 let z = 999;
 export default function Popup({
@@ -14,9 +13,6 @@ export default function Popup({
   className = "",
   wide,
 }) {
-  const ref = useRef();
-  useOnClickOutside(ref, onClose);
-
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
   useEffect(() => {
@@ -31,9 +27,13 @@ export default function Popup({
           <div
             className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
             style={{ zIndex: zOverlay }}
+            onClick={(event) => {
+              if (event.target === event.currentTarget) {
+                onClose();
+              }
+            }}
           >
             <NeutralPanel
-              ref={ref}
               className={clsx(
                 "relative mt-[12vh] mb-4",
                 "w-[400px] max-w-full",
