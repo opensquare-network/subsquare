@@ -21,6 +21,7 @@ const Label = styled.div`
   margin-bottom: 8px;
   font-weight: bold;
   font-size: 12px;
+  color: var(--textPrimary);
 `;
 
 /**
