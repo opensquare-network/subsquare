@@ -46,7 +46,7 @@ function VotingProposals({ host }) {
     return null;
   }
   if (posts.length <= 0) {
-    return <NoProposals />;
+    return <NoProposals host={host} />;
   }
 
   return (
