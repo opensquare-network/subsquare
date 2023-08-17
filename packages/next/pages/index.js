@@ -35,10 +35,9 @@ import Link from "next/link";
 import { SystemTip } from "@osn/icons/subsquare";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
-import Api from "next-common/services/api";
 import {
-  hasDefinedOffChainVoting,
   hasDefinedBounties,
+  hasDefinedOffChainVoting,
 } from "next-common/utils/summaryExternalInfo";
 
 function SubscribeTip() {
@@ -62,257 +61,255 @@ function SubscribeTip() {
   );
 }
 
-export default withLoginUserRedux(
-  ({ overview, tracks, fellowshipTracks, activeBountyPosts }) => {
-    const chain = useChain();
-    const isKarura = ["karura", "acala"].includes(chain);
-    const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
-    const isCollectives = isCollectivesChain(chain);
-    const isZeitgeist = chain === Chains.zeitgeist;
-    const chainSettings = useChainSettings();
-    const user = useUser();
+export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
+  const chain = useChain();
+  const isKarura = ["karura", "acala"].includes(chain);
+  const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
+  const isCollectives = isCollectivesChain(chain);
+  const isZeitgeist = chain === Chains.zeitgeist;
+  const chainSettings = useChainSettings();
+  const user = useUser();
 
-    const discussionsCategory = [
-      {
-        category: businessCategory.discussions,
-        link: "/discussions",
-        items: (overview?.discussions ?? []).map((item) =>
-          normalizeDiscussionListItem(chain, item),
-        ),
-      },
-    ];
+  const discussionsCategory = [
+    {
+      category: businessCategory.discussions,
+      link: "/discussions",
+      items: (overview?.discussions ?? []).map((item) =>
+        normalizeDiscussionListItem(chain, item),
+      ),
+    },
+  ];
 
-    const discussions = isCentrifuge ? [] : discussionsCategory;
+  const discussions = isCentrifuge ? [] : discussionsCategory;
 
-    let overviewData = [];
+  let overviewData = [];
 
-    if (chainSettings.hasReferenda) {
-      overviewData.push({
-        category: businessCategory.openGovReferenda,
-        link: "/referenda",
-        items: (overview?.gov2?.referenda ?? []).map((item) =>
-          normalizeGov2ReferendaListItem(item, tracks),
-        ),
-      });
-    }
-    if (chainSettings.hasFellowship) {
-      overviewData.push({
-        category: businessCategory.fellowship,
-        link: "/fellowship",
-        items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
-          normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-        ),
-      });
-    }
-
-    if (isCollectives) {
-      overviewData.push(
-        {
-          category: businessCategory.allianceMotions,
-          link: "/alliance/motions",
-          items: (overview?.alliance?.motions ?? []).map((item) =>
-            normalizeAllianceMotion(item),
-          ),
-        },
-        {
-          category: businessCategory.allianceAnnouncements,
-          link: "/alliance/announcements",
-          items: (overview?.alliance?.announcements ?? []).map((item) =>
-            normalizeAllianceAnnouncement(item),
-          ),
-        },
-      );
-    }
-
-    overviewData.push(
-      {
-        category: businessCategory.democracyReferenda,
-        link: "/democracy/referenda",
-        items: (overview?.democracy?.referenda ?? []).map((item) =>
-          normalizeReferendaListItem(chain, item),
-        ),
-      },
-      {
-        category: businessCategory.democracyExternals,
-        link: "/democracy/externals",
-        items: (overview?.democracy?.externals ?? []).map((item) =>
-          normalizeExternalListItem(chain, item),
-        ),
-      },
-      {
-        category: businessCategory.democracyProposals,
-        link: "/democracy/proposals",
-        items: (overview?.democracy?.proposals ?? []).map((item) =>
-          normalizeProposalListItem(chain, item),
-        ),
-      },
-      ...discussions,
-    );
-
-    if (isMoonChain()) {
-      overviewData.push(
-        {
-          category: businessCategory.councilMotions,
-          link: "/council/motions",
-          items: (overview?.moonCouncil?.motions ?? []).map((item) =>
-            normalizeCouncilMotionListItem(chain, item),
-          ),
-        },
-        {
-          category: businessCategory.treasuryCouncilMotions,
-          link: "/treasury-council/motions",
-          items: (overview?.council?.motions ?? []).map((item) =>
-            normalizeTreasuryCouncilMotionListItem(chain, item),
-          ),
-        },
-      );
-    } else {
-      overviewData.push({
-        category: businessCategory.councilMotions,
-        link: "/council/motions",
-        items: (overview?.council?.motions ?? []).map((item) =>
-          normalizeCouncilMotionListItem(chain, item),
-        ),
-      });
-    }
-
+  if (chainSettings.hasReferenda) {
     overviewData.push({
-      category: businessCategory.tcProposals,
-      link: "/techcomm/proposals",
-      items: (overview?.techComm?.motions ?? []).map((item) =>
-        normalizeTechCommMotionListItem(chain, item),
+      category: businessCategory.openGovReferenda,
+      link: "/referenda",
+      items: (overview?.gov2?.referenda ?? []).map((item) =>
+        normalizeGov2ReferendaListItem(item, tracks),
       ),
     });
-    if (isMoonChain()) {
-      overviewData.push({
-        category: businessCategory.openTechCommitteeProposals,
-        link: "/open-techcomm/proposals",
-        items: (overview?.openTechComm?.motions ?? []).map((item) =>
-          normalizeOpenTechCommProposalListItem(chain, item),
-        ),
-      });
-    }
+  }
+  if (chainSettings.hasFellowship) {
+    overviewData.push({
+      category: businessCategory.fellowship,
+      link: "/fellowship",
+      items: (overview?.gov2?.fellowshipReferenda ?? []).map((item) =>
+        normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+      ),
+    });
+  }
 
-    if (isKarura) {
-      overviewData.push({
-        category: businessCategory.financialMotions,
-        link: "/financial-council/motions",
-        items: (overview?.financialCouncil?.motions ?? []).map((item) =>
-          toFinancialMotionsListItem(chain, item),
-        ),
-      });
-    }
-
+  if (isCollectives) {
     overviewData.push(
       {
-        category: businessCategory.treasuryProposals,
-        link: "/treasury/proposals",
-        items: (overview?.treasury?.proposals ?? []).map((item) =>
-          normalizeTreasuryProposalListItem(chain, item),
+        category: businessCategory.allianceMotions,
+        link: "/alliance/motions",
+        items: (overview?.alliance?.motions ?? []).map((item) =>
+          normalizeAllianceMotion(item),
         ),
       },
       {
-        category: businessCategory.treasuryBounties,
-        link: "/treasury/bounties",
-        items: (overview?.treasury?.bounties ?? []).map((item) =>
-          normalizeBountyListItem(chain, item),
-        ),
-      },
-      {
-        category: businessCategory.treasuryTips,
-        link: "/treasury/tips",
-        items: (overview?.treasury?.tips ?? []).map((item) =>
-          normalizeTipListItem(chain, item),
+        category: businessCategory.allianceAnnouncements,
+        link: "/alliance/announcements",
+        items: (overview?.alliance?.announcements ?? []).map((item) =>
+          normalizeAllianceAnnouncement(item),
         ),
       },
     );
+  }
 
-    if (isZeitgeist) {
-      overviewData.push({
-        category: businessCategory.advisoryMotions,
-        link: "/advisory-committee/motions",
-        items: (overview?.advisoryCommittee?.motions ?? []).map((item) =>
-          toAdvisoryMotionsListItem(chain, item),
+  overviewData.push(
+    {
+      category: businessCategory.democracyReferenda,
+      link: "/democracy/referenda",
+      items: (overview?.democracy?.referenda ?? []).map((item) =>
+        normalizeReferendaListItem(chain, item),
+      ),
+    },
+    {
+      category: businessCategory.democracyExternals,
+      link: "/democracy/externals",
+      items: (overview?.democracy?.externals ?? []).map((item) =>
+        normalizeExternalListItem(chain, item),
+      ),
+    },
+    {
+      category: businessCategory.democracyProposals,
+      link: "/democracy/proposals",
+      items: (overview?.democracy?.proposals ?? []).map((item) =>
+        normalizeProposalListItem(chain, item),
+      ),
+    },
+    ...discussions,
+  );
+
+  if (isMoonChain()) {
+    overviewData.push(
+      {
+        category: businessCategory.councilMotions,
+        link: "/council/motions",
+        items: (overview?.moonCouncil?.motions ?? []).map((item) =>
+          normalizeCouncilMotionListItem(chain, item),
         ),
+      },
+      {
+        category: businessCategory.treasuryCouncilMotions,
+        link: "/treasury-council/motions",
+        items: (overview?.council?.motions ?? []).map((item) =>
+          normalizeTreasuryCouncilMotionListItem(chain, item),
+        ),
+      },
+    );
+  } else {
+    overviewData.push({
+      category: businessCategory.councilMotions,
+      link: "/council/motions",
+      items: (overview?.council?.motions ?? []).map((item) =>
+        normalizeCouncilMotionListItem(chain, item),
+      ),
+    });
+  }
+
+  overviewData.push({
+    category: businessCategory.tcProposals,
+    link: "/techcomm/proposals",
+    items: (overview?.techComm?.motions ?? []).map((item) =>
+      normalizeTechCommMotionListItem(chain, item),
+    ),
+  });
+  if (isMoonChain()) {
+    overviewData.push({
+      category: businessCategory.openTechCommitteeProposals,
+      link: "/open-techcomm/proposals",
+      items: (overview?.openTechComm?.motions ?? []).map((item) =>
+        normalizeOpenTechCommProposalListItem(chain, item),
+      ),
+    });
+  }
+
+  if (isKarura) {
+    overviewData.push({
+      category: businessCategory.financialMotions,
+      link: "/financial-council/motions",
+      items: (overview?.financialCouncil?.motions ?? []).map((item) =>
+        toFinancialMotionsListItem(chain, item),
+      ),
+    });
+  }
+
+  overviewData.push(
+    {
+      category: businessCategory.treasuryProposals,
+      link: "/treasury/proposals",
+      items: (overview?.treasury?.proposals ?? []).map((item) =>
+        normalizeTreasuryProposalListItem(chain, item),
+      ),
+    },
+    {
+      category: businessCategory.treasuryBounties,
+      link: "/treasury/bounties",
+      items: (overview?.treasury?.bounties ?? []).map((item) =>
+        normalizeBountyListItem(chain, item),
+      ),
+    },
+    {
+      category: businessCategory.treasuryTips,
+      link: "/treasury/tips",
+      items: (overview?.treasury?.tips ?? []).map((item) =>
+        normalizeTipListItem(chain, item),
+      ),
+    },
+  );
+
+  if (isZeitgeist) {
+    overviewData.push({
+      category: businessCategory.advisoryMotions,
+      link: "/advisory-committee/motions",
+      items: (overview?.advisoryCommittee?.motions ?? []).map((item) =>
+        toAdvisoryMotionsListItem(chain, item),
+      ),
+    });
+  }
+
+  if (chain === "kabocha") {
+    overviewData = discussionsCategory;
+  }
+
+  const filteredOverviewData = overviewData.filter(
+    (data) => data?.items?.length > 0 || data?.category === "Discussions",
+  );
+
+  // Sort the items with length = 0 to the end of the list
+  filteredOverviewData.sort((a, b) =>
+    a?.items?.length > 0 && b?.items?.length > 0
+      ? 0
+      : b?.items?.length - a?.items?.length,
+  );
+
+  const SummaryComponent = isCollectivesChain(chain)
+    ? AllianceOverviewSummary
+    : OverviewSummary;
+
+  const tabs = [
+    {
+      label: "Overview",
+      url: "/",
+      exactMatch: false,
+    },
+  ];
+
+  if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
+    if (user?.address) {
+      tabs.push({
+        label: "My Votes",
+        url: "/votes",
       });
     }
+  }
+  const titleExtra = (
+    <div className="max-md:hidden transition-all h-[32px] w-[32px] hover:w-[224px] [&_span]:hidden [&_span]:hover:inline">
+      <SubscribeTip />
+    </div>
+  );
 
-    if (chain === "kabocha") {
-      overviewData = discussionsCategory;
-    }
-
-    const filteredOverviewData = overviewData.filter(
-      (data) => data?.items?.length > 0 || data?.category === "Discussions",
-    );
-
-    // Sort the items with length = 0 to the end of the list
-    filteredOverviewData.sort((a, b) =>
-      a?.items?.length > 0 && b?.items?.length > 0
-        ? 0
-        : b?.items?.length - a?.items?.length,
-    );
-
-    const SummaryComponent = isCollectivesChain(chain)
-      ? AllianceOverviewSummary
-      : OverviewSummary;
-
-    const tabs = [
-      {
-        label: "Overview",
-        url: "/",
-        exactMatch: false,
-      },
-    ];
-
-    if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
-      if (user?.address) {
-        tabs.push({
-          label: "My Votes",
-          url: "/votes",
-        });
-      }
-    }
-    const titleExtra = (
-      <div className="max-md:hidden transition-all h-[32px] w-[32px] hover:w-[224px] [&_span]:hidden [&_span]:hover:inline">
+  const headContent = (
+    <div className="flex flex-col gap-[16px]">
+      <ChainSocialLinks />
+      <div className="md:hidden">
         <SubscribeTip />
       </div>
-    );
+    </div>
+  );
 
-    const headContent = (
-      <div className="flex flex-col gap-[16px]">
-        <ChainSocialLinks />
-        <div className="md:hidden">
-          <SubscribeTip />
-        </div>
+  let externalInfo = null;
+  if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
+    externalInfo = (
+      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+        <OffChainVoting />
+        <Bounties />
       </div>
     );
+  }
 
-    let externalInfo = null;
-    if (hasDefinedOffChainVoting() || activeBountyPosts.length > 0) {
-      externalInfo = (
-        <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
-          {hasDefinedOffChainVoting() && <OffChainVoting />}
-          {hasDefinedBounties() && <Bounties />}
-        </div>
-      );
-    }
-
-    return (
-      <ListLayout
-        title={chainSettings.name}
-        titleExtra={titleExtra}
-        seoInfo={{ title: "" }}
-        description={chainSettings.description}
-        headContent={headContent}
-        summary={<SummaryComponent summaryData={overview?.summary} />}
-        summaryFooter={externalInfo}
-        tabs={tabs}
-      >
-        <OverviewPostList overviewData={filteredOverviewData} />
-      </ListLayout>
-    );
-  },
-);
+  return (
+    <ListLayout
+      title={chainSettings.name}
+      titleExtra={titleExtra}
+      seoInfo={{ title: "" }}
+      description={chainSettings.description}
+      headContent={headContent}
+      summary={<SummaryComponent summaryData={overview?.summary} />}
+      summaryFooter={externalInfo}
+      tabs={tabs}
+    >
+      <OverviewPostList overviewData={filteredOverviewData} />
+    </ListLayout>
+  );
+});
 
 export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch("overview");
@@ -322,33 +319,11 @@ export const getServerSideProps = withLoginUser(async () => {
     nextApi.fetch(fellowshipTracksApi),
   ]);
 
-  let activeOffChainVotingPosts = null;
-  if (hasDefinedOffChainVoting()) {
-    const offChainVotingApi = new Api(
-      process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
-        "https://voting.opensquare.io",
-    );
-    ({ result: activeOffChainVotingPosts } = await offChainVotingApi.fetch(
-      `/api/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposals/active`,
-    ));
-  }
-
-  let activeBountyPosts = null;
-  if (hasDefinedBounties()) {
-    const bountiesApi = new Api(process.env.NEXT_PUBLIC_BOUNTIES_API_URL);
-    ({ result: activeBountyPosts } = await bountiesApi.fetch("child-bounties"));
-  }
-
   return {
     props: {
       overview: result ?? null,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
-      activeOffChainVotingPosts: activeOffChainVotingPosts?.items ?? [],
-      activeBountyPosts:
-        activeBountyPosts?.items?.filter(
-          (item) => item.network === process.env.CHAIN,
-        ) ?? [],
     },
   };
 });
