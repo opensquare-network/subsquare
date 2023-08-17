@@ -325,7 +325,8 @@ export const getServerSideProps = withLoginUser(async () => {
   let activeOffChainVotingPosts = null;
   if (hasDefinedOffChainVoting()) {
     const offChainVotingApi = new Api(
-      process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL,
+      process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
+        "https://voting.opensquare.io",
     );
     ({ result: activeOffChainVotingPosts } = await offChainVotingApi.fetch(
       `/api/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposals/active`,

@@ -12,13 +12,17 @@ const NewProposal = styled.a`
 
 export default function OffChainVoting() {
   const { activeOffChainVotingPosts } = usePageProps();
+  const votingHost = `${
+    process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
+    "https://voting.opensquare.io"
+  }`;
   if (!activeOffChainVotingPosts || !activeOffChainVotingPosts.length) {
     return (
       <div className="flex gap-[8px] text-textTertiary leading-[16px] font-medium text-[12px]">
         <span>No active off-chain voting</span>
         <NewProposal
           target="_blank"
-          href={`${process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/create`}
+          href={`${votingHost}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/create`}
         >
           + New Proposal
         </NewProposal>
@@ -31,7 +35,7 @@ export default function OffChainVoting() {
       title="Active off-chain voting"
       items={(activeOffChainVotingPosts || []).map((item) => ({
         title: item.title,
-        href: `${process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposal/${item.cid}`,
+        href: `${votingHost}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposal/${item.cid}`,
       }))}
     />
   );
