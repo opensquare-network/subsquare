@@ -5,7 +5,7 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { pretty_scroll_bar, shadow_200 } from "../styles/componentCss";
+import { pretty_scroll_bar } from "../styles/componentCss";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
@@ -50,7 +50,8 @@ const Options = styled.div`
   margin-top: 4px;
   padding: 8px 0;
   background: var(--neutral100);
-  ${shadow_200};
+  box-shadow: var(--shadow200);
+  border: 1px solid var(--neutral300);
   border-radius: 4px;
   max-height: 320px;
   overflow-y: auto;
