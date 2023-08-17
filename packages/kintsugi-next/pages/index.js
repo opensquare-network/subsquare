@@ -12,6 +12,8 @@ import { isCollectivesChain } from "next-common/utils/chain";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
+import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
+import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 
 export default withLoginUserRedux(({ overview, chain }) => {
   const chainSettings = useChainSettings();
@@ -69,6 +71,15 @@ export default withLoginUserRedux(({ overview, chain }) => {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
+  let externalInfo = null;
+  if (hasDefinedOffChainVoting()) {
+    externalInfo = (
+      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+        <OffChainVoting />
+      </div>
+    );
+  }
+
   return (
     <ListLayout
       title={chainSettings.name}
@@ -76,6 +87,7 @@ export default withLoginUserRedux(({ overview, chain }) => {
       description={chainSettings.description}
       headContent={<ChainSocialLinks />}
       summary={<SummaryComponent summaryData={overview?.summary} />}
+      summaryFooter={externalInfo}
     >
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
