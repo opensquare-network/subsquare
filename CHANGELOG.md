@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.1
+date: 2023-08-17
+- Add OpenSquare off-chain voting and bounties link to summary page.
+- Show OpenGov fellowship votes history on user profile page.
+- Add my votes tab to referenda and democracy page.
+- Refactor: replace old chain icons.
+- Fix styles.
+
 ### 3.4.0
 date: 2023-08-14
 - [Big]Support on-chain votes management, including support for referenda and democracy.
