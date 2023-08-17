@@ -11,7 +11,11 @@ function findRemarkCalls(call) {
     return [call];
   }
 
-  if ("utility" === section && ["batch", "forceBatch"].includes(method)) {
+  if (
+    "utility" === section &&
+    ["batch", "forceBatch"].includes(method) &&
+    args
+  ) {
     const calls = args[0].value;
     return calls.filter((call) => isRemark(call.section, call.method));
   }

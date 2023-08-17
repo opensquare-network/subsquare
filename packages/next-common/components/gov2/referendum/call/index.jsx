@@ -31,8 +31,13 @@ export default function Gov2ReferendumCall() {
 
   let remarks = extractRemarks(proposal?.call);
   for (let i = 0; i < remarks.length; i++) {
+    let key = "Remark";
+    if (remarks.length > 0) {
+      key = `${key} ${i + 1}`;
+    }
+
     data.push([
-      `Remark ${i + 1}`,
+      key,
       <p className="whitespace-pre-wrap" key={`remark-${i}`}>
         {remarks[i]}
       </p>,
