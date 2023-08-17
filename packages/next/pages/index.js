@@ -37,8 +37,8 @@ import OffChainVoting from "next-common/components/summary/externalInfo/offChain
 import Bounties from "next-common/components/summary/externalInfo/bounties";
 import Api from "next-common/services/api";
 import {
-  hasDefinedOffChainVoting,
   hasDefinedBounties,
+  hasDefinedOffChainVoting,
 } from "next-common/utils/summaryExternalInfo";
 
 function SubscribeTip() {
@@ -291,7 +291,7 @@ export default withLoginUserRedux(
     if (hasDefinedOffChainVoting() || activeBountyPosts.length > 0) {
       externalInfo = (
         <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
-          {hasDefinedOffChainVoting() && <OffChainVoting />}
+          <OffChainVoting />
           {hasDefinedBounties() && <Bounties />}
         </div>
       );
@@ -322,17 +322,6 @@ export const getServerSideProps = withLoginUser(async () => {
     nextApi.fetch(fellowshipTracksApi),
   ]);
 
-  let activeOffChainVotingPosts = null;
-  if (hasDefinedOffChainVoting()) {
-    const offChainVotingApi = new Api(
-      process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
-        "https://voting.opensquare.io",
-    );
-    ({ result: activeOffChainVotingPosts } = await offChainVotingApi.fetch(
-      `/api/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposals/active`,
-    ));
-  }
-
   let activeBountyPosts = null;
   if (hasDefinedBounties()) {
     const bountiesApi = new Api(process.env.NEXT_PUBLIC_BOUNTIES_API_URL);
@@ -344,7 +333,6 @@ export const getServerSideProps = withLoginUser(async () => {
       overview: result ?? null,
       tracks: tracks ?? [],
       fellowshipTracks: fellowshipTracks ?? [],
-      activeOffChainVotingPosts: activeOffChainVotingPosts?.items ?? [],
       activeBountyPosts:
         activeBountyPosts?.items?.filter(
           (item) => item.network === process.env.CHAIN,

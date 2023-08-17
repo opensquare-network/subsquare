@@ -1,6 +1,8 @@
-import { usePageProps } from "next-common/context/page";
 import List from "./list";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import Api from "next-common/services/api";
+import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
 
 const NewProposal = styled.a`
   cursor: pointer;
@@ -10,33 +12,63 @@ const NewProposal = styled.a`
   -webkit-text-fill-color: transparent;
 `;
 
-export default function OffChainVoting() {
-  const { activeOffChainVotingPosts } = usePageProps();
-  const votingHost = `${
-    process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
-    "https://voting.opensquare.io"
-  }`;
-  if (!activeOffChainVotingPosts || !activeOffChainVotingPosts.length) {
-    return (
-      <div className="flex gap-[8px] text-textTertiary leading-[16px] font-medium text-[12px]">
-        <span>No active off-chain voting</span>
-        <NewProposal
-          target="_blank"
-          href={`${votingHost}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/create`}
-        >
-          + New Proposal
-        </NewProposal>
-      </div>
-    );
+function NoProposals({ host }) {
+  return (
+    <div className="flex gap-[8px] text-textTertiary leading-[16px] font-medium text-[12px]">
+      <span>No active off-chain voting</span>
+      <NewProposal
+        target="_blank"
+        href={`${host}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/create`}
+      >
+        + New Proposal
+      </NewProposal>
+    </div>
+  );
+}
+
+function VotingProposals({ host }) {
+  const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
+
+  const [posts, setPosts] = useState();
+  useEffect(() => {
+    new Api(host)
+      .fetch(`/api/${space}/proposals/active`)
+      .then(({ result: { items } }) => {
+        setPosts(items);
+      });
+  }, [host]);
+
+  if (!space) {
+    throw new Error("NEXT_PUBLIC_OFF_CHAIN_SPACE is not set");
+  }
+
+  if (!posts) {
+    return null;
+  }
+  if (posts.length <= 0) {
+    return <NoProposals />;
   }
 
   return (
     <List
       title="Active off-chain voting"
-      items={(activeOffChainVotingPosts || []).map((item) => ({
+      items={(posts || []).map((item) => ({
         title: item.title,
-        href: `${votingHost}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/proposal/${item.cid}`,
+        href: `${host}/space/${space}/proposal/${item.cid}`,
       }))}
     />
   );
+}
+
+export default function OffChainVoting() {
+  if (!hasDefinedOffChainVoting()) {
+    return null;
+  }
+
+  const votingHost = `${
+    process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
+    "https://voting.opensquare.io"
+  }`;
+
+  return <VotingProposals host={votingHost} />;
 }
