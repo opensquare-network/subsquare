@@ -27,7 +27,7 @@ export default function Popup({
           <div
             className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
             style={{ zIndex: zOverlay }}
-            onClick={(event) => {
+            onMouseDown={(event) => {
               if (event.target === event.currentTarget) {
                 onClose();
               }
