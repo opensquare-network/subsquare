@@ -1,9 +1,10 @@
+import Avatar from "../../../assets/icons/chain/westend-collectives.png";
+import DarkAvatar from "../../../assets/icons/chain/westend-collectives-dark.png";
+
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
 import {
-  ProjectIconWestendCollectivesDark,
-  ProjectIconWestendCollectivesLight,
   ProjectLogoWestendCollectivesDark,
   ProjectLogoWestendCollectivesLight,
 } from "@osn/icons/subsquare";
@@ -32,8 +33,8 @@ const westendCollectives = {
   ss58Format: 42,
   snsCoverCid: "bafybeibtr7oelilpotm26qrnnp34ztbnde7ouu5fdflcx6f6dj6foyb5eq",
   endpoints: westendCollectivesEndpoints,
-  avatar: ProjectIconWestendCollectivesLight,
-  darkAvatar: ProjectIconWestendCollectivesDark,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
   navLogo: ProjectLogoWestendCollectivesLight,
   navLogoDark: ProjectLogoWestendCollectivesDark,
   group: MenuGroups.Solochain,

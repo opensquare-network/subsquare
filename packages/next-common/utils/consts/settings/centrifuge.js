@@ -1,11 +1,12 @@
+import Avatar from "../../../assets/icons/chain/centrifuge.png";
+import DarkAvatar from "../../../assets/icons/chain/centrifuge-dark.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import difference from "lodash.difference";
 import {
-  ProjectIconCentrifugeDark,
-  ProjectIconCentrifugeLight,
   ProjectLogoCentrifugeDark,
   ProjectLogoCentrifugeLight,
 } from "@osn/icons/subsquare";
@@ -49,8 +50,8 @@ const centrifuge = {
   ss58Format: 36,
   snsCoverCid: "bafybeigik7gv4e2tasibkgjhvlfyjzdlbw4p33x6o64jhdypmgqhmo3a54",
   endpoints: defaultNodes,
-  avatar: ProjectIconCentrifugeLight,
-  darkAvatar: ProjectIconCentrifugeDark,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
   navLogo: ProjectLogoCentrifugeLight,
   navLogoDark: ProjectLogoCentrifugeDark,
   links,

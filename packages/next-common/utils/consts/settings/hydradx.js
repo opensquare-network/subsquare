@@ -1,11 +1,8 @@
 import Chains from "../chains";
+import Avatar from "../../../assets/icons/chain/hydradx.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconHydradxDark,
-  ProjectIconHydradxLight,
-  ProjectLogoHydradxDark,
-} from "@osn/icons/subsquare";
+import { ProjectLogoHydradxDark } from "@osn/icons/subsquare";
 
 const defaultHydradxEndpoints = [
   {
@@ -54,8 +51,8 @@ const hydradx = {
   hasElections: true,
   ss58Format: 63,
   snsCoverCid: "bafybeieqf3lmi5e4e3yqvujn7dd26dsvhy66u55g6gjzgvw2ogjzu2pt4e",
-  avatar: ProjectIconHydradxLight,
-  darkAvatar: ProjectIconHydradxDark,
+  avatar: Avatar,
+  darkAvatar: Avatar,
   navLogo: ProjectLogoHydradxDark,
   navLogoDark: ProjectLogoHydradxDark,
   endpoints: defaultHydradxEndpoints,

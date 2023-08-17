@@ -1,12 +1,10 @@
+import Avatar from "../../../assets/icons/chain/litmus.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconLitmusDark,
-  ProjectIconLitmusLight,
-  ProjectLogoLitmusLight,
-} from "@osn/icons/subsquare";
+import { ProjectLogoLitmusLight } from "@osn/icons/subsquare";
 
 const DEFAULT_LITMUS_NODES = [
   {
@@ -48,8 +46,7 @@ const litmus = {
   ss58Format: 131,
   snsCoverCid: "bafybeiexfrkdte6eruqghlc66xpnfoyadkgq5we3ql5elqjwgdzbxmez6q",
   endpoints: DEFAULT_LITMUS_NODES,
-  avatar: ProjectIconLitmusLight,
-  darkAvatar: ProjectIconLitmusDark,
+  avatar: Avatar,
   navLogo: ProjectLogoLitmusLight,
   navLogoDark: ProjectLogoLitmusLight,
   links,

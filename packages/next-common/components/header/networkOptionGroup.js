@@ -47,6 +47,12 @@ const Item = styled.a`
   > :not(:first-child) {
     margin-left: 8px;
   }
+  > div {
+    flex-grow: 1;
+  }
+  > img.logo {
+    flex: 0 0 24px;
+  }
 `;
 
 export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {

@@ -1,12 +1,11 @@
+import Avatar from "../../../assets/icons/chain/zeitgeist.png";
+import DarkAvatar from "../../../assets/icons/chain/zeitgeist-dark.png";
+
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import {
-  ProjectIconZeigeistDark,
-  ProjectIconZeigeistLight,
-  ProjectLogoZeigeistDark,
-} from "@osn/icons/subsquare";
+import { ProjectLogoZeigeistDark } from "@osn/icons/subsquare";
 
 const defaultNodes = [
   {
@@ -53,8 +52,8 @@ const zeitgeist = {
   blockTime: 12000,
   snsCoverCid: "bafybeifwpcjcbym2df3zuh63p4nowvh53d6hgludiwvlsnusxckyke5sri",
   endpoints: defaultNodes,
-  avatar: ProjectIconZeigeistLight,
-  darkAvatar: ProjectIconZeigeistDark,
+  avatar: Avatar,
+  darkAvatar: DarkAvatar,
   navLogo: ProjectLogoZeigeistDark,
   navLogoDark: ProjectLogoZeigeistDark,
   links,

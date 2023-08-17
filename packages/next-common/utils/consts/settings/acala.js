@@ -1,8 +1,7 @@
+import Avatar from "../../../assets/icons/chain/acala.png";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import {
-  ProjectIconAcalaDark,
-  ProjectIconAcalaLight,
   ProjectLogoAcalaDark,
   ProjectLogoAcalaLight,
 } from "@osn/icons/subsquare";
@@ -71,8 +70,7 @@ const acala = {
   ss58Format: 10,
   snsCoverCid: "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy",
   endpoints: DEFAULT_ACALA_NODES,
-  avatar: ProjectIconAcalaLight,
-  darkAvatar: ProjectIconAcalaDark,
+  avatar: Avatar,
   navLogo: ProjectLogoAcalaLight,
   navLogoDark: ProjectLogoAcalaDark,
   links,
