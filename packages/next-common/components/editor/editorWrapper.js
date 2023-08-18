@@ -66,5 +66,10 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   caret-color: var(--textPrimary) !important;
+
+  /* quill paste url modal */
+  & .modal-shade {
+    z-index: 20;
+  }
 `;
 export default EditorWrapper;
