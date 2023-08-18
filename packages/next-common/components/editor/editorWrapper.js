@@ -10,7 +10,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   textarea {
     background: var(--neutral100);
     color: var(--textPrimary);
-    padding: 16px 24px;
   }
 
   div ul.mention-list,
