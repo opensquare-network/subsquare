@@ -10,7 +10,6 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   textarea {
     background: var(--neutral100);
     color: var(--textPrimary);
-    padding: 16px 24px;
   }
 
   div ul.mention-list,
@@ -67,5 +66,10 @@ const EditorWrapper = styled(RichTextStyleWrapper)`
   }
 
   caret-color: var(--textPrimary) !important;
+
+  /* quill paste url modal */
+  & .modal-shade {
+    z-index: 20;
+  }
 `;
 export default EditorWrapper;
