@@ -24,13 +24,15 @@ export default function CollectiveCall({ call }) {
     detailPageCategory.ADVISORY_MOTION === detailType
   ) {
     const { marketId, marketMetadata } = motion;
-    data.push([
-      <MarketMetadata
-        key={"marketMetadata"}
-        id={marketId}
-        metadata={marketMetadata}
-      />,
-    ]);
+    if (marketId && marketMetadata) {
+      data.push([
+        <MarketMetadata
+          key={"marketMetadata"}
+          id={marketId}
+          metadata={marketMetadata}
+        />,
+      ]);
+    }
   }
 
   return <KvList data={data} />;
