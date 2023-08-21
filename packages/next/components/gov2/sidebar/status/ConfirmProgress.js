@@ -14,7 +14,7 @@ import {
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
 import MultiProgress from "next-common/components/progress/multiProgress";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   useConfirmingStarted,
   useConfirmTimelineFailPairs,
@@ -28,7 +28,9 @@ import { useZoomMode, zoomModes } from "./context/zoomContext";
 import { usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
 import LastConfirmationProgress from "./confirmation/lastConfirmation";
-import ConfirmationInfo from "./confirmation/confirmationInfo";
+import ConfirmationInfo, {
+  ConfirmInfoContext,
+} from "./confirmation/confirmationInfo";
 
 function Empty() {
   const confirmStart = useConfirmingStarted();
@@ -166,7 +168,7 @@ function ConfirmMultiProgress() {
   );
 }
 
-export default function ConfirmProgress() {
+function ConfirmProgressImpl() {
   const confirmStart = useConfirmingStarted();
   const mode = useZoomMode();
   const state = usePostState();
@@ -184,4 +186,12 @@ export default function ConfirmProgress() {
   }
 
   return <ConfirmSingleProgress />;
+}
+
+export default function ConfirmProgress({ showConfirmAttempts }) {
+  return (
+    <ConfirmInfoContext.Provider value={{ showConfirmAttempts }}>
+      <ConfirmProgressImpl />
+    </ConfirmInfoContext.Provider>
+  );
 }

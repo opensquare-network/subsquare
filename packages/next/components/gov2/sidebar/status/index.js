@@ -1,4 +1,4 @@
-import Status, { PrepareStatus } from "./status";
+import { PrepareStatus } from "./status";
 import DecisionProgress from "./DecisionProgress";
 import ConfirmProgress from "./ConfirmProgress";
 import { usePostState } from "next-common/context/post";
@@ -17,7 +17,6 @@ export default function Gov2Status() {
     return (
       <StatusWrapper>
         <EnactmentProgress />
-        <Status />
       </StatusWrapper>
     );
   }
@@ -29,6 +28,17 @@ export default function Gov2Status() {
         <PrepareStatus />
         <PlaceDecisionDeposit />
       </StatusWrapper>
+    );
+  }
+
+  if (gov2State.Deciding === state) {
+    return (
+      <ZoomProvider>
+        <StatusWrapper titleExtra={<Zoom />}>
+          <DecisionProgress />
+          <ConfirmProgress showConfirmAttempts={true} />
+        </StatusWrapper>
+      </ZoomProvider>
     );
   }
 
@@ -49,7 +59,6 @@ export default function Gov2Status() {
       <StatusWrapper titleExtra={<Zoom />}>
         <DecisionProgress />
         <ConfirmProgress />
-        <Status />
       </StatusWrapper>
     </ZoomProvider>
   );
