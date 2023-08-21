@@ -6,18 +6,24 @@ import React from "react";
 
 export const ConfirmInfoContext = React.createContext();
 
-export default function ConfirmationInfo() {
+function ConfirmPeriod() {
   const confirmPeriod = useConfirm();
 
   return (
+    <div className="flex justify-between">
+      <span>Confirmation</span>
+      <span>
+        <TimeDuration blocks={confirmPeriod} />
+      </span>
+    </div>
+  );
+}
+
+export default function ConfirmationInfo() {
+  return (
     <ProgressInfo>
       <div className="flex flex-col grow gap-[4px]">
-        <div className="flex justify-between">
-          <span>Confirmation</span>
-          <span>
-            <TimeDuration blocks={confirmPeriod} />
-          </span>
-        </div>
+        <ConfirmPeriod />
         <ConfirmAttempts />
       </div>
     </ProgressInfo>
