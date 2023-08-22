@@ -10,7 +10,10 @@ import nextApi from "next-common/services/nextApi";
 
 const dataCache = {};
 
-export default function usePolkassemblyPostData({ polkassemblyId, polkassemblyPostType = "discussion" }) {
+export default function usePolkassemblyPostData({
+  polkassemblyId,
+  polkassemblyPostType = "discussion",
+}) {
   const chain = useChain();
   const isMounted = useIsMounted();
   const [comments, setComments] = useState([]);
@@ -34,35 +37,41 @@ export default function usePolkassemblyPostData({ polkassemblyId, polkassemblyPo
     }
 
     setLoadingComments(true);
-    nextApi.fetch("polkassembly-comments", {
-      postId: polkassemblyId,
-      postType: polkassemblyPostType,
-    }).then(({ result }) => {
-      if (isMounted.current) {
-        const comments = result?.comments?.map((item) =>
-          toPolkassemblyCommentListItem(chain, item),
-        );
-        comments?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        const postReactions = convertPolkassemblyReaction(result?.post_reactions);
-        const commentsCount = result?.comments?.length;
+    nextApi
+      .fetch("polkassembly-comments", {
+        postId: polkassemblyId,
+        postType: polkassemblyPostType,
+      })
+      .then(({ result }) => {
+        if (isMounted.current) {
+          const comments = result?.comments
+            ?.filter((item) => item.comment_source !== "subsquare")
+            ?.map((item) => toPolkassemblyCommentListItem(chain, item));
+          comments?.sort(
+            (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+          );
+          const postReactions = convertPolkassemblyReaction(
+            result?.post_reactions,
+          );
+          const commentsCount = result?.comments?.length;
 
-        const data = {
-          comments,
-          postReactions,
-          commentsCount,
-        };
-        dataCache[cacheKey] = data;
+          const data = {
+            comments,
+            postReactions,
+            commentsCount,
+          };
+          dataCache[cacheKey] = data;
 
-        setComments(comments);
-        setPostReactions(postReactions);
-        setCommentsCount(commentsCount);
-      }
-    })
-    .finally(() => {
-      if (isMounted.current) {
-        setLoadingComments(false);
-      }
-    });
+          setComments(comments);
+          setPostReactions(postReactions);
+          setCommentsCount(commentsCount);
+        }
+      })
+      .finally(() => {
+        if (isMounted.current) {
+          setLoadingComments(false);
+        }
+      });
   }, [polkassemblyId, polkassemblyPostType, chain, isMounted]);
 
   return {
