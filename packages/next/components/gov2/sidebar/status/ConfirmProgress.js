@@ -14,7 +14,7 @@ import {
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
 import MultiProgress from "next-common/components/progress/multiProgress";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import {
   useConfirmingStarted,
   useConfirmTimelineFailPairs,
