@@ -36,7 +36,7 @@ export default function Gov2Status() {
       <ZoomProvider>
         <StatusWrapper titleExtra={<Zoom />}>
           <DecisionProgress />
-          <ConfirmProgress showConfirmAttempts={true} />
+          <ConfirmProgress />
         </StatusWrapper>
       </ZoomProvider>
     );

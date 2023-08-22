@@ -1,16 +1,9 @@
 import { usePost } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
-import { useContext } from "react";
-import { ConfirmInfoContext } from "./confirmationInfo";
 import { SystemInfo } from "@osn/icons/subsquare";
 
 export default function ConfirmAttempts() {
-  const { showConfirmAttempts } = useContext(ConfirmInfoContext);
   const post = usePost();
-
-  if (!showConfirmAttempts) {
-    return null;
-  }
 
   const attempts = [];
   const timeline = post?.onchainData?.timeline || [];

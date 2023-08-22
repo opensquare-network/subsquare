@@ -4,8 +4,6 @@ import TimeDuration from "next-common/components/TimeDuration";
 import ConfirmAttempts from "./confirmAttempts";
 import React from "react";
 
-export const ConfirmInfoContext = React.createContext();
-
 function ConfirmPeriod() {
   const confirmPeriod = useConfirm();
 
