@@ -32,7 +32,7 @@ export default function Gov2ReferendumCall() {
   let remarks = extractRemarks(proposal?.call);
   for (let i = 0; i < remarks.length; i++) {
     let key = "Remark";
-    if (remarks.length > 0) {
+    if (remarks.length > 1) {
       key = `${key} ${i + 1}`;
     }
 
