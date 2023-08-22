@@ -38,12 +38,12 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
     return {
       value: track.id,
       name: startCase(track.name),
-      pathname: `/referenda/track/${track.id}`,
+      pathname: `/referenda/tracks/${track.id}`,
       activeCount: track.activeCount,
       icon: `[${track.id}]`,
       extraMatchNavMenuActivePathnames: [
-        `/referenda/track/${track.id}/statistics`,
-        track.id === currentTrackId && "/referenda/referendum/[id]",
+        `/referenda/tracks/${track.id}/statistics`,
+        track.id === currentTrackId && "/referenda/[id]",
       ].filter(Boolean),
     };
   };
