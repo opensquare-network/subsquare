@@ -24,6 +24,7 @@ export default function ConfirmAttempts() {
       attempts.push({
         start: curr,
         end: next,
+        success: next.name === "Confirmed",
       });
       continue;
     }
@@ -37,6 +38,11 @@ export default function ConfirmAttempts() {
     <div className="flex flex-col">
       {attempts.map((item, index) => (
         <span key={index}>
+          {(item.end || index !== 0) && (
+            <span className="inline-block w-[18px]">
+              {item.end && (item.success ? "✅" : "❌")}
+            </span>
+          )}
           {`#${
             index + 1
           }: ${item.start.indexer.blockHeight.toLocaleString()} ~ `}
