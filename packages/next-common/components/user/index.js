@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useChainSettings } from "../../context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
 import { KNOWN_ADDR_MATCHERS } from "next-common/utils/knownAddr";
+import { IdentitySpecial } from "@osn/icons/subsquare";
 
 const Wrapper = styled(Flex)`
   a {
@@ -175,28 +176,24 @@ function User({
     );
   }
 
-  if (knownAddr) {
-    return (
-      <Username fontSize={fontSize} color={color}>
-        {knownAddr}
-      </Username>
-    );
-  }
-
   const elmUsernameOrAddr = (
     <Username fontSize={fontSize} color={color}>
-      {(!isKeyUser && user?.username) || addressEllipsis(address)}
+      {knownAddr || (!isKeyUser && user?.username) || addressEllipsis(address)}
     </Username>
   );
 
-  const addressWithoutIdentity =
-    maxWidth && !noTooltip ? (
-      <Tooltip content={(!isKeyUser && user?.username) || address}>
-        <div>{elmUsernameOrAddr}</div>
-      </Tooltip>
-    ) : (
-      elmUsernameOrAddr
-    );
+  const addressWithoutIdentity = (
+    <div className="flex items-center gap-[4px]">
+      {knownAddr && <IdentitySpecial width={12} height={12} />}
+      {maxWidth && !noTooltip ? (
+        <Tooltip content={(!isKeyUser && user?.username) || address}>
+          <div>{elmUsernameOrAddr}</div>
+        </Tooltip>
+      ) : (
+        elmUsernameOrAddr
+      )}
+    </div>
+  );
 
   const elmUsername = (
     <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
