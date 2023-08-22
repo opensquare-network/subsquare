@@ -1,7 +1,7 @@
 import { withLoginUser } from "next-common/lib";
 
-export default function Referendum() {
-  return "Please visit `/fellowship/referenda/[id]`";
+export default function Track() {
+  return "Please visit `/referenda/tracks/[id]`";
 }
 
 export const getServerSideProps = withLoginUser(async (context) => {
@@ -10,7 +10,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     redirect: {
       permanent: true,
-      destination: `/fellowship/referenda/${id}`,
+      destination: `/referenda/tracks/${id}`,
     },
   };
 });

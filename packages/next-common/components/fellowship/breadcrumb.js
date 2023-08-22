@@ -14,7 +14,7 @@ function getBreadcrumbItems(track = {}, referendumIndex) {
       content: "Fellowship",
     },
     {
-      path: `/fellowship/track/${track.id}`,
+      path: `/fellowship/tracks/${track.id}`,
       content: `[${track.id}] ` + startCase(track.name),
     },
     {

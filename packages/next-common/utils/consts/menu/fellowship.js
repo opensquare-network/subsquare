@@ -54,11 +54,11 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
     return {
       value: track.id,
       name: startCase(track.name),
-      pathname: `/fellowship/track/${track.id}`,
+      pathname: `/fellowship/tracks/${track.id}`,
       activeCount: track.activeCount,
       icon: `[${track.id}]`,
       extraMatchNavMenuActivePathnames: [
-        track.id === currentTrackId && "/fellowship/referendum/[id]",
+        track.id === currentTrackId && "/fellowship/referenda/[id]",
       ].filter(Boolean),
     };
   };

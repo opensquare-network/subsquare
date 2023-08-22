@@ -34,7 +34,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
       time: formatTime(indexer?.blockTime),
       status: {
         value: `Referenda #${treasuryProposal.gov2Referendum}`,
-        link: `/referenda/referendum/${treasuryProposal.gov2Referendum}`,
+        link: `/referenda/${treasuryProposal.gov2Referendum}`,
       },
     },
     {
