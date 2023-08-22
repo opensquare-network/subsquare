@@ -31,17 +31,6 @@ export default function Gov2Status() {
     );
   }
 
-  if (gov2State.Deciding === state) {
-    return (
-      <ZoomProvider>
-        <StatusWrapper titleExtra={<Zoom />}>
-          <DecisionProgress />
-          <ConfirmProgress />
-        </StatusWrapper>
-      </ZoomProvider>
-    );
-  }
-
   if (
     ![
       gov2State.Deciding,
