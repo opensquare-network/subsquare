@@ -12,6 +12,7 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import Link from "next/link";
 import { useChainSettings } from "../../context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
+import { KNOWN_ADDR_MATCHERS } from "next-common/utils/knownAddr";
 
 const Wrapper = styled(Flex)`
   a {
@@ -137,6 +138,10 @@ function User({
   const isKeyUser = isKeyRegisteredUser(user);
   const isMounted = useIsMounted();
   const [identity, setIdentity] = useState(null);
+  const knownAddr = KNOWN_ADDR_MATCHERS.map((matcher) => matcher(address)).find(
+    Boolean,
+  );
+
   useEffect(() => {
     setIdentity(null);
     if (address) {
@@ -167,6 +172,14 @@ function User({
         <AvatarDeleted />
         [Deleted Account]
       </DeleteAccount>
+    );
+  }
+
+  if (knownAddr) {
+    return (
+      <Username fontSize={fontSize} color={color}>
+        {knownAddr}
+      </Username>
     );
   }
 
