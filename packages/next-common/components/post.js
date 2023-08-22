@@ -224,7 +224,7 @@ export default function Post({ data, href, type }) {
   const trackTagLink =
     type === businessCategory.openGovReferenda
       ? `/referenda/tracks/${data.track}`
-      : `/fellowship/track/${data.track}`;
+      : `/fellowship/tracks/${data.track}`;
 
   const hasTally = data.onchainData?.tally || data.onchainData?.info?.tally;
   const showTally = [
