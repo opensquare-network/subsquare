@@ -28,9 +28,9 @@ export default function ConfirmAttempts() {
   }
 
   const tooltipContent = (
-    <div className="flex flex-col">
+    <ol>
       {attempts.map((item, index) => (
-        <span key={index}>
+        <li key={index}>
           {(item.end || index !== 0) && (
             <span className="inline-block w-[18px]">
               {item.end && (item.success ? "✅" : "❌")}
@@ -40,9 +40,9 @@ export default function ConfirmAttempts() {
             index + 1
           }: ${item.start.indexer.blockHeight.toLocaleString()} ~ `}
           {item.end && `${item.end?.indexer.blockHeight.toLocaleString()}`}
-        </span>
+        </li>
       ))}
-    </div>
+    </ol>
   );
 
   return (
