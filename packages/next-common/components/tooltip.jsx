@@ -5,8 +5,11 @@ import * as RadixTooltip from "@radix-ui/react-tooltip";
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
 import clsx from "clsx";
 
-const QuestionIcon = styled(Icon)`
-  path {
+const IconWrapper = styled.div`
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  svg path {
     fill: var(--textDisabled);
   }
 `;
@@ -24,13 +27,14 @@ export default function Tooltip({
   side,
   sideOffset = 2,
   keepTooltipOpenAfterClick,
+  icon,
 }) {
   const [open, setOpen] = React.useState(false);
 
   const tooltipTrigger = children ? (
     <div className={clsx("inline-block", className)}>{children}</div>
   ) : (
-    <div className="cursor-pointer">{label ? label : <QuestionIcon />}</div>
+    <IconWrapper>{label ? label : icon || <Icon />}</IconWrapper>
   );
 
   const tooltipContent = content && (
