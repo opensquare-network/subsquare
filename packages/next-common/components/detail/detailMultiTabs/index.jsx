@@ -1,7 +1,7 @@
 import { cloneElement, useState } from "react";
-import Tabs from "../tabs";
+import Tabs from "../../tabs";
 import { useTimelineData } from "next-common/context/post";
-import Tab from "../tab";
+import Tab from "../../tab";
 import { TimelineCompact, TimelineNormal } from "@osn/icons/subsquare";
 
 export default function DetailMultiTabs({
