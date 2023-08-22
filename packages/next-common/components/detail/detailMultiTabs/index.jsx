@@ -51,7 +51,7 @@ export default function DetailMultiTabs({
     votesStats && {
       label: "Votes Stats",
       labelExtra: (
-        <ThemedTag className="!rounded-full max-sm:hidden ml-2">New</ThemedTag>
+        <ThemedTag className="!rounded-full max-sm:!hidden ml-2">New</ThemedTag>
       ),
       content: (
         <div className="space-y-4">
