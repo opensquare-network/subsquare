@@ -244,7 +244,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "OpenGov Fellowships",
       comment?.fellowshipReferendum?.title || `Fellowship #${referendumIndex}`,
-      `/fellowship/referendum/${referendumIndex}`,
+      `/fellowship/referenda/${referendumIndex}`,
     ];
   }
   if (comment?.moonCouncil) {

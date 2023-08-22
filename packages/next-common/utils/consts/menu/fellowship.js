@@ -58,7 +58,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       activeCount: track.activeCount,
       icon: `[${track.id}]`,
       extraMatchNavMenuActivePathnames: [
-        track.id === currentTrackId && "/fellowship/referendum/[id]",
+        track.id === currentTrackId && "/fellowship/referenda/[id]",
       ].filter(Boolean),
     };
   };

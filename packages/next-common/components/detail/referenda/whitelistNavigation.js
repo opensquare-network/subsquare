@@ -5,8 +5,8 @@ import { NavigationWrapper } from "../navigation/navigators";
 
 export function FellowshipReferendumLink({ referendumIndex }) {
   return (
-    <Link href={ `/fellowship/referendum/${ referendumIndex }` } legacyBehavior>
-      { `Fellowship #${ referendumIndex }` }
+    <Link href={`/fellowship/referenda/${referendumIndex}`} legacyBehavior>
+      {`Fellowship #${referendumIndex}`}
     </Link>
   );
 }
@@ -21,7 +21,10 @@ export default function ReferendaWhiteListNavigation() {
 
   const fellowshipReferendumIndex = fellowshipReferenda[0];
 
-  return <NavigationWrapper>
-    Whitelisted by &nbsp;<FellowshipReferendumLink referendumIndex={ fellowshipReferendumIndex } />
-  </NavigationWrapper>;
+  return (
+    <NavigationWrapper>
+      Whitelisted by &nbsp;
+      <FellowshipReferendumLink referendumIndex={fellowshipReferendumIndex} />
+    </NavigationWrapper>
+  );
 }

@@ -35,7 +35,7 @@ export const detailPageCategory = {
   TREASURY_CHILD_BOUNTY: "treasury/child-bounty",
   TREASURY_TIP: "treasury/tip",
   GOV2_REFERENDUM: "referenda",
-  FELLOWSHIP_REFERENDUM: "fellowship/referendum",
+  FELLOWSHIP_REFERENDUM: "fellowship/referenda",
   ADVISORY_MOTION: "advisory-committee/motion",
   ALLIANCE_MOTION: "alliance/motion",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcement",
