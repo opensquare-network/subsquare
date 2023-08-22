@@ -35,6 +35,7 @@ export default function TabsList({
                     {tab.activeCount}
                   </span>
                 )}
+                {tab.labelExtra}
               </div>
             </li>
           );
