@@ -5,8 +5,8 @@ import Link from "next/link";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
-    <Link href={ `/referenda/referendum/${ referendumIndex }` } legacyBehavior>
-      { `Referenda #${ referendumIndex }` }
+    <Link href={`/referenda/${referendumIndex}`} legacyBehavior>
+      {`Referenda #${referendumIndex}`}
     </Link>
   );
 }
@@ -14,7 +14,7 @@ export function ReferendumLink({ referendumIndex }) {
 function OpenGovReferendum({ referendumIndex }) {
   return (
     <div>
-      <ReferendumLink referendumIndex={ referendumIndex } />
+      <ReferendumLink referendumIndex={referendumIndex} />
     </div>
   );
 }
@@ -27,10 +27,12 @@ export default function FellowshipWhitelistNavigation() {
     return null;
   }
 
-  return <NavigationWrapper>
-    Executed by &nbsp;
-    {
-      openGovReferenda.map(openGovIndex => <OpenGovReferendum key={openGovIndex} referendumIndex={openGovIndex}/>)
-    }
-  </NavigationWrapper>;
+  return (
+    <NavigationWrapper>
+      Executed by &nbsp;
+      {openGovReferenda.map((openGovIndex) => (
+        <OpenGovReferendum key={openGovIndex} referendumIndex={openGovIndex} />
+      ))}
+    </NavigationWrapper>
+  );
 }

@@ -43,7 +43,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
       icon: `[${track.id}]`,
       extraMatchNavMenuActivePathnames: [
         `/referenda/track/${track.id}/statistics`,
-        track.id === currentTrackId && "/referenda/referendum/[id]",
+        track.id === currentTrackId && "/referenda/[id]",
       ].filter(Boolean),
     };
   };

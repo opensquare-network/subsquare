@@ -7,7 +7,7 @@ import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 
 export function Gov2ReferendumLink({ referendumIndex }) {
   return (
-    <Link href={`/referenda/referendum/${referendumIndex}`} legacyBehavior>
+    <Link href={`/referenda/${referendumIndex}`} legacyBehavior>
       {`Referendum #${referendumIndex}`}
     </Link>
   );

@@ -236,7 +236,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "OpenGov Referenda",
       comment?.referendaReferendum?.title || `Referendum #${referendumIndex}`,
-      `/referenda/referendum/${referendumIndex}`,
+      `/referenda/${referendumIndex}`,
     ];
   }
   if (comment?.fellowshipReferendum) {
