@@ -158,7 +158,7 @@ function ConfirmMultiProgress() {
   return (
     <ProgressGroup>
       <ProgressBarWrapper>
-        <MultiProgress progressItems={progressItems.slice(0, 1)} />
+        <MultiProgress progressItems={progressItems} />
       </ProgressBarWrapper>
 
       <ConfirmationInfo />
