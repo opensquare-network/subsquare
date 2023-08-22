@@ -15,10 +15,10 @@ export default function ReferendaTrackLayout({
     <ListLayout
       description={periodData.description}
       tabs={[
-        { label: "Referenda", url: `/referenda/track/${periodData.id}` },
+        { label: "Referenda", url: `/referenda/tracks/${periodData.id}` },
         {
           label: "Statistics",
-          url: `/referenda/track/${periodData.id}/statistics`,
+          url: `/referenda/tracks/${periodData.id}/statistics`,
         },
       ]}
       summary={

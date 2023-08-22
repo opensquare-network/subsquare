@@ -37,7 +37,7 @@ export default function TypeTag({ type }) {
 
     let href =
       type === detailPageCategory.GOV2_REFERENDUM
-        ? `/referenda/track/${trackId}`
+        ? `/referenda/tracks/${trackId}`
         : `/fellowship/track/${trackId}`;
     tag = (
       <Link href={href} passHref legacyBehavior>
