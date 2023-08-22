@@ -3,6 +3,8 @@ import Tabs from "../../tabs";
 import { useTimelineData } from "next-common/context/post";
 import Tab from "../../tab";
 import { TimelineCompact, TimelineNormal } from "@osn/icons/subsquare";
+import { ThemedTag } from "next-common/components/tags/state/styled";
+import VotesStatsModeTabs from "./votesStatsModeTabs";
 
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
@@ -13,6 +15,7 @@ export default function DetailMultiTabs({
   metadata,
   timeline,
   timelineCount,
+  votesStats,
 }) {
   const timelineData = useTimelineData();
   const [timelineModeTabId, setTimelineModeTabId] = useState("normal");
@@ -42,6 +45,19 @@ export default function DetailMultiTabs({
           {cloneElement(timeline, {
             compact: timelineCompact,
           })}
+        </div>
+      ),
+    },
+    votesStats && {
+      label: "Votes Stats",
+      labelExtra: (
+        <ThemedTag className="!rounded-full max-sm:hidden ml-2">New</ThemedTag>
+      ),
+      content: (
+        <div className="space-y-4">
+          <VotesStatsModeTabs />
+
+          {votesStats}
         </div>
       ),
     },
