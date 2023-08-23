@@ -54,6 +54,11 @@ export function toApiType(type) {
     return "polkassembly-discussions";
   }
 
+  // Collectives
+  if (type === detailPageCategory.ALLIANCE_MOTION) {
+    return "alliance/motions";
+  }
+
   // Karura
   if (type === detailPageCategory.FINANCIAL_MOTION) {
     return "financial-motions";

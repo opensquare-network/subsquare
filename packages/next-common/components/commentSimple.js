@@ -268,7 +268,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Alliance Motions",
       comment?.allianceMotion?.title || `Motion #${motionId}`,
-      `/alliance/motion/${motionId}`,
+      `/alliance/motions/${motionId}`,
     ];
   }
   if (comment?.allianceAnnouncement) {
