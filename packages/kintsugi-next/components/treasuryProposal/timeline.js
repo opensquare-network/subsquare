@@ -52,7 +52,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
             time: formatTime(item.indexer.blockTime),
             status: {
               value: `Public proposal #${item.args.index}`,
-              link: `/democracy/proposal/${item.args.index}`,
+              link: `/democracy/proposals/${item.args.index}`,
               type: detailPageCategory.DEMOCRACY_PROPOSAL,
             },
             voting: {
@@ -61,7 +61,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
               args: publicProposal.preImage?.call.args,
             },
             method: item.method,
-            link: `/democracy/proposal/${item.args.index}`,
+            link: `/democracy/proposals/${item.args.index}`,
           })),
           ...getDemocracyTimelineData(
             completeTimeline.slice(1),

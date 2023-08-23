@@ -204,7 +204,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Democracy Public Proposals",
       comment?.democracy?.title || `Proposal #${proposalIndex}`,
-      `/democracy/proposal/${proposalIndex}`,
+      `/democracy/proposals/${proposalIndex}`,
     ];
   }
   if (comment?.democracy?.externalProposalHash) {

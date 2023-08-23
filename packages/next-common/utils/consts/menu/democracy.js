@@ -28,7 +28,7 @@ const democracy = {
       value: "democracyProposals",
       name: "Public Proposals",
       pathname: "/democracy/proposals",
-      extraMatchNavMenuActivePathnames: ["/democracy/proposal/[id]"],
+      extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
     },
     {
       value: "democracyExternals",

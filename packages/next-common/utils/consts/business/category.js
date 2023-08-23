@@ -29,7 +29,7 @@ export const detailPageCategory = {
   TECH_COMM_MOTION: "techcomm/proposal",
   DEMOCRACY_REFERENDUM: "democracy/referenda",
   DEMOCRACY_EXTERNAL: "democracy/external",
-  DEMOCRACY_PROPOSAL: "democracy/proposal",
+  DEMOCRACY_PROPOSAL: "democracy/proposals",
   TREASURY_PROPOSAL: "treasury/proposal",
   TREASURY_BOUNTY: "treasury/bounty",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounty",

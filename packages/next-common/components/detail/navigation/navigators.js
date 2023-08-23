@@ -39,7 +39,7 @@ export function DemocracyProposalNavigator({ proposalIndex, isLink = true }) {
   }
 
   return (
-    <Link href={`/democracy/proposal/${proposalIndex}`} legacyBehavior>
+    <Link href={`/democracy/proposals/${proposalIndex}`} legacyBehavior>
       {`Proposal #${proposalIndex}`}
     </Link>
   );

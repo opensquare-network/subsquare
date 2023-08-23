@@ -177,7 +177,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
           "Link to",
           <Link
             key="link-to"
-            href={`/democracy/proposal/${proposal?.proposalIndex}`}
+            href={`/democracy/proposals/${proposal?.proposalIndex}`}
             legacyBehavior
           >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
