@@ -2,6 +2,7 @@ import clsx from "clsx";
 import flatten from "lodash.flatten";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import Tooltip from "next-common/components/tooltip";
+import User from "next-common/components/user";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
@@ -88,15 +89,28 @@ export default function VotesStats({ allAye, allNay, allAbstain, ...props }) {
               setInteractionNode(null);
             }}
           >
-            <Tooltip
-              className="!block h-full"
-              content={<div>{node.data.account}</div>}
-              keepTooltipOpenAfterClick
-            >
-              <div className="rounded-full w-full h-full">
-                {/* TODO: identity */}
-              </div>
-            </Tooltip>
+            {node.r * 2 >= 60 && (
+              <Tooltip
+                className="!block h-full p-2"
+                content={<div>{node.data.account}</div>}
+                keepTooltipOpenAfterClick
+              >
+                <UserWrapper>
+                  <User
+                    add={node.data.account}
+                    showAvatar={false}
+                    noEvent
+                    noTooltip
+                    ellipsis={false}
+                    color={clsx(
+                      node.data.aye && "var(--green500)",
+                      node.data.aye === false && "var(--red500)",
+                      node.data.isAbstain && "var(--textSecondary)",
+                    )}
+                  />
+                </UserWrapper>
+              </Tooltip>
+            )}
           </div>
         )}
       />
@@ -109,6 +123,28 @@ export default function VotesStats({ allAye, allNay, allAbstain, ...props }) {
         showVotes={showVotes}
         setShowVotes={setShowVotes}
       />
+    </div>
+  );
+}
+
+/**
+ * @description hide identity icon, truncate user address or identity name
+ */
+function UserWrapper({ children }) {
+  return (
+    <div
+      className={clsx(
+        "flex items-center justify-center",
+        "rounded-full w-full h-full",
+
+        // user
+        "[&_div]:truncate",
+        "[&_div_a]:truncate",
+        // user, hide identity icon
+        "[&_a_svg]:hidden",
+      )}
+    >
+      {children}
     </div>
   );
 }
