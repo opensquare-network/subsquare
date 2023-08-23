@@ -4,7 +4,7 @@ import { useTimelineData } from "next-common/context/post";
 import Tab from "../../tab";
 import { TimelineCompact, TimelineNormal } from "@osn/icons/subsquare";
 import { ThemedTag } from "next-common/components/tags/state/styled";
-import VotesStatsModeTabs from "./votesStatsModeTabs";
+import VotesStatsViewTabs from "./votesStatsViewTabs";
 
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
@@ -55,7 +55,7 @@ export default function DetailMultiTabs({
       ),
       content: (
         <div className="space-y-4">
-          <VotesStatsModeTabs />
+          <VotesStatsViewTabs />
 
           {votesStats}
         </div>
