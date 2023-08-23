@@ -1,10 +1,16 @@
 import clsx from "clsx";
 import flatten from "lodash.flatten";
 import CirclePacking from "next-common/components/charts/circlePacking";
+import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import Tooltip from "next-common/components/tooltip";
 import User from "next-common/components/user";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
 import { useNavCollapsed } from "next-common/context/nav";
+import { detailMultiTabsVotesStatsView } from "next-common/store/reducers/detailSlice";
+import { toPrecision } from "next-common/utils";
 import { useLayoutEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useEventListener } from "usehooks-ts";
 import VotesStatsLegend from "./legend";
 
@@ -18,6 +24,7 @@ export default function VotesStats({
   sizeField,
   ...props
 }) {
+  const chainSettings = useChainSettings();
   const [showVotes, setShowVotes] = useState({
     aye: true,
     nay: true,
@@ -36,6 +43,7 @@ export default function VotesStats({
   const ref = useRef();
   const [navCollapsed] = useNavCollapsed();
   const [interactionNode, setInteractionNode] = useState(null);
+  const view = useSelector(detailMultiTabsVotesStatsView);
 
   useLayoutEffect(() => {
     handleSize();
@@ -66,6 +74,8 @@ export default function VotesStats({
     name: "root",
     children: votes,
   };
+
+  console.log(interactionNode);
 
   return (
     <div className={clsx(props.className, "w-full")} {...props} ref={ref}>
@@ -98,7 +108,39 @@ export default function VotesStats({
             {node.r * 2 >= 60 && (
               <Tooltip
                 className="!block h-full p-2"
-                content={<div>{node.data.account}</div>}
+                content={
+                  <ul>
+                    <li>{node.data.account}</li>
+                    {view === "flattened" && (
+                      <li>
+                        Capital:{" "}
+                        <ValueDisplay
+                          value={toPrecision(
+                            node.data.balance,
+                            chainSettings.decimals,
+                          )}
+                          symbol={chainSettings.symbol}
+                        />
+                        (<VoteLabel {...node.data} />)
+                      </li>
+                    )}
+                    {view === "nested" && (
+                      <li>
+                        Delegators: {node.data.directVoterDelegations?.length}
+                      </li>
+                    )}
+                    <li>
+                      Votes:{" "}
+                      <ValueDisplay
+                        value={toPrecision(
+                          node.data[sizeField],
+                          chainSettings.decimals,
+                        )}
+                        symbol={chainSettings.symbol}
+                      />
+                    </li>
+                  </ul>
+                }
                 keepTooltipOpenAfterClick
               >
                 <UserWrapper>
