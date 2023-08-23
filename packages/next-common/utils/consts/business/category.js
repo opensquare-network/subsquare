@@ -27,7 +27,7 @@ export const detailPageCategory = {
   COUNCIL_MOTION: "council/motion",
   FINANCIAL_MOTION: "financial-council/motion",
   TECH_COMM_MOTION: "techcomm/proposal",
-  DEMOCRACY_REFERENDUM: "democracy/referendum",
+  DEMOCRACY_REFERENDUM: "democracy/referenda",
   DEMOCRACY_EXTERNAL: "democracy/external",
   DEMOCRACY_PROPOSAL: "democracy/proposal",
   TREASURY_PROPOSAL: "treasury/proposal",

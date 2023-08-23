@@ -9,7 +9,7 @@ import { useChain } from "../../../context/chain";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
-    <Link href={`/democracy/referendum/${referendumIndex}`} legacyBehavior>
+    <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
       {`Referendum #${referendumIndex}`}
     </Link>
   );
@@ -75,7 +75,10 @@ export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
   return (
     <div>
       {triangle}
-      <Link href={`/council/motion/${getMotionId(motion, chain)}`} legacyBehavior>
+      <Link
+        href={`/council/motion/${getMotionId(motion, chain)}`}
+        legacyBehavior
+      >
         {`Motion #${shortMotionId(motion)}`}
       </Link>
     </div>
@@ -86,7 +89,10 @@ export function TechCommMotionNavigator({ motion = {}, isLink = true }) {
   const chain = useChain();
 
   let link = (
-    <Link href={`/techcomm/proposal/${getMotionId(motion, chain)}`} legacyBehavior>
+    <Link
+      href={`/techcomm/proposal/${getMotionId(motion, chain)}`}
+      legacyBehavior
+    >
       {`Tech. Comm. #${shortMotionId(motion)}`}
     </Link>
   );

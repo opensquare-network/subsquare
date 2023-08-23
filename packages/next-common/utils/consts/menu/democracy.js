@@ -21,7 +21,7 @@ const democracy = {
       pathname: "/democracy/referenda",
       extraMatchNavMenuActivePathnames: [
         "/democracy/statistics",
-        "/democracy/referendum/[id]",
+        "/democracy/referenda/[id]",
       ],
     },
     {

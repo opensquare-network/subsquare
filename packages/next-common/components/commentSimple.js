@@ -220,7 +220,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Democracy Referendums",
       comment?.democracy?.title || `Referendum #${referendumIndex}`,
-      `/democracy/referendum/${referendumIndex}`,
+      `/democracy/referenda/${referendumIndex}`,
     ];
   }
   if (comment?.techCommMotion) {

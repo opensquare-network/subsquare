@@ -88,7 +88,7 @@ export default function useTreasuryTimelineData(treasuryProposal) {
         return createReferendumTimelineData(
           referendum,
           true,
-          "/democracy/referendum",
+          "/democracy/referenda",
         );
       }) ?? [];
 
