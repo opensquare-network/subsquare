@@ -1,3 +1,5 @@
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+
 export const toDiscussionListItem = (chain, item) => ({
   ...item,
   time: item.lastActivityAt,
@@ -5,8 +7,11 @@ export const toDiscussionListItem = (chain, item) => ({
 });
 
 export function toApiType(type) {
-  if (type === "treasury/bounty") {
-    return "treasury/bounties";
+  if (type === detailPageCategory.TECH_COMM_MOTION) {
+    return "tech-comm/motions";
+  }
+  if (type === detailPageCategory.DEMOCRACY_REFERENDUM) {
+    return "democracy/referendums";
   }
   return `${type}s`;
 }
