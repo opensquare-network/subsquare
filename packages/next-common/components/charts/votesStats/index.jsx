@@ -1,14 +1,29 @@
 import clsx from "clsx";
+import flatten from "lodash.flatten";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import Tooltip from "next-common/components/tooltip";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
+import VotesStatsLegend from "./legend";
 
 /**
- * @param {{ votes: any[]} & import("react").HTMLAttributes<HTMLDivElement>} props
+ * @param {{ allAye: any[], allNay: any[], allAbstain: any[]} & import("react").HTMLAttributes<HTMLDivElement>} props
  */
-export default function VotesStats({ votes = [], ...props }) {
+export default function VotesStats({ allAye, allNay, allAbstain, ...props }) {
+  const [showVotes, setShowVotes] = useState({
+    aye: true,
+    nay: true,
+    abstain: true,
+  });
+  const votes = flatten(
+    [
+      showVotes.aye && allAye,
+      showVotes.nay && allNay,
+      showVotes.abstain && allAbstain,
+    ].filter(Boolean),
+  );
+
   // cache size, avoid re-render circle packing chart
   const [size, setSize] = useState({ width: 0, height: 0 });
   const ref = useRef();
@@ -46,11 +61,11 @@ export default function VotesStats({ votes = [], ...props }) {
   };
 
   return (
-    <div className={clsx(props.className, "w-full h-80")} {...props} ref={ref}>
+    <div className={clsx(props.className, "w-full")} {...props} ref={ref}>
       <CirclePacking
         data={data}
         width={size.width}
-        height={size.height}
+        height={320}
         sizeField="votes"
         bubbleCircleClassName={(node) =>
           clsx(
@@ -83,6 +98,15 @@ export default function VotesStats({ votes = [], ...props }) {
             </Tooltip>
           </div>
         )}
+      />
+
+      <VotesStatsLegend
+        className="mt-4"
+        allAye={allAye}
+        allNay={allNay}
+        allAbstain={allAbstain}
+        showVotes={showVotes}
+        setShowVotes={setShowVotes}
       />
     </div>
   );
