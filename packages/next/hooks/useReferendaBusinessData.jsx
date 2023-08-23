@@ -19,7 +19,7 @@ function extractTreasury(call = {}) {
         "Link to",
         <Link
           key="proposal-link"
-          href={`/treasury/proposal/${proposalId}`}
+          href={`/treasury/proposals/${proposalId}`}
           legacyBehavior
         >{`Treasury Proposal #${proposalId}`}</Link>,
       ],
@@ -42,7 +42,7 @@ function extractBounty(call = {}, chainSettings = {}) {
         "Link to",
         <Link
           key="bounty-link"
-          href={`/treasury/bounty/${bountyId}`}
+          href={`/treasury/bounties/${bountyId}`}
           legacyBehavior
         >{`Bounty #${bountyId}`}</Link>,
       ],
@@ -62,7 +62,7 @@ function extractBounty(call = {}, chainSettings = {}) {
         "Link to",
         <Link
           key="bounty-link"
-          href={`/treasury/bounty/${bountyId}`}
+          href={`/treasury/bounties/${bountyId}`}
           legacyBehavior
         >{`Bounty #${bountyId}`}</Link>,
       ],

@@ -172,7 +172,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Tips",
       comment?.tip.title || `Tip #${hashEllipsis(tipHash)}`,
-      `/treasury/tip/${comment?.tip.height}_${tipHash}`,
+      `/treasury/tips/${comment?.tip.height}_${tipHash}`,
     ];
   }
   if (comment?.childBounty) {
@@ -180,7 +180,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Child Bounties",
       comment?.childBounty.title || `Child bounty #${index}`,
-      `/treasury/child-bounty/${index}`,
+      `/treasury/child-bounties/${index}`,
     ];
   }
   if (comment?.bounty) {
@@ -188,7 +188,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Bounties",
       comment?.bounty.title || `Bounty #${bountyIndex}`,
-      `/treasury/bounty/${bountyIndex}`,
+      `/treasury/bounties/${bountyIndex}`,
     ];
   }
   if (comment?.treasuryProposal) {
@@ -196,7 +196,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Proposals",
       comment?.treasuryProposal.title || `Proposal #${proposalIndex}`,
-      `/treasury/proposal/${proposalIndex}`,
+      `/treasury/proposals/${proposalIndex}`,
     ];
   }
   if (!isNil(comment?.democracy?.proposalIndex)) {

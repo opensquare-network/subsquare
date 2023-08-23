@@ -99,7 +99,7 @@ export default function Meta() {
         <InfoItem>
           <InfoItemName>Parent bounty</InfoItemName>
           <InfoItemValue>
-            <Anchor href={`/treasury/bounty/${onChain.parentBountyId}`}>
+            <Anchor href={`/treasury/bounties/${onChain.parentBountyId}`}>
               {`#${onChain.parentBountyId}`}
             </Anchor>
           </InfoItemValue>

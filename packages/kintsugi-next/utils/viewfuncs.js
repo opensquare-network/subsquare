@@ -13,5 +13,5 @@ export function toApiType(type) {
   if (type === detailPageCategory.DEMOCRACY_REFERENDUM) {
     return "democracy/referendums";
   }
-  return `${type}s`;
+  return type;
 }

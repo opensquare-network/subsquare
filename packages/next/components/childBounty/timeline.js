@@ -17,7 +17,7 @@ export default function ChildBountyTimeline({ onchainData, compact }) {
           return {
             ...args,
             parentBountyId: (
-              <Anchor href={`/treasury/bounty/${args.parentBountyId}`}>
+              <Anchor href={`/treasury/bounties/${args.parentBountyId}`}>
                 {" "}
                 {args.parentBountyId}{" "}
               </Anchor>

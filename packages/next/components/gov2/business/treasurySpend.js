@@ -31,7 +31,7 @@ export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
       "Link to",
       <Link
         key="proposal-link"
-        href={`/treasury/proposal/${onchain.treasuryProposalIndex}`}
+        href={`/treasury/proposals/${onchain.treasuryProposalIndex}`}
         legacyBehavior
       >{`Treasury Proposal #${onchain.treasuryProposalIndex}`}</Link>,
     ]);
