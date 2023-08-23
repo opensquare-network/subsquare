@@ -2,7 +2,7 @@ import clsx from "clsx";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import Tooltip from "next-common/components/tooltip";
 import { useNavCollapsed } from "next-common/context/nav";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
 
 /**
@@ -14,7 +14,7 @@ export default function VotesStats({ votes = [], ...props }) {
   const ref = useRef();
   const [navCollapsed] = useNavCollapsed();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     handleSize();
   }, [navCollapsed, ref.current]);
 
