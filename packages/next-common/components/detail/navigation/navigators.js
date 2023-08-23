@@ -90,7 +90,7 @@ export function TechCommMotionNavigator({ motion = {}, isLink = true }) {
 
   let link = (
     <Link
-      href={`/techcomm/proposal/${getMotionId(motion, chain)}`}
+      href={`/techcomm/proposals/${getMotionId(motion, chain)}`}
       legacyBehavior
     >
       {`Tech. Comm. #${shortMotionId(motion)}`}

@@ -228,7 +228,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Tech. Comm. Proposals",
       comment?.techCommMotion?.title || `Proposal #${motionId}`,
-      `/techcomm/proposal/${motionId}`,
+      `/techcomm/proposals/${motionId}`,
     ];
   }
   if (comment?.referendaReferendum) {
