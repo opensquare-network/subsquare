@@ -26,40 +26,17 @@ import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
-import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import isMoonChain from "next-common/utils/isMoonChain";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
 import { useUser } from "next-common/context/user";
-import Link from "next/link";
-import { SystemTip } from "@osn/icons/subsquare";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
 import {
   hasDefinedBounties,
   hasDefinedOffChainVoting,
 } from "next-common/utils/summaryExternalInfo";
-
-function SubscribeTip() {
-  return (
-    <Link
-      className="flex gap-1 items-center p-[6px] bg-neutral200 rounded-[16px] overflow-hidden"
-      href="/setting/notification"
-    >
-      <div className="inline-flex">
-        <SystemTip
-          className="[&_path]:fill-textTertiary"
-          width={20}
-          height={20}
-        />
-      </div>
-      <span className="text-[14px] leading-[20px] whitespace-nowrap text-textSecondary">
-        <span className="text-theme500 font-medium">Subscribe</span> on-chain
-        events
-      </span>
-    </Link>
-  );
-}
+import { TitleExtra, HeadContent } from "next-common/components/overview";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -270,20 +247,6 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       });
     }
   }
-  const titleExtra = (
-    <div className="max-md:hidden transition-all h-[32px] w-[32px] hover:w-[224px] [&_span]:hidden [&_span]:hover:inline">
-      <SubscribeTip />
-    </div>
-  );
-
-  const headContent = (
-    <div className="flex flex-col gap-[16px]">
-      <ChainSocialLinks />
-      <div className="md:hidden">
-        <SubscribeTip />
-      </div>
-    </div>
-  );
 
   let externalInfo = null;
   if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
@@ -298,10 +261,10 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   return (
     <ListLayout
       title={chainSettings.name}
-      titleExtra={titleExtra}
+      titleExtra={<TitleExtra />}
       seoInfo={{ title: "" }}
       description={chainSettings.description}
-      headContent={headContent}
+      headContent={<HeadContent />}
       summary={<SummaryComponent summaryData={overview?.summary} />}
       summaryFooter={externalInfo}
       tabs={tabs}
