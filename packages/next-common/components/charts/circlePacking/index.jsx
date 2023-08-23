@@ -41,7 +41,7 @@ export default function CirclePacking({ data, width, height }) {
             />
             <foreignObject x={node.x - r} y={node.y - r} width={d} height={d}>
               <Tooltip
-                className="!block h-full"
+                className="!block h-full rounded-full"
                 content={<div>{node.data.account}</div>}
               >
                 <div className="rounded-full w-full h-full">
