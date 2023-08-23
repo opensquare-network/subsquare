@@ -157,7 +157,7 @@ const getCommentSource = (comment, chain) => {
       return [
         "Treasury Council Motion",
         comment?.motion.title || `Treasury motion #${motionId}`,
-        `/treasury-council/motion/${motionId}`,
+        `/treasury-council/motions/${motionId}`,
       ];
     } else {
       return [

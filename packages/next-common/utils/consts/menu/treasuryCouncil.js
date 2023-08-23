@@ -9,7 +9,7 @@ const treasuryCouncil = {
       value: "motions",
       name: "Motions",
       pathname: "/treasury-council/motions",
-      extraMatchNavMenuActivePathnames: ["/treasury-council/motion/[id]"],
+      extraMatchNavMenuActivePathnames: ["/treasury-council/motions/[id]"],
     },
     {
       value: "councilMembers",

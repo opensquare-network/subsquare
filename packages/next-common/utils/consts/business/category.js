@@ -39,7 +39,7 @@ export const detailPageCategory = {
   ADVISORY_MOTION: "advisory-committee/motions",
   ALLIANCE_MOTION: "alliance/motions",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcements",
-  TREASURY_COUNCIL_MOTION: "treasury-council/motion",
+  TREASURY_COUNCIL_MOTION: "treasury-council/motions",
   OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposals",
 };
 

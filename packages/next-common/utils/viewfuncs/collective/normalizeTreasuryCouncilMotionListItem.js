@@ -10,7 +10,7 @@ export default function normalizeTreasuryCouncilMotionListItem(chain, item) {
     title: getTitle(item),
     address: item.proposer,
     status: getMotionState(item),
-    detailLink: `/treasury-council/motion/${getMotionId(item)}`,
+    detailLink: `/treasury-council/motions/${getMotionId(item)}`,
     isTreasury:
       item?.onchainData?.treasuryProposals?.length > 0 ||
       item?.onchainData?.treasuryBounties?.length > 0,
