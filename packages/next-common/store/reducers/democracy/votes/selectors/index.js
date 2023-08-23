@@ -3,34 +3,37 @@ import BigNumber from "bignumber.js";
 import { name } from "../consts";
 
 export const allVotesSelector = (state) => state[name].allVotes;
-export const showVotesNumberSelector = createSelector(allVotesSelector, (allVotes) => !!allVotes);
+export const showVotesNumberSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => !!allVotes,
+);
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 
-export const allAyeSelector = state => {
+export const allAyeSelector = (state) => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => v.aye);
 };
 
-export const allNaySelector = state => {
+export const allNaySelector = (state) => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => !v.aye);
 };
 
-export const allDirectVotesSelector = state => {
+export const allDirectVotesSelector = (state) => {
   const allVotes = state[name].allVotes || [];
-  return allVotes.filter(v => !v.isDelegating);
+  return allVotes.filter((v) => !v.isDelegating);
 };
 
-export const allDelegationVotesSelector = state => {
+export const allDelegationVotesSelector = (state) => {
   const allVotes = state[name].allVotes || [];
-  return allVotes.filter(v => v.isDelegating);
+  return allVotes.filter((v) => v.isDelegating);
 };
 
 export const allNestedVotesSelector = createSelector(
   allDirectVotesSelector,
   allDelegationVotesSelector,
   (directVotes, delegations) => {
-    const directVotesWithNested = directVotes.map(vote => {
+    const directVotesWithNested = directVotes.map((vote) => {
       if (!vote.isStandard) {
         return {
           ...vote,
@@ -53,9 +56,12 @@ export const allNestedVotesSelector = createSelector(
       const totalDelegatedVotes = directVoterDelegations.reduce((result, d) => {
         return BigNumber(result).plus(d.votes).toString();
       }, 0);
-      const totalDelegatedCapital = directVoterDelegations.reduce((result, d) => {
-        return BigNumber(result).plus(d.balance).toString();
-      }, 0);
+      const totalDelegatedCapital = directVoterDelegations.reduce(
+        (result, d) => {
+          return BigNumber(result).plus(d.balance).toString();
+        },
+        0,
+      );
 
       return {
         ...vote,
@@ -66,9 +72,20 @@ export const allNestedVotesSelector = createSelector(
       };
     });
 
-    const allAye = directVotesWithNested.filter(v => v.aye);
-    const allNay = directVotesWithNested.filter(v => v.aye === false);
+    const allAye = directVotesWithNested.filter((v) => v.aye);
+    const allNay = directVotesWithNested.filter((v) => v.aye === false);
 
+    return {
+      allAye,
+      allNay,
+    };
+  },
+);
+
+export const flattenVotesSelector = createSelector(
+  allAyeSelector,
+  allNaySelector,
+  (allAye, allNay) => {
     return {
       allAye,
       allNay,
