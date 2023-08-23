@@ -184,7 +184,11 @@ function User({
 
   const addressWithoutIdentity = (
     <div className="flex items-center gap-[4px]">
-      {knownAddr && <IdentitySpecial width={12} height={12} />}
+      {knownAddr && (
+        <Tooltip content="Special account">
+          <IdentitySpecial width={12} height={12} />
+        </Tooltip>
+      )}
       {maxWidth && !noTooltip ? (
         <Tooltip content={(!isKeyUser && user?.username) || address}>
           <div>{elmUsernameOrAddr}</div>
