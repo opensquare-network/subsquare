@@ -21,21 +21,21 @@ const democracy = {
       pathname: "/democracy/referenda",
       extraMatchNavMenuActivePathnames: [
         "/democracy/statistics",
-        "/democracy/referendum/[id]",
+        "/democracy/referenda/[id]",
       ],
     },
     {
       value: "democracyProposals",
       name: "Public Proposals",
       pathname: "/democracy/proposals",
-      extraMatchNavMenuActivePathnames: ["/democracy/proposal/[id]"],
+      extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
     },
     {
       value: "democracyExternals",
       excludeToChains: [Chains.kintsugi, Chains.interlay],
       name: "External Proposals",
       pathname: "/democracy/externals",
-      extraMatchNavMenuActivePathnames: ["/democracy/external/[id]"],
+      extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
     },
   ],
 };

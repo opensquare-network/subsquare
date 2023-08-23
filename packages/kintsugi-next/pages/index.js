@@ -11,9 +11,9 @@ import { useChainSettings } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
-import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
+import { TitleExtra, HeadContent } from "next-common/components/overview";
 
 export default withLoginUserRedux(({ overview, chain }) => {
   const chainSettings = useChainSettings();
@@ -83,9 +83,10 @@ export default withLoginUserRedux(({ overview, chain }) => {
   return (
     <ListLayout
       title={chainSettings.name}
+      titleExtra={<TitleExtra />}
       seoInfo={{ title: "" }}
       description={chainSettings.description}
-      headContent={<ChainSocialLinks />}
+      headContent={<HeadContent />}
       summary={<SummaryComponent summaryData={overview?.summary} />}
       summaryFooter={externalInfo}
     >

@@ -72,7 +72,7 @@ export default function DemocracyNavigate({ motion }) {
         <TriangleRight />
         <Link
           passHref={true}
-          href={`/democracy/external/${external.indexer.blockHeight}_${external.proposalHash}`}
+          href={`/democracy/externals/${external.indexer.blockHeight}_${external.proposalHash}`}
         >
           {`External #${external.proposalHash?.slice(0, 6)}`}
         </Link>
@@ -87,10 +87,7 @@ export default function DemocracyNavigate({ motion }) {
       {referendumIndex !== undefined && (
         <div>
           <TriangleRight />
-          <Link
-            href={`/democracy/referendum/${referendumIndex}`}
-            legacyBehavior
-          >
+          <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
             {`Referendum #${referendumIndex}`}
           </Link>
         </div>

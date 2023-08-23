@@ -9,7 +9,7 @@ import { useChain } from "../../../context/chain";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
-    <Link href={`/democracy/referendum/${referendumIndex}`} legacyBehavior>
+    <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
       {`Referendum #${referendumIndex}`}
     </Link>
   );
@@ -39,7 +39,7 @@ export function DemocracyProposalNavigator({ proposalIndex, isLink = true }) {
   }
 
   return (
-    <Link href={`/democracy/proposal/${proposalIndex}`} legacyBehavior>
+    <Link href={`/democracy/proposals/${proposalIndex}`} legacyBehavior>
       {`Proposal #${proposalIndex}`}
     </Link>
   );
@@ -51,7 +51,7 @@ export function DemocracyExternalNavigator({
   isLink = true,
 }) {
   let link = (
-    <Link passHref={true} href={`/democracy/external/${blockHeight}_${hash}`}>
+    <Link passHref={true} href={`/democracy/externals/${blockHeight}_${hash}`}>
       {`External #${hash.slice(0, 6)}`}
     </Link>
   );
@@ -75,7 +75,10 @@ export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
   return (
     <div>
       {triangle}
-      <Link href={`/council/motion/${getMotionId(motion, chain)}`} legacyBehavior>
+      <Link
+        href={`/council/motions/${getMotionId(motion, chain)}`}
+        legacyBehavior
+      >
         {`Motion #${shortMotionId(motion)}`}
       </Link>
     </div>
@@ -86,7 +89,10 @@ export function TechCommMotionNavigator({ motion = {}, isLink = true }) {
   const chain = useChain();
 
   let link = (
-    <Link href={`/techcomm/proposal/${getMotionId(motion, chain)}`} legacyBehavior>
+    <Link
+      href={`/techcomm/proposals/${getMotionId(motion, chain)}`}
+      legacyBehavior
+    >
       {`Tech. Comm. #${shortMotionId(motion)}`}
     </Link>
   );

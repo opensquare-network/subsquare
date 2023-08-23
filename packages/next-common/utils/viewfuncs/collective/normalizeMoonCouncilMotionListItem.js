@@ -10,7 +10,7 @@ export default function normalizeMoonCouncilMotionListItem(chain, item) {
     title: getTitle(item),
     address: item.proposer,
     status: getMotionState(item),
-    detailLink: `/council/motion/${getMotionId(item)}`,
+    detailLink: `/council/motions/${getMotionId(item)}`,
     isDemocracy: item?.onchainData?.externalProposals?.length > 0,
     time: getPostLastActivityAt(item),
   };

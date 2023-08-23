@@ -35,7 +35,7 @@ export default function ValueDisplay({
   if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
     const abbreviated = abbreviateBigNumber(value, 2);
     let display = (
-      <span title={showTooltip ? "" : tooltipContent}>
+      <span title={showTooltip ? "" : tooltipContent} className={className}>
         {abbreviated}
         {symbolContent}
       </span>
