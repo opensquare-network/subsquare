@@ -285,7 +285,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Open Tech. Comm. Proposals",
       comment?.openTechCommittee?.title || `Proposal #${motionId}`,
-      `/open-techcomm/proposal/${motionId}`,
+      `/open-techcomm/proposals/${motionId}`,
     ];
   }
 

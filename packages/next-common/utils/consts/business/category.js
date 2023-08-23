@@ -40,7 +40,7 @@ export const detailPageCategory = {
   ALLIANCE_MOTION: "alliance/motions",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcements",
   TREASURY_COUNCIL_MOTION: "treasury-council/motion",
-  OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposal",
+  OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposals",
 };
 
 export default businessCategory;
