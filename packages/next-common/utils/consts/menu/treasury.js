@@ -43,7 +43,7 @@ const treasury = {
       value: "child-bounties",
       name: "Child Bounties",
       pathname: "/treasury/child-bounties",
-      extraMatchNavMenuActivePathnames: ["/treasury/child-bounty/[id]"],
+      extraMatchNavMenuActivePathnames: ["/treasury/child-bounties/[id]"],
       excludeToChains: getExcludeChains([
         Chains.polkadot,
         Chains.kusama,

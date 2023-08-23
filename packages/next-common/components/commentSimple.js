@@ -180,7 +180,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Child Bounties",
       comment?.childBounty.title || `Child bounty #${index}`,
-      `/treasury/child-bounty/${index}`,
+      `/treasury/child-bounties/${index}`,
     ];
   }
   if (comment?.bounty) {

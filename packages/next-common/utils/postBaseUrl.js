@@ -1,4 +1,4 @@
-export const childBountyBaseUrl = "/treasury/child-bounty";
+export const childBountyBaseUrl = "/treasury/child-bounties";
 export const bountyBaseUrl = "/treasury/bounties";
 export const tipBaseUrl = "/treasury/tip";
 export const treasuryProposalBaseUrl = "/treasury/proposal";
