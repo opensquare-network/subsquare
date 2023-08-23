@@ -80,7 +80,7 @@ export function toApiType(type) {
     return "advisory-motions";
   }
 
-  return `${type}s`;
+  return type;
 }
 
 export function getEffectiveNumbers(n) {
