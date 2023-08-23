@@ -38,7 +38,7 @@ export const detailPageCategory = {
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
   ADVISORY_MOTION: "advisory-committee/motions",
   ALLIANCE_MOTION: "alliance/motions",
-  ALLIANCE_ANNOUNCEMENT: "alliance/announcement",
+  ALLIANCE_ANNOUNCEMENT: "alliance/announcements",
   TREASURY_COUNCIL_MOTION: "treasury-council/motion",
   OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposal",
 };

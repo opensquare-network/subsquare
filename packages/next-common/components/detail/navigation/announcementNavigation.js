@@ -12,7 +12,7 @@ export function AnnouncementNavigator({ cid, height, isLink = true }) {
   let link = `Announcement ${cid.slice(0, 4)}...`;
   if (isLink) {
     link = (
-      <Link href={`/alliance/announcement/${height}_${cid}`} legacyBehavior>
+      <Link href={`/alliance/announcements/${height}_${cid}`} legacyBehavior>
         {link}
       </Link>
     );

@@ -277,7 +277,7 @@ const getCommentSource = (comment, chain) => {
       "Alliance Announcements",
       comment?.allianceAnnouncement?.title ||
         `Announcement #${textEllipsis(cid, 4, 4)}`,
-      `/alliance/announcement/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
+      `/alliance/announcements/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
     ];
   }
   if (comment?.openTechCommittee) {

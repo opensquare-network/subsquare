@@ -26,7 +26,7 @@ const announcements = {
   value: "allianceAnnouncements",
   name: "Announcements",
   pathname: "/alliance/announcements",
-  extraMatchNavMenuActivePathnames: ["/alliance/announcement/[id]"],
+  extraMatchNavMenuActivePathnames: ["/alliance/announcements/[id]"],
 };
 
 const alliance = {

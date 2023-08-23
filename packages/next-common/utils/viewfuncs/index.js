@@ -58,6 +58,9 @@ export function toApiType(type) {
   if (type === detailPageCategory.ALLIANCE_MOTION) {
     return "alliance/motions";
   }
+  if (type === detailPageCategory.ALLIANCE_ANNOUNCEMENT) {
+    return "alliance/announcements";
+  }
 
   // Karura
   if (type === detailPageCategory.FINANCIAL_MOTION) {
