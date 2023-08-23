@@ -4,16 +4,23 @@
 // https://github.com/opensquare-network/subsquare/issues/3326
 // https://react-graph-gallery.com/circular-packing
 
-import clsx from "clsx";
 import * as d3 from "d3";
+import noop from "lodash.noop";
 import { Fragment } from "react";
-import Tooltip from "next-common/components/tooltip";
 
-export default function CirclePacking({ data, width, height }) {
+export default function CirclePacking({
+  data,
+  width,
+  height,
+  sizeField = "value",
+  bubbleCircleClassName = "",
+  bubbleCircleContent = noop,
+}) {
   const hierarchy = d3
     .hierarchy(data)
-    .sum((d) => d.votes)
-    .sort((a, b) => b.votes - a.votes);
+    .sum((d) => d[sizeField])
+    .sort((a, b) => b[sizeField] - a[sizeField]);
+
   const pack = d3
     .pack()
     .size([width || 1, height || 1])
@@ -27,28 +34,23 @@ export default function CirclePacking({ data, width, height }) {
         const { x, y, r } = node;
         const d = r * 2;
 
+        const bubbleClassName =
+          typeof bubbleCircleClassName === "function"
+            ? bubbleCircleClassName(node)
+            : bubbleCircleClassName;
+        const bubbleContent =
+          typeof bubbleCircleContent === "function"
+            ? bubbleCircleContent(node)
+            : bubbleCircleContent;
+
         return (
           <Fragment key={idx}>
-            <circle
-              cx={x}
-              cy={y}
-              r={r}
-              className={clsx(
-                node.data.aye && "fill-green300",
-                node.data.aye === false && "fill-red300",
-                node.data.isAbstain && "fill-neutral400",
-              )}
-            />
-            <foreignObject x={node.x - r} y={node.y - r} width={d} height={d}>
-              <Tooltip
-                className="!block h-full rounded-full"
-                content={<div>{node.data.account}</div>}
-              >
-                <div className="rounded-full w-full h-full">
-                  {/* TODO: identity */}
-                </div>
-              </Tooltip>
-            </foreignObject>
+            <circle cx={x} cy={y} r={r} className={bubbleClassName} />
+            {bubbleContent && (
+              <foreignObject x={node.x - r} y={node.y - r} width={d} height={d}>
+                {bubbleContent}
+              </foreignObject>
+            )}
           </Fragment>
         );
       })}
