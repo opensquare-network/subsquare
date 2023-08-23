@@ -52,7 +52,7 @@ export default function useTreasuryTimelineData(treasuryProposal) {
   const [timelineData, setTimelineData] = useState([]);
   const motionLink = isMoonChain()
     ? "/treasury-council/motion"
-    : "/council/motion";
+    : "/council/motions";
 
   useEffect(() => {
     const data = flatten(

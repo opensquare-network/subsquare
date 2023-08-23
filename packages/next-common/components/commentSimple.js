@@ -163,7 +163,7 @@ const getCommentSource = (comment, chain) => {
       return [
         "Council Motions",
         comment?.motion.title || `Motion #${motionId}`,
-        `/council/motion/${motionId}`,
+        `/council/motions/${motionId}`,
       ];
     }
   }
@@ -252,7 +252,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Council Motions",
       comment?.motion.title || `Motion #${motionId}`,
-      `/council/motion/${motionId}`,
+      `/council/motions/${motionId}`,
     ];
   }
   if (comment?.advisoryCommitteeMotion) {

@@ -9,6 +9,6 @@ export const referendaReferendumBaseUrl = "/referenda";
 export const referendaTrackBaseUrl = "/referenda/tracks";
 export const fellowshipReferendumBaseUrl = "/fellowship/referenda";
 export const fellowshipTrackBaseUrl = "/fellowship/tracks";
-export const councilMotionBaseUrl = "/council/motion";
+export const councilMotionBaseUrl = "/council/motions";
 export const techCommMotionBaseUrl = "/techcomm/proposal";
 export const advisoryCommitteeBaseUrl = "/advisory-committee/motion";

@@ -76,7 +76,7 @@ export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
     <div>
       {triangle}
       <Link
-        href={`/council/motion/${getMotionId(motion, chain)}`}
+        href={`/council/motions/${getMotionId(motion, chain)}`}
         legacyBehavior
       >
         {`Motion #${shortMotionId(motion)}`}
