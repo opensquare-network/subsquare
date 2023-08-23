@@ -114,7 +114,7 @@ function ChildBountiesTable({ childBounties }) {
                 `#${bounty.index}`,
                 <ChildBounty key="child-bounty">
                   <Anchor
-                    href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
+                    href={`/treasury/child-bounties/${bounty.parentBountyId}_${bounty.index}`}
                     title={bounty.title}
                   >
                     {bounty.title}
@@ -135,7 +135,7 @@ function ChildBountiesTable({ childBounties }) {
 
             <ChildBountyMobile key={index}>
               <Anchor
-                href={`/treasury/child-bounty/${bounty.parentBountyId}_${bounty.index}`}
+                href={`/treasury/child-bounties/${bounty.parentBountyId}_${bounty.index}`}
                 title={bounty.title}
               >
                 {bounty.title}

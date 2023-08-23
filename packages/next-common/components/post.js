@@ -313,7 +313,10 @@ export default function Post({ data, href, type }) {
             )}
             {data.parentIndex !== undefined && (
               <MobileHiddenInfo>
-                <Anchor href={`/treasury/bounty/${data.parentIndex}`} passHref>
+                <Anchor
+                  href={`/treasury/bounties/${data.parentIndex}`}
+                  passHref
+                >
                   {`Parent #${data.parentIndex}`}
                 </Anchor>
               </MobileHiddenInfo>
