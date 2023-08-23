@@ -172,7 +172,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Tips",
       comment?.tip.title || `Tip #${hashEllipsis(tipHash)}`,
-      `/treasury/tip/${comment?.tip.height}_${tipHash}`,
+      `/treasury/tips/${comment?.tip.height}_${tipHash}`,
     ];
   }
   if (comment?.childBounty) {

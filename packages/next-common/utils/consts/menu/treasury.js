@@ -56,7 +56,7 @@ const treasury = {
       value: "tips",
       name: "Tips",
       pathname: "/treasury/tips",
-      extraMatchNavMenuActivePathnames: ["/treasury/tip/[id]"],
+      extraMatchNavMenuActivePathnames: ["/treasury/tips/[id]"],
       excludeToChains: [
         Chains.kintsugi,
         Chains.interlay,

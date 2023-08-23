@@ -1,6 +1,6 @@
 export const childBountyBaseUrl = "/treasury/child-bounties";
 export const bountyBaseUrl = "/treasury/bounties";
-export const tipBaseUrl = "/treasury/tip";
+export const tipBaseUrl = "/treasury/tips";
 export const treasuryProposalBaseUrl = "/treasury/proposals";
 export const democracyReferendumBaseUrl = "/democracy/referenda";
 export const democracyProposalBaseUrl = "/democracy/proposals";
