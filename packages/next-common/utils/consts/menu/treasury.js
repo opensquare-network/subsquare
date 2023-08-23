@@ -23,7 +23,7 @@ const treasury = {
       value: "bounties",
       name: "Bounties",
       pathname: "/treasury/bounties",
-      extraMatchNavMenuActivePathnames: ["/treasury/bounty/[id]"],
+      extraMatchNavMenuActivePathnames: ["/treasury/bounties/[id]"],
       excludeToChains: [
         Chains.basilisk,
         Chains.hydradx,

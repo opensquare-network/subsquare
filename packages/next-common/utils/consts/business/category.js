@@ -31,7 +31,7 @@ export const detailPageCategory = {
   DEMOCRACY_EXTERNAL: "democracy/externals",
   DEMOCRACY_PROPOSAL: "democracy/proposals",
   TREASURY_PROPOSAL: "treasury/proposal",
-  TREASURY_BOUNTY: "treasury/bounty",
+  TREASURY_BOUNTY: "treasury/bounties",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounty",
   TREASURY_TIP: "treasury/tip",
   GOV2_REFERENDUM: "referenda",

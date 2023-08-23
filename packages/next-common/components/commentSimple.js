@@ -188,7 +188,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Bounties",
       comment?.bounty.title || `Bounty #${bountyIndex}`,
-      `/treasury/bounty/${bountyIndex}`,
+      `/treasury/bounties/${bountyIndex}`,
     ];
   }
   if (comment?.treasuryProposal) {

@@ -21,7 +21,7 @@ function BountyMetadata({ meta }) {
     switch (key) {
       case "parentBounty":
         normalizedValue = (
-          <Anchor href={`/treasury/bounty/${value}`}> #{value} </Anchor>
+          <Anchor href={`/treasury/bounties/${value}`}> #{value} </Anchor>
         );
         break;
       case "proposer":
