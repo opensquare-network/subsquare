@@ -12,13 +12,16 @@ export default function Gov2ReferendaVotesStats() {
   const allNestedVotes = useSelector(allNestedVotesSelector);
 
   const [votesObj, setVotesObj] = useState({});
+  const [sizeField, setSizeField] = useState("votes");
   const viewMode = useSelector(detailMultiTabsVotesStatsView);
 
   useEffect(() => {
     if (viewMode === "flattened") {
       setVotesObj(allFlattenedVotes);
+      setSizeField("votes");
     } else {
       setVotesObj(allNestedVotes);
+      setSizeField("totalVotes");
     }
   }, [viewMode]);
 
@@ -27,6 +30,7 @@ export default function Gov2ReferendaVotesStats() {
       allAye={votesObj.allAye}
       allNay={votesObj.allNay}
       allAbstain={votesObj.allAbstain}
+      sizeField={sizeField}
     />
   );
 }

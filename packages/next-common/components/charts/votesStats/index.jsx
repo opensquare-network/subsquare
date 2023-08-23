@@ -11,7 +11,13 @@ import VotesStatsLegend from "./legend";
 /**
  * @param {{ allAye: any[], allNay: any[], allAbstain: any[]} & import("react").HTMLAttributes<HTMLDivElement>} props
  */
-export default function VotesStats({ allAye, allNay, allAbstain, ...props }) {
+export default function VotesStats({
+  allAye,
+  allNay,
+  allAbstain,
+  sizeField,
+  ...props
+}) {
   const [showVotes, setShowVotes] = useState({
     aye: true,
     nay: true,
@@ -23,7 +29,7 @@ export default function VotesStats({ allAye, allNay, allAbstain, ...props }) {
       showVotes.nay && allNay,
       showVotes.abstain && allAbstain,
     ].filter(Boolean),
-  );
+  ).sort((a, b) => b[sizeField] - a[sizeField]);
 
   // cache size, avoid re-render circle packing chart
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -64,10 +70,10 @@ export default function VotesStats({ allAye, allNay, allAbstain, ...props }) {
   return (
     <div className={clsx(props.className, "w-full")} {...props} ref={ref}>
       <CirclePacking
+        sizeField={sizeField}
         data={data}
         width={size.width}
         height={320}
-        sizeField="votes"
         bubbleCircleClassName={(node) =>
           clsx(
             node.data.aye && "fill-green300",

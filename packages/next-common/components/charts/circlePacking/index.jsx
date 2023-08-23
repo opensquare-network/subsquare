@@ -16,10 +16,7 @@ export default function CirclePacking({
   bubbleCircleClassName = "",
   bubbleCircleContent = noop,
 }) {
-  const hierarchy = d3
-    .hierarchy(data)
-    .sum((d) => d[sizeField])
-    .sort((a, b) => b[sizeField] - a[sizeField]);
+  const hierarchy = d3.hierarchy(data).sum((d) => d[sizeField]);
 
   const pack = d3
     .pack()
