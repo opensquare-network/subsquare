@@ -131,6 +131,7 @@ function User({
   noTooltip = false,
   color,
   linkToVotesPage = false,
+  ellipsis = true,
 }) {
   const settings = useChainSettings();
   const address = add ?? user?.address;
@@ -172,7 +173,8 @@ function User({
 
   const elmUsernameOrAddr = (
     <Username fontSize={fontSize} color={color}>
-      {(!isKeyUser && user?.username) || addressEllipsis(address)}
+      {(!isKeyUser && user?.username) ||
+        (ellipsis ? addressEllipsis(address) : address)}
     </Username>
   );
 
