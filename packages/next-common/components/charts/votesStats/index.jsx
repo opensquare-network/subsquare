@@ -13,6 +13,7 @@ export default function VotesStats({ votes = [], ...props }) {
   const [size, setSize] = useState({ width: 0, height: 0 });
   const ref = useRef();
   const [navCollapsed] = useNavCollapsed();
+  const [interactionNode, setInteractionNode] = useState(null);
 
   useLayoutEffect(() => {
     handleSize();
@@ -24,6 +25,21 @@ export default function VotesStats({ votes = [], ...props }) {
     const width = ref.current.offsetWidth;
     const height = ref.current.offsetHeight;
     setSize({ width, height });
+  }
+
+  function hoverDimClassName(node) {
+    if (interactionNode) {
+      if (
+        (interactionNode.data.aye && node.data.aye) ||
+        (interactionNode.data.aye === false && node.data.aye === false) ||
+        (interactionNode.data.isAbstain && node.data.isAbstain)
+      ) {
+        return "opacity-100";
+      }
+      return "opacity-40";
+    }
+
+    return "opacity-100";
   }
 
   const data = {
@@ -43,17 +59,31 @@ export default function VotesStats({ votes = [], ...props }) {
             node.data.aye && "fill-green300",
             node.data.aye === false && "fill-red300",
             node.data.isAbstain && "fill-neutral400",
+            hoverDimClassName(node),
           )
         }
         bubbleCircleContent={(node) => (
-          <Tooltip
-            className="!block h-full rounded-full"
-            content={<div>{node.data.account}</div>}
+          <div
+            className={clsx(
+              "h-full w-full rounded-full",
+              hoverDimClassName(node),
+            )}
+            onMouseEnter={() => {
+              setInteractionNode(node);
+            }}
+            onMouseLeave={() => {
+              setInteractionNode(null);
+            }}
           >
-            <div className="rounded-full w-full h-full">
-              {/* TODO: identity */}
-            </div>
-          </Tooltip>
+            <Tooltip
+              className="!block h-full"
+              content={<div>{node.data.account}</div>}
+            >
+              <div className="rounded-full w-full h-full">
+                {/* TODO: identity */}
+              </div>
+            </Tooltip>
+          </div>
         )}
       />
     </div>
