@@ -38,8 +38,6 @@ export default function VotesStats({ votes = [], ...props }) {
       }
       return "opacity-40";
     }
-
-    return "opacity-100";
   }
 
   const data = {
