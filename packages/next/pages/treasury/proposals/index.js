@@ -1,54 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import nextApi, { ssrNextApi } from "next-common/services/nextApi";
+import { ssrNextApi } from "next-common/services/nextApi";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
-import dynamic from "next/dynamic";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
-import { SystemPlus } from "@osn/icons/subsquare";
-
-const Popup = dynamic(
-  () => import("next-common/components/treasury/proposal/popup"),
-  {
-    ssr: false,
-  },
-);
 
 export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
-  const [showPopup, setShowPopup] = useState(false);
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-  const isMounted = useIsMounted();
-  const {
-    hasDotreasury,
-    symbol,
-    hideActionButtons,
-    noTreasuryPrecompile,
-    hideNewTreasuryProposalButton,
-  } = useChainSettings();
+  const { hasDotreasury, symbol } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
-  );
-
-  const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch("treasury/proposals");
-    if (result && isMounted.current) {
-      setProposals(result);
-    }
-  }, [isMounted]);
-
-  const onProposeFinalized = useWaitSyncBlock(
-    "Proposal proposed",
-    refreshPageData,
   );
 
   const category = "Treasury Proposals";
@@ -59,23 +27,6 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       seoInfo={seoInfo}
       title={category}
       summary={<TreasurySummary />}
-      summaryFooter={
-        !hideActionButtons &&
-        !hideNewTreasuryProposalButton &&
-        !noTreasuryPrecompile && (
-          <div className="flex justify-end">
-            <PrimaryButton
-              small
-              icon={
-                <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
-              }
-              onClick={() => setShowPopup(true)}
-            >
-              New Proposal
-            </PrimaryButton>
-          </div>
-        )
-      }
       tabs={[
         {
           label: "Proposals",
@@ -98,12 +49,6 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
           total: proposals.total,
         }}
       />
-      {showPopup && (
-        <Popup
-          onClose={() => setShowPopup(false)}
-          onFinalized={onProposeFinalized}
-        />
-      )}
     </ListLayout>
   );
 });
