@@ -260,7 +260,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Advisory Committee Motions",
       comment?.advisoryCommitteeMotion?.title || `Motion #${motionId}`,
-      `/advisory-committee/motion/${motionId}`,
+      `/advisory-committee/motions/${motionId}`,
     ];
   }
   if (comment?.allianceMotion) {

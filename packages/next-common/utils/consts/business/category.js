@@ -36,7 +36,7 @@ export const detailPageCategory = {
   TREASURY_TIP: "treasury/tips",
   GOV2_REFERENDUM: "referenda",
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
-  ADVISORY_MOTION: "advisory-committee/motion",
+  ADVISORY_MOTION: "advisory-committee/motions",
   ALLIANCE_MOTION: "alliance/motion",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcement",
   TREASURY_COUNCIL_MOTION: "treasury-council/motion",

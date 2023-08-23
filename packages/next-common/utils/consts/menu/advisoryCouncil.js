@@ -13,7 +13,7 @@ const advisoryCommittee = {
       value: "advisoryMotions",
       name: "Motions",
       pathname: "/advisory-committee/motions",
-      extraMatchNavMenuActivePathnames: ["/advisory-committee/motion/[id]"],
+      extraMatchNavMenuActivePathnames: ["/advisory-committee/motions/[id]"],
     },
     {
       value: "advisoryCouncilMembers",
