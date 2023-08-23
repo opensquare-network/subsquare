@@ -65,7 +65,7 @@ export default function useBountyTimelineData(bounty) {
 
     const motions =
       bounty?.motions?.map((motion) => {
-        return createMotionTimelineData(motion, true, "/council/motion");
+        return createMotionTimelineData(motion, true, "/council/motions");
       }) ?? [];
 
     setTimelineData(sortTimeline([...data, ...motions].filter(Boolean)));

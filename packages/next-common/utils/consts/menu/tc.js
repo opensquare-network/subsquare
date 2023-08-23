@@ -21,7 +21,7 @@ const techComm = {
       value: "techCommProposals",
       name: "Proposals",
       pathname: "/techcomm/proposals",
-      extraMatchNavMenuActivePathnames: ["/techcomm/proposal/[id]"],
+      extraMatchNavMenuActivePathnames: ["/techcomm/proposals/[id]"],
     },
     {
       value: "techCommMembers",

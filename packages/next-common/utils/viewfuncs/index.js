@@ -41,6 +41,9 @@ export function toApiType(type) {
   if (type === detailPageCategory.ADVISORY_MOTION) {
     return "advisory-motions";
   }
+  if (type === detailPageCategory.DEMOCRACY_REFERENDUM) {
+    return "democracy/referendums";
+  }
   return `${type}s`;
 }
 

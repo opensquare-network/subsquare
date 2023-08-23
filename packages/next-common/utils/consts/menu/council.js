@@ -21,7 +21,7 @@ const council = {
       value: "motions",
       name: "Motions",
       pathname: "/council/motions",
-      extraMatchNavMenuActivePathnames: ["/council/motion/[id]"],
+      extraMatchNavMenuActivePathnames: ["/council/motions/[id]"],
     },
     {
       value: "councilMembers",

@@ -163,7 +163,7 @@ const getCommentSource = (comment, chain) => {
       return [
         "Council Motions",
         comment?.motion.title || `Motion #${motionId}`,
-        `/council/motion/${motionId}`,
+        `/council/motions/${motionId}`,
       ];
     }
   }
@@ -204,7 +204,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Democracy Public Proposals",
       comment?.democracy?.title || `Proposal #${proposalIndex}`,
-      `/democracy/proposal/${proposalIndex}`,
+      `/democracy/proposals/${proposalIndex}`,
     ];
   }
   if (comment?.democracy?.externalProposalHash) {
@@ -212,7 +212,7 @@ const getCommentSource = (comment, chain) => {
       "Democracy External Proposals",
       comment.democracy.title ||
         `Proposal #${hashEllipsis(comment?.democracy.externalProposalHash)}`,
-      `/democracy/external/${comment?.democracy.indexer.blockHeight}_${comment?.democracy.externalProposalHash}`,
+      `/democracy/externals/${comment?.democracy.indexer.blockHeight}_${comment?.democracy.externalProposalHash}`,
     ];
   }
   if (!isNil(comment?.democracy?.referendumIndex)) {
@@ -220,7 +220,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Democracy Referendums",
       comment?.democracy?.title || `Referendum #${referendumIndex}`,
-      `/democracy/referendum/${referendumIndex}`,
+      `/democracy/referenda/${referendumIndex}`,
     ];
   }
   if (comment?.techCommMotion) {
@@ -228,7 +228,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Tech. Comm. Proposals",
       comment?.techCommMotion?.title || `Proposal #${motionId}`,
-      `/techcomm/proposal/${motionId}`,
+      `/techcomm/proposals/${motionId}`,
     ];
   }
   if (comment?.referendaReferendum) {
@@ -252,7 +252,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Council Motions",
       comment?.motion.title || `Motion #${motionId}`,
-      `/council/motion/${motionId}`,
+      `/council/motions/${motionId}`,
     ];
   }
   if (comment?.advisoryCommitteeMotion) {
