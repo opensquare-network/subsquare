@@ -142,7 +142,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Financial Motion",
       comment.financialMotion.title || `Motion #${hashEllipsis(hash)}`,
-      `/financial-council/motion/${comment?.financialMotion.indexer.blockHeight}_${hash}`,
+      `/financial-council/motions/${comment?.financialMotion.indexer.blockHeight}_${hash}`,
     ];
   }
 

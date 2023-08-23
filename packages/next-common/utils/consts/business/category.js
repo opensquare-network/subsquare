@@ -25,7 +25,7 @@ export const detailPageCategory = {
   POST: "post",
   PA_POST: "polkassembly/post",
   COUNCIL_MOTION: "council/motions",
-  FINANCIAL_MOTION: "financial-council/motion",
+  FINANCIAL_MOTION: "financial-council/motions",
   TECH_COMM_MOTION: "techcomm/proposals",
   DEMOCRACY_REFERENDUM: "democracy/referenda",
   DEMOCRACY_EXTERNAL: "democracy/externals",
