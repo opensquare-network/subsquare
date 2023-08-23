@@ -75,8 +75,6 @@ export default function VotesStats({
     children: votes,
   };
 
-  console.log(interactionNode);
-
   return (
     <div className={clsx(props.className, "w-full")} {...props} ref={ref}>
       <CirclePacking
