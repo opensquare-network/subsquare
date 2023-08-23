@@ -26,17 +26,21 @@ function createNumMatcher(prefix, name, add) {
   const minLength = test.length + 4;
 
   return (addr) => {
-    const u8a = isCodec(addr)
-      ? addr.toU8a()
-      : registry.createType("AccountId", addr).toU8a();
+    try {
+      const u8a = isCodec(addr)
+        ? addr.toU8a()
+        : registry.createType("AccountId", addr).toU8a();
 
-    return u8a.length >= minLength &&
-      u8aEq(test, u8a.subarray(0, test.length)) &&
-      u8aEmpty(u8a.subarray(minLength))
-      ? `${name} ${formatNumber(
-          u8aToBn(u8a.subarray(test.length, minLength)),
-        )}${add ? ` (${add})` : ""}`
-      : null;
+      return u8a.length >= minLength &&
+        u8aEq(test, u8a.subarray(0, test.length)) &&
+        u8aEmpty(u8a.subarray(minLength))
+        ? `${name} ${formatNumber(
+            u8aToBn(u8a.subarray(test.length, minLength)),
+          )}${add ? ` (${add})` : ""}`
+        : null;
+    } catch (e) {
+      return null;
+    }
   };
 }
 
