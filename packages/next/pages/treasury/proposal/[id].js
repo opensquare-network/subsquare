@@ -1,6 +1,6 @@
 import { withLoginUser } from "next-common/lib";
 
-export default function ChildBounty() {
+export default function Proposal() {
   return "Please visit `/treasury/proposals/[id]`";
 }
 
