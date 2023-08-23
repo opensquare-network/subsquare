@@ -18,8 +18,9 @@ export default function Business({ treasuryProposals }) {
         {treasuryProposals.map((item, idx) => (
           <Link
             key={idx}
-            href={`/treasury/proposal/${item.proposalIndex}`}
-            legacyBehavior>{`Treasury Proposal #${item.proposalIndex}`}</Link>
+            href={`/treasury/proposals/${item.proposalIndex}`}
+            legacyBehavior
+          >{`Treasury Proposal #${item.proposalIndex}`}</Link>
         ))}
       </LinkItems>,
     ]);

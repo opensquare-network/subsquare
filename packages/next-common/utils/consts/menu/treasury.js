@@ -17,7 +17,7 @@ const treasury = {
       value: "proposals",
       name: "Proposals",
       pathname: "/treasury/proposals",
-      extraMatchNavMenuActivePathnames: ["/treasury/proposal/[id]"],
+      extraMatchNavMenuActivePathnames: ["/treasury/proposals/[id]"],
     },
     {
       value: "bounties",

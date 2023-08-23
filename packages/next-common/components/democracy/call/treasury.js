@@ -16,7 +16,7 @@ export default function extractTreasuryFields(call = {}) {
       "Link to",
       <Link
         key="proposal-link"
-        href={`/treasury/proposal/${proposalId}`}
+        href={`/treasury/proposals/${proposalId}`}
         legacyBehavior
       >{`Treasury Proposal #${proposalId}`}</Link>,
     ],

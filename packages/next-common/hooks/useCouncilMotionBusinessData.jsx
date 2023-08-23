@@ -20,7 +20,7 @@ export function useCouncilMotionBusinessData() {
           "Link to",
           <Link
             key="proposal-link"
-            href={`/treasury/proposal/${proposal.proposalIndex}`}
+            href={`/treasury/proposals/${proposal.proposalIndex}`}
             legacyBehavior
           >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
         ],

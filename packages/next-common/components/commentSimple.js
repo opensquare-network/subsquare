@@ -196,7 +196,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Treasury Proposals",
       comment?.treasuryProposal.title || `Proposal #${proposalIndex}`,
-      `/treasury/proposal/${proposalIndex}`,
+      `/treasury/proposals/${proposalIndex}`,
     ];
   }
   if (!isNil(comment?.democracy?.proposalIndex)) {

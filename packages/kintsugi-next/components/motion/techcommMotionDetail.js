@@ -150,7 +150,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
         "Link to",
         <Link
           key="treasury-link-to"
-          href={`/treasury/proposal/${motion.treasuryProposalIndex}`}
+          href={`/treasury/proposals/${motion.treasuryProposalIndex}`}
           legacyBehavior
         >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
       ],
