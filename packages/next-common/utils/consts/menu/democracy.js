@@ -35,7 +35,7 @@ const democracy = {
       excludeToChains: [Chains.kintsugi, Chains.interlay],
       name: "External Proposals",
       pathname: "/democracy/externals",
-      extraMatchNavMenuActivePathnames: ["/democracy/external/[id]"],
+      extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
     },
   ],
 };

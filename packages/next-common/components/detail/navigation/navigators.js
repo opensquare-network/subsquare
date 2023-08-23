@@ -51,7 +51,7 @@ export function DemocracyExternalNavigator({
   isLink = true,
 }) {
   let link = (
-    <Link passHref={true} href={`/democracy/external/${blockHeight}_${hash}`}>
+    <Link passHref={true} href={`/democracy/externals/${blockHeight}_${hash}`}>
       {`External #${hash.slice(0, 6)}`}
     </Link>
   );

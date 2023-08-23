@@ -41,7 +41,7 @@ function createMotionBusinessData(motion) {
       "Link to",
       <Link
         key="link-to"
-        href={`/democracy/external/${height}_${motion.proposalHash}`}
+        href={`/democracy/externals/${height}_${motion.proposalHash}`}
         legacyBehavior
       >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
     ],

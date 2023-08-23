@@ -212,7 +212,7 @@ const getCommentSource = (comment, chain) => {
       "Democracy External Proposals",
       comment.democracy.title ||
         `Proposal #${hashEllipsis(comment?.democracy.externalProposalHash)}`,
-      `/democracy/external/${comment?.democracy.indexer.blockHeight}_${comment?.democracy.externalProposalHash}`,
+      `/democracy/externals/${comment?.democracy.indexer.blockHeight}_${comment?.democracy.externalProposalHash}`,
     ];
   }
   if (!isNil(comment?.democracy?.referendumIndex)) {

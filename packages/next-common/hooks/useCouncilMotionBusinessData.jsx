@@ -90,7 +90,7 @@ export function useCouncilMotionBusinessData() {
           "Link to",
           <Link
             key="external-link"
-            href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
+            href={`/democracy/externals/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
             legacyBehavior
           >{`Democracy External #${external?.proposalHash?.slice(
             0,
@@ -110,7 +110,7 @@ export function useCouncilMotionBusinessData() {
           "Link to",
           <Link
             key="external-link"
-            href={`/democracy/external/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
+            href={`/democracy/externals/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
             legacyBehavior
           >{`Democracy External #${external?.proposalHash?.slice(
             0,

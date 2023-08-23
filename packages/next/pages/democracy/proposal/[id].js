@@ -1,6 +1,6 @@
 import { withLoginUser } from "next-common/lib";
 
-export default function Referendum() {
+export default function Proposal() {
   return "Please visit `/democracy/proposals/[id]`";
 }
 
