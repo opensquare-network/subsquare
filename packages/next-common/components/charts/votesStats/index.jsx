@@ -5,10 +5,11 @@ import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/vote
 import Tooltip from "next-common/components/tooltip";
 import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { useNavCollapsed } from "next-common/context/nav";
 import { detailMultiTabsVotesStatsView } from "next-common/store/reducers/detailSlice";
 import { toPrecision } from "next-common/utils";
+import Chains from "next-common/utils/consts/chains";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useEventListener } from "usehooks-ts";
@@ -25,6 +26,8 @@ export default function VotesStats({
   ...props
 }) {
   const chainSettings = useChainSettings();
+  const chain = useChain();
+  const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
   const [showVotes, setShowVotes] = useState({
     aye: true,
     nay: true,
@@ -103,45 +106,49 @@ export default function VotesStats({
               setInteractionNode(null);
             }}
           >
-            {node.r * 2 >= 60 && (
-              <Tooltip
-                className="!block h-full p-2"
-                content={
-                  <ul>
-                    <li>{node.data.account}</li>
-                    {view === "flattened" && (
-                      <li>
-                        Capital:{" "}
-                        <ValueDisplay
-                          value={toPrecision(
-                            node.data.balance,
-                            chainSettings.decimals,
-                          )}
-                          symbol={chainSettings.symbol}
-                        />
-                        (<VoteLabel {...node.data} />)
-                      </li>
-                    )}
-                    {view === "nested" && (
-                      <li>
-                        Delegators: {node.data.directVoterDelegations?.length}
-                      </li>
-                    )}
+            <Tooltip
+              className="!block h-full p-2"
+              content={
+                <ul>
+                  <li>{node.data.account}</li>
+                  {view === "flattened" && (
                     <li>
-                      Votes:{" "}
+                      Capital:{" "}
                       <ValueDisplay
                         value={toPrecision(
-                          node.data[sizeField],
+                          node.data.balance,
                           chainSettings.decimals,
                         )}
                         symbol={chainSettings.symbol}
                       />
+                      {hasLabel && (
+                        <>
+                          (<VoteLabel {...node.data} />)
+                        </>
+                      )}
                     </li>
-                  </ul>
-                }
-                keepTooltipOpenAfterClick
-              >
-                <UserWrapper>
+                  )}
+                  {view === "nested" && (
+                    <li>
+                      Delegators: {node.data.directVoterDelegations?.length}
+                    </li>
+                  )}
+                  <li>
+                    Votes:{" "}
+                    <ValueDisplay
+                      value={toPrecision(
+                        node.data[sizeField],
+                        chainSettings.decimals,
+                      )}
+                      symbol={chainSettings.symbol}
+                    />
+                  </li>
+                </ul>
+              }
+              keepTooltipOpenAfterClick
+            >
+              <UserWrapper>
+                {node.r * 2 >= 60 && (
                   <User
                     add={node.data.account}
                     showAvatar={false}
@@ -154,9 +161,9 @@ export default function VotesStats({
                       node.data.isAbstain && "var(--textSecondary)",
                     )}
                   />
-                </UserWrapper>
-              </Tooltip>
-            )}
+                )}
+              </UserWrapper>
+            </Tooltip>
           </div>
         )}
       />
