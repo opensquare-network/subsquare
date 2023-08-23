@@ -1,16 +1,16 @@
+import clsx from "clsx";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import { useNavCollapsed } from "next-common/context/nav";
-import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { useEventListener } from "usehooks-ts";
 
-// TODO: votes should passed from props
-export default function ReferendaVotesStats() {
+/**
+ * @param {{ votes: any[]} & import("react").HTMLAttributes<HTMLDivElement>} props
+ */
+export default function VotesStats({ votes = [], ...props }) {
   // cache size, avoid re-render circle packing chart
   const [size, setSize] = useState({ width: 0, height: 0 });
   const ref = useRef();
-  const votes = useSelector(allVotesSelector);
   const [navCollapsed] = useNavCollapsed();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function ReferendaVotesStats() {
   };
 
   return (
-    <div className="w-full h-80" ref={ref}>
+    <div className={clsx(props.className, "w-full h-80")} {...props} ref={ref}>
       <CirclePacking data={data} width={size.width} height={size.height} />
     </div>
   );
