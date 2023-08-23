@@ -47,7 +47,13 @@ export default function CirclePacking({
           <Fragment key={idx}>
             <circle cx={x} cy={y} r={r} className={bubbleClassName} />
             {bubbleContent && (
-              <foreignObject x={node.x - r} y={node.y - r} width={d} height={d}>
+              <foreignObject
+                x={node.x - r}
+                y={node.y - r}
+                width={d}
+                height={d}
+                className="rounded-full"
+              >
                 {bubbleContent}
               </foreignObject>
             )}
