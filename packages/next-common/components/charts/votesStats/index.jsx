@@ -91,6 +91,7 @@ export default function VotesStats({ allAye, allNay, allAbstain, ...props }) {
             <Tooltip
               className="!block h-full"
               content={<div>{node.data.account}</div>}
+              keepTooltipOpenAfterClick
             >
               <div className="rounded-full w-full h-full">
                 {/* TODO: identity */}
