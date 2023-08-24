@@ -115,9 +115,6 @@ export default function VotesBubble({
                   className={clsx(
                     "flex items-center justify-center cursor-pointer",
                     "rounded-full w-full h-full px-2",
-                    // user
-                    "[&_div]:truncate",
-                    "[&_div_a]:truncate",
                   )}
                   onClick={() => {
                     router.push(`/user/${node.data.account}/votes`);
@@ -128,6 +125,7 @@ export default function VotesBubble({
                     <User
                       add={node.data.account}
                       showAvatar={false}
+                      maxWidth={d - 12}
                       noEvent
                       noTooltip
                       ellipsis={false}
