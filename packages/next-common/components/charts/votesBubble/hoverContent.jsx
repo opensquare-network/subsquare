@@ -20,6 +20,7 @@ export default function VotesBubbleHoverContent({ node, sizeField }) {
           add={node.data.account}
           ellipsis={false}
           color="var(--textPrimaryContrast)"
+          noEvent
         />
       </li>
       {view === "flattened" && (
