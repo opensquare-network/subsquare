@@ -147,7 +147,7 @@ const getCommentSource = (comment, chain) => {
   }
 
   if (comment?.post) {
-    return ["Discussion", comment.post.title, `/post/${comment.post.postUid}`];
+    return ["Discussion", comment.post.title, `/posts/${comment.post.postUid}`];
   }
   if (comment?.motion) {
     const motionId = getMotionId(comment?.motion);

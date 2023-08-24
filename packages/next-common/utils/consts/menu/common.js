@@ -28,7 +28,7 @@ const commonMenus = {
       value: "discussions",
       name: "Discussions",
       pathname: "/discussions",
-      extraMatchNavMenuActivePathnames: ["/post/[id]"],
+      extraMatchNavMenuActivePathnames: ["/posts/[id]"],
       excludeToChains: [Chains.centrifuge, Chains.altair],
       icon: <MenuDiscussions />,
     },

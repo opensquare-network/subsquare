@@ -54,7 +54,7 @@ function getDiscussionUrl(discussion) {
   if (!discussion) {
     return "";
   }
-  return `${process.env.NEXT_PUBLIC_SITE_URL}/post/${discussion.postUid}`;
+  return `${process.env.NEXT_PUBLIC_SITE_URL}/posts/${discussion.postUid}`;
 }
 
 export default function PostLinkPopup({ setShow = noop }) {
