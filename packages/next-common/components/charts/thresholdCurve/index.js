@@ -17,9 +17,12 @@ export default function ThresholdCurvesChart({
   labels = [],
   supportData = [],
   approvalData = [],
+  currentSupportData = [],
+  currentApprovalData = [],
   beforeDrawOptions = emptyFunction,
 }) {
-  const { neutral400, purple500, green500 } = useThemeSetting();
+  const { neutral400, purple500, green500, purple300, green300 } =
+    useThemeSetting();
 
   const chartData = {
     labels,
@@ -39,6 +42,28 @@ export default function ThresholdCurvesChart({
         data: approvalData,
         tension: 0.1,
         borderColor: green500,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHitRadius: 10,
+        pointHoverRadius: 5,
+      },
+      {
+        label: "Current Support",
+        data: currentSupportData,
+        tension: 0.1,
+        borderDash: [5, 3],
+        borderColor: purple300,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHitRadius: 10,
+        pointHoverRadius: 5,
+      },
+      {
+        label: "Current Approval",
+        data: currentApprovalData,
+        tension: 0.1,
+        borderDash: [5, 3],
+        borderColor: green300,
         borderWidth: 2,
         pointRadius: 0,
         pointHitRadius: 10,

@@ -19,6 +19,7 @@ import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import useVotesFromServer from "next-common/utils/gov2/useVotesFromServer";
+import useReferendaTallyHistory from "next-common/utils/hooks/useReferendaTallyHistory";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -36,11 +37,18 @@ export default function Gov2Tally() {
   const approvalThreshold = useApprovalThreshold();
   const supportPerbill = useSupportPerbill(tally);
 
+  const { data: tallyHistory } = useReferendaTallyHistory(referendumIndex);
+
   const issuance = useReferendaIssuance();
   const track = useTrack();
 
   let titleRightCorner = (
-    <CurvePopup track={track} tally={tally} supportPerbill={supportPerbill} />
+    <CurvePopup
+      track={track}
+      tally={tally}
+      supportPerbill={supportPerbill}
+      tallyHistory={tallyHistory}
+    />
   );
 
   return (
