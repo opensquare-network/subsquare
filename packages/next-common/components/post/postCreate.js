@@ -101,7 +101,7 @@ export default function PostCreate() {
         dispatch(newErrorToast(result.error.message));
       }
     } else {
-      router.push(`/post/${result.result}`);
+      router.push(`/posts/${result.result}`);
     }
   };
 
