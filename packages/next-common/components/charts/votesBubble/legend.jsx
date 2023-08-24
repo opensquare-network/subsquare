@@ -23,7 +23,7 @@ export default function VotesBubbleLegend({
     allAbstain && {
       key: "abstain",
       label: "Abstain",
-      circleClassName: "bg-neutral400 border-textSecondary",
+      circleClassName: "bg-neutral400 border-neutral500",
     },
   ].filter(Boolean);
 

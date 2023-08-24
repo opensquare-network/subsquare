@@ -73,7 +73,7 @@ export default function VotesBubble({
             clsx(
               node.data.aye && "fill-green300 stroke-green500",
               node.data.aye === false && "fill-red300 stroke-red500",
-              node.data.isAbstain && "fill-neutral400 stroke-textSecondary",
+              node.data.isAbstain && "fill-neutral400 stroke-neutral500",
             )
           }
           bubbleContent={(node) => {
