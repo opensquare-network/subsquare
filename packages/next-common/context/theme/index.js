@@ -16,7 +16,7 @@ import { useChainSettings } from "../chain";
 const ThemeModeContext = createContext({});
 
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
-  const [themeMode, setThemeMode] = useState(defaultThemeMode || "system");
+  const [themeMode, setThemeMode] = useState(defaultThemeMode || "light");
 
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
