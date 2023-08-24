@@ -19,19 +19,7 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
-export default function CurvePopup({
-  track,
-  tally,
-  supportPerbill,
-  tallyHistory,
-}) {
-  const approvalPercentage = useApprovalPercentage(tally);
-  const { labels, supportData, approvalData } =
-    useGov2ThresholdCurveData(track);
-  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
-    useState(false);
-  const supportPercentage = useSupportPercentage(supportPerbill);
-
+function calcDataFromTallyHistory(tallyHistory, labels) {
   let currentSupportData = null;
   let currentApprovalData = null;
 
@@ -78,6 +66,27 @@ export default function CurvePopup({
       }
     }
   }
+
+  return { currentSupportData, currentApprovalData };
+}
+
+export default function CurvePopup({
+  track,
+  tally,
+  supportPerbill,
+  tallyHistory,
+}) {
+  const approvalPercentage = useApprovalPercentage(tally);
+  const { labels, supportData, approvalData } =
+    useGov2ThresholdCurveData(track);
+  const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
+    useState(false);
+  const supportPercentage = useSupportPercentage(supportPerbill);
+
+  const { currentSupportData, currentApprovalData } = calcDataFromTallyHistory(
+    tallyHistory,
+    labels,
+  );
 
   return (
     <>
