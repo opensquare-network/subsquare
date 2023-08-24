@@ -31,42 +31,44 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
   currentSupportData = [];
   currentApprovalData = [];
 
-  if (tallyHistory.length > 0) {
-    const firstDataPointTime = tallyHistory[0].indexer.blockTime;
-    const { ayes, nays, support, issuance } = tallyHistory[0].tally;
+  if (tallyHistory.length === 0) {
+    return { currentSupportData, currentApprovalData };
+  }
 
-    let currentSupport = new BigNumber(support).div(issuance).toNumber();
-    let currentApprove = new BigNumber(ayes)
-      .div(new BigNumber(ayes).plus(nays))
-      .toNumber();
-    currentSupportData.push(currentSupport * 100);
-    currentApprovalData.push(currentApprove * 100);
+  const firstDataPointTime = tallyHistory[0].indexer.blockTime;
+  const { ayes, nays, support, issuance } = tallyHistory[0].tally;
 
-    let currentPointNum = 0;
+  let currentSupport = new BigNumber(support).div(issuance).toNumber();
+  let currentApprove = new BigNumber(ayes)
+    .div(new BigNumber(ayes).plus(nays))
+    .toNumber();
+  currentSupportData.push(currentSupport * 100);
+  currentApprovalData.push(currentApprove * 100);
 
-    // Loop through tally history to find nearest data point for each hour
-    for (let i = 1; i < tallyHistory.length; i++) {
-      const nextDataPointTime =
-        firstDataPointTime + (currentPointNum + 1) * 3600 * 1000;
-      if (tallyHistory[i].indexer.blockTime > nextDataPointTime) {
-        const { ayes, nays, support, issuance } = tallyHistory[i - 1].tally;
+  let currentPointNum = 0;
 
-        currentSupport = new BigNumber(support).div(issuance).toNumber();
-        currentApprove = new BigNumber(ayes)
-          .div(new BigNumber(ayes).plus(nays))
-          .toNumber();
-        currentSupportData.push(currentSupport * 100);
-        currentApprovalData.push(currentApprove * 100);
+  // Loop through tally history to find nearest data point for each hour
+  for (let i = 1; i < tallyHistory.length; i++) {
+    const nextDataPointTime =
+      firstDataPointTime + (currentPointNum + 1) * 3600 * 1000;
+    if (tallyHistory[i].indexer.blockTime > nextDataPointTime) {
+      const { ayes, nays, support, issuance } = tallyHistory[i - 1].tally;
 
-        currentPointNum++;
-      }
-    }
-
-    // Fill the rest of the data points with the last data point
-    for (let i = currentPointNum + 1; i < labels.length; i++) {
+      currentSupport = new BigNumber(support).div(issuance).toNumber();
+      currentApprove = new BigNumber(ayes)
+        .div(new BigNumber(ayes).plus(nays))
+        .toNumber();
       currentSupportData.push(currentSupport * 100);
       currentApprovalData.push(currentApprove * 100);
+
+      currentPointNum++;
     }
+  }
+
+  // Fill the rest of the data points with the last data point
+  for (let i = currentPointNum + 1; i < labels.length; i++) {
+    currentSupportData.push(currentSupport * 100);
+    currentApprovalData.push(currentApprove * 100);
   }
 
   return { currentSupportData, currentApprovalData };
