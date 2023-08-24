@@ -65,6 +65,8 @@ export default function Posted() {
   const resetPage = () => setPagination({ ...pagination, page: 1 });
 
   useEffect(() => {
+    let cancel = false;
+
     setIsLoading(true);
     router.push(
       {
@@ -79,6 +81,10 @@ export default function Posted() {
         pageSize: pagination.pageSize,
       })
       .then(({ result: { items, page, pageSize, total } }) => {
+        if (cancel) {
+          return;
+        }
+
         setItems(items.map((item) => secondCategory.formatter(chain, item)));
         setPagination({ page, pageSize, total });
       })
@@ -88,12 +94,23 @@ export default function Posted() {
       .finally(() => {
         setIsLoading(false);
       });
+
+    return () => {
+      cancel = true;
+    };
   }, [chain, id, pagination.page, pagination.pageSize, secondCategory]);
 
   const onPageChange = (e, target) => {
     e.preventDefault();
     setPagination({ ...pagination, page: target });
   };
+
+  useEffect(() => {
+    const [, postedRoute] = router.asPath.split("/posted/");
+    const items = getCategoryByRoute(postedRoute, categories);
+    setFirstCategory(items[0]);
+    setSecondCategory(items[1]);
+  }, [router]);
 
   useEffect(() => {
     if (router.asPath !== `/user/${id}`) {
