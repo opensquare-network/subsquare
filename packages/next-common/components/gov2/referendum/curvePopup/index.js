@@ -42,8 +42,8 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
   let currentApprove = new BigNumber(ayes)
     .div(new BigNumber(ayes).plus(nays))
     .toNumber();
-  currentSupportData.push(currentSupport * 100);
-  currentApprovalData.push(currentApprove * 100);
+  currentSupportData.push((currentSupport || 0) * 100);
+  currentApprovalData.push((currentApprove || 0) * 100);
 
   let currentPointNum = 0;
 
@@ -91,6 +91,11 @@ export default function CurvePopup({
     tallyHistory,
     labels,
   );
+
+  console.log({
+    currentSupportData,
+    currentApprovalData,
+  });
 
   return (
     <>
