@@ -38,7 +38,6 @@ export default function VotesBubble({
   const [size, setSize] = useState({ width: 0, height: 0 });
   const ref = useRef();
   const [navCollapsed] = useNavCollapsed();
-  const [interactionNode, setInteractionNode] = useState(null);
 
   useLayoutEffect(() => {
     handleSize();
@@ -50,19 +49,6 @@ export default function VotesBubble({
     const width = ref.current.offsetWidth;
     const height = ref.current.offsetHeight;
     setSize({ width, height });
-  }
-
-  function hoverDimClassName(node) {
-    if (interactionNode) {
-      if (
-        (interactionNode.data.aye && node.data.aye) ||
-        (interactionNode.data.aye === false && node.data.aye === false) ||
-        (interactionNode.data.isAbstain && node.data.isAbstain)
-      ) {
-        return "opacity-100";
-      }
-      return "opacity-40";
-    }
   }
 
   const data = {
@@ -85,10 +71,9 @@ export default function VotesBubble({
           height={size.height}
           bubbleClassName={(node) =>
             clsx(
-              node.data.aye && "fill-green300",
-              node.data.aye === false && "fill-red300",
-              node.data.isAbstain && "fill-neutral400",
-              hoverDimClassName(node),
+              node.data.aye && "fill-green300 stroke-green500",
+              node.data.aye === false && "fill-red300 stroke-red500",
+              node.data.isAbstain && "fill-neutral400 stroke-textSecondary",
             )
           }
           bubbleContent={(node) => {
@@ -96,19 +81,10 @@ export default function VotesBubble({
 
             return (
               <Tooltip
-                className={clsx(
-                  "!block h-full w-full rounded-full",
-                  hoverDimClassName(node),
-                )}
+                className={clsx("!block h-full w-full rounded-full")}
                 content={
                   <VotesBubbleHoverContent node={node} sizeField={sizeField} />
                 }
-                onMouseEnter={() => {
-                  setInteractionNode(node);
-                }}
-                onMouseLeave={() => {
-                  setInteractionNode(null);
-                }}
               >
                 <div
                   role="link"
@@ -118,7 +94,6 @@ export default function VotesBubble({
                   )}
                   onClick={() => {
                     router.push(`/user/${node.data.account}/votes`);
-                    setInteractionNode(null);
                   }}
                 >
                   {d >= 60 && (
