@@ -9,7 +9,7 @@ export function useApprovalThreshold() {
 
   return useMemo(() => {
     if (isNil(percentage)) {
-      return;
+      return null;
     }
 
     return approvalCurve(percentage);
