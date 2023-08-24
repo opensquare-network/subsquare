@@ -102,11 +102,6 @@ export default function CurvePopup({
     labels,
   );
 
-  console.log({
-    currentSupportData,
-    currentApprovalData,
-  });
-
   return (
     <>
       <CurveIcon
