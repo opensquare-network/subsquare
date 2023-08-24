@@ -13,8 +13,8 @@ export default function CirclePacking({
   width,
   height,
   sizeField = "value",
-  bubbleCircleClassName = "",
-  bubbleCircleContent = noop,
+  bubbleClassName = "",
+  bubbleContent = noop,
 }) {
   const hierarchy = d3.hierarchy(data).sum((d) => d[sizeField]);
 
@@ -31,27 +31,28 @@ export default function CirclePacking({
         const { x, y, r } = node;
         const d = r * 2;
 
-        const bubbleClassName =
-          typeof bubbleCircleClassName === "function"
-            ? bubbleCircleClassName(node)
-            : bubbleCircleClassName;
-        const bubbleContent =
-          typeof bubbleCircleContent === "function"
-            ? bubbleCircleContent(node)
-            : bubbleCircleContent;
+        const bubbleCircleClassName =
+          typeof bubbleClassName === "function"
+            ? bubbleClassName(node)
+            : bubbleClassName;
+
+        const bubbleCircleContent =
+          typeof bubbleContent === "function"
+            ? bubbleContent(node)
+            : bubbleContent;
 
         return (
           <Fragment key={idx}>
-            <circle cx={x} cy={y} r={r} className={bubbleClassName} />
-            {bubbleContent && (
+            <circle cx={x} cy={y} r={r} className={bubbleCircleClassName} />
+            {bubbleCircleContent && (
               <foreignObject
-                x={node.x - r}
-                y={node.y - r}
+                x={x - r}
+                y={y - r}
                 width={d}
                 height={d}
                 className="rounded-full"
               >
-                {bubbleContent}
+                {bubbleCircleContent}
               </foreignObject>
             )}
           </Fragment>
