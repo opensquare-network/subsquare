@@ -9,11 +9,11 @@ import { useChain } from "../../../context/chain";
 import { getMotionId, shortMotionId } from "../../../utils/motion";
 
 export function AnnouncementNavigator({ cid, height, isLink = true }) {
-  let link = `Announcement ${ cid.slice(0, 4) }...`;
+  let link = `Announcement ${cid.slice(0, 4)}...`;
   if (isLink) {
     link = (
-      <Link href={ `/alliance/announcement/${height}_${ cid }` } legacyBehavior>
-        { link }
+      <Link href={`/alliance/announcements/${height}_${cid}`} legacyBehavior>
+        {link}
       </Link>
     );
   }
@@ -21,7 +21,7 @@ export function AnnouncementNavigator({ cid, height, isLink = true }) {
   return (
     <div>
       <TriangleRight />
-      { link }
+      {link}
     </div>
   );
 }
@@ -31,7 +31,10 @@ export function AllianceMotionNavigator({ motion }) {
 
   return (
     <div>
-      <Link href={`/alliance/motion/${getMotionId(motion, chain)}`} legacyBehavior>
+      <Link
+        href={`/alliance/motions/${getMotionId(motion, chain)}`}
+        legacyBehavior
+      >
         {`Motion #${shortMotionId(motion)}`}
       </Link>
     </div>
@@ -50,8 +53,10 @@ export default function AnnouncementNavigation() {
     return null;
   }
 
-  return <NavigationWrapper>
-    <AllianceMotionNavigator motion={ motion } />
-    <AnnouncementNavigator cid={ cid } height={ height } isLink={false} />
-  </NavigationWrapper>;
+  return (
+    <NavigationWrapper>
+      <AllianceMotionNavigator motion={motion} />
+      <AnnouncementNavigator cid={cid} height={height} isLink={false} />
+    </NavigationWrapper>
+  );
 }

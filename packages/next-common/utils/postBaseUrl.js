@@ -11,4 +11,4 @@ export const fellowshipReferendumBaseUrl = "/fellowship/referenda";
 export const fellowshipTrackBaseUrl = "/fellowship/tracks";
 export const councilMotionBaseUrl = "/council/motions";
 export const techCommMotionBaseUrl = "/techcomm/proposals";
-export const advisoryCommitteeBaseUrl = "/advisory-committee/motion";
+export const advisoryCommitteeBaseUrl = "/advisory-committee/motions";

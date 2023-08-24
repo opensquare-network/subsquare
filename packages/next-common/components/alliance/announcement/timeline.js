@@ -36,7 +36,7 @@ export default function AnnouncementTimeline({ data, compact }) {
     const motionTimeline = createMotionTimelineData(
       motion,
       true,
-      "/alliance/motion",
+      "/alliance/motions",
     );
 
     setTimelineData(sortTimeline([...data, ...motionTimeline].filter(Boolean)));

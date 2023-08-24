@@ -54,6 +54,14 @@ export function toApiType(type) {
     return "polkassembly-discussions";
   }
 
+  // Collectives
+  if (type === detailPageCategory.ALLIANCE_MOTION) {
+    return "alliance/motions";
+  }
+  if (type === detailPageCategory.ALLIANCE_ANNOUNCEMENT) {
+    return "alliance/announcements";
+  }
+
   // Karura
   if (type === detailPageCategory.FINANCIAL_MOTION) {
     return "financial-motions";
@@ -72,7 +80,7 @@ export function toApiType(type) {
     return "advisory-motions";
   }
 
-  return `${type}s`;
+  return type;
 }
 
 export function getEffectiveNumbers(n) {

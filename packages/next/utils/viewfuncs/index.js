@@ -11,15 +11,18 @@ import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTi
 
 export const convertPolkassemblyReaction = (chain, paReactions) =>
   flatten(
-    Object.entries(paReactions || {}).map(([r, { usernames } = {}]) => usernames?.map(u => [r, u])),
+    Object.entries(paReactions || {}).map(([r, { usernames } = {}]) =>
+      usernames?.map((u) => [r, u]),
+    ),
   ).map(([r, u]) => ({
     reaction: r === "👍" ? 1 : 0,
     user: u,
   }));
 
 export const convertPolkassemblyComment = (chain, comment) => {
-  const address = comment.proposer && encodeAddressToChain(comment.proposer, chain);
-  return ({
+  const address =
+    comment.proposer && encodeAddressToChain(comment.proposer, chain);
+  return {
     reactions: convertPolkassemblyReaction(comment.comment_reactions),
     id: comment.id,
     content: comment.content,
@@ -29,7 +32,7 @@ export const convertPolkassemblyComment = (chain, comment) => {
       username: address ? addressEllipsis(address) : comment.username,
       address,
     },
-  });
+  };
 };
 
 export const toPolkassemblyCommentListItem = (chain, item) => ({
@@ -44,7 +47,7 @@ export const toFinancialMotionsListItem = (chain, item) => ({
   author: item.author,
   address: item.proposer,
   status: item.state?.state ?? "Unknown",
-  detailLink: `/financial-council/motion/${getMotionId(item)}`,
+  detailLink: `/financial-council/motions/${getMotionId(item)}`,
   time: getPostLastActivityAt(item),
 });
 

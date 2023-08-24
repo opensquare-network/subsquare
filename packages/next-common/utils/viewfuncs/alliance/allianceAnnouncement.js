@@ -11,7 +11,7 @@ export default function normalizeAllianceAnnouncement(item = {}) {
     title: item.title || item.cid,
     address: item.proposer,
     status: onchainData.state?.state ?? "Unknown",
-    detailLink: `/alliance/announcement/${getAnnouncementId(
+    detailLink: `/alliance/announcements/${getAnnouncementId(
       item.height,
       item.cid,
     )}`,
