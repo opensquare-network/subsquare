@@ -12,7 +12,7 @@ let polkassemblyMenu = {
   value: "polkassembly",
   name: "Polkassembly",
   pathname: "/polkassembly/discussions",
-  extraMatchNavMenuActivePathnames: ["/polkassembly/post/[id]"],
+  extraMatchNavMenuActivePathnames: ["/polkassembly/posts/[id]"],
   icon: <MenuPolkassembly />,
 };
 
