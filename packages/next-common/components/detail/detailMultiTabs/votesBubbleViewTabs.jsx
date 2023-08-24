@@ -1,12 +1,12 @@
 import {
-  detailMultiTabsVotesStatsView,
-  setDetailMultiTabsVotesStatsView,
+  detailMultiTabsVotesBubbleView,
+  setDetailMultiTabsVotesBubbleView,
 } from "next-common/store/reducers/detailSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Tab from "../../tab";
 
-export default function VotesStatsViewTabs() {
-  const tabId = useSelector(detailMultiTabsVotesStatsView);
+export default function VotesBubbleViewTabs() {
+  const tabId = useSelector(detailMultiTabsVotesBubbleView);
   const dispatch = useDispatch();
 
   const tabs = [
@@ -24,7 +24,7 @@ export default function VotesStatsViewTabs() {
     <Tab
       selectedTabId={tabId}
       setSelectedTabId={(id) => {
-        dispatch(setDetailMultiTabsVotesStatsView(id));
+        dispatch(setDetailMultiTabsVotesBubbleView(id));
       }}
       small
       tabs={tabs}

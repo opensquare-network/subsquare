@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import noop from "lodash.noop";
 
-export default function VotesStatsLegend({
+export default function VotesBubbleLegend({
   className = "",
   allAye,
   allNay,

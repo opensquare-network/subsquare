@@ -5,19 +5,19 @@ const detailSlice = createSlice({
   initialState: {
     multiTabs: {
       // flattened, nested
-      votesStatsView: "flattened",
+      votesBubbleView: "flattened",
     },
   },
   reducers: {
-    setDetailMultiTabsVotesStatsView(state, { payload }) {
-      state.multiTabs.votesStatsView = payload;
+    setDetailMultiTabsVotesBubbleView(state, { payload }) {
+      state.multiTabs.votesBubbleView = payload;
     },
   },
 });
 
-export const { setDetailMultiTabsVotesStatsView } = detailSlice.actions;
+export const { setDetailMultiTabsVotesBubbleView } = detailSlice.actions;
 
-export const detailMultiTabsVotesStatsView = (state) =>
-  state.detail.multiTabs.votesStatsView;
+export const detailMultiTabsVotesBubbleView = (state) =>
+  state.detail.multiTabs.votesBubbleView;
 
 export default detailSlice.reducer;

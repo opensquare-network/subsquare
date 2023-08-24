@@ -4,7 +4,7 @@ import { useTimelineData } from "next-common/context/post";
 import Tab from "../../tab";
 import { TimelineCompact, TimelineNormal } from "@osn/icons/subsquare";
 import { ThemedTag } from "next-common/components/tags/state/styled";
-import VotesStatsViewTabs from "./votesStatsViewTabs";
+import VotesBubbleViewTabs from "./votesBubbleViewTabs";
 
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
@@ -15,7 +15,7 @@ export default function DetailMultiTabs({
   metadata,
   timeline,
   timelineCount,
-  votesStats,
+  votesBubble,
 }) {
   const timelineData = useTimelineData();
   const [timelineModeTabId, setTimelineModeTabId] = useState("normal");
@@ -48,16 +48,16 @@ export default function DetailMultiTabs({
         </div>
       ),
     },
-    votesStats && {
-      label: "Votes Stats",
+    votesBubble && {
+      label: "Votes Bubble",
       labelExtra: (
         <ThemedTag className="!rounded-full max-sm:!hidden ml-2">New</ThemedTag>
       ),
       content: (
         <div className="space-y-4">
-          <VotesStatsViewTabs />
+          <VotesBubbleViewTabs />
 
-          {votesStats}
+          {votesBubble}
         </div>
       ),
     },

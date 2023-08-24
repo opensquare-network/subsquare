@@ -7,18 +7,18 @@ import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { useNavCollapsed } from "next-common/context/nav";
-import { detailMultiTabsVotesStatsView } from "next-common/store/reducers/detailSlice";
+import { detailMultiTabsVotesBubbleView } from "next-common/store/reducers/detailSlice";
 import { toPrecision } from "next-common/utils";
 import Chains from "next-common/utils/consts/chains";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useEventListener } from "usehooks-ts";
-import VotesStatsLegend from "./legend";
+import VotesBubbleLegend from "./legend";
 
 /**
  * @param {{ allAye: any[], allNay: any[], allAbstain: any[]} & import("react").HTMLAttributes<HTMLDivElement>} props
  */
-export default function VotesStats({
+export default function VotesBubble({
   allAye,
   allNay,
   allAbstain,
@@ -46,7 +46,7 @@ export default function VotesStats({
   const ref = useRef();
   const [navCollapsed] = useNavCollapsed();
   const [interactionNode, setInteractionNode] = useState(null);
-  const view = useSelector(detailMultiTabsVotesStatsView);
+  const view = useSelector(detailMultiTabsVotesBubbleView);
 
   useLayoutEffect(() => {
     handleSize();
@@ -168,7 +168,7 @@ export default function VotesStats({
         )}
       />
 
-      <VotesStatsLegend
+      <VotesBubbleLegend
         className="mt-4"
         allAye={allAye}
         allNay={allNay}

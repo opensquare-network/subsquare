@@ -37,7 +37,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
-import Gov2ReferendaVotesStats from "next-common/components/gov2/referendum/votesStats";
+import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/votesBubble";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -71,7 +71,7 @@ function ReferendumContent({ comments }) {
         call={proposal?.call && <Gov2ReferendumCall />}
         metadata={<Gov2ReferendumMetadata info={info} />}
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-        votesStats={<Gov2ReferendaVotesStats />}
+        votesBubble={<Gov2ReferendaVotesBubble />}
       />
 
       {CommentComponent}
