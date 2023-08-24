@@ -71,77 +71,79 @@ export default function VotesBubble({
   };
 
   return (
-    <div
-      className={clsx(props.className, "relative w-full")}
-      {...props}
-      ref={ref}
-    >
-      <CirclePacking
-        keyField="account"
-        sizeField={sizeField}
-        data={data}
-        width={size.width}
-        height={320}
-        bubbleClassName={(node) =>
-          clsx(
-            node.data.aye && "fill-green300",
-            node.data.aye === false && "fill-red300",
-            node.data.isAbstain && "fill-neutral400",
-            hoverDimClassName(node),
-          )
-        }
-        bubbleContent={(node) => {
-          const d = node.r * 2;
+    <>
+      <div
+        className={clsx(props.className, "w-full h-[480px] max-sm:h-80")}
+        {...props}
+        ref={ref}
+      >
+        <CirclePacking
+          keyField="account"
+          sizeField={sizeField}
+          data={data}
+          width={size.width}
+          height={size.height}
+          bubbleClassName={(node) =>
+            clsx(
+              node.data.aye && "fill-green300",
+              node.data.aye === false && "fill-red300",
+              node.data.isAbstain && "fill-neutral400",
+              hoverDimClassName(node),
+            )
+          }
+          bubbleContent={(node) => {
+            const d = node.r * 2;
 
-          return (
-            <Tooltip
-              className={clsx(
-                "!block h-full w-full rounded-full",
-                hoverDimClassName(node),
-              )}
-              content={
-                <VotesBubbleHoverContent node={node} sizeField={sizeField} />
-              }
-              onMouseEnter={() => {
-                setInteractionNode(node);
-              }}
-              onMouseLeave={() => {
-                setInteractionNode(null);
-              }}
-            >
-              <div
-                role="link"
+            return (
+              <Tooltip
                 className={clsx(
-                  "flex items-center justify-center cursor-pointer",
-                  "rounded-full w-full h-full px-2",
-                  // user
-                  "[&_div]:truncate",
-                  "[&_div_a]:truncate",
+                  "!block h-full w-full rounded-full",
+                  hoverDimClassName(node),
                 )}
-                onClick={() => {
-                  router.push(`/user/${node.data.account}/votes`);
+                content={
+                  <VotesBubbleHoverContent node={node} sizeField={sizeField} />
+                }
+                onMouseEnter={() => {
+                  setInteractionNode(node);
+                }}
+                onMouseLeave={() => {
                   setInteractionNode(null);
                 }}
               >
-                {d >= 60 && (
-                  <User
-                    add={node.data.account}
-                    showAvatar={false}
-                    noEvent
-                    noTooltip
-                    ellipsis={false}
-                    color={clsx(
-                      node.data.aye && "var(--green500)",
-                      node.data.aye === false && "var(--red500)",
-                      node.data.isAbstain && "var(--textSecondary)",
-                    )}
-                  />
-                )}
-              </div>
-            </Tooltip>
-          );
-        }}
-      />
+                <div
+                  role="link"
+                  className={clsx(
+                    "flex items-center justify-center cursor-pointer",
+                    "rounded-full w-full h-full px-2",
+                    // user
+                    "[&_div]:truncate",
+                    "[&_div_a]:truncate",
+                  )}
+                  onClick={() => {
+                    router.push(`/user/${node.data.account}/votes`);
+                    setInteractionNode(null);
+                  }}
+                >
+                  {d >= 60 && (
+                    <User
+                      add={node.data.account}
+                      showAvatar={false}
+                      noEvent
+                      noTooltip
+                      ellipsis={false}
+                      color={clsx(
+                        node.data.aye && "var(--green500)",
+                        node.data.aye === false && "var(--red500)",
+                        node.data.isAbstain && "var(--textSecondary)",
+                      )}
+                    />
+                  )}
+                </div>
+              </Tooltip>
+            );
+          }}
+        />
+      </div>
 
       <VotesBubbleLegend
         className="mt-4"
@@ -151,6 +153,6 @@ export default function VotesBubble({
         showVotes={showVotes}
         setShowVotes={setShowVotes}
       />
-    </div>
+    </>
   );
 }
