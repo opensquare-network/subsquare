@@ -27,6 +27,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import ReferendumCall from "next-common/components/democracy/call";
+import DemocracyReferendaVotesBubble from "components/referenda/votesBubble";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -102,6 +103,7 @@ function ReferendumContent({ publicProposal, comments }) {
         }
         timeline={<Timeline data={timelineData} />}
         timelineCount={timelineData.length}
+        votesBubble={<DemocracyReferendaVotesBubble />}
       />
 
       {CommentComponent}

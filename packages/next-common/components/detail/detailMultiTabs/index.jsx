@@ -5,6 +5,8 @@ import Tab from "../../tab";
 import { TimelineCompact, TimelineNormal } from "@osn/icons/subsquare";
 import { ThemedTag } from "next-common/components/tags/state/styled";
 import VotesBubbleViewTabs from "./votesBubbleViewTabs";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
@@ -20,6 +22,8 @@ export default function DetailMultiTabs({
   const timelineData = useTimelineData();
   const [timelineModeTabId, setTimelineModeTabId] = useState("normal");
   const timelineCompact = timelineModeTabId === "compact";
+  const chain = useChain();
+  const hasVotesViewTabs = ![Chains.kintsugi, Chains.interlay].includes(chain);
 
   const tabs = [
     business && { label: "Business", content: business },
@@ -55,7 +59,7 @@ export default function DetailMultiTabs({
       ),
       content: (
         <div className="space-y-4">
-          <VotesBubbleViewTabs />
+          {hasVotesViewTabs && <VotesBubbleViewTabs />}
 
           {votesBubble}
         </div>
