@@ -35,6 +35,7 @@ export default function CurvePopup({
   let currentSupportData = null;
   let currentApprovalData = null;
 
+  // We need to calculate the current support and approval data from tally history if it is provided
   if (tallyHistory) {
     currentSupportData = [];
     currentApprovalData = [];
@@ -52,6 +53,7 @@ export default function CurvePopup({
 
       let currentPointNum = 0;
 
+      // Loop through tally history to find nearest data point for each hour
       for (let i = 1; i < tallyHistory.length; i++) {
         const nextDataPointTime =
           firstDataPointTime + (currentPointNum + 1) * 3600 * 1000;
@@ -69,6 +71,7 @@ export default function CurvePopup({
         }
       }
 
+      // Fill the rest of the data points with the last data point
       for (let i = currentPointNum + 1; i < labels.length; i++) {
         currentSupportData.push(currentSupport * 100);
         currentApprovalData.push(currentApprove * 100);
