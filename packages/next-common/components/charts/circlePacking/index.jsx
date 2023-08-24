@@ -5,6 +5,7 @@
 // https://react-graph-gallery.com/circular-packing
 
 import * as d3 from "d3";
+import { get } from "lodash";
 import noop from "lodash.noop";
 import { Fragment } from "react";
 
@@ -13,6 +14,7 @@ export default function CirclePacking({
   width,
   height,
   sizeField = "value",
+  keyField,
   bubbleClassName = "",
   bubbleContent = noop,
 }) {
@@ -25,39 +27,39 @@ export default function CirclePacking({
   const root = pack(hierarchy);
   const nodes = root.descendants().slice(1);
 
+  const allBubbles = nodes.map((node, idx) => {
+    const { x, y, r } = node;
+    const d = r * 2;
+
+    const bubbleCircleClassName =
+      typeof bubbleClassName === "function"
+        ? bubbleClassName(node)
+        : bubbleClassName;
+
+    const bubbleCircleContent =
+      typeof bubbleContent === "function" ? bubbleContent(node) : bubbleContent;
+
+    return (
+      <Fragment key={get(node.data, keyField) || idx}>
+        <circle cx={x} cy={y} r={r} className={bubbleCircleClassName} />
+        {bubbleCircleContent && (
+          <foreignObject
+            x={x - r}
+            y={y - r}
+            width={d}
+            height={d}
+            className="rounded-full"
+          >
+            {bubbleCircleContent}
+          </foreignObject>
+        )}
+      </Fragment>
+    );
+  });
+
   return (
     <svg width={width} height={height}>
-      {nodes.map((node, idx) => {
-        const { x, y, r } = node;
-        const d = r * 2;
-
-        const bubbleCircleClassName =
-          typeof bubbleClassName === "function"
-            ? bubbleClassName(node)
-            : bubbleClassName;
-
-        const bubbleCircleContent =
-          typeof bubbleContent === "function"
-            ? bubbleContent(node)
-            : bubbleContent;
-
-        return (
-          <Fragment key={idx}>
-            <circle cx={x} cy={y} r={r} className={bubbleCircleClassName} />
-            {bubbleCircleContent && (
-              <foreignObject
-                x={x - r}
-                y={y - r}
-                width={d}
-                height={d}
-                className="rounded-full"
-              >
-                {bubbleCircleContent}
-              </foreignObject>
-            )}
-          </Fragment>
-        );
-      })}
+      {allBubbles}
     </svg>
   );
 }

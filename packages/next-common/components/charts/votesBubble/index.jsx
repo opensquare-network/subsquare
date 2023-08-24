@@ -77,6 +77,7 @@ export default function VotesBubble({
       ref={ref}
     >
       <CirclePacking
+        keyField="account"
         sizeField={sizeField}
         data={data}
         width={size.width}
