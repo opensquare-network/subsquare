@@ -16,7 +16,11 @@ export default function VotesBubbleHoverContent({ node, sizeField }) {
   return (
     <ul>
       <li>
-        <User add={node.data.account} ellipsis={false} />
+        <User
+          add={node.data.account}
+          ellipsis={false}
+          color="var(--textPrimaryContrast)"
+        />
       </li>
       {view === "flattened" && (
         <li>
