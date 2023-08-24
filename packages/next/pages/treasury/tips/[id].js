@@ -16,6 +16,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -103,6 +104,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
       },
     };
   }
+
+  //TODO: remove the dirty fix
+  detail.authors = detail.authors?.filter((author) =>
+    isPolkadotAddress(author),
+  );
 
   const { result: comments } = await nextApi.fetch(
     `treasury/tips/${detail._id}/comments`,
