@@ -36,7 +36,6 @@ export default function VotesBubble({
   const [size, setSize] = useState({ width: 0, height: 0 });
   const ref = useRef();
   const [navCollapsed] = useNavCollapsed();
-  // eslint-disable-next-line no-unused-vars
   const [interactionNode, setInteractionNode] = useState(null);
 
   useLayoutEffect(() => {
@@ -97,12 +96,12 @@ export default function VotesBubble({
                 "h-full w-full rounded-full",
                 hoverDimClassName(node),
               )}
-              // onMouseEnter={() => {
-              //   setInteractionNode(node);
-              // }}
-              // onMouseLeave={() => {
-              //   setInteractionNode(null);
-              // }}
+              onMouseEnter={() => {
+                setInteractionNode(node);
+              }}
+              onMouseLeave={() => {
+                setInteractionNode(null);
+              }}
             >
               <Tooltip
                 className="!block h-full w-full"
