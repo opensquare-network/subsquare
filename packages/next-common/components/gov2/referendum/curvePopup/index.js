@@ -19,6 +19,20 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
+function calcFromOneTallyData(tally) {
+  const { ayes, nays, support, issuance } = tally;
+
+  const currentSupport = new BigNumber(support).div(issuance).toNumber();
+  const currentApprove = new BigNumber(ayes)
+    .div(new BigNumber(ayes).plus(nays))
+    .toNumber();
+
+  return {
+    currentSupport: (currentSupport || 0) * 100,
+    currentApprove: (currentApprove || 0) * 100,
+  };
+}
+
 function calcDataFromTallyHistory(tallyHistory, labels) {
   let currentSupportData = null;
   let currentApprovalData = null;
@@ -36,14 +50,12 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
   }
 
   const firstDataPointTime = tallyHistory[0].indexer.blockTime;
-  const { ayes, nays, support, issuance } = tallyHistory[0].tally;
+  let { currentSupport, currentApprove } = calcFromOneTallyData(
+    tallyHistory[0].tally,
+  );
 
-  let currentSupport = new BigNumber(support).div(issuance).toNumber();
-  let currentApprove = new BigNumber(ayes)
-    .div(new BigNumber(ayes).plus(nays))
-    .toNumber();
-  currentSupportData.push((currentSupport || 0) * 100);
-  currentApprovalData.push((currentApprove || 0) * 100);
+  currentSupportData.push(currentSupport);
+  currentApprovalData.push(currentApprove);
 
   let currentPointNum = 0;
 
@@ -52,14 +64,12 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
     const nextDataPointTime =
       firstDataPointTime + (currentPointNum + 1) * 3600 * 1000;
     if (tallyHistory[i].indexer.blockTime > nextDataPointTime) {
-      const { ayes, nays, support, issuance } = tallyHistory[i - 1].tally;
+      ({ currentSupport, currentApprove } = calcFromOneTallyData(
+        tallyHistory[i - 1].tally,
+      ));
 
-      currentSupport = new BigNumber(support).div(issuance).toNumber();
-      currentApprove = new BigNumber(ayes)
-        .div(new BigNumber(ayes).plus(nays))
-        .toNumber();
-      currentSupportData.push((currentSupport || 0) * 100);
-      currentApprovalData.push((currentApprove || 0) * 100);
+      currentSupportData.push(currentSupport);
+      currentApprovalData.push(currentApprove);
 
       currentPointNum++;
     }
@@ -67,8 +77,8 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
 
   // Fill the rest of the data points with the last data point
   for (let i = currentPointNum + 1; i < labels.length; i++) {
-    currentSupportData.push((currentSupport || 0) * 100);
-    currentApprovalData.push((currentApprove || 0) * 100);
+    currentSupportData.push(currentSupport);
+    currentApprovalData.push(currentApprove);
   }
 
   return { currentSupportData, currentApprovalData };
