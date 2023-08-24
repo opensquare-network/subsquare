@@ -23,7 +23,7 @@ export default function DemocracyReferendaVotesBubble() {
       setVotesObj(allNestedVotes);
       setSizeField("totalVotes");
     }
-  }, [viewMode]);
+  }, [viewMode, allFlattenedVotes, allNestedVotes]);
 
   return (
     <VotesBubble

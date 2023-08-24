@@ -23,7 +23,7 @@ export default function Gov2ReferendaVotesBubble() {
       setVotesObj(allNestedVotes);
       setSizeField("totalVotes");
     }
-  }, [viewMode]);
+  }, [viewMode, allFlattenedVotes, allNestedVotes]);
 
   return (
     <VotesBubble
