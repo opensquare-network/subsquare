@@ -119,10 +119,6 @@ const widths = {
   identity: 16,
 };
 
-/**
- * @param {object} props
- * @param {number} props.maxWidth whole `User` max width, includes avatar, identity icon and address or name
- */
 function User({
   user,
   add,
@@ -178,7 +174,7 @@ function User({
   }
 
   const elmUsernameOrAddr = (
-    <Username fontSize={fontSize} color={color}>
+    <Username fontSize={fontSize} color={color} maxWidth={maxWidth}>
       {knownAddr ||
         (!isKeyUser && user?.username) ||
         (ellipsis ? addressEllipsis(address) : address)}
