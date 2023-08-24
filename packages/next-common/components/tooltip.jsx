@@ -28,6 +28,8 @@ export default function Tooltip({
   sideOffset = 2,
   keepTooltipOpenAfterClick,
   icon,
+  onMouseEnter,
+  onMouseLeave,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -64,8 +66,14 @@ export default function Tooltip({
       <RadixTooltip.Root {...rootProps}>
         <RadixTooltip.Trigger
           asChild
-          onMouseEnter={() => setOpen(true)}
-          onMouseLeave={() => setOpen(false)}
+          onMouseEnter={() => {
+            setOpen(true);
+            onMouseEnter?.();
+          }}
+          onMouseLeave={() => {
+            setOpen(false);
+            onMouseLeave?.();
+          }}
         >
           {tooltipTrigger}
         </RadixTooltip.Trigger>
