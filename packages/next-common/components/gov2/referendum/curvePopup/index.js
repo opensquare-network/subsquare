@@ -58,8 +58,8 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
       currentApprove = new BigNumber(ayes)
         .div(new BigNumber(ayes).plus(nays))
         .toNumber();
-      currentSupportData.push(currentSupport * 100);
-      currentApprovalData.push(currentApprove * 100);
+      currentSupportData.push((currentSupport || 0) * 100);
+      currentApprovalData.push((currentApprove || 0) * 100);
 
       currentPointNum++;
     }
@@ -67,8 +67,8 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
 
   // Fill the rest of the data points with the last data point
   for (let i = currentPointNum + 1; i < labels.length; i++) {
-    currentSupportData.push(currentSupport * 100);
-    currentApprovalData.push(currentApprove * 100);
+    currentSupportData.push((currentSupport || 0) * 100);
+    currentApprovalData.push((currentApprove || 0) * 100);
   }
 
   return { currentSupportData, currentApprovalData };
