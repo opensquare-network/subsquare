@@ -142,7 +142,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Financial Motion",
       comment.financialMotion.title || `Motion #${hashEllipsis(hash)}`,
-      `/financial-council/motion/${comment?.financialMotion.indexer.blockHeight}_${hash}`,
+      `/financial-council/motions/${comment?.financialMotion.indexer.blockHeight}_${hash}`,
     ];
   }
 
@@ -157,7 +157,7 @@ const getCommentSource = (comment, chain) => {
       return [
         "Treasury Council Motion",
         comment?.motion.title || `Treasury motion #${motionId}`,
-        `/treasury-council/motion/${motionId}`,
+        `/treasury-council/motions/${motionId}`,
       ];
     } else {
       return [
@@ -260,7 +260,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Advisory Committee Motions",
       comment?.advisoryCommitteeMotion?.title || `Motion #${motionId}`,
-      `/advisory-committee/motion/${motionId}`,
+      `/advisory-committee/motions/${motionId}`,
     ];
   }
   if (comment?.allianceMotion) {
@@ -268,7 +268,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Alliance Motions",
       comment?.allianceMotion?.title || `Motion #${motionId}`,
-      `/alliance/motion/${motionId}`,
+      `/alliance/motions/${motionId}`,
     ];
   }
   if (comment?.allianceAnnouncement) {
@@ -277,7 +277,7 @@ const getCommentSource = (comment, chain) => {
       "Alliance Announcements",
       comment?.allianceAnnouncement?.title ||
         `Announcement #${textEllipsis(cid, 4, 4)}`,
-      `/alliance/announcement/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
+      `/alliance/announcements/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
     ];
   }
   if (comment?.openTechCommittee) {
@@ -285,7 +285,7 @@ const getCommentSource = (comment, chain) => {
     return [
       "Open Tech. Comm. Proposals",
       comment?.openTechCommittee?.title || `Proposal #${motionId}`,
-      `/open-techcomm/proposal/${motionId}`,
+      `/open-techcomm/proposals/${motionId}`,
     ];
   }
 

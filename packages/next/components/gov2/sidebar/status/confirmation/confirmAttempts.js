@@ -1,6 +1,7 @@
 import { usePost } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import { SystemInfo } from "@osn/icons/subsquare";
+import { gov2State } from "next-common/utils/consts/state";
 
 export default function ConfirmAttempts() {
   const post = usePost();
@@ -13,7 +14,9 @@ export default function ConfirmAttempts() {
       continue;
     }
     const next = timeline[i + 1];
-    if (["ConfirmAborted", "Confirmed"].includes(next?.name)) {
+    if (
+      ["ConfirmAborted", "Confirmed", gov2State.Rejected].includes(next?.name)
+    ) {
       attempts.push({
         start: curr,
         end: next,

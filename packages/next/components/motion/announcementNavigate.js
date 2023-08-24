@@ -14,7 +14,7 @@ function AnnouncementNavigator({ cid, height }) {
   return (
     <div>
       <TriangleRight />
-      <Link href={`/alliance/announcement/${height}_${cid}`} legacyBehavior>
+      <Link href={`/alliance/announcements/${height}_${cid}`} legacyBehavior>
         {`Announcement ${cid.slice(0, 4)}...`}
       </Link>
     </div>

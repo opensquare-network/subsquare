@@ -10,8 +10,7 @@ export default function normalizeOpenTechCommProposalListItem(chain, item) {
     author: item.author,
     address: item.proposer,
     status: item.state ?? "Unknown",
-    detailLink: `/open-techcomm/proposal/${getMotionId(item)}`,
+    detailLink: `/open-techcomm/proposals/${getMotionId(item)}`,
     time: getPostLastActivityAt(item),
   };
 }
-

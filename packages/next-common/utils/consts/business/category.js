@@ -25,7 +25,7 @@ export const detailPageCategory = {
   POST: "post",
   PA_POST: "polkassembly/post",
   COUNCIL_MOTION: "council/motions",
-  FINANCIAL_MOTION: "financial-council/motion",
+  FINANCIAL_MOTION: "financial-council/motions",
   TECH_COMM_MOTION: "techcomm/proposals",
   DEMOCRACY_REFERENDUM: "democracy/referenda",
   DEMOCRACY_EXTERNAL: "democracy/externals",
@@ -36,11 +36,11 @@ export const detailPageCategory = {
   TREASURY_TIP: "treasury/tips",
   GOV2_REFERENDUM: "referenda",
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
-  ADVISORY_MOTION: "advisory-committee/motion",
-  ALLIANCE_MOTION: "alliance/motion",
-  ALLIANCE_ANNOUNCEMENT: "alliance/announcement",
-  TREASURY_COUNCIL_MOTION: "treasury-council/motion",
-  OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposal",
+  ADVISORY_MOTION: "advisory-committee/motions",
+  ALLIANCE_MOTION: "alliance/motions",
+  ALLIANCE_ANNOUNCEMENT: "alliance/announcements",
+  TREASURY_COUNCIL_MOTION: "treasury-council/motions",
+  OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposals",
 };
 
 export default businessCategory;

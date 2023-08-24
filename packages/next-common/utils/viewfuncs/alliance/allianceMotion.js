@@ -9,7 +9,7 @@ export default function normalizeAllianceMotion(item) {
     title: getTitle(item),
     address: item.proposer,
     status: item.state ?? "Unknown",
-    detailLink: `/alliance/motion/${getMotionId(item)}`,
+    detailLink: `/alliance/motions/${getMotionId(item)}`,
     time: getPostLastActivityAt(item),
   };
 }

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.2
+date: 2023-08-23
+- Refactor routes for referenda/democracy/treasury related pages.
+- Show confirmation attempts for OpenGov referenda.
+- Fix referenda confirmation bars.
+- Add identity support for special addresses, #3165.
+- Remove new treasury proposal button for kintsugi/interlay.
+- Add notification subscription component on overview panel for kintsugi/interlay.
+- Fix editor related styles.
+
 ### 3.4.1
 date: 2023-08-17
 - Add OpenSquare off-chain voting and bounties link to summary page.

@@ -13,7 +13,7 @@ const financialCouncil = {
       value: "financialMotions",
       name: "Motions",
       pathname: "/financial-council/motions",
-      extraMatchNavMenuActivePathnames: ["/financial-council/motion/[id]"],
+      extraMatchNavMenuActivePathnames: ["/financial-council/motions/[id]"],
     },
     {
       value: "financialCouncilMembers",

@@ -51,7 +51,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
 export default function useTreasuryTimelineData(treasuryProposal) {
   const [timelineData, setTimelineData] = useState([]);
   const motionLink = isMoonChain()
-    ? "/treasury-council/motion"
+    ? "/treasury-council/motions"
     : "/council/motions";
 
   useEffect(() => {
