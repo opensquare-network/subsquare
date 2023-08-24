@@ -8,6 +8,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
 import VotesBubbleHoverContent from "./hoverContent";
 import VotesBubbleLegend from "./legend";
+import { useRouter } from "next/router";
 
 /**
  * @param {{ allAye: any[], allNay: any[], allAbstain: any[]} & import("react").HTMLAttributes<HTMLDivElement>} props
@@ -19,6 +20,7 @@ export default function VotesBubble({
   sizeField,
   ...props
 }) {
+  const router = useRouter();
   const [showVotes, setShowVotes] = useState({
     aye: true,
     nay: true,
@@ -107,13 +109,18 @@ export default function VotesBubble({
               }}
             >
               <div
+                role="link"
                 className={clsx(
-                  "flex items-center justify-center",
-                  "rounded-full w-full h-full",
+                  "flex items-center justify-center cursor-pointer",
+                  "rounded-full w-full h-full px-2",
                   // user
                   "[&_div]:truncate",
                   "[&_div_a]:truncate",
                 )}
+                onClick={() => {
+                  router.push(`/user/${node.data.account}/votes`);
+                  setInteractionNode(null);
+                }}
               >
                 {d >= 60 && (
                   <User
