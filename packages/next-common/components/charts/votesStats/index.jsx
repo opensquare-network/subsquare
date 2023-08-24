@@ -193,8 +193,6 @@ function UserWrapper({ children }) {
         // user
         "[&_div]:truncate",
         "[&_div_a]:truncate",
-        // user, hide identity icon
-        "[&_a_svg]:hidden",
       )}
     >
       {children}
