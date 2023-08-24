@@ -91,11 +91,14 @@ export default function VotesBubble({
           const d = node.r * 2;
 
           return (
-            <div
+            <Tooltip
               className={clsx(
-                "h-full w-full rounded-full",
+                "!block h-full w-full rounded-full",
                 hoverDimClassName(node),
               )}
+              content={
+                <VotesBubbleHoverContent node={node} sizeField={sizeField} />
+              }
               onMouseEnter={() => {
                 setInteractionNode(node);
               }}
@@ -103,38 +106,31 @@ export default function VotesBubble({
                 setInteractionNode(null);
               }}
             >
-              <Tooltip
-                className="!block h-full w-full"
-                content={
-                  <VotesBubbleHoverContent node={node} sizeField={sizeField} />
-                }
+              <div
+                className={clsx(
+                  "flex items-center justify-center",
+                  "rounded-full w-full h-full",
+                  // user
+                  "[&_div]:truncate",
+                  "[&_div_a]:truncate",
+                )}
               >
-                <div
-                  className={clsx(
-                    "flex items-center justify-center",
-                    "rounded-full w-full h-full",
-                    // user
-                    "[&_div]:truncate",
-                    "[&_div_a]:truncate",
-                  )}
-                >
-                  {d >= 60 && (
-                    <User
-                      add={node.data.account}
-                      showAvatar={false}
-                      noEvent
-                      noTooltip
-                      ellipsis={false}
-                      color={clsx(
-                        node.data.aye && "var(--green500)",
-                        node.data.aye === false && "var(--red500)",
-                        node.data.isAbstain && "var(--textSecondary)",
-                      )}
-                    />
-                  )}
-                </div>
-              </Tooltip>
-            </div>
+                {d >= 60 && (
+                  <User
+                    add={node.data.account}
+                    showAvatar={false}
+                    noEvent
+                    noTooltip
+                    ellipsis={false}
+                    color={clsx(
+                      node.data.aye && "var(--green500)",
+                      node.data.aye === false && "var(--red500)",
+                      node.data.isAbstain && "var(--textSecondary)",
+                    )}
+                  />
+                )}
+              </div>
+            </Tooltip>
           );
         }}
       />
