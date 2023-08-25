@@ -5,6 +5,7 @@ import "../globalConfig";
 import { emptyFunction } from "../../../utils";
 import hoverLinePlugin from "../plugins/hoverLine";
 import { useThemeSetting } from "next-common/context/theme";
+import { formatDays, formatHours } from "next-common/utils/timeFormat";
 
 const Wrapper = styled.div``;
 
@@ -127,36 +128,45 @@ export default function ThresholdCurvesChart({
             const hs = parsed.x;
 
             // Display time at the first line
-            if (dataset.label === "Support") {
-              const result = `Time: ${hs}hs`;
+            if (dataset.label === chartData.datasets[0].label) {
+              const days = Math.floor(hs / 24);
+              const restHs = hs - days * 24;
+              let result = `Time: ${formatHours(hs)}`;
+              if (days > 0) {
+                result =
+                  result +
+                  ` (${formatDays(days)}${
+                    restHs > 0 ? formatHours(restHs) : ""
+                  })`;
+              }
 
               return result;
             }
 
-            // Display support and approval at the second line
-            if (dataset.label === "Approval") {
-              const supportValue = Number(
-                chartData.datasets[0].data[dataIndex],
-              ).toFixed(2);
+            // Display approval at the second line
+            if (dataset.label === chartData.datasets[1].label) {
               const approvalValue = Number(
                 chartData.datasets[1].data[dataIndex],
-              ).toFixed(2);
-
-              const result = `Support: ${supportValue}% Approval: ${approvalValue}%`;
-
-              return result;
-            }
-
-            // Display current support and current approval at the third line
-            if (dataset.label === "Current Approval") {
-              const currentSupportValue = Number(
-                chartData.datasets[2].data[dataIndex],
               ).toFixed(2);
               const currentApprovalValue = Number(
                 chartData.datasets[3].data[dataIndex],
               ).toFixed(2);
 
-              const result = `Current Support: ${currentSupportValue}% Current Approval: ${currentApprovalValue}%`;
+              const result = `Approval: ${currentApprovalValue}% / ${approvalValue}%`;
+
+              return result;
+            }
+
+            // Display support at the third line
+            if (dataset.label === chartData.datasets[2].label) {
+              const supportValue = Number(
+                chartData.datasets[0].data[dataIndex],
+              ).toFixed(2);
+              const currentSupportValue = Number(
+                chartData.datasets[2].data[dataIndex],
+              ).toFixed(2);
+
+              const result = `Support: ${currentSupportValue}% / ${supportValue}%`;
 
               return result;
             }
