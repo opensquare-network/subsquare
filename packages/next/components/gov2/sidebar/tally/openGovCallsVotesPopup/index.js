@@ -15,6 +15,9 @@ import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
+import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
+import SearchBar from "../common/searchBar";
+import SearchBtn from "../common/searchBtn";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -39,6 +42,8 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
 
   let page;
@@ -54,6 +59,20 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
     votes = allAbstain;
   }
 
+  const voteAccounts = useMemo(() => votes.map((vote) => vote.voter), [votes]);
+
+  const searchAddresses = useSearchIdentityAddress(search, voteAccounts);
+
+  const filteredVotes = useMemo(() => {
+    if (search) {
+      return votes.filter(
+        (item) =>
+          item.voter.includes(search) || searchAddresses.includes(item.voter),
+      );
+    }
+    return votes;
+  }, [votes, search, searchAddresses]);
+
   const onPageChange = (e, target) => {
     e.preventDefault();
     if (tabIndex === "Aye") {
@@ -68,7 +87,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const pagination = {
     page,
     pageSize,
-    total: votes?.length || 0,
+    total: filteredVotes?.length || 0,
     onPageChange,
   };
 
@@ -76,11 +95,26 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const sliceTo = sliceFrom + pageSize;
 
   const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
+    return filteredVotes.slice(sliceFrom, sliceTo);
+  }, [filteredVotes, sliceFrom, sliceTo]);
+
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
 
   return (
-    <BaseVotesPopup wide title="Calls" onClose={() => setShowVoteList(false)}>
+    <BaseVotesPopup
+      wide
+      title="Calls"
+      onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
+    >
+      {showSearch && <SearchBar setSearch={setSearch} />}
+
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}

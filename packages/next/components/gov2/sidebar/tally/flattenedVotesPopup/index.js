@@ -10,6 +10,9 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
+import SearchBar from "../common/searchBar";
+import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
+import SearchBtn from "../common/searchBtn";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -22,6 +25,8 @@ export default function VotesPopup({
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
 
   let page;
@@ -37,6 +42,24 @@ export default function VotesPopup({
     votes = allAbstain;
   }
 
+  const voteAccounts = useMemo(
+    () => votes.map((vote) => vote.account),
+    [votes],
+  );
+
+  const searchAddresses = useSearchIdentityAddress(search, voteAccounts);
+
+  const filteredVotes = useMemo(() => {
+    if (search) {
+      return votes.filter(
+        (item) =>
+          item.account.includes(search) ||
+          searchAddresses.includes(item.account),
+      );
+    }
+    return votes;
+  }, [votes, search, searchAddresses]);
+
   function onPageChange(e, target) {
     e.preventDefault();
     if (tabIndex === "Aye") {
@@ -51,7 +74,7 @@ export default function VotesPopup({
   const pagination = {
     page,
     pageSize,
-    total: votes?.length || 0,
+    total: filteredVotes?.length || 0,
     onPageChange,
   };
 
@@ -59,15 +82,25 @@ export default function VotesPopup({
   const sliceTo = sliceFrom + pageSize;
 
   const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
+    return filteredVotes.slice(sliceFrom, sliceTo);
+  }, [filteredVotes, sliceFrom, sliceTo]);
+
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
 
   return (
     <BaseVotesPopup
       wide
       title="Flattened View"
       onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
     >
+      {showSearch && <SearchBar setSearch={setSearch} />}
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}

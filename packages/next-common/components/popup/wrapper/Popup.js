@@ -12,6 +12,7 @@ export default function Popup({
   title,
   className = "",
   wide,
+  extra,
 }) {
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
@@ -50,11 +51,14 @@ export default function Popup({
                   <Dialog.Title asChild>
                     <h3 className="text14Bold text-textPrimary">{title}</h3>
                   </Dialog.Title>
-                  <SystemClose
-                    className="w-4 h-4 [&_path]:stroke-textTertiary"
-                    role="button"
-                    onClick={onClose}
-                  />
+                  <div className="flex items-center gap-[12px]">
+                    {extra}
+                    <SystemClose
+                      className="w-[20px] h-[20px] [&_path]:stroke-textTertiary"
+                      role="button"
+                      onClick={onClose}
+                    />
+                  </div>
                 </div>
               )}
 
