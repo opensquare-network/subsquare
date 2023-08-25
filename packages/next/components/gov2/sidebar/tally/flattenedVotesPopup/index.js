@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
@@ -10,6 +10,9 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
+import SearchBar from "./searchBar";
+import { fetchIdentity } from "next-common/services/identity";
+import { getIdentityDisplay } from "next-common/utils/identity";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -22,7 +25,10 @@ export default function VotesPopup({
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [identityDisplayToAddress, setIdentityDisplayToAddress] = useState({});
   const pageSize = 50;
+  const chainSettings = useChainSettings();
 
   let page;
   let votes;
@@ -36,6 +42,34 @@ export default function VotesPopup({
     page = abstainPage;
     votes = allAbstain;
   }
+
+  useEffect(() => {
+    const identityChain = chainSettings.identity;
+    votes.forEach((vote) => {
+      fetchIdentity(identityChain, vote.account).then((identity) => {
+        const identityDisplay = getIdentityDisplay(identity);
+        setIdentityDisplayToAddress((identityDisplayToAddress) => ({
+          ...identityDisplayToAddress,
+          [identityDisplay]: vote.account,
+        }));
+      });
+    });
+  }, [votes, chainSettings]);
+
+  const filteredVotes = useMemo(() => {
+    if (search) {
+      const addresses = Object.keys(identityDisplayToAddress)
+        .filter((display) =>
+          display.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+        )
+        .map((display) => identityDisplayToAddress[display]);
+      return votes.filter(
+        (item) =>
+          item.account.includes(search) || addresses.includes(item.account),
+      );
+    }
+    return votes;
+  }, [votes, search, identityDisplayToAddress]);
 
   function onPageChange(e, target) {
     e.preventDefault();
@@ -51,7 +85,7 @@ export default function VotesPopup({
   const pagination = {
     page,
     pageSize,
-    total: votes?.length || 0,
+    total: filteredVotes?.length || 0,
     onPageChange,
   };
 
@@ -59,8 +93,8 @@ export default function VotesPopup({
   const sliceTo = sliceFrom + pageSize;
 
   const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
+    return filteredVotes.slice(sliceFrom, sliceTo);
+  }, [filteredVotes, sliceFrom, sliceTo]);
 
   return (
     <BaseVotesPopup
@@ -68,6 +102,7 @@ export default function VotesPopup({
       title="Flattened View"
       onClose={() => setShowVoteList(false)}
     >
+      <SearchBar setSearch={setSearch} />
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
