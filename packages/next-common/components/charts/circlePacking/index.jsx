@@ -18,12 +18,13 @@ export default function CirclePacking({
   bubbleClassName = "",
   bubbleContent = noop,
 }) {
+  if (!width || !height) {
+    return null;
+  }
+
   const hierarchy = d3.hierarchy(data).sum((d) => d[sizeField]);
 
-  const pack = d3
-    .pack()
-    .size([width || 1, height || 1])
-    .padding(4);
+  const pack = d3.pack().size([width, height]).padding(4);
   const root = pack(hierarchy);
   const nodes = root.descendants().slice(1);
 
