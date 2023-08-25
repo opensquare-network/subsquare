@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
@@ -11,8 +11,7 @@ import { toPrecision } from "next-common/utils";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
 import SearchBar from "./searchBar";
-import { fetchIdentity } from "next-common/services/identity";
-import { getIdentityDisplay } from "next-common/utils/identity";
+import useSearchIdentityAddress from "./useSearchIdentityAddress";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -26,9 +25,7 @@ export default function VotesPopup({
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [identityDisplayToAddress, setIdentityDisplayToAddress] = useState({});
   const pageSize = 50;
-  const chainSettings = useChainSettings();
 
   let page;
   let votes;
@@ -43,33 +40,23 @@ export default function VotesPopup({
     votes = allAbstain;
   }
 
-  useEffect(() => {
-    const identityChain = chainSettings.identity;
-    votes.forEach((vote) => {
-      fetchIdentity(identityChain, vote.account).then((identity) => {
-        const identityDisplay = getIdentityDisplay(identity);
-        setIdentityDisplayToAddress((identityDisplayToAddress) => ({
-          ...identityDisplayToAddress,
-          [identityDisplay]: vote.account,
-        }));
-      });
-    });
-  }, [votes, chainSettings]);
+  const voteAccounts = useMemo(
+    () => votes.map((vote) => vote.account),
+    [votes],
+  );
+
+  const searchAddresses = useSearchIdentityAddress(search, voteAccounts);
 
   const filteredVotes = useMemo(() => {
     if (search) {
-      const addresses = Object.keys(identityDisplayToAddress)
-        .filter((display) =>
-          display.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
-        )
-        .map((display) => identityDisplayToAddress[display]);
       return votes.filter(
         (item) =>
-          item.account.includes(search) || addresses.includes(item.account),
+          item.account.includes(search) ||
+          searchAddresses.includes(item.account),
       );
     }
     return votes;
-  }, [votes, search, identityDisplayToAddress]);
+  }, [votes, search, searchAddresses]);
 
   function onPageChange(e, target) {
     e.preventDefault();
