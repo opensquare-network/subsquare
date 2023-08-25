@@ -4,11 +4,7 @@ import ChainTypes from "./consts/chainTypes";
 import WalletTypes from "./consts/walletTypes";
 
 export function getMetaMaskEthereum() {
-  if (
-    window.ethereum &&
-    window.ethereum.isMetaMask &&
-    !window.ethereum.isTalisman
-  ) {
+  if (window.ethereum && window.ethereum.isMetaMask) {
     return window.ethereum;
   }
 
