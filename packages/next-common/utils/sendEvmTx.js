@@ -8,7 +8,8 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
-import { getMetaMaskEthereum } from "./metamask";
+import { getMetaMaskEthereum, switchNetwork } from "./metamask";
+import getChainSettings from "./consts/settings";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -30,9 +31,30 @@ export async function sendEvmTx({
     return;
   }
 
-  const totalSteps = 2 ;
   const toastId = newToastId();
-  dispatch(newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`));
+
+  const { ethereumNetwork } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (ethereum.chainId !== ethereumNetwork.chainId) {
+    dispatch(
+      newPendingToast(
+        toastId,
+        `Switching the wallet to network: ${ethereumNetwork.chainName}`,
+      ),
+    );
+    try {
+      await switchNetwork(ethereumNetwork.chainId);
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+      return;
+    } finally {
+      dispatch(removeToast(toastId));
+    }
+  }
+
+  const totalSteps = 2;
+  dispatch(
+    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
+  );
 
   try {
     setLoading(true);

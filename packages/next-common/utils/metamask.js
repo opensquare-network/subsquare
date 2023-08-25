@@ -4,11 +4,7 @@ import ChainTypes from "./consts/chainTypes";
 import WalletTypes from "./consts/walletTypes";
 
 export function getMetaMaskEthereum() {
-  if (
-    window.ethereum &&
-    window.ethereum.isMetaMask &&
-    !window.ethereum.isTalisman
-  ) {
+  if (window.ethereum && window.ethereum.isMetaMask) {
     return window.ethereum;
   }
 
@@ -58,6 +54,18 @@ export async function addNetwork(ethereumNetwork) {
   return await ethereum.request({
     method: "wallet_addEthereumChain",
     params: [ethereumNetwork],
+  });
+}
+
+export async function switchNetwork(chainId) {
+  const ethereum = getMetaMaskEthereum();
+  if (!ethereum) {
+    throw new Error("Please install MetaMask");
+  }
+
+  return await ethereum.request({
+    method: "wallet_switchEthereumChain",
+    params: [{ chainId }],
   });
 }
 
