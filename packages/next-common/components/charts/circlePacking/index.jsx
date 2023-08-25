@@ -14,7 +14,7 @@ export default function CirclePacking({
   width,
   height,
   sizeField = "value",
-  keyField,
+  keyField, // children key
   bubbleClassName = "",
   bubbleContent = noop,
 }) {
