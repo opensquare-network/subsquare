@@ -1,17 +1,14 @@
 import clsx from "clsx";
 import flatten from "lodash.flatten";
 import CirclePacking from "next-common/components/charts/circlePacking";
-import Tooltip from "next-common/components/tooltip";
-import User from "next-common/components/user";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
-import VotesBubbleHoverContent from "./hoverContent";
+import VoteBubbleContent from "./bubbleContent";
 import VotesBubbleLegend from "./legend";
-import { useRouter } from "next/router";
 
 /**
- * @param {{ allAye: any[], allNay: any[], allAbstain: any[]} & import("react").HTMLAttributes<HTMLDivElement>} props
+ * @param {{ allAye: any[], allNay: any[], allAbstain: any[], sizeField?: string} & import("react").HTMLAttributes<HTMLDivElement>} props
  */
 export default function VotesBubble({
   allAye,
@@ -20,12 +17,12 @@ export default function VotesBubble({
   sizeField,
   ...props
 }) {
-  const router = useRouter();
   const [showVotes, setShowVotes] = useState({
     aye: true,
     nay: true,
     abstain: true,
   });
+
   const votes = flatten(
     [
       showVotes.aye && allAye,
@@ -64,9 +61,9 @@ export default function VotesBubble({
         ref={ref}
       >
         <CirclePacking
+          data={chartData}
           keyField="account"
           sizeField={sizeField}
-          data={chartData}
           width={size.width}
           height={size.height}
           bubbleClassName={(node) =>
@@ -76,45 +73,9 @@ export default function VotesBubble({
               node.data.isAbstain && "fill-neutral400 stroke-neutral500",
             )
           }
-          bubbleContent={(node) => {
-            const d = node.r * 2;
-
-            return (
-              <Tooltip
-                className={clsx("!block h-full w-full rounded-full")}
-                content={
-                  <VotesBubbleHoverContent node={node} sizeField={sizeField} />
-                }
-              >
-                <div
-                  role="link"
-                  className={clsx(
-                    "flex items-center justify-center cursor-pointer",
-                    "rounded-full w-full h-full px-2",
-                  )}
-                  onClick={() => {
-                    router.push(`/user/${node.data.account}/votes`);
-                  }}
-                >
-                  {d >= 60 && (
-                    <User
-                      add={node.data.account}
-                      showAvatar={false}
-                      maxWidth={d - 12}
-                      noEvent
-                      noTooltip
-                      ellipsis={false}
-                      color={clsx(
-                        node.data.aye && "var(--green500)",
-                        node.data.aye === false && "var(--red500)",
-                        node.data.isAbstain && "var(--textSecondary)",
-                      )}
-                    />
-                  )}
-                </div>
-              </Tooltip>
-            );
-          }}
+          renderBubbleContent={(node) => (
+            <VoteBubbleContent node={node} sizeField={sizeField} />
+          )}
         />
       </div>
 

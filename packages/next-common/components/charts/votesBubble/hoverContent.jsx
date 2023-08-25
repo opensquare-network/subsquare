@@ -7,7 +7,7 @@ import { toPrecision } from "next-common/utils";
 import Chains from "next-common/utils/consts/chains";
 import { useSelector } from "react-redux";
 
-export default function VotesBubbleHoverContent({ node, sizeField }) {
+export default function VoteBubbleHoverContent({ node, sizeField }) {
   const chainSettings = useChainSettings();
   const chain = useChain();
   const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);

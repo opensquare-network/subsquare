@@ -5,7 +5,6 @@
 // https://react-graph-gallery.com/circular-packing
 
 import * as d3 from "d3";
-import { get } from "lodash";
 import noop from "lodash.noop";
 import { Fragment } from "react";
 
@@ -16,7 +15,7 @@ export default function CirclePacking({
   sizeField = "value",
   keyField, // children key
   bubbleClassName = "",
-  bubbleContent = noop,
+  renderBubbleContent = noop,
 }) {
   if (!width || !height) {
     return null;
@@ -32,18 +31,14 @@ export default function CirclePacking({
     const { x, y, r } = node;
     const d = r * 2;
 
-    const bubbleCircleClassName =
-      typeof bubbleClassName === "function"
-        ? bubbleClassName(node)
-        : bubbleClassName;
+    const circleClassName = bubbleClassName?.(node) || bubbleClassName;
 
-    const bubbleCircleContent =
-      typeof bubbleContent === "function" ? bubbleContent(node) : bubbleContent;
+    const bubbleContent = renderBubbleContent?.(node) || null;
 
     return (
-      <Fragment key={get(node.data, keyField) || idx}>
-        <circle cx={x} cy={y} r={r} className={bubbleCircleClassName} />
-        {bubbleCircleContent && (
+      <Fragment key={node.data[keyField] || idx}>
+        <circle cx={x} cy={y} r={r} className={circleClassName} />
+        {bubbleContent && (
           <foreignObject
             x={x - r}
             y={y - r}
@@ -51,7 +46,7 @@ export default function CirclePacking({
             height={d}
             className="rounded-full"
           >
-            {bubbleCircleContent}
+            {bubbleContent}
           </foreignObject>
         )}
       </Fragment>
