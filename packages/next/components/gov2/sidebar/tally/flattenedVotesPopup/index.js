@@ -10,8 +10,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
-import SearchBar from "./searchBar";
-import useSearchIdentityAddress from "./useSearchIdentityAddress";
+import SearchBar from "../common/searchBar";
+import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
 
 export default function VotesPopup({
   setShowVoteList,
