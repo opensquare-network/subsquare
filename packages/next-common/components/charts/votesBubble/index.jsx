@@ -51,7 +51,7 @@ export default function VotesBubble({
     setSize({ width, height });
   }
 
-  const data = {
+  const chartData = {
     name: "root",
     children: votes,
   };
@@ -66,7 +66,7 @@ export default function VotesBubble({
         <CirclePacking
           keyField="account"
           sizeField={sizeField}
-          data={data}
+          data={chartData}
           width={size.width}
           height={size.height}
           bubbleClassName={(node) =>
