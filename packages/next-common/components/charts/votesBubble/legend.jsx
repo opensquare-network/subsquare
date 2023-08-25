@@ -33,7 +33,8 @@ export default function VotesBubbleLegend({
       [item.key]: !showVotes[item.key],
     };
 
-    const allFalse = Object.values(newShowVotesValue).every((v) => !v);
+    const legendKeys = items.map((item) => item.key);
+    const allFalse = legendKeys.every((key) => !newShowVotesValue[key]);
     if (allFalse) {
       return;
     }
