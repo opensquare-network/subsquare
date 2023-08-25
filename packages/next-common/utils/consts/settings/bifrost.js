@@ -8,16 +8,16 @@ import {
 
 const DEFAULT_BIFROST_NODES = [
   {
-    name: "OnFinality",
-    url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
+    name: "Dwellir",
+    url: "wss://bifrost-rpc.dwellir.com",
   },
   {
     name: "Liebi",
     url: "wss://bifrost-rpc.liebi.com/ws",
   },
   {
-    name: "Dwellir",
-    url: "wss://bifrost-rpc.dwellir.com",
+    name: "OnFinality",
+    url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
   },
 ];
 

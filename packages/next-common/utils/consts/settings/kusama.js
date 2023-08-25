@@ -39,6 +39,10 @@ const DEFAULT_KUSAMA_NODES = [
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
+  {
+    name: "Stakeworld",
+    url: "wss://ksm-rpc.stakeworld.io",
+  },
 ];
 
 const links = [

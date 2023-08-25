@@ -9,12 +9,12 @@ import phala from "./phala";
 
 const DEFAULT_KHALA_NODES = [
   {
-    name: "OnFinality",
-    url: "wss://khala.api.onfinality.io/public-ws",
-  },
-  {
     name: "Dwellir",
     url: "wss://khala-rpc.dwellir.com",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://khala.api.onfinality.io/public-ws",
   },
   {
     name: "Phala",

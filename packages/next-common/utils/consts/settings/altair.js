@@ -14,6 +14,10 @@ const nodes = [
     name: "Centrifuge",
     url: "wss://fullnode.altair.centrifuge.io",
   },
+  {
+    name: "OnFinality",
+    url: "wss://altair.api.onfinality.io/public-ws",
+  },
 ];
 
 const links = [

@@ -11,7 +11,7 @@ import {
 const DEFAULT_INTERLAY_NODES = [
   {
     name: "Dwellir",
-    url: "wss://interlay-rpc.dwellir.com/",
+    url: "wss://interlay-rpc.dwellir.com",
   },
   {
     name: "Kintsugi Labs",

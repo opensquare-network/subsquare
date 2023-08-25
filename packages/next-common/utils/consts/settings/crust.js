@@ -17,14 +17,6 @@ const DEFAULT_CRUST_NODES = [
     name: "Crust",
     url: "wss://rpc.crust.network",
   },
-  {
-    name: "Decoo Technologies",
-    url: "wss://rpc-crust-mainnet.decoo.io",
-  },
-  {
-    name: "DCloud Foundation",
-    url: "wss://api.decloudf.com",
-  },
 ];
 
 const links = [
