@@ -57,6 +57,18 @@ export async function addNetwork(ethereumNetwork) {
   });
 }
 
+export async function switchNetwork(chainId) {
+  const ethereum = getMetaMaskEthereum();
+  if (!ethereum) {
+    throw new Error("Please install MetaMask");
+  }
+
+  return await ethereum.request({
+    method: "wallet_switchEthereumChain",
+    params: [{ chainId }],
+  });
+}
+
 export function normalizedMetaMaskAccounts(accounts) {
   return accounts.map((item) => ({
     name: addressEllipsis(item),
