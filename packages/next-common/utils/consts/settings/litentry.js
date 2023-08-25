@@ -10,12 +10,16 @@ import {
 
 const DEFAULT_LITENTRY_NODES = [
   {
-    name: "Litentry",
-    url: "wss://rpc.litentry-parachain.litentry.io/",
-  },
-  {
     name: "Dwellir",
     url: "wss://litentry-rpc.dwellir.com/",
+  },
+  {
+    name: "Litentry",
+    url: "wss://rpc.litentry-parachain.litentry.io",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://litentry.api.onfinality.io/public-ws",
   },
 ];
 

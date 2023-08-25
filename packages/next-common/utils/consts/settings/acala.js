@@ -10,11 +10,11 @@ import {
 const DEFAULT_ACALA_NODES = [
   {
     name: "Acala Foundation 0",
-    url: "wss://acala-rpc-0.aca-api.network/",
+    url: "wss://acala-rpc-0.aca-api.network",
   },
   {
     name: "Acala Foundation 1",
-    url: "wss://acala-rpc-1.aca-api.network/",
+    url: "wss://acala-rpc-1.aca-api.network",
   },
   {
     name: "Acala Foundation 3",
@@ -28,10 +28,10 @@ const DEFAULT_ACALA_NODES = [
     name: "OnFinality",
     url: "wss://acala-polkadot.api.onfinality.io/public-ws",
   },
-  {
-    name: "Polkawallet 0",
-    url: "wss://acala.polkawallet.io/",
-  },
+  // {
+  //   name: "Polkawallet 0",
+  //   url: "wss://acala.polkawallet.io/",
+  // },
   // {
   //   name: "Acala Foundation 2",
   //   url: "wss://acala-rpc-2.aca-api.network/ws",
