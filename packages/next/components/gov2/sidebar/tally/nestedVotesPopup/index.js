@@ -13,6 +13,7 @@ import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
 import SearchBar from "../common/searchBar";
+import SearchBtn from "../common/searchBtn";
 
 export default function NestedVotesPopup({
   setShowVoteList,
@@ -26,6 +27,7 @@ export default function NestedVotesPopup({
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
 
   let page;
@@ -84,13 +86,22 @@ export default function NestedVotesPopup({
     return filteredVotes.slice(sliceFrom, sliceTo);
   }, [filteredVotes, sliceFrom, sliceTo]);
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
     <>
       <BaseVotesPopup
         title="Nested View"
         onClose={() => setShowVoteList(false)}
+        extra={searchBtn}
       >
-        <SearchBar setSearch={setSearch} />
+        {showSearch && <SearchBar setSearch={setSearch} />}
 
         <VotesTab
           tabIndex={tabIndex}

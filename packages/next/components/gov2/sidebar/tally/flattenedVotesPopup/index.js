@@ -12,6 +12,7 @@ import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
 import SearchBar from "../common/searchBar";
 import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
+import SearchBtn from "../common/searchBtn";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -25,6 +26,7 @@ export default function VotesPopup({
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
 
   let page;
@@ -83,13 +85,22 @@ export default function VotesPopup({
     return filteredVotes.slice(sliceFrom, sliceTo);
   }, [filteredVotes, sliceFrom, sliceTo]);
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
     <BaseVotesPopup
       wide
       title="Flattened View"
       onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
     >
-      <SearchBar setSearch={setSearch} />
+      {showSearch && <SearchBar setSearch={setSearch} />}
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}

@@ -17,6 +17,7 @@ import { useOnchainData } from "next-common/context/post";
 import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
 import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
 import SearchBar from "../common/searchBar";
+import SearchBtn from "../common/searchBtn";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -42,6 +43,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
 
   let page;
@@ -96,9 +98,22 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
     return filteredVotes.slice(sliceFrom, sliceTo);
   }, [filteredVotes, sliceFrom, sliceTo]);
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
-    <BaseVotesPopup wide title="Calls" onClose={() => setShowVoteList(false)}>
-      <SearchBar setSearch={setSearch} />
+    <BaseVotesPopup
+      wide
+      title="Calls"
+      onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
+    >
+      {showSearch && <SearchBar setSearch={setSearch} />}
 
       <VotesTab
         tabIndex={tabIndex}
