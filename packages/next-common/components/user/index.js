@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
-import { fetchIdentity } from "../../services/identity";
+import { fetchIdentity, getIdentity } from "../../services/identity";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Identity from "../Identity";
@@ -135,7 +135,12 @@ function User({
   const address = add ?? user?.address;
   const isKeyUser = isKeyRegisteredUser(user);
   const isMounted = useIsMounted();
-  const [identity, setIdentity] = useState(null);
+  const [identity, setIdentity] = useState(() =>
+    getIdentity(
+      settings.identity,
+      encodeAddressToChain(address, settings.identity),
+    ),
+  );
   const knownAddr = KNOWN_ADDR_MATCHERS.map((matcher) => matcher(address)).find(
     Boolean,
   );
