@@ -27,6 +27,20 @@ export default function VotesBubbleLegend({
     },
   ].filter(Boolean);
 
+  function onLegendClick(item) {
+    const newShowVotesValue = {
+      ...showVotes,
+      [item.key]: !showVotes[item.key],
+    };
+
+    const allFalse = Object.values(newShowVotesValue).every((v) => !v);
+    if (allFalse) {
+      return;
+    }
+
+    setShowVotes(newShowVotesValue);
+  }
+
   return (
     <ul className={clsx(className, "flex gap-x-4 justify-center")}>
       {items.map((item) => (
@@ -38,7 +52,7 @@ export default function VotesBubbleLegend({
             showVotes[item.key] ? "text-textSecondary" : "text-textDisabled",
           )}
           onClick={() => {
-            setShowVotes({ ...showVotes, [item.key]: !showVotes[item.key] });
+            onLegendClick(item);
           }}
         >
           <Circle
