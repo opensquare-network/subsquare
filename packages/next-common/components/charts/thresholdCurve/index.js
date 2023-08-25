@@ -5,6 +5,7 @@ import "../globalConfig";
 import { emptyFunction } from "../../../utils";
 import hoverLinePlugin from "../plugins/hoverLine";
 import { useThemeSetting } from "next-common/context/theme";
+import { formatDays, formatHours } from "next-common/utils/timeFormat";
 
 const Wrapper = styled.div``;
 
@@ -17,9 +18,12 @@ export default function ThresholdCurvesChart({
   labels = [],
   supportData = [],
   approvalData = [],
+  currentSupportData = [],
+  currentApprovalData = [],
   beforeDrawOptions = emptyFunction,
 }) {
-  const { neutral400, purple500, green500 } = useThemeSetting();
+  const { neutral400, purple500, green500, purple300, green300 } =
+    useThemeSetting();
 
   const chartData = {
     labels,
@@ -39,6 +43,28 @@ export default function ThresholdCurvesChart({
         data: approvalData,
         tension: 0.1,
         borderColor: green500,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHitRadius: 10,
+        pointHoverRadius: 5,
+      },
+      {
+        label: "Current Support",
+        data: currentSupportData,
+        tension: 0.1,
+        borderDash: [5, 3],
+        borderColor: purple300,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHitRadius: 10,
+        pointHoverRadius: 5,
+      },
+      {
+        label: "Current Approval",
+        data: currentApprovalData,
+        tension: 0.1,
+        borderDash: [5, 3],
+        borderColor: green300,
         borderWidth: 2,
         pointRadius: 0,
         pointHitRadius: 10,
@@ -99,22 +125,53 @@ export default function ThresholdCurvesChart({
           label(tooltipItem) {
             const { dataIndex, parsed, dataset } = tooltipItem;
 
-            // only display one item
-            if (dataset.label === "Approval") {
-              return "";
+            const hs = parsed.x;
+
+            // Display time at the first line
+            if (dataset.label === chartData.datasets[0].label) {
+              const days = Math.floor(hs / 24);
+              const restHs = hs - days * 24;
+              let result = `Time: ${formatHours(hs)}`;
+              if (days > 0) {
+                result =
+                  result +
+                  ` (${formatDays(days)}${
+                    restHs > 0 ? formatHours(restHs) : ""
+                  })`;
+              }
+
+              return result;
             }
 
-            const hs = parsed.x;
-            const supportValue = Number(
-              chartData.datasets[0].data[dataIndex],
-            ).toFixed(2);
-            const approvalValue = Number(
-              chartData.datasets[1].data[dataIndex],
-            ).toFixed(2);
+            // Display approval at the second line
+            if (dataset.label === chartData.datasets[1].label) {
+              const approvalValue = Number(
+                chartData.datasets[1].data[dataIndex],
+              ).toFixed(2);
+              const currentApprovalValue = Number(
+                chartData.datasets[3].data[dataIndex],
+              ).toFixed(2);
 
-            const result = `Time: ${hs}hs Support: ${supportValue}% Approval: ${approvalValue}%`;
+              const result = `Approval: ${currentApprovalValue}% / ${approvalValue}%`;
 
-            return result;
+              return result;
+            }
+
+            // Display support at the third line
+            if (dataset.label === chartData.datasets[2].label) {
+              const supportValue = Number(
+                chartData.datasets[0].data[dataIndex],
+              ).toFixed(2);
+              const currentSupportValue = Number(
+                chartData.datasets[2].data[dataIndex],
+              ).toFixed(2);
+
+              const result = `Support: ${currentSupportValue}% / ${supportValue}%`;
+
+              return result;
+            }
+
+            return "";
           },
         },
       },

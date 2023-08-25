@@ -39,6 +39,8 @@ export default function ThresholdCurvesGov2TallyPopup({
   labels = [],
   supportData = [],
   approvalData = [],
+  currentSupportData,
+  currentApprovalData,
   supportPerbill = 0,
   supportPercentage = 0,
   approvalPercentage = 0,
@@ -68,16 +70,20 @@ export default function ThresholdCurvesGov2TallyPopup({
   );
 
   function beforeDrawOptions(options) {
-    set(
-      options,
-      "plugins.annotation.annotations.lineSupportThreshold",
-      supportThresholdLine,
-    );
-    set(
-      options,
-      "plugins.annotation.annotations.lineApprovalThreshold",
-      approvalThresholdLine,
-    );
+    if (!currentSupportData) {
+      set(
+        options,
+        "plugins.annotation.annotations.lineSupportThreshold",
+        supportThresholdLine,
+      );
+    }
+    if (!currentApprovalData) {
+      set(
+        options,
+        "plugins.annotation.annotations.lineApprovalThreshold",
+        approvalThresholdLine,
+      );
+    }
 
     set(
       options,
@@ -113,6 +119,8 @@ export default function ThresholdCurvesGov2TallyPopup({
         labels={labels}
         supportData={supportData}
         approvalData={approvalData}
+        currentSupportData={currentSupportData}
+        currentApprovalData={currentApprovalData}
         supportThreshold={supportThreshold}
         approvalThreshold={approvalThreshold}
         beforeDrawOptions={beforeDrawOptions}
