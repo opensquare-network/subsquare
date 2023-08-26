@@ -7444,6 +7444,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.last@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "lodash.last@npm:3.0.0"
+  checksum: 7e0a2d5abf8e30fa7662cfbf14666883cb7b021e478baa0fec3a9ad74619cfeef12a8cc57d3641c64916247defe69052228bbb61daad441782a927f8b92f27e8
+  languageName: node
+  linkType: hard
+
 "lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
@@ -7991,6 +7998,7 @@ __metadata:
     lodash.isempty: ^4.4.0
     lodash.isequal: ^4.5.0
     lodash.isnil: ^4.0.0
+    lodash.last: ^3.0.0
     lodash.noop: ^3.0.1
     lodash.orderby: ^4.6.0
     lodash.range: ^3.2.0

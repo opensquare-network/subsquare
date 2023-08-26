@@ -8,6 +8,13 @@ import {
 } from "../../../../context/post/gov2/percentage";
 import useGov2ThresholdCurveData from "../../../../utils/hooks/useGov2ThresholdCurveData";
 import BigNumber from "bignumber.js";
+import { useDecidingSince } from "next-common/context/post/gov2/referendum";
+import { useSelector } from "react-redux";
+import {
+  blockTimeSelector,
+  latestHeightSelector,
+} from "next-common/store/reducers/chainSlice";
+import last from "lodash.last";
 
 const CurveIcon = styled(CurveIconOrigin)`
   cursor: pointer;
@@ -33,11 +40,17 @@ function calcFromOneTallyData(tally) {
   };
 }
 
-function calcDataFromTallyHistory(tallyHistory, labels) {
+function calcDataFromTallyHistory(
+  tallyHistory,
+  labels,
+  decidingSince,
+  latestHeight,
+  blockTime,
+) {
   let currentSupportData = null;
   let currentApprovalData = null;
 
-  if (!tallyHistory) {
+  if (!tallyHistory || !decidingSince) {
     return { currentSupportData, currentApprovalData };
   }
 
@@ -49,34 +62,31 @@ function calcDataFromTallyHistory(tallyHistory, labels) {
     return { currentSupportData, currentApprovalData };
   }
 
-  const firstDataPointTime = tallyHistory[0].indexer.blockTime;
-  let { currentSupport, currentApprove } = calcFromOneTallyData(
-    tallyHistory[0].tally,
-  );
+  const oneHour = 3600 * 1000;
+  const blockStep = oneHour / blockTime; // it means the blocks between 2 dots.
 
-  currentSupportData.push(currentSupport);
-  currentApprovalData.push(currentApprove);
+  const lastTally = last(tallyHistory);
+  const maxHeight = last(tallyHistory).indexer.blockHeight;
 
-  let currentPointNum = 0;
-
-  // Loop through tally history to find nearest data point for each hour
-  for (let i = 1; i < tallyHistory.length; i++) {
-    const nextDataPointTime =
-      firstDataPointTime + (currentPointNum + 1) * 3600 * 1000;
-    if (tallyHistory[i].indexer.blockTime > nextDataPointTime) {
-      ({ currentSupport, currentApprove } = calcFromOneTallyData(
-        tallyHistory[i - 1].tally,
-      ));
-
-      currentSupportData.push(currentSupport);
-      currentApprovalData.push(currentApprove);
-
-      currentPointNum++;
+  let iterHeight = decidingSince;
+  while (iterHeight <= maxHeight) {
+    const tally = tallyHistory.findLast(
+      (tally) => tally.indexer.blockHeight <= iterHeight,
+    );
+    if (!tally) {
+      break;
     }
+
+    let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
+    currentSupportData.push(currentSupport);
+    currentApprovalData.push(currentApprove);
+    iterHeight += blockStep;
   }
 
-  // Fill the rest of the data points with the last data point
-  for (let i = currentPointNum + 1; i < labels.length; i++) {
+  if (iterHeight < maxHeight + blockStep) {
+    let { currentSupport, currentApprove } = calcFromOneTallyData(
+      lastTally.tally,
+    );
     currentSupportData.push(currentSupport);
     currentApprovalData.push(currentApprove);
   }
@@ -96,10 +106,16 @@ export default function CurvePopup({
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);
   const supportPercentage = useSupportPercentage(supportPerbill);
+  const decidingSince = useDecidingSince();
+  const blockTime = useSelector(blockTimeSelector);
+  const latestHeight = useSelector(latestHeightSelector);
 
   const { currentSupportData, currentApprovalData } = calcDataFromTallyHistory(
     tallyHistory,
     labels,
+    decidingSince,
+    latestHeight,
+    blockTime,
   );
 
   return (
