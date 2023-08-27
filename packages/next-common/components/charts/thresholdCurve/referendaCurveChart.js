@@ -27,10 +27,10 @@ export default function ReferendaCurveChart() {
     useApprovalValueDatasetConfig(currentApprovalData);
 
   const datasets = [
-    supportThresholdConfig,
     approvalThresholdConfig,
-    supportValueConfig,
+    supportThresholdConfig,
     approvalValueConfig,
+    supportValueConfig,
   ];
 
   const chartData = { labels, datasets };

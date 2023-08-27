@@ -33,7 +33,7 @@ export default function FellowshipCurveChart() {
   const approvalThresholdConfig =
     useApprovalThresholdDatasetConfig(approvalData);
 
-  const datasets = [supportThresholdConfig, approvalThresholdConfig];
+  const datasets = [approvalThresholdConfig, supportThresholdConfig];
 
   const chartData = { labels, datasets };
   const options = useDetailPageOptionsWithoutTallyHistory(labels, datasets);

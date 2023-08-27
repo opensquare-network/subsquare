@@ -14,7 +14,7 @@ import VStack from "../../styled/vStack";
 import ThresholdSupportCard from "./thresholdCards/support";
 import ThresholdApprovalCard from "./thresholdCards/approval";
 import ReferendaCurveChart from "next-common/components/charts/thresholdCurve/referendaCurveChart";
-import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/felloshipCurveChart";
+import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/fellowshipCurveChart";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
