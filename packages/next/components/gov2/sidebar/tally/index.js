@@ -9,7 +9,6 @@ import Support from "./values/support";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
-import { useTrack } from "next-common/context/post/gov2/track";
 import MyVote from "./myVote";
 import { useOnchainData, usePost } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
@@ -38,13 +37,10 @@ export default function Gov2Tally() {
   const supportPerbill = useSupportPerbill(tally);
 
   const { data: tallyHistory } = useReferendaTallyHistory(referendumIndex);
-
   const issuance = useReferendaIssuance();
-  const track = useTrack();
 
   let titleRightCorner = (
     <CurvePopup
-      track={track}
       tally={tally}
       supportPerbill={supportPerbill}
       tallyHistory={tallyHistory}
