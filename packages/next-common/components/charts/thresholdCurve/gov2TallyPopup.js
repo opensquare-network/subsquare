@@ -3,28 +3,18 @@ import PopupOrigin from "../../popup/wrapper/Popup";
 import { emptyFunction } from "next-common/utils";
 import styled, { css } from "styled-components";
 import { smcss } from "next-common/utils/responsive";
-import ThresholdCurvesChart from ".";
+import "../globalConfig";
 import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
 } from "../../../context/post/gov2/threshold";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "../../../store/reducers/chainSlice";
-import BigNumber from "bignumber.js";
-import { useDecidingSince } from "../../../context/post/gov2/referendum";
-import set from "lodash.set";
-import {
-  useApprovalPercentageLine,
-  useApprovalPoints,
-  useSupportPercentageLine,
-  useSupportPoints,
-} from "./annotations";
 import LearnGov2Link from "../../links/learnGov2Link";
 import VStack from "../../styled/vStack";
 import ThresholdSupportCard from "./thresholdCards/support";
 import ThresholdApprovalCard from "./thresholdCards/approval";
-import { useDecidingEndHeight } from "../../../context/post/gov2/decidingPercentage";
+import ReferendaCurveChart from "next-common/components/charts/thresholdCurve/referendaCurveChart";
+import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/felloshipCurveChart";
 
 const Popup = styled(PopupOrigin)`
   width: 480px;
@@ -34,78 +24,23 @@ const Popup = styled(PopupOrigin)`
   `)}
 `;
 
+function PopupChartContent({ isFellowship = false }) {
+  if (!isFellowship) {
+    return <ReferendaCurveChart />;
+  } else {
+    return <FellowshipCurveChart />;
+  }
+}
+
 export default function ThresholdCurvesGov2TallyPopup({
   setShow = emptyFunction,
-  labels = [],
-  supportData = [],
-  approvalData = [],
-  currentSupportData,
-  currentApprovalData,
   supportPerbill = 0,
   supportPercentage = 0,
   approvalPercentage = 0,
+  isFellowship = false,
 }) {
-  const blockTime = useSelector(blockTimeSelector);
-  const decidingEnd = useDecidingEndHeight();
-
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
-
-  const decisionSince = useDecidingSince();
-  const gone = decisionSince && decidingEnd ? decidingEnd - decisionSince : 0;
-
-  const value = new BigNumber(blockTime).multipliedBy(gone).toNumber();
-  const seconds = value / 1000;
-  const xValue = Math.min(seconds / 3600, labels[labels.length - 1]);
-
-  const supportThresholdLine = useSupportPercentageLine(supportPercentage);
-  const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
-  const [supportOuterPoint, supportInnerPoint] = useSupportPoints(
-    xValue,
-    supportThreshold,
-  );
-  const [approvalOuterPoint, approvalInnerPoint] = useApprovalPoints(
-    xValue,
-    approvalThreshold,
-  );
-
-  function beforeDrawOptions(options) {
-    if (!currentSupportData) {
-      set(
-        options,
-        "plugins.annotation.annotations.lineSupportThreshold",
-        supportThresholdLine,
-      );
-    }
-    if (!currentApprovalData) {
-      set(
-        options,
-        "plugins.annotation.annotations.lineApprovalThreshold",
-        approvalThresholdLine,
-      );
-    }
-
-    set(
-      options,
-      "plugins.annotation.annotations.pointSupportOuter",
-      supportOuterPoint,
-    );
-    set(
-      options,
-      "plugins.annotation.annotations.pointSupportInner",
-      supportInnerPoint,
-    );
-    set(
-      options,
-      "plugins.annotation.annotations.pointApprovalOuter",
-      approvalOuterPoint,
-    );
-    set(
-      options,
-      "plugins.annotation.annotations.pointApprovalInner",
-      approvalInnerPoint,
-    );
-  }
 
   return (
     <Popup
@@ -114,18 +49,7 @@ export default function ThresholdCurvesGov2TallyPopup({
         setShow(false);
       }}
     >
-      <ThresholdCurvesChart
-        height={144}
-        labels={labels}
-        supportData={supportData}
-        approvalData={approvalData}
-        currentSupportData={currentSupportData}
-        currentApprovalData={currentApprovalData}
-        supportThreshold={supportThreshold}
-        approvalThreshold={approvalThreshold}
-        beforeDrawOptions={beforeDrawOptions}
-      />
-
+      <PopupChartContent isFellowship={isFellowship} />
       <ThresholdCurvesGov2TallyLegend />
 
       <VStack space={16}>

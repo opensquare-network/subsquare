@@ -46,7 +46,11 @@ export default function FellowshipTally() {
     <SecondaryCardDetail>
       <Title className="!px-0">
         Tally
-        <CurvePopup tally={tally} supportPerbill={supportPerbill} />
+        <CurvePopup
+          tally={tally}
+          supportPerbill={supportPerbill}
+          isFellowship={true}
+        />
       </Title>
 
       <VoteBar
