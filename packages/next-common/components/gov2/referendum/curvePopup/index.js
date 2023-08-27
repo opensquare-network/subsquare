@@ -6,7 +6,6 @@ import {
   useApprovalPercentage,
   useSupportPercentage,
 } from "../../../../context/post/gov2/percentage";
-import useGov2ThresholdCurveData from "../../../../utils/hooks/useGov2ThresholdCurveData";
 import BigNumber from "bignumber.js";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
@@ -15,6 +14,7 @@ import {
   latestHeightSelector,
 } from "next-common/store/reducers/chainSlice";
 import last from "lodash.last";
+import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
 
 const CurveIcon = styled(CurveIconOrigin)`
   cursor: pointer;
@@ -94,15 +94,9 @@ function calcDataFromTallyHistory(
   return { currentSupportData, currentApprovalData };
 }
 
-export default function CurvePopup({
-  track,
-  tally,
-  supportPerbill,
-  tallyHistory,
-}) {
+export default function CurvePopup({ tally, supportPerbill, tallyHistory }) {
   const approvalPercentage = useApprovalPercentage(tally);
-  const { labels, supportData, approvalData } =
-    useGov2ThresholdCurveData(track);
+  const { labels, supportData, approvalData } = useReferendumCurveData();
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);
   const supportPercentage = useSupportPercentage(supportPerbill);
