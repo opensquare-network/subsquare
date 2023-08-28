@@ -1,12 +1,11 @@
 import { cloneElement, useState } from "react";
 import Tabs from "../../tabs";
 import { useTimelineData } from "next-common/context/post";
-import Tab from "../../tab";
-import { TimelineCompact, TimelineNormal } from "@osn/icons/subsquare";
 import { ThemedTag } from "next-common/components/tags/state/styled";
 import VotesBubbleViewTabs from "./votesBubbleViewTabs";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import TimelineModeTabs from "./timelineModeTabs";
 
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
@@ -39,12 +38,10 @@ export default function DetailMultiTabs({
       activeCount: timelineCount || timelineData?.length,
       content: (
         <div>
-          <div className="sm:hidden">
-            <TimelineModeTabs
-              timelineModeTabId={timelineModeTabId}
-              setTimelineModeTabId={setTimelineModeTabId}
-            />
-          </div>
+          <TimelineModeTabs
+            tabId={timelineModeTabId}
+            setTabId={setTimelineModeTabId}
+          />
 
           {cloneElement(timeline, {
             compact: timelineCompact,
@@ -77,50 +74,7 @@ export default function DetailMultiTabs({
         activeTabLabel={activeTabLabel}
         onTabClick={(tab) => setActiveTabLabel(tab.label)}
         tabs={tabs}
-        tabsListExtra={
-          activeTabLabel === "Timeline" && (
-            <div className="max-sm:hidden">
-              <TimelineModeTabs
-                timelineModeTabId={timelineModeTabId}
-                setTimelineModeTabId={setTimelineModeTabId}
-              />
-            </div>
-          )
-        }
       />
     </div>
-  );
-}
-
-function TimelineModeTabs({ timelineModeTabId, setTimelineModeTabId }) {
-  const timelineModeTabs = [
-    {
-      tabId: "normal",
-      tabTitle: (
-        <span className="inline-flex gap-x-2 text-textPrimary">
-          <TimelineNormal className="w-5 h-5 [&_path]:fill-textPrimary" />
-          <span className="sm:hidden">Normal</span>
-        </span>
-      ),
-    },
-    {
-      tabId: "compact",
-      tabTitle: (
-        <span className="inline-flex gap-x-2 text-textPrimary">
-          <TimelineCompact className="w-5 h-5 [&_path]:fill-textPrimary" />
-          <span className="sm:hidden">Compact</span>
-        </span>
-      ),
-    },
-  ];
-
-  return (
-    <Tab
-      className="sm:w-16 sm:relative sm:bottom-2"
-      selectedTabId={timelineModeTabId}
-      setSelectedTabId={setTimelineModeTabId}
-      small
-      tabs={timelineModeTabs}
-    />
   );
 }
