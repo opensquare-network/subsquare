@@ -47,8 +47,8 @@ export default function VotesBubble({
 
   function handleSize() {
     if (!ref.current) return;
-    const width = ref.current.offsetWidth;
-    const height = ref.current.offsetHeight;
+    const width = ref.current.clientWidth;
+    const height = ref.current.clientHeight;
     setSize({ width, height });
   }
 
