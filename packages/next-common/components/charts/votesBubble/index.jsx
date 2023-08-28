@@ -14,6 +14,12 @@ export default function VotesBubble({
   sizeField,
   ...props
 }) {
+  const hasVotes = !![
+    allAye?.length,
+    allNay?.length,
+    allAbstain?.length,
+  ].filter(Boolean).length;
+
   const [showVotes, setShowVotes] = useState({
     aye: true,
     nay: true,
@@ -51,7 +57,7 @@ export default function VotesBubble({
     children: votes,
   };
 
-  if (!votes.length) {
+  if (!hasVotes) {
     return (
       <div className="text-center text14Medium text-textTertiary py-4">
         No current votes
