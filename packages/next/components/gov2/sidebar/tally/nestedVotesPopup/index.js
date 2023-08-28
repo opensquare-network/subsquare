@@ -11,9 +11,9 @@ import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
-import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
 import SearchBar from "../common/searchBar";
 import SearchBtn from "../common/searchBtn";
+import useSearchVotes from "../common/useSearchVotes";
 
 export default function NestedVotesPopup({
   setShowVoteList,
@@ -30,36 +30,22 @@ export default function NestedVotesPopup({
   const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
 
+  const filteredAye = useSearchVotes(search, allAye);
+  const filteredNay = useSearchVotes(search, allNay);
+  const filteredAbstain = useSearchVotes(search, allAbstain);
+
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = filteredAye;
   } else if (tabIndex === "Nay") {
     page = nayPage;
-    votes = allNay;
+    votes = filteredNay;
   } else {
     page = abstainPage;
-    votes = allAbstain;
+    votes = filteredAbstain;
   }
-
-  const voteAccounts = useMemo(
-    () => votes.map((vote) => vote.account),
-    [votes],
-  );
-
-  const searchAddresses = useSearchIdentityAddress(search, voteAccounts);
-
-  const filteredVotes = useMemo(() => {
-    if (search) {
-      return votes.filter(
-        (item) =>
-          item.account.includes(search) ||
-          searchAddresses.includes(item.account),
-      );
-    }
-    return votes;
-  }, [votes, search, searchAddresses]);
 
   function onPageChange(e, target) {
     e.preventDefault();
@@ -75,7 +61,7 @@ export default function NestedVotesPopup({
   const pagination = {
     page,
     pageSize,
-    total: filteredVotes?.length || 0,
+    total: votes?.length || 0,
     onPageChange,
   };
 
@@ -83,8 +69,8 @@ export default function NestedVotesPopup({
   const sliceTo = sliceFrom + pageSize;
 
   const items = useMemo(() => {
-    return filteredVotes.slice(sliceFrom, sliceTo);
-  }, [filteredVotes, sliceFrom, sliceTo]);
+    return votes.slice(sliceFrom, sliceTo);
+  }, [votes, sliceFrom, sliceTo]);
 
   const searchBtn = (
     <SearchBtn
@@ -106,9 +92,9 @@ export default function NestedVotesPopup({
         <VotesTab
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
-          ayesCount={allAye?.length || 0}
-          naysCount={allNay?.length || 0}
-          abstainsCount={allAbstain?.length || 0}
+          ayesCount={filteredAye?.length || 0}
+          naysCount={filteredNay?.length || 0}
+          abstainsCount={filteredAbstain?.length || 0}
         />
 
         <VotesList items={items} loading={isLoadingVotes} tab={tabIndex} />

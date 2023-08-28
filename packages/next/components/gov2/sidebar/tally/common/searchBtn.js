@@ -1,13 +1,15 @@
 import { SystemSearch } from "@osn/icons/subsquare";
+import clsx from "clsx";
 
 export default function SearchBtn({ showSearch, setShowSearch, setSearch }) {
   return (
     <div
-      className={
+      className={clsx(
+        "cursor-pointer",
         showSearch
           ? "[&_path]:fill-textSecondary"
-          : "[&_path]:fill-textTertiary"
-      }
+          : "[&_path]:fill-textTertiary",
+      )}
       onClick={() => {
         const show = !showSearch;
         setShowSearch(show);

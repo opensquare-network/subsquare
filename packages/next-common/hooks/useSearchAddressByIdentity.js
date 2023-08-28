@@ -3,7 +3,10 @@ import { fetchIdentity } from "next-common/services/identity";
 import { getIdentityDisplay } from "next-common/utils/identity";
 import { useEffect, useMemo, useState } from "react";
 
-export default function useSearchIdentityAddress(identitySearch, fromAccounts) {
+export default function useSearchAddressByIdentity(
+  identitySearch,
+  fromAccounts,
+) {
   const [identityDisplayToAddress, setIdentityDisplayToAddress] = useState({});
   const chainSettings = useChainSettings();
 
