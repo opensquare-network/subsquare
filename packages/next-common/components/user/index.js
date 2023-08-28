@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
-import { fetchIdentity } from "../../services/identity";
+import { fetchIdentity, getIdentity } from "../../services/identity";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Identity from "../Identity";
@@ -119,10 +119,6 @@ const widths = {
   identity: 16,
 };
 
-/**
- * @param {object} props
- * @param {number} props.maxWidth whole `User` max width, includes avatar, identity icon and address or name
- */
 function User({
   user,
   add,
@@ -133,12 +129,18 @@ function User({
   noTooltip = false,
   color,
   linkToVotesPage = false,
+  ellipsis = true,
 }) {
   const settings = useChainSettings();
   const address = add ?? user?.address;
   const isKeyUser = isKeyRegisteredUser(user);
   const isMounted = useIsMounted();
-  const [identity, setIdentity] = useState(null);
+  const [identity, setIdentity] = useState(() =>
+    getIdentity(
+      settings.identity,
+      encodeAddressToChain(address, settings.identity),
+    ),
+  );
   const knownAddr = KNOWN_ADDR_MATCHERS.map((matcher) => matcher(address)).find(
     Boolean,
   );
@@ -177,8 +179,10 @@ function User({
   }
 
   const elmUsernameOrAddr = (
-    <Username fontSize={fontSize} color={color}>
-      {knownAddr || (!isKeyUser && user?.username) || addressEllipsis(address)}
+    <Username fontSize={fontSize} color={color} maxWidth={maxWidth}>
+      {knownAddr ||
+        (!isKeyUser && user?.username) ||
+        (ellipsis ? addressEllipsis(address) : address)}
     </Username>
   );
 

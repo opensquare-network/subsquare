@@ -173,7 +173,7 @@ function Vote({ referendumInfo, referendumIndex }) {
   return (
     <RightBarWrapper>
       <SecondaryCardDetail>
-        <Title>
+        <Title className="!px-0">
           <span>Votes</span>
           <div>
             {isLoadingReferendumStatus || isElectorateLoading ? (

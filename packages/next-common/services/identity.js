@@ -90,3 +90,15 @@ export function fetchIdentity(chain, address) {
 
   return pending.get(idName).promise;
 }
+
+/**
+ * @description sync, get identity from cache
+ */
+export function getIdentity(chain, address) {
+  if (!chain || !address) {
+    return null;
+  }
+
+  const idName = `${chain}/${address}`;
+  return cachedIdentities.get(idName) || null;
+}

@@ -25,6 +25,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import ReferendumCall from "next-common/components/democracy/call";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
+import DemocracyReferendaVotesBubble from "next-common/components/democracy/referendum/votesBubble";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -86,6 +87,7 @@ function ReferendumContent({ comments }) {
           />
         }
         timeline={<Timeline />}
+        votesBubble={<DemocracyReferendaVotesBubble />}
       />
 
       {CommentComponent}

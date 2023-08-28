@@ -17,6 +17,7 @@ import treasury from "./treasury";
 import preImagesReducer from "./preImagesSlice";
 import myVotesReducer from "./myVotesSlice";
 import myOnChainData from "./myOnChainData";
+import detailReducer from "./detailSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -36,4 +37,5 @@ export default combineReducers({
   preImages: preImagesReducer,
   myVotes: myVotesReducer,
   ...myOnChainData,
+  detail: detailReducer,
 });
