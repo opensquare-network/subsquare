@@ -12,7 +12,5 @@ export default function TimelineModeTabs({ tabId, setTabId }) {
     },
   ];
 
-  return (
-    <Tab selectedTabId={tabId} setSelectedTabId={setTabId} small tabs={tabs} />
-  );
+  return <Tab selectedTabId={tabId} setSelectedTabId={setTabId} tabs={tabs} />;
 }

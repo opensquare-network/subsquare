@@ -26,7 +26,6 @@ export default function VotesBubbleViewTabs() {
       setSelectedTabId={(id) => {
         dispatch(setDetailMultiTabsVotesBubbleView(id));
       }}
-      small
       tabs={tabs}
     />
   );
