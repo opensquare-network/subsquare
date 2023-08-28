@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.3
+date: 2023-08-28
+
+- Add circle packing view for referenda/democracy votes distribution.
+- Implement tally history line on the referendum detail tally curve chart.
+- Support voters search by address/identity on referenda/democracy votes popup.
+- Set default color theme to light.
+- Enable post showing less/more feature only when content length is greater than 1200px.
+- Update endpoints for various chains.
+- Fix bugs and styles.
+
 ### 3.4.2
 date: 2023-08-23
 - Refactor routes for referenda/democracy/treasury related pages.
