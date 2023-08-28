@@ -40,6 +40,7 @@ export default function VotesBubble({
   useEventListener("resize", handleSize, ref.current);
 
   function handleSize() {
+    if (!ref.current) return;
     const width = ref.current.offsetWidth;
     const height = ref.current.offsetHeight;
     setSize({ width, height });
@@ -49,6 +50,14 @@ export default function VotesBubble({
     name: "root",
     children: votes,
   };
+
+  if (!votes.length) {
+    return (
+      <div className="text-center text14Medium text-textTertiary py-4">
+        No current votes
+      </div>
+    );
+  }
 
   return (
     <>
