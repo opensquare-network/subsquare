@@ -10,6 +10,7 @@ import last from "lodash.last";
 import BigNumber from "bignumber.js";
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
 import { useMemo } from "react";
+import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -29,6 +30,7 @@ export function calcDataFromTallyHistory(
   tallyHistory,
   labels,
   decidingSince,
+  decidingEnd,
   latestHeight,
   blockTime,
 ) {
@@ -49,12 +51,10 @@ export function calcDataFromTallyHistory(
 
   const oneHour = 3600 * 1000;
   const blockStep = oneHour / blockTime; // it means the blocks between 2 dots.
-
   const lastTally = last(tallyHistory);
-  const maxHeight = last(tallyHistory).indexer.blockHeight;
 
   let iterHeight = decidingSince;
-  while (iterHeight <= maxHeight) {
+  while (iterHeight <= decidingEnd) {
     const tally = tallyHistory.findLast(
       (tally) => tally.indexer.blockHeight <= iterHeight,
     );
@@ -68,7 +68,7 @@ export function calcDataFromTallyHistory(
     iterHeight += blockStep;
   }
 
-  if (iterHeight < maxHeight + blockStep) {
+  if (iterHeight < decidingEnd + blockStep && latestHeight > decidingEnd) {
     let { currentSupport, currentApprove } = calcFromOneTallyData(
       lastTally.tally,
     );
@@ -83,15 +83,17 @@ export default function useHistoryTallyValueData() {
   const { labels } = useReferendumCurveData();
   const decidingSince = useDecidingSince();
   const blockTime = useSelector(blockTimeSelector);
-  const latestHeight = useSelector(latestHeightSelector);
   const { referendumIndex } = useOnchainData();
   const { data: tallyHistory } = useReferendaTallyHistory(referendumIndex);
+  const decidingEnd = useDecidingEndHeight();
+  const latestHeight = useSelector(latestHeightSelector);
 
   return useMemo(() => {
     return calcDataFromTallyHistory(
       tallyHistory,
       labels,
       decidingSince,
+      decidingEnd,
       latestHeight,
       blockTime,
     );
