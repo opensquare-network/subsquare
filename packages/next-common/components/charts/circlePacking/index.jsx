@@ -32,9 +32,6 @@ export default function CirclePacking({
   const allBubbles = useMemo(() => {
     return nodes.map((node, idx) => {
       const { x, y, r } = node;
-      if (!x) {
-        console.log("node", node);
-      }
       const d = r * 2;
       const circleClassName = bubbleClassName?.(node) || bubbleClassName;
       const bubbleContent = renderBubbleContent?.(node) || null;
