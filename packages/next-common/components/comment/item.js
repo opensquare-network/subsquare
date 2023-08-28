@@ -31,12 +31,6 @@ const Wrapper = styled.div`
       display: block;
     }
   }
-
-  ${(p) =>
-    p.highlight &&
-    css`
-      background-color: var(--neutral200);
-    `}
 `;
 
 const InfoWrapper = styled(Flex)`
@@ -199,10 +193,15 @@ export default function Item({
     <Wrapper
       ref={refCommentTree}
       id={comment.height}
-      highlight={highlight}
       className={clsx(
         "group/comment-item first:mt-0",
         !isSecondLevel ? "mt-8" : "mt-4",
+        highlight &&
+          clsx(
+            "bg-neutral200 -mx-12 px-12 py-4 !mt-4",
+            "max-md:-mx-6 max-md:px-6",
+            isSecondLevel && clsx("-ml-4 pl-4", "max-md:-ml-4 max-md:pl-4"),
+          ),
       )}
     >
       <InfoWrapper>
