@@ -11,6 +11,9 @@ import {
 import { getMetaMaskEthereum, switchNetwork } from "./metamask";
 import getChainSettings from "./consts/settings";
 
+// import { ethers } from "ethers";
+// import { clientBuilder } from "darwinia.js";
+
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
 
@@ -25,6 +28,21 @@ export async function sendEvmTx({
   signerAddress,
   isMounted,
 }) {
+  // const provider = new ethers.BrowserProvider(window.ethereum);
+  // const client = clientBuilder.buildPangolinClient(provider);
+  // const signer = await provider.getSigner();
+  // try {
+  //   await client.calls.council.vote(
+  //     signer,
+  //     "0xaf19545e53a637b5e26c49c90f3e3be7551d3141a6c17bdfd8891b7adec09c6d",
+  //     11,
+  //     true,
+  //   );
+  // } catch (e) {
+  //   console.log(e);
+  // }
+  // return;
+
   const ethereum = getMetaMaskEthereum();
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));

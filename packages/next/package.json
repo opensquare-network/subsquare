@@ -17,6 +17,7 @@
     "bignumber.js": "^9.0.2",
     "clsx": "^1.2.1",
     "cookies": "^0.8.0",
+    "darwinia.js": "^3.0.3",
     "dayjs": "^1.10.7",
     "http-proxy": "^1.18.1",
     "lodash.capitalize": "^4.2.1",
