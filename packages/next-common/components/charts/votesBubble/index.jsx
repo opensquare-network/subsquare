@@ -7,9 +7,6 @@ import { useEventListener } from "usehooks-ts";
 import VoteBubbleContent from "./bubbleContent";
 import VotesBubbleLegend from "./legend";
 
-/**
- * @param {{ allAye: any[], allNay: any[], allAbstain: any[], sizeField?: string} & import("react").HTMLAttributes<HTMLDivElement>} props
- */
 export default function VotesBubble({
   allAye,
   allNay,
