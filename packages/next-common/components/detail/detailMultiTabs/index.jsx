@@ -51,9 +51,7 @@ export default function DetailMultiTabs({
     },
     votesBubble && {
       label: "Votes Bubble",
-      labelExtra: (
-        <ThemedTag className="!rounded-full max-sm:!hidden ml-2">New</ThemedTag>
-      ),
+      labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
       content: (
         <div className="space-y-4">
           {hasVotesViewTabs && <VotesBubbleViewTabs />}

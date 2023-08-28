@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 export default function Tabs({
   tabs = [],
-  tabsListExtra,
   activeTabLabel = "",
   onTabClick = noop,
 }) {
@@ -27,7 +26,6 @@ export default function Tabs({
     <div>
       <TabsList
         tabs={tabs}
-        extra={tabsListExtra}
         activeTabLabel={activeTabLabel}
         onTabClick={onTabClick}
       />
