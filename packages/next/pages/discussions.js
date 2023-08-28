@@ -31,7 +31,7 @@ export default withLoginUserRedux(({ posts }) => {
             icon={
               <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
             }
-            onClick={() => router.push("/post/create")}
+            onClick={() => router.push("/posts/create")}
           >
             New Post
           </PrimaryButton>

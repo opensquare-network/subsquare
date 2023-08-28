@@ -1,5 +1,6 @@
 import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
 import { hexToString } from "@polkadot/util";
+import React from "react";
 
 function isRemark(section, method) {
   return "system" === section && ["remark", "remarkWithEvent"].includes(method);
@@ -23,7 +24,7 @@ function findRemarkCalls(call) {
   return [];
 }
 
-export default function extractRemarks(call = {}) {
+function extractRemarks(call = {}) {
   const remarkCalls = findRemarkCalls(call);
   const remarks = [];
   for (const call of remarkCalls) {
@@ -34,4 +35,24 @@ export default function extractRemarks(call = {}) {
   }
 
   return remarks;
+}
+
+export default function extractRemarkMetaFields(call = {}) {
+  let remarks = extractRemarks(call);
+  let data = [];
+  for (let i = 0; i < remarks.length; i++) {
+    let key = "Remark";
+    if (remarks.length > 1) {
+      key = `${key} ${i + 1}`;
+    }
+
+    data.push([
+      key,
+      <p className="whitespace-pre-wrap" key={`remark-${i}`}>
+        {remarks[i]}
+      </p>,
+    ]);
+  }
+
+  return data;
 }

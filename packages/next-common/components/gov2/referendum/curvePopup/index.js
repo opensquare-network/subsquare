@@ -6,7 +6,6 @@ import {
   useApprovalPercentage,
   useSupportPercentage,
 } from "../../../../context/post/gov2/percentage";
-import useGov2ThresholdCurveData from "../../../../utils/hooks/useGov2ThresholdCurveData";
 
 const CurveIcon = styled(CurveIconOrigin)`
   cursor: pointer;
@@ -18,12 +17,15 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
-export default function CurvePopup({ track, tally, supportPerbill }) {
-  const approvalPercentage = useApprovalPercentage(tally);
-  const { labels, supportData, approvalData } =
-    useGov2ThresholdCurveData(track);
+export default function CurvePopup({
+  tally = { tally },
+  supportPerbill,
+  isFellowship = false,
+}) {
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);
+
+  const approvalPercentage = useApprovalPercentage(tally);
   const supportPercentage = useSupportPercentage(supportPerbill);
 
   return (
@@ -35,13 +37,11 @@ export default function CurvePopup({ track, tally, supportPerbill }) {
 
       {showThresholdCurveDetailPopup && (
         <ThresholdCurvesGov2TallyPopup
-          labels={labels}
-          supportData={supportData}
-          supportPerbill={supportPerbill}
-          approvalData={approvalData}
           setShow={setShowThresholdCurveDetailPopup}
+          supportPerbill={supportPerbill}
           supportPercentage={supportPercentage}
           approvalPercentage={approvalPercentage}
+          isFellowship={isFellowship}
         />
       )}
     </>

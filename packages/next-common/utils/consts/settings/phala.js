@@ -8,6 +8,10 @@ import {
 
 const DEFAULT_PHALA_NODES = [
   {
+    name: "Dwellir",
+    url: "wss://phala-rpc.dwellir.com",
+  },
+  {
     name: "Phala",
     url: "wss://api.phala.network/ws",
   },

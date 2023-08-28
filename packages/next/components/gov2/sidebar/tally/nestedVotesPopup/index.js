@@ -1,16 +1,19 @@
+import React, { useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import StyledList from "next-common/components/styledList";
 import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import React, { useMemo, useState } from "react";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
+import SearchBar from "../common/searchBar";
+import SearchBtn from "../common/searchBtn";
+import useSearchVotes from "../common/useSearchVotes";
 
 export default function NestedVotesPopup({
   setShowVoteList,
@@ -23,19 +26,25 @@ export default function NestedVotesPopup({
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
+
+  const filteredAye = useSearchVotes(search, allAye);
+  const filteredNay = useSearchVotes(search, allNay);
+  const filteredAbstain = useSearchVotes(search, allAbstain);
 
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = filteredAye;
   } else if (tabIndex === "Nay") {
     page = nayPage;
-    votes = allNay;
+    votes = filteredNay;
   } else {
     page = abstainPage;
-    votes = allAbstain;
+    votes = filteredAbstain;
   }
 
   function onPageChange(e, target) {
@@ -63,18 +72,29 @@ export default function NestedVotesPopup({
     return votes.slice(sliceFrom, sliceTo);
   }, [votes, sliceFrom, sliceTo]);
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
     <>
       <BaseVotesPopup
         title="Nested View"
         onClose={() => setShowVoteList(false)}
+        extra={searchBtn}
       >
+        {showSearch && <SearchBar setSearch={setSearch} />}
+
         <VotesTab
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
-          ayesCount={allAye?.length || 0}
-          naysCount={allNay?.length || 0}
-          abstainsCount={allAbstain?.length || 0}
+          ayesCount={filteredAye?.length || 0}
+          naysCount={filteredNay?.length || 0}
+          abstainsCount={filteredAbstain?.length || 0}
         />
 
         <VotesList items={items} loading={isLoadingVotes} tab={tabIndex} />

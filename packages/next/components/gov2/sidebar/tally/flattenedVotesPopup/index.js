@@ -10,6 +10,9 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
+import SearchBar from "../common/searchBar";
+import SearchBtn from "../common/searchBtn";
+import useSearchVotes from "../common/useSearchVotes";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -22,19 +25,25 @@ export default function VotesPopup({
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
+
+  const filteredAye = useSearchVotes(search, allAye);
+  const filteredNay = useSearchVotes(search, allNay);
+  const filteredAbstain = useSearchVotes(search, allAbstain);
 
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = filteredAye;
   } else if (tabIndex === "Nay") {
     page = nayPage;
-    votes = allNay;
+    votes = filteredNay;
   } else {
     page = abstainPage;
-    votes = allAbstain;
+    votes = filteredAbstain;
   }
 
   function onPageChange(e, target) {
@@ -62,18 +71,28 @@ export default function VotesPopup({
     return votes.slice(sliceFrom, sliceTo);
   }, [votes, sliceFrom, sliceTo]);
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
     <BaseVotesPopup
       wide
       title="Flattened View"
       onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
     >
+      {showSearch && <SearchBar setSearch={setSearch} />}
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        ayesCount={allAye?.length || 0}
-        naysCount={allNay?.length || 0}
-        abstainsCount={allAbstain?.length || 0}
+        ayesCount={filteredAye?.length || 0}
+        naysCount={filteredNay?.length || 0}
+        abstainsCount={filteredAbstain?.length || 0}
       />
       <VotesList items={items} loading={isLoadingVotes} tab={tabIndex} />
       <Pagination {...pagination} />

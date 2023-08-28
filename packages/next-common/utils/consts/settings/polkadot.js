@@ -44,6 +44,14 @@ export const defaultPolkadotNodes = [
     name: "RadiumBlock",
     url: "wss://polkadot.public.curie.radiumblock.co/ws",
   },
+  {
+    name: "Stakeworld",
+    url: "wss://dot-rpc.stakeworld.io",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-polkadot.luckyfriday.io",
+  },
 ];
 
 const links = [

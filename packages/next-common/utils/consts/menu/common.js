@@ -12,7 +12,7 @@ let polkassemblyMenu = {
   value: "polkassembly",
   name: "Polkassembly",
   pathname: "/polkassembly/discussions",
-  extraMatchNavMenuActivePathnames: ["/polkassembly/post/[id]"],
+  extraMatchNavMenuActivePathnames: ["/polkassembly/posts/[id]"],
   icon: <MenuPolkassembly />,
 };
 
@@ -28,7 +28,7 @@ const commonMenus = {
       value: "discussions",
       name: "Discussions",
       pathname: "/discussions",
-      extraMatchNavMenuActivePathnames: ["/post/[id]"],
+      extraMatchNavMenuActivePathnames: ["/posts/[id]"],
       excludeToChains: [Chains.centrifuge, Chains.altair],
       icon: <MenuDiscussions />,
     },

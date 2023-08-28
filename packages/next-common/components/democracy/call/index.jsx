@@ -6,6 +6,7 @@ import React from "react";
 import extractKintsugiFields from "next-common/components/democracy/common/kintsugiCallFields";
 import extractTreasuryFields from "next-common/components/democracy/call/treasury";
 import Copyable from "next-common/components/copyable";
+import extractRemarkMetaFields from "next-common/components/common/call/remarks";
 
 export default function ReferendumCall({ call, shorten, onchainData = {} }) {
   const hash = useDemocracyReferendumHash();
@@ -23,6 +24,7 @@ export default function ReferendumCall({ call, shorten, onchainData = {} }) {
     ],
     ...extractKintsugiFields(chain, call),
     ...extractTreasuryFields(call),
+    ...extractRemarkMetaFields(call),
   ];
 
   return <KvList data={data} />;

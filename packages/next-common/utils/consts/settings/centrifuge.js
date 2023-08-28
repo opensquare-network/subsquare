@@ -14,6 +14,14 @@ const name = Chains.centrifuge;
 
 export const defaultNodes = [
   {
+    name: "Centrifuge",
+    url: "wss://fullnode.centrifuge.io",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-centrifuge.luckyfriday.io",
+  },
+  {
     name: "OnFinality",
     url: "wss://centrifuge-parachain.api.onfinality.io/public-ws",
   },

@@ -18,7 +18,7 @@ const DEFAULT_KINTSUGI_NODES =
     : [
         {
           name: "Dwellir",
-          url: "wss://kintsugi-rpc.dwellir.com/",
+          url: "wss://kintsugi-rpc.dwellir.com",
         },
         {
           name: "Kintsugi Labs",

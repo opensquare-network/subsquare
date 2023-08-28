@@ -15,6 +15,9 @@ import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
+import SearchBar from "../common/searchBar";
+import SearchBtn from "../common/searchBtn";
+import useSearchVotes from "../common/useSearchVotes";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -26,6 +29,8 @@ const VoteTime = styled.div`
     text-decoration: underline;
   }
 `;
+
+const getVoter = (vote) => vote.voter;
 
 export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
@@ -39,19 +44,25 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
   const [abstainPage, setAbstainPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
+
+  const filteredAye = useSearchVotes(search, allAye, getVoter);
+  const filteredNay = useSearchVotes(search, allNay, getVoter);
+  const filteredAbstain = useSearchVotes(search, allAbstain, getVoter);
 
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = filteredAye;
   } else if (tabIndex === "Nay") {
     page = nayPage;
-    votes = allNay;
+    votes = filteredNay;
   } else {
     page = abstainPage;
-    votes = allAbstain;
+    votes = filteredAbstain;
   }
 
   const onPageChange = (e, target) => {
@@ -79,14 +90,29 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
     return votes.slice(sliceFrom, sliceTo);
   }, [votes, sliceFrom, sliceTo]);
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
-    <BaseVotesPopup wide title="Calls" onClose={() => setShowVoteList(false)}>
+    <BaseVotesPopup
+      wide
+      title="Calls"
+      onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
+    >
+      {showSearch && <SearchBar setSearch={setSearch} />}
+
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        ayesCount={allAye?.length || 0}
-        naysCount={allNay?.length || 0}
-        abstainCount={allAbstain?.length || 0}
+        ayesCount={filteredAye?.length || 0}
+        naysCount={filteredNay?.length || 0}
+        abstainCount={filteredAbstain?.length || 0}
       />
       <VotesList items={items} loading={isLoading} />
       <Pagination {...pagination} />

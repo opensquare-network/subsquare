@@ -62,7 +62,7 @@ export default function EmptyOverview() {
         <div className="title">Welcome to SubSquare</div>
         <div className="desc">{text}</div>
         {!isCentrifuge && (
-          <Link href={"/post/create"}>
+          <Link href={"/posts/create"}>
             <PrimaryButton icon={<Icon />}>New Discussion</PrimaryButton>
           </Link>
         )}
