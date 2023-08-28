@@ -16,6 +16,9 @@ import {
   allNaySelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
+import useSearchVotes from "next-common/hooks/useSearchVotes";
+import SearchBtn from "next-common/components/voteSearch/searchBtn";
+import SearchBar from "next-common/components/voteSearch/searchBar";
 
 export default function VotesPopup({ setShowVoteList }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -26,14 +29,19 @@ export default function VotesPopup({ setShowVoteList }) {
   const [nayPage, setNayPage] = useState(1);
   const pageSize = 50;
 
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const filteredAye = useSearchVotes(search, allAye);
+  const filteredNay = useSearchVotes(search, allNay);
+
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = filteredAye;
   } else {
     page = nayPage;
-    votes = allNay;
+    votes = filteredNay;
   }
 
   function onPageChange(e, target) {
@@ -55,16 +63,27 @@ export default function VotesPopup({ setShowVoteList }) {
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
     <BaseVotesPopup
       title="Flattened View"
       onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
     >
+      {showSearch && <SearchBar setSearch={setSearch} />}
+
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        ayesCount={allAye?.length || 0}
-        naysCount={allNay?.length || 0}
+        ayesCount={filteredAye?.length || 0}
+        naysCount={filteredNay?.length || 0}
       />
       <VotesList
         items={votes.slice(sliceFrom, sliceTo)}

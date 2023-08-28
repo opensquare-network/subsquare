@@ -11,9 +11,9 @@ import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
-import SearchBar from "../common/searchBar";
-import SearchBtn from "../common/searchBtn";
-import useSearchVotes from "../common/useSearchVotes";
+import SearchBar from "next-common/components/voteSearch/searchBar";
+import SearchBtn from "next-common/components/voteSearch/searchBtn";
+import useSearchVotes from "next-common/hooks/useSearchVotes";
 
 export default function NestedVotesPopup({
   setShowVoteList,

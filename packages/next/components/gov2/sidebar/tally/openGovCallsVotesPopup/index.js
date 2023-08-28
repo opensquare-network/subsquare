@@ -15,9 +15,9 @@ import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
-import SearchBar from "../common/searchBar";
-import SearchBtn from "../common/searchBtn";
-import useSearchVotes from "../common/useSearchVotes";
+import SearchBar from "next-common/components/voteSearch/searchBar";
+import SearchBtn from "next-common/components/voteSearch/searchBtn";
+import useSearchVotes from "next-common/hooks/useSearchVotes";
 
 const VoteTime = styled.div`
   font-style: normal;
