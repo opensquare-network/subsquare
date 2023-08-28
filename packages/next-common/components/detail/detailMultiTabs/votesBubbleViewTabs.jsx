@@ -11,12 +11,12 @@ export default function VotesBubbleViewTabs() {
 
   const tabs = [
     {
-      tabId: "flattened",
-      tabTitle: "Flattened",
-    },
-    {
       tabId: "nested",
       tabTitle: "Nested",
+    },
+    {
+      tabId: "flattened",
+      tabTitle: "Flattened",
     },
   ];
 

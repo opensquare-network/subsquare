@@ -159,11 +159,11 @@ function Vote({ referendumIndex }) {
         <VotesGroup>
           <VotesGroupLabel>Votes</VotesGroupLabel>
           <VotesGroupItems>
-            <SubLink onClick={() => setShowFlattenedVotesList(true)}>
-              Flattened
-            </SubLink>
             <SubLink onClick={() => setShowNestedVotesList(true)}>
               Nested
+            </SubLink>
+            <SubLink onClick={() => setShowFlattenedVotesList(true)}>
+              Flattened
             </SubLink>
             {useVoteCall && <Calls />}
           </VotesGroupItems>

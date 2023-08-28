@@ -5,7 +5,7 @@ const detailSlice = createSlice({
   initialState: {
     multiTabs: {
       // flattened, nested
-      votesBubbleView: "flattened",
+      votesBubbleView: "nested",
     },
   },
   reducers: {

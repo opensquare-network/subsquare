@@ -20,8 +20,8 @@ export default function VotesInfo() {
       <VotesInfoLine>
         <VotesGroupLabel>Votes</VotesGroupLabel>
         <VotesGroupItems>
-          <FlattenedVotes />
           <NestedVotes />
+          <FlattenedVotes />
           <CallsVotes />
         </VotesGroupItems>
       </VotesInfoLine>
