@@ -1,4 +1,4 @@
-import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
+import useSearchAddressByIdentity from "next-common/hooks/useSearchAddressByIdentity";
 import { useMemo } from "react";
 
 const defaultGetVoter = (vote) => vote.account;
@@ -9,7 +9,7 @@ export default function useSearchVotes(
   getVoter = defaultGetVoter,
 ) {
   const voteAccounts = useMemo(() => votes.map(getVoter), [votes, getVoter]);
-  const searchAddresses = useSearchIdentityAddress(search, voteAccounts);
+  const searchAddresses = useSearchAddressByIdentity(search, voteAccounts);
   const filteredVotes = useMemo(() => {
     if (search) {
       return votes.filter(
