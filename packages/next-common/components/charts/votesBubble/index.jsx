@@ -1,3 +1,4 @@
+import { SystemLoading } from "@osn/icons/subsquare";
 import clsx from "clsx";
 import flatten from "lodash.flatten";
 import CirclePacking from "next-common/components/charts/circlePacking";
@@ -38,6 +39,7 @@ export default function VotesBubble({
   const [size, setSize] = useState({ width: 0, height: 0 });
   const ref = useRef();
   const [navCollapsed] = useNavCollapsed();
+  const [isFirst, setIsFirst] = useState(true);
 
   useLayoutEffect(() => {
     handleSize();
@@ -67,38 +69,49 @@ export default function VotesBubble({
 
   return (
     <>
-      <div
-        className={clsx(props.className, "w-full h-[480px] max-sm:h-80")}
-        {...props}
-        ref={ref}
-      >
-        <CirclePacking
-          data={chartData}
-          keyField="account"
-          sizeField={sizeField}
-          width={size.width}
-          height={size.height}
-          bubbleClassName={(node) =>
-            clsx(
-              node.data.aye && "fill-green300 stroke-green500",
-              node.data.aye === false && "fill-red300 stroke-red500",
-              node.data.isAbstain && "fill-neutral400 stroke-neutral500",
-            )
-          }
-          renderBubbleContent={(node) => (
-            <VoteBubbleContent node={node} sizeField={sizeField} />
-          )}
+      {isFirst && (
+        <div className="py-4">
+          <SystemLoading className="[&_path]:stroke-textTertiary mx-auto" />
+        </div>
+      )}
+
+      <div className={clsx(isFirst && "h-0 opacity-0 overflow-hidden")}>
+        <div
+          className={clsx(props.className, "w-full h-[480px] max-sm:h-80")}
+          {...props}
+          ref={ref}
+        >
+          <CirclePacking
+            data={chartData}
+            keyField="account"
+            sizeField={sizeField}
+            width={size.width}
+            height={size.height}
+            bubbleClassName={(node) =>
+              clsx(
+                node.data.aye && "fill-green300 stroke-green500",
+                node.data.aye === false && "fill-red300 stroke-red500",
+                node.data.isAbstain && "fill-neutral400 stroke-neutral500",
+              )
+            }
+            renderBubbleContent={(node) => (
+              <VoteBubbleContent node={node} sizeField={sizeField} />
+            )}
+            onReady={() => {
+              setIsFirst(false);
+            }}
+          />
+        </div>
+
+        <VotesBubbleLegend
+          className="mt-4"
+          allAye={allAye}
+          allNay={allNay}
+          allAbstain={allAbstain}
+          showVotes={showVotes}
+          setShowVotes={setShowVotes}
         />
       </div>
-
-      <VotesBubbleLegend
-        className="mt-4"
-        allAye={allAye}
-        allNay={allNay}
-        allAbstain={allAbstain}
-        showVotes={showVotes}
-        setShowVotes={setShowVotes}
-      />
     </>
   );
 }

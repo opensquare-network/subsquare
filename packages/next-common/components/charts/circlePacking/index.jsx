@@ -16,7 +16,9 @@ export default function CirclePacking({
   keyField, // children key
   bubbleClassName = "",
   renderBubbleContent = noop,
+  onReady = noop,
 }) {
+  const [isFirst, setIsFirst] = useState(true);
   const [nodes, setNodes] = useState([]);
   useEffect(() => {
     if (!width || !height) {
@@ -54,6 +56,13 @@ export default function CirclePacking({
       );
     });
   }, [nodes]);
+
+  useEffect(() => {
+    if (allBubbles.length && isFirst) {
+      onReady();
+      setIsFirst(false);
+    }
+  }, [isFirst, allBubbles]);
 
   return (
     <svg width={width} height={height}>
