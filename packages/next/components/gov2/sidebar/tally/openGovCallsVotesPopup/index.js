@@ -15,9 +15,9 @@ import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
-import useSearchIdentityAddress from "next-common/hooks/useSearchIdentityAddress";
 import SearchBar from "../common/searchBar";
 import SearchBtn from "../common/searchBtn";
+import useSearchVotes from "../common/useSearchVotes";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -29,6 +29,8 @@ const VoteTime = styled.div`
     text-decoration: underline;
   }
 `;
+
+const getVoter = (vote) => vote.voter;
 
 export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
@@ -46,32 +48,22 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const [showSearch, setShowSearch] = useState(false);
   const pageSize = 50;
 
+  const filteredAye = useSearchVotes(search, allAye, getVoter);
+  const filteredNay = useSearchVotes(search, allNay, getVoter);
+  const filteredAbstain = useSearchVotes(search, allAbstain, getVoter);
+
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = filteredAye;
   } else if (tabIndex === "Nay") {
     page = nayPage;
-    votes = allNay;
+    votes = filteredNay;
   } else {
     page = abstainPage;
-    votes = allAbstain;
+    votes = filteredAbstain;
   }
-
-  const voteAccounts = useMemo(() => votes.map((vote) => vote.voter), [votes]);
-
-  const searchAddresses = useSearchIdentityAddress(search, voteAccounts);
-
-  const filteredVotes = useMemo(() => {
-    if (search) {
-      return votes.filter(
-        (item) =>
-          item.voter.includes(search) || searchAddresses.includes(item.voter),
-      );
-    }
-    return votes;
-  }, [votes, search, searchAddresses]);
 
   const onPageChange = (e, target) => {
     e.preventDefault();
@@ -87,7 +79,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const pagination = {
     page,
     pageSize,
-    total: filteredVotes?.length || 0,
+    total: votes?.length || 0,
     onPageChange,
   };
 
@@ -95,8 +87,8 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const sliceTo = sliceFrom + pageSize;
 
   const items = useMemo(() => {
-    return filteredVotes.slice(sliceFrom, sliceTo);
-  }, [filteredVotes, sliceFrom, sliceTo]);
+    return votes.slice(sliceFrom, sliceTo);
+  }, [votes, sliceFrom, sliceTo]);
 
   const searchBtn = (
     <SearchBtn
@@ -118,9 +110,9 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        ayesCount={allAye?.length || 0}
-        naysCount={allNay?.length || 0}
-        abstainCount={allAbstain?.length || 0}
+        ayesCount={filteredAye?.length || 0}
+        naysCount={filteredNay?.length || 0}
+        abstainCount={filteredAbstain?.length || 0}
       />
       <VotesList items={items} loading={isLoading} />
       <Pagination {...pagination} />

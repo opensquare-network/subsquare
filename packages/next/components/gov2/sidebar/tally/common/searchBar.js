@@ -15,6 +15,11 @@ const Input = styled.input`
   border: none;
   outline: none;
   background: transparent;
+
+  color: var(--textPrimary);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
 `;
 
 export default function SearchBar({ setSearch = noop }) {
