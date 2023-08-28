@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import noop from "lodash.noop";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import Pagination from "next-common/components/pagination";
@@ -20,6 +20,9 @@ import {
   allNestedVotesSelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
+import useSearchVotes from "next-common/hooks/useSearchVotes";
+import SearchBtn from "next-common/components/voteSearch/searchBtn";
+import SearchBar from "next-common/components/voteSearch/searchBar";
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -29,17 +32,28 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const [nayPage, setNayPage] = useState(1);
   const pageSize = 50;
 
-  const allDirectAyes = sortTotalVotes(allAye.filter((v) => !v.isDelegating));
-  const allDirectNays = sortTotalVotes(allNay.filter((v) => !v.isDelegating));
+  const allDirectAyes = useMemo(
+    () => sortTotalVotes(allAye.filter((v) => !v.isDelegating)),
+    [allAye],
+  );
+  const allDirectNays = useMemo(
+    () => sortTotalVotes(allNay.filter((v) => !v.isDelegating)),
+    [allNay],
+  );
+
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const filteredAye = useSearchVotes(search, allDirectAyes);
+  const filteredNay = useSearchVotes(search, allDirectNays);
 
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allDirectAyes;
+    votes = filteredAye;
   } else {
     page = nayPage;
-    votes = allDirectNays;
+    votes = filteredNay;
   }
 
   function onPageChange(e, target) {
@@ -60,13 +74,26 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const sliceFrom = (pagination.page - 1) * pageSize;
   const sliceTo = sliceFrom + pageSize;
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
-    <BaseVotesPopup title="Nested View" onClose={() => setShowVoteList(false)}>
+    <BaseVotesPopup
+      title="Nested View"
+      onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
+    >
+      {showSearch && <SearchBar setSearch={setSearch} />}
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        ayesCount={allDirectAyes?.length || 0}
-        naysCount={allDirectNays?.length || 0}
+        ayesCount={filteredAye?.length || 0}
+        naysCount={filteredNay?.length || 0}
       />
 
       <VotesList

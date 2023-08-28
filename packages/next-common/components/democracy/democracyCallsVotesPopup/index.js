@@ -15,6 +15,9 @@ import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import useDemocracyFetchVoteCalls from "./useDemocracyFetchVoteCalls";
+import useSearchVotes from "next-common/hooks/useSearchVotes";
+import SearchBtn from "next-common/components/voteSearch/searchBtn";
+import SearchBar from "next-common/components/voteSearch/searchBar";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -27,6 +30,8 @@ const VoteTime = styled.div`
   }
 `;
 
+const getVoter = (vote) => vote.voter;
+
 export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
   const { allAye = [], allNay = [] } =
@@ -37,14 +42,19 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
   const [nayPage, setNayPage] = useState(1);
   const pageSize = 50;
 
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const filteredAye = useSearchVotes(search, allAye, getVoter);
+  const filteredNay = useSearchVotes(search, allNay, getVoter);
+
   let page;
   let votes;
   if (tabIndex === "Aye") {
     page = ayePage;
-    votes = allAye;
+    votes = filteredAye;
   } else if (tabIndex === "Nay") {
     page = nayPage;
-    votes = allNay;
+    votes = filteredNay;
   }
 
   const onPageChange = (e, target) => {
@@ -70,13 +80,28 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
     return votes.slice(sliceFrom, sliceTo);
   }, [votes, sliceFrom, sliceTo]);
 
+  const searchBtn = (
+    <SearchBtn
+      showSearch={showSearch}
+      setShowSearch={setShowSearch}
+      setSearch={setSearch}
+    />
+  );
+
   return (
-    <BaseVotesPopup wide title="Calls" onClose={() => setShowVoteList(false)}>
+    <BaseVotesPopup
+      wide
+      title="Calls"
+      onClose={() => setShowVoteList(false)}
+      extra={searchBtn}
+    >
+      {showSearch && <SearchBar setSearch={setSearch} />}
+
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        ayesCount={allAye?.length || 0}
-        naysCount={allNay?.length || 0}
+        ayesCount={filteredAye?.length || 0}
+        naysCount={filteredNay?.length || 0}
       />
       <VotesList items={items} loading={isLoading} />
       <Pagination {...pagination} />
