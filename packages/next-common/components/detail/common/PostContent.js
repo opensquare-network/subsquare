@@ -5,6 +5,7 @@ import clsx from "clsx";
 import GhostButton from "next-common/components/buttons/ghostButton";
 
 const collapsedHeight = 640;
+const moreLessHeightThreshold = 1200;
 
 export default function PostContent() {
   const post = usePost();
@@ -14,7 +15,11 @@ export default function PostContent() {
   const [postContentCollapsed, setPostContentCollapsed] = useState(true);
 
   useEffect(() => {
-    const shouldCollapse = ref.current?.clientHeight >= collapsedHeight;
+    const shouldCollapse =
+      ref.current?.clientHeight >= collapsedHeight &&
+      ref.current?.scrollHeight > moreLessHeightThreshold;
+
+    setPostContentCollapsed(shouldCollapse);
     setShowToggleButton(shouldCollapse);
   }, [ref]);
 
