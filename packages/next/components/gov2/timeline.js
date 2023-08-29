@@ -77,7 +77,9 @@ export default function ReferendumTimeline({ trackInfo }) {
     [timeline, trackInfo],
   );
 
-  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
-  return <Timeline data={timelineData} compact={compact} />;
+  return <Timeline data={timelineData} compact={isTimelineCompact} />;
 }

@@ -104,7 +104,11 @@ export default function TipTimeline({ tip }) {
     setTimelineData(data);
   }, [tip]);
 
-  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
-  return <Timeline data={timelineData} indent={false} compact={compact} />;
+  return (
+    <Timeline data={timelineData} indent={false} compact={isTimelineCompact} />
+  );
 }

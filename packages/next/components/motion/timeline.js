@@ -65,7 +65,9 @@ export default function MotionTimeline() {
   const [timelineData, setTimelineData] = useState([]);
   useEffect(() => setTimelineData(makeMotionTimelineData(motion)), [motion]);
 
-  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
   if (!motion) {
     return null;
@@ -82,7 +84,7 @@ export default function MotionTimeline() {
       motionEndInfo={motionEndInfo}
       data={timelineData}
       indent={false}
-      compact={compact}
+      compact={isTimelineCompact}
     />
   );
 }

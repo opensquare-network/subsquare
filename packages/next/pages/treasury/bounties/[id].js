@@ -28,7 +28,9 @@ function BountyContent({ detail, childBounties, comments }) {
   useSubscribePostDetail(detail?.bountyIndex);
 
   const timelineData = useBountyTimelineData(detail?.onchainData);
-  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
   return (
     <>
@@ -39,7 +41,7 @@ function BountyContent({ detail, childBounties, comments }) {
         }
         childBountiesCount={childBounties.total}
         metadata={<Metadata meta={detail.onchainData?.meta} />}
-        timeline={<Timeline data={timelineData} compact={compact} />}
+        timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
         timelineCount={timelineData.length}
       />
       {CommentComponent}

@@ -26,7 +26,9 @@ function TreasuryProposalContent({ detail, comments }) {
 
   useSubscribePostDetail(detail?.proposalIndex);
   const timelineData = useTreasuryTimelineData(detail?.onchainData);
-  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
   return (
     <>
@@ -34,7 +36,11 @@ function TreasuryProposalContent({ detail, comments }) {
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={
-          <Timeline data={timelineData} indent={false} compact={compact} />
+          <Timeline
+            data={timelineData}
+            indent={false}
+            compact={isTimelineCompact}
+          />
         }
         timelineCount={timelineData.length}
       />

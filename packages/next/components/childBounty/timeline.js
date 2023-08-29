@@ -91,13 +91,15 @@ export default function ChildBountyTimeline({ onchainData }) {
     setTimelineData(sortTimeline(data));
   }, [getTimelineData, onchainData]);
 
-  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
   return (
     <Timeline
       data={timelineData}
       type={detailPageCategory.TREASURY_CHILD_BOUNTY}
-      compact={compact}
+      compact={isTimelineCompact}
     />
   );
 }

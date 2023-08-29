@@ -44,7 +44,11 @@ export default function AnnouncementTimeline({ data }) {
     setTimelineData(sortTimeline([...data, ...motionTimeline].filter(Boolean)));
   }, [timeline, motion]);
 
-  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
-  return <Timeline data={timelineData} indent={false} compact={compact} />;
+  return (
+    <Timeline data={timelineData} indent={false} compact={isTimelineCompact} />
+  );
 }
