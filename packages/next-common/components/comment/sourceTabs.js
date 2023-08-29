@@ -9,17 +9,11 @@ const Count = styled.span`
 export const SubSquare = "SubSquare";
 export const Polkassembly = "Polkassembly";
 
-export default function SourceTabs({
-  detail,
-  small = true,
-  tabIndex,
-  setTabIndex,
-}) {
+export default function SourceTabs({ detail, tabIndex, setTabIndex }) {
   const { commentsCount, polkassemblyCommentsCount } = detail ?? {};
 
   return (
     <Tab
-      small={small}
       tabs={[
         {
           tabId: SubSquare,

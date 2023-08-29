@@ -1,5 +1,3 @@
-import React from "react";
-import styled from "styled-components";
 import Item from "./item";
 import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
@@ -8,17 +6,6 @@ import { useIsLogin } from "../../context/user";
 import clsx from "clsx";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import PrimaryButton from "../buttons/primaryButton";
-
-const Header = styled.div`
-  display: flex;
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    margin-bottom: 20px;
-  }
-  @media screen and (min-width: 768px) {
-    justify-content: space-between;
-  }
-`;
 
 export default function Comments({
   data: { items, page, pageSize, total } = {},
@@ -29,12 +16,12 @@ export default function Comments({
 
   return (
     <div>
-      <Header>
-        <TitleContainer className={clsx("w-full !px-0 mb-4", "max-sm:!block")}>
-          <div className="max-sm:mb-4">Comments</div>
-          {tabs}
+      <div className="mb-4">
+        <TitleContainer className={clsx("w-full !px-0 mb-4", "!block")}>
+          <div className="text14Bold">Comments</div>
+          {tabs && <div className="mt-4">{tabs}</div>}
         </TitleContainer>
-      </Header>
+      </div>
       {items?.length > 0 && (
         <>
           <div>
