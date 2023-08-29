@@ -5,7 +5,6 @@ import SourceTabs, {
 } from "next-common/components/comment/sourceTabs";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import PolkassemblyComments from "./polkassemblyComments";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
@@ -20,7 +19,6 @@ export default function useUniversalComments({ detail, comments }) {
 
   const paBtnRef = useRef();
   const [tabIndex, setTabIndex] = useState(defaultTabIndex);
-  const { width } = useWindowSize();
 
   const { hasAnchor } = useCommentsAnchor();
   useEffect(() => {
@@ -40,26 +38,13 @@ export default function useUniversalComments({ detail, comments }) {
 
   if (detail?.polkassemblyId !== undefined && isPolkassemblyEnabled) {
     // Allow to switch to polkassembly comments if has corresponding pa post
-    if (parseInt(width) <= 768) {
+    if (isPolkassemblyEnabled) {
       tabs = (
-        <div style={{ width: "100%" }}>
-          <SourceTabs
-            detail={detail}
-            small={false}
-            tabIndex={tabIndex}
-            setTabIndex={setTabIndex}
-          />
-        </div>
-      );
-    } else if (isPolkassemblyEnabled) {
-      tabs = (
-        <div style={{ marginTop: "-6px" }}>
-          <SourceTabs
-            detail={detail}
-            tabIndex={tabIndex}
-            setTabIndex={setTabIndex}
-          />
-        </div>
+        <SourceTabs
+          detail={detail}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+        />
       );
     }
   }

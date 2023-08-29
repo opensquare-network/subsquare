@@ -6,17 +6,6 @@ import Loading from "next-common/components/loading";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import clsx from "clsx";
 
-const Header = styled.div`
-  display: flex;
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    margin-bottom: 20px;
-  }
-  @media screen and (min-width: 768px) {
-    justify-content: space-between;
-  }
-`;
-
 const LoadingDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -33,12 +22,12 @@ export default function PolkassemblyComments({
 }) {
   return (
     <div>
-      <Header>
-        <TitleContainer className={clsx("w-full !px-0 mb-4", "max-sm:!block")}>
-          <div className="max-sm:mb-4">Comments</div>
-          {tabs}
+      <div className="mb-4">
+        <TitleContainer className={clsx("w-full !px-0", "!block")}>
+          <div className="text14Bold">Comments</div>
+          {tabs && <div className="mt-4">{tabs}</div>}
         </TitleContainer>
-      </Header>
+      </div>
       {isLoading ? (
         <LoadingDiv>
           <Loading size={14} />
