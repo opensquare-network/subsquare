@@ -4,7 +4,7 @@ import React from "react";
 import { MarkdownPreviewer } from "@osn/previewer";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const RemarkWrapper = styled.div`
   .markdown-body {
     word-break: break-word;
   }
@@ -66,11 +66,11 @@ export default function extractRemarkMetaFields(call = {}) {
 
     data.push([
       key,
-      <Wrapper key={`remark-${i}`}>
+      <RemarkWrapper key={`remark-${i}`}>
         <MarkdownPreviewer
           content={transformToMarkdownBlockLevels(remarks[i])}
         />
-      </Wrapper>,
+      </RemarkWrapper>,
     ]);
   }
 
