@@ -11,6 +11,8 @@ date: 2023-08-28
 - Set default color theme to light.
 - Enable post showing less/more feature only when content length is greater than 1200px.
 - Update endpoints for various chains.
+- Refactor more pages router to follow RESTful rules.
+- Fix the interaction conflict between metamask and talisman.
 - Fix bugs and styles.
 
 ### 3.4.2
