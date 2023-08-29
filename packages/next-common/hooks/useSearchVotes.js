@@ -9,17 +9,19 @@ export default function useSearchVotes(
   getVoter = defaultGetVoter,
 ) {
   const voteAccounts = useMemo(() => votes.map(getVoter), [votes, getVoter]);
-  const searchAddresses = useSearchAddressByIdentity(search, voteAccounts);
-  const filteredVotes = useMemo(() => {
+  const resultByIdentities = useSearchAddressByIdentity(search, voteAccounts);
+  return useMemo(() => {
     if (search) {
-      return votes.filter(
-        (item) =>
-          getVoter(item).toLowerCase().includes(search.toLowerCase()) ||
-          searchAddresses.includes(getVoter(item)),
-      );
+      return votes.filter((item) => {
+        const voter = getVoter(item);
+        const hasResultByAddress = voter
+          ?.toLowerCase()
+          .includes(search.toLowerCase());
+        return (
+          hasResultByAddress || resultByIdentities.includes(getVoter(item))
+        );
+      });
     }
     return votes;
-  }, [votes, getVoter, search, searchAddresses]);
-
-  return filteredVotes;
+  }, [votes, getVoter, search, resultByIdentities]);
 }
