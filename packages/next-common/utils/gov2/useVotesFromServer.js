@@ -30,7 +30,15 @@ function extractSplitVotes(vote = {}) {
 }
 
 function extractSplitAbstainVotes(vote = {}) {
-  const { account, ayeBalance, ayeVotes, nayBalance, nayVotes, abstainBalance, abstainVotes } = vote;
+  const {
+    account,
+    ayeBalance,
+    ayeVotes,
+    nayBalance,
+    nayVotes,
+    abstainBalance,
+    abstainVotes,
+  } = vote;
   const common = {
     account,
     isDelegating: false,
@@ -53,13 +61,13 @@ function extractSplitAbstainVotes(vote = {}) {
       votes: ayeVotes,
     },
     {
+      ...common,
       balance: nayBalance,
       aye: false,
       conviction: 0,
       votes: nayVotes,
     },
   ];
-
 }
 
 export default function useVotesFromServer(referendumIndex) {
@@ -67,7 +75,9 @@ export default function useVotesFromServer(referendumIndex) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    nextApi.fetch(`gov2/referenda/${ referendumIndex }/votes`).then(({ result: votes }) => setVotes(votes));
+    nextApi
+      .fetch(`gov2/referenda/${referendumIndex}/votes`)
+      .then(({ result: votes }) => setVotes(votes));
   }, [referendumIndex]);
 
   useEffect(() => {
@@ -75,14 +85,16 @@ export default function useVotesFromServer(referendumIndex) {
       return;
     }
 
-    const allVotes = (votes || []).reduce((result, vote) => {
-      if (vote.isSplit) {
-        return [...result, ...extractSplitVotes(vote)];
-      } else if (vote.isSplitAbstain) {
-        return [...result, ...extractSplitAbstainVotes(vote)];
-      }
-      return [...result, vote];
-    }, []).filter(v => new BigNumber(v.balance).gt(0));
+    const allVotes = (votes || [])
+      .reduce((result, vote) => {
+        if (vote.isSplit) {
+          return [...result, ...extractSplitVotes(vote)];
+        } else if (vote.isSplitAbstain) {
+          return [...result, ...extractSplitAbstainVotes(vote)];
+        }
+        return [...result, vote];
+      }, [])
+      .filter((v) => new BigNumber(v.balance).gt(0));
 
     dispatch(setAllVotes(sortVotes(allVotes)));
   }, [votes]);

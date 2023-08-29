@@ -24,15 +24,15 @@ export default function useSearchAddressByIdentity(
   }, [fromAccounts, chainSettings]);
 
   return useMemo(() => {
-    if (identitySearch) {
-      return Object.keys(identityDisplayToAddress)
-        .filter((display) =>
-          display
-            .toLocaleLowerCase()
-            .includes(identitySearch.toLocaleLowerCase()),
-        )
-        .map((display) => identityDisplayToAddress[display]);
+    if (!identitySearch) {
+      return [];
     }
-    return [];
+    return Object.keys(identityDisplayToAddress)
+      .filter((display) =>
+        display
+          .toLocaleLowerCase()
+          .includes(identitySearch.toLocaleLowerCase()),
+      )
+      .map((display) => identityDisplayToAddress[display]);
   }, [identitySearch, identityDisplayToAddress]);
 }

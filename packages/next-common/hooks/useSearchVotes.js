@@ -8,20 +8,25 @@ export default function useSearchVotes(
   votes,
   getVoter = defaultGetVoter,
 ) {
-  const voteAccounts = useMemo(() => votes.map(getVoter), [votes, getVoter]);
+  const voteAccounts = useMemo(
+    () => votes.map(getVoter).filter(Boolean),
+    [votes, getVoter],
+  );
   const resultByIdentities = useSearchAddressByIdentity(search, voteAccounts);
   return useMemo(() => {
-    if (search) {
-      return votes.filter((item) => {
-        const voter = getVoter(item);
-        const hasResultByAddress = voter
-          ?.toLowerCase()
-          .includes(search.toLowerCase());
-        return (
-          hasResultByAddress || resultByIdentities.includes(getVoter(item))
-        );
-      });
+    if (!search) {
+      return votes;
     }
-    return votes;
+    return votes.filter((item) => {
+      const voter = getVoter(item);
+      if (!voter) {
+        return false;
+      }
+      const hasResultByAddress = voter
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const hasResultByIdentity = resultByIdentities.includes(voter);
+      return hasResultByAddress || hasResultByIdentity;
+    });
   }, [votes, getVoter, search, resultByIdentities]);
 }
