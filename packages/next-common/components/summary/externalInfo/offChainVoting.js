@@ -14,9 +14,10 @@ const NewProposal = styled.a`
 
 function NoProposals({ host }) {
   return (
-    <div className="flex gap-[8px] text-textTertiary leading-[16px] font-medium text-[12px]">
+    <div className="flex gap-[8px] text-textTertiary text12Medium">
       <span>No active off-chain voting</span>
       <NewProposal
+        className="text12Bold"
         target="_blank"
         href={`${host}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/create`}
       >
