@@ -6,6 +6,8 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
 
 export function makePublicProposalTimelineData(timeline) {
   const getTimelineData = (args, method) => {
@@ -40,13 +42,15 @@ export function makePublicProposalTimelineData(timeline) {
   return timelineData;
 }
 
-export default function PublicProposalTimeline({ compact }) {
+export default function PublicProposalTimeline() {
   const timeline = useTimelineData();
   const [timelineData, setTimelineData] = useState([]);
   useEffect(
     () => setTimelineData(makePublicProposalTimelineData(timeline)),
     [timeline],
   );
+
+  const compact = useSelector(detailMultiTabsTimelineCompactMode);
 
   return <Timeline data={timelineData} compact={compact} />;
 }

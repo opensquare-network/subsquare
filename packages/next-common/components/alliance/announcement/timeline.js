@@ -5,6 +5,8 @@ import Timeline from "../../timeline";
 import { createMotionTimelineData } from "@subsquare/next/utils/timeline/motion";
 import IpfsCidWithLink from "../ipfsCidWithLink";
 import formatTime from "../../../utils/viewfuncs/formatDate";
+import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
+import { useSelector } from "react-redux";
 
 function getData(item) {
   const { method, args = {} } = item;
@@ -17,7 +19,7 @@ function getData(item) {
   return args;
 }
 
-export default function AnnouncementTimeline({ data, compact }) {
+export default function AnnouncementTimeline({ data }) {
   const type = useDetailType();
 
   const { timeline = [], motion } = data;
@@ -41,6 +43,8 @@ export default function AnnouncementTimeline({ data, compact }) {
 
     setTimelineData(sortTimeline([...data, ...motionTimeline].filter(Boolean)));
   }, [timeline, motion]);
+
+  const compact = useSelector(detailMultiTabsTimelineCompactMode);
 
   return <Timeline data={timelineData} indent={false} compact={compact} />;
 }

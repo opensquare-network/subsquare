@@ -8,8 +8,10 @@ import TreasuryCountDown from "next-common/components/treasury/common/countdown"
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
 
-export default function ChildBountyTimeline({ onchainData, compact }) {
+export default function ChildBountyTimeline({ onchainData }) {
   const getTimelineData = useCallback(
     (args, method, indexer) => {
       switch (method) {
@@ -88,6 +90,8 @@ export default function ChildBountyTimeline({ onchainData, compact }) {
     });
     setTimelineData(sortTimeline(data));
   }, [getTimelineData, onchainData]);
+
+  const compact = useSelector(detailMultiTabsTimelineCompactMode);
 
   return (
     <Timeline

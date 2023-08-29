@@ -7,6 +7,8 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -41,7 +43,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TipTimeline({ tip, compact }) {
+export default function TipTimeline({ tip }) {
   const getTimelineData = (args, method) => {
     switch (method) {
       case "tipNew":
@@ -101,6 +103,8 @@ export default function TipTimeline({ tip, compact }) {
 
     setTimelineData(data);
   }, [tip]);
+
+  const compact = useSelector(detailMultiTabsTimelineCompactMode);
 
   return <Timeline data={timelineData} indent={false} compact={compact} />;
 }

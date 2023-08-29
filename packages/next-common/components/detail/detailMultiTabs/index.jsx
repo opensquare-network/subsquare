@@ -1,4 +1,4 @@
-import { cloneElement, useState } from "react";
+import { useState } from "react";
 import Tabs from "../../tabs";
 import { useTimelineData } from "next-common/context/post";
 import { ThemedTag } from "next-common/components/tags/state/styled";
@@ -19,8 +19,6 @@ export default function DetailMultiTabs({
   votesBubble,
 }) {
   const timelineData = useTimelineData();
-  const [timelineModeTabId, setTimelineModeTabId] = useState("normal");
-  const timelineCompact = timelineModeTabId === "compact";
   const chain = useChain();
   const hasVotesViewTabs = ![Chains.kintsugi, Chains.interlay].includes(chain);
 
@@ -38,14 +36,9 @@ export default function DetailMultiTabs({
       activeCount: timelineCount || timelineData?.length,
       content: (
         <div>
-          <TimelineModeTabs
-            tabId={timelineModeTabId}
-            setTabId={setTimelineModeTabId}
-          />
+          <TimelineModeTabs />
 
-          {cloneElement(timeline, {
-            compact: timelineCompact,
-          })}
+          {timeline}
         </div>
       ),
     },
