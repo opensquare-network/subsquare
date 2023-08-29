@@ -16,6 +16,8 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useBountyTimelineData from "../../../components/bounty/useBountyTimelineData";
 import Timeline from "next-common/components/timeline";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { useSelector } from "react-redux";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -26,6 +28,9 @@ function BountyContent({ detail, childBounties, comments }) {
   useSubscribePostDetail(detail?.bountyIndex);
 
   const timelineData = useBountyTimelineData(detail?.onchainData);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
   return (
     <>
@@ -36,7 +41,7 @@ function BountyContent({ detail, childBounties, comments }) {
         }
         childBountiesCount={childBounties.total}
         metadata={<Metadata meta={detail.onchainData?.meta} />}
-        timeline={<Timeline data={timelineData} />}
+        timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
         timelineCount={timelineData.length}
       />
       {CommentComponent}

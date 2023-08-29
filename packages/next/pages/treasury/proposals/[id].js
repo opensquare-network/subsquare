@@ -15,6 +15,8 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useTreasuryTimelineData from "../../../components/treasuryProposal/useTimelineData";
 import Timeline from "next-common/components/timeline";
+import { useSelector } from "react-redux";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -24,13 +26,22 @@ function TreasuryProposalContent({ detail, comments }) {
 
   useSubscribePostDetail(detail?.proposalIndex);
   const timelineData = useTreasuryTimelineData(detail?.onchainData);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
   return (
     <>
       <TreasuryProposalDetail onReply={focusEditor} />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
-        timeline={<Timeline data={timelineData} indent={false} />}
+        timeline={
+          <Timeline
+            data={timelineData}
+            indent={false}
+            compact={isTimelineCompact}
+          />
+        }
         timelineCount={timelineData.length}
       />
       {CommentComponent}
