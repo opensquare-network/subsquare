@@ -7,7 +7,7 @@ import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 export function makePublicProposalTimelineData(timeline) {
   const getTimelineData = (args, method) => {
@@ -50,7 +50,7 @@ export default function PublicProposalTimeline() {
     [timeline],
   );
 
-  const compact = useSelector(detailMultiTabsTimelineCompactMode);
+  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
 
   return <Timeline data={timelineData} compact={compact} />;
 }

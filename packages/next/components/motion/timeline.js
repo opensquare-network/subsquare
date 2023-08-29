@@ -7,7 +7,7 @@ import Timeline from "next-common/components/timeline";
 import { usePostOnChainData } from "next-common/context/post";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -65,7 +65,7 @@ export default function MotionTimeline() {
   const [timelineData, setTimelineData] = useState([]);
   useEffect(() => setTimelineData(makeMotionTimelineData(motion)), [motion]);
 
-  const compact = useSelector(detailMultiTabsTimelineCompactMode);
+  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
 
   if (!motion) {
     return null;

@@ -16,7 +16,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useTreasuryTimelineData from "../../../components/treasuryProposal/useTimelineData";
 import Timeline from "next-common/components/timeline";
 import { useSelector } from "react-redux";
-import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -26,7 +26,7 @@ function TreasuryProposalContent({ detail, comments }) {
 
   useSubscribePostDetail(detail?.proposalIndex);
   const timelineData = useTreasuryTimelineData(detail?.onchainData);
-  const compact = useSelector(detailMultiTabsTimelineCompactMode);
+  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
 
   return (
     <>

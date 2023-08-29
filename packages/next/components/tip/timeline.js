@@ -8,7 +8,7 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -104,7 +104,7 @@ export default function TipTimeline({ tip }) {
     setTimelineData(data);
   }, [tip]);
 
-  const compact = useSelector(detailMultiTabsTimelineCompactMode);
+  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
 
   return <Timeline data={timelineData} indent={false} compact={compact} />;
 }

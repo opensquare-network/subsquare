@@ -27,7 +27,7 @@ export const {
 
 export const detailMultiTabsTimelineMode = (state) =>
   state.detail.multiTabs.timelineMode;
-export const detailMultiTabsTimelineCompactMode = (state) =>
+export const detailMultiTabsIsTimelineCompactModeSelector = (state) =>
   state.detail.multiTabs.timelineMode === "compact";
 
 export const detailMultiTabsVotesBubbleView = (state) =>

@@ -8,7 +8,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 const getTimelineData = (args, method, trackInfo) => {
   switch (method) {
@@ -77,7 +77,7 @@ export default function ReferendumTimeline({ trackInfo }) {
     [timeline, trackInfo],
   );
 
-  const compact = useSelector(detailMultiTabsTimelineCompactMode);
+  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
 
   return <Timeline data={timelineData} compact={compact} />;
 }

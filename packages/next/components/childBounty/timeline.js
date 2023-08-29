@@ -9,7 +9,7 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { detailMultiTabsTimelineCompactMode } from "next-common/store/reducers/detailSlice";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 export default function ChildBountyTimeline({ onchainData }) {
   const getTimelineData = useCallback(
@@ -91,7 +91,7 @@ export default function ChildBountyTimeline({ onchainData }) {
     setTimelineData(sortTimeline(data));
   }, [getTimelineData, onchainData]);
 
-  const compact = useSelector(detailMultiTabsTimelineCompactMode);
+  const compact = useSelector(detailMultiTabsIsTimelineCompactModeSelector);
 
   return (
     <Timeline
