@@ -45,7 +45,7 @@ function extractRemarks(call = {}) {
   return remarks;
 }
 
-function transformToMarkdownBlockLevels(str = "") {
+function splitMarkdownBlockLevels(str = "") {
   const levels = ["## ", "### ", "#### ", "- ", "   "];
 
   for (const level of levels) {
@@ -67,9 +67,7 @@ export default function extractRemarkMetaFields(call = {}) {
     data.push([
       key,
       <RemarkWrapper key={`remark-${i}`}>
-        <MarkdownPreviewer
-          content={transformToMarkdownBlockLevels(remarks[i])}
-        />
+        <MarkdownPreviewer content={splitMarkdownBlockLevels(remarks[i])} />
       </RemarkWrapper>,
     ]);
   }
