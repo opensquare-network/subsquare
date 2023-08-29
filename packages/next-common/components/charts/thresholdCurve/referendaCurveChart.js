@@ -12,9 +12,11 @@ import React from "react";
 import useDetailPageOptions from "next-common/components/charts/thresholdCurve/utils/options";
 import set from "lodash.set";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 // used for detail page curve chart
 export default function ReferendaCurveChart() {
+  const { width } = useWindowSize();
   const { labels, supportData, approvalData } = useReferendumCurveData();
   const supportThresholdConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalThresholdConfig =
@@ -49,7 +51,7 @@ export default function ReferendaCurveChart() {
   );
 
   return (
-    <div style={{ height: 144 }}>
+    <div style={{ height: width > 768 ? 320 : 144 }}>
       <Line data={chartData} options={options} plugins={[hoverLinePlugin]} />
     </div>
   );

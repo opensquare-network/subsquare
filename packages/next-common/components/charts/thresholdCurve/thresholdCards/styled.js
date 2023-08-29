@@ -5,7 +5,8 @@ import { p_14_medium, p_14_normal } from "../../../../styles/componentCss";
 export const ThresholdInfo = styled(GreyPanel)`
   display: block;
   padding: 10px 16px;
-  color: var(--textPrimary);
+  color: var(--red500);
+  background-color: var(--red100);
 
   ${(p) =>
     p.positive &&

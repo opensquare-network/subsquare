@@ -1,8 +1,8 @@
 import React from "react";
-import styled, { css, useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 import ThresholdCurvesChart from ".";
 import { emptyFunction } from "../../../utils";
-import PopupOrigin from "../../popup/wrapper/Popup";
+import Popup from "../../popup/wrapper/Popup";
 import Flex from "../../styled/flex";
 import ThresholdCurvesGov2TrackSummaryLegend from "./legend/gov2TrackSummaryLegend";
 import {
@@ -16,18 +16,11 @@ import {
 import { pretty_scroll_bar } from "../../../styles/componentCss";
 import Loading from "../../loading";
 import _range from "lodash.range";
-import { smcss } from "../../../utils/responsive";
+import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 const Center = styled(Flex)`
   justify-content: center;
-`;
-
-const Popup = styled(PopupOrigin)`
-  width: 480px;
-
-  ${smcss(css`
-    width: 100%;
-  `)}
 `;
 
 const Table = styled(StyledTable)`
@@ -67,6 +60,7 @@ export default function ThresholdCurvesPopup({
   supportData = [],
   approvalData = [],
 }) {
+  const { width } = useWindowSize();
   const theme = useTheme();
 
   const list = _range(labels.length).map((n) => {
@@ -83,12 +77,13 @@ export default function ThresholdCurvesPopup({
   return (
     <Popup
       title="Threshold Curves"
+      className="w-[960px]"
       onClose={() => {
         setShow(false);
       }}
     >
       <ThresholdCurvesChart
-        height={144}
+        height={width > 768 ? 320 : 144}
         labels={labels}
         supportData={supportData}
         approvalData={approvalData}
@@ -134,6 +129,10 @@ export default function ThresholdCurvesPopup({
           )}
         </tbody>
       </Table>
+
+      <div className="mt-[16px]">
+        <HowOpenGovWorks />
+      </div>
     </Popup>
   );
 }

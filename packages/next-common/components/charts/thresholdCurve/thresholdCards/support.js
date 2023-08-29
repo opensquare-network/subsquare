@@ -21,7 +21,10 @@ export default function ThresholdSupportCard({
   }, [supportThreshold]);
 
   return (
-    <ThresholdInfo positive={supportThreshold < supportPercentage}>
+    <ThresholdInfo
+      className="grow w-full"
+      positive={supportThreshold < supportPercentage}
+    >
       <VStack space={8}>
         <FlexBetweenCenter>
           <ThresholdInfoLabel>Current Support</ThresholdInfoLabel>
