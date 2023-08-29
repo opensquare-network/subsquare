@@ -105,7 +105,8 @@ const LinkWrapper = styled.a`
           color: var(--textPrimary) !important;
           text-decoration-color: var(--textPrimary) !important;
         `}
-  display: block;
+  display: flex;
+  align-items: center;
   :hover {
     text-decoration: underline;
     cursor: pointer;
