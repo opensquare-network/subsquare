@@ -8,7 +8,7 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
-import { getMetaMaskEthereum, switchNetwork } from "./metamask";
+import { getEthereum, switchNetwork } from "./metamask";
 import getChainSettings from "./consts/settings";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
@@ -25,7 +25,7 @@ export async function sendEvmTx({
   signerAddress,
   isMounted,
 }) {
-  const ethereum = getMetaMaskEthereum();
+  const ethereum = getEthereum();
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
     return;
