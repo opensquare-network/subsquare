@@ -12,7 +12,10 @@ export default function ThresholdApprovalCard({
   approvalPercentage,
 }) {
   return (
-    <ThresholdInfo positive={approvalThreshold < approvalPercentage}>
+    <ThresholdInfo
+      className="grow w-full"
+      positive={approvalThreshold < approvalPercentage}
+    >
       <VStack space={8}>
         <FlexBetweenCenter>
           <ThresholdInfoLabel>Current Approval</ThresholdInfoLabel>

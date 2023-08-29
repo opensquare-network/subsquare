@@ -1,28 +1,18 @@
 import React from "react";
-import PopupOrigin from "../../popup/wrapper/Popup";
+import Popup from "../../popup/wrapper/Popup";
 import { emptyFunction } from "next-common/utils";
-import styled, { css } from "styled-components";
-import { smcss } from "next-common/utils/responsive";
 import "../globalConfig";
 import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
 } from "../../../context/post/gov2/threshold";
-import LearnGov2Link from "../../links/learnGov2Link";
-import VStack from "../../styled/vStack";
 import ThresholdSupportCard from "./thresholdCards/support";
 import ThresholdApprovalCard from "./thresholdCards/approval";
 import ReferendaCurveChart from "next-common/components/charts/thresholdCurve/referendaCurveChart";
 import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/fellowshipCurveChart";
-
-const Popup = styled(PopupOrigin)`
-  width: 480px;
-
-  ${smcss(css`
-    width: 100%;
-  `)}
-`;
+import Flex from "next-common/components/styled/flex";
+import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 
 function PopupChartContent({ isFellowship = false }) {
   if (!isFellowship) {
@@ -45,6 +35,7 @@ export default function ThresholdCurvesGov2TallyPopup({
   return (
     <Popup
       title="Threshold Curves"
+      className="w-[960px]"
       onClose={() => {
         setShow(false);
       }}
@@ -52,7 +43,7 @@ export default function ThresholdCurvesGov2TallyPopup({
       <PopupChartContent isFellowship={isFellowship} />
       <ThresholdCurvesGov2TallyLegend />
 
-      <VStack space={16}>
+      <Flex className="flex max-sm:flex-col grow gap-[16px]">
         <ThresholdApprovalCard
           approvalThreshold={approvalThreshold}
           approvalPercentage={approvalPercentage}
@@ -63,9 +54,11 @@ export default function ThresholdCurvesGov2TallyPopup({
           supportPerbill={supportPerbill}
           supportPercentage={supportPercentage}
         />
+      </Flex>
 
-        <LearnGov2Link />
-      </VStack>
+      <div className="mt-[16px]">
+        <HowOpenGovWorks />
+      </div>
     </Popup>
   );
 }

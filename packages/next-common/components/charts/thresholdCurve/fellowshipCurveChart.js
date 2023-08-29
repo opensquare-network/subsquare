@@ -19,8 +19,10 @@ import {
   useSupportPercentageLine,
 } from "next-common/components/charts/thresholdCurve/annotations";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 export default function FellowshipCurveChart() {
+  const { width } = useWindowSize();
   const tally = useFellowshipReferendumTally();
   const approvalPercentage = useApprovalPercentage(tally);
   const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
@@ -60,7 +62,7 @@ export default function FellowshipCurveChart() {
   );
 
   return (
-    <div style={{ height: 144 }}>
+    <div style={{ height: width > 768 ? 320 : 144 }}>
       <Line data={chartData} options={options} plugins={[hoverLinePlugin]} />
     </div>
   );
