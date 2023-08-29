@@ -1,6 +1,14 @@
 import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
 import { hexToString } from "@polkadot/util";
 import React from "react";
+import { MarkdownPreviewer } from "@osn/previewer";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  .markdown-body {
+    word-break: break-word;
+  }
+`;
 
 function isRemark(section, method) {
   return "system" === section && ["remark", "remarkWithEvent"].includes(method);
@@ -37,6 +45,16 @@ function extractRemarks(call = {}) {
   return remarks;
 }
 
+function transformToMarkdownBlockLevels(str = "") {
+  const levels = ["## ", "### ", "#### ", "- ", "   "];
+
+  for (const level of levels) {
+    str = str.split(level).join(`\n${level}`);
+  }
+
+  return str;
+}
+
 export default function extractRemarkMetaFields(call = {}) {
   let remarks = extractRemarks(call);
   let data = [];
@@ -48,9 +66,11 @@ export default function extractRemarkMetaFields(call = {}) {
 
     data.push([
       key,
-      <p className="whitespace-pre-wrap" key={`remark-${i}`}>
-        {remarks[i]}
-      </p>,
+      <Wrapper key={`remark-${i}`}>
+        <MarkdownPreviewer
+          content={transformToMarkdownBlockLevels(remarks[i])}
+        />
+      </Wrapper>,
     ]);
   }
 
