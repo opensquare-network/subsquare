@@ -2,9 +2,30 @@ import { useCallback, useEffect, useState } from "react";
 import { addressEllipsis } from ".";
 import ChainTypes from "./consts/chainTypes";
 import WalletTypes from "./consts/walletTypes";
+import isUseTalisman from "./isTalisman";
 
 export function getMetaMaskEthereum() {
-  if (window.ethereum && window.ethereum.isMetaMask) {
+  if (
+    window.ethereum &&
+    window.ethereum.isMetaMask &&
+    !window.ethereum.isTalisman
+  ) {
+    return window.ethereum;
+  }
+
+  return null;
+}
+
+export function getEthereum() {
+  if (isUseTalisman()) {
+    return window.talismanEth;
+  }
+
+  if (
+    window.ethereum &&
+    window.ethereum.isMetaMask &&
+    !window.ethereum.isTalisman
+  ) {
     return window.ethereum;
   }
 
@@ -58,7 +79,7 @@ export async function addNetwork(ethereumNetwork) {
 }
 
 export async function switchNetwork(chainId) {
-  const ethereum = getMetaMaskEthereum();
+  const ethereum = getEthereum();
   if (!ethereum) {
     throw new Error("Please install MetaMask");
   }
