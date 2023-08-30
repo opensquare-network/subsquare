@@ -3,8 +3,7 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { VoteItem } from "./voteItem";
 import Link from "next/link";
-import { useChain, useChainSettings } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
+import { useChainSettings } from "next-common/context/chain";
 import DelegationStatus from "./delegationStatus";
 import tw from "tailwind-styled-components";
 
@@ -21,12 +20,8 @@ const Title = styled(TitleContainer)`
 `;
 
 export default function MyVoteCommon({ votes }) {
-  const chain = useChain();
-  const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
-
   const { hasReferenda, noDemocracyModule } = useChainSettings();
-  const hasVotesManagement =
-    !isKintsugi && (hasReferenda || !noDemocracyModule);
+  const hasVotesManagement = hasReferenda || !noDemocracyModule;
 
   if (!votes || votes.length === 0) {
     return null;
