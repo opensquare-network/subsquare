@@ -12,7 +12,7 @@ import tw from "tailwind-styled-components";
 
 const ConvictionWrapper = tw.div`flex text-textTertiary`;
 
-const Wrapper = tw.div`flex text-[14px] grow items-center justify-between border-b-neutral300 border-b py-[12px]`;
+const Wrapper = tw.div`flex text14Medium grow items-center justify-between border-b-neutral300 border-b py-[12px]`;
 
 export function VoteItem({ vote }) {
   const { symbol, decimals, voteSymbol } = useChainSettings();
