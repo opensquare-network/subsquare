@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   position: relative;
   border-radius: 4px;
   height: 8px;
+  overflow: hidden;
 `;
 
 const BarWrapper = styled.div`
