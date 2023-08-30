@@ -6,13 +6,12 @@ import Link from "next/link";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import DelegationStatus from "./delegationStatus";
+import tw from "tailwind-styled-components";
 
-export const Button = styled.div`
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
-  color: var(--theme500);
+export const Button = tw(Link)`
+  cursor-pointer
+  text14Medium
+  text-theme500
 `;
 
 const Title = styled(TitleContainer)`
@@ -62,9 +61,11 @@ export default function MyVoteCommon({ votes }) {
         )}
 
         {hasVotesManagement && (
-          <Link className="flex justify-end" href="/votes">
-            <Button className="inline-flex">Manage My Votes</Button>
-          </Link>
+          <div className="flex justify-end">
+            <Button href="/votes">
+              <span>Manage My Votes</span>
+            </Button>
+          </div>
         )}
       </div>
     </SecondaryCardDetail>
