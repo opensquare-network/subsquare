@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Flex from "../../../styled/flex";
 import User from "../../../user";
 import { usePost } from "../../../../context/post";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
 const DividerWrapper = styled(Flex)`
   flex-wrap: wrap;
@@ -25,6 +26,7 @@ const DividerWrapper = styled(Flex)`
 
 export default function PostMetaBase({ children, state }) {
   const post = usePost();
+  const { sm } = useScreenSize();
 
   return (
     <div className="flex items-center justify-between flex-nowrap">
@@ -33,6 +35,7 @@ export default function PostMetaBase({ children, state }) {
           user={post.author}
           add={post.proposer || post.finder}
           fontSize={12}
+          maxWidth={sm ? 236 : 370}
         />
         {children}
       </DividerWrapper>
