@@ -15,7 +15,7 @@ export default function LegendItem({ dashed, color = "", ...props }) {
     >
       <span
         className={clsx(
-          "w-2.5 h-0.5 rounded-full mr-2",
+          "w-3 h-0.5 rounded-full mr-2",
           "bg-repeat-x bg-[size:20px]",
           dashed && "!bg-[size:7px_2px]",
         )}
