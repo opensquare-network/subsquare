@@ -1,5 +1,4 @@
 import YoutubeSvg from "../../assets/imgs/icons/youtube-logo.svg";
-import LinkSvg from "../../assets/imgs/icons/link-icon.svg";
 import MediumSvg from "../../assets/imgs/icons/medium-logo.svg";
 import PolkassemblySvg from "../../assets/imgs/icons/polkassembly-logo.svg";
 import TwitterSvg from "../../assets/imgs/icons/twitter-logo.svg";
@@ -25,7 +24,7 @@ export const defaultLinkSvg = (
 export function getLinkIcon(link) {
   const url = new URL(link);
   if (url.host.endsWith("youtube.com") || url.host.endsWith("youtu.be")) {
-    return YoutubeSvg;
+    return <YoutubeSvg />;
   } else if (
     url.host.endsWith("github.com") ||
     url.host.endsWith("github.io")
@@ -56,5 +55,5 @@ export function getLinkIcon(link) {
     );
   }
 
-  return LinkSvg;
+  return defaultLinkSvg;
 }
