@@ -1,11 +1,13 @@
 import ExternalLink from "./externalLink";
 
-export default function HowOpenGovWorks() {
+export default function HowOpenGovWorks({ anchor }) {
+  let link = "https://wiki.polkadot.network/docs/maintain-guides-opengov";
+  if (anchor) {
+    link += `#${anchor}`;
+  }
+
   return (
-    <ExternalLink
-      className="text-[14px] text-sapphire500"
-      href="https://wiki.polkadot.network/docs/maintain-guides-opengov"
-    >
+    <ExternalLink className="text14Medium text-sapphire500" href={link}>
       How OpenGov works&nbsp;
       <span style={{ color: "var(--textSecondary)" }}>↗</span>
     </ExternalLink>

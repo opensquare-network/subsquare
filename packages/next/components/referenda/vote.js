@@ -168,8 +168,6 @@ function Vote({ referendumIndex }) {
             {useVoteCall && <Calls />}
           </VotesGroupItems>
         </VotesGroup>
-
-        <MyVote />
       </SecondaryCardDetail>
 
       {!isVoteFinished && !hideActionButtons && (
@@ -181,6 +179,9 @@ function Vote({ referendumIndex }) {
           Vote
         </PrimaryButton>
       )}
+
+      <MyVote />
+
       {showVote && (
         <Popup
           onClose={() => setShowVote(false)}

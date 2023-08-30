@@ -3291,6 +3291,7 @@ __metadata:
     lodash.groupby: ^4.6.0
     lodash.isnil: ^4.0.0
     lodash.noop: ^3.0.1
+    lodash.omit: ^4.5.0
     lodash.partition: ^4.6.0
     lodash.pick: ^4.4.0
     lodash.range: ^3.2.0
@@ -7773,6 +7774,13 @@ __metadata:
   version: 3.0.1
   resolution: "lodash.noop@npm:3.0.1"
   checksum: 4525f763ee62f746197779ed1937d430145d039f8a5700d86bf509f02f9fc7302454423623bf1c32f1b9cded9d4f74a2f05d6e54686c40e9511a422254749f7f
+  languageName: node
+  linkType: hard
+
+"lodash.omit@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.omit@npm:4.5.0"
+  checksum: 434645e49fe84ab315719bd5a9a3a585a0f624aa4160bc09157dd041a414bcc287c15840365c1379476a3f3eda41fbe838976c3f7bdecbbf4c5478e86c471a30
   languageName: node
   linkType: hard
 

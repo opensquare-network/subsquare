@@ -131,7 +131,7 @@ export default function ThresholdCurvesPopup({
       </Table>
 
       <div className="mt-[16px]">
-        <HowOpenGovWorks />
+        <HowOpenGovWorks anchor="referenda" />
       </div>
     </Popup>
   );
