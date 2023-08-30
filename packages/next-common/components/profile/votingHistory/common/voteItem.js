@@ -46,7 +46,7 @@ export function Nay() {
   );
 }
 
-function Abstain() {
+export function Abstain() {
   return (
     <VoteTypeWrapper>
       <ColoredAbstainIcon />
@@ -55,7 +55,7 @@ function Abstain() {
   );
 }
 
-function ConvictionLabel({ vote }) {
+export function ConvictionLabel({ vote }) {
   return (
     <span style={{ color: "var(--textTertiary)" }}>
       <VoteLabel {...vote} />

@@ -9,7 +9,6 @@ import Support from "./values/support";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
-import MyVote from "./myVote";
 import { useOnchainData, usePost } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
@@ -68,7 +67,6 @@ export default function Gov2Tally() {
       <Issuance issuance={issuance} />
 
       <VotesInfo />
-      <MyVote />
     </SecondaryCardDetail>
   );
 }

@@ -28,6 +28,7 @@
     "lodash.groupby": "^4.6.0",
     "lodash.isnil": "^4.0.0",
     "lodash.noop": "^3.0.1",
+    "lodash.omit": "^4.5.0",
     "lodash.partition": "^4.6.0",
     "lodash.pick": "^4.4.0",
     "lodash.range": "^3.2.0",

@@ -57,7 +57,7 @@ export default function ThresholdCurvesGov2TallyPopup({
       </Flex>
 
       <div className="mt-[16px]">
-        <HowOpenGovWorks />
+        <HowOpenGovWorks anchor="referenda" />
       </div>
     </Popup>
   );

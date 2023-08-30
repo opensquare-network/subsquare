@@ -6,10 +6,11 @@ import Gov2Tally from "./tally";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { usePost } from "next-common/context/post";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import LearnGov2Link from "next-common/components/links/learnGov2Link";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import { useChainSettings } from "next-common/context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
+import MyVote from "./tally/myVote";
+import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 
 const VotePopup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -38,6 +39,8 @@ export default function Gov2Sidebar() {
 
       <Gov2Tally />
 
+      <MyVote />
+
       {isVoting && !hideActionButtons && (
         <InlineWrapper>
           <PrimaryButton
@@ -59,7 +62,7 @@ export default function Gov2Sidebar() {
       )}
 
       <InlineWrapper>
-        <LearnGov2Link anchor="referenda" />
+        <HowOpenGovWorks anchor="referenda" />
       </InlineWrapper>
     </RightBarWrapper>
   );

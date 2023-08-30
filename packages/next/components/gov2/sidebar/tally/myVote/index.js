@@ -1,30 +1,26 @@
 import styled from "styled-components";
-import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
-import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
-import DelegateVoteStatus from "components/referenda/myVote/delegateVoteStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import SplitAbstainVoteStatus from "components/gov2/votePopup/splitAbstainVoteStatus";
-import { usePost } from "next-common/context/post";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
+import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { VoteItem } from "./voteItem";
+import { useSelector } from "react-redux";
+import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { Button } from "../styled";
+import Link from "next/link";
 
-const Wrapper = styled.div`
-  color: var(--textPrimary);
-  margin-top: 24px;
+const Title = styled(TitleContainer)`
+  margin-bottom: 16px;
+  padding-left: 0;
+  padding-right: 0;
 `;
 
 export default function MyVote() {
-  const detail = usePost();
   const pageType = useDetailType();
+  const allVotes = useSelector(allVotesSelector);
 
   const realAddress = useRealAddress();
-
-  const referendumIndex = detail?.referendumIndex;
-  const trackId = detail?.track;
-  const { vote: addressVote } = useSubMyReferendaVote(trackId, referendumIndex, realAddress);
-
-  const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
   if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
     return null;
@@ -34,40 +30,44 @@ export default function MyVote() {
     return null;
   }
 
-  if (
-    !addressVote?.standard &&
-    !addressVote?.split &&
-    !addressVote?.splitAbstain &&
-    !addressVoteDelegateVoted
-  ) {
+  const votes = allVotes?.filter((item) => item.account === realAddress);
+  if (!votes || votes.length === 0) {
     return null;
   }
 
-  const title = "My voting";
+  votes.sort((a, b) => {
+    let priorA = a.isAbstain ? 3 : a.aye ? 1 : 2;
+    let priorB = b.isAbstain ? 3 : b.aye ? 1 : 2;
+    return priorA - priorB;
+  });
+
+  let voteType = "";
+  if (votes[0].isDelegating) {
+    voteType = "Delegating";
+  } else if (votes[0].isSplit) {
+    voteType = "Split";
+  } else if (votes[0].isSplitAbstain) {
+    voteType = "SplitAbstain";
+  }
 
   return (
-    <Wrapper>
-      {addressVote?.splitAbstain && (
-        <SplitAbstainVoteStatus
-          title={title}
-          addressVoteSplit={addressVote?.splitAbstain}
-        />
-      )}
-      {addressVote?.standard && (
-        <StandardVoteStatus
-          title={title}
-          addressVoteStandard={addressVote?.standard}
-        />
-      )}
-      {addressVote?.split && (
-        <SplitVoteStatus title={title} addressVoteSplit={addressVote?.split} />
-      )}
-      {addressVoteDelegateVoted && (
-        <DelegateVoteStatus
-          title={title}
-          addressVoteDelegate={addressVote?.delegating}
-        />
-      )}
-    </Wrapper>
+    <SecondaryCardDetail>
+      <Title>
+        My Vote
+        <span className="text-textTertiary text14Medium">{voteType}</span>
+      </Title>
+
+      <div className="flex flex-col gap-[24px]">
+        <div>
+          {votes.map((vote, i) => (
+            <VoteItem key={i} vote={vote} />
+          ))}
+        </div>
+
+        <Link className="flex justify-end" href="/votes">
+          <Button className="inline-flex !text14Medium">Manage My Votes</Button>
+        </Link>
+      </div>
+    </SecondaryCardDetail>
   );
 }
