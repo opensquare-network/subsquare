@@ -1,43 +1,18 @@
-import React from "react";
-import styled from "styled-components";
+import tw from "tailwind-styled-components";
 
-const Wrapper = styled.div`
-  position: relative;
-  border-radius: 4px;
-  height: 8px;
-  overflow: hidden;
-`;
+const Bar = tw.div`absolute inset-0 overflow-hidden`;
 
-const Bar = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-radius: 4px;
-  overflow: hidden;
-`;
-
-const Background = styled(Bar)`
-  background-color: var(--neutral200);
-`;
-
-const Percentage = styled(Bar)`
-  background-color: ${(p) => p.fg ?? "var(--blue500)"};
-  width: ${(p) => p.percentage}%;
-`;
-const Total = styled(Bar)`
-  background-color: ${(p) => p.bg ?? "var(--blue100)"};
-  overflow: hidden;
-`;
-
-export default function Progress({ percentage = 0, fg, bg }) {
+export default function Progress({
+  percentage = 0,
+  fg = "var(--blue500)",
+  bg = "var(--blue100)",
+}) {
   return (
-    <Wrapper>
-      <Background />
-      <Total bg={bg}>
-        <Percentage fg={fg} percentage={percentage} />
-      </Total>
-    </Wrapper>
+    <div className="relative rounded overflow-hidden h-2">
+      <Bar className="bg-neutral200" />
+      <Bar style={{ backgroundColor: bg }}>
+        <Bar style={{ backgroundColor: fg, width: `${percentage}%` }} />
+      </Bar>
+    </div>
   );
 }
