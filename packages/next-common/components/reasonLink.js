@@ -1,4 +1,3 @@
-import React from "react";
 import {
   defaultLinkSvg,
   extractLinks,
@@ -19,11 +18,11 @@ export default function ReasonLink({ text, hideText = false }) {
       {!!links?.length && (
         <span className="inline-flex ml-2 space-x-2 relative top-1">
           {links.map((link) => {
-            let SvgIcon;
+            let svgIcon;
             try {
-              SvgIcon = getLinkIcon(link);
+              svgIcon = getLinkIcon(link);
             } catch (e) {
-              SvgIcon = defaultLinkSvg;
+              svgIcon = defaultLinkSvg;
             }
 
             return (
@@ -33,7 +32,7 @@ export default function ReasonLink({ text, hideText = false }) {
                 href={link}
                 target="_blank"
               >
-                <SvgIcon />
+                {svgIcon}
               </Link>
             );
           })}
