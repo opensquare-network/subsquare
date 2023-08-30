@@ -1,10 +1,8 @@
-import React from "react";
 import LegendItem from "../../legend/item";
-import FlexCenter from "../../../styled/flexCenter";
 
 export default function ThresholdCurvesGov2TallyLegend() {
   return (
-    <FlexCenter>
+    <div className="flex justify-center gap-x-4">
       <LegendItem color="var(--purple500)">Support</LegendItem>
       <LegendItem dashed color="var(--purple300)">
         Current Support
@@ -13,6 +11,6 @@ export default function ThresholdCurvesGov2TallyLegend() {
       <LegendItem dashed color="var(--green300)">
         Current Approval
       </LegendItem>
-    </FlexCenter>
+    </div>
   );
 }
