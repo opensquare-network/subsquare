@@ -1,12 +1,10 @@
 import styled from "styled-components";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { VoteItem } from "./voteItem";
 import Link from "next/link";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
-import omit from "lodash.omit";
 import DelegationStatus from "./delegationStatus";
 
 export const Button = styled.div`
@@ -23,7 +21,7 @@ const Title = styled(TitleContainer)`
   padding-right: 0;
 `;
 
-export default function MyVoteCommon({ allVotes }) {
+export default function MyVoteCommon({ votes }) {
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
@@ -31,60 +29,9 @@ export default function MyVoteCommon({ allVotes }) {
   const hasVotesManagement =
     !isKintsugi && (hasReferenda || !noDemocracyModule);
 
-  const realAddress = useRealAddress();
-  if (!realAddress) {
-    return null;
-  }
-
-  const votes = allVotes?.filter((item) => item.account === realAddress);
   if (!votes || votes.length === 0) {
     return null;
   }
-
-  if (votes[0].isSplit) {
-    if (!votes.find((vote) => vote.aye)) {
-      votes.push({
-        ...votes[0],
-        balance: 0,
-        aye: true,
-      });
-    }
-    if (!votes.find((vote) => !vote.aye)) {
-      votes.push({
-        ...votes[0],
-        balance: 0,
-        aye: false,
-      });
-    }
-  } else if (votes[0].isSplitAbstain) {
-    if (!votes.find((vote) => vote.isAbstain)) {
-      votes.push({
-        ...omit(votes[0], ["aye", "isAbstain"]),
-        balance: 0,
-        isAbstain: true,
-      });
-    }
-    if (!votes.find((vote) => !vote.isAbstain && vote.aye)) {
-      votes.push({
-        ...omit(votes[0], ["aye", "isAbstain"]),
-        balance: 0,
-        aye: true,
-      });
-    }
-    if (!votes.find((vote) => !vote.isAbstain && !vote.aye)) {
-      votes.push({
-        ...omit(votes[0], ["aye", "isAbstain"]),
-        balance: 0,
-        aye: false,
-      });
-    }
-  }
-
-  votes.sort((a, b) => {
-    let priorA = a.isAbstain ? 3 : a.aye ? 1 : 2;
-    let priorB = b.isAbstain ? 3 : b.aye ? 1 : 2;
-    return priorA - priorB;
-  });
 
   let voteType = "Standard";
   if (votes[0].isSplit) {
