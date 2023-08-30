@@ -1,37 +1,30 @@
-import Flex from "../../styled/flex";
-import { p_12_medium } from "../../../styles/componentCss";
-import styled, { css } from "styled-components";
+import clsx from "clsx";
 
-const LegendItem = styled(Flex)`
-  color: var(--textSecondary);
-  ${p_12_medium};
-
-  &::before {
-    content: "";
-    display: inline-block;
-    width: 10px;
-    height: 2px;
-    margin-right: 8px;
-    border-radius: 9999px;
-    background-image: linear-gradient(
-      to right,
-      ${(p) => p.color} 0%,
-      ${(p) => p.color} 50%,
-      transparent 50%
-    );
-    background-repeat: repeat-x;
-
-    background-size: 20px;
-    ${(p) =>
-      p.dashed &&
-      css`
-        background-size: 7px 2px;
-      `}
-  }
-
-  &:not(:last-child) {
-    margin-right: 16px;
-  }
-`;
-
-export default LegendItem;
+/**
+ * @param {{dashed?: boolean, color: string} & import("react").HTMLAttributes<HTMLDivElement>} props
+ */
+export default function LegendItem({ dashed, color = "", ...props }) {
+  return (
+    <div
+      className={clsx(
+        "flex items-center",
+        "text-textSecondary text12Medium",
+        "mr-4 last:mr-0",
+        props.className,
+      )}
+      {...props}
+    >
+      <span
+        className={clsx(
+          "w-2.5 h-0.5 rounded-full mr-2",
+          "bg-repeat-x bg-[size:20px]",
+          dashed && "!bg-[size:7px_2px]",
+        )}
+        style={{
+          backgroundImage: `linear-gradient(to right, ${color} 0%, ${color} 50%, transparent 50%)`,
+        }}
+      />
+      {props.children}
+    </div>
+  );
+}

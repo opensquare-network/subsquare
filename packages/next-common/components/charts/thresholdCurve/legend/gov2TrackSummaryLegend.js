@@ -1,12 +1,13 @@
-import React from "react";
-import Flex from "../../../styled/flex";
+import clsx from "clsx";
 import LegendItem from "../../legend/item";
 
-export default function ThresholdCurvesGov2TrackSummaryLegend() {
+export default function ThresholdCurvesGov2TrackSummaryLegend({
+  className = "",
+}) {
   return (
-    <Flex>
-      <LegendItem color="var(--purple500)">Support</LegendItem>
+    <div className={clsx("flex", className)}>
       <LegendItem color="var(--green500)">Approval</LegendItem>
-    </Flex>
+      <LegendItem color="var(--purple500)">Support</LegendItem>
+    </div>
   );
 }
