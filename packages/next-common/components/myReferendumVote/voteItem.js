@@ -37,7 +37,12 @@ export function VoteItem({ vote }) {
         />
         {!isNil(vote.conviction) && (
           <ConvictionWrapper>
-            (<VoteLabel conviction={vote.conviction} />)
+            (
+            <VoteLabel
+              conviction={vote.conviction}
+              isDelegating={vote.isDelegating}
+            />
+            )
           </ConvictionWrapper>
         )}
       </div>

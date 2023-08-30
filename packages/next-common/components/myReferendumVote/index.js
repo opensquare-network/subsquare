@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import omit from "lodash.omit";
+import DelegationStatus from "./delegationStatus";
 
 export const Button = styled.div`
   cursor: pointer;
@@ -85,14 +86,15 @@ export default function MyVoteCommon({ allVotes }) {
     return priorA - priorB;
   });
 
-  let voteType = "";
-  if (votes[0].isDelegating) {
-    voteType = "Delegating";
-  } else if (votes[0].isSplit) {
+  let voteType = "Standard";
+  if (votes[0].isSplit) {
     voteType = "Split";
   } else if (votes[0].isSplitAbstain) {
     voteType = "SplitAbstain";
   }
+
+  const isDelegating = votes[0].isDelegating;
+  const delegatingTarget = votes[0].target;
 
   return (
     <SecondaryCardDetail>
@@ -101,12 +103,16 @@ export default function MyVoteCommon({ allVotes }) {
         <span className="text-textTertiary text14Medium">{voteType}</span>
       </Title>
 
-      <div className="flex flex-col gap-[24px]">
+      <div className="flex flex-col gap-[16px]">
         <div>
           {votes.map((vote, i) => (
             <VoteItem key={i} vote={vote} />
           ))}
         </div>
+
+        {isDelegating && (
+          <DelegationStatus delegatingTarget={delegatingTarget} />
+        )}
 
         {hasVotesManagement && (
           <Link className="flex justify-end" href="/votes">
