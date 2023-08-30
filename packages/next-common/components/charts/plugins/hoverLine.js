@@ -9,7 +9,7 @@ const hoverLinePlugin = {
 
     const { lineWidth, lineColor } = options ?? {};
 
-    if (chart.tooltip._active && chart.tooltip._active.length) {
+    if (chart?.tooltip?._active?.length) {
       const { ctx } = chart;
       ctx.save();
 
