@@ -241,7 +241,6 @@ function Vote({ referendumInfo, referendumIndex }) {
           ))}
 
         <VotesInfo />
-        <MyVote />
       </SecondaryCardDetail>
 
       {!referendumInfo?.finished && (
@@ -254,6 +253,8 @@ function Vote({ referendumInfo, referendumIndex }) {
           Vote
         </PrimaryButton>
       )}
+
+      <MyVote />
 
       <Guide>
         How {capitalize(chain)} Governance Works.

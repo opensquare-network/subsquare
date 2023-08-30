@@ -20,7 +20,7 @@ const democracyVoteExpiredReferendaSelector = createSelector(
 
     return votes.reduce((result, voteItem) => {
       const { referendumIndex, vote, referendumInfo } = voteItem;
-      if (referendumInfo.ongoing) {
+      if (referendumInfo?.ongoing) {
         return result;
       } else if (referendumInfo && referendumInfo.finished) {
         const isExpired = isVoteLockExpired(
