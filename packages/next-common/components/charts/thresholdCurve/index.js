@@ -39,7 +39,11 @@ export default function ThresholdCurvesChart({
       const supportThreshold = Number(
         chartData.datasets[0].data[dataIndex],
       ).toFixed(2);
-      return `Approval: ${approvalThreshold}%, Support: ${supportThreshold}%`;
+
+      return [
+        `Approval: ${approvalThreshold}%`,
+        `Support: ${supportThreshold}%`,
+      ];
     }
 
     return null;
