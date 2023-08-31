@@ -13,13 +13,10 @@ export function getSubscanLink(chain, type, post) {
     return `https://${sub}.subscan.io${path}`;
   };
 
+  // prettier-ignore
   const MAP = {
-    [detailPageCategory.GOV2_REFERENDUM]: makeLink(
-      `/referenda_v2/${post.referendumIndex}`,
-    ),
-    [detailPageCategory.DEMOCRACY_REFERENDUM]: makeLink(
-      `/referenda/${post.referendumIndex}`,
-    ),
+    [detailPageCategory.GOV2_REFERENDUM]: makeLink(`/referenda_v2/${post.referendumIndex}`),
+    [detailPageCategory.DEMOCRACY_REFERENDUM]: makeLink(`/referenda/${post.referendumIndex}`),
   };
 
   return MAP[type];
