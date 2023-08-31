@@ -28,7 +28,7 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = karuraOptions;
     } else if ([Chains.khala, Chains.phala].includes(chain)) {
       customizedOptions = khalaOptions;
-    } else if (chain === "bifrost") {
+    } else if (chain === Chains.bifrost) {
       customizedOptions = bifrostOptions;
     } else if (chain === Chains.polkadex) {
       customizedOptions = polkadexOptions;
