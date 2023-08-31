@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
@@ -13,6 +13,8 @@ import Annotation from "next-common/components/democracy/flattenedVotesPopup/ann
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
+import filterTabs from "../common/filterTabs";
+import voteTabs from "../common/voteTabs";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -33,12 +35,21 @@ export default function VotesPopup({
   const filteredNay = useSearchVotes(search, allNay);
   const filteredAbstain = useSearchVotes(search, allAbstain);
 
+  useEffect(() => {
+    const tabs = filterTabs(filteredAye, filteredNay, filteredAbstain);
+    if (!search || tabs.length <= 0 || tabs.includes(tabIndex)) {
+      return;
+    }
+
+    setTabIndex(tabs[0]);
+  }, [search]);
+
   let page;
   let votes;
-  if (tabIndex === "Aye") {
+  if (tabIndex === voteTabs.Aye) {
     page = ayePage;
     votes = filteredAye;
-  } else if (tabIndex === "Nay") {
+  } else if (tabIndex === voteTabs.Nay) {
     page = nayPage;
     votes = filteredNay;
   } else {
