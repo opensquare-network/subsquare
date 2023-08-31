@@ -1453,20 +1453,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@darwinia/types-known@npm:^2.8.10":
-  version: 2.8.10
-  resolution: "@darwinia/types-known@npm:2.8.10"
-  checksum: c251502fdc045a80591b0daa9c507004a3fc5726319474f438f7abc6cb485608900ecb072e8c80bc73df96ba38521926d915753b6607012e1669aaa0a1e71a25
-  languageName: node
-  linkType: hard
-
-"@darwinia/types@npm:^2.8.10":
-  version: 2.8.10
-  resolution: "@darwinia/types@npm:2.8.10"
-  checksum: 1fd623626a1e42c4ba21fd2a03a005581a165ac239a3f7b02f7ce321fbc2a399aacbf23f210169f53b841bf81a2eaa0457049737b8b1e1389278a6321b4074c5
-  languageName: node
-  linkType: hard
-
 "@emotion/is-prop-valid@npm:^1.1.0":
   version: 1.2.0
   resolution: "@emotion/is-prop-valid@npm:1.2.0"
@@ -8307,8 +8293,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "next-common@workspace:packages/next-common"
   dependencies:
-    "@darwinia/types": ^2.8.10
-    "@darwinia/types-known": ^2.8.10
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.29.0

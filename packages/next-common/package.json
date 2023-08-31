@@ -12,8 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@darwinia/types": "^2.8.10",
-    "@darwinia/types-known": "^2.8.10",
     "@interlay/monetary-js": "0.5.4",
     "@osn/icons": "^1.29.0",
     "@osn/polkadot-react-identicon": "^1.0.8",

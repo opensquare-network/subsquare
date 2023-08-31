@@ -11,7 +11,6 @@ import {
 } from "@osn/provider-options";
 import allOptions from "@osn/provider-options";
 import crabOptions from "./crab";
-import darwinia2Options from "./darwinia2";
 
 const apiInstanceMap = new Map();
 
@@ -41,8 +40,6 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = zeitgeistOptions;
     } else if (chain === Chains.altair) {
       customizedOptions = altairOptions;
-    } else if (chain === Chains.darwinia2) {
-      customizedOptions = darwinia2Options;
     } else {
       customizedOptions = allOptions[chain] || {};
     }
