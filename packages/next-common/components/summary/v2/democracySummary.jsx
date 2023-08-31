@@ -67,11 +67,7 @@ export default function DemocracySummary({ summary = {} }) {
 
         isKintsugi && {
           title: "Next Launch Time",
-          content: (
-            <NextLaunchTime
-              nextLaunchTimestamp={summaryData.nextLaunchTimestamp}
-            />
-          ),
+          content: <NextLaunchTime />,
         },
       ].filter(Boolean)}
     />

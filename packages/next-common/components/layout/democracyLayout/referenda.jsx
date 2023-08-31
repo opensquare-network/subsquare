@@ -5,9 +5,6 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useUser } from "next-common/context/user";
 
-/**
- * @param {import("../ListLayout").ListLayoutProps & {summaryData}} props
- */
 export default function DemocracyReferendaLayout({ summaryData, ...props }) {
   const chain = useChain();
   const chainSettings = useChainSettings();
