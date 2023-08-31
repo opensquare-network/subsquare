@@ -9,7 +9,6 @@ import {
 } from "../store/reducers/toastSlice";
 import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
-import isUseTalisman from "./isTalisman";
 import isUseMetamask from "./isUseMetamask";
 import { sendEvmTx } from "./sendEvmTx";
 
@@ -55,7 +54,7 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
-  if (isEvmChain() && (isUseMetamask() || isUseTalisman())) {
+  if (isEvmChain() && isUseMetamask()) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
       dispatch,
