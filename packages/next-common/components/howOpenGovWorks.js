@@ -8,8 +8,7 @@ export default function HowOpenGovWorks({ anchor }) {
 
   return (
     <ExternalLink className="text14Medium text-sapphire500" href={link}>
-      How OpenGov works&nbsp;
-      <span style={{ color: "var(--textSecondary)" }}>↗</span>
+      How OpenGov works
     </ExternalLink>
   );
 }

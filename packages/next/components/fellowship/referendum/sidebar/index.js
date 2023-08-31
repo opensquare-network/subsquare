@@ -7,8 +7,8 @@ import { gov2VotingState } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import LearnGov2Link from "next-common/components/links/learnGov2Link";
 import { useChainSettings } from "next-common/context/chain";
+import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 
 export default function FellowshipReferendumSideBar() {
   const post = usePost();
@@ -41,7 +41,7 @@ export default function FellowshipReferendumSideBar() {
       )}
 
       <InlineWrapper>
-        <LearnGov2Link anchor="polkadot-fellowship" />
+        <HowOpenGovWorks anchor="polkadot-fellowship" />
       </InlineWrapper>
     </RightBarWrapper>
   );

@@ -12,19 +12,13 @@ const Wrapper = styled.div`
   line-height: 140%;
 `;
 
-const StyledLink = styled.div`
-  cursor: pointer;
-  text-decoration: underline;
-  color: var(--azure500);
-`;
-
 export default function DownloadExtension() {
   return (
     <Wrapper>
       Polkadot-js extension not detected. No web3 account could be found. Visit
       this page on a computer with polkadot-js extension.
       <ExternalLink href="https://polkadot.js.org/extension/">
-        <StyledLink>{"Download Polkadot{.js} extension"}</StyledLink>
+        {"Download Polkadot{.js} extension"}
       </ExternalLink>
     </Wrapper>
   );

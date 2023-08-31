@@ -56,6 +56,7 @@ export default function Footer() {
               <ExternalLink
                 className="text-textSecondary hover:text-textPrimary"
                 href={contact.link}
+                externalIcon={false}
               >
                 {contact.name}
               </ExternalLink>

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
@@ -13,7 +13,6 @@ import {
 import useApi from "next-common/utils/hooks/useApi";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
-import ExternalLink from "next-common/assets/imgs/icons/external-link.svg";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -33,6 +32,7 @@ import useSubDemocracyTally from "next-common/hooks/democracy/tally";
 import capitalize from "lodash.capitalize";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import VotesInfo from "./votesInfo";
+import ExternalLink from "next-common/components/externalLink";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -110,24 +110,6 @@ const NaysBar = styled.div`
   background-color: var(--red500);
   width: ${(p) => p.precent}%;
   height: 100%;
-`;
-
-const Guide = styled.p`
-  font-size: 12px;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  color: var(--textTertiary);
-  a {
-    margin-left: 2px;
-    svg {
-      margin-left: 2px;
-    }
-    font-size: 12px !important;
-    display: flex;
-    align-items: center;
-    color: var(--theme500) !important;
-  }
 `;
 
 function Vote({ referendumInfo, referendumIndex }) {
@@ -256,16 +238,9 @@ function Vote({ referendumInfo, referendumIndex }) {
 
       <MyVote />
 
-      <Guide>
+      <ExternalLink href={`https://docs.interlay.io/#/${chain}/governance`}>
         How {capitalize(chain)} Governance Works.
-        <a
-          href={`https://docs.interlay.io/#/${chain}/governance`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <ExternalLink />
-        </a>
-      </Guide>
+      </ExternalLink>
 
       {showVote && (
         <Popup
