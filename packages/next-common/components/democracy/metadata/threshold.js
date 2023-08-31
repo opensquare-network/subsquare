@@ -1,24 +1,7 @@
-import React from "react";
-import styled from "styled-components";
 import { votingThreshold } from "../../../utils/consts/referendum";
-import ExternalLink from "../../../assets/imgs/icons/external-link.svg";
 import Chains from "../../../utils/consts/chains";
 import { useChain } from "../../../context/chain";
-
-const Wrapper = styled.span`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 140%;
-  display: inline-flex;
-
-  & > a {
-    margin-left: 10px;
-    svg {
-      position: relative;
-      top: 3px;
-    }
-  }
-`;
+import ExternalLink from "next-common/components/externalLink";
 
 export default function Threshold({ threshold = "" }) {
   const chain = useChain();
@@ -42,13 +25,8 @@ export default function Threshold({ threshold = "" }) {
   }
 
   return (
-    <Wrapper>
-      {threshold}
-      {link ? (
-        <a href={link} target="_blank" rel="noreferrer">
-          <ExternalLink />
-        </a>
-      ) : null}
-    </Wrapper>
+    <span className="text14Medium">
+      {link ? <ExternalLink href={link}>{threshold}</ExternalLink> : threshold}
+    </span>
   );
 }

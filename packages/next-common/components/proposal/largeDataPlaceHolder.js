@@ -1,19 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import ExternalLink from "../../assets/imgs/icons/external-link.svg";
 import { useChain, useChainSettings } from "../../context/chain";
 import isNil from "lodash.isnil";
-
-const LargeData = styled.div`
-  display: flex;
-  align-items: center;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 140%;
-  color: var(--textTertiary);
-  gap: 10px;
-`;
+import ExternalLink from "../externalLink";
 
 export default function LargeDataPlaceHolder({
   motionIndex,
@@ -31,18 +18,11 @@ export default function LargeDataPlaceHolder({
       : `https://${domain}.subscan.io/democracy_proposal/${proposalIndex}`;
 
   return (
-    <LargeData>
-      Large data, please check it on subscan
-      {!isNil(referendumIndex) && hasSubscan && (
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href={subscanLink}
-          style={{ display: "flex" }}
-        >
-          <ExternalLink />
-        </a>
-      )}
-    </LargeData>
+    !isNil(referendumIndex) &&
+    hasSubscan && (
+      <ExternalLink href={subscanLink}>
+        Large data, please check it on subscan
+      </ExternalLink>
+    )
   );
 }

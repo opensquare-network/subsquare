@@ -28,9 +28,9 @@ export default function PostDataSource() {
   }
 
   return (
-    <GreyPanel className="!rounded-lg px-4 py-2.5 mt-4 gap-2">
+    <GreyPanel className="!rounded-lg px-4 py-2.5 mt-4">
       <ExternalLink className="text14Medium text-sapphire500" href={paLink}>
-        Polkassembly <span className="text-textSecondary">↗</span>
+        Polkassembly
       </ExternalLink>
     </GreyPanel>
   );

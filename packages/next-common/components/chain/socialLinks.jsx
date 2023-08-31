@@ -39,6 +39,7 @@ export default function ChainSocialLinks({ className }) {
               href={link.url}
               title={link.title || link.name}
               className="[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary"
+              externalIcon={false}
             >
               <Icon className="w-5 h-5" />
             </ExternalLink>
