@@ -1,60 +1,6 @@
-import React, { useMemo } from "react";
-import styled, { css } from "styled-components";
+import { useMemo } from "react";
 import Tooltip from "../tooltip";
-
-const bar_css = css`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const Wrapper = styled.div`
-  position: relative;
-  border-radius: 4px;
-  height: 8px;
-  overflow: hidden;
-`;
-
-const BarWrapper = styled.div`
-  overflow: hidden;
-  ${bar_css};
-`;
-
-const Bar = styled.div`
-  ${bar_css};
-`;
-
-const Background = styled(Bar)`
-  background-color: var(--neutral200);
-`;
-
-const Percentage = styled(Bar)`
-  background-color: ${(p) => p.fg};
-  width: ${(p) => p.percentage}%;
-`;
-const Total = styled(Bar)`
-  background-color: ${(p) => p.bg};
-  left: ${(p) => p.start || 0}%;
-  width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
-  overflow: hidden;
-`;
-
-const TooltipWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: ${(p) => p.start || 0}%;
-  width: ${(p) => (p.end >= 100 ? p.end - p.start : p.end)}%;
-  border-radius: 4px;
-
-  /* tooltip children wrapper */
-  > div {
-    width: ${(p) => p.percentage}%;
-    ${bar_css};
-  }
-`;
+import Progress from ".";
 
 const ensureMax100 = (n) => (Number(n) > 100 ? 100 : Number(n));
 
@@ -71,30 +17,29 @@ export default function MultiProgress({ progressItems = [] }) {
   }, [progressItems]);
 
   return (
-    <Wrapper>
-      <Background />
-      <BarWrapper>
-        {items.map((item, idx) => (
-          <Total key={idx} start={item.start} end={item.end} bg={item.bg}>
-            <Percentage percentage={item.percentage} fg={item.fg} />
-          </Total>
-        ))}
-      </BarWrapper>
+    <div className="relative rounded h-2 overflow-hidden">
+      <Progress bg="var(--neutral200)" />
 
-      {items.map((item, idx) => (
-        <TooltipWrapper
-          key={idx}
-          start={Number(item.start) || 0}
-          end={Math.abs(Number(item.end) || 100)}
-          percentage={item.percentage > 100 ? 100 : item.percentage}
-        >
-          <Tooltip content={item.tooltipContent}>
-            <Total start={item.start} end={item.end}>
-              <Percentage percentage={item.percentage} />
-            </Total>
+      <div className="z-10 absolute inset-0 h-full w-full">
+        {items.map((item, idx) => (
+          <Tooltip
+            key={idx}
+            content={item.tooltipContent}
+            className="absolute inset-0"
+            style={{
+              width: Math.abs(Number(item.end) || 100) + "%",
+              left: (Number(item.start) || 0) + "%",
+            }}
+          >
+            <Progress
+              percentage={item.percentage}
+              fg={item.fg}
+              bg={item.bg}
+              rounded={false}
+            />
           </Tooltip>
-        </TooltipWrapper>
-      ))}
-    </Wrapper>
+        ))}
+      </div>
+    </div>
   );
 }
