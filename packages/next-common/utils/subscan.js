@@ -14,10 +14,10 @@ export function getSubscanLink(chain, type, post) {
   };
 
   // prettier-ignore
-  const MAP = {
+  const LINK_MAP = {
     [detailPageCategory.GOV2_REFERENDUM]: makeLink(`/referenda_v2/${post.referendumIndex}`),
     [detailPageCategory.DEMOCRACY_REFERENDUM]: makeLink(`/referenda/${post.referendumIndex}`),
   };
 
-  return MAP[type];
+  return LINK_MAP[type];
 }
