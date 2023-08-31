@@ -14,16 +14,12 @@ const IconWrapper = styled.div`
   }
 `;
 
-/**
- * @param {object} props
- * @param {RadixTooltip.TooltipContentProps['side']} props.side
- * @param {RadixTooltip.TooltipContentProps['sideOffset']} props.sideOffset
- */
 export default function Tooltip({
   content,
   children,
   label,
   className,
+  style,
   side,
   sideOffset = 2,
   keepTooltipOpenAfterClick,
@@ -32,7 +28,9 @@ export default function Tooltip({
   const [open, setOpen] = React.useState(false);
 
   const tooltipTrigger = children ? (
-    <div className={clsx("inline-block", className)}>{children}</div>
+    <div className={clsx("inline-block", className)} style={style}>
+      {children}
+    </div>
   ) : (
     <IconWrapper>{label ? label : icon || <Icon />}</IconWrapper>
   );
