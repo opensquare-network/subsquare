@@ -11,6 +11,7 @@ import {
 } from "@osn/provider-options";
 import allOptions from "@osn/provider-options";
 import crabOptions from "./crab";
+import darwinia2Options from "./darwinia2";
 
 const apiInstanceMap = new Map();
 
@@ -28,7 +29,7 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = karuraOptions;
     } else if ([Chains.khala, Chains.phala].includes(chain)) {
       customizedOptions = khalaOptions;
-    } else if (chain === "bifrost") {
+    } else if (chain === Chains.bifrost) {
       customizedOptions = bifrostOptions;
     } else if (chain === Chains.polkadex) {
       customizedOptions = polkadexOptions;
@@ -40,6 +41,8 @@ export default async function getApi(chain, endpoint) {
       customizedOptions = zeitgeistOptions;
     } else if (chain === Chains.altair) {
       customizedOptions = altairOptions;
+    } else if (chain === Chains.darwinia2) {
+      customizedOptions = darwinia2Options;
     } else {
       customizedOptions = allOptions[chain] || {};
     }
