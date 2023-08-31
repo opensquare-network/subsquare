@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import noop from "lodash.noop";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import Pagination from "next-common/components/pagination";
@@ -23,6 +23,7 @@ import {
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
+import filterTabs from "../common/filterTabs";
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -45,6 +46,15 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const [showSearch, setShowSearch] = useState(false);
   const filteredAye = useSearchVotes(search, allDirectAyes);
   const filteredNay = useSearchVotes(search, allDirectNays);
+
+  useEffect(() => {
+    const tabs = filterTabs(filteredAye, filteredNay);
+    if (!search || tabs.length <= 0 || tabs.includes(tabIndex)) {
+      return;
+    }
+
+    setTabIndex(tabs[0]);
+  }, [search]);
 
   let page;
   let votes;
