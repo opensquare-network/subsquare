@@ -80,6 +80,19 @@ export function useModuleName() {
   }
 }
 
+export function useTitleLink(referendumIndex) {
+  const selectedTabId = useModuleTab();
+  if (selectedTabId === Referenda) {
+    return `/referenda/${referendumIndex}`;
+  } else if (selectedTabId === Fellowship) {
+    return `/fellowship/referenda/${referendumIndex}`;
+  } else if (selectedTabId === Democracy) {
+    return `/democracy/referenda/${referendumIndex}`;
+  } else {
+    throw new Error(`Unknown user votes tab: ${selectedTabId}`);
+  }
+}
+
 export function useAvailableModuleTabs() {
   const { availableTabs } = useContext(ModuleTabContext);
   return availableTabs;
