@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Index } from "../styled";
 import styled from "styled-components";
 import clsx from "clsx";
-import { useModuleName } from "./moduleTab";
+import { useTitleLink } from "./moduleTab";
 
 const Title = styled.span`
   font-style: normal;
@@ -10,8 +10,7 @@ const Title = styled.span`
 `;
 
 export function PostTitle({ referendumIndex, title, noLink, className }) {
-  const module = useModuleName();
-  const url = `/${module}/referendum/${referendumIndex}`;
+  const url = useTitleLink(referendumIndex);
   return (
     <div
       className={clsx("truncate max-w-[inherit] text-textPrimary", className)}
