@@ -11,7 +11,11 @@ export default function ListPostTitle({ data = {}, href }) {
         <span className="after:content-['·'] after:mx-2 after:text-textTertiary">{`#${data.index}`}</span>
       )}
 
-      <Link href={href} className="break-words cursor-pointer hover:underline">
+      <Link
+        href={href}
+        className="cursor-pointer hover:underline"
+        style={{ wordBreak: "break-word" }}
+      >
         {title}
       </Link>
       <ReasonLink text={data.title} hideText={true} />
