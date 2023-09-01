@@ -60,7 +60,7 @@ export default function ConvictionSlider({
             "top-6",
             "flex items-center justify-center",
             "w-6 h-6",
-            "bg-neutral100 border border-neutral300 rounded shadow-100",
+            "bg-neutral100 border border-neutral300 rounded shadow-100 outline-theme500",
           )}
         >
           <ThumbSvg />
