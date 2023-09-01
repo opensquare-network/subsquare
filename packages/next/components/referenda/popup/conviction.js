@@ -1,6 +1,6 @@
 import ConvictionField from "next-common/components/popup/fields/convictionField";
 
-export default function DemocracyVoteLock({
+export default function DemocracyConviction({
   balance,
   voteLock,
   setVoteLock,
