@@ -25,7 +25,12 @@ export default function DirectVote({
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
       />
-      <VoteLock module={module} voteLock={voteLock} setVoteLock={setVoteLock} />
+      <VoteLock
+        balance={inputVoteBalance}
+        module={module}
+        voteLock={voteLock}
+        setVoteLock={setVoteLock}
+      />
     </>
   );
 }
