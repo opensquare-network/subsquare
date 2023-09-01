@@ -9,6 +9,7 @@ export default function LegendItem({ dashed, color = "", ...props }) {
       className={clsx(
         "flex items-center",
         "text-textSecondary text12Medium",
+        "ml-4 first:ml-0",
         props.className,
       )}
       {...props}
