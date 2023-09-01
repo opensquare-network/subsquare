@@ -1,16 +1,13 @@
-import React from "react";
-import styled from "styled-components";
 import PopupLabel from "next-common/components/popup/label";
-import ConvictionSelect from "next-common/components/convictionSelect";
 import useVoteLockTime from "next-common/utils/hooks/useVoteLockTime";
 import Loading from "../../loading";
 import { StatusWrapper } from "../styled";
-
-const LockingPeriod = styled(StatusWrapper)`
-  margin-top: 8px;
-`;
+import ConvictionSlider from "next-common/components/convictionSlider";
+import { useChainSettings } from "next-common/context/chain";
+import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 
 export default function ConvictionField({
+  balance = 0,
   conviction,
   setConviction,
   title = "Conviction",
@@ -18,35 +15,45 @@ export default function ConvictionField({
   module,
 }) {
   const [time, isLoading] = useVoteLockTime(conviction, module);
+  const chainSettings = useChainSettings();
+  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   let lockingPeriod = null;
 
   if (isLoading) {
     lockingPeriod = (
-      <LockingPeriod>
+      <StatusWrapper>
         <div className="no-data">
           <Loading />
         </div>
-      </LockingPeriod>
+      </StatusWrapper>
     );
-  } else if (time) {
+  } else {
     lockingPeriod = (
-      <LockingPeriod>
-        <div className="value">Locking Period</div>
-        <div className="result">≈ {time}</div>
-      </LockingPeriod>
+      <StatusWrapper className="flex-col gap-y-1">
+        <div className="flex justify-between w-full">
+          <div className="value">
+            <span>Governance Votes</span>
+          </div>
+          <div className="result">
+            {calcVotes(balance, conviction)} {symbol}
+          </div>
+        </div>
+        <div className="flex justify-between w-full">
+          <div className="value">
+            <span>Undelegating Period</span>
+          </div>
+          <div className="result">{time ? "≈ " + time : 0}</div>
+        </div>
+      </StatusWrapper>
     );
   }
 
   return (
     <div>
       <PopupLabel text={title} titleTooltip={titleTooltip} />
-      <ConvictionSelect
-        value={conviction}
-        setValue={setConviction}
-        disabled={false}
-      />
-      {lockingPeriod}
+      <ConvictionSlider value={conviction} setValue={setConviction} />
+      {lockingPeriod && <div className="mt-2">{lockingPeriod}</div>}
     </div>
   );
 }

@@ -3,5 +3,5 @@ import Flex from "../flex";
 
 export const GreyPanel = styled(Flex)`
   background: var(--neutral200);
-  border-radius: 4px;
+  border-radius: 8px;
 `;
