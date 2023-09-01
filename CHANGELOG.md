@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 
 ### 3.4.3
+date: 2023-09-01
+- Render `system#remark` call content with markdown previewer.
+- Refactor: Control detail page tabs with data in redux.
+- Styles enhancement
+  - Improve comment source tab position on detail pages.
+  - Fix username alignment with avatar.
+  - Fix title alignment with proposal index on list pages.
+  - Fix off-chain voting fonts.
+  - Fix subsquare icon in dark mode.
+  - Improve confirmation progress bar on referendum detail page.
+  - Enlarge referenda curves chart size for better view.
+- Fix referenda curves data when hovering.
+- Fix referendum confirmation bar tooltip.
+- Refactor external link component and add subscan link for referenda.
+
+### 3.4.3
 date: 2023-08-28
 
 - Add circle packing view for referenda/democracy votes distribution.
