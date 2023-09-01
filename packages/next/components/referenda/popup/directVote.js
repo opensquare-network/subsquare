@@ -1,6 +1,6 @@
 import Delegations from "./delegations";
 import VoteValue from "./voteValue";
-import VoteLock from "./voteLock";
+import Conviction from "./conviction";
 
 export default function DirectVote({
   module,
@@ -25,7 +25,7 @@ export default function DirectVote({
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
       />
-      <VoteLock
+      <Conviction
         balance={inputVoteBalance}
         module={module}
         voteLock={voteLock}

@@ -11,7 +11,6 @@ export default function DemocracyVoteLock({
       balance={balance}
       conviction={voteLock}
       setConviction={setVoteLock}
-      title="Vote lock"
       module={module}
     />
   );
