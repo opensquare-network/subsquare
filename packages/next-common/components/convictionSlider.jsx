@@ -1,30 +1,33 @@
 import clsx from "clsx";
 import ReactSlider from "react-slider";
 import ThumbSvg from "./slider/thumb.svg";
-import { convictionToLockX } from "next-common/utils/referendumCommon";
+import {
+  convictionToLockX,
+  Conviction,
+} from "next-common/utils/referendumCommon";
 import last from "lodash.last";
 
 const DEFAULT_OPTIONS = [
   {
-    value: 0,
+    value: Conviction.None,
   },
   {
-    value: 1,
+    value: Conviction.Locked1x,
   },
   {
-    value: 2,
+    value: Conviction.Locked2x,
   },
   {
-    value: 3,
+    value: Conviction.Locked3x,
   },
   {
-    value: 4,
+    value: Conviction.Locked4x,
   },
   {
-    value: 5,
+    value: Conviction.Locked5x,
   },
   {
-    value: 6,
+    value: Conviction.Locked6x,
   },
 ];
 
