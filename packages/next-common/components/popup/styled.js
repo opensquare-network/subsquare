@@ -41,20 +41,19 @@ export const StatusWrapper = styled(GreyPanel)`
   justify-content: space-between;
   min-height: 38px;
   font-size: 14px;
-  line-height: 100%;
+  line-height: 20px;
+  font-weight: 500;
   color: var(--textPrimary);
-  > div.value {
+  div.value {
     display: flex;
-    font-weight: 500;
     > span {
       color: var(--textTertiary);
       margin-left: 2px;
     }
   }
-  > div.result {
+  div.result {
     display: flex;
     align-items: center;
-    color: var(--textSecondary);
     > svg {
       margin-left: 8px;
     }
