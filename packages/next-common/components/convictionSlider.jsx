@@ -43,6 +43,7 @@ export default function ConvictionSlider({
 }) {
   return (
     <ReactSlider
+      value={value}
       className="cursor-grab h-12"
       onChange={(val) => {
         setValue(val);
