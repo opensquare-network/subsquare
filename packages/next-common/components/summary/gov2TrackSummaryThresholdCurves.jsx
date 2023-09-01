@@ -55,7 +55,7 @@ export default function Gov2TrackSummaryThresholdCurves({ period }) {
             />
           </div>
 
-          <ThresholdCurvesGov2TrackSummaryLegend className="flex-col gap-y-2" />
+          <ThresholdCurvesGov2TrackSummaryLegend className="flex-col gap-y-2 space-x-0" />
         </div>
       </SummaryThresholdCurveItem>
 

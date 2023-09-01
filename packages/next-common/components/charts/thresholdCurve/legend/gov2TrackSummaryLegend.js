@@ -5,7 +5,7 @@ export default function ThresholdCurvesGov2TrackSummaryLegend({
   className = "",
 }) {
   return (
-    <div className={clsx("flex gap-x-4", className)}>
+    <div className={clsx("flex", className)}>
       <LegendItem color="var(--green500)">Approval</LegendItem>
       <LegendItem color="var(--purple500)">Support</LegendItem>
     </div>
