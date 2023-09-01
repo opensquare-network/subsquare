@@ -124,7 +124,11 @@ export default function PopupContent({
         setInputVoteBalance={setInputVoteBalance}
         node={node}
       />
-      <Conviction conviction={conviction} setConviction={setConviction} />
+      <Conviction
+        balance={inputVoteBalance}
+        conviction={conviction}
+        setConviction={setConviction}
+      />
       <PopupButtonWrapper>
         <PrimaryButton isLoading={isLoading} onClick={doDelegate}>
           Confirm
