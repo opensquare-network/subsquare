@@ -86,6 +86,7 @@ export default function FoldableItem({ data, indent = true, compact }) {
             isFold={isFold}
             setIsFold={setIsFold}
             compact={compact}
+            className="[&_.timeline-item-right]:!pb-4"
           />
         ))}
       </Right>

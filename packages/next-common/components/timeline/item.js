@@ -127,7 +127,14 @@ const LinkWrapper = styled(Flex)`
   margin-top: 8px;
 `;
 
-export default function Item({ data, foldable, isFold, setIsFold, compact }) {
+export default function Item({
+  data,
+  foldable,
+  isFold,
+  setIsFold,
+  compact,
+  className = "",
+}) {
   const itemTime = data.time;
   const itemAge = useDuration(itemTime);
 
@@ -135,13 +142,13 @@ export default function Item({ data, foldable, isFold, setIsFold, compact }) {
     <Wrapper
       foldable={foldable}
       isFold={isFold}
-      className="group/timeline-item"
+      className={clsx("group/timeline-item", className)}
     >
       <Left>
         <Cirtcle />
         <Bar className="bar" />
       </Left>
-      <Right className="pb-4 group-last/timeline-item:pb-0">
+      <Right className="timeline-item-right pb-4 group-last/timeline-item:pb-0">
         <TitleWrapper>
           <Tooltip content={itemAge}>
             <div className="text-textPrimary">{itemTime}</div>
