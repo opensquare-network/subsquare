@@ -89,20 +89,36 @@ function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
   };
 }
 
+function getNanValueShow(value) {
+  if (!value) {
+    return "--";
+  }
+
+  return `${Number(value).toFixed(2)}%`;
+}
+
 export default function useDetailPageOptions(labels = [], datasets) {
   const commonPluginsConfig = useCommonPluginsConfig();
   return getDetailConfig(labels, commonPluginsConfig, function (tooltipItem) {
     const { dataset, parsed, dataIndex } = tooltipItem;
-    if (dataset.label === "Current Approval") {
-      const approvalValue = Number(parsed.y).toFixed(2);
-      const dataset = datasets.find((dataset) => dataset.label === "Approval");
-      const threshold = Number(dataset.data[dataIndex]).toFixed(2);
-      return `Approval: ${approvalValue}% / ${threshold}%`;
-    } else if (dataset.label === "Current Support") {
-      const supportValue = Number(parsed.y).toFixed(2);
-      const dataset = datasets.find((dataset) => dataset.label === "Support");
-      const threshold = Number(dataset.data[dataIndex]).toFixed(2);
-      return `Support: ${supportValue}% / ${threshold}%`;
+    if (dataset.label === "Approval") {
+      const threshold = Number(parsed.y).toFixed(2);
+      const dataset = datasets.find(
+        (dataset) => dataset.label === "Current Approval",
+      );
+
+      return `Approval: ${getNanValueShow(
+        dataset.data[dataIndex],
+      )} / ${threshold}%`;
+    } else if (dataset.label === "Support") {
+      const threshold = Number(parsed.y).toFixed(2);
+      const dataset = datasets.find(
+        (dataset) => dataset.label === "Current Support",
+      );
+
+      return `Support: ${getNanValueShow(
+        dataset.data[dataIndex],
+      )} / ${threshold}%`;
     }
 
     return null;
