@@ -36,7 +36,6 @@ export default function Gov2Sidebar() {
   return (
     <RightBarWrapper>
       <Gov2Status />
-
       <Gov2Tally />
 
       <MyVote />

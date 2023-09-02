@@ -4,13 +4,12 @@ import {
   blockTimeSelector,
   latestHeightSelector,
 } from "next-common/store/reducers/chainSlice";
-import useReferendaTallyHistory from "next-common/utils/hooks/useReferendaTallyHistory";
-import { useOnchainData } from "next-common/context/post";
 import last from "lodash.last";
 import BigNumber from "bignumber.js";
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
 import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
+import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -83,8 +82,7 @@ export default function useHistoryTallyValueData() {
   const { labels } = useReferendumCurveData();
   const decidingSince = useDecidingSince();
   const blockTime = useSelector(blockTimeSelector);
-  const { referendumIndex } = useOnchainData();
-  const { data: tallyHistory } = useReferendaTallyHistory(referendumIndex);
+  const tallyHistory = useSelector(referendaTallyHistorySelector);
   const decidingEnd = useDecidingEndHeight();
   const latestHeight = useSelector(latestHeightSelector);
 
