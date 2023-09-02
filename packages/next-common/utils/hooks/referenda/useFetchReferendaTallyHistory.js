@@ -1,7 +1,10 @@
 import nextApi from "next-common/services/nextApi";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setTallyHistory } from "next-common/store/reducers/referenda/tallyHistory";
+import {
+  clearTallyHistory,
+  setTallyHistory,
+} from "next-common/store/reducers/referenda/tallyHistory";
 
 export default function useFetchReferendaTallyHistory(referendumIndex) {
   const dispatch = useDispatch();
@@ -13,5 +16,9 @@ export default function useFetchReferendaTallyHistory(referendumIndex) {
         if (!result) return;
         dispatch(setTallyHistory(result));
       });
+
+    return () => {
+      dispatch(clearTallyHistory());
+    };
   }, [referendumIndex]);
 }
