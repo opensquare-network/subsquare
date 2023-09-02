@@ -51,7 +51,7 @@ export default function ReferendaCurveChart() {
   );
 
   return (
-    <div style={{ height: width > 768 ? 320 : 144 }}>
+    <div style={{ height: width <= 768 ? 144 : 320 }}>
       <Line data={chartData} options={options} plugins={[hoverLinePlugin]} />
     </div>
   );
