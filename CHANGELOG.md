@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### 3.4.3
+### 3.4.4
 date: 2023-09-01
 - Render `system#remark` call content with markdown previewer.
 - Refactor: Control detail page tabs with data in redux.
