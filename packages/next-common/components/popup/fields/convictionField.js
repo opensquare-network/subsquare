@@ -33,7 +33,7 @@ export default function ConvictionField({
       <StatusWrapper className="flex-col gap-y-1">
         <div className="flex justify-between w-full">
           <div className="value">
-            <span>Governance Votes</span>
+            <span>Votes</span>
           </div>
           <div className="result">
             {calcVotes(balance, conviction)} {symbol}
@@ -41,7 +41,7 @@ export default function ConvictionField({
         </div>
         <div className="flex justify-between w-full">
           <div className="value">
-            <span>Undelegating Period</span>
+            <span>Locked For</span>
           </div>
           <div className="result">{time ? "≈ " + time : 0}</div>
         </div>
