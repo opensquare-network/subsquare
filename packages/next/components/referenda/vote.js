@@ -170,6 +170,8 @@ function Vote({ referendumIndex }) {
         </VotesGroup>
       </SecondaryCardDetail>
 
+      <MyVote />
+
       {!isVoteFinished && !hideActionButtons && (
         <PrimaryButton
           onClick={() => {
@@ -179,8 +181,6 @@ function Vote({ referendumIndex }) {
           Vote
         </PrimaryButton>
       )}
-
-      <MyVote />
 
       {showVote && (
         <Popup

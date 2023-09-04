@@ -34,7 +34,7 @@ function VotingProposals({ host }) {
   useEffect(() => {
     new Api(host)
       .fetch(`/api/${space}/proposals/active`)
-      .then(({ result: { items } }) => {
+      .then(({ result: { items = [] } }) => {
         setPosts(items);
       });
   }, [host]);

@@ -8,6 +8,8 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { VoteItem } from "next-common/components/myReferendumVote/voteItem";
+import useSubMyDemocracyVote from "hooks/democracy/useSubMyDemocracyVote";
+import { usePost } from "next-common/context/post";
 
 export const Button = tw(Link)`
   cursor-pointer
@@ -24,11 +26,14 @@ const Title = styled(TitleContainer)`
 export default function MyVote() {
   const allVotes = useSelector(allVotesSelector);
   const realAddress = useRealAddress();
-  if (!realAddress) {
-    return null;
+
+  const post = usePost();
+  const referendumIndex = post?.referendumIndex;
+  let { vote } = useSubMyDemocracyVote(referendumIndex, realAddress);
+  if (!vote) {
+    vote = allVotes?.find((vote) => vote.account === realAddress);
   }
 
-  const vote = allVotes?.find((vote) => vote.account === realAddress);
   if (!vote) {
     return null;
   }

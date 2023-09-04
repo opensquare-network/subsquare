@@ -225,6 +225,8 @@ function Vote({ referendumInfo, referendumIndex }) {
         <VotesInfo />
       </SecondaryCardDetail>
 
+      <MyVote />
+
       {!referendumInfo?.finished && (
         <PrimaryButton
           isFill
@@ -235,8 +237,6 @@ function Vote({ referendumInfo, referendumIndex }) {
           Vote
         </PrimaryButton>
       )}
-
-      <MyVote />
 
       <ExternalLink href={`https://docs.interlay.io/#/${chain}/governance`}>
         How {capitalize(chain)} Governance Works.
