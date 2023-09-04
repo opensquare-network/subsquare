@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import { Conviction, isAye } from "../../utils/referendumCommon";
-import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
-import useBlockApi from "../../utils/hooks/useBlockApi";
+import useApi from "next-common/utils/hooks/useApi";
 
 export default function useSubMyReferendaVote(
   trackId,
   referendumIndex,
   address,
 ) {
-  const finishedHeight = useReferendumVotingFinishHeight();
-  const api = useBlockApi(finishedHeight);
+  const api = useApi();
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();

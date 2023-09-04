@@ -8,8 +8,11 @@ import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferenda
 import { usePost } from "next-common/context/post";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { normalizeOnchainVote } from "next-common/utils/vote";
+import { useState } from "react";
+import RemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup";
 
 export default function MyVote() {
+  const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
   const pageType = useDetailType();
   const allVotes = useSelector(allVotesSelector);
   let votes = useMyVotes(allVotes);
@@ -34,5 +37,20 @@ export default function MyVote() {
     return null;
   }
 
-  return <MyVoteCommon votes={votes} hasOnchainVote={hasOnchainVote} />;
+  return (
+    <>
+      <MyVoteCommon
+        votes={votes}
+        hasOnchainVote={hasOnchainVote}
+        setShowRemoveVotePopup={setShowRemoveVotePopup}
+      />
+      {showRemovePopup && (
+        <RemoveReferendaVotePopup
+          trackId={trackId}
+          referendumIndex={referendumIndex}
+          onClose={() => setShowRemoveVotePopup(false)}
+        />
+      )}
+    </>
+  );
 }

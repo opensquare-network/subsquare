@@ -3,8 +3,7 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "../../context/post";
 import { Conviction, isAye } from "../../utils/referendumCommon";
-import useDemocracyVoteFinishedHeight from "../../context/post/democracy/referendum/voteFinishedHeight";
-import useBlockApi from "../../utils/hooks/useBlockApi";
+import useApi from "next-common/utils/hooks/useApi";
 
 async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
   const { target, conviction } = delegating;
@@ -33,8 +32,7 @@ async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
 export default function useSubMyDemocracyVote() {
   const realAddress = useRealAddress();
   const isMounted = useIsMounted();
-  const finishedHeight = useDemocracyVoteFinishedHeight();
-  const api = useBlockApi(finishedHeight);
+  const api = useApi();
   const { referendumIndex } = useOnchainData();
 
   const [vote, setVote] = useState(null);

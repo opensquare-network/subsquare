@@ -1,11 +1,9 @@
-import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import useApi from "next-common/utils/hooks/useApi";
 
 export default function useSubMyDemocracyVote(referendumIndex, address) {
-  const finishedHeight = useDemocracyVoteFinishedHeight();
-  const api = useBlockApi(finishedHeight);
+  const api = useApi();
 
   const [isLoading, setIsLoading] = useState(false);
   const [vote, setVote] = useState(null);
