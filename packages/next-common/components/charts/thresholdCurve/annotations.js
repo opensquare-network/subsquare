@@ -8,7 +8,7 @@ function percentageLineBase(threshold, borderColor) {
     fill: false,
     borderDash: [5, 3],
     borderColor,
-    borderWidth: 1,
+    borderWidth: 2,
     pointRadius: 0,
     pointHoverRadius: 0,
     scaleID: "y",
@@ -16,12 +16,12 @@ function percentageLineBase(threshold, borderColor) {
 }
 
 export function useSupportPercentageLine(supportPercentage) {
-  const { purple300 } = useThemeSetting();
-  return percentageLineBase(supportPercentage, purple300);
+  const { purple500 } = useThemeSetting();
+  return percentageLineBase(supportPercentage, purple500);
 }
 export function useApprovalPercentageLine(approvalPercentage) {
-  const { green300 } = useThemeSetting();
-  return percentageLineBase(approvalPercentage, green300);
+  const { green500 } = useThemeSetting();
+  return percentageLineBase(approvalPercentage, green500);
 }
 
 function outerPointBase(backgroundColor, borderColor, x, y) {

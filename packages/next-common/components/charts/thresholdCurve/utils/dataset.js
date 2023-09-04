@@ -35,21 +35,21 @@ export function useApprovalThresholdDatasetConfig(data) {
 }
 
 export function useSupportValueDatasetConfig(data = []) {
-  const { purple300 } = useThemeSetting();
+  const { purple500 } = useThemeSetting();
   return {
     label: "Current Support",
     data,
-    borderColor: purple300,
+    borderColor: purple500,
     ...valueCommon,
   };
 }
 
 export function useApprovalValueDatasetConfig(data = []) {
-  const { green300 } = useThemeSetting();
+  const { green500 } = useThemeSetting();
   return {
     label: "Current Approval",
     data,
-    borderColor: green300,
+    borderColor: green500,
     ...valueCommon,
   };
 }
