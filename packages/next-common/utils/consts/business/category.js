@@ -22,7 +22,7 @@ const businessCategory = {
 };
 
 export const detailPageCategory = {
-  POST: "post",
+  POST: "posts",
   PA_POST: "polkassembly/posts",
   COUNCIL_MOTION: "council/motions",
   FINANCIAL_MOTION: "financial-council/motions",
