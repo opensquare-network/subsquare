@@ -20,7 +20,7 @@ export default function MultiProgress({ progressItems = [] }) {
     <div className="relative rounded h-2 overflow-hidden">
       <Progress bg="var(--neutral200)" />
 
-      <div className="z-10 absolute inset-0 h-full w-full">
+      <div className="absolute inset-0 h-full w-full">
         {items.map((item, idx) => (
           <Tooltip
             key={idx}
