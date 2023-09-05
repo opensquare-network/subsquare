@@ -33,6 +33,7 @@ import capitalize from "lodash.capitalize";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import VotesInfo from "./votesInfo";
 import ExternalLink from "next-common/components/externalLink";
+import WithAddress from "next-common/components/common/withAddress";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -225,7 +226,9 @@ function Vote({ referendumInfo, referendumIndex }) {
         <VotesInfo />
       </SecondaryCardDetail>
 
-      <MyVote />
+      <WithAddress>
+        <MyVote />
+      </WithAddress>
 
       {!referendumInfo?.finished && (
         <PrimaryButton
