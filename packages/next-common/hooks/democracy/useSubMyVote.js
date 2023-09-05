@@ -3,8 +3,7 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "../../context/post";
 import { Conviction, isAye } from "../../utils/referendumCommon";
-import useDemocracyVoteFinishedHeight from "../../context/post/democracy/referendum/voteFinishedHeight";
-import useBlockApi from "../../utils/hooks/useBlockApi";
+import useApi from "next-common/utils/hooks/useApi";
 
 async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
   const { target, conviction } = delegating;
@@ -33,8 +32,7 @@ async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
 export default function useSubMyDemocracyVote() {
   const realAddress = useRealAddress();
   const isMounted = useIsMounted();
-  const finishedHeight = useDemocracyVoteFinishedHeight();
-  const api = useBlockApi(finishedHeight);
+  const api = useApi();
   const { referendumIndex } = useOnchainData();
 
   const [vote, setVote] = useState(null);
@@ -47,38 +45,45 @@ export default function useSubMyDemocracyVote() {
 
     let unsub;
     setIsLoading(true);
-    api.query.democracy.votingOf(realAddress, (voting) => {
-      const jsonVoting = voting?.toJSON();
-      if (!jsonVoting) {
-        return;
-      }
+    api.query.democracy
+      .votingOf(realAddress, (voting) => {
+        const jsonVoting = voting?.toJSON();
+        if (!jsonVoting) {
+          return;
+        }
 
-      if (jsonVoting.direct) {
-        const vote = (jsonVoting.direct.votes || []).find(
-          (vote) => vote[0] === referendumIndex,
-        )?.[1];
+        if (jsonVoting.direct) {
+          const vote = (jsonVoting.direct.votes || []).find(
+            (vote) => vote[0] === referendumIndex,
+          )?.[1];
 
-        if (isMounted.current) {
-          setVote({
-            ...vote,
-            delegations: jsonVoting.direct.delegations,
+          if (isMounted.current) {
+            setVote({
+              ...vote,
+              delegations: jsonVoting.direct.delegations,
+            });
+          }
+        } else if (jsonVoting.delegating) {
+          // If the address has delegated to other.
+          // Then, look into the votes of the delegating target address.
+          queryVotingByDelegation(
+            api,
+            referendumIndex,
+            jsonVoting.delegating,
+          ).then((delegatingVote) => {
+            if (isMounted.current) {
+              setVote(delegatingVote);
+            }
           });
         }
-      } else if (jsonVoting.delegating) { // If the address has delegated to other.
-        // Then, look into the votes of the delegating target address.
-        queryVotingByDelegation(api, referendumIndex, jsonVoting.delegating).then(delegatingVote => {
-          if (isMounted.current) {
-            setVote(delegatingVote);
-          }
-        });
-      }
 
-      if (isMounted.current) {
-        setIsLoading(false);
-      }
-    }).then(result => {
-      unsub = result;
-    });
+        if (isMounted.current) {
+          setIsLoading(false);
+        }
+      })
+      .then((result) => {
+        unsub = result;
+      });
 
     return () => {
       if (unsub) {

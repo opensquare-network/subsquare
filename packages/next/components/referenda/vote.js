@@ -34,6 +34,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Calls from "./voteCalls";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
+import WithAddress from "next-common/components/common/withAddress";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -170,6 +171,10 @@ function Vote({ referendumIndex }) {
         </VotesGroup>
       </SecondaryCardDetail>
 
+      <WithAddress>
+        <MyVote />
+      </WithAddress>
+
       {!isVoteFinished && !hideActionButtons && (
         <PrimaryButton
           onClick={() => {
@@ -179,8 +184,6 @@ function Vote({ referendumIndex }) {
           Vote
         </PrimaryButton>
       )}
-
-      <MyVote />
 
       {showVote && (
         <Popup

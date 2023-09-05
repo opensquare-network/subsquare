@@ -16,6 +16,9 @@ const Wrapper = tw.div`flex text14Medium grow items-center justify-between borde
 
 export function VoteItem({ vote }) {
   const { symbol, decimals, voteSymbol } = useChainSettings();
+  if (!vote) {
+    return null;
+  }
 
   let icon = null;
   if (vote.isAbstain) {

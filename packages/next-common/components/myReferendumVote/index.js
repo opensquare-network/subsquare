@@ -7,7 +7,13 @@ import { useChainSettings } from "next-common/context/chain";
 import DelegationStatus from "./delegationStatus";
 import tw from "tailwind-styled-components";
 
-export const Button = tw(Link)`
+export const LinkButton = tw(Link)`
+  cursor-pointer
+  text14Medium
+  text-theme500
+`;
+
+export const Button = tw.div`
   cursor-pointer
   text14Medium
   text-theme500
@@ -19,7 +25,11 @@ const Title = styled(TitleContainer)`
   padding-right: 0;
 `;
 
-export default function MyVoteCommon({ votes }) {
+export default function MyVoteCommon({
+  votes,
+  hasOnchainVote,
+  setShowRemoveVotePopup,
+}) {
   const { hasReferenda, noDemocracyModule } = useChainSettings();
   const hasVotesManagement = hasReferenda || !noDemocracyModule;
 
@@ -55,13 +65,16 @@ export default function MyVoteCommon({ votes }) {
           <DelegationStatus delegatingTarget={delegatingTarget} />
         )}
 
-        {hasVotesManagement && (
-          <div className="flex justify-end">
-            <Button href="/votes">
+        <div className="flex justify-end gap-[16px]">
+          {hasVotesManagement && (
+            <LinkButton href="/votes">
               <span>Manage My Votes</span>
-            </Button>
-          </div>
-        )}
+            </LinkButton>
+          )}
+          {hasOnchainVote && (
+            <Button onClick={() => setShowRemoveVotePopup(true)}>Remove</Button>
+          )}
+        </div>
       </div>
     </SecondaryCardDetail>
   );

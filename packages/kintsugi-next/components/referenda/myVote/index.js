@@ -4,12 +4,17 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Link from "next/link";
 import tw from "tailwind-styled-components";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { VoteItem } from "next-common/components/myReferendumVote/voteItem";
+import useSubMyDemocracyVote from "hooks/democracy/useSubMyDemocracyVote";
+import { usePost } from "next-common/context/post";
+import { useState } from "react";
+import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
+import isNil from "lodash.isnil";
+import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 
-export const Button = tw(Link)`
+export const Button = tw.div`
   cursor-pointer
   text14Medium
   text-theme500
@@ -22,13 +27,20 @@ const Title = styled(TitleContainer)`
 `;
 
 export default function MyVote() {
+  const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
   const allVotes = useSelector(allVotesSelector);
   const realAddress = useRealAddress();
-  if (!realAddress) {
-    return null;
+
+  const post = usePost();
+  const referendumIndex = post?.referendumIndex;
+  let { vote } = useSubMyDemocracyVote(referendumIndex, realAddress);
+  const hasOnchainVote = !isNil(vote);
+
+  const finishHeight = useDemocracyVoteFinishedHeight();
+  if (finishHeight) {
+    vote = allVotes?.find((vote) => vote.account === realAddress);
   }
 
-  const vote = allVotes?.find((vote) => vote.account === realAddress);
   if (!vote) {
     return null;
   }
@@ -38,6 +50,19 @@ export default function MyVote() {
       <Title>My Vote</Title>
 
       <VoteItem vote={vote} />
+
+      <div className="flex justify-end gap-[16px] mt-[16px]">
+        {hasOnchainVote && (
+          <Button onClick={() => setShowRemoveVotePopup(true)}>Remove</Button>
+        )}
+      </div>
+
+      {showRemovePopup && (
+        <RemoveDemocracyVotePopup
+          referendumIndex={referendumIndex}
+          onClose={() => setShowRemoveVotePopup(false)}
+        />
+      )}
     </SecondaryCardDetail>
   );
 }

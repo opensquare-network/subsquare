@@ -11,6 +11,7 @@ import { useChainSettings } from "next-common/context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
 import MyVote from "./tally/myVote";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import WithAddress from "next-common/components/common/withAddress";
 
 const VotePopup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -37,8 +38,9 @@ export default function Gov2Sidebar() {
     <RightBarWrapper>
       <Gov2Status />
       <Gov2Tally />
-
-      <MyVote />
+      <WithAddress>
+        <MyVote />
+      </WithAddress>
 
       {isVoting && !hideActionButtons && (
         <InlineWrapper>
