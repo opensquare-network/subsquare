@@ -10,7 +10,7 @@ function BountyProposals() {
   useEffect(() => {
     new Api(process.env.NEXT_PUBLIC_BOUNTIES_API_URL)
       .fetch("child-bounties")
-      .then(({ result: { items = [] } }) => {
+      .then(({ result: { items } }) => {
         setPosts(items.filter((item) => item.network === chain));
       });
   }, []);
