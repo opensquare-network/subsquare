@@ -1,5 +1,3 @@
-import { useDetailType } from "next-common/context/page";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useSelector } from "react-redux";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import MyVoteCommon from "next-common/components/myReferendumVote";
@@ -14,7 +12,6 @@ import isNil from "lodash.isnil";
 
 export default function MyVote() {
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
-  const pageType = useDetailType();
   const allVotes = useSelector(allVotesSelector);
   let votes = useMyVotes(allVotes);
 
@@ -35,10 +32,6 @@ export default function MyVote() {
   // If the referendum is finished, we don't need to show the onchain vote
   if (!finishHeight) {
     votes = normalizedOnchainVote;
-  }
-
-  if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {
-    return null;
   }
 
   return (
