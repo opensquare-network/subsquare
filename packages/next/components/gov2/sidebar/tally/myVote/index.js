@@ -10,6 +10,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useState } from "react";
 import RemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function MyVote() {
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
@@ -26,11 +27,23 @@ export default function MyVote() {
     referendumIndex,
     realAddress,
   );
+  const finishHeight = useReferendumVotingFinishHeight();
 
   let hasOnchainVote = false;
+  let normalizedOnchainVote = [];
   if (onchainVote) {
-    hasOnchainVote = true;
-    votes = normalizeOnchainVote(onchainVote);
+    normalizedOnchainVote = normalizeOnchainVote(onchainVote);
+    const isDelegating = !!onchainVote.delegating;
+    hasOnchainVote = normalizedOnchainVote?.length > 0 && !isDelegating;
+  }
+
+  // If the referendum is finished, we don't need to show the onchain vote
+  if (!finishHeight) {
+    votes = normalizedOnchainVote;
+  }
+
+  if (!realAddress) {
+    return null;
   }
 
   if (detailPageCategory.FELLOWSHIP_REFERENDUM === pageType) {

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { usePost } from "next-common/context/post";
 import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 
 export default function MyVote() {
   const post = usePost();
@@ -18,16 +19,24 @@ export default function MyVote() {
   let votes = useMyVotes(allVotes);
 
   const { vote: onchainVote } = useSubMyDemocracyVote();
+  const finishHeight = useDemocracyVoteFinishedHeight();
+
+  // Retrieve the current vote from the chain
+  let hasOnchainVote = false;
+  let normalizedOnchainVote = [];
+  if (onchainVote) {
+    normalizedOnchainVote = normalizeOnchainVote(onchainVote);
+    const isDelegating = !!onchainVote.delegating;
+    hasOnchainVote = normalizedOnchainVote?.length > 0 && !isDelegating;
+  }
+
+  // If the referendum is finished, we don't need to show the onchain vote
+  if (!finishHeight) {
+    votes = normalizedOnchainVote;
+  }
 
   if (!realAddress) {
     return null;
-  }
-
-  let hasOnchainVote = false;
-  if (onchainVote) {
-    const isDelegating = !!onchainVote.delegating;
-    hasOnchainVote = !isDelegating;
-    votes = normalizeOnchainVote(onchainVote);
   }
 
   return (
