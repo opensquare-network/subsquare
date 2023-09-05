@@ -40,6 +40,16 @@ export function normalizeOnchainVote(vote) {
         conviction: 0,
       },
     ];
+  } else if (vote?.delegating) {
+    return [
+      {
+        aye: vote?.delegating?.aye,
+        balance: vote?.delegating?.balance,
+        conviction: vote?.delegating?.conviction,
+        isDelegating: true,
+        target: vote?.delegating?.target,
+      },
+    ];
   }
 
   return [];
