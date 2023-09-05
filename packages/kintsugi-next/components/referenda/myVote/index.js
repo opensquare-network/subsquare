@@ -11,6 +11,8 @@ import useSubMyDemocracyVote from "hooks/democracy/useSubMyDemocracyVote";
 import { usePost } from "next-common/context/post";
 import { useState } from "react";
 import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
+import isNil from "lodash.isnil";
+import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 
 export const Button = tw.div`
   cursor-pointer
@@ -32,9 +34,10 @@ export default function MyVote() {
   const post = usePost();
   const referendumIndex = post?.referendumIndex;
   let { vote } = useSubMyDemocracyVote(referendumIndex, realAddress);
-  let hasOnchainVote = true;
-  if (!vote) {
-    hasOnchainVote = false;
+  const hasOnchainVote = !isNil(vote);
+
+  const finishHeight = useDemocracyVoteFinishedHeight();
+  if (finishHeight) {
     vote = allVotes?.find((vote) => vote.account === realAddress);
   }
 

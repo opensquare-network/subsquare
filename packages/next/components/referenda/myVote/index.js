@@ -9,6 +9,7 @@ import { usePost } from "next-common/context/post";
 import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
+import isNil from "lodash.isnil";
 
 export default function MyVote() {
   const post = usePost();
@@ -26,7 +27,7 @@ export default function MyVote() {
   let normalizedOnchainVote = [];
   if (onchainVote) {
     normalizedOnchainVote = normalizeOnchainVote(onchainVote);
-    const isDelegating = !!onchainVote.delegating;
+    const isDelegating = !isNil(onchainVote.delegating);
     hasOnchainVote = normalizedOnchainVote?.length > 0 && !isDelegating;
   }
 

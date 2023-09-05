@@ -11,6 +11,7 @@ import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useState } from "react";
 import RemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import isNil from "lodash.isnil";
 
 export default function MyVote() {
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
@@ -33,7 +34,7 @@ export default function MyVote() {
   let normalizedOnchainVote = [];
   if (onchainVote) {
     normalizedOnchainVote = normalizeOnchainVote(onchainVote);
-    const isDelegating = !!onchainVote.delegating;
+    const isDelegating = !isNil(onchainVote.delegating);
     hasOnchainVote = normalizedOnchainVote?.length > 0 && !isDelegating;
   }
 
