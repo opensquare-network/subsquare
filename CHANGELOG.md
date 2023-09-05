@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.5
+date: 2023-09-05
+- Show my vote and support removing vote on referendum detail page.
+- Improve tally history line style of referendum curve chart, and improve chart initialization.
+- Implement conviction slider for democracy/referenda pallets.
+- Fix styles.
+
 ### 3.4.4
 date: 2023-09-01
 - Render `system#remark` call content with markdown previewer.
