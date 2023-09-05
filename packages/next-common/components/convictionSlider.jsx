@@ -52,6 +52,7 @@ export default function ConvictionSlider({
       renderThumb={(props) => (
         <div
           {...props}
+          style={{ ...props.style, zIndex: 0 }}
           className={clsx(
             props.className,
             "top-6",
@@ -65,7 +66,11 @@ export default function ConvictionSlider({
       )}
       // slider dot
       renderMark={(props) => (
-        <div {...props} className={clsx(props.className, "flex flex-col")}>
+        <div
+          {...props}
+          style={{ ...props.style, zIndex: -1 }}
+          className={clsx(props.className, "flex flex-col")}
+        >
           <div className="text12Medium text-textSecondary mb-2 text-center">
             {convictionToLockX(props.key)}
           </div>
@@ -93,6 +98,7 @@ export default function ConvictionSlider({
             left: props.style.left + 12,
             right: props.style.right + 12,
             top: 33,
+            zIndex: -1,
           }}
         />
       )}
