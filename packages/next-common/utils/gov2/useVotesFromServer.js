@@ -2,8 +2,9 @@ import nextApi from "next-common/services/nextApi";
 import { useEffect, useState } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import BigNumber from "bignumber.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAllVotes } from "next-common/store/reducers/referenda/votes";
+import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 function extractSplitVotes(vote = {}) {
   const { account, ayeBalance, ayeVotes, nayBalance, nayVotes } = vote;
@@ -73,15 +74,18 @@ function extractSplitAbstainVotes(vote = {}) {
 export default function useVotesFromServer(referendumIndex) {
   const [votes, setVotes] = useState();
   const dispatch = useDispatch();
+  const reduxVotes = useSelector(allVotesSelector);
 
   useEffect(() => {
-    nextApi
-      .fetch(`gov2/referenda/${referendumIndex}/votes`)
-      .then(({ result: votes }) => setVotes(votes));
-  }, [referendumIndex]);
+    if (!reduxVotes) {
+      nextApi
+        .fetch(`gov2/referenda/${referendumIndex}/votes`)
+        .then(({ result: votes }) => setVotes(votes));
+    }
+  }, [referendumIndex, reduxVotes]);
 
   useEffect(() => {
-    if (!votes) {
+    if (!votes || reduxVotes) {
       return;
     }
 
@@ -97,5 +101,5 @@ export default function useVotesFromServer(referendumIndex) {
       .filter((v) => new BigNumber(v.balance).gt(0));
 
     dispatch(setAllVotes(sortVotes(allVotes)));
-  }, [votes]);
+  }, [votes, reduxVotes]);
 }

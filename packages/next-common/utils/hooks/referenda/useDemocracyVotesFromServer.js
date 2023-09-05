@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { setAllVotes } from "next-common/store/reducers/democracy/votes";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
+import { allVotesSelector } from "next-common/store/reducers/democracy/votes/selectors";
 
 function extractSplitVotes(vote = {}) {
   const { account, ayeBalance, ayeVotes, nayBalance, nayVotes } = vote;
@@ -31,14 +32,18 @@ function extractSplitVotes(vote = {}) {
 export default function useDemocracyVotesFromServer(referendumIndex) {
   const [votes, setVotes] = useState();
   const dispatch = useDispatch();
+  const reduxVotes = useSelector(allVotesSelector);
 
   useEffect(() => {
-    nextApi.fetch(`democracy/referenda/${ referendumIndex }/votes`)
-      .then(({ result: votes }) => setVotes(votes));
-  }, [referendumIndex]);
+    if (!reduxVotes) {
+      nextApi
+        .fetch(`democracy/referenda/${referendumIndex}/votes`)
+        .then(({ result: votes }) => setVotes(votes));
+    }
+  }, [referendumIndex, reduxVotes]);
 
   useEffect(() => {
-    if (!votes) {
+    if (!votes || reduxVotes) {
       return;
     }
 
@@ -50,5 +55,5 @@ export default function useDemocracyVotesFromServer(referendumIndex) {
     }, []);
 
     dispatch(setAllVotes(sortVotes(allVotes)));
-  });
+  }, [votes, reduxVotes]);
 }
