@@ -18,5 +18,9 @@ const ColorLoadingIcon = styled(SystemLoading)`
 `;
 
 export default function Loading({ size = 12, color }) {
-  return <ColorLoadingIcon width={size} height={size} color={color} />;
+  return (
+    <div className="inline-flex">
+      <ColorLoadingIcon width={size} height={size} color={color} />
+    </div>
+  );
 }
