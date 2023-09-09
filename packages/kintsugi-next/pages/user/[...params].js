@@ -8,12 +8,11 @@ import { encodeAddressToChain } from "next-common/services/address";
 export default withLoginUserRedux(Profile);
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const {
     params: [id],
   } = context.query;
 
-  const setting = getChainSettings(chain);
+  const setting = getChainSettings(process.env.CHAIN);
   const identityChain = setting.identity;
   const identityAddress = encodeAddressToChain(id, identityChain);
 
@@ -34,7 +33,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       id,
-      chain,
       summary: summary ?? {},
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",

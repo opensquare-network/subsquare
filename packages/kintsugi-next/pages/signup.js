@@ -3,8 +3,4 @@ import SignUpPage from "@subsquare/next/pages/signup";
 
 export default SignUpPage;
 
-export const getServerSideProps = withLoginUser(async () => {
-  return {
-    props: {},
-  };
-});
+export const getServerSideProps = withLoginUser();
