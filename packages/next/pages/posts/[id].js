@@ -9,12 +9,14 @@ import { getFocusEditor } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Cookies from "cookies";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import { fetchDetailComments } from "next-common/services/detail";
+import {
+  fetchDetailComments,
+  getPostVotesAndMine,
+} from "next-common/services/detail";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote }) => {
@@ -83,28 +85,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     page,
     pageSize,
   );
-
-  let options;
-  const cookies = new Cookies(context.req, context.res);
-  const authToken = cookies.get("auth-token");
-  if (authToken) {
-    options = {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    };
-  }
-
-  let votes = null;
-  let myVote = null;
-  if (detail.poll) {
-    ({ result: votes } = await nextApi.fetch(`polls/${detail.poll._id}/votes`));
-    ({ result: myVote } = await nextApi.fetch(
-      `polls/${detail.poll._id}/myvote`,
-      {},
-      options,
-    ));
-  }
+  const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
     nextApi.fetch(gov2TracksApi),

@@ -4,12 +4,14 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Cookies from "cookies";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import { fetchDetailComments } from "next-common/services/detail";
+import {
+  fetchDetailComments,
+  getPostVotesAndMine,
+} from "next-common/services/detail";
 
 export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -61,28 +63,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     page,
     pageSize,
   );
-
-  let options;
-  const cookies = new Cookies(context.req, context.res);
-  const authToken = cookies.get("auth-token");
-  if (authToken) {
-    options = {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    };
-  }
-
-  let votes = null;
-  let myVote = null;
-  if (detail.poll) {
-    ({ result: votes } = await nextApi.fetch(`polls/${detail.poll._id}/votes`));
-    ({ result: myVote } = await nextApi.fetch(
-      `polls/${detail.poll._id}/myvote`,
-      {},
-      options,
-    ));
-  }
+  const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
   return {
     props: {
