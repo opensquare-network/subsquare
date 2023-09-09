@@ -19,6 +19,7 @@ import Timeline from "next-common/components/timeline";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 import { useSelector } from "react-redux";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -110,14 +111,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   ]);
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        childBounties: EmptyList,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { childBounties: EmptyList });
   }
 
   const comments = await fetchDetailComments(

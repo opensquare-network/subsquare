@@ -13,6 +13,7 @@ import AnnouncementTimeline from "next-common/components/alliance/announcement/t
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -76,7 +77,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `alliance/announcements/${id}`,
   );
   if (!announcement) {
-    return { props: { id, announcement: null, comments: EmptyList } };
+    return getNullDetailProps(id, { announcement: null });
   }
 
   const comments = await fetchDetailComments(

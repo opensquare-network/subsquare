@@ -27,6 +27,7 @@ import ReferendumCall from "next-common/components/democracy/call";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import DemocracyReferendaVotesBubble from "next-common/components/democracy/referendum/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -146,15 +147,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
 
   const { result: detail } = await nextApi.fetch(`democracy/referendums/${id}`);
-
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
   const comments = await fetchDetailComments(

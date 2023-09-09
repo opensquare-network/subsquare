@@ -10,6 +10,7 @@ import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function AdvisoryCommitteeMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -75,13 +76,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const { result: motion } = await nextApi.fetch(`advisory-motions/${id}`);
   if (!motion) {
-    return {
-      props: {
-        id,
-        motion: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { motion: null });
   }
 
   const comments = await fetchDetailComments(

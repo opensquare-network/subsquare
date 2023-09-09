@@ -21,6 +21,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -107,13 +108,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   );
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
   const comments = await fetchDetailComments(

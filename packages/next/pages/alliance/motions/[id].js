@@ -9,6 +9,7 @@ import MotionContent from "../../../components/motion/motionContent";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
   const breadcrumbItems = [
@@ -49,7 +50,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
   const { result: motion } = await nextApi.fetch(`alliance/motions/${id}`);
   if (!motion) {
-    return { props: { id, motion: null, comments: EmptyList } };
+    return getNullDetailProps(id, { motion: null });
   }
 
   const comments = await fetchDetailComments(

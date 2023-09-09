@@ -39,6 +39,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -146,14 +147,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   );
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        voteStats: {},
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { voteStats: {} });
   }
 
   const { result: voteStats } = await ssrNextApi.fetch(

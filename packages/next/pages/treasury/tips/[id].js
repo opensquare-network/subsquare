@@ -18,6 +18,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -96,13 +97,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: detail } = await nextApi.fetch(`treasury/tips/${id}`);
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
   //TODO: remove the dirty fix

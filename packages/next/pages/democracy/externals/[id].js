@@ -18,6 +18,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function DemocracyExternalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -107,13 +108,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: detail } = await nextApi.fetch(`democracy/externals/${id}`);
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
   const comments = await fetchDetailComments(
