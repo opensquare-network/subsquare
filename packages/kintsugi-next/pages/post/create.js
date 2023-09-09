@@ -1,10 +1,14 @@
 import { withLoginUser } from "next-common/lib";
-import CreatePostPage from "@subsquare/next/pages/post/create";
 
-export default CreatePostPage;
+export default function Create() {
+  return "Please visit `/posts/create`";
+}
 
-export const getServerSideProps = withLoginUser(async () => {
+export const getServerSideProps = withLoginUser(async (context) => {
   return {
-    props: {},
+    redirect: {
+      permanent: true,
+      destination: "/posts/create",
+    },
   };
 });
