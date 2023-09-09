@@ -9,6 +9,7 @@ import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function AdvisoryCommitteeMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -84,12 +85,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `advisory-motions/${motion._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   return {

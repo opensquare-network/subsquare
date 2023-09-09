@@ -9,6 +9,7 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
+import { fetchDetailComments } from "next-common/services/detail";
 
 export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -55,12 +56,11 @@ export const getServerSideProps = withLoginUser(async (context) => {
     return to404();
   }
 
-  const postId = detail._id;
-
-  const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`, {
-    page: page ?? "last",
-    pageSize: Math.min(pageSize ?? 50, 100),
-  });
+  const comments = await fetchDetailComments(
+    `posts/${detail._id}/comments`,
+    page,
+    pageSize,
+  );
 
   let options;
   const cookies = new Cookies(context.req, context.res);

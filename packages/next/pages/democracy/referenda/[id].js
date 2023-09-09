@@ -26,6 +26,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import ReferendumCall from "next-common/components/democracy/call";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import DemocracyReferendaVotesBubble from "next-common/components/democracy/referendum/votesBubble";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -157,12 +158,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `democracy/referendums/${detail?._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

@@ -32,6 +32,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -141,13 +142,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const postId = detail?._id;
-  const { result: comments } = await ssrNextApi.fetch(
-    getFellowshipReferendumCommentsUrl(postId),
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+  const comments = await fetchDetailComments(
+    getFellowshipReferendumCommentsUrl(detail?._id),
+    page,
+    pageSize,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

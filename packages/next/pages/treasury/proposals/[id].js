@@ -17,6 +17,7 @@ import useTreasuryTimelineData from "../../../components/treasuryProposal/useTim
 import Timeline from "next-common/components/timeline";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -111,12 +112,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `treasury/proposals/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

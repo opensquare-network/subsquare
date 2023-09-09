@@ -13,6 +13,7 @@ import TreasuryProposalDetail from "next-common/components/detail/treasury/propo
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -95,12 +96,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `treasury/proposals/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
-    },
+    page,
+    pageSize,
   );
 
   return {

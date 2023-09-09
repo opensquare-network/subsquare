@@ -28,6 +28,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import ReferendumCall from "next-common/components/democracy/call";
 import DemocracyReferendaVotesBubble from "components/referenda/votesBubble";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -190,12 +191,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     publicProposal = result;
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `democracy/referendums/${detail?._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
-    },
+    page,
+    pageSize,
   );
 
   return {

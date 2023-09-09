@@ -17,6 +17,7 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -110,12 +111,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     isPolkadotAddress(author),
   );
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `treasury/tips/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

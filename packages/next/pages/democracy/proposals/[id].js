@@ -18,6 +18,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function PublicProposalContent({ comments }) {
   const post = usePost();
@@ -137,12 +138,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `democracy/proposals/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

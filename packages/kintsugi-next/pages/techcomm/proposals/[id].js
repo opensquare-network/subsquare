@@ -11,6 +11,7 @@ import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -98,14 +99,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const motionId = motion._id;
-
-  const { result: comments } = await nextApi.fetch(
-    `tech-comm/motions/${motionId}/comments`,
-    {
-      page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
-    },
+  const comments = await fetchDetailComments(
+    `tech-comm/motions/${motion._id}/comments`,
+    page,
+    pageSize,
   );
 
   return {

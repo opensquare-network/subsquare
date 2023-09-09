@@ -18,6 +18,7 @@ import useBountyTimelineData from "../../../components/bounty/useBountyTimelineD
 import Timeline from "next-common/components/timeline";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 import { useSelector } from "react-redux";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -120,12 +121,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `treasury/bounties/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

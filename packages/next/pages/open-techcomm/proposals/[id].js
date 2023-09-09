@@ -11,6 +11,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -88,14 +89,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
     };
   }
 
-  const motionId = motion._id;
-
-  const { result: comments } = await nextApi.fetch(
-    `open-techcomm/motions/${motionId}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+  const comments = await fetchDetailComments(
+    `open-techcomm/motions/${motion._id}/comments`,
+    page,
+    pageSize,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

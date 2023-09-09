@@ -12,6 +12,7 @@ import DetailItem from "../../../components/detailItem";
 import AnnouncementTimeline from "next-common/components/alliance/announcement/timeline";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { fetchDetailComments } from "next-common/services/detail";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -79,12 +80,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const pageSize = Math.min(page_size ?? 50, 100);
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `alliance/announcements/${announcement._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   return {

@@ -8,6 +8,7 @@ import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName
 import MotionContent from "../../../components/motion/motionContent";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { fetchDetailComments } from "next-common/services/detail";
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
   const breadcrumbItems = [
@@ -52,12 +53,10 @@ export const getServerSideProps = withLoginUser(async (context) => {
   }
 
   const pageSize = Math.min(page_size ?? 50, 100);
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `alliance/motions/${motion._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    page,
+    pageSize,
   );
 
   return {
