@@ -1,16 +1,9 @@
-import { withLoginUser } from "next-common/lib";
+import { getRedirectServerSideProps } from "next-common/services/serverSide";
 
 export default function Track() {
   return "Please visit `/referenda/tracks/[id]`";
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const { id } = context.query;
-
-  return {
-    redirect: {
-      permanent: true,
-      destination: `/referenda/tracks/${id}`,
-    },
-  };
-});
+export const getServerSideProps = getRedirectServerSideProps(
+  (id) => `/referenda/tracks/${id}`,
+);

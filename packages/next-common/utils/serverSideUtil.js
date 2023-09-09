@@ -1,5 +1,3 @@
-export const EMPTY_SERVER_PROPS = { props: {} };
-
 // redirect to 404 page
 export function to404() {
   return redirect("/404");
