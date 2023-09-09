@@ -12,6 +12,7 @@ import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -90,13 +91,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
 
   if (!motion) {
-    return {
-      props: {
-        id,
-        motion: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { motion: null });
   }
 
   const comments = await fetchDetailComments(
