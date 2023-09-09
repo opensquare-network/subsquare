@@ -139,8 +139,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: detail } = await ssrNextApi.fetch(
     gov2ReferendumsDetailApi(id),
@@ -163,8 +162,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const comments = await fetchDetailComments(
     gov2ReferendumsCommentApi(detail?._id),
-    page,
-    pageSize,
+    context,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

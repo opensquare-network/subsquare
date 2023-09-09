@@ -71,7 +71,7 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
+  const { id } = context.query;
   const { result: announcement } = await nextApi.fetch(
     `alliance/announcements/${id}`,
   );
@@ -79,11 +79,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
     return { props: { id, announcement: null, comments: EmptyList } };
   }
 
-  const pageSize = Math.min(page_size ?? 50, 100);
   const comments = await fetchDetailComments(
     `alliance/announcements/${announcement._id}/comments`,
-    page,
-    pageSize,
+    context,
   );
 
   return {

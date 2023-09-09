@@ -46,17 +46,15 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
+  const { id } = context.query;
   const { result: motion } = await nextApi.fetch(`alliance/motions/${id}`);
   if (!motion) {
     return { props: { id, motion: null, comments: EmptyList } };
   }
 
-  const pageSize = Math.min(page_size ?? 50, 100);
   const comments = await fetchDetailComments(
     `alliance/motions/${motion._id}/comments`,
-    page,
-    pageSize,
+    context,
   );
 
   return {

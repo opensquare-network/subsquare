@@ -77,8 +77,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   let listApi = "motions";
   if ([Chains.moonbeam, Chains.moonriver].includes(chain)) {
@@ -98,8 +97,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const comments = await fetchDetailComments(
     `${listApi}/${motion._id}/comments`,
-    page,
-    pageSize,
+    context,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

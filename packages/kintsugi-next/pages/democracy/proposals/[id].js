@@ -138,7 +138,7 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size: pageSize } = context.query;
+  const { id } = context.query;
 
   const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
 
@@ -163,8 +163,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const comments = await fetchDetailComments(
     `democracy/proposals/${detail._id}/comments`,
-    page,
-    pageSize,
+    context,
   );
 
   return {

@@ -85,7 +85,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size: pageSize } = context.query;
+  const { id } = context.query;
 
   const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
 
@@ -101,8 +101,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const comments = await fetchDetailComments(
     `tech-comm/motions/${motion._id}/comments`,
-    page,
-    pageSize,
+    context,
   );
 
   return {

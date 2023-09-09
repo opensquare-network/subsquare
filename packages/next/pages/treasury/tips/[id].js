@@ -91,8 +91,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: detail } = await nextApi.fetch(`treasury/tips/${id}`);
 
@@ -113,8 +112,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const comments = await fetchDetailComments(
     `treasury/tips/${detail._id}/comments`,
-    page,
-    pageSize,
+    context,
   );
 
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

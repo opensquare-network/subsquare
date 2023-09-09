@@ -70,7 +70,7 @@ export default withLoginUserRedux(
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
-  const { id, page, page_size: pageSize } = context.query;
+  const { id } = context.query;
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`posts/${id}`),
@@ -82,8 +82,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,
-    page,
-    pageSize,
+    context,
   );
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
