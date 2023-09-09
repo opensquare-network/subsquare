@@ -12,11 +12,11 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import {
   fetchDetailComments,
   getPostVotesAndMine,
 } from "next-common/services/detail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote }) => {
@@ -69,7 +69,6 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id } = context.query;
 
   const [{ result: detail }] = await Promise.all([
@@ -86,10 +85,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
   );
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -97,10 +93,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       comments: comments ?? EmptyList,
       votes,
       myVote: myVote ?? null,
-      chain,
 
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

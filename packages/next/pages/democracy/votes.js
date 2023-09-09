@@ -1,6 +1,5 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import {
   Democracy,
   ModuleTabProvider,
@@ -10,6 +9,7 @@ import DemocracyReferendaLayout from "next-common/components/layout/democracyLay
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ summary }) => {
   const user = useUser();
@@ -39,20 +39,14 @@ export default withLoginUserRedux(({ summary }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const [
-    { result: tracks },
-    { result: fellowshipTracks },
-    { result: summary },
-  ] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
+  const [tracksProps, { result: summary }] = await Promise.all([
+    fetchOpenGovTracksProps(),
     ssrNextApi.fetch("summary"),
   ]);
 
   return {
     props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
       summary: summary ?? {},
     },
   };

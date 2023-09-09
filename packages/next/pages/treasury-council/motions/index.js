@@ -4,8 +4,8 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ motions, chain }) => {
   const items = (motions.items || []).map((item) =>
@@ -45,18 +45,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
       pageSize: pageSize ?? defaultPageSize,
     }),
   ]);
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       chain,
       motions: motions ?? EmptyList,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

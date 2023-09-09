@@ -10,6 +10,7 @@ import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ id, motion, comments }) => {
   const breadcrumbItems = [
@@ -57,10 +58,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `alliance/motions/${motion._id}/comments`,
     context,
   );
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       id,
+      ...tracksProps,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
     },

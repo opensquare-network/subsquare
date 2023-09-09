@@ -1,9 +1,9 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import getChainSettings from "next-common/utils/consts/settings";
 import { encodeAddressToChain } from "next-common/services/address";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(Profile);
 
@@ -24,11 +24,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
         `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`,
       ),
     ]);
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -36,8 +32,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       summary: summary ?? {},
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
       identity: identity || {},
     },
   };

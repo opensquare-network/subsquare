@@ -8,13 +8,10 @@ import {
   useCalendarUserEventsSummary,
 } from "next-common/hooks/calendar";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import {
-  adminsApi,
-  fellowshipTracksApi,
-  gov2TracksApi,
-} from "next-common/services/url";
+import { adminsApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
 import clsx from "clsx";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const [date, setDate] = useState(new Date());
@@ -58,17 +55,12 @@ export default withLoginUserRedux(() => {
 });
 
 export const getServerSideProps = withLoginUser(async () => {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
-
+  const tracksProps = await fetchOpenGovTracksProps();
   const { result: admins } = await nextApi.fetch(adminsApi);
 
   return {
     props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
       admins: admins ?? [],
     },
   };

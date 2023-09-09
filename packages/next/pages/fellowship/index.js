@@ -4,14 +4,13 @@ import { ssrNextApi } from "next-common/services/nextApi";
 import {
   fellowshipReferendumsApi,
   fellowshipReferendumsSummaryApi,
-  fellowshipTracksApi,
-  gov2TracksApi,
 } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
   const title = "Fellowship Referenda";
@@ -46,26 +45,20 @@ export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
 
-  const [
-    { result: tracks },
-    { result: fellowshipTracks },
-    { result: posts },
-    { result: summary },
-  ] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-    ssrNextApi.fetch(fellowshipReferendumsApi, {
-      page,
-      pageSize,
-    }),
-    ssrNextApi.fetch(fellowshipReferendumsSummaryApi),
-  ]);
+  const [tracksProps, { result: posts }, { result: summary }] =
+    await Promise.all([
+      fetchOpenGovTracksProps(),
+      ssrNextApi.fetch(fellowshipReferendumsApi, {
+        page,
+        pageSize,
+      }),
+      ssrNextApi.fetch(fellowshipReferendumsSummaryApi),
+    ]);
 
   return {
     props: {
       posts: posts ?? EmptyList,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
       summary: summary ?? {},
     },
   };

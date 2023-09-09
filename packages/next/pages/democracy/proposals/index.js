@@ -4,9 +4,9 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ proposals, chain, summary }) => {
   const items = (proposals.items || []).map((item) =>
@@ -50,18 +50,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
     }),
     nextApi.fetch("summary"),
   ]);
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       chain,
       proposals: proposals ?? EmptyList,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
       summary: summary ?? {},
     },
   };

@@ -1,9 +1,7 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import {
-  fellowshipTracksApi,
   gov2ReferendumsTracksApi,
   gov2ReferendumsTracksSummaryApi,
-  gov2TracksApi,
 } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -16,6 +14,7 @@ import VoteTrend from "next-common/components/statistics/track/voteTrend";
 import AddressTrend from "next-common/components/statistics/track/addressTrend";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
 import DemocracyStatistics from "next-common/components/statistics/democracy";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(
   ({
@@ -78,10 +77,7 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
 
-  const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
-  const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(
-    fellowshipTracksApi,
-  );
+  const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -117,8 +113,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
   return {
     props: {
       track: track ?? {},
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      tracks,
+      fellowshipTracks,
       turnout: turnout ?? [],
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,

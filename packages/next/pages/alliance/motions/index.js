@@ -1,14 +1,11 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import {
-  ssrNextApi as nextApi,
-  ssrNextApi,
-} from "next-common/services/nextApi";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allianceMotion";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ motions }) => {
   const items = motions.items.map((item) => normalizeAllianceMotion(item));
@@ -36,16 +33,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
     pageSize: pageSize ?? 50,
   });
 
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       motions: motions ?? EmptyList,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

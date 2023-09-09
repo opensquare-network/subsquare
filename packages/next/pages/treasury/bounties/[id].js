@@ -11,7 +11,6 @@ import CheckUnFinalized from "components/bounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useBountyTimelineData from "../../../components/bounty/useBountyTimelineData";
@@ -20,6 +19,7 @@ import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/
 import { useSelector } from "react-redux";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -118,11 +118,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `treasury/bounties/${detail._id}/comments`,
     context,
   );
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -131,8 +127,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
 
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
     },
   };
 });

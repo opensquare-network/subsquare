@@ -1,22 +1,21 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
-  fellowshipTracksApi,
   gov2ReferendumsTrackApi,
   gov2ReferendumsTracksApi,
   gov2ReferendumsTracksSummaryApi,
-  gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
-import { camelCase, upperFirst, snakeCase } from "lodash";
+import { camelCase, snakeCase, upperFirst } from "lodash";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(
   ({ posts, title, tracks, summary, period, status }) => {
@@ -80,11 +79,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   const status = upperFirst(camelCase(statusQuery));
 
-  const { result: tracks = [] } = await ssrNextApi.fetch(gov2TracksApi);
-  const { result: fellowshipTracks = [] } = await ssrNextApi.fetch(
-    fellowshipTracksApi,
-  );
-
+  const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -109,8 +104,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       track: track ?? null,
       posts: posts ?? EmptyList,
       title: "Referenda " + startCase(track.name),
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      tracks,
+      fellowshipTracks,
       summary: summary ?? {},
       period: period ?? {},
       status,

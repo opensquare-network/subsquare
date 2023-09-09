@@ -6,8 +6,7 @@ import UnscrupulousAccounts from "components/alliance/unscrupulousAccounts";
 import UnscrupulousWebsites from "components/alliance/unscrupulousWebsites";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useState } from "react";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import { ssrNextApi } from "next-common/services/nextApi";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const { data: accounts, isLoading: isAccountsLoading } =
@@ -61,15 +60,11 @@ export default withLoginUserRedux(() => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

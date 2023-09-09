@@ -6,7 +6,6 @@ import {
   toFinancialMotionsListItem,
 } from "utils/viewfuncs";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import Chains from "next-common/utils/consts/chains";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
@@ -36,7 +35,8 @@ import {
   hasDefinedBounties,
   hasDefinedOffChainVoting,
 } from "next-common/utils/summaryExternalInfo";
-import { TitleExtra, HeadContent } from "next-common/components/overview";
+import { HeadContent, TitleExtra } from "next-common/components/overview";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
   const chain = useChain();
@@ -276,17 +276,12 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
 
 export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch("overview");
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       overview: result ?? null,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

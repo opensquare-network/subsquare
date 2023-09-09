@@ -28,8 +28,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  return {
-    props: {},
-  };
-});
+export const getServerSideProps = withLoginUser();

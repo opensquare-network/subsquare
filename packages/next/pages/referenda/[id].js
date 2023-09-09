@@ -10,11 +10,9 @@ import Gov2Sidebar from "components/gov2/sidebar";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
 import {
-  fellowshipTracksApi,
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
-  gov2TracksApi,
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
@@ -40,6 +38,7 @@ import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -158,11 +157,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     gov2ReferendumsCommentApi(detail?._id),
     context,
   );
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -171,8 +166,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       voteStats: voteStats ?? {},
       comments: comments ?? EmptyList,
 
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
     },
   };
 });

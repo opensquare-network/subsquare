@@ -1,11 +1,9 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
-  fellowshipTracksApi,
   fellowshipReferendumsTrackApi,
   fellowshipReferendumsTracksApi,
   fellowshipReferendumsTracksSummaryApi,
-  gov2TracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
@@ -15,6 +13,7 @@ import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/no
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(
   ({ posts, title, fellowshipTracks, summary, period }) => {
@@ -55,12 +54,7 @@ export default withLoginUserRedux(
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page = 1, page_size: pageSize = 50, id } = context.query;
 
-  const [{ result: tracks = [] }, { result: fellowshipTracks = [] }] =
-    await Promise.all([
-      ssrNextApi.fetch(gov2TracksApi),
-      ssrNextApi.fetch(fellowshipTracksApi),
-    ]);
-
+  const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();
   let track = fellowshipTracks.find(
     (trackItem) => trackItem.id === parseInt(id),
   );
@@ -85,8 +79,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
     props: {
       posts: posts ?? EmptyList,
       title: "Fellowship " + startCase(track.name),
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      tracks,
+      fellowshipTracks,
       summary: summary ?? {},
       period: period ?? {},
     },

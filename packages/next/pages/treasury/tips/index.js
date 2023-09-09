@@ -8,13 +8,13 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { SystemPlus } from "@osn/icons/subsquare";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import useHasTips from "next-common/hooks/treasury/useHasTips";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -111,16 +111,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
     }),
   ]);
 
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       tips: tips ?? EmptyList,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

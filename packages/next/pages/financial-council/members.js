@@ -28,12 +28,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
-  return {
-    props: {
-      chain,
-    },
-  };
-});
+export const getServerSideProps = withLoginUser();

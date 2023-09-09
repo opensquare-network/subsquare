@@ -14,6 +14,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -84,10 +85,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
     `alliance/announcements/${announcement._id}/comments`,
     context,
   );
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       id,
+      ...tracksProps,
       announcement: announcement ?? null,
       comments: comments ?? EmptyList,
     },
