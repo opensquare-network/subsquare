@@ -3,6 +3,7 @@ import { usePost } from "./index";
 import { useDetailType } from "../page";
 import { useEffect, useState } from "react";
 import { isSameAddress } from "next-common/utils";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export function useIsPostAuthor() {
   const user = useUser();
@@ -13,7 +14,7 @@ export function useIsPostAuthor() {
   useEffect(() => {
     if (!user) {
       setIsAuthor(false);
-    } else if (type === "post") {
+    } else if (type === detailPageCategory.POST) {
       setIsAuthor(post.author?.username === user.username);
     } else {
       setIsAuthor(
