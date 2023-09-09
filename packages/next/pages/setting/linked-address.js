@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
@@ -28,12 +28,4 @@ export default withLoginUserRedux(({ loginUser }) => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

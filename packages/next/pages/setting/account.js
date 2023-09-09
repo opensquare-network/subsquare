@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
 import Password from "next-common/components/setting/password";
@@ -12,7 +12,7 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import { ContentWrapper } from "next-common/components/setting/styled";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
@@ -56,12 +56,4 @@ export default withLoginUserRedux(({ loginUser }) => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

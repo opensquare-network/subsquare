@@ -1,9 +1,9 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import MembersList from "components/alliance/membersList";
 import MemberSummary from "components/alliance/memberSummary";
 import { useAllianceMembers } from "hooks/useAllianceMembers";
 import ListLayout from "next-common/components/layout/ListLayout";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const { data, isLoading } = useAllianceMembers();
@@ -37,12 +37,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

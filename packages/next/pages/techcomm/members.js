@@ -1,12 +1,12 @@
 import MembersList from "next-common/components/membersList/simpleMembersList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import usePrime from "next-common/utils/hooks/usePrime";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
@@ -34,12 +34,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

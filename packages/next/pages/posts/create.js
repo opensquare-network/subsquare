@@ -1,10 +1,10 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import PostCreate from "next-common/components/post/postCreate";
 import { useEffect } from "react";
 import { useIsLogin } from "next-common/context/user";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const isLogin = useIsLogin();
@@ -39,12 +39,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

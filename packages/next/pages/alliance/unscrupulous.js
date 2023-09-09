@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import { useUnscrupulousAccounts } from "hooks/useUnscrupulousAccounts";
 import { useUnscrupulousWebsites } from "hooks/useUnscrupulousWebsites";
 import UnscrupulousSummary from "components/alliance/unscrupulousSummary";
@@ -6,7 +6,7 @@ import UnscrupulousAccounts from "components/alliance/unscrupulousAccounts";
 import UnscrupulousWebsites from "components/alliance/unscrupulousWebsites";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useState } from "react";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const { data: accounts, isLoading: isAccountsLoading } =
@@ -59,12 +59,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

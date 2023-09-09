@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
@@ -10,7 +10,7 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import { ContentWrapper } from "next-common/components/setting/styled";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const user = loginUser;
@@ -45,12 +45,4 @@ export default withLoginUserRedux(({ loginUser }) => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;
