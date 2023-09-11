@@ -10,6 +10,7 @@ import { InfoWrapper, Redirect } from "next-common/components/login/styled";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import GhostButton from "../buttons/ghostButton";
 import { LoginCard } from "../styled/containers/loginCard";
+import { updateUser, useUserDispatch } from "next-common/context/user";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const [errors, setErrors] = useState();
@@ -18,6 +19,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   const { email, token } = router.query;
   const isMounted = useIsMounted();
   const { countdown, counting: success, startCountdown } = useCountdown(3);
+  const userDispatch = useUserDispatch();
 
   if (success && countdown === 0) {
     router.replace(loginUser ? "/" : "/login");
@@ -33,6 +35,7 @@ export default withLoginUserRedux(({ loginUser }) => {
         });
         if (res.result) {
           if (isMounted.current) {
+            updateUser(res.result, userDispatch);
             startCountdown();
           }
         } else if (res.error) {
