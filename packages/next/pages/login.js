@@ -1,6 +1,7 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import Login from "next-common/components/pages/login";
+import { getRedirectHomeProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(Login);
+export default function Proposal() {
+  return "Please login on home page";
+}
 
-export const getServerSideProps = withLoginUser();
+export const getServerSideProps = getRedirectHomeProps;

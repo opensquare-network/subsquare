@@ -10,3 +10,12 @@ export function getRedirectServerSideProps(getDestinationFun = emptyFunction) {
     };
   };
 }
+
+export function getRedirectHomeProps() {
+  return {
+    redirect: {
+      permanent: true,
+      destination: "/",
+    },
+  };
+}
