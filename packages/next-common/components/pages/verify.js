@@ -12,7 +12,7 @@ import GhostButton from "../buttons/ghostButton";
 import { LoginCard } from "../styled/containers/loginCard";
 import { updateUser, useUserDispatch } from "next-common/context/user";
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default withLoginUserRedux(() => {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -21,9 +21,11 @@ export default withLoginUserRedux(({ loginUser }) => {
   const { countdown, counting: success, startCountdown } = useCountdown(3);
   const userDispatch = useUserDispatch();
 
-  if (success && countdown === 0) {
-    router.replace(loginUser ? "/" : "/login");
-  }
+  useEffect(() => {
+    if (success && countdown === 0) {
+      router.replace("/");
+    }
+  }, [success, countdown]);
 
   useEffect(() => {
     if (email && token) {

@@ -85,7 +85,7 @@ export default withLoginUserRedux(
       }
 
       if (loginUser === null) {
-        router.push("/login");
+        router.push("/");
       }
     }, [loginUser, router, unsubscribe]);
 

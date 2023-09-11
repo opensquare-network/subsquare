@@ -81,7 +81,7 @@ export default withLoginUserRedux(({ loginUser }) => {
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
 
   if (emailSent && countdown === 0) {
-    router.replace("/login");
+    router.replace("/");
   }
 
   const { formData, handleInputChange, handleSubmit } = useForm(

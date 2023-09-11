@@ -13,14 +13,13 @@ import { ContentWrapper } from "next-common/components/setting/styled";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ loginUser }) => {
-  const user = loginUser;
-  const address = user?.address || "";
+  const address = loginUser?.address || "";
 
   const router = useRouter();
 
   useEffect(() => {
     if (loginUser === null) {
-      router.push("/login");
+      router.push("/");
     }
     if (loginUser && !isKeyRegisteredUser(loginUser)) {
       router.push("/setting/account");
