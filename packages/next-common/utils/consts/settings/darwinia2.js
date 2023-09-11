@@ -10,7 +10,7 @@ import {
   ProjectLogoDarwinia2Light,
 } from "@osn/icons/subsquare";
 
-export const DEFAULT_DARWINIA_NODES = [
+const DEFAULT_DARWINIA_NODES = [
   {
     name: "Darwinia",
     url: "wss://rpc.darwinia.network",
@@ -26,6 +26,13 @@ export const DEFAULT_DARWINIA_NODES = [
   {
     name: "OnFinality",
     url: "wss://darwinia2.api.onfinality.io/public-ws",
+  },
+];
+
+const defaultTestNetNodes = [
+  {
+    name: "Darwinia",
+    url: "wss://pangoro-rpc.darwinia.network/",
   },
 ];
 
@@ -69,7 +76,10 @@ const darwinia2 = {
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",
-  endpoints: DEFAULT_DARWINIA_NODES,
+  endpoints:
+    process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
+      ? defaultTestNetNodes
+      : DEFAULT_DARWINIA_NODES,
   avatar: ProjectIconDarwinia2Light,
   darkAvatar: ProjectIconDarwinia2Dark,
   navLogo: ProjectLogoDarwinia2Light,
