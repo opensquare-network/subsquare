@@ -2,8 +2,8 @@ import Cookies from "cookies";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   isBrowserCompatible,
+  redirect,
   toBrowserIncompatible,
-  toLogin,
 } from "next-common/utils/serverSideUtil";
 import { CACHE_KEY } from "../utils/constants";
 import { useUser } from "../context/user";
@@ -45,7 +45,7 @@ export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
     if (context.resolvedUrl?.startsWith("/setting/") && !user) {
       const { unsubscribe } = context.query;
       if (!unsubscribe) {
-        return toLogin(context);
+        return redirect("/");
       }
     }
 

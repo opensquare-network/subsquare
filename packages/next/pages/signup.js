@@ -16,6 +16,7 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
+import { updateUser, useUserDispatch } from "next-common/context/user";
 
 const Title = styled.div`
   font-weight: bold;
@@ -79,9 +80,10 @@ export default withLoginUserRedux(({ loginUser }) => {
   const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
+  const userDispatch = useUserDispatch();
 
   if (emailSent && countdown === 0) {
-    router.replace("/login");
+    router.replace("/");
   }
 
   const { formData, handleInputChange, handleSubmit } = useForm(
@@ -99,6 +101,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
         if (isMounted.current) {
+          updateUser(res.result, userDispatch);
           setSuccess(true);
         }
         sendVerifyEmail();

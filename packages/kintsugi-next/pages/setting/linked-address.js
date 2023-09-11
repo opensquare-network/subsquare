@@ -18,7 +18,7 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   useEffect(() => {
     if (loginUser === null) {
-      router.push("/login");
+      router.push("/");
     }
   }, [loginUser, router]);
 

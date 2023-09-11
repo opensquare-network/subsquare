@@ -23,10 +23,6 @@ export function toBrowserIncompatible() {
   return redirect("/incompatible");
 }
 
-export function toLogin(context) {
-  return redirect(`/login?redirect=${context.resolvedUrl}`);
-}
-
 export function redirect(url) {
   return {
     redirect: {

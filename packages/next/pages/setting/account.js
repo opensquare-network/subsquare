@@ -19,7 +19,7 @@ export default withLoginUserRedux(({ loginUser }) => {
 
   useEffect(() => {
     if (loginUser === null) {
-      router.push("/login");
+      router.push("/");
     }
     if (loginUser && isKeyRegisteredUser(loginUser)) {
       router.push("/setting/key-account");
