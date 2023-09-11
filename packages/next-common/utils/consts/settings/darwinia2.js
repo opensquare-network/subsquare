@@ -67,19 +67,18 @@ const links = [
   },
 ];
 
+const isDevelopmentEnv = process.env.NEXT_PUBLIC_DEVELOPMENT === "true";
+
 const darwinia2 = {
   value: Chains.darwinia2,
   name: capitalize(Chains.darwinia2),
   identity: Chains.darwinia2,
-  symbol: "RING",
+  symbol: isDevelopmentEnv ? "ORING" : "RING",
   decimals: 18,
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",
-  endpoints:
-    process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
-      ? defaultTestNetNodes
-      : DEFAULT_DARWINIA_NODES,
+  endpoints: isDevelopmentEnv ? defaultTestNetNodes : DEFAULT_DARWINIA_NODES,
   avatar: ProjectIconDarwinia2Light,
   darkAvatar: ProjectIconDarwinia2Dark,
   navLogo: ProjectLogoDarwinia2Light,
