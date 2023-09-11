@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import { useUnscrupulousAccounts } from "hooks/useUnscrupulousAccounts";
 import { useUnscrupulousWebsites } from "hooks/useUnscrupulousWebsites";
 import UnscrupulousSummary from "components/alliance/unscrupulousSummary";
@@ -6,8 +6,7 @@ import UnscrupulousAccounts from "components/alliance/unscrupulousAccounts";
 import UnscrupulousWebsites from "components/alliance/unscrupulousWebsites";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useState } from "react";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
-import { ssrNextApi } from "next-common/services/nextApi";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const { data: accounts, isLoading: isAccountsLoading } =
@@ -60,16 +59,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
-
-  return {
-    props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

@@ -9,7 +9,11 @@ import { CACHE_KEY } from "../utils/constants";
 import { useUser } from "../context/user";
 import getDetailPageProperties from "./pages/detail";
 
-export function withLoginUser(getServerSideProps) {
+async function defaultGetServerSideProps() {
+  return { props: {} };
+}
+
+export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
   return async function (context) {
     const propsPromise = getServerSideProps(context);
 
@@ -51,6 +55,7 @@ export function withLoginUser(getServerSideProps) {
       ...props,
       props: {
         ...props.props,
+        chain: process.env.CHAIN,
         loginUser: user ?? null,
         themeMode: themeMode ?? null,
         navCollapsed: navCollapsed || false,

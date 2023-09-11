@@ -1,13 +1,10 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import {
-  ssrNextApi as nextApi,
-  ssrNextApi,
-} from "next-common/services/nextApi";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 import ListLayout from "next-common/components/layout/ListLayout";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ announcements }) => {
   const items = announcements.items.map((item) =>
@@ -42,16 +39,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
     },
   );
 
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       announcements,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

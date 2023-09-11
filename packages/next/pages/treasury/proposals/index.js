@@ -5,10 +5,10 @@ import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   const [proposals, setProposals] = useState(ssrProposals);
@@ -54,8 +54,6 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
@@ -64,18 +62,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
       pageSize: pageSize ?? defaultPageSize,
     }),
   ]);
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      chain,
       proposals: proposals ?? EmptyList,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

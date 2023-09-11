@@ -9,8 +9,10 @@ import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -74,34 +76,18 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: motion } = await nextApi.fetch(`open-techcomm/motions/${id}`);
   if (!motion) {
-    return {
-      props: {
-        id,
-        motion: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { motion: null });
   }
 
-  const motionId = motion._id;
-
-  const { result: comments } = await nextApi.fetch(
-    `open-techcomm/motions/${motionId}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+  const comments = await fetchDetailComments(
+    `open-techcomm/motions/${motion._id}/comments`,
+    context,
   );
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -109,8 +95,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       motion,
       comments: comments ?? EmptyList,
 
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
     },
   };
 });

@@ -3,8 +3,4 @@ import TechcommMembersPage from "@subsquare/next/pages/techcomm/members";
 
 export default TechcommMembersPage;
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  return {
-    props: {},
-  };
-});
+export const getServerSideProps = withLoginUser();

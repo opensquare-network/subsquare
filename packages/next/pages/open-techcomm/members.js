@@ -1,7 +1,8 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import MembersNoElections from "components/council/membersNoElections";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(() => {
   const category = "Open Tech. Comm. Members";
@@ -21,8 +22,4 @@ export default withLoginUserRedux(() => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  return {
-    props: {},
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

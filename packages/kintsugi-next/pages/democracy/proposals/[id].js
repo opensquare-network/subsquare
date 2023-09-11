@@ -18,6 +18,8 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -137,19 +139,12 @@ export default withLoginUserRedux(({ id, detail, referendum, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size: pageSize } = context.query;
+  const { id } = context.query;
 
   const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        referendum: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { referendum: null });
   }
 
   let referendum;
@@ -160,12 +155,9 @@ export const getServerSideProps = withLoginUser(async (context) => {
     referendum = result;
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `democracy/proposals/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
-    },
+    context,
   );
 
   return {

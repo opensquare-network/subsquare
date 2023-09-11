@@ -13,6 +13,8 @@ import TreasuryProposalDetail from "next-common/components/detail/treasury/propo
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -81,26 +83,16 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size: pageSize } = context.query;
-
+  const { id } = context.query;
   const { result: detail } = await nextApi.fetch(`treasury/proposals/${id}`);
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `treasury/proposals/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize: Math.min(pageSize ?? 50, 100),
-    },
+    context,
   );
 
   return {

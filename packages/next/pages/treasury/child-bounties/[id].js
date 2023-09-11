@@ -17,9 +17,11 @@ import NonNullPost from "next-common/components/nonNullPost";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -99,35 +101,21 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: detail } = await ssrNextApi.fetch(
     `treasury/child-bounties/${id}`,
   );
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
-  const { result: comments } = await ssrNextApi.fetch(
+  const comments = await fetchDetailComments(
     `treasury/child-bounties/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    context,
   );
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -135,8 +123,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
 
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
     },
   };
 });

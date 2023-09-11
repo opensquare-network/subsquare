@@ -12,6 +12,9 @@ import DetailItem from "../../../components/detailItem";
 import AnnouncementTimeline from "next-common/components/alliance/announcement/timeline";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -70,26 +73,24 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
+  const { id } = context.query;
   const { result: announcement } = await nextApi.fetch(
     `alliance/announcements/${id}`,
   );
   if (!announcement) {
-    return { props: { id, announcement: null, comments: EmptyList } };
+    return getNullDetailProps(id, { announcement: null });
   }
 
-  const pageSize = Math.min(page_size ?? 50, 100);
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `alliance/announcements/${announcement._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    context,
   );
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       id,
+      ...tracksProps,
       announcement: announcement ?? null,
       comments: comments ?? EmptyList,
     },

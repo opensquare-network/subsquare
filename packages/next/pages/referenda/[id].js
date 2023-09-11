@@ -10,11 +10,9 @@ import Gov2Sidebar from "components/gov2/sidebar";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useUniversalComments from "components/universalComments";
 import {
-  fellowshipTracksApi,
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
-  gov2TracksApi,
 } from "next-common/services/url";
 import Timeline from "components/gov2/timeline";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
@@ -38,6 +36,9 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/votesBubble";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -138,41 +139,25 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: detail } = await ssrNextApi.fetch(
     gov2ReferendumsDetailApi(id),
   );
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        voteStats: {},
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { voteStats: {} });
   }
 
   const { result: voteStats } = await ssrNextApi.fetch(
     gov2ReferendumsVoteStatsApi(id),
   );
 
-  const postId = detail?._id;
-  const { result: comments } = await ssrNextApi.fetch(
-    gov2ReferendumsCommentApi(postId),
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+  const comments = await fetchDetailComments(
+    gov2ReferendumsCommentApi(detail?._id),
+    context,
   );
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -181,8 +166,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       voteStats: voteStats ?? {},
       comments: comments ?? EmptyList,
 
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
     },
   };
 });

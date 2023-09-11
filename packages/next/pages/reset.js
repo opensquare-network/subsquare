@@ -3,12 +3,4 @@ import Reset from "next-common/components/pages/reset";
 
 export default withLoginUserRedux(Reset);
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
-  return {
-    props: {
-      chain,
-    },
-  };
-});
+export const getServerSideProps = withLoginUser();

@@ -9,6 +9,8 @@ import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import DetailLayout from "next-common/components/layout/DetailLayout";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 
 function AdvisoryCommitteeMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -70,26 +72,16 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: motion } = await nextApi.fetch(`advisory-motions/${id}`);
   if (!motion) {
-    return {
-      props: {
-        id,
-        motion: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id, { motion: null });
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `advisory-motions/${motion._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    context,
   );
 
   return {

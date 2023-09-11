@@ -1,7 +1,6 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { isCollectivesChain } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
@@ -11,6 +10,7 @@ import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import MyVotes from "components/myvotes";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ overview }) => {
   const chain = useChain();
@@ -58,17 +58,12 @@ export default withLoginUserRedux(({ overview }) => {
 
 export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch("overview");
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       overview: result ?? null,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

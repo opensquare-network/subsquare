@@ -3,11 +3,11 @@ import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toTreasuryChildBountyListItem } from "utils/viewfuncs";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ bounties, chain }) => {
   const chainSettings = useChainSettings();
@@ -63,18 +63,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
       parent: parentBountyId ?? "",
     }),
   ]);
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       chain,
       bounties: bounties ?? EmptyList,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

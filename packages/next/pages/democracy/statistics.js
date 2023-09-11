@@ -5,13 +5,13 @@ import DemocracyStatistics from "next-common/components/statistics/democracy";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
 import BigNumber from "bignumber.js";
 import { useChainSettings } from "next-common/context/chain";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import { Header } from "next-common/components/statistics/styled";
 import clsx from "clsx";
 import { useNavCollapsed } from "next-common/context/nav";
 import VoteTrend from "next-common/components/statistics/track/voteTrend";
 import AddressTrend from "next-common/components/statistics/track/addressTrend";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(
   ({ delegatee, delegators, summary, turnout, referendumsSummary }) => {
@@ -94,11 +94,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       .minus(item.delegationCapital)
       .toString(),
   }));
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -108,9 +104,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       turnout: normailizedTurnout ?? [],
 
       referendumsSummary: referendumsSummary ?? {},
-
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

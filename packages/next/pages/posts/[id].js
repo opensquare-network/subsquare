@@ -9,11 +9,14 @@ import { getFocusEditor } from "next-common/utils/post";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Cookies from "cookies";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import {
+  fetchDetailComments,
+  getPostVotesAndMine,
+} from "next-common/services/detail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(
   ({ loginUser, detail, comments, votes, myVote }) => {
@@ -66,8 +69,7 @@ export default withLoginUserRedux(
 );
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-  const { id, page, page_size: pageSize } = context.query;
+  const { id } = context.query;
 
   const [{ result: detail }] = await Promise.all([
     nextApi.fetch(`posts/${id}`),
@@ -77,39 +79,13 @@ export const getServerSideProps = withLoginUser(async (context) => {
     return to404();
   }
 
-  const postId = detail._id;
+  const comments = await fetchDetailComments(
+    `posts/${detail._id}/comments`,
+    context,
+  );
+  const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
-  const { result: comments } = await nextApi.fetch(`posts/${postId}/comments`, {
-    page: page ?? "last",
-    pageSize: Math.min(pageSize ?? 50, 100),
-  });
-
-  let options;
-  const cookies = new Cookies(context.req, context.res);
-  const authToken = cookies.get("auth-token");
-  if (authToken) {
-    options = {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    };
-  }
-
-  let votes = null;
-  let myVote = null;
-  if (detail.poll) {
-    ({ result: votes } = await nextApi.fetch(`polls/${detail.poll._id}/votes`));
-    ({ result: myVote } = await nextApi.fetch(
-      `polls/${detail.poll._id}/myvote`,
-      {},
-      options,
-    ));
-  }
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -117,10 +93,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
       comments: comments ?? EmptyList,
       votes,
       myVote: myVote ?? null,
-      chain,
 
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

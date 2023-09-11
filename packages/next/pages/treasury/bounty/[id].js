@@ -1,16 +1,9 @@
-import { withLoginUser } from "next-common/lib";
+import { getRedirectServerSideProps } from "next-common/services/serverSide";
 
 export default function Bounty() {
   return "Please visit `/treasury/bounties/[id]`";
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const { id } = context.query;
-
-  return {
-    redirect: {
-      permanent: true,
-      destination: `/treasury/bounties/${id}`,
-    },
-  };
-});
+export const getServerSideProps = getRedirectServerSideProps(
+  (id) => `/treasury/bounties/${id}`,
+);

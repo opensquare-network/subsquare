@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUserRedux } from "next-common/lib";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
 import Password from "next-common/components/setting/password";
@@ -12,8 +12,7 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import { ContentWrapper } from "next-common/components/setting/styled";
-import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ loginUser }) => {
   const router = useRouter();
@@ -57,16 +56,4 @@ export default withLoginUserRedux(({ loginUser }) => {
   );
 });
 
-export const getServerSideProps = withLoginUser(async (context) => {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
-
-  return {
-    props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

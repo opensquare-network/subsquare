@@ -8,7 +8,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(({ detail }) => {
   const polkassemblyId = detail?.polkassemblyId;
@@ -57,18 +57,12 @@ export const getServerSideProps = withLoginUser(async (context) => {
   if (!detail) {
     return to404();
   }
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       detail,
-
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
     },
   };
 });

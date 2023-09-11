@@ -9,7 +9,6 @@ import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
@@ -17,6 +16,9 @@ import useTreasuryTimelineData from "../../../components/treasuryProposal/useTim
 import Timeline from "next-common/components/timeline";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -96,33 +98,19 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: detail } = await nextApi.fetch(`treasury/proposals/${id}`);
 
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `treasury/proposals/${detail._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    context,
   );
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -130,8 +118,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
 
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
     },
   };
 });

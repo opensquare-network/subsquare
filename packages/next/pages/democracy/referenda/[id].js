@@ -20,12 +20,14 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch } from "react-redux";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import ReferendumCall from "next-common/components/democracy/call";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import DemocracyReferendaVotesBubble from "next-common/components/democracy/referendum/votesBubble";
+import { fetchDetailComments } from "next-common/services/detail";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -142,33 +144,18 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { id, page, page_size } = context.query;
-  const pageSize = Math.min(page_size ?? 50, 100);
+  const { id } = context.query;
 
   const { result: detail } = await nextApi.fetch(`democracy/referendums/${id}`);
-
   if (!detail) {
-    return {
-      props: {
-        id,
-        detail: null,
-        comments: EmptyList,
-      },
-    };
+    return getNullDetailProps(id);
   }
 
-  const { result: comments } = await nextApi.fetch(
+  const comments = await fetchDetailComments(
     `democracy/referendums/${detail?._id}/comments`,
-    {
-      page: page ?? "last",
-      pageSize,
-    },
+    context,
   );
-
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksApi),
-    nextApi.fetch(fellowshipTracksApi),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
@@ -176,8 +163,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       detail,
       comments: comments ?? EmptyList,
 
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
     },
   };
 });

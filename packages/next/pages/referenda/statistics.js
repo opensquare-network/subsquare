@@ -7,14 +7,11 @@ import OpenGovTurnoutSummary from "next-common/components/statistics/referenda/t
 import TrackDelegationSummary from "next-common/components/statistics/referenda/trackDelegationSummary";
 import DelegatedAddressSummary from "next-common/components/statistics/referenda/delegatedAddressSummary";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
-import {
-  fellowshipTracksApi,
-  gov2ReferendumsSummaryApi,
-  gov2TracksApi,
-} from "next-common/services/url";
+import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import { Header } from "next-common/components/statistics/styled";
 import clsx from "clsx";
 import { useNavCollapsed } from "next-common/context/nav";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default withLoginUserRedux(
   ({ tracksStats, delegatee, summary, referendumsSummary }) => {
@@ -71,8 +68,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     { result: tracksStats },
     { result: delegatee },
     { result: summary },
-    { result: tracks },
-    { result: fellowshipTracks },
+    tracksProps,
     { result: referendumsSummary },
   ] = await Promise.all([
     ssrNextApi.fetch("referenda/tracks"),
@@ -82,8 +78,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
     }),
     ssrNextApi.fetch("referenda/summary"),
 
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
+    fetchOpenGovTracksProps(),
     ssrNextApi.fetch(gov2ReferendumsSummaryApi),
   ]);
 
@@ -93,8 +88,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
       delegatee: delegatee ?? EmptyList,
       summary: summary ?? [],
 
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
+      ...tracksProps,
       referendumsSummary: referendumsSummary ?? {},
     },
   };
