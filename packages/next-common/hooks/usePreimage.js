@@ -197,7 +197,7 @@ export default function usePreimage(hashOrBounded) {
 
   const [optStatus, , isStatusLoaded] = useCall(
     !inlineData && paramsStatus && api?.query.preimage?.statusFor,
-    paramsStatus,
+    paramsStatus ? paramsStatus : [undefined],
   );
 
   // from the retrieved status (if any), get the on-chain stored bytes
@@ -211,7 +211,7 @@ export default function usePreimage(hashOrBounded) {
 
   const [optBytes, , isBytesLoaded] = useCall(
     paramsBytes && api?.query.preimage?.preimageFor,
-    paramsBytes,
+    paramsBytes ? paramsBytes : [undefined],
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },
   );
 
