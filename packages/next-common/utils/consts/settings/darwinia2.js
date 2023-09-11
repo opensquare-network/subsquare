@@ -32,7 +32,7 @@ const DEFAULT_DARWINIA_NODES = [
 const defaultTestNetNodes = [
   {
     name: "Darwinia",
-    url: "wss://pangoro-rpc.darwinia.network/",
+    url: "wss://pangolin-rpc.darwinia.network/",
   },
 ];
 
@@ -73,7 +73,7 @@ const darwinia2 = {
   value: Chains.darwinia2,
   name: capitalize(Chains.darwinia2),
   identity: Chains.darwinia2,
-  symbol: isDevelopmentEnv ? "ORING" : "RING",
+  symbol: isDevelopmentEnv ? "PRING" : "RING",
   decimals: 18,
   hasElections: false,
   ss58Format: 18,
