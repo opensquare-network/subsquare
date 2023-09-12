@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
-import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import nextApi, { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import dynamic from "next/dynamic";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
@@ -15,6 +14,7 @@ import { SystemPlus } from "@osn/icons/subsquare";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import useHasTips from "next-common/hooks/treasury/useHasTips";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { fetchList } from "next-common/services/list";
 
 const Popup = dynamic(
   () => import("next-common/components/treasury/tip/popup"),
@@ -102,20 +102,12 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page, page_size: pageSize } = context.query;
-
-  const [{ result: tips }] = await Promise.all([
-    ssrNextApi.fetch("treasury/tips", {
-      page: page ?? 1,
-      pageSize: pageSize ?? defaultPageSize,
-    }),
-  ]);
-
+  const tips = await fetchList("treasury/tips", context);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      tips: tips ?? EmptyList,
+      tips,
       ...tracksProps,
     },
   };

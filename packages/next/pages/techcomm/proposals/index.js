@@ -1,11 +1,10 @@
 import PostList from "next-common/components/postList";
-import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { fetchList } from "next-common/services/list";
 
 export default withLoginUserRedux(({ proposals, chain }) => {
   const items = (proposals.items || []).map((item) =>
@@ -39,19 +38,12 @@ export default withLoginUserRedux(({ proposals, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page, page_size: pageSize } = context.query;
-
-  const [{ result: proposals }] = await Promise.all([
-    nextApi.fetch("tech-comm/motions", {
-      page: page ?? 1,
-      pageSize: pageSize ?? defaultPageSize,
-    }),
-  ]);
+  const proposals = await fetchList("tech-comm/motions", context);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      proposals: proposals ?? EmptyList,
+      proposals,
       ...tracksProps,
     },
   };

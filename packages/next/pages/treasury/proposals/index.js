@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
-import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { fetchList } from "next-common/services/list";
 
 export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
   const [proposals, setProposals] = useState(ssrProposals);
@@ -54,19 +53,12 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page, page_size: pageSize } = context.query;
-
-  const [{ result: proposals }] = await Promise.all([
-    ssrNextApi.fetch("treasury/proposals", {
-      page: page ?? 1,
-      pageSize: pageSize ?? defaultPageSize,
-    }),
-  ]);
+  const proposals = await fetchList("treasury/proposals", context);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      proposals: proposals ?? EmptyList,
+      proposals: proposals,
       ...tracksProps,
     },
   };
