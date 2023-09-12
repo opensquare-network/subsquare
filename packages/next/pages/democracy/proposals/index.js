@@ -1,6 +1,6 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
@@ -8,7 +8,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ proposals, chain, summary }) => {
+export default function DemocracyProposalsPage({ proposals, chain, summary }) {
   const items = (proposals.items || []).map((item) =>
     normalizeProposalListItem(chain, item),
   );
@@ -36,7 +36,7 @@ export default withLoginUserRedux(({ proposals, chain, summary }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
