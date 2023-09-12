@@ -1,12 +1,11 @@
 import PostList from "next-common/components/postList";
-import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toAdvisoryMotionsListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChainSettings } from "next-common/context/chain";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
+import { fetchList } from "next-common/services/list";
 
 export default withLoginUserRedux(({ motions, chain }) => {
   const chainSettings = useChainSettings();
@@ -41,19 +40,11 @@ export default withLoginUserRedux(({ motions, chain }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
-
-  const { page, page_size: pageSize } = context.query;
-
-  const { result: motions } = await nextApi.fetch("advisory-motions", {
-    page: page ?? 1,
-    pageSize: pageSize ?? defaultPageSize,
-  });
+  const motions = await fetchList("advisory-motions", context);
 
   return {
     props: {
-      chain,
-      motions: motions ?? EmptyList,
+      motions,
     },
   };
 });

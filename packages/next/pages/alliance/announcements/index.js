@@ -1,10 +1,10 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { fetchList } from "next-common/services/list";
 
 export default withLoginUserRedux(({ announcements }) => {
   const items = announcements.items.map((item) =>
@@ -30,15 +30,7 @@ export default withLoginUserRedux(({ announcements }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page, page_size: pageSize } = context.query;
-  const { result: announcements } = await nextApi.fetch(
-    "alliance/announcements",
-    {
-      page: page ?? 1,
-      pageSize: pageSize ?? 50,
-    },
-  );
-
+  const announcements = await fetchList("alliance/announcements", context);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {

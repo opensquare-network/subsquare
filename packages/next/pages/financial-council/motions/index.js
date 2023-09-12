@@ -1,11 +1,10 @@
 import PostList from "next-common/components/postList";
-import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
 import { useChain } from "next-common/context/chain";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
+import { fetchList } from "next-common/services/list";
 
 export default withLoginUserRedux(({ motions }) => {
   const chain = useChain();
@@ -37,18 +36,11 @@ export default withLoginUserRedux(({ motions }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page, page_size: pageSize } = context.query;
-
-  const [{ result: motions }] = await Promise.all([
-    nextApi.fetch("financial-motions", {
-      page: page ?? 1,
-      pageSize: pageSize ?? defaultPageSize,
-    }),
-  ]);
+  const motions = await fetchList("financial-motions", context);
 
   return {
     props: {
-      motions: motions ?? EmptyList,
+      motions,
     },
   };
 });

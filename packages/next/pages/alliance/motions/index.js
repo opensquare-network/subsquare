@@ -1,11 +1,10 @@
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { EmptyList } from "next-common/utils/constants";
 import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allianceMotion";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { fetchList } from "next-common/services/list";
 
 export default withLoginUserRedux(({ motions }) => {
   const items = motions.items.map((item) => normalizeAllianceMotion(item));
@@ -27,17 +26,12 @@ export default withLoginUserRedux(({ motions }) => {
 });
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const { page, page_size: pageSize } = context.query;
-  const { result: motions } = await nextApi.fetch("alliance/motions", {
-    page: page ?? 1,
-    pageSize: pageSize ?? 50,
-  });
-
+  const motions = await fetchList("alliance/motions", context);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      motions: motions ?? EmptyList,
+      motions,
       ...tracksProps,
     },
   };
