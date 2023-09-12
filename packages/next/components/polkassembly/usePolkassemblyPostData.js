@@ -27,7 +27,6 @@ export default function usePolkassemblyPostData({
     }
 
     const cacheKey = `${polkassemblyPostType}:${polkassemblyId}`;
-
     if (dataCache[cacheKey]) {
       const data = dataCache[cacheKey];
       setComments(data.comments);
@@ -54,13 +53,11 @@ export default function usePolkassemblyPostData({
             result?.post_reactions,
           );
           const commentsCount = result?.comments?.length;
-
-          const data = {
+          dataCache[cacheKey] = {
             comments,
             postReactions,
             commentsCount,
           };
-          dataCache[cacheKey] = data;
 
           setComments(comments);
           setPostReactions(postReactions);

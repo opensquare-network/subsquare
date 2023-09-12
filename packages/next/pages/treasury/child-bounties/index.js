@@ -8,11 +8,11 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ bounties, chain }) => {
+export default withLoginUserRedux(({ bounties }) => {
   const chainSettings = useChainSettings();
 
   const items = (bounties.items || []).map((item) =>
-    toTreasuryChildBountyListItem(chain, item),
+    toTreasuryChildBountyListItem(item),
   );
   const category = "Treasury Child Bounties";
   const seoInfo = { title: category, desc: category };

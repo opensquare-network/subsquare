@@ -35,18 +35,15 @@ export default function useUniversalComments({ detail, comments }) {
   ].includes(chain);
 
   let tabs = null;
-
   if (detail?.polkassemblyId !== undefined && isPolkassemblyEnabled) {
     // Allow to switch to polkassembly comments if has corresponding pa post
-    if (isPolkassemblyEnabled) {
-      tabs = (
-        <SourceTabs
-          detail={detail}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
-        />
-      );
-    }
+    tabs = (
+      <SourceTabs
+        detail={detail}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+      />
+    );
   }
 
   let { CommentComponent, focusEditor } = useCommentComponent({

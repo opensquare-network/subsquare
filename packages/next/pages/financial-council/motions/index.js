@@ -1,15 +1,13 @@
 import PostList from "next-common/components/postList";
 import { withLoginUser, withLoginUserRedux } from "next-common/lib";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
-import { useChain } from "next-common/context/chain";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchList } from "next-common/services/list";
 
 export default withLoginUserRedux(({ motions }) => {
-  const chain = useChain();
   const items = (motions.items || []).map((item) =>
-    toFinancialMotionsListItem(chain, item),
+    toFinancialMotionsListItem(item),
   );
   const category = businessCategory.financialMotions;
   const seoInfo = { title: category, desc: category };
