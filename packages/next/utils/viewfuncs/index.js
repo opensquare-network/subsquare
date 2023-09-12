@@ -40,16 +40,18 @@ export const toPolkassemblyCommentListItem = (chain, item) => ({
   replies: item.replies?.map((r) => convertPolkassemblyComment(chain, r)),
 });
 
-export const toFinancialMotionsListItem = (chain, item) => ({
-  ...item,
-  index: item.motionIndex,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  status: item.state?.state ?? "Unknown",
-  detailLink: `/financial-council/motions/${getMotionId(item)}`,
-  time: getPostLastActivityAt(item),
-});
+export const toFinancialMotionsListItem = (chain, item) => {
+  return {
+    ...item,
+    index: item.motionIndex,
+    title: getTitle(item),
+    author: item.author,
+    address: item.proposer,
+    status: item.state ?? "Unknown",
+    detailLink: `/financial-council/motions/${getMotionId(item)}`,
+    time: getPostLastActivityAt(item),
+  };
+};
 
 export const toAdvisoryMotionsListItem = (chain, item) => ({
   ...item,
