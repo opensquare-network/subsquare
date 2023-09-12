@@ -56,7 +56,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      bounties: bounties,
+      bounties,
       ...tracksProps,
     },
   };

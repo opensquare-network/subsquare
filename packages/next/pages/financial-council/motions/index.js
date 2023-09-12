@@ -40,7 +40,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      motions: motions,
+      motions,
     },
   };
 });

@@ -58,7 +58,7 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      proposals: proposals,
+      proposals,
       ...tracksProps,
     },
   };
