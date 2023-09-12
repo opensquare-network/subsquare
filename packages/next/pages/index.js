@@ -173,7 +173,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       category: businessCategory.financialMotions,
       link: "/financial-council/motions",
       items: (overview?.financialCouncil?.motions ?? []).map((item) =>
-        toFinancialMotionsListItem(chain, item),
+        toFinancialMotionsListItem(item),
       ),
     });
   }
@@ -207,7 +207,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       category: businessCategory.advisoryMotions,
       link: "/advisory-committee/motions",
       items: (overview?.advisoryCommittee?.motions ?? []).map((item) =>
-        toAdvisoryMotionsListItem(chain, item),
+        toAdvisoryMotionsListItem(item),
       ),
     });
   }

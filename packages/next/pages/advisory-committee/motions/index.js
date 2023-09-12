@@ -7,11 +7,11 @@ import { useChainSettings } from "next-common/context/chain";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ motions, chain }) => {
+export default withLoginUserRedux(({ motions }) => {
   const chainSettings = useChainSettings();
 
   const items = (motions.items || []).map((item) =>
-    toAdvisoryMotionsListItem(chain, item),
+    toAdvisoryMotionsListItem(item),
   );
   const category = businessCategory.advisoryMotions;
   const seoInfo = {

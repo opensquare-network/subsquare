@@ -206,7 +206,7 @@ function User({
 
   const elmUsername = (
     <Username fontSize={fontSize} maxWidth={maxWidth} color={color}>
-      {user?.username}
+      {user?.username || user}
     </Username>
   );
 

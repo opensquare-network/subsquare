@@ -9,15 +9,19 @@ import {
 } from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 
-export const convertPolkassemblyReaction = (chain, paReactions) =>
-  flatten(
+export const convertPolkassemblyReaction = (paReactions) => {
+  const flattened = flatten(
     Object.entries(paReactions || {}).map(([r, { usernames } = {}]) =>
       usernames?.map((u) => [r, u]),
     ),
-  ).map(([r, u]) => ({
+  );
+  const reactions = flattened.map(([r, u]) => ({
     reaction: r === "👍" ? 1 : 0,
     user: u,
   }));
+
+  return reactions;
+};
 
 export const convertPolkassemblyComment = (chain, comment) => {
   const address =
@@ -40,7 +44,7 @@ export const toPolkassemblyCommentListItem = (chain, item) => ({
   replies: item.replies?.map((r) => convertPolkassemblyComment(chain, r)),
 });
 
-export const toFinancialMotionsListItem = (chain, item) => {
+export const toFinancialMotionsListItem = (item) => {
   return {
     ...item,
     index: item.motionIndex,
@@ -53,7 +57,7 @@ export const toFinancialMotionsListItem = (chain, item) => {
   };
 };
 
-export const toAdvisoryMotionsListItem = (chain, item) => ({
+export const toAdvisoryMotionsListItem = (item) => ({
   ...item,
   index: item.motionIndex,
   title: getTitle(item),
@@ -64,7 +68,7 @@ export const toAdvisoryMotionsListItem = (chain, item) => ({
   time: getPostLastActivityAt(item),
 });
 
-export const toTreasuryChildBountyListItem = (chain, item) => ({
+export const toTreasuryChildBountyListItem = (item) => ({
   ...item,
   title: getTitle(item),
   author: item.author,

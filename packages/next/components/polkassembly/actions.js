@@ -32,7 +32,10 @@ const GreyItem = styled.div`
 `;
 
 export default function Actions({ reactions }) {
-  const count = reactions?.length;
+  const filtered = (reactions || []).filter(
+    (reaction) => reaction.reaction === 1,
+  );
+  const count = filtered.length;
 
   const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
     disabled: true,
