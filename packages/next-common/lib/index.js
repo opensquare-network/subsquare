@@ -50,7 +50,6 @@ export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
     }
 
     const userAgent = context?.req?.headers?.["user-agent"] ?? "";
-
     return {
       ...props,
       props: {
