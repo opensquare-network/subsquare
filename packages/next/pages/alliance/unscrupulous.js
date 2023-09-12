@@ -1,4 +1,3 @@
-import { withLoginUserRedux } from "next-common/lib";
 import { useUnscrupulousAccounts } from "hooks/useUnscrupulousAccounts";
 import { useUnscrupulousWebsites } from "hooks/useUnscrupulousWebsites";
 import UnscrupulousSummary from "components/alliance/unscrupulousSummary";
@@ -8,7 +7,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { useState } from "react";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function UnscrupulousPage() {
   const { data: accounts, isLoading: isAccountsLoading } =
     useUnscrupulousAccounts();
   const { data: websites, isLoading: isWebsitesLoading } =
@@ -57,6 +56,6 @@ export default withLoginUserRedux(() => {
       )}
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

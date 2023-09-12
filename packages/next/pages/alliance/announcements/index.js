@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
@@ -6,7 +6,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ announcements }) => {
+export default function AnnouncementsPage({ announcements }) {
   const items = announcements.items.map((item) =>
     normalizeAllianceAnnouncement(item),
   );
@@ -27,7 +27,7 @@ export default withLoginUserRedux(({ announcements }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const announcements = await fetchList("alliance/announcements", context);

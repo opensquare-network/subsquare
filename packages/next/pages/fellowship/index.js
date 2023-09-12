@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
@@ -12,7 +12,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
+export default function FellowshipPage({ posts, fellowshipTracks, summary }) {
   const title = "Fellowship Referenda";
   const seoInfo = { title, desc: title };
 
@@ -40,7 +40,7 @@ export default withLoginUserRedux(({ posts, fellowshipTracks, summary }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page = 1, page_size: pageSize = defaultPageSize } = context.query;

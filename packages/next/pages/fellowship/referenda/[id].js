@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   getFellowshipReferendumCommentsUrl,
@@ -90,7 +90,7 @@ function UnFinalizedBreadcrumb({ id }) {
   );
 }
 
-export default withLoginUserRedux(({ id, detail, comments }) => {
+export default function ReferendumPage({ id, detail, comments }) {
   let postContent = null;
   let breadcrumbs;
 
@@ -123,7 +123,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

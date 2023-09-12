@@ -1,11 +1,10 @@
-import { withLoginUserRedux } from "next-common/lib";
 import MembersList from "components/alliance/membersList";
 import MemberSummary from "components/alliance/memberSummary";
 import { useAllianceMembers } from "hooks/useAllianceMembers";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function MembersPage() {
   const { data, isLoading } = useAllianceMembers();
   const list = [
     ...(data?.fellow?.map?.((address) => ({ address, role: "Fellow" })) ?? []),
@@ -35,6 +34,6 @@ export default withLoginUserRedux(() => {
       <MembersList items={list} loading={isLoading} />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

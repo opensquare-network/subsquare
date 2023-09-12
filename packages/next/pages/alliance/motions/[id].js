@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider } from "next-common/context/post";
@@ -12,7 +12,7 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ id, motion, comments }) => {
+export default function MotionPage({ id, motion, comments }) {
   const breadcrumbItems = [
     {
       content: "Alliance",
@@ -45,7 +45,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
