@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
@@ -64,7 +64,7 @@ export default function Account() {
   );
 }
 
-export const getServerSideProps = withLoginUser(async () => {
+export const getServerSideProps = withCommonProps(async () => {
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
     ssrNextApi.fetch(gov2TracksApi),
     ssrNextApi.fetch(fellowshipTracksApi),

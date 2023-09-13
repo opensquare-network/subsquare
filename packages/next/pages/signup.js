@@ -7,7 +7,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
@@ -251,4 +251,4 @@ export default function Signup() {
   );
 }
 
-export const getServerSideProps = withLoginUser();
+export const getServerSideProps = withCommonProps();

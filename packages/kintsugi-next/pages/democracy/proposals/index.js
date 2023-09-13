@@ -1,6 +1,6 @@
 import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { useChain } from "next-common/context/chain";
@@ -41,7 +41,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }, { result: summary }] = await Promise.all([

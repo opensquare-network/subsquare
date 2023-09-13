@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -37,7 +37,7 @@ export default function ProposalsPage({ proposals, chain }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const proposals = await fetchList("tech-comm/motions", context);
   const tracksProps = await fetchOpenGovTracksProps();
 

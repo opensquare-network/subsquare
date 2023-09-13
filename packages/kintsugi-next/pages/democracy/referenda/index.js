@@ -1,6 +1,6 @@
 import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
@@ -40,7 +40,7 @@ export default function DemocracyReferendaPage({ posts, chain, summary }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const chain = process.env.CHAIN;
   const { page, page_size: pageSize } = context.query;
 

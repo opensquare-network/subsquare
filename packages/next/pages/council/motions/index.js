@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -35,7 +35,7 @@ export default function MotionsPage({ motions, chain }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   let listApiUrl = "motions";
   if ([Chains.moonbeam, Chains.moonriver].includes(process.env.CHAIN)) {
     listApiUrl = "moon-council/motions";

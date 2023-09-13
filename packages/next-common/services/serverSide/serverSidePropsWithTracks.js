@@ -1,7 +1,7 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide/tracks";
 
-export const getServerSidePropsWithTracks = withLoginUser(async () => {
+export const getServerSidePropsWithTracks = withCommonProps(async () => {
   const tracksProps = await fetchOpenGovTracksProps();
   return {
     props: {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { useChainSettings } from "next-common/context/chain";
@@ -52,7 +52,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const proposals = await fetchList("treasury/proposals", context);
   const tracksProps = await fetchOpenGovTracksProps();
 

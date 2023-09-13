@@ -12,7 +12,9 @@ async function defaultGetServerSideProps() {
   return { props: {} };
 }
 
-export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
+export function withCommonProps(
+  getServerSideProps = defaultGetServerSideProps,
+) {
   return async function (context) {
     const propsPromise = getServerSideProps(context);
 

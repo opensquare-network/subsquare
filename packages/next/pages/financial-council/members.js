@@ -1,5 +1,5 @@
 import MembersList from "next-common/components/membersList/simpleMembersList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
@@ -28,4 +28,4 @@ export default function MembersPage() {
   );
 }
 
-export const getServerSideProps = withLoginUser();
+export const getServerSideProps = withCommonProps();

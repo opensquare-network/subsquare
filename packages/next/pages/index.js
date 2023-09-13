@@ -1,5 +1,5 @@
 import OverviewPostList from "next-common/components/overview/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   toAdvisoryMotionsListItem,
@@ -274,7 +274,7 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async () => {
+export const getServerSideProps = withCommonProps(async () => {
   const { result } = await nextApi.fetch("overview");
   const tracksProps = await fetchOpenGovTracksProps();
 

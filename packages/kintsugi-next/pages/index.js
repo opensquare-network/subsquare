@@ -1,5 +1,5 @@
 import OverviewPostList from "next-common/components/overview/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toDiscussionListItem } from "utils/viewfuncs";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
@@ -95,7 +95,7 @@ export default function Home({ overview, chain }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async () => {
+export const getServerSideProps = withCommonProps(async () => {
   const chain = process.env.CHAIN;
   const { result } = await nextApi.fetch("overview");
 

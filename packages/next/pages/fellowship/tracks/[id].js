@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   fellowshipReferendumsTrackApi,
@@ -55,7 +55,7 @@ export default function Trackpage({
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { page = 1, page_size: pageSize = 50, id } = context.query;
 
   const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();

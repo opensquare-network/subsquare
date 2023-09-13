@@ -1,11 +1,11 @@
 import { EmptyList } from "next-common/utils/constants";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import TreasuryProposalsPage from "@subsquare/next/pages/treasury/proposals";
 
 export default TreasuryProposalsPage;
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const chain = process.env.CHAIN;
 
   const { page, page_size: pageSize } = context.query;

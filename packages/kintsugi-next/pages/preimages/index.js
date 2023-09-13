@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import usePreimageHashs from "next-common/hooks/usePreimageHashs";
@@ -20,4 +20,4 @@ export default function Preimages() {
   );
 }
 
-export const getServerSideProps = withLoginUser();
+export const getServerSideProps = withCommonProps();
