@@ -1,5 +1,4 @@
 import Cookies from "cookies";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   isBrowserCompatible,
   redirect,
@@ -7,6 +6,7 @@ import {
 } from "next-common/utils/serverSideUtil";
 import { CACHE_KEY } from "../utils/constants";
 import getDetailPageProperties, { getIdProperty } from "./pages/detail";
+import fetchProfile from "next-common/lib/fetchProfile";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -16,31 +16,19 @@ export function withCommonProps(
   getServerSideProps = defaultGetServerSideProps,
 ) {
   return async function (context) {
-    const propsPromise = getServerSideProps(context);
-
     if (!isBrowserCompatible(context)) {
       return toBrowserIncompatible();
     }
 
-    let options = {};
     const cookies = new Cookies(context.req, context.res);
     const themeMode = cookies.get(CACHE_KEY.themeMode);
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
-    const authToken = cookies.get(CACHE_KEY.authToken);
     const detailPageProperties = getDetailPageProperties(context);
-    if (authToken) {
-      options = {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      };
-    }
-    const profilePromise = nextApi.fetch("user/profile", {}, options);
 
     const [props, { result: user }] = await Promise.all([
-      propsPromise,
-      profilePromise,
+      getServerSideProps(context),
+      fetchProfile(cookies),
     ]);
 
     if (context.resolvedUrl?.startsWith("/setting/") && !user) {
