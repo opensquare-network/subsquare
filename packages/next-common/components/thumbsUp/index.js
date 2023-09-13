@@ -57,7 +57,7 @@ const ActionItem = styled(Flex)`
     margin-left: 17px;
   }
 
-  > svg {
+  > :first-child {
     margin-right: 8px;
   }
 `;
@@ -100,7 +100,13 @@ export default function useThumbsUp({
         highlight={highlight}
         onClick={() => toggleThumbUp && toggleThumbUp()}
       >
-        {thumbUpLoading ? <Loading size={14} /> : disabled ? <DisabledThumbUp /> : <ThumbUpIcon />}
+        {thumbUpLoading ? (
+          <Loading size={14} />
+        ) : disabled ? (
+          <DisabledThumbUp />
+        ) : (
+          <ThumbUpIcon />
+        )}
         <div>Up{count > 0 ? ` ${count}` : ""}</div>
       </ActionItem>
       {count > 0 && (
