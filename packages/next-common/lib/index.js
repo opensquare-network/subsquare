@@ -6,7 +6,6 @@ import {
   toBrowserIncompatible,
 } from "next-common/utils/serverSideUtil";
 import { CACHE_KEY } from "../utils/constants";
-import { useUser } from "../context/user";
 import getDetailPageProperties from "./pages/detail";
 
 async function defaultGetServerSideProps() {
@@ -66,16 +65,5 @@ export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
         },
       },
     };
-  };
-}
-
-export function withLoginUserRedux(fnComponent) {
-  return ({ ...props }) => {
-    const loginUser = useUser();
-
-    return fnComponent({
-      ...props,
-      loginUser,
-    });
   };
 }
