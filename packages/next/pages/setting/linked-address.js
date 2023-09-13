@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
-import { withLoginUserRedux } from "next-common/lib";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { useUser } from "next-common/context/user";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
@@ -12,7 +12,8 @@ const LinkedAddressComp = dynamic(
   },
 );
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default function LinkedAddressPage() {
+  const loginUser = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +27,6 @@ export default withLoginUserRedux(({ loginUser }) => {
       <LinkedAddressComp />
     </SettingLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

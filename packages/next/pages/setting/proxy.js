@@ -1,4 +1,3 @@
-import { withLoginUserRedux } from "next-common/lib";
 import {
   ContentWrapper,
   InfoMessage,
@@ -11,7 +10,7 @@ import {
 } from "next-common/components/styled/containers/titleContainer";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function ProxyPage() {
   return (
     <SettingLayout>
       <SettingSection>
@@ -26,6 +25,6 @@ export default withLoginUserRedux(() => {
       </SettingSection>
     </SettingLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

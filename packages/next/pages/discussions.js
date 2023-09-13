@@ -1,6 +1,6 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChain } from "next-common/context/chain";
@@ -10,7 +10,7 @@ import { SystemPlus } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ posts }) => {
+export default function DiscussionsPage({ posts }) {
   const chain = useChain();
   const router = useRouter();
   const items = (posts.items || []).map((item) =>
@@ -51,7 +51,7 @@ export default withLoginUserRedux(({ posts }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page, page_size: pageSize, label } = context.query;

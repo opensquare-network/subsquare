@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "utils/viewfuncs";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
@@ -8,7 +8,7 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ bounties }) => {
+export default function ChildBountiesPage({ bounties }) {
   const chainSettings = useChainSettings();
 
   const items = (bounties.items || []).map((item) =>
@@ -48,7 +48,7 @@ export default withLoginUserRedux(({ bounties }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const bounties = await fetchList("treasury/child-bounties", context);

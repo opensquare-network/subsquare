@@ -1,6 +1,6 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import Reset from "next-common/components/pages/reset";
 
-export default withLoginUserRedux(Reset);
+export default Reset;
 
 export const getServerSideProps = withLoginUser();

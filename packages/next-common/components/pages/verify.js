@@ -4,7 +4,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { InfoWrapper, Redirect } from "next-common/components/login/styled";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
@@ -12,7 +11,7 @@ import GhostButton from "../buttons/ghostButton";
 import { LoginCard } from "../styled/containers/loginCard";
 import { updateUser, useUserDispatch } from "next-common/context/user";
 
-export default withLoginUserRedux(() => {
+export default function Verify() {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -80,4 +79,4 @@ export default withLoginUserRedux(() => {
       </LoginCard>
     </>
   );
-});
+}

@@ -1,7 +1,6 @@
 import React from "react";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import { withLoginUserRedux } from "../../lib";
 import { isPolkadotAddress } from "../../utils/viewfuncs";
 import Bio from "./bio";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
@@ -12,7 +11,7 @@ import { useRouter } from "next/router";
 import VotingHistory from "./votingHistory";
 import { useChainSettings } from "next-common/context/chain";
 
-export default withLoginUserRedux(({ user, id }) => {
+export default function ProfilePage({ user, id }) {
   const { hasReferenda, hasFellowship, noDemocracy } = useChainSettings();
 
   const address =
@@ -64,4 +63,4 @@ export default withLoginUserRedux(({ user, id }) => {
       {tabContent}
     </ListLayout>
   );
-});
+}

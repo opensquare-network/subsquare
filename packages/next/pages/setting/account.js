@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { withLoginUserRedux } from "next-common/lib";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
 import Password from "next-common/components/setting/password";
@@ -13,8 +12,10 @@ import {
 } from "next-common/components/styled/containers/titleContainer";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { useUser } from "next-common/context/user";
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default function AccountSettingPage() {
+  const loginUser = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -54,6 +55,6 @@ export default withLoginUserRedux(({ loginUser }) => {
       </SettingSection>
     </SettingLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ summary }) => {
+export default function ReferendaVotesPage({ summary }) {
   const user = useUser();
   const router = useRouter();
 
@@ -33,7 +33,7 @@ export default withLoginUserRedux(({ summary }) => {
       </ModuleTabProvider>
     </ReferendaLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async () => {
   const [tracksProps, { result: summary }] = await Promise.all([

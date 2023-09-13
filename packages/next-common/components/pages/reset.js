@@ -5,7 +5,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import {
   FormInputsWrapper,
@@ -19,7 +18,7 @@ import PrimaryButton from "../buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { LoginCard } from "../styled/containers/loginCard";
 
-const Reset = withLoginUserRedux(() => {
+const Reset = () => {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -105,6 +104,6 @@ const Reset = withLoginUserRedux(() => {
       </LoginCard>
     </>
   );
-});
+};
 
 export default Reset;

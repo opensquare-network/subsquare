@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Input from "next-common/components/input";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withLoginUserRedux } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
@@ -18,7 +17,7 @@ import PrimaryButton from "../buttons/primaryButton";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { LoginCard } from "../styled/containers/loginCard";
 
-const Forget = withLoginUserRedux(() => {
+const Forget = () => {
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState();
@@ -94,6 +93,6 @@ const Forget = withLoginUserRedux(() => {
       </LoginCard>
     </>
   );
-});
+};
 
 export default Forget;

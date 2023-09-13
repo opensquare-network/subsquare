@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import { useRouter } from "next/router";
 import { LoginCard } from "../styled/containers/loginCard";
 import LoginEmailContent from "../login/emailContent";
+import { useUser } from "next-common/context/user";
 
-const EmailPage = withLoginUserRedux(({ loginUser }) => {
+const EmailPage = () => {
+  const loginUser = useUser();
   const address = loginUser?.address;
 
   const router = useRouter();
@@ -27,6 +28,6 @@ const EmailPage = withLoginUserRedux(({ loginUser }) => {
       </LoginCard>
     </>
   );
-});
+};
 
 export default EmailPage;

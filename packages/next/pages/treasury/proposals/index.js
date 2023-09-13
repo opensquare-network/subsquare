@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { useChainSettings } from "next-common/context/chain";
@@ -9,7 +9,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
+export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
   const { hasDotreasury, symbol } = useChainSettings();
@@ -50,7 +50,7 @@ export default withLoginUserRedux(({ proposals: ssrProposals, chain }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const proposals = await fetchList("treasury/proposals", context);

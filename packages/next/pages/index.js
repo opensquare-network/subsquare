@@ -1,5 +1,5 @@
 import OverviewPostList from "next-common/components/overview/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   toAdvisoryMotionsListItem,
@@ -38,7 +38,7 @@ import {
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
+export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const chain = useChain();
   const isKarura = ["karura", "acala"].includes(chain);
   const isCentrifuge = [Chains.centrifuge, Chains.altair].includes(chain);
@@ -272,7 +272,7 @@ export default withLoginUserRedux(({ overview, tracks, fellowshipTracks }) => {
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch("overview");

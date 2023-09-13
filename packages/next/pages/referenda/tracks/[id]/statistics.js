@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import {
   gov2ReferendumsTracksApi,
   gov2ReferendumsTracksSummaryApi,
@@ -16,63 +16,61 @@ import TurnoutStatistics from "next-common/components/statistics/track/turnoutSt
 import DemocracyStatistics from "next-common/components/statistics/democracy";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(
-  ({
-    track,
-    turnout,
-    delegatee,
-    delegators,
-    summary,
+export default function TrackStatisticsPage({
+  track,
+  turnout,
+  delegatee,
+  delegators,
+  summary,
 
-    referendumsSummary,
-    period,
-  }) => {
-    const title = "OpenGov Statistics";
-    const seoInfo = { title, desc: title };
-    const [navCollapsed] = useNavCollapsed();
+  referendumsSummary,
+  period,
+}) {
+  const title = "OpenGov Statistics";
+  const seoInfo = { title, desc: title };
+  const [navCollapsed] = useNavCollapsed();
 
-    return (
-      <ReferendaTrackLayout
-        seoInfo={seoInfo}
-        title={`[${period.id}] Origin: ${period.origin}`}
-        summaryData={referendumsSummary}
-        periodData={period}
-      >
-        <div className="space-y-6">
-          <div>
-            <Header className="px-6 mb-4">Referenda</Header>
-            <div
-              className={clsx(
-                "flex gap-4 flex-wrap",
-                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
-                !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
-                !navCollapsed
-                  ? "[&_>_div]:max-md:max-w-full"
-                  : "[&_>_div]:max-sm:max-w-full",
-              )}
-            >
-              <VoteTrend turnout={turnout} />
-              <AddressTrend turnout={turnout} />
-              <TurnoutStatistics turnout={turnout} />
-            </div>
-          </div>
-
-          <div>
-            <Header className="px-6 mb-4">Delegation</Header>
-            <div>
-              <DemocracyStatistics
-                apiRoot={`referenda/tracks/${track.id}`}
-                delegatee={delegatee}
-                delegators={delegators}
-                summary={summary}
-              />
-            </div>
+  return (
+    <ReferendaTrackLayout
+      seoInfo={seoInfo}
+      title={`[${period.id}] Origin: ${period.origin}`}
+      summaryData={referendumsSummary}
+      periodData={period}
+    >
+      <div className="space-y-6">
+        <div>
+          <Header className="px-6 mb-4">Referenda</Header>
+          <div
+            className={clsx(
+              "flex gap-4 flex-wrap",
+              "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
+              !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
+              !navCollapsed
+                ? "[&_>_div]:max-md:max-w-full"
+                : "[&_>_div]:max-sm:max-w-full",
+            )}
+          >
+            <VoteTrend turnout={turnout} />
+            <AddressTrend turnout={turnout} />
+            <TurnoutStatistics turnout={turnout} />
           </div>
         </div>
-      </ReferendaTrackLayout>
-    );
-  },
-);
+
+        <div>
+          <Header className="px-6 mb-4">Delegation</Header>
+          <div>
+            <DemocracyStatistics
+              apiRoot={`referenda/tracks/${track.id}`}
+              delegatee={delegatee}
+              delegators={delegators}
+              summary={summary}
+            />
+          </div>
+        </div>
+      </div>
+    </ReferendaTrackLayout>
+  );
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

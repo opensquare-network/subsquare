@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import dynamic from "next/dynamic";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -23,7 +23,7 @@ const Popup = dynamic(
   },
 );
 
-export default withLoginUserRedux(({ tips: ssrTips }) => {
+export default function TipsPage({ tips: ssrTips }) {
   const chain = useChain();
   const [showPopup, setShowPopup] = useState(false);
   const [tips, setTips] = useState(ssrTips);
@@ -99,7 +99,7 @@ export default withLoginUserRedux(({ tips: ssrTips }) => {
       )}
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const tips = await fetchList("treasury/tips", context);
