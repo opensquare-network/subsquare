@@ -1,10 +1,11 @@
 import dynamic from "next/dynamic";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { useUser } from "next-common/context/user";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
@@ -13,7 +14,8 @@ const LinkedAddressComp = dynamic(
   },
 );
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default function LinkedAddress() {
+  const loginUser = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       <LinkedAddressComp />
     </SettingLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([

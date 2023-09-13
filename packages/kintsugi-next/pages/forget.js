@@ -1,6 +1,6 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import Forget from "next-common/components/pages/forget";
 
-export default withLoginUserRedux(Forget);
+export default Forget;
 
 export const getServerSideProps = withLoginUser();

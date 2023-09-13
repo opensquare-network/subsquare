@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
@@ -14,8 +14,10 @@ import {
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { useUser } from "next-common/context/user";
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default function Account() {
+  const loginUser = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       </SettingLayout>
     </>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async () => {
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
