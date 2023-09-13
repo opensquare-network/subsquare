@@ -1,42 +1,15 @@
 import clsx from "clsx";
-import BaseLayout from "./baseLayout";
-import Breadcrumb from "../_Breadcrumb";
-import { useSelector } from "react-redux";
+import BaseLayout from "../baseLayout";
+import { useDispatch, useSelector } from "react-redux";
 import {
   layoutDetailSidebarHeight,
   setLayoutDetailSidebarHeight,
 } from "next-common/store/reducers/layoutSlice";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useNavCollapsed } from "next-common/context/nav";
-import { NeutralPanel } from "../styled/containers/neutralPanel";
+import { NeutralPanel } from "../../styled/containers/neutralPanel";
+import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 
-/**
- * @typedef {{
- * content: string | import("react").ReactNode
- * path?: string
- * }} Breadcrumb
- */
-
-/**
- * @typedef {{
- * title: string
- * desc?: string
- * }} SeoInfo
- */
-
-/**
- * @typedef {Object} DetailLayoutProps
- * @property {JSX.Element | Breadcrumb[]} breadcrumbs - The breadcrumb items.
- * @property {SeoInfo} seoInfo - The SEO information.
- * @property {JSX.Element} children - The children components.
- * @property {JSX.Element} header - The header element.
- * @property {boolean} hasSidebar - Indicates if the layout has a sidebar component.
- */
-
-/**
- * @param {DetailLayoutProps} props
- */
 export default function DetailLayout({
   seoInfo,
   breadcrumbs,
@@ -69,20 +42,7 @@ export default function DetailLayout({
             !hasSidebar && "max-w-[856px]",
           )}
         >
-          {breadcrumbs && (
-            <div
-              className={clsx(
-                "mb-6 px-12",
-                navCollapsed ? "max-md:px-6" : "max-lg:px-6",
-              )}
-            >
-              {breadcrumbs?.length > 0 ? (
-                <Breadcrumb items={breadcrumbs} />
-              ) : (
-                breadcrumbs
-              )}
-            </div>
-          )}
+          <Breadcrumbs breadcrumbs={breadcrumbs} />
 
           {header && (
             <div

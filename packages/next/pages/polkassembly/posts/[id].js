@@ -16,16 +16,6 @@ export default function PostsPage({ detail }) {
     polkassemblyId,
   });
 
-  const breadcrumbItems = [
-    {
-      content: "Polkassembly",
-      path: "/polkassembly/discussions",
-    },
-    {
-      content: "#" + polkassemblyId,
-    },
-  ];
-
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -35,7 +25,6 @@ export default function PostsPage({ detail }) {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
       >
         <DetailItem postReactions={postReactions} />
         <PolkassemblyComments

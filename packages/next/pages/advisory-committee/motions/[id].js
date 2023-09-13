@@ -7,7 +7,6 @@ import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
-import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
@@ -40,20 +39,6 @@ export default function MotionPage({ id, motion, comments }) {
   }
 
   const desc = getMetaDesc(motion);
-  const breadcrumbItemName = getMotionBreadcrumbName(id, motion);
-  const breadcrumbItems = [
-    {
-      content: "Advisory Committee",
-    },
-    {
-      content: "Motions",
-      path: "/advisory-committee/motions",
-    },
-    {
-      content: `#${breadcrumbItemName}`,
-    },
-  ];
-
   return (
     <PostProvider post={motion}>
       <DetailLayout
@@ -62,7 +47,6 @@ export default function MotionPage({ id, motion, comments }) {
           desc,
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
         hasSidebar
       >
         {postContent}

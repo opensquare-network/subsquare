@@ -8,7 +8,6 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
-import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
@@ -44,20 +43,6 @@ export default function ProposalPage({ id, motion, comments }) {
   }
 
   const desc = getMetaDesc(motion);
-  const breadcrumbItemName = getMotionBreadcrumbName(id, motion);
-  const breadcrumbItems = [
-    {
-      content: "Tech.Comm.",
-    },
-    {
-      content: "Proposals",
-      path: "/techcomm/proposals",
-    },
-    {
-      content: `#${breadcrumbItemName}`,
-    },
-  ];
-
   return (
     <PostProvider post={motion}>
       <DetailLayout
@@ -66,7 +51,6 @@ export default function ProposalPage({ id, motion, comments }) {
           desc,
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
         hasSidebar
       >
         {postContent}

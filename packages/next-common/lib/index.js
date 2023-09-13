@@ -6,7 +6,7 @@ import {
   toBrowserIncompatible,
 } from "next-common/utils/serverSideUtil";
 import { CACHE_KEY } from "../utils/constants";
-import getDetailPageProperties from "./pages/detail";
+import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -26,7 +26,8 @@ export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const authToken = cookies.get(CACHE_KEY.authToken);
-    const pageProperties = getDetailPageProperties(context.resolvedUrl);
+    const detailPageProperties = getDetailPageProperties(context);
+    console.log("detailPageProperties", detailPageProperties);
     if (authToken) {
       options = {
         headers: {
@@ -59,9 +60,12 @@ export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
         navCollapsed: navCollapsed || false,
         navSubmenuVisible: navSubmenuVisible || "{}",
         pageProperties: {
-          ...pageProperties,
+          ...detailPageProperties,
           userAgent,
-          props: props.props,
+          props: {
+            ...getIdProperty(context),
+            ...props.props,
+          },
         },
       },
     };

@@ -7,7 +7,6 @@ import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -31,43 +30,19 @@ function TechCommMotionContent({ motion, comments }) {
 }
 
 export default function Proposal({ id, motion, comments }) {
-  let breadcrumbItemName = "";
   let postContent = null;
 
   if (motion) {
-    breadcrumbItemName = `#${
-      motion?.motionIndex ?? hashEllipsis(motion?.hash)
-    }`;
     postContent = (
       <NonNullPost>
         <TechCommMotionContent motion={motion} comments={comments} />
       </NonNullPost>
     );
   } else {
-    if (id?.match(/^[0-9]+$/)) {
-      breadcrumbItemName = `#${id}`;
-    } else {
-      const hash = id?.split("_").pop();
-      breadcrumbItemName = `#${hashEllipsis(hash)}`;
-    }
     postContent = <CheckUnFinalized id={id} />;
   }
 
   const desc = getMetaDesc(motion);
-
-  const breadcrumbItems = [
-    {
-      content: "Tech.Comm.",
-    },
-    {
-      content: "Proposals",
-      path: "/techcomm/proposals",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
-
   return (
     <PostProvider post={motion}>
       <DetailLayout
@@ -77,7 +52,6 @@ export default function Proposal({ id, motion, comments }) {
           desc,
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
       >
         {postContent}
       </DetailLayout>

@@ -10,7 +10,6 @@ import useUniversalComments from "components/universalComments";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
-import { hashEllipsis } from "next-common/utils";
 import CheckUnFinalized from "components/external/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -55,11 +54,8 @@ function DemocracyExternalContent({ detail, comments }) {
 }
 
 export default function DemocracyExternalPage({ id, detail, comments }) {
-  let breadcrumbItemName = "";
   let postContent = null;
-
   if (detail) {
-    breadcrumbItemName = `#${hashEllipsis(detail?.externalProposalHash)}`;
     postContent = (
       <NonNullPost>
         <DemocracyExternalContent detail={detail} comments={comments} />
@@ -67,25 +63,10 @@ export default function DemocracyExternalPage({ id, detail, comments }) {
     );
   } else {
     const hash = id?.split("_").pop();
-    breadcrumbItemName = `#${hashEllipsis(hash)}`;
     postContent = <CheckUnFinalized id={hash} />;
   }
 
   const desc = getMetaDesc(detail);
-
-  const breadcrumbItems = [
-    {
-      content: "Democracy",
-    },
-    {
-      content: "Externals",
-      path: "/democracy/externals",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
-
   return (
     <PostProvider post={detail}>
       <DetailLayout
@@ -94,7 +75,6 @@ export default function DemocracyExternalPage({ id, detail, comments }) {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
       >
         {postContent}
       </DetailLayout>

@@ -52,33 +52,17 @@ function TreasuryProposalContent({ detail, comments }) {
 }
 
 export default function ProposalPage({ id, detail, comments }) {
-  let breadcrumbItemName = "";
-  let postContent = null;
+  let postContent;
 
   if (detail) {
-    breadcrumbItemName = `#${detail?.proposalIndex}`;
     postContent = (
       <NonNullPost>
         <TreasuryProposalContent detail={detail} comments={comments} />
       </NonNullPost>
     );
   } else {
-    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
-
-  const breadcrumbItems = [
-    {
-      content: "Treasury",
-    },
-    {
-      content: "Proposals",
-      path: "/treasury/proposals",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
 
   const desc = getMetaDesc(detail);
 
@@ -90,9 +74,7 @@ export default function ProposalPage({ id, detail, comments }) {
 
   return (
     <PostProvider post={detail}>
-      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbItems}>
-        {postContent}
-      </DetailLayout>
+      <DetailLayout seoInfo={seoInfo}>{postContent}</DetailLayout>
     </PostProvider>
   );
 }
