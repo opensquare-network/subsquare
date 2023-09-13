@@ -49,18 +49,15 @@ function ChildBountyContent({ comments }) {
 }
 
 export default function ChildBountyPage({ id, detail, comments }) {
-  let breadcrumbItemName = "";
   let postContent = null;
 
   if (detail) {
-    breadcrumbItemName = `#${detail?.index}`;
     postContent = (
       <NonNullPost>
         <ChildBountyContent comments={comments} />
       </NonNullPost>
     );
   } else {
-    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 
@@ -70,19 +67,6 @@ export default function ChildBountyPage({ id, detail, comments }) {
     detail?.onchainData?.state?.state,
   );
 
-  const breadcrumbItems = [
-    {
-      content: "Treasury",
-    },
-    {
-      content: "Child Bounties",
-      path: "/treasury/child-bounties",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
-
   return (
     <PostProvider post={detail}>
       <DetailLayout
@@ -91,7 +75,6 @@ export default function ChildBountyPage({ id, detail, comments }) {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
         hasSidebar={showRightSidePanel}
       >
         {postContent}

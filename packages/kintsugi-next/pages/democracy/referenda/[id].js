@@ -119,11 +119,8 @@ export default function DemocracyReferendumPage({
   publicProposal,
   comments,
 }) {
-  let breadcrumbItemName = "";
   let postContent = null;
-
   if (detail) {
-    breadcrumbItemName = `#${detail?.referendumIndex}`;
     postContent = (
       <NonNullPost>
         <ReferendumContent
@@ -133,25 +130,10 @@ export default function DemocracyReferendumPage({
       </NonNullPost>
     );
   } else {
-    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 
   const desc = getMetaDesc(detail);
-
-  const breadcrumbItems = [
-    {
-      content: "Democracy",
-    },
-    {
-      content: "Referenda",
-      path: "/democracy/referenda",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
-
   const seoInfo = {
     title: detail?.title,
     desc,
@@ -160,7 +142,7 @@ export default function DemocracyReferendumPage({
 
   return (
     <PostProvider post={detail}>
-      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbItems} hasSidebar>
+      <DetailLayout seoInfo={seoInfo} hasSidebar>
         {postContent}
       </DetailLayout>
     </PostProvider>

@@ -32,16 +32,6 @@ export default function PostDetailPage({ detail, comments, votes, myVote }) {
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
-  const breadcrumbItems = [
-    {
-      content: "Discussions",
-      path: "/discussions",
-    },
-    {
-      content: "#" + detail?.postUid,
-    },
-  ];
-
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -51,7 +41,6 @@ export default function PostDetailPage({ detail, comments, votes, myVote }) {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
       >
         <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
         <Comments data={comments} />

@@ -4,7 +4,6 @@ import { EmptyList } from "next-common/utils/constants";
 import { PostProvider } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import getMotionBreadcrumbName from "next-common/utils/collective/breadcrumbName";
 import MotionContent from "../../../components/motion/motionContent";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -13,19 +12,6 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default function MotionPage({ id, motion, comments }) {
-  const breadcrumbItems = [
-    {
-      content: "Alliance",
-    },
-    {
-      content: "Motions",
-      path: "/alliance/motions",
-    },
-    {
-      content: `#${getMotionBreadcrumbName(id, motion)}`,
-    },
-  ];
-
   return (
     <PostProvider post={motion}>
       <DetailLayout
@@ -34,7 +20,6 @@ export default function MotionPage({ id, motion, comments }) {
           desc: getMetaDesc(motion),
           ogImage: getBannerUrl(motion?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
         hasSidebar
       >
         {motion ? (

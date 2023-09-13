@@ -1,6 +1,8 @@
 import { detailPageCategory } from "../../utils/consts/business/category";
+import isNil from "lodash.isnil";
 
-export default function getDetailPageProperties(url) {
+function getTypeProperties(context) {
+  const url = context.resolvedUrl;
   if (!url) {
     return null;
   }
@@ -14,5 +16,17 @@ export default function getDetailPageProperties(url) {
     }
   }
 
-  return null;
+  return {};
+}
+
+export function getIdProperty(context) {
+  const { id } = context.query;
+  return isNil(id) ? {} : { id };
+}
+
+export default function getDetailPageProperties(context) {
+  return {
+    ...getTypeProperties(context),
+    ...getIdProperty(context),
+  };
 }

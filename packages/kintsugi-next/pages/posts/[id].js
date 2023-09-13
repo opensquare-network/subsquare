@@ -19,16 +19,6 @@ export default function Post({ detail, comments, votes, myVote }) {
     comments,
   });
 
-  const breadcrumbItems = [
-    {
-      content: "Discussions",
-      path: "/discussions",
-    },
-    {
-      content: "#" + detail?.postUid,
-    },
-  ];
-
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -38,7 +28,6 @@ export default function Post({ detail, comments, votes, myVote }) {
           desc,
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
-        breadcrumbs={breadcrumbItems}
       >
         <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
         {CommentComponent}

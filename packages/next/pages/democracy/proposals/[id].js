@@ -76,40 +76,23 @@ function PublicProposalContent({ comments }) {
 }
 
 export default function DemocracyProposalPage({ id, detail, comments }) {
-  let breadcrumbItemName = "";
   let postContent = null;
 
   if (detail) {
-    breadcrumbItemName = `#${detail?.proposalIndex}`;
     postContent = (
       <NonNullPost>
         <PublicProposalContent comments={comments} />
       </NonNullPost>
     );
   } else {
-    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 
   const desc = getMetaDesc(detail);
 
-  const breadcrumbItems = [
-    {
-      content: "Democracy",
-    },
-    {
-      content: "Proposals",
-      path: "/democracy/proposals",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
-
   return (
     <PostProvider post={detail}>
       <DetailLayout
-        breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
