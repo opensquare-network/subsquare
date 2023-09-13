@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import {
   gov2ReferendumsTracksApi,
   gov2ReferendumsTracksSummaryApi,
@@ -72,7 +72,7 @@ export default function TrackStatisticsPage({
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
   const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();

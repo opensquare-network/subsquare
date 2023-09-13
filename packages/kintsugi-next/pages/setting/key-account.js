@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
@@ -55,7 +55,7 @@ export default function KeyAccount() {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const chain = process.env.CHAIN;
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
     ssrNextApi.fetch(gov2TracksApi),

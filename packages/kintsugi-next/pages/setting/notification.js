@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import {
   newErrorToast,
@@ -181,7 +181,7 @@ export default function Notification({ unsubscribe, subscription }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const chain = process.env.CHAIN;
   const { unsubscribe } = context.query;
 

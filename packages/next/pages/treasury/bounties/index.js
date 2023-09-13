@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
@@ -50,7 +50,7 @@ export default function BountiesPage({ bounties, chain }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const bounties = await fetchList("treasury/bounties", context);
   const tracksProps = await fetchOpenGovTracksProps();
 

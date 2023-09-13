@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -7,7 +7,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default Profile;
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const {
     params: [id],
   } = context.query;

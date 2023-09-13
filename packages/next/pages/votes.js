@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
@@ -56,7 +56,7 @@ export default function Votes({ overview }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async () => {
+export const getServerSideProps = withCommonProps(async () => {
   const { result } = await nextApi.fetch("overview");
   const tracksProps = await fetchOpenGovTracksProps();
 

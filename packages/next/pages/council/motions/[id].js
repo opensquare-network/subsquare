@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -60,7 +60,7 @@ export default function MotionPage({ id, motion, comments }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
   let listApi = "motions";
   if ([Chains.moonbeam, Chains.moonriver].includes(process.env.CHAIN)) {

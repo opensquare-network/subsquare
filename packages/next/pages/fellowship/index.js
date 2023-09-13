@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
@@ -42,7 +42,7 @@ export default function FellowshipPage({ posts, fellowshipTracks, summary }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
 
   const [tracksProps, { result: posts }, { result: summary }] =

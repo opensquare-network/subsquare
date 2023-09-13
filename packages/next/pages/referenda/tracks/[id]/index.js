@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsTrackApi,
@@ -74,7 +74,7 @@ export default function TrackPage({
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const {
     page = 1,
     page_size: pageSize = defaultPageSize,

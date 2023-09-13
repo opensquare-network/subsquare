@@ -3,7 +3,7 @@ import {
   useOnchainData,
   usePost,
 } from "next-common/context/post";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import Gov2Sidebar from "components/gov2/sidebar";
@@ -138,7 +138,7 @@ export default function ReferendumPage({ id, detail, comments }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
   const { result: detail } = await ssrNextApi.fetch(
     gov2ReferendumsDetailApi(id),

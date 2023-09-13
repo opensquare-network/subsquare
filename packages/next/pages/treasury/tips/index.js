@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import dynamic from "next/dynamic";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -101,7 +101,7 @@ export default function TipsPage({ tips: ssrTips }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const tips = await fetchList("treasury/tips", context);
   const tracksProps = await fetchOpenGovTracksProps();
 

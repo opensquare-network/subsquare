@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
 import {
   newErrorToast,
@@ -175,7 +175,7 @@ export default function NotificationPage({ subscription, unsubscribe }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { unsubscribe } = context.query;
 
   const cookies = new Cookies(context.req, context.res);

@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   getFellowshipReferendumCommentsUrl,
@@ -125,7 +125,7 @@ export default function ReferendumPage({ id, detail, comments }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
   const { result: detail } = await ssrNextApi.fetch(

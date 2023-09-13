@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider } from "next-common/context/post";
@@ -32,7 +32,7 @@ export default function MotionPage({ id, motion, comments }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
   const { result: motion } = await nextApi.fetch(`alliance/motions/${id}`);
   if (!motion) {

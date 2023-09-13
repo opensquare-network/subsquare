@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Vote from "components/referenda/vote";
@@ -126,7 +126,7 @@ export default function DemocracyReferendumPage({ id, detail, comments }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
   const { result: detail } = await nextApi.fetch(`democracy/referendums/${id}`);

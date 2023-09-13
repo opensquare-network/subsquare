@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
@@ -7,7 +7,7 @@ import { encodeAddressToChain } from "next-common/services/address";
 
 export default Profile;
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const {
     params: [id],
   } = context.query;

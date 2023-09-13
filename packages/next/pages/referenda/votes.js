@@ -1,4 +1,4 @@
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
@@ -35,7 +35,7 @@ export default function ReferendaVotesPage({ summary }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async () => {
+export const getServerSideProps = withCommonProps(async () => {
   const [tracksProps, { result: summary }] = await Promise.all([
     fetchOpenGovTracksProps(),
     ssrNextApi.fetch(gov2ReferendumsSummaryApi),

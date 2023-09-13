@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { toAdvisoryMotionsListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -39,7 +39,7 @@ export default function MotionsPage({ motions }) {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const motions = await fetchList("advisory-motions", context);
 
   return {

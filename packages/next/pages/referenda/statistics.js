@@ -1,5 +1,5 @@
 import { EmptyList } from "next-common/utils/constants";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import DelegateeSummary from "next-common/components/statistics/referenda/delegateeSummary";
 import ReferendaSummary from "next-common/components/statistics/referenda/summary";
@@ -66,7 +66,7 @@ export default function ReferendaStatisticsPage({
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const [
     { result: tracksStats },
     { result: delegatee },

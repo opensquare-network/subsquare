@@ -1,5 +1,5 @@
 import { EmptyList } from "next-common/utils/constants";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import DemocracyStatistics from "next-common/components/statistics/democracy";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
@@ -68,7 +68,7 @@ export default function DemocracyStatisticsPage({
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const [
     { result: delegatee },
     { result: delegators },

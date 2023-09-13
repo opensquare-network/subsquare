@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { withLoginUser } from "next-common/lib";
+import { withCommonProps } from "next-common/lib";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
@@ -31,7 +31,7 @@ export default function LinkedAddress() {
   );
 }
 
-export const getServerSideProps = withLoginUser(async (context) => {
+export const getServerSideProps = withCommonProps(async (context) => {
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
     ssrNextApi.fetch(gov2TracksApi),
     ssrNextApi.fetch(fellowshipTracksApi),
