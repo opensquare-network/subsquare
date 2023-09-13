@@ -1,5 +1,5 @@
 import DetailItem from "components/detailItem";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Business from "components/external/business";
@@ -54,7 +54,7 @@ function DemocracyExternalContent({ detail, comments }) {
   );
 }
 
-export default withLoginUserRedux(({ id, detail, comments }) => {
+export default function DemocracyExternalPage({ id, detail, comments }) {
   let breadcrumbItemName = "";
   let postContent = null;
 
@@ -100,7 +100,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

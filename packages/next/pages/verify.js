@@ -1,6 +1,6 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import Verify from "next-common/components/pages/verify";
 
-export default withLoginUserRedux(Verify);
+export default Verify;
 
 export const getServerSideProps = withLoginUser();

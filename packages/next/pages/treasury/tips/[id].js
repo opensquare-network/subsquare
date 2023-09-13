@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
@@ -42,7 +42,7 @@ function TreasuryTipContent({ comments }) {
   );
 }
 
-export default withLoginUserRedux(({ id, detail, comments }) => {
+export default function TipPage({ id, detail, comments }) {
   let breadcrumbItemName;
   let postContent;
 
@@ -89,7 +89,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

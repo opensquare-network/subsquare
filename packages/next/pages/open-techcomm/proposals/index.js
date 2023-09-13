@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { useChain } from "next-common/context/chain";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
@@ -7,7 +7,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ motions }) => {
+export default function MotionsPage({ motions }) {
   const chain = useChain();
   const items = (motions.items || []).map((item) =>
     normalizeOpenTechCommProposalListItem(chain, item),
@@ -34,7 +34,7 @@ export default withLoginUserRedux(({ motions }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const tracksProps = await fetchOpenGovTracksProps();

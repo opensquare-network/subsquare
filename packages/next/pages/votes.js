@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import MyVotes from "components/myvotes";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ overview }) => {
+export default function Votes({ overview }) {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
@@ -54,7 +54,7 @@ export default withLoginUserRedux(({ overview }) => {
       <MyVotes />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async () => {
   const { result } = await nextApi.fetch("overview");

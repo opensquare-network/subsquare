@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getAnnouncementBreadcrumbName from "next-common/utils/alliance/announcementBread";
@@ -35,7 +35,7 @@ function AnnouncementContent({ detail, comments }) {
   );
 }
 
-export default withLoginUserRedux(({ id, announcement, comments }) => {
+export default function AnnouncementPage({ id, announcement, comments }) {
   const breadcrumbItems = [
     {
       content: "Alliance",
@@ -70,7 +70,7 @@ export default withLoginUserRedux(({ id, announcement, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

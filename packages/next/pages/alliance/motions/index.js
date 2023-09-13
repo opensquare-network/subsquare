@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allianceMotion";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
@@ -6,7 +6,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ motions }) => {
+export default function MotionsPage({ motions }) {
   const items = motions.items.map((item) => normalizeAllianceMotion(item));
 
   const seoInfo = {
@@ -23,7 +23,7 @@ export default withLoginUserRedux(({ motions }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const motions = await fetchList("alliance/motions", context);

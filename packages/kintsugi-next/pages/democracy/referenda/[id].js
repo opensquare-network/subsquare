@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import DetailItem from "components/detailItem";
@@ -113,60 +113,59 @@ function ReferendumContent({ publicProposal, comments }) {
   );
 }
 
-export default withLoginUserRedux(
-  ({ id, detail, publicProposal, comments }) => {
-    let breadcrumbItemName = "";
-    let postContent = null;
+export default function DemocracyReferendumPage({
+  id,
+  detail,
+  publicProposal,
+  comments,
+}) {
+  let breadcrumbItemName = "";
+  let postContent = null;
 
-    if (detail) {
-      breadcrumbItemName = `#${detail?.referendumIndex}`;
-      postContent = (
-        <NonNullPost>
-          <ReferendumContent
-            publicProposal={publicProposal}
-            comments={comments}
-          />
-        </NonNullPost>
-      );
-    } else {
-      breadcrumbItemName = `#${id}`;
-      postContent = <CheckUnFinalized id={id} />;
-    }
-
-    const desc = getMetaDesc(detail);
-
-    const breadcrumbItems = [
-      {
-        content: "Democracy",
-      },
-      {
-        content: "Referenda",
-        path: "/democracy/referenda",
-      },
-      {
-        content: breadcrumbItemName,
-      },
-    ];
-
-    const seoInfo = {
-      title: detail?.title,
-      desc,
-      ogImage: getBannerUrl(detail?.bannerCid),
-    };
-
-    return (
-      <PostProvider post={detail}>
-        <DetailLayout
-          seoInfo={seoInfo}
-          breadcrumbs={breadcrumbItems}
-          hasSidebar
-        >
-          {postContent}
-        </DetailLayout>
-      </PostProvider>
+  if (detail) {
+    breadcrumbItemName = `#${detail?.referendumIndex}`;
+    postContent = (
+      <NonNullPost>
+        <ReferendumContent
+          publicProposal={publicProposal}
+          comments={comments}
+        />
+      </NonNullPost>
     );
-  },
-);
+  } else {
+    breadcrumbItemName = `#${id}`;
+    postContent = <CheckUnFinalized id={id} />;
+  }
+
+  const desc = getMetaDesc(detail);
+
+  const breadcrumbItems = [
+    {
+      content: "Democracy",
+    },
+    {
+      content: "Referenda",
+      path: "/democracy/referenda",
+    },
+    {
+      content: breadcrumbItemName,
+    },
+  ];
+
+  const seoInfo = {
+    title: detail?.title,
+    desc,
+    ogImage: getBannerUrl(detail?.bannerCid),
+  };
+
+  return (
+    <PostProvider post={detail}>
+      <DetailLayout seoInfo={seoInfo} breadcrumbs={breadcrumbItems} hasSidebar>
+        {postContent}
+      </DetailLayout>
+    </PostProvider>
+  );
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

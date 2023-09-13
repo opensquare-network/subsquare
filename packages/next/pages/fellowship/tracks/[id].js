@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   fellowshipReferendumsTrackApi,
@@ -15,41 +15,45 @@ import businessCategory from "next-common/utils/consts/business/category";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(
-  ({ posts, title, fellowshipTracks, summary, period }) => {
-    const seoInfo = { title, desc: title };
-    const items = (posts.items || []).map((item) =>
-      normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-    );
+export default function Trackpage({
+  posts,
+  title,
+  fellowshipTracks,
+  summary,
+  period,
+}) {
+  const seoInfo = { title, desc: title };
+  const items = (posts.items || []).map((item) =>
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+  );
 
-    return (
-      <ListLayout
-        seoInfo={seoInfo}
-        title={`[${period.id}] Origin: ${period.origin}`}
-        description={period.description}
-        summary={
-          <Gov2TrackSummary
-            summary={summary}
-            period={period}
-            titleExtra={`[${period.id}]`}
-          />
-        }
-      >
-        <PostList
-          title="List"
-          titleCount={posts.total}
-          category={businessCategory.fellowship}
-          items={items}
-          pagination={{
-            page: posts.page,
-            pageSize: posts.pageSize,
-            total: posts.total,
-          }}
+  return (
+    <ListLayout
+      seoInfo={seoInfo}
+      title={`[${period.id}] Origin: ${period.origin}`}
+      description={period.description}
+      summary={
+        <Gov2TrackSummary
+          summary={summary}
+          period={period}
+          titleExtra={`[${period.id}]`}
         />
-      </ListLayout>
-    );
-  },
-);
+      }
+    >
+      <PostList
+        title="List"
+        titleCount={posts.total}
+        category={businessCategory.fellowship}
+        items={items}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
+      />
+    </ListLayout>
+  );
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { page = 1, page_size: pageSize = 50, id } = context.query;

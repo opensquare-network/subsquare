@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/childBounty/timeline";
@@ -48,7 +48,7 @@ function ChildBountyContent({ comments }) {
   );
 }
 
-export default withLoginUserRedux(({ id, detail, comments }) => {
+export default function ChildBountyPage({ id, detail, comments }) {
   let breadcrumbItemName = "";
   let postContent = null;
 
@@ -98,7 +98,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import privacyMd from "./privacy-policy.md";
 import { MarkdownPreviewer } from "@osn/previewer";
@@ -33,7 +32,7 @@ const Title = styled.h1`
   margin-top: 0;
 `;
 
-const Privacy = withLoginUserRedux(() => {
+const Privacy = () => {
   return (
     <>
       <NextHead title="Privacy Policy" desc="Privacy Policy" />
@@ -49,6 +48,6 @@ const Privacy = withLoginUserRedux(() => {
       </div>
     </>
   );
-});
+};
 
 export default Privacy;

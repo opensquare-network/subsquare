@@ -1,9 +1,8 @@
-import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import LoginContent from "../login/content";
 import { LoginCard } from "../styled/containers/loginCard";
 
-const Login = withLoginUserRedux(() => {
+const Login = () => {
   return (
     <>
       <NextHead title={"Login"} desc={"Login"} />
@@ -13,6 +12,6 @@ const Login = withLoginUserRedux(() => {
       </LoginCard>
     </>
   );
-});
+};
 
 export default Login;

@@ -1,13 +1,13 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ posts, chain, summary }) => {
+export default function DemocracyReferendaPage({ posts, chain, summary }) {
   const items = (posts.items || []).map((item) =>
     normalizeReferendaListItem(chain, item),
   );
@@ -37,7 +37,7 @@ export default withLoginUserRedux(({ posts, chain, summary }) => {
       />
     </DemocracyReferendaLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

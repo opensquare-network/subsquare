@@ -1,4 +1,3 @@
-import { withLoginUserRedux } from "next-common/lib";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Members from "components/council/members";
 import MembersNoElections from "components/council/membersNoElections";
@@ -6,7 +5,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function MembersPage() {
   const category = "Council Members";
   const seoInfo = { title: category, desc: category };
 
@@ -24,6 +23,6 @@ export default withLoginUserRedux(() => {
       {members}
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

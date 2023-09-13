@@ -1,5 +1,5 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -7,7 +7,7 @@ import Chains from "next-common/utils/consts/chains";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ motions, chain }) => {
+export default function MotionsPage({ motions, chain }) {
   const items = (motions.items || []).map((item) =>
     normalizeCouncilMotionListItem(chain, item),
   );
@@ -33,7 +33,7 @@ export default withLoginUserRedux(({ motions, chain }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   let listApiUrl = "motions";

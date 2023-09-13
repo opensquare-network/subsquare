@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -30,7 +30,7 @@ function FinancialMotionContent({ motion, comments }) {
   );
 }
 
-export default withLoginUserRedux(({ id, motion, comments }) => {
+export default function MotionPage({ id, motion, comments }) {
   let postContent = null;
 
   if (motion) {
@@ -73,7 +73,7 @@ export default withLoginUserRedux(({ id, motion, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

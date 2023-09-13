@@ -3,7 +3,7 @@ import {
   useOnchainData,
   usePost,
 } from "next-common/context/post";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import Gov2Sidebar from "components/gov2/sidebar";
@@ -105,7 +105,7 @@ function UnFinalizedBreadcrumb({ id }) {
   );
 }
 
-export default withLoginUserRedux(({ id, detail, comments }) => {
+export default function ReferendumPage({ id, detail, comments }) {
   let postContent;
   let breadcrumbs;
 
@@ -136,7 +136,7 @@ export default withLoginUserRedux(({ id, detail, comments }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

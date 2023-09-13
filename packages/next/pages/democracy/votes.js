@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   Democracy,
@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ summary }) => {
+export default function DemocracyVotes({ summary }) {
   const user = useUser();
   const router = useRouter();
 
@@ -36,7 +36,7 @@ export default withLoginUserRedux(({ summary }) => {
       </ModuleTabProvider>
     </DemocracyReferendaLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const [tracksProps, { result: summary }] = await Promise.all([

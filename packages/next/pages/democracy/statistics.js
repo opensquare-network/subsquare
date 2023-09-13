@@ -1,5 +1,5 @@
 import { EmptyList } from "next-common/utils/constants";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import DemocracyStatistics from "next-common/components/statistics/democracy";
 import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
@@ -13,56 +13,60 @@ import VoteTrend from "next-common/components/statistics/track/voteTrend";
 import AddressTrend from "next-common/components/statistics/track/addressTrend";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(
-  ({ delegatee, delegators, summary, turnout, referendumsSummary }) => {
-    const { hasDemocracy } = useChainSettings();
+export default function DemocracyStatisticsPage({
+  delegatee,
+  delegators,
+  summary,
+  turnout,
+  referendumsSummary,
+}) {
+  const { hasDemocracy } = useChainSettings();
 
-    const title = "Democracy Statistics";
-    const seoInfo = { title, desc: title };
-    const [navCollapsed] = useNavCollapsed();
+  const title = "Democracy Statistics";
+  const seoInfo = { title, desc: title };
+  const [navCollapsed] = useNavCollapsed();
 
-    return (
-      <DemocracyReferendaLayout
-        seoInfo={seoInfo}
-        title={title}
-        summaryData={referendumsSummary}
-      >
-        <div className="space-y-6">
+  return (
+    <DemocracyReferendaLayout
+      seoInfo={seoInfo}
+      title={title}
+      summaryData={referendumsSummary}
+    >
+      <div className="space-y-6">
+        <div>
+          <Header className="px-6 mb-4">Referenda</Header>
+          <div
+            className={clsx(
+              "flex gap-4 flex-wrap",
+              "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
+              !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
+              !navCollapsed
+                ? "[&_>_div]:max-md:max-w-full"
+                : "[&_>_div]:max-sm:max-w-full",
+            )}
+          >
+            <VoteTrend turnout={turnout} />
+            <AddressTrend turnout={turnout} />
+            <TurnoutStatistics turnout={turnout} />
+          </div>
+        </div>
+
+        {hasDemocracy !== false && (
           <div>
-            <Header className="px-6 mb-4">Referenda</Header>
-            <div
-              className={clsx(
-                "flex gap-4 flex-wrap",
-                "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
-                !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
-                !navCollapsed
-                  ? "[&_>_div]:max-md:max-w-full"
-                  : "[&_>_div]:max-sm:max-w-full",
-              )}
-            >
-              <VoteTrend turnout={turnout} />
-              <AddressTrend turnout={turnout} />
-              <TurnoutStatistics turnout={turnout} />
+            <Header className="px-6 mb-4">Delegation</Header>
+            <div>
+              <DemocracyStatistics
+                delegatee={delegatee}
+                delegators={delegators}
+                summary={summary}
+              />
             </div>
           </div>
-
-          {hasDemocracy !== false && (
-            <div>
-              <Header className="px-6 mb-4">Delegation</Header>
-              <div>
-                <DemocracyStatistics
-                  delegatee={delegatee}
-                  delegators={delegators}
-                  summary={summary}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </DemocracyReferendaLayout>
-    );
-  },
-);
+        )}
+      </div>
+    </DemocracyReferendaLayout>
+  );
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const [

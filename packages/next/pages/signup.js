@@ -7,7 +7,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
@@ -16,7 +16,7 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
-import { updateUser, useUserDispatch } from "next-common/context/user";
+import { updateUser, useUser, useUserDispatch } from "next-common/context/user";
 
 const Title = styled.div`
   font-weight: bold;
@@ -70,7 +70,8 @@ const FormWrapper = styled.form`
   }
 `;
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default function Signup() {
+  const loginUser = useUser();
   const router = useRouter();
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(!!loginUser);
@@ -248,6 +249,6 @@ export default withLoginUserRedux(({ loginUser }) => {
       </LoginCard>
     </>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser();

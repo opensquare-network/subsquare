@@ -1,7 +1,7 @@
 import DetailItem from "components/polkassembly/detailItem";
 import PolkassemblyComments from "components/polkassembly/comment";
 import usePolkassemblyPostData from "components/polkassembly/usePolkassemblyPostData";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -10,7 +10,7 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(({ detail }) => {
+export default function PostsPage({ detail }) {
   const polkassemblyId = detail?.polkassemblyId;
   const { comments, postReactions, loadingComments } = usePolkassemblyPostData({
     polkassemblyId,
@@ -46,7 +46,7 @@ export default withLoginUserRedux(({ detail }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;

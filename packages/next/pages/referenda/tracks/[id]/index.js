@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsTrackApi,
@@ -17,57 +17,62 @@ import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normaliz
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(
-  ({ posts, title, tracks, summary, period, status }) => {
-    const router = useRouter();
+export default function TrackPage({
+  posts,
+  title,
+  tracks,
+  summary,
+  period,
+  status,
+}) {
+  const router = useRouter();
 
-    const items = (posts.items || []).map((item) =>
-      normalizeGov2ReferendaListItem(item, tracks),
-    );
+  const items = (posts.items || []).map((item) =>
+    normalizeGov2ReferendaListItem(item, tracks),
+  );
 
-    function onStatusChange(item) {
-      const q = router.query;
+  function onStatusChange(item) {
+    const q = router.query;
 
-      delete q.page;
-      if (item.value) {
-        q.status = snakeCase(item.value);
-      } else {
-        delete q.status;
-      }
-
-      router.replace({ query: q });
+    delete q.page;
+    if (item.value) {
+      q.status = snakeCase(item.value);
+    } else {
+      delete q.status;
     }
 
-    const seoInfo = { title, desc: title };
+    router.replace({ query: q });
+  }
 
-    return (
-      <ReferendaTrackLayout
-        seoInfo={seoInfo}
-        title={`[${period.id}] Origin: ${period.origin}`}
-        periodData={period}
-        summaryData={summary}
-      >
-        <PostList
-          title="List"
-          titleCount={posts.total}
-          titleExtra={
-            <ReferendaStatusSelectField
-              value={status}
-              onChange={onStatusChange}
-            />
-          }
-          category={businessCategory.openGovReferenda}
-          items={items}
-          pagination={{
-            page: posts.page,
-            pageSize: posts.pageSize,
-            total: posts.total,
-          }}
-        />
-      </ReferendaTrackLayout>
-    );
-  },
-);
+  const seoInfo = { title, desc: title };
+
+  return (
+    <ReferendaTrackLayout
+      seoInfo={seoInfo}
+      title={`[${period.id}] Origin: ${period.origin}`}
+      periodData={period}
+      summaryData={summary}
+    >
+      <PostList
+        title="List"
+        titleCount={posts.total}
+        titleExtra={
+          <ReferendaStatusSelectField
+            value={status}
+            onChange={onStatusChange}
+          />
+        }
+        category={businessCategory.openGovReferenda}
+        items={items}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
+      />
+    </ReferendaTrackLayout>
+  );
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const {

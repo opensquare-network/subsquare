@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
 import { useCallback, useState } from "react";
@@ -13,7 +13,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import clsx from "clsx";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function CalendarPage() {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(date);
   const futureEvents = useScheduled();
@@ -52,7 +52,7 @@ export default withLoginUserRedux(() => {
       </div>
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async () => {
   const tracksProps = await fetchOpenGovTracksProps();

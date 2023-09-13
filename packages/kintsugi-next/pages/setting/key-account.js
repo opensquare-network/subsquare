@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
@@ -14,9 +14,11 @@ import SettingLayout from "next-common/components/layout/settingLayout";
 import { useChain } from "next-common/context/chain";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import { useUser } from "next-common/context/user";
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default function KeyAccount() {
   const chain = useChain();
+  const loginUser = useUser();
   const user = loginUser;
   const address = user?.publicKey
     ? encodeAddressToChain(Buffer.from(user?.publicKey, "hex"), chain)
@@ -51,7 +53,7 @@ export default withLoginUserRedux(({ loginUser }) => {
       </SettingLayout>
     </>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;

@@ -1,12 +1,11 @@
 import MembersList from "components/fellowship/memberList";
-import { withLoginUserRedux } from "next-common/lib";
 import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function MembersPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useApi();
@@ -46,6 +45,6 @@ export default withLoginUserRedux(() => {
       <MembersList items={data} loading={loading} />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

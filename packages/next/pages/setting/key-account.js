@@ -1,4 +1,3 @@
-import { withLoginUserRedux } from "next-common/lib";
 import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
@@ -11,8 +10,10 @@ import {
 } from "next-common/components/styled/containers/titleContainer";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { useUser } from "next-common/context/user";
 
-export default withLoginUserRedux(({ loginUser }) => {
+export default function KeyAccountSettingPage() {
+  const loginUser = useUser();
   const address = loginUser?.address || "";
 
   const router = useRouter();
@@ -42,6 +43,6 @@ export default withLoginUserRedux(({ loginUser }) => {
       </SettingSection>
     </SettingLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { withLoginUserRedux } from "next-common/lib";
 import NextHead from "next-common/components/nextHead";
 import termsMd from "./terms-of-service.md";
 import { MarkdownPreviewer } from "@osn/previewer";
@@ -33,7 +32,7 @@ const Title = styled.h1`
   margin-top: 0;
 `;
 
-const Terms = withLoginUserRedux(() => {
+const Terms = () => {
   return (
     <>
       <NextHead title="Terms of Service" desc="Terms of Service" />
@@ -49,6 +48,6 @@ const Terms = withLoginUserRedux(() => {
       </div>
     </>
   );
-});
+};
 
 export default Terms;

@@ -1,5 +1,5 @@
 import OverviewPostList from "next-common/components/overview/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { toDiscussionListItem } from "utils/viewfuncs";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
@@ -13,9 +13,9 @@ import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
-import { TitleExtra, HeadContent } from "next-common/components/overview";
+import { HeadContent, TitleExtra } from "next-common/components/overview";
 
-export default withLoginUserRedux(({ overview, chain }) => {
+export default function Home({ overview, chain }) {
   const chainSettings = useChainSettings();
 
   let overviewData = [
@@ -93,7 +93,7 @@ export default withLoginUserRedux(({ overview, chain }) => {
       <OverviewPostList overviewData={filteredOverviewData} />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async () => {
   const chain = process.env.CHAIN;

@@ -1,4 +1,4 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import TurnoutStatistics from "components/statistics/democracy/turnoutStatistics";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
@@ -9,7 +9,7 @@ import AddressTrend from "components/statistics/democracy/addressTrend";
 import { Header } from "next-common/components/statistics/styled";
 import clsx from "clsx";
 
-export default withLoginUserRedux(({ turnout, summary }) => {
+export default function DemocracyStatisticsPage({ turnout, summary }) {
   const title = "Democracy Statistics";
   const seoInfo = { title, desc: title };
   const [navCollapsed] = useNavCollapsed();
@@ -42,7 +42,7 @@ export default withLoginUserRedux(({ turnout, summary }) => {
       </div>
     </DemocracyReferendaLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const [{ result: turnout }, { result: summary }] = await Promise.all([

@@ -1,9 +1,9 @@
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import usePreimageHashs from "next-common/hooks/usePreimageHashs";
 
-export default withLoginUserRedux(() => {
+export default function Preimages() {
   const title = "Preimages";
   const seoInfo = { title, desc: title };
 
@@ -18,6 +18,6 @@ export default withLoginUserRedux(() => {
       <PreImagesList data={hashs} />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser();

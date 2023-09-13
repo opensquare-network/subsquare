@@ -1,10 +1,9 @@
-import { withLoginUserRedux } from "next-common/lib";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import usePreimageHashs from "next-common/hooks/usePreimageHashs";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function PreimagesPage() {
   const title = "Preimages";
   const seoInfo = { title, desc: title };
 
@@ -19,6 +18,6 @@ export default withLoginUserRedux(() => {
       <PreImagesList data={hashs} />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;

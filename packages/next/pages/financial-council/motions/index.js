@@ -1,11 +1,11 @@
 import PostList from "next-common/components/postList";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { toFinancialMotionsListItem } from "utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchList } from "next-common/services/list";
 
-export default withLoginUserRedux(({ motions }) => {
+export default function MotionsPage({ motions }) {
   const items = (motions.items || []).map((item) =>
     toFinancialMotionsListItem(item),
   );
@@ -31,7 +31,7 @@ export default withLoginUserRedux(({ motions }) => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const motions = await fetchList("financial-motions", context);

@@ -1,5 +1,5 @@
 import DetailItem from "components/detailItem";
-import { withLoginUser, withLoginUserRedux } from "next-common/lib";
+import { withLoginUser } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { to404 } from "next-common/utils/serverSideUtil";
@@ -13,7 +13,7 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 
-export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
+export default function Post({ detail, comments, votes, myVote }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
     detail,
     comments,
@@ -45,7 +45,7 @@ export default withLoginUserRedux(({ detail, comments, votes, myVote }) => {
       </DetailLayout>
     </PostProvider>
   );
-});
+}
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const chain = process.env.CHAIN;
