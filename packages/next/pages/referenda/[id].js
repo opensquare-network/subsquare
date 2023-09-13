@@ -140,7 +140,6 @@ export default function ReferendumPage({ id, detail, comments }) {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
-
   const { result: detail } = await ssrNextApi.fetch(
     gov2ReferendumsDetailApi(id),
   );
@@ -161,7 +160,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       detail,
       voteStats: voteStats ?? {},
       comments: comments ?? EmptyList,

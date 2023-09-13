@@ -30,7 +30,7 @@ function TechCommMotionContent({ motion, comments }) {
 }
 
 export default function ProposalPage({ id, motion, comments }) {
-  let postContent = null;
+  let postContent;
 
   if (motion) {
     postContent = (
@@ -61,7 +61,6 @@ export default function ProposalPage({ id, motion, comments }) {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
-
   const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
   if (!motion) {
     return getNullDetailProps(id, { motion: null });
@@ -75,7 +74,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
 

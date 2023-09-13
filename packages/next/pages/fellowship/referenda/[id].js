@@ -91,7 +91,7 @@ function UnFinalizedBreadcrumb({ id }) {
 }
 
 export default function ReferendumPage({ id, detail, comments }) {
-  let postContent = null;
+  let postContent;
   let breadcrumbs;
 
   if (detail) {
@@ -143,7 +143,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       detail,
       comments: comments ?? EmptyList,
 

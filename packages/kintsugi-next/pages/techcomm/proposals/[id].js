@@ -61,7 +61,6 @@ export default function Proposal({ id, motion, comments }) {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
-
   const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
 
   if (!motion) {
@@ -75,7 +74,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
     },

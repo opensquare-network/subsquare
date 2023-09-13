@@ -47,7 +47,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       ...tracksProps,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
