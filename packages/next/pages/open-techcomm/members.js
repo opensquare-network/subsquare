@@ -1,10 +1,9 @@
-import { withLoginUserRedux } from "next-common/lib";
 import MembersNoElections from "components/council/membersNoElections";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
-export default withLoginUserRedux(() => {
+export default function Members() {
   const category = "Open Tech. Comm. Members";
   const seoInfo = { title: category, desc: category };
 
@@ -20,6 +19,6 @@ export default withLoginUserRedux(() => {
       />
     </ListLayout>
   );
-});
+}
 
 export const getServerSideProps = getServerSidePropsWithTracks;
