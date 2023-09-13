@@ -57,7 +57,6 @@ export default function MotionPage({ id, motion, comments }) {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
-
   const { result: motion } = await nextApi.fetch(`advisory-motions/${id}`);
   if (!motion) {
     return getNullDetailProps(id, { motion: null });
@@ -70,7 +69,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
     },

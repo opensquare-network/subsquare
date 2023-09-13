@@ -54,7 +54,7 @@ function DemocracyExternalContent({ detail, comments }) {
 }
 
 export default function DemocracyExternalPage({ id, detail, comments }) {
-  let postContent = null;
+  let postContent;
   if (detail) {
     postContent = (
       <NonNullPost>
@@ -84,7 +84,6 @@ export default function DemocracyExternalPage({ id, detail, comments }) {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
-
   const { result: detail } = await nextApi.fetch(`democracy/externals/${id}`);
 
   if (!detail) {
@@ -99,7 +98,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       detail,
       comments: comments ?? EmptyList,
       ...tracksProps,

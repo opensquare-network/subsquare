@@ -7,7 +7,6 @@ import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
 import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
-import { hashEllipsis } from "next-common/utils";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
@@ -43,11 +42,8 @@ function TreasuryTipContent({ comments }) {
 }
 
 export default function TipPage({ id, detail, comments }) {
-  let breadcrumbItemName;
   let postContent;
-
   if (detail) {
-    breadcrumbItemName = `#${hashEllipsis(detail?.hash)}`;
     postContent = (
       <NonNullPost>
         <TreasuryTipContent comments={comments} />
@@ -55,29 +51,13 @@ export default function TipPage({ id, detail, comments }) {
     );
   } else {
     const hash = id?.split("_").pop();
-    breadcrumbItemName = `#${hashEllipsis(hash)}`;
     postContent = <CheckUnFinalized id={hash} />;
   }
 
   const desc = getMetaDesc(detail);
-
-  const breadcrumbItems = [
-    {
-      content: "Treasury",
-    },
-    {
-      content: "Tips",
-      path: "/treasury/tips",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
-
   return (
     <PostProvider post={detail}>
       <DetailLayout
-        breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
@@ -113,7 +93,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       detail,
       comments: comments ?? EmptyList,
 

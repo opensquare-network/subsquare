@@ -27,7 +27,6 @@ export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const authToken = cookies.get(CACHE_KEY.authToken);
     const detailPageProperties = getDetailPageProperties(context);
-    console.log("detailPageProperties", detailPageProperties);
     if (authToken) {
       options = {
         headers: {
@@ -59,6 +58,7 @@ export function withLoginUser(getServerSideProps = defaultGetServerSideProps) {
         themeMode: themeMode ?? null,
         navCollapsed: navCollapsed || false,
         navSubmenuVisible: navSubmenuVisible || "{}",
+        ...detailPageProperties,
         pageProperties: {
           ...detailPageProperties,
           userAgent,

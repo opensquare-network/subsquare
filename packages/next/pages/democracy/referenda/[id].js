@@ -142,10 +142,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       detail,
       comments: comments ?? EmptyList,
-
       ...tracksProps,
     },
   };

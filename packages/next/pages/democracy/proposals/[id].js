@@ -108,7 +108,6 @@ export default function DemocracyProposalPage({ id, detail, comments }) {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
-
   const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
 
   if (!detail) {
@@ -124,7 +123,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       detail,
       comments: comments ?? EmptyList,
       ...tracksProps,

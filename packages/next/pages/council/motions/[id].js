@@ -61,11 +61,9 @@ export default function MotionPage({ id, motion, comments }) {
 }
 
 export const getServerSideProps = withLoginUser(async (context) => {
-  const chain = process.env.CHAIN;
   const { id } = context.query;
-
   let listApi = "motions";
-  if ([Chains.moonbeam, Chains.moonriver].includes(chain)) {
+  if ([Chains.moonbeam, Chains.moonriver].includes(process.env.CHAIN)) {
     listApi = "moon-council/motions";
   }
 
@@ -82,10 +80,8 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       motion: motion ?? null,
       comments: comments ?? EmptyList,
-
       ...tracksProps,
     },
   };

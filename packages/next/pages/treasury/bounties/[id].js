@@ -52,11 +52,8 @@ function BountyContent({ detail, childBounties, comments }) {
 }
 
 export default function BountyPage({ id, detail, childBounties, comments }) {
-  let breadcrumbItemName = "";
-  let postContent = null;
-
+  let postContent;
   if (detail) {
-    breadcrumbItemName = `#${detail?.bountyIndex}`;
     postContent = (
       <NonNullPost>
         <BountyContent
@@ -67,29 +64,13 @@ export default function BountyPage({ id, detail, childBounties, comments }) {
       </NonNullPost>
     );
   } else {
-    breadcrumbItemName = `#${id}`;
     postContent = <CheckUnFinalized id={id} />;
   }
 
   const desc = getMetaDesc(detail);
-
-  const breadcrumbItems = [
-    {
-      content: "Treasury",
-    },
-    {
-      content: "Bounties",
-      path: "/treasury/bounties",
-    },
-    {
-      content: breadcrumbItemName,
-    },
-  ];
-
   return (
     <PostProvider post={detail}>
       <DetailLayout
-        breadcrumbs={breadcrumbItems}
         seoInfo={{
           title: detail?.title,
           desc,
@@ -104,7 +85,6 @@ export default function BountyPage({ id, detail, childBounties, comments }) {
 
 export const getServerSideProps = withLoginUser(async (context) => {
   const { id } = context.query;
-
   const [{ result: detail }, { result: childBounties }] = await Promise.all([
     nextApi.fetch(`treasury/bounties/${id}`),
     nextApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
@@ -122,7 +102,6 @@ export const getServerSideProps = withLoginUser(async (context) => {
 
   return {
     props: {
-      id,
       detail,
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
