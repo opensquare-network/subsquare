@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.6
+date: 2023-09-13
+- Refactor detail page breadcrumbs.
+- Remove `withLoginUserRedux` wrapper function for page components.
+- Refactor the code to get list data of server side props.
+- Deprecate the legacy login page.
+- Fix: login/signup page bugs with web2 users which have email bind with web3 user.
+- Fix: update login user information after verification.
+- Fix usePreimage deps error.
+- Fix acala/karura financial motion state.
+- Fix polkassembly discussion post thumbs up reaction view.
+
 ### 3.4.5
 date: 2023-09-05
 - Show my vote and support removing vote on referendum detail page.
