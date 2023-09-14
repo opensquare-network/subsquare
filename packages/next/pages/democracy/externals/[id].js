@@ -6,7 +6,6 @@ import Business from "components/external/business";
 import Metadata from "components/external/metadata";
 import DemocracyExternalProposalCall from "components/external/call";
 import Timeline from "components/external/timeline";
-import useUniversalComments from "components/universalComments";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -18,21 +17,17 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function DemocracyExternalContent({ detail, comments }) {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-  });
-
   useSubscribePostDetail(detail?.externalProposalHash);
 
   const external = detail?.onchainData || {};
   const call = external?.preImage?.call;
 
   return (
-    <>
-      <DetailItem onReply={focusEditor} />
+    <ContentWithUniversalComment comments={comments}>
+      <DetailItem />
       <DetailMultiTabs
         call={
           call && (
@@ -48,8 +43,7 @@ function DemocracyExternalContent({ detail, comments }) {
         metadata={<Metadata external={detail?.onchainData} />}
         timeline={<Timeline />}
       />
-      {CommentComponent}
-    </>
+    </ContentWithUniversalComment>
   );
 }
 

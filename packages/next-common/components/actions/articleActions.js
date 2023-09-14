@@ -9,9 +9,9 @@ import useThumbsUp from "../thumbsUp";
 import ContentMenu from "../contentMenu";
 import ThumbUpList from "./thumbUpList";
 import { useIsLogin } from "../../context/user";
+import { useFocusEditor } from "next-common/context/post/editor";
 
 export default function ArticleActions({
-  onReply,
   toggleThumbUp,
   thumbUpLoading,
   setIsEdit,
@@ -30,11 +30,12 @@ export default function ArticleActions({
     toggleThumbUp,
     thumbUpLoading,
   });
+  const focusEditor = useFocusEditor();
 
   return (
     <>
       <Wrapper>
-        <ReplyButton onReply={onReply} noHover={!isLogin || isAuthor} />
+        <ReplyButton onReply={focusEditor} noHover={!isLogin || isAuthor} />
         {ThumbsUpComponent}
         <Share />
         {isLogin && (

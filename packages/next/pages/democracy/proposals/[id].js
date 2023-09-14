@@ -9,7 +9,6 @@ import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import isNil from "lodash.isnil";
-import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
@@ -20,15 +19,11 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function PublicProposalContent({ comments }) {
   const post = usePost();
   useSubscribePostDetail(post?.proposalIndex);
-
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail: post,
-    comments,
-  });
 
   const publicProposal = post?.onchainData;
   const proposalIndex = publicProposal?.proposalIndex;
@@ -47,8 +42,8 @@ function PublicProposalContent({ comments }) {
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <>
-      <DetailItem onReply={focusEditor} />
+    <ContentWithUniversalComment comments={comments}>
+      <DetailItem />
       <Second
         proposalIndex={proposalIndex}
         hasTurnIntoReferendum={hasTurnIntoReferendum}
@@ -70,8 +65,7 @@ function PublicProposalContent({ comments }) {
         metadata={<Metadata publicProposal={post?.onchainData} />}
         timeline={<Timeline />}
       />
-      {CommentComponent}
-    </>
+    </ContentWithUniversalComment>
   );
 }
 

@@ -4,7 +4,6 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -12,13 +11,9 @@ import {
   fetchDetailComments,
   getPostVotesAndMine,
 } from "next-common/services/detail";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
 export default function Post({ detail, comments, votes, myVote }) {
-  const { CommentComponent, focusEditor } = useCommentComponent({
-    detail,
-    comments,
-  });
-
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -29,8 +24,9 @@ export default function Post({ detail, comments, votes, myVote }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
-        {CommentComponent}
+        <ContentWithComment comments={comments}>
+          <DetailItem votes={votes} myVote={myVote} />
+        </ContentWithComment>
       </DetailLayout>
     </PostProvider>
   );

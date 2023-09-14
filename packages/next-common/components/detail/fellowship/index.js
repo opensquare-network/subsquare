@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import FellowshipWhitelistNavigation from "next-common/components/detail/fellowship/whitelistNavigation";
 
-export default function FellowshipReferendaDetail({ onReply }) {
+export default function FellowshipReferendaDetail() {
   const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
@@ -24,12 +24,7 @@ export default function FellowshipReferendaDetail({ onReply }) {
       <PostTitle />
       <Divider className="my-4" />
       <ReferendaPostMeta isFellowship />
-      <ArticleContent
-        className="mt-6"
-        post={post}
-        onReply={onReply}
-        setIsEdit={setIsEdit}
-      />
+      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

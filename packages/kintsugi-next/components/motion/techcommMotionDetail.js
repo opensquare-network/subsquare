@@ -95,7 +95,7 @@ const getClosedTimelineData = (timeline = []) => {
   return [fd, ...notFoldItems];
 };
 
-export default function TechcommMotionDetail({ motion, onReply }) {
+export default function TechcommMotionDetail({ motion }) {
   const type = useDetailType();
   const chain = useChain();
   const postDispatch = usePostDispatch();
@@ -200,7 +200,7 @@ export default function TechcommMotionDetail({ motion, onReply }) {
     <div className="flex flex-col gap-y-12">
       <DetailContentBase>
         <TechcommMotionDetailHeader motion={motion} />
-        <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
+        <ArticleContent post={post} setIsEdit={setIsEdit} />
       </DetailContentBase>
 
       <DetailMultiTabs

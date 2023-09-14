@@ -10,7 +10,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import BountyPostMeta from "next-common/components/detail/treasury/common/bountyMeta";
 import ChildBountyCountDown from "next-common/components/detail/treasury/childBounty/countDown";
 
-export default function ChildBountyDetail({ onReply }) {
+export default function ChildBountyDetail() {
   const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
@@ -25,7 +25,7 @@ export default function ChildBountyDetail({ onReply }) {
       <PostTitle />
       <Divider className="my-4" />
       <BountyPostMeta />
-      <ArticleContent post={post} onReply={onReply} setIsEdit={setIsEdit} />
+      <ArticleContent post={post} setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

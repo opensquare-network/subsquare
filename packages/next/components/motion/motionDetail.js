@@ -26,7 +26,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
 import CollectiveCall from "next-common/components/collective/call";
 
-export default function MotionDetail({ onReply }) {
+export default function MotionDetail() {
   const type = useDetailType();
   const chain = useChain();
   const postDispatch = usePostDispatch();
@@ -138,12 +138,7 @@ export default function MotionDetail({ onReply }) {
     <>
       <DetailContentBase>
         {!isEdit && <MotionHead motion={post} type={type} />}
-        <ArticleContent
-          className="mt-6"
-          post={post}
-          onReply={onReply}
-          setIsEdit={setIsEdit}
-        />
+        <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
       </DetailContentBase>
       <Vote
         votes={votes}

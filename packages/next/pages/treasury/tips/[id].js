@@ -5,7 +5,6 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import Timeline from "components/tip/timeline";
 import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
-import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
@@ -18,26 +17,21 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail: post,
-    comments,
-  });
-
   return (
-    <>
-      <TipDetail onReply={focusEditor} />
+    <ContentWithUniversalComment comments={comments}>
+      <TipDetail />
       <Tipper />
       <DetailMultiTabs
         metadata={<Metadata tip={post?.onchainData} />}
         timeline={<Timeline tip={post?.onchainData} />}
       />
-      {CommentComponent}
-    </>
+    </ContentWithUniversalComment>
   );
 }
 

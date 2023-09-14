@@ -7,7 +7,7 @@ import { useDetailType } from "next-common/context/page";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import DetailHeader from "next-common/components/detail/detailHeader";
 
-export default function DetailItem({ onReply, votes, myVote }) {
+export default function DetailItem({ votes, myVote }) {
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();
@@ -33,7 +33,6 @@ export default function DetailItem({ onReply, votes, myVote }) {
         post={post}
         votes={votes}
         myVote={myVote}
-        onReply={onReply}
         setIsEdit={setIsEdit}
       />
     </DetailContentBase>

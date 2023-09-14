@@ -3,7 +3,6 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
-import useCommentComponent from "next-common/components/useCommentComponent";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
@@ -12,20 +11,15 @@ import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
 function TechCommMotionContent({ motion, comments }) {
-  const { CommentComponent, focusEditor } = useCommentComponent({
-    detail: motion,
-    comments,
-  });
-
   useSubscribePostDetail(`${motion?.height}_${motion?.hash}`);
 
   return (
-    <>
-      <TechcommMotionDetail motion={motion} onReply={focusEditor} />
-      {CommentComponent}
-    </>
+    <ContentWithComment comments={comments}>
+      <TechcommMotionDetail motion={motion} />
+    </ContentWithComment>
   );
 }
 

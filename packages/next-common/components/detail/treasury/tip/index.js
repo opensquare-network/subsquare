@@ -9,7 +9,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import CloseCountDown from "next-common/components/detail/treasury/tip/closeCountDown";
 import TipPostMeta from "next-common/components/detail/treasury/tip/meta";
 
-export default function TipDetail({ onReply }) {
+export default function TipDetail() {
   const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
@@ -24,12 +24,7 @@ export default function TipDetail({ onReply }) {
       <PostTitle />
       <Divider className="my-4" />
       <TipPostMeta />
-      <ArticleContent
-        className="mt-6"
-        post={post}
-        onReply={onReply}
-        setIsEdit={setIsEdit}
-      />
+      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

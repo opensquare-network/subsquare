@@ -3,7 +3,6 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
@@ -19,13 +18,9 @@ import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function TreasuryProposalContent({ detail, comments }) {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-  });
-
   useSubscribePostDetail(detail?.proposalIndex);
   const timelineData = useTreasuryTimelineData(detail?.onchainData);
   const isTimelineCompact = useSelector(
@@ -33,8 +28,8 @@ function TreasuryProposalContent({ detail, comments }) {
   );
 
   return (
-    <>
-      <TreasuryProposalDetail onReply={focusEditor} />
+    <ContentWithUniversalComment comments={comments}>
+      <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={
@@ -46,8 +41,7 @@ function TreasuryProposalContent({ detail, comments }) {
         }
         timelineCount={timelineData.length}
       />
-      {CommentComponent}
-    </>
+    </ContentWithUniversalComment>
   );
 }
 

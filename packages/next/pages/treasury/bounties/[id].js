@@ -4,7 +4,6 @@ import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
-import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "components/bounty/checkUnFinalized";
@@ -20,13 +19,9 @@ import { useSelector } from "react-redux";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function BountyContent({ detail, childBounties, comments }) {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-  });
-
   useSubscribePostDetail(detail?.bountyIndex);
 
   const timelineData = useBountyTimelineData(detail?.onchainData);
@@ -35,8 +30,8 @@ function BountyContent({ detail, childBounties, comments }) {
   );
 
   return (
-    <>
-      <BountyDetail onReply={focusEditor} />
+    <ContentWithUniversalComment comments={comments}>
+      <BountyDetail />
       <DetailMultiTabs
         childBounties={
           !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />
@@ -46,8 +41,7 @@ function BountyContent({ detail, childBounties, comments }) {
         timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
         timelineCount={timelineData.length}
       />
-      {CommentComponent}
-    </>
+    </ContentWithUniversalComment>
   );
 }
 

@@ -4,7 +4,6 @@ import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/treasuryProposal/timeline";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import useCommentComponent from "next-common/components/useCommentComponent";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
@@ -15,24 +14,19 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
 function TreasuryProposalContent({ detail, comments }) {
-  const { CommentComponent, focusEditor } = useCommentComponent({
-    detail,
-    comments,
-  });
-
   useSubscribePostDetail(detail?.proposalIndex);
 
   return (
-    <>
-      <TreasuryProposalDetail onReply={focusEditor} />
+    <ContentWithComment comments={comments}>
+      <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={<Timeline treasuryProposal={detail?.onchainData} />}
       />
-      {CommentComponent}
-    </>
+    </ContentWithComment>
   );
 }
 
