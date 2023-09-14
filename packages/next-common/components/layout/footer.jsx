@@ -22,7 +22,7 @@ export default function Footer() {
     },
     {
       name: "Email",
-      link: "mailto:hi@opensquare.network",
+      link: "mailto:yongfeng@opensquare.network",
     },
   ];
 
