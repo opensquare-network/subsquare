@@ -6,7 +6,6 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import NonNullPost from "next-common/components/nonNullPost";
-import useUniversalComments from "../../../components/universalComments";
 import DetailItem from "../../../components/detailItem";
 import AnnouncementTimeline from "next-common/components/alliance/announcement/timeline";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -14,24 +13,18 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function AnnouncementContent({ detail, comments }) {
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail,
-    comments,
-  });
-
   useSubscribePostDetail(`${detail?.height}_${detail?.cid}`);
 
   return (
-    <EditorProvider focusEditor={focusEditor}>
+    <ContentWithUniversalComment comments={comments}>
       <DetailItem />
       <DetailMultiTabs
         timeline={<AnnouncementTimeline data={detail?.onchainData} />}
       />
-      {CommentComponent}
-    </EditorProvider>
+    </ContentWithUniversalComment>
   );
 }
 

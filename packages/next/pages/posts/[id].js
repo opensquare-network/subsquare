@@ -1,12 +1,7 @@
 import DetailItem from "components/detailItem";
-import Comments from "next-common/components/comment";
 import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import CommentEditor from "next-common/components/comment/editor";
-import { useRef, useState } from "react";
-import { getFocusEditor } from "next-common/utils/post";
-import useMentionList from "next-common/utils/hooks/useMentionList";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -17,22 +12,9 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { useUser } from "next-common/context/user";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
 export default function PostDetailPage({ detail, comments, votes, myVote }) {
-  const loginUser = useUser();
-  const postId = detail._id;
-  const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
-  const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown",
-  );
-  const users = useMentionList(detail, comments);
-
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -43,18 +25,9 @@ export default function PostDetailPage({ detail, comments, votes, myVote }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <EditorProvider focusEditor={focusEditor}>
+        <ContentWithComment comments={comments}>
           <DetailItem votes={votes} myVote={myVote} />
-          <Comments data={comments} />
-          {loginUser && (
-            <CommentEditor
-              postId={postId}
-              ref={editorWrapperRef}
-              setQuillRef={setQuillRef}
-              {...{ contentType, setContentType, content, setContent, users }}
-            />
-          )}
-        </EditorProvider>
+        </ContentWithComment>
       </DetailLayout>
     </PostProvider>
   );

@@ -8,7 +8,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import Gov2Sidebar from "components/gov2/sidebar";
 import { ssrNextApi } from "next-common/services/nextApi";
-import useUniversalComments from "components/universalComments";
 import {
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
@@ -39,7 +38,7 @@ import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/vot
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -56,15 +55,10 @@ function ReferendumContent({ comments }) {
     };
   }, [dispatch]);
 
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail: post,
-    comments,
-  });
-
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <EditorProvider focusEditor={focusEditor}>
+    <ContentWithUniversalComment comments={comments}>
       <ReferendaDetail />
 
       <Gov2Sidebar />
@@ -75,9 +69,7 @@ function ReferendumContent({ comments }) {
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
         votesBubble={<Gov2ReferendaVotesBubble />}
       />
-
-      {CommentComponent}
-    </EditorProvider>
+    </ContentWithUniversalComment>
   );
 }
 

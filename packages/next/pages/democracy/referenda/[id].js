@@ -7,7 +7,6 @@ import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
-import useUniversalComments from "components/universalComments";
 import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
@@ -28,7 +27,7 @@ import DemocracyReferendaVotesBubble from "next-common/components/democracy/refe
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -38,11 +37,6 @@ function ReferendumContent({ comments }) {
   const { timeline = [], preImage } = onchainData;
 
   useSubscribePostDetail(post?.referendumIndex);
-
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail: post,
-    comments,
-  });
 
   const api = useApi();
   const { referendumStatus } = useMaybeFetchReferendumStatus(
@@ -65,7 +59,7 @@ function ReferendumContent({ comments }) {
   }, [dispatch]);
 
   return (
-    <EditorProvider focusEditor={focusEditor}>
+    <ContentWithUniversalComment comments={comments}>
       <DemocracyReferendaDetail />
 
       <Vote referendumIndex={post?.referendumIndex} />
@@ -92,9 +86,7 @@ function ReferendumContent({ comments }) {
         timeline={<Timeline />}
         votesBubble={<DemocracyReferendaVotesBubble />}
       />
-
-      {CommentComponent}
-    </EditorProvider>
+    </ContentWithUniversalComment>
   );
 }
 

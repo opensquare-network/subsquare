@@ -13,7 +13,6 @@ import {
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
-import useUniversalComments from "../../../components/universalComments";
 import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import Timeline from "../../../components/gov2/timeline";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
@@ -33,7 +32,7 @@ import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -42,15 +41,10 @@ function FellowshipContent({ comments }) {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
 
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail: post,
-    comments,
-  });
-
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <EditorProvider focusEditor={focusEditor}>
+    <ContentWithUniversalComment comments={comments}>
       <FellowshipReferendaDetail />
       <FellowshipReferendumSideBar />
       <DetailMultiTabs
@@ -60,9 +54,7 @@ function FellowshipContent({ comments }) {
         }
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
-
-      {CommentComponent}
-    </EditorProvider>
+    </ContentWithUniversalComment>
   );
 }
 

@@ -9,7 +9,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Second from "next-common/components/publicProposal/second";
 import { useAddressVotingBalance } from "utils/hooks";
 import isNil from "lodash.isnil";
-import useCommentComponent from "next-common/components/useCommentComponent";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
@@ -20,17 +19,12 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
 
   useSubscribePostDetail(post?.proposalIndex);
-
-  const { CommentComponent, focusEditor } = useCommentComponent({
-    detail: post,
-    comments,
-  });
 
   const publicProposal = post?.onchainData;
   const proposalIndex = publicProposal?.proposalIndex;
@@ -52,7 +46,7 @@ function PublicProposalContent({ referendum, comments }) {
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <EditorProvider focusEditor={focusEditor}>
+    <ContentWithComment comments={comments}>
       <DetailItem />
       <Second
         proposalIndex={proposalIndex}
@@ -85,9 +79,7 @@ function PublicProposalContent({ referendum, comments }) {
           />
         }
       />
-
-      {CommentComponent}
-    </EditorProvider>
+    </ContentWithComment>
   );
 }
 

@@ -9,7 +9,6 @@ import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
-import useCommentComponent from "next-common/components/useCommentComponent";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
@@ -30,18 +29,13 @@ import ReferendumCall from "next-common/components/democracy/call";
 import DemocracyReferendaVotesBubble from "components/referenda/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
   const post = usePost();
 
   useSubscribePostDetail(post?.referendumIndex);
-
-  const { CommentComponent, focusEditor } = useCommentComponent({
-    detail: post,
-    comments,
-  });
 
   const api = useApi();
   const { referendumStatus } = useMaybeFetchReferendumStatus(
@@ -79,7 +73,7 @@ function ReferendumContent({ publicProposal, comments }) {
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
   return (
-    <EditorProvider focusEditor={focusEditor}>
+    <ContentWithComment comments={comments}>
       <DetailItem />
 
       <Vote
@@ -108,9 +102,7 @@ function ReferendumContent({ publicProposal, comments }) {
         timelineCount={timelineData.length}
         votesBubble={<DemocracyReferendaVotesBubble />}
       />
-
-      {CommentComponent}
-    </EditorProvider>
+    </ContentWithComment>
   );
 }
 

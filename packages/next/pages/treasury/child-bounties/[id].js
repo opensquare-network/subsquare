@@ -4,7 +4,6 @@ import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/childBounty/timeline";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
-import useUniversalComments from "components/universalComments";
 import { getBannerUrl } from "next-common/utils/banner";
 import Claim from "components/childBounty/claim";
 import {
@@ -22,30 +21,24 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { EditorProvider } from "next-common/context/post/editor";
+import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
   const { parentBountyId, index } = useOnchainData();
   useSubChildBounty(parentBountyId, index);
 
-  const { CommentComponent, focusEditor } = useUniversalComments({
-    detail: post,
-    comments,
-  });
-
   useSubscribePostDetail(post?.index);
 
   return (
-    <EditorProvider focusEditor={focusEditor}>
+    <ContentWithUniversalComment comments={comments}>
       <ChildBountyDetail />
       <Claim />
       <DetailMultiTabs
         metadata={<Metadata meta={post?.onchainData?.meta} />}
         timeline={<Timeline onchainData={post?.onchainData} />}
       />
-      {CommentComponent}
-    </EditorProvider>
+    </ContentWithUniversalComment>
   );
 }
 
