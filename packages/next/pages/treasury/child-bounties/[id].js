@@ -22,6 +22,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function ChildBountyContent({ comments }) {
   const post = usePost();
@@ -36,15 +37,15 @@ function ChildBountyContent({ comments }) {
   useSubscribePostDetail(post?.index);
 
   return (
-    <>
-      <ChildBountyDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <ChildBountyDetail />
       <Claim />
       <DetailMultiTabs
         metadata={<Metadata meta={post?.onchainData?.meta} />}
         timeline={<Timeline onchainData={post?.onchainData} />}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

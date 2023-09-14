@@ -13,6 +13,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function MotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -23,10 +24,10 @@ function MotionContent({ motion, comments }) {
   motion.status = motion.state?.state;
 
   return (
-    <>
-      <MotionDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <MotionDetail />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

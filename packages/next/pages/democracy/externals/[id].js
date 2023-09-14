@@ -18,6 +18,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function DemocracyExternalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -31,8 +32,8 @@ function DemocracyExternalContent({ detail, comments }) {
   const call = external?.preImage?.call;
 
   return (
-    <>
-      <DetailItem onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <DetailItem />
       <DetailMultiTabs
         call={
           call && (
@@ -49,7 +50,7 @@ function DemocracyExternalContent({ detail, comments }) {
         timeline={<Timeline />}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

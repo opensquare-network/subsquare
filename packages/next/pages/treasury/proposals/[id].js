@@ -19,6 +19,7 @@ import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -33,8 +34,8 @@ function TreasuryProposalContent({ detail, comments }) {
   );
 
   return (
-    <>
-      <TreasuryProposalDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={
@@ -47,7 +48,7 @@ function TreasuryProposalContent({ detail, comments }) {
         timelineCount={timelineData.length}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

@@ -20,6 +20,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function PublicProposalContent({ comments }) {
   const post = usePost();
@@ -47,8 +48,8 @@ function PublicProposalContent({ comments }) {
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <>
-      <DetailItem onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <DetailItem />
       <Second
         proposalIndex={proposalIndex}
         hasTurnIntoReferendum={hasTurnIntoReferendum}
@@ -71,7 +72,7 @@ function PublicProposalContent({ comments }) {
         timeline={<Timeline />}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

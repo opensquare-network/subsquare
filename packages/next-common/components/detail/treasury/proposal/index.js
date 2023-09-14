@@ -10,7 +10,7 @@ import TreasuryProposalNavigation from "next-common/components/detail/navigation
 import TreasuryProposalPostMeta from "next-common/components/detail/treasury/proposal/meta";
 import useSetEdit from "../../common/hooks/useSetEdit";
 
-export default function TreasuryProposalDetail({ onReply }) {
+export default function TreasuryProposalDetail() {
   const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
@@ -26,12 +26,7 @@ export default function TreasuryProposalDetail({ onReply }) {
       <PostTitle />
       <Divider className="my-4" />
       <TreasuryProposalPostMeta />
-      <ArticleContent
-        className="mt-6"
-        post={post}
-        onReply={onReply}
-        setIsEdit={setIsEdit}
-      />
+      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

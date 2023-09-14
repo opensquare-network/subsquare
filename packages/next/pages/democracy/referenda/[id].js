@@ -28,6 +28,7 @@ import DemocracyReferendaVotesBubble from "next-common/components/democracy/refe
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -64,8 +65,8 @@ function ReferendumContent({ comments }) {
   }, [dispatch]);
 
   return (
-    <>
-      <DemocracyReferendaDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <DemocracyReferendaDetail />
 
       <Vote referendumIndex={post?.referendumIndex} />
 
@@ -93,7 +94,7 @@ function ReferendumContent({ comments }) {
       />
 
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

@@ -12,6 +12,7 @@ import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function TechCommMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -22,10 +23,10 @@ function TechCommMotionContent({ motion, comments }) {
   useSubscribePostDetail(`${motion?.height}_${motion?.hash}`);
 
   return (
-    <>
-      <TechcommMotionDetail motion={motion} onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <TechcommMotionDetail motion={motion} />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

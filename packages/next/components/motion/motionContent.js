@@ -1,3 +1,4 @@
+import { EditorProvider } from "next-common/context/post/editor";
 import useUniversalComments from "../universalComments";
 import MotionDetail from "./motionDetail";
 
@@ -10,9 +11,9 @@ export default function MotionContent({ motion, comments }) {
   motion.status = motion.state?.state;
 
   return (
-    <>
-      <MotionDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <MotionDetail />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }

@@ -39,6 +39,7 @@ import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/vot
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function ReferendumContent({ comments }) {
   const post = usePost();
@@ -63,8 +64,8 @@ function ReferendumContent({ comments }) {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <>
-      <ReferendaDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <ReferendaDetail />
 
       <Gov2Sidebar />
 
@@ -76,7 +77,7 @@ function ReferendumContent({ comments }) {
       />
 
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

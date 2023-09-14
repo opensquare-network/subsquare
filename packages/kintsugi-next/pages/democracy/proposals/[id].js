@@ -20,6 +20,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function PublicProposalContent({ referendum, comments }) {
   const post = usePost();
@@ -51,8 +52,8 @@ function PublicProposalContent({ referendum, comments }) {
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <>
-      <DetailItem onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <DetailItem />
       <Second
         proposalIndex={proposalIndex}
         hasTurnIntoReferendum={hasTurnIntoReferendum}
@@ -86,7 +87,7 @@ function PublicProposalContent({ referendum, comments }) {
       />
 
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

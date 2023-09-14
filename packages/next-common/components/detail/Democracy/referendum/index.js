@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import Divider from "next-common/components/styled/layout/divider";
 
-export default function DemocracyReferendaDetail({ onReply }) {
+export default function DemocracyReferendaDetail() {
   const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
@@ -28,12 +28,7 @@ export default function DemocracyReferendaDetail({ onReply }) {
       <PostTitle />
       <Divider className="my-4" />
       <DemocracyReferendumMeta />
-      <ArticleContent
-        className="mt-6"
-        post={post}
-        onReply={onReply}
-        setIsEdit={setIsEdit}
-      />
+      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

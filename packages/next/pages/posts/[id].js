@@ -18,6 +18,7 @@ import {
 } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { useUser } from "next-common/context/user";
+import { EditorProvider } from "next-common/context/post/editor";
 
 export default function PostDetailPage({ detail, comments, votes, myVote }) {
   const loginUser = useUser();
@@ -42,16 +43,18 @@ export default function PostDetailPage({ detail, comments, votes, myVote }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
-        <Comments data={comments} />
-        {loginUser && (
-          <CommentEditor
-            postId={postId}
-            ref={editorWrapperRef}
-            setQuillRef={setQuillRef}
-            {...{ contentType, setContentType, content, setContent, users }}
-          />
-        )}
+        <EditorProvider focusEditor={focusEditor}>
+          <DetailItem votes={votes} myVote={myVote} />
+          <Comments data={comments} />
+          {loginUser && (
+            <CommentEditor
+              postId={postId}
+              ref={editorWrapperRef}
+              setQuillRef={setQuillRef}
+              {...{ contentType, setContentType, content, setContent, users }}
+            />
+          )}
+        </EditorProvider>
       </DetailLayout>
     </PostProvider>
   );

@@ -46,7 +46,6 @@ const BannerImage = styled.img`
 export default function ArticleContent({
   votes,
   myVote,
-  onReply,
   setIsEdit,
   className = "",
 }) {
@@ -120,7 +119,6 @@ export default function ArticleContent({
         setIsEdit={setIsEdit}
         toggleThumbUp={toggleThumbUp}
         thumbUpLoading={thumbUpLoading}
-        onReply={onReply}
         setShowLinkPopup={setShowLinkPopup}
         setShowUnlinkPopup={setShowUnlinkPopup}
         setShowReportPopup={setShowReportPopup}

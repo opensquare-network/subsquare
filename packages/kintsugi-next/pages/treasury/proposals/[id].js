@@ -15,6 +15,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function TreasuryProposalContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -25,14 +26,14 @@ function TreasuryProposalContent({ detail, comments }) {
   useSubscribePostDetail(detail?.proposalIndex);
 
   return (
-    <>
-      <TreasuryProposalDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={<Timeline treasuryProposal={detail?.onchainData} />}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

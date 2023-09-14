@@ -18,6 +18,7 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function TreasuryTipContent({ comments }) {
   const post = usePost();
@@ -29,15 +30,15 @@ function TreasuryTipContent({ comments }) {
   });
 
   return (
-    <>
-      <TipDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <TipDetail />
       <Tipper />
       <DetailMultiTabs
         metadata={<Metadata tip={post?.onchainData} />}
         timeline={<Timeline tip={post?.onchainData} />}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

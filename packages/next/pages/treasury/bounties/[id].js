@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function BountyContent({ detail, childBounties, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -35,8 +36,8 @@ function BountyContent({ detail, childBounties, comments }) {
   );
 
   return (
-    <>
-      <BountyDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <BountyDetail />
       <DetailMultiTabs
         childBounties={
           !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />
@@ -47,7 +48,7 @@ function BountyContent({ detail, childBounties, comments }) {
         timelineCount={timelineData.length}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

@@ -10,6 +10,7 @@ import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function AdvisoryCommitteeMotionContent({ motion, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -20,10 +21,10 @@ function AdvisoryCommitteeMotionContent({ motion, comments }) {
   motion.status = motion.state?.state;
 
   return (
-    <>
-      <MotionDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <MotionDetail />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

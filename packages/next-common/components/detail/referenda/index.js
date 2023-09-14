@@ -12,7 +12,7 @@ import ReferendaReferendumNavigation from "next-common/components/detail/navigat
 import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCountdown";
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 
-export default function ReferendaDetail({ onReply }) {
+export default function ReferendaDetail() {
   const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
@@ -31,12 +31,7 @@ export default function ReferendaDetail({ onReply }) {
       <Divider className="my-4" />
       <ReferendaPostMeta />
 
-      <ArticleContent
-        className="mt-6"
-        post={post}
-        onReply={onReply}
-        setIsEdit={setIsEdit}
-      />
+      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

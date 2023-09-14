@@ -12,6 +12,7 @@ import {
   fetchDetailComments,
   getPostVotesAndMine,
 } from "next-common/services/detail";
+import { EditorProvider } from "next-common/context/post/editor";
 
 export default function Post({ detail, comments, votes, myVote }) {
   const { CommentComponent, focusEditor } = useCommentComponent({
@@ -29,8 +30,10 @@ export default function Post({ detail, comments, votes, myVote }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <DetailItem votes={votes} myVote={myVote} onReply={focusEditor} />
-        {CommentComponent}
+        <EditorProvider focusEditor={focusEditor}>
+          <DetailItem votes={votes} myVote={myVote} />
+          {CommentComponent}
+        </EditorProvider>
       </DetailLayout>
     </PostProvider>
   );

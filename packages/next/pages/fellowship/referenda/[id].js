@@ -33,6 +33,7 @@ import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function FellowshipContent({ comments }) {
   const post = usePost();
@@ -49,8 +50,8 @@ function FellowshipContent({ comments }) {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <>
-      <FellowshipReferendaDetail onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <FellowshipReferendaDetail />
       <FellowshipReferendumSideBar />
       <DetailMultiTabs
         call={proposal?.call && <Gov2ReferendumCall />}
@@ -61,7 +62,7 @@ function FellowshipContent({ comments }) {
       />
 
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

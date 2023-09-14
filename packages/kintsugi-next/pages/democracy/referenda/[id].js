@@ -30,6 +30,7 @@ import ReferendumCall from "next-common/components/democracy/call";
 import DemocracyReferendaVotesBubble from "components/referenda/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function ReferendumContent({ publicProposal, comments }) {
   const dispatch = useDispatch();
@@ -78,8 +79,8 @@ function ReferendumContent({ publicProposal, comments }) {
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
   return (
-    <>
-      <DetailItem onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <DetailItem />
 
       <Vote
         referendumInfo={post?.onchainData?.info}
@@ -109,7 +110,7 @@ function ReferendumContent({ publicProposal, comments }) {
       />
 
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 

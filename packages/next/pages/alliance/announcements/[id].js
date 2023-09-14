@@ -14,6 +14,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { EditorProvider } from "next-common/context/post/editor";
 
 function AnnouncementContent({ detail, comments }) {
   const { CommentComponent, focusEditor } = useUniversalComments({
@@ -24,13 +25,13 @@ function AnnouncementContent({ detail, comments }) {
   useSubscribePostDetail(`${detail?.height}_${detail?.cid}`);
 
   return (
-    <>
-      <DetailItem onReply={focusEditor} />
+    <EditorProvider focusEditor={focusEditor}>
+      <DetailItem />
       <DetailMultiTabs
         timeline={<AnnouncementTimeline data={detail?.onchainData} />}
       />
       {CommentComponent}
-    </>
+    </EditorProvider>
   );
 }
 
