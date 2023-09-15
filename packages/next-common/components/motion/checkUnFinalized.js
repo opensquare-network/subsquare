@@ -13,6 +13,9 @@ export default function CheckUnFinalized({ id }) {
   const findMotion = useCallback(
     async (api) => {
       const councilApi = api.query[toApiCouncil(chain, type)];
+      if (!councilApi) {
+        return;
+      }
 
       if (id?.match(/^[0-9]+$/)) {
         // If id is a motion index

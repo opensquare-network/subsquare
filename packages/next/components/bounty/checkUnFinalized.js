@@ -5,7 +5,7 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
-      onChainDataFetcher={(api) => api.query.bounties.bounties(id)}
+      onChainDataFetcher={async (api) => api.query.bounties?.bounties(id)}
       serverPostFetcher={() => nextApi.fetch(`treasury/bounties/${id}`)}
     />
   );
