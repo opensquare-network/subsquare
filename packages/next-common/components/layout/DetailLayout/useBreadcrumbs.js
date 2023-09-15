@@ -74,8 +74,8 @@ export default function useBreadcrumbs() {
     return [
       treasury,
       {
-        content: "Child Bounties",
-        path: "/treasury/child-bounties",
+        content: "Bounties",
+        path: "/treasury/bounties",
       },
       getIndexField(post?.bountyIndex, id),
     ];
@@ -83,8 +83,8 @@ export default function useBreadcrumbs() {
     return [
       treasury,
       {
-        content: "Bounties",
-        path: "/treasury/bounties",
+        content: "Child Bounties",
+        path: "/treasury/child-bounties",
       },
       getIndexField(post?.bountyIndex, id),
     ];

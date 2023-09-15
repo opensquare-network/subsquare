@@ -63,6 +63,7 @@ const childBountyStateTagMap = {
   Claimed: PositiveTag,
 
   // in timeline
+  proposeCurator: ActiveTag,
   acceptCurator: ActiveTag,
   Awarded: PositiveTag,
 };
