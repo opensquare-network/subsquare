@@ -8,7 +8,6 @@ import Tipper from "components/tipper";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/tip/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -18,8 +17,10 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function TreasuryTipContent({ comments }) {
+function TreasuryTipContent() {
+  const { comments } = usePageProps();
   const post = usePost();
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
@@ -35,33 +36,41 @@ function TreasuryTipContent({ comments }) {
   );
 }
 
-export default function TipPage({ id, detail: renderDetail, comments }) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <TreasuryTipContent comments={comments} />
-      </NonNullPost>
-    );
-  } else {
+function TipContentWithNullGuard() {
+  const { id } = usePageProps();
+  const detail = usePost();
+
+  if (!detail) {
     const hash = id?.split("_").pop();
-    postContent = <CheckUnFinalized id={hash} />;
+    return <CheckUnFinalized id={hash} />;
   }
 
-  const desc = getMetaDesc(detail);
+  return <TreasuryTipContent />;
+}
+
+function TipPageImpl() {
+  const post = usePost();
+
+  const desc = getMetaDesc(post);
+
+  return (
+    <DetailLayout
+      seoInfo={{
+        title: post?.title,
+        desc,
+        ogImage: getBannerUrl(post?.bannerCid),
+      }}
+      hasSidebar
+    >
+      <TipContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function TipPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <DetailLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
-        hasSidebar
-      >
-        {postContent}
-      </DetailLayout>
+      <TipPageImpl />
     </PostProvider>
   );
 }

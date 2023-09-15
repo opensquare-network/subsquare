@@ -6,14 +6,17 @@ import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function TechCommMotionContent({ motion, comments }) {
+function TechCommMotionContent() {
+  const motion = usePost();
+  const { comments } = usePageProps();
+
   motion.status = motion.state?.state;
 
   return (
@@ -23,32 +26,39 @@ function TechCommMotionContent({ motion, comments }) {
   );
 }
 
-export default function ProposalPage({ id, motion: renderDetail, comments }) {
-  const motion = usePost(renderDetail);
-  let postContent;
-  if (motion) {
-    postContent = (
-      <NonNullPost>
-        <TechCommMotionContent motion={motion} comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function ProposalPageWithNullGuard() {
+  const motion = usePost();
+  const { id } = usePageProps();
+
+  if (!motion) {
+    return <CheckUnFinalized id={id} />;
   }
 
+  return <TechCommMotionContent />;
+}
+
+function ProposalPageImpl() {
+  const motion = usePost();
   const desc = getMetaDesc(motion);
+
+  return (
+    <DetailLayout
+      seoInfo={{
+        title: motion?.title,
+        desc,
+        ogImage: getBannerUrl(motion?.bannerCid),
+      }}
+      hasSidebar
+    >
+      <ProposalPageWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function ProposalPage({ motion }) {
   return (
     <PostProvider post={motion}>
-      <DetailLayout
-        seoInfo={{
-          title: motion?.title,
-          desc,
-          ogImage: getBannerUrl(motion?.bannerCid),
-        }}
-        hasSidebar
-      >
-        {postContent}
-      </DetailLayout>
+      <ProposalPageImpl />
     </PostProvider>
   );
 }

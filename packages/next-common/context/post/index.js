@@ -42,9 +42,8 @@ export function usePostDispatch() {
   return useContext(PostDispatchContext);
 }
 
-export function usePost(defaultValue) {
-  const ctxValue = useContext(PostContext);
-  return ctxValue || defaultValue;
+export function usePost() {
+  return useContext(PostContext);
 }
 
 export function usePostTitle() {
