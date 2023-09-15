@@ -24,7 +24,7 @@ export default function ChildBountyDetail() {
       )}
       <PostTitle />
       <Divider className="my-4" />
-      <BountyPostMeta />
+      <BountyPostMeta isChild />
       <ArticleContent post={post} setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
