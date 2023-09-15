@@ -14,8 +14,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function AnnouncementContent({ detail, comments }) {
+function AnnouncementContent() {
+  const detail = usePost();
+  const { comments } = usePageProps();
+
   useSubscribePostDetail(`${detail?.height}_${detail?.cid}`);
 
   return (
@@ -28,29 +32,29 @@ function AnnouncementContent({ detail, comments }) {
   );
 }
 
-export default function AnnouncementPage({
-  announcement: renderDetail,
-  comments,
-}) {
-  const announcement = usePost(renderDetail);
-  const postContent = (
-    <NonNullPost>
-      <AnnouncementContent detail={announcement} comments={comments} />
-    </NonNullPost>
-  );
+function AnnouncementPageImpl() {
+  const announcement = usePost();
 
   return (
+    <DetailLayout
+      detail={announcement}
+      seoInfo={{
+        title: announcement?.title,
+        desc: getMetaDesc(announcement),
+        ogImage: getBannerUrl(announcement?.bannerCid),
+      }}
+    >
+      <NonNullPost>
+        <AnnouncementContent />
+      </NonNullPost>
+    </DetailLayout>
+  );
+}
+
+export default function AnnouncementPage({ announcement }) {
+  return (
     <PostProvider post={announcement}>
-      <DetailLayout
-        detail={announcement}
-        seoInfo={{
-          title: announcement?.title,
-          desc: getMetaDesc(announcement),
-          ogImage: getBannerUrl(announcement?.bannerCid),
-        }}
-      >
-        {postContent}
-      </DetailLayout>
+      <AnnouncementPageImpl />
     </PostProvider>
   );
 }

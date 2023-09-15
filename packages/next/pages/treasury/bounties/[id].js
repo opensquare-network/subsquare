@@ -7,7 +7,6 @@ import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/bounty/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -20,8 +19,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function BountyContent({ detail, childBounties, comments }) {
+function BountyContent() {
+  const { childBounties, comments } = usePageProps();
+  const detail = usePost();
+
   useSubscribePostDetail(detail?.bountyIndex);
 
   const timelineData = useBountyTimelineData(detail?.onchainData);
@@ -45,40 +48,40 @@ function BountyContent({ detail, childBounties, comments }) {
   );
 }
 
-export default function BountyPage({
-  id,
-  detail: renderDetail,
-  childBounties,
-  comments,
-}) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <BountyContent
-          detail={detail}
-          childBounties={childBounties}
-          comments={comments}
-        />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function BountyContentWithNullGuard() {
+  const { id } = usePageProps();
+  const detail = usePost();
+
+  if (!detail) {
+    return <CheckUnFinalized id={id} />;
   }
 
-  const desc = getMetaDesc(detail);
+  return <BountyContent />;
+}
+
+function BountyPageImpl() {
+  const post = usePost();
+
+  const desc = getMetaDesc(post);
+
+  return (
+    <DetailLayout
+      seoInfo={{
+        title: post?.title,
+        desc,
+        ogImage: getBannerUrl(post?.bannerCid),
+      }}
+      hasSidebar
+    >
+      <BountyContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function BountyPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <DetailLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
-      >
-        {postContent}
-      </DetailLayout>
+      <BountyPageImpl />
     </PostProvider>
   );
 }

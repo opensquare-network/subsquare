@@ -12,7 +12,6 @@ import {
   usePost,
 } from "next-common/context/post";
 import CheckUnFinalized from "components/childBounty/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -22,9 +21,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function ChildBountyContent({ comments }) {
+function ChildBountyContent() {
+  const { comments } = usePageProps();
   const post = usePost();
+
   const { parentBountyId, index } = useOnchainData();
   useSubChildBounty(parentBountyId, index);
 
@@ -42,39 +44,43 @@ function ChildBountyContent({ comments }) {
   );
 }
 
-export default function ChildBountyPage({
-  id,
-  detail: renderDetail,
-  comments,
-}) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <ChildBountyContent comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function ChildBountyContentWithNullGuard() {
+  const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!detail) {
+    return <CheckUnFinalized id={id} />;
   }
 
-  const desc = getMetaDesc(detail);
+  return <ChildBountyContent />;
+}
+
+function ChildBountyPageImpl() {
+  const post = usePost();
+
+  const desc = getMetaDesc(post);
   const showRightSidePanel = ["PendingPayout", "Claimed"].includes(
-    detail?.onchainData?.state?.state,
+    post?.onchainData?.state?.state,
   );
+
+  return (
+    <DetailLayout
+      seoInfo={{
+        title: post?.title,
+        desc,
+        ogImage: getBannerUrl(post?.bannerCid),
+      }}
+      hasSidebar={showRightSidePanel}
+    >
+      <ChildBountyContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function ChildBountyPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <DetailLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
-        hasSidebar={showRightSidePanel}
-      >
-        {postContent}
-      </DetailLayout>
+      <ChildBountyPageImpl />
     </PostProvider>
   );
 }

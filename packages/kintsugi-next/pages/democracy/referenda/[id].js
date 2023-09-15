@@ -18,7 +18,6 @@ import { PostProvider, usePost } from "next-common/context/post";
 import { useDispatch } from "react-redux";
 import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -30,10 +29,12 @@ import DemocracyReferendaVotesBubble from "components/referenda/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import { usePageProps } from "next-common/context/page";
 
-function ReferendumContent({ publicProposal, comments }) {
+function ReferendumContent() {
   const dispatch = useDispatch();
   const post = usePost();
+  const { publicProposal, comments } = usePageProps();
 
   useSubscribePostDetail(post?.referendumIndex);
 
@@ -106,27 +107,19 @@ function ReferendumContent({ publicProposal, comments }) {
   );
 }
 
-export default function DemocracyReferendumPage({
-  id,
-  detail: renderDetail,
-  publicProposal,
-  comments,
-}) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <ReferendumContent
-          publicProposal={publicProposal}
-          comments={comments}
-        />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function ReferendumContentWithNullGuard() {
+  const post = usePost();
+  const { id } = usePageProps();
+
+  if (!post) {
+    return <CheckUnFinalized id={id} />;
   }
 
+  return <ReferendumContent />;
+}
+
+function DemocracyReferendumPageImpl() {
+  const detail = usePost();
   const desc = getMetaDesc(detail);
   const seoInfo = {
     title: detail?.title,
@@ -135,10 +128,16 @@ export default function DemocracyReferendumPage({
   };
 
   return (
+    <DetailLayout seoInfo={seoInfo} hasSidebar>
+      <ReferendumContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function DemocracyReferendumPage({ detail }) {
+  return (
     <PostProvider post={detail}>
-      <DetailLayout seoInfo={seoInfo} hasSidebar>
-        {postContent}
-      </DetailLayout>
+      <DemocracyReferendumPageImpl />
     </PostProvider>
   );
 }

@@ -12,7 +12,6 @@ import isNil from "lodash.isnil";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
@@ -20,9 +19,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function PublicProposalContent({ comments }) {
+function PublicProposalContent() {
   const post = usePost();
+  const { comments } = usePageProps();
+
   useSubscribePostDetail(post?.proposalIndex);
 
   const publicProposal = post?.onchainData;
@@ -69,37 +71,39 @@ function PublicProposalContent({ comments }) {
   );
 }
 
-export default function DemocracyProposalPage({
-  id,
-  detail: renderDetail,
-  comments,
-}) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <PublicProposalContent comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function DemocracyProposalContentWithNullGuard() {
+  const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!detail) {
+    return <CheckUnFinalized id={id} />;
   }
 
+  return <PublicProposalContent />;
+}
+
+function DemocracyProposalPageImpl() {
+  const detail = usePost();
   const desc = getMetaDesc(detail);
 
   return (
+    <DetailLayout
+      seoInfo={{
+        title: detail?.title,
+        desc,
+        ogImage: getBannerUrl(detail?.bannerCid),
+      }}
+      hasSidebar
+    >
+      <DemocracyProposalContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function DemocracyProposalPage({ detail }) {
+  return (
     <PostProvider post={detail}>
-      <DetailLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
-        hasSidebar
-      >
-        {postContent}
-      </DetailLayout>
+      <DemocracyProposalPageImpl />
     </PostProvider>
   );
 }

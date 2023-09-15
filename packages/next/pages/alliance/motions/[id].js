@@ -10,25 +10,30 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { usePageProps } from "next-common/context/page";
 
-export default function MotionPage({ id, motion: renderDetail, comments }) {
-  const motion = usePost(renderDetail);
+function MotionPageImpl() {
+  const motion = usePost();
+  const { id } = usePageProps();
+
+  return (
+    <DetailLayout
+      seoInfo={{
+        title: motion?.title,
+        desc: getMetaDesc(motion),
+        ogImage: getBannerUrl(motion?.bannerCid),
+      }}
+      hasSidebar
+    >
+      {motion ? <MotionContent /> : <CheckUnFinalized id={id} />}
+    </DetailLayout>
+  );
+}
+
+export default function MotionPage({ motion }) {
   return (
     <PostProvider post={motion}>
-      <DetailLayout
-        seoInfo={{
-          title: motion?.title,
-          desc: getMetaDesc(motion),
-          ogImage: getBannerUrl(motion?.bannerCid),
-        }}
-        hasSidebar
-      >
-        {motion ? (
-          <MotionContent motion={motion} comments={comments} />
-        ) : (
-          <CheckUnFinalized id={id} />
-        )}
-      </DetailLayout>
+      <MotionPageImpl />
     </PostProvider>
   );
 }

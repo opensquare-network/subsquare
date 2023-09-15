@@ -7,13 +7,16 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import { usePageProps } from "next-common/context/page";
 
-function TechCommMotionContent({ motion, comments }) {
+function TechCommMotionContent() {
+  const motion = usePost();
+  const { comments } = usePageProps();
+
   useSubscribePostDetail(`${motion?.height}_${motion?.hash}`);
 
   return (
@@ -23,32 +26,39 @@ function TechCommMotionContent({ motion, comments }) {
   );
 }
 
-export default function Proposal({ id, motion: renderDetail, comments }) {
-  const motion = usePost(renderDetail);
-  let postContent;
-  if (motion) {
-    postContent = (
-      <NonNullPost>
-        <TechCommMotionContent motion={motion} comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function TechCommMotionContentWithNullGuard() {
+  const motion = usePost();
+  const { id } = usePageProps();
+
+  if (!motion) {
+    return <CheckUnFinalized id={id} />;
   }
+
+  return <TechCommMotionContent />;
+}
+
+function TechCommProposalPageImpl() {
+  const motion = usePost();
 
   const desc = getMetaDesc(motion);
   return (
+    <DetailLayout
+      detail={motion}
+      seoInfo={{
+        title: motion?.title,
+        desc,
+        ogImage: getBannerUrl(motion?.bannerCid),
+      }}
+    >
+      <TechCommMotionContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function TechCommProposalPage({ motion }) {
+  return (
     <PostProvider post={motion}>
-      <DetailLayout
-        detail={motion}
-        seoInfo={{
-          title: motion?.title,
-          desc,
-          ogImage: getBannerUrl(motion?.bannerCid),
-        }}
-      >
-        {postContent}
-      </DetailLayout>
+      <TechCommProposalPageImpl />
     </PostProvider>
   );
 }

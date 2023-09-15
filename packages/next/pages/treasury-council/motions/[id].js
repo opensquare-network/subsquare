@@ -6,14 +6,17 @@ import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function MotionContent({ motion, comments }) {
+function MotionContent() {
+  const motion = usePost();
+  const { comments } = usePageProps();
+
   motion.status = motion.state?.state;
 
   return (
@@ -23,32 +26,39 @@ function MotionContent({ motion, comments }) {
   );
 }
 
-export default function MotionPage({ id, motion: renderDetail, comments }) {
-  const motion = usePost(renderDetail);
-  let postContent;
-  if (motion) {
-    postContent = (
-      <NonNullPost>
-        <MotionContent motion={motion} comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function MotionContentWithNullGuard() {
+  const { id } = usePageProps();
+  const detail = usePost();
+
+  if (!detail) {
+    return <CheckUnFinalized id={id} />;
   }
 
+  return <MotionContent />;
+}
+
+function MotionPageImpl() {
+  const motion = usePost();
   const desc = getMetaDesc(motion);
+
+  return (
+    <DetailLayout
+      seoInfo={{
+        title: motion?.title,
+        desc,
+        ogImage: getBannerUrl(motion?.bannerCid),
+      }}
+      hasSidebar
+    >
+      <MotionContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function MotionPage({ motion }) {
   return (
     <PostProvider post={motion}>
-      <DetailLayout
-        seoInfo={{
-          title: motion?.title,
-          desc,
-          ogImage: getBannerUrl(motion?.bannerCid),
-        }}
-        hasSidebar
-      >
-        {postContent}
-      </DetailLayout>
+      <MotionPageImpl />
     </PostProvider>
   );
 }
