@@ -5,7 +5,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Metadata from "next-common/components/treasury/bounty/metadata";
 import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/bounty/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
@@ -45,7 +45,13 @@ function BountyContent({ detail, childBounties, comments }) {
   );
 }
 
-export default function BountyPage({ id, detail, childBounties, comments }) {
+export default function BountyPage({
+  id,
+  detail: renderDetail,
+  childBounties,
+  comments,
+}) {
+  const detail = usePost(renderDetail);
   let postContent;
   if (detail) {
     postContent = (

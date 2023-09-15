@@ -98,10 +98,10 @@ function UnFinalizedBreadcrumb({ id }) {
   );
 }
 
-export default function ReferendumPage({ id, detail, comments }) {
+export default function ReferendumPage({ id, detail: renderDetail, comments }) {
+  const detail = usePost(renderDetail);
   let postContent;
   let breadcrumbs;
-
   if (detail) {
     postContent = (
       <NonNullPost>

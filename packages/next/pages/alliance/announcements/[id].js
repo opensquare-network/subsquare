@@ -1,7 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -28,7 +28,11 @@ function AnnouncementContent({ detail, comments }) {
   );
 }
 
-export default function AnnouncementPage({ announcement, comments }) {
+export default function AnnouncementPage({
+  announcement: renderDetail,
+  comments,
+}) {
+  const announcement = usePost(renderDetail);
   const postContent = (
     <NonNullPost>
       <AnnouncementContent detail={announcement} comments={comments} />

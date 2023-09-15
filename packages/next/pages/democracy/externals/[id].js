@@ -8,7 +8,7 @@ import DemocracyExternalProposalCall from "components/external/call";
 import Timeline from "components/external/timeline";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/external/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -47,7 +47,12 @@ function DemocracyExternalContent({ detail, comments }) {
   );
 }
 
-export default function DemocracyExternalPage({ id, detail, comments }) {
+export default function DemocracyExternalPage({
+  id,
+  detail: renderDetail,
+  comments,
+}) {
+  const detail = usePost(renderDetail);
   let postContent;
   if (detail) {
     postContent = (

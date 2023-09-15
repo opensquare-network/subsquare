@@ -90,9 +90,13 @@ function ReferendumContent({ comments }) {
   );
 }
 
-export default function DemocracyReferendumPage({ id, detail, comments }) {
+export default function DemocracyReferendumPage({
+  id,
+  detail: renderDetail,
+  comments,
+}) {
+  const detail = usePost(renderDetail);
   let postContent;
-
   if (detail) {
     postContent = (
       <NonNullPost>
