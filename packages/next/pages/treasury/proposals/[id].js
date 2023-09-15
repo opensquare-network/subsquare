@@ -6,7 +6,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -19,8 +18,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function TreasuryProposalContent({ detail, comments }) {
+function TreasuryProposalContent() {
+  const detail = usePost();
+  const { comments } = usePageProps();
+
   useSubscribePostDetail(detail?.proposalIndex);
   const timelineData = useTreasuryTimelineData(detail?.onchainData);
   const isTimelineCompact = useSelector(
@@ -45,30 +48,39 @@ function TreasuryProposalContent({ detail, comments }) {
   );
 }
 
-export default function ProposalPage({ id, detail: renderDetail, comments }) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <TreasuryProposalContent detail={detail} comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function ProposalContentWithNullGuard() {
+  const { id } = usePageProps();
+  const detail = usePost();
+
+  if (!detail) {
+    return <CheckUnFinalized id={id} />;
   }
 
-  const desc = getMetaDesc(detail);
+  return <TreasuryProposalContent />;
+}
+
+function ProposalPageImpl() {
+  const post = usePost();
+
+  const desc = getMetaDesc(post);
 
   const seoInfo = {
-    title: detail?.title,
+    title: post?.title,
     desc,
-    ogImage: getBannerUrl(detail?.bannerCid),
+    ogImage: getBannerUrl(post?.bannerCid),
   };
 
   return (
+    <DetailLayout seoInfo={seoInfo}>
+      <ProposalContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function ProposalPage({ detail }) {
+  return (
     <PostProvider post={detail}>
-      <DetailLayout seoInfo={seoInfo}>{postContent}</DetailLayout>
+      <ProposalPageImpl />
     </PostProvider>
   );
 }

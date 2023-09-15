@@ -21,7 +21,6 @@ import BreadcrumbWrapper, {
   BreadcrumbHideOnMobileText,
 } from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import NonNullPost from "next-common/components/nonNullPost";
 import FellowshipReferendaDetail from "next-common/components/detail/fellowship";
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
@@ -33,9 +32,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function FellowshipContent({ comments }) {
+function FellowshipContent() {
   const post = usePost();
+  const { comments } = usePageProps();
+
   useSubFellowshipReferendumInfo();
   const info = useFellowshipReferendumInfo();
   const onchainData = useOnchainData();
@@ -83,26 +85,8 @@ function UnFinalizedBreadcrumb({ id }) {
   );
 }
 
-export default function ReferendumPage({ id, detail: renderDetail, comments }) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  let breadcrumbs;
-
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <FellowshipContent comments={comments} />
-      </NonNullPost>
-    );
-    breadcrumbs = <FellowshipBreadcrumb />;
-  } else {
-    postContent = (
-      <>
-        <CheckUnFinalized id={id} />
-      </>
-    );
-    breadcrumbs = <UnFinalizedBreadcrumb id={id} />;
-  }
+function ReferendumPageCommon({ breadcrumbs, postContent }) {
+  const detail = usePost();
 
   const seoInfo = {
     title: detail?.title,
@@ -111,10 +95,45 @@ export default function ReferendumPage({ id, detail: renderDetail, comments }) {
   };
 
   return (
+    <DetailLayout breadcrumbs={breadcrumbs} seoInfo={seoInfo} hasSidebar>
+      {postContent}
+    </DetailLayout>
+  );
+}
+
+function ReferendumNullPage() {
+  const { id } = usePageProps();
+  return (
+    <ReferendumPageCommon
+      breadcrumbs={<UnFinalizedBreadcrumb id={id} />}
+      postContent={<CheckUnFinalized id={id} />}
+    />
+  );
+}
+
+function ReferendumPageWithPost() {
+  return (
+    <ReferendumPageCommon
+      breadcrumbs={<FellowshipBreadcrumb />}
+      postContent={<FellowshipContent />}
+    />
+  );
+}
+
+function ReferendumPageImpl() {
+  const detail = usePost();
+
+  if (!detail) {
+    return <ReferendumNullPage />;
+  }
+
+  return <ReferendumPageWithPost />;
+}
+
+export default function ReferendumPage({ detail }) {
+  return (
     <PostProvider post={detail}>
-      <DetailLayout breadcrumbs={breadcrumbs} seoInfo={seoInfo} hasSidebar>
-        {postContent}
-      </DetailLayout>
+      <ReferendumPageImpl />
     </PostProvider>
   );
 }

@@ -10,7 +10,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/external/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
@@ -18,8 +17,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function DemocracyExternalContent({ detail, comments }) {
+function DemocracyExternalContent() {
+  const detail = usePost();
+  const { comments } = usePageProps();
+
   useSubscribePostDetail(detail?.externalProposalHash);
 
   const external = detail?.onchainData || {};
@@ -47,36 +50,38 @@ function DemocracyExternalContent({ detail, comments }) {
   );
 }
 
-export default function DemocracyExternalPage({
-  id,
-  detail: renderDetail,
-  comments,
-}) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <DemocracyExternalContent detail={detail} comments={comments} />
-      </NonNullPost>
-    );
-  } else {
+function DemocracyExternalContentWithNullGuard() {
+  const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!detail) {
     const hash = id?.split("_").pop();
-    postContent = <CheckUnFinalized id={hash} />;
+    return <CheckUnFinalized id={hash} />;
   }
 
+  return <DemocracyExternalContent />;
+}
+
+function DemocracyExternalPageImpl() {
+  const detail = usePost();
   const desc = getMetaDesc(detail);
   return (
+    <DetailLayout
+      seoInfo={{
+        title: detail?.title,
+        desc,
+        ogImage: getBannerUrl(detail?.bannerCid),
+      }}
+    >
+      <DemocracyExternalContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function DemocracyExternalPage({ detail }) {
+  return (
     <PostProvider post={detail}>
-      <DetailLayout
-        seoInfo={{
-          title: detail?.title,
-          desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
-        }}
-      >
-        {postContent}
-      </DetailLayout>
+      <DemocracyExternalPageImpl />
     </PostProvider>
   );
 }

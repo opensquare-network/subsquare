@@ -10,8 +10,12 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function AdvisoryCommitteeMotionContent({ motion, comments }) {
+function AdvisoryCommitteeMotionContent() {
+  const motion = usePost();
+  const { comments } = usePageProps();
+
   motion.status = motion.state?.state;
 
   return (
@@ -21,30 +25,39 @@ function AdvisoryCommitteeMotionContent({ motion, comments }) {
   );
 }
 
-export default function MotionPage({ id, motion: renderDetail, comments }) {
-  const motion = usePost(renderDetail);
-  let postContent;
-  if (motion) {
-    postContent = (
-      <AdvisoryCommitteeMotionContent motion={motion} comments={comments} />
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function MotionContentWithNullGuard() {
+  const motion = usePost();
+  const { id } = usePageProps();
+
+  if (!motion) {
+    return <CheckUnFinalized id={id} />;
   }
+
+  return <AdvisoryCommitteeMotionContent />;
+}
+
+function MotionPageImpl() {
+  const motion = usePost();
 
   const desc = getMetaDesc(motion);
   return (
+    <DetailLayout
+      seoInfo={{
+        title: motion?.title,
+        desc,
+        ogImage: getBannerUrl(motion?.bannerCid),
+      }}
+      hasSidebar
+    >
+      <MotionContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function MotionPage({ motion }) {
+  return (
     <PostProvider post={motion}>
-      <DetailLayout
-        seoInfo={{
-          title: motion?.title,
-          desc,
-          ogImage: getBannerUrl(motion?.bannerCid),
-        }}
-        hasSidebar
-      >
-        {postContent}
-      </DetailLayout>
+      <MotionPageImpl />
     </PostProvider>
   );
 }

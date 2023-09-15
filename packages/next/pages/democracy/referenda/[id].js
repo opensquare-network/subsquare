@@ -13,7 +13,6 @@ import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import DemocracyReferendaDetail from "next-common/components/detail/Democracy/referendum";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
@@ -28,9 +27,12 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import { usePageProps } from "next-common/context/page";
 
-function ReferendumContent({ comments }) {
+function ReferendumContent() {
   const post = usePost();
+  const { comments } = usePageProps();
+
   const onchainData = post?.onchainData;
   const dispatch = useDispatch();
 
@@ -90,24 +92,22 @@ function ReferendumContent({ comments }) {
   );
 }
 
-export default function DemocracyReferendumPage({
-  id,
-  detail: renderDetail,
-  comments,
-}) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <ReferendumContent comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function ReferendumContentContentWithNullGuard() {
+  const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!detail) {
+    return <CheckUnFinalized id={id} />;
   }
 
+  return <ReferendumContent />;
+}
+
+function DemocracyReferendumPageImpl() {
+  const detail = usePost();
+
   const desc = getMetaDesc(detail);
+
   const seoInfo = {
     title: detail?.title,
     desc,
@@ -115,10 +115,16 @@ export default function DemocracyReferendumPage({
   };
 
   return (
+    <DetailLayout seoInfo={seoInfo} hasSidebar>
+      <ReferendumContentContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function DemocracyReferendumPage({ detail }) {
+  return (
     <PostProvider post={detail}>
-      <DetailLayout seoInfo={seoInfo} hasSidebar>
-        {postContent}
-      </DetailLayout>
+      <DemocracyReferendumPageImpl />
     </PostProvider>
   );
 }

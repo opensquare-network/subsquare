@@ -7,7 +7,6 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
-import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -15,8 +14,12 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import { usePageProps } from "next-common/context/page";
 
-function TreasuryProposalContent({ detail, comments }) {
+function TreasuryProposalContent() {
+  const detail = usePost();
+  const { comments } = usePageProps();
+
   useSubscribePostDetail(detail?.proposalIndex);
 
   return (
@@ -30,18 +33,19 @@ function TreasuryProposalContent({ detail, comments }) {
   );
 }
 
-export default function Proposal({ id, detail: renderDetail, comments }) {
-  const detail = usePost(renderDetail);
-  let postContent;
-  if (detail) {
-    postContent = (
-      <NonNullPost>
-        <TreasuryProposalContent detail={detail} comments={comments} />
-      </NonNullPost>
-    );
-  } else {
-    postContent = <CheckUnFinalized id={id} />;
+function TreasuryProposalContentWithNullGuard() {
+  const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!detail) {
+    return <CheckUnFinalized id={id} />;
   }
+
+  return <TreasuryProposalContent />;
+}
+
+function ProposalPageImpl() {
+  const detail = usePost();
 
   const desc = getMetaDesc(detail);
   const seoInfo = {
@@ -51,8 +55,16 @@ export default function Proposal({ id, detail: renderDetail, comments }) {
   };
 
   return (
+    <DetailLayout seoInfo={seoInfo}>
+      <TreasuryProposalContentWithNullGuard />
+    </DetailLayout>
+  );
+}
+
+export default function Proposal({ detail }) {
+  return (
     <PostProvider post={detail}>
-      <DetailLayout seoInfo={seoInfo}>{postContent}</DetailLayout>
+      <ProposalPageImpl />
     </PostProvider>
   );
 }
