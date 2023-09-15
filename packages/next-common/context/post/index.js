@@ -42,8 +42,9 @@ export function usePostDispatch() {
   return useContext(PostDispatchContext);
 }
 
-export function usePost() {
-  return useContext(PostContext);
+export function usePost(defaultValue) {
+  const ctxValue = useContext(PostContext);
+  return ctxValue || defaultValue;
 }
 
 export function usePostTitle() {
@@ -88,7 +89,7 @@ export function usePostStateInfo() {
 
 export function useOnchainData() {
   const post = useContext(PostContext);
-  if (!post.onchainData) {
+  if (!post?.onchainData) {
     throw new Error("No on chain data when call `useOnchainData`");
   }
   return post.onchainData;

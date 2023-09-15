@@ -42,9 +42,13 @@ function ChildBountyContent({ comments }) {
   );
 }
 
-export default function ChildBountyPage({ id, detail, comments }) {
-  let postContent = null;
-
+export default function ChildBountyPage({
+  id,
+  detail: renderDetail,
+  comments,
+}) {
+  const detail = usePost(renderDetail);
+  let postContent;
   if (detail) {
     postContent = (
       <NonNullPost>
@@ -56,11 +60,9 @@ export default function ChildBountyPage({ id, detail, comments }) {
   }
 
   const desc = getMetaDesc(detail);
-
   const showRightSidePanel = ["PendingPayout", "Claimed"].includes(
     detail?.onchainData?.state?.state,
   );
-
   return (
     <PostProvider post={detail}>
       <DetailLayout
