@@ -108,11 +108,12 @@ function ReferendumContent({ publicProposal, comments }) {
 
 export default function DemocracyReferendumPage({
   id,
-  detail,
+  detail: renderDetail,
   publicProposal,
   comments,
 }) {
-  let postContent = null;
+  const detail = usePost(renderDetail);
+  let postContent;
   if (detail) {
     postContent = (
       <NonNullPost>

@@ -4,7 +4,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
@@ -45,9 +45,9 @@ function TreasuryProposalContent({ detail, comments }) {
   );
 }
 
-export default function ProposalPage({ id, detail, comments }) {
+export default function ProposalPage({ id, detail: renderDetail, comments }) {
+  const detail = usePost(renderDetail);
   let postContent;
-
   if (detail) {
     postContent = (
       <NonNullPost>

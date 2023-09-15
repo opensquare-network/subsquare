@@ -4,7 +4,7 @@ import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import Chains from "next-common/utils/consts/chains";
@@ -24,9 +24,9 @@ function MotionContent({ motion, comments }) {
   );
 }
 
-export default function MotionPage({ id, motion, comments }) {
-  let postContent = null;
-
+export default function MotionPage({ id, motion: renderDetail, comments }) {
+  const motion = usePost(renderDetail);
+  let postContent;
   if (motion) {
     postContent = (
       <NonNullPost>

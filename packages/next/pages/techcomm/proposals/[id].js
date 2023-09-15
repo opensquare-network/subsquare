@@ -4,7 +4,7 @@ import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import NonNullPost from "next-common/components/nonNullPost";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -23,9 +23,9 @@ function TechCommMotionContent({ motion, comments }) {
   );
 }
 
-export default function ProposalPage({ id, motion, comments }) {
+export default function ProposalPage({ id, motion: renderDetail, comments }) {
+  const motion = usePost(renderDetail);
   let postContent;
-
   if (motion) {
     postContent = (
       <NonNullPost>

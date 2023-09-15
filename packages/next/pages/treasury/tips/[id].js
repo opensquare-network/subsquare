@@ -35,7 +35,8 @@ function TreasuryTipContent({ comments }) {
   );
 }
 
-export default function TipPage({ id, detail, comments }) {
+export default function TipPage({ id, detail: renderDetail, comments }) {
+  const detail = usePost(renderDetail);
   let postContent;
   if (detail) {
     postContent = (

@@ -15,7 +15,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default function Trackpage({
+export default function TrackPage({
   posts,
   title,
   fellowshipTracks,

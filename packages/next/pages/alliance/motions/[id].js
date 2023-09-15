@@ -1,7 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { PostProvider } from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import MotionContent from "../../../components/motion/motionContent";
@@ -11,7 +11,8 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default function MotionPage({ id, motion, comments }) {
+export default function MotionPage({ id, motion: renderDetail, comments }) {
+  const motion = usePost(renderDetail);
   return (
     <PostProvider post={motion}>
       <DetailLayout

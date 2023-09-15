@@ -69,9 +69,13 @@ function PublicProposalContent({ comments }) {
   );
 }
 
-export default function DemocracyProposalPage({ id, detail, comments }) {
-  let postContent = null;
-
+export default function DemocracyProposalPage({
+  id,
+  detail: renderDetail,
+  comments,
+}) {
+  const detail = usePost(renderDetail);
+  let postContent;
   if (detail) {
     postContent = (
       <NonNullPost>
