@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.7
+date: 2023-09-18
+- Refactor various page components and fix post detail data subscription.
+- Refactor: pass `focusEditor` function through context and this will make code more clean.
+- Fix detail page bug due to removal of kintsugi/interlay treasury pallet.
+- Fix child bounty state tag color on detail page.
+- Change the contact email to yongfeng@opensquare.network.
+
 ### 3.4.6
 date: 2023-09-13
 - Refactor detail page breadcrumbs.
