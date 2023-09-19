@@ -242,7 +242,7 @@ export default function LinkedAddress() {
 
   return (
     <NeutralPanel className="p-6">
-      {!hasExtension ? (
+      {hasExtension ? (
         <div>
           <InfoWrapper>
             {
