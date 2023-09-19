@@ -8,7 +8,8 @@ import MailLink from "./mailLink";
 import WebLink from "./webLink";
 import ElementLink from "./elementLink";
 import TwitterLink from "./twitterLink";
-import { usePageProps } from "next-common/context/page";
+import useIdentity from "next-common/utils/hooks/useIdentity";
+import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -18,7 +19,8 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function AccountLinks({ address }) {
-  const { identity } = usePageProps();
+  const chain = useChain();
+  const identity = useIdentity(address, chain);
   const { email, riot, twitter, web } = identity?.info || {};
 
   if (!address) {
@@ -27,13 +29,13 @@ export default function AccountLinks({ address }) {
 
   return (
     <Wrapper>
+      <StatescanAccountLink address={address} />
+      <DotreasuryAccountLink address={address} />
+      <SubScanAccountLink address={address} />
       {email && <MailLink email={email} />}
       {web && <WebLink website={web} />}
       {riot && <ElementLink riot={riot} />}
       {twitter && <TwitterLink twitter={twitter} />}
-      <StatescanAccountLink address={address} />
-      <DotreasuryAccountLink address={address} />
-      <SubScanAccountLink address={address} />
     </Wrapper>
   );
 }
