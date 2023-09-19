@@ -15,10 +15,10 @@ import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 
 function PopupChartContent({ isFellowship = false }) {
-  if (!isFellowship) {
-    return <ReferendaCurveChart />;
-  } else {
+  if (isFellowship) {
     return <FellowshipCurveChart />;
+  } else {
+    return <ReferendaCurveChart />;
   }
 }
 
