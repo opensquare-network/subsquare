@@ -19,15 +19,15 @@ export default function CouncilorLink({ address }) {
   const chain = useChain();
   const [isCouncilor, setIsCouncilor] = useState(false);
   useEffect(() => {
-    fetch(`https://${chain}-api.dotreasury.com/participants/${address}`).then(
-      async (res) => {
+    fetch(`https://${chain}-api.dotreasury.com/participants/${address}`)
+      .then(async (res) => {
         if (!res.ok) {
           return;
         }
         const data = await res.json();
         setIsCouncilor(data.isCouncilor);
-      },
-    );
+      })
+      .catch(console.error);
   }, [chain, address]);
 
   if (!isCouncilor) {
@@ -44,7 +44,7 @@ export default function CouncilorLink({ address }) {
         rel="noreferrer"
       >
         <span className="text-theme500">Council Votes</span>
-        <div className="inline-flex text-textTertiary">↗</div>
+        <i className="text-textTertiary">↗</i>
       </Link>
     </>
   );
