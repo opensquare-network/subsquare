@@ -10,6 +10,8 @@ import ElementLink from "./elementLink";
 import TwitterLink from "./twitterLink";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { useChain } from "next-common/context/chain";
+import CouncilorLink from "./councilorLink";
+import Chains from "next-common/utils/consts/chains";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -22,6 +24,7 @@ export default function AccountLinks({ address }) {
   const chain = useChain();
   const identity = useIdentity(address, chain);
   const { email, riot, twitter, web } = identity?.info || {};
+  const showCouncilorLink = [Chains.polkadot, Chains.kusama].includes(chain);
 
   if (!address) {
     throw new Error("No address provided");
@@ -36,6 +39,7 @@ export default function AccountLinks({ address }) {
       {web && <WebLink website={web} />}
       {riot && <ElementLink riot={riot} />}
       {twitter && <TwitterLink twitter={twitter} />}
+      {showCouncilorLink && <CouncilorLink address={address} />}
     </Wrapper>
   );
 }
