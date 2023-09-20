@@ -20,12 +20,11 @@ import ContentWithUniversalComment from "components/details/contentWithUniversal
 import { usePageProps } from "next-common/context/page";
 
 function TreasuryTipContent() {
-  const { comments } = usePageProps();
   const post = usePost();
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <TipDetail />
       <Tipper />
       <DetailMultiTabs

@@ -18,12 +18,11 @@ import { usePageProps } from "next-common/context/page";
 
 function TreasuryProposalContent() {
   const detail = usePost();
-  const { comments } = usePageProps();
 
   useSubscribePostDetail(detail?.proposalIndex);
 
   return (
-    <ContentWithComment comments={comments}>
+    <ContentWithComment>
       <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}

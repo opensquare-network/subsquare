@@ -42,7 +42,6 @@ import { usePageProps } from "next-common/context/page";
 
 function ReferendumContent() {
   const post = usePost();
-  const { comments } = usePageProps();
 
   const dispatch = useDispatch();
   useSubReferendumInfo();
@@ -60,7 +59,7 @@ function ReferendumContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <ReferendaDetail />
 
       <Gov2Sidebar />

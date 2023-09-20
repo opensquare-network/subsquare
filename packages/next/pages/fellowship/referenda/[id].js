@@ -36,7 +36,6 @@ import { usePageProps } from "next-common/context/page";
 
 function FellowshipContent() {
   const post = usePost();
-  const { comments } = usePageProps();
 
   useSubFellowshipReferendumInfo();
   const info = useFellowshipReferendumInfo();
@@ -46,7 +45,7 @@ function FellowshipContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <FellowshipReferendaDetail />
       <FellowshipReferendumSideBar />
       <DetailMultiTabs

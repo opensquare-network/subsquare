@@ -15,12 +15,11 @@ import { usePageProps } from "next-common/context/page";
 
 function TechCommMotionContent() {
   const motion = usePost();
-  const { comments } = usePageProps();
 
   useSubscribePostDetail(`${motion?.height}_${motion?.hash}`);
 
   return (
-    <ContentWithComment comments={comments}>
+    <ContentWithComment>
       <TechcommMotionDetail motion={motion} />
     </ContentWithComment>
   );

@@ -34,7 +34,7 @@ import { usePageProps } from "next-common/context/page";
 function ReferendumContent() {
   const dispatch = useDispatch();
   const post = usePost();
-  const { publicProposal, comments } = usePageProps();
+  const { publicProposal } = usePageProps();
 
   useSubscribePostDetail(post?.referendumIndex);
 
@@ -74,7 +74,7 @@ function ReferendumContent() {
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
   return (
-    <ContentWithComment comments={comments}>
+    <ContentWithComment>
       <DetailItem />
 
       <Vote
