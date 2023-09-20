@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import useKintOnChainAccountData from "./useKintOnChainAccountData";
 
 function extractKintAccountInfo(accountData) {
   if (!accountData) {
@@ -18,7 +19,8 @@ function extractKintAccountInfo(accountData) {
   };
 }
 
-export default function useKintAccountInfo(accountData) {
+export default function useKintAccountInfo(address) {
+  const accountData = useKintOnChainAccountData(address);
   return useMemo(() => {
     if (!accountData) {
       return null;

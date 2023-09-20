@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import useOnChainAccountData from "./useOnChainAccountData";
 
 function extractAccountInfo(accountData) {
   if (!accountData) {
@@ -22,7 +23,8 @@ function extractAccountInfo(accountData) {
   };
 }
 
-export default function useAccountInfo(accountData) {
+export default function useAccountInfo(address) {
+  const accountData = useOnChainAccountData(address);
   return useMemo(() => {
     if (!accountData) {
       return null;

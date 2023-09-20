@@ -1,10 +1,8 @@
 import AssetDisplay from "./assetDisplay";
-import useKintOnChainAccountData from "next-common/hooks/useKintOnChainAccountData";
 import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
 
 export default function KintAssetInfo({ address }) {
-  const accountData = useKintOnChainAccountData(address);
-  const accountInfo = useKintAccountInfo(accountData);
+  const accountInfo = useKintAccountInfo(address);
 
   if (!accountInfo) {
     return null;
