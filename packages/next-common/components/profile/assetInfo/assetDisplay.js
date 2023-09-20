@@ -48,19 +48,19 @@ const ItemValue = tw.span`
   [&_.value-display-symbol]:text-textTertiary
 `;
 
-const isZero = (value) => !value || new BigNumber(value).isZero();
+const isEmpty = (value) => !value || new BigNumber(value).isZero();
 
 export default function AssetDisplay({ accountInfo }) {
   const { decimals, symbol } = useChainSettings();
 
-  const hasTransferrable = !isZero(accountInfo?.data?.transferrable);
+  const hasTransferrable = !isEmpty(accountInfo?.data?.transferrable);
   let hasFree = false;
   if (!hasTransferrable) {
     hasFree = true;
   }
-  const hasBonded = !isZero(accountInfo?.data?.bonded);
-  const hasLocked = !isZero(accountInfo?.data?.lockedBalance);
-  const hasReserved = !isZero(accountInfo?.data?.reserved);
+  const hasBonded = !isEmpty(accountInfo?.data?.bonded);
+  const hasLocked = !isEmpty(accountInfo?.data?.lockedBalance);
+  const hasReserved = !isEmpty(accountInfo?.data?.reserved);
 
   let cellsNumber = 1;
   if (hasTransferrable) cellsNumber++;
