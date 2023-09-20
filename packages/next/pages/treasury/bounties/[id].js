@@ -22,7 +22,7 @@ import ContentWithUniversalComment from "components/details/contentWithUniversal
 import { usePageProps } from "next-common/context/page";
 
 function BountyContent() {
-  const { childBounties, comments } = usePageProps();
+  const { childBounties } = usePageProps();
   const detail = usePost();
 
   useSubscribePostDetail(detail?.bountyIndex);
@@ -33,7 +33,7 @@ function BountyContent() {
   );
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <BountyDetail />
       <DetailMultiTabs
         childBounties={

@@ -22,6 +22,7 @@ import { useUser } from "../../context/user";
 import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
 import Divider from "next-common/components/styled/layout/divider";
 import clsx from "clsx";
+import { useComments, useSetComments } from "next-common/context/post/comments";
 
 const Wrapper = styled.div`
   position: relative;
@@ -90,7 +91,7 @@ function jumpToAnchor(anchorId) {
 }
 
 export default function Item({
-  data,
+  data: comment,
   replyToCommentId,
   isSecondLevel,
   updateTopLevelComment,
@@ -100,8 +101,6 @@ export default function Item({
   const dispatch = useDispatch();
   const ref = useRef();
   const refCommentTree = useRef();
-  const [comment, setComment] = useState(data);
-  useEffect(() => setComment(data), [data]);
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -110,6 +109,8 @@ export default function Item({
   const duration = useDuration(comment.createdAt);
   const { hasAnchor, anchor } = useCommentsAnchor();
   const [folded, setFolded] = useState(true);
+  const comments = useComments();
+  const setComments = useSetComments();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -140,9 +141,18 @@ export default function Item({
       `comments/${comment._id}`,
     );
     if (updatedComment) {
-      setComment(updatedComment);
+      const newComments = {
+        ...comments,
+        items: comments.items.map((item) => {
+          if (item._id === updatedComment._id) {
+            return updatedComment;
+          }
+          return item;
+        }),
+      };
+      setComments(newComments);
     }
-  }, []);
+  }, [comments, setComments, comment._id]);
 
   const scrollToCommentBottom = useCallback(() => {
     if (refCommentTree.current) {

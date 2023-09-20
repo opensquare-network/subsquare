@@ -22,7 +22,6 @@ import { usePageProps } from "next-common/context/page";
 
 function TreasuryProposalContent() {
   const detail = usePost();
-  const { comments } = usePageProps();
 
   useSubscribePostDetail(detail?.proposalIndex);
   const timelineData = useTreasuryTimelineData(detail?.onchainData);
@@ -31,7 +30,7 @@ function TreasuryProposalContent() {
   );
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}

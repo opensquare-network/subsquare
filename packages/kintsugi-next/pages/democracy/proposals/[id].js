@@ -23,7 +23,7 @@ import { usePageProps } from "next-common/context/page";
 
 function PublicProposalContent() {
   const post = usePost();
-  const { referendum, comments } = usePageProps();
+  const { referendum } = usePageProps();
 
   useSubscribePostDetail(post?.proposalIndex);
 
@@ -47,7 +47,7 @@ function PublicProposalContent() {
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <ContentWithComment comments={comments}>
+    <ContentWithComment>
       <DetailItem />
       <Second
         proposalIndex={proposalIndex}

@@ -21,7 +21,6 @@ import { usePageProps } from "next-common/context/page";
 
 function DemocracyExternalContent() {
   const detail = usePost();
-  const { comments } = usePageProps();
 
   useSubscribePostDetail(detail?.externalProposalHash);
 
@@ -29,7 +28,7 @@ function DemocracyExternalContent() {
   const call = external?.preImage?.call;
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <DetailItem />
       <DetailMultiTabs
         call={

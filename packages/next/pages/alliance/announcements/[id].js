@@ -14,16 +14,14 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
-import { usePageProps } from "next-common/context/page";
 
 function AnnouncementContent() {
   const detail = usePost();
-  const { comments } = usePageProps();
 
   useSubscribePostDetail(`${detail?.height}_${detail?.cid}`);
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <DetailItem />
       <DetailMultiTabs
         timeline={<AnnouncementTimeline data={detail?.onchainData} />}

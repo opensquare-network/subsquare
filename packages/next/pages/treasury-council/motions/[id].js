@@ -15,12 +15,11 @@ import { usePageProps } from "next-common/context/page";
 
 function MotionContent() {
   const motion = usePost();
-  const { comments } = usePageProps();
 
   motion.status = motion.state?.state;
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <MotionDetail />
     </ContentWithUniversalComment>
   );

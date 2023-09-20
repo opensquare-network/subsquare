@@ -13,7 +13,7 @@ import {
 } from "next-common/services/detail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
-export default function Post({ detail, comments, votes, myVote }) {
+export default function Post({ detail, votes, myVote }) {
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -24,7 +24,7 @@ export default function Post({ detail, comments, votes, myVote }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <ContentWithComment comments={comments}>
+        <ContentWithComment>
           <DetailItem votes={votes} myVote={myVote} />
         </ContentWithComment>
       </DetailLayout>

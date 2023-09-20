@@ -31,7 +31,6 @@ import { usePageProps } from "next-common/context/page";
 
 function ReferendumContent() {
   const post = usePost();
-  const { comments } = usePageProps();
 
   const onchainData = post?.onchainData;
   const dispatch = useDispatch();
@@ -61,7 +60,7 @@ function ReferendumContent() {
   }, [dispatch]);
 
   return (
-    <ContentWithUniversalComment comments={comments}>
+    <ContentWithUniversalComment>
       <DemocracyReferendaDetail />
 
       <Vote referendumIndex={post?.referendumIndex} />
