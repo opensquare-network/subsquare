@@ -50,91 +50,54 @@ const ItemValue = tw.span`
 
 const isEmpty = (value) => !value || new BigNumber(value).isZero();
 
-export default function AssetDisplay({ accountInfo }) {
+function AssetItem({ value, title }) {
   const { decimals, symbol } = useChainSettings();
 
-  const hasTransferrable = !isEmpty(accountInfo?.data?.transferrable);
-  let hasFree = false;
-  if (!hasTransferrable) {
-    hasFree = true;
-  }
-  const hasBonded = !isEmpty(accountInfo?.data?.bonded);
-  const hasLocked = !isEmpty(accountInfo?.data?.lockedBalance);
-  const hasReserved = !isEmpty(accountInfo?.data?.reserved);
+  return (
+    <Item>
+      <ItemTitle>{title}</ItemTitle>
+      <ItemValue>
+        <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
+      </ItemValue>
+    </Item>
+  );
+}
 
-  let cellsNumber = 1;
-  if (hasTransferrable) cellsNumber++;
-  if (hasFree) cellsNumber++;
-  if (hasBonded) cellsNumber++;
-  if (hasLocked) cellsNumber++;
-  if (hasReserved) cellsNumber++;
+export default function AssetDisplay({ accountInfo }) {
+  const showTransferrable = !isEmpty(accountInfo?.data?.transferrable);
+  const showBonded = !isEmpty(accountInfo?.data?.bonded);
+  const showLocked = !isEmpty(accountInfo?.data?.lockedBalance);
+  const showReserved = !isEmpty(accountInfo?.data?.reserved);
+
+  let cellsNumber = 2;
+  if (showBonded) cellsNumber++;
+  if (showLocked) cellsNumber++;
+  if (showReserved) cellsNumber++;
 
   return (
     <Wrapper style={{ maxWidth: cellsNumber * 161 }}>
       <Grid>
-        <Item>
-          <ItemTitle>Total</ItemTitle>
-          <ItemValue>
-            <ValueDisplay
-              value={toPrecision(accountInfo?.data?.total, decimals)}
-              symbol={symbol}
-            />
-          </ItemValue>
-        </Item>
-        {hasTransferrable && (
-          <Item>
-            <ItemTitle>Transferrable</ItemTitle>
-            <ItemValue>
-              <ValueDisplay
-                value={toPrecision(accountInfo?.data?.transferrable, decimals)}
-                symbol={symbol}
-              />
-            </ItemValue>
-          </Item>
+        <AssetItem value={accountInfo?.data?.total} title="Total" />
+
+        {showTransferrable ? (
+          <AssetItem
+            value={accountInfo?.data?.transferrable}
+            title="Transferrable"
+          />
+        ) : (
+          <AssetItem value={accountInfo?.data?.free} title="Free" />
         )}
-        {hasFree && (
-          <Item>
-            <ItemTitle>Free</ItemTitle>
-            <ItemValue>
-              <ValueDisplay
-                value={toPrecision(accountInfo?.data?.free, decimals)}
-                symbol={symbol}
-              />
-            </ItemValue>
-          </Item>
+
+        {showBonded && (
+          <AssetItem value={accountInfo?.data?.bonded} title="Bonded" />
         )}
-        {hasBonded && (
-          <Item>
-            <ItemTitle>Bonded</ItemTitle>
-            <ItemValue>
-              <ValueDisplay
-                value={toPrecision(accountInfo?.data?.bonded, decimals)}
-                symbol={symbol}
-              />
-            </ItemValue>
-          </Item>
+
+        {showLocked && (
+          <AssetItem value={accountInfo?.data?.lockedBalance} title="Locked" />
         )}
-        {hasLocked && (
-          <Item>
-            <ItemTitle>Locked</ItemTitle>
-            <ItemValue>
-              <ValueDisplay
-                value={toPrecision(accountInfo?.data?.lockedBalance, decimals)}
-                symbol={symbol}
-              />
-            </ItemValue>
-          </Item>
-        )}
-        {hasReserved && (
-          <Item>
-            <ItemTitle>Reserved</ItemTitle>
-            <ItemValue>
-              <ValueDisplay
-                value={toPrecision(accountInfo?.data?.reserved, decimals)}
-                symbol={symbol}
-              />
-            </ItemValue>
-          </Item>
+
+        {showReserved && (
+          <AssetItem value={accountInfo?.data?.reserved} title="Reserved" />
         )}
       </Grid>
     </Wrapper>
