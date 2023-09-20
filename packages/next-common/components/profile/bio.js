@@ -81,7 +81,7 @@ const DisplayUserAddress = ({ address }) => {
 export default function Bio({ address, user, id }) {
   const { showAchainableLabels } = useChainSettings();
   const chain = useChain();
-  const isKintsugi = [Chains.kintsugi, Chains.acala].includes(chain);
+  const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
   return (
     <Wrapper>
