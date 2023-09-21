@@ -130,7 +130,7 @@ const HeadWrapper = styled.div`
   }
 `;
 
-const ContentWrapper = styled(RichTextStyleWrapper)`
+const ContentWrapper = styled.div`
   flex: 1;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -303,26 +303,28 @@ export default function CommentSimple({ data }) {
         <HeadWrapper>
           <TitleWrapper>
             <Anchor href={`${route}#${data.height}`} passHref>
-              {data.contentType === "markdown" && (
-                <MarkdownPreviewer
-                  content={data.content}
-                  plugins={[
-                    renderMentionIdentityUserPlugin(<IdentityOrAddr />),
-                  ]}
-                  maxLines={2}
-                />
-              )}
-              {data.contentType === "html" && (
-                <HtmlPreviewer
-                  content={prettyHTML(data.content)}
-                  plugins={[
-                    renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
-                      targetElement: { tag: "span" },
-                    }),
-                  ]}
-                  maxLines={2}
-                />
-              )}
+              <RichTextStyleWrapper>
+                {data.contentType === "markdown" && (
+                  <MarkdownPreviewer
+                    content={data.content}
+                    plugins={[
+                      renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                    ]}
+                    maxLines={2}
+                  />
+                )}
+                {data.contentType === "html" && (
+                  <HtmlPreviewer
+                    content={prettyHTML(data.content)}
+                    plugins={[
+                      renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
+                        targetElement: { tag: "span" },
+                      }),
+                    ]}
+                    maxLines={2}
+                  />
+                )}
+              </RichTextStyleWrapper>
             </Anchor>
           </TitleWrapper>
         </HeadWrapper>

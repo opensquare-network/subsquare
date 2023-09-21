@@ -61,7 +61,7 @@ export default function VotingHistorySummary() {
   return (
     <>
       {availableTabs?.length > 1 && (
-        <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
+        <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
           <Title>Votes</Title>
           <ModuleTab />
         </div>

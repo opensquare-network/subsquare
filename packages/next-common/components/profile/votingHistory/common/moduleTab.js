@@ -11,6 +11,9 @@ const Wrapper = styled.div`
   flex-grow: 1;
   margin: -4px 0;
   justify-content: right;
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+  }
 
   .tabs-container {
     background-color: var(--neutral300);
@@ -18,19 +21,20 @@ const Wrapper = styled.div`
   }
   .tab-item {
     border-radius: 4px;
-    max-width: 124px;
   }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     max-width: 280px;
+    .tab-item {
+      max-width: 124px;
+    }
   }
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 768px) {
     .tabs-container {
       margin: 0 24px;
       flex-grow: 1;
     }
     .tab-item {
-      width: unset;
-      max-width: 94px;
+      width: auto;
     }
   }
 `;

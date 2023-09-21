@@ -1,6 +1,7 @@
 import VoteListItem from "./voteListItem";
 import EmptyList from "next-common/components/profile/votingHistory/mobile/emptyList";
 import LoadingList from "next-common/components/profile/votingHistory/mobile/loadingList";
+import ProxyHint from "../proxyHint";
 
 export default function MobileVotesList({ votes, isLoading }) {
   if (isLoading) {
@@ -15,5 +16,10 @@ export default function MobileVotesList({ votes, isLoading }) {
     <VoteListItem key={item.referendumIndex} vote={item} />
   ));
 
-  return <div className="flex flex-col gap-[16px]">{listContent}</div>;
+  return (
+    <div className="flex flex-col gap-[16px]">
+      <ProxyHint />
+      {listContent}
+    </div>
+  );
 }
