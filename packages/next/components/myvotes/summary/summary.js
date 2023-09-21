@@ -98,7 +98,7 @@ export default function ReferendaVoteSummary({
 
   return (
     <>
-      <div className="flex justify-between md:items-center max-md:flex-col gap-[12px]">
+      <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
         <Title>My Votes</Title>
         <ModuleTab />
       </div>
