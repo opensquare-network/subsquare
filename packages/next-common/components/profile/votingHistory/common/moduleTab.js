@@ -35,7 +35,6 @@ const Wrapper = styled.div`
     }
     .tab-item {
       width: auto;
-      /* max-width: 94px; */
     }
   }
 `;
