@@ -18,6 +18,7 @@ import { useChain } from "../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
 import isMoonChain from "next-common/utils/isMoonChain";
 import isNil from "lodash.isnil";
+import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -129,7 +130,7 @@ const HeadWrapper = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(RichTextStyleWrapper)`
   flex: 1;
   overflow-x: scroll;
   overflow-y: hidden;
