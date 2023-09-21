@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Content = styled.div`
+export const StatementContent = styled.div`
   margin-top: 16px;
   background: var(--neutral100);
   border: 1px solid var(--neutral300);
@@ -20,7 +20,7 @@ export const Content = styled.div`
   }
 `;
 
-export const Title = styled.h1`
+export const StatementTitle = styled.h1`
   font-size: 1.5rem;
   line-height: 100%;
   font-weight: bold;
