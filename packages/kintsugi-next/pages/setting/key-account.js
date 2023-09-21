@@ -12,8 +12,6 @@ import {
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { useChain } from "next-common/context/chain";
-import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useUser } from "next-common/context/user";
 
 export default function KeyAccount() {
@@ -55,18 +53,4 @@ export default function KeyAccount() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const chain = process.env.CHAIN;
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
-
-  return {
-    props: {
-      chain,
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
-    },
-  };
-});
+export const getServerSideProps = withCommonProps();
