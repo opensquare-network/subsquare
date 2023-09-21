@@ -12,8 +12,6 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useUser } from "next-common/context/user";
 
 export default function Account() {
@@ -64,16 +62,4 @@ export default function Account() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
-
-  return {
-    props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
-    },
-  };
-});
+export const getServerSideProps = withCommonProps();

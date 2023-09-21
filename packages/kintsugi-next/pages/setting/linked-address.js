@@ -3,8 +3,6 @@ import { withCommonProps } from "next-common/lib";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import { useUser } from "next-common/context/user";
 
 const LinkedAddressComp = dynamic(
@@ -31,16 +29,4 @@ export default function LinkedAddress() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
-  ]);
-
-  return {
-    props: {
-      tracks: tracks ?? [],
-      fellowshipTracks: fellowshipTracks ?? [],
-    },
-  };
-});
+export const getServerSideProps = withCommonProps();
