@@ -30,7 +30,7 @@ export const Title = styled.h1`
 
 export const LegalBreadcrumb = ({ title }) => {
   return (
-    <div className="flex mt-[16px] ml-[48px] gap-[8px] text14Bold">
+    <div className="flex mt-[16px] ml-[48px] max-sm:ml-[24px] gap-[8px] text14Bold">
       <span className="text-textPrimary">Legal</span>
       <span className="text-textTertiary">/</span>
       <span className="text-textTertiary">{title}</span>
