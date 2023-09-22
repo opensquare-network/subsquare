@@ -32,7 +32,7 @@ export default function useSignerAccount(extensionAccounts) {
           isSameAddress(item.address, userAddress) &&
           item.meta?.source === extensionName,
       );
-      if (!account) {
+      if (account) {
         address = userAddress;
       }
     }
@@ -44,7 +44,7 @@ export default function useSignerAccount(extensionAccounts) {
           isSameAddress(item.address, connectedWallet) &&
           item.meta?.source === extensionName,
       );
-      if (!account) {
+      if (account) {
         address = connectedWallet;
       }
     }
