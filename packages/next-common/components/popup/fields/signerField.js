@@ -1,12 +1,11 @@
 import React from "react";
 import isNil from "lodash.isnil";
-import { isSameAddress, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import ConnectedSigner from "../../connectedSigner";
 import ProxyInfo from "../proxyInfo";
-import { useUser } from "next-common/context/user";
 import ChangeableConnectedSigner from "next-common/components/changeableConnectedSigner";
 
 export default function Signer({
@@ -21,13 +20,10 @@ export default function Signer({
   const node = useChainSettings();
   const noSignerBalance = isNil(signerBalance) && isNil(isSignerBalanceLoading);
   const noVotingBalance = isNil(balance) && isNil(isBalanceLoading);
-  const user = useUser();
-  const isLoggedInAddress =
-    user?.address && isSameAddress(user.address, signerAccount?.address);
 
   let signerDisplay = null;
 
-  if (isLoggedInAddress) {
+  if (!signerAccount || signerAccount?.isLoggedInAddress) {
     signerDisplay = (
       <>
         <ConnectedSigner signerAccount={signerAccount} />

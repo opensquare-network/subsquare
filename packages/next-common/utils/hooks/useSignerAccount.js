@@ -23,7 +23,7 @@ export default function useSignerAccount(extensionAccounts) {
     }
 
     let account = null;
-    let address = null;
+    let isLoggedInAddress = false;
 
     // Check user login address first
     if (userAddress) {
@@ -33,7 +33,7 @@ export default function useSignerAccount(extensionAccounts) {
           item.meta?.source === extensionName,
       );
       if (account) {
-        address = userAddress;
+        isLoggedInAddress = true;
       }
     }
 
@@ -45,7 +45,7 @@ export default function useSignerAccount(extensionAccounts) {
           item.meta?.source === extensionName,
       );
       if (account) {
-        address = connectedWallet;
+        isLoggedInAddress = false;
       }
     }
 
@@ -69,7 +69,10 @@ export default function useSignerAccount(extensionAccounts) {
         ...account,
         name: account.meta?.name,
         proxyAddress,
-        realAddress: proxyAddress || address,
+        realAddress: isLoggedInAddress
+          ? proxyAddress || userAddress
+          : connectedWallet,
+        isLoggedInAddress,
       });
     } else {
       setSignerAccount();
