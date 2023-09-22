@@ -4,7 +4,7 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import PolkadotWallet from "./polkadotWallet";
 import { MetaMaskWallet } from "./metamaskWallet";
@@ -34,7 +34,6 @@ export default function SelectWallet({
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
-  const chain = useChain();
   const [metamaskAccounts] = useMetaMaskAccounts(
     selectedWallet === WalletTypes.METAMASK,
   );
@@ -44,58 +43,6 @@ export default function SelectWallet({
       setAccounts(metamaskAccounts);
     }
   }, [metamaskAccounts, selectedWallet, setAccounts]);
-
-  useEffect(() => {
-    if (!injectedWeb3) {
-      return;
-    }
-
-    for (let wallet of getWallets()) {
-      if (injectedWeb3[wallet.extensionName]) {
-        return;
-      }
-    }
-
-    if (chainType === ChainTypes.ETHEREUM) {
-      // For ethereum chains, we only due with the known supported wallets
-      return;
-    }
-
-    // For unknown wallet extensions
-    (async () => {
-      const polkadotDapp = await import("@polkadot/extension-dapp");
-      const extensionUtils = await import("../../utils/extensionAccount");
-      const web3Enable = polkadotDapp.web3Enable;
-      const web3FromSource = polkadotDapp.web3FromSource;
-      const polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
-
-      await web3Enable("subsquare");
-      const extensionAccounts = await polkadotWeb3Accounts(chainType);
-      const accounts = extensionAccounts.map((item) => {
-        return {
-          ...item,
-          name: item.meta?.name,
-        };
-      });
-
-      if (isMounted.current) {
-        setAccounts(accounts);
-        if (accounts?.length > 0) {
-          const injector = await web3FromSource(accounts[0].meta.source);
-          setSelectWallet("other");
-          setWallet(injector);
-        }
-      }
-    })();
-  }, [
-    injectedWeb3,
-    setAccounts,
-    setSelectWallet,
-    setWallet,
-    isMounted,
-    chainType,
-    chain,
-  ]);
 
   const loadAccounts = useCallback(
     async (selectedWallet) => {

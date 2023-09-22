@@ -26,7 +26,6 @@ export default function SelectWalletContent() {
   const [wallet, setWallet] = useState();
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [web3Error, setWeb3Error] = useState();
   const dispatch = useDispatch();
   const setConnectedWallet = useSetConnectedWallet();
 
@@ -53,8 +52,6 @@ export default function SelectWalletContent() {
           setSelectWallet={setSelectWallet}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
-          web3Error={web3Error}
-          setWeb3Error={setWeb3Error}
           lastUsedAddress={localStorage.getItem(CACHE_KEY.lastLoginAddress)}
         />
 

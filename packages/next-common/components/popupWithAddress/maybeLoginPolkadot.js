@@ -4,6 +4,7 @@ import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import Popup from "../popup/wrapper/Popup";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { CACHE_KEY } from "next-common/utils/constants";
 
 export default function MaybeLoginPolkadot({
   onClose,
@@ -13,18 +14,22 @@ export default function MaybeLoginPolkadot({
   ...props
 }) {
   const dispatch = useDispatch();
-  const { injectedWeb3 } = useInjectedWeb3();
+  const { injectedWeb3, loading } = useInjectedWeb3();
   const [polkadotAccounts, setPolkadotAccounts] = useState([]);
   const [detecting, setDetecting] = useState(true);
+  const extensionName = localStorage.getItem(CACHE_KEY.lastLoginExtension);
 
   useEffect(() => {
     (async () => {
-      if (!injectedWeb3) {
+      if (loading) {
         return;
       }
 
       try {
-        const extensionName = localStorage.lastLoginExtension;
+        if (!injectedWeb3) {
+          return;
+        }
+
         const extension = injectedWeb3?.[extensionName];
 
         if (!extension) {
@@ -49,7 +54,7 @@ export default function MaybeLoginPolkadot({
         setDetecting(false);
       }
     })();
-  }, [injectedWeb3]);
+  }, [injectedWeb3, loading, extensionName]);
 
   if (detecting) {
     return null;

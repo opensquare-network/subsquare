@@ -1,5 +1,8 @@
+import { CACHE_KEY } from "./constants";
 import WalletTypes from "./consts/walletTypes";
 
 export default function isUseMetamask() {
-  return localStorage.lastLoginExtension === WalletTypes.METAMASK;
+  return (
+    localStorage.getItem(CACHE_KEY.lastLoginExtension) === WalletTypes.METAMASK
+  );
 }

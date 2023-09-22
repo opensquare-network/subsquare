@@ -8,11 +8,13 @@ export default function MaybeLogin({ children, accounts, onClose }) {
   const loginUser = useUser();
   const connectedWallet = useConnectedWallet();
 
-  const address = loginUser?.address || connectedWallet;
-
   if (
-    !address ||
-    !accounts?.find((acc) => isSameAddress(acc.address, address))
+    !(loginUser?.address || connectedWallet) ||
+    !accounts?.find(
+      (acc) =>
+        isSameAddress(acc.address, loginUser?.address) ||
+        isSameAddress(acc.address, connectedWallet),
+    )
   ) {
     return <SelectWalletPopup onClose={onClose} />;
   }
