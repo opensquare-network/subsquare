@@ -4,13 +4,15 @@ import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useUser } from "../../context/user";
 import useApi from "./useApi";
 import WalletTypes from "../consts/walletTypes";
+import { useConnectedWallet } from "next-common/context/connectedWallet";
 
 export default function useSignerAccount(extensionAccounts) {
   const { injectedWeb3 } = useInjectedWeb3();
   const [signerAccount, setSignerAccount] = useState();
   const api = useApi();
   const user = useUser();
-  const address = user?.address;
+  const connectedWallet = useConnectedWallet();
+  const address = user?.address || connectedWallet;
   const proxyAddress = user?.proxyAddress;
 
   useEffect(() => {

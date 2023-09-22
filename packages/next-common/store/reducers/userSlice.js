@@ -22,6 +22,7 @@ const userSlice = createSlice({
 
 export const isEditingPostSelector = (state) => state.user?.isEditingPost;
 export const loginOpenSelector = (state) => state.user?.loginOpen;
+
 export const { setUser, setEditingPost, setLoginOpen } = userSlice.actions;
 
 export default userSlice.reducer;

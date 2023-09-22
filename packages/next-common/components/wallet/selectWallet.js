@@ -208,14 +208,17 @@ export default function SelectWallet({
   return (
     <div className="space-y-2">
       {getWallets().map((wallet, index) => {
+        const selected = wallet.extensionName === selectedWallet;
+        const loading = wallet.extensionName === waitingPermissionWallet;
+
         if (wallet.extensionName === WalletTypes.METAMASK) {
           return (
             <MetaMaskWallet
               key={index}
               wallet={wallet}
               onClick={onMetaMaskWalletClick}
-              selected={wallet.extensionName === selectedWallet}
-              loading={wallet.extensionName === waitingPermissionWallet}
+              selected={selected}
+              loading={loading}
             />
           );
         }
@@ -226,8 +229,8 @@ export default function SelectWallet({
               key={index}
               wallet={wallet}
               onClick={onNovaWalletClick}
-              selected={wallet.extensionName === selectedWallet}
-              loading={wallet.extensionName === waitingPermissionWallet}
+              selected={selected}
+              loading={loading}
             />
           );
         }
@@ -237,8 +240,8 @@ export default function SelectWallet({
             key={index}
             wallet={wallet}
             onClick={onPolkadotWalletClick}
-            selected={wallet.extensionName === selectedWallet}
-            loading={wallet.extensionName === waitingPermissionWallet}
+            selected={selected}
+            loading={loading}
           />
         );
       })}
