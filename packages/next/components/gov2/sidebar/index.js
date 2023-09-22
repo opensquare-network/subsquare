@@ -12,6 +12,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import MyVote from "./tally/myVote";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import WithAddress from "next-common/components/common/withAddress";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 const VotePopup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -30,7 +31,7 @@ export default function Gov2Sidebar() {
   const { hideActionButtons } = useChainSettings();
 
   let Popup = VotePopup;
-  if (isMoonChain()) {
+  if (isMoonChain() && isUseMetamask()) {
     Popup = MoonVotePopup;
   }
 

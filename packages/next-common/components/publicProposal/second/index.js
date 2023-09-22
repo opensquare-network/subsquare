@@ -17,6 +17,7 @@ import useMaxDeposits from "./useMaxDeposits";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 const SecondPopup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -101,7 +102,7 @@ export default function Second({
   const maxDeposits = useMaxDeposits();
 
   let Popup = SecondPopup;
-  if (isMoonChain()) {
+  if (isMoonChain() && isUseMetamask()) {
     Popup = MoonSecondPopup;
   }
 

@@ -35,6 +35,7 @@ import Calls from "./voteCalls";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import WithAddress from "next-common/components/common/withAddress";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -117,7 +118,7 @@ function Vote({ referendumIndex }) {
   const isVoteFinished = useIsDemocracyVoteFinished();
 
   let Popup = VotePopup;
-  if (isMoonChain()) {
+  if (isMoonChain() && isUseMetamask()) {
     Popup = MoonVotePopup;
   }
 
