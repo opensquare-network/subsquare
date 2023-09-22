@@ -108,7 +108,7 @@ export default function useDetailPageOptions(labels = [], datasets) {
       );
 
       return `Approval: ${getNanValueShow(
-        dataset.data[dataIndex],
+        (dataset.data || [])[dataIndex],
       )} / ${threshold}%`;
     } else if (dataset.label === "Support") {
       const threshold = Number(parsed.y).toFixed(2);
@@ -117,7 +117,7 @@ export default function useDetailPageOptions(labels = [], datasets) {
       );
 
       return `Support: ${getNanValueShow(
-        dataset.data[dataIndex],
+        (dataset.data || [])[dataIndex],
       )} / ${threshold}%`;
     }
 

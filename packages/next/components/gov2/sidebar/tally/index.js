@@ -13,7 +13,7 @@ import { useOnchainData, usePost } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
 import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
-import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
+import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import useVotesFromServer from "next-common/utils/gov2/useVotesFromServer";
@@ -38,15 +38,11 @@ export default function Gov2Tally() {
   useFetchReferendaTallyHistory(referendumIndex);
   const issuance = useReferendaIssuance();
 
-  let titleRightCorner = (
-    <CurvePopup tally={tally} supportPerbill={supportPerbill} />
-  );
-
   return (
     <SecondaryCardDetail>
       <Title>
         Tally
-        {titleRightCorner}
+        <CurvePopupOpener tally={tally} supportPerbill={supportPerbill} />
       </Title>
       <VoteBar
         tally={tally}
