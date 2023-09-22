@@ -55,6 +55,7 @@ const hydradx = {
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
+  blockTime: 12000,
   hasElections: true,
   ss58Format: 63,
   snsCoverCid: "bafybeieqf3lmi5e4e3yqvujn7dd26dsvhy66u55g6gjzgvw2ogjzu2pt4e",

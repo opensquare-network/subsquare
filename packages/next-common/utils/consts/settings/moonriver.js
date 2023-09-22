@@ -30,6 +30,7 @@ const moonriver = {
   identity: Chains.moonriver,
   symbol: "MOVR",
   decimals: 18,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmR2LSfa9e46C1Wc5LTZ2oRm9wkdaxfX4SyhYXVohcsdrB",

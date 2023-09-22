@@ -26,6 +26,7 @@ const calamari = {
   identity: Chains.kusama,
   symbol: "KMA",
   decimals: 12,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 78,
   snsCoverCid: "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",

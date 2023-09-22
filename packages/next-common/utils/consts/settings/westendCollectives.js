@@ -29,6 +29,7 @@ const westendCollectives = {
   identity: "westend",
   symbol: "WND",
   decimals: 12,
+  blockTime: 12000,
   ss58Format: 42,
   snsCoverCid: "bafybeibtr7oelilpotm26qrnnp34ztbnde7ouu5fdflcx6f6dj6foyb5eq",
   endpoints: westendCollectivesEndpoints,

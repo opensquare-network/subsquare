@@ -8,8 +8,7 @@ import "next-common/styles/tailwind.css";
 import { store } from "next-common/store";
 // import "next-common/styles/richTextStyles.scss";
 import "react-datepicker/dist/react-datepicker.css";
-import { connect } from "next-common/services/websocket";
-import React, { useEffect } from "react";
+import React from "react";
 import GlobalProvider from "next-common/context/global";
 import "next-common/styles/cmdk.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -40,10 +39,6 @@ function MyApp({ Component, pageProps }) {
   if (!process.env.NEXT_PUBLIC_CHAIN) {
     throw new Error("NEXT_PUBLIC_CHAIN env not set");
   }
-
-  useEffect(() => {
-    connect();
-  }, []);
 
   const {
     loginUser,

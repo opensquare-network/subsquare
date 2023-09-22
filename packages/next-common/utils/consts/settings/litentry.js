@@ -60,6 +60,7 @@ const litentry = {
   identity: Chains.polkadot,
   symbol: "LIT",
   decimals: 12,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 31,
   snsCoverCid: "bafybeiej7his75nmaf2yhm6n3sqxf3ew2kvkyb7q37pbt37b72jwvs5cu4",
