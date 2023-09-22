@@ -38,7 +38,7 @@ export function useSupportValueDatasetConfig(data = []) {
   const { purple500 } = useThemeSetting();
   return {
     label: "Current Support",
-    data,
+    data: [...(data || [])],
     borderColor: purple500,
     ...valueCommon,
   };
@@ -48,7 +48,7 @@ export function useApprovalValueDatasetConfig(data = []) {
   const { green500 } = useThemeSetting();
   return {
     label: "Current Approval",
-    data,
+    data: [...(data || [])],
     borderColor: green500,
     ...valueCommon,
   };

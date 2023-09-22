@@ -14,7 +14,7 @@ import { useOnchainData } from "next-common/context/post";
 import AllVotes from "./allVotes";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import useFetchMaxVoters from "next-common/context/post/fellowship/useMaxVoters";
-import CurvePopup from "next-common/components/gov2/referendum/curvePopup";
+import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
 import Calls from "./voteCalls";
 import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
@@ -46,7 +46,7 @@ export default function FellowshipTally() {
     <SecondaryCardDetail>
       <Title className="!px-0">
         Tally
-        <CurvePopup
+        <CurvePopupOpener
           tally={tally}
           supportPerbill={supportPerbill}
           isFellowship={true}
