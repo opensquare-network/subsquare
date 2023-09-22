@@ -54,6 +54,7 @@ const phala = {
   identity: "phala",
   symbol: "PHA",
   decimals: 12,
+  blockTime: 12000,
   hasElections: true,
   ss58Format: 30,
   snsCoverCid: "bafybeibte36v2qk5wg352hk7ewvkuhoke6iwb7l5gvjt7wy446yayxjie4",

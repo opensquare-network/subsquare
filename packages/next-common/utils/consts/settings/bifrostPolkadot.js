@@ -27,6 +27,7 @@ const bifrostPolkadot = {
   identity: "bifrost-polkadot",
   symbol: "BNC",
   decimals: 12,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 6,
   snsCoverCid: "bafybeicykjzlwi3rjs637txy4fn2m6qbjofjwlypgmthbbb7i3f522xjzy",

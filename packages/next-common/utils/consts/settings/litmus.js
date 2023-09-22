@@ -44,6 +44,7 @@ const litmus = {
   identity: Chains.kusama,
   symbol: "LIT",
   decimals: 12,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 131,
   snsCoverCid: "bafybeiexfrkdte6eruqghlc66xpnfoyadkgq5we3ql5elqjwgdzbxmez6q",

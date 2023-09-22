@@ -61,6 +61,7 @@ const interlay = {
   symbol: "INTR",
   voteSymbol: "vINTR",
   decimals: 10,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 2032,
   snsCoverCid: "bafybeifqabzy3677ms2jihcb4ed4kxcvbjtxskctjboidcoy7pbosqrqyi",

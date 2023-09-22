@@ -45,6 +45,7 @@ const collectives = {
   identity: Chains.polkadot,
   symbol: "DOT",
   decimals: 10,
+  blockTime: 12000,
   ss58Format: 0,
   snsCoverCid: "bafybeigyl3p7ikczpt4an4diyynbqsco6oqxza47vf3o2jeinkumm5pwby",
   endpoints: collectivesEndpoints,

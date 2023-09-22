@@ -26,6 +26,7 @@ const moonbeam = {
   identity: Chains.moonbeam,
   symbol: "MOVR",
   decimals: 18,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmQ2r48Wf6yu8d9k9VEejvcRoxNDVuiqW12ui7RCiXgWQg",

@@ -68,6 +68,7 @@ const kintsugi = {
   symbol: "KINT",
   voteSymbol: "vKINT",
   decimals: 12,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 2092,
   snsCoverCid: "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
