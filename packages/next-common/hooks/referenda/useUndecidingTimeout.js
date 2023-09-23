@@ -1,11 +1,15 @@
 import useApi from "next-common/utils/hooks/useApi";
+import { useEffect, useState } from "react";
 
 export default function useUndecidingTimeout() {
   const api = useApi();
+  const [timout, setTimeout] = useState();
 
-  if (api) {
-    return api.consts.referenda.undecidingTimeout.toNumber();
-  }
+  useEffect(() => {
+    if (api?.consts?.referenda) {
+      setTimeout(api.consts.referenda.undecidingTimeout.toNumber());
+    }
+  }, [api]);
 
-  return null;
+  return timout;
 }
