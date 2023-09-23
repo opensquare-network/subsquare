@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.4.8
+date: 2023-09-23
+- Show user balance on profile page.
+- Refactor curve components on referendum detail page and fix a bug the curve history chart may not appear.
+- Improve scan height subscription and remove redundant ones.
+- Add header and menu to terms and privacy page.
+- Add councilor link to dotreasury on profile page if an address is previously a councilor.
+- Show a hint on my votes component to explain we show proxied account votes when one is set.
+- Show multiple beneficiaries when there are multiple ones on referendum detail page.
+- Not fetch user identity from `getServerSideProps` which may cause performance problems.
+- Fix comments don't update correctly after update.
+- Fix dark mode style issues.
+
+
 ### 3.4.7
 date: 2023-09-18
 - Refactor various page components and fix post detail data subscription.
