@@ -14,6 +14,7 @@ date: 2023-09-23
 - Not fetch user identity from `getServerSideProps` which may cause performance problems.
 - Fix comments don't update correctly after update.
 - Fix dark mode style issues.
+- Show timeout countdown for fellowship referenda.
 
 
 ### 3.4.7
