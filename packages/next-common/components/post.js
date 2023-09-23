@@ -163,7 +163,6 @@ export default function Post({ data, href, type }) {
     businessCategory.openGovReferenda,
     businessCategory.fellowship,
   ].includes(type);
-  const isReferenda = businessCategory.openGovReferenda === type;
 
   let stateArgs;
   if (isDemocracyCollective) {
@@ -197,8 +196,13 @@ export default function Post({ data, href, type }) {
   }
 
   if (isGov2Referendum) {
-    if (isReferenda && data?.status === gov2State.Preparing) {
-      elapseIcon = <PreparingCountdown detail={data} />;
+    if (data?.status === gov2State.Preparing) {
+      elapseIcon = (
+        <PreparingCountdown
+          detail={data}
+          isFellowship={businessCategory.fellowship === type}
+        />
+      );
     } else if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     } else if (data?.status === gov2State.Confirming) {
