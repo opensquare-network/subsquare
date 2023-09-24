@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMyDemocracyVoting } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
 import normalizePrior from "../../utils/normalizePrior";
+import getDelegatingVotesInfo from "./delegatingVotes";
 
 async function queryReferendumInfo(api, referendumIndex) {
   const info = await api.query.democracy.referendumInfoOf(referendumIndex);
@@ -47,17 +48,6 @@ async function getDirectVotesInfo(api, voting) {
   };
 }
 
-function getDelegatingVotesInfo(voting) {
-  const delegating = voting.asDelegating;
-  return {
-    isDelegating: true,
-    balance: delegating.balance.toString(),
-    target: delegating.target.toString(),
-    conviction: delegating.conviction.toNumber(),
-    prior: normalizePrior(delegating.prior),
-  };
-}
-
 export default function useSubMyDemocracyVoting() {
   const address = useRealAddress();
   const api = useApi();
@@ -65,7 +55,10 @@ export default function useSubMyDemocracyVoting() {
   const trigger = useSelector(myVotesTriggerSelector);
 
   useEffect(() => {
-    if (!api || !api.query.democracy || !address) {
+    if (!api || !api.query.democracy) {
+      return;
+    } else if (!address) {
+      dispatch(setMyDemocracyVoting(null));
       return;
     }
 
