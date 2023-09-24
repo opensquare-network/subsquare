@@ -1,5 +1,4 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import normalizeDemocracyVote from "../normalize";
 import { useEffect } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,43 +6,15 @@ import { setMyDemocracyVoting } from "next-common/store/reducers/myOnChainData/d
 import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
 import normalizePrior from "../../utils/normalizePrior";
 import getDelegatingVotesInfo from "./delegatingVotes";
+import getDemocracyRichVotes from "./getRichVotes";
 
-async function queryReferendumInfo(api, referendumIndex) {
-  const info = await api.query.democracy.referendumInfoOf(referendumIndex);
-  return {
-    referendumIndex,
-    referendumInfo: info.toJSON(),
-  };
-}
-
-async function getDirectVotesInfo(api, voting) {
+async function getDirectVotesInfo(voting, api) {
   const direct = voting.asDirect;
-  const votes = [];
-  for (const vote of direct.votes) {
-    const referendumIndex = vote[0].toNumber();
-    votes.push({ referendumIndex, vote: normalizeDemocracyVote(vote[1]) });
-  }
-
-  const promises = [];
-  for (const vote of votes) {
-    promises.push(queryReferendumInfo(api, vote.referendumIndex));
-  }
-  const infoArr = await Promise.all(promises);
-
-  const normalizedVotes = votes.map((vote) => {
-    const referendumInfo = infoArr.find(
-      (info) => info.referendumIndex === vote.referendumIndex,
-    );
-
-    return {
-      ...vote,
-      ...referendumInfo,
-    };
-  });
+  const richVotes = await getDemocracyRichVotes(api, voting);
 
   return {
     isDirect: true,
-    votes: normalizedVotes,
+    votes: richVotes,
     prior: normalizePrior(direct.prior),
   };
 }
@@ -67,9 +38,9 @@ export default function useSubMyDemocracyVoting() {
       .votingOf(address, async (voting) => {
         let info;
         if (voting.isDirect) {
-          info = await getDirectVotesInfo(api, voting);
+          info = await getDirectVotesInfo(voting, api);
         } else if (voting.isDelegating) {
-          info = getDelegatingVotesInfo(voting);
+          info = await getDelegatingVotesInfo(voting, api);
         }
         dispatch(setMyDemocracyVoting(info));
       })
