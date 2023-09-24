@@ -1,11 +1,11 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import normalizeDemocracyVote from "./normalize";
+import normalizeDemocracyVote from "../normalize";
 import { useEffect } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setMyDemocracyVoting } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
-import normalizePrior from "../utils/normalizePrior";
+import normalizePrior from "../../utils/normalizePrior";
 
 async function queryReferendumInfo(api, referendumIndex) {
   const info = await api.query.democracy.referendumInfoOf(referendumIndex);
@@ -58,18 +58,7 @@ function getDelegatingVotesInfo(voting) {
   };
 }
 
-async function queryVotesAndReferendaInfo(api, address) {
-  const voting = await api.query.democracy.votingOf(address);
-  if (voting.isDirect) {
-    return await getDirectVotesInfo(api, voting);
-  } else if (voting.isDelegating) {
-    return getDelegatingVotesInfo(voting);
-  }
-
-  throw new Error("Unknown voting type when get my democracy votes info");
-}
-
-export default function useFetchMyDemocracyVoting() {
+export default function useSubMyDemocracyVoting() {
   const address = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();
@@ -80,8 +69,25 @@ export default function useFetchMyDemocracyVoting() {
       return;
     }
 
-    queryVotesAndReferendaInfo(api, address).then((info) => {
-      dispatch(setMyDemocracyVoting(info));
-    });
+    let unsub;
+    api.query.democracy
+      .votingOf(address, async (voting) => {
+        let info;
+        if (voting.isDirect) {
+          info = await getDirectVotesInfo(api, voting);
+        } else if (voting.isDelegating) {
+          info = getDelegatingVotesInfo(voting);
+        }
+        dispatch(setMyDemocracyVoting(info));
+      })
+      .then((result) => {
+        unsub = result;
+      });
+
+    return () => {
+      if (unsub) {
+        unsub();
+      }
+    };
   }, [api, address, dispatch, trigger]);
 }

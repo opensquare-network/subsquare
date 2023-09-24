@@ -7,7 +7,7 @@ import {
 } from "next-common/store/reducers/myVotesSlice";
 import DemocracySummary from "./summary/democracySummary";
 import MyVotesList from "./myVotesList";
-import useFetchMyDemocracyVoting from "./democracy/useFetchMyDemocracyVoting";
+import useSubMyDemocracyVoting from "./democracy/useSubMyDemocracyVoting";
 import useFetchDemocracyLockingPeriod from "./democracy/useFetchDemocracyLockingPeriod";
 import myDemocracyVotesSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/votes";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
@@ -16,7 +16,7 @@ export default function MyDemocracyVotes() {
   const dispatch = useDispatch();
   const myDemocracyVotes = useSelector(myDemocracyVotesSelector);
   const voting = useSelector(myDemocracyVotingSelector);
-  useFetchMyDemocracyVoting();
+  useSubMyDemocracyVoting();
   useFetchDemocracyLockingPeriod();
 
   useEffect(() => {
