@@ -50,6 +50,7 @@ const basilisk = {
   identity: "basilisk",
   symbol: "BSX",
   decimals: 12,
+  blockTime: 12000,
   hasElections: true,
   ss58Format: 10041,
   snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",

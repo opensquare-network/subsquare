@@ -66,6 +66,7 @@ const darwinia2 = {
   identity: Chains.darwinia2,
   symbol: "RING",
   decimals: 18,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",

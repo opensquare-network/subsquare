@@ -6,7 +6,11 @@ import isNil from "lodash.isnil";
 import Link from "next/link";
 
 export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
-  const { amount, beneficiary } = onchain?.treasuryInfo || {};
+  const {
+    amount,
+    beneficiary,
+    beneficiaries = [],
+  } = onchain?.treasuryInfo || {};
 
   const business = [];
   if (amount) {
@@ -19,7 +23,21 @@ export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
       />,
     ]);
   }
-  if (beneficiary) {
+
+  if (beneficiaries.length > 1) {
+    business.push([
+      "Beneficiaries",
+      <ol className="flex flex-wrap gap-x-4" key="beneficiaries">
+        {beneficiaries.map((beneficiary, index) => {
+          return (
+            <li key={`beneficiary-${index}`}>
+              <User add={beneficiary} fontSize={14} />
+            </li>
+          );
+        })}
+      </ol>,
+    ]);
+  } else if (beneficiary) {
     business.push([
       "Beneficiary",
       <User key="beneficiary" add={beneficiary} fontSize={14} />,

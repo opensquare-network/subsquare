@@ -23,7 +23,7 @@ function PopupChartContent({ isFellowship = false }) {
 }
 
 export default function ThresholdCurvesGov2TallyPopup({
-  setShow = emptyFunction,
+  closeFunc = emptyFunction,
   supportPerbill = 0,
   supportPercentage = 0,
   approvalPercentage = 0,
@@ -33,13 +33,7 @@ export default function ThresholdCurvesGov2TallyPopup({
   const supportThreshold = useSupportThreshold();
 
   return (
-    <Popup
-      title="Threshold Curves"
-      className="w-[960px]"
-      onClose={() => {
-        setShow(false);
-      }}
-    >
+    <Popup title="Threshold Curves" className="w-[960px]" onClose={closeFunc}>
       <PopupChartContent isFellowship={isFellowship} />
       <ThresholdCurvesGov2TallyLegend />
 

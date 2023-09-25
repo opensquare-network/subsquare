@@ -6,9 +6,10 @@ import Wrapper from "./wrapper";
 import CountDown from "../../_CountDown";
 import TimeDuration from "../../TimeDuration";
 import usePercentage from "./usePercentage";
-import TimeoutCountDown from "next-common/components/gov2/postList/timeoutCountDown";
+import FellowshipTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/fellowshipTimeoutCountdown";
+import ReferendaTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/referendaTimeoutCountdown";
 
-export default function PreparingCountdown({ detail }) {
+export default function PreparingCountdown({ detail, isFellowship = false }) {
   const latestHeight = useSelector(latestHeightSelector);
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
@@ -22,7 +23,11 @@ export default function PreparingCountdown({ detail }) {
   const preparePercentage = usePercentage(submitted, preparePeriod);
 
   if (remaining <= 0) {
-    return <TimeoutCountDown detail={detail} />;
+    return isFellowship ? (
+      <FellowshipTimeoutCountdown detail={detail} />
+    ) : (
+      <ReferendaTimeoutCountdown detail={detail} />
+    );
   }
 
   return (

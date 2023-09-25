@@ -197,7 +197,12 @@ export default function Post({ data, href, type }) {
 
   if (isGov2Referendum) {
     if (data?.status === gov2State.Preparing) {
-      elapseIcon = <PreparingCountdown detail={data} />;
+      elapseIcon = (
+        <PreparingCountdown
+          detail={data}
+          isFellowship={businessCategory.fellowship === type}
+        />
+      );
     } else if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     } else if (data?.status === gov2State.Confirming) {

@@ -10,6 +10,7 @@ import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/use
 import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
+import isEmpty from "lodash.isempty";
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -33,25 +34,14 @@ export function calcDataFromTallyHistory(
   latestHeight,
   blockTime,
 ) {
-  let currentSupportData = null;
-  let currentApprovalData = null;
-
-  if (!tallyHistory || !decidingSince) {
-    return { currentSupportData, currentApprovalData };
-  }
-
-  // We need to calculate the current support and approval data from tally history if it is provided
-  currentSupportData = [];
-  currentApprovalData = [];
-
-  if (tallyHistory.length === 0) {
-    return { currentSupportData, currentApprovalData };
+  let historySupportData = [];
+  let historyApprovalData = [];
+  if (!tallyHistory || !decidingSince || isEmpty(tallyHistory)) {
+    return { historySupportData, historyApprovalData };
   }
 
   const oneHour = 3600 * 1000;
   const blockStep = oneHour / blockTime; // it means the blocks between 2 dots.
-  const lastTally = last(tallyHistory);
-
   let iterHeight = decidingSince;
   while (iterHeight <= decidingEnd) {
     const tally = tallyHistory.findLast(
@@ -62,20 +52,21 @@ export function calcDataFromTallyHistory(
     }
 
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
-    currentSupportData.push(currentSupport);
-    currentApprovalData.push(currentApprove);
+    historySupportData.push(currentSupport);
+    historyApprovalData.push(currentApprove);
     iterHeight += blockStep;
   }
 
   if (iterHeight < decidingEnd + blockStep && latestHeight > decidingEnd) {
+    const lastTally = last(tallyHistory);
     let { currentSupport, currentApprove } = calcFromOneTallyData(
       lastTally.tally,
     );
-    currentSupportData.push(currentSupport);
-    currentApprovalData.push(currentApprove);
+    historySupportData.push(currentSupport);
+    historyApprovalData.push(currentApprove);
   }
 
-  return { currentSupportData, currentApprovalData };
+  return { historySupportData, historyApprovalData };
 }
 
 export default function useHistoryTallyValueData() {
@@ -95,5 +86,5 @@ export default function useHistoryTallyValueData() {
       latestHeight,
       blockTime,
     );
-  }, [tallyHistory]);
+  }, [tallyHistory, latestHeight, decidingEnd, blockTime]);
 }

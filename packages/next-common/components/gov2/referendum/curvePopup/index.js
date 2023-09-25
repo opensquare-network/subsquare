@@ -17,7 +17,7 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
-export default function CurvePopup({
+export default function CurvePopupOpener({
   tally = { tally },
   supportPerbill,
   isFellowship = false,
@@ -37,7 +37,7 @@ export default function CurvePopup({
 
       {showThresholdCurveDetailPopup && (
         <ThresholdCurvesGov2TallyPopup
-          setShow={setShowThresholdCurveDetailPopup}
+          closeFunc={() => setShowThresholdCurveDetailPopup(false)}
           supportPerbill={supportPerbill}
           supportPercentage={supportPercentage}
           approvalPercentage={approvalPercentage}

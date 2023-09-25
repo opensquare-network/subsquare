@@ -56,6 +56,7 @@ const turing = {
   identity: Chains.turing,
   symbol: "TUR",
   decimals: 10,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 51,
   snsCoverCid: "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",

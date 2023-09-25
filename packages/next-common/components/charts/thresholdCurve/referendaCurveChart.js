@@ -18,21 +18,20 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 export default function ReferendaCurveChart() {
   const { width } = useWindowSize();
   const { labels, supportData, approvalData } = useReferendumCurveData();
-  const supportThresholdConfig = useSupportThresholdDatasetConfig(supportData);
-  const approvalThresholdConfig =
-    useApprovalThresholdDatasetConfig(approvalData);
+  const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
+  const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
 
-  const { currentSupportData, currentApprovalData } =
+  const { historySupportData, historyApprovalData } =
     useHistoryTallyValueData();
-  const supportValueConfig = useSupportValueDatasetConfig(currentSupportData);
-  const approvalValueConfig =
-    useApprovalValueDatasetConfig(currentApprovalData);
+  const supportHistoryConfig = useSupportValueDatasetConfig(historySupportData);
+  const approvalHistoryConfig =
+    useApprovalValueDatasetConfig(historyApprovalData);
 
   const datasets = [
-    approvalThresholdConfig,
-    supportThresholdConfig,
-    approvalValueConfig,
-    supportValueConfig,
+    approvalCurveConfig,
+    supportCurveConfig,
+    approvalHistoryConfig,
+    supportHistoryConfig,
   ];
 
   const chartData = { labels, datasets };

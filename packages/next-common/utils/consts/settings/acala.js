@@ -67,6 +67,7 @@ const acala = {
   identity: "polkadot",
   symbol: "ACA",
   decimals: 12,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 10,
   snsCoverCid: "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy",

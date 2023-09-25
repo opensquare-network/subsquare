@@ -30,6 +30,7 @@ const khala = {
   identity: "khala",
   symbol: "PHA",
   decimals: 12,
+  blockTime: 12000,
   hasElections: true,
   ss58Format: 30,
   snsCoverCid: "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4",

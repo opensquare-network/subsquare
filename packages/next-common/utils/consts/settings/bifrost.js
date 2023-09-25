@@ -56,6 +56,7 @@ const bifrost = {
   identity: "bifrost",
   symbol: "BNC",
   decimals: 12,
+  blockTime: 12000,
   hasElections: false,
   ss58Format: 6,
   snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
