@@ -34,7 +34,7 @@ export default function MaybeLoginPolkadot({
           return;
         }
 
-        const extension = injectedWeb3?.[connectedAddress?.extensionName];
+        const extension = injectedWeb3?.[connectedAddress?.wallet];
 
         if (!extension) {
           return;
@@ -47,7 +47,7 @@ export default function MaybeLoginPolkadot({
             ...item,
             meta: {
               name: item.name,
-              source: connectedAddress?.extensionName,
+              source: connectedAddress?.wallet,
             },
           })),
         );

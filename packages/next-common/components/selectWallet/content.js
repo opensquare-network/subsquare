@@ -32,7 +32,7 @@ export default function SelectWalletContent() {
 
     setConnectedAddress({
       address: selectedAccount.address,
-      extensionName: selectedAccount.meta?.source || selectedWallet,
+      wallet: selectedAccount.meta?.source || selectedWallet,
     });
   };
 

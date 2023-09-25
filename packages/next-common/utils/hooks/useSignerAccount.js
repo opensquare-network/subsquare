@@ -28,7 +28,7 @@ export default function useSignerAccount(extensionAccounts) {
       account = extensionAccounts?.find(
         (item) =>
           isSameAddress(item.address, userAddress) &&
-          item.meta?.source === connectedAddress?.extensionName,
+          item.meta?.source === connectedAddress?.wallet,
       );
       if (account) {
         isLoggedInAddress = true;
@@ -40,7 +40,7 @@ export default function useSignerAccount(extensionAccounts) {
       account = extensionAccounts?.find(
         (item) =>
           isSameAddress(item.address, connectedAddress?.address) &&
-          item.meta?.source === connectedAddress?.extensionName,
+          item.meta?.source === connectedAddress?.wallet,
       );
       if (account) {
         isLoggedInAddress = false;
@@ -56,7 +56,7 @@ export default function useSignerAccount(extensionAccounts) {
       if (!injectedWeb3) {
         return;
       }
-      const extension = injectedWeb3?.[connectedAddress?.extensionName];
+      const extension = injectedWeb3?.[connectedAddress?.wallet];
       if (!extension) {
         return;
       }

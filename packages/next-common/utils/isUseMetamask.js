@@ -2,7 +2,5 @@ import { getStorageLastConnectedAddress } from "next-common/context/connectedAdd
 import WalletTypes from "./consts/walletTypes";
 
 export default function isUseMetamask() {
-  return (
-    getStorageLastConnectedAddress()?.extensionName === WalletTypes.METAMASK
-  );
+  return getStorageLastConnectedAddress()?.wallet === WalletTypes.METAMASK;
 }

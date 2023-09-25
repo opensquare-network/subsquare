@@ -20,7 +20,7 @@ export default function PopupWithAddress({
     return <SelectWalletPopup onClose={onClose} />;
   }
 
-  if (connectedAddress?.extensionName === WalletTypes.METAMASK) {
+  if (connectedAddress?.wallet === WalletTypes.METAMASK) {
     return (
       <MaybeLoginMetamask
         onClose={onClose}

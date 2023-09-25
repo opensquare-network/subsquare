@@ -2,7 +2,5 @@ import { getStorageLastConnectedAddress } from "next-common/context/connectedAdd
 import WalletTypes from "./consts/walletTypes";
 
 export default function isUseTalisman() {
-  return (
-    getStorageLastConnectedAddress()?.extensionName === WalletTypes.TALISMAN
-  );
+  return getStorageLastConnectedAddress()?.wallet === WalletTypes.TALISMAN;
 }

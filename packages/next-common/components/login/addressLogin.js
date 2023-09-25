@@ -102,7 +102,7 @@ export default function AddressLogin({ setView }) {
             updateUser(loginResult, userDispatch);
             setConnectedAddress({
               address: selectedAccount.address,
-              extensionName: selectedAccount.meta?.source || selectedWallet,
+              wallet: selectedAccount.meta?.source || selectedWallet,
             });
 
             if (loginResult.email || dontRemindEmail) {
