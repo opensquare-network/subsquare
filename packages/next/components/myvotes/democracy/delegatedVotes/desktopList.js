@@ -7,6 +7,7 @@ import { PostTitle } from "next-common/components/profile/votingHistory/common";
 import DelegatedVoteForItem from "./voteForItem";
 import DemocracyTag from "../stateTag";
 import getPostTitle from "./getPostTitle";
+import DelegationHint from "./hint";
 
 export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
@@ -38,6 +39,7 @@ export default function DesktopList() {
 
   return (
     <ListCard>
+      <DelegationHint />
       <ListWrapper>
         <StyledList columns={columns} rows={rows} loading={!myDelegatedVotes} />
       </ListWrapper>
