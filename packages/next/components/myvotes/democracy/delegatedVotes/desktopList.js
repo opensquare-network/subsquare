@@ -6,6 +6,7 @@ import { commonVoteColumnsDefinition } from "../../common/votesListColumns";
 import { PostTitle } from "next-common/components/profile/votingHistory/common";
 import DelegatedVoteForItem from "./voteForItem";
 import DemocracyTag from "../stateTag";
+import getPostTitle from "./getPostTitle";
 
 export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
@@ -17,14 +18,18 @@ export default function DesktopList() {
         <PostTitle
           key="proposal"
           referendumIndex={vote.referendumIndex}
-          title={vote.post?.title}
+          title={getPostTitle(vote)}
         />,
         <DelegatedVoteForItem
           key="vote"
           targetVote={vote.vote}
           referendumInfo={vote.referendumInfo}
         />,
-        <DemocracyTag key="tag" onchainData={vote.post?.onchainData} />,
+        <DemocracyTag
+          key="tag"
+          post={vote.post}
+          onchainInfo={vote.referendumInfo}
+        />,
       ];
       row.key = vote.referendumIndex;
       return row;

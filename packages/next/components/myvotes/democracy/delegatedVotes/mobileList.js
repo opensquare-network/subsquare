@@ -9,15 +9,26 @@ import {
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import VoteItemGuard from "./voteItemGuard";
 import { DelegatedVoteLock } from "./voteForItem";
+import getPostTitle from "./getPostTitle";
+import DemocracyTag from "../stateTag";
 
 function ItemHeader({ vote }) {
   return (
-    <div className="flex items-center justify-between pb-[12px] border-b border-b-neutral300">
-      <PostTitle
-        referendumIndex={vote.post?.referendumIndex}
-        title={vote.post?.title}
-      />
-    </div>
+    <>
+      <div className="flex items-center justify-between pb-[12px] border-b border-b-neutral300">
+        <PostTitle
+          referendumIndex={vote.referendumIndex}
+          title={getPostTitle(vote)}
+        />
+      </div>
+      <div className="flex justify-end pt-[12px] items-center">
+        <DemocracyTag
+          key="tag"
+          post={vote.post}
+          onchainInfo={vote.referendumInfo}
+        />
+      </div>
+    </>
   );
 }
 

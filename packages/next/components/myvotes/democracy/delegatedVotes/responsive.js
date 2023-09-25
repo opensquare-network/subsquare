@@ -13,6 +13,6 @@ export default function ResponsiveDelegatedVotesList() {
   return width > 1024 ? (
     <DesktopList /> // desktop view
   ) : (
-    <MobileList />
-  ); // mobile view
+    <MobileList /> // mobile view
+  );
 }
