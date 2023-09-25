@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const name = "myDemocracyVoting";
 
@@ -18,5 +18,16 @@ export const { setVoting: setMyDemocracyVoting } =
   myDemocracyVotingSlice.actions;
 
 export const myDemocracyVotingSelector = (state) => state[name].voting;
+
+export const isMyDemocracyDelegatingSelector = createSelector(
+  myDemocracyVotingSelector,
+  (voting) => {
+    if (!voting) {
+      return false;
+    }
+
+    return voting.isDelegating;
+  },
+);
 
 export default myDemocracyVotingSlice.reducer;

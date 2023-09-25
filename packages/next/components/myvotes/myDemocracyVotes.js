@@ -7,17 +7,22 @@ import {
 } from "next-common/store/reducers/myVotesSlice";
 import DemocracySummary from "./summary/democracySummary";
 import MyVotesList from "./myVotesList";
-import useFetchMyDemocracyVoting from "./democracy/useFetchMyDemocracyVoting";
+import useSubMyDemocracyVoting from "./democracy/useSubMyDemocracyVoting";
 import useFetchDemocracyLockingPeriod from "./democracy/useFetchDemocracyLockingPeriod";
 import myDemocracyVotesSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/votes";
-import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
+import {
+  isMyDemocracyDelegatingSelector,
+  myDemocracyVotingSelector,
+} from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
+import MyDelegatedVotes from "./democracy/delegatedVotes";
 
 export default function MyDemocracyVotes() {
   const dispatch = useDispatch();
   const myDemocracyVotes = useSelector(myDemocracyVotesSelector);
   const voting = useSelector(myDemocracyVotingSelector);
-  useFetchMyDemocracyVoting();
+  useSubMyDemocracyVoting();
   useFetchDemocracyLockingPeriod();
+  const isDelegating = useSelector(isMyDemocracyDelegatingSelector);
 
   useEffect(() => {
     if (!myDemocracyVotes || !myDemocracyVotes.length) {
@@ -44,7 +49,11 @@ export default function MyDemocracyVotes() {
   return (
     <div className="flex flex-col gap-[16px]">
       <DemocracySummary />
-      <MyVotesList votes={myDemocracyVotes} isLoading={!voting} />
+      {isDelegating ? (
+        <MyDelegatedVotes />
+      ) : (
+        <MyVotesList votes={myDemocracyVotes} isLoading={!voting} />
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { noLockObj, noResultObj } from "./consts";
 import getDemocracyEndInfo from "./democracy/endInfo";
+import calcVoteLockEnd from "../../utils/calcVoteLockEnd";
 
 function getReferendaEndInfo(referendumInfo) {
   const { rejected, approved } = referendumInfo;
@@ -37,8 +38,11 @@ export default function getVoteEndInfo(voteInfo, period, isReferenda) {
     return noLockObj;
   }
 
-  const periodsArr = [0, 1, 2, 4, 8, 16, 32];
-  const lockEnd = referendumEndInfo.end + periodsArr[vote.conviction] * period;
+  const lockEnd = calcVoteLockEnd(
+    referendumEndInfo.end,
+    period,
+    vote.conviction,
+  );
   return {
     hasLock: true,
     period,
