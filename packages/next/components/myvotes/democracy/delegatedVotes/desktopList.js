@@ -10,6 +10,7 @@ import {
 } from "../../common/votesListColumns";
 import { PostTitle } from "next-common/components/profile/votingHistory/common";
 import DelegatedVoteForItem from "./voteForItem";
+import DemocracyTag from "../stateTag";
 
 export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
@@ -33,6 +34,7 @@ export default function DesktopList() {
           targetVote={vote.vote}
           referendumInfo={vote.referendumInfo}
         />,
+        <DemocracyTag key="tag" onchainData={vote.post?.onchainData} />,
       ];
       row.key = vote.referendumIndex;
       return row;

@@ -19,14 +19,16 @@ export default async function getDemocracyRichVotes(api, voting) {
     api,
     votes.map((vote) => vote.referendumIndex),
   );
-  return votes.map((vote) => {
-    const referendumInfo = infoArr.find(
-      (info) => info.referendumIndex === vote.referendumIndex,
-    );
+  return votes
+    .map((vote) => {
+      const referendumInfo = infoArr.find(
+        (info) => info.referendumIndex === vote.referendumIndex,
+      );
 
-    return {
-      ...vote,
-      ...referendumInfo,
-    };
-  });
+      return {
+        ...vote,
+        ...referendumInfo,
+      };
+    })
+    .sort((v1, v2) => v2.referendumIndex - v1.referendumIndex);
 }
