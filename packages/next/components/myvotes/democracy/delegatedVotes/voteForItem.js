@@ -5,8 +5,9 @@ import { VoteItem } from "next-common/components/profile/votingHistory/common";
 import VotingGuard from "./votingGuard";
 import useDelegatedVoteLock from "./useDelegatedVoteLock";
 import VoteLock from "../../vote/lock";
+import VoteItemGuard from "./voteItemGuard";
 
-function DelegatedVoteLock({ referendumInfo, targetVote }) {
+export function DelegatedVoteLock({ referendumInfo, targetVote }) {
   const voting = useSelector(myDemocracyVotingSelector);
   const delegatedVote = {
     isDelegating: true,
@@ -32,28 +33,21 @@ function DelegatedVoteLock({ referendumInfo, targetVote }) {
 
 export default function DelegatedVoteForItem({ targetVote, referendumInfo }) {
   const voting = useSelector(myDemocracyVotingSelector);
-  if (
-    !targetVote ||
-    !voting ||
-    !voting.isDelegating ||
-    !targetVote.isStandard
-  ) {
-    return null;
-  }
-
-  const { balance, conviction } = voting;
+  const { balance, conviction } = voting || {};
   const { aye } = targetVote?.vote || {};
 
   return (
-    <VoteForItemWrapper>
-      <VoteItem
-        key="vote"
-        vote={{ balance, conviction, aye, isDelegating: true }}
-      />
-      <DelegatedVoteLock
-        referendumInfo={referendumInfo}
-        targetVote={targetVote}
-      />
-    </VoteForItemWrapper>
+    <VoteItemGuard targetVote={targetVote}>
+      <VoteForItemWrapper>
+        <VoteItem
+          key="vote"
+          vote={{ balance, conviction, aye, isDelegating: true }}
+        />
+        <DelegatedVoteLock
+          referendumInfo={referendumInfo}
+          targetVote={targetVote}
+        />
+      </VoteForItemWrapper>
+    </VoteItemGuard>
   );
 }
