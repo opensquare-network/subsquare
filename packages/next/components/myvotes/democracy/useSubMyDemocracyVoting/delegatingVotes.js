@@ -1,5 +1,7 @@
 import normalizePrior from "../../utils/normalizePrior";
 import getDemocracyRichVotes from "./getRichVotes";
+import getReferendaPosts from "./posts";
+import omit from "lodash.omit";
 
 export default async function getDelegatingVotesInfo(voting, api) {
   const delegating = voting.asDelegating;
@@ -18,8 +20,18 @@ export default async function getDelegatingVotesInfo(voting, api) {
   }
 
   const richVotes = await getDemocracyRichVotes(api, targetVoting);
+  const posts = await getReferendaPosts(
+    richVotes.map((v) => v.referendumIndex),
+  );
+  const delegatedVotes = richVotes.map((vote) => {
+    const post = posts.find((p) => p.referendumIndex === vote.referendumIndex);
+    return {
+      ...vote,
+      post: omit(post, ["_id", "content"]),
+    };
+  });
   return {
     ...delegationCommon,
-    delegatedVotes: richVotes,
+    delegatedVotes,
   };
 }
