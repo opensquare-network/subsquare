@@ -43,6 +43,7 @@ const referendumTagMap = {
   FastTrack: PositiveTag,
 
   Started: StartTag,
+  Ongoing: StartTag,
   Passed: PositiveTag,
   NotPassed: NegativeTag,
   Cancelled: NegativeTag,
@@ -55,6 +56,8 @@ export function DemocracyReferendumTag({ state, args }) {
   let Tag = referendumTagMap[state] || ClosedTag;
   if ("Executed" === state && args?.isOk === false) {
     Tag = NegativeTag;
+  } else if ("Finished" === state) {
+    Tag = args.approved ? PositiveTag : NegativeTag;
   }
 
   return <Tag>{state}</Tag>;

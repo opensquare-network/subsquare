@@ -43,7 +43,7 @@ const Wrapper = styled(Flex)`
 
 const AvatarWrapper = styled(Flex)`
   display: flex;
-  margin-right: 8px;
+  margin-right: ${(p) => (p.fontSize <= 12 ? "4px" : "8px")};
   svg {
     circle:first-child {
       fill: var(--neutral200);
@@ -226,7 +226,7 @@ function User({
   return (
     <Wrapper noEvent={noEvent} color={color}>
       {showAvatar && (
-        <AvatarWrapper>
+        <AvatarWrapper fontSize={fontSize}>
           {address ? (
             <Avatar address={address} size={fontSize * (20 / 14)} />
           ) : (
