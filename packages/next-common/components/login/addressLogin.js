@@ -15,7 +15,7 @@ import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import SelectWalletAddress from "./selectWalletAddress";
-import { useSetConnectedWallet } from "next-common/context/connectedWallet";
+import { useSetConnectedAddress } from "next-common/context/connectedAddress";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -51,7 +51,7 @@ export default function AddressLogin({ setView }) {
   const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
   const { closeLoginPopup } = useLoginPopup();
-  const setConnectedWallet = useSetConnectedWallet();
+  const setConnectedAddress = useSetConnectedAddress();
   const isLoginPage = router.pathname === "/login";
 
   async function signWith(message, address, selectedWallet) {
@@ -104,7 +104,7 @@ export default function AddressLogin({ setView }) {
           );
           if (loginResult) {
             updateUser(loginResult, userDispatch);
-            setConnectedWallet(selectedAccount.address);
+            setConnectedAddress(selectedAccount.address);
             rememberLoginAddress(selectedAccount.address);
             rememberLoginExtension(
               selectedAccount.meta?.source || selectedWallet,

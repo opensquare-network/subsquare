@@ -6,7 +6,7 @@ import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
 import { CACHE_KEY } from "../../utils/constants";
 import SelectWalletAddress from "../login/selectWalletAddress";
-import { useSetConnectedWallet } from "next-common/context/connectedWallet";
+import { useSetConnectedAddress } from "next-common/context/connectedAddress";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -27,15 +27,15 @@ export default function SelectWalletContent() {
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
-  const setConnectedWallet = useSetConnectedWallet();
+  const setConnectedAddress = useSetConnectedAddress();
 
-  const doSelectWallet = async () => {
+  const doConnectAddress = async () => {
     if (!selectedAccount?.address) {
       dispatch(newErrorToast("Please select an account"));
       return;
     }
 
-    setConnectedWallet(selectedAccount.address);
+    setConnectedAddress(selectedAccount.address);
     rememberConnectAddress(selectedAccount.address);
     rememberConnectExtension(selectedAccount.meta?.source || selectedWallet);
   };
@@ -59,7 +59,7 @@ export default function SelectWalletContent() {
           {selectedWallet && (
             <PrimaryButton
               isFill
-              onClick={doSelectWallet}
+              onClick={doConnectAddress}
               disabled={!selectedAccount}
             >
               Next

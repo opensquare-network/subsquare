@@ -5,7 +5,7 @@ import ThemeModeProvider from "./theme";
 import PageProvider from "./page";
 import NavProvider from "./nav";
 import { SocketProvider } from "./socket";
-import { ConnectedWalletProvider } from "./connectedWallet";
+import { ConnectedAddressProvider } from "./connectedAddress";
 
 export default function GlobalProvider({
   user,
@@ -21,7 +21,7 @@ export default function GlobalProvider({
       <ThemeModeProvider defaultThemeMode={themeMode}>
         <ChainProvider chain={chain}>
           <UserProvider user={user}>
-            <ConnectedWalletProvider>
+            <ConnectedAddressProvider>
               <NavProvider
                 navCollapsed={navCollapsed}
                 navSubmenuVisible={navSubmenuVisible}
@@ -30,7 +30,7 @@ export default function GlobalProvider({
                   {children}
                 </PageProvider>
               </NavProvider>
-            </ConnectedWalletProvider>
+            </ConnectedAddressProvider>
           </UserProvider>
         </ChainProvider>
       </ThemeModeProvider>

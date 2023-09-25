@@ -4,7 +4,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybeLoginPolkadot from "./maybeLoginPolkadot";
 import MaybeLoginMetamask from "./maybeLoginMetamask";
 import SelectWalletPopup from "../selectWallet";
-import { useConnectedWallet } from "next-common/context/connectedWallet";
+import { useConnectedAddress } from "next-common/context/connectedAddress";
 
 export default function PopupWithAddress({
   Component,
@@ -14,10 +14,10 @@ export default function PopupWithAddress({
   ...props
 }) {
   const loginUser = useUser();
-  const connectedWallet = useConnectedWallet();
+  const connectedAddress = useConnectedAddress();
   const lastLoginExtension = localStorage.lastLoginExtension;
 
-  if (!loginUser && !connectedWallet) {
+  if (!loginUser && !connectedAddress) {
     return <SelectWalletPopup onClose={onClose} />;
   }
 

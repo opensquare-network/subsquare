@@ -4,7 +4,7 @@ import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useUser } from "../../context/user";
 import useApi from "./useApi";
 import WalletTypes from "../consts/walletTypes";
-import { useConnectedWallet } from "next-common/context/connectedWallet";
+import { useConnectedAddress } from "next-common/context/connectedAddress";
 import { CACHE_KEY } from "../constants";
 
 export default function useSignerAccount(extensionAccounts) {
@@ -12,13 +12,13 @@ export default function useSignerAccount(extensionAccounts) {
   const [signerAccount, setSignerAccount] = useState();
   const api = useApi();
   const user = useUser();
-  const connectedWallet = useConnectedWallet();
+  const connectedAddress = useConnectedAddress();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
   const extensionName = localStorage.getItem(CACHE_KEY.lastLoginExtension);
 
   useEffect(() => {
-    if (!userAddress && !connectedWallet) {
+    if (!userAddress && !connectedAddress) {
       return;
     }
 
@@ -38,10 +38,10 @@ export default function useSignerAccount(extensionAccounts) {
     }
 
     // Check connected wallet address
-    if (!account && connectedWallet) {
+    if (!account && connectedAddress) {
       account = extensionAccounts?.find(
         (item) =>
-          isSameAddress(item.address, connectedWallet) &&
+          isSameAddress(item.address, connectedAddress) &&
           item.meta?.source === extensionName,
       );
       if (account) {
@@ -71,7 +71,7 @@ export default function useSignerAccount(extensionAccounts) {
         proxyAddress,
         realAddress: isLoggedInAddress
           ? proxyAddress || userAddress
-          : connectedWallet,
+          : connectedAddress,
         isLoggedInAddress,
       });
     } else {
@@ -80,7 +80,7 @@ export default function useSignerAccount(extensionAccounts) {
   }, [
     extensionAccounts,
     userAddress,
-    connectedWallet,
+    connectedAddress,
     proxyAddress,
     api,
     injectedWeb3,

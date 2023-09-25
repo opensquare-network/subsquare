@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Account from "./account";
 import EmptyAccount from "./emptyAccount";
 import { GreyPanel } from "./styled/containers/greyPanel";
-import { useSetConnectedWallet } from "next-common/context/connectedWallet";
+import { useSetConnectedAddress } from "next-common/context/connectedAddress";
 import { CACHE_KEY } from "next-common/utils/constants";
 
 const Wrapper = styled(GreyPanel)`
@@ -12,10 +12,10 @@ const Wrapper = styled(GreyPanel)`
 `;
 
 export default function ChangeableConnectedSigner({ signerAccount }) {
-  const setConnectedWallet = useSetConnectedWallet();
+  const setConnectedAddress = useSetConnectedAddress();
 
   const reSelectWallet = () => {
-    setConnectedWallet();
+    setConnectedAddress();
     localStorage.removeItem(CACHE_KEY.lastLoginAddress);
   };
 
