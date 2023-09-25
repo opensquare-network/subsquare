@@ -61,9 +61,7 @@ export function useConnectedAddress() {
 }
 
 export function useSetConnectedAddress() {
-  const { setConnectedAddress, setConnectedExtension } = useContext(
-    ConnectedAddressContext,
-  );
+  const { setConnectedAddress } = useContext(ConnectedAddressContext);
   return useCallback(
     (info) => {
       if (!info) {
@@ -75,6 +73,11 @@ export function useSetConnectedAddress() {
       setConnectedAddress(info);
       setStorageLastConnectedAddress(info);
     },
-    [setConnectedAddress, setConnectedExtension],
+    [setConnectedAddress],
   );
+}
+
+export function useDisconnectAddress() {
+  const setConnectedAddress = useSetConnectedAddress();
+  return useCallback(() => setConnectedAddress(), [setConnectedAddress]);
 }
