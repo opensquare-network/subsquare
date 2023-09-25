@@ -25,12 +25,12 @@ export default function MaybeLoginPolkadot({
         return;
       }
 
-      if (!connectedAddress) {
-        return;
-      }
-
       try {
         if (!injectedWeb3) {
+          return;
+        }
+
+        if (!connectedAddress) {
           return;
         }
 

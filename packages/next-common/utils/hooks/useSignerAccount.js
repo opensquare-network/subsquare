@@ -47,34 +47,35 @@ export default function useSignerAccount(extensionAccounts) {
       }
     }
 
-    if (account) {
-      if (account.meta?.source !== WalletTypes.METAMASK) {
-        if (!injectedWeb3) {
-          return;
-        }
-        const extension = injectedWeb3?.[connectedAddress?.extensionName];
-        if (!extension) {
-          return;
-        }
-        extension.enable("subsquare").then((wallet) => {
-          if (wallet) {
-            api?.setSigner(wallet.signer);
-          }
-        });
-      }
-
-      setSignerAccount({
-        ...account,
-        name: account.meta?.name,
-        proxyAddress,
-        realAddress: isLoggedInAddress
-          ? proxyAddress || userAddress
-          : connectedAddress?.address,
-        isLoggedInAddress,
-      });
-    } else {
+    if (!account) {
       setSignerAccount();
+      return;
     }
+
+    if (account.meta?.source !== WalletTypes.METAMASK) {
+      if (!injectedWeb3) {
+        return;
+      }
+      const extension = injectedWeb3?.[connectedAddress?.extensionName];
+      if (!extension) {
+        return;
+      }
+      extension.enable("subsquare").then((wallet) => {
+        if (wallet) {
+          api?.setSigner(wallet.signer);
+        }
+      });
+    }
+
+    setSignerAccount({
+      ...account,
+      name: account.meta?.name,
+      proxyAddress,
+      realAddress: isLoggedInAddress
+        ? proxyAddress || userAddress
+        : connectedAddress?.address,
+      isLoggedInAddress,
+    });
   }, [
     extensionAccounts,
     userAddress,

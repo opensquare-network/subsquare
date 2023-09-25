@@ -14,7 +14,7 @@ import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
-import WalletSelect from "./walletSelect";
+import WalletAddressSelect from "./walletAddressSelect";
 import {
   useConnectedAddress,
   useSetConnectedAddress,
@@ -141,7 +141,7 @@ export default function AddressLogin({ setView }) {
 
   return (
     <div className="space-y-6">
-      <WalletSelect
+      <WalletAddressSelect
         wallet={wallet}
         setWallet={setWallet}
         selectedWallet={selectedWallet}

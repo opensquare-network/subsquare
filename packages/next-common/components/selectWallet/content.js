@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
-import WalletSelect from "../login/walletSelect";
+import WalletAddressSelect from "../login/walletAddressSelect";
 import {
   useConnectedAddress,
   useSetConnectedAddress,
@@ -41,7 +41,7 @@ export default function SelectWalletContent() {
       <PageTitleContainer>Select Wallet</PageTitleContainer>
 
       <div className="space-y-6">
-        <WalletSelect
+        <WalletAddressSelect
           wallet={wallet}
           setWallet={setWallet}
           selectedWallet={selectedWallet}

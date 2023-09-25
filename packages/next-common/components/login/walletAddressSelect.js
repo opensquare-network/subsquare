@@ -18,7 +18,7 @@ const Label = styled.div`
   color: var(--textPrimary);
 `;
 
-export default function WalletSelect({
+export default function WalletAddressSelect({
   web3Error,
   setWeb3Error = noop,
   wallet,
