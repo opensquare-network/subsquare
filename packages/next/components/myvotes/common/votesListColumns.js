@@ -22,3 +22,10 @@ export const actionColumnDefinition = {
   name: "",
   style: { textAlign: "right", width: "64px", minWidth: "64px" },
 };
+
+export const commonVoteColumnsDefinition = [
+  proposalColumnDefinition,
+  voteColumnDefinition,
+  statusColumnDefinition,
+  actionColumnDefinition,
+];

@@ -2,24 +2,14 @@ import { useSelector } from "react-redux";
 import { myDemocracyDelegatedVotesSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/delegated";
 import { ListCard, ListWrapper, StyledList } from "../../styled";
 import useColumns from "next-common/components/styledList/useColumns";
-import {
-  actionColumnDefinition,
-  proposalColumnDefinition,
-  statusColumnDefinition,
-  voteColumnDefinition,
-} from "../../common/votesListColumns";
+import { commonVoteColumnsDefinition } from "../../common/votesListColumns";
 import { PostTitle } from "next-common/components/profile/votingHistory/common";
 import DelegatedVoteForItem from "./voteForItem";
 import DemocracyTag from "../stateTag";
 
 export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
-  const { columns } = useColumns([
-    proposalColumnDefinition,
-    voteColumnDefinition,
-    statusColumnDefinition,
-    actionColumnDefinition,
-  ]);
+  const { columns } = useColumns(commonVoteColumnsDefinition);
 
   const rows = (myDelegatedVotes || []).map((vote) => ({
     useData: () => {

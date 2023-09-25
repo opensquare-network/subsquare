@@ -11,22 +11,10 @@ import useReferendumTitle from "./useReferendumTitle";
 import { useSelector } from "react-redux";
 import { myVotedPostsLoading } from "next-common/store/reducers/myVotesSlice";
 import { ListWrapper, StyledList } from "./styled";
-import {
-  actionColumnDefinition,
-  proposalColumnDefinition,
-  statusColumnDefinition,
-  voteColumnDefinition,
-} from "./common/votesListColumns";
+import { commonVoteColumnsDefinition } from "./common/votesListColumns";
 
 export default function VotesList({ votes, isLoading }) {
-  const columnsDefinition = [
-    proposalColumnDefinition,
-    voteColumnDefinition,
-    statusColumnDefinition,
-    actionColumnDefinition,
-  ];
-
-  const { columns } = useColumns(columnsDefinition);
+  const { columns } = useColumns(commonVoteColumnsDefinition);
 
   const rows = (votes || []).map((item) => {
     return {
