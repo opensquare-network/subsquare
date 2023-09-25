@@ -49,7 +49,7 @@ export default function PopupContent({
     signerAccount?.address,
   );
   const { vote: addressVote, isLoading: addressVoteIsLoading } =
-    useSubMyDemocracyVote();
+    useSubMyDemocracyVote(signerAccount?.realAddress);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 

@@ -1,4 +1,3 @@
-import useRealAddress from "../../utils/hooks/useRealAddress";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "../../context/post";
@@ -29,8 +28,7 @@ async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
   };
 }
 
-export default function useSubMyDemocracyVote() {
-  const realAddress = useRealAddress();
+export default function useSubMyDemocracyVote(address) {
   const isMounted = useIsMounted();
   const api = useApi();
   const { referendumIndex } = useOnchainData();
@@ -39,14 +37,14 @@ export default function useSubMyDemocracyVote() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!api || !realAddress || !api.query.democracy) {
+    if (!api || !address || !api.query.democracy) {
       return;
     }
 
     let unsub;
     setIsLoading(true);
     api.query.democracy
-      .votingOf(realAddress, (voting) => {
+      .votingOf(address, (voting) => {
         const jsonVoting = voting?.toJSON();
         if (!jsonVoting) {
           return;
@@ -90,7 +88,7 @@ export default function useSubMyDemocracyVote() {
         unsub();
       }
     };
-  }, [api, isMounted, realAddress, referendumIndex]);
+  }, [api, isMounted, address, referendumIndex]);
 
   return {
     vote,
