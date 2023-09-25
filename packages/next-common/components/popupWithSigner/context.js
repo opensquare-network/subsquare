@@ -1,41 +1,54 @@
-import { useCallback, useEffect, useState } from "react";
-import { isSameAddress } from "..";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
-import { useUser } from "../../context/user";
-import useApi from "./useApi";
-import WalletTypes from "../consts/walletTypes";
+import WalletTypes from "next-common/utils/consts/walletTypes";
+import useApi from "next-common/utils/hooks/useApi";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import useInjectedWeb3 from "../wallet/useInjectedWeb3";
+import { useUser } from "next-common/context/user";
 import { useConnectedAddress } from "next-common/context/connectedAddress";
+import { isSameAddress } from "next-common/utils";
+
+export const SignerContext = createContext();
+
+export default SignerContext;
 
 function useSetSigner() {
   const api = useApi();
   const { injectedWeb3 } = useInjectedWeb3();
 
   return useCallback(
-    (account) => {
+    async (account) => {
       if (!account) {
         return;
       }
 
-      if (account.meta?.source !== WalletTypes.METAMASK) {
-        if (!injectedWeb3) {
-          return;
-        }
-        const extension = injectedWeb3?.[account.meta?.source];
-        if (!extension) {
-          return;
-        }
-        extension.enable("subsquare").then((wallet) => {
-          if (wallet) {
-            api?.setSigner(wallet.signer);
-          }
-        });
+      if (account.meta?.source === WalletTypes.METAMASK) {
+        return;
+      }
+
+      if (!injectedWeb3) {
+        return;
+      }
+
+      const extension = injectedWeb3?.[account.meta?.source];
+      if (!extension) {
+        return;
+      }
+
+      const wallet = await extension.enable("subsquare");
+      if (wallet) {
+        api?.setSigner(wallet.signer);
       }
     },
     [injectedWeb3, api],
   );
 }
 
-export default function useSignerAccount(extensionAccounts) {
+export function SignerContextProvider({ children, extensionAccounts }) {
   const [signerAccount, setSignerAccount] = useState();
   const user = useUser();
   const connectedAddress = useConnectedAddress();
@@ -99,5 +112,24 @@ export default function useSignerAccount(extensionAccounts) {
     setSigner,
   ]);
 
+  return (
+    <SignerContext.Provider
+      value={{
+        extensionAccounts,
+        signerAccount,
+      }}
+    >
+      {children}
+    </SignerContext.Provider>
+  );
+}
+
+export function useSignerAccount() {
+  const { signerAccount } = useContext(SignerContext);
   return signerAccount;
+}
+
+export function useExtensionAccounts() {
+  const { extensionAccounts } = useContext(SignerContext);
+  return extensionAccounts;
 }

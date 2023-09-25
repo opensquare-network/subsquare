@@ -1,4 +1,4 @@
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import AyeNaySplitTab from "./ayeNaySplitTab";
 import useStandardVote from "./voteHooks/useStandardVote";
 import useSplitVote from "./voteHooks/useSplitVote";
@@ -39,7 +39,7 @@ export async function submitPolkadotExtrinsic({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Referendum vote"
       Component={PopupContent}
       useStandardVote={useStandardVote}

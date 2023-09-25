@@ -11,12 +11,11 @@ import VoteButton from "next-common/components/popup/voteButton";
 import { emptyFunction } from "next-common/utils";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChain } from "next-common/context/chain";
-import Signer from "next-common/components/popup/fields/signerField";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -25,7 +24,6 @@ const SignerWrapper = styled.div`
 `;
 
 export default function PopupContent({
-  extensionAccounts,
   votes,
   isLoadingVotes,
   motionHash,
@@ -40,15 +38,7 @@ export default function PopupContent({
   const chain = useChain();
   const dispatch = useDispatch();
   const api = useApi();
-  const signerAccount = useSignerAccount(extensionAccounts);
-  const [balance, loadingBalance] = useAddressBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, loadingSignerBalance] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
+  const signerAccount = useSignerAccount();
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
@@ -101,13 +91,7 @@ export default function PopupContent({
   return (
     <>
       <SignerWrapper>
-        <Signer
-          signerAccount={signerAccount}
-          balance={balance}
-          isBalanceLoading={loadingBalance}
-          signerBalance={signerBalance}
-          isSignerBalanceLoading={loadingSignerBalance}
-        />
+        <SignerWithBalance />
         {!canVote && (
           <WarningMessage danger={!canVote}>
             Only council members can vote.

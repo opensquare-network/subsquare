@@ -6,7 +6,7 @@ import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, emptyFunction } from "next-common/utils";
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
@@ -15,18 +15,17 @@ import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import useSubMyDemocracyVote from "../../../hooks/democracy/useSubMyDemocracyVote";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 function PopupContent({
-  extensionAccounts,
   referendumIndex,
   onClose,
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
@@ -39,10 +38,8 @@ function PopupContent({
     api,
     signerAccount?.address,
   );
-  const {
-    vote: addressVote,
-    isLoading: addressVoteIsLoading,
-  } = useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
+  const { vote: addressVote, isLoading: addressVoteIsLoading } =
+    useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const isMounted = useIsMounted();
 
@@ -112,7 +109,6 @@ function PopupContent({
   return (
     <>
       <Signer
-        signerAccount={signerAccount}
         balanceName="Voting balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}
@@ -136,7 +132,7 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Referenda vote"
       Component={PopupContent}
       {...props}

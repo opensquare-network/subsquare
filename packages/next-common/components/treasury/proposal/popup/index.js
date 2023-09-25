@@ -7,7 +7,7 @@ import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
 import { checkInputValue, emptyFunction } from "../../../../utils";
-import PopupWithAddress from "../../../popupWithAddress";
+import PopupWithSigner from "../../../popupWithSigner";
 import ProposalBond from "./proposalBond";
 import Beneficiary from "../../common/beneficiary";
 import ProposalValue from "./proposalValue";
@@ -18,11 +18,13 @@ import useBond from "../../../../utils/hooks/useBond";
 import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import PrimaryButton from "../../../buttons/primaryButton";
 import { useChainSettings } from "../../../../context/chain";
-import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
+import {
+  useExtensionAccounts,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 
 function PopupContent({
-  extensionAccounts,
   onClose,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
@@ -30,7 +32,8 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
+  const extensionAccounts = useExtensionAccounts();
 
   const [inputValue, setInputValue] = useState();
   const [loading, setLoading] = useState(false);
@@ -111,7 +114,6 @@ function PopupContent({
   return (
     <>
       <Signer
-        signerAccount={signerAccount}
         balance={balance}
         isBalanceLoading={balanceIsLoading}
         signerBalance={signerBalance}
@@ -137,7 +139,7 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="New Treasury Proposal"
       Component={PopupContent}
       {...props}

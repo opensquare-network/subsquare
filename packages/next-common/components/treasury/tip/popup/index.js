@@ -6,21 +6,22 @@ import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
 import { checkInputValue, emptyFunction } from "../../../../utils";
-import PopupWithAddress from "../../../popupWithAddress";
+import PopupWithSigner from "../../../popupWithSigner";
 import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
-import Signer from "next-common/components/popup/fields/signerField";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
-import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import PrimaryButton from "../../../buttons/primaryButton";
 import { useChainSettings } from "../../../../context/chain";
-import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
+import {
+  useExtensionAccounts,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 function PopupContent({
-  extensionAccounts,
   onClose,
   onInBlock = emptyFunction,
   onFinalized = emptyFunction,
@@ -28,7 +29,8 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
+  const extensionAccounts = useExtensionAccounts();
 
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,14 +40,6 @@ function PopupContent({
   const api = useApi();
 
   const [beneficiary, setBeneficiary] = useState();
-  const [balance, balanceIsLoading] = useAddressBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -110,13 +104,7 @@ function PopupContent({
       <div style={{ marginTop: "16px", marginBottom: "16px" }}>
         <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </div>
-      <Signer
-        signerAccount={signerAccount}
-        balance={balance}
-        isBalanceLoading={balanceIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-      />
+      <SignerWithBalance />
       <Beneficiary
         extensionAccounts={extensionAccounts}
         setAddress={setBeneficiary}
@@ -134,6 +122,6 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress title="New Tip" Component={PopupContent} {...props} />
+    <PopupWithSigner title="New Tip" Component={PopupContent} {...props} />
   );
 }

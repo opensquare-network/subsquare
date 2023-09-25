@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import MaybeLogin from "../maybeLogin";
+import MaybeSignerConnected from "./maybeSignerConnected";
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import Popup from "../popup/wrapper/Popup";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAddress } from "next-common/context/connectedAddress";
 
-export default function MaybeLoginPolkadot({
+export default function MaybePolkadotSigner({
   onClose,
   autoCloseAfterLogin,
   title,
@@ -65,18 +65,14 @@ export default function MaybeLoginPolkadot({
   }
 
   return (
-    <MaybeLogin
-      accounts={polkadotAccounts}
+    <MaybeSignerConnected
+      extensionAccounts={polkadotAccounts}
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
     >
       <Popup onClose={onClose} title={title}>
-        <Component
-          onClose={onClose}
-          extensionAccounts={polkadotAccounts}
-          {...props}
-        />
+        <Component onClose={onClose} {...props} />
       </Popup>
-    </MaybeLogin>
+    </MaybeSignerConnected>
   );
 }

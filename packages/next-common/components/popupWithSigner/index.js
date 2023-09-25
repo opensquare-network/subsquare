@@ -1,12 +1,12 @@
 import React from "react";
 import { useUser } from "next-common/context/user";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import MaybeLoginPolkadot from "./maybeLoginPolkadot";
-import MaybeLoginMetamask from "./maybeLoginMetamask";
+import MaybePolkadotSigner from "./maybePolkadotSigner";
+import MaybeMetamaskSigner from "./maybeMetamaskSigner";
 import SelectWalletPopup from "../selectWallet";
 import { useConnectedAddress } from "next-common/context/connectedAddress";
 
-export default function PopupWithAddress({
+export default function PopupWithSigner({
   Component,
   title,
   onClose,
@@ -20,9 +20,11 @@ export default function PopupWithAddress({
     return <SelectWalletPopup onClose={onClose} />;
   }
 
+  //TODO: handle case of user logged in but connected address is empty
+
   if (connectedAddress?.wallet === WalletTypes.METAMASK) {
     return (
-      <MaybeLoginMetamask
+      <MaybeMetamaskSigner
         onClose={onClose}
         autoCloseAfterLogin={autoCloseAfterLogin}
         title={title}
@@ -33,7 +35,7 @@ export default function PopupWithAddress({
   }
 
   return (
-    <MaybeLoginPolkadot
+    <MaybePolkadotSigner
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
       title={title}

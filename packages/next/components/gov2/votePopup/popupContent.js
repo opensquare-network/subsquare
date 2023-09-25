@@ -14,7 +14,6 @@ import Delegating from "components/referenda/popup/delegating";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import { useChainSettings } from "next-common/context/chain";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { WarningMessage } from "next-common/components/popup/styled";
 import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
@@ -22,9 +21,9 @@ import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 export default function PopupContent({
-  extensionAccounts,
   referendumIndex,
   trackId,
   onClose,
@@ -39,7 +38,7 @@ export default function PopupContent({
   const isMounted = useIsMounted();
   const [tabIndex, setTabIndex] = useState(Aye);
 
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
 
   const api = useApi();
   const node = useChainSettings();
@@ -124,7 +123,6 @@ export default function PopupContent({
   return (
     <>
       <Signer
-        signerAccount={signerAccount}
         balanceName="Voting balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}

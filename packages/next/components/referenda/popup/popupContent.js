@@ -14,14 +14,13 @@ import Delegating from "./delegating";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import { useChainSettings } from "next-common/context/chain";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { Aye, Nay, Split } from "./ayeNaySplitTab";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 export default function PopupContent({
-  extensionAccounts,
   referendumIndex,
   onClose,
   onSubmitted = emptyFunction,
@@ -35,7 +34,7 @@ export default function PopupContent({
   const isMounted = useIsMounted();
   const [tabIndex, setTabIndex] = useState(Aye);
 
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
 
   const api = useApi();
   const node = useChainSettings();
@@ -114,7 +113,6 @@ export default function PopupContent({
   return (
     <>
       <Signer
-        signerAccount={signerAccount}
         balanceName="Voting balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}

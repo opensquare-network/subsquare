@@ -1,4 +1,4 @@
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import AyeNayTab from "./ayeNayTab";
 import useMoonStandardVote from "./voteHooks/useMoonStandardVote";
 import useMoonSplitVote from "./voteHooks/useMoonSplitVote";
@@ -83,7 +83,7 @@ export async function submitExtrinsic({
 
 export default function MoonPopup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Referendum vote"
       Component={PopupContent}
       useStandardVote={useMoonStandardVote}

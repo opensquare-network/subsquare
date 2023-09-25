@@ -1,9 +1,9 @@
 import React from "react";
-import MaybeLogin from "../maybeLogin";
+import MaybeSignerConnected from "./maybeSignerConnected";
 import Popup from "../popup/wrapper/Popup";
 import { useMetaMaskAccounts } from "../../utils/metamask";
 
-export default function MaybeLoginMetamask({
+export default function MaybeMetamaskSigner({
   onClose,
   autoCloseAfterLogin,
   title,
@@ -17,18 +17,14 @@ export default function MaybeLoginMetamask({
   }
 
   return (
-    <MaybeLogin
-      accounts={metamaskAccounts}
+    <MaybeSignerConnected
+      extensionAccounts={metamaskAccounts}
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
     >
       <Popup onClose={onClose} title={title}>
-        <Component
-          onClose={onClose}
-          extensionAccounts={metamaskAccounts}
-          {...props}
-        />
+        <Component onClose={onClose} {...props} />
       </Popup>
-    </MaybeLogin>
+    </MaybeSignerConnected>
   );
 }

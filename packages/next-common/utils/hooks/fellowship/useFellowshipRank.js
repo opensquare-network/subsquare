@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import useApi from "../useApi";
 import useIsMounted from "../useIsMounted";
-import useRealAddress from "../useRealAddress";
 
-export default function useFellowshipRank() {
+export default function useFellowshipRank(address) {
   const api = useApi();
   const [rank, setRank] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const realAddress = useRealAddress();
   const isMounted = useIsMounted();
 
   useEffect(() => {
@@ -15,9 +13,13 @@ export default function useFellowshipRank() {
       return;
     }
 
+    if (!address) {
+      return;
+    }
+
     setIsLoading(true);
     api.query.fellowshipCollective
-      .members(realAddress)
+      .members(address)
       .then((data) => {
         setRank(data.toJSON());
       })
@@ -26,7 +28,7 @@ export default function useFellowshipRank() {
           setIsLoading(false);
         }
       });
-  }, [api, realAddress, isMounted]);
+  }, [api, address, isMounted]);
 
   return { rank, isLoading };
 }

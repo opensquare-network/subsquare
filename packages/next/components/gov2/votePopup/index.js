@@ -1,4 +1,4 @@
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import useStandardVote from "components/referenda/popup/voteHooks/useStandardVote";
 import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
@@ -7,7 +7,7 @@ import { submitPolkadotExtrinsic } from "components/referenda/popup";
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Referendum vote"
       Component={PopupContent}
       useStandardVote={useStandardVote}

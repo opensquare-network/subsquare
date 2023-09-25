@@ -7,16 +7,17 @@ import PopupLabel from "../label";
 import ConnectedSigner from "../../connectedSigner";
 import ProxyInfo from "../proxyInfo";
 import ChangeableConnectedSigner from "next-common/components/changeableConnectedSigner";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 export default function Signer({
   isBalanceLoading,
   balance,
   balanceName = "Balance",
-  signerAccount,
   symbol,
   signerBalance,
   isSignerBalanceLoading,
 }) {
+  const signerAccount = useSignerAccount();
   const node = useChainSettings();
   const noSignerBalance = isNil(signerBalance) && isNil(isSignerBalanceLoading);
   const noVotingBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -26,7 +27,7 @@ export default function Signer({
   if (!signerAccount || signerAccount?.isLoggedInAddress) {
     signerDisplay = (
       <>
-        <ConnectedSigner signerAccount={signerAccount} />
+        <ConnectedSigner />
         {signerAccount?.proxyAddress &&
           (noVotingBalance ? (
             <ProxyInfo address={signerAccount.proxyAddress} />
@@ -41,7 +42,7 @@ export default function Signer({
       </>
     );
   } else {
-    signerDisplay = <ChangeableConnectedSigner signerAccount={signerAccount} />;
+    signerDisplay = <ChangeableConnectedSigner />;
   }
 
   return (

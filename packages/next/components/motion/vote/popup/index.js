@@ -1,4 +1,4 @@
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -43,7 +43,7 @@ export async function submitPolkadotExtrinsic({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Vote"
       Component={PopupContent}
       submitExtrinsic={submitPolkadotExtrinsic}

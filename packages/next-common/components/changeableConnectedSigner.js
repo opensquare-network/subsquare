@@ -4,13 +4,15 @@ import Account from "./account";
 import EmptyAccount from "./emptyAccount";
 import { GreyPanel } from "./styled/containers/greyPanel";
 import { useDisconnectAddress } from "next-common/context/connectedAddress";
+import { useSignerAccount } from "./popupWithSigner/context";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
   justify-content: space-between;
 `;
 
-export default function ChangeableConnectedSigner({ signerAccount }) {
+export default function ChangeableConnectedSigner() {
+  const signerAccount = useSignerAccount();
   const disconnectAddress = useDisconnectAddress();
 
   return (
