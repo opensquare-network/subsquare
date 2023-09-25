@@ -13,4 +13,15 @@ const myDemocracyDelegatedSelector = createSelector(
   },
 );
 
+export const myDemocracyDelegatedVotesSelector = createSelector(
+  myDemocracyVotingSelector,
+  (voting) => {
+    if (!voting || !voting.isDelegating) {
+      return null;
+    }
+
+    return voting.delegatedVotes;
+  },
+);
+
 export default myDemocracyDelegatedSelector;
