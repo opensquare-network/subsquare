@@ -4,9 +4,11 @@ import { useDispatch } from "react-redux";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
-import { CACHE_KEY } from "../../utils/constants";
 import SelectWalletAddress from "../login/selectWalletAddress";
-import { useSetConnectedAddress } from "next-common/context/connectedAddress";
+import {
+  useConnectedAddress,
+  useSetConnectedAddress,
+} from "next-common/context/connectedAddress";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -14,19 +16,12 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-function rememberConnectAddress(address) {
-  localStorage.setItem(CACHE_KEY.lastLoginAddress, address);
-}
-
-function rememberConnectExtension(address) {
-  localStorage.setItem(CACHE_KEY.lastLoginExtension, address);
-}
-
 export default function SelectWalletContent() {
   const [wallet, setWallet] = useState();
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
+  const connectedAddress = useConnectedAddress();
   const setConnectedAddress = useSetConnectedAddress();
 
   const doConnectAddress = async () => {
@@ -35,9 +30,10 @@ export default function SelectWalletContent() {
       return;
     }
 
-    setConnectedAddress(selectedAccount.address);
-    rememberConnectAddress(selectedAccount.address);
-    rememberConnectExtension(selectedAccount.meta?.source || selectedWallet);
+    setConnectedAddress({
+      address: selectedAccount.address,
+      extensionName: selectedAccount.meta?.source || selectedWallet,
+    });
   };
 
   return (
@@ -52,7 +48,7 @@ export default function SelectWalletContent() {
           setSelectWallet={setSelectWallet}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
-          lastUsedAddress={localStorage.getItem(CACHE_KEY.lastLoginAddress)}
+          lastUsedAddress={connectedAddress?.address}
         />
 
         <ButtonWrapper>

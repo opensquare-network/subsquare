@@ -5,7 +5,6 @@ import { useUser } from "../../context/user";
 import useApi from "./useApi";
 import WalletTypes from "../consts/walletTypes";
 import { useConnectedAddress } from "next-common/context/connectedAddress";
-import { CACHE_KEY } from "../constants";
 
 export default function useSignerAccount(extensionAccounts) {
   const { injectedWeb3 } = useInjectedWeb3();
@@ -15,7 +14,6 @@ export default function useSignerAccount(extensionAccounts) {
   const connectedAddress = useConnectedAddress();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
-  const extensionName = localStorage.getItem(CACHE_KEY.lastLoginExtension);
 
   useEffect(() => {
     if (!userAddress && !connectedAddress) {
@@ -30,7 +28,7 @@ export default function useSignerAccount(extensionAccounts) {
       account = extensionAccounts?.find(
         (item) =>
           isSameAddress(item.address, userAddress) &&
-          item.meta?.source === extensionName,
+          item.meta?.source === connectedAddress?.extensionName,
       );
       if (account) {
         isLoggedInAddress = true;
@@ -41,8 +39,8 @@ export default function useSignerAccount(extensionAccounts) {
     if (!account && connectedAddress) {
       account = extensionAccounts?.find(
         (item) =>
-          isSameAddress(item.address, connectedAddress) &&
-          item.meta?.source === extensionName,
+          isSameAddress(item.address, connectedAddress?.address) &&
+          item.meta?.source === connectedAddress?.extensionName,
       );
       if (account) {
         isLoggedInAddress = false;
@@ -54,7 +52,7 @@ export default function useSignerAccount(extensionAccounts) {
         if (!injectedWeb3) {
           return;
         }
-        const extension = injectedWeb3?.[extensionName];
+        const extension = injectedWeb3?.[connectedAddress?.extensionName];
         if (!extension) {
           return;
         }
@@ -71,7 +69,7 @@ export default function useSignerAccount(extensionAccounts) {
         proxyAddress,
         realAddress: isLoggedInAddress
           ? proxyAddress || userAddress
-          : connectedAddress,
+          : connectedAddress?.address,
         isLoggedInAddress,
       });
     } else {
@@ -84,7 +82,6 @@ export default function useSignerAccount(extensionAccounts) {
     proxyAddress,
     api,
     injectedWeb3,
-    extensionName,
   ]);
 
   return signerAccount;

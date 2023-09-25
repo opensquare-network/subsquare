@@ -1,8 +1,8 @@
-import { CACHE_KEY } from "./constants";
+import { getStorageLastConnectedAddress } from "next-common/context/connectedAddress";
 import WalletTypes from "./consts/walletTypes";
 
 export default function isUseTalisman() {
   return (
-    localStorage.getItem(CACHE_KEY.lastLoginExtension) === WalletTypes.TALISMAN
+    getStorageLastConnectedAddress()?.extensionName === WalletTypes.TALISMAN
   );
 }

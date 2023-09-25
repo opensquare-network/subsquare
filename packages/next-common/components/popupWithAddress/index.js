@@ -15,13 +15,12 @@ export default function PopupWithAddress({
 }) {
   const loginUser = useUser();
   const connectedAddress = useConnectedAddress();
-  const lastLoginExtension = localStorage.lastLoginExtension;
 
   if (!loginUser && !connectedAddress) {
     return <SelectWalletPopup onClose={onClose} />;
   }
 
-  if (lastLoginExtension === WalletTypes.METAMASK) {
+  if (connectedAddress?.extensionName === WalletTypes.METAMASK) {
     return (
       <MaybeLoginMetamask
         onClose={onClose}

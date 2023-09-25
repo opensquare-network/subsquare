@@ -1,22 +1,54 @@
 import { CACHE_KEY } from "next-common/utils/constants";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const ConnectedAddressContext = createContext(null);
 
 export default ConnectedAddressContext;
+
+export function getStorageLastConnectedAddress() {
+  const lastConnectedAddress = localStorage.getItem(
+    CACHE_KEY.lastConnectedAddress,
+  );
+  if (!lastConnectedAddress) {
+    return;
+  }
+  try {
+    return JSON.parse(lastConnectedAddress);
+  } catch (e) {
+    return;
+  }
+}
+
+function setStorageLastConnectedAddress(info) {
+  localStorage.setItem(CACHE_KEY.lastConnectedAddress, JSON.stringify(info));
+}
+
+function forgetStorageLastConnectedAddress() {
+  localStorage.removeItem(CACHE_KEY.lastConnectedAddress);
+}
 
 export function ConnectedAddressProvider({ children }) {
   const [connectedAddress, setConnectedAddress] = useState();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setConnectedAddress(localStorage[CACHE_KEY.lastLoginAddress]);
+      const info = getStorageLastConnectedAddress();
+      setConnectedAddress(info);
     }
   }, []);
 
   return (
     <ConnectedAddressContext.Provider
-      value={{ connectedAddress, setConnectedAddress }}
+      value={{
+        connectedAddress,
+        setConnectedAddress,
+      }}
     >
       {children}
     </ConnectedAddressContext.Provider>
@@ -29,6 +61,20 @@ export function useConnectedAddress() {
 }
 
 export function useSetConnectedAddress() {
-  const { setConnectedAddress } = useContext(ConnectedAddressContext);
-  return setConnectedAddress;
+  const { setConnectedAddress, setConnectedExtension } = useContext(
+    ConnectedAddressContext,
+  );
+  return useCallback(
+    (info) => {
+      if (!info) {
+        setConnectedAddress();
+        forgetStorageLastConnectedAddress();
+        return;
+      }
+
+      setConnectedAddress(info);
+      setStorageLastConnectedAddress(info);
+    },
+    [setConnectedAddress, setConnectedExtension],
+  );
 }

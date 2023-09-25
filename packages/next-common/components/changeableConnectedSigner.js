@@ -4,7 +4,6 @@ import Account from "./account";
 import EmptyAccount from "./emptyAccount";
 import { GreyPanel } from "./styled/containers/greyPanel";
 import { useSetConnectedAddress } from "next-common/context/connectedAddress";
-import { CACHE_KEY } from "next-common/utils/constants";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -14,9 +13,8 @@ const Wrapper = styled(GreyPanel)`
 export default function ChangeableConnectedSigner({ signerAccount }) {
   const setConnectedAddress = useSetConnectedAddress();
 
-  const reSelectWallet = () => {
+  const reSelectAddress = () => {
     setConnectedAddress();
-    localStorage.removeItem(CACHE_KEY.lastLoginAddress);
   };
 
   return (
@@ -24,7 +22,7 @@ export default function ChangeableConnectedSigner({ signerAccount }) {
       <div className="flex items-center gap-[16px]">
         {signerAccount ? <Account account={signerAccount} /> : <EmptyAccount />}
       </div>
-      <button className="text14Medium text-theme500" onClick={reSelectWallet}>
+      <button className="text14Medium text-theme500" onClick={reSelectAddress}>
         Change
       </button>
     </Wrapper>

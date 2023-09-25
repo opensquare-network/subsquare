@@ -15,21 +15,16 @@ import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import SelectWalletAddress from "./selectWalletAddress";
-import { useSetConnectedAddress } from "next-common/context/connectedAddress";
+import {
+  useConnectedAddress,
+  useSetConnectedAddress,
+} from "next-common/context/connectedAddress";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
     margin-top: 12px;
   }
 `;
-
-function rememberLoginExtension(extensionName) {
-  localStorage.setItem(CACHE_KEY.lastLoginExtension, extensionName);
-}
-
-function rememberLoginAddress(address) {
-  localStorage.setItem(CACHE_KEY.lastLoginAddress, address);
-}
 
 function rememberAccountName(account, chain) {
   const accountMap = JSON.parse(
@@ -51,6 +46,7 @@ export default function AddressLogin({ setView }) {
   const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
   const { closeLoginPopup } = useLoginPopup();
+  const connectedAddress = useConnectedAddress();
   const setConnectedAddress = useSetConnectedAddress();
   const isLoginPage = router.pathname === "/login";
 
@@ -104,11 +100,10 @@ export default function AddressLogin({ setView }) {
           );
           if (loginResult) {
             updateUser(loginResult, userDispatch);
-            setConnectedAddress(selectedAccount.address);
-            rememberLoginAddress(selectedAccount.address);
-            rememberLoginExtension(
-              selectedAccount.meta?.source || selectedWallet,
-            );
+            setConnectedAddress({
+              address: selectedAccount.address,
+              extensionName: selectedAccount.meta?.source || selectedWallet,
+            });
 
             if (loginResult.email || dontRemindEmail) {
               if (isLoginPage) {
@@ -155,7 +150,7 @@ export default function AddressLogin({ setView }) {
         setSelectedAccount={setSelectedAccount}
         web3Error={web3Error}
         setWeb3Error={setWeb3Error}
-        lastUsedAddress={localStorage.getItem(CACHE_KEY.lastLoginAddress)}
+        lastUsedAddress={connectedAddress?.address}
       />
       <ButtonWrapper>
         {selectedWallet && (

@@ -13,7 +13,7 @@ export default function MaybeLogin({ children, accounts, onClose }) {
     !accounts?.find(
       (acc) =>
         isSameAddress(acc.address, loginUser?.address) ||
-        isSameAddress(acc.address, connectedAddress),
+        isSameAddress(acc.address, connectedAddress?.address),
     )
   ) {
     return <SelectWalletPopup onClose={onClose} />;
