@@ -1,4 +1,6 @@
 import { CACHE_KEY } from "next-common/utils/constants";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import getChainSettings from "next-common/utils/consts/settings";
 import {
   createContext,
   useCallback,
@@ -6,6 +8,8 @@ import {
   useEffect,
   useState,
 } from "react";
+import ethers from "ethers";
+import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 const ConnectedAddressContext = createContext(null);
 
@@ -19,7 +23,24 @@ export function getStorageLastConnectedAddress() {
     return;
   }
   try {
-    return JSON.parse(lastConnectedAddress);
+    const info = JSON.parse(lastConnectedAddress);
+
+    // Check data
+    const chain = process.env.NEXT_PUBLIC_CHAIN;
+    const chainSettings = getChainSettings(chain);
+
+    if (
+      chainSettings.chainType === ChainTypes.ETHEREUM &&
+      !ethers.isAddress(info.address)
+    ) {
+      return;
+    }
+
+    if (!isPolkadotAddress(info.address)) {
+      return;
+    }
+
+    return info;
   } catch (e) {
     return;
   }
