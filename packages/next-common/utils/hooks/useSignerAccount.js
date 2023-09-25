@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isSameAddress } from "..";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useUser } from "../../context/user";
@@ -6,14 +6,42 @@ import useApi from "./useApi";
 import WalletTypes from "../consts/walletTypes";
 import { useConnectedAddress } from "next-common/context/connectedAddress";
 
-export default function useSignerAccount(extensionAccounts) {
-  const { injectedWeb3 } = useInjectedWeb3();
-  const [signerAccount, setSignerAccount] = useState();
+function useSetSigner() {
   const api = useApi();
+  const { injectedWeb3 } = useInjectedWeb3();
+
+  return useCallback(
+    (account) => {
+      if (!account) {
+        return;
+      }
+
+      if (account.meta?.source !== WalletTypes.METAMASK) {
+        if (!injectedWeb3) {
+          return;
+        }
+        const extension = injectedWeb3?.[account.meta?.source];
+        if (!extension) {
+          return;
+        }
+        extension.enable("subsquare").then((wallet) => {
+          if (wallet) {
+            api?.setSigner(wallet.signer);
+          }
+        });
+      }
+    },
+    [injectedWeb3, api],
+  );
+}
+
+export default function useSignerAccount(extensionAccounts) {
+  const [signerAccount, setSignerAccount] = useState();
   const user = useUser();
   const connectedAddress = useConnectedAddress();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
+  const setSigner = useSetSigner();
 
   useEffect(() => {
     if (!userAddress && !connectedAddress) {
@@ -52,20 +80,7 @@ export default function useSignerAccount(extensionAccounts) {
       return;
     }
 
-    if (account.meta?.source !== WalletTypes.METAMASK) {
-      if (!injectedWeb3) {
-        return;
-      }
-      const extension = injectedWeb3?.[connectedAddress?.wallet];
-      if (!extension) {
-        return;
-      }
-      extension.enable("subsquare").then((wallet) => {
-        if (wallet) {
-          api?.setSigner(wallet.signer);
-        }
-      });
-    }
+    setSigner(account);
 
     setSignerAccount({
       ...account,
@@ -81,8 +96,7 @@ export default function useSignerAccount(extensionAccounts) {
     userAddress,
     connectedAddress,
     proxyAddress,
-    api,
-    injectedWeb3,
+    setSigner,
   ]);
 
   return signerAccount;
