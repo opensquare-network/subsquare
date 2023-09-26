@@ -6,7 +6,7 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useReducer,
 } from "react";
 import ethers from "ethers";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
@@ -54,13 +54,34 @@ function forgetStorageLastConnectedAddress() {
   localStorage.removeItem(CACHE_KEY.lastConnectedAddress);
 }
 
+const ACTION_KEY = {
+  SET: "SET",
+  FORGET: "FORGET",
+};
+
+function connectedAddressReducer(state, action) {
+  switch (action.type) {
+    case ACTION_KEY.SET:
+      setStorageLastConnectedAddress(action.info);
+      return action.info;
+    case ACTION_KEY.FORGET:
+      forgetStorageLastConnectedAddress();
+      return null;
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
 export function ConnectedAddressProvider({ children }) {
-  const [connectedAddress, setConnectedAddress] = useState();
+  const [connectedAddress, dispatch] = useReducer(connectedAddressReducer);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const info = getStorageLastConnectedAddress();
-      setConnectedAddress(info);
+      dispatch({
+        type: ACTION_KEY.SET,
+        info,
+      });
     }
   }, []);
 
@@ -68,7 +89,7 @@ export function ConnectedAddressProvider({ children }) {
     <ConnectedAddressContext.Provider
       value={{
         connectedAddress,
-        setConnectedAddress,
+        dispatch,
       }}
     >
       {children}
@@ -82,23 +103,30 @@ export function useConnectedAddress() {
 }
 
 export function useSetConnectedAddress() {
-  const { setConnectedAddress } = useContext(ConnectedAddressContext);
+  const { dispatch } = useContext(ConnectedAddressContext);
   return useCallback(
     (info) => {
       if (!info) {
-        setConnectedAddress();
-        forgetStorageLastConnectedAddress();
+        dispatch({
+          type: ACTION_KEY.FORGET,
+        });
         return;
       }
 
-      setConnectedAddress(info);
-      setStorageLastConnectedAddress(info);
+      dispatch({
+        type: ACTION_KEY.SET,
+        info,
+      });
     },
-    [setConnectedAddress],
+    [dispatch],
   );
 }
 
 export function useDisconnectAddress() {
-  const setConnectedAddress = useSetConnectedAddress();
-  return useCallback(() => setConnectedAddress(), [setConnectedAddress]);
+  const { dispatch } = useContext(ConnectedAddressContext);
+  return useCallback(() => {
+    dispatch({
+      type: ACTION_KEY.FORGET,
+    });
+  }, [dispatch]);
 }
