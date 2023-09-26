@@ -28,7 +28,10 @@ export default function getStorageAddressInfo(key) {
     return;
   }
 
-  if (!isPolkadotAddress(info.address)) {
+  if (
+    chainSettings.chainType !== ChainTypes.ETHEREUM &&
+    !isPolkadotAddress(info.address)
+  ) {
     return;
   }
 

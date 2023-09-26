@@ -52,7 +52,10 @@ export default function AddressLogin({ setView }) {
   const [lastLoginAddress, setLastLoginAddress] = useState();
 
   useEffect(() => {
-    setLastLoginAddress(getStorageAddressInfo(CACHE_KEY.lastLoginAddress));
+    const info = getStorageAddressInfo(CACHE_KEY.lastLoginAddress);
+    if (info) {
+      setLastLoginAddress(info);
+    }
   }, []);
 
   async function signWith(message, address, selectedWallet) {
