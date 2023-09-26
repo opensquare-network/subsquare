@@ -131,6 +131,7 @@ function User({
   color,
   linkToVotesPage = false,
   ellipsis = true,
+  externalLink,
 }) {
   const settings = useChainSettings();
   const address = add ?? user?.address;
@@ -218,43 +219,61 @@ function User({
     elmUsername
   );
 
+  const userAvatar = (
+    <AvatarWrapper fontSize={fontSize}>
+      {address ? (
+        <Avatar address={address} size={fontSize * (20 / 14)} />
+      ) : (
+        <Gravatar
+          email={user?.email}
+          emailMd5={user?.emailMd5}
+          size={fontSize * (20 / 14)}
+        />
+      )}
+    </AvatarWrapper>
+  );
+
+  const userIdentity = address ? (
+    identity && identity?.info?.status !== "NO_ID" ? (
+      <Identity identity={identity} fontSize={fontSize} maxWidth={maxWidth} />
+    ) : (
+      addressWithoutIdentity
+    )
+  ) : (
+    noAddress
+  );
+
   let linkUserPage = `/user/${address ?? user?.username}`;
   if (linkToVotesPage) {
     linkUserPage = `${linkUserPage}/votes`;
   }
 
+  let userIdentityLink = (
+    <Link href={linkUserPage} passHref legacyBehavior>
+      <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
+        {userIdentity}
+      </LinkWrapper>
+    </Link>
+  );
+
+  if (externalLink) {
+    userIdentityLink = (
+      <LinkWrapper
+        href={externalLink}
+        target="_blank"
+        rel="noreferrer"
+        color={color}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {userIdentity}
+      </LinkWrapper>
+    );
+  }
+
   return (
     <Wrapper noEvent={noEvent} color={color}>
-      {showAvatar && (
-        <AvatarWrapper fontSize={fontSize}>
-          {address ? (
-            <Avatar address={address} size={fontSize * (20 / 14)} />
-          ) : (
-            <Gravatar
-              email={user?.email}
-              emailMd5={user?.emailMd5}
-              size={fontSize * (20 / 14)}
-            />
-          )}
-        </AvatarWrapper>
-      )}
-      <Link href={linkUserPage} passHref legacyBehavior>
-        <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
-          {address ? (
-            identity && identity?.info?.status !== "NO_ID" ? (
-              <Identity
-                identity={identity}
-                fontSize={fontSize}
-                maxWidth={maxWidth}
-              />
-            ) : (
-              addressWithoutIdentity
-            )
-          ) : (
-            noAddress
-          )}
-        </LinkWrapper>
-      </Link>
+      {showAvatar && userAvatar}
+      {userIdentityLink}
     </Wrapper>
   );
 }

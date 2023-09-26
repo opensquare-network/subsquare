@@ -72,7 +72,10 @@ export default function Item({ data, isSecondLevel }) {
       )}
     >
       <InfoWrapper>
-        <User user={comment.author} noEvent />
+        <User
+          user={comment.author}
+          externalLink={comment?.author?.polkassemblyUserLink}
+        />
         <div>{duration}</div>
       </InfoWrapper>
       <ContentWrapper>
