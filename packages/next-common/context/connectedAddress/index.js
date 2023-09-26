@@ -1,13 +1,7 @@
 import { CACHE_KEY } from "next-common/utils/constants";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import getChainSettings from "next-common/utils/consts/settings";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import ethers from "ethers";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
@@ -102,31 +96,27 @@ export function useConnectedAddress() {
   return connectedAddress;
 }
 
-export function useSetConnectedAddress() {
+export function useConnectedAddressDispatch() {
   const { dispatch } = useContext(ConnectedAddressContext);
-  return useCallback(
-    (info) => {
-      if (!info) {
-        dispatch({
-          type: ACTION_KEY.FORGET,
-        });
-        return;
-      }
-
-      dispatch({
-        type: ACTION_KEY.SET,
-        info,
-      });
-    },
-    [dispatch],
-  );
+  return dispatch;
 }
 
-export function useDisconnectAddress() {
-  const { dispatch } = useContext(ConnectedAddressContext);
-  return useCallback(() => {
+export function setConnectedAddress(dispatch, info) {
+  if (!info) {
     dispatch({
       type: ACTION_KEY.FORGET,
     });
-  }, [dispatch]);
+    return;
+  }
+
+  dispatch({
+    type: ACTION_KEY.SET,
+    info,
+  });
+}
+
+export function disconnectAddress(dispatch) {
+  dispatch({
+    type: ACTION_KEY.FORGET,
+  });
 }

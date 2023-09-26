@@ -3,7 +3,10 @@ import styled from "styled-components";
 import Account from "./account";
 import EmptyAccount from "./emptyAccount";
 import { GreyPanel } from "./styled/containers/greyPanel";
-import { useDisconnectAddress } from "next-common/context/connectedAddress";
+import {
+  disconnectAddress,
+  useConnectedAddressDispatch,
+} from "next-common/context/connectedAddress";
 import { useSignerAccount } from "./popupWithSigner/context";
 
 const Wrapper = styled(GreyPanel)`
@@ -13,7 +16,7 @@ const Wrapper = styled(GreyPanel)`
 
 export default function ChangeableConnectedSigner() {
   const signerAccount = useSignerAccount();
-  const disconnectAddress = useDisconnectAddress();
+  const connectedAddressDispatch = useConnectedAddressDispatch();
 
   return (
     <Wrapper>
@@ -22,7 +25,7 @@ export default function ChangeableConnectedSigner() {
       </div>
       <button
         className="text14Medium text-theme500"
-        onClick={disconnectAddress}
+        onClick={() => disconnectAddress(connectedAddressDispatch)}
       >
         Change
       </button>
