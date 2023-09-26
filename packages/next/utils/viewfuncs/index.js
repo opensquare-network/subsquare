@@ -33,8 +33,13 @@ export const convertPolkassemblyComment = (chain, comment) => {
     createdAt: comment.created_at,
     updatedAt: comment.updated_at,
     author: {
-      username: address ? addressEllipsis(address) : comment.username,
+      username: comment.is_custom_username
+        ? comment.username
+        : address
+        ? addressEllipsis(address)
+        : comment.username,
       address,
+      polkassemblyUserLink: `https://${chain}.polkassembly.io/user/${comment.username}`,
     },
   };
 };
