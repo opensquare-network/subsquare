@@ -33,6 +33,9 @@ export function ConnectedAddressProvider({ children }) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const info = getStorageAddressInfo(CACHE_KEY.lastConnectedAddress);
+      if (!info) {
+        return;
+      }
       dispatch({
         type: ACTION_KEY.SET,
         info,
