@@ -4,7 +4,6 @@ import useIsProxySet from "next-common/hooks/useIsProxySet";
 
 export default function ProxyHint({ style }) {
   const isProxySet = useIsProxySet();
-
   if (!isProxySet) {
     return null;
   }
