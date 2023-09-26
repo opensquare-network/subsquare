@@ -12,6 +12,7 @@ import { DelegatedVoteLock } from "./voteForItem";
 import getPostTitle from "./getPostTitle";
 import DemocracyTag from "../stateTag";
 import DelegationHint from "./hint";
+import ProxyHint from "../../proxyHint";
 
 function ItemHeader({ vote }) {
   return (
@@ -62,6 +63,7 @@ export default function MobileList() {
 
   return (
     <ListWrapper isLoading={!myDelegatedVotes}>
+      <ProxyHint />
       <DelegationHint />
       {(myDelegatedVotes || []).map((item) => (
         <VoteListItem key={item.referendumIndex} vote={item} />

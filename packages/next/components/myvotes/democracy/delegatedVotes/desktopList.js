@@ -8,6 +8,7 @@ import DelegatedVoteForItem from "./voteForItem";
 import DemocracyTag from "../stateTag";
 import getPostTitle from "./getPostTitle";
 import DelegationHint from "./hint";
+import ProxyHint from "../../proxyHint";
 
 export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
@@ -39,7 +40,8 @@ export default function DesktopList() {
 
   return (
     <ListCard>
-      <DelegationHint />
+      <ProxyHint style={{ marginBottom: 4 }} />
+      <DelegationHint style={{ marginBottom: 8 }} />
       <ListWrapper>
         <StyledList columns={columns} rows={rows} loading={!myDelegatedVotes} />
       </ListWrapper>
