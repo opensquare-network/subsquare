@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -17,9 +17,9 @@ import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import WalletAddressSelect from "./walletAddressSelect";
 import {
   setConnectedAddress,
-  useConnectedAddress,
   useConnectedAddressDispatch,
 } from "next-common/context/connectedAddress";
+import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -47,9 +47,13 @@ export default function AddressLogin({ setView }) {
   const router = useRouter();
   const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
   const { closeLoginPopup } = useLoginPopup();
-  const connectedAddress = useConnectedAddress();
   const connectedAddressDispatch = useConnectedAddressDispatch();
   const isLoginPage = router.pathname === "/login";
+  const [lastLoginAddress, setLastLoginAddress] = useState();
+
+  useEffect(() => {
+    setLastLoginAddress(getStorageAddressInfo(CACHE_KEY.lastLoginAddress));
+  }, []);
 
   async function signWith(message, address, selectedWallet) {
     if (selectedWallet === WalletTypes.METAMASK) {
@@ -101,10 +105,16 @@ export default function AddressLogin({ setView }) {
           );
           if (loginResult) {
             updateUser(loginResult, userDispatch);
-            setConnectedAddress(connectedAddressDispatch, {
+
+            const info = {
               address: selectedAccount.address,
               wallet: selectedAccount.meta?.source || selectedWallet,
-            });
+            };
+            setConnectedAddress(connectedAddressDispatch, info);
+            localStorage.setItem(
+              CACHE_KEY.lastLoginAddress,
+              JSON.stringify(info),
+            );
 
             if (loginResult.email || dontRemindEmail) {
               if (isLoginPage) {
@@ -151,7 +161,7 @@ export default function AddressLogin({ setView }) {
         setSelectedAccount={setSelectedAccount}
         web3Error={web3Error}
         setWeb3Error={setWeb3Error}
-        lastUsedAddress={connectedAddress?.address}
+        lastUsedAddress={lastLoginAddress?.address}
       />
       <ButtonWrapper>
         {selectedWallet && (
