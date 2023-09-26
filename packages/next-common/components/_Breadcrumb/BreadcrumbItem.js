@@ -24,7 +24,9 @@ function BreadcrumbItem(props) {
     <li
       className={clsx(
         "group",
+        "[&:not(:last-child)]:min-w-fit",
         "text14Medium text-textPrimary last:text-textTertiary",
+        "overflow-hidden whitespace-nowrap overflow-ellipsis",
       )}
     >
       <span>{content}</span>
