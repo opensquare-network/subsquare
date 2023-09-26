@@ -10,6 +10,7 @@ import MoonUndelegatePopup from "./undelegatePopup/moonPopup";
 import styled from "styled-components";
 import Tooltip from "../../tooltip";
 import isMoonChain from "next-common/utils/isMoonChain";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 const RemoveButton = styled(Button)`
   display: flex;
@@ -27,7 +28,7 @@ export default function DemocracySummaryDelegationButton({
 
   let TheDelegatePopup = DelegatePopup;
   let TheUndelegatePopup = UndelegatePopup;
-  if (isMoonChain()) {
+  if (isMoonChain() && isUseMetamask()) {
     TheDelegatePopup = MoonDelegatePopup;
     TheUndelegatePopup = MoonUndelegatePopup;
   }

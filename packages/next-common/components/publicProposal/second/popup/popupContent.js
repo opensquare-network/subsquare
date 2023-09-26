@@ -10,11 +10,10 @@ import SubmitButton from "./submitButton";
 import { emptyFunction } from "../../../../utils";
 import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
-import useSignerAccount from "../../../../utils/hooks/useSignerAccount";
 import SecondPopupInputTimes from "./inputTimes";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 export default function PopupContent({
-  extensionAccounts,
   proposalIndex,
   depositorUpperBound,
   depositRequired,
@@ -27,7 +26,7 @@ export default function PopupContent({
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(false);
@@ -77,7 +76,6 @@ export default function PopupContent({
   return (
     <>
       <Signer
-        signerAccount={signerAccount}
         balanceName="Voting balance"
         balance={balance}
         isBalanceLoading={loadingBalance}

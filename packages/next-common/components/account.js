@@ -8,6 +8,44 @@ import Identity from "./Identity";
 import { addressEllipsis } from "../utils";
 import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address";
+import {
+  WalletPolkadotjs,
+  WalletMetamask,
+  WalletTailsman,
+  WalletSubwallet,
+  WalletPolkagate,
+  WalletNova,
+} from "@osn/icons/subsquare";
+import WalletTypes from "next-common/utils/consts/walletTypes";
+
+const WalletIcon = ({ wallet }) => {
+  return (
+    <div className="absolute right-0 bottom-0">
+      {wallet === WalletTypes.POLKADOT_JS && (
+        <WalletPolkadotjs width={16} height={16} />
+      )}
+      {wallet === WalletTypes.METAMASK && (
+        <WalletMetamask width={16} height={16} />
+      )}
+      {wallet === WalletTypes.TALISMAN && (
+        <WalletTailsman width={16} height={16} />
+      )}
+      {wallet === WalletTypes.SUBWALLET_JS && (
+        <WalletSubwallet width={16} height={16} />
+      )}
+      {wallet === WalletTypes.POLKAGATE && (
+        <WalletPolkagate width={16} height={16} />
+      )}
+      {wallet === WalletTypes.NOVA && <WalletNova width={16} height={16} />}
+    </div>
+  );
+};
+
+const AvatarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
 
 const NameWrapper = styled.div`
   color: var(--textPrimary);
@@ -28,6 +66,7 @@ export default function Account({ account }) {
   const [identity, setIdentity] = useState(null);
 
   const address = normalizeAddress(account?.address);
+  const wallet = account?.meta?.source;
 
   useEffect(() => {
     setIdentity(null);
@@ -41,7 +80,10 @@ export default function Account({ account }) {
 
   return (
     <>
-      <Avatar address={address} />
+      <AvatarWrapper>
+        <Avatar address={address} size={40} />
+        <WalletIcon wallet={wallet} />
+      </AvatarWrapper>
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
         {identity && identity?.info?.status !== "NO_ID" ? (

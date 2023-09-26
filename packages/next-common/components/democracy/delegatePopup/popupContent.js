@@ -17,11 +17,13 @@ import Conviction from "./conviction";
 import VoteValue from "./voteValue";
 import Target from "./target";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import useSignerAccount from "../../../utils/hooks/useSignerAccount";
 import { PopupButtonWrapper } from "../../popup/wrapper";
+import {
+  useExtensionAccounts,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 
 export default function PopupContent({
-  extensionAccounts,
   onClose,
   onInBlock = emptyFunction,
   submitExtrinsic = emptyFunction,
@@ -29,7 +31,8 @@ export default function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
+  const extensionAccounts = useExtensionAccounts();
 
   const [targetAddress, setTargetAddress] = useState("");
 
@@ -106,7 +109,6 @@ export default function PopupContent({
   return (
     <>
       <Signer
-        signerAccount={signerAccount}
         balanceName="Voting balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}

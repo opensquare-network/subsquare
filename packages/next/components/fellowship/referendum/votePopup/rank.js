@@ -2,10 +2,12 @@ import {
   StatusWrapper,
   WarningMessage,
 } from "next-common/components/popup/styled";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useFellowshipRank from "next-common/utils/hooks/fellowship/useFellowshipRank";
 
 export default function Rank() {
-  const { rank, isLoading } = useFellowshipRank();
+  const signerAccount = useSignerAccount();
+  const { rank, isLoading } = useFellowshipRank(signerAccount?.realAddress);
 
   if (isLoading) {
     return null;

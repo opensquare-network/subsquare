@@ -10,20 +10,18 @@ import {
   emptyFunction,
   isAddressInGroup,
 } from "next-common/utils";
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { useChainSettings } from "next-common/context/chain";
-import Signer from "next-common/components/popup/fields/signerField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 function PopupContent({
-  extensionAccounts,
   tipHash,
   onClose,
   onSubmitted = emptyFunction,
@@ -33,19 +31,11 @@ function PopupContent({
   const isMounted = useIsMounted();
   const api = useApi();
 
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
 
   const [inputTipValue, setInputTipValue] = useState("");
   const [tipping, setTipping] = useState(false);
   const { decimals } = useChainSettings();
-  const [balance, loadingBalance] = useAddressBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
   const councilTippers = useCouncilMembers();
   const isTipper = isAddressInGroup(
     signerAccount?.realAddress,
@@ -98,13 +88,7 @@ function PopupContent({
       <WarningMessage danger={!isTipper}>
         Only council members can tip.
       </WarningMessage>
-      <Signer
-        signerAccount={signerAccount}
-        balance={balance}
-        isBalanceLoading={loadingBalance}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-      />
+      <SignerWithBalance />
       <BalanceField
         title="Tip Value"
         isLoading={tipping}
@@ -121,5 +105,5 @@ function PopupContent({
 }
 
 export default function EndorsePopup(props) {
-  return <PopupWithAddress title="Tip" Component={PopupContent} {...props} />;
+  return <PopupWithSigner title="Tip" Component={PopupContent} {...props} />;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupContent from "./popupContent";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
@@ -39,7 +39,7 @@ export async function submitPolkadotExtrinsic({
 
 export default function DelegatePopup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Delegate"
       Component={PopupContent}
       autoCloseAfterLogin={true}

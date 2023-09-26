@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import { Conviction, isAye } from "../../utils/referendumCommon";
 import useApi from "next-common/utils/hooks/useApi";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-export default function useSubMyReferendaVote(trackId, referendumIndex) {
+export default function useSubMyReferendaVote(
+  trackId,
+  referendumIndex,
+  address,
+) {
   const api = useApi();
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();
-  const address = useRealAddress();
 
   useEffect(() => {
     if (!api || !address || !api.query.convictionVoting) {

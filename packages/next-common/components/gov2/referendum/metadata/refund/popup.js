@@ -1,10 +1,9 @@
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import React, { useState } from "react";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
 import { emptyFunction } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
@@ -12,6 +11,7 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import PopupLabel from "next-common/components/popup/label";
 import styled from "styled-components";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 const Input = styled.input`
   background: var(--neutral200) !important;
@@ -25,7 +25,6 @@ const Input = styled.input`
 `;
 
 function PopupContent({
-  extensionAccounts,
   pallet = "referenda",
   referendumIndex,
   onClose = emptyFunction,
@@ -34,7 +33,7 @@ function PopupContent({
   const isMounted = useIsMounted();
 
   const dispatch = useDispatch();
-  const signerAccount = useSignerAccount(extensionAccounts);
+  const signerAccount = useSignerAccount();
   const showErrorToast = (message) => dispatch(newErrorToast(message));
   const [calling, setCalling] = useState(false);
 
@@ -60,7 +59,7 @@ function PopupContent({
 
   return (
     <>
-      <Signer signerAccount={signerAccount} />
+      <Signer />
       <div>
         <PopupLabel text="Referendum Index" />
         <div>
@@ -78,7 +77,7 @@ function PopupContent({
 
 export default function RefundPopup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Refund decision deposit"
       Component={PopupContent}
       {...props}

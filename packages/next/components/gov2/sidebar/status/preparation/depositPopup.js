@@ -1,10 +1,7 @@
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useApi from "next-common/utils/hooks/useApi";
-import useSignerAccount from "next-common/utils/hooks/useSignerAccount";
-import Signer from "next-common/components/popup/fields/signerField";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePostOnChainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceInput from "next-common/components/balanceInput";
@@ -16,9 +13,10 @@ import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 function PopupContent({
-  extensionAccounts,
   onClose = emptyFunction,
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
@@ -29,15 +27,7 @@ function PopupContent({
   const node = useChainSettings();
 
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
-  const signerAccount = useSignerAccount(extensionAccounts);
-  const [balance, loadingBalance] = useAddressBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
+  const signerAccount = useSignerAccount();
 
   const [calling, setCalling] = useState(false);
 
@@ -66,13 +56,7 @@ function PopupContent({
 
   return (
     <>
-      <Signer
-        signerAccount={signerAccount}
-        balance={balance}
-        isBalanceLoading={loadingBalance}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-      />
+      <SignerWithBalance />
       <div>
         <PopupLabel text={"Referendum ID"} />
         <Input value={referendumIndex} disabled={true} />
@@ -97,7 +81,7 @@ function PopupContent({
 
 export default function DepositPopup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Place decision deposit"
       Component={PopupContent}
       {...props}

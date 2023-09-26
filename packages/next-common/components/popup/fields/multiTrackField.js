@@ -5,8 +5,8 @@ import PopupLabel from "../label";
 import MultiSelect from "next-common/components/multiSelect";
 import useCall from "next-common/utils/hooks/useCall";
 import useApi from "next-common/utils/hooks/useApi";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Loading from "next-common/components/loading";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 export default function MultiTrack({
   title = "Track",
@@ -17,7 +17,9 @@ export default function MultiTrack({
   const { tracks: defaultTrackList } = usePageProps();
   const tracks = trackList || defaultTrackList;
 
-  const address = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
+
   const api = useApi();
   let [myVotingTuple, isLoading] = useCall(
     api?.query?.convictionVoting?.votingFor.entries,

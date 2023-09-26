@@ -20,6 +20,7 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { useChainSettings } from "next-common/context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -61,7 +62,7 @@ export default function AllDelegation() {
   }, [dispatch, refresh]);
 
   let Popup = DelegatePopup;
-  if (isMoonChain()) {
+  if (isMoonChain() && isUseMetamask()) {
     Popup = MoonDelegatePopup;
   }
 

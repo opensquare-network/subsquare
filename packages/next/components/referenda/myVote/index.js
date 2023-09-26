@@ -9,6 +9,7 @@ import { usePost } from "next-common/context/post";
 import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 import isNil from "lodash.isnil";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function MyVote() {
   const post = usePost();
@@ -17,7 +18,8 @@ export default function MyVote() {
   const allVotes = useSelector(allVotesSelector);
   let votes = useMyVotes(allVotes);
 
-  const { vote: onchainVote } = useSubMyDemocracyVote();
+  const realAddress = useRealAddress();
+  const { vote: onchainVote } = useSubMyDemocracyVote(realAddress);
   const finishHeight = useDemocracyVoteFinishedHeight();
 
   // Retrieve the current vote from the chain

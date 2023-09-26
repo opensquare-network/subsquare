@@ -9,6 +9,7 @@ import { useState } from "react";
 import RemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import isNil from "lodash.isnil";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function MyVote() {
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
@@ -18,7 +19,14 @@ export default function MyVote() {
   const post = usePost();
   const referendumIndex = post?.referendumIndex;
   const trackId = post?.track;
-  const { vote: onchainVote } = useSubMyReferendaVote(trackId, referendumIndex);
+
+  const address = useRealAddress();
+  const { vote: onchainVote } = useSubMyReferendaVote(
+    trackId,
+    referendumIndex,
+    address,
+  );
+
   const finishHeight = useReferendumVotingFinishHeight();
 
   let hasOnchainVote = false;

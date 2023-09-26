@@ -5,7 +5,7 @@ import * as techCommCouncil from "next-common/utils/moonPrecompiles/techCommCoun
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
 import isUseMetamask from "next-common/utils/isUseMetamask";
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { submitPolkadotExtrinsic } from ".";
 import PopupContent from "./popupContent";
@@ -122,7 +122,7 @@ async function submitExtrinsic({
 
 export default function Popup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Vote"
       Component={PopupContent}
       submitExtrinsic={submitExtrinsic}

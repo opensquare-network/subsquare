@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { getWallets } from "../../utils/consts/connect";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import PolkadotWallet from "./polkadotWallet";
 import { MetaMaskWallet } from "./metamaskWallet";
@@ -15,7 +15,6 @@ import {
   getMetaMaskEthereum,
   normalizedMetaMaskAccounts,
   requestAccounts,
-  useMetaMaskAccounts,
 } from "next-common/utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
@@ -34,70 +33,8 @@ export default function SelectWallet({
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
-  const chain = useChain();
-  const [metamaskAccounts] = useMetaMaskAccounts(
-    selectedWallet === WalletTypes.METAMASK,
-  );
 
-  useEffect(() => {
-    if (selectedWallet === WalletTypes.METAMASK) {
-      setAccounts(metamaskAccounts);
-    }
-  }, [metamaskAccounts, selectedWallet, setAccounts]);
-
-  useEffect(() => {
-    if (!injectedWeb3) {
-      return;
-    }
-
-    for (let wallet of getWallets()) {
-      if (injectedWeb3[wallet.extensionName]) {
-        return;
-      }
-    }
-
-    if (chainType === ChainTypes.ETHEREUM) {
-      // For ethereum chains, we only due with the known supported wallets
-      return;
-    }
-
-    // For unknown wallet extensions
-    (async () => {
-      const polkadotDapp = await import("@polkadot/extension-dapp");
-      const extensionUtils = await import("../../utils/extensionAccount");
-      const web3Enable = polkadotDapp.web3Enable;
-      const web3FromSource = polkadotDapp.web3FromSource;
-      const polkadotWeb3Accounts = extensionUtils.polkadotWeb3Accounts;
-
-      await web3Enable("subsquare");
-      const extensionAccounts = await polkadotWeb3Accounts(chainType);
-      const accounts = extensionAccounts.map((item) => {
-        return {
-          ...item,
-          name: item.meta?.name,
-        };
-      });
-
-      if (isMounted.current) {
-        setAccounts(accounts);
-        if (accounts?.length > 0) {
-          const injector = await web3FromSource(accounts[0].meta.source);
-          setSelectWallet("other");
-          setWallet(injector);
-        }
-      }
-    })();
-  }, [
-    injectedWeb3,
-    setAccounts,
-    setSelectWallet,
-    setWallet,
-    isMounted,
-    chainType,
-    chain,
-  ]);
-
-  const loadAccounts = useCallback(
+  const loadPolkadotAccounts = useCallback(
     async (selectedWallet) => {
       setAccounts(null);
       const extension = injectedWeb3?.[selectedWallet];
@@ -179,43 +116,52 @@ export default function SelectWallet({
     ],
   );
 
-  const onPolkadotWalletClick = useCallback(
-    (wallet) => {
-      loadAccounts(wallet.extensionName);
-      onSelect && onSelect(wallet.extensionName);
-    },
-    [loadAccounts, onSelect],
-  );
-
-  const onNovaWalletClick = useCallback(() => {
-    if (isEvmChain()) {
-      loadMetaMaskAccounts(WalletTypes.METAMASK);
-      onSelect && onSelect(WalletTypes.METAMASK);
-    } else {
-      loadAccounts(WalletTypes.POLKADOT_JS);
-      onSelect && onSelect(WalletTypes.POLKADOT_JS);
+  useEffect(() => {
+    if (!selectedWallet) {
+      return;
     }
-  }, [loadMetaMaskAccounts, loadAccounts, onSelect]);
 
-  const onMetaMaskWalletClick = useCallback(
-    (wallet) => {
-      loadMetaMaskAccounts(wallet.extensionName);
-      onSelect && onSelect(wallet.extensionName);
-    },
-    [loadMetaMaskAccounts, onSelect],
-  );
+    switch (selectedWallet) {
+      case WalletTypes.POLKADOT_JS:
+      case WalletTypes.POLKAGATE:
+      case WalletTypes.SUBWALLET_JS:
+      case WalletTypes.TALISMAN: {
+        loadPolkadotAccounts(selectedWallet);
+        onSelect(selectedWallet);
+        break;
+      }
+      case WalletTypes.METAMASK: {
+        loadMetaMaskAccounts(selectedWallet);
+        onSelect(selectedWallet);
+        break;
+      }
+      case WalletTypes.NOVA: {
+        if (isEvmChain()) {
+          loadMetaMaskAccounts(WalletTypes.METAMASK);
+          onSelect(WalletTypes.METAMASK);
+        } else {
+          loadPolkadotAccounts(WalletTypes.POLKADOT_JS);
+          onSelect(WalletTypes.POLKADOT_JS);
+        }
+        break;
+      }
+    }
+  }, [selectedWallet, loadPolkadotAccounts, loadMetaMaskAccounts, onSelect]);
 
   return (
     <div className="space-y-2">
       {getWallets().map((wallet, index) => {
+        const selected = wallet.extensionName === selectedWallet;
+        const loading = wallet.extensionName === waitingPermissionWallet;
+
         if (wallet.extensionName === WalletTypes.METAMASK) {
           return (
             <MetaMaskWallet
               key={index}
               wallet={wallet}
-              onClick={onMetaMaskWalletClick}
-              selected={wallet.extensionName === selectedWallet}
-              loading={wallet.extensionName === waitingPermissionWallet}
+              onClick={() => setSelectWallet(wallet.extensionName)}
+              selected={selected}
+              loading={loading}
             />
           );
         }
@@ -225,9 +171,9 @@ export default function SelectWallet({
             <NovaWallet
               key={index}
               wallet={wallet}
-              onClick={onNovaWalletClick}
-              selected={wallet.extensionName === selectedWallet}
-              loading={wallet.extensionName === waitingPermissionWallet}
+              onClick={() => setSelectWallet(wallet.extensionName)}
+              selected={selected}
+              loading={loading}
             />
           );
         }
@@ -236,9 +182,9 @@ export default function SelectWallet({
           <PolkadotWallet
             key={index}
             wallet={wallet}
-            onClick={onPolkadotWalletClick}
-            selected={wallet.extensionName === selectedWallet}
-            loading={wallet.extensionName === waitingPermissionWallet}
+            onClick={() => setSelectWallet(wallet.extensionName)}
+            selected={selected}
+            loading={loading}
           />
         );
       })}

@@ -6,19 +6,44 @@ import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import ConnectedSigner from "../../connectedSigner";
 import ProxyInfo from "../proxyInfo";
+import ChangeableConnectedSigner from "next-common/components/changeableConnectedSigner";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 export default function Signer({
   isBalanceLoading,
   balance,
   balanceName = "Balance",
-  signerAccount,
   symbol,
   signerBalance,
   isSignerBalanceLoading,
 }) {
+  const signerAccount = useSignerAccount();
   const node = useChainSettings();
   const noSignerBalance = isNil(signerBalance) && isNil(isSignerBalanceLoading);
   const noVotingBalance = isNil(balance) && isNil(isBalanceLoading);
+
+  let signerDisplay = null;
+
+  if (!signerAccount || signerAccount?.isLoggedInAddress) {
+    signerDisplay = (
+      <>
+        <ConnectedSigner />
+        {signerAccount?.proxyAddress &&
+          (noVotingBalance ? (
+            <ProxyInfo address={signerAccount.proxyAddress} />
+          ) : (
+            <ProxyInfo
+              address={signerAccount.proxyAddress}
+              balance={toPrecision(balance ?? 0, node.decimals)}
+              isLoading={isBalanceLoading}
+              symbol={symbol || node.symbol}
+            />
+          ))}
+      </>
+    );
+  } else {
+    signerDisplay = <ChangeableConnectedSigner />;
+  }
 
   return (
     <div>
@@ -33,18 +58,7 @@ export default function Signer({
           symbol={symbol || node.symbol}
         />
       )}
-      <ConnectedSigner signerAccount={signerAccount} />
-      {signerAccount?.proxyAddress &&
-        (noVotingBalance ? (
-          <ProxyInfo address={signerAccount.proxyAddress} />
-        ) : (
-          <ProxyInfo
-            address={signerAccount.proxyAddress}
-            balance={toPrecision(balance ?? 0, node.decimals)}
-            isLoading={isBalanceLoading}
-            symbol={symbol || node.symbol}
-          />
-        ))}
+      {signerDisplay}
     </div>
   );
 }

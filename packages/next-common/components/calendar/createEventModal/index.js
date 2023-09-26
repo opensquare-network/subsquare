@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import Signer from "next-common/components/popup/fields/signerField";
-import PopupWithAddress from "../../../components/popupWithAddress";
-import useSignerAccount from "../../../utils/hooks/useSignerAccount";
+import PopupWithSigner from "../../../components/popupWithSigner";
 import Title from "./title";
 import Link from "./link";
 import Description from "./description";
@@ -18,9 +17,8 @@ import noop from "lodash.noop";
 import { calendarUserEventsApi } from "../../../services/url";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 
-function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
+function PopupContent({ onClose, refresh = noop }) {
   const dispatch = useDispatch();
-  const signerAccount = useSignerAccount(extensionAccounts);
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
@@ -97,7 +95,7 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
 
   return (
     <>
-      <Signer signerAccount={signerAccount} balanceName="Balance" />
+      <Signer />
       <Title setValue={setTitle} />
       <Description setValue={setDescription} />
       <DateField
@@ -137,10 +135,6 @@ function PopupContent({ extensionAccounts, onClose, refresh = noop }) {
 
 export default function CreateEventModal(props) {
   return (
-    <PopupWithAddress
-      title="Create Event"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithSigner title="Create Event" Component={PopupContent} {...props} />
   );
 }

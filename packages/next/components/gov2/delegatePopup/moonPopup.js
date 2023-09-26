@@ -1,5 +1,5 @@
 import { emptyFunction } from "next-common/utils";
-import PopupWithAddress from "next-common/components/popupWithAddress";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupContent from "./popupContent";
 import isUseMetamask from "next-common/utils/isUseMetamask";
 import { submitPolkadotExtrinsic } from ".";
@@ -121,7 +121,7 @@ async function submitExtrinsic({
 
 export default function MoonDelegatePopup(props) {
   return (
-    <PopupWithAddress
+    <PopupWithSigner
       title="Delegate"
       Component={PopupContent}
       autoCloseAfterLogin={true}

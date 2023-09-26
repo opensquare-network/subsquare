@@ -9,6 +9,7 @@ import MoonUndelegatePopup from "./undelegatePopup/moonPopup";
 import Tooltip from "next-common/components/tooltip";
 import styled from "styled-components";
 import isMoonChain from "next-common/utils/isMoonChain";
+import isUseMetamask from "next-common/utils/isUseMetamask";
 
 const RemoveButton = styled(Button)`
   display: flex;
@@ -27,7 +28,7 @@ export default function DelegationButton({
 
   let TheDelegatePopup = DelegatePopup;
   let TheUndelegatePopup = UndelegatePopup;
-  if (isMoonChain()) {
+  if (isMoonChain() && isUseMetamask()) {
     TheDelegatePopup = MoonDelegatePopup;
     TheUndelegatePopup = MoonUndelegatePopup;
   }
