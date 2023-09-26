@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { getWallets } from "../../utils/consts/connect";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import { emptyFunction } from "../../utils";
@@ -15,7 +15,6 @@ import {
   getMetaMaskEthereum,
   normalizedMetaMaskAccounts,
   requestAccounts,
-  useMetaMaskAccounts,
 } from "next-common/utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
@@ -34,17 +33,8 @@ export default function SelectWallet({
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
-  const [metamaskAccounts] = useMetaMaskAccounts(
-    selectedWallet === WalletTypes.METAMASK,
-  );
 
-  useEffect(() => {
-    if (selectedWallet === WalletTypes.METAMASK) {
-      setAccounts(metamaskAccounts);
-    }
-  }, [metamaskAccounts, selectedWallet, setAccounts]);
-
-  const loadAccounts = useCallback(
+  const loadPolkadotAccounts = useCallback(
     async (selectedWallet) => {
       setAccounts(null);
       const extension = injectedWeb3?.[selectedWallet];
@@ -126,31 +116,37 @@ export default function SelectWallet({
     ],
   );
 
-  const onPolkadotWalletClick = useCallback(
-    (wallet) => {
-      loadAccounts(wallet.extensionName);
-      onSelect && onSelect(wallet.extensionName);
-    },
-    [loadAccounts, onSelect],
-  );
-
-  const onNovaWalletClick = useCallback(() => {
-    if (isEvmChain()) {
-      loadMetaMaskAccounts(WalletTypes.METAMASK);
-      onSelect && onSelect(WalletTypes.METAMASK);
-    } else {
-      loadAccounts(WalletTypes.POLKADOT_JS);
-      onSelect && onSelect(WalletTypes.POLKADOT_JS);
+  useEffect(() => {
+    if (!selectedWallet) {
+      return;
     }
-  }, [loadMetaMaskAccounts, loadAccounts, onSelect]);
 
-  const onMetaMaskWalletClick = useCallback(
-    (wallet) => {
-      loadMetaMaskAccounts(wallet.extensionName);
-      onSelect && onSelect(wallet.extensionName);
-    },
-    [loadMetaMaskAccounts, onSelect],
-  );
+    switch (selectedWallet) {
+      case WalletTypes.POLKADOT_JS:
+      case WalletTypes.POLKAGATE:
+      case WalletTypes.SUBWALLET_JS:
+      case WalletTypes.TALISMAN: {
+        loadPolkadotAccounts(selectedWallet);
+        onSelect(selectedWallet);
+        break;
+      }
+      case WalletTypes.METAMASK: {
+        loadMetaMaskAccounts(selectedWallet);
+        onSelect(selectedWallet);
+        break;
+      }
+      case WalletTypes.NOVA: {
+        if (isEvmChain()) {
+          loadMetaMaskAccounts(WalletTypes.METAMASK);
+          onSelect(WalletTypes.METAMASK);
+        } else {
+          loadPolkadotAccounts(WalletTypes.POLKADOT_JS);
+          onSelect(WalletTypes.POLKADOT_JS);
+        }
+        break;
+      }
+    }
+  }, [selectedWallet, loadPolkadotAccounts, loadMetaMaskAccounts, onSelect]);
 
   return (
     <div className="space-y-2">
@@ -163,7 +159,7 @@ export default function SelectWallet({
             <MetaMaskWallet
               key={index}
               wallet={wallet}
-              onClick={onMetaMaskWalletClick}
+              onClick={() => setSelectWallet(wallet.extensionName)}
               selected={selected}
               loading={loading}
             />
@@ -175,7 +171,7 @@ export default function SelectWallet({
             <NovaWallet
               key={index}
               wallet={wallet}
-              onClick={onNovaWalletClick}
+              onClick={() => setSelectWallet(wallet.extensionName)}
               selected={selected}
               loading={loading}
             />
@@ -186,7 +182,7 @@ export default function SelectWallet({
           <PolkadotWallet
             key={index}
             wallet={wallet}
-            onClick={onPolkadotWalletClick}
+            onClick={() => setSelectWallet(wallet.extensionName)}
             selected={selected}
             loading={loading}
           />
