@@ -10,12 +10,12 @@ export default function NoData({
   return (
     <div {...props} className={clsx("py-6", className)}>
       {showIcon && (
-        <SystemEmptyBox className="[&_path]:stroke-textTertiary w-10 h-10 mx-auto" />
+        <SystemEmptyBox className="[&_path]:stroke-textTertiary w-10 h-10 mx-auto mb-2" />
       )}
 
       <p
         className={clsx(
-          "mt-2 text14Medium text-textTertiary",
+          "text14Medium text-textTertiary",
           "flex items-center justify-center flex-wrap",
         )}
       >
