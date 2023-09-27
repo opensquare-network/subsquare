@@ -13,7 +13,6 @@ import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs"
 export default function DetailLayout({
   seoInfo,
   breadcrumbs,
-  header,
   children,
   hasSidebar,
 }) {
@@ -42,21 +41,10 @@ export default function DetailLayout({
             !hasSidebar && "max-w-[856px]",
           )}
         >
-          <Breadcrumbs breadcrumbs={breadcrumbs} />
-
-          {header && (
-            <div
-              className={clsx(
-                "px-12",
-                navCollapsed ? "max-md:px-6" : "max-lg:px-6",
-              )}
-            >
-              {header}
-            </div>
-          )}
+          <Breadcrumbs breadcrumbs={breadcrumbs} hasSidebar={hasSidebar} />
 
           {/* set relative for right side(vote) component */}
-          <div className="flex gap-x-6 mt-6 max-w-full relative">
+          <div className="flex gap-x-6 max-w-full relative">
             <div
               className={clsx(
                 "w-full",

@@ -42,7 +42,6 @@ function TechCommProposalPageImpl() {
   const desc = getMetaDesc(motion);
   return (
     <DetailLayout
-      detail={motion}
       seoInfo={{
         title: motion?.title,
         desc,
