@@ -1,4 +1,3 @@
-import useIsMounted from "../../utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "../../context/post";
 import { Conviction, isAye } from "../../utils/referendumCommon";
@@ -29,7 +28,6 @@ async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
 }
 
 export default function useSubMyDemocracyVote(address) {
-  const isMounted = useIsMounted();
   const api = useApi();
   const { referendumIndex } = useOnchainData();
 
@@ -47,6 +45,7 @@ export default function useSubMyDemocracyVote(address) {
       .votingOf(address, (voting) => {
         const jsonVoting = voting?.toJSON();
         if (!jsonVoting) {
+          setIsLoading(false);
           return;
         }
 
@@ -55,29 +54,27 @@ export default function useSubMyDemocracyVote(address) {
             (vote) => vote[0] === referendumIndex,
           )?.[1];
 
-          if (isMounted.current) {
-            setVote({
-              ...vote,
-              delegations: jsonVoting.direct.delegations,
-            });
-          }
-        } else if (jsonVoting.delegating) {
-          // If the address has delegated to other.
-          // Then, look into the votes of the delegating target address.
-          queryVotingByDelegation(
-            api,
-            referendumIndex,
-            jsonVoting.delegating,
-          ).then((delegatingVote) => {
-            if (isMounted.current) {
-              setVote(delegatingVote);
-            }
+          setVote({
+            ...vote,
+            delegations: jsonVoting.direct.delegations,
           });
         }
 
-        if (isMounted.current) {
+        if (!jsonVoting.delegating) {
           setIsLoading(false);
+          return;
         }
+
+        // If the address has delegated to other.
+        // Then, look into the votes of the delegating target address.
+        queryVotingByDelegation(
+          api,
+          referendumIndex,
+          jsonVoting.delegating,
+        ).then((delegatingVote) => {
+          setVote(delegatingVote);
+          setIsLoading(false);
+        });
       })
       .then((result) => {
         unsub = result;
@@ -88,7 +85,7 @@ export default function useSubMyDemocracyVote(address) {
         unsub();
       }
     };
-  }, [api, isMounted, address, referendumIndex]);
+  }, [api, address, referendumIndex]);
 
   return {
     vote,
