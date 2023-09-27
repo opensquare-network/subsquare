@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "../../utils/hooks/useIsMounted";
 import { Conviction, isAye } from "../../utils/referendumCommon";
 import useApi from "next-common/utils/hooks/useApi";
 
@@ -11,7 +10,6 @@ export default function useSubMyReferendaVote(
   const api = useApi();
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
 
   useEffect(() => {
     if (!api || !address || !api.query.convictionVoting) {
@@ -37,6 +35,7 @@ export default function useSubMyReferendaVote(
             ...vote,
             delegations: jsonVoting.casting.delegations,
           });
+          setIsLoading(false);
         }
 
         if (!jsonVoting.delegating) {
@@ -69,15 +68,11 @@ export default function useSubMyReferendaVote(
                 aye,
               },
             });
+            setIsLoading(false);
           });
       })
       .then((result) => {
         unsub = result;
-      })
-      .finally(() => {
-        if (isMounted.current) {
-          setIsLoading(false);
-        }
       });
 
     return () => {
@@ -85,7 +80,7 @@ export default function useSubMyReferendaVote(
         unsub();
       }
     };
-  }, [api, trackId, referendumIndex, address, isMounted]);
+  }, [api, trackId, referendumIndex, address]);
 
   return {
     vote,
