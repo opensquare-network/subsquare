@@ -22,7 +22,7 @@ export default function ArticleContent({ post, postReactions }) {
 
   return (
     <Wrapper>
-      {post.content !== "" && (
+      {post.content === "" && (
         <NoData text={"The post has not been edited by creator."} />
       )}
       <MarkdownPreviewer content={post.content} />
