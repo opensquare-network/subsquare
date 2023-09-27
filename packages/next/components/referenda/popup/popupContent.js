@@ -24,7 +24,20 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
 
-export default function PopupContent({
+export function LoadingPanel() {
+  return (
+    <>
+      <div className="flex w-full justify-center p-[8px]">
+        <Loading size={20} />
+      </div>
+      <div style={{ textAlign: "right" }}>
+        <PrimaryButton disabled={true}>Confirm</PrimaryButton>
+      </div>
+    </>
+  );
+}
+
+function VotePanel({
   referendumIndex,
   onClose,
   onSubmitted = emptyFunction,
@@ -33,6 +46,9 @@ export default function PopupContent({
   useSplitVote,
   VoteTypeTab,
   submitExtrinsic = emptyFunction,
+  votingBalance,
+  addressVote,
+  addressVoteIsLoading,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -44,17 +60,6 @@ export default function PopupContent({
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
-  );
-  const { vote: addressVote, isLoading: addressVoteIsLoading } =
-    useSubMyDemocracyVote(signerAccount?.realAddress);
-  const addressVoteIsLoaded = useIsLoaded(addressVoteIsLoading);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
@@ -115,66 +120,99 @@ export default function PopupContent({
     });
   };
 
-  let content = (
+  return (
     <>
-      <div className="flex w-full justify-center p-[8px]">
-        <Loading size={20} />
-      </div>
-      <div style={{ textAlign: "right" }}>
-        <PrimaryButton disabled={true}>Confirm</PrimaryButton>
-      </div>
+      {!addressVote?.delegating && (
+        // Address is not allow to vote directly when it is in delegate mode
+        <>
+          <VoteTypeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+          {voteComponent}
+        </>
+      )}
+
+      {addressVote?.delegating && (
+        // If the address has set to delegate mode, show the delegating setting instead
+        <Delegating addressVoteDelegate={addressVote?.delegating} />
+      )}
+
+      {!addressVoteIsLoading &&
+        !addressVote?.standard &&
+        !addressVote?.split &&
+        (!addressVote?.delegating || !addressVoteDelegateVoted) && (
+          <NoVoteRecord />
+        )}
+      {(addressVote?.standard || addressVote?.split) && (
+        <VStack space={8}>
+          {addressVote?.standard && (
+            <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
+          )}
+          {addressVote?.split && (
+            <SplitVoteStatus addressVoteSplit={addressVote?.split} />
+          )}
+          <WarningMessage>
+            Resubmitting the vote will override the current voting record
+          </WarningMessage>
+        </VStack>
+      )}
+      {addressVote?.delegating && addressVoteDelegateVoted && (
+        <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
+      )}
+      {addressVoteIsLoading && <LoadingVoteStatus />}
+
+      {!addressVote?.delegating && (
+        // Address is not allow to vote directly when it is in delegate mode
+        <div style={{ textAlign: "right" }}>
+          <PrimaryButton isLoading={isLoading} onClick={doVote}>
+            Confirm
+          </PrimaryButton>
+        </div>
+      )}
     </>
   );
+}
+
+export default function PopupContent({
+  referendumIndex,
+  onClose,
+  onSubmitted = emptyFunction,
+  onInBlock = emptyFunction,
+  useStandardVote,
+  useSplitVote,
+  VoteTypeTab,
+  submitExtrinsic = emptyFunction,
+}) {
+  const signerAccount = useSignerAccount();
+
+  const api = useApi();
+  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.realAddress,
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address,
+  );
+  const { vote: addressVote, isLoading: addressVoteIsLoading } =
+    useSubMyDemocracyVote(signerAccount?.realAddress);
+  const addressVoteIsLoaded = useIsLoaded(addressVoteIsLoading);
+
+  let content = <LoadingPanel />;
 
   if (addressVoteIsLoaded) {
     content = (
-      <>
-        {!addressVote?.delegating && (
-          // Address is not allow to vote directly when it is in delegate mode
-          <>
-            <VoteTypeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
-            {voteComponent}
-          </>
-        )}
-
-        {addressVote?.delegating && (
-          // If the address has set to delegate mode, show the delegating setting instead
-          <Delegating addressVoteDelegate={addressVote?.delegating} />
-        )}
-
-        {!addressVoteIsLoading &&
-          !addressVote?.standard &&
-          !addressVote?.split &&
-          (!addressVote?.delegating || !addressVoteDelegateVoted) && (
-            <NoVoteRecord />
-          )}
-        {(addressVote?.standard || addressVote?.split) && (
-          <VStack space={8}>
-            {addressVote?.standard && (
-              <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
-            )}
-            {addressVote?.split && (
-              <SplitVoteStatus addressVoteSplit={addressVote?.split} />
-            )}
-            <WarningMessage>
-              Resubmitting the vote will override the current voting record
-            </WarningMessage>
-          </VStack>
-        )}
-        {addressVote?.delegating && addressVoteDelegateVoted && (
-          <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
-        )}
-        {addressVoteIsLoading && <LoadingVoteStatus />}
-
-        {!addressVote?.delegating && (
-          // Address is not allow to vote directly when it is in delegate mode
-          <div style={{ textAlign: "right" }}>
-            <PrimaryButton isLoading={isLoading} onClick={doVote}>
-              Confirm
-            </PrimaryButton>
-          </div>
-        )}
-      </>
+      <VotePanel
+        referendumIndex={referendumIndex}
+        onClose={onClose}
+        onSubmitted={onSubmitted}
+        onInBlock={onInBlock}
+        useStandardVote={useStandardVote}
+        useSplitVote={useSplitVote}
+        VoteTypeTab={VoteTypeTab}
+        submitExtrinsic={submitExtrinsic}
+        votingBalance={votingBalance}
+        addressVote={addressVote}
+        addressVoteIsLoading={addressVoteIsLoading}
+      />
     );
   }
 
