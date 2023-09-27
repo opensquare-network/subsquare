@@ -7,13 +7,13 @@ import Identity from "../Identity";
 import { addressEllipsis, isKeyRegisteredUser } from "../../utils";
 import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
-import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Link from "next/link";
 import { useChainSettings } from "../../context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
 import { KNOWN_ADDR_MATCHERS } from "next-common/utils/knownAddr";
 import { IdentitySpecial } from "@osn/icons/subsquare";
+import DeletedAccount from "./deletedAccount";
 
 const Wrapper = styled(Flex)`
   a {
@@ -73,24 +73,6 @@ const Username = styled.div`
       : css`
           word-break: break-all;
         `}
-`;
-
-const DeleteAccount = styled(Flex)`
-  font-weight: 500;
-  word-break: break-all;
-  font-size: ${(props) => props.fontSize}px;
-  color: var(--textSecondary);
-  > svg {
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-    circle:last-child {
-      fill: var(--neutral400);
-    }
-    circle:first-child {
-      fill: var(--neutral200);
-    }
-  }
 `;
 
 const LinkWrapper = styled.a`
@@ -172,12 +154,7 @@ function User({
   }, [showAvatar, identity, propMaxWidth]);
 
   if (!user && !add) {
-    return (
-      <DeleteAccount fontSize={fontSize}>
-        <AvatarDeleted />
-        [Deleted Account]
-      </DeleteAccount>
-    );
+    return <DeletedAccount fontSize={fontSize} />;
   }
 
   const elmUsernameOrAddr = (
