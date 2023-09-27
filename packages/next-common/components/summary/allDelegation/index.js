@@ -20,7 +20,7 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { useChainSettings } from "next-common/context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
-import isUseMetamask from "next-common/utils/isUseMetamask";
+import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -54,6 +54,7 @@ export default function AllDelegation() {
     useState(false);
   const [showAllBeenDelegatedPopup, setShowAllBeenDelegatedPopup] =
     useState(false);
+  const isUseMetamask = useIsUseMetamask();
 
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
@@ -62,7 +63,7 @@ export default function AllDelegation() {
   }, [dispatch, refresh]);
 
   let Popup = DelegatePopup;
-  if (isMoonChain() && isUseMetamask()) {
+  if (isMoonChain() && isUseMetamask) {
     Popup = MoonDelegatePopup;
   }
 
