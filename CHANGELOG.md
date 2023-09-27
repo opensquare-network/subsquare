@@ -9,6 +9,7 @@ date: 2023-09-27
 - Add a hint for users who have set a proxy that we're showing the on chain votes of the proxied account.
 - Correct user component for polkassembly users, and users can go to polkassembly user detail page.
 - Fix breadcrumb style to prevent case that a breadcrumb item text is too long.
+- Fix OpenGov referenda confirmation progress bar if last confirmation abort doesn't cause a rejection.
 
 ### 3.4.8
 date: 2023-09-23

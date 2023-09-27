@@ -1,5 +1,4 @@
 import { createContext, useContext, useReducer } from "react";
-import { useConfirmingStarted } from "next-common/context/post/gov2/referendum";
 import { usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
 
@@ -12,12 +11,9 @@ export const zoomModes = Object.freeze({
 });
 
 export function ZoomProvider({ children }) {
-  const confirmStart = useConfirmingStarted();
   const state = usePostState();
   let initialMode;
-  if (gov2State.Rejected === state && confirmStart) {
-    initialMode = zoomModes.in;
-  } else if (gov2State.Confirming === state) {
+  if (gov2State.Confirming === state) {
     initialMode = zoomModes.in;
   } else {
     initialMode = zoomModes.out;
