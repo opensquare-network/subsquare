@@ -22,6 +22,7 @@ export default function useSubMyReferendaVote(
       .votingFor(address, trackId, (voting) => {
         const jsonVoting = voting?.toJSON();
         if (!jsonVoting) {
+          setIsLoading(false);
           return null;
         }
 
@@ -35,10 +36,10 @@ export default function useSubMyReferendaVote(
             ...vote,
             delegations: jsonVoting.casting.delegations,
           });
-          setIsLoading(false);
         }
 
         if (!jsonVoting.delegating) {
+          setIsLoading(false);
           return;
         }
 
@@ -54,6 +55,7 @@ export default function useSubMyReferendaVote(
             )?.[1];
 
             if (!vote?.standard) {
+              setIsLoading(false);
               return;
             }
 
