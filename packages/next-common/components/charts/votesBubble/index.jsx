@@ -7,6 +7,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
 import VoteBubbleContent from "./bubbleContent";
 import VotesBubbleLegend from "./legend";
+import NoData from "next-common/components/noData";
 
 export default function VotesBubble({
   allAye,
@@ -60,11 +61,7 @@ export default function VotesBubble({
   };
 
   if (!hasVotes) {
-    return (
-      <div className="text-center text14Medium text-textTertiary py-4">
-        No current votes
-      </div>
-    );
+    return <NoData text="No votes data" />;
   }
 
   return (

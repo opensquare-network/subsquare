@@ -1,7 +1,7 @@
 import React from "react";
-import EditIcon from "../../../assets/imgs/icons/edit.svg";
 import { emptyFunction } from "../../../utils";
 import { LinkButton } from "./styled";
+import { SystemEdit } from "@osn/icons/subsquare";
 
 export default function PostEdit({ setIsEdit = emptyFunction }) {
   return (
@@ -10,7 +10,7 @@ export default function PostEdit({ setIsEdit = emptyFunction }) {
         setIsEdit(true);
       }}
     >
-      <EditIcon />
+      <SystemEdit className="w-5 h-5 [&_path]:fill-textSecondary" />
       Edit
     </LinkButton>
   );

@@ -13,6 +13,7 @@ import isNil from "lodash.isnil";
 import SecondPopupInputTimes from "./inputTimes";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function PopupContent({
   proposalIndex,
@@ -28,6 +29,7 @@ export default function PopupContent({
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();
+  const node = useChainSettings();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(false);
@@ -87,6 +89,7 @@ export default function PopupContent({
         isBalanceLoading={loadingBalance}
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
+        symbol={node.voteSymbol}
       />
       <DepositRequired
         deposit={deposit}
