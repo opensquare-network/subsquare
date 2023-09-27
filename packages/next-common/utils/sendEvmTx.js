@@ -8,7 +8,7 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
-import { getEthereum, switchNetwork } from "./metamask";
+import { getEthereum, requestAccounts, switchNetwork } from "./metamask";
 import getChainSettings from "./consts/settings";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
@@ -49,6 +49,16 @@ export async function sendEvmTx({
     } finally {
       dispatch(removeToast(toastId));
     }
+  }
+
+  const accounts = await requestAccounts();
+  if (accounts?.[0]?.toLowerCase() !== signerAddress.toLowerCase()) {
+    dispatch(
+      newErrorToast(
+        `Please switch to correct account from MetaMask: ${signerAddress}`,
+      ),
+    );
+    return;
   }
 
   const totalSteps = 2;
