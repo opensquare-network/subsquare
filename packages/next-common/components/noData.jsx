@@ -13,7 +13,14 @@ export default function NoData({
         <SystemEmptyBox className="[&_path]:stroke-textTertiary w-10 h-10 mx-auto" />
       )}
 
-      <p className="mt-2 text14Medium text-textTertiary text-center">{text}</p>
+      <p
+        className={clsx(
+          "mt-2 text14Medium text-textTertiary",
+          "flex items-center justify-center flex-wrap",
+        )}
+      >
+        {text}
+      </p>
     </div>
   );
 }
