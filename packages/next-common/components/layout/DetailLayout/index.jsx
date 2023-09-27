@@ -42,7 +42,7 @@ export default function DetailLayout({
             !hasSidebar && "max-w-[856px]",
           )}
         >
-          <Breadcrumbs breadcrumbs={breadcrumbs} />
+          <Breadcrumbs breadcrumbs={breadcrumbs} hasSidebar={hasSidebar} />
 
           {header && (
             <div
@@ -56,7 +56,7 @@ export default function DetailLayout({
           )}
 
           {/* set relative for right side(vote) component */}
-          <div className="flex gap-x-6 mt-6 max-w-full relative">
+          <div className="flex gap-x-6 max-w-full relative">
             <div
               className={clsx(
                 "w-full",
