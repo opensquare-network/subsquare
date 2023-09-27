@@ -6,7 +6,6 @@ import PostEdit from "./PostEdit";
 import PostLink from "./PostLink";
 import User from "../../user";
 import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
-import { useDetailType } from "../../../context/page";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import NoData from "next-common/components/noData";
 
@@ -43,14 +42,13 @@ function WhoCanEdit({ authors = [] }) {
 }
 
 export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
-  const type = useDetailType();
   const isAuthor = useIsPostAuthor();
   return (
     <>
       <NoData
         text={
           <>
-            {`The ${type} has not been edited by creator.`}
+            {"No context provided."}
             {isAuthor && (
               <>
                 <PostEdit setIsEdit={setIsEdit} />
