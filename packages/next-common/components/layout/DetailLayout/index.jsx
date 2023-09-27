@@ -47,7 +47,7 @@ export default function DetailLayout({
           {header && (
             <div
               className={clsx(
-                "px-12",
+                "px-12 mb-6",
                 navCollapsed ? "max-md:px-6" : "max-lg:px-6",
               )}
             >
