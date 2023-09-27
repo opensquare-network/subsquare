@@ -6,21 +6,8 @@ import PostEdit from "./PostEdit";
 import PostLink from "./PostLink";
 import User from "../../user";
 import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
-import { useDetailType } from "../../../context/page";
 import { GreyPanel } from "../../styled/containers/greyPanel";
-
-const PlaceHolder = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: var(--textTertiary);
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import NoData from "next-common/components/noData";
 
 const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
@@ -55,22 +42,24 @@ function WhoCanEdit({ authors = [] }) {
 }
 
 export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
-  const type = useDetailType();
   const isAuthor = useIsPostAuthor();
   return (
     <>
-      <PlaceHolder>
-        <span>
-          {`The ${type} has not been edited by creator.`}
-          {isAuthor && (
-            <>
-              <PostEdit setIsEdit={setIsEdit} />
-              {", or link a post"}
-              <PostLink onClick={() => setShowLinkPopup(true)} />
-            </>
-          )}
-        </span>
-      </PlaceHolder>
+      <NoData
+        text={
+          <>
+            {"No context provided."}
+            {isAuthor && (
+              <>
+                <PostEdit setIsEdit={setIsEdit} />
+                {", or link a post"}
+                <PostLink onClick={() => setShowLinkPopup(true)} />
+              </>
+            )}
+          </>
+        }
+      />
+
       <WhoCanEdit authors={authors} />
     </>
   );

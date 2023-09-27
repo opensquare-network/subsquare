@@ -1,23 +1,14 @@
 import styled from "styled-components";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
+import tw from "tailwind-styled-components";
 
-export const LinkButton = styled.div`
-  display: inline-flex;
-  cursor: pointer;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: var(--textSecondary);
-  align-items: center;
+export const LinkButton = tw.div`
+  text14Medium
+  cursor-pointer
+  inline-flex items-center
+  text-center text-textSecondary
 
-  svg {
-    margin-left: 8px;
-    margin-right: 4px;
-  }
-
-  transform: translateY(5px);
+  [&_svg]:ml-2 [&_svg]:mr-1
 `;
 
 export const CountDownWrapper = styled(NoticeWrapper)`
