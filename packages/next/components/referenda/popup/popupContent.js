@@ -19,6 +19,8 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import VStack from "next-common/components/styled/vStack";
+import { WarningMessage } from "next-common/components/popup/styled";
 
 export default function PopupContent({
   referendumIndex,
@@ -138,11 +140,18 @@ export default function PopupContent({
         (!addressVote?.delegating || !addressVoteDelegateVoted) && (
           <NoVoteRecord />
         )}
-      {addressVote?.standard && (
-        <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
-      )}
-      {addressVote?.split && (
-        <SplitVoteStatus addressVoteSplit={addressVote?.split} />
+      {(addressVote?.standard || addressVote?.split) && (
+        <VStack space={8}>
+          {addressVote?.standard && (
+            <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
+          )}
+          {addressVote?.split && (
+            <SplitVoteStatus addressVoteSplit={addressVote?.split} />
+          )}
+          <WarningMessage>
+            Resubmitting the vote will override the current voting record
+          </WarningMessage>
+        </VStack>
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
         <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
