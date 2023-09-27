@@ -35,7 +35,6 @@ function AnnouncementPageImpl() {
 
   return (
     <DetailLayout
-      detail={announcement}
       seoInfo={{
         title: announcement?.title,
         desc: getMetaDesc(announcement),
