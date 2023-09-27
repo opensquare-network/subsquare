@@ -22,10 +22,11 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import useIsLoaded from "next-common/hooks/useIsLoaded";
+import { LoadingPanel } from "components/referenda/popup/popupContent";
 
-export default function PopupContent({
+function VotePanel({
   referendumIndex,
-  trackId,
   onClose,
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
@@ -33,6 +34,9 @@ export default function PopupContent({
   useSplitVote,
   useSplitAbstainVote,
   submitExtrinsic = emptyFunction,
+  votingBalance,
+  addressVote,
+  addressVoteIsLoading,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -44,17 +48,6 @@ export default function PopupContent({
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
-  );
-
-  const { vote: addressVote, isLoading: addressVoteIsLoading } =
-    useSubMyReferendaVote(trackId, referendumIndex, signerAccount?.realAddress);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
@@ -122,13 +115,6 @@ export default function PopupContent({
 
   return (
     <>
-      <Signer
-        balanceName="Voting balance"
-        balance={votingBalance}
-        isBalanceLoading={votingIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-      />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <>
@@ -182,6 +168,68 @@ export default function PopupContent({
           </PrimaryButton>
         </div>
       )}
+    </>
+  );
+}
+
+export default function PopupContent({
+  referendumIndex,
+  trackId,
+  onClose,
+  onSubmitted = emptyFunction,
+  onInBlock = emptyFunction,
+  useStandardVote,
+  useSplitVote,
+  useSplitAbstainVote,
+  submitExtrinsic = emptyFunction,
+}) {
+  const signerAccount = useSignerAccount();
+
+  const api = useApi();
+
+  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.realAddress,
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address,
+  );
+
+  const { vote: addressVote, isLoading: addressVoteIsLoading } =
+    useSubMyReferendaVote(trackId, referendumIndex, signerAccount?.realAddress);
+  const addressVoteIsLoaded = useIsLoaded(addressVoteIsLoading);
+
+  let content = <LoadingPanel />;
+
+  if (addressVoteIsLoaded) {
+    content = (
+      <VotePanel
+        referendumIndex={referendumIndex}
+        onClose={onClose}
+        onSubmitted={onSubmitted}
+        onInBlock={onInBlock}
+        useStandardVote={useStandardVote}
+        useSplitVote={useSplitVote}
+        useSplitAbstainVote={useSplitAbstainVote}
+        submitExtrinsic={submitExtrinsic}
+        votingBalance={votingBalance}
+        addressVote={addressVote}
+        addressVoteIsLoading={addressVoteIsLoading}
+      />
+    );
+  }
+
+  return (
+    <>
+      <Signer
+        balanceName="Voting balance"
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
+      />
+      {content}
     </>
   );
 }

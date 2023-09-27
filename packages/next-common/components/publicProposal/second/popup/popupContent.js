@@ -12,6 +12,7 @@ import useDeposit from "./useDeposit";
 import isNil from "lodash.isnil";
 import SecondPopupInputTimes from "./inputTimes";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import useIsLoaded from "next-common/hooks/useIsLoaded";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function PopupContent({
@@ -37,11 +38,16 @@ export default function PopupContent({
     api,
     signerAccount?.realAddress,
   );
+  const isBalanceLoaded = useIsLoaded(loadingBalance);
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
     signerAccount?.address,
   );
-  const { deposit, balanceInsufficient } = useDeposit(depositRequired, balance);
+  const {
+    deposit,
+    balanceInsufficient,
+    isLoading: isCheckingDeposit,
+  } = useDeposit(depositRequired, balance, isBalanceLoaded);
   const [times, setTimes] = useState(1);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -99,7 +105,7 @@ export default function PopupContent({
         onClick={submit}
         balanceInsufficient={balanceInsufficient}
         isSubmitting={isSubmitting}
-        disabled={submitDisabled}
+        disabled={isCheckingDeposit || submitDisabled}
       />
     </>
   );

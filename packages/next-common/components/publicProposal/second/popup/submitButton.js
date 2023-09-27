@@ -6,10 +6,8 @@ export default function SubmitButton({
   onClick,
   balanceInsufficient,
   isSubmitting,
-  disabled: _disabled,
+  disabled,
 }) {
-  const disabled = balanceInsufficient || _disabled;
-
   return (
     <PopupButtonWrapper>
       {balanceInsufficient || disabled ? (

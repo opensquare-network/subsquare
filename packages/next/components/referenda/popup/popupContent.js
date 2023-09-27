@@ -21,8 +21,23 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import VStack from "next-common/components/styled/vStack";
 import { WarningMessage } from "next-common/components/popup/styled";
+import Loading from "next-common/components/loading";
+import useIsLoaded from "next-common/hooks/useIsLoaded";
 
-export default function PopupContent({
+export function LoadingPanel() {
+  return (
+    <>
+      <div className="flex w-full justify-center p-[8px]">
+        <Loading size={20} />
+      </div>
+      <div style={{ textAlign: "right" }}>
+        <PrimaryButton disabled={true}>Confirm</PrimaryButton>
+      </div>
+    </>
+  );
+}
+
+function VotePanel({
   referendumIndex,
   onClose,
   onSubmitted = emptyFunction,
@@ -31,6 +46,9 @@ export default function PopupContent({
   useSplitVote,
   VoteTypeTab,
   submitExtrinsic = emptyFunction,
+  votingBalance,
+  addressVote,
+  addressVoteIsLoading,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -42,16 +60,6 @@ export default function PopupContent({
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
-  );
-  const { vote: addressVote, isLoading: addressVoteIsLoading } =
-    useSubMyDemocracyVote(signerAccount?.realAddress);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
@@ -114,13 +122,6 @@ export default function PopupContent({
 
   return (
     <>
-      <Signer
-        balanceName="Voting balance"
-        balance={votingBalance}
-        isBalanceLoading={votingIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-      />
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <>
@@ -166,6 +167,65 @@ export default function PopupContent({
           </PrimaryButton>
         </div>
       )}
+    </>
+  );
+}
+
+export default function PopupContent({
+  referendumIndex,
+  onClose,
+  onSubmitted = emptyFunction,
+  onInBlock = emptyFunction,
+  useStandardVote,
+  useSplitVote,
+  VoteTypeTab,
+  submitExtrinsic = emptyFunction,
+}) {
+  const signerAccount = useSignerAccount();
+
+  const api = useApi();
+  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.realAddress,
+  );
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address,
+  );
+  const { vote: addressVote, isLoading: addressVoteIsLoading } =
+    useSubMyDemocracyVote(signerAccount?.realAddress);
+  const addressVoteIsLoaded = useIsLoaded(addressVoteIsLoading);
+
+  let content = <LoadingPanel />;
+
+  if (addressVoteIsLoaded) {
+    content = (
+      <VotePanel
+        referendumIndex={referendumIndex}
+        onClose={onClose}
+        onSubmitted={onSubmitted}
+        onInBlock={onInBlock}
+        useStandardVote={useStandardVote}
+        useSplitVote={useSplitVote}
+        VoteTypeTab={VoteTypeTab}
+        submitExtrinsic={submitExtrinsic}
+        votingBalance={votingBalance}
+        addressVote={addressVote}
+        addressVoteIsLoading={addressVoteIsLoading}
+      />
+    );
+  }
+
+  return (
+    <>
+      <Signer
+        balanceName="Voting balance"
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
+      />
+      {content}
     </>
   );
 }

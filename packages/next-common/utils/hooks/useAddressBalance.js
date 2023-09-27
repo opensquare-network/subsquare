@@ -25,7 +25,7 @@ export default function useAddressBalance(api, address) {
   const chain = useChain();
   const isMounted = useIsMounted();
   const [balance, setBalance] = useState(0);
-  const [loadingBalance, setLoadingBalance] = useState(true);
+  const [loadingBalance, setLoadingBalance] = useState(false);
 
   useEffect(() => {
     if (!address) {
@@ -34,12 +34,10 @@ export default function useAddressBalance(api, address) {
 
     if (balanceMap.has(address)) {
       setBalance(balanceMap.get(address));
-      setLoadingBalance(false);
       return;
     }
 
     if (!api) {
-      setLoadingBalance(false);
       return;
     }
 
