@@ -12,7 +12,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import MyVote from "./tally/myVote";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import WithAddress from "next-common/components/common/withAddress";
-import isUseMetamask from "next-common/utils/isUseMetamask";
+import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 
 const VotePopup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -29,9 +29,10 @@ export default function Gov2Sidebar() {
   const trackId = detail?.track;
   const isVoting = gov2VotingState.includes(detail?.state?.name);
   const { hideActionButtons } = useChainSettings();
+  const isUseMetamask = useIsUseMetamask();
 
   let Popup = VotePopup;
-  if (isMoonChain() && isUseMetamask()) {
+  if (isMoonChain() && isUseMetamask) {
     Popup = MoonVotePopup;
   }
 
