@@ -21,6 +21,8 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import VStack from "next-common/components/styled/vStack";
 import { WarningMessage } from "next-common/components/popup/styled";
+import Loading from "next-common/components/loading";
+import useIsLoaded from "next-common/hooks/useIsLoaded";
 
 export default function PopupContent({
   referendumIndex,
@@ -52,6 +54,7 @@ export default function PopupContent({
   );
   const { vote: addressVote, isLoading: addressVoteIsLoading } =
     useSubMyDemocracyVote(signerAccount?.realAddress);
+  const addressVoteIsLoaded = useIsLoaded(addressVoteIsLoading);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
@@ -112,6 +115,69 @@ export default function PopupContent({
     });
   };
 
+  let content = (
+    <>
+      <div className="flex w-full justify-center p-[8px]">
+        <Loading size={20} />
+      </div>
+      <div style={{ textAlign: "right" }}>
+        <PrimaryButton disabled={true}>Confirm</PrimaryButton>
+      </div>
+    </>
+  );
+
+  if (addressVoteIsLoaded) {
+    content = (
+      <>
+        {!addressVote?.delegating && (
+          // Address is not allow to vote directly when it is in delegate mode
+          <>
+            <VoteTypeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+            {voteComponent}
+          </>
+        )}
+
+        {addressVote?.delegating && (
+          // If the address has set to delegate mode, show the delegating setting instead
+          <Delegating addressVoteDelegate={addressVote?.delegating} />
+        )}
+
+        {!addressVoteIsLoading &&
+          !addressVote?.standard &&
+          !addressVote?.split &&
+          (!addressVote?.delegating || !addressVoteDelegateVoted) && (
+            <NoVoteRecord />
+          )}
+        {(addressVote?.standard || addressVote?.split) && (
+          <VStack space={8}>
+            {addressVote?.standard && (
+              <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
+            )}
+            {addressVote?.split && (
+              <SplitVoteStatus addressVoteSplit={addressVote?.split} />
+            )}
+            <WarningMessage>
+              Resubmitting the vote will override the current voting record
+            </WarningMessage>
+          </VStack>
+        )}
+        {addressVote?.delegating && addressVoteDelegateVoted && (
+          <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
+        )}
+        {addressVoteIsLoading && <LoadingVoteStatus />}
+
+        {!addressVote?.delegating && (
+          // Address is not allow to vote directly when it is in delegate mode
+          <div style={{ textAlign: "right" }}>
+            <PrimaryButton isLoading={isLoading} onClick={doVote}>
+              Confirm
+            </PrimaryButton>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <Signer
@@ -121,51 +187,7 @@ export default function PopupContent({
         signerBalance={signerBalance}
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
-      {!addressVote?.delegating && (
-        // Address is not allow to vote directly when it is in delegate mode
-        <>
-          <VoteTypeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
-          {voteComponent}
-        </>
-      )}
-
-      {addressVote?.delegating && (
-        // If the address has set to delegate mode, show the delegating setting instead
-        <Delegating addressVoteDelegate={addressVote?.delegating} />
-      )}
-
-      {!addressVoteIsLoading &&
-        !addressVote?.standard &&
-        !addressVote?.split &&
-        (!addressVote?.delegating || !addressVoteDelegateVoted) && (
-          <NoVoteRecord />
-        )}
-      {(addressVote?.standard || addressVote?.split) && (
-        <VStack space={8}>
-          {addressVote?.standard && (
-            <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
-          )}
-          {addressVote?.split && (
-            <SplitVoteStatus addressVoteSplit={addressVote?.split} />
-          )}
-          <WarningMessage>
-            Resubmitting the vote will override the current voting record
-          </WarningMessage>
-        </VStack>
-      )}
-      {addressVote?.delegating && addressVoteDelegateVoted && (
-        <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
-      )}
-      {addressVoteIsLoading && <LoadingVoteStatus />}
-
-      {!addressVote?.delegating && (
-        // Address is not allow to vote directly when it is in delegate mode
-        <div style={{ textAlign: "right" }}>
-          <PrimaryButton isLoading={isLoading} onClick={doVote}>
-            Confirm
-          </PrimaryButton>
-        </div>
-      )}
+      {content}
     </>
   );
 }
