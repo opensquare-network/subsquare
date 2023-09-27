@@ -4,10 +4,11 @@ import clsx from "clsx";
 export default function NoData({
   showIcon = true,
   text = "No data",
+  className = "",
   ...props
 }) {
   return (
-    <div {...props} className={clsx("py-6", props.className)}>
+    <div {...props} className={clsx("py-6", className)}>
       {showIcon && (
         <SystemEmptyBox className="[&_path]:stroke-textTertiary w-10 h-10 mx-auto" />
       )}
