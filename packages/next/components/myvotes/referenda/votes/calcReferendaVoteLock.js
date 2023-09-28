@@ -20,7 +20,7 @@ export default function calcReferendaVoteLock(
   lockPeriod,
 ) {
   const { isStandard, conviction } = vote || {};
-  if (isStandard) {
+  if (!isStandard) {
     return noLockObj;
   }
 
