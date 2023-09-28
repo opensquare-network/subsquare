@@ -24,6 +24,8 @@ import {
 import clsx from "clsx";
 import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
+import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
+import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -41,6 +43,8 @@ export default function BaseLayout({ children, seoInfo = {} }) {
   const isMounted = useIsMountedBool();
 
   useUpdateNodesDelay();
+  useStoreDemocracyLockPeriod();
+  useStoreConvictionVotingLockPeriod();
 
   useEffect(() => {
     if (blockTime && isMounted()) {

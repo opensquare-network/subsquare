@@ -32,6 +32,7 @@ const gov2ReferendaTagMap = {
   ConfirmStarted: PositiveTag,
   ConfirmAborted: NegativeTag,
   Confirmed: PositiveTag,
+  Ongoing: StartTag,
 };
 
 export function Gov2ReferendaTag({ state, args }) {
