@@ -3,6 +3,7 @@ import isNil from "lodash.isnil";
 import DesktopList from "./desktop";
 import { ListCard } from "../../../styled";
 import ProxyHint from "../../../proxyHint";
+import MobileList from "./mobile";
 
 export default function ResponsiveDemocracyVotes() {
   const { width } = useWindowSize();
@@ -16,5 +17,7 @@ export default function ResponsiveDemocracyVotes() {
       <ProxyHint style={{ marginBottom: 24 }} />
       <DesktopList />
     </ListCard>
-  ) : null;
+  ) : (
+    <MobileList />
+  );
 }
