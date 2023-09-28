@@ -57,7 +57,7 @@ export function DemocracyReferendumTag({ state, args }) {
   if ("Executed" === state && args?.isOk === false) {
     Tag = NegativeTag;
   } else if ("Finished" === state) {
-    Tag = args.approved ? PositiveTag : NegativeTag;
+    Tag = args?.approved ? PositiveTag : NegativeTag;
   }
 
   return <Tag>{state}</Tag>;
