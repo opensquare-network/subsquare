@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import User from "next-common/components/user";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
@@ -35,6 +34,8 @@ import PreparingCountdown from "./gov2/postList/preparingCountdown";
 import { getDemocracyStateArgs } from "../utils/democracy/result";
 import ReferendumElapse from "./democracy/referendum/referendumElapse";
 import PostListCardVotesSummaryBar from "./postList/votesSummaryBar";
+import SystemUser from "./user/systemUser";
+import AddressUser from "./user/addressUser";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -267,13 +268,21 @@ export default function Post({ data, href, type }) {
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
-            <User
-              user={data?.author}
-              add={data.address}
-              fontSize={12}
-              noEvent={userNoClickEvent}
-              maxWidth={sm ? 160 : 240}
-            />
+            {data?.author ? (
+              <SystemUser
+                user={data?.author}
+                fontSize={12}
+                noEvent={userNoClickEvent}
+                maxWidth={sm ? 160 : 240}
+              />
+            ) : (
+              <AddressUser
+                add={data.address}
+                fontSize={12}
+                noEvent={userNoClickEvent}
+                maxWidth={sm ? 160 : 240}
+              />
+            )}
 
             {data.trackName && (
               <MobileHiddenInfo>
