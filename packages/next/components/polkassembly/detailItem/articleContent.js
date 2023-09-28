@@ -1,24 +1,11 @@
-import React from "react";
 import styled from "styled-components";
 import Actions from "../actions";
 import PostDataSource from "next-common/components/postDataSource";
 import { MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
+import NoData from "next-common/components/noData";
 
 const Wrapper = styled(RichTextStyleWrapper)``;
-
-const PlaceHolder = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: var(--textTertiary);
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const EditedLabel = styled.div`
   margin-top: 8px;
@@ -28,7 +15,7 @@ const EditedLabel = styled.div`
   color: var(--textTertiary);
 `;
 
-export default function ArticleContent({ post, type, postReactions }) {
+export default function ArticleContent({ post, postReactions }) {
   if (!post) {
     return null;
   }
@@ -36,13 +23,11 @@ export default function ArticleContent({ post, type, postReactions }) {
   return (
     <Wrapper>
       {post.content === "" && (
-        <PlaceHolder>
-          {`The ${type} has not been edited by creator.`}
-        </PlaceHolder>
+        <NoData text={"The post has not been edited by creator."} />
       )}
       <MarkdownPreviewer content={post.content} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
-      <PostDataSource type={type} post={post} />
+      <PostDataSource post={post} />
       <Actions reactions={postReactions} />
     </Wrapper>
   );

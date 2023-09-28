@@ -14,6 +14,7 @@ import "next-common/styles/cmdk.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
 import ScanStatusComponent from "next-common/components/scanStatus";
+import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 
 NProgress.configure({
   minimum: 0.3,
@@ -62,6 +63,7 @@ function MyApp({ Component, pageProps }) {
           navCollapsed={navCollapsed}
           navSubmenuVisible={navSubmenuVisible}
         >
+          <SystemVersionUpgrade />
           <ScanStatusComponent>
             <Component {...otherProps} />
           </ScanStatusComponent>

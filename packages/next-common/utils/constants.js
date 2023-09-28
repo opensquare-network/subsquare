@@ -89,6 +89,8 @@ export const BalanceDecimals = {
 export const CACHE_KEY = {
   lastConnectedAddress: "lastConnectedAddress",
   lastLoginAddress: "lastLoginAddress",
+  lastLoggedInAddress: "lastLoggedInAddress",
+  lastLoginExtension: "lastLoginExtension",
   accountMap: "accountMap",
   themeMode: "theme-mode",
   authToken: "auth-token",

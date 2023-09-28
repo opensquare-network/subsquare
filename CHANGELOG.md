@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.5.0
+date: 2023-09-27
+- [Medium]Users don't have to login before signing an extrinsic.
+- [Medium]Show an address' delegated on chain votes for democracy pallet, while business for OpenGov referenda is still under developing.
+- Add a hint for users who have set a proxy that we're showing the on chain votes of the proxied account.
+- Correct user component for polkassembly users, and users can go to polkassembly user detail page.
+- Fix breadcrumb style to prevent case that a breadcrumb item text is too long.
+- Fix OpenGov referenda confirmation progress bar if last confirmation abort doesn't cause a rejection.
+
 ### 3.4.8
 date: 2023-09-23
 - Show user balance on profile page.
