@@ -3,13 +3,14 @@ import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
 import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
 import { useEffect } from "react";
-import normalizePrior from "../utils/normalizePrior";
-import normalizeReferendaVote from "./normalizeVote";
-import queryReferendumInfo from "./queryReferendumInfo";
+import normalizePrior from "../../utils/normalizePrior";
+import normalizeReferendaVote from "../normalizeVote";
+import queryReferendumInfo from "../queryReferendumInfo";
 import {
   setIsLoadingReferendaVoting,
   setMyReferendaVoting,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import getOpenGovReferendaPosts from "./posts";
 
 function getDelegatingInfo(voting) {
   const delegating = voting.asDelegating;
@@ -40,13 +41,18 @@ async function normalizeCastingVoting(api, trackId, votingOf) {
   }
   const infoArr = await Promise.all(promises);
 
+  const indexes = votes.map((v) => v.referendumIndex);
+  const posts = await getOpenGovReferendaPosts(indexes);
+
   const normalizedVotes = votes.map((vote) => {
     const referendumInfo = infoArr.find(
       (info) => info.referendumIndex === vote.referendumIndex,
     );
+    const post = posts.find((p) => p.referendumIndex === vote.referendumIndex);
     return {
       ...vote,
       ...(referendumInfo || {}),
+      post,
     };
   });
 
