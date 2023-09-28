@@ -15,6 +15,7 @@ import {
   myDemocracyVotingSelector,
 } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import MyDelegatedVotes from "./democracy/delegatedVotes";
+import MyDemocracyVotesList from "./democracy/votes";
 
 export default function MyDemocracyVotes() {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ export default function MyDemocracyVotes() {
   return (
     <div className="flex flex-col gap-[16px]">
       <DemocracySummary />
+      <MyDemocracyVotesList />
       {isDelegating ? (
         <MyDelegatedVotes />
       ) : (
