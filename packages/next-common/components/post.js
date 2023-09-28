@@ -268,16 +268,16 @@ export default function Post({ data, href, type }) {
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
-            {data?.author ? (
-              <SystemUser
-                user={data?.author}
+            {data.address ? (
+              <AddressUser
+                add={data.address}
                 fontSize={12}
                 noEvent={userNoClickEvent}
                 maxWidth={sm ? 160 : 240}
               />
             ) : (
-              <AddressUser
-                add={data.address}
+              <SystemUser
+                user={data?.author}
                 fontSize={12}
                 noEvent={userNoClickEvent}
                 maxWidth={sm ? 160 : 240}
