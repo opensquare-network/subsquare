@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import BigNumber from "bignumber.js";
 import VoteSummary from "./summary";
 import ClearExpiredReferendaVotePopup from "../clearExpiredReferendaVotePopup";
-import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import { maxTracksLockSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/classLocks";
 import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalOnChainLock";
 import { totalReferendaLockRequiredSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalLockRequired";
@@ -12,7 +11,10 @@ import unlockTracksSelector from "next-common/store/reducers/myOnChainData/refer
 import unlockTracks from "next-common/store/reducers/myOnChainData/referenda/selectors/unlockTracks";
 import referendaVotesLengthSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/votesLength";
 import myReferendaDelegatedSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/delegated";
-import { isLoadingReferendaSummarySelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import {
+  incMyReferendaVotesTrigger,
+  isLoadingReferendaSummarySelector,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 
 export default function ReferendaSummary() {
   const dispatch = useDispatch();
@@ -60,7 +62,7 @@ export default function ReferendaSummary() {
           votes={voteExpiredReferenda}
           unlockTracks={tracksToUnlock}
           onClose={() => setShowClearExpired(false)}
-          onInBlock={() => dispatch(incMyVotesTrigger())}
+          onInBlock={() => dispatch(incMyReferendaVotesTrigger())}
         />
       )}
     </>
