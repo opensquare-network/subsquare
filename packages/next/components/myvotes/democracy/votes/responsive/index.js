@@ -1,8 +1,6 @@
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import isNil from "lodash.isnil";
 import DesktopList from "./desktop";
-import { ListCard } from "../../../styled";
-import ProxyHint from "../../../proxyHint";
 import MobileList from "./mobile";
 
 export default function ResponsiveDemocracyVotes() {
@@ -12,12 +10,5 @@ export default function ResponsiveDemocracyVotes() {
     return null;
   }
 
-  return width > 1024 ? (
-    <ListCard>
-      <ProxyHint style={{ marginBottom: 24 }} />
-      <DesktopList />
-    </ListCard>
-  ) : (
-    <MobileList />
-  );
+  return width > 1024 ? <DesktopList /> : <MobileList />;
 }

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import myDemocracyVotesSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/votes";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
-import { ListWrapper, StyledList } from "../../../styled";
+import { ListCard, ListWrapper, StyledList } from "../../../styled";
 import useColumns from "next-common/components/styledList/useColumns";
 import { commonVoteColumnsDefinition } from "../../../common/votesListColumns";
 import { PostTitle } from "next-common/components/profile/votingHistory/common";
@@ -9,6 +9,7 @@ import getPostTitle from "../../delegatedVotes/getPostTitle";
 import DemocracyVoteForItem from "./voteForItem";
 import DemocracyTag from "../../stateTag";
 import RemoveVoteButton from "./remove";
+import ProxyHint from "../../../proxyHint";
 
 export default function DesktopList() {
   const myDemocracyVotes = useSelector(myDemocracyVotesSelector);
@@ -44,8 +45,11 @@ export default function DesktopList() {
   });
 
   return (
-    <ListWrapper>
-      <StyledList loading={isLoading} columns={columns} rows={rows} />
-    </ListWrapper>
+    <ListCard>
+      <ProxyHint style={{ marginBottom: 24 }} />
+      <ListWrapper>
+        <StyledList loading={isLoading} columns={columns} rows={rows} />
+      </ListWrapper>
+    </ListCard>
   );
 }
