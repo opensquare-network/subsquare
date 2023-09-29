@@ -3,8 +3,9 @@ import isNil from "lodash.isnil";
 import DesktopList from "./desktop";
 import MobileList from "./mobile";
 
-export default function ResponsiveReferendaVotes() {
+export default function ResponsiveDemocracyVotes() {
   const { width } = useWindowSize();
+
   if (isNil(width)) {
     return null;
   }

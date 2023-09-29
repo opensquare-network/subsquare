@@ -1,6 +1,6 @@
 import useVoteLockingPeriod from "next-common/hooks/useVoteLockingPeriod";
 import { useEffect, useState } from "react";
-import calcDemocracyDelegateVoteLock from "../calcDemocracyVoteLock";
+import calcDemocracyDelegateVoteLock from "../calcDemocracyDelegateVoteLock";
 
 export default function useDelegatedVoteLock(
   referendumInfo,

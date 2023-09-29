@@ -1,5 +1,7 @@
 import normalizeDemocracyVote from "../normalize";
 import getReferendaInfo from "./referendaInfo";
+import getReferendaPosts from "./posts";
+import omit from "lodash.omit";
 
 export default async function getDemocracyRichVotes(api, voting) {
   if (!voting.isDirect) {
@@ -19,15 +21,21 @@ export default async function getDemocracyRichVotes(api, voting) {
     api,
     votes.map((vote) => vote.referendumIndex),
   );
+
+  const posts = await getReferendaPosts(votes.map((v) => v.referendumIndex));
   return votes
     .map((vote) => {
       const referendumInfo = infoArr.find(
         (info) => info.referendumIndex === vote.referendumIndex,
       );
+      const post = posts.find(
+        (p) => p.referendumIndex === vote.referendumIndex,
+      );
 
       return {
         ...vote,
         ...referendumInfo,
+        post: omit(post, ["_id", "content"]),
       };
     })
     .sort((v1, v2) => v2.referendumIndex - v1.referendumIndex);

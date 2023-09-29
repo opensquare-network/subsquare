@@ -1,19 +1,13 @@
-import React, { useMemo, useState } from "react";
-import { useCallback } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
 
-export default function ClearExpiredDemocracyVotePopup({
-  votes,
-  onClose,
-  onInBlock = emptyFunction,
-}) {
+export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const [isLoading, setIsLoading] = useState(false);
@@ -63,13 +57,12 @@ export default function ClearExpiredDemocracyVotePopup({
         tx,
         setLoading: setIsLoading,
         dispatch,
-        onInBlock,
         onClose,
         signerAddress,
         isMounted,
       });
     },
-    [dispatch, isMounted, showErrorToast, onInBlock, onClose, relatedReferenda],
+    [dispatch, isMounted, showErrorToast, onClose, relatedReferenda],
   );
 
   const title = relatedReferenda.length <= 0 ? "Unlock" : "Clear Expired Votes";

@@ -1,6 +1,3 @@
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
-import styled from "styled-components";
-import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Copyable from "next-common/components/copyable";
@@ -21,18 +18,8 @@ import {
 } from "next-common/store/reducers/preImagesSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import FieldLoading from "../icons/fieldLoading";
-
-const ListWrapper = styled.div`
-  display: flex;
-  overflow-x: auto;
-  ${pretty_scroll_bar};
-`;
-
-const StyledList = styled(StyledListOrigin)`
-  border: none;
-  box-shadow: none;
-  padding: 0;
-`;
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import NoBorderList from "next-common/components/styledList/noBorderList";
 
 function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
@@ -229,14 +216,14 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
 
   return (
     <SecondaryCard>
-      <ListWrapper>
-        <StyledList
+      <ScrollerX>
+        <NoBorderList
           columns={columns}
           rows={rows}
           noDataText="No current preimages"
           loading={!data}
         />
-      </ListWrapper>
+      </ScrollerX>
       {showArgumentsDetail && (
         <PreimageDetailPopup
           setShow={() => setShowArgumentsDetail(null)}

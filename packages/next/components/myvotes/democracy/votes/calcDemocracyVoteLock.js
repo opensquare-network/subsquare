@@ -1,20 +1,19 @@
 import { noLockObj, noResultObj } from "../../vote/utils/consts";
 import calcVoteLockEnd from "../../utils/calcVoteLockEnd";
 
-function getReferendaEndInfo(referendumInfo) {
-  const { rejected, approved } = referendumInfo;
-  if (!rejected && !approved) {
+function getDemocracyEndInfo(referendumInfo) {
+  if (!referendumInfo || !referendumInfo.finished) {
     return noResultObj;
   }
 
   return {
     hasResult: true,
-    approved: !!approved,
-    end: (approved || rejected)[0],
+    approved: referendumInfo.finished.approved,
+    end: referendumInfo.finished.end,
   };
 }
 
-export default function calcReferendaVoteLock(
+export default function calcDemocracyVoteLock(
   vote,
   referendumInfo,
   lockPeriod,
@@ -24,7 +23,7 @@ export default function calcReferendaVoteLock(
     return noLockObj;
   }
 
-  const referendumEndInfo = getReferendaEndInfo(referendumInfo);
+  const referendumEndInfo = getDemocracyEndInfo(referendumInfo);
   if (!referendumEndInfo.hasResult) {
     return noLockObj;
   }

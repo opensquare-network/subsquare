@@ -1,7 +1,8 @@
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
-import { PostTitle, ReferendumTag, FellowshipVoteItem } from "./common";
-import { ListWrapper, StyledList } from "./common/styled";
+import { FellowshipVoteItem, PostTitle, ReferendumTag } from "./common";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import NoBorderList from "next-common/components/styledList/noBorderList";
 
 export default function FellowshipVotesList({ data, fetchData, page }) {
   const columnsDefinition = [
@@ -37,9 +38,9 @@ export default function FellowshipVotesList({ data, fetchData, page }) {
 
   return (
     <>
-      <ListWrapper>
-        <StyledList loading={!data} columns={columns} rows={rows} />
-      </ListWrapper>
+      <ScrollerX>
+        <NoBorderList loading={!data} columns={columns} rows={rows} />
+      </ScrollerX>
       <Pagination
         {...data}
         page={page}

@@ -1,9 +1,8 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect } from "react";
 import useApi from "next-common/utils/hooks/useApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setMyDemocracyVoting } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
-import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
 import normalizePrior from "../../utils/normalizePrior";
 import getDelegatingVotesInfo from "./delegatingVotes";
 import getDemocracyRichVotes from "./getRichVotes";
@@ -23,7 +22,6 @@ export default function useSubMyDemocracyVoting() {
   const address = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();
-  const trigger = useSelector(myVotesTriggerSelector);
 
   useEffect(() => {
     if (!api || !api.query.democracy) {
@@ -53,5 +51,5 @@ export default function useSubMyDemocracyVoting() {
         unsub();
       }
     };
-  }, [api, address, dispatch, trigger]);
+  }, [api, address, dispatch]);
 }
