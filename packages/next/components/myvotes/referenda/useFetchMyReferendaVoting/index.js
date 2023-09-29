@@ -1,12 +1,12 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { myVotesTriggerSelector } from "next-common/store/reducers/myVotesSlice";
 import { useEffect } from "react";
 import normalizePrior from "../../utils/normalizePrior";
 import normalizeReferendaVote from "../normalizeVote";
 import queryReferendumInfo from "../queryReferendumInfo";
 import {
+  myReferendaVotesTriggerSelector,
   setIsLoadingReferendaVoting,
   setMyReferendaVoting,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
@@ -84,14 +84,16 @@ export default function useFetchMyReferendaVoting() {
   const address = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();
-  const trigger = useSelector(myVotesTriggerSelector);
+  const trigger = useSelector(myReferendaVotesTriggerSelector);
 
   useEffect(() => {
     if (!api || !api.query.convictionVoting || !address) {
       return;
     }
 
-    dispatch(setIsLoadingReferendaVoting(true));
+    if (trigger <= 0) {
+      dispatch(setIsLoadingReferendaVoting(true));
+    }
     queryVotesAndReferendaInfo(api, address)
       .then((voting) => {
         dispatch(setMyReferendaVoting(voting));
