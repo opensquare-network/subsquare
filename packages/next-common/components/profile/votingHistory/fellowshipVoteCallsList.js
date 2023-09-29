@@ -1,12 +1,13 @@
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
 import {
-  ReferendumTag,
-  PostTitle,
   CallDate,
   FellowshipVoteItem,
+  PostTitle,
+  ReferendumTag,
 } from "./common";
-import { ListWrapper, StyledList } from "./common/styled";
+import { StyledList } from "./common/styled";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
 
 export default function FellowshipVoteCallsList({ data, fetchData, page }) {
   const { columns } = useColumns([
@@ -38,9 +39,9 @@ export default function FellowshipVoteCallsList({ data, fetchData, page }) {
 
   return (
     <>
-      <ListWrapper>
+      <ScrollerX>
         <StyledList loading={!data} columns={columns} rows={rows} />
-      </ListWrapper>
+      </ScrollerX>
       <Pagination
         {...data}
         page={page}

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { myDemocracyDelegatedVotesSelector } from "next-common/store/reducers/myOnChainData/democracy/selectors/delegated";
-import { ListCard, ListWrapper, StyledList } from "../../styled";
+import { ListCard, StyledList } from "../../styled";
 import useColumns from "next-common/components/styledList/useColumns";
 import { commonVoteColumnsDefinition } from "../../common/votesListColumns";
 import { PostTitle } from "next-common/components/profile/votingHistory/common";
@@ -9,6 +9,7 @@ import DemocracyTag from "../stateTag";
 import getPostTitle from "./getPostTitle";
 import DelegationHint from "./hint";
 import ProxyHint from "../../proxyHint";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
 
 export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
@@ -42,9 +43,9 @@ export default function DesktopList() {
     <ListCard>
       <ProxyHint style={{ marginBottom: 4 }} />
       <DelegationHint style={{ marginBottom: 8 }} />
-      <ListWrapper>
+      <ScrollerX>
         <StyledList columns={columns} rows={rows} loading={!myDelegatedVotes} />
-      </ListWrapper>
+      </ScrollerX>
     </ListCard>
   );
 }

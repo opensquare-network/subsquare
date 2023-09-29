@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import myReferendaVotesSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/votes";
 import useColumns from "next-common/components/styledList/useColumns";
 import { commonVoteColumnsDefinition } from "../../../common/votesListColumns";
-import { ListCard, ListWrapper, StyledList } from "../../../styled";
+import { ListCard, StyledList } from "../../../styled";
 import { isLoadingReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { PostTitle } from "next-common/components/profile/votingHistory/common";
 import getPostTitle from "./getPostTitle";
@@ -11,6 +11,7 @@ import ReferendaVoteForItem from "./voteForItem";
 import MyReferendaVoteTag from "../stateTag";
 import RemoveVoteButton from "./remove";
 import ProxyHint from "../../../proxyHint";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
 
 export default function DesktopList() {
   const referendaVotes = useSelector(myReferendaVotesSelector);
@@ -45,9 +46,9 @@ export default function DesktopList() {
   return (
     <ListCard>
       <ProxyHint style={{ marginBottom: 24 }} />
-      <ListWrapper>
+      <ScrollerX>
         <StyledList loading={isLoading} columns={columns} rows={rows} />
-      </ListWrapper>
+      </ScrollerX>
     </ListCard>
   );
 }

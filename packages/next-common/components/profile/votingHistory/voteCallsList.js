@@ -1,14 +1,15 @@
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
 import {
-  ReferendumTag,
-  PostTitle,
-  normalizeCall,
   CallDate,
+  normalizeCall,
+  PostTitle,
+  ReferendumTag,
   VoteItem,
 } from "./common";
 import { useChain } from "next-common/context/chain";
-import { ListWrapper, StyledList } from "./common/styled";
+import { StyledList } from "./common/styled";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
 
 export default function VoteCallsList({ data, fetchData, page }) {
   const chain = useChain();
@@ -46,9 +47,9 @@ export default function VoteCallsList({ data, fetchData, page }) {
 
   return (
     <>
-      <ListWrapper>
+      <ScrollerX>
         <StyledList loading={!data} columns={columns} rows={rows} />
-      </ListWrapper>
+      </ScrollerX>
       <Pagination
         {...data}
         page={page}
