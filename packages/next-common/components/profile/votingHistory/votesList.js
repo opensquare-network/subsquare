@@ -4,8 +4,8 @@ import DetailButton from "next-common/components/detailButton";
 import { PostTitle, ReferendumTag, VoteItem } from "./common";
 import { useChain } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";
-import { StyledList } from "./common/styled";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import NoBorderList from "next-common/components/styledList/noBorderList";
 
 export default function VotesList({
   data,
@@ -68,7 +68,7 @@ export default function VotesList({
   return (
     <>
       <ScrollerX>
-        <StyledList loading={!data} columns={columns} rows={rows} />
+        <NoBorderList loading={!data} columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...data}

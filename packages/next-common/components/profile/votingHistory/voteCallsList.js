@@ -8,8 +8,8 @@ import {
   VoteItem,
 } from "./common";
 import { useChain } from "next-common/context/chain";
-import { StyledList } from "./common/styled";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import NoBorderList from "next-common/components/styledList/noBorderList";
 
 export default function VoteCallsList({ data, fetchData, page }) {
   const chain = useChain();
@@ -48,7 +48,7 @@ export default function VoteCallsList({ data, fetchData, page }) {
   return (
     <>
       <ScrollerX>
-        <StyledList loading={!data} columns={columns} rows={rows} />
+        <NoBorderList loading={!data} columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...data}

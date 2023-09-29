@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import User from "next-common/components/user";
 import styled from "styled-components";
-import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
@@ -12,14 +11,9 @@ import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import NoBorderList from "next-common/components/styledList/noBorderList";
 
 const Wrapper = styled.div``;
-
-const StyledList = styled(StyledListOrigin)`
-  border: none;
-  box-shadow: none;
-  padding: 0;
-`;
 
 const ConvictionText = styled.span`
   width: 40px;
@@ -129,7 +123,7 @@ export default function Delegator({ delegators, apiRoot = "democracy" }) {
     <Wrapper>
       <div id="header"></div>
       <ScrollerX>
-        <StyledList columns={columns} rows={rows} />
+        <NoBorderList columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...delegatorsList}

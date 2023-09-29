@@ -1,7 +1,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { p_16_bold } from "next-common/styles/componentCss";
 import styled from "styled-components";
-import StyledListOrigin from "next-common/components/styledList";
 import Flex from "next-common/components/styled/flex";
 
 export const Title = styled.div`
@@ -30,12 +29,6 @@ export const Index = styled.span`
     color: var(--textTertiary);
     margin: 0 8px;
   }
-`;
-
-export const StyledList = styled(StyledListOrigin)`
-  border: none;
-  box-shadow: none;
-  padding: 0;
 `;
 
 export const VoteForItemWrapper = styled(Flex)`

@@ -1,5 +1,3 @@
-import styled from "styled-components";
-import StyledListOrigin from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Copyable from "next-common/components/copyable";
@@ -21,12 +19,7 @@ import {
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import FieldLoading from "../icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-
-const StyledList = styled(StyledListOrigin)`
-  border: none;
-  box-shadow: none;
-  padding: 0;
-`;
+import NoBorderList from "next-common/components/styledList/noBorderList";
 
 function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
@@ -224,7 +217,7 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
   return (
     <SecondaryCard>
       <ScrollerX>
-        <StyledList
+        <NoBorderList
           columns={columns}
           rows={rows}
           noDataText="No current preimages"

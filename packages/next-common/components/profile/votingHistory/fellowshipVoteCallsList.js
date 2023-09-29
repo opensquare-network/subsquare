@@ -6,8 +6,8 @@ import {
   PostTitle,
   ReferendumTag,
 } from "./common";
-import { StyledList } from "./common/styled";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import NoBorderList from "next-common/components/styledList/noBorderList";
 
 export default function FellowshipVoteCallsList({ data, fetchData, page }) {
   const { columns } = useColumns([
@@ -40,7 +40,7 @@ export default function FellowshipVoteCallsList({ data, fetchData, page }) {
   return (
     <>
       <ScrollerX>
-        <StyledList loading={!data} columns={columns} rows={rows} />
+        <NoBorderList loading={!data} columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...data}
