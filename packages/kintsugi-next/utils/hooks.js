@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { getVotingBalance } from "./escrow/votingBalance";
 import { useSelector } from "react-redux";
-import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
@@ -38,11 +38,11 @@ export function useAddressVotingBalance(api, address) {
 
 export function useLatestAddressVotingBalance(api, address) {
   const [balance, isLoading, refresh] = useAddressVotingBalance(api, address);
-  const scanHeight = useSelector(nodesHeightSelector);
+  const latestHeight = useSelector(chainOrScanHeightSelector);
 
   useEffect(() => {
     refresh();
-  }, [refresh, scanHeight]);
+  }, [refresh, latestHeight]);
 
   return [balance, isLoading, refresh];
 }
