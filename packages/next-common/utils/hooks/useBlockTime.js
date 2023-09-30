@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "../../store/reducers/chainSlice";
 import { getBlockTimeByHeight } from "../blockTime";
 import useApi from "./useApi";
 import useIsMounted from "./useIsMounted";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function useLatestBlockTime() {
   const api = useApi();
   const isMounted = useIsMounted();
-  const blockHeight = useSelector(latestHeightSelector);
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const [time, setTime] = useState(0);
 
   useEffect(() => {

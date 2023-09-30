@@ -42,7 +42,6 @@ export const {
 
 export const blockTimeSelector = (state) => state.chain.blockTime;
 export const latestHeightSelector = (state) => state.chain.latestHeight;
-export const nowHeightSelector = (state) => state.chain.nowHeight;
 export const convictionVotingLockPeriodSelector = (state) =>
   state.chain.convictionVotingLockPeriod;
 export const democracyLockPeriodSelector = (state) =>

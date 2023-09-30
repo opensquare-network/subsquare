@@ -1,17 +1,22 @@
 import { useSubmittedAt } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { usePreparation } from "next-common/context/post/gov2/track";
 import { useEffect, useState } from "react";
 import isNil from "lodash.isnil";
-import { ProgressBarWrapper, ProgressGroup, ProgressInfo, Tooltip } from "../styled";
+import {
+  ProgressBarWrapper,
+  ProgressGroup,
+  ProgressInfo,
+  Tooltip,
+} from "../styled";
 import Progress from "next-common/components/progress";
 import { usePrepareRemaining } from "./remaining";
 import Remaining from "../remaining";
 import TimeDuration from "next-common/components/TimeDuration";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function PreparationProgress() {
-  const latestHeight = useSelector(latestHeightSelector);
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const submittedAt = useSubmittedAt();
   const prepareBlocks = usePreparation();
   const remaining = usePrepareRemaining();
@@ -33,11 +38,7 @@ export default function PreparationProgress() {
   return (
     <ProgressGroup>
       <ProgressBarWrapper>
-        <Tooltip
-          content={
-            remaining > 0 && <Remaining blocks={remaining} />
-          }
-        >
+        <Tooltip content={remaining > 0 && <Remaining blocks={remaining} />}>
           <Progress percentage={percentage} />
         </Tooltip>
       </ProgressBarWrapper>

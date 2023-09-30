@@ -1,12 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { democracyLockingPeriodSelector } from "next-common/store/reducers/democracy/info";
 import isVoteLockExpired from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/isVoteLockExpired";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 const democracyVoteExpiredReferendaSelector = createSelector(
   myDemocracyVotingSelector,
-  latestHeightSelector,
+  chainOrScanHeightSelector,
   democracyLockingPeriodSelector,
   (voting, latestHeight, lockingPeriod) => {
     if (!voting) {

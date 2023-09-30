@@ -9,7 +9,6 @@ import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import CollectiveMetadata from "next-common/components/collective/metadata";
 import CollectiveCall from "next-common/components/collective/call";
 import PostEdit from "next-common/components/post/postEdit";
@@ -25,6 +24,7 @@ import DetailContentBase from "next-common/components/detail/common/detailBase";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 import Copyable from "next-common/components/copyable";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -103,7 +103,7 @@ export default function TechcommMotionDetail({ motion }) {
   const isEdit = useSelector(isEditingPostSelector);
   const setIsEdit = useSetEdit();
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const blockHeight = useSelector(latestHeightSelector);
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight,
   );

@@ -1,32 +1,38 @@
 import { useOnchainData } from "next-common/context/post";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function ExecutionCountdown() {
   const onchain = useOnchainData();
   const { willExecuteAt } = onchain;
-  const blockHeight = useSelector(latestHeightSelector);
-  const estimatedBlocksTime = useEstimateBlocksTime(willExecuteAt - blockHeight);
+  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    willExecuteAt - blockHeight,
+  );
   const voteFinishedHeight = useDemocracyVoteFinishedHeight();
   if (!willExecuteAt || !blockHeight || blockHeight >= willExecuteAt) {
     return;
   }
 
-  const shortText = `Execution expected in ${ estimatedBlocksTime }`;
-  const longText = `${ shortText }, #${ bigNumber2Locale(new BigNumber(willExecuteAt).toString()) }`;
-  return <CountDownWrapper>
-    <CountDown
-      numerator={blockHeight - voteFinishedHeight}
-      denominator={willExecuteAt - voteFinishedHeight}
-      tooltipContent={longText}
-    />
-    <span>{shortText}</span>
-  </CountDownWrapper>;
+  const shortText = `Execution expected in ${estimatedBlocksTime}`;
+  const longText = `${shortText}, #${bigNumber2Locale(
+    new BigNumber(willExecuteAt).toString(),
+  )}`;
+  return (
+    <CountDownWrapper>
+      <CountDown
+        numerator={blockHeight - voteFinishedHeight}
+        denominator={willExecuteAt - voteFinishedHeight}
+        tooltipContent={longText}
+      />
+      <span>{shortText}</span>
+    </CountDownWrapper>
+  );
 }

@@ -1,14 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import getOnChainVoteLock from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/getOngoingVoteLock";
 import BigNumber from "bignumber.js";
 import { democracyLockingPeriodSelector } from "next-common/store/reducers/democracy/info";
 import getFinishedVoteLock from "next-common/store/reducers/myOnChainData/democracy/selectors/utils/getFinishedVoteLock";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export const democracyLockRequiredSelector = createSelector(
   myDemocracyVotingSelector,
-  latestHeightSelector,
+  chainOrScanHeightSelector,
   democracyLockingPeriodSelector,
   (voting, latestHeight, lockingPeriod) => {
     if (!voting) {

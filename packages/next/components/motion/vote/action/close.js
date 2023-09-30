@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { usePost, usePostOnChainData } from "next-common/context/post";
 import { useEffect, useState } from "react";
 import GhostButton from "next-common/components/buttons/ghostButton";
@@ -10,11 +9,13 @@ import useCollectiveProposal from "next-common/utils/hooks/collectives/usePropos
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import CloseMotionPopup from "./closeMotionPopup";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function Close() {
-  const latestHeight = useSelector(latestHeightSelector);
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const onchainData = usePostOnChainData();
-  const { voting: { end, nays = [], ayes = [], threshold } = {} } = onchainData || {};
+  const { voting: { end, nays = [], ayes = [], threshold } = {} } =
+    onchainData || {};
   const chain = useChain();
   const type = useDetailType();
   const { hash, motionIndex } = usePost();
@@ -32,9 +33,14 @@ export default function Close() {
       return;
     }
 
-    if (threshold > Math.abs(members.length - nays.length) || ayes.length >= threshold) { // failed or approved
+    if (
+      threshold > Math.abs(members.length - nays.length) ||
+      ayes.length >= threshold
+    ) {
+      // failed or approved
       setCanClose(true);
-    } else if (latestHeight >= end) { // reach end block number
+    } else if (latestHeight >= end) {
+      // reach end block number
       setCanClose(true);
     } else {
       setCanClose(false);
@@ -45,8 +51,8 @@ export default function Close() {
     <>
       <GhostButton
         isFill
-        disabled={ !proposal || !canClose }
-        onClick={ () => setShowClosePopup(true) }
+        disabled={!proposal || !canClose}
+        onClick={() => setShowClosePopup(true)}
       >
         Close
       </GhostButton>

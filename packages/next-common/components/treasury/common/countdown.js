@@ -1,15 +1,21 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "../../../store/reducers/chainSlice";
 import { useEstimateBlocksTime } from "../../../utils/hooks";
 import isNil from "lodash.isnil";
 import Loading from "../../loading";
 import Flex from "../../styled/flex";
 import CountDown from "../../_CountDown";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
-export default function TreasuryCountDown({ startHeight = 0, targetHeight = 0, prefix = "End" }) {
-  const nowHeight = useSelector(latestHeightSelector);
-  const estimatedBlocksTime = useEstimateBlocksTime(Math.abs(targetHeight - nowHeight));
+export default function TreasuryCountDown({
+  startHeight = 0,
+  targetHeight = 0,
+  prefix = "End",
+}) {
+  const nowHeight = useSelector(chainOrScanHeightSelector);
+  const estimatedBlocksTime = useEstimateBlocksTime(
+    Math.abs(targetHeight - nowHeight),
+  );
 
   if (isNil(startHeight) || isNil(targetHeight)) {
     return null;
@@ -38,7 +44,7 @@ export default function TreasuryCountDown({ startHeight = 0, targetHeight = 0, p
           targetHeight - nowHeight,
         )} blocks left`}
       />
-      <span>{ text }</span>
+      <span>{text}</span>
     </Flex>
   );
 }
