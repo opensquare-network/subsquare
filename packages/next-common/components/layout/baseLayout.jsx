@@ -7,15 +7,8 @@ import SEO from "../SEO";
 import Toast from "../toast";
 import Footer from "./footer";
 import useApi from "next-common/utils/hooks/useApi";
-import {
-  useBlockTime,
-  useChainHeight,
-  useSubscribeChainHead,
-} from "next-common/utils/hooks";
-import { useDispatch } from "react-redux";
+import { useBlockTime, useSubscribeChainHead } from "next-common/utils/hooks";
 import useUpdateNodesDelay from "next-common/utils/hooks/useUpdateNodesDelay";
-import { useEffect } from "react";
-import { setNowHeight } from "next-common/store/reducers/chainSlice";
 import clsx from "clsx";
 import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
@@ -32,17 +25,10 @@ export default function BaseLayout({ children, seoInfo = {} }) {
   const api = useApi();
   useBlockTime(api);
   useSubscribeChainHead(api);
-  const nowHeight = useChainHeight(api);
-
-  const dispatch = useDispatch();
 
   useUpdateNodesDelay();
   useStoreDemocracyLockPeriod();
   useStoreConvictionVotingLockPeriod();
-
-  useEffect(() => {
-    dispatch(setNowHeight(nowHeight));
-  }, [nowHeight, dispatch]);
 
   return (
     <>

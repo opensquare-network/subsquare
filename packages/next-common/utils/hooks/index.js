@@ -55,24 +55,6 @@ export function useSubscribeChainHead(api) {
   }, [api]);
 }
 
-export function useChainHeight(api) {
-  const [height, setHeight] = useState(0);
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    api.derive.chain.bestNumber().then((best) => {
-      if (isMounted.current) {
-        setHeight(best.toNumber());
-      }
-    });
-  }, [api]);
-
-  return height;
-}
-
 export function useEstimateBlocksTime(blocks) {
   const blockTime = useSelector(blockTimeSelector);
   const [estimatedTime, setEstimatedTime] = useState("");
