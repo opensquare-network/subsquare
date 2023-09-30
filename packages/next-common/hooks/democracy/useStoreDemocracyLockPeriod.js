@@ -8,7 +8,7 @@ export default function useStoreDemocracyLockPeriod() {
   const api = useApi();
 
   useEffect(() => {
-    if (api && api.consts?.democracy) {
+    if (api && api.consts?.democracy?.voteLockingPeriod) {
       dispatch(
         setDemocracyLockPeriod(
           api.consts.democracy.voteLockingPeriod.toNumber(),
