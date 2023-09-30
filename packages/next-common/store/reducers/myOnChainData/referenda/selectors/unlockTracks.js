@@ -3,11 +3,11 @@ import {
   myReferendaTrackLocksSelector,
   myReferendaVotingSelector,
 } from "../myReferendaVoting";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { referendaLockingPeriodSelector } from "next-common/store/reducers/referenda/meta";
 import getTrackRequiredLock from "./utils/getTrackRequiredLock";
 import BigNumber from "bignumber.js";
 import orderBy from "lodash.orderby";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 function shouldUnlockTrack(trackData, latestHeight, lockingPeriod) {
   const { trackLock, voting } = trackData;
@@ -26,7 +26,7 @@ function shouldUnlockTrack(trackData, latestHeight, lockingPeriod) {
 const unlockTracksSelector = createSelector(
   myReferendaTrackLocksSelector,
   myReferendaVotingSelector,
-  latestHeightSelector,
+  chainOrScanHeightSelector,
   referendaLockingPeriodSelector,
   (trackLocks, trackVotingArr, latestHeight, lockingPeriod) => {
     const sorted = orderBy(trackLocks, ["trackId"]);

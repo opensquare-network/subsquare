@@ -3,10 +3,11 @@ import { BN_ONE, BN_ZERO } from "@polkadot/util";
 import startCase from "lodash.startcase";
 import useApi from "../utils/hooks/useApi";
 import useCall from "../utils/hooks/useCall";
-import { useBlockTime } from "../utils/hooks";
 import Chains from "../utils/consts/chains";
 import { useLeaseRangeMax } from "./useLeaseRanges";
 import { useChain } from "../context/chain";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function newDate(blocks, blockTime) {
   const date = new Date(
@@ -307,7 +308,8 @@ function useReferendums(api) {
       return;
     }
 
-    api.derive.democracy?.referendums()
+    api.derive.democracy
+      ?.referendums()
       .then((referendums) => setData(referendums));
   }, [api, chain]);
 
@@ -316,7 +318,7 @@ function useReferendums(api) {
 
 function useScheduled() {
   const api = useApi();
-  const blockTime = useBlockTime(api);
+  const blockTime = useSelector(blockTimeSelector);
   const leaseRangeMax = useLeaseRangeMax();
   const [bestNumber] = useCall(api?.derive.chain.bestNumber);
   const [auctionInfo] = useCall(api?.query.auctions?.auctionInfo);

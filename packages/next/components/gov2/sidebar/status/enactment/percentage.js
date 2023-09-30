@@ -1,11 +1,11 @@
 import { useOnchainData, usePostStateInfo } from "next-common/context/post";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useEffect, useState } from "react";
 import isNil from "lodash.isnil";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function useEnactmentPercentage() {
-  const latestHeight = useSelector(latestHeightSelector);
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const stateInfo = usePostStateInfo();
   const { indexer: { blockHeight: confirmedAt = 0 } = {} } = stateInfo || {};
   const onchainData = useOnchainData();
