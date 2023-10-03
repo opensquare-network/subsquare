@@ -43,7 +43,7 @@ export default function useSubMyReferendaVote(
           return;
         }
 
-        // If the address has delegated to other.
+        // If the address has delegated to others.
         // Then, look into the votes of the delegating target address.
         const { target, conviction } = jsonVoting.delegating;
         api.query.convictionVoting
@@ -56,6 +56,13 @@ export default function useSubMyReferendaVote(
 
             if (!vote?.standard) {
               setIsLoading(false);
+              setVote({
+                delegating: {
+                  ...jsonVoting.delegating,
+                  conviction: Conviction[conviction],
+                },
+              });
+
               return;
             }
 

@@ -40,7 +40,7 @@ export function normalizeOnchainVote(vote) {
         conviction: 0,
       },
     ];
-  } else if (vote?.delegating) {
+  } else if (vote?.delegating?.voted) {
     return [
       {
         aye: vote?.delegating?.aye,
