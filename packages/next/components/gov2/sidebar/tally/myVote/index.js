@@ -37,7 +37,6 @@ export default function MyVote() {
     hasOnchainVote = normalizedOnchainVote?.length > 0 && !isDelegating;
   }
 
-  // If the referendum is finished, we don't need to show the onchain vote
   if (!finishHeight) {
     votes = normalizedOnchainVote;
   }
