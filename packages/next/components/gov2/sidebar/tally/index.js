@@ -1,7 +1,6 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import styled from "styled-components";
-import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import VoteBar from "next-common/components/referenda/voteBar";
 import Aye from "./values/aye";
 import Nay from "./values/nay";
@@ -9,7 +8,7 @@ import Support from "./values/support";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
-import { useOnchainData, usePost } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
 import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
@@ -26,10 +25,8 @@ const Title = styled(TitleContainer)`
 `;
 
 export default function Gov2Tally() {
-  const detail = usePost();
   const { referendumIndex } = useOnchainData();
   useVotesFromServer(referendumIndex);
-  useFetchVotes(detail?.onchainData);
   useSubActiveIssuance();
   const tally = useReferendumTally();
   const approvalThreshold = useApprovalThreshold();
