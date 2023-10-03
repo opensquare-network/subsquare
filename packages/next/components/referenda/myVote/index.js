@@ -23,24 +23,23 @@ export default function MyVote() {
   const finishHeight = useDemocracyVoteFinishedHeight();
 
   // Retrieve the current vote from the chain
-  let hasOnchainVote = false;
-  let normalizedOnchainVote = [];
+  let hasDirectOnchainVote = false;
+  let normalizedOnchainVotes = [];
   if (onchainVote) {
-    normalizedOnchainVote = normalizeOnchainVote(onchainVote);
+    normalizedOnchainVotes = normalizeOnchainVote(onchainVote);
     const isDelegating = !isNil(onchainVote.delegating);
-    hasOnchainVote = normalizedOnchainVote?.length > 0 && !isDelegating;
+    hasDirectOnchainVote = normalizedOnchainVotes?.length > 0 && !isDelegating;
   }
 
-  // If the referendum is finished, we don't need to show the onchain vote
   if (!finishHeight) {
-    votes = normalizedOnchainVote;
+    votes = normalizedOnchainVotes;
   }
 
   return (
     <>
       <MyVoteCommon
         votes={votes}
-        hasOnchainVote={hasOnchainVote}
+        hasOnchainVote={hasDirectOnchainVote}
         setShowRemoveVotePopup={setShowRemoveVotePopup}
       />
       {showRemovePopup && (
