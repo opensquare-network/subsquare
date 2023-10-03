@@ -39,6 +39,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
 import { usePageProps } from "next-common/context/page";
+import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 
 function ReferendumContent() {
   const post = usePost();
@@ -47,6 +48,7 @@ function ReferendumContent() {
   useSubReferendumInfo();
   const info = useReferendumInfo();
   const onchainData = useOnchainData();
+  useFetchVotes(onchainData);
   const proposal = onchainData?.proposal ?? {};
 
   useEffect(() => {
