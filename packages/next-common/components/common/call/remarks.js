@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 const RemarkWrapper = styled.div`
   .markdown-body {
+    color: inherit;
     word-break: break-word;
   }
 `;
