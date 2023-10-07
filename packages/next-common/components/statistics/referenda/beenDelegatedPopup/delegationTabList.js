@@ -12,16 +12,10 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
-import startCase from "lodash.startcase";
 import { p_12_medium } from "next-common/styles/componentCss";
 import AddressUser from "next-common/components/user/addressUser";
-
-const ListWrapper = styled.div`
-  display: flex;
-  overflow-x: auto;
-  ${pretty_scroll_bar};
-`;
+import startCase from "lodash.startcase";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
 
 const ConvictionText = styled.span`
   width: 40px;
@@ -157,11 +151,11 @@ export default function DelegationTabList({ delegatee }) {
 
   return (
     <VStack space={16}>
-      <ListWrapper>
+      <ScrollerX>
         <MyPopupListWrapper>
           <StyledList columns={columns} rows={rows} loading={!isLoaded} />
         </MyPopupListWrapper>
-      </ListWrapper>
+      </ScrollerX>
       <Pagination {...pagination} />
     </VStack>
   );

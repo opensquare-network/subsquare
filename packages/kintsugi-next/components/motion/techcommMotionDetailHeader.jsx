@@ -7,15 +7,15 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import { useSelector } from "react-redux";
 import { usePost } from "next-common/context/post";
 import { isMotionEnded } from "next-common/utils";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import MotionEnd from "next-common/components/motionEnd";
 import Divider from "next-common/components/styled/layout/divider";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function TechcommMotionDetailHeader({ motion }) {
   const post = usePost();
   const isEdit = useSelector(isEditingPostSelector);
-  const blockHeight = useSelector(latestHeightSelector);
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const motionEndHeight = motion.onchainData?.voting?.end;
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight,

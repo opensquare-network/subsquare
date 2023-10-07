@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import useApi from "../utils/hooks/useApi";
 import { useSelector } from "react-redux";
-import {
-  blockTimeSelector,
-  latestHeightSelector,
-} from "../store/reducers/chainSlice";
+import { blockTimeSelector } from "../store/reducers/chainSlice";
 import { useChain } from "../context/chain";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 async function referendumsActive(api) {
   if (!api) {
@@ -26,7 +24,7 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
   const [summary, setSummary] = useState(defaultSummaryData || {});
   const api = useApi();
   const blockTime = useSelector(blockTimeSelector);
-  const blockHeight = useSelector(latestHeightSelector);
+  const blockHeight = useSelector(chainOrScanHeightSelector);
 
   useEffect(() => {
     if (!api) {

@@ -40,6 +40,7 @@ function DemocracyTag({ proposal, vote }) {
     return (
       <DemocracyReferendumTag
         state={capitalize(Object.keys(referendumInfo)[0])}
+        args={Object.values(referendumInfo)[0]}
       />
     );
   }

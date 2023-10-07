@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import BigNumber from "bignumber.js";
 import VoteSummary from "./summary";
-import { incMyVotesTrigger } from "next-common/store/reducers/myVotesSlice";
 import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
 import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
 import {
@@ -15,7 +14,6 @@ import myDemocracyDelegatedSelector from "next-common/store/reducers/myOnChainDa
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 
 export default function DemocracySummary() {
-  const dispatch = useDispatch();
   const [showClearExpired, setShowClearExpired] = useState(false);
 
   // Locked balance calculated from on-chain voting data
@@ -62,7 +60,6 @@ export default function DemocracySummary() {
         <ClearExpiredDemocracyVotePopup
           votes={voteExpiredReferenda}
           onClose={() => setShowClearExpired(false)}
-          onInBlock={() => dispatch(incMyVotesTrigger())}
         />
       )}
     </>

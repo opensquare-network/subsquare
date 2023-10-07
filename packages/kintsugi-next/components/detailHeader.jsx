@@ -4,7 +4,6 @@ import PostTitle from "next-common/components/detail/common/Title";
 import { KintsugiDemocracyProposalNavigation } from "next-common/components/detail/navigation/democracyProposal";
 import { KintsugiReferendumNavigation } from "next-common/components/detail/navigation/ReferendumNavigation";
 import PostMeta from "next-common/components/detail/container/Meta";
-import MaliciousHead from "next-common/components/detail/maliciousHead";
 import ReferendumVoteEndCountDown from "next-common/components/democracy/referendum/voteEndCountDown";
 import { usePost } from "next-common/context/post";
 import { useDetailType } from "next-common/context/page";
@@ -21,7 +20,6 @@ export default function DetailHeader() {
     <>
       {!isEditing && (
         <>
-          {post?.isMalicious && <MaliciousHead />}
           {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
             <ReferendumVoteEndCountDown />
           )}

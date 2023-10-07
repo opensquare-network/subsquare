@@ -1979,10 +1979,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.33.0":
-  version: 1.33.0
-  resolution: "@osn/icons@npm:1.33.0"
-  checksum: c1ff22e7edb3219075a7edf1485bd603421ed36194dda24ea7b173197e7c6fb3aaf8b458e3c3d346519c70d9224bae454bc08ef40dbe289338c152756d0a6aad
+"@osn/icons@npm:^1.33.2":
+  version: 1.33.2
+  resolution: "@osn/icons@npm:1.33.2"
+  checksum: 4ace0875ec97e1c57c97d6a069177355229fd98d16dd2a6d8a71115078856a81f78cc55aa01d63bf6b49f1840d663689455541f7d551f442b8d4d0c900d1b1cc
   languageName: node
   linkType: hard
 
@@ -3261,7 +3261,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.33.0
+    "@osn/icons": ^1.33.2
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3294,7 +3294,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.33.0
+    "@osn/icons": ^1.33.2
     "@osn/previewer": ^0.12.5
     "@osn/rich-text-editor": ^0.6.2
     "@svgr/webpack": ^7.0.0
@@ -8303,7 +8303,7 @@ __metadata:
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.33.0
+    "@osn/icons": ^1.33.2
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^0.12.5
     "@osn/provider-options": 1.1.0
@@ -9000,25 +9000,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.3.11":
-  version: 8.4.21
-  resolution: "postcss@npm:8.4.21"
-  dependencies:
-    nanoid: ^3.3.4
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: e39ac60ccd1542d4f9d93d894048aac0d686b3bb38e927d8386005718e6793dbbb46930f0a523fe382f1bbd843c6d980aaea791252bf5e176180e5a4336d9679
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.4.23, postcss@npm:^8.4.24":
-  version: 8.4.24
-  resolution: "postcss@npm:8.4.24"
+"postcss@npm:^8.3.11, postcss@npm:^8.4.23, postcss@npm:^8.4.31":
+  version: 8.4.31
+  resolution: "postcss@npm:8.4.31"
   dependencies:
     nanoid: ^3.3.6
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
-  checksum: 814e2126dacfea313588eda09cc99a9b4c26ec55c059188aa7a916d20d26d483483106dc5ff9e560731b59f45c5bb91b945dfadc670aed875cc90ddbbf4e787d
+  checksum: 1d8611341b073143ad90486fcdfeab49edd243377b1f51834dc4f6d028e82ce5190e4f11bb2633276864503654fb7cab28e67abdc0fbf9d1f88cad4a0ff0beea
   languageName: node
   linkType: hard
 
@@ -9959,13 +9948,13 @@ __metadata:
   linkType: hard
 
 "semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.0":
-  version: 7.5.0
-  resolution: "semver@npm:7.5.0"
+  version: 7.5.2
+  resolution: "semver@npm:7.5.2"
   dependencies:
     lru-cache: ^6.0.0
   bin:
     semver: bin/semver.js
-  checksum: 2d266937756689a76f124ffb4c1ea3e1bbb2b263219f90ada8a11aebebe1280b13bb76cca2ca96bdee3dbc554cbc0b24752eb895b2a51577aa644427e9229f2b
+  checksum: 3fdf5d1e6f170fe8bcc41669e31787649af91af7f54f05c71d0865bb7aa27e8b92f68b3e6b582483e2c1c648008bc84249d2cd86301771fe5cbf7621d1fe5375
   languageName: node
   linkType: hard
 
@@ -10428,7 +10417,8 @@ __metadata:
     eslint-plugin-react: latest
     husky: ^8.0.3
     lint-staged: ^13.2.3
-    postcss: ^8.4.24
+    postcss: ^8.4.31
+    postcss-import: ^15.1.0
     postinstall-postinstall: ^2.1.0
     prettier: ^3.0.0
     pretty-quick: ^3.1.3

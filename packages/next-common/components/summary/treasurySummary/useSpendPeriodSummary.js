@@ -1,17 +1,15 @@
 import useApi from "next-common/utils/hooks/useApi";
 import { useSelector } from "react-redux";
-import {
-  blockTimeSelector,
-  latestHeightSelector,
-} from "next-common/store/reducers/chainSlice";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import BigNumber from "bignumber.js";
 import { estimateBlocksTime } from "next-common/utils";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function useSpendPeriodSummary() {
   const api = useApi();
-  const blockHeight = useSelector(latestHeightSelector);
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const [summary, setSummary] = useState({});
   const isMounted = useIsMounted();
   const blockTime = useSelector(blockTimeSelector);

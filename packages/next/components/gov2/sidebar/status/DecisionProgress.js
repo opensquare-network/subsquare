@@ -7,7 +7,6 @@ import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useMemo } from "react";
 import isNil from "lodash.isnil";
 import { useSelector } from "react-redux";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import Remaining from "./remaining";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
@@ -17,9 +16,10 @@ import {
   ProgressInfo,
   Tooltip,
 } from "./styled";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function DecisionProgress() {
-  const latestHeight = useSelector(latestHeightSelector);
+  const latestHeight = useSelector(chainOrScanHeightSelector);
 
   const decisionBlocks = useDecisionBlocks();
   const decidingSince = useDecidingSince();

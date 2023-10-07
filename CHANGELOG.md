@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.5.1
+date: 2023-09-30
+- Improve content placer when proposal post has no context or no comments.
+- Improve loading effect for democracy vote popup.
+- Refactor code about my votes management.
+- Use scan height before latest chain height query.
+
 ### 3.5.0
 date: 2023-09-27
 - [Medium]Users don't have to login before signing an extrinsic.

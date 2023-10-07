@@ -12,15 +12,18 @@ async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
     (vote) => vote[0] === referendumIndex,
   )?.[1];
 
+  const common = {
+    ...delegating,
+    conviction: Conviction[conviction],
+  };
   if (!vote?.standard) {
-    return null;
+    return { delegating: common };
   }
 
   const aye = isAye(vote.standard.vote);
   return {
     delegating: {
-      ...delegating,
-      conviction: Conviction[conviction],
+      ...common,
       voted: true,
       aye,
     },
@@ -65,7 +68,7 @@ export default function useSubMyDemocracyVote(address) {
           return;
         }
 
-        // If the address has delegated to other.
+        // If the address has delegated to others.
         // Then, look into the votes of the delegating target address.
         queryVotingByDelegation(
           api,

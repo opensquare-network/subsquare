@@ -8,7 +8,7 @@ const businessCategory = {
   tcProposals: "Tech. Comm. Proposals",
   democracyProposals: "Democracy Public Proposals",
   democracyExternals: "Democracy External Proposals",
-  democracyReferenda: "Referenda",
+  democracyReferenda: "Democracy Referenda",
   collective: "collective",
   polkassemblyDiscussions: "Polkassembly Discussions",
   discussions: "Discussions",

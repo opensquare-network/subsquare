@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useApi from "../hooks/useApi";
-import { fetchReferendaVotes } from "next-common/store/reducers/referenda/votes";
+import {
+  clearVotes,
+  fetchReferendaVotes,
+} from "next-common/store/reducers/referenda/votes";
 import { votesTriggerSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
@@ -20,5 +23,9 @@ export default function useFetchVotes(referendum) {
     }
 
     dispatch(fetchReferendaVotes(api, trackId, referendumIndex));
+
+    return () => {
+      dispatch(clearVotes());
+    };
   }, [api, dispatch, finishedHeight, referendumIndex, votesTrigger]);
 }

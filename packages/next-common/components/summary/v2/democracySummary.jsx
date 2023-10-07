@@ -12,13 +12,11 @@ import { Fragment, useMemo } from "react";
 import useNextLaunchTimestamp from "next-common/hooks/democracy/kintsugi/useNextLaunchTimestamp";
 import useLaunchPeriod from "next-common/hooks/democracy/useLaunchPeriod";
 import { useSelector } from "react-redux";
-import {
-  blockTimeSelector,
-  latestHeightSelector,
-} from "next-common/store/reducers/chainSlice";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { estimateBlocksTime } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useApi";
 import useLaunchProgress from "next-common/hooks/democracy/useLaunchProgress";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -76,7 +74,7 @@ export default function DemocracySummary({ summary = {} }) {
 
 function LaunchPeriod() {
   const launchPeriod = useLaunchPeriod();
-  const blockHeight = useSelector(latestHeightSelector);
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const goneBlocks = blockHeight % launchPeriod;
   const blockTime = useSelector(blockTimeSelector);
   const timeArray = estimateBlocksTime(launchPeriod - goneBlocks, blockTime);
