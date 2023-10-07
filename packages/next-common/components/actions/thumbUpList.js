@@ -1,6 +1,6 @@
 import React from "react";
 import { GreyItem, GreyWrapper } from "./styled";
-import AddressUser from "../user/addressUser";
+import SystemUser from "../user/systemUser";
 
 export default function ThumbUpList({ showThumbsUpList, reactions }) {
   if (!showThumbsUpList || !(reactions?.length > 0)) {
@@ -13,7 +13,7 @@ export default function ThumbUpList({ showThumbsUpList, reactions }) {
         .filter((r) => r.user)
         .map((r, index) => (
           <GreyItem key={index}>
-            <AddressUser user={r.user} fontSize={12} showAvatar={false} />
+            <SystemUser user={r.user} fontSize={12} showAvatar={false} />
           </GreyItem>
         ))}
     </GreyWrapper>

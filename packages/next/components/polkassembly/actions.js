@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import useThumbsUp from "next-common/components/thumbsUp";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import AddressUser from "next-common/components/user/addressUser";
+import SystemUser from "next-common/components/user/systemUser";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -52,7 +52,7 @@ export default function Actions({ reactions }) {
             .filter((r) => r.user)
             .map((r, index) => (
               <GreyItem key={index}>
-                <AddressUser
+                <SystemUser
                   user={r.user}
                   fontSize={12}
                   showAvatar={false}
