@@ -1,8 +1,8 @@
 import React from "react";
 import KVList from "../listInfo/kvList";
-import User from "../user";
 import SymbolBalance from "../values/symbolBalance";
 import Copyable from "../copyable";
+import AddressUser from "../user/addressUser";
 
 function getDeposit(scanDepositData) {
   if (!Array.isArray(scanDepositData)) {
@@ -25,10 +25,7 @@ export default function Metadata({ publicProposal }) {
   const metadata = [
     ["hash", <Copyable key="hash">{publicProposal?.hash}</Copyable>],
     ["deposit", <SymbolBalance value={getDeposit(deposit)} key="balance" />],
-    [
-      "proposer",
-      <User add={publicProposal?.proposer} fontSize={14} key="user" />,
-    ],
+    ["proposer", <AddressUser add={publicProposal?.proposer} key="user" />],
   ];
 
   return <KVList title="Metadata" data={metadata} showFold />;

@@ -4,10 +4,10 @@ import React from "react";
 import styled from "styled-components";
 import PostEdit from "./PostEdit";
 import PostLink from "./PostLink";
-import User from "../../user";
 import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import NoData from "next-common/components/noData";
+import AddressUser from "next-common/components/user/addressUser";
 
 const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
@@ -34,7 +34,7 @@ function WhoCanEdit({ authors = [] }) {
       <span style={{ marginRight: 12 }}>Who can edit?</span>
       {authors.map((author) => (
         <GreyItem key={author}>
-          <User add={author} showAvatar={false} fontSize={12} />
+          <AddressUser add={author} showAvatar={false} fontSize={12} />
         </GreyItem>
       ))}
     </GreyWrapper>

@@ -1,5 +1,4 @@
 import React from "react";
-import User from "next-common/components/user";
 import styled from "styled-components";
 import StyledListOrigin from "next-common/components/styledList";
 import { useCallback, useEffect, useState } from "react";
@@ -14,9 +13,9 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import AddressUser from "next-common/components/user/addressUser";
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -123,7 +122,7 @@ export default function DemocracyDelegatee({
   const rows = (delegateeList.items || []).map((item) => {
     const row = [
       <Flex key="account">
-        <User add={item.account} fontSize={14} maxWidth={230} />
+        <AddressUser add={item.account} maxWidth={230} />
       </Flex>,
       item.delegatorsCount,
       <ValueDisplay

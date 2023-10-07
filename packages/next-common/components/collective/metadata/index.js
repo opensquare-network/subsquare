@@ -1,8 +1,8 @@
 import React from "react";
 import capitalize from "../../../utils/capitalize";
 import KVList from "../../listInfo/kvList";
-import User from "../../user";
 import Copyable from "next-common/components/copyable";
+import AddressUser from "next-common/components/user/addressUser";
 
 const keys = {
   proposer: "proposer",
@@ -19,7 +19,7 @@ export default function CollectiveMetadata({
 }) {
   const proposerItem = [
     capitalize(keys.proposer),
-    <User add={proposer} fontSize={14} key="proposer" />,
+    <AddressUser add={proposer} key="proposer" />,
   ];
   const indexItem = Number.isInteger(index)
     ? [capitalize(keys.index), index]

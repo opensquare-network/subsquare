@@ -1,5 +1,5 @@
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
-import User from "next-common/components/user";
+import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { detailMultiTabsVotesBubbleView } from "next-common/store/reducers/detailSlice";
@@ -16,7 +16,7 @@ export default function VoteBubbleHoverContent({ node, sizeField }) {
   return (
     <ul>
       <li>
-        <User
+        <AddressUser
           add={node.data.account}
           ellipsis={false}
           color="var(--textPrimaryContrast)"

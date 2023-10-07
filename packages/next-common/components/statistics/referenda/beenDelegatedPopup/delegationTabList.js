@@ -7,7 +7,6 @@ import { EmptyList } from "next-common/utils/constants";
 import StyledList from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Flex from "next-common/components/styled/flex";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
@@ -16,6 +15,7 @@ import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import startCase from "lodash.startcase";
 import { p_12_medium } from "next-common/styles/componentCss";
+import AddressUser from "next-common/components/user/addressUser";
 
 const ListWrapper = styled.div`
   display: flex;
@@ -138,7 +138,7 @@ export default function DelegationTabList({ delegatee }) {
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
     <Flex key="account">
-      <User add={item.account} fontSize={14} maxWidth={232} />
+      <AddressUser add={item.account} maxWidth={232} />
     </Flex>,
     <TrackNameText key="track">{startCase(item.trackName)}</TrackNameText>,
     <Flex key="capital" style={{ justifyContent: "right" }}>

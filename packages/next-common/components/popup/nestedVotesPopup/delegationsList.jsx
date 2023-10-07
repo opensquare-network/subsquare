@@ -5,13 +5,13 @@ import { useChainSettings } from "next-common/context/chain";
 import styled, { css } from "styled-components";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Pagination from "next-common/components/pagination";
-import User from "next-common/components/user";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
 import { toPrecision } from "next-common/utils";
 import { smcss } from "next-common/utils/responsive";
 import { p_14_bold } from "next-common/styles/componentCss";
+import AddressUser from "next-common/components/user/addressUser";
 
 const StyledPopupListWrapper = styled(PopupListWrapper)`
   ${smcss(css`
@@ -92,10 +92,9 @@ function DetailDelegatorList({ items = [] }) {
     const capital = item.balance;
 
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.account}
-        fontSize={14}
         noTooltip
         maxWidth={296}
         linkToVotesPage

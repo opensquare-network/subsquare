@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import User from "../user";
+import AddressUser from "../user/addressUser";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ export default function DelegationStatus({ delegatingTarget }) {
   return (
     <Wrapper>
       <span className="text-textTertiary text14Medium">Delegated to</span>
-      <User add={delegatingTarget} showAvatar={false} maxWidth={133} />
+      <AddressUser add={delegatingTarget} showAvatar={false} maxWidth={133} />
     </Wrapper>
   );
 }

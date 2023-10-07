@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import User from "../user";
+import SystemUser from "../user/systemUser";
 
 const Title = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ export default function VoterList({ voters }) {
       <Title>Voted by:</Title>
       {(voters || []).map((user, index) => (
         <GreyItem key={index}>
-          <User
+          <SystemUser
             user={user}
             showAvatar={false}
             fontSize={12}

@@ -36,6 +36,7 @@ import ReferendumElapse from "./democracy/referendum/referendumElapse";
 import PostListCardVotesSummaryBar from "./postList/votesSummaryBar";
 import SystemUser from "./user/systemUser";
 import AddressUser from "./user/addressUser";
+import PolkassemblyUser from "./user/polkassemblyUser";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -149,6 +150,41 @@ const BannerWrapper = styled.div`
   }
 `;
 
+function PostUser({ data, type }) {
+  const { sm } = useScreenSize();
+  const userMaxWidth = sm ? 160 : 240;
+  const userFontSize = 12;
+
+  let user = null;
+  if (type === businessCategory.polkassemblyDiscussions) {
+    user = (
+      <PolkassemblyUser
+        user={data?.author}
+        fontSize={userFontSize}
+        maxWidth={userMaxWidth}
+      />
+    );
+  } else if (data?.author) {
+    user = (
+      <SystemUser
+        user={data?.author}
+        fontSize={userFontSize}
+        maxWidth={userMaxWidth}
+      />
+    );
+  } else {
+    user = (
+      <AddressUser
+        add={data.address}
+        fontSize={userFontSize}
+        maxWidth={userMaxWidth}
+      />
+    );
+  }
+
+  return user;
+}
+
 export default function Post({ data, href, type }) {
   const isDemocracyCollective = [
     businessCategory.councilMotions,
@@ -220,13 +256,6 @@ export default function Post({ data, href, type }) {
 
   const bannerUrl = getBannerUrl(data.bannerCid);
 
-  let userNoClickEvent = false;
-  if (type === businessCategory.polkassemblyDiscussions) {
-    if (!data?.author.address) {
-      userNoClickEvent = true;
-    }
-  }
-
   const trackTagLink =
     type === businessCategory.openGovReferenda
       ? `/referenda/tracks/${data.track}`
@@ -238,8 +267,6 @@ export default function Post({ data, href, type }) {
     businessCategory.openGovReferenda,
     businessCategory.fellowship,
   ].includes(type);
-
-  const { sm } = useScreenSize();
 
   const postValue = data.onchainData?.isTreasury
     ? data.onchainData?.treasuryInfo?.amount
@@ -268,22 +295,7 @@ export default function Post({ data, href, type }) {
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
-            {data.address ? (
-              <AddressUser
-                add={data.address}
-                fontSize={12}
-                noEvent={userNoClickEvent}
-                maxWidth={sm ? 160 : 240}
-              />
-            ) : (
-              <SystemUser
-                user={data?.author}
-                fontSize={12}
-                noEvent={userNoClickEvent}
-                maxWidth={sm ? 160 : 240}
-              />
-            )}
-
+            <PostUser data={data} type={type} />
             {data.trackName && (
               <MobileHiddenInfo>
                 <Link href={trackTagLink} passHref legacyBehavior>

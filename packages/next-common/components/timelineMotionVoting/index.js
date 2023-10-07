@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import User from "../user";
 import Progress from "./progress";
 import Flex from "../styled/flex";
 import { Approve } from "../icons";
 import { GreyPanel } from "../styled/containers/greyPanel";
+import AddressUser from "../user/addressUser";
 
 const TitleWrapper = styled(Flex)`
   justify-content: space-between;
@@ -53,7 +53,7 @@ export default function Voting({ data }) {
   return (
     <div>
       <TitleWrapper>
-        <User add={data.proposer} fontSize={14} />
+        <AddressUser add={data.proposer} />
         <div>
           <div>{data.method}</div>
           <Approve />

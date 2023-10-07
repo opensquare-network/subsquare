@@ -1,8 +1,8 @@
 import React from "react";
 import KVList from "../../listInfo/kvList";
 import capitalize from "../../../utils/capitalize";
-import User from "../../user";
 import SymbolBalance from "../../values/symbolBalance";
+import AddressUser from "next-common/components/user/addressUser";
 
 const keys = {
   proposer: "proposer",
@@ -21,12 +21,9 @@ export default function TreasuryProposalMetadata({ treasuryProposal = {} }) {
 
   const data = metadata.map(([key, value]) => {
     if (keys.proposer === key) {
-      return [
-        capitalize(key),
-        <User add={proposer} fontSize={14} key="user" />,
-      ];
+      return [capitalize(key), <AddressUser add={proposer} key="user" />];
     } else if ([keys.proposer, keys.beneficiary].includes(key)) {
-      return [capitalize(key), <User add={value} fontSize={14} key="user" />];
+      return [capitalize(key), <AddressUser add={value} key="user" />];
     } else if ([keys.value, keys.bond].includes(key)) {
       return [capitalize(key), <SymbolBalance value={value} key="balance" />];
     } else {

@@ -1,8 +1,8 @@
 import clsx from "clsx";
-import User from "next-common/components/user";
 import Tooltip from "next-common/components/tooltip";
 import VoteBubbleHoverContent from "./hoverContent";
 import { useRouter } from "next/router";
+import AddressUser from "next-common/components/user/addressUser";
 
 // if `d` less than this value, don't render address/identity
 const CONTENT_MIN_SIZE = 60;
@@ -27,7 +27,7 @@ export default function VoteBubbleContent({ node, sizeField }) {
         }}
       >
         {d >= CONTENT_MIN_SIZE && (
-          <User
+          <AddressUser
             add={node.data.account}
             showAvatar={false}
             maxWidth={d - 12}

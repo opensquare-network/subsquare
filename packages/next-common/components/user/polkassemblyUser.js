@@ -1,39 +1,35 @@
 import React, { memo } from "react";
 import Identity from "../Identity";
-import Link from "next/link";
+import DeletedAccount from "./deletedAccount";
+import UserDisplay from "./userDisplay";
 import { AvatarWrapper, LinkWrapper, UserWrapper } from "./styled";
 import Avatar from "../avatar";
-import AddressDisplay from "./addressDisplay";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
-import DeletedAccount from "./deletedAccount";
 
-function AddressUser({
-  add,
-  showAvatar = true,
+function PolkassemblyUser({
+  user,
   fontSize = 14,
   noEvent = false,
   maxWidth: propMaxWidth,
   noTooltip = false,
   color,
-  linkToVotesPage = false,
   ellipsis = true,
-  externalLink,
 }) {
-  const address = add;
+  const address = user?.address;
   const [identity, hasIdentity] = useIdentityInfo(address);
-
+  const showAvatar = !!address;
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
-  if (!address) {
+  if (!user) {
     return <DeletedAccount fontSize={fontSize} />;
   }
 
   const userIdentity = hasIdentity ? (
     <Identity identity={identity} fontSize={fontSize} maxWidth={maxWidth} />
   ) : (
-    <AddressDisplay
-      address={address}
+    <UserDisplay
+      user={user}
       fontSize={fontSize}
       color={color}
       maxWidth={maxWidth}
@@ -41,33 +37,6 @@ function AddressUser({
       ellipsis={ellipsis}
     />
   );
-
-  let linkUserPage = `/user/${address}`;
-  if (linkToVotesPage) {
-    linkUserPage = `${linkUserPage}/votes`;
-  }
-
-  let userIdentityLink = (
-    <Link href={linkUserPage} passHref legacyBehavior>
-      <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
-        {userIdentity}
-      </LinkWrapper>
-    </Link>
-  );
-
-  if (externalLink) {
-    userIdentityLink = (
-      <LinkWrapper
-        href={externalLink}
-        target="_blank"
-        rel="noreferrer"
-        color={color}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {userIdentity}
-      </LinkWrapper>
-    );
-  }
 
   const avatarSize = fontSize * (20 / 14);
 
@@ -78,9 +47,17 @@ function AddressUser({
           <Avatar address={address} size={avatarSize} />
         </AvatarWrapper>
       )}
-      {userIdentityLink}
+      <LinkWrapper
+        href={user?.polkassemblyUserLink}
+        target="_blank"
+        rel="noreferrer"
+        color={color}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {userIdentity}
+      </LinkWrapper>
     </UserWrapper>
   );
 }
 
-export default memo(AddressUser);
+export default memo(PolkassemblyUser);

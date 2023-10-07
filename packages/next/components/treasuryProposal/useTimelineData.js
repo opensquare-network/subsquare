@@ -7,8 +7,8 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import { createReferendumTimelineData } from "../../utils/timeline/referendum";
 import sortTimeline from "next-common/utils/timeline/sort";
-import User from "next-common/components/user";
 import SymbolBalance from "next-common/components/values/symbolBalance";
+import AddressUser from "next-common/components/user/addressUser";
 
 function getTimelineData(args, method) {
   switch (method) {
@@ -18,7 +18,7 @@ function getTimelineData(args, method) {
       };
     case "Awarded":
       return {
-        Beneficiary: <User add={args.beneficiary} />,
+        Beneficiary: <AddressUser add={args.beneficiary} />,
         Award: <SymbolBalance value={args.award} />,
       };
   }

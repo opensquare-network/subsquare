@@ -1,5 +1,4 @@
 import Timeline from "next-common/components/timeline";
-import User from "next-common/components/user";
 import startCase from "lodash.startcase";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import SymbolBalance from "next-common/components/values/symbolBalance";
@@ -9,12 +8,13 @@ import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import AddressUser from "next-common/components/user/addressUser";
 
 const getTimelineData = (args, method, trackInfo) => {
   switch (method) {
     case "Submitted": {
       return {
-        Proposer: <User add={args.proposer} />,
+        Proposer: <AddressUser add={args.proposer} />,
         Track: startCase(trackInfo.name),
         "Proposal Hash":
           args.proposal?.legacy?.hash ||
@@ -24,7 +24,7 @@ const getTimelineData = (args, method, trackInfo) => {
     }
     case "DecisionDepositPlaced": {
       return {
-        Depositor: <User add={args.who} />,
+        Depositor: <AddressUser add={args.who} />,
         Deposit: <SymbolBalance value={args.amount} />,
       };
     }

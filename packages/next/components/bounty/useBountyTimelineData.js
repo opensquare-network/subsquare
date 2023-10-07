@@ -1,4 +1,3 @@
-import User from "next-common/components/user";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useEffect, useState } from "react";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
@@ -6,18 +5,19 @@ import { getTimelineStatus } from "../../utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
+import AddressUser from "next-common/components/user/addressUser";
 
 const getTimelineData = (args, method) => {
   switch (method) {
     case "BountyExtended":
       return {
         ...args,
-        caller: <User add={args.caller} fontSize={14} />,
+        caller: <AddressUser add={args.caller} />,
       };
     case "acceptCurator":
       return {
         ...args,
-        curator: <User add={args.curator.id ?? args.curator} fontSize={14} />,
+        curator: <AddressUser add={args.curator.id ?? args.curator} />,
       };
     case "proposeBounty":
       return {
@@ -35,13 +35,13 @@ const getTimelineData = (args, method) => {
       };
     case "BountyClaimed":
       return {
-        Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+        Beneficiary: <AddressUser add={args.beneficiary} />,
         Payout: <SymbolBalance value={args.payout} />,
       };
     case "Awarded":
     case "BountyAwarded":
       return {
-        Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+        Beneficiary: <AddressUser add={args.beneficiary} />,
       };
   }
   return args;

@@ -5,8 +5,8 @@ import VotesTab, {
 } from "next-common/components/democracy/flattenedVotesPopup/tab";
 import Pagination from "next-common/components/pagination";
 import StyledList from "next-common/components/styledList";
-import User from "next-common/components/user";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -71,12 +71,11 @@ function VotesList({ items = [], loading }) {
 
   const rows = items.map((item) => {
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.address}
-        fontSize={14}
         maxWidth={176}
-        noTooltip={true}
+        noTooltip
         linkToVotesPage
       />,
       item.votes,

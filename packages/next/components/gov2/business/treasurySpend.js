@@ -1,9 +1,9 @@
 import { toPrecision } from "next-common/utils";
-import User from "next-common/components/user";
 import React from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
 import isNil from "lodash.isnil";
 import Link from "next/link";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
   const {
@@ -31,7 +31,7 @@ export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
         {beneficiaries.map((beneficiary, index) => {
           return (
             <li key={`beneficiary-${index}`}>
-              <User add={beneficiary} fontSize={14} />
+              <AddressUser add={beneficiary} />
             </li>
           );
         })}
@@ -40,7 +40,7 @@ export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
   } else if (beneficiary) {
     business.push([
       "Beneficiary",
-      <User key="beneficiary" add={beneficiary} fontSize={14} />,
+      <AddressUser key="beneficiary" add={beneficiary} />,
     ]);
   }
 

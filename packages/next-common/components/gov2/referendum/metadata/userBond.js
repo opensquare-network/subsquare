@@ -1,5 +1,4 @@
 import React from "react";
-import User from "../../../user";
 import { ValueWrapper } from "./styled";
 import { toPrecision } from "../../../../utils";
 import Tooltip from "../../../tooltip";
@@ -7,6 +6,7 @@ import styled from "styled-components";
 import Flex from "../../../styled/flex";
 import { useDecimals, useVoteSymbol } from "../../../../context/chain";
 import RefundDecisionDeposit from "next-common/components/gov2/referendum/metadata/refund";
+import AddressUser from "next-common/components/user/addressUser";
 
 const BondValueWrapper = styled(Flex)`
   color: var(--textTertiary);
@@ -35,7 +35,7 @@ export default function UserBond({ address, bond, children }) {
 
   return (
     <ValueWrapper className="flex-wrap">
-      <User add={address} fontSize={14} />
+      <AddressUser add={address} />
       <BondValue deposit={bond} decimals={decimals} symbol={symbol} />
       {children}
     </ValueWrapper>

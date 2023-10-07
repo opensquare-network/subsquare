@@ -6,7 +6,6 @@ import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
-import User from "next-common/components/user";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
@@ -19,6 +18,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
+import AddressUser from "next-common/components/user/addressUser";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -139,11 +139,10 @@ function VotesList({ items = [], loading }) {
 
   const rows = items?.map((item) => {
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.voter}
-        fontSize={14}
-        noTooltip={true}
+        noTooltip
         maxWidth={264}
         linkToVotesPage
       />,

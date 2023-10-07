@@ -1,5 +1,4 @@
 import React from "react";
-import User from "next-common/components/user";
 import styled from "styled-components";
 import StyledListOrigin from "next-common/components/styledList";
 import { useCallback, useEffect, useState } from "react";
@@ -13,9 +12,9 @@ import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import AddressUser from "next-common/components/user/addressUser";
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -111,10 +110,10 @@ export default function Delegator({ delegators, apiRoot = "democracy" }) {
   const rows = (delegatorsList?.items || []).map((item) => {
     const row = [
       <Flex key="account">
-        <User add={item.account} fontSize={14} maxWidth={230} />
+        <AddressUser add={item.account} maxWidth={230} />
       </Flex>,
       <Flex key="delegatee">
-        <User add={item.delegatee} fontSize={14} maxWidth={230} />
+        <AddressUser add={item.delegatee} maxWidth={230} />
       </Flex>,
       <Flex key="capital" style={{ justifyContent: "right" }}>
         <ValueDisplay

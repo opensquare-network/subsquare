@@ -7,7 +7,6 @@ import Pagination from "next-common/components/pagination";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -21,6 +20,7 @@ import {
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function CheckAllVotesPopup({ setShowVoteList = () => {} }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -117,10 +117,9 @@ function VotesList({ items = [], loading }) {
 
   const rows = items?.map?.((item) => {
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.account}
-        fontSize={14}
         noTooltip
         maxWidth={176}
         linkToVotesPage

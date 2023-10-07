@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
-import User from "next-common/components/user";
 import ValueDisplay from "../../valueDisplay";
 import Loading from "../../loading";
 
@@ -18,6 +17,7 @@ import Chains from "../../../utils/consts/chains";
 import { useChain, useChainSettings } from "../../../context/chain";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import Annotation from "./annotation";
+import AddressUser from "next-common/components/user/addressUser";
 
 function VotesList({ items, theme, loading = false, tab, isOpenGov = false }) {
   const chain = useChain();
@@ -56,7 +56,7 @@ function VotesList({ items, theme, loading = false, tab, isOpenGov = false }) {
               <Fragment key={index}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 416 }}>
-                    <User add={item.account} fontSize={14} noTooltip={true} />
+                    <AddressUser add={item.account} noTooltip />
                   </StyledTd>
                   {hasLabel && (
                     <StyledTd style={{ textAlign: "right", width: 128 }}>

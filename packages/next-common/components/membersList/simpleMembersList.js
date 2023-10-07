@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import User from "../user";
 import React from "react";
 import PrimeAddressMark from "../primeAddressMark";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import MemberListTable from "../memberListTable";
+import AddressUser from "../user/addressUser";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -27,7 +27,7 @@ export default function MembersList({
 
   const rows = items.map((item) => [
     <Member key={item}>
-      <User add={item} fontSize={14} />
+      <AddressUser add={item} />
       {item === prime && <PrimeAddressMark />}
     </Member>,
   ]);

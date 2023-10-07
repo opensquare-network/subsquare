@@ -1,12 +1,12 @@
 import PopupListWrapper from "../../styled/popupListWrapper";
 import React from "react";
-import User from "next-common/components/user";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
 import { Conviction } from "../../../utils/referendumCommon";
 import StyledList from "next-common/components/styledList";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function AllMyDelegationPopupList({ myDelegationList = [] }) {
   const { decimals } = useChainSettings();
@@ -47,10 +47,9 @@ export default function AllMyDelegationPopupList({ myDelegationList = [] }) {
   const rows = myDelegationList.map((item) => {
     const row = [
       <Gov2TrackTag key="track" name={item.track.name} />,
-      <User
+      <AddressUser
         key="user"
         add={item.delegation.target}
-        fontSize={14}
         maxWidth={colWidths.delegatingTo}
       />,
       <CapitalTableItem

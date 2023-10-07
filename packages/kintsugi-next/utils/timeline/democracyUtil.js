@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { getTimelineStatus } from "utils";
-import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import AddressUser from "next-common/components/user/addressUser";
 
 const DepositorsWrapper = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ function getTimelineData(args, method) {
         Depositors: (
           <DepositorsWrapper>
             {(args.depositors || []).map((item, index) => (
-              <User add={item} key={index} />
+              <AddressUser add={item} key={index} />
             ))}
           </DepositorsWrapper>
         ),

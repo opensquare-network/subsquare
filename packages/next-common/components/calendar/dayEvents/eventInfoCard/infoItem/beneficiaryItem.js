@@ -1,12 +1,12 @@
 import React from "react";
-import User from "../../../../user";
 import { ItemWrapper } from "./styled";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function BeneficiaryItem({ beneficiary }) {
   return (
     <ItemWrapper>
       <span>Beneficiary:</span>
-      <User
+      <AddressUser
         add={beneficiary}
         fontSize={12}
         showAvatar={false}

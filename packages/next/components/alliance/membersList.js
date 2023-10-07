@@ -1,6 +1,6 @@
-import User from "next-common/components/user";
 import React from "react";
 import MemberListTable from "next-common/components/memberListTable";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function MembersList({ items, loading = false }) {
   const columns = [
@@ -9,7 +9,7 @@ export default function MembersList({ items, loading = false }) {
   ];
 
   const rows = items.map((item) => [
-    <User key={item.address} add={item.address} fontSize={14} />,
+    <AddressUser key={item.address} add={item.address} />,
     item.role,
   ]);
 

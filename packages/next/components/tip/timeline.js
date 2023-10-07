@@ -2,13 +2,13 @@ import styled from "styled-components";
 import findLastIndex from "lodash.findlastindex";
 import { getTimelineStatus } from "utils";
 import Timeline from "next-common/components/timeline";
-import User from "next-common/components/user";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import AddressUser from "next-common/components/user/addressUser";
 
 const FlexEnd = styled.div`
   display: flex;
@@ -51,12 +51,12 @@ export default function TipTimeline({ tip }) {
         return {
           Finder: (
             <FlexEnd>
-              <User add={args.finder} />
+              <AddressUser add={args.finder} />
             </FlexEnd>
           ),
           Beneficiary: (
             <FlexEnd>
-              <User add={args.beneficiary?.id || args.beneficiary} />
+              <AddressUser add={args.beneficiary?.id || args.beneficiary} />
             </FlexEnd>
           ),
           Reason: args.reason,
@@ -67,7 +67,7 @@ export default function TipTimeline({ tip }) {
         return {
           Tipper: (
             <FlexEnd>
-              <User add={args.tipper} />
+              <AddressUser add={args.tipper} />
             </FlexEnd>
           ),
           Value: <SymbolBalance value={value} />,
@@ -76,7 +76,7 @@ export default function TipTimeline({ tip }) {
         return {
           Beneficiary: (
             <FlexEnd>
-              <User add={args.beneficiary} />
+              <AddressUser add={args.beneficiary} />
             </FlexEnd>
           ),
           Payout: <SymbolBalance value={args.payout} />,

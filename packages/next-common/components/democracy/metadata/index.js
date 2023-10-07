@@ -9,10 +9,10 @@ import {
   blockTimeSelector,
   latestHeightSelector,
 } from "../../../store/reducers/chainSlice";
-import User from "../../user";
 import useDemocracyThreshold from "../../../context/post/democracy/referendum/threshold";
 import { useDemocracyReferendumHash } from "next-common/hooks/democracy/useDemocracyReferendumHash";
 import Copyable from "next-common/components/copyable";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function ReferendumMetadata({
   proposer,
@@ -51,7 +51,7 @@ export default function ReferendumMetadata({
   const [metadata, setMetadata] = useState([]);
   useEffect(() => {
     const data = [
-      ["Proposer", <User add={proposer} fontSize={14} key="user" />],
+      ["Proposer", <AddressUser add={proposer} key="user" />],
       ["Hash", <Copyable key="hash">{hash}</Copyable>],
       [
         "Delay",

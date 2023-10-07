@@ -4,12 +4,12 @@ import {
   decimalPlaces,
   toPrecision,
 } from "next-common/utils";
-import User from "next-common/components/user";
 import { useState } from "react";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useChainSettings } from "next-common/context/chain";
 import MemberListTable from "next-common/components/memberListTable";
+import AddressUser from "next-common/components/user/addressUser";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -89,7 +89,7 @@ function MembersList({
   const rows = items.map((item) => {
     const row = [
       <Member key={item.address}>
-        <User add={item.address} fontSize={14} />
+        <AddressUser add={item.address} />
         {item.address === prime && <PrimeAddressMark />}
       </Member>,
     ];

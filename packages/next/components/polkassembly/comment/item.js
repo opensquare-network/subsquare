@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import User from "next-common/components/user";
 import Flex from "next-common/components/styled/flex";
 import {
   MarkdownPreviewer,
@@ -12,6 +11,7 @@ import RichTextStyleWrapper from "next-common/components/content/richTextStyleWr
 import useDuration from "next-common/utils/hooks/useDuration";
 import Divider from "next-common/components/styled/layout/divider";
 import clsx from "clsx";
+import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 
 const Wrapper = styled.div`
   position: relative;
@@ -72,10 +72,7 @@ export default function Item({ data, isSecondLevel }) {
       )}
     >
       <InfoWrapper>
-        <User
-          user={comment.author}
-          externalLink={comment?.author?.polkassemblyUserLink}
-        />
+        <PolkassemblyUser user={comment.author} />
         <div>{duration}</div>
       </InfoWrapper>
       <ContentWrapper>
