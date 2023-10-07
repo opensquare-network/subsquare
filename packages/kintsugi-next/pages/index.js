@@ -14,41 +14,42 @@ import AllianceOverviewSummary from "next-common/components/summary/allianceOver
 import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default function Home({ overview, chain }) {
   const chainSettings = useChainSettings();
 
   let overviewData = [
     {
-      category: "Discussions",
+      category: businessCategory.discussions,
       link: "/discussions",
       items: (overview?.discussions ?? []).map((item) =>
         toDiscussionListItem(chain, item),
       ),
     },
     {
-      category: "Referenda",
+      category: businessCategory.democracyReferenda,
       link: "/democracy/referenda",
       items: (overview?.democracy?.referenda ?? []).map((item) =>
         normalizeReferendaListItem(chain, item),
       ),
     },
     {
-      category: "Democracy Public Proposals",
+      category: businessCategory.democracyProposals,
       link: "/democracy/proposals",
       items: (overview?.democracy?.proposals ?? []).map((item) =>
         normalizeProposalListItem(chain, item),
       ),
     },
     {
-      category: "Treasury Proposals",
+      category: businessCategory.treasuryProposals,
       link: "/treasury/proposals",
       items: (overview?.treasury?.proposals ?? []).map((item) =>
         normalizeTreasuryProposalListItem(chain, item),
       ),
     },
     {
-      category: "Tech. Comm. Proposals",
+      category: businessCategory.tcProposals,
       link: "/techcomm/proposals",
       items: (overview?.techComm?.motions ?? []).map((item) =>
         normalizeTechCommMotionListItem(chain, item),
