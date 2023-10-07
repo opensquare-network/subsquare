@@ -19,11 +19,11 @@ export function getMentionList(comments) {
   const items = [
     ...(comments?.items ?? []),
     ...flatten((comments?.items ?? []).map((item) => item.replies)),
-  ];
-  return uniqBy(
-    items?.map((comment) => comment.author).filter((author) => !!author) ?? [],
-    (item) => item.username,
-  );
+  ]
+    .map((comment) => comment.author)
+    .filter((author) => !!author);
+
+  return uniqBy(items, (item) => item.username);
 }
 
 export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
