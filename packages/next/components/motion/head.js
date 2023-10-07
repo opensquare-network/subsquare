@@ -87,7 +87,7 @@ export default function MotionHead({ motion, type }) {
       <Divider className="my-4" />
       <FlexWrapper>
         <DividerWrapper>
-          <PostUser data={motion} />
+          <PostUser />
           <MotionTag motion={motion.onchainData} />
           <UpdatedTime />
           {!noCommentsCount && commentsCount > -1 && (
