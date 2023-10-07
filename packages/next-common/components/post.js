@@ -155,34 +155,33 @@ function PostUser({ data, type }) {
   const userMaxWidth = sm ? 160 : 240;
   const userFontSize = 12;
 
-  let user = null;
   if (type === businessCategory.polkassemblyDiscussions) {
-    user = (
+    return (
       <PolkassemblyUser
         user={data?.author}
         fontSize={userFontSize}
         maxWidth={userMaxWidth}
       />
     );
-  } else if (data?.author) {
-    user = (
+  }
+
+  if (data?.author) {
+    return (
       <SystemUser
         user={data?.author}
         fontSize={userFontSize}
         maxWidth={userMaxWidth}
       />
     );
-  } else {
-    user = (
-      <AddressUser
-        add={data.address}
-        fontSize={userFontSize}
-        maxWidth={userMaxWidth}
-      />
-    );
   }
 
-  return user;
+  return (
+    <AddressUser
+      add={data.address}
+      fontSize={userFontSize}
+      maxWidth={userMaxWidth}
+    />
+  );
 }
 
 export default function Post({ data, href, type }) {

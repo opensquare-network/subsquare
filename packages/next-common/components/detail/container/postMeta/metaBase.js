@@ -31,26 +31,23 @@ function PostUser() {
   const userMaxWidth = sm ? 236 : 370;
   const userFontSize = 12;
 
-  let user = null;
   if (post?.author) {
-    user = (
+    return (
       <SystemUser
         user={post?.author}
         fontSize={userFontSize}
         maxWidth={userMaxWidth}
       />
     );
-  } else {
-    user = (
-      <AddressUser
-        add={post?.proposer || post?.finder}
-        fontSize={userFontSize}
-        maxWidth={userMaxWidth}
-      />
-    );
   }
 
-  return user;
+  return (
+    <AddressUser
+      add={post?.proposer || post?.finder}
+      fontSize={userFontSize}
+      maxWidth={userMaxWidth}
+    />
+  );
 }
 
 export default function PostMetaBase({ children, state }) {
