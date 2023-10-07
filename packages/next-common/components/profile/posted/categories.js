@@ -103,11 +103,8 @@ const Category = ({ type, count, selected, onClick }) => {
 
 export default function Categories({
   categories,
-  setItems,
   setFirstCategory,
   setSecondCategory,
-  resetPage,
-  setIsLoading,
   firstCategory,
   secondCategory,
   overview,
@@ -115,18 +112,14 @@ export default function Categories({
   const chain = useChain();
 
   const onFirstCategoryClick = (c) => {
-    setItems(null);
     setFirstCategory(c);
     setSecondCategory(
       c.children.find((child) => !child?.excludeChains?.includes(chain)),
     );
-    resetPage();
   };
 
   const onSecondCategoryClick = (c) => {
-    setIsLoading(true);
     setSecondCategory(c);
-    resetPage();
   };
 
   return (

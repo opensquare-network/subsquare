@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import nextApi from "next-common/services/nextApi";
 import { getProfileCategories } from "../../../utils/consts/profile";
 import { useRouter } from "next/router";
 import { useChain } from "../../../context/chain";
@@ -49,10 +48,6 @@ export default function Posted() {
   }
 
   const chain = useChain();
-  const defaultPage = { page: 1, pageSize: 10, total: 0 };
-  const [items, setItems] = useState([]);
-  const [pagination, setPagination] = useState(defaultPage);
-  const [isLoading, setIsLoading] = useState(true);
   const categories = getProfileCategories(chain);
   const [firstCategory, setFirstCategory] = useState(
     getCategoryByRoute(postedRoute, categories)[0],
@@ -62,12 +57,7 @@ export default function Posted() {
   );
   const router = useRouter();
 
-  const resetPage = () => setPagination({ ...pagination, page: 1 });
-
   useEffect(() => {
-    let cancel = false;
-
-    setIsLoading(true);
     router.push(
       {
         pathname: `/user/${id}/posted/${secondCategory.routePath}`,
@@ -75,35 +65,7 @@ export default function Posted() {
       undefined,
       { shallow: true },
     );
-    nextApi
-      .fetch(`users/${id}/${secondCategory.apiPath}`, {
-        page: pagination.page,
-        pageSize: pagination.pageSize,
-      })
-      .then(({ result: { items, page, pageSize, total } }) => {
-        if (cancel) {
-          return;
-        }
-
-        setItems(items.map((item) => secondCategory.formatter(chain, item)));
-        setPagination({ page, pageSize, total });
-      })
-      .catch((e) => {
-        console.error(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-
-    return () => {
-      cancel = true;
-    };
-  }, [chain, id, pagination.page, pagination.pageSize, secondCategory]);
-
-  const onPageChange = (e, target) => {
-    e.preventDefault();
-    setPagination({ ...pagination, page: target });
-  };
+  }, [id, secondCategory]);
 
   useEffect(() => {
     const [, postedRoute] = router.asPath.split("/posted/");
@@ -138,19 +100,15 @@ export default function Posted() {
     <>
       <Categories
         categories={categories}
-        setItems={setItems}
         setFirstCategory={setFirstCategory}
         setSecondCategory={setSecondCategory}
-        resetPage={resetPage}
-        setIsLoading={setIsLoading}
         firstCategory={firstCategory}
         secondCategory={secondCategory}
         overview={overview}
       />
       <List
-        items={items}
-        pagination={{ ...pagination, onPageChange }}
-        isLoading={isLoading}
+        key={secondCategory.categoryId}
+        id={id}
         secondCategory={secondCategory}
       />
     </>
