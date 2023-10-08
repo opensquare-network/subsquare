@@ -8,8 +8,8 @@ import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
 import BigNumber from "bignumber.js";
-import FieldLoading from "next-common/components/icons/fieldLoading";
 import PriorInfo from "./prior";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -34,14 +34,6 @@ function TokenValueContent({ value }) {
       }
     />
   );
-}
-
-function LoadableContent({ isLoading = false, children }) {
-  if (isLoading) {
-    return <FieldLoading />;
-  }
-
-  return <>{children}</>;
 }
 
 export default function ReferendaVoteSummary({
