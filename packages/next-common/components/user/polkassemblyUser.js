@@ -6,6 +6,7 @@ import { AvatarWrapper, LinkWrapper, UserWrapper } from "./styled";
 import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
+import { useChain } from "next-common/context/chain";
 
 function PolkassemblyUser({
   user,
@@ -16,6 +17,7 @@ function PolkassemblyUser({
   color,
   ellipsis = true,
 }) {
+  const chain = useChain();
   const address = user?.address;
   const [identity, hasIdentity] = useIdentityInfo(address);
   const showAvatar = !!address;
@@ -39,6 +41,7 @@ function PolkassemblyUser({
   );
 
   const avatarSize = fontSize * (20 / 14);
+  const polkassemblyUserLink = `https://${chain}.polkassembly.io/user/${user.username}`;
 
   return (
     <UserWrapper noEvent={noEvent} color={color}>
@@ -48,7 +51,7 @@ function PolkassemblyUser({
         </AvatarWrapper>
       )}
       <LinkWrapper
-        href={user?.polkassemblyUserLink}
+        href={polkassemblyUserLink}
         target="_blank"
         rel="noreferrer"
         color={color}

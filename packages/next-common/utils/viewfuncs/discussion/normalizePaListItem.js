@@ -1,13 +1,12 @@
 import { addressEllipsis } from "../../index";
 
-export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
+export const toPolkassemblyDiscussionAuthor = (author) => ({
   username: addressEllipsis(author?.address) || author?.username,
   ...(author?.address
     ? {
         address: author.address,
       }
     : {}),
-  polkassemblyUserLink: `https://${chain}.polkassembly.io/user/${author?.username}`,
 });
 
 export default function normalizePolkassemblyDiscussionListItem(chain, item) {

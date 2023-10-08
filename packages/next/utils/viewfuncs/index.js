@@ -17,7 +17,10 @@ export const convertPolkassemblyReaction = (paReactions) => {
   );
   const reactions = flattened.map(([r, u]) => ({
     reaction: r === "👍" ? 1 : 0,
-    user: u,
+    user: {
+      username: u,
+      address: "",
+    },
   }));
 
   return reactions;
@@ -27,7 +30,7 @@ export const convertPolkassemblyComment = (chain, comment) => {
   const address =
     comment.proposer && encodeAddressToChain(comment.proposer, chain);
   return {
-    reactions: convertPolkassemblyReaction(comment.comment_reactions),
+    reactions: convertPolkassemblyReaction(comment.comment_reactions, chain),
     id: comment.id,
     content: comment.content,
     createdAt: comment.created_at,
@@ -39,7 +42,6 @@ export const convertPolkassemblyComment = (chain, comment) => {
         ? addressEllipsis(address)
         : comment.username,
       address,
-      polkassemblyUserLink: `https://${chain}.polkassembly.io/user/${comment.username}`,
     },
   };
 };

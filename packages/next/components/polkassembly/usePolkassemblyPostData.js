@@ -51,6 +51,7 @@ export default function usePolkassemblyPostData({
           );
           const postReactions = convertPolkassemblyReaction(
             result?.post_reactions,
+            chain,
           );
           const commentsCount = result?.comments?.length;
           dataCache[cacheKey] = {
