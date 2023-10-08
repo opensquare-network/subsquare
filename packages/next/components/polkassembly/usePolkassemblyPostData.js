@@ -3,7 +3,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   convertPolkassemblyReaction,
   toPolkassemblyCommentListItem,
-} from "utils/viewfuncs";
+} from "next-common/utils/polkassembly";
 import { useChain } from "next-common/context/chain";
 import isNil from "lodash.isnil";
 import nextApi from "next-common/services/nextApi";
