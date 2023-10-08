@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BN_ONE, BN_ZERO } from "@polkadot/util";
+import { BN_ONE, BN_ZERO, bnToBn } from "@polkadot/util";
 import startCase from "lodash.startcase";
 import useApi from "../utils/hooks/useApi";
 import useCall from "../utils/hooks/useCall";
@@ -11,7 +11,7 @@ import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function newDate(blocks, blockTime) {
   const date = new Date(
-    Date.now() + blocks?.mul(blockTime || BN_ZERO).toNumber(),
+    Date.now() + blocks?.mul(bnToBn(blockTime) || BN_ZERO).toNumber(),
   );
 
   return { date, dateTime: date.getTime() };
