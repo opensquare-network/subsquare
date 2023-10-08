@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
-import User from "next-common/components/user";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
@@ -12,6 +11,7 @@ import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import SystemUser from "../user/systemUser";
 
 const Wrapper = styled.div``;
 
@@ -106,7 +106,7 @@ export default function SidebarAccount() {
       {user && (
         <div>
           <UserWrapper>
-            <User user={user} noEvent />
+            <SystemUser user={user} noEvent />
           </UserWrapper>
           {user.address && <ProfileMenuItem onClick={openUserProfile} />}
           {accountMenu.map((item, index) => (

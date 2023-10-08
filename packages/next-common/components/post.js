@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import User from "next-common/components/user";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
@@ -35,6 +34,9 @@ import PreparingCountdown from "./gov2/postList/preparingCountdown";
 import { getDemocracyStateArgs } from "../utils/democracy/result";
 import ReferendumElapse from "./democracy/referendum/referendumElapse";
 import PostListCardVotesSummaryBar from "./postList/votesSummaryBar";
+import SystemUser from "./user/systemUser";
+import AddressUser from "./user/addressUser";
+import PolkassemblyUser from "./user/polkassemblyUser";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -148,6 +150,40 @@ const BannerWrapper = styled.div`
   }
 `;
 
+function PostUser({ data, type }) {
+  const { sm } = useScreenSize();
+  const userMaxWidth = sm ? 160 : 240;
+  const userFontSize = 12;
+
+  if (type === businessCategory.polkassemblyDiscussions) {
+    return (
+      <PolkassemblyUser
+        user={data?.author}
+        fontSize={userFontSize}
+        maxWidth={userMaxWidth}
+      />
+    );
+  }
+
+  if (data?.author) {
+    return (
+      <SystemUser
+        user={data?.author}
+        fontSize={userFontSize}
+        maxWidth={userMaxWidth}
+      />
+    );
+  }
+
+  return (
+    <AddressUser
+      add={data.address}
+      fontSize={userFontSize}
+      maxWidth={userMaxWidth}
+    />
+  );
+}
+
 export default function Post({ data, href, type }) {
   const isDemocracyCollective = [
     businessCategory.councilMotions,
@@ -219,13 +255,6 @@ export default function Post({ data, href, type }) {
 
   const bannerUrl = getBannerUrl(data.bannerCid);
 
-  let userNoClickEvent = false;
-  if (type === businessCategory.polkassemblyDiscussions) {
-    if (!data?.author.address) {
-      userNoClickEvent = true;
-    }
-  }
-
   const trackTagLink =
     type === businessCategory.openGovReferenda
       ? `/referenda/tracks/${data.track}`
@@ -237,8 +266,6 @@ export default function Post({ data, href, type }) {
     businessCategory.openGovReferenda,
     businessCategory.fellowship,
   ].includes(type);
-
-  const { sm } = useScreenSize();
 
   const postValue = data.onchainData?.isTreasury
     ? data.onchainData?.treasuryInfo?.amount
@@ -267,14 +294,7 @@ export default function Post({ data, href, type }) {
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
-            <User
-              user={data?.author}
-              add={data.address}
-              fontSize={12}
-              noEvent={userNoClickEvent}
-              maxWidth={sm ? 160 : 240}
-            />
-
+            <PostUser data={data} type={type} />
             {data.trackName && (
               <MobileHiddenInfo>
                 <Link href={trackTagLink} passHref legacyBehavior>

@@ -1,10 +1,10 @@
+import React from "react";
 import getTreasurySpendBusiness from "components/gov2/business/treasurySpend";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import Link from "next/link";
-import User from "next-common/components/user";
-import React from "react";
 import { toPrecision } from "next-common/utils";
+import AddressUser from "next-common/components/user/addressUser";
 
 function extractTreasury(call = {}) {
   const { section, method, args = [] } = call;
@@ -68,12 +68,7 @@ function extractBounty(call = {}, chainSettings = {}) {
       ],
       [
         "Curator",
-        <User
-          key="curator"
-          add={curator}
-          showAvatar={true}
-          color="var(--sapphire500)"
-        />,
+        <AddressUser key="curator" add={curator} color="var(--sapphire500)" />,
       ],
       ["Fee", `${toPrecision(fee, decimals)} ${symbol}`],
     ];

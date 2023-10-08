@@ -1,4 +1,3 @@
-import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
@@ -10,6 +9,7 @@ import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function ChildBountyTimeline({ onchainData }) {
   const getTimelineData = useCallback(
@@ -29,9 +29,7 @@ export default function ChildBountyTimeline({ onchainData }) {
         case "proposeCurator":
         case "acceptCurator":
           return {
-            Curator: (
-              <User add={args.curator.id ?? args.curator} fontSize={14} />
-            ),
+            Curator: <AddressUser add={args.curator.id ?? args.curator} />,
           };
         case "proposeBounty":
           return {
@@ -50,7 +48,7 @@ export default function ChildBountyTimeline({ onchainData }) {
         case "Awarded":
           // eslint-disable-next-line no-case-declarations
           const AwardedTimelineNode = {
-            Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+            Beneficiary: <AddressUser add={args.beneficiary} />,
           };
           if (onchainData?.state?.state === "PendingPayout") {
             AwardedTimelineNode.PendingPayout = (
@@ -65,7 +63,7 @@ export default function ChildBountyTimeline({ onchainData }) {
         case "BountyClaimed":
         case "Claimed":
           return {
-            Beneficiary: <User add={args.beneficiary} fontSize={14} />,
+            Beneficiary: <AddressUser add={args.beneficiary} />,
             Payout: <SymbolBalance value={args.payout} />,
           };
       }

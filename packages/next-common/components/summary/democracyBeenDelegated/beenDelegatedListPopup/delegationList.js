@@ -1,12 +1,12 @@
 import React from "react";
 import { toPrecision } from "next-common/utils";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 
 import { useChainSettings } from "next-common/context/chain";
 import PopupListWrapper from "../../../styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import AddressUser from "next-common/components/user/addressUser";
 
 function DelegationList({ items, loading = false }) {
   const node = useChainSettings();
@@ -47,10 +47,9 @@ function DelegationList({ items, loading = false }) {
 
   const rows = items?.map?.((item) => {
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.delegator}
-        fontSize={14}
         maxWidth={colWidths.address}
       />,
       <CapitalTableItem

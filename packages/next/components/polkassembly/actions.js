@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
-import User from "next-common/components/user";
 import useThumbsUp from "next-common/components/thumbsUp";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import SystemUser from "next-common/components/user/systemUser";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -52,7 +52,12 @@ export default function Actions({ reactions }) {
             .filter((r) => r.user)
             .map((r, index) => (
               <GreyItem key={index}>
-                <User user={r.user} fontSize={12} showAvatar={false} noEvent />
+                <SystemUser
+                  user={r.user}
+                  fontSize={12}
+                  showAvatar={false}
+                  noEvent
+                />
               </GreyItem>
             ))}
         </GreyWrapper>

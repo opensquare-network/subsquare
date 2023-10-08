@@ -7,7 +7,7 @@ import {
 import uniqBy from "lodash.uniqby";
 import { useUser } from "../../context/user";
 import { useChain } from "../../context/chain";
-import { isKeyRegisteredUser } from "..";
+import { addressEllipsis, isKeyRegisteredUser } from "..";
 
 export default function useMentionList(post, comments) {
   const chain = useChain();
@@ -20,22 +20,29 @@ export default function useMentionList(post, comments) {
     }
 
     //combine post author(s) and comment authors but exclude current user
-    const users = uniqBy(
-      [...(post.author ? [post.author] : []), ...getMentionList(comments)],
-      (item) => item.username,
-    )
-      .concat(
-        (post.authors ?? []).map((address) => ({
-          username: address,
-          address,
-          isKeyRegistered: true,
-        })),
-      )
-      .filter((item) => item.username !== currentUser?.username);
+    let userAppearances = getMentionList(comments);
+    if (post.author) {
+      userAppearances.push(post.author);
+    }
+    userAppearances = uniqBy(userAppearances, (item) => item.username);
+    for (const address of post.authors ?? []) {
+      const existing = userAppearances.find((item) => item.address === address);
+      if (existing) {
+        continue;
+      }
+      userAppearances.push({
+        username: addressEllipsis(address),
+        address,
+        isKeyRegistered: true,
+      });
+    }
+    userAppearances = userAppearances.filter(
+      (item) => item.username !== currentUser?.username,
+    );
 
     const loadSuggestions = async () => {
       return await Promise.all(
-        (users || []).map(async (user) => {
+        (userAppearances || []).map(async (user) => {
           const name = await getMentionName(user, chain);
           const memberId = getMemberId(user, chain);
 

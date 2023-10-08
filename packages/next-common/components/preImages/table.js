@@ -1,7 +1,6 @@
 import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Copyable from "next-common/components/copyable";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -18,6 +17,7 @@ import {
 } from "next-common/store/reducers/preImagesSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import FieldLoading from "../icons/fieldLoading";
+import AddressUser from "../user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import NoBorderList from "next-common/components/styledList/noBorderList";
 
@@ -55,7 +55,7 @@ function Deposit({ hash, deposit, count, status, onUnnoteInBlock }) {
 
   return (
     <div className="flex flex-col">
-      <User add={who} maxWidth={128} />
+      <AddressUser add={who} maxWidth={128} />
       <div className="flex ml-[28px] text-textSecondary text-[12px]">
         <ValueDisplay
           className="whitespace-nowrap"

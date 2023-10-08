@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import User from "next-common/components/user";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import Flex from "next-common/components/styled/flex";
@@ -11,6 +10,7 @@ import MemberLinks from "components/motion/vote/memberLinks";
 import useTipThreshold from "next-common/context/post/treasury/tip/tipThreshold";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import AddressUser from "next-common/components/user/addressUser";
 
 const NoTippers = styled.div`
   text-align: center;
@@ -52,7 +52,7 @@ function Items({ tips, windowWidth }) {
     <ItemsWrapper>
       {tips.map(([address, amount]) => (
         <TipperItem key={address}>
-          <User
+          <AddressUser
             add={address}
             fontSize={12}
             {...(windowWidth > 1024 ? { maxWidth: 150 } : {})}

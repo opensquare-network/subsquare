@@ -4,7 +4,6 @@ import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
-import User from "next-common/components/user";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -20,6 +19,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function VotesPopup({ setShowVoteList }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -128,10 +128,9 @@ function VotesList({ loading, items = [] }) {
     const capital = item.balance;
 
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.account}
-        fontSize={14}
         noTooltip
         maxWidth={276}
         linkToVotesPage

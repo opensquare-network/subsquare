@@ -1,5 +1,4 @@
 import styled, { withTheme } from "styled-components";
-import User from "next-common/components/user";
 import { Fragment } from "react";
 import Loading from "next-common/components/loading";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -11,6 +10,7 @@ import {
   StyledTh,
   StyledTr,
 } from "next-common/components/styled/table";
+import AddressUser from "next-common/components/user/addressUser";
 
 const Wrapper = styled.div`
   > :not(:first-child) {
@@ -48,7 +48,7 @@ function MembersList({ category, items, loading = false, theme }) {
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left" }}>
                     <Member>
-                      <User add={item.address} fontSize={14} />
+                      <AddressUser add={item.address} />
                     </Member>
                   </StyledTd>
                   <StyledTd style={{ textAlign: "right" }}>

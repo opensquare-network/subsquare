@@ -1,10 +1,10 @@
 import Chains from "next-common/utils/consts/chains";
 import getChainSettings from "next-common/utils/consts/settings";
 import { toPrecision } from "next-common/utils";
-import User from "next-common/components/user";
 import React from "react";
 import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
 import { hexToString } from "@polkadot/util";
+import AddressUser from "next-common/components/user/addressUser";
 
 function extractTreasuryFields(chain, call = {}) {
   const { section, method, args = [] } = call;
@@ -20,10 +20,9 @@ function extractTreasuryFields(chain, call = {}) {
     ["Request", `${toPrecision(value, decimals)} ${symbol}`],
     [
       "Beneficiary",
-      <User
+      <AddressUser
         key="beneficiary"
         add={beneficiary}
-        showAvatar={true}
         color="var(--sapphire500)"
       />,
     ],

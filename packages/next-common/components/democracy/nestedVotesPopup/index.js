@@ -7,7 +7,6 @@ import Pagination from "next-common/components/pagination";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
@@ -24,6 +23,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "../common/filterTabs";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -144,10 +144,9 @@ function VotesList({ items = [], loading }) {
 
   const rows = items.map((item) => {
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.account}
-        fontSize={14}
         noTooltip
         maxWidth={296}
         linkToVotesPage

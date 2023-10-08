@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import User from "next-common/components/user";
 import styled from "styled-components";
 import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
@@ -11,6 +10,7 @@ import BeenDelegatedListPopup from "../beenDelegatedPopup";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
+import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import NoBorderList from "next-common/components/styledList/noBorderList";
 
@@ -109,7 +109,7 @@ export default function DemocracyDelegatee({
   const rows = (delegateeList.items || []).map((item) => {
     const row = [
       <Flex key="account">
-        <User add={item.account} fontSize={14} maxWidth={230} />
+        <AddressUser add={item.account} maxWidth={230} />
       </Flex>,
       item.delegatorsCount,
       <ValueDisplay

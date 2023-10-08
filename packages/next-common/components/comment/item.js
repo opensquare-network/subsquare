@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import User from "next-common/components/user";
 import EditInput from "next-common/components/editInput";
 import Flex from "next-common/components/styled/flex";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
@@ -23,6 +22,7 @@ import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
 import Divider from "next-common/components/styled/layout/divider";
 import clsx from "clsx";
 import { useComments, useSetComments } from "next-common/context/post/comments";
+import SystemUser from "../user/systemUser";
 
 const Wrapper = styled.div`
   position: relative;
@@ -215,7 +215,7 @@ export default function Item({
       )}
     >
       <InfoWrapper>
-        <User user={comment.author} />
+        <SystemUser user={comment.author} />
         <div>{duration}</div>
       </InfoWrapper>
       {!isEdit && (

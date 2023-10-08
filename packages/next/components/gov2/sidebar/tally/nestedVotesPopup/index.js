@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import StyledList from "next-common/components/styledList";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
@@ -16,6 +15,7 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import voteTabs from "../common/voteTabs";
 import filterTabs from "../common/filterTabs";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function NestedVotesPopup({
   setShowVoteList,
@@ -145,10 +145,9 @@ function VotesList({ items = [], loading }) {
 
   const rows = items.map((item) => {
     const row = [
-      <User
+      <AddressUser
         key="user"
         add={item.account}
-        fontSize={14}
         noTooltip
         maxWidth={296}
         linkToVotesPage

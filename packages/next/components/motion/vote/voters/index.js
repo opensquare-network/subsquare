@@ -5,11 +5,11 @@ import Statistics from "next-common/components/styled/paragraph/statistic";
 import Loading from "next-common/components/loading";
 import MemberLinks from "../memberLinks";
 import { usePostOnChainData } from "next-common/context/post";
-import User from "next-common/components/user";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import AyeNay from "next-common/components/collective/AyeNay";
 import styled from "styled-components";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import AddressUser from "next-common/components/user/addressUser";
 
 const TipperList = styled.div`
   margin-top: 16px;
@@ -58,7 +58,7 @@ export default function Voters({ votes = [], isLoadingVote = false, prime }) {
         {votes.map(([voter, approve], index) => (
           <TipperItem key={index}>
             <VoterAddr>
-              <User add={voter} fontSize={12} />
+              <AddressUser add={voter} fontSize={12} />
               {voter === prime && <PrimeAddressMark />}
             </VoterAddr>
             <AyeNay isAye={approve} />

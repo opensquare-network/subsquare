@@ -14,7 +14,6 @@ import CollectiveCall from "next-common/components/collective/call";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
-import User from "next-common/components/user";
 import { useChain } from "next-common/context/chain";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useDetailType } from "next-common/context/page";
@@ -24,6 +23,7 @@ import DetailContentBase from "next-common/components/detail/common/detailBase";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 import Copyable from "next-common/components/copyable";
+import AddressUser from "next-common/components/user/addressUser";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 const TimelineMotionEnd = styled.div`
@@ -156,10 +156,9 @@ export default function TechcommMotionDetail({ motion }) {
       ],
       [
         "Beneficiary",
-        <User
+        <AddressUser
           key="beneficiary"
           add={treasuryProposalMeta.beneficiary}
-          fontSize={14}
         />,
       ],
       [
@@ -182,10 +181,7 @@ export default function TechcommMotionDetail({ motion }) {
           >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
         ["Hash", <Copyable key="hash">{proposal.hash}</Copyable>],
-        [
-          "Proposer",
-          <User key="proposer" add={proposal?.proposer} fontSize={14} />,
-        ],
+        ["Proposer", <AddressUser key="proposer" add={proposal?.proposer} />],
       ]);
     });
   }

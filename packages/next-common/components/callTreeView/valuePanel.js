@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import { balanceTypes } from "next-common/components/democracy/metadata/normalize";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -14,6 +13,7 @@ import ArrayPanel from "./arrayPanel";
 import TuplePanel from "./tuplePanel";
 import OptionPanel from "./optionPanel";
 import StructPanel from "./structPanel";
+import AddressUser from "../user/addressUser";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -120,7 +120,7 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
   const val = value.toJSON();
 
   if (accountTypes.includes(type)) {
-    valueComponent = <User add={val.id || val} fontSize={12} />;
+    valueComponent = <AddressUser add={val.id || val} fontSize={12} />;
   } else if (balanceTypes.includes(typeName)) {
     valueComponent = (
       <ValueDisplay value={toPrecision(val, decimals)} symbol={symbol} />

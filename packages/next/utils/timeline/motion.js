@@ -1,11 +1,13 @@
-import User from "next-common/components/user";
 import Voting from "next-common/components/timelineMotionVoting";
 import businessCategory from "next-common/utils/consts/business/category";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import AyeNay from "next-common/components/collective/AyeNay";
-import getMotionExecutedResult, { isMotionExecutedSucceed } from "next-common/utils/collective/result";
+import getMotionExecutedResult, {
+  isMotionExecutedSucceed,
+} from "next-common/utils/collective/result";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import AddressUser from "next-common/components/user/addressUser";
 
 const VoteResultWrapper = styled(Flex)`
   justify-content: space-between;
@@ -22,7 +24,7 @@ export function createArgs(method, args) {
         },
         {
           name: curator.name,
-          value: <User add={curator.value.id} fontSize={14} />,
+          value: <AddressUser add={curator.value.id} />,
         },
       ];
     }
@@ -95,7 +97,7 @@ export function createMotionTimelineData(
           status: { value: "Vote", type },
           data: (
             <VoteResultWrapper>
-              <User add={item.args.voter} />
+              <AddressUser add={item.args.voter} />
               <AyeNay isAye={item.args.approve} />
             </VoteResultWrapper>
           ),

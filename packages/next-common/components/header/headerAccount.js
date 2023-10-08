@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
-import User from "../user";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { isKeyRegisteredUser } from "../../utils";
@@ -14,6 +13,7 @@ import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import GhostButton from "../buttons/ghostButton.js";
 import { SystemProfile } from "@osn/icons/subsquare";
+import SystemUser from "../user/systemUser.js";
 
 const Wrapper = Relative;
 
@@ -104,7 +104,7 @@ export default function HeaderAccount() {
           <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
         ) : (
           <GhostButton onClick={() => setShow(!show)}>
-            <User user={user} noEvent />
+            <SystemUser user={user} noEvent />
           </GhostButton>
         )}
 

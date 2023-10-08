@@ -4,7 +4,6 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import ValueDisplay from "next-common/components/valueDisplay";
-import User from "next-common/components/user";
 import { Conviction, ConvictionSupport } from "../../../utils/referendumCommon";
 import GreyInfoPanel from "../styled/greyInfoPanel";
 import {
@@ -16,6 +15,7 @@ import {
 } from "../../../styles/tailwindcss";
 import { no_scroll_bar, p_12_normal } from "../../../styles/componentCss";
 import { SM_SIZE } from "../../../utils/responsive";
+import AddressUser from "next-common/components/user/addressUser";
 
 const Wrapper = styled(GreyInfoPanel)`
   ${flex_nowrap};
@@ -56,7 +56,7 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
     <Wrapper>
       <Item>
         <span>Delegating to</span>
-        <User add={delegating.target} />
+        <AddressUser add={delegating.target} />
         <ValueDisplay
           value={
             <TextSecondary>

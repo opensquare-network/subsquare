@@ -1,12 +1,12 @@
 import React from "react";
-import User from "../../../../user";
 import { ItemWrapper } from "./styled";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function FinderItem({ finder }) {
   return (
     <ItemWrapper>
       <span>Finder:</span>
-      <User
+      <AddressUser
         add={finder}
         fontSize={12}
         showAvatar={false}

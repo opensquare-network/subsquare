@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import User from "next-common/components/user";
 import styled from "styled-components";
 import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
@@ -10,6 +9,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
+import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import NoBorderList from "next-common/components/styledList/noBorderList";
 
@@ -97,10 +97,10 @@ export default function Delegator({ delegators, apiRoot = "democracy" }) {
   const rows = (delegatorsList?.items || []).map((item) => {
     const row = [
       <Flex key="account">
-        <User add={item.account} fontSize={14} maxWidth={230} />
+        <AddressUser add={item.account} maxWidth={230} />
       </Flex>,
       <Flex key="delegatee">
-        <User add={item.delegatee} fontSize={14} maxWidth={230} />
+        <AddressUser add={item.delegatee} maxWidth={230} />
       </Flex>,
       <Flex key="capital" style={{ justifyContent: "right" }}>
         <ValueDisplay

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import User from "next-common/components/user";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import Tag from "next-common/components/tags/state/tag";
@@ -24,6 +23,7 @@ import { smcss } from "next-common/utils/responsive";
 import { hidden } from "next-common/styles/tailwindcss";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import Divider from "next-common/components/styled/layout/divider";
+import PostUser from "next-common/components/detail/container/postMeta/postUser";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -87,7 +87,7 @@ export default function MotionHead({ motion, type }) {
       <Divider className="my-4" />
       <FlexWrapper>
         <DividerWrapper>
-          <User user={motion?.author} add={motion.proposer} fontSize={12} />
+          <PostUser />
           <MotionTag motion={motion.onchainData} />
           <UpdatedTime />
           {!noCommentsCount && commentsCount > -1 && (

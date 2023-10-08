@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import styled, { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
-import User from "next-common/components/user";
 import Loading from "next-common/components/loading";
 
 import {
@@ -17,6 +16,7 @@ import ExplorerLink from "next-common/components/links/explorerLink";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import AddressUser from "next-common/components/user/addressUser";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -58,7 +58,7 @@ function CallsVotesList({ items, theme, loading = false }) {
               <Fragment key={index}>
                 <StyledTr>
                   <StyledTd style={{ textAlign: "left", width: 344 }}>
-                    <User add={item.voter} fontSize={14} noTooltip={true} />
+                    <AddressUser add={item.voter} noTooltip />
                   </StyledTd>
                   <StyledTd style={{ textAlign: "left", width: 160 }}>
                     <VoteTime>

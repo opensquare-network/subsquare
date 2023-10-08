@@ -6,10 +6,10 @@ import BlockValue from "./blockValue";
 import Threshold from "./threshold";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../../../store/reducers/chainSlice";
-import User from "../../user";
 import useDemocracyThreshold from "../../../context/post/democracy/referendum/threshold";
 import { useDemocracyReferendumHash } from "next-common/hooks/democracy/useDemocracyReferendumHash";
 import Copyable from "next-common/components/copyable";
+import AddressUser from "next-common/components/user/addressUser";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function ReferendumMetadata({
@@ -49,7 +49,7 @@ export default function ReferendumMetadata({
   const [metadata, setMetadata] = useState([]);
   useEffect(() => {
     const data = [
-      ["Proposer", <User add={proposer} fontSize={14} key="user" />],
+      ["Proposer", <AddressUser add={proposer} key="user" />],
       ["Hash", <Copyable key="hash">{hash}</Copyable>],
       [
         "Delay",

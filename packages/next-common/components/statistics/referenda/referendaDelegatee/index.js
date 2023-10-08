@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import User from "next-common/components/user";
 import styled from "styled-components";
 import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
@@ -14,6 +13,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { pretty_scroll_bar } from "next-common/styles/componentCss";
 import Tooltip from "next-common/components/tooltip";
 import startCase from "lodash.startcase";
+import AddressUser from "next-common/components/user/addressUser";
 import NoBorderList from "next-common/components/styledList/noBorderList";
 
 const Wrapper = styled.div``;
@@ -141,7 +141,7 @@ export default function ReferendaDelegatee({ delegatee }) {
   const rows = (delegateeList.items || []).map((item) => {
     const row = [
       <Flex key="account">
-        <User add={item.account} fontSize={14} maxWidth={268} />
+        <AddressUser add={item.account} maxWidth={268} />
       </Flex>,
       <div key="tracks">
         <Tooltip content={<TrackNameList tracks={item.tracks} />}>

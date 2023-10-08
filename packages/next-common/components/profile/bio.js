@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { isPolkadotAddress } from "../../utils/viewfuncs";
-import User from "../user";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import Flex from "../styled/flex";
@@ -13,6 +12,7 @@ import Copyable from "../copyable";
 import AssetInfo from "./assetInfo";
 import KintAssetInfo from "./assetInfo/kint";
 import Chains from "next-common/utils/consts/chains";
+import AddressUser from "../user/addressUser";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -52,13 +52,13 @@ const DisplayUserAvatar = ({ address, user }) => {
   return address ? (
     <Avatar address={address} size={48} />
   ) : (
-    <Gravatar emailMd5={user?.emmailMd5} size={48} />
+    <Gravatar emailMd5={user?.emailMd5} size={48} />
   );
 };
 
 const DisplayUser = ({ id }) => {
   if (isPolkadotAddress(id) || isEthereumAddress(id)) {
-    return <User add={id} showAvatar={false} fontSize={16} />;
+    return <AddressUser add={id} showAvatar={false} fontSize={16} />;
   }
 
   return <Username>{id}</Username>;

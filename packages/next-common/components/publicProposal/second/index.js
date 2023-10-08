@@ -3,7 +3,6 @@ import styled from "styled-components";
 import dynamic from "next/dynamic";
 import countBy from "lodash.countby";
 import BigNumber from "bignumber.js";
-import User from "../../user";
 import Loading from "../../loading";
 import { emptyFunction } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
@@ -18,6 +17,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import AddressUser from "next-common/components/user/addressUser";
 
 const SecondPopup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -138,7 +138,7 @@ export default function Second({
         <SecondsList>
           {showData.map((address, index) => (
             <SecondItem key={index}>
-              <User add={address} fontSize={12} maxWidth={148} />
+              <AddressUser add={address} fontSize={12} maxWidth={148} />
               <Tooltip
                 content={`${new BigNumber(depositRequired)
                   .times(secondsCount[address])

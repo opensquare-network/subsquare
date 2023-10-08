@@ -1,7 +1,7 @@
 import HintMessage from "next-common/components/styled/hintMessage";
 import { useSelector } from "react-redux";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
-import User from "next-common/components/user";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function DelegationHint({ style = {} }) {
   const voting = useSelector(myDemocracyVotingSelector);
@@ -15,7 +15,7 @@ export default function DelegationHint({ style = {} }) {
       }}
     >
       You are delegating votes to &nbsp;
-      <User add={target} fontSize={12} linkToVotesPage />
+      <AddressUser add={target} fontSize={12} linkToVotesPage />
     </HintMessage>
   );
 }

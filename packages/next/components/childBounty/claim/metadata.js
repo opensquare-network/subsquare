@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Flex from "next-common/components/styled/flex";
-import User from "next-common/components/user";
 import { useOnchainData } from "next-common/context/post";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useMemo } from "react";
@@ -10,6 +9,7 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import Anchor from "next-common/components/styled/anchor";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import AddressUser from "next-common/components/user/addressUser";
 
 const Info = styled.div`
   display: flex;
@@ -71,9 +71,8 @@ export default function Meta() {
         <InfoItem>
           <InfoItemName>Beneficiary</InfoItemName>
           <InfoItemValue>
-            <User
+            <AddressUser
               add={onChain.beneficiary}
-              fontSize={14}
               maxWidth={beneficiaryUserMaxWidth}
             />
           </InfoItemValue>

@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 import KVList from "../../listInfo/kvList";
 import Anchor from "../../styled/anchor";
-import User from "../../user";
 import SymbolBalance from "../../values/symbolBalance";
+import AddressUser from "next-common/components/user/addressUser";
 
 /**
  *
@@ -26,7 +26,7 @@ function BountyMetadata({ meta }) {
         break;
       case "proposer":
       case "beneficiary":
-        normalizedValue = <User add={value} fontSize={14} />;
+        normalizedValue = <AddressUser add={value} />;
         break;
       case "value":
       case "fee":

@@ -9,7 +9,7 @@ import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import AccountSVG from "next-common/assets/imgs/icons/account.svg";
 import Flex from "next-common/components/styled/flex";
 import ValueDisplay from "next-common/components/valueDisplay";
-import User from "next-common/components/user";
+import AddressUser from "next-common/components/user/addressUser";
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ export default function DelegationSummary({
   delegatorsCount,
   delegatedCapital,
   delegatedVotes,
- }) {
+}) {
   const node = useChainSettings();
 
   return (
@@ -59,7 +59,7 @@ export default function DelegationSummary({
             Delegatee
           </Title>
           <Value>
-            <User add={delegatee} />
+            <AddressUser add={delegatee} />
           </Value>
         </Item>
       </div>

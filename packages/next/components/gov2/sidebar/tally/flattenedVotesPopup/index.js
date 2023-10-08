@@ -5,7 +5,6 @@ import Pagination from "next-common/components/pagination";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
 import { useChainSettings } from "next-common/context/chain";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
@@ -15,6 +14,7 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -136,10 +136,9 @@ function VotesList({ items = [], loading, tab }) {
     const votes = item.votes;
 
     return [
-      <User
+      <AddressUser
         key="user"
         add={item.account}
-        fontSize={14}
         noTooltip
         maxWidth={276}
         linkToVotesPage

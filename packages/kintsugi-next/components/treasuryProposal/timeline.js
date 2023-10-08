@@ -1,4 +1,3 @@
-import User from "next-common/components/user";
 import { getTimelineStatus } from "utils";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
@@ -7,6 +6,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
+import AddressUser from "next-common/components/user/addressUser";
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const getTimelineData = (args, method) => {
@@ -17,7 +17,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
         };
       case "Awarded":
         return {
-          Beneficiary: <User add={args.beneficiary} />,
+          Beneficiary: <AddressUser add={args.beneficiary} />,
           Award: <SymbolBalance value={args.award} />,
         };
     }

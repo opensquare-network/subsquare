@@ -7,12 +7,12 @@ import { EmptyList } from "next-common/utils/constants";
 import StyledList from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Flex from "next-common/components/styled/flex";
-import User from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
+import AddressUser from "next-common/components/user/addressUser";
 
 const ConvictionText = styled.span`
   width: 40px;
@@ -108,7 +108,7 @@ export default function DelegationTabList({
 
   const rows = (beenDelegatedList?.items || []).map((item) => [
     <Flex key="account">
-      <User add={item.account} fontSize={14} maxWidth={296} />
+      <AddressUser add={item.account} maxWidth={296} />
     </Flex>,
     <Flex key="capital" style={{ justifyContent: "right" }}>
       <ValueDisplay

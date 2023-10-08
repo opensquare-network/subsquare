@@ -1,9 +1,9 @@
 import { usePostOnChainData } from "next-common/context/post";
 import Link from "next/link";
 import Flex from "next-common/components/styled/flex";
-import User from "next-common/components/user";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import Copyable from "next-common/components/copyable";
+import AddressUser from "next-common/components/user/addressUser";
 
 export function useCouncilMotionBusinessData() {
   const motion = usePostOnChainData();
@@ -27,7 +27,7 @@ export function useCouncilMotionBusinessData() {
         [
           "Beneficiary",
           <Flex key="proposal-beneficiary">
-            <User add={proposal.meta.beneficiary} fontSize={14} />
+            <AddressUser add={proposal.meta.beneficiary} />
           </Flex>,
         ],
         [
@@ -63,7 +63,7 @@ export function useCouncilMotionBusinessData() {
                 {item[0]}
               </span>,
               <Flex key="bounty-beneficiary-value">
-                <User add={item[1]} fontSize={14} />
+                <AddressUser add={item[1]} />
               </Flex>,
             ]);
             break;
