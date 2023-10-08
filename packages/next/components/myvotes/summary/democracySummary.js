@@ -55,6 +55,7 @@ export default function DemocracySummary() {
       <VoteSummary
         votesLength={votesCount}
         totalLocked={totalLocked}
+        prior={prior}
         delegated={delegated}
         unLockable={democracyVoting ? unLockable : 0}
         actionComponent={actionComponent}
