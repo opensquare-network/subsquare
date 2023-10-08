@@ -6,10 +6,10 @@ import { useIsLogin } from "../../context/user";
 import clsx from "clsx";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import PrimaryButton from "../buttons/primaryButton";
+import PolkassemblyCommentItem from "../polkassembly/comment/item";
 
 export default function Comments({
   data: { items, page, pageSize, total } = {},
-  tabs = null,
 }) {
   const isLogin = useIsLogin();
   const { openLoginPopup } = useLoginPopup();
@@ -19,15 +19,18 @@ export default function Comments({
       <div className="mb-4">
         <TitleContainer className={clsx("w-full !px-0 mb-4", "!block")}>
           <div className="text14Bold">Comments</div>
-          {tabs && <div className="mt-4">{tabs}</div>}
         </TitleContainer>
       </div>
       {items?.length > 0 && (
         <>
           <div>
-            {(items || []).map((item) => (
-              <Item key={item._id} data={item} replyToCommentId={item._id} />
-            ))}
+            {(items || []).map((item) =>
+              item.source === "polkassembly" ? (
+                <PolkassemblyCommentItem key={item.id} data={item} />
+              ) : (
+                <Item key={item._id} data={item} replyToCommentId={item._id} />
+              ),
+            )}
           </div>
           <Pagination page={page} pageSize={pageSize} total={total} />
         </>
