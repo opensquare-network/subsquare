@@ -18,7 +18,6 @@ export default function DemocracySummary() {
   const [showClearExpired, setShowClearExpired] = useState(false);
 
   const prior = useSelector(myDemocracyPriorLockSelector);
-  console.log("prior", prior);
 
   // Locked balance calculated from on-chain voting data
   const lockFromOnChain = useSelector(democracyLockFromOnChainDataSelector);
