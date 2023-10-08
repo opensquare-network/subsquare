@@ -23,6 +23,8 @@ import Divider from "next-common/components/styled/layout/divider";
 import clsx from "clsx";
 import { useComments, useSetComments } from "next-common/context/post/comments";
 import SystemUser from "../user/systemUser";
+import { LinkSubsquare } from "@osn/icons/subsquare";
+import Tooltip from "../tooltip";
 
 const Wrapper = styled.div`
   position: relative;
@@ -38,11 +40,6 @@ const InfoWrapper = styled(Flex)`
   min-height: 28px;
   justify-content: space-between;
   flex-wrap: wrap;
-
-  > :last-child {
-    font-size: 14px;
-    color: var(--textTertiary);
-  }
 `;
 
 const ContentWrapper = styled(RichTextStyleWrapper)`
@@ -216,7 +213,12 @@ export default function Item({
     >
       <InfoWrapper>
         <SystemUser user={comment.author} />
-        <div>{duration}</div>
+        <div className="flex items-center gap-x-2">
+          <p className="text12Medium text-textTertiary">{duration}</p>
+          <Tooltip content="Post from SubSquare">
+            <LinkSubsquare className="w-4 h-4 [&_path]:fill-textTertiary" />
+          </Tooltip>
+        </div>
       </InfoWrapper>
       {!isEdit && (
         <>

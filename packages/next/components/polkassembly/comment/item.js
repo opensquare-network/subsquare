@@ -12,6 +12,12 @@ import useDuration from "next-common/utils/hooks/useDuration";
 import Divider from "next-common/components/styled/layout/divider";
 import clsx from "clsx";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
+import { LinkPolkassembly } from "@osn/icons/subsquare";
+import Tooltip from "next-common/components/tooltip";
+import ExternalLink from "next-common/components/externalLink";
+import { getPolkassemblyLink } from "next-common/utils/polkassembly";
+import { useDetailType } from "next-common/context/page";
+import { usePost } from "next-common/context/post";
 
 const Wrapper = styled.div`
   position: relative;
@@ -21,11 +27,6 @@ const InfoWrapper = styled(Flex)`
   min-height: 28px;
   justify-content: space-between;
   flex-wrap: wrap;
-
-  > :last-child {
-    font-size: 14px;
-    color: var(--textTertiary);
-  }
 `;
 
 const ContentWrapper = styled(RichTextStyleWrapper)`
@@ -63,6 +64,8 @@ export default function Item({ data, isSecondLevel }) {
 
   const [folded, setFolded] = React.useState(true);
   const duration = useDuration(comment.createdAt);
+  const type = useDetailType();
+  const post = usePost();
 
   return (
     <Wrapper
@@ -73,7 +76,23 @@ export default function Item({ data, isSecondLevel }) {
     >
       <InfoWrapper>
         <PolkassemblyUser user={comment.author} />
-        <div>{duration}</div>
+        <div className="flex items-center gap-x-2">
+          <p className="text12Medium text-textTertiary">{duration}</p>
+          <Tooltip content="Post from Polkassembly">
+            <ExternalLink
+              href={`${getPolkassemblyLink(type, post)}#${data.id}`}
+              externalIcon={false}
+            >
+              <LinkPolkassembly
+                className={clsx(
+                  "w-4 h-4",
+                  "[&_path]:fill-textTertiary",
+                  "[&_path]:hover:fill-textSecondary",
+                )}
+              />
+            </ExternalLink>
+          </Tooltip>
+        </div>
       </InfoWrapper>
       <ContentWrapper>
         <MarkdownPreviewer
