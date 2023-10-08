@@ -14,12 +14,12 @@ const readPolkassemblyCommentsChains = [
 ];
 
 export function usePostCommentsData() {
-  const [commentsData, setCommentsData] = useState([]);
-
+  const comments = useComments();
   const chain = useChain();
   const post = usePost();
-  const comments = useComments();
   const polkassemblyPostData = usePolkassemblyPostData(post);
+
+  const [commentsData, setCommentsData] = useState(comments);
 
   const shouldReadPolkassemblyComments =
     readPolkassemblyCommentsChains.includes(chain);
@@ -27,18 +27,20 @@ export function usePostCommentsData() {
   useEffect(() => {
     if (shouldReadPolkassemblyComments) {
       if (!polkassemblyPostData.loadingComments) {
-        setCommentsData(
-          [
+        setCommentsData((data) => {
+          data.items = [
             ...polkassemblyPostData.comments.map((comment) => ({
               ...comment,
               source: "polkassembly",
             })),
-            ...(comments.items ?? []).map((comment) => ({
+            ...(data.items ?? []).map((comment) => ({
               ...comment,
               source: "subsquare",
             })),
-          ].sort((a, b) => dayjs.unix(a.createdAt) - dayjs.unix(b.createdAt)),
-        );
+          ].sort((a, b) => dayjs.unix(a.createdAt) - dayjs.unix(b.createdAt));
+
+          return data;
+        });
       }
     } else {
       setCommentsData(comments);
@@ -46,8 +48,7 @@ export function usePostCommentsData() {
   }, [shouldReadPolkassemblyComments, polkassemblyPostData.loadingComments]);
 
   return {
-    comments: commentsData,
+    commentsData,
     loading: polkassemblyPostData.loadingComments,
-    multiSource: shouldReadPolkassemblyComments,
   };
 }
