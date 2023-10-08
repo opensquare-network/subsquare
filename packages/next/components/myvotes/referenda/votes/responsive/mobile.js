@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import isNil from "lodash.isnil";
 import calcReferendaVoteLock from "../calcReferendaVoteLock";
 import VoteLock from "../../../vote/lock";
+import { EmptyList } from "next-common/components/emptyList";
 
 function ItemHeader({ vote }) {
   return (
@@ -69,6 +70,7 @@ export default function MobileList() {
       {referendaVotes.map((vote) => (
         <VoteListItem key={vote.referendumIndex} vote={vote} />
       ))}
+      {referendaVotes.length <= 0 ? <EmptyList type="votes" /> : null}
     </ListWrapper>
   );
 }

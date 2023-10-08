@@ -13,6 +13,7 @@ import getPostTitle from "./getPostTitle";
 import DemocracyTag from "../stateTag";
 import DelegationHint from "./hint";
 import ProxyHint from "../../proxyHint";
+import { EmptyList } from "next-common/components/emptyList";
 
 function ItemHeader({ vote }) {
   return (
@@ -68,6 +69,7 @@ export default function MobileList() {
       {(myDelegatedVotes || []).map((item) => (
         <VoteListItem key={item.referendumIndex} vote={item} />
       ))}
+      {(myDelegatedVotes || []).length <= 0 ? <EmptyList type="votes" /> : null}
     </ListWrapper>
   );
 }
