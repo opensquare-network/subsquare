@@ -10,7 +10,7 @@ import nextApi from "next-common/services/nextApi";
 
 const dataCache = {};
 
-export default function usePolkassemblyPostData({
+export function usePolkassemblyPostData({
   polkassemblyId,
   polkassemblyPostType = "discussion",
 }) {
