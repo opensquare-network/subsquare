@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.5.2
+date: 2023-10-08
+- Fix referenda delegation voting checking.
+- Clear already stored votes data after leaving referendum detail page.
+- Refactor the complex user component.
+- Improve tailwind config for vscode.
+- Show prior lock for democracy.
+- Show empty placeholder for on-chain votes on mobile view.
+- Improve `referenda` to `Democracy referenda`.
+- Housekeeping: remove useless code.
+
 ### 3.5.1
 date: 2023-09-30
 - Improve content placer when proposal post has no context or no comments.

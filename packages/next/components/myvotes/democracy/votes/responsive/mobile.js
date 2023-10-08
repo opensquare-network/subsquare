@@ -16,6 +16,7 @@ import getPostTitle from "../../delegatedVotes/getPostTitle";
 import RemoveVoteButton from "./remove";
 import VoteLock from "../../../vote/lock";
 import DemocracyTag from "../../stateTag";
+import { EmptyList } from "next-common/components/emptyList";
 
 function ItemHeader({ vote }) {
   return (
@@ -73,6 +74,7 @@ export default function MobileList() {
       {myDemocracyVotes.map((vote) => (
         <VoteListItem key={vote.referendumIndex} vote={vote} />
       ))}
+      {myDemocracyVotes.length <= 0 ? <EmptyList type="votes" /> : null}
     </ListWrapper>
   );
 }

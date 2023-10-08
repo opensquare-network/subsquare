@@ -12,9 +12,12 @@ import { democracyLockRequiredSelector } from "next-common/store/reducers/myOnCh
 import democracyVoteExpiredReferendaSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/expiredReferenda";
 import myDemocracyDelegatedSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/delegated";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
+import myDemocracyPriorLockSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/prior";
 
 export default function DemocracySummary() {
   const [showClearExpired, setShowClearExpired] = useState(false);
+
+  const prior = useSelector(myDemocracyPriorLockSelector);
 
   // Locked balance calculated from on-chain voting data
   const lockFromOnChain = useSelector(democracyLockFromOnChainDataSelector);
@@ -51,6 +54,7 @@ export default function DemocracySummary() {
       <VoteSummary
         votesLength={votesCount}
         totalLocked={totalLocked}
+        prior={prior}
         delegated={delegated}
         unLockable={democracyVoting ? unLockable : 0}
         actionComponent={actionComponent}
