@@ -11,7 +11,8 @@ import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function newDate(blocks, blockTime) {
   const date = new Date(
-    Date.now() + blocks?.mul(bnToBn(blockTime) || BN_ZERO).toNumber(),
+    Date.now() +
+      blocks?.mul(blockTime ? bnToBn(blockTime) : BN_ZERO).toNumber(),
   );
 
   return { date, dateTime: date.getTime() };
