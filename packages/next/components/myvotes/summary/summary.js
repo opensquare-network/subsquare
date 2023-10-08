@@ -9,6 +9,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import SummaryItems from "next-common/components/summary/summaryItems";
 import BigNumber from "bignumber.js";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import PriorInfo from "./prior";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -46,6 +47,7 @@ function LoadableContent({ isLoading = false, children }) {
 export default function ReferendaVoteSummary({
   votesLength = 0,
   totalLocked,
+  prior,
   delegated,
   unLockable,
   actionComponent,
@@ -67,6 +69,7 @@ export default function ReferendaVoteSummary({
       content: (
         <LoadableContent isLoading={isLoading}>
           <TokenValueContent value={totalLocked} />
+          <PriorInfo prior={prior} />
         </LoadableContent>
       ),
     },

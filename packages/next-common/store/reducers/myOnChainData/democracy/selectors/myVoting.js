@@ -32,7 +32,7 @@ export const democracyVotesLengthSelector = createSelector(
       return 0;
     }
 
-    const { votes = [] } = voting;
-    return votes.length;
+    const { votes = [], delegatedVotes = [] } = voting;
+    return votes.length + delegatedVotes.length;
   },
 );
