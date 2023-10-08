@@ -241,7 +241,7 @@ export default function Item({
               <EditedLabel>Edited</EditedLabel>
             )}
           </ContentWrapper>
-          <div style={{ margin: "8px 0 0 28px" }}>
+          <div className="mt-2 ml-7">
             <CommentActions
               setFolded={setFolded}
               updateComment={updateTopLevelComment || updateComment}
