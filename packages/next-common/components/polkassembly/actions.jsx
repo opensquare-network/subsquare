@@ -31,7 +31,7 @@ const GreyItem = styled.div`
   }
 `;
 
-export default function Actions({ reactions }) {
+export default function PolkassemblyActions({ reactions }) {
   const filtered = (reactions || []).filter(
     (reaction) => reaction.reaction === 1,
   );

@@ -6,7 +6,7 @@ import {
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
-import Actions from "../actions";
+import PolkassemblyActions from "../actions";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import useDuration from "next-common/utils/hooks/useDuration";
 import Divider from "next-common/components/styled/layout/divider";
@@ -59,7 +59,7 @@ const EditedLabel = styled.div`
   color: var(--textTertiary);
 `;
 
-export default function Item({ data, isSecondLevel }) {
+export default function PolkassemblyCommentItem({ data, isSecondLevel }) {
   const comment = data;
 
   const [folded, setFolded] = React.useState(true);
@@ -105,7 +105,7 @@ export default function Item({ data, isSecondLevel }) {
       </ContentWrapper>
       {!isSecondLevel && (
         <IndentWrapper>
-          <Actions reactions={comment.reactions} />
+          <PolkassemblyActions reactions={comment.reactions} />
         </IndentWrapper>
       )}
       {comment.replies?.length > 0 && (
@@ -121,7 +121,11 @@ export default function Item({ data, isSecondLevel }) {
 
           {!folded
             ? (comment.replies || []).map((item) => (
-                <Item key={item.id} data={item} isSecondLevel={true} />
+                <PolkassemblyCommentItem
+                  key={item.id}
+                  data={item}
+                  isSecondLevel={true}
+                />
               ))
             : null}
         </IndentWrapper>
