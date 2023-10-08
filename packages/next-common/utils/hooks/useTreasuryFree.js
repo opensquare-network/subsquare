@@ -39,7 +39,7 @@ export function useTreasuryAccount(api) {
 
 export default function useTreasuryFree(api) {
   const chain = useChain();
-  const [free, setFree] = useState("0");
+  const [free, setFree] = useState(null);
   const isMounted = useIsMounted();
   const treasuryAccount = useTreasuryAccount(api);
 

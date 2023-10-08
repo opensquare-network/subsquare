@@ -9,6 +9,8 @@ import TreasuryBurn from "../treasurySummaryItems/burn";
 import { isKintsugiChain } from "next-common/utils/chain";
 import SpendPeriod from "next-common/components/summary/treasurySummary/spendPeriod";
 import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
+import LoadableContent from "next-common/components/common/loadableContent";
+import isNil from "lodash.isnil";
 
 export default function TreasurySummary() {
   const chain = useChain();
@@ -37,15 +39,21 @@ export default function TreasurySummary() {
         {
           title: "Available",
           content: (
-            <>
-              <span>{abbreviateBigNumber(toPrecision(free, decimals))}</span>
+            <LoadableContent isLoading={isNil(free)}>
+              <span>
+                {abbreviateBigNumber(toPrecision(free || 0, decimals))}
+              </span>
               <span className="unit upper">{symbol}</span>
-            </>
+            </LoadableContent>
           ),
         },
         {
           title: "Next Burn",
-          content: <TreasuryBurn free={free} />,
+          content: (
+            <LoadableContent isLoading={isNil(free)}>
+              <TreasuryBurn free={free} />
+            </LoadableContent>
+          ),
         },
         isKintsugiChain(chain) ? null : spendPeriodsItem,
       ].filter(Boolean)}
