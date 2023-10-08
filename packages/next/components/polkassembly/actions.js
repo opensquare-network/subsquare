@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import useThumbsUp from "next-common/components/thumbsUp";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import SystemUser from "next-common/components/user/systemUser";
+import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -52,11 +52,10 @@ export default function Actions({ reactions }) {
             .filter((r) => r.user)
             .map((r, index) => (
               <GreyItem key={index}>
-                <SystemUser
+                <PolkassemblyUser
                   user={r.user}
                   fontSize={12}
                   showAvatar={false}
-                  noEvent
                 />
               </GreyItem>
             ))}

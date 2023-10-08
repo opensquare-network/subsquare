@@ -9,7 +9,7 @@ import {
 } from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 
-export const convertPolkassemblyReaction = (paReactions) => {
+export const convertPolkassemblyReaction = (paReactions, chain) => {
   const flattened = flatten(
     Object.entries(paReactions || {}).map(([r, { usernames } = {}]) =>
       usernames?.map((u) => [r, u]),
@@ -17,7 +17,11 @@ export const convertPolkassemblyReaction = (paReactions) => {
   );
   const reactions = flattened.map(([r, u]) => ({
     reaction: r === "👍" ? 1 : 0,
-    user: u,
+    user: {
+      username: u,
+      address: "",
+      polkassemblyUserLink: `https://${chain}.polkassembly.io/user/${u}`,
+    },
   }));
 
   return reactions;
@@ -27,7 +31,7 @@ export const convertPolkassemblyComment = (chain, comment) => {
   const address =
     comment.proposer && encodeAddressToChain(comment.proposer, chain);
   return {
-    reactions: convertPolkassemblyReaction(comment.comment_reactions),
+    reactions: convertPolkassemblyReaction(comment.comment_reactions, chain),
     id: comment.id,
     content: comment.content,
     createdAt: comment.created_at,
