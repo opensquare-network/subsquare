@@ -9,6 +9,7 @@ import { GreyPanel } from "../../styled/containers/greyPanel";
 import NoData from "next-common/components/noData";
 import AddressUser from "next-common/components/user/addressUser";
 import PostLinkPopup from "../../linkPost/postLinkPopup";
+import { usePost } from "next-common/context/post";
 
 const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
@@ -29,11 +30,13 @@ const GreyItem = styled.div`
   }
 `;
 
-function WhoCanEdit({ authors = [] }) {
+function WhoCanEdit() {
+  const post = usePost();
+
   return (
     <GreyWrapper>
       <span style={{ marginRight: 12 }}>Who can edit?</span>
-      {authors.map((author) => (
+      {post?.authors?.map((author) => (
         <GreyItem key={author}>
           <AddressUser add={author} showAvatar={false} fontSize={12} />
         </GreyItem>
@@ -42,7 +45,7 @@ function WhoCanEdit({ authors = [] }) {
   );
 }
 
-export default function NonEdited({ setIsEdit, authors }) {
+export default function NonEdited({ setIsEdit }) {
   const isAuthor = useIsPostAuthor();
   const [showLinkPopup, setShowLinkPopup] = useState(false);
 
@@ -63,7 +66,7 @@ export default function NonEdited({ setIsEdit, authors }) {
         }
       />
 
-      <WhoCanEdit authors={authors} />
+      <WhoCanEdit />
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
     </>
   );

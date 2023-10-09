@@ -38,14 +38,11 @@ export default function ArticleContent({
   className = "",
 }) {
   const post = usePost();
-
   const bannerUrl = getBannerUrl(post.bannerCid);
 
   return (
     <Wrapper className={className}>
-      {!post.content && (
-        <NonEdited setIsEdit={setIsEdit} authors={post.authors} />
-      )}
+      {!post.content && <NonEdited setIsEdit={setIsEdit} />}
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
       <PostContent />
       {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
