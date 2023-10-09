@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDetailType } from "../context/page";
 import { usePost } from "../context/post";
@@ -20,6 +20,11 @@ import ReportPopup from "./reportPopup";
 import copy from "copy-to-clipboard";
 import noop from "lodash.noop";
 import { useComment } from "./comment/context";
+import DeletePopup from "./deletePopup";
+import nextApi from "next-common/services/nextApi";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -151,10 +156,12 @@ function DeleteMenuItem({ setShowDeletePopup, setShow }) {
 }
 
 export function CommentContextMenu({ editable, setIsEdit }) {
+  const dispatch = useDispatch();
   const comment = useComment();
   const [show, setShow] = useState(false);
   const ref = useRef();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const router = useRouter();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -163,6 +170,15 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`,
     );
   };
+
+  const deleteComment = useCallback(async () => {
+    const { error } = await nextApi.delete(`comments/${comment._id}`);
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+    router.replace(router.asPath);
+  }, [comment, router]);
 
   return (
     <Wrapper className="edit" active={true} ref={ref}>
@@ -184,12 +200,20 @@ export function CommentContextMenu({ editable, setIsEdit }) {
           <CopyMenuItem onCopy={onCopy} />
         </OptionWrapper>
       )}
-      {showDeletePopup && <ReportPopup setShow={setShowDeletePopup} />}
+      {showDeletePopup && (
+        <DeletePopup
+          itemName="comment"
+          setShow={setShowDeletePopup}
+          deletePost={deleteComment}
+        />
+      )}
     </Wrapper>
   );
 }
 
 export function PostContextMenu({ editable, setIsEdit }) {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const post = usePost();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -199,9 +223,18 @@ export function PostContextMenu({ editable, setIsEdit }) {
   const [showReportPopup, setShowReportPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
-  const hasLinkMenu = postType !== detailPageCategory.POST;
+  const isDiscussionPost = postType === detailPageCategory.POST;
 
   useOnClickOutside(ref, () => setShow(false));
+
+  const deletePost = useCallback(async () => {
+    const { error } = await nextApi.delete(`posts/${post._id}`);
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+    router.replace("/discussions");
+  }, [post, router]);
 
   let linkOrUnlinkMenuItem = (
     <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />
@@ -225,12 +258,14 @@ export function PostContextMenu({ editable, setIsEdit }) {
         <OptionWrapper>
           {editable && (
             <>
-              {hasLinkMenu && linkOrUnlinkMenuItem}
+              {!isDiscussionPost && linkOrUnlinkMenuItem}
               <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-              <DeleteMenuItem
-                setShowDeletePopup={setShowDeletePopup}
-                setShow={setShow}
-              />
+              {isDiscussionPost && (
+                <DeleteMenuItem
+                  setShowDeletePopup={setShowDeletePopup}
+                  setShow={setShow}
+                />
+              )}
             </>
           )}
           <ReportMenuItem
@@ -242,7 +277,13 @@ export function PostContextMenu({ editable, setIsEdit }) {
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
       {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
       {showReportPopup && <ReportPopup setShow={setShowReportPopup} />}
-      {showDeletePopup && <ReportPopup setShow={setShowDeletePopup} />}
+      {showDeletePopup && (
+        <DeletePopup
+          itemName="post"
+          setShow={setShowDeletePopup}
+          deletePost={deletePost}
+        />
+      )}
     </Wrapper>
   );
 }
