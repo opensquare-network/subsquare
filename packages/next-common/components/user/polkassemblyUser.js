@@ -7,6 +7,7 @@ import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import { useChain } from "next-common/context/chain";
+import Gravatar from "../gravatar";
 
 function PolkassemblyUser({
   user,
@@ -20,8 +21,7 @@ function PolkassemblyUser({
   const chain = useChain();
   const address = user?.address;
   const [identity, hasIdentity] = useIdentityInfo(address);
-  const showAvatar = !!address;
-  const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
+  const maxWidth = useWidth(true, identity, propMaxWidth);
 
   if (!user) {
     return <DeletedAccount fontSize={fontSize} />;
@@ -41,15 +41,17 @@ function PolkassemblyUser({
   );
 
   const avatarSize = fontSize * (20 / 14);
+  const avatar = address ? (
+    <Avatar address={address} size={avatarSize} />
+  ) : (
+    <Gravatar email={user?.username} size={avatarSize} />
+  );
+
   const polkassemblyUserLink = `https://${chain}.polkassembly.io/user/${user.username}`;
 
   return (
     <UserWrapper noEvent={noEvent} color={color}>
-      {showAvatar && (
-        <AvatarWrapper fontSize={fontSize}>
-          <Avatar address={address} size={avatarSize} />
-        </AvatarWrapper>
-      )}
+      <AvatarWrapper fontSize={fontSize}>{avatar}</AvatarWrapper>
       <LinkWrapper
         href={polkassemblyUserLink}
         target="_blank"
