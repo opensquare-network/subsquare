@@ -68,13 +68,15 @@ export default function Gov2ReferendumMetadata({ info, pallet = "referenda" }) {
         {getEnactmentValue(info?.enactment)}
       </ValueWrapper>,
     ],
-    [
-      "Proposal Hash",
-      <ValueWrapper key="proposal-hash">
-        <Copyable key="hash">{proposalHash}</Copyable>
-      </ValueWrapper>,
-    ],
-  ];
+    proposalHash
+      ? [
+          "Proposal Hash",
+          <ValueWrapper key="proposal-hash">
+            <Copyable key="hash">{proposalHash}</Copyable>
+          </ValueWrapper>,
+        ]
+      : null,
+  ].filter(Boolean);
 
   return <KVList title={"Metadata"} data={metadata} showFold={true} />;
 }
