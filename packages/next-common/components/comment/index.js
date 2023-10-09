@@ -7,21 +7,26 @@ import clsx from "clsx";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import PrimaryButton from "../buttons/primaryButton";
 import PolkassemblyCommentItem from "../polkassembly/comment/item";
+import Loading from "../loading";
+import { usePostCommentsData } from "next-common/hooks/usePostCommentsData";
 
-export default function Comments({
-  data: { items, page, pageSize, total } = {},
-}) {
+export default function Comments() {
   const isLogin = useIsLogin();
   const { openLoginPopup } = useLoginPopup();
+  const { commentsData, loading } = usePostCommentsData();
 
-  return (
-    <div>
-      <div className="mb-4">
-        <TitleContainer className={clsx("w-full !px-0 mb-4", "!block")}>
-          <div className="text14Bold">Comments</div>
-        </TitleContainer>
+  const { items, page, pageSize, total } = commentsData;
+
+  let content;
+  if (loading) {
+    content = (
+      <div className="flex justify-center py-5">
+        <Loading size={14} />
       </div>
-      {items?.length > 0 && (
+    );
+  } else {
+    if (items?.length > 0) {
+      content = (
         <>
           <div>
             {(items || []).map((item) =>
@@ -34,8 +39,22 @@ export default function Comments({
           </div>
           <Pagination page={page} pageSize={pageSize} total={total} />
         </>
-      )}
-      {!items?.length > 0 && <NoComment />}
+      );
+    } else {
+      content = <NoComment />;
+    }
+  }
+
+  return (
+    <div>
+      <div className="mb-4">
+        <TitleContainer className={clsx("w-full !px-0 mb-4", "!block")}>
+          <div className="text14Bold">Comments</div>
+        </TitleContainer>
+      </div>
+
+      {content}
+
       {!isLogin && (
         <div className="flex justify-end">
           <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>

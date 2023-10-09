@@ -4,10 +4,14 @@ import CommentEditor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor } from "next-common/utils/post";
 import { useUser } from "../../context/user";
+import { usePostCommentsData } from "next-common/hooks/usePostCommentsData";
+import { usePost } from "next-common/context/post";
 
-export default function useCommentComponent({ detail, comments, tabs = null }) {
+export default function useCommentComponent() {
   const loginUser = useUser();
-  const postId = detail._id;
+  const post = usePost();
+  const postId = post._id;
+  const { commentsData } = usePostCommentsData();
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -16,13 +20,13 @@ export default function useCommentComponent({ detail, comments, tabs = null }) {
     loginUser?.preference.editor || "markdown",
   );
 
-  const users = useMentionList(detail, comments);
+  const users = useMentionList(post, commentsData);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
   const CommentComponent = (
     <div>
-      <Comments data={comments} tabs={tabs} />
+      <Comments data={commentsData} />
       {loginUser && (
         <CommentEditor
           postId={postId}

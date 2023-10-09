@@ -20,32 +20,36 @@ export function usePostCommentsData() {
   const polkassemblyPostData = usePolkassemblyPostData(post);
 
   const [commentsData, setCommentsData] = useState(comments);
-
   const shouldReadPolkassemblyComments =
     readPolkassemblyCommentsChains.includes(chain);
 
   useEffect(() => {
     if (shouldReadPolkassemblyComments) {
       if (!polkassemblyPostData.loadingComments) {
-        setCommentsData((data) => {
-          data.items = [
-            ...polkassemblyPostData.comments.map((comment) => ({
-              ...comment,
-              source: "polkassembly",
-            })),
-            ...(data.items ?? []).map((comment) => ({
-              ...comment,
-              source: "subsquare",
-            })),
-          ].sort((a, b) => dayjs.unix(a.createdAt) - dayjs.unix(b.createdAt));
+        const data = { ...comments };
 
-          return data;
-        });
+        data.items = [
+          ...polkassemblyPostData.comments.map((comment) => ({
+            ...comment,
+            source: "polkassembly",
+          })),
+          ...(comments.items ?? []).map((comment) => ({
+            ...comment,
+            source: "subsquare",
+          })),
+        ].sort((a, b) => dayjs.unix(a.createdAt) - dayjs.unix(b.createdAt));
+
+        setCommentsData(data);
       }
     } else {
       setCommentsData(comments);
     }
-  }, [shouldReadPolkassemblyComments, polkassemblyPostData.loadingComments]);
+  }, [
+    comments,
+    polkassemblyPostData.loadingComments,
+    polkassemblyPostData.comments,
+    shouldReadPolkassemblyComments,
+  ]);
 
   return {
     commentsData,
