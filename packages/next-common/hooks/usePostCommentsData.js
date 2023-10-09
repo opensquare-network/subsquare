@@ -37,7 +37,7 @@ export function usePostCommentsData() {
             ...comment,
             source: "subsquare",
           })),
-        ].sort((a, b) => dayjs.unix(a.createdAt) - dayjs.unix(b.createdAt));
+        ].sort((a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix());
 
         setCommentsData(data);
       }
