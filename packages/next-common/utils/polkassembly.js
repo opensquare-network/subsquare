@@ -80,6 +80,7 @@ export const convertPolkassemblyComment = (chain, comment) => {
     content: comment.content,
     createdAt: comment.created_at,
     updatedAt: comment.updated_at,
+    comment_source: comment.comment_source,
     author: {
       username: comment.is_custom_username
         ? comment.username

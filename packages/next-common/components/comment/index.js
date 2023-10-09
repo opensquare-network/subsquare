@@ -30,7 +30,7 @@ export default function Comments() {
         <>
           <div>
             {(items || []).map((item) =>
-              item.source === "polkassembly" ? (
+              item.comment_source === "polkassembly" ? (
                 <PolkassemblyCommentItem key={item.id} data={item} />
               ) : (
                 <Item key={item._id} data={item} replyToCommentId={item._id} />

@@ -29,14 +29,8 @@ export function usePostCommentsData() {
         const data = { ...comments };
 
         data.items = [
-          ...polkassemblyPostData.comments.map((comment) => ({
-            ...comment,
-            source: "polkassembly",
-          })),
-          ...(comments.items ?? []).map((comment) => ({
-            ...comment,
-            source: "subsquare",
-          })),
+          ...(polkassemblyPostData.comments ?? []),
+          ...(comments.items ?? []),
         ].sort((a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix());
 
         setCommentsData(data);
