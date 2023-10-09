@@ -6,7 +6,7 @@ import { useIsLogin } from "../../context/user";
 import clsx from "clsx";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import PrimaryButton from "../buttons/primaryButton";
-import PolkassemblyCommentItem from "../polkassembly/comment/item";
+import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import Loading from "../loading";
 import { usePostCommentsData } from "next-common/hooks/usePostCommentsData";
 

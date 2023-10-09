@@ -3,7 +3,7 @@ import {
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
-import PolkassemblyActions from "../actions";
+import PolkassemblyActions from "../polkassembly/actions";
 import clsx from "clsx";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 import { LinkPolkassembly } from "@osn/icons/subsquare";
