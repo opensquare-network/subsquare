@@ -4,10 +4,6 @@ import { encodeAddressToChain } from "next-common/services/address";
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
-import {
-  advisoryCommitteeBaseUrl,
-  childBountyBaseUrl,
-} from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 
 export function getPolkassemblyLink(type, post) {
@@ -111,26 +107,3 @@ export const toFinancialMotionsListItem = (item) => {
     time: getPostLastActivityAt(item),
   };
 };
-
-export const toAdvisoryMotionsListItem = (item) => ({
-  ...item,
-  index: item.motionIndex,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  status: item.state ?? "Unknown",
-  detailLink: `${advisoryCommitteeBaseUrl}/${getMotionId(item)}`,
-  time: getPostLastActivityAt(item),
-});
-
-export const toTreasuryChildBountyListItem = (item) => ({
-  ...item,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  status: item.state ?? "Unknown",
-  time: getPostLastActivityAt(item),
-  value: item.onchainData.value,
-  detailLink: `${childBountyBaseUrl}/${item.index}`,
-  parentIndex: item.parentBountyId,
-});

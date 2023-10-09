@@ -1,6 +1,6 @@
 import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
-import { toFinancialMotionsListItem } from "utils/viewfuncs";
+import { toFinancialMotionsListItem } from "next-common/utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchList } from "next-common/services/list";
