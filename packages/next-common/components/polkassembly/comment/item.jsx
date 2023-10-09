@@ -13,6 +13,7 @@ import { getPolkassemblyLink } from "next-common/utils/polkassembly";
 import { useDetailType } from "next-common/context/page";
 import { usePost } from "next-common/context/post";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";
+import { useState } from "react";
 
 export default function PolkassemblyCommentItem({
   data: comment,
@@ -20,11 +21,14 @@ export default function PolkassemblyCommentItem({
 }) {
   const type = useDetailType();
   const post = usePost();
+  const [folded, setFolded] = useState(true);
 
   return (
     <CommentItemTemplate
       data={comment}
       isSecondLevel={isSecondLevel}
+      folded={folded}
+      setFolded={setFolded}
       user={<PolkassemblyUser user={comment.author} />}
       from={
         <Tooltip content="Post from Polkassembly">

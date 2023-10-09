@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 import Divider from "../styled/layout/divider";
 import clsx from "clsx";
 import useDuration from "next-common/utils/hooks/useDuration";
@@ -9,6 +9,8 @@ const CommentItemTemplate = forwardRef(function Comp(
   {
     data: comment = {},
     isSecondLevel,
+    folded = true,
+    setFolded = noop,
 
     className = "",
     user,
@@ -22,7 +24,6 @@ const CommentItemTemplate = forwardRef(function Comp(
   ref,
 ) {
   const duration = useDuration(comment.createdAt);
-  const [folded, setFolded] = useState(true);
 
   return (
     <div
