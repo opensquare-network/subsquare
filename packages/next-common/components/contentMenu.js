@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useDetailType } from "../context/page";
 import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
@@ -29,19 +29,12 @@ import { useRouter } from "next/router";
 const Wrapper = styled.div`
   margin-left: auto;
   position: relative;
-  display: none;
 
   > img {
     width: 16px;
     height: 16px;
     cursor: pointer;
   }
-
-  ${(p) =>
-    p.active &&
-    css`
-      display: block;
-    `}
 `;
 
 function LinkMenuItem({ setShowLinkPopup, setShow }) {
@@ -181,7 +174,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   }, [comment, router]);
 
   return (
-    <Wrapper className="edit" active={true} ref={ref}>
+    <Wrapper className="edit" ref={ref}>
       <SystemMore
         className="w-4 h-4 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
@@ -249,7 +242,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
   }
 
   return (
-    <Wrapper className="edit" active={true} ref={ref}>
+    <Wrapper className="edit" ref={ref}>
       <SystemMore
         className="w-4 h-4 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
