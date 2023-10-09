@@ -20,7 +20,7 @@ function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
       }
 
       setLoading(true);
-      fn(...params)
+      fn(...(params || []))
         .then((value) => {
           if (cacheKey) {
             callCache[cacheKey] = value;
