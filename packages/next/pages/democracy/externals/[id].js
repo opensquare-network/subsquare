@@ -16,7 +16,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 
 function DemocracyExternalContent() {
@@ -28,7 +28,7 @@ function DemocracyExternalContent() {
   const call = external?.preImage?.call;
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <DetailItem />
       <DetailMultiTabs
         call={
@@ -45,7 +45,7 @@ function DemocracyExternalContent() {
         metadata={<Metadata external={detail?.onchainData} />}
         timeline={<Timeline />}
       />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }
 

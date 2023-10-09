@@ -31,7 +31,7 @@ import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 
 function FellowshipContent() {
@@ -45,7 +45,7 @@ function FellowshipContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <FellowshipReferendaDetail />
       <FellowshipReferendumSideBar />
       <DetailMultiTabs
@@ -55,7 +55,7 @@ function FellowshipContent() {
         }
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }
 

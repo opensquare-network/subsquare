@@ -16,7 +16,7 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 
 function TreasuryTipContent() {
@@ -24,14 +24,14 @@ function TreasuryTipContent() {
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <TipDetail />
       <Tipper />
       <DetailMultiTabs
         metadata={<Metadata tip={post?.onchainData} />}
         timeline={<Timeline tip={post?.onchainData} />}
       />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }
 

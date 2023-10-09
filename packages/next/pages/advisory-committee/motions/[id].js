@@ -9,7 +9,7 @@ import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 
 function AdvisoryCommitteeMotionContent() {
@@ -18,9 +18,9 @@ function AdvisoryCommitteeMotionContent() {
   motion.status = motion.state?.state;
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <MotionDetail />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }
 
