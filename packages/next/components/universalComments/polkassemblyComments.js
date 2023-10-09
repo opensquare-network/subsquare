@@ -1,4 +1,4 @@
-import PolkassemblyComments from "components/polkassembly/comment";
+import PolkassemblyComments from "next-common/components/polkassembly/comment";
 import { usePolkassemblyPostData } from "next-common/hooks/polkassembly/usePolkassemblyPostData";
 
 export default function PolkassemblyCommentsWithData({ detail, btnRef, tabs }) {
