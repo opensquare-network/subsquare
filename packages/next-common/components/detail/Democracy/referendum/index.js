@@ -1,4 +1,3 @@
-import { usePost } from "next-common/context/post";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import ArticleContent from "next-common/components/articleContent";
@@ -12,7 +11,6 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import Divider from "next-common/components/styled/layout/divider";
 
 export default function DemocracyReferendaDetail() {
-  const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
@@ -22,13 +20,13 @@ export default function DemocracyReferendaDetail() {
         <>
           <ExecutionCountdown />
           <ReferendumVoteEndCountDown />
-          <ReferendumNavigation post={post} />
+          <ReferendumNavigation />
         </>
       )}
       <PostTitle />
       <Divider className="my-4" />
       <DemocracyReferendumMeta />
-      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

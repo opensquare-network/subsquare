@@ -196,7 +196,7 @@ export default function TechcommMotionDetail({ motion }) {
     <div className="flex flex-col gap-y-12">
       <DetailContentBase>
         <TechcommMotionDetailHeader motion={motion} />
-        <ArticleContent post={post} setIsEdit={setIsEdit} />
+        <ArticleContent setIsEdit={setIsEdit} />
       </DetailContentBase>
 
       <DetailMultiTabs

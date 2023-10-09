@@ -13,7 +13,7 @@ export default function DetailItem({ postReactions }) {
   return (
     <DetailContentBase>
       <PolkassemblyDetailHeader />
-      <ArticleContent post={post} postReactions={postReactions} />
+      <ArticleContent postReactions={postReactions} />
     </DetailContentBase>
   );
 }

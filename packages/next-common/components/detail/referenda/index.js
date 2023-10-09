@@ -1,4 +1,3 @@
-import { usePost } from "../../../context/post";
 import DetailContentBase from "../common/detailBase";
 import ArticleContent from "../../articleContent";
 import useSetEdit from "../common/hooks/useSetEdit";
@@ -14,7 +13,6 @@ import PreimageWarning from "next-common/components/detail/referenda/preimageWar
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 
 export default function ReferendaDetail() {
-  const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
@@ -34,7 +32,7 @@ export default function ReferendaDetail() {
       <Divider className="my-4" />
       <ReferendaPostMeta />
 
-      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

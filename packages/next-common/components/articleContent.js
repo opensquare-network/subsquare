@@ -31,12 +31,7 @@ const BannerImage = styled.img`
   width: 100%;
 `;
 
-export default function ArticleContent({
-  votes,
-  myVote,
-  setIsEdit,
-  className = "",
-}) {
+export default function ArticleContent({ setIsEdit, className = "" }) {
   const post = usePost();
   const bannerUrl = getBannerUrl(post.bannerCid);
 
@@ -49,7 +44,7 @@ export default function ArticleContent({
       {post.poll && (
         <>
           <Divider margin={16} />
-          <Poll poll={post.poll} votes={votes} myVote={myVote} />
+          <Poll />
         </>
       )}
       <PostDataSource />

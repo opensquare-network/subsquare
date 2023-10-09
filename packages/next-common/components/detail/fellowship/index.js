@@ -1,6 +1,5 @@
 import DetailContentBase from "../common/detailBase";
 import ArticleContent from "../../articleContent";
-import { usePost } from "../../../context/post";
 import useSetEdit from "../common/hooks/useSetEdit";
 import PostTitle from "next-common/components/detail/common/Title";
 import Divider from "next-common/components/styled/layout/divider";
@@ -13,7 +12,6 @@ import FellowshipTimeoutCountdown from "next-common/components/detail/fellowship
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 
 export default function FellowshipReferendaDetail() {
-  const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
@@ -31,7 +29,7 @@ export default function FellowshipReferendaDetail() {
       <PostTitle />
       <Divider className="my-4" />
       <ReferendaPostMeta isFellowship />
-      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }
