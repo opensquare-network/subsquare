@@ -52,7 +52,7 @@ export default function Item({
   const [highlight, setHighlight] = useState(false);
   const isMounted = useIsMountedBool();
   const { hasAnchor, anchor } = useCommentsAnchor();
-  const [folded, setFolded] = useState(true);
+  const [showReplies, setShowReplies] = useState(false);
   const comments = useComments();
   const setComments = useSetComments();
 
@@ -62,7 +62,7 @@ export default function Item({
       return;
     }
 
-    setFolded(false);
+    setShowReplies(true);
 
     if (anchor === comment.height) {
       setHighlight(true);
@@ -148,8 +148,8 @@ export default function Item({
       ref={refCommentTree}
       data={comment}
       isSecondLevel={isSecondLevel}
-      folded={folded}
-      setFolded={setFolded}
+      showReplies={showReplies}
+      setShowReplies={setShowReplies}
       id={comment.height}
       highlight={highlight}
       user={<SystemUser user={comment.author} />}
@@ -203,7 +203,7 @@ export default function Item({
       }
       actions={
         <CommentActions
-          setFolded={setFolded}
+          setShowReplies={setShowReplies}
           updateComment={updateTopLevelComment || updateComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom

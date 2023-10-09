@@ -21,14 +21,14 @@ export default function PolkassemblyCommentItem({
 }) {
   const type = useDetailType();
   const post = usePost();
-  const [folded, setFolded] = useState(true);
+  const [showReplies, setShowReplies] = useState(false);
 
   return (
     <CommentItemTemplate
       data={comment}
       isSecondLevel={isSecondLevel}
-      folded={folded}
-      setFolded={setFolded}
+      showReplies={showReplies}
+      setShowReplies={setShowReplies}
       user={<PolkassemblyUser user={comment.author} />}
       from={
         <Tooltip content="Post from Polkassembly">

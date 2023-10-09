@@ -9,8 +9,8 @@ const CommentItemTemplate = forwardRef(function Comp(
   {
     data: comment = {},
     isSecondLevel,
-    folded = true,
-    setFolded = noop,
+    showReplies = false,
+    setShowReplies = noop,
 
     className = "",
     user,
@@ -65,14 +65,16 @@ const CommentItemTemplate = forwardRef(function Comp(
             <button
               className="text-textSecondary hover:text-textPrimary text14Medium"
               onClick={() => {
-                setFolded(!folded);
+                setShowReplies(!showReplies);
               }}
             >
-              {folded ? `${comment.replies?.length} Replies` : "Hide Replies"}
+              {showReplies
+                ? "Hide Replies"
+                : `${comment.replies?.length} Replies`}
             </button>
           </div>
 
-          {!folded && comment.replies?.map?.(renderReply)}
+          {showReplies && comment.replies?.map?.(renderReply)}
         </div>
       )}
 
