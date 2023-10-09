@@ -1,6 +1,6 @@
 // Used when proposal author has not edited the auto generated post content.
 
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PostEdit from "./PostEdit";
 import PostLink from "./PostLink";
@@ -8,6 +8,7 @@ import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import NoData from "next-common/components/noData";
 import AddressUser from "next-common/components/user/addressUser";
+import PostLinkPopup from "../../linkPost/postLinkPopup";
 
 const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
@@ -41,8 +42,10 @@ function WhoCanEdit({ authors = [] }) {
   );
 }
 
-export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
+export default function NonEdited({ setIsEdit, authors }) {
   const isAuthor = useIsPostAuthor();
+  const [showLinkPopup, setShowLinkPopup] = useState(false);
+
   return (
     <>
       <NoData
@@ -61,6 +64,7 @@ export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
       />
 
       <WhoCanEdit authors={authors} />
+      {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
     </>
   );
 }
