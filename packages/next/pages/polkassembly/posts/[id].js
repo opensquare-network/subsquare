@@ -1,4 +1,4 @@
-import DetailItem from "components/polkassembly/detailItem";
+import DetailItem from "next-common/components/polkassembly/detailItem";
 import PolkassemblyComments from "components/polkassembly/comment";
 import { usePolkassemblyPostData } from "next-common/hooks/polkassembly/usePolkassemblyPostData";
 import { withCommonProps } from "next-common/lib";
