@@ -36,7 +36,7 @@ function jumpToAnchor(anchorId) {
   });
 }
 
-export default function Item({
+export default function CommentItem({
   data: comment,
   replyToCommentId,
   isSecondLevel,
@@ -226,7 +226,7 @@ export default function Item({
         />
       }
       renderReply={(reply) => (
-        <Item
+        <CommentItem
           key={reply._id}
           data={reply}
           replyToCommentId={replyToCommentId}

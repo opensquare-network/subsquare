@@ -1,4 +1,4 @@
-import Item from "./item";
+import CommentItem from "./item";
 import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
@@ -33,7 +33,11 @@ export default function Comments() {
               item.comment_source === "polkassembly" ? (
                 <PolkassemblyCommentItem key={item.id} data={item} />
               ) : (
-                <Item key={item._id} data={item} replyToCommentId={item._id} />
+                <CommentItem
+                  key={item._id}
+                  data={item}
+                  replyToCommentId={item._id}
+                />
               ),
             )}
           </div>
