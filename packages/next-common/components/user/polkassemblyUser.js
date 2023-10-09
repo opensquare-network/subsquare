@@ -17,11 +17,12 @@ function PolkassemblyUser({
   noTooltip = false,
   color,
   ellipsis = true,
+  showAvatar = true,
 }) {
   const chain = useChain();
   const address = user?.address;
   const [identity, hasIdentity] = useIdentityInfo(address);
-  const maxWidth = useWidth(true, identity, propMaxWidth);
+  const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
   if (!user) {
     return <DeletedAccount fontSize={fontSize} />;
@@ -51,7 +52,9 @@ function PolkassemblyUser({
 
   return (
     <UserWrapper noEvent={noEvent} color={color}>
-      <AvatarWrapper fontSize={fontSize}>{avatar}</AvatarWrapper>
+      {showAvatar && (
+        <AvatarWrapper fontSize={fontSize}>{avatar}</AvatarWrapper>
+      )}
       <LinkWrapper
         href={polkassemblyUserLink}
         target="_blank"
