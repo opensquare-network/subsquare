@@ -34,6 +34,7 @@ export default function VoteBubbleContent({ node, sizeField }) {
             noEvent
             noTooltip
             ellipsis={false}
+            linkToVotesPage
             color={clsx(
               node.data.aye && "var(--green500)",
               node.data.aye === false && "var(--red500)",

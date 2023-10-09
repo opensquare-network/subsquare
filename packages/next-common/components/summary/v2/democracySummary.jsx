@@ -17,6 +17,7 @@ import { estimateBlocksTime } from "next-common/utils";
 import useApi from "next-common/utils/hooks/useApi";
 import useLaunchProgress from "next-common/hooks/democracy/useLaunchProgress";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -110,19 +111,17 @@ function NextLaunchTime() {
   const time = useEstimateTime(offset);
 
   return (
-    <>
-      {!!nextLaunchTimestamp && !!latestBlockTime && (
-        <Tooltip
-          content={dayjs(nextLaunchTimestampMilliseconds).format(
-            "YYYY-MM-DD HH:MM:ss",
-          )}
-        >
-          <span>
-            <SummaryGreyText>≈ In</SummaryGreyText> {time}
-          </span>
-        </Tooltip>
-      )}
-    </>
+    <LoadableContent isLoading={!nextLaunchTimestamp || !latestBlockTime}>
+      <Tooltip
+        content={dayjs(nextLaunchTimestampMilliseconds).format(
+          "YYYY-MM-DD HH:MM:ss",
+        )}
+      >
+        <span>
+          <SummaryGreyText>≈ In</SummaryGreyText> {time}
+        </span>
+      </Tooltip>
+    </LoadableContent>
   );
 }
 
