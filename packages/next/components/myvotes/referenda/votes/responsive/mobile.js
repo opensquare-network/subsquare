@@ -26,7 +26,9 @@ function ItemHeader({ vote }) {
           referendumIndex={vote.referendumIndex}
           title={getPostTitle(vote)}
         />
-        <RemoveVoteButton key="action" vote={vote} />
+        {vote.vote?.isDelegating ? null : (
+          <RemoveVoteButton key="action" vote={vote} />
+        )}
       </div>
       <div className="flex justify-end pt-[12px] items-center">
         <MyReferendaVoteTag
