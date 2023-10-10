@@ -4,7 +4,7 @@ import CommentEditor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor } from "next-common/utils/post";
 import { useUser } from "../../context/user";
-import { usePostCommentsData } from "next-common/hooks/usePostCommentsData";
+import { usePostCommentsData } from "next-common/hooks/usePostComments";
 import { usePost } from "next-common/context/post";
 
 export default function useCommentComponent() {

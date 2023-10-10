@@ -5,6 +5,8 @@ import Chains from "next-common/utils/consts/chains";
 import { useEffect, useState } from "react";
 import { usePolkassemblyPostData } from "./polkassembly/usePolkassemblyPostData";
 import dayjs from "dayjs";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const readPolkassemblyCommentsChains = [
   Chains.kusama,
@@ -16,12 +18,17 @@ const readPolkassemblyCommentsChains = [
 export function usePostCommentsData() {
   const comments = useComments();
   const chain = useChain();
+  const detailType = useDetailType();
   const post = usePost();
   const polkassemblyPostData = usePolkassemblyPostData(post);
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
     readPolkassemblyCommentsChains.includes(chain);
+
+  const isUniversal =
+    shouldReadPolkassemblyComments &&
+    ![detailPageCategory.POST, detailPageCategory.PA_POST].includes(detailType);
 
   useEffect(() => {
     if (shouldReadPolkassemblyComments) {
@@ -48,5 +55,6 @@ export function usePostCommentsData() {
   return {
     commentsData,
     loading: polkassemblyPostData.loadingComments,
+    isUniversal,
   };
 }

@@ -7,7 +7,7 @@ import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import PrimaryButton from "../buttons/primaryButton";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import Loading from "../loading";
-import { usePostCommentsData } from "next-common/hooks/usePostCommentsData";
+import { usePostCommentsData } from "next-common/hooks/usePostComments";
 
 export default function Comments() {
   const isLogin = useIsLogin();
