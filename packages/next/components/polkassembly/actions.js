@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
-import useThumbsUp from "next-common/components/thumbsUp";
+import ThumbsUp from "next-common/components/thumbsUp";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 
@@ -32,21 +32,22 @@ const GreyItem = styled.div`
 `;
 
 export default function Actions({ reactions }) {
-  const filtered = (reactions || []).filter(
-    (reaction) => reaction.reaction === 1,
-  );
-  const count = filtered.length;
+  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+  const thumbsUpReactions = (reactions || []).filter((r) => r.reaction === 1);
 
-  const { ThumbsUpComponent, showThumbsUpList } = useThumbsUp({
-    disabled: true,
-    count,
-    noHover: true,
-    highlight: false,
-  });
   return (
     <>
-      <Wrapper>{ThumbsUpComponent}</Wrapper>
-      {showThumbsUpList && count > 0 && (
+      <Wrapper>
+        <ThumbsUp
+          disabled={true}
+          count={thumbsUpReactions.length}
+          noHover={true}
+          highlight={false}
+          showThumbsUpList={showThumbsUpList}
+          setShowThumbsUpList={setShowThumbsUpList}
+        />
+      </Wrapper>
+      {showThumbsUpList && thumbsUpReactions.length > 0 && (
         <GreyWrapper style={{ marginTop: 10 }}>
           {reactions
             .filter((r) => r.user)

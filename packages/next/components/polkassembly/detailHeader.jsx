@@ -35,7 +35,7 @@ export default function PolkassemblyDetailHeader() {
 
   return (
     <>
-      <PostTitle post={post} />
+      <PostTitle />
       <Divider className="my-4" />
       <div className="flex items-center justify-between flex-nowrap">
         <DividerWrapper>

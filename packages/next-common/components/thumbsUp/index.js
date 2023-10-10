@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 
 import ThumbUpIcon from "../../assets/imgs/icons/thumb-up.svg";
@@ -6,6 +6,7 @@ import UnfoldIcon from "../../assets/imgs/icons/unfold.svg";
 import FoldIcon from "../../assets/imgs/icons/fold.svg";
 import Flex from "../styled/flex";
 import Loading from "../loading";
+import noop from "lodash.noop";
 
 const ActionItem = styled(Flex)`
   cursor: default;
@@ -83,22 +84,22 @@ const DisabledThumbUp = styled(ThumbUpIcon)`
   }
 `;
 
-export default function useThumbsUp({
-  disabled,
-  count,
-  noHover,
-  highlight,
-  toggleThumbUp,
-  thumbUpLoading,
+export default function ThumbsUp({
+  disabled = false,
+  count = 0,
+  noHover = false,
+  highlight = false,
+  thumbUpLoading = false,
+  toggleThumbUp = noop,
+  showThumbsUpList = false,
+  setShowThumbsUpList = noop,
 }) {
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-
-  const ThumbsUpComponent = (
+  return (
     <>
       <ActionItem
         noHover={noHover}
         highlight={highlight}
-        onClick={() => toggleThumbUp && toggleThumbUp()}
+        onClick={() => toggleThumbUp()}
       >
         {thumbUpLoading ? (
           <Loading size={14} />
@@ -116,9 +117,4 @@ export default function useThumbsUp({
       )}
     </>
   );
-
-  return {
-    ThumbsUpComponent,
-    showThumbsUpList,
-  };
 }

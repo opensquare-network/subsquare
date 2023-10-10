@@ -16,14 +16,12 @@ import TreasuryProposalNavigation from "next-common/components/detail/navigation
 import ReferendaReferendumNavigation from "next-common/components/detail/navigation/referendaReferendumNavigation";
 import AnnouncementNavigation from "next-common/components/detail/navigation/announcementNavigation";
 import ReferendumVoteEndCountDown from "next-common/components/democracy/referendum/voteEndCountDown";
-import { usePost } from "next-common/context/post";
 import { useDetailType } from "next-common/context/page";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import Divider from "../styled/layout/divider";
 
 export default function DetailHeader({ countDown = null }) {
-  const post = usePost();
   const type = useDetailType();
   const isEditing = useSelector(isEditingPostSelector);
 
@@ -43,17 +41,17 @@ export default function DetailHeader({ countDown = null }) {
         )}
 
         {type === detailPageCategory.DEMOCRACY_EXTERNAL && (
-          <ExternalNavigation post={post} />
+          <ExternalNavigation />
         )}
+
         {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
-          <DemocracyProposalNavigation
-            proposalIndex={post.proposalIndex}
-            referendumIndex={post?.referendumIndex}
-          />
+          <DemocracyProposalNavigation />
         )}
+
         {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
-          <ReferendumNavigation post={post} />
+          <ReferendumNavigation />
         )}
+
         <AnnouncementNavigation />
         {countDown}
         <PostTitle />

@@ -1,8 +1,8 @@
+import React from "react";
 import { usePost } from "../../../../context/post";
 import useSetEdit from "../../common/hooks/useSetEdit";
 import DetailContentBase from "../../common/detailBase";
 import ArticleContent from "../../../articleContent";
-import React from "react";
 import PostTitle from "next-common/components/detail/common/Title";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
@@ -25,7 +25,7 @@ export default function ChildBountyDetail() {
       <PostTitle />
       <Divider className="my-4" />
       <BountyPostMeta isChild />
-      <ArticleContent post={post} setIsEdit={setIsEdit} />
+      <ArticleContent setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

@@ -7,11 +7,12 @@ import { useDetailType } from "next-common/context/page";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import DetailHeader from "next-common/components/detail/detailHeader";
 
-export default function DetailItem({ votes, myVote }) {
+export default function DetailItem() {
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();
   const [isEdit, setIsEdit] = useState(false);
+
   if (!post) {
     return null;
   }
@@ -28,13 +29,7 @@ export default function DetailItem({ votes, myVote }) {
   return (
     <DetailContentBase>
       <DetailHeader />
-      <ArticleContent
-        className="mt-6"
-        post={post}
-        votes={votes}
-        myVote={myVote}
-        setIsEdit={setIsEdit}
-      />
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

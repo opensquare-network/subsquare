@@ -6,8 +6,11 @@ import {
   ReferendumNavigationItem,
   TechCommMotionNavigator,
 } from "./navigators";
+import { usePost } from "next-common/context/post";
 
-export default function ExternalNavigation({ post = {} }) {
+export default function ExternalNavigation() {
+  const post = usePost();
+
   return (
     <NavigationWrapper>
       {post?.onchainData?.motions?.map((motion, key) => (

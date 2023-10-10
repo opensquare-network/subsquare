@@ -138,7 +138,7 @@ export default function MotionDetail() {
     <>
       <DetailContentBase>
         {!isEdit && <MotionHead motion={post} type={type} />}
-        <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
+        <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
       </DetailContentBase>
       <Vote
         votes={votes}

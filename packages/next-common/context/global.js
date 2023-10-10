@@ -6,9 +6,11 @@ import PageProvider from "./page";
 import NavProvider from "./nav";
 import { SocketProvider } from "./socket";
 import { ConnectedAddressProvider } from "./connectedAddress";
+import { AdminProvider } from "./admin";
 
 export default function GlobalProvider({
   user,
+  admins,
   chain,
   themeMode,
   children,
@@ -21,16 +23,18 @@ export default function GlobalProvider({
       <ThemeModeProvider defaultThemeMode={themeMode}>
         <ChainProvider chain={chain}>
           <UserProvider user={user}>
-            <ConnectedAddressProvider>
-              <NavProvider
-                navCollapsed={navCollapsed}
-                navSubmenuVisible={navSubmenuVisible}
-              >
-                <PageProvider pageProperties={pageProperties}>
-                  {children}
-                </PageProvider>
-              </NavProvider>
-            </ConnectedAddressProvider>
+            <AdminProvider admins={admins}>
+              <ConnectedAddressProvider>
+                <NavProvider
+                  navCollapsed={navCollapsed}
+                  navSubmenuVisible={navSubmenuVisible}
+                >
+                  <PageProvider pageProperties={pageProperties}>
+                    {children}
+                  </PageProvider>
+                </NavProvider>
+              </ConnectedAddressProvider>
+            </AdminProvider>
           </UserProvider>
         </ChainProvider>
       </ThemeModeProvider>

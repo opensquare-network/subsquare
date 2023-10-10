@@ -13,7 +13,7 @@ import {
 } from "next-common/services/detail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
-export default function Post({ detail, votes, myVote }) {
+export default function Post({ detail }) {
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -25,7 +25,7 @@ export default function Post({ detail, votes, myVote }) {
         }}
       >
         <ContentWithComment>
-          <DetailItem votes={votes} myVote={myVote} />
+          <DetailItem />
         </ContentWithComment>
       </DetailLayout>
     </PostProvider>

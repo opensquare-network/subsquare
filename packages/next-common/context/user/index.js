@@ -11,11 +11,13 @@ const UserDispatchContext = createContext(emptyFunction);
 
 export default function UserProvider({ user, children }) {
   const [initialUser, dispatch] = useReducer(userReducer, user);
-  return <UserContext.Provider value={ initialUser }>
-    <UserDispatchContext.Provider value={ dispatch }>
-      { children }
-    </UserDispatchContext.Provider>
-  </UserContext.Provider>;
+  return (
+    <UserContext.Provider value={initialUser}>
+      <UserDispatchContext.Provider value={dispatch}>
+        {children}
+      </UserDispatchContext.Provider>
+    </UserContext.Provider>
+  );
 }
 
 export function useUser() {
@@ -38,7 +40,7 @@ function userReducer(post, action) {
     return null;
   }
 
-  throw new Error(`Unknown user action: ${ action.type }`);
+  throw new Error(`Unknown user action: ${action.type}`);
 }
 
 export function updateUser(user, dispatch) {

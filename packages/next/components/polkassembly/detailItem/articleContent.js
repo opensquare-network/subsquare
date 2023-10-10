@@ -4,6 +4,7 @@ import PostDataSource from "next-common/components/postDataSource";
 import { MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import NoData from "next-common/components/noData";
+import { usePost } from "next-common/context/post";
 
 const Wrapper = styled(RichTextStyleWrapper)``;
 
@@ -15,7 +16,9 @@ const EditedLabel = styled.div`
   color: var(--textTertiary);
 `;
 
-export default function ArticleContent({ post, postReactions }) {
+export default function ArticleContent({ postReactions }) {
+  const post = usePost();
+
   if (!post) {
     return null;
   }
@@ -27,7 +30,7 @@ export default function ArticleContent({ post, postReactions }) {
       )}
       <MarkdownPreviewer content={post.content} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
-      <PostDataSource post={post} />
+      <PostDataSource />
       <Actions reactions={postReactions} />
     </Wrapper>
   );

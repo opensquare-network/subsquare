@@ -1,6 +1,5 @@
 import DetailContentBase from "../../common/detailBase";
 import ArticleContent from "../../../articleContent";
-import { usePost } from "../../../../context/post";
 import useSetEdit from "../../common/hooks/useSetEdit";
 import PostTitle from "next-common/components/detail/common/Title";
 import { useSelector } from "react-redux";
@@ -10,7 +9,6 @@ import CloseCountDown from "next-common/components/detail/treasury/tip/closeCoun
 import TipPostMeta from "next-common/components/detail/treasury/tip/meta";
 
 export default function TipDetail() {
-  const post = usePost();
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
@@ -24,7 +22,7 @@ export default function TipDetail() {
       <PostTitle />
       <Divider className="my-4" />
       <TipPostMeta />
-      <ArticleContent className="mt-6" post={post} setIsEdit={setIsEdit} />
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }
