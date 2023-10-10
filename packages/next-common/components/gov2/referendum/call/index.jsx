@@ -6,12 +6,11 @@ import React from "react";
 import Copyable from "next-common/components/copyable";
 import extractRemarkMetaFields from "next-common/components/common/call/remarks";
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
-import useInlineCall from "next-common/components/gov2/referendum/call/inline";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
-  const inlineCall = useInlineCall();
+  const { call: inlineCall } = onchainData?.inlineCall || {};
 
   const data = [
     onchainData?.proposalHash
