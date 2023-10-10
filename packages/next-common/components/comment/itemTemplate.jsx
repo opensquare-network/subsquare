@@ -4,10 +4,10 @@ import clsx from "clsx";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import noop from "lodash.noop";
 import Duration from "../duration";
+import { useComment } from "./context";
 
 const CommentItemTemplate = forwardRef(function Comp(
   {
-    data: comment = {},
     isSecondLevel,
     showReplies = false,
     setShowReplies = noop,
@@ -23,6 +23,8 @@ const CommentItemTemplate = forwardRef(function Comp(
   },
   ref,
 ) {
+  const comment = useComment();
+
   return (
     <div
       ref={ref}

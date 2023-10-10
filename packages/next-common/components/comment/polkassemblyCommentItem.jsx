@@ -15,11 +15,10 @@ import { usePost } from "next-common/context/post";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";
 import { useState } from "react";
 import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
+import { CommentProvider, useComment } from "./context";
 
-export default function PolkassemblyCommentItem({
-  data: comment,
-  isSecondLevel,
-}) {
+function PolkassemblyCommentItemImpl({ isSecondLevel }) {
+  const comment = useComment();
   const type = useDetailType();
   const post = usePost();
   const [showReplies, setShowReplies] = useState(false);
@@ -27,7 +26,6 @@ export default function PolkassemblyCommentItem({
 
   return (
     <CommentItemTemplate
-      data={comment}
       isSecondLevel={isSecondLevel}
       showReplies={showReplies}
       setShowReplies={setShowReplies}
@@ -63,5 +61,17 @@ export default function PolkassemblyCommentItem({
         <PolkassemblyCommentItem key={reply.id} data={reply} isSecondLevel />
       )}
     />
+  );
+}
+
+export default function PolkassemblyCommentItem({
+  data,
+  isSecondLevel,
+  ...props
+}) {
+  return (
+    <CommentProvider comment={data}>
+      <PolkassemblyCommentItemImpl isSecondLevel={isSecondLevel} {...props} />
+    </CommentProvider>
   );
 }

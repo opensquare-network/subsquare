@@ -107,7 +107,6 @@ function CommentItemImpl({
   return (
     <CommentItemTemplate
       ref={refCommentTree}
-      data={comment}
       isSecondLevel={isSecondLevel}
       showReplies={showReplies}
       setShowReplies={setShowReplies}
