@@ -15,20 +15,19 @@ const readPolkassemblyCommentsChains = [
   Chains.collectives,
 ];
 
+function getShouldReadPolkassemblyComments(chain) {
+  return readPolkassemblyCommentsChains.includes(chain);
+}
+
 export function usePostCommentsData() {
   const comments = useComments();
   const chain = useChain();
-  const detailType = useDetailType();
   const post = usePost();
   const polkassemblyPostData = usePolkassemblyPostData(post);
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
-    readPolkassemblyCommentsChains.includes(chain);
-
-  const isUniversal =
-    shouldReadPolkassemblyComments &&
-    ![detailPageCategory.POST, detailPageCategory.PA_POST].includes(detailType);
+    getShouldReadPolkassemblyComments(chain);
 
   useEffect(() => {
     if (shouldReadPolkassemblyComments) {
@@ -55,6 +54,18 @@ export function usePostCommentsData() {
   return {
     commentsData,
     loading: polkassemblyPostData.loadingComments,
-    isUniversal,
   };
+}
+
+export function useIsUniversalPostComments() {
+  const detailType = useDetailType();
+  const chain = useChain();
+  const shouldReadPolkassemblyComments =
+    getShouldReadPolkassemblyComments(chain);
+
+  const isUniversal =
+    shouldReadPolkassemblyComments &&
+    ![detailPageCategory.POST, detailPageCategory.PA_POST].includes(detailType);
+
+  return isUniversal;
 }

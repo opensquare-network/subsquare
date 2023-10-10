@@ -44,7 +44,7 @@ const CommentItemTemplate = forwardRef(function Comp(
     >
       <div className="flex items-center justify-between flex-wrap min-h-[28px]">
         {user}
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center">
           <p className="text12Medium text-textTertiary">{duration}</p>
           {commentSource}
         </div>

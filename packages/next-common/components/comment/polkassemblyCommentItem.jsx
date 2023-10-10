@@ -14,6 +14,7 @@ import { useDetailType } from "next-common/context/page";
 import { usePost } from "next-common/context/post";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";
 import { useState } from "react";
+import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 
 export default function PolkassemblyCommentItem({
   data: comment,
@@ -22,6 +23,7 @@ export default function PolkassemblyCommentItem({
   const type = useDetailType();
   const post = usePost();
   const [showReplies, setShowReplies] = useState(false);
+  const isUniversalComments = useIsUniversalPostComments();
 
   return (
     <CommentItemTemplate
@@ -31,20 +33,22 @@ export default function PolkassemblyCommentItem({
       setShowReplies={setShowReplies}
       user={<PolkassemblyUser user={comment.author} />}
       commentSource={
-        <Tooltip content="Post from Polkassembly">
-          <ExternalLink
-            href={`${getPolkassemblyLink(type, post)}#${comment.id}`}
-            externalIcon={false}
-          >
-            <LinkPolkassembly
-              className={clsx(
-                "w-4 h-4",
-                "[&_path]:fill-textTertiary",
-                "[&_path]:hover:fill-textSecondary",
-              )}
-            />
-          </ExternalLink>
-        </Tooltip>
+        isUniversalComments && (
+          <Tooltip content="Post from Polkassembly" className="ml-2">
+            <ExternalLink
+              href={`${getPolkassemblyLink(type, post)}#${comment.id}`}
+              externalIcon={false}
+            >
+              <LinkPolkassembly
+                className={clsx(
+                  "w-4 h-4",
+                  "[&_path]:fill-textTertiary",
+                  "[&_path]:hover:fill-textSecondary",
+                )}
+              />
+            </ExternalLink>
+          </Tooltip>
+        )
       }
       content={
         <MarkdownPreviewer

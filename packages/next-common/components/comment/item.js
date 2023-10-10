@@ -20,6 +20,7 @@ import SystemUser from "../user/systemUser";
 import { LinkSubsquare } from "@osn/icons/subsquare";
 import Tooltip from "../tooltip";
 import CommentItemTemplate from "./itemTemplate";
+import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -55,6 +56,7 @@ export default function CommentItem({
   const [showReplies, setShowReplies] = useState(false);
   const comments = useComments();
   const setComments = useSetComments();
+  const isUniversalComments = useIsUniversalPostComments();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -154,9 +156,11 @@ export default function CommentItem({
       highlight={highlight}
       user={<SystemUser user={comment.author} />}
       commentSource={
-        <Tooltip content="Post from SubSquare">
-          <LinkSubsquare className="w-4 h-4 [&_path]:fill-textTertiary" />
-        </Tooltip>
+        isUniversalComments && (
+          <Tooltip content="Post from SubSquare" className="ml-2">
+            <LinkSubsquare className="w-4 h-4 [&_path]:fill-textTertiary" />
+          </Tooltip>
+        )
       }
       content={
         <>
