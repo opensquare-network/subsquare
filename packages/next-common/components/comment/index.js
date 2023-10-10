@@ -20,26 +20,24 @@ export default function Comments({ data: commentsData, loading }) {
         <Loading size={14} />
       </div>
     );
+  } else if (items?.length > 0) {
+    content = (
+      <div>
+        {(items || []).map((item) =>
+          item.comment_source === "polkassembly" ? (
+            <PolkassemblyCommentItem key={item.id} data={item} />
+          ) : (
+            <CommentItem
+              key={item._id}
+              data={item}
+              replyToCommentId={item._id}
+            />
+          ),
+        )}
+      </div>
+    );
   } else {
-    if (items?.length > 0) {
-      content = (
-        <div>
-          {(items || []).map((item) =>
-            item.comment_source === "polkassembly" ? (
-              <PolkassemblyCommentItem key={item.id} data={item} />
-            ) : (
-              <CommentItem
-                key={item._id}
-                data={item}
-                replyToCommentId={item._id}
-              />
-            ),
-          )}
-        </div>
-      );
-    } else {
-      content = <NoComment />;
-    }
+    content = <NoComment />;
   }
 
   return (
