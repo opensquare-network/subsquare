@@ -11,7 +11,7 @@ export default function useCommentComponent() {
   const loginUser = useUser();
   const post = usePost();
   const postId = post._id;
-  const { commentsData } = usePostCommentsData();
+  const { commentsData, loading } = usePostCommentsData();
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -26,7 +26,7 @@ export default function useCommentComponent() {
 
   const CommentComponent = (
     <div>
-      <Comments data={commentsData} />
+      <Comments data={commentsData} loading={loading} />
       {loginUser && (
         <CommentEditor
           postId={postId}
