@@ -35,8 +35,10 @@ export default function DesktopList() {
             post={item.post}
             onchainInfo={item.referendumInfo}
           />,
-          <RemoveVoteButton key="action" vote={item} />,
-        ];
+          item.vote?.isDelegating ? null : (
+            <RemoveVoteButton key="action" vote={item} />
+          ),
+        ].filter(Boolean);
 
         row.key = item.referendumIndex;
         return row;

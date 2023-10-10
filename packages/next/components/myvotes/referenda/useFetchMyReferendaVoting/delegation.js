@@ -34,6 +34,7 @@ export default async function getDelegatedVoting(api, trackId, voting) {
           trackId,
           referendumIndex,
           vote: {
+            isDelegating: true,
             isStandard: true,
             balance,
             conviction,

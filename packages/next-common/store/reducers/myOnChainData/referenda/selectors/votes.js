@@ -6,7 +6,9 @@ import orderBy from "lodash.orderby";
 const myReferendaVotesSelector = createSelector(
   myReferendaVotingSelector,
   (votingArr) => {
-    const votesArr = votingArr.map((voting) => voting.votes || []);
+    const votesArr = votingArr.map((voting) => {
+      return [...(voting.votes || []), ...(voting.delegatedVotes || [])];
+    });
     return orderBy(flatten(votesArr), ["referendumIndex"], ["desc"]);
   },
 );
