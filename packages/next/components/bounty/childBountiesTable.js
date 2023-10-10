@@ -1,22 +1,12 @@
 import Anchor from "next-common/components/styled/anchor";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
-import styled from "styled-components";
 import businessCategory from "next-common/utils/consts/business/category";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import clsx from "clsx";
 import KvList from "next-common/components/listInfo/kvList";
-
-const DomesticLink = styled.a`
-  margin-top: 16px;
-  display: block;
-  width: 60px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--theme500);
-  cursor: pointer;
-`;
+import Link from "next/link";
 
 export default function ChildBountiesTable({ childBounties }) {
   const { decimals, symbol } = useChainSettings();
@@ -66,11 +56,14 @@ export default function ChildBountiesTable({ childBounties }) {
       <KvList data={listData} />
 
       {childBounties.total > 5 && (
-        <DomesticLink
-          href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}
-        >
-          View all
-        </DomesticLink>
+        <div className="mt-4 text-right">
+          <Link
+            href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}
+            className="text14Medium text-theme500"
+          >
+            View all
+          </Link>
+        </div>
       )}
     </div>
   );
