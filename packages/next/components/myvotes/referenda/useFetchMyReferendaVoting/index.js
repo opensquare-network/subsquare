@@ -11,17 +11,7 @@ import {
   setMyReferendaVoting,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import getOpenGovReferendaPosts from "./posts";
-
-function getDelegatingInfo(voting) {
-  const delegating = voting.asDelegating;
-  return {
-    isDelegating: true,
-    balance: delegating.balance.toString(),
-    target: delegating.target.toString(),
-    conviction: delegating.conviction.toNumber(),
-    prior: normalizePrior(delegating.prior),
-  };
-}
+import getDelegatedVoting from "./delegation";
 
 async function normalizeCastingVoting(api, trackId, votingOf) {
   const casting = votingOf.asCasting;
@@ -70,7 +60,8 @@ async function queryVotesAndReferendaInfo(api, address) {
   for (const [storageKey, votingOf] of entries) {
     const trackId = storageKey.args[1].toNumber();
     if (votingOf.isDelegating) {
-      voting.push({ trackId, ...getDelegatingInfo(votingOf) });
+      const delegated = await getDelegatedVoting(api, trackId, votingOf);
+      voting.push({ trackId, ...delegated });
     } else if (votingOf.isCasting) {
       const normalized = await normalizeCastingVoting(api, trackId, votingOf);
       voting.push(normalized);

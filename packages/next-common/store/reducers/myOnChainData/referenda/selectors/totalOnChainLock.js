@@ -4,7 +4,7 @@ import getOnChainVoteLock from "./utils/getOnChainVoteLock";
 import BigNumber from "bignumber.js";
 
 function getVotingLock(voting) {
-  const { isDelegating, balance, votes, prior } = voting;
+  const { isDelegating, balance, votes = [], prior } = voting;
   let votesLocked;
   if (isDelegating) {
     votesLocked = balance;
