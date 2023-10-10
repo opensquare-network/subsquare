@@ -30,7 +30,7 @@ export default function PolkassemblyCommentItem({
       showReplies={showReplies}
       setShowReplies={setShowReplies}
       user={<PolkassemblyUser user={comment.author} />}
-      from={
+      commentSource={
         <Tooltip content="Post from Polkassembly">
           <ExternalLink
             href={`${getPolkassemblyLink(type, post)}#${comment.id}`}

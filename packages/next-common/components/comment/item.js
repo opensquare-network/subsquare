@@ -153,7 +153,7 @@ export default function CommentItem({
       id={comment.height}
       highlight={highlight}
       user={<SystemUser user={comment.author} />}
-      from={
+      commentSource={
         <Tooltip content="Post from SubSquare">
           <LinkSubsquare className="w-4 h-4 [&_path]:fill-textTertiary" />
         </Tooltip>

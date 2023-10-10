@@ -14,7 +14,7 @@ const CommentItemTemplate = forwardRef(function Comp(
 
     className = "",
     user,
-    from,
+    commentSource,
     content,
     actions,
     highlight,
@@ -46,7 +46,7 @@ const CommentItemTemplate = forwardRef(function Comp(
         {user}
         <div className="flex items-center gap-x-2">
           <p className="text12Medium text-textTertiary">{duration}</p>
-          {from}
+          {commentSource}
         </div>
       </div>
 
