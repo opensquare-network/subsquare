@@ -174,7 +174,7 @@ function CommentItemImpl({
           setIsEdit={setIsEdit}
         />
       }
-      renderReply={(reply) => (
+      renderReplyItem={(reply) => (
         <CommentItem
           key={reply._id}
           data={reply}

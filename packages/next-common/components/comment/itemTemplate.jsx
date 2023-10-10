@@ -18,7 +18,7 @@ const CommentItemTemplate = forwardRef(function Comp(
     content,
     actions,
     highlight,
-    renderReply = noop,
+    renderReplyItem = noop,
     ...props
   },
   ref,
@@ -76,7 +76,7 @@ const CommentItemTemplate = forwardRef(function Comp(
             </button>
           </div>
 
-          {showReplies && comment.replies?.map?.(renderReply)}
+          {showReplies && comment.replies?.map?.(renderReplyItem)}
         </div>
       )}
 

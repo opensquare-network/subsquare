@@ -57,7 +57,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
       actions={
         !isSecondLevel && <PolkassemblyActions reactions={comment.reactions} />
       }
-      renderReply={(reply) => (
+      renderReplyItem={(reply) => (
         <PolkassemblyCommentItem key={reply.id} data={reply} isSecondLevel />
       )}
     />
