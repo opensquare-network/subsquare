@@ -1,3 +1,6 @@
+// TODO: delete this file #3525
+// https://github.com/opensquare-network/subsquare/issues/3525
+
 import styled from "styled-components";
 import PolkassemblyCommentItem from "next-common/components/comment/polkassemblyCommentItem";
 import NoComment from "next-common/components/comment/noComment";
