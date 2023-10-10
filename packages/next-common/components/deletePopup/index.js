@@ -26,7 +26,7 @@ export default function DeletePopup({
 
   return (
     <Popup title="Report" onClose={() => setShow(false)}>
-      <div className="text-[14px]">
+      <div className="text-[14px] text-textPrimary">
         This will delete this {itemName} permanently. You will not be able to
         recover it.
       </div>
