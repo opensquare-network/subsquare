@@ -17,7 +17,7 @@ import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 
 function TreasuryProposalContent() {
@@ -30,7 +30,7 @@ function TreasuryProposalContent() {
   );
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
@@ -43,7 +43,7 @@ function TreasuryProposalContent() {
         }
         timelineCount={timelineData.length}
       />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }
 

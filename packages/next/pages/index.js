@@ -4,7 +4,7 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import {
   toAdvisoryMotionsListItem,
   toFinancialMotionsListItem,
-} from "utils/viewfuncs";
+} from "next-common/utils/viewfuncs";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";

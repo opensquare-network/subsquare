@@ -20,7 +20,7 @@ import { useComment } from "../comment/context";
 export default function CommentActions({
   updateComment = noop,
   scrollToNewReplyComment = noop,
-  setFolded = noop,
+  setShowReplies = noop,
   replyToCommentId,
   setIsEdit,
 }) {
@@ -127,7 +127,7 @@ export default function CommentActions({
           onFinishedEdit={async (reload) => {
             setIsReply(false);
             if (reload) {
-              setFolded(false);
+              setShowReplies(true);
               await updateComment();
               scrollToNewReplyComment();
             }

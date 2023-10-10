@@ -37,7 +37,7 @@ import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/vot
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 
@@ -61,7 +61,7 @@ function ReferendumContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <ReferendaDetail />
 
       <Gov2Sidebar />
@@ -72,7 +72,7 @@ function ReferendumContent() {
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
         votesBubble={<Gov2ReferendaVotesBubble />}
       />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }
 

@@ -1,6 +1,6 @@
 import { usePost } from "next-common/context/post";
 import MotionDetail from "./motionDetail";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
 export default function MotionContent() {
   const motion = usePost();
@@ -8,8 +8,8 @@ export default function MotionContent() {
   motion.status = motion.state?.state;
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <MotionDetail />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }

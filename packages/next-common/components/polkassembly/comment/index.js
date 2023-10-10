@@ -1,5 +1,8 @@
+// TODO: delete this file #3525
+// https://github.com/opensquare-network/subsquare/issues/3525
+
 import styled from "styled-components";
-import Item from "./item";
+import PolkassemblyCommentItem from "next-common/components/comment/polkassemblyCommentItem";
 import NoComment from "next-common/components/comment/noComment";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
@@ -36,7 +39,7 @@ export default function PolkassemblyComments({
         <>
           <div>
             {(comments || []).map((item, idx) => (
-              <Item key={idx} data={item} />
+              <PolkassemblyCommentItem key={idx} data={item} />
             ))}
           </div>
         </>

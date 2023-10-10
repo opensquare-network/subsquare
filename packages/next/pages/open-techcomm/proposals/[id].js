@@ -10,7 +10,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithUniversalComment from "components/details/contentWithUniversalComment";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 
 function MotionContent() {
@@ -19,9 +19,9 @@ function MotionContent() {
   motion.status = motion.state?.state;
 
   return (
-    <ContentWithUniversalComment>
+    <ContentWithComment>
       <MotionDetail />
-    </ContentWithUniversalComment>
+    </ContentWithComment>
   );
 }
 

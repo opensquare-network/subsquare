@@ -31,7 +31,7 @@ const GreyItem = styled.div`
   }
 `;
 
-export default function Actions({ reactions }) {
+export default function PolkassemblyActions({ reactions }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const thumbsUpReactions = (reactions || []).filter((r) => r.reaction === 1);
 

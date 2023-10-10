@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Actions from "../actions";
+import PolkassemblyActions from "next-common/components/polkassembly/actions";
 import PostDataSource from "next-common/components/postDataSource";
 import { MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
@@ -31,7 +31,7 @@ export default function ArticleContent({ postReactions }) {
       <MarkdownPreviewer content={post.content} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
       <PostDataSource />
-      <Actions reactions={postReactions} />
+      <PolkassemblyActions reactions={postReactions} />
     </Wrapper>
   );
 }
