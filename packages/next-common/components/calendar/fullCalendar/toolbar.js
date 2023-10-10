@@ -18,9 +18,9 @@ import {
 } from "../../../styles/tailwindcss";
 import CreateEventButton from "./createEventButton";
 import noop from "lodash.noop";
-import { useUser } from "../../../context/user";
+import { useIsLogin } from "../../../context/user";
 import { OnlyDesktop } from "../../styled/responsive";
-import { usePageProps } from "next-common/context/page";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
 
 const ToolbarWrapper = styled.div`
   ${flex}
@@ -59,10 +59,8 @@ export default function FullCalendarToolbar({
   setSelectedDate,
   onCreateEvent = noop,
 }) {
-  const user = useUser();
-  const { admins } = usePageProps();
-  const address = user?.address;
-  const isAdmin = admins.includes(address);
+  const isAdmin = useIsAdmin();
+  const isLogin = useIsLogin();
 
   function gotoToday() {
     onNavigate("TODAY");
@@ -96,7 +94,7 @@ export default function FullCalendarToolbar({
           <OnlyDesktop>
             <Button onClick={gotoToday}>Today</Button>
           </OnlyDesktop>
-          {address && (
+          {isLogin && (
             <CreateEventButton onClick={onCreateEvent} disabled={!isAdmin} />
           )}
         </Flex>

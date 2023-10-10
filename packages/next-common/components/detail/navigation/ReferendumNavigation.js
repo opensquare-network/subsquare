@@ -8,8 +8,11 @@ import {
   ReferendumNavigationItem,
   TechCommMotionNavigator,
 } from "./navigators";
+import { usePost } from "next-common/context/post";
 
-export default function ReferendumNavigation({ post = {} }) {
+export default function ReferendumNavigation() {
+  const post = usePost();
+
   if (!isNil(post.proposalIndex)) {
     return (
       <NavigationWrapper>
@@ -52,7 +55,8 @@ export default function ReferendumNavigation({ post = {} }) {
   );
 }
 
-export function KintsugiReferendumNavigation({ post }) {
+export function KintsugiReferendumNavigation() {
+  const post = usePost();
   const onchainData = post?.onchainData;
 
   if (isNil(onchainData?.publicProposalIndex)) {

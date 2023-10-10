@@ -2,8 +2,8 @@ import React from "react";
 import { GreyItem, GreyWrapper } from "./styled";
 import SystemUser from "../user/systemUser";
 
-export default function ThumbUpList({ showThumbsUpList, reactions }) {
-  if (!showThumbsUpList || !(reactions?.length > 0)) {
+export default function ThumbUpList({ reactions }) {
+  if (!reactions || reactions.length == 0) {
     return null;
   }
 

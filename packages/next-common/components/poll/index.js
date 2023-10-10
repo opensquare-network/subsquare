@@ -8,6 +8,8 @@ import VoteButton from "./voteButton";
 import nextApi from "../../services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { usePageProps } from "next-common/context/page";
+import { usePost } from "next-common/context/post";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,11 +17,15 @@ const Wrapper = styled.div`
   gap: 16px;
 `;
 
-export default function Poll({ poll, votes, myVote }) {
+export default function Poll() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const post = usePost();
+  const { votes, myVote } = usePageProps();
+
+  const poll = post?.poll;
 
   if (!poll || !votes) {
     return null;

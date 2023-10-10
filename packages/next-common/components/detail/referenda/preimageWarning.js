@@ -21,16 +21,17 @@ function Warning() {
 
 export default function PreimageWarning() {
   const state = usePostState();
-  if (
-    [
-      gov2State.Rejected,
-      gov2State.Approved,
-      gov2State.TimedOut,
-      gov2State.Killed,
-      gov2State.Cancelled,
-      gov2State.Executed,
-    ].includes(state)
-  ) {
+  const { proposalHash } = useOnchainData();
+
+  const inFinalState = [
+    gov2State.Rejected,
+    gov2State.Approved,
+    gov2State.TimedOut,
+    gov2State.Killed,
+    gov2State.Cancelled,
+    gov2State.Executed,
+  ].includes(state);
+  if (inFinalState || !proposalHash) {
     return null;
   }
 

@@ -49,7 +49,7 @@ function FellowshipContent() {
       <FellowshipReferendaDetail />
       <FellowshipReferendumSideBar />
       <DetailMultiTabs
-        call={proposal?.call && <Gov2ReferendumCall />}
+        call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
         metadata={
           <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
         }

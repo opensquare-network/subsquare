@@ -1,13 +1,15 @@
 import React from "react";
 import { NoticeWrapper } from "../../../styled/containers/titleContainer";
 import TreasuryCountDown from "../../../treasury/common/countdown";
+import { useOnchainData } from "next-common/context/post";
 
 /**
  *
  * @param data bounty on chain data
  * @constructor
  */
-export default function BountyCountDown({ data = {} }) {
+export default function BountyCountDown() {
+  const data = useOnchainData();
   if (data.state?.state !== "PendingPayout") {
     return null;
   }

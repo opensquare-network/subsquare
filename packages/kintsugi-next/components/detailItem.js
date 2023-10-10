@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailHeader from "./detailHeader";
 
-export default function DetailItem({ votes, myVote }) {
+export default function DetailItem() {
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();
@@ -28,13 +28,7 @@ export default function DetailItem({ votes, myVote }) {
   return (
     <DetailContentBase>
       <DetailHeader />
-      <ArticleContent
-        className="mt-6"
-        post={post}
-        setIsEdit={setIsEdit}
-        votes={votes}
-        myVote={myVote}
-      />
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

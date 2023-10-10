@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import nextApi from "next-common/services/nextApi";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import EditInput from "next-common/components/editInput";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import {
@@ -12,8 +10,6 @@ import {
 import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML } from "../../utils/viewfuncs";
 import CommentActions from "../actions/commentActions";
-import copy from "copy-to-clipboard";
-import { useUser } from "../../context/user";
 import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
 import { useComments, useSetComments } from "next-common/context/post/comments";
 import SystemUser from "../user/systemUser";
@@ -21,6 +17,7 @@ import { LinkSubsquare } from "@osn/icons/subsquare";
 import Tooltip from "../tooltip";
 import CommentItemTemplate from "./itemTemplate";
 import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
+import { CommentProvider, useComment } from "./context";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -37,17 +34,14 @@ function jumpToAnchor(anchorId) {
   });
 }
 
-export default function CommentItem({
-  data: comment,
+function CommentItemImpl({
   replyToCommentId,
   isSecondLevel,
   updateTopLevelComment,
   scrollToTopLevelCommentBottom,
 }) {
-  const user = useUser();
-  const dispatch = useDispatch();
+  const comment = useComment();
   const refCommentTree = useRef();
-  const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -75,12 +69,6 @@ export default function CommentItem({
   }, [hasAnchor, anchor]);
 
   const commentId = comment._id;
-  const isLoggedIn = !!user;
-  const ownComment = isLoggedIn && comment.author?.username === user.username;
-  const thumbUp =
-    isLoggedIn &&
-    comment?.reactions?.findIndex((r) => r.user?.username === user.username) >
-      -1;
 
   const updateComment = useCallback(async () => {
     const { result: updatedComment } = await nextApi.fetch(
@@ -108,35 +96,6 @@ export default function CommentItem({
       });
     }
   }, [refCommentTree]);
-
-  const toggleThumbUp = async () => {
-    if (isLoggedIn && !ownComment && !thumbUpLoading) {
-      setThumbUpLoading(true);
-      try {
-        let result, error;
-
-        if (thumbUp) {
-          ({ result, error } = await nextApi.delete(
-            `comments/${comment._id}/reaction`,
-          ));
-        } else {
-          ({ result, error } = await nextApi.put(
-            `comments/${comment._id}/reaction`,
-            { reaction: 1 },
-          ));
-        }
-
-        if (result) {
-          await updateComment();
-        }
-        if (error) {
-          dispatch(newErrorToast(error.message));
-        }
-      } finally {
-        setThumbUpLoading(false);
-      }
-    }
-  };
 
   const editComment = async (content, contentType) => {
     return await nextApi.patch(`comments/${commentId}`, {
@@ -213,20 +172,7 @@ export default function CommentItem({
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
           replyToCommentId={replyToCommentId}
-          highlight={isLoggedIn && thumbUp}
-          noHover={!isLoggedIn || ownComment}
-          edit={ownComment}
           setIsEdit={setIsEdit}
-          toggleThumbUp={toggleThumbUp}
-          thumbUpLoading={thumbUpLoading}
-          reactions={comment.reactions}
-          author={comment.author}
-          copy
-          onCopy={() => {
-            copy(
-              `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`,
-            );
-          }}
         />
       }
       renderReply={(reply) => (
@@ -242,5 +188,26 @@ export default function CommentItem({
         />
       )}
     />
+  );
+}
+
+export default function CommentItem({
+  data,
+  replyToCommentId,
+  isSecondLevel,
+  updateTopLevelComment,
+  scrollToTopLevelCommentBottom,
+  ...props
+}) {
+  return (
+    <CommentProvider comment={data}>
+      <CommentItemImpl
+        replyToCommentId={replyToCommentId}
+        isSecondLevel={isSecondLevel}
+        updateTopLevelComment={updateTopLevelComment}
+        scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}
+        {...props}
+      />
+    </CommentProvider>
   );
 }

@@ -6,11 +6,13 @@ import {
   TechCommMotionNavigator,
 } from "./navigators";
 import isNil from "lodash.isnil";
+import { usePost } from "next-common/context/post";
 
-export default function DemocracyProposalNavigation({
-  proposalIndex,
-  referendumIndex,
-}) {
+export default function DemocracyProposalNavigation() {
+  const post = usePost();
+  const proposalIndex = post?.proposalIndex;
+  const referendumIndex = post?.referendumIndex;
+
   return (
     <NavigationWrapper>
       <DemocracyProposalNavigator
@@ -22,7 +24,8 @@ export default function DemocracyProposalNavigation({
   );
 }
 
-export function KintsugiDemocracyProposalNavigation({ post }) {
+export function KintsugiDemocracyProposalNavigation() {
+  const post = usePost();
   const onchainData = post?.onchainData;
 
   return (

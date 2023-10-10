@@ -1,6 +1,6 @@
 // Used when proposal author has not edited the auto generated post content.
 
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PostEdit from "./PostEdit";
 import PostLink from "./PostLink";
@@ -8,6 +8,8 @@ import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import NoData from "next-common/components/noData";
 import AddressUser from "next-common/components/user/addressUser";
+import PostLinkPopup from "../../linkPost/postLinkPopup";
+import { usePost } from "next-common/context/post";
 
 const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;
@@ -28,11 +30,13 @@ const GreyItem = styled.div`
   }
 `;
 
-function WhoCanEdit({ authors = [] }) {
+function WhoCanEdit() {
+  const post = usePost();
+
   return (
     <GreyWrapper>
       <span style={{ marginRight: 12 }}>Who can edit?</span>
-      {authors.map((author) => (
+      {post?.authors?.map((author) => (
         <GreyItem key={author}>
           <AddressUser add={author} showAvatar={false} fontSize={12} />
         </GreyItem>
@@ -41,8 +45,10 @@ function WhoCanEdit({ authors = [] }) {
   );
 }
 
-export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
+export default function NonEdited({ setIsEdit }) {
   const isAuthor = useIsPostAuthor();
+  const [showLinkPopup, setShowLinkPopup] = useState(false);
+
   return (
     <>
       <NoData
@@ -60,7 +66,8 @@ export default function NonEdited({ setIsEdit, authors, setShowLinkPopup }) {
         }
       />
 
-      <WhoCanEdit authors={authors} />
+      <WhoCanEdit />
+      {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
     </>
   );
 }

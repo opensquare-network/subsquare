@@ -14,7 +14,7 @@ import {
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 
-export default function PostDetailPage({ detail, votes, myVote }) {
+export default function PostDetailPage({ detail }) {
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -26,7 +26,7 @@ export default function PostDetailPage({ detail, votes, myVote }) {
         }}
       >
         <ContentWithComment>
-          <DetailItem votes={votes} myVote={myVote} />
+          <DetailItem />
         </ContentWithComment>
       </DetailLayout>
     </PostProvider>
