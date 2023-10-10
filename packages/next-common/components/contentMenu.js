@@ -25,6 +25,7 @@ import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -155,6 +156,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   const ref = useRef();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const router = useRouter();
+  const isAdmin = useIsAdmin();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -181,14 +183,12 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {editable && (
-            <>
-              <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-              <DeleteMenuItem
-                setShowDeletePopup={setShowDeletePopup}
-                setShow={setShow}
-              />
-            </>
+          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
+          {(editable || isAdmin) && (
+            <DeleteMenuItem
+              setShowDeletePopup={setShowDeletePopup}
+              setShow={setShow}
+            />
           )}
           <CopyMenuItem onCopy={onCopy} />
         </OptionWrapper>
@@ -215,6 +215,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
   const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
   const [showReportPopup, setShowReportPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const isAdmin = useIsAdmin();
 
   const isDiscussionPost = postType === detailPageCategory.POST;
 
@@ -253,13 +254,13 @@ export function PostContextMenu({ editable, setIsEdit }) {
             <>
               {!isDiscussionPost && linkOrUnlinkMenuItem}
               <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-              {isDiscussionPost && (
-                <DeleteMenuItem
-                  setShowDeletePopup={setShowDeletePopup}
-                  setShow={setShow}
-                />
-              )}
             </>
+          )}
+          {(editable || isAdmin) && isDiscussionPost && (
+            <DeleteMenuItem
+              setShowDeletePopup={setShowDeletePopup}
+              setShow={setShow}
+            />
           )}
           <ReportMenuItem
             setShowReportPopup={setShowReportPopup}

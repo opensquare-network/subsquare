@@ -7,8 +7,6 @@ import {
   useCalendarUserEvents,
   useCalendarUserEventsSummary,
 } from "next-common/hooks/calendar";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { adminsApi } from "next-common/services/url";
 import ListLayout from "next-common/components/layout/ListLayout";
 import clsx from "clsx";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -56,12 +54,10 @@ export default function CalendarPage() {
 
 export const getServerSideProps = withCommonProps(async () => {
   const tracksProps = await fetchOpenGovTracksProps();
-  const { result: admins } = await nextApi.fetch(adminsApi);
 
   return {
     props: {
       ...tracksProps,
-      admins: admins ?? [],
     },
   };
 });

@@ -7,6 +7,8 @@ import {
 import { CACHE_KEY } from "../utils/constants";
 import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
+import { adminsApi } from "next-common/services/url";
+import { ssrNextApi } from "next-common/services/nextApi";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -26,9 +28,10 @@ export function withCommonProps(
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const detailPageProperties = getDetailPageProperties(context);
 
-    const [props, { result: user }] = await Promise.all([
+    const [props, { result: user }, { result: admins }] = await Promise.all([
       getServerSideProps(context),
       fetchProfile(cookies),
+      ssrNextApi.fetch(adminsApi),
     ]);
 
     if (context.resolvedUrl?.startsWith("/setting/") && !user) {
@@ -45,6 +48,7 @@ export function withCommonProps(
         ...props.props,
         chain: process.env.CHAIN,
         loginUser: user ?? null,
+        admins: admins ?? [],
         themeMode: themeMode ?? null,
         navCollapsed: navCollapsed || false,
         navSubmenuVisible: navSubmenuVisible || "{}",

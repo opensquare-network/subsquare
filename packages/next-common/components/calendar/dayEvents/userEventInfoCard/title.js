@@ -8,9 +8,9 @@ import DeleteSVG from "./delete.svg";
 import { flex, gap_x } from "../../../../styles/tailwindcss";
 import Flex from "../../../styled/flex";
 import DeleteEventModal from "./deleteEventModal";
-import { useUser } from "../../../../context/user";
-import { usePageProps } from "next-common/context/page";
+import { useIsLogin } from "../../../../context/user";
 import Tooltip from "next-common/components/tooltip";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
 
 const Wrapper = styled.div`
   display: flex;
@@ -97,10 +97,8 @@ export default function Title({
   refresh,
 }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { admins } = usePageProps();
-  const user = useUser();
-  const address = user?.address;
-  const isAdmin = admins.includes(address);
+  const isAdmin = useIsAdmin();
+  const isLogin = useIsLogin();
 
   return (
     <Wrapper>
@@ -109,7 +107,7 @@ export default function Title({
         <div>
           <EventTag event={event} />
         </div>
-        {address && (
+        {isLogin && (
           <DeleteButton
             onClick={() => setShowDeleteModal(true)}
             disabled={!isAdmin}

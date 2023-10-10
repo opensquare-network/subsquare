@@ -43,6 +43,7 @@ function MyApp({ Component, pageProps }) {
 
   const {
     loginUser,
+    admins,
     themeMode,
     pageProperties,
     navCollapsed,
@@ -57,6 +58,7 @@ function MyApp({ Component, pageProps }) {
       <Provider store={store}>
         <GlobalProvider
           user={loginUser}
+          admins={admins}
           chain={process.env.NEXT_PUBLIC_CHAIN}
           themeMode={themeMode}
           pageProperties={pageProperties}
