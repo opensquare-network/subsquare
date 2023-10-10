@@ -32,7 +32,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
       user={<PolkassemblyUser user={comment.author} />}
       commentSource={
         isUniversalComments && (
-          <Tooltip content="Post from Polkassembly" className="ml-2">
+          <Tooltip content="Comment from Polkassembly" className="ml-2">
             <ExternalLink
               href={`${getPolkassemblyLink(type, post)}#${comment.id}`}
               externalIcon={false}

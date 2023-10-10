@@ -115,7 +115,7 @@ function CommentItemImpl({
       user={<SystemUser user={comment.author} />}
       commentSource={
         isUniversalComments && (
-          <Tooltip content="Post from SubSquare" className="ml-2">
+          <Tooltip content="Comment from SubSquare" className="ml-2">
             <LinkSubsquare className="w-4 h-4 [&_path]:fill-textTertiary" />
           </Tooltip>
         )
