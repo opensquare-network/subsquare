@@ -1,5 +1,4 @@
 import CommentItem from "./item";
-import Pagination from "next-common/components/pagination/index.js";
 import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useIsLogin } from "../../context/user";
@@ -15,7 +14,7 @@ export default function Comments() {
   const { openLoginPopup } = useLoginPopup();
   const { commentsData, loading } = usePostCommentsData();
 
-  const { items, page, pageSize, total } = commentsData;
+  const { items } = commentsData;
 
   let content;
   if (loading) {
@@ -27,22 +26,19 @@ export default function Comments() {
   } else {
     if (items?.length > 0) {
       content = (
-        <>
-          <div>
-            {(items || []).map((item) =>
-              item.comment_source === "polkassembly" ? (
-                <PolkassemblyCommentItem key={item.id} data={item} />
-              ) : (
-                <CommentItem
-                  key={item._id}
-                  data={item}
-                  replyToCommentId={item._id}
-                />
-              ),
-            )}
-          </div>
-          <Pagination page={page} pageSize={pageSize} total={total} />
-        </>
+        <div>
+          {(items || []).map((item) =>
+            item.comment_source === "polkassembly" ? (
+              <PolkassemblyCommentItem key={item.id} data={item} />
+            ) : (
+              <CommentItem
+                key={item._id}
+                data={item}
+                replyToCommentId={item._id}
+              />
+            ),
+          )}
+        </div>
       );
     } else {
       content = <NoComment />;
@@ -60,7 +56,7 @@ export default function Comments() {
       {content}
 
       {!isLogin && (
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
         </div>
       )}
