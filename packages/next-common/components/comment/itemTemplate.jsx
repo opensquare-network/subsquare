@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
 import Divider from "../styled/layout/divider";
 import clsx from "clsx";
-import useDuration from "next-common/utils/hooks/useDuration";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import noop from "lodash.noop";
+import Duration from "../duration";
 
 const CommentItemTemplate = forwardRef(function Comp(
   {
@@ -23,8 +23,6 @@ const CommentItemTemplate = forwardRef(function Comp(
   },
   ref,
 ) {
-  const duration = useDuration(comment.createdAt);
-
   return (
     <div
       ref={ref}
@@ -45,7 +43,9 @@ const CommentItemTemplate = forwardRef(function Comp(
       <div className="flex items-center justify-between flex-wrap min-h-[28px]">
         {user}
         <div className="flex items-center">
-          <p className="text12Medium text-textTertiary">{duration}</p>
+          <p className="text12Medium text-textTertiary">
+            <Duration time={comment.createdAt} />
+          </p>
           {commentSource}
         </div>
       </div>
