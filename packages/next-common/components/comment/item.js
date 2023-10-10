@@ -87,6 +87,88 @@ function jumpToAnchor(anchorId) {
   });
 }
 
+function Replies({
+  folded,
+  setFolded,
+  replyToCommentId,
+  updateTopLevelComment,
+  scrollToTopLevelCommentBottom,
+}) {
+  const comment = useComment();
+  const replies = comment.replies;
+
+  return (
+    <IndentWrapper quoted>
+      <FoldButton
+        className="text14Medium"
+        onClick={() => {
+          setFolded(!folded);
+        }}
+      >
+        {folded ? `${replies?.length} Replies` : "Hide Replies"}
+      </FoldButton>
+
+      {!folded
+        ? (replies || []).map((item) => (
+            <Item
+              key={item._id}
+              data={item}
+              replyToCommentId={replyToCommentId}
+              isSecondLevel={true}
+              updateTopLevelComment={updateTopLevelComment}
+              scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}
+            />
+          ))
+        : null}
+    </IndentWrapper>
+  );
+}
+
+function CommentContentView({
+  setIsEdit,
+  replyToCommentId,
+  setFolded,
+  updateTopLevelComment,
+  scrollToTopLevelCommentBottom,
+}) {
+  const comment = useComment();
+
+  return (
+    <>
+      <ContentWrapper>
+        {comment.contentType === "markdown" && (
+          <MarkdownPreviewer
+            content={comment.content}
+            plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
+          />
+        )}
+        {comment.contentType === "html" && (
+          <HtmlPreviewer
+            content={prettyHTML(comment.content)}
+            plugins={[
+              renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
+                targetElement: { tag: "span" },
+              }),
+            ]}
+          />
+        )}
+        {comment.createdAt !== comment.updatedAt && (
+          <EditedLabel>Edited</EditedLabel>
+        )}
+      </ContentWrapper>
+      <div style={{ margin: "8px 0 0 28px" }}>
+        <CommentActions
+          setFolded={setFolded}
+          updateComment={updateTopLevelComment}
+          scrollToNewReplyComment={scrollToTopLevelCommentBottom}
+          replyToCommentId={replyToCommentId}
+          setIsEdit={setIsEdit}
+        />
+      </div>
+    </>
+  );
+}
+
 function ItemImpl({
   replyToCommentId,
   isSecondLevel,
@@ -94,7 +176,6 @@ function ItemImpl({
   scrollToTopLevelCommentBottom,
 }) {
   const comment = useComment();
-  const ref = useRef();
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -179,40 +260,15 @@ function ItemImpl({
         </div>
       </InfoWrapper>
       {!isEdit && (
-        <>
-          <ContentWrapper ref={ref}>
-            {comment.contentType === "markdown" && (
-              <MarkdownPreviewer
-                content={comment.content}
-                plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
-              />
-            )}
-            {comment.contentType === "html" && (
-              <HtmlPreviewer
-                content={prettyHTML(comment.content)}
-                plugins={[
-                  renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
-                    targetElement: { tag: "span" },
-                  }),
-                ]}
-              />
-            )}
-            {comment.createdAt !== comment.updatedAt && (
-              <EditedLabel>Edited</EditedLabel>
-            )}
-          </ContentWrapper>
-          <div style={{ margin: "8px 0 0 28px" }}>
-            <CommentActions
-              setFolded={setFolded}
-              updateComment={updateTopLevelComment || updateComment}
-              scrollToNewReplyComment={
-                scrollToTopLevelCommentBottom || scrollToCommentBottom
-              }
-              replyToCommentId={replyToCommentId}
-              setIsEdit={setIsEdit}
-            />
-          </div>
-        </>
+        <CommentContentView
+          setIsEdit={setIsEdit}
+          setFolded={setFolded}
+          replyToCommentId={replyToCommentId}
+          updateTopLevelComment={updateTopLevelComment || updateComment}
+          scrollToTopLevelCommentBottom={
+            scrollToTopLevelCommentBottom || scrollToCommentBottom
+          }
+        />
       )}
       {isEdit && (
         <EditInput
@@ -232,33 +288,16 @@ function ItemImpl({
         />
       )}
       {comment.replies?.length > 0 && (
-        <IndentWrapper quoted>
-          <FoldButton
-            className="text14Medium"
-            onClick={() => {
-              setFolded(!folded);
-            }}
-          >
-            {folded ? `${comment.replies?.length} Replies` : "Hide Replies"}
-          </FoldButton>
-
-          {!folded
-            ? (comment.replies || []).map((item) => (
-                <Item
-                  key={item._id}
-                  data={item}
-                  replyToCommentId={replyToCommentId}
-                  isSecondLevel={true}
-                  updateTopLevelComment={updateTopLevelComment || updateComment}
-                  scrollToTopLevelCommentBottom={
-                    scrollToTopLevelCommentBottom || scrollToCommentBottom
-                  }
-                />
-              ))
-            : null}
-        </IndentWrapper>
+        <Replies
+          folded={folded}
+          setFolded={setFolded}
+          replyToCommentId={replyToCommentId}
+          updateTopLevelComment={updateTopLevelComment || updateComment}
+          scrollToTopLevelCommentBottom={
+            scrollToTopLevelCommentBottom || scrollToCommentBottom
+          }
+        />
       )}
-
       {!isSecondLevel && (
         <Divider
           className={clsx(
