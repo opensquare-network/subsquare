@@ -1,18 +1,11 @@
-import styled, { css } from "styled-components";
-import { mdcss } from "next-common/utils/responsive";
-import { p_12_normal } from "next-common/styles/componentCss";
+import styled from "styled-components";
 import ExternalLink from "next-common/components/externalLink";
+import tw from "tailwind-styled-components";
 
-const Link = styled(ExternalLink)`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--textTertiary);
-  ${p_12_normal};
-
-  ${mdcss(css`
-    margin: 0 24px;
-  `)}
+const Link = tw(ExternalLink)`
+  inline-flex items-center gap-2
+  text-textTertiary text12Medium
+  max-md:mx-6
 `;
 
 export { Link };

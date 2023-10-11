@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { p_12_bold, p_14_normal } from "../../../styles/componentCss";
 import Popup from "../../popup/wrapper/Popup";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
@@ -16,6 +15,7 @@ import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
 import Input from "../../input";
 import { PopupButtonWrapper } from "../../popup/wrapper";
+import tw from "tailwind-styled-components";
 
 const Section = styled.div`
   display: flex;
@@ -23,9 +23,8 @@ const Section = styled.div`
   gap: 8px;
 `;
 
-const SectionTitle = styled.span`
-  ${p_12_bold}
-  color: var(--textPrimary);
+const SectionTitle = tw.span`
+  text12Bold text-textPrimary
 `;
 
 const Discussion = styled.div`
@@ -39,15 +38,6 @@ const Discussion = styled.div`
       background: var(--neutral300);
     `}
   border-radius: 4px;
-`;
-
-const NoDiscussion = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  ${p_14_normal}
-  color: var(--textTertiary);
 `;
 
 function getDiscussionUrl(discussion) {
@@ -160,9 +150,9 @@ export default function PostLinkPopup({ setShow = noop }) {
   }, [postUrl]);
 
   let discussionList = (
-    <NoDiscussion>
+    <div className="flex justify-center items-center text14Medium text-textTertiary">
       {isLoadingList ? <Loading size={16} /> : "No posts"}
-    </NoDiscussion>
+    </div>
   );
 
   if (myDiscussions?.length) {

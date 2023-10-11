@@ -1,20 +1,4 @@
 import styled from "styled-components";
-import { shadow_100 } from "../../styles/componentCss";
-import { NeutralPanel } from "../styled/containers/neutralPanel";
-
-export const ContentCenterWrapper = styled(NeutralPanel)`
-  ${shadow_100};
-  width: 400px;
-  margin: 0 auto;
-  padding: 48px;
-  color: var(--textPrimary);
-  > :not(:first-child) {
-    margin-top: 24px;
-  }
-  @media screen and (max-width: 392px) {
-    width: 100%;
-  }
-`;
 
 export const LinkWrapper = styled.div`
   font-size: 14px;

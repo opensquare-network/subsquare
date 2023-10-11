@@ -1,44 +1,8 @@
-import styled, { css } from "styled-components";
 import SelectedValueItem from "./selectedValueItem";
 import DownSVG from "./down.svg";
 import noop from "lodash.noop";
-import { p_14_normal } from "next-common/styles/componentCss";
 import pluralize from "pluralize";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-  padding: 10px 16px;
-
-  border-radius: 4px;
-  border: 1px solid var(--neutral400);
-`;
-
-const ValueContent = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  gap: 8px;
-  ${p_14_normal}
-`;
-
-const IconWrapper = styled.div`
-  display: inline-flex;
-  cursor: pointer;
-  svg path {
-    stroke: var(--textPrimary);
-  }
-  ${(p) =>
-    p.showDropDown &&
-    css`
-      transform: rotate(180deg);
-    `}
-`;
-
-const Placeholder = styled.span`
-  color: var(--textDisabled);
-`;
+import { cn } from "next-common/utils";
 
 export default function SelectedValueBox({
   disabled,
@@ -57,7 +21,9 @@ export default function SelectedValueBox({
   let selectedTracks;
   if (showOptions.length === 0) {
     selectedTracks = (
-      <Placeholder>Please select {pluralize(itemName)}</Placeholder>
+      <span className="text-textDisabled">
+        Please select {pluralize(itemName)}
+      </span>
     );
   } else if (showOptions.length > 2) {
     selectedTracks = (
@@ -76,7 +42,11 @@ export default function SelectedValueBox({
   }
 
   return (
-    <Wrapper
+    <div
+      className={cn(
+        "flex items-center grow",
+        "py-2.5 px-4 rounded border border-neutral400",
+      )}
       onClick={() => {
         if (disabled) {
           return;
@@ -84,10 +54,17 @@ export default function SelectedValueBox({
         setShowDropDown(!showDropDown);
       }}
     >
-      <ValueContent>{selectedTracks}</ValueContent>
-      <IconWrapper showDropDown={showDropDown}>
-        <DownSVG />
-      </IconWrapper>
-    </Wrapper>
+      <div className="flex grow flex-wrap gap-2 text14Medium">
+        {selectedTracks}
+      </div>
+      <div
+        className={cn(
+          "inline-flex cursor-pointer",
+          showDropDown && "transform rotate-180",
+        )}
+      >
+        <DownSVG className="[&_path]:stroke-textPrimary" />
+      </div>
+    </div>
   );
 }

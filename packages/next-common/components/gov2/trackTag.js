@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { p_12_medium } from "../../styles/componentCss";
 import startCase from "lodash.startcase";
 
 const Tag = styled.span`
@@ -8,7 +7,6 @@ const Tag = styled.span`
   border-radius: 10px;
   color: ${(p) => p.fg || "var(--textSecondary)"};
   background-color: ${(p) => p.bg || "var(--neutral200)"};
-  ${p_12_medium};
 `;
 
 export default function Gov2TrackTag({ name = "" }) {
@@ -20,7 +18,11 @@ export default function Gov2TrackTag({ name = "" }) {
   };
 
   return (
-    <Tag fg={trackColor[name]?.fg} bg={trackColor[name]?.bg}>
+    <Tag
+      className="text12Medium"
+      fg={trackColor[name]?.fg}
+      bg={trackColor[name]?.bg}
+    >
       {startCase(name)}
     </Tag>
   );

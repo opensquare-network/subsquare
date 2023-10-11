@@ -1,25 +1,5 @@
 import React from "react";
-import styled from "styled-components";
 import Link from "next/link";
-import { p_12_normal } from "../styles/componentCss";
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  & > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
-
-const Label = styled.a`
-  display: flex;
-  padding: 2px 8px;
-  ${p_12_normal}
-  color: var(--textSecondary);
-  border: 1px solid var(--neutral400);
-  border-radius: 10px;
-  cursor: pointer;
-`;
 
 export default function PostLabels({ labels = [] }) {
   if (!labels || labels.length <= 0) {
@@ -27,16 +7,16 @@ export default function PostLabels({ labels = [] }) {
   }
 
   return (
-    <Wrapper>
+    <div className="flex items-center gap-x-2">
       {labels.map((item) => (
         <Link
           key={item}
           href={`/discussions?label=${encodeURIComponent(item)}`}
-          legacyBehavior
+          className="flex cursor-pointer px-0.5 py-2 text12Medium text-textSecondary border border-neutral400 rounded-xl"
         >
-          <Label>{item}</Label>
+          {item}
         </Link>
       ))}
-    </Wrapper>
+    </div>
   );
 }

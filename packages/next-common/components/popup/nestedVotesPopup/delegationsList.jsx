@@ -2,38 +2,13 @@
 
 import React, { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
-import styled, { css } from "styled-components";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Pagination from "next-common/components/pagination";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import StyledList from "next-common/components/styledList";
 import { toPrecision } from "next-common/utils";
-import { smcss } from "next-common/utils/responsive";
-import { p_14_bold } from "next-common/styles/componentCss";
 import AddressUser from "next-common/components/user/addressUser";
-
-const StyledPopupListWrapper = styled(PopupListWrapper)`
-  ${smcss(css`
-    table tbody {
-      max-height: 180px;
-    }
-  `)}
-
-  /* for non-full screen display */
-  @media (height < 750px) {
-    table tbody {
-      max-height: 80px;
-    }
-  }
-`;
-
-const DelegationListTitle = styled.h3`
-  margin: 0;
-  margin-bottom: 8px;
-  ${p_14_bold};
-  color: var(--textPrimary);
-`;
 
 export default function DelegationsList({ delegations }) {
   const [detailListPage, setDetailListPage] = useState(1);
@@ -62,7 +37,9 @@ export default function DelegationsList({ delegations }) {
 
   return (
     <>
-      <DelegationListTitle>Delegation List</DelegationListTitle>
+      <div className="m-0 mb-2 text14Bold text-textPrimary">
+        Delegation List
+      </div>
       <DetailDelegatorList items={items} />
       <Pagination {...pagination} />
     </>
@@ -115,8 +92,8 @@ function DetailDelegatorList({ items = [] }) {
   });
 
   return (
-    <StyledPopupListWrapper>
+    <PopupListWrapper className="max-sm:[&_table_tbody]:!max-h-[180px]">
       <StyledList items={items} columns={columns} rows={rows} />
-    </StyledPopupListWrapper>
+    </PopupListWrapper>
   );
 }

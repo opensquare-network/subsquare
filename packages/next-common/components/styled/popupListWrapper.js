@@ -2,11 +2,13 @@ import { breakpoint } from "next-common/utils/responsive";
 import styled, { css } from "styled-components";
 import tw from "tailwind-styled-components";
 
-const Comp = tw.div`
+const TwDiv = tw.div`
+  space-y-4 m-auto
+  max-md:max-w-[960px]
   [&_table_tbody]:scrollbar-pretty
 `;
 
-const PopupListWrapper = styled(Comp)`
+const PopupListWrapper = styled(TwDiv)`
   width: 100%;
   ${breakpoint(
     720,
@@ -14,14 +16,6 @@ const PopupListWrapper = styled(Comp)`
       overflow-x: scroll;
     `,
   )};
-
-  @media screen and (max-width: 1024px) {
-    max-width: 960px;
-  }
-  margin: auto;
-  > div :not(:first-child) {
-    margin-top: 16px;
-  }
   table {
     border: none;
     padding: 0;

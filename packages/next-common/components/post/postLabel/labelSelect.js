@@ -1,42 +1,24 @@
 import React from "react";
 import noop from "lodash.noop";
-import styled, { css } from "styled-components";
 import { useCallback } from "react";
-import { p_12_normal } from "../../../styles/componentCss";
+import { cn } from "next-common/utils";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-const Choice = styled.div`
-  ${p_12_normal}
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 4px 12px;
-
-  border-radius: 16px;
-
-  cursor: pointer;
-
-  ${(p) =>
-    p.selected
-      ? css`
-          color: var(--theme500);
-          border: 1px solid var(--theme500);
-        `
-      : css`
-          color: var(--textSecondary);
-          border: 1px solid var(--neutral400);
-          :hover {
-            color: var(--textPrimary);
-            border-color: var(--neutral500);
-          }
-        `}
-`;
+function Choice({ selected, ...props }) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "text12Medium",
+        "flex flex-row justify-center items-center",
+        "py-1 px-3 rounded-3xl",
+        "cursor-pointer",
+        "text-textSecondary border border-neutral400",
+        selected && "text-theme500 border-theme500",
+        !selected && "hover:text-textPrimary hover:border-neutral500",
+      )}
+    />
+  );
+}
 
 export default function LabelSelect({
   allLabels = [],
@@ -61,7 +43,7 @@ export default function LabelSelect({
   }
 
   return (
-    <Wrapper>
+    <div className="flex flex-wrap gap-2">
       {allLabels.map((item) => (
         <Choice
           key={item}
@@ -71,6 +53,6 @@ export default function LabelSelect({
           {item}
         </Choice>
       ))}
-    </Wrapper>
+    </div>
   );
 }

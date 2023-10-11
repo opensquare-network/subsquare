@@ -13,7 +13,6 @@ import {
   StyledTh,
   StyledTr,
 } from "../../styled/table";
-import { pretty_scroll_bar } from "../../../styles/componentCss";
 import Loading from "../../loading";
 import _range from "lodash.range";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
@@ -31,8 +30,6 @@ const Table = styled(StyledTable)`
     max-height: 180px;
     overflow-y: auto;
     overflow-x: hidden;
-
-    ${pretty_scroll_bar};
   }
   thead,
   tbody tr {
@@ -107,7 +104,7 @@ export default function ThresholdCurvesPopup({
             padding={"16px 0 0 0"}
           />
         </thead>
-        <tbody>
+        <tbody className="scrollbar-pretty">
           {list.length ? (
             list.map((item, idx) => (
               <StyledTr key={idx}>
