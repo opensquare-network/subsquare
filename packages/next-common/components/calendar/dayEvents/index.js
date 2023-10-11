@@ -1,47 +1,12 @@
 import dayjs from "dayjs";
 import React from "react";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-import styled from "styled-components";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
-import {
-  flex,
-  flex_col,
-  gap_y,
-  m,
-  m_l,
-  p_x,
-  p_y,
-} from "../../../styles/tailwindcss";
-import {
-  p_12_normal,
-  p_16_bold,
-  shadow_100,
-} from "../../../styles/componentCss";
 import Divider from "../../styled/layout/divider";
 import DayEventTimelines from "./timelines";
 import { useCalendarEvents } from "../../../hooks/calendar";
 
 dayjs.extend(advancedFormat);
-
-const Wrapper = styled(NeutralPanel)`
-  ${p_x(24)}
-  ${p_y(20)}
-  ${shadow_100}
-  ${flex}
-  ${flex_col}
-  ${gap_y(16)}
-`;
-
-const Title = styled.h2`
-  ${m(0)}
-  ${p_16_bold}
-  color: var(--textPrimary);
-`;
-const TitleDate = styled.small`
-  ${m_l(12)}
-  ${p_12_normal}
-  color: var(--textTertiary);
-`;
 
 export default function DayEvents({
   selectedDate,
@@ -56,11 +21,13 @@ export default function DayEvents({
   });
 
   return (
-    <Wrapper>
-      <Title>
+    <NeutralPanel className="flex flex-col px-6 py-5 gap-y-4">
+      <h2 className="text16Bold text-textPrimary">
         Event
-        <TitleDate>{dayjs(selectedDate).format("MMMM Do, YYYY")}</TitleDate>
-      </Title>
+        <small className="ml-3 text12Medium text-textTertiary">
+          {dayjs(selectedDate).format("MMMM Do, YYYY")}
+        </small>
+      </h2>
 
       <Divider />
 
@@ -71,6 +38,6 @@ export default function DayEvents({
         loading={loading || loadingDayUserEvents}
         refresh={refresh}
       />
-    </Wrapper>
+    </NeutralPanel>
   );
 }

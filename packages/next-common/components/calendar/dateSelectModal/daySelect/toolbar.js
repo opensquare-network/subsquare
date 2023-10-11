@@ -5,46 +5,9 @@ import { Button } from "../../../summary/styled";
 import CaretLeft from "../../../icons/caretLeft";
 import CaretRight from "../../../icons/caretRight";
 import Flex from "../../../styled/flex";
-import { p_14_bold } from "../../../../styles/componentCss";
-import {
-  flex,
-  flex_col,
-  gap_y,
-  justify_between,
-  m_b,
-  m_l,
-  p,
-  space_x,
-} from "../../../../styles/tailwindcss";
-
-const ToolbarWrapper = styled.div`
-  ${flex}
-  ${flex_col}
-  ${gap_y(16)}
-  ${m_b(16)}
-`;
-
-const ToolbarGroup = styled.div`
-  ${flex}
-  ${justify_between}
-`;
-
-const ToolbarButtonGroup = styled.div`
-  ${flex}
-  ${space_x(8)}
-  flex-grow: 1;
-`;
-
-const ToolbarDateLabel = styled(Flex)`
-  ${p_14_bold}
-  ${m_l(16)}
-  color: var(--textPrimary);
-  flex-grow: 1;
-  justify-content: center;
-`;
 
 const NavigateButton = styled(Button)`
-  ${p(8)}
+  padding: 8px;
 `;
 
 export default function CalendarToolbar({
@@ -53,10 +16,10 @@ export default function CalendarToolbar({
   localizer: { messages },
 }) {
   return (
-    <ToolbarWrapper>
-      <ToolbarGroup>
+    <div className="flex flex-col gap-y-4 mb-4">
+      <div className="flex justify-between">
         <Flex style={{ flexGrow: 1 }}>
-          <ToolbarButtonGroup>
+          <div className="flex space-x-2 grow">
             <NavigateButton
               onClick={() => onNavigate("PREV")}
               arial-label={messages.previous}
@@ -64,7 +27,9 @@ export default function CalendarToolbar({
               <CaretLeft />
             </NavigateButton>
 
-            <ToolbarDateLabel>{label}</ToolbarDateLabel>
+            <Flex className="text14Bold ml-4 text-textPrimary grow justify-center">
+              {label}
+            </Flex>
 
             <NavigateButton
               onClick={() => onNavigate("NEXT")}
@@ -72,11 +37,11 @@ export default function CalendarToolbar({
             >
               <CaretRight />
             </NavigateButton>
-          </ToolbarButtonGroup>
+          </div>
         </Flex>
-      </ToolbarGroup>
+      </div>
 
       <Divider />
-    </ToolbarWrapper>
+    </div>
   );
 }
