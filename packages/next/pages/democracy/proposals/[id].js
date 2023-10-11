@@ -20,6 +20,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import usePreImageCallFromHash from "next-common/components/proposal/preImage";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -42,6 +43,10 @@ function PublicProposalContent() {
 
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
+  const preImageHash = publicProposal.preImage?.hash;
+  const { call: rawCall, isLoading: isLoadingRawCall } =
+    usePreImageCallFromHash(preImageHash);
+
   return (
     <ContentWithComment>
       <DetailItem />
@@ -57,6 +62,8 @@ function PublicProposalContent() {
           call && (
             <DemocracyPublicProposalCall
               call={call}
+              rawCall={rawCall}
+              isLoadingRawCall={isLoadingRawCall}
               shorten={publicProposal.preImage?.shorten}
               proposalIndex={publicProposal.proposalIndex}
               referendumIndex={publicProposal.referendumIndex}

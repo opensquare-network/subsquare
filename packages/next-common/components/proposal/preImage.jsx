@@ -1,8 +1,44 @@
 import { useCallback, useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { hexToU8a } from "@polkadot/util";
+import nextApi from "next-common/services/nextApi";
 
-export default function usePreImageCall(preImage, isLoadingPreImage) {
+export function usePreImage(preImageHash) {
+  const [preImage, setPreImage] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!preImageHash) {
+      setIsLoading(false);
+      return;
+    }
+
+    const abortController = new AbortController();
+    setTimeout(() => {
+      abortController.abort();
+    }, 15 * 1000);
+    nextApi
+      .fetch(
+        `preimages/${preImageHash}`,
+        {},
+        { signal: abortController.signal },
+      )
+      .then(({ result, error }) => {
+        if (error) {
+          return;
+        }
+
+        setPreImage(result);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [preImageHash]);
+
+  return { preImage, isLoading };
+}
+
+export function usePreImageCall(preImage, isLoadingPreImage) {
   const api = useApi();
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -75,4 +111,17 @@ export default function usePreImageCall(preImage, isLoadingPreImage) {
   ]);
 
   return { call, isLoading };
+}
+
+export default function usePreImageCallFromHash(preImageHash) {
+  const { preImage, isLoading: isLoadingPreImage } = usePreImage(preImageHash);
+  const { call, isLoading: isLoadingCall } = usePreImageCall(
+    preImage,
+    isLoadingPreImage,
+  );
+
+  return {
+    call,
+    isLoading: isLoadingCall,
+  };
 }

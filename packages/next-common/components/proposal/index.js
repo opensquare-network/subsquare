@@ -235,7 +235,8 @@ const tabs = [
 
 export default function Proposal({
   call = {},
-  preImageHash,
+  rawCall,
+  isLoadingRawCall,
   shorten,
   proposalIndex,
   motionIndex,
@@ -308,7 +309,9 @@ export default function Proposal({
             selectedTabId={selectedTabId}
             setSelectedTabId={setSelectedTabId}
           />
-          {selectedTabId === "tree" && <CallTree preImageHash={preImageHash} />}
+          {selectedTabId === "tree" && (
+            <CallTree call={rawCall} isLoading={isLoadingRawCall} />
+          )}
           {selectedTabId === "table" && (
             <ArgsWrapper className="wrapper text-textPrimary">
               <InnerDataTable data={dataTableData} />
