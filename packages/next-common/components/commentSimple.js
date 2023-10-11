@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
-import { no_scroll_bar, p_14_medium } from "next-common/styles/componentCss";
 import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
@@ -105,18 +104,6 @@ const HeadWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 
-  > span {
-    display: block;
-    ${p_14_medium};
-    line-height: 22.4px;
-    color: var(--textPrimary);
-    white-space: nowrap;
-    flex-basis: 120px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    text-align: right;
-  }
-
   .symbol {
     color: var(--textTertiary);
   }
@@ -128,13 +115,6 @@ const HeadWrapper = styled.div`
       flex-basis: 100%;
     }
   }
-`;
-
-const ContentWrapper = styled.div`
-  flex: 1;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  ${no_scroll_bar};
 `;
 
 const getCommentSource = (comment, chain) => {
@@ -299,7 +279,7 @@ export default function CommentSimple({ data }) {
   const duration = useDuration(data.updatedAt);
   return (
     <Wrapper>
-      <ContentWrapper>
+      <div className="flex-1 overflow-x-scroll overflow-y-hidden scrollbar-pretty">
         <HeadWrapper>
           <TitleWrapper>
             <Anchor href={`${route}#${data.height}`} passHref>
@@ -341,7 +321,7 @@ export default function CommentSimple({ data }) {
             {data.updatedAt && <Info>{duration}</Info>}
           </Footer>
         </FooterWrapper>
-      </ContentWrapper>
+      </div>
     </Wrapper>
   );
 }

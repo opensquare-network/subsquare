@@ -5,7 +5,6 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { pretty_scroll_bar } from "../styles/componentCss";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
@@ -56,8 +55,6 @@ const Options = styled.div`
   max-height: 320px;
   overflow-y: auto;
   z-index: 1;
-
-  ${pretty_scroll_bar};
 `;
 
 const Item = styled(Flex)`
@@ -215,7 +212,7 @@ export default function AddressCombo({ accounts, address, setAddress }) {
   }
 
   const listOptions = (
-    <Options>
+    <Options className="scrollbar-pretty">
       {(accounts || []).map((item, index) => {
         const ss58Address = normalizeAddress(item.address);
         return (

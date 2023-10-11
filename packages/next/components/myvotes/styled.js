@@ -1,12 +1,11 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { p_16_bold } from "next-common/styles/componentCss";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
+import tw from "tailwind-styled-components";
 
-export const Title = styled.div`
-  margin-left: 24px;
-  color: var(--textPrimary);
-  ${p_16_bold}
+export const Title = tw.div`
+  ml-6
+  text-textPrimary text16Bold
 `;
 
 export const ListCard = styled(SecondaryCard)`
