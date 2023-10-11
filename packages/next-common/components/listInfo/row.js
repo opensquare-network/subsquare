@@ -59,7 +59,7 @@ function Row({ row = [] }) {
       {row.length === 1 && row[0]}
       {row.length === 2 && (
         <>
-          <Header>{row[0]}</Header>
+          <Header className="text-textSecondary">{row[0]}</Header>
           <Content>{row[1]}</Content>
         </>
       )}

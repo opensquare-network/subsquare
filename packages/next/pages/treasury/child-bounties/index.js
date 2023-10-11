@@ -1,6 +1,6 @@
 import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
-import { toTreasuryChildBountyListItem } from "utils/viewfuncs";
+import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
 import { useChainSettings } from "next-common/context/chain";
 import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";

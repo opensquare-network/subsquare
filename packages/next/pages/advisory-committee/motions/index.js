@@ -1,6 +1,6 @@
 import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
-import { toAdvisoryMotionsListItem } from "utils/viewfuncs";
+import { toAdvisoryMotionsListItem } from "next-common/utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChainSettings } from "next-common/context/chain";

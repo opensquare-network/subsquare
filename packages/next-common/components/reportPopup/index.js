@@ -79,7 +79,7 @@ export default function ReportPopup({ setShow = noop }) {
 
   return (
     <Popup title="Report" onClose={() => setShow(false)}>
-      <div className="text-[14px]">
+      <div className="text-[14px] text-textPrimary">
         <div className="font-bold mb-[16px]">What’s the problem?</div>
         <RadioOptionGroup
           options={options}
