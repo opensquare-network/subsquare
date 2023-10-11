@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { hexToU8a } from "@polkadot/util";
 import nextApi from "next-common/services/nextApi";
@@ -38,26 +38,26 @@ export function usePreImage(preImageHash) {
   return { preImage, isLoading };
 }
 
+const parseGov2PreImageCall = (bytes, api) => {
+  const callData = api.registry.createType("Bytes", bytes);
+  return api.registry.createType("Call", callData);
+};
+
+const parseDemocracyPreImageCall = (bytes, api) => {
+  return api.registry.createType("Proposal", bytes);
+};
+
+const getBlockApi = async (api, blockHash) => {
+  if (blockHash) {
+    return api.at(blockHash);
+  }
+  return api;
+};
+
 export function usePreImageCall(preImage, isLoadingPreImage) {
   const api = useApi();
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
-  const parseGov2PreImageCall = useCallback((bytes, api) => {
-    const callData = api.registry.createType("Bytes", bytes);
-    return api.registry.createType("Call", callData);
-  }, []);
-
-  const parseDemocracyPreImageCall = useCallback((bytes, api) => {
-    return api.registry.createType("Proposal", bytes);
-  }, []);
-
-  const getBlockApi = useCallback(async (api, blockHash) => {
-    if (blockHash) {
-      return api.at(blockHash);
-    }
-    return api;
-  }, []);
 
   useEffect(() => {
     if (isLoadingPreImage) {
@@ -101,14 +101,7 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [
-    api,
-    isLoadingPreImage,
-    preImage,
-    getBlockApi,
-    parseGov2PreImageCall,
-    parseDemocracyPreImageCall,
-  ]);
+  }, [api, isLoadingPreImage, preImage]);
 
   return { call, isLoading };
 }
