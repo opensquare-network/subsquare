@@ -31,6 +31,7 @@
     "sass": "^1.38.0",
     "sharp": "^0.32.0",
     "styled-components": "^5.3.9",
+    "tailwind-merge": "^1.14.0",
     "tailwind-styled-components": "^2.2.0",
     "use-deep-compare-effect": "^1.8.1"
   },
