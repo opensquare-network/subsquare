@@ -4,7 +4,6 @@ import Proposal from "../proposal";
 import extractKintsugiFields from "next-common/components/democracy/common/kintsugiCallFields";
 import { useChain } from "next-common/context/chain";
 import Copyable from "../copyable";
-import usePreImageCallFromHash from "../proposal/preImage";
 
 export default function DemocracyPublicProposalCall({
   call,
@@ -15,8 +14,6 @@ export default function DemocracyPublicProposalCall({
   const onchainData = useOnchainData();
   const chain = useChain();
   const preImageHash = onchainData.preImage?.hash;
-  const { call: rawCall, isLoading: isLoadingRawCall } =
-    usePreImageCallFromHash(preImageHash);
 
   const data = [
     ["Hash", <Copyable key="hash">{onchainData?.hash}</Copyable>],
@@ -24,8 +21,7 @@ export default function DemocracyPublicProposalCall({
       <Proposal
         key={"call"}
         call={call}
-        rawCall={rawCall}
-        isLoadingRawCall={isLoadingRawCall}
+        preImageHash={preImageHash}
         shorten={shorten}
         proposalIndex={proposalIndex}
         referendumIndex={referendumIndex}

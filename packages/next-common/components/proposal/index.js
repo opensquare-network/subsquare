@@ -20,6 +20,7 @@ import Tab from "../tab";
 import { useLocalStorage } from "usehooks-ts";
 import ProposalChildCalls from "./childCalls";
 import CallTree from "./callTree";
+import usePreImageCallFromHash from "./preImage";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -235,8 +236,7 @@ const tabs = [
 
 export default function Proposal({
   call = {},
-  rawCall,
-  isLoadingRawCall,
+  preImageHash,
   shorten,
   proposalIndex,
   motionIndex,
@@ -248,6 +248,8 @@ export default function Proposal({
     "callType",
     tabs[0].tabId,
   );
+  const { call: rawCall, isLoading: isLoadingRawCall } =
+    usePreImageCallFromHash(preImageHash);
 
   const tableViewData = convertProposalForTableView(call, chain);
 

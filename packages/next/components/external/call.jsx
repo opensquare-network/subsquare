@@ -2,7 +2,6 @@ import Copyable from "next-common/components/copyable";
 import KvList from "next-common/components/listInfo/kvList";
 import Proposal from "next-common/components/proposal";
 import { useOnchainData } from "next-common/context/post";
-import usePreImageCallFromHash from "next-common/components/proposal/preImage";
 
 export default function DemocracyExternalProposalCall({
   call,
@@ -12,8 +11,6 @@ export default function DemocracyExternalProposalCall({
 }) {
   const onchainData = useOnchainData();
   const preImageHash = onchainData.preImage?.hash;
-  const { call: rawCall, isLoading: isLoadingRawCall } =
-    usePreImageCallFromHash(preImageHash);
 
   const data = [
     ["Hash", <Copyable key="hash">{onchainData?.proposalHash}</Copyable>],
@@ -21,8 +18,7 @@ export default function DemocracyExternalProposalCall({
       <Proposal
         key={"call"}
         call={call}
-        rawCall={rawCall}
-        isLoadingRawCall={isLoadingRawCall}
+        preImageHash={preImageHash}
         shorten={shorten}
         motionIndex={motionIndex}
         referendumIndex={referendumIndex}
