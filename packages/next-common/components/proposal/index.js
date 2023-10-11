@@ -19,6 +19,7 @@ import Tooltip from "../tooltip";
 import Tab from "../tab";
 import { useLocalStorage } from "usehooks-ts";
 import ProposalChildCalls from "./childCalls";
+import CallTree from "./callTree";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -227,11 +228,14 @@ function convertProposalForJsonView(proposal, chain) {
 }
 
 const tabs = [
+  { tabId: "tree", tabTitle: "Tree" },
   { tabId: "table", tabTitle: "Table" },
   { tabId: "json", tabTitle: "JSON" },
 ];
+
 export default function Proposal({
   call = {},
+  preImageHash,
   shorten,
   proposalIndex,
   motionIndex,
@@ -304,7 +308,7 @@ export default function Proposal({
             selectedTabId={selectedTabId}
             setSelectedTabId={setSelectedTabId}
           />
-
+          {selectedTabId === "tree" && <CallTree preImageHash={preImageHash} />}
           {selectedTabId === "table" && (
             <ArgsWrapper className="wrapper text-textPrimary">
               <InnerDataTable data={dataTableData} />

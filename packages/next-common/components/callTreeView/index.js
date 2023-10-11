@@ -4,7 +4,7 @@ import CallArgsPanel from "./callArgsPanel";
 export default function CallTreeView({ proposal }) {
   const { section, method, meta, argsEntries } = proposal || {};
   const { docs, args } = meta || {};
-  const doc = docs[0]?.toJSON();
+  const doc = docs?.[0]?.toJSON();
 
   return (
     <div className="text-textPrimary">
