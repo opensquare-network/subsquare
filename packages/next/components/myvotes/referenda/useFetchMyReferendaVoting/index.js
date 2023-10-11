@@ -8,6 +8,7 @@ import queryReferendumInfo from "../queryReferendumInfo";
 import {
   myReferendaVotesTriggerSelector,
   setIsLoadingReferendaVoting,
+  setMyReferendaPriors,
   setMyReferendaVoting,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import getOpenGovReferendaPosts from "./posts";
@@ -57,18 +58,27 @@ async function normalizeCastingVoting(api, trackId, votingOf) {
 async function queryVotesAndReferendaInfo(api, address) {
   const entries = await api.query.convictionVoting.votingFor.entries(address);
   const voting = [];
+  const priors = [];
   for (const [storageKey, votingOf] of entries) {
     const trackId = storageKey.args[1].toNumber();
     if (votingOf.isDelegating) {
       const delegated = await getDelegatedVoting(api, trackId, votingOf);
       voting.push({ trackId, ...delegated });
+      priors.push({
+        trackId,
+        ...normalizePrior(votingOf.asDelegating.prior),
+      });
     } else if (votingOf.isCasting) {
       const normalized = await normalizeCastingVoting(api, trackId, votingOf);
       voting.push(normalized);
+      priors.push({
+        trackId,
+        ...normalizePrior(votingOf.asCasting.prior),
+      });
     }
   }
 
-  return voting;
+  return { voting, priors };
 }
 
 export default function useFetchMyReferendaVoting() {
@@ -86,7 +96,8 @@ export default function useFetchMyReferendaVoting() {
       dispatch(setIsLoadingReferendaVoting(true));
     }
     queryVotesAndReferendaInfo(api, address)
-      .then((voting) => {
+      .then(({ voting, priors }) => {
+        dispatch(setMyReferendaPriors(priors));
         dispatch(setMyReferendaVoting(voting));
       })
       .finally(() => {
