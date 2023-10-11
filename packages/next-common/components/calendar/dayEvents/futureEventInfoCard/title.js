@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { formatNumber, isString } from "@polkadot/util";
 import EventTag from "../eventInfoCard/eventTag";
 import FoldButton from "../eventInfoCard/foldButton";
-import { flex, gap_x, hover, underline } from "../../../../styles/tailwindcss";
 import TooltipOrigin from "../../../tooltip";
 import { FutureEventType } from "./futureEventType";
 
@@ -26,23 +25,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Left = styled.div`
-  flex: 1;
-  word-break: break-word;
-  ${flex}
-  ${gap_x(4)}
-`;
-
-const Right = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-`;
-
-const TitleTime = styled.div`
-  ${hover(underline)}
-`;
-
 const Tooltip = styled(TooltipOrigin)``;
 
 function getTitle(event, title) {
@@ -51,7 +33,7 @@ function getTitle(event, title) {
   return (
     <span>
       <Tooltip content={"#" + event?.indexer?.blockHeight?.toLocaleString()}>
-        <TitleTime>[{timeText}]</TitleTime>
+        <div className="hover:underline">[{timeText}]</div>
       </Tooltip>{" "}
       <span>{title}</span>
     </span>
@@ -139,8 +121,10 @@ export default function Title({ event, isFolded, setIsFolded = noop }) {
 
   return (
     <Wrapper>
-      <Left>{getTitle(event, description)}</Left>
-      <Right>
+      <div className="flex-1 flex gap-x-1" style={{ wordBreak: "break-word" }}>
+        {getTitle(event, description)}
+      </div>
+      <div className="flex justify-between gap-2">
         <div>
           <EventTag event={event} />
         </div>
@@ -150,7 +134,7 @@ export default function Title({ event, isFolded, setIsFolded = noop }) {
             isFolded={isFolded}
           />
         </div>
-      </Right>
+      </div>
     </Wrapper>
   );
 }
