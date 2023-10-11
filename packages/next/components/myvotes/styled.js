@@ -1,12 +1,17 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { p_16_bold } from "next-common/styles/componentCss";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Flex from "next-common/components/styled/flex";
 
 export const Title = styled.div`
   margin-left: 24px;
   color: var(--textPrimary);
   ${p_16_bold}
+  ${(p) =>
+    p.disabled &&
+    css`
+      color: var(--textTertiary);
+    `}
 `;
 
 export const ListCard = styled(SecondaryCard)`

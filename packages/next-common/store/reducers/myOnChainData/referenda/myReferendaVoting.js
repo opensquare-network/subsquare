@@ -50,6 +50,7 @@ export const isLoadingReferendaVotingSelector = (state) =>
 export const isLoadingClassLocksSelector = (state) =>
   state[name].isLoadingClassLocks;
 export const myReferendaVotesTriggerSelector = (state) => state[name].trigger;
+export const myReferendaPriorLocksSelector = (state) => state[name].priors;
 
 export const isLoadingReferendaSummarySelector = createSelector(
   isLoadingReferendaVotingSelector,
