@@ -43,30 +43,21 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  const decodeGov2PreImageCall = useCallback(
-    async (proposalHex, blockHash, api) => {
-      let blockApi = api;
-      if (blockHash) {
-        blockApi = await api.at(blockHash);
-      }
-      const bytes = hexToU8a(proposalHex);
-      const callData = blockApi.registry.createType("Bytes", bytes);
-      return blockApi.registry.createType("Call", callData);
-    },
-    [],
-  );
+  const parseGov2PreImageCall = useCallback((bytes, api) => {
+    const callData = api.registry.createType("Bytes", bytes);
+    return api.registry.createType("Call", callData);
+  }, []);
 
-  const decodeDemocracyPreImageCall = useCallback(
-    async (proposalHex, blockHash, api) => {
-      let blockApi = api;
-      if (blockHash) {
-        blockApi = await api.at(blockHash);
-      }
-      const bytes = hexToU8a(proposalHex);
-      return blockApi.registry.createType("Proposal", bytes);
-    },
-    [],
-  );
+  const parseDemocracyPreImageCall = useCallback((bytes, api) => {
+    return api.registry.createType("Proposal", bytes);
+  }, []);
+
+  const getBlockApi = useCallback(async (api, blockHash) => {
+    if (blockHash) {
+      return api.at(blockHash);
+    }
+    return api;
+  }, []);
 
   useEffect(() => {
     if (isLoadingPreImage) {
@@ -83,16 +74,24 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
     }
 
     const blockHash = preImage?.indexer.blockHash;
-    let proposalHex = preImage?.hex;
-    let decodeCall = decodeGov2PreImageCall;
+    let proposalHex;
+    let parseCall;
 
-    if (!proposalHex) {
+    if (preImage.isGov2) {
+      // Gov2 preImage
+      proposalHex = preImage?.hex;
+      parseCall = parseGov2PreImageCall;
+    } else {
       // Democracy preImage
       proposalHex = preImage?.data;
-      decodeCall = decodeDemocracyPreImageCall;
+      parseCall = parseDemocracyPreImageCall;
     }
 
-    decodeCall(proposalHex, blockHash, api)
+    getBlockApi(api, blockHash)
+      .then((blockApi) => {
+        const bytes = hexToU8a(proposalHex);
+        return parseCall(bytes, blockApi);
+      })
       .then((callInfo) => {
         if (callInfo) {
           setCall(callInfo);
@@ -106,8 +105,9 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
     api,
     isLoadingPreImage,
     preImage,
-    decodeGov2PreImageCall,
-    decodeDemocracyPreImageCall,
+    getBlockApi,
+    parseGov2PreImageCall,
+    parseDemocracyPreImageCall,
   ]);
 
   return { call, isLoading };

@@ -6,11 +6,15 @@ import useReferendaBusinessData from "@subsquare/next/hooks/useReferendaBusiness
 import Copyable from "next-common/components/copyable";
 import extractRemarkMetaFields from "next-common/components/common/call/remarks";
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
+import usePreImageCallFromHash from "next-common/components/proposal/preImage";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const { call: inlineCall } = onchainData?.inlineCall || {};
+  const preImageHash = onchainData?.proposalHash;
+  const { call: rawCall, isLoading: isLoadingRawCall } =
+    usePreImageCallFromHash(preImageHash);
 
   const data = [
     onchainData?.proposalHash
@@ -24,7 +28,8 @@ export default function Gov2ReferendumCall() {
           <Proposal
             key={"call"}
             call={inlineCall}
-            preImageHash={onchainData?.proposalHash}
+            rawCall={rawCall}
+            isLoadingRawCall={isLoadingRawCall}
           />,
         ]
       : null,
@@ -33,7 +38,8 @@ export default function Gov2ReferendumCall() {
           <Proposal
             key={"call"}
             call={proposal?.call}
-            preImageHash={onchainData?.proposalHash}
+            rawCall={rawCall}
+            isLoadingRawCall={isLoadingRawCall}
             shorten={proposal?.shorten}
           />,
         ]
