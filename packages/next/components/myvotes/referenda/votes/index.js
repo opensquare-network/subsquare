@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import myReferendaVotesSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/votes";
-import VotesListTitle from "../../common/votesListTitle";
 import ResponsiveReferendaVotes from "./responsive";
 import { useState } from "react";
 import { Title } from "../../styled";
@@ -11,6 +10,15 @@ const tabs = Object.freeze({
   votes: 1,
   priors: 2,
 });
+
+function VotesListTitle({ length, disabled }) {
+  return (
+    <div className="flex gap-[8px]">
+      <Title disabled={disabled}>On-chain Votes</Title>
+      <span className="text-textTertiary">{length || 0}</span>
+    </div>
+  );
+}
 
 function PriorLocksTitle({ disabled }) {
   const filteredLocks = useSelector(myFilteredReferendaPriorLocksSelector);
