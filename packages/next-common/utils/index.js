@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import capitalize from "lodash.capitalize";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -301,4 +303,8 @@ export function toPercentage(value = 0, decimals = 0) {
 
 export function isHash(value) {
   return value && value.length === 66 && value.startsWith("0x");
+}
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
 }
