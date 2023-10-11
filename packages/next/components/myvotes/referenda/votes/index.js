@@ -5,6 +5,7 @@ import ResponsiveReferendaVotes from "./responsive";
 import { useState } from "react";
 import { Title } from "../../styled";
 import myFilteredReferendaPriorLocksSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
+import PriorLocks from "./priors";
 
 const tabs = Object.freeze({
   votes: 1,
@@ -39,7 +40,7 @@ export default function MyReferendaVotes() {
           <PriorLocksTitle disabled={tab !== tabs.priors} />
         </li>
       </ol>
-      <ResponsiveReferendaVotes />
+      {tab === tabs.votes ? <ResponsiveReferendaVotes /> : <PriorLocks />}
     </>
   );
 }
