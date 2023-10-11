@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Title } from "../../styled";
 import myFilteredReferendaPriorLocksSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
 import PriorLocks from "./priors";
+import WithAllVotesLink from "../../common/withAllVotesLink";
 
 const tabs = Object.freeze({
   votes: 1,
@@ -37,17 +38,19 @@ export default function MyReferendaVotes() {
 
   return (
     <>
-      <ol className="flex">
-        <li className="cursor-pointer" onClick={() => setTab(tabs.votes)}>
-          <VotesListTitle
-            disabled={tab !== tabs.votes}
-            length={referendaVotes?.length || 0}
-          />
-        </li>
-        <li className="cursor-pointer" onClick={() => setTab(tabs.priors)}>
-          <PriorLocksTitle disabled={tab !== tabs.priors} />
-        </li>
-      </ol>
+      <WithAllVotesLink isReferenda={true}>
+        <ol className="flex">
+          <li className="cursor-pointer" onClick={() => setTab(tabs.votes)}>
+            <VotesListTitle
+              disabled={tab !== tabs.votes}
+              length={referendaVotes?.length || 0}
+            />
+          </li>
+          <li className="cursor-pointer" onClick={() => setTab(tabs.priors)}>
+            <PriorLocksTitle disabled={tab !== tabs.priors} />
+          </li>
+        </ol>
+      </WithAllVotesLink>
       {tab === tabs.votes ? <ResponsiveReferendaVotes /> : <PriorLocks />}
     </>
   );
