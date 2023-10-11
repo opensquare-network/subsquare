@@ -1,27 +1,9 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import "../../../charts/globalConfig";
-import styled, { useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import LegendItem from "../../../charts/legend/item";
-import {
-  flex,
-  items_center,
-  justify_center,
-  m_t,
-} from "next-common/styles/tailwindcss";
 import deepmerge from "deepmerge";
-
-const Wrapper = styled.div``;
-const ChartWrapper = styled.div`
-  height: ${p => p.height || 484}px;
-`;
-
-const Legend = styled.div`
-  ${flex};
-  ${items_center};
-  ${justify_center};
-  ${m_t(16)};
-`;
 
 function useOptions(userOptions) {
   const theme = useTheme();
@@ -94,13 +76,13 @@ export default function BarChart({
   const options = useOptions(userOptions);
 
   return (
-    <Wrapper>
-      <ChartWrapper height={height}>
+    <div>
+      <div style={{ height: height || 484 }}>
         <Bar data={data} options={options} />
-      </ChartWrapper>
+      </div>
 
       {!noLegend && (
-        <Legend>
+        <div className="flex items-center justify-center mt-4">
           {data?.datasets?.map?.((item) => {
             if (item.legend === false) {
               return;
@@ -111,8 +93,8 @@ export default function BarChart({
               </LegendItem>
             );
           })}
-        </Legend>
+        </div>
       )}
-    </Wrapper>
+    </div>
   );
 }

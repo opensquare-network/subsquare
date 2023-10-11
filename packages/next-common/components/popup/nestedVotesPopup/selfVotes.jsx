@@ -9,8 +9,8 @@ import ConvictionSVG from "next-common/assets/imgs/icons/conviction.svg";
 import ValueDisplay from "next-common/components/valueDisplay";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import Descriptions from "next-common/components/Descriptions";
-import { flex, gap_x, items_center } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
+import tw from "tailwind-styled-components";
 
 const StyledAccountSVG = styled(AccountSVG)`
   fill: var(--textTertiary);
@@ -24,10 +24,8 @@ const StyledCapitalSVG = styled(BalanceSVG)`
   stroke: var(--textTertiary);
 `;
 
-const DetailDescriptionLabel = styled.div`
-  ${flex};
-  ${items_center};
-  ${gap_x(8)};
+const DetailDescriptionLabel = tw.div`
+  flex items-center gap-x-2
 `;
 
 const DetailSelfVotesAnnotation = styled.span`

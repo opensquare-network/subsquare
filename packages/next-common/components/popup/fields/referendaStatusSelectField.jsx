@@ -1,31 +1,10 @@
 import noop from "lodash.noop";
 import Select from "next-common/components/select";
-import { p_12_medium } from "next-common/styles/componentCss";
-import {
-  flex,
-  gap_x,
-  items_center,
-  rounded,
-} from "next-common/styles/tailwindcss";
 import { gov2State } from "next-common/utils/consts/state";
 import styled from "styled-components";
 
 const StyledSelect = styled(Select)`
   width: 160px;
-`;
-
-const LabelWrapper = styled.div`
-  ${flex};
-  ${gap_x(8)};
-  ${items_center};
-  ${p_12_medium};
-`;
-
-const LabelColorRectangle = styled.span`
-  width: 6px;
-  height: 6px;
-  background-color: ${(p) => p.color};
-  ${rounded};
 `;
 
 const options = [
@@ -76,9 +55,14 @@ function Label({ label }) {
   };
 
   return (
-    <LabelWrapper>
-      {colors[label] && <LabelColorRectangle color={colors[label]} />}
+    <div className="flex gap-x-2 items-center text12Medium">
+      {colors[label] && (
+        <span
+          className="w-1.5 h-1.5 rounded"
+          style={{ backgroundColor: colors[label] }}
+        />
+      )}
       <span>{label}</span>
-    </LabelWrapper>
+    </div>
   );
 }

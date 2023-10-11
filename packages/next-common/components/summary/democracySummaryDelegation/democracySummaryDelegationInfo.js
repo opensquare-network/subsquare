@@ -1,47 +1,21 @@
 import React from "react";
-import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { Conviction, ConvictionSupport } from "../../../utils/referendumCommon";
 import GreyInfoPanel from "../styled/greyInfoPanel";
-import {
-  flex,
-  flex_nowrap,
-  gap_x,
-  items_center,
-  whitespace_nowrap,
-} from "../../../styles/tailwindcss";
-import { no_scroll_bar, p_12_normal } from "../../../styles/componentCss";
-import { SM_SIZE } from "../../../utils/responsive";
 import AddressUser from "next-common/components/user/addressUser";
+import tw from "tailwind-styled-components";
 
-const Wrapper = styled(GreyInfoPanel)`
-  ${flex_nowrap};
-  ${whitespace_nowrap};
-  overflow-x: auto;
-
-  @media (min-width: ${SM_SIZE + 1}px) {
-    ${no_scroll_bar};
-  }
+const Item = tw.div`
+  inline-flex items-center gap-x-2 text12Medium
+  before:content-["·"]
+  first:before:hidden
 `;
 
-const Item = styled.div`
-  ${flex};
-  ${items_center};
-  ${gap_x(8)};
-  ${p_12_normal};
-
-  &:not(:first-child) {
-    &::before {
-      content: "·";
-    }
-  }
-`;
-
-const TextSecondary = styled.span`
-  color: var(--textSecondary);
+const TextSecondary = tw.span`
+  text-textSecondary
 `;
 
 export default function DemocracySummaryDelegationInfo({ delegating }) {
@@ -53,7 +27,7 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
   const conviction = Conviction[delegating.conviction];
 
   return (
-    <Wrapper>
+    <GreyInfoPanel className="overflow-x-auto !flex-nowrap whitespace-nowrap scrollbar-hidden">
       <Item>
         <span>Delegating to</span>
         <AddressUser add={delegating.target} />
@@ -88,6 +62,6 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
           symbol={<TextSecondary>{node.symbol}</TextSecondary>}
         />
       </Item>
-    </Wrapper>
+    </GreyInfoPanel>
   );
 }

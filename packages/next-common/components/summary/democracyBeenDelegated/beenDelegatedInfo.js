@@ -1,51 +1,25 @@
 import React from "react";
-import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import GreyInfoPanel from "../styled/greyInfoPanel";
-import {
-  flex_nowrap,
-  gap_x,
-  inline_flex,
-  items_center,
-  whitespace_nowrap,
-} from "../../../styles/tailwindcss";
-import { no_scroll_bar, p_12_normal } from "../../../styles/componentCss";
-import { SM_SIZE } from "../../../utils/responsive";
+import tw from "tailwind-styled-components";
 
-const Wrapper = styled(GreyInfoPanel)`
-  ${flex_nowrap};
-  ${whitespace_nowrap};
-  overflow-x: auto;
-
-  @media (min-width: ${SM_SIZE + 1}px) {
-    ${no_scroll_bar};
-  }
+const Item = tw.div`
+  inline-flex items-center gap-x-2 text12Medium
+  before:content-["·"]
+  first:before:hidden
 `;
 
-const Item = styled.div`
-  ${inline_flex};
-  ${items_center};
-  ${gap_x(8)};
-  ${p_12_normal};
-
-  &:not(:first-child) {
-    &::before {
-      content: "·";
-    }
-  }
-`;
-
-const TextSecondary = styled.span`
-  color: var(--textSecondary);
+const TextSecondary = tw.span`
+  text-textSecondary
 `;
 
 export default function BeenDelegatedInfo({ delegations, addressesCount }) {
   const { decimals, symbol } = useChainSettings();
 
   return (
-    <Wrapper>
+    <GreyInfoPanel className="overflow-x-auto !flex-nowrap whitespace-nowrap scrollbar-hidden">
       <Item>
         <span>Been delegated</span>
         <ValueDisplay
@@ -74,6 +48,6 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
           {addressesCount} {addressesCount === 1 ? "Address" : "Addresses"}
         </TextSecondary>
       </Item>
-    </Wrapper>
+    </GreyInfoPanel>
   );
 }

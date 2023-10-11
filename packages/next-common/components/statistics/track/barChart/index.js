@@ -1,40 +1,9 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import "../../../charts/globalConfig";
-import styled, { css, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import LegendItem from "../../../charts/legend/item";
-import {
-  flex,
-  items_center,
-  justify_center,
-  m_t,
-} from "next-common/styles/tailwindcss";
 import deepmerge from "deepmerge";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
-
-const Wrapper = styled.div``;
-
-const ChartScrollWrapper = styled.div`
-  overflow-x: auto;
-  overflow-y: hidden;
-  ${pretty_scroll_bar}
-`;
-
-const ChartWrapper = styled.div`
-  height: ${(p) => p.height}px;
-  ${(p) =>
-    p.minWidth &&
-    css`
-      min-width: ${p.minWidth}px;
-    `}
-`;
-
-const Legend = styled.div`
-  ${flex};
-  ${items_center};
-  ${justify_center};
-  ${m_t(16)};
-`;
 
 function useOptions(userOptions) {
   const theme = useTheme();
@@ -104,15 +73,15 @@ export default function BarChart({
     customLegend || data?.datasets?.filter((item) => item.legend !== false);
 
   return (
-    <Wrapper>
-      <ChartScrollWrapper>
-        <ChartWrapper minWidth={minWidth} height={height}>
+    <div>
+      <div className="overflow-x-auto overflow-y-hidden scrollbar-pretty">
+        <div style={{ height, minWidth }}>
           <Bar data={data} options={options} />
-        </ChartWrapper>
-      </ChartScrollWrapper>
+        </div>
+      </div>
       {slider}
       {!noLegend && (
-        <Legend>
+        <div className="flex items-center justify-center mt-4">
           {legendItems?.map?.((item) => {
             return (
               <LegendItem key={item.label} color={item.backgroundColor}>
@@ -120,8 +89,8 @@ export default function BarChart({
               </LegendItem>
             );
           })}
-        </Legend>
+        </div>
       )}
-    </Wrapper>
+    </div>
   );
 }

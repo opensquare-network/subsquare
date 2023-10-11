@@ -1,21 +1,9 @@
 import React from "react";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { p_14_normal } from "next-common/styles/componentCss";
-import { inline_flex } from "next-common/styles/tailwindcss";
-import styled from "styled-components";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import isNil from "lodash.isnil";
-
-const Capital = styled.div`
-  ${inline_flex};
-  ${p_14_normal};
-`;
-const CapitalConvictionLabel = styled.span`
-  width: 60px;
-  color: var(--textTertiary);
-`;
 
 export default function CapitalTableItem({ capital, item, tab, conviction }) {
   const chainSettings = useChainSettings();
@@ -28,13 +16,13 @@ export default function CapitalTableItem({ capital, item, tab, conviction }) {
   }
 
   return (
-    <Capital>
+    <div className="inline-flex text14Medium">
       <ValueDisplay value={capital} symbol={symbol} />
       {hasLabel && (
-        <CapitalConvictionLabel>
+        <span className="w-[60px] text-textTertiary">
           <VoteLabel {...item} conviction={conviction} tab={tab} />
-        </CapitalConvictionLabel>
+        </span>
       )}
-    </Capital>
+    </div>
   );
 }
