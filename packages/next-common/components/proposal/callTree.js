@@ -15,7 +15,7 @@ function usePreImage(preImageHash) {
     }
 
     nextApi
-      .fetch(`pre-images/${preImageHash}`)
+      .fetch(`preimages/${preImageHash}`)
       .then(({ result, error }) => {
         if (error) {
           return;
