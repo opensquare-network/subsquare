@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import InnerDataTable from "../table/innerDataTable";
@@ -21,6 +21,8 @@ import { useLocalStorage } from "usehooks-ts";
 import ProposalChildCalls from "./childCalls";
 import CallTreeView from "../callTreeView";
 import Loading from "../loading";
+import useCallFromProposalHex from "../gov2/referendum/call/hex";
+import nextApi from "next-common/services/nextApi";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -234,7 +236,34 @@ const tabs = [
   { tabId: "json", tabTitle: "JSON" },
 ];
 
-function CallTree({ proposal, isLoading }) {
+function CallTree({ preImageHash }) {
+  const [proposalHex, setProposalHex] = useState();
+  const [isLoadingProposalHex, setIsLoadingProposalHex] = useState(true);
+  const [call, isLoading] = useCallFromProposalHex(
+    proposalHex,
+    isLoadingProposalHex,
+  );
+
+  useEffect(() => {
+    if (!preImageHash) {
+      setIsLoadingProposalHex(false);
+      return;
+    }
+
+    nextApi
+      .fetch(`pre-images/${preImageHash}`)
+      .then(({ result, error }) => {
+        if (error) {
+          return;
+        }
+
+        setProposalHex(result?.hex || result?.data);
+      })
+      .finally(() => {
+        setIsLoadingProposalHex(false);
+      });
+  }, [preImageHash]);
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-[24px]">
@@ -243,7 +272,7 @@ function CallTree({ proposal, isLoading }) {
     );
   }
 
-  if (!proposal) {
+  if (!call) {
     return (
       <div className="flex justify-center py-[24px] text-textTertiary text14Medium">
         <span>Fail to parse</span>
@@ -251,13 +280,12 @@ function CallTree({ proposal, isLoading }) {
     );
   }
 
-  return <CallTreeView proposal={proposal} />;
+  return <CallTreeView proposal={call} />;
 }
 
 export default function Proposal({
   call = {},
-  rawCall = null,
-  isRawCallLoading = false,
+  preImageHash,
   shorten,
   proposalIndex,
   motionIndex,
@@ -330,9 +358,7 @@ export default function Proposal({
             selectedTabId={selectedTabId}
             setSelectedTabId={setSelectedTabId}
           />
-          {selectedTabId === "tree" && (
-            <CallTree proposal={rawCall} isLoading={isRawCallLoading} />
-          )}
+          {selectedTabId === "tree" && <CallTree preImageHash={preImageHash} />}
           {selectedTabId === "table" && (
             <ArgsWrapper className="wrapper text-textPrimary">
               <InnerDataTable data={dataTableData} />

@@ -3,25 +3,32 @@ import { useCallback, useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { hexToU8a } from "@polkadot/util";
 
-export default function useCallFromProposalHex() {
+export default function useCallFromProposalHex(
+  proposalHex,
+  isLoadingProposalHex,
+) {
   const api = useApi();
   const onchainData = useOnchainData();
-  const { indexer, proposal } = onchainData || {};
+  const { indexer } = onchainData || {};
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  const decodeCall = useCallback(async (hex, blockHash, api) => {
+  const decodeCall = useCallback(async (proposalHex, blockHash, api) => {
     let blockApi = api;
     if (blockHash) {
       blockApi = await api.at(blockHash);
     }
-    const bytes = hexToU8a(hex);
+    const bytes = hexToU8a(proposalHex);
     const callData = blockApi.registry.createType("Bytes", bytes);
     return blockApi.registry.createType("Call", callData);
   }, []);
 
   useEffect(() => {
-    if (!proposal?.hex) {
+    if (isLoadingProposalHex) {
+      return;
+    }
+
+    if (!proposalHex) {
       setIsLoading(false);
       return;
     }
@@ -30,7 +37,7 @@ export default function useCallFromProposalHex() {
       return;
     }
 
-    decodeCall(proposal.hex, indexer?.blockHash, api)
+    decodeCall(proposalHex, indexer?.blockHash, api)
       .then((callInfo) => {
         if (callInfo) {
           setCall(callInfo);
@@ -40,7 +47,7 @@ export default function useCallFromProposalHex() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, proposal, decodeCall]);
+  }, [api, isLoadingProposalHex, proposalHex, decodeCall]);
 
   return [call, isLoading];
 }
