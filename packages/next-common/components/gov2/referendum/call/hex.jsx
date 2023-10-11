@@ -3,11 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { hexToU8a } from "@polkadot/util";
 
-export default function useCallFromHex() {
+export default function useCallFromProposalHex() {
   const api = useApi();
   const onchainData = useOnchainData();
   const { indexer, proposal } = onchainData || {};
   const [call, setCall] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const decodeCall = useCallback(async (hex, blockHash, api) => {
     let blockApi = api;
@@ -20,16 +21,26 @@ export default function useCallFromHex() {
   }, []);
 
   useEffect(() => {
-    if (!proposal?.hex || !api) {
+    if (!proposal?.hex) {
+      setIsLoading(false);
       return;
     }
 
-    decodeCall(proposal.hex, indexer?.blockHash, api).then((callInfo) => {
-      if (callInfo) {
-        setCall(callInfo);
-      }
-    });
+    if (!api) {
+      return;
+    }
+
+    decodeCall(proposal.hex, indexer?.blockHash, api)
+      .then((callInfo) => {
+        if (callInfo) {
+          setCall(callInfo);
+        }
+      })
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [api, proposal, decodeCall]);
 
-  return call;
+  return [call, isLoading];
 }

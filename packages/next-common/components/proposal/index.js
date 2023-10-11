@@ -20,6 +20,7 @@ import Tab from "../tab";
 import { useLocalStorage } from "usehooks-ts";
 import ProposalChildCalls from "./childCalls";
 import CallTreeView from "../callTreeView";
+import Loading from "../loading";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -233,9 +234,21 @@ const tabs = [
   { tabId: "json", tabTitle: "JSON" },
 ];
 
-function CallTree({ proposal }) {
+function CallTree({ proposal, isLoading }) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-[24px]">
+        <Loading size={20} />
+      </div>
+    );
+  }
+
   if (!proposal) {
-    return null;
+    return (
+      <div className="flex justify-center py-[24px] text-textTertiary text14Medium">
+        <span>Fail to parse</span>
+      </div>
+    );
   }
 
   return <CallTreeView proposal={proposal} />;
@@ -243,7 +256,8 @@ function CallTree({ proposal }) {
 
 export default function Proposal({
   call = {},
-  proposal = null,
+  rawCall = null,
+  isRawCallLoading = false,
   shorten,
   proposalIndex,
   motionIndex,
@@ -317,9 +331,7 @@ export default function Proposal({
             setSelectedTabId={setSelectedTabId}
           />
           {selectedTabId === "tree" && (
-            <ArgsWrapper className="wrapper text-textPrimary">
-              <CallTree proposal={proposal} />
-            </ArgsWrapper>
+            <CallTree proposal={rawCall} isLoading={isRawCallLoading} />
           )}
           {selectedTabId === "table" && (
             <ArgsWrapper className="wrapper text-textPrimary">
