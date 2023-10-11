@@ -11,6 +11,7 @@ export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const { call: inlineCall } = onchainData?.inlineCall || {};
+  const preImageHash = onchainData?.proposalHash;
 
   const data = [
     onchainData?.proposalHash
@@ -24,7 +25,7 @@ export default function Gov2ReferendumCall() {
           <Proposal
             key={"call"}
             call={inlineCall}
-            preImageHash={onchainData?.proposalHash}
+            preImageHash={preImageHash}
           />,
         ]
       : null,
@@ -33,8 +34,8 @@ export default function Gov2ReferendumCall() {
           <Proposal
             key={"call"}
             call={proposal?.call}
-            preImageHash={onchainData?.proposalHash}
             shorten={proposal?.shorten}
+            preImageHash={preImageHash}
           />,
         ]
       : null,

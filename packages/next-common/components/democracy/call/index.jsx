@@ -11,6 +11,7 @@ import extractRemarkMetaFields from "next-common/components/common/call/remarks"
 export default function ReferendumCall({ call, shorten, onchainData = {} }) {
   const hash = useDemocracyReferendumHash();
   const chain = useChain();
+  const preImageHash = onchainData.preImage?.hash;
 
   const data = [
     ["Hash", <Copyable key="hash">{hash}</Copyable>],
@@ -18,6 +19,7 @@ export default function ReferendumCall({ call, shorten, onchainData = {} }) {
       <Proposal
         key={"call"}
         call={call}
+        preImageHash={preImageHash}
         shorten={shorten}
         referendumIndex={onchainData.referendumIndex}
       />,
