@@ -1,42 +1,29 @@
 import React from "react";
 import InputOrigin from "./input";
-import {
-  border_hidden,
-  cursor_pointer,
-  flex,
-  flex_1,
-  flex_col,
-  h_full,
-  items_center,
-  justify_center,
-  w,
-} from "../styles/tailwindcss";
 import styled from "styled-components";
 import noop from "lodash.noop";
 import DividerOrigin from "./styled/layout/divider";
 import Caret from "./icons/caret";
+import tw from "tailwind-styled-components";
 
 const Divider = styled(DividerOrigin)`
   background-color: var(--neutral400);
 `;
 
-const NumberController = styled.div`
-  ${flex};
-  ${flex_col};
-  ${w(46)};
-  ${h_full};
-  ${border_hidden};
+const TwNumberController = tw.div`
+  flex flex-col
+  w-[46px] h-full
+  border-none
+`;
+const NumberController = styled(TwNumberController)`
   box-shadow: -1px 0 0 0 var(--neutral400);
 `;
 
-const NumberSteper = styled.button`
-  ${flex};
-  ${items_center};
-  ${justify_center};
-  ${border_hidden};
-  background-color: transparent;
-  ${cursor_pointer};
-  ${flex_1};
+const NumberSteper = tw.button`
+  flex items-center justify-center flex-1
+  border-none
+  bg-transparent
+  cursor-pointer
 `;
 
 const Input = styled(InputOrigin)`

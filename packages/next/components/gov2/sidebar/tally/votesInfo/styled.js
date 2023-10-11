@@ -1,32 +1,18 @@
-import styled from "styled-components";
-import {
-  flex,
-  gap_x,
-  items_center,
-  justify_between,
-} from "next-common/styles/tailwindcss";
-import { p_12_medium } from "next-common/styles/componentCss";
+import tw from "tailwind-styled-components";
 
-export const VotesGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 16px;
-  gap: 8px;
+export const VotesGroup = tw.div`
+  flex flex-col gap-2
+  mt-4
 `;
 
-export const VotesInfoLine = styled.div`
-  ${flex};
-  ${items_center};
-  ${justify_between};
+export const VotesInfoLine = tw.div`
+  flex items-center justify-between
 `;
 
-export const VotesGroupLabel = styled.div`
-  ${p_12_medium};
-  color: var(--textPrimary);
+export const VotesGroupLabel = tw.div`
+  text12Medium text-textPrimary
 `;
 
-export const VotesGroupItems = styled.div`
-  ${flex};
-  ${items_center};
-  ${gap_x(12)};
+export const VotesGroupItems = tw.div`
+  flex items-center gap-x-3
 `;

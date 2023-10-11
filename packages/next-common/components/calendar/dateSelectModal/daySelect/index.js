@@ -2,16 +2,6 @@ import React from "react";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import styled from "styled-components";
-import {
-  gap_x,
-  gap_y,
-  hidden,
-  h_full,
-  max_h,
-  p,
-  p_x,
-  p_y,
-} from "../../../../styles/tailwindcss";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import CalendarToolbar from "./toolbar";
 import CalendarMonthHeader from "./monthHeader";
@@ -28,40 +18,42 @@ const CalendarWrapper = styled.div`
 
   .rbc-month-view {
     border: none;
-    ${gap_y(4)}
+    row-gap: 4px;
 
     .rbc-month-header,
     .rbc-month-row .rbc-row-content .rbc-row {
-      ${gap_x(4)}
+      column-gap: 4px;
     }
 
     .rbc-month-header {
-      ${p_y(8)}
+      padding-top: 8px;
+      padding-bottom: 8px;
 
       .rbc-header {
         border: none;
-        ${p_x(8)}
+        padding-left: 8px;
+        padding-right: 8px;
       }
     }
 
     .rbc-month-row {
       border: none;
       overflow: visible;
-      ${max_h(48)}
+      max-height: 48px;
       .rbc-row-bg {
-        ${hidden}
+        display: none;
       }
       .rbc-row-content {
-        ${h_full}
+        height: 100%;
         .rbc-row {
-          ${h_full}
+          height: 100%;
         }
         .rbc-date-cell {
-          ${p(0)}
+          padding: 0;
         }
         /* events row, hide it */
         .rbc-row .rbc-row-segment {
-          ${hidden};
+          display: none;
         }
       }
     }
