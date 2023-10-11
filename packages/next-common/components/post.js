@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
-import { p_14_medium } from "next-common/styles/componentCss";
 import MotionElapse from "next-common/components/motionElapse";
 import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
 import CommentIcon from "../assets/imgs/icons/comment.svg";
@@ -37,6 +36,7 @@ import PostListCardVotesSummaryBar from "./postList/votesSummaryBar";
 import SystemUser from "./user/systemUser";
 import AddressUser from "./user/addressUser";
 import PolkassemblyUser from "./user/polkassemblyUser";
+import tw from "tailwind-styled-components";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -110,19 +110,13 @@ const TitleExtraValue = styled(Flex)`
     color: var(--textTertiary);
   }
 `;
-const TitleExtra = styled(Flex)`
-  align-items: flex-start;
-  color: var(--textTertiary);
-  padding: 2px 0;
-  margin-left: 8px;
-  ${p_14_medium};
-
-  ${smcss(css`
-    margin-top: 8px;
-    margin-left: 0;
-  `)}
+const TitleExtra = tw.div`
+  text14Medium
+  flex items-start
+  py-0.5 ml-2
+  text-textTertiary
+  max-sm:mt-2 max-sm:ml-0
 `;
-
 const HeadWrapper = styled.div`
   display: flex;
   justify-content: space-between;
