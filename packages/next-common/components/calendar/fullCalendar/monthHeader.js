@@ -1,18 +1,4 @@
 import React from "react";
-import styled from "styled-components";
-import { p_12_bold } from "../../../styles/componentCss";
-import { hidden, text_uppercase } from "../../../styles/tailwindcss";
-import { smcss } from "../../../utils/responsive";
-
-const Label = styled.div`
-  ${p_12_bold}
-  color: var(--textTertiary);
-  ${text_uppercase}
-  text-align: left;
-`;
-const Rest = styled.span`
-  ${smcss(hidden)}
-`;
 
 /**
  * @param {import("react-big-calendar").HeaderProps}
@@ -21,9 +7,9 @@ export default function FullCalendarMonthHeader({ label }) {
   const [first, ...rest] = label;
 
   return (
-    <Label>
+    <div className="text12Bold text-textTertiary uppercase text-left">
       {first}
-      <Rest>{rest.join("")}</Rest>
-    </Label>
+      <span className="max-sm:hidden">{rest.join("")}</span>
+    </div>
   );
 }
