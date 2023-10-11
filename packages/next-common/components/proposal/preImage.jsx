@@ -7,15 +7,30 @@ export default function usePreImageCall(preImage, isLoadingPreImage) {
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  const decodeCall = useCallback(async (proposalHex, blockHash, api) => {
-    let blockApi = api;
-    if (blockHash) {
-      blockApi = await api.at(blockHash);
-    }
-    const bytes = hexToU8a(proposalHex);
-    const callData = blockApi.registry.createType("Bytes", bytes);
-    return blockApi.registry.createType("Call", callData);
-  }, []);
+  const decodeGov2PreImageCall = useCallback(
+    async (proposalHex, blockHash, api) => {
+      let blockApi = api;
+      if (blockHash) {
+        blockApi = await api.at(blockHash);
+      }
+      const bytes = hexToU8a(proposalHex);
+      const callData = blockApi.registry.createType("Bytes", bytes);
+      return blockApi.registry.createType("Call", callData);
+    },
+    [],
+  );
+
+  const decodeDemocracyPreImageCall = useCallback(
+    async (proposalHex, blockHash, api) => {
+      let blockApi = api;
+      if (blockHash) {
+        blockApi = await api.at(blockHash);
+      }
+      const bytes = hexToU8a(proposalHex);
+      return blockApi.registry.createType("Proposal", bytes);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (isLoadingPreImage) {
@@ -31,8 +46,16 @@ export default function usePreImageCall(preImage, isLoadingPreImage) {
       return;
     }
 
-    const proposalHex = preImage?.hex || preImage?.data;
     const blockHash = preImage?.indexer.blockHash;
+    let proposalHex = preImage?.hex;
+    let decodeCall = decodeGov2PreImageCall;
+
+    if (!proposalHex) {
+      // Democracy preImage
+      proposalHex = preImage?.data;
+      decodeCall = decodeDemocracyPreImageCall;
+    }
+
     decodeCall(proposalHex, blockHash, api)
       .then((callInfo) => {
         if (callInfo) {
@@ -43,7 +66,13 @@ export default function usePreImageCall(preImage, isLoadingPreImage) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, isLoadingPreImage, preImage, decodeCall]);
+  }, [
+    api,
+    isLoadingPreImage,
+    preImage,
+    decodeGov2PreImageCall,
+    decodeDemocracyPreImageCall,
+  ]);
 
   return { call, isLoading };
 }
