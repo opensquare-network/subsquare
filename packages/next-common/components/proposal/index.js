@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 
 import InnerDataTable from "../table/innerDataTable";
@@ -19,10 +19,7 @@ import Tooltip from "../tooltip";
 import Tab from "../tab";
 import { useLocalStorage } from "usehooks-ts";
 import ProposalChildCalls from "./childCalls";
-import CallTreeView from "../callTreeView";
-import Loading from "../loading";
-import useCallFromProposalHex from "../gov2/referendum/call/hex";
-import nextApi from "next-common/services/nextApi";
+import CallTree from "./callTree";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
@@ -235,53 +232,6 @@ const tabs = [
   { tabId: "table", tabTitle: "Table" },
   { tabId: "json", tabTitle: "JSON" },
 ];
-
-function CallTree({ preImageHash }) {
-  const [proposalHex, setProposalHex] = useState();
-  const [isLoadingProposalHex, setIsLoadingProposalHex] = useState(true);
-  const [call, isLoading] = useCallFromProposalHex(
-    proposalHex,
-    isLoadingProposalHex,
-  );
-
-  useEffect(() => {
-    if (!preImageHash) {
-      setIsLoadingProposalHex(false);
-      return;
-    }
-
-    nextApi
-      .fetch(`pre-images/${preImageHash}`)
-      .then(({ result, error }) => {
-        if (error) {
-          return;
-        }
-
-        setProposalHex(result?.hex || result?.data);
-      })
-      .finally(() => {
-        setIsLoadingProposalHex(false);
-      });
-  }, [preImageHash]);
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-[24px]">
-        <Loading size={20} />
-      </div>
-    );
-  }
-
-  if (!call) {
-    return (
-      <div className="flex justify-center py-[24px] text-textTertiary text14Medium">
-        <span>Fail to parse</span>
-      </div>
-    );
-  }
-
-  return <CallTreeView proposal={call} />;
-}
 
 export default function Proposal({
   call = {},

@@ -1,15 +1,9 @@
-import { useOnchainData } from "next-common/context/post";
 import { useCallback, useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { hexToU8a } from "@polkadot/util";
 
-export default function useCallFromProposalHex(
-  proposalHex,
-  isLoadingProposalHex,
-) {
+export default function usePreImageCall(preImage, isLoadingPreImage) {
   const api = useApi();
-  const onchainData = useOnchainData();
-  const { indexer } = onchainData || {};
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,11 +18,11 @@ export default function useCallFromProposalHex(
   }, []);
 
   useEffect(() => {
-    if (isLoadingProposalHex) {
+    if (isLoadingPreImage) {
       return;
     }
 
-    if (!proposalHex) {
+    if (!preImage) {
       setIsLoading(false);
       return;
     }
@@ -37,7 +31,9 @@ export default function useCallFromProposalHex(
       return;
     }
 
-    decodeCall(proposalHex, indexer?.blockHash, api)
+    const proposalHex = preImage?.hex || preImage?.data;
+    const blockHash = preImage?.indexer.blockHash;
+    decodeCall(proposalHex, blockHash, api)
       .then((callInfo) => {
         if (callInfo) {
           setCall(callInfo);
@@ -47,7 +43,7 @@ export default function useCallFromProposalHex(
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, isLoadingProposalHex, proposalHex, decodeCall]);
+  }, [api, isLoadingPreImage, preImage, decodeCall]);
 
-  return [call, isLoading];
+  return { call, isLoading };
 }
