@@ -42,7 +42,7 @@ export default function CalendarMonthDateCell({
         className={cn(
           "text12Bold text-textSecondary text-center",
           "m-0",
-          isSameMonth && "text-textTertiary",
+          !isSameMonth && "text-textTertiary",
           isPast && "text-textDisabled",
         )}
       >
