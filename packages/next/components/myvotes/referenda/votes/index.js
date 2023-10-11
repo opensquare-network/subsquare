@@ -6,20 +6,12 @@ import { Title } from "../../styled";
 import myFilteredReferendaPriorLocksSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
 import PriorLocks from "./priors";
 import WithAllVotesLink from "../../common/withAllVotesLink";
+import VotesListTitle from "../../common/votesListTitle";
 
 const tabs = Object.freeze({
   votes: 1,
   priors: 2,
 });
-
-function VotesListTitle({ length, disabled }) {
-  return (
-    <div className="flex gap-[8px]">
-      <Title disabled={disabled}>On-chain Votes</Title>
-      <span className="text-textTertiary">{length || 0}</span>
-    </div>
-  );
-}
 
 function PriorLocksTitle({ disabled }) {
   const filteredLocks = useSelector(myFilteredReferendaPriorLocksSelector);
