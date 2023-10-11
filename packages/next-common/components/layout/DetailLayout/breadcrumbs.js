@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { useNavCollapsed } from "next-common/context/nav";
 import useBreadcrumbs from "next-common/components/layout/DetailLayout/useBreadcrumbs";
@@ -13,7 +13,7 @@ export default function Breadcrumbs({ breadcrumbs, hasSidebar }) {
   const finalBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
   return (
     <div
-      className={clsx(
+      className={cn(
         "mb-6 px-12",
         "w-full",
         hasSidebar ? "max-w-[calc(100%-320px-24px)]" : "max-w-full",

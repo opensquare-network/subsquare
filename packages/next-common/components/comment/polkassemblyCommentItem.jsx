@@ -4,7 +4,7 @@ import {
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import PolkassemblyActions from "../polkassembly/actions";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 import { LinkPolkassembly } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
@@ -38,7 +38,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
               externalIcon={false}
             >
               <LinkPolkassembly
-                className={clsx(
+                className={cn(
                   "w-4 h-4",
                   "[&_path]:fill-textTertiary",
                   "[&_path]:hover:fill-textSecondary",

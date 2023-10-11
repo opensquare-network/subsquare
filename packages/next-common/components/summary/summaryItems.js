@@ -1,11 +1,11 @@
 import Content from "./cardContent";
 import { SummaryTitle } from "./styled";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 export default function SummaryItems({ items, className }) {
   return (
     <div
-      className={clsx(
+      className={cn(
         "w-full grid grid-cols-4 max-sm:grid-cols-2 gap-4",
         className,
       )}

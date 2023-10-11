@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import Divider from "../styled/layout/divider";
 import TabsList from "./tabsList";
 import noop from "lodash.noop";
@@ -38,7 +38,7 @@ export default function Tabs({
             cached[tab.label] && (
               <div
                 key={idx}
-                className={clsx(
+                className={cn(
                   "hidden",
                   activeTabLabel === tab.label && "!block",
                 )}

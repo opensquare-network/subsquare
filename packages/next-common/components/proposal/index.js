@@ -14,7 +14,7 @@ import needCheckUtf8 from "./needCheckUtf8";
 import Popup from "../popup/wrapper/Popup";
 import { ThemedTag } from "../tags/state/styled";
 import { InfoDocs } from "@osn/icons/subsquare";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
 import Tab from "../tab";
 import { useLocalStorage } from "usehooks-ts";
@@ -279,7 +279,7 @@ export default function Proposal({
           <Tooltip content="Call Detail">
             <InfoDocs
               role="button"
-              className={clsx(
+              className={cn(
                 "w-4 h-4 relative top-[0.5px]",
                 "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
                 "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",

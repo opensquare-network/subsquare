@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import Divider from "../styled/layout/divider";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import noop from "lodash.noop";
 import Duration from "../duration";
@@ -28,15 +28,15 @@ const CommentItemTemplate = forwardRef(function Comp(
   return (
     <div
       ref={ref}
-      className={clsx(
+      className={cn(
         "relative",
         "group/comment-item first:mt-0",
         isSecondLevel ? "mt-4" : "mt-8",
         highlight &&
-          clsx(
+          cn(
             "bg-neutral200 -mx-12 px-12 py-4 !mt-4",
             "max-md:-mx-6 max-md:px-6",
-            isSecondLevel && clsx("-ml-4 pl-4", "max-md:-ml-4 max-md:pl-4"),
+            isSecondLevel && cn("-ml-4 pl-4", "max-md:-ml-4 max-md:pl-4"),
           ),
         className,
       )}
@@ -82,7 +82,7 @@ const CommentItemTemplate = forwardRef(function Comp(
 
       {!isSecondLevel && (
         <Divider
-          className={clsx(
+          className={cn(
             "group-last/comment-item:hidden",
             "ml-7 relative top-4",
           )}

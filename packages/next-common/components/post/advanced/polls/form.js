@@ -12,7 +12,7 @@ import InputOptions from "./inputOptions";
 import FormItem from "../formItem";
 import DatePicker from "../../../datePicker";
 import dayjs from "dayjs";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
   const [endTime, setEndTime] = useState(null);
@@ -103,7 +103,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
           <button
             disabled={disabled}
             onClick={handleAddOption}
-            className={clsx(
+            className={cn(
               "text12Medium text-theme500",
               disabled && "cursor-not-allowed !text-textDisabled",
             )}

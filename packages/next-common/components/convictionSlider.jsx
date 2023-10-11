@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import ReactSlider from "react-slider";
 import ThumbSvg from "./slider/thumb.svg";
 import {
@@ -40,7 +40,7 @@ export default function ConvictionSlider({
   return (
     <ReactSlider
       value={value}
-      className={clsx("cursor-grab h-12 select-none", disabled && "opacity-70")}
+      className={cn("cursor-grab h-12 select-none", disabled && "opacity-70")}
       onChange={(val) => {
         setValue(val);
       }}
@@ -53,7 +53,7 @@ export default function ConvictionSlider({
         <div
           {...props}
           style={{ ...props.style, zIndex: 0 }}
-          className={clsx(
+          className={cn(
             props.className,
             "top-6",
             "flex items-center justify-center",
@@ -69,14 +69,14 @@ export default function ConvictionSlider({
         <div
           {...props}
           style={{ ...props.style, zIndex: -1 }}
-          className={clsx(props.className, "flex flex-col")}
+          className={cn(props.className, "flex flex-col")}
         >
           <div className="text12Medium text-textSecondary mb-2 text-center">
             {convictionToLockX(props.key)}
           </div>
           <div className="w-6 h-6 flex items-center justify-center">
             <span
-              className={clsx(
+              className={cn(
                 "inline-block w-2 h-3 rounded-sm bg-neutral200",
                 value > props.key && "bg-theme500",
               )}
@@ -88,7 +88,7 @@ export default function ConvictionSlider({
       renderTrack={(props, state) => (
         <div
           {...props}
-          className={clsx(
+          className={cn(
             props.className,
             "h-1.5 bg-neutral400",
             state.index === 0 && "bg-theme300",

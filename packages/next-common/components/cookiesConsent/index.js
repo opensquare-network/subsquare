@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 import isNil from "lodash.isnil";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
 import PrimaryButton from "../buttons/primaryButton";
 
@@ -30,14 +30,14 @@ export default function CookiesConsent() {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         " w-[432px] max-sm:w-full",
         "fixed right-6 bottom-24",
         "max-sm:right-0 max-sm:left-0 max-sm:bottom-12",
       )}
     >
       <div
-        className={clsx(
+        className={cn(
           "bg-neutral100 shadow-100",
           "border border-neutral300 rounded-lg p-6",
           "space-y-4",

@@ -7,7 +7,7 @@ import BigNumber from "bignumber.js";
 import { useChainSettings } from "next-common/context/chain";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import { Header } from "next-common/components/statistics/styled";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import VoteTrend from "next-common/components/statistics/track/voteTrend";
 import AddressTrend from "next-common/components/statistics/track/addressTrend";
@@ -36,7 +36,7 @@ export default function DemocracyStatisticsPage({
         <div>
           <Header className="px-6 mb-4">Referenda</Header>
           <div
-            className={clsx(
+            className={cn(
               "flex gap-4 flex-wrap",
               "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
               !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",

@@ -1,5 +1,5 @@
 import { SystemLoading } from "@osn/icons/subsquare";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import flatten from "lodash.flatten";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -72,9 +72,9 @@ export default function VotesBubble({
         </div>
       )}
 
-      <div className={clsx(isFirst && "h-0 opacity-0 overflow-hidden")}>
+      <div className={cn(isFirst && "h-0 opacity-0 overflow-hidden")}>
         <div
-          className={clsx(props.className, "w-full h-[480px] max-sm:h-80")}
+          className={cn(props.className, "w-full h-[480px] max-sm:h-80")}
           {...props}
           ref={ref}
         >
@@ -85,7 +85,7 @@ export default function VotesBubble({
             width={size.width}
             height={size.height}
             bubbleClassName={(node) =>
-              clsx(
+              cn(
                 node.data.aye && "fill-green300 stroke-green500",
                 node.data.aye === false && "fill-red300 stroke-red500",
                 node.data.isAbstain && "fill-neutral400 stroke-neutral500",

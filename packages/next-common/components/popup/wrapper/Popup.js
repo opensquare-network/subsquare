@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import * as Dialog from "@radix-ui/react-dialog";
 import noop from "lodash.noop";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
 
 let z = 999;
@@ -35,7 +35,7 @@ export default function Popup({
             }}
           >
             <NeutralPanel
-              className={clsx(
+              className={cn(
                 "relative mt-[12vh] mb-4",
                 "w-[400px] max-w-full",
                 wide && "sm:w-[480px]",

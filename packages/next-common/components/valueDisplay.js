@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Tooltip from "./tooltip";
 import { abbreviateBigNumber, getEffectiveNumbers } from "../utils/viewfuncs";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 const NotEqual = styled.div`
   ::before {
@@ -23,7 +23,7 @@ export default function ValueDisplay({
 
   if (isNaN(value) || noWrap) {
     return (
-      <div className={clsx("inline-flex items-center", className)}>
+      <div className={cn("inline-flex items-center", className)}>
         <span>
           {value}
           {symbolContent}
@@ -42,7 +42,7 @@ export default function ValueDisplay({
     );
     if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
       display = (
-        <NotEqual className={clsx("inline-flex items-center", className)}>
+        <NotEqual className={cn("inline-flex items-center", className)}>
           {display}
         </NotEqual>
       );
@@ -59,7 +59,7 @@ export default function ValueDisplay({
   if (decimal?.length > 5) {
     const shortDecimal = decimal.substring(0, 5);
     let display = (
-      <NotEqual className={clsx("inline-flex items-center", className)}>
+      <NotEqual className={cn("inline-flex items-center", className)}>
         <span title={showTooltip ? "" : tooltipContent}>
           {int}.{shortDecimal}
           {symbolContent}
@@ -75,7 +75,7 @@ export default function ValueDisplay({
   }
 
   return (
-    <div className={clsx("inline-flex items-center", className)}>
+    <div className={cn("inline-flex items-center", className)}>
       <span>{Number(value)?.toLocaleString()}&nbsp;</span>
       {symbolContent}
     </div>

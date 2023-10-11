@@ -6,7 +6,7 @@ import Flex from "../styled/flex";
 import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
 import Tooltip from "../tooltip";
 import useDuration from "../../utils/hooks/useDuration";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 const Wrapper = styled.div`
   display: flex;
@@ -142,7 +142,7 @@ export default function Item({
     <Wrapper
       foldable={foldable}
       isFold={isFold}
-      className={clsx("group/timeline-item", className)}
+      className={cn("group/timeline-item", className)}
     >
       <Left>
         <Cirtcle />
@@ -164,7 +164,7 @@ export default function Item({
             </TagWrapper>
           )}
           <FoldButton
-            className={clsx("fold-button", compact && "!hidden")}
+            className={cn("fold-button", compact && "!hidden")}
             isFold={isFold}
             onClick={() => setIsFold(!isFold)}
           >
@@ -172,7 +172,7 @@ export default function Item({
           </FoldButton>
         </TitleWrapper>
 
-        <ContentWrapper className={clsx(compact && "hidden")}>
+        <ContentWrapper className={cn(compact && "hidden")}>
           {data.data &&
             (React.isValidElement(data.data)
               ? data.data
@@ -189,7 +189,7 @@ export default function Item({
                   </ContentItem>
                 )))}
         </ContentWrapper>
-        <LinkWrapper className={clsx(compact && "!hidden")}>
+        <LinkWrapper className={cn(compact && "!hidden")}>
           <ExplorerLinks indexer={data.indexer} />
         </LinkWrapper>
       </Right>

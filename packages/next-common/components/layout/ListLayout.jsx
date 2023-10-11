@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import BaseLayout from "./baseLayout";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -83,23 +83,19 @@ export default function ListLayout({
   return (
     <BaseLayout seoInfo={seoInfo}>
       <div className="bg-neutral100 border-b border-neutral300">
-        <div
-          className={clsx("px-12 py-6 mx-auto max-w-[1200px]", "max-sm:px-6")}
-        >
+        <div className={cn("px-12 py-6 mx-auto max-w-[1200px]", "max-sm:px-6")}>
           {header || listHeader}
         </div>
 
         {tabs?.length > 0 && (
-          <div className={clsx("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
+          <div className={cn("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
             <Tabs tabs={tabs} />
           </div>
         )}
       </div>
 
       <div className="flex-1">
-        <div
-          className={clsx("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}
-        >
+        <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>
           {children}
         </div>
       </div>
@@ -119,7 +115,7 @@ function Tabs({ tabs = [] }) {
     <ul className="flex space-x-6">
       {tabs.map((tab, idx) => {
         const isExternal = isExternalLink(tab.url);
-        const itemClassName = clsx(
+        const itemClassName = cn(
           "block pb-3",
           "text14Bold border-b-4 text-textPrimary",
           "hover:text-theme500",
@@ -132,7 +128,7 @@ function Tabs({ tabs = [] }) {
               <Link
                 href={tab.url}
                 target={isExternal ? "_blank" : "_self"}
-                className={clsx(
+                className={cn(
                   itemClassName,
                   tab.active ??
                     (tab.exactMatch === false
@@ -152,7 +148,7 @@ function Tabs({ tabs = [] }) {
             ) : (
               <div
                 role="button"
-                className={clsx(
+                className={cn(
                   itemClassName,
                   tab.active ? itemActiveClassName : "border-transparent",
                 )}

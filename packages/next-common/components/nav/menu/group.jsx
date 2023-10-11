@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { capitalize } from "lodash";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -61,7 +61,7 @@ export default function NavMenuGroup({
               extra={
                 <span>
                   <ArrowDown
-                    className={clsx(
+                    className={cn(
                       submenuVisible && "rotate-180",
                       "[&_path]:stroke-navigationTextTertiary",
                     )}
@@ -91,7 +91,7 @@ export default function NavMenuGroup({
       </li>
       {!!menu.items?.length && (
         <SubMenuItems
-          className={clsx(submenuVisible ? "block" : "hidden", "pl-9")}
+          className={cn(submenuVisible ? "block" : "hidden", "pl-9")}
           items={menu.items}
         />
       )}

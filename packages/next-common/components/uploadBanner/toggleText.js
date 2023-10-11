@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 function ToggleText({
   disabled = false,
@@ -15,7 +15,7 @@ function ToggleText({
 
   return (
     <button
-      className={clsx(
+      className={cn(
         "text14Medium select-none text-theme500",
         disabled && "cursor-not-allowed !text-textDisabled",
       )}

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 
 import Icon from "next-common/assets/imgs/icons/circle-question.svg";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 const IconWrapper = styled.div`
   cursor: pointer;
@@ -28,7 +28,7 @@ export default function Tooltip({
   const [open, setOpen] = React.useState(false);
 
   const tooltipTrigger = children ? (
-    <div className={clsx("inline-block", className)} style={style}>
+    <div className={cn("inline-block", className)} style={style}>
       {children}
     </div>
   ) : (
@@ -40,7 +40,7 @@ export default function Tooltip({
       <RadixTooltip.Content
         sideOffset={sideOffset}
         side={side}
-        className={clsx(
+        className={cn(
           "z-[10000] rounded py-1.5 px-3",
           "text12Normal text-textPrimaryContrast break-words",
           "bg-tooltipBg",

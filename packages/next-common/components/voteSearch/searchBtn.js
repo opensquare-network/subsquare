@@ -1,10 +1,10 @@
 import { SystemSearch } from "@osn/icons/subsquare";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 export default function SearchBtn({ showSearch, setShowSearch, setSearch }) {
   return (
     <div
-      className={clsx(
+      className={cn(
         "cursor-pointer",
         showSearch
           ? "[&_path]:fill-textSecondary"
