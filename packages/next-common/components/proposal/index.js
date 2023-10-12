@@ -228,10 +228,14 @@ function convertProposalForJsonView(proposal, chain) {
   };
 }
 
-const tabs = [
-  { tabId: "tree", tabTitle: "Tree" },
+const tabsNoTreeView = [
   { tabId: "table", tabTitle: "Table" },
   { tabId: "json", tabTitle: "JSON" },
+];
+
+const tabsWithTreeView = [
+  { tabId: "tree", tabTitle: "Tree" },
+  ...tabsNoTreeView,
 ];
 
 export default function Proposal({
@@ -244,10 +248,19 @@ export default function Proposal({
 }) {
   const chain = useChain();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
-  const [selectedTabId, setSelectedTabId] = useLocalStorage(
+
+  const tabs = preImageHash ? tabsWithTreeView : tabsNoTreeView;
+
+  const [storageTabId, setStorageTabId] = useLocalStorage(
     "callType",
     tabs[0].tabId,
   );
+  // When the storage call type is tree, but tree view is unavailable here,
+  // just use the first available call type instead.
+  const selectedTabId =
+    tabs.find((item) => item.tabId === storageTabId)?.tabId || tabs[0].tabId;
+  const setSelectedTabId = setStorageTabId;
+
   const { call: rawCall, isLoading: isLoadingRawCall } =
     usePreImageCallFromHash(preImageHash);
 
