@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { MenuNavigation } from "@osn/icons/subsquare";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 export default function NavCommonMenu({ collapsed }) {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ export default function NavCommonMenu({ collapsed }) {
           collapsed={collapsed}
           extra={
             <span
-              className={clsx(
+              className={cn(
                 "bg-navigationActive rounded py-0.5 px-2",
                 "text12Medium text-navigationTextTertiary",
               )}

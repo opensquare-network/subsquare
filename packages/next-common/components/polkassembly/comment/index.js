@@ -7,7 +7,7 @@ import NoComment from "next-common/components/comment/noComment";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 const LoadingDiv = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ export default function PolkassemblyComments({
   return (
     <div>
       <div className="mb-4">
-        <TitleContainer className={clsx("w-full !px-0", "!block")}>
+        <TitleContainer className={cn("w-full !px-0", "!block")}>
           <div className="text14Bold">Comments</div>
           {tabs && <div className="mt-4">{tabs}</div>}
         </TitleContainer>

@@ -1,5 +1,5 @@
-import { p_12_bold } from "next-common/styles/componentCss";
 import styled from "styled-components";
+import tw from "tailwind-styled-components";
 
 export const StyledTable = styled.table`
   width: 100%;
@@ -7,13 +7,11 @@ export const StyledTable = styled.table`
   color: var(--textPrimary);
 `;
 
-export const StyledTh = styled.th`
-  ${p_12_bold};
-  letter-spacing: 0.16em;
-  color: var(--textTertiary);
-  padding-top: 8px;
-  padding-bottom: 16px;
-  height: 12px;
+export const StyledTh = tw.th`
+  text12Bold text-textTertiary
+  tracking-[0.16em]
+  pt-2 pb-4
+  h-3
 `;
 
 export const StyledTd = styled.td`

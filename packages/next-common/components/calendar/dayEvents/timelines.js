@@ -1,64 +1,17 @@
 import dayjs from "dayjs";
 import groupBy from "lodash.groupby";
 import React from "react";
-import styled from "styled-components";
-import { p_12_medium, p_14_normal } from "../../../styles/componentCss";
-import {
-  flex,
-  gap_x,
-  h,
-  items_center,
-  justify_center,
-  m,
-  m_l,
-  p_b,
-  w,
-  w_full,
-} from "../../../styles/tailwindcss";
 import EventInfoCard from "./eventInfoCard";
 import FutureEventInfoCard from "./futureEventInfoCard";
 import Loading from "../../loading";
 import { EventType } from "./eventInfoCard/utils";
 import { FutureEventType } from "./futureEventInfoCard/futureEventType";
 import UserEventInfoCard from "./userEventInfoCard";
+import tw from "tailwind-styled-components";
 
-const TimeLineHour = styled.div`
-  ${w(40)}
-  ${p_12_medium}
-  color: var(--textTertiary);
-  text-align: right;
-`;
-const TimeLineSolid = styled.div`
-  ${w_full}
-  ${h(1)}
-  background-color: var(--neutral200);
-`;
-const TimeLineContent = styled.div`
-  ${m_l(48)}
-  & > :not(:first-child) {
-    margin-top: 8px;
-  }
-`;
-const TimelineItem = styled.div`
-  ${flex}
-  ${gap_x(8)}
-  ${items_center}
-`;
-const TimelineWrapper = styled.div`
-  ${p_b(16)}
-`;
-
-const StatusWrapper = styled.div`
-  ${flex}
-  ${items_center}
-  ${justify_center}
-  ${h(44)}
-`;
-
-const NoData = styled.p`
-  ${p_14_normal}
-  color: var(--textTertiary);
-  ${m(0)}
+const StatusWrapper = tw.div`
+  flex items-center justify-center
+  h-11
 `;
 
 function joinSortedEvents(events, userEvents, futureEvents) {
@@ -73,13 +26,15 @@ function joinSortedEvents(events, userEvents, futureEvents) {
 
 function Timeline({ children, hour }) {
   return (
-    <TimelineWrapper>
-      <TimelineItem>
-        <TimeLineHour>{String(hour).padStart(2, "0")}:00</TimeLineHour>
-        <TimeLineSolid />
-      </TimelineItem>
-      {children && <TimeLineContent>{children}</TimeLineContent>}
-    </TimelineWrapper>
+    <div className="pb-4">
+      <div className="flex gap-x-2 items-center">
+        <div className="w-10 text12Medium text-textTertiary text-right">
+          {String(hour).padStart(2, "0")}:00
+        </div>
+        <hr className="w-full border-neutral200" />
+      </div>
+      {children && <div className="ml-12 space-y-2">{children}</div>}
+    </div>
   );
 }
 
@@ -136,7 +91,7 @@ export default function DayEventTimelines({
   if (!events.length && !futureEvents.length && !userEvents.length) {
     return (
       <StatusWrapper>
-        <NoData>No current events</NoData>
+        <p className="text14Medium m-0 text-textTertiary">No current events</p>
       </StatusWrapper>
     );
   }

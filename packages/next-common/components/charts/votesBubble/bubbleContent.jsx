@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import VoteBubbleHoverContent from "./hoverContent";
 import { useRouter } from "next/router";
@@ -13,12 +13,12 @@ export default function VoteBubbleContent({ node, sizeField }) {
 
   return (
     <Tooltip
-      className={clsx("!block h-full w-full rounded-full")}
+      className={cn("!block h-full w-full rounded-full")}
       content={<VoteBubbleHoverContent node={node} sizeField={sizeField} />}
     >
       <div
         role="link"
-        className={clsx(
+        className={cn(
           "flex items-center justify-center cursor-pointer",
           "rounded-full w-full h-full px-2",
         )}
@@ -35,7 +35,7 @@ export default function VoteBubbleContent({ node, sizeField }) {
             noTooltip
             ellipsis={false}
             linkToVotesPage
-            color={clsx(
+            color={cn(
               node.data.aye && "var(--green500)",
               node.data.aye === false && "var(--red500)",
               node.data.isAbstain && "var(--textSecondary)",

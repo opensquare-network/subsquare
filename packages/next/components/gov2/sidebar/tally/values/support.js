@@ -5,15 +5,6 @@ import {
   Header,
 } from "next-common/components/referenda/tally/styled";
 import Percentage from "next-common/components/referenda/tally/support/percentage";
-import styled from "styled-components";
-import { p_14_medium } from "next-common/styles/componentCss";
-import { m_l } from "next-common/styles/tailwindcss";
-
-const PercentageWrapper = styled.span`
-  ${p_14_medium};
-  color: var(--textTertiary);
-  ${m_l(4)};
-`;
 
 export default function Support({ supportPerbill = 0, value = 0 }) {
   return (
@@ -21,9 +12,9 @@ export default function Support({ supportPerbill = 0, value = 0 }) {
       <Header>
         <ElectorateIcon />
         Support
-        <PercentageWrapper>
+        <span className="ml-1 text-textTertiary text14Medium">
           (<Percentage perbill={supportPerbill} />)
-        </PercentageWrapper>
+        </span>
       </Header>
       <SymbolValue value={value} />
     </BorderedRow>

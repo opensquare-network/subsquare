@@ -6,7 +6,6 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Close from "../assets/imgs/icons/close-16.svg";
-import { font_family, p_14_medium, p_14_normal } from "../styles/componentCss";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
@@ -156,92 +155,13 @@ const DateWrapper = styled.div`
     font-weight: 500;
     color: var(--textTertiary);
   }
-
-  .react-datepicker {
-    padding: 20px 12px;
-    border: 1px solid var(--neutral400);
-    border-radius: 4px;
-    background-color: var(--neutral100);
-  }
-
-  .react-datepicker__header {
-    background: transparent;
-    border: none;
-    padding: 0;
-  }
-
-  .react-datepicker__day-name {
-    width: 46.86px;
-    ${font_family};
-    ${p_14_medium};
-    line-height: 32px;
-    text-align: center;
-    color: var(--textSecondary);
-    margin: 0 !important;
-  }
-
-  .react-datepicker__day-names {
-    line-height: 32px;
-  }
-
-  .react-datepicker__month {
-    margin: 0;
-    padding-top: 8px;
-  }
-
-  .react-datepicker__day {
-    width: 46.86px;
-    ${font_family};
-    ${p_14_normal};
-    line-height: 32px;
-    color: var(--textPrimary);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 !important;
-    border-radius: 4px;
-
-    :hover {
-      background: var(--neutral200);
-    }
-  }
-
-  .react-datepicker__day--today {
-    font-weight: 600;
-    border: 1px solid var(--neutral400);
-    border-radius: 4px;
-  }
-
-  .react-datepicker__day--selected {
-    background: var(--neutral300);
-    &:hover {
-      background: var(--neutral300);
-    }
-  }
-
-  .react-datepicker__day--outside-month {
-    color: var(--textTertiary);
-  }
-
-  .react-datepicker__day--keyboard-selected {
-    background-color: transparent;
-  }
-
-  .react-datepicker__day--disabled {
-    color: var(--textTertiary);
-    cursor: not-allowed;
-
-    &:hover {
-      background: none;
-    }
-  }
 `;
 
 const DateHeader = styled(Flex)`
   margin-bottom: 8px;
 
   > b {
-    ${font_family};
+    font-family: Inter;
     text-align: center;
     color: var(--textPrimary);
     flex: 1 1 auto;

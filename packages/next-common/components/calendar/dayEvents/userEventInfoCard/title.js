@@ -5,7 +5,6 @@ import styled, { css } from "styled-components";
 import EventTag from "../eventInfoCard/eventTag";
 import FoldButton from "../eventInfoCard/foldButton";
 import DeleteSVG from "./delete.svg";
-import { flex, gap_x } from "../../../../styles/tailwindcss";
 import Flex from "../../../styled/flex";
 import DeleteEventModal from "./deleteEventModal";
 import { useIsLogin } from "../../../../context/user";
@@ -27,19 +26,6 @@ const Wrapper = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
-`;
-
-const Left = styled.div`
-  flex: 1;
-  word-break: break-word;
-  ${flex}
-  ${gap_x(4)}
-`;
-
-const Right = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
 `;
 
 const DeleteWrapper = styled(Flex)`
@@ -102,8 +88,10 @@ export default function Title({
 
   return (
     <Wrapper>
-      <Left>{getTitle(event)}</Left>
-      <Right>
+      <div className="flex-1 flex gap-x-1" style={{ wordBreak: "break-word" }}>
+        {getTitle(event)}
+      </div>
+      <div className="flex justify-between gap-2">
         <div>
           <EventTag event={event} />
         </div>
@@ -119,7 +107,7 @@ export default function Title({
             isFolded={isFolded}
           />
         </div>
-      </Right>
+      </div>
       {showDeleteModal && (
         <DeleteEventModal
           event={event}

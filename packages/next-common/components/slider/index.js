@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import ReactSlider from "react-slider";
 import styled from "styled-components";
 import ThumbSVG from "./thumb.svg";
-import { p_12_normal } from "next-common/styles/componentCss";
 import noop from "lodash.noop";
 
 const StyledSlider = styled(ReactSlider)`
@@ -32,23 +31,14 @@ const StyledThumb = styled.div`
   }
 `;
 
-const StyledThumbValue = styled.div`
-  position: absolute;
-  top: calc(100% + 8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  ${p_12_normal}
-  color: var(--textSecondary);
-`;
-
 function useThumb({ formatValue = (val) => val }) {
   return useCallback(
     (props, state) => (
       <StyledThumb {...props}>
         <ThumbSVG />
-        <StyledThumbValue>{formatValue(state.valueNow)}</StyledThumbValue>
+        <div className="absolute top-[calc(100%+8px)] flex items-center justify-center w-full text12Medium text-textSecondary">
+          {formatValue(state.valueNow)}
+        </div>
       </StyledThumb>
     ),
     [formatValue],

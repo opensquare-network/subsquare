@@ -8,7 +8,7 @@ import {
   useCalendarUserEventsSummary,
 } from "next-common/hooks/calendar";
 import ListLayout from "next-common/components/layout/ListLayout";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default function CalendarPage() {
@@ -27,7 +27,7 @@ export default function CalendarPage() {
 
   return (
     <ListLayout title="Calendar">
-      <div className={clsx("flex flex-col gap-y-4", "max-sm:mx-4")}>
+      <div className={cn("flex flex-col gap-y-4", "max-sm:mx-4")}>
         {/* calendar component */}
         <FullCalendar
           date={date}

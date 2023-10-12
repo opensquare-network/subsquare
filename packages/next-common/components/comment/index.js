@@ -2,7 +2,7 @@ import CommentItem from "./item";
 import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useIsLogin } from "../../context/user";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import PrimaryButton from "../buttons/primaryButton";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
@@ -43,7 +43,7 @@ export default function Comments({ data: commentsData, loading }) {
   return (
     <div>
       <div className="mb-4">
-        <TitleContainer className={clsx("w-full !px-0 mb-4", "!block")}>
+        <TitleContainer className={cn("w-full !px-0 mb-4", "!block")}>
           <div className="text14Bold">Comments</div>
         </TitleContainer>
       </div>

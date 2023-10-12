@@ -17,13 +17,6 @@ import VoteBar from "next-common/components/referenda/voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import MyVote from "./myVote";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import {
-  flex,
-  gap_x,
-  items_center,
-  justify_between,
-} from "next-common/styles/tailwindcss";
-import { p_12_medium } from "next-common/styles/componentCss";
 import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
@@ -54,22 +47,6 @@ const FlattenedVotesPopup = dynamic(
     ssr: false,
   },
 );
-
-const VotesGroup = styled.div`
-  ${flex};
-  ${items_center};
-  ${justify_between};
-  margin-top: 16px;
-`;
-const VotesGroupLabel = styled.div`
-  ${p_12_medium};
-  color: var(--textPrimary);
-`;
-const VotesGroupItems = styled.div`
-  ${flex};
-  ${items_center};
-  ${gap_x(12)};
-`;
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -159,9 +136,9 @@ function Vote({ referendumIndex }) {
             <RejectStatus>Failing</RejectStatus>
           ))}
 
-        <VotesGroup>
-          <VotesGroupLabel>Votes</VotesGroupLabel>
-          <VotesGroupItems>
+        <div className="flex items-center justify-between mt-4">
+          <div className="text12Medium text-textPrimary">Votes</div>
+          <div className="flex items-center gap-x-3">
             <SubLink onClick={() => setShowNestedVotesList(true)}>
               Nested
             </SubLink>
@@ -169,8 +146,8 @@ function Vote({ referendumIndex }) {
               Flattened
             </SubLink>
             {useVoteCall && <Calls />}
-          </VotesGroupItems>
-        </VotesGroup>
+          </div>
+        </div>
       </SecondaryCardDetail>
 
       <WithAddress>

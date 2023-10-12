@@ -1,10 +1,7 @@
-import styled from "styled-components";
-import { pretty_scroll_bar } from "next-common/styles/componentCss";
+import tw from "tailwind-styled-components";
 
-const ScrollerX = styled.div`
-  display: flex;
-  overflow-x: auto;
-  ${pretty_scroll_bar};
+const ScrollerX = tw.div`
+  flex overflow-x-auto scrollbar-pretty
 `;
 
 export default ScrollerX;

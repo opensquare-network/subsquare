@@ -1,13 +1,6 @@
 import React from "react";
 import RowSplitter from "./rowSplitter";
 import { StyledTh } from "./styled";
-import styled from "styled-components";
-import { p_12_bold } from "next-common/styles/componentCss";
-
-const ThWrapper = styled.div`
-  height: inherit;
-  ${p_12_bold}
-`;
 
 export function Headers({ columns }) {
   return (
@@ -15,7 +8,7 @@ export function Headers({ columns }) {
       <tr>
         {columns.map((col, index) => (
           <StyledTh key={index} style={col.style} className={col.className}>
-            <ThWrapper>{col.name}</ThWrapper>
+            <div className="text12Bold h-[inherit]">{col.name}</div>
           </StyledTh>
         ))}
       </tr>

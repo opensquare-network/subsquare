@@ -5,7 +5,6 @@ import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { pretty_scroll_bar } from "../styles/componentCss";
 import { encodeAddressToChain } from "../services/address";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
@@ -72,8 +71,6 @@ const Options = styled.div`
   max-height: 320px;
   overflow-y: auto;
   z-index: 1;
-
-  ${pretty_scroll_bar};
 `;
 
 const Item = styled(Flex)`
@@ -190,7 +187,7 @@ export default function AddressSelect({
         <Caret down={!show} />
       </Select>
       {show && (
-        <Options>
+        <Options className="scrollbar-pretty">
           {(accounts || []).map((item, index) => (
             <Option
               key={index}

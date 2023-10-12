@@ -1,104 +1,42 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import styled from "styled-components";
-import {
-  block,
-  border_hidden,
-  cursor_pointer,
-  flex,
-  flex_col,
-  items_center,
-  m_t,
-  m_y,
-  overflow_hidden,
-  p_x,
-  p_y,
-  rounded,
-  rounded_4,
-  space_x,
-  w,
-  w_full,
-} from "next-common/styles/tailwindcss";
-import { smcss } from "next-common/utils/responsive";
-import {
-  p_12_medium,
-  p_14_medium,
-  p_14_normal,
-} from "../../../styles/componentCss";
 import ExternalLink from "../../externalLink";
 import InnerDataTable from "../../table/innerDataTable";
 import WarningIcon from "../../../assets/imgs/icons/warning.svg";
 import isNil from "lodash.isnil";
+import tw from "tailwind-styled-components";
 
 const JsonView = dynamic(() => import("../../jsonView"), { ssr: false });
 
-const Wrapper = styled.div`
-  ${flex};
-  ${flex_col};
-  ${overflow_hidden};
-  ${w_full};
+const Wrapper = tw.div`
+  flex flex-col
+  overflow-hidden
+  w-full
 `;
 
-const HeaderWrapper = styled.div`
-  ${flex};
-  ${items_center};
-  ${smcss(block)};
+const HeaderWrapper = tw.div`
+  flex items-center
+  max-sm:block
 `;
-const HeaderTitle = styled.div`
-  ${p_14_medium};
-  ${w(160)};
-`;
-
-const TagButton = styled.button`
-  ${p_x(8)};
-  ${p_y(4)};
-  background-color: var(--neutral200);
-  ${p_12_medium};
-  ${rounded};
-  color: var(--textSecondary);
-  ${border_hidden};
-  ${cursor_pointer};
-  line-height: 1;
-
-  &.active {
-    background-color: var(--theme100);
-    color: var(--theme500);
-  }
-`;
-const TagsWrapper = styled.div`
-  ${flex};
-  ${items_center};
-  ${space_x(8)};
-
-  ${smcss(m_t(8))};
+const HeaderTitle = tw.div`
+  text14Medium
+  w-40
 `;
 
-const ViewWrapper = styled.div`
-  ${rounded_4};
-  border: 24px solid;
-  border-color: var(--neutral200);
-  ${m_t(12)};
-`;
+const TagButton = tw.button`
+  text12Medium text-textSecondary
+  px-2 py-1
+  bg-neutral200
+  rounded-sm
+  border-none
+  leading-none
 
-const DataTableViewDescription = styled.div`
-  ${p_14_normal};
-  a {
-    color: var(--sapphire500);
-  }
+  [&.active]:bg-theme100 [&.active]:text-theme500
 `;
-
-const DataTableViewQuestionLink = styled(ExternalLink)`
-  ${p_14_normal};
-  color: var(--sapphire500);
-`;
-
-const DataTableViewTags = styled.div`
-  ${p_14_normal};
-`;
-
-const UnavailableText = styled.p`
-  ${m_y(0)};
-  ${p_14_normal};
+const TagsWrapper = tw.div`
+  flex items-center
+  space-x-2
+  max-sm:mt-2
 `;
 
 export default function MarketMetadata({ id, metadata }) {
@@ -114,7 +52,7 @@ export default function MarketMetadata({ id, metadata }) {
           <HeaderTitle>Market</HeaderTitle>
           <TagsWrapper>
             <WarningIcon />
-            <UnavailableText>Metadata unavailable</UnavailableText>
+            <p className="text14Medium my-0">Metadata unavailable</p>
           </TagsWrapper>
         </HeaderWrapper>
       </Wrapper>
@@ -125,16 +63,20 @@ export default function MarketMetadata({ id, metadata }) {
 
   const dataTableViewData = {
     Question: (
-      <DataTableViewQuestionLink href={questionLink}>
+      <ExternalLink
+        href={questionLink}
+        className="text14Medium text-sapphire500"
+      >
         {metadata?.question}
-      </DataTableViewQuestionLink>
+      </ExternalLink>
     ),
     Description: (
-      <DataTableViewDescription
+      <div
+        className="text14Medium [&_a]:text-sapphire500"
         dangerouslySetInnerHTML={{ __html: metadata?.description }}
       />
     ),
-    Tags: <DataTableViewTags>{metadata?.tags?.join("/")}</DataTableViewTags>,
+    Tags: <div className="text14Medium">{metadata?.tags?.join("/")}</div>,
   };
 
   return (
@@ -157,10 +99,10 @@ export default function MarketMetadata({ id, metadata }) {
         </TagsWrapper>
       </HeaderWrapper>
 
-      <ViewWrapper>
+      <div className="rounded border-[24px] border-neutral200 mt-3">
         {view === "metadata" && <InnerDataTable data={dataTableViewData} />}
         {view === "data" && <JsonView src={metadata} />}
-      </ViewWrapper>
+      </div>
 
       <div />
     </Wrapper>

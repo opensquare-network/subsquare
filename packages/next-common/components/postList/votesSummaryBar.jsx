@@ -7,8 +7,8 @@ import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "../valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
-import { p_12_bold } from "next-common/styles/componentCss";
 import businessCategory from "next-common/utils/consts/business/category";
+import tw from "tailwind-styled-components";
 
 const VotesSummaryBarWrapper = styled(Flex)`
   width: 25px;
@@ -24,9 +24,9 @@ const TooltipContent = styled.div`
   }
 `;
 
-const GroupTitle = styled.h4`
-  ${p_12_bold};
-  margin: 0;
+const GroupTitle = tw.h4`
+  text12Bold
+  m-0
 `;
 
 const GroupValue = styled(Flex)`

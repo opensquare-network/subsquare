@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { p_16_bold } from "../../../styles/componentCss";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
@@ -30,14 +29,10 @@ const TypeGroup = styled(Flex)`
   }
 `;
 
-const TypeLabel = styled(SummaryGreyText)`
-  ${p_16_bold};
-`;
-
 function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
   return (
     <TypeGroup separator={separator}>
-      <TypeLabel>{label}</TypeLabel>
+      <SummaryGreyText className="text16Bold">{label}</SummaryGreyText>
       <ActiveValue tooltip={tooltip} href={href} value={value} />
     </TypeGroup>
   );

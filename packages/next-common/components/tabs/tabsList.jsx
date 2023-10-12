@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import noop from "lodash.noop";
 
 export default function TabsList({
@@ -9,7 +9,7 @@ export default function TabsList({
   return (
     <ul className="flex space-x-6 overflow-x-auto scrollbar-hidden">
       {tabs.map((tab, idx) => {
-        const itemClassName = clsx(
+        const itemClassName = cn(
           "block whitespace-nowrap pb-3",
           "text14Bold border-b-4 text-textPrimary",
           "hover:text-theme500",
@@ -21,7 +21,7 @@ export default function TabsList({
           <li
             key={idx}
             role="button"
-            className={clsx(
+            className={cn(
               itemClassName,
               active ? itemActiveClassName : "border-transparent",
             )}

@@ -1,8 +1,8 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import getChainSettings from "../../utils/consts/settings";
 
 function Img({ src, className = "" }) {
-  return <img src={src} alt="" className={clsx("logo", className)} />;
+  return <img src={src} alt="" className={cn("logo", className)} />;
 }
 
 export default function ChainIcon({ chain }) {

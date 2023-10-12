@@ -3,7 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { TrackColors } from "./colors";
 import startCase from "lodash.startcase";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -51,7 +51,7 @@ export function DoughnutChart({ trackReferendaCounts }) {
   };
 
   return (
-    <div className={clsx("flex justify-center flex-grow", "w-[200px]")}>
+    <div className={cn("flex justify-center flex-grow", "w-[200px]")}>
       <div style={{ width: 200, height: 200 }}>
         <Doughnut data={data} options={options} />
       </div>

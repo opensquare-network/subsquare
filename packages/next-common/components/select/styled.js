@@ -1,30 +1,23 @@
-import { pretty_scroll_bar, shadow_200 } from "next-common/styles/componentCss";
-import styled, { css } from "styled-components";
+import { cn } from "next-common/utils";
 
-export const OptionsWrapper = styled.div`
-  position: absolute;
-  left: -1px;
-  right: 0;
-  top: calc(100% + 4px);
-  background: var(--neutral100);
-  ${shadow_200};
-  border-radius: 4px;
-  padding: 8px 0;
-  width: calc(100% + 2px);
-  z-index: 999999;
-  color: var(--textPrimary);
-
-  ${(p) =>
-    p.theme.isDark &&
-    css`
-      border: 1px solid var(--neutral300);
-    `}
-
-  ${(p) =>
-    p.maxDisplayItem &&
-    css`
-      max-height: ${p.itemHeight * p.maxDisplayItem}px;
-      overflow-y: scroll;
-      ${pretty_scroll_bar};
-    `}
-`;
+export function OptionsWrapper({ itemHeight, maxDisplayItem, ...props }) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "z-[999999]",
+        "absolute -left-px right-0 top-[calc(100%+4px)]",
+        "bg-neutral100 shadow-200",
+        "rounded py-2 px-0",
+        "w-[calc(100%+2px)]",
+        "text-textPrimary",
+        "dark:border dark:border-neutral300",
+        maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
+      )}
+      style={{
+        maxHeight: maxDisplayItem && itemHeight * maxDisplayItem,
+        ...props.style,
+      }}
+    />
+  );
+}

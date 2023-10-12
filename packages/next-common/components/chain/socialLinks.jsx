@@ -11,7 +11,7 @@ import {
   LinkReddit,
 } from "@osn/icons/subsquare";
 import ExternalLink from "../externalLink";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 const iconMap = {
   website: LinkWebsite,
@@ -29,7 +29,7 @@ export default function ChainSocialLinks({ className }) {
   const chainSettings = useChainSettings();
 
   return (
-    <ul className={clsx("flex gap-x-3", className)}>
+    <ul className={cn("flex gap-x-3", className)}>
       {chainSettings.links?.map?.((link) => {
         const Icon = iconMap[link.name] || LinkWebsite;
 

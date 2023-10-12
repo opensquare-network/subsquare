@@ -4,7 +4,7 @@ import Tag from "next-common/components/tags/state/tag";
 import businessCategory from "next-common/utils/consts/business/category";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import KvList from "next-common/components/listInfo/kvList";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ export default function ChildBountiesTable({ childBounties }) {
     return [
       <div
         key={bounty.index}
-        className={clsx(
+        className={cn(
           "flex items-center",
           "w-full",
           "text14Medium",

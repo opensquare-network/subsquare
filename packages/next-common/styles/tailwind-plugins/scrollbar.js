@@ -8,7 +8,7 @@ module.exports = plugin(({ addUtilities }) => {
           width: "4px",
           height: "4px",
         },
-        "&::webkit-scrollbar-thumb": {
+        "&::-webkit-scrollbar-thumb": {
           background: "var(--neutral500)",
           "border-radius": "4px",
         },

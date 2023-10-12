@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import { usePost } from "../../../context/post";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import GhostButton from "next-common/components/buttons/ghostButton";
 
 const collapsedHeight = 640;
@@ -26,7 +26,7 @@ export default function PostContent() {
   return (
     <div
       ref={ref}
-      className={clsx(
+      className={cn(
         "flex flex-col",
         "relative",
         postContentCollapsed && "max-h-[640px] overflow-hidden",
@@ -41,7 +41,7 @@ export default function PostContent() {
 
       {showToggleButton && (
         <div
-          className={clsx(
+          className={cn(
             "flex justify-center",
             "absolute bottom-0 right-0 left-0",
             !postContentCollapsed && "!static",

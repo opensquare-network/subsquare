@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import ExternalLink from "next-common/components/externalLink";
 import { useThemeMode } from "next-common/context/theme";
 import {
@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         "flex",
         "h-auto px-6 py-4 justify-between items-center",
         "lg:h-[72px]",
@@ -36,18 +36,18 @@ export default function Footer() {
         "max-lg:flex-col",
       )}
     >
-      <div className={clsx("flex items-center gap-x-4", "max-sm:flex-col")}>
+      <div className={cn("flex items-center gap-x-4", "max-sm:flex-col")}>
         <div>
           <FooterLogoLight className="dark:hidden" />
           <FooterLogoDark className="hidden dark:inline" />
         </div>
-        <p className={clsx("text14Medium text-textTertiary", "max-sm:mt-2")}>
+        <p className={cn("text14Medium text-textTertiary", "max-sm:mt-2")}>
           @{new Date().getFullYear()} SubSquare. Powered by OpenSquare
         </p>
       </div>
 
-      <div className={clsx("flex items-center gap-x-6", "max-sm:flex-col")}>
-        <ul className={clsx("flex", "text14Medium", "max-sm:mt-2.5")}>
+      <div className={cn("flex items-center gap-x-6", "max-sm:flex-col")}>
+        <ul className={cn("flex", "text14Medium", "max-sm:mt-2.5")}>
           {contactLinks.map((contact) => (
             <li
               key={contact.name}
@@ -64,7 +64,7 @@ export default function Footer() {
           ))}
         </ul>
 
-        <div className={clsx("max-sm:mt-3 max-sm:mb-4")}>
+        <div className={cn("max-sm:mt-3 max-sm:mb-4")}>
           <ThemeToggleGroup />
         </div>
       </div>
@@ -93,7 +93,7 @@ function ThemeToggleGroup() {
   ];
 
   return (
-    <div className={clsx("p-1", "border rounded-lg border-neutral300")}>
+    <div className={cn("p-1", "border rounded-lg border-neutral300")}>
       {themeButtons.map((button) => (
         <Tooltip
           key={button.themeMode}
@@ -101,7 +101,7 @@ function ThemeToggleGroup() {
           sideOffset={5}
         >
           <button
-            className={clsx(
+            className={cn(
               "p-1.5 rounded",
               "hover:bg-neutral200",
               "[&_path]:fill-textDisabled",

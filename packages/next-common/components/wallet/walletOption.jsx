@@ -1,5 +1,5 @@
 import React from "react";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 /**
  * @param {React.HTMLAttributes<HTMLDivElement> & {installed: boolean, selected: boolean}} props
@@ -8,7 +8,7 @@ export default function WalletOption({ selected, installed, ...props }) {
   return (
     <div
       {...props}
-      className={clsx(
+      className={cn(
         "flex justify-between items-center px-4 py-2.5",
         // compat with old logic
         "[&>div]:gap-x-4",

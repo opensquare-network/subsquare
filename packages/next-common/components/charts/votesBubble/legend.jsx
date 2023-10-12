@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import noop from "lodash.noop";
 
 export default function VotesBubbleLegend({
@@ -43,11 +43,11 @@ export default function VotesBubbleLegend({
   }
 
   return (
-    <ul className={clsx(className, "flex gap-x-4 justify-center")}>
+    <ul className={cn(className, "flex gap-x-4 justify-center")}>
       {items.map((item) => (
         <li
           key={item.key}
-          className={clsx(
+          className={cn(
             "flex gap-x-2 items-center",
             "text12Medium select-none cursor-pointer",
             showVotes[item.key] ? "text-textSecondary" : "text-textDisabled",
@@ -70,7 +70,7 @@ export default function VotesBubbleLegend({
 function Circle({ className = "", disabled }) {
   return (
     <span
-      className={clsx(
+      className={cn(
         className,
         "w-2.5 h-2.5 border rounded-full",
         disabled && "!bg-neutral200 !border-neutral400",

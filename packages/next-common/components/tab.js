@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 export default function Tab({
   small,
@@ -13,7 +13,7 @@ export default function Tab({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         "flex justify-between",
         "bg-neutral200",
         "rounded-lg p-1 h-12",
@@ -25,7 +25,7 @@ export default function Tab({
       {tabs?.map?.(({ tabId, tabTitle }) => (
         <button
           key={tabId}
-          className={clsx(
+          className={cn(
             "text14Medium outline-none",
             "flex justify-center items-center flex-1",
             "py-2.5 w-[172px]",

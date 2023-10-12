@@ -1,12 +1,10 @@
-import { p_14_medium } from "next-common/styles/componentCss";
-import styled from "styled-components";
+import tw from "tailwind-styled-components";
 
-const HintMessage = styled.div`
-  padding: 10px 16px;
-  border-radius: 8px;
-  background: var(--neutral200);
-  color: var(--textSecondary);
-  ${p_14_medium}
+const HintMessage = tw.div`
+  py-2.5 px-4
+  rounded-lg
+  bg-neutral200
+  text14Medium text-textSecondary
 `;
 
 export default HintMessage;

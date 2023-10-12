@@ -1,14 +1,12 @@
 import { usePageProps } from "next-common/context/page";
 import startCase from "lodash.startcase";
-import styled from "styled-components";
-import { p_12_medium } from "next-common/styles/componentCss";
+import tw from "tailwind-styled-components";
 
-const Background = styled.span`
-  background: var(--neutral200);
-  padding: 2px 8px;
-  border-radius: 10px;
-  color: var(--textSecondary);
-  ${p_12_medium}
+const Background = tw.span`
+  bg-neutral200
+  py-0.5 px-2
+  rounded-[10px]
+  text-textSecondary text12Medium
 `;
 
 export default function Track({ id }) {

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import Tag from "next-common/components/tags/state/tag";
@@ -19,31 +18,17 @@ import isNil from "lodash.isnil";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import AnnouncementNavigate from "./announcementNavigate";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
-import { smcss } from "next-common/utils/responsive";
-import { hidden } from "next-common/styles/tailwindcss";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import Divider from "next-common/components/styled/layout/divider";
 import PostUser from "next-common/components/detail/container/postMeta/postUser";
+import tw from "tailwind-styled-components";
 
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-
-  > :not(:first-child) {
-    ${smcss(hidden)};
-
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: var(--textTertiary);
-      margin: 0 8px;
-    }
-  }
+const DividerWrapper = tw(Flex)`
+  flex-wrap
+  [&>*]:before:content-["·"]
+  [&>*]:before:mx-2
+  [&>*]:before:text-textTertiary [&>*]:before:text12Medium
+  first:[&>*]:before:hidden
 `;
 
 function MotionTag({ motion }) {
@@ -85,7 +70,7 @@ export default function MotionHead({ motion, type }) {
       <AnnouncementNavigate />
       <PostTitle />
       <Divider className="my-4" />
-      <FlexWrapper>
+      <div className="flex justify-between flex-nowrap">
         <DividerWrapper>
           <PostUser />
           <MotionTag motion={motion.onchainData} />
@@ -97,7 +82,7 @@ export default function MotionHead({ motion, type }) {
         {motion.state && (
           <Tag state={motion.state} category={type} args={stateArgs} />
         )}
-      </FlexWrapper>
+      </div>
     </div>
   );
 }

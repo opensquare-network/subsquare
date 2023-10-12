@@ -1,5 +1,5 @@
 import Link from "next/link";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 /**
  * @param {import('./types').BreadcrumbItemProps} props
@@ -22,7 +22,7 @@ function BreadcrumbItem(props) {
 
   return (
     <li
-      className={clsx(
+      className={cn(
         "group",
         "[&:not(:last-child)]:min-w-fit",
         "text14Medium text-textPrimary last:text-textTertiary",

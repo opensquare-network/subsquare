@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Index } from "../styled";
 import styled from "styled-components";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { useTitleLink } from "./moduleTab";
 
 const Title = styled.span`
@@ -12,9 +12,7 @@ const Title = styled.span`
 export function PostTitle({ referendumIndex, title, noLink, className }) {
   const url = useTitleLink(referendumIndex);
   return (
-    <div
-      className={clsx("truncate max-w-[inherit] text-textPrimary", className)}
-    >
+    <div className={cn("truncate max-w-[inherit] text-textPrimary", className)}>
       <Index>{`#${referendumIndex}`}</Index>
       {noLink ? (
         <Title>{title}</Title>

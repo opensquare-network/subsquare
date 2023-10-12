@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { GreyPanel } from "../../../styled/containers/greyPanel";
-import { p_14_medium, p_14_normal } from "../../../../styles/componentCss";
+import tw from "tailwind-styled-components";
 
 export const ThresholdInfo = styled(GreyPanel)`
   display: block;
@@ -16,9 +16,9 @@ export const ThresholdInfo = styled(GreyPanel)`
     `}
 `;
 
-export const ThresholdInfoLabel = styled.span`
-  ${p_14_medium};
-`;
-export const ThresholdInfoValue = styled.span`
-  ${p_14_normal};
+export const ThresholdInfoLabel = tw.span`
+  text14Medium
+  `;
+export const ThresholdInfoValue = tw.span`
+  text14Medium
 `;

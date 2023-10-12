@@ -8,8 +8,8 @@ import AddressesSVG from "next-common/assets/imgs/icons/addresses.svg";
 import SupportSVG from "next-common/assets/imgs/icons/support.svg";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Descriptions from "next-common/components/Descriptions";
-import { flex, gap_x, items_center } from "next-common/styles/tailwindcss";
 import { toPrecision } from "next-common/utils";
+import tw from "tailwind-styled-components";
 
 const StyledCapitalSVG = styled(BalanceSVG)`
   stroke: var(--textTertiary);
@@ -23,10 +23,8 @@ const StyledTotalDelegationSvg = styled(SupportSVG)`
   stroke: var(--textTertiary);
 `;
 
-const DetailDescriptionLabel = styled.div`
-  ${flex};
-  ${items_center};
-  ${gap_x(8)};
+const DetailDescriptionLabel = tw.div`
+  flex items-center gap-x-2
 `;
 
 export default function DelegationVotes({ data, delegations }) {

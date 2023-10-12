@@ -2,65 +2,9 @@ import React from "react";
 import dayjs from "dayjs";
 import noop from "lodash.noop";
 import isToday from "dayjs/plugin/isToday";
-import styled, { css } from "styled-components";
-import { p_12_bold } from "../../../../styles/componentCss";
-import {
-  cursor_pointer,
-  flex,
-  flex_col,
-  h,
-  justify_between,
-  m,
-  p,
-  w_full,
-} from "../../../../styles/tailwindcss";
+import { cn } from "next-common/utils";
 
 dayjs.extend(isToday);
-
-const CellLabel = styled.span`
-  ${p_12_bold}
-  ${m(0)}
-  color: var(--textSecondary);
-  text-align: center;
-  ${(p) =>
-    !p.isSameMonth &&
-    css`
-      color: var(--textTertiary);
-    `}
-  ${(p) =>
-    p.isPast &&
-    css`
-      color: var(--textDisabled);
-    `}
-`;
-
-const CellWrapper = styled.div`
-  ${w_full}
-  ${h(32)}
-  ${flex}
-  ${flex_col}
-  ${justify_between}
-  ${p(8)}
-  text-align: left;
-  ${cursor_pointer}
-
-  &:hover {
-    background-color: var(--neutral200);
-  }
-
-  ${(p) =>
-    p.isToday &&
-    css`
-      border: 1px solid var(--neutral500);
-      border-radius: 4px;
-    `}
-
-  ${(p) =>
-    p.isSelectedDay &&
-    css`
-      background-color: var(--neutral300);
-    `}
-`;
 
 export default function CalendarMonthDateCell({
   label,
@@ -81,14 +25,29 @@ export default function CalendarMonthDateCell({
   }
 
   return (
-    <CellWrapper
-      isToday={isToday}
-      isSelectedDay={isSelectedDay}
+    <div
+      className={cn(
+        "w-full h-8",
+        "flex flex-col justify-between",
+        "p-2 rounded",
+        "text-left",
+        "hover:bg-neutral200",
+        isToday && "border border-neutral500",
+        isSelectedDay && "bg-neutral300",
+      )}
+      role="button"
       onClick={onCellClick}
     >
-      <CellLabel isPast={isPast} isSameMonth={isSameMonth}>
+      <span
+        className={cn(
+          "text12Bold text-textSecondary text-center",
+          "m-0",
+          !isSameMonth && "text-textTertiary",
+          isPast && "text-textDisabled",
+        )}
+      >
         {label}
-      </CellLabel>
-    </CellWrapper>
+      </span>
+    </div>
   );
 }

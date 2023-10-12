@@ -2,19 +2,6 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import styled from "styled-components";
-import { shadow_100 } from "../../../styles/componentCss";
-import {
-  flex,
-  flex_col,
-  gap_x,
-  gap_y,
-  hidden,
-  h_full,
-  max_h,
-  p,
-  p_x,
-  p_y,
-} from "../../../styles/tailwindcss";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import timezone from "dayjs/plugin/timezone";
 import FullCalendarToolbar from "./toolbar";
@@ -28,52 +15,46 @@ dayjs.extend(timezone);
 
 const localizer = dayjsLocalizer(dayjs);
 
-const Wrapper = styled(NeutralPanel)`
-  ${p_x(24)}
-  ${p_y(20)}
-  ${shadow_100}
-  ${flex}
-  ${flex_col}
-  ${gap_y(16)}
-`;
-
 const CalendarWrapper = styled.div`
   .rbc-month-view {
     border: none;
-    ${gap_y(4)}
+    row-gap: 4px;
 
     .rbc-month-header,
     .rbc-month-row .rbc-row-content .rbc-row {
-      ${gap_x(4)}
+      column-gap: 4px;
     }
 
     .rbc-month-header {
-      ${p_y(8)}
+      padding-top: 8px;
+      padding-bottom: 8px;
 
       .rbc-header {
         border: none;
-        ${p_x(8)}
+        padding-left: 8px;
+        padding-right: 8px;
       }
     }
 
     .rbc-month-row {
       border: none;
       overflow: visible;
-      ${max_h(48)}
+      max-height: 48px;
       .rbc-row-bg {
-        ${hidden}
+        display: none;
       }
       .rbc-row-content {
-        ${h_full}
+        height: 100%;
+
         .rbc-row {
-          ${h_full}
+          height: 100%;
         }
         .rbc-date-cell {
-          ${p(0)}
+          padding: 0;
         }
         /* events row, hide it */
         .rbc-row .rbc-row-segment {
-          ${hidden};
+          display: none;
         }
       }
     }
@@ -125,7 +106,7 @@ export default function FullCalendar({
   };
 
   return (
-    <Wrapper>
+    <NeutralPanel className="flex flex-col gap-y-4 px-6 py-5">
       <CalendarWrapper>
         <Calendar
           localizer={localizer}
@@ -143,6 +124,6 @@ export default function FullCalendar({
           refresh={refresh}
         />
       )}
-    </Wrapper>
+    </NeutralPanel>
   );
 }

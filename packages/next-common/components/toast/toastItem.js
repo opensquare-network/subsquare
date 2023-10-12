@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { removeToast } from "../../store/reducers/toastSlice";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import Flex from "../../components/styled/flex";
-import { shadow_200 } from "../../styles/componentCss";
 import Loading from "../loading";
 import ToastSuccessIcon from "../../assets/imgs/icons/toast-success.svg";
 import ToastErrorIcon from "../../assets/imgs/icons/toast-error.svg";
@@ -15,7 +14,7 @@ const Wrapper = styled(Flex)`
   align-items: flex-start;
   padding: 16px 16px;
   background: var(--neutral100);
-  ${shadow_200};
+  box-shadow: var(--shadow200);
   border-radius: 6px;
   border: 1px solid var(--neutral300);
   font-size: 14px;

@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 export default function ExternalLink({
   href,
@@ -10,7 +10,7 @@ export default function ExternalLink({
 }) {
   return (
     <a
-      className={clsx(
+      className={cn(
         "text-sapphire500 text14Medium hover:!no-underline",
         className,
       )}

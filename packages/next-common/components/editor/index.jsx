@@ -5,7 +5,7 @@ import EditorWrapper from "./editorWrapper";
 import dynamic from "next/dynamic";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { SystemLoading } from "@osn/icons/subsquare";
 import { useEventListener } from "usehooks-ts";
 
@@ -180,7 +180,7 @@ function Editor(props, ref) {
       onDragLeave={onDragLeave}
       onDrop={onDrop}
       onPaste={onPaste}
-      className={clsx(
+      className={cn(
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",
       )}

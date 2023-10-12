@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 /**
  * Render a form item with a label, optional extra label, and children.
@@ -19,7 +19,7 @@ function FormItem({
   className = "",
 }) {
   return (
-    <div className={clsx("mb-4 last:mb-0", className)}>
+    <div className={cn("mb-4 last:mb-0", className)}>
       <div className="flex items-end justify-between mb-4">
         <div className="text14Bold text-textPrimary">{label}</div>
         {(labelExtra || labelExternal) && (

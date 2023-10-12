@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import noop from "lodash.noop";
 import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
@@ -21,7 +21,7 @@ export default function NavMenuItem({
   let content = (
     <div
       onClick={onClick}
-      className={clsx(
+      className={cn(
         "group/menu-item",
         "text-navigationText",
         "w-full h-10 flex px-2 py-2.5 gap-x-3 items-center rounded-lg cursor-pointer text14Medium",
@@ -32,7 +32,7 @@ export default function NavMenuItem({
     >
       {icon && (
         <span
-          className={clsx(
+          className={cn(
             "w-6 h-6",
             "inline-flex items-center",
             "[&_svg_path]:fill-navigationIcon",
@@ -44,7 +44,7 @@ export default function NavMenuItem({
         </span>
       )}
       <span
-        className={clsx(
+        className={cn(
           collapsed && "hidden",
           "w-full inline-flex justify-between items-center",
         )}

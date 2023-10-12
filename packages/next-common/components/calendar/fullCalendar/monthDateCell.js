@@ -2,27 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday";
 import groupBy from "lodash.groupby";
-import styled, { css } from "styled-components";
-import { p_12_bold, p_12_normal } from "../../../styles/componentCss";
-import {
-  block,
-  border,
-  cursor_pointer,
-  flex,
-  flex_col,
-  gap_x,
-  h,
-  hidden,
-  h_full,
-  justify_between,
-  m,
-  m_r,
-  p,
-  p_l,
-  rounded_4,
-  w_full,
-} from "../../../styles/tailwindcss";
-import TooltipOrigin from "../../tooltip";
+import Tooltip from "../../tooltip";
 import FullCalendarCategory from "./category";
 import {
   FULLCALENDAR_CATEGORIES,
@@ -31,92 +11,8 @@ import {
   FULLCALENDAR_CATEGORY_SOCIETY,
   FULLCALENDAR_CATEGORY_STAKING,
 } from "./consts";
-import { smcss } from "../../../utils/responsive";
+import { cn } from "next-common/utils";
 dayjs.extend(isToday);
-
-const CellLabel = styled.p`
-  ${p_12_bold}
-  ${m(0)}
-  color: var(--textSecondary);
-`;
-
-const CellLabelMonth = styled.span`
-  ${smcss(hidden)}
-`;
-
-const CellEventGroup = styled.div`
-  ${flex}
-  ${gap_x(4)}
-
-  ${smcss(hidden)}
-`;
-const CellEventGroupSmSize = styled(CellEventGroup)`
-  ${hidden}
-  ${smcss(block)}
-`;
-
-const CellWrapper = styled.div`
-  ${w_full}
-  ${h(48)}
-  ${flex}
-  ${flex_col}
-  ${justify_between}
-  ${p(8)}
-  ${border}
-  border-color: var(--neutral300);
-  ${rounded_4}
-  text-align: left;
-  ${cursor_pointer}
-
-  &:hover {
-    border-color: var(--neutral500);
-  }
-
-  ${(p) =>
-    p.isToday &&
-    css`
-      border-color: var(--neutral500);
-    `}
-
-  ${(p) =>
-    p.isSelectedDay &&
-    css`
-      border-color: var(--theme500);
-
-      ${CellLabel} {
-        color: var(--theme500);
-      }
-
-      &:hover {
-        border-color: var(--theme500);
-      }
-    `}
-`;
-
-const TooltipSubcategoryWrapper = styled.ul`
-  ${m(0)}
-  ${p(0)}
-  list-style: none;
-
-  li {
-    ${p_l(4)}
-    &::before {
-      content: "•";
-      ${m_r(4)}
-    }
-  }
-`;
-const TooltipContentWrapper = styled.div`
-  ${p_12_normal}
-  text-align: left;
-`;
-const TooltipChildrenWrapper = styled.div`
-  ${h_full}
-`;
-const Tooltip = styled(TooltipOrigin)`
-  ${block}
-  ${h_full}
-`;
 
 /**
  * @param {import("react-big-calendar").DateHeaderProps}
@@ -198,7 +94,7 @@ export default function FullCalendarMonthDateCell({
   }, {});
 
   const tooltipContent = !!categories.length && (
-    <TooltipContentWrapper>
+    <div className="text12Medium text-left">
       {categories.map((category) => {
         const subCategoriesGroup = categorySubCategoriesGroup[category];
         const subCategories = Object.keys(subCategoriesGroup);
@@ -207,22 +103,25 @@ export default function FullCalendarMonthDateCell({
           <div key={category}>
             {category}
             {subCategories?.length && (
-              <TooltipSubcategoryWrapper>
+              <ul>
                 {subCategories.map((subCategory) => {
                   const count = subCategoriesGroup[subCategory]?.length;
                   return (
-                    <li key={subCategory}>
+                    <li
+                      key={subCategory}
+                      className="pl-1 before:content-['•'] before:mr-1"
+                    >
                       {subCategory}
                       {count > 1 && `*${count}`}
                     </li>
                   );
                 })}
-              </TooltipSubcategoryWrapper>
+              </ul>
             )}
           </div>
         );
       })}
-    </TooltipContentWrapper>
+    </div>
   );
 
   function onCellClick() {
@@ -230,23 +129,37 @@ export default function FullCalendarMonthDateCell({
   }
 
   return (
-    <Tooltip content={tooltipContent}>
-      <TooltipChildrenWrapper>
-        <CellWrapper
-          isToday={isToday}
-          isSelectedDay={isSelectedDay}
+    <Tooltip content={tooltipContent} className="block h-full">
+      <div className="h-full">
+        <div
+          className={cn(
+            "group",
+            "w-full h-12",
+            "flex flex-col justify-between",
+            "p-2 border border-neutral300 rounded",
+            "text-left",
+            "hover:border-neutral500",
+            isToday && "border-theme500",
+            isSelectedDay && "border-theme500 hover:border-theme500",
+          )}
+          role="button"
           onClick={onCellClick}
         >
-          <CellLabel>
+          <p
+            className={cn(
+              "text12Bold text-textSecondary",
+              isSelectedDay && "text-theme500",
+            )}
+          >
             {label === 1 && (
-              <CellLabelMonth>{day.format("MMM")} </CellLabelMonth>
+              <span className="max-sm:hidden">{day.format("MMM")} </span>
             )}
             {label}
-          </CellLabel>
+          </p>
 
           {!!categories.length && (
             <>
-              <CellEventGroup>
+              <div className="flex gap-x-1 max-sm:hidden">
                 {categories.map((category) => (
                   <FullCalendarCategory
                     key={category}
@@ -254,14 +167,14 @@ export default function FullCalendarMonthDateCell({
                     onlyDot
                   />
                 ))}
-              </CellEventGroup>
-              <CellEventGroupSmSize>
+              </div>
+              <div className="hidden max-sm:block">
                 <FullCalendarCategory color="var(--theme500)" />
-              </CellEventGroupSmSize>
+              </div>
             </>
           )}
-        </CellWrapper>
-      </TooltipChildrenWrapper>
+        </div>
+      </div>
     </Tooltip>
   );
 }

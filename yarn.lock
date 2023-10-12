@@ -3283,6 +3283,7 @@ __metadata:
     sass: ^1.38.0
     sharp: ^0.32.0
     styled-components: ^5.3.9
+    tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
     use-deep-compare-effect: ^1.8.1
   languageName: unknown
@@ -3332,6 +3333,7 @@ __metadata:
     sass: ^1.38.0
     sharp: ^0.32.1
     styled-components: ^5.3.9
+    tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
     use-deep-compare-effect: ^1.8.1
   languageName: unknown
@@ -8362,6 +8364,7 @@ __metadata:
     react-slider: ^2.0.4
     socket.io-client: ^4.3.2
     styled-components: ^5.3.9
+    tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
     usehooks-ts: ^2.9.1
   languageName: unknown
@@ -10499,6 +10502,13 @@ __metadata:
     "@pkgr/utils": ^2.3.1
     tslib: ^2.5.0
   checksum: 8a9560e5d8f3d94dc3cf5f7b9c83490ffa30d320093560a37b88f59483040771fd1750e76b9939abfbb1b5a23fd6dfbae77f6b338abffe7cae7329cd9b9bb86b
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^1.14.0":
+  version: 1.14.0
+  resolution: "tailwind-merge@npm:1.14.0"
+  checksum: 8cf5d37f51b3b32e4bdd5544feaed34357bfba2f64f14834cc4a21ac29b0ae22d7255386467a0f1dadb3e38499389efbbabeddcd0b16571af5a0d346a4921877
   languageName: node
   linkType: hard
 

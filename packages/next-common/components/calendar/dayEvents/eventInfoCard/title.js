@@ -4,12 +4,6 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import EventTag from "./eventTag";
 import FoldButton from "./foldButton";
-import {
-  flex,
-  gap_x,
-  hover,
-  underline,
-} from "../../../../styles/tailwindcss";
 import Link from "next/link";
 import TooltipOrigin from "../../../tooltip";
 import { EventType, getPostUrlsByEvent } from "./utils";
@@ -30,26 +24,6 @@ const Wrapper = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
-`;
-
-const Left = styled.div`
-  flex: 1;
-  word-break: break-word;
-  ${flex}
-  ${gap_x(4)}
-`;
-const Right = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-`;
-
-const TitleTime = styled.div`
-  ${hover(underline)}
-`;
-const TitleLink = styled.a`
-  flex: 1;
-  ${hover(underline)}
 `;
 
 const Tooltip = styled(TooltipOrigin)``;
@@ -246,10 +220,10 @@ function getTitle(event) {
   return (
     <span>
       <Tooltip content={"#" + event?.indexer?.blockHeight?.toLocaleString()}>
-        <TitleTime>[{timeText}]</TitleTime>
+        <div className="hover:underline">[{timeText}]</div>
       </Tooltip>{" "}
-      <Link href={postUrl} passHref legacyBehavior>
-        <TitleLink>{title}</TitleLink>
+      <Link href={postUrl} className="flex-1 hover:underline">
+        {title}
       </Link>
     </span>
   );
@@ -258,8 +232,10 @@ function getTitle(event) {
 export default function Title({ event, isFolded, setIsFolded = noop }) {
   return (
     <Wrapper>
-      <Left>{getTitle(event)}</Left>
-      <Right>
+      <div className="flex-1 flex gap-x-1" style={{ wordBreak: "break-word" }}>
+        {getTitle(event)}
+      </div>
+      <div className="flex justify-between gap-2">
         <div>
           <EventTag event={event} />
         </div>
@@ -269,7 +245,7 @@ export default function Title({ event, isFolded, setIsFolded = noop }) {
             isFolded={isFolded}
           />
         </div>
-      </Right>
+      </div>
     </Wrapper>
   );
 }

@@ -1,41 +1,29 @@
 import styled, { css } from "styled-components";
 import SelectedSVG from "./selected.svg";
-import { p_14_normal } from "next-common/styles/componentCss";
 import pluralize from "pluralize";
+import { cn } from "next-common/utils";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const ListItem = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  gap: 10px;
-
-  ${p_14_normal}
-
-  ${(p) =>
-    p.disabled
-      ? css`
-          cursor: not-allowed;
-        `
-      : css`
-          :hover {
-            background: var(--neutral200);
-          }
-        `}
-
-  ${(p) =>
-    p.selected &&
-    css`
-      background: var(--neutral200);
-    `}
-`;
+function ListItem({ disabled, selected, ...props }) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "text14Medium",
+        "cursor-pointer",
+        "flex grow items-center justify-between gap-2.5",
+        "py-2.5 px-4",
+        disabled ? "cursor-not-allowed" : "hover:bg-neutral200",
+        selected && "bg-neutral200",
+        props.className,
+      )}
+    />
+  );
+}
 
 const TrackName = styled.span`
   ${(p) =>

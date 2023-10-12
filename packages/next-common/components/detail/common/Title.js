@@ -4,7 +4,7 @@ import isNil from "lodash.isnil";
 import { usePost, usePostTitle } from "../../../context/post";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 const TitleWrapper = styled.div`
   overflow: hidden;
@@ -42,7 +42,7 @@ export default function PostTitle() {
   return (
     <TitleWrapper className="text-textPrimary">
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title className={clsx(isEditing && "!text-textDisabled select-none")}>
+      <Title className={cn(isEditing && "!text-textDisabled select-none")}>
         {title}
       </Title>
     </TitleWrapper>

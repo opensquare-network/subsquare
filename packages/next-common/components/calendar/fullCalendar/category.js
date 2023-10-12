@@ -1,31 +1,5 @@
 import React from "react";
-import styled from "styled-components";
-import { p_12_medium } from "../../../styles/componentCss";
-import {
-  inline_flex,
-  items_center,
-  m_l,
-  rounded_full,
-} from "../../../styles/tailwindcss";
 import { FULLCALENDAR_CATEGORY_COLORS } from "./consts";
-
-const Wrapper = styled.span`
-  ${inline_flex}
-  ${items_center}
-`;
-
-const Dot = styled.span`
-  width: 8px;
-  height: 8px;
-  ${rounded_full}
-  background-color: ${(p) => p.color || "var(--textTertiary)"};
-`;
-
-const Label = styled.span`
-  ${p_12_medium}
-  color: var(--textSecondary);
-  ${m_l(8)}
-`;
 
 export default function FullCalendarCategory({
   category,
@@ -35,9 +9,14 @@ export default function FullCalendarCategory({
   const categoryColor = color ?? FULLCALENDAR_CATEGORY_COLORS[category];
 
   return (
-    <Wrapper>
-      <Dot color={categoryColor} />
-      {!onlyDot && category && <Label>{category}</Label>}
-    </Wrapper>
+    <span className="inline-flex items-center">
+      <span
+        className="w-2 h-2 rounded-full"
+        style={{ backgroundColor: categoryColor || "var(--textTertiary)" }}
+      />
+      {!onlyDot && category && (
+        <span className="text12Medium text-textSecondary ml-2">{category}</span>
+      )}
+    </span>
   );
 }

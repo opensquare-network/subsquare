@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { useToggle } from "usehooks-ts";
 import NavMenu from "./menu";
@@ -73,7 +73,7 @@ function NavDesktop() {
 
   return (
     <nav
-      className={clsx(
+      className={cn(
         navCollapsed ? "w-[72px]" : "w-[300px]",
         "border-r border-neutral300",
         "max-w-[300px] max-sm:hidden h-full overflow-y-scroll",
@@ -85,14 +85,14 @@ function NavDesktop() {
         <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
           <Link href="/">
-            <div className={clsx(navCollapsed && "hidden")}>
+            <div className={cn(navCollapsed && "hidden")}>
               <ChainName />
               <BrandingHint />
             </div>
           </Link>
           <div>
             <ToggleMenuButton onClick={() => setNavCollapsed(!navCollapsed)}>
-              <ArrowFold className={clsx(navCollapsed && "rotate-180")} />
+              <ArrowFold className={cn(navCollapsed && "rotate-180")} />
             </ToggleMenuButton>
           </div>
         </div>
@@ -127,15 +127,15 @@ function NavMobile() {
 
   return (
     <nav
-      className={clsx(
+      className={cn(
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
         "sm:hidden",
       )}
     >
-      <div className={clsx("h-16", "flex items-center justify-between")}>
+      <div className={cn("h-16", "flex items-center justify-between")}>
         <NavMobileToolbarItem>
           <ToggleMenuButton onClick={menuToggle}>
-            <ArrowFold className={clsx(!menuVisible && "rotate-180")} />
+            <ArrowFold className={cn(!menuVisible && "rotate-180")} />
           </ToggleMenuButton>
         </NavMobileToolbarItem>
         <Link href="/">
@@ -147,13 +147,13 @@ function NavMobile() {
         <NavMobileToolbarItem>
           <div role="button" onClick={toolbarToggle}>
             <SystemMenu
-              className={clsx(
+              className={cn(
                 "[&_path]:fill-navigationText",
                 toolbarVisible && "hidden",
               )}
             />
             <SystemClose
-              className={clsx(
+              className={cn(
                 "[&_path]:fill-navigationText",
                 !toolbarVisible && "hidden",
               )}
@@ -163,13 +163,13 @@ function NavMobile() {
       </div>
 
       {menuVisible && (
-        <NavMobileFloatContainer className={clsx("bg-navigationBg")}>
+        <NavMobileFloatContainer className={cn("bg-navigationBg")}>
           <NavMenu />
         </NavMobileFloatContainer>
       )}
 
       {toolbarVisible && (
-        <NavMobileFloatContainer className={clsx("bg-neutral100")}>
+        <NavMobileFloatContainer className={cn("bg-neutral100")}>
           <HeaderDrawer />
         </NavMobileFloatContainer>
       )}

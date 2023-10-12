@@ -1,12 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
-import { shadow_100 } from "../styles/componentCss";
 
 const Wrapper = styled(Flex)`
   justify-content: center;
   border: 1px solid var(--neutral300);
-  ${shadow_100};
   border-radius: 12px;
   padding: 24px;
   font-style: normal;
@@ -19,7 +17,7 @@ const Wrapper = styled(Flex)`
 
 export function EmptyList({ type = "discussions" }) {
   return (
-    <Wrapper>
+    <Wrapper className="shadow-100">
       <span>
         No current <span style={{ textTransform: "lowercase" }}>{type}</span>
       </span>

@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import ThresholdComponent from "next-common/components/referenda/threshold";
 import isNil from "lodash.isnil";
 import TooltipOrigin from "next-common/components/tooltip";
-import { p_12_medium } from "next-common/styles/componentCss";
 import BigNumber from "bignumber.js";
 import Percentage from "next-common/components/referenda/tally/support/percentage";
 
@@ -34,7 +33,6 @@ const Wrapper = styled.div`
     color: var(--textPrimary);
     li {
       width: 33.3%;
-      ${p_12_medium};
       &:last-child {
         text-align: right;
       }
@@ -48,7 +46,6 @@ const Wrapper = styled.div`
     margin: 0;
     text-align: center;
     color: var(--textSecondary);
-    ${p_12_medium};
   }
 `;
 
@@ -126,7 +123,7 @@ export default function SupportBar({ supportPerbill }) {
           <Progress percentage={barPercentage} bg="var(--neutral200)" />
         </Tooltip>
       </ProgressBarWrapper>
-      <ul>
+      <ul className="text12Medium">
         <li>0.0%</li>
         <li>
           <Percentage perbill={threshold} />
@@ -135,7 +132,7 @@ export default function SupportBar({ supportPerbill }) {
           <Percentage perbill={progressMax} />
         </li>
       </ul>
-      <p>Threshold</p>
+      <p className="text12Medium">Threshold</p>
     </Wrapper>
   );
 }

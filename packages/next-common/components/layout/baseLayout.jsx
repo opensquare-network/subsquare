@@ -9,7 +9,7 @@ import Footer from "./footer";
 import useApi from "next-common/utils/hooks/useApi";
 import { useBlockTime, useSubscribeChainHead } from "next-common/utils/hooks";
 import useUpdateNodesDelay from "next-common/utils/hooks/useUpdateNodesDelay";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
 import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
@@ -40,7 +40,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
         </section>
 
         <section
-          className={clsx(
+          className={cn(
             "flex flex-col flex-1",
             navCollapsed
               ? "max-w-[calc(100%-72px)]"

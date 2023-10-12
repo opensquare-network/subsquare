@@ -1,6 +1,4 @@
 import styled, { css } from "styled-components";
-import { p_14_normal } from "../../../styles/componentCss";
-import { smcss } from "../../../utils/responsive";
 import { SecondaryCard } from "../../styled/containers/secondaryCard";
 import tw from "tailwind-styled-components";
 
@@ -25,18 +23,13 @@ export const SummaryGreyText = styled.span`
   color: var(--textTertiary) !important;
 `;
 
-export const SummaryItemWrapper = styled.div`
-  display: flex;
-  ${smcss(css`
-    gap: 16px;
-    flex-wrap: wrap;
-  `)}
+export const SummaryItemWrapper = tw.div`
+  flex
+  max-sm:gap-4 max-sm:flex-wrap
 `;
-export const SummaryItem = styled.div`
-  flex: 1;
-  ${smcss(css`
-    min-width: calc(50% - 16px);
-  `)}
+export const SummaryItem = tw.div`
+  flex-1
+  max-sm:min-w-[calc(50%-16px)]
 `;
 export const SummaryItemTitle = SummaryTitle;
 
@@ -82,9 +75,7 @@ export const Button = styled.div`
   }
 `;
 
-export const SummaryDescription = styled.p`
-  margin: 0;
-  margin-top: 4px;
-  color: var(--textTertiary);
-  ${p_14_normal};
+export const SummaryDescription = tw.p`
+  m-0 mt-1
+  text-textTertiary text14Medium
 `;

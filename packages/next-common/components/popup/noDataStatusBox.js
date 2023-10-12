@@ -2,7 +2,7 @@ import React from "react";
 
 import { GreyPanel } from "../styled/containers/greyPanel";
 import NoData from "../noData";
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 
 export default function NoDataStatusBox({ text }) {
   return (
@@ -10,7 +10,7 @@ export default function NoDataStatusBox({ text }) {
       <NoData
         showIcon={false}
         text={text}
-        className={clsx("w-full", "!py-4 !px-3")}
+        className={cn("w-full", "!py-4 !px-3")}
       />
     </GreyPanel>
   );

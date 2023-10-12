@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import BigNumber from "bignumber.js";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import { m_x } from "next-common/styles/tailwindcss";
 import Tooltip from "next-common/components/tooltip";
 import React from "react";
 import { toPrecision } from "next-common/utils";
@@ -23,7 +22,7 @@ const Expiration = styled.span`
     color: var(--textTertiary);
     content: "•";
     font-weight: lighter;
-    ${m_x(8)}
+    margin-left: 8px;
   }
 `;
 

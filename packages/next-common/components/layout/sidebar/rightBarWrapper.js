@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import { setLayoutDetailSidebarHeight } from "next-common/store/reducers/layoutSlice";
 import { useEffect, useRef } from "react";
@@ -20,7 +20,7 @@ export function RightBarWrapper(props) {
     <div
       ref={ref}
       {...props}
-      className={clsx(
+      className={cn(
         "flex flex-col",
         "space-y-6",
         "absolute right-0 top-0 w-[320px] mt-0",
