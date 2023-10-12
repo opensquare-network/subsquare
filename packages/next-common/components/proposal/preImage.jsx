@@ -1,21 +1,63 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { hexToU8a } from "@polkadot/util";
+import nextApi from "next-common/services/nextApi";
 
-export default function usePreImageCall(preImage, isLoadingPreImage) {
+export function usePreImage(preImageHash) {
+  const [preImage, setPreImage] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!preImageHash) {
+      setIsLoading(false);
+      return;
+    }
+
+    const abortController = new AbortController();
+    setTimeout(() => {
+      abortController.abort();
+    }, 15 * 1000);
+    nextApi
+      .fetch(
+        `preimages/${preImageHash}`,
+        {},
+        { signal: abortController.signal },
+      )
+      .then(({ result, error }) => {
+        if (error) {
+          return;
+        }
+
+        setPreImage(result);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [preImageHash]);
+
+  return { preImage, isLoading };
+}
+
+const parseGov2PreImageCall = (bytes, api) => {
+  const callData = api.registry.createType("Bytes", bytes);
+  return api.registry.createType("Call", callData);
+};
+
+const parseDemocracyPreImageCall = (bytes, api) => {
+  return api.registry.createType("Proposal", bytes);
+};
+
+const getBlockApi = async (api, blockHash) => {
+  if (blockHash) {
+    return api.at(blockHash);
+  }
+  return api;
+};
+
+export function usePreImageCall(preImage, isLoadingPreImage) {
   const api = useApi();
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
-  const decodeCall = useCallback(async (proposalHex, blockHash, api) => {
-    let blockApi = api;
-    if (blockHash) {
-      blockApi = await api.at(blockHash);
-    }
-    const bytes = hexToU8a(proposalHex);
-    const callData = blockApi.registry.createType("Bytes", bytes);
-    return blockApi.registry.createType("Call", callData);
-  }, []);
 
   useEffect(() => {
     if (isLoadingPreImage) {
@@ -31,9 +73,25 @@ export default function usePreImageCall(preImage, isLoadingPreImage) {
       return;
     }
 
-    const proposalHex = preImage?.hex || preImage?.data;
     const blockHash = preImage?.indexer.blockHash;
-    decodeCall(proposalHex, blockHash, api)
+    let proposalHex;
+    let parseCall;
+
+    if (preImage.isGov2) {
+      // Gov2 preImage
+      proposalHex = preImage?.hex;
+      parseCall = parseGov2PreImageCall;
+    } else {
+      // Democracy preImage
+      proposalHex = preImage?.data;
+      parseCall = parseDemocracyPreImageCall;
+    }
+
+    getBlockApi(api, blockHash)
+      .then((blockApi) => {
+        const bytes = hexToU8a(proposalHex);
+        return parseCall(bytes, blockApi);
+      })
       .then((callInfo) => {
         if (callInfo) {
           setCall(callInfo);
@@ -43,7 +101,20 @@ export default function usePreImageCall(preImage, isLoadingPreImage) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, isLoadingPreImage, preImage, decodeCall]);
+  }, [api, isLoadingPreImage, preImage]);
 
   return { call, isLoading };
+}
+
+export default function usePreImageCallFromHash(preImageHash) {
+  const { preImage, isLoading: isLoadingPreImage } = usePreImage(preImageHash);
+  const { call, isLoading: isLoadingCall } = usePreImageCall(
+    preImage,
+    isLoadingPreImage,
+  );
+
+  return {
+    call,
+    isLoading: isLoadingCall,
+  };
 }

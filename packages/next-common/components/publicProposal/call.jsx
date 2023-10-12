@@ -13,6 +13,7 @@ export default function DemocracyPublicProposalCall({
 }) {
   const onchainData = useOnchainData();
   const chain = useChain();
+  const preImageHash = onchainData.preImage?.hash;
 
   const data = [
     ["Hash", <Copyable key="hash">{onchainData?.hash}</Copyable>],
@@ -20,6 +21,7 @@ export default function DemocracyPublicProposalCall({
       <Proposal
         key={"call"}
         call={call}
+        preImageHash={preImageHash}
         shorten={shorten}
         proposalIndex={proposalIndex}
         referendumIndex={referendumIndex}
