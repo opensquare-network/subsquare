@@ -13,6 +13,7 @@ export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
 export default function normalizePolkassemblyDiscussionListItem(chain, item) {
   return {
     ...item,
+    index: item.polkassemblyId,
     time: item.lastActivityAt,
     author: toPolkassemblyDiscussionAuthor(item.author, chain),
     detailLink: `/polkassembly/posts/${item.polkassemblyId}`,
