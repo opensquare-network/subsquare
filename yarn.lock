@@ -8352,6 +8352,7 @@ __metadata:
     lodash.startcase: ^4.4.0
     lodash.sumby: ^4.6.0
     lodash.uniq: ^4.5.0
+    lodash.uniqby: ^4.7.0
     md5: ^2.3.0
     moment: ^2.29.4
     react: ^18.2.0

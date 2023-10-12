@@ -7,6 +7,7 @@ import {
 import { useChain } from "next-common/context/chain";
 import isNil from "lodash.isnil";
 import nextApi from "next-common/services/nextApi";
+import uniqBy from "lodash.uniqby";
 
 const dataCache = {};
 
@@ -43,9 +44,10 @@ export function usePolkassemblyPostData({
       })
       .then(({ result }) => {
         if (isMounted.current) {
-          const comments = result?.comments
+          let comments = result?.comments
             ?.filter((item) => item.comment_source !== "subsquare")
             ?.map((item) => toPolkassemblyCommentListItem(chain, item));
+          comments = uniqBy([...comments].reverse(), "id");
           comments?.sort(
             (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
           );
