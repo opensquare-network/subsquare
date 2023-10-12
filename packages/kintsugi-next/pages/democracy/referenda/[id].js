@@ -30,6 +30,8 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { useSelector } from "react-redux";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 function ReferendumContent() {
   const dispatch = useDispatch();
@@ -73,6 +75,10 @@ function ReferendumContent() {
   const { call: inlineCall } = useInlineCall(timelineData, proposal);
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
+
   return (
     <ContentWithComment>
       <DetailItem />
@@ -99,7 +105,7 @@ function ReferendumContent() {
             onchainData={post?.onchainData}
           />
         }
-        timeline={<Timeline data={timelineData} />}
+        timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
         timelineCount={timelineData.length}
         votesBubble={<DemocracyReferendaVotesBubble />}
       />

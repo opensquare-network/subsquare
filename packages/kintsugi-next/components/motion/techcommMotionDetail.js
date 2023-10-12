@@ -25,6 +25,7 @@ import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHe
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -106,6 +107,10 @@ export default function TechcommMotionDetail({ motion }) {
   const blockHeight = useSelector(chainOrScanHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight,
+  );
+
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
   );
 
   if (isEdit) {
@@ -222,6 +227,7 @@ export default function TechcommMotionDetail({ motion }) {
             data={timelineData}
             indent={false}
             motionEndInfo={motionEndInfo}
+            compact={isTimelineCompact}
           />
         }
       />
