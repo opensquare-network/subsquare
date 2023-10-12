@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { removeToast } from "../../store/reducers/toastSlice";
 import Loading from "../loading";
@@ -11,7 +10,7 @@ import {
   SystemWarning,
 } from "@osn/icons/subsquare";
 
-export default function ToastItem({ type, message, id, sticky, timeout }) {
+export default function ToastItem({ type, message, id }) {
   const dispatch = useDispatch();
 
   const icons = {
@@ -21,44 +20,31 @@ export default function ToastItem({ type, message, id, sticky, timeout }) {
     error: <SystemFailure className="w-5 h-5" />,
   };
 
-  useEffect(() => {
-    if (!message) return;
-
-    toast.custom(
-      () => (
-        <div
-          className={cn(
-            "w-full h-full",
-            "flex items-center gap-x-2",
-            "p-4",
-            "bg-neutral100 shadow-200",
-            "text14Medium text-textPrimary",
-            "rounded-xl border-l-4 border-transparent",
-            type === "success" && "border-green500",
-            type === "warning" && "border-orange500",
-            type === "error" && "border-red500",
-            type === "pending" && "border-blue500",
-          )}
-        >
-          {icons[type]}
-          <div className="w-full">{message}</div>
-          <SystemClose
-            role="button"
-            className="[&_path]:fill-textTertiary"
-            onClick={() => {
-              dispatch(removeToast(id));
-              toast.dismiss(id);
-            }}
-          />
-        </div>
-      ),
-      {
-        id,
-        duration: sticky ? 9999999999 : timeout || 5000,
-        onAutoClose() {
+  return (
+    <div
+      className={cn(
+        "w-full h-full",
+        "flex items-center gap-x-2",
+        "p-4",
+        "bg-neutral100 shadow-200",
+        "text14Medium text-textPrimary",
+        "rounded-xl border-l-4 border-transparent",
+        type === "success" && "border-green500",
+        type === "warning" && "border-orange500",
+        type === "error" && "border-red500",
+        type === "pending" && "border-blue500",
+      )}
+    >
+      {icons[type]}
+      <div className="w-full">{message}</div>
+      <SystemClose
+        role="button"
+        className="[&_path]:fill-textTertiary"
+        onClick={() => {
           dispatch(removeToast(id));
-        },
-      },
-    );
-  }, [dispatch, timeout, sticky, id, message]);
+          toast.dismiss(id);
+        }}
+      />
+    </div>
+  );
 }
