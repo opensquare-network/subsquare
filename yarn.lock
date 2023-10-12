@@ -1979,10 +1979,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.34.1":
-  version: 1.34.1
-  resolution: "@osn/icons@npm:1.34.1"
-  checksum: 6737e680577d11a42be674cc393b1090a2e4e98fc38e86502533d83ee5a45acf4fadf9c9dfb7e3c674664ad81fcfd60ce8e4ec3992ac102f8a737f28805f8092
+"@osn/icons@npm:^1.35.0":
+  version: 1.35.0
+  resolution: "@osn/icons@npm:1.35.0"
+  checksum: 3d6b86a7fba1facd83bbc43ddd2813d4d244d98efa9bf2fb6515ceac37713a0b0605a422f744e31b5ecafd80c7e9060ce90a5f6df292443d3d1684eea18eb86d
   languageName: node
   linkType: hard
 
@@ -3261,7 +3261,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.34.1
+    "@osn/icons": ^1.35.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3282,6 +3282,7 @@ __metadata:
     react-redux: ^8.0.5
     sass: ^1.38.0
     sharp: ^0.32.0
+    sonner: ^1.0.3
     styled-components: ^5.3.9
     tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
@@ -3295,7 +3296,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.34.1
+    "@osn/icons": ^1.35.0
     "@osn/previewer": ^0.12.5
     "@osn/rich-text-editor": ^0.6.2
     "@svgr/webpack": ^7.0.0
@@ -3332,6 +3333,7 @@ __metadata:
     react-redux: ^8.0.5
     sass: ^1.38.0
     sharp: ^0.32.1
+    sonner: ^1.0.3
     styled-components: ^5.3.9
     tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
@@ -8305,7 +8307,7 @@ __metadata:
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.34.1
+    "@osn/icons": ^1.35.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^0.12.5
     "@osn/provider-options": 1.1.0
@@ -8364,6 +8366,7 @@ __metadata:
     react-redux: ^8.0.5
     react-slider: ^2.0.4
     socket.io-client: ^4.3.2
+    sonner: ^1.0.3
     styled-components: ^5.3.9
     tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
@@ -10181,6 +10184,16 @@ __metadata:
     ip: ^2.0.0
     smart-buffer: ^4.2.0
   checksum: 259d9e3e8e1c9809a7f5c32238c3d4d2a36b39b83851d0f573bfde5f21c4b1288417ce1af06af1452569cd1eb0841169afd4998f0e04ba04656f6b7f0e46d748
+  languageName: node
+  linkType: hard
+
+"sonner@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "sonner@npm:1.0.3"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: e7233c9982c05413e24c7ee14af4439c734c713f5a4e4d5f2c4ca9425615f96e9c560d0053af3ff0555dc70aaff49079d05a0bdf90457e551bd2641925bd08fd
   languageName: node
   linkType: hard
 
