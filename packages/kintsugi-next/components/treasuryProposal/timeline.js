@@ -7,6 +7,8 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
 import AddressUser from "next-common/components/user/addressUser";
+import { useSelector } from "react-redux";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 export default function TreasuryProposalTimeline({ treasuryProposal }) {
   const getTimelineData = (args, method) => {
@@ -73,5 +75,11 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
     setTimelineData(sortTimeline([...data, ...publicProposalTimelines]));
   }, [treasuryProposal]);
 
-  return <Timeline data={timelineData} indent={false} />;
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
+
+  return (
+    <Timeline data={timelineData} indent={false} compact={isTimelineCompact} />
+  );
 }
