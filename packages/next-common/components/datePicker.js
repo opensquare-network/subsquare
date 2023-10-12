@@ -226,7 +226,7 @@ export default function DatePicker({
                 }}
               >
                 <div>
-                  <h6 className="text12Bold mb-2">Date</h6>
+                  <h6 className="text12Bold mb-2 text-textPrimary">Date</h6>
                   <ReactDatePicker
                     selected={date}
                     minDate={new Date()}
@@ -260,7 +260,7 @@ export default function DatePicker({
 
                 <div>
                   <FlexBetween className="mb-2">
-                    <h6 className="text12Bold">Time</h6>
+                    <h6 className="text12Bold text-textPrimary">Time</h6>
                     <span className="text12Medium text-textTertiary">
                       24-hour clock
                     </span>
