@@ -31,6 +31,7 @@ const Discussion = styled.div`
   display: flex;
   cursor: pointer;
   padding: 10px 16px;
+  color: var(--textPrimary);
   background: var(--neutral200);
   ${(p) =>
     p.selected &&
