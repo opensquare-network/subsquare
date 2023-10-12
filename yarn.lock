@@ -3282,6 +3282,7 @@ __metadata:
     react-redux: ^8.0.5
     sass: ^1.38.0
     sharp: ^0.32.0
+    sonner: ^1.0.3
     styled-components: ^5.3.9
     tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
@@ -3332,6 +3333,7 @@ __metadata:
     react-redux: ^8.0.5
     sass: ^1.38.0
     sharp: ^0.32.1
+    sonner: ^1.0.3
     styled-components: ^5.3.9
     tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
@@ -8363,6 +8365,7 @@ __metadata:
     react-redux: ^8.0.5
     react-slider: ^2.0.4
     socket.io-client: ^4.3.2
+    sonner: ^1.0.3
     styled-components: ^5.3.9
     tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
@@ -10180,6 +10183,16 @@ __metadata:
     ip: ^2.0.0
     smart-buffer: ^4.2.0
   checksum: 259d9e3e8e1c9809a7f5c32238c3d4d2a36b39b83851d0f573bfde5f21c4b1288417ce1af06af1452569cd1eb0841169afd4998f0e04ba04656f6b7f0e46d748
+  languageName: node
+  linkType: hard
+
+"sonner@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "sonner@npm:1.0.3"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: e7233c9982c05413e24c7ee14af4439c734c713f5a4e4d5f2c4ca9425615f96e9c560d0053af3ff0555dc70aaff49079d05a0bdf90457e551bd2641925bd08fd
   languageName: node
   linkType: hard
 
