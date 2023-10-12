@@ -4,6 +4,7 @@ import CookiesConsent from "../cookiesConsent";
 import Header from "../header";
 import Nav from "../nav";
 import SEO from "../SEO";
+import Toast from "../toast";
 import Footer from "./footer";
 import useApi from "next-common/utils/hooks/useApi";
 import { useBlockTime, useSubscribeChainHead } from "next-common/utils/hooks";
@@ -13,7 +14,6 @@ import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
 import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
 import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
-import { Toaster } from "sonner";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -63,15 +63,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
       </div>
 
       <CMDKPalette />
-      <Toaster
-        toastOptions={{
-          className: "w-full !h-[68px]",
-        }}
-        className="!w-[480px] !top-24 !right-6"
-        position="top-right"
-        expand
-        visibleToasts={6}
-      />
+      <Toast />
       <CookiesConsent />
       <LoginGlobalPopup />
     </>
