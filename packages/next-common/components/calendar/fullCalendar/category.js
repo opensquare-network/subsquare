@@ -1,12 +1,5 @@
 import React from "react";
-import styled from "styled-components";
 import { FULLCALENDAR_CATEGORY_COLORS } from "./consts";
-
-const Dot = styled.span`
-  width: 8px;
-  height: 8px;
-  background-color: ${(p) => p.color || "var(--textTertiary)"};
-`;
 
 export default function FullCalendarCategory({
   category,
@@ -17,7 +10,10 @@ export default function FullCalendarCategory({
 
   return (
     <span className="inline-flex items-center">
-      <Dot color={categoryColor} className="rounded-full" />
+      <span
+        className="w-2 h-2 rounded-full"
+        style={{ backgroundColor: categoryColor || "var(--textTertiary)" }}
+      />
       {!onlyDot && category && (
         <span className="text12Medium text-textSecondary ml-2">{category}</span>
       )}

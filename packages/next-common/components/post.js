@@ -117,6 +117,7 @@ const TitleExtra = tw.div`
   text-textTertiary
   max-sm:mt-2 max-sm:ml-0
 `;
+
 const HeadWrapper = styled.div`
   display: flex;
   justify-content: space-between;
