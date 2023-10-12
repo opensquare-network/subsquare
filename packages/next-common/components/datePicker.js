@@ -1,16 +1,14 @@
 import styled, { css } from "styled-components";
 import ReactDatePicker from "react-datepicker";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
-import Close from "../assets/imgs/icons/close-16.svg";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
-import Background from "./styled/backgroundShade";
 import PrimaryButton from "./buttons/primaryButton";
+import Popup from "./popup/wrapper/Popup";
 const CaretWrapper = styled.div`
   cursor: pointer;
   padding: 6px 7px 5px 7px;
@@ -121,42 +119,6 @@ const DateButton = styled.div`
     `}
 `;
 
-const DateWrapper = styled.div`
-  position: absolute;
-  z-index: 1;
-  right: 50%;
-  margin-right: -200px;
-  top: 50%;
-  margin-top: -280px;
-  padding: 24px;
-  background: var(--neutral100);
-  border: 1px solid var(--neutral300);
-  box-shadow: var(--shadow200);
-  border-radius: 8px;
-
-  h2 {
-    margin: 0;
-    font-size: 14px;
-    line-height: 20px;
-  }
-
-  h6 {
-    margin-top: 16px;
-    margin-bottom: 8px;
-  }
-
-  h2 + button {
-    all: unset;
-    cursor: pointer;
-  }
-
-  h6 + span {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--textTertiary);
-  }
-`;
-
 const DateHeader = styled(Flex)`
   margin-bottom: 8px;
 
@@ -212,8 +174,7 @@ export default function DatePicker({
   const [show, setShow] = useState("date");
   const [hour, setHour] = useState(now.getHours());
   const [minute, setMinute] = useState(now.getMinutes());
-  const ref = useRef();
-  useOnClickOutside(ref, () => setIsOpen(false));
+
   const handleChange = (e) => {
     setDate(e);
   };
@@ -258,19 +219,14 @@ export default function DatePicker({
         {isOpen && (
           <>
             {show === "date" && (
-              <Background>
-                <DateWrapper ref={ref}>
-                  <FlexBetween>
-                    <h2>Select End Time</h2>
-                    <button
-                      onClick={() => {
-                        setIsOpen(false);
-                      }}
-                    >
-                      <Close />
-                    </button>
-                  </FlexBetween>
-                  <h6>Date</h6>
+              <Popup
+                title="Select Time"
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              >
+                <div>
+                  <h6 className="text12Bold mb-2">Date</h6>
                   <ReactDatePicker
                     selected={date}
                     minDate={new Date()}
@@ -291,18 +247,24 @@ export default function DatePicker({
                             }
                             onClick={decreaseMonth}
                           />
-                          <b>{moment(date).format("YYYY-MM")}</b>
+                          <b className="text14Bold">
+                            {moment(date).format("YYYY-MM")}
+                          </b>
                           <CaretRight onClick={increaseMonth} />
                         </DateHeader>
                       </div>
                     )}
                     formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
                   />
-                  <FlexBetween style={{ marginTop: 14, marginBottom: 8 }}>
-                    <h6 style={{ margin: 0 }}>Time</h6>
-                    <span>24-hour clock</span>
-                  </FlexBetween>
+                </div>
 
+                <div>
+                  <FlexBetween className="mb-2">
+                    <h6 className="text12Bold">Time</h6>
+                    <span className="text12Medium text-textTertiary">
+                      24-hour clock
+                    </span>
+                  </FlexBetween>
                   <TimeWrapper>
                     <Input
                       className="input"
@@ -336,28 +298,29 @@ export default function DatePicker({
                       placeholder="00"
                     />
                   </TimeWrapper>
-                  <ButtonWrapper>
-                    <PrimaryButton
-                      disabled={hour === "" || minute === ""}
-                      onClick={() => {
-                        if (!date) {
-                          setDate(new Date());
-                        }
-                        onSelectDatetime(
-                          Date.parse(
-                            `${moment(date ?? new Date()).format(
-                              "YYYY-MM-DD",
-                            )} ${hour}:${minute}`,
-                          ),
-                        );
-                        setIsOpen(false);
-                      }}
-                    >
-                      Confirm
-                    </PrimaryButton>
-                  </ButtonWrapper>
-                </DateWrapper>
-              </Background>
+                </div>
+
+                <ButtonWrapper>
+                  <PrimaryButton
+                    disabled={hour === "" || minute === ""}
+                    onClick={() => {
+                      if (!date) {
+                        setDate(new Date());
+                      }
+                      onSelectDatetime(
+                        Date.parse(
+                          `${moment(date ?? new Date()).format(
+                            "YYYY-MM-DD",
+                          )} ${hour}:${minute}`,
+                        ),
+                      );
+                      setIsOpen(false);
+                    }}
+                  >
+                    Confirm
+                  </PrimaryButton>
+                </ButtonWrapper>
+              </Popup>
             )}
           </>
         )}
