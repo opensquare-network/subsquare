@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.6.0
+date: 2023-10-12
+- Allow post authors and admins to delete a discussion post.
+- Merge comments from subsquare and polkassembly.
+- Show my delegated OpenGov referenda votes on my votes management.
+- Add a link to all my votes history on my votes management.
+- Show OpenGov prior locks on my votes management page.
+- Implement enhanced tree view for call on OpenGov and democracy referendum detail page.
+- [Medium]Refactor tailwind related codes.
+- Fix: kintsugi timeline compact mode doesn't work.
+- Add index for posts on discussions page.
+- Add loading effect for treasury panel items.
+- Fix styles.
+
 ### 3.5.2
 date: 2023-10-08
 - Fix referenda delegation voting checking.
