@@ -12,30 +12,23 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import { p_12_medium } from "next-common/styles/componentCss";
 import AddressUser from "next-common/components/user/addressUser";
 import startCase from "lodash.startcase";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import tw from "tailwind-styled-components";
 
 const ConvictionText = styled.span`
   width: 40px;
   color: var(--textTertiary);
 `;
 
-const TrackNameText = styled.div`
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  padding: 2px 8px;
-
-  background: var(--neutral200);
-  border-radius: 10px;
-
-  ${p_12_medium}
-
-  text-align: center;
-  color: var(--textSecondary);
+const TrackNameText = tw.div`
+  inline-flex items-center flex-nowrap
+  whitespace-nowrap
+  py-0.5 px-2
+  bg-neutral200
+  rounded-[10px]
+  text12Medium text-center text-textSecondary
 `;
 
 const MyPopupListWrapper = styled(PopupListWrapper)`

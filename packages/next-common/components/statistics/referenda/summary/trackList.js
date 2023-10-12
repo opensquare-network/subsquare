@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { p_12_normal } from "next-common/styles/componentCss";
 import { TrackColors } from "./colors";
 import startCase from "lodash.startcase";
 import Link from "next/link";
+import tw from "tailwind-styled-components";
 
 const Box = styled.div`
   width: 10px;
@@ -25,17 +25,13 @@ const TrackItem = styled.div`
   justify-content: space-between;
 `;
 
-const Name = styled(Link)`
-  ${p_12_normal}
-  color: var(--textPrimary);
-  :hover {
-    text-decoration: underline;
-  }
+const Name = tw(Link)`
+  text12Medium text-textPrimary
+  hover:underline
 `;
 
-const Count = styled.span`
-  ${p_12_normal}
-  color: var(--textTertiary);
+const Count = tw.span`
+  text12Medium text-textTertiary
 `;
 
 const Wrapper = styled.div`

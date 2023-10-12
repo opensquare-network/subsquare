@@ -1,6 +1,5 @@
 import React from "react";
 import { useChainSettings } from "next-common/context/chain";
-import { p_14_medium, p_14_normal } from "next-common/styles/componentCss";
 import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import SupportSVG from "next-common/assets/imgs/icons/support.svg";
@@ -11,6 +10,7 @@ import TracksSVG from "next-common/assets/imgs/icons/tracks.svg";
 import Flex from "next-common/components/styled/flex";
 import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
+import tw from "tailwind-styled-components";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,16 +31,13 @@ const Item = styled(Flex)`
   margin: 12px 0;
 `;
 
-const Title = styled(Flex)`
-  gap: 8px;
-
-  ${p_14_medium};
-  color: var(--textPrimary);
+const Title = tw(Flex)`
+  gap-2
+  text14Medium text-textPrimary
 `;
 
-const Value = styled.div`
-  ${p_14_normal};
-  color: var(--textPrimary);
+const Value = tw.div`
+  text14Medium text-textPrimary
 `;
 
 export default function DelegationSummary({

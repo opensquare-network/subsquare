@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useChain } from "next-common/context/chain";
 import Tooltip from "../tooltip";
 import AchainableSVG from "./achainable.svg";
-import { p_12_medium } from "next-common/styles/componentCss";
 import useAchainableData from "./useAchainableData";
+import tw from "tailwind-styled-components";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,18 +21,12 @@ const TagsWrapper = styled.div`
   gap: 8px;
 `;
 
-const Tag = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px 8px;
-
-  border: 1px solid var(--neutral400);
-  border-radius: 4px;
-  white-space: nowrap;
-
-  ${p_12_medium}
-  color: var(--textSecondary);
+const Tag = tw.div`
+  text12Medium
+  flex justify-center items-center
+  py-0.5 px-2
+  border border-neutral400 rounded
+  whitespace-nowrap text-textSecondary
 `;
 
 const Footer = styled.div`

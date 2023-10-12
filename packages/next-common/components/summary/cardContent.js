@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import { p_16_bold } from "../../styles/componentCss";
+import tw from "tailwind-styled-components";
 
-const Content = styled.div`
+const Comp = tw.div`
+  text16Bold
+`;
+
+const Content = styled(Comp)`
   color: var(--textPrimary);
-  ${p_16_bold};
 
   > .unit {
     color: var(--textTertiary);

@@ -8,9 +8,9 @@ import {
 } from "utils/referendumUtil";
 import Threshold from "../threshold";
 import isNil from "lodash.isnil";
-import { p_12_medium } from "next-common/styles/componentCss";
 import VoteBarBarProgress from "./barProgress";
 import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
+import tw from "tailwind-styled-components";
 
 const Wrapper = styled.div``;
 
@@ -23,13 +23,11 @@ const ContentGroup = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const ContentPercentage = styled.span`
-  color: var(--textPrimary);
-  ${p_12_medium};
+const ContentPercentage = tw.span`
+  text12Medium text-textPrimary
 `;
-const ContentDescription = styled.span`
-  color: var(--textSecondary);
-  ${p_12_medium};
+const ContentDescription = tw.span`
+  text12Medium text-textSecondary
 `;
 const ContentAyeGroup = styled(ContentGroup)`
   text-align: left;

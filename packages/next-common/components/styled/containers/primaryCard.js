@@ -1,14 +1,8 @@
-import styled from "styled-components";
-import { shadow_100 } from "../../../styles/componentCss";
 import { NeutralPanel } from "./neutralPanel";
+import tw from "tailwind-styled-components";
 
-export const PrimaryCard = styled(NeutralPanel)`
-  padding: 48px;
-  color: var(--textPrimary);
-  ${shadow_100};
-
-  @media screen and (max-width: 768px) {
-    padding: 24px;
-    border-radius: 0;
-  }
+export const PrimaryCard = tw(NeutralPanel)`
+  p-12
+  text-textPrimary
+  max-sm:p-6 max-sm:!rounded-none
 `;

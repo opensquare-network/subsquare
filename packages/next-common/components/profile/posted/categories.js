@@ -1,21 +1,14 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { SecondaryCard } from "../../styled/containers/secondaryCard";
-import { no_scroll_bar } from "../../../styles/componentCss";
 import { useChain } from "../../../context/chain";
-import VStack from "../../styled/vStack";
+import tw from "tailwind-styled-components";
 
-const CategoryWrapper = styled(SecondaryCard)``;
-
-const CategoryList = styled.ul`
-  all: unset;
-  padding-inline-start: 0 !important;
-  display: flex;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  ${no_scroll_bar};
-  flex-wrap: wrap;
-  gap: 8px;
+const CategoryList = tw.ul`
+  ps-0
+  flex flex-wrap gap-2
+  overflow-x-scroll overflow-y-hidden
+  scrollbar-hidden
 `;
 
 const CategoryOption = styled.li`
@@ -123,8 +116,8 @@ export default function Categories({
   };
 
   return (
-    <CategoryWrapper>
-      <VStack space={16}>
+    <SecondaryCard>
+      <div className="flex flex-col gap-4">
         <CategoryList>
           {categories.map((c, index) => (
             <Category
@@ -161,7 +154,7 @@ export default function Categories({
             );
           })}
         </CategoryList>
-      </VStack>
-    </CategoryWrapper>
+      </div>
+    </SecondaryCard>
   );
 }
