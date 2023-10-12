@@ -45,8 +45,8 @@ export default function NavMenuItem({
       )}
       <span
         className={cn(
-          collapsed && "hidden",
           "w-full inline-flex justify-between items-center",
+          collapsed && "hidden",
         )}
       >
         <span>
