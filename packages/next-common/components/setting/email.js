@@ -8,6 +8,7 @@ import { EmailVerify, InputWrapper } from "./styled";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 import PrimaryButton from "../buttons/primaryButton";
+import EmailJunkWarning from "./emailJunkWarning";
 
 export default function Email({ email, verified }) {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ export default function Email({ email, verified }) {
 
   return (
     <div>
+      {email && <EmailJunkWarning />}
       <InputWrapper>
         <Input
           defaultValue={email}
