@@ -1,7 +1,6 @@
 import OverviewPostList from "next-common/components/overview/postList";
 import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import { toDiscussionListItem } from "utils/viewfuncs";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
@@ -15,6 +14,7 @@ import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo"
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import businessCategory from "next-common/utils/consts/business/category";
+import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 
 export default function Home({ overview, chain }) {
   const chainSettings = useChainSettings();
@@ -24,7 +24,7 @@ export default function Home({ overview, chain }) {
       category: businessCategory.discussions,
       link: "/discussions",
       items: (overview?.discussions ?? []).map((item) =>
-        toDiscussionListItem(chain, item),
+        normalizeDiscussionListItem(chain, item),
       ),
     },
     {
