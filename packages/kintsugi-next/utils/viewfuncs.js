@@ -1,11 +1,5 @@
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 
-export const toDiscussionListItem = (chain, item) => ({
-  ...item,
-  time: item.lastActivityAt,
-  detailLink: `/posts/${item.postUid}`,
-});
-
 export function toApiType(type) {
   if (type === detailPageCategory.TECH_COMM_MOTION) {
     return "tech-comm/motions";
