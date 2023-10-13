@@ -11,7 +11,7 @@ import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
 import PrimaryButton from "../buttons/primaryButton";
-import JunkWarning from "./warning";
+import EmailJunkWarning from "./emailJunkWarning";
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -94,7 +94,7 @@ export default function NotificationEmail({ email, verified }) {
 
   return (
     <div>
-      {email && <JunkWarning />}
+      {email && <EmailJunkWarning />}
       <InputWrapper>
         <Input
           placeholder="Please fill Email..."
