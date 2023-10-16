@@ -11,6 +11,12 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import MyVotes from "components/myvotes";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import {
+  hasDefinedBounties,
+  hasDefinedOffChainVoting,
+} from "next-common/utils/summaryExternalInfo";
+import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
+import Bounties from "next-common/components/summary/externalInfo/bounties";
 
 export default function Votes({ overview }) {
   const chain = useChain();
@@ -42,6 +48,16 @@ export default function Votes({ overview }) {
     });
   }
 
+  let externalInfo = null;
+  if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
+    externalInfo = (
+      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+        <OffChainVoting />
+        <Bounties />
+      </div>
+    );
+  }
+
   return (
     <ListLayout
       title={chainSettings.name}
@@ -49,6 +65,7 @@ export default function Votes({ overview }) {
       description={chainSettings.description}
       headContent={<ChainSocialLinks />}
       summary={<SummaryComponent summaryData={overview?.summary} />}
+      summaryFooter={externalInfo}
       tabs={tabs}
     >
       <MyVotes />
