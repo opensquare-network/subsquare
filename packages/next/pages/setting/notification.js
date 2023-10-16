@@ -28,6 +28,7 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import NotificationEmail from "next-common/components/setting/notificationEmail";
+import NotificationTelegram from "next-common/components/setting/notificationTelegram";
 import useSubscription from "components/settings/subscription/useSubscription";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
@@ -62,6 +63,16 @@ export default function NotificationPage({ subscription, unsubscribe }) {
   } = useSubscription({
     subscription,
   });
+
+  const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
+    user?.activeNotificationChannels?.telegram,
+  );
+  const [isEmailChannelOn, setIsEmailChannelOn] = useState(
+    user?.activeNotificationChannels?.email,
+  );
+  const isActiveChannelsChanged =
+    !isTelegramChannelOn !== !user?.activeNotificationChannels?.telegram ||
+    !isEmailChannelOn !== !user?.activeNotificationChannels?.email;
 
   const emailVerified =
     loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
@@ -100,51 +111,70 @@ export default function NotificationPage({ subscription, unsubscribe }) {
 
     setSaving(true);
 
-    const data = {
-      ...getDiscussionOptionValues(),
-    };
+    try {
+      let error;
 
-    const { result, error } = await nextApi.patch("user/notification", data);
-    if (result) {
+      ({ error } = await nextApi.patch("user/active-channels", {
+        email: !!isEmailChannelOn,
+        telegram: !!isTelegramChannelOn,
+      }));
+      if (error) {
+        dispatch(newErrorToast(error.message));
+        return;
+      }
+
+      const data = {
+        ...getDiscussionOptionValues(),
+      };
+
+      ({ error } = await nextApi.patch("user/notification", data));
+      if (error) {
+        dispatch(newErrorToast(error.message));
+        return;
+      }
+
       await fetchAndUpdateUser(userDispatch);
 
       if (isSubscriptionChanged) {
-        const { result, error } = await updateSubscriptionSetting();
-        if (result) {
-          dispatch(newSuccessToast("Settings updated"));
-        }
+        const { error } = await updateSubscriptionSetting();
         if (error) {
           dispatch(newErrorToast(error.message));
+          return;
         }
       }
-    }
-    if (error) {
-      dispatch(newErrorToast(error.message));
-    }
 
-    setSaving(false);
+      dispatch(newSuccessToast("Settings updated"));
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <SettingLayout>
       {isKeyUser && (
         <SettingSection>
-          <TitleContainer>Email</TitleContainer>
+          <TitleContainer>Channels</TitleContainer>
           <ContentWrapper>
-            {showLoginToUnsubscribe && (
-              <WarningMessage>
-                Please login to unsubscribe notifications
-              </WarningMessage>
-            )}
-            {emailVerified && (
-              <WarningMessage>
-                Please set the email to receive notifications
-              </WarningMessage>
-            )}
-            <NotificationEmail
-              email={user?.email}
-              verified={user?.emailVerified}
-            />
+            <div className="flex flex-col gap-[16px]">
+              {showLoginToUnsubscribe && (
+                <WarningMessage>
+                  Please login to unsubscribe notifications
+                </WarningMessage>
+              )}
+              {emailVerified && (
+                <WarningMessage>
+                  Please set the email to receive notifications
+                </WarningMessage>
+              )}
+              <NotificationEmail
+                isOn={isEmailChannelOn}
+                setIsOn={setIsEmailChannelOn}
+              />
+              <NotificationTelegram
+                isOn={isTelegramChannelOn}
+                setIsOn={setIsTelegramChannelOn}
+              />
+            </div>
           </ContentWrapper>
         </SettingSection>
       )}
@@ -161,7 +191,9 @@ export default function NotificationPage({ subscription, unsubscribe }) {
             <PrimaryButton
               disabled={
                 !isVerifiedUser ||
-                (!isNotificationChanged && !isSubscriptionChanged)
+                (!isNotificationChanged &&
+                  !isSubscriptionChanged &&
+                  !isActiveChannelsChanged)
               }
               onClick={updateNotificationSetting}
               isLoading={saving}

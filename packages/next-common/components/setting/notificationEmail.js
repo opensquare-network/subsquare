@@ -5,13 +5,44 @@ import Input from "../input";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import { EmailVerify, InputWrapper } from "./styled";
+import { EmailVerify } from "./styled";
 import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
-import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
+import {
+  fetchAndUpdateUser,
+  useUser,
+  useUserDispatch,
+} from "../../context/user";
 import PrimaryButton from "../buttons/primaryButton";
 import EmailJunkWarning from "./emailJunkWarning";
+import { LinkEmail } from "@osn/icons/subsquare";
+import Flex from "../styled/flex";
+import FlexBetween from "../styled/flexBetween";
+import Switch from "./switch";
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    path {
+      fill: var(--textTertiary);
+    }
+  }
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-grow: 1;
+
+  > :first-child {
+    flex-grow: 1;
+  }
+`;
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -34,14 +65,19 @@ const CountdownWrapper = styled.div`
   color: var(--textPrimary);
 `;
 
-export default function NotificationEmail({ email, verified }) {
+export default function NotificationEmail({ isOn, setIsOn }) {
   const dispatch = useDispatch();
+  const user = useUser();
+  const email = user?.email;
+  const verified = user?.emailVerified;
   const [resendLoading, setResendLoading] = useState(false);
   const [resendErrors, setResendErrors] = useState();
   const [inputEmail, setInputEmail] = useState(email);
   const { countdown, counting, startCountdown, resetCountdown } =
     useCountdown(60);
   const userDispatch = useUserDispatch();
+
+  const isUnset = !email;
 
   useEffect(() => {
     if (counting && countdown % 5 === 0) {
@@ -92,33 +128,48 @@ export default function NotificationEmail({ email, verified }) {
     }
   }
 
+  const onToggle = () => {
+    setIsOn(!isOn);
+  };
+
   return (
     <div>
       {email && <EmailJunkWarning />}
-      <InputWrapper>
-        <Input
-          placeholder="Please fill Email..."
-          defaultValue={inputEmail}
-          post={emailVerified}
-          onChange={(e) => {
-            setInputEmail(e.target.value);
-            setResendErrors();
-          }}
-        />
-        {counting ? (
-          <CountdownWrapper>{countdown}s</CountdownWrapper>
-        ) : (
-          (!verified || inputEmail !== email) && (
-            <PrimaryButton
-              onClick={onResend}
-              isLoading={resendLoading}
-              style={{ width: 72, height: 40 }}
-            >
-              Verify
-            </PrimaryButton>
-          )
-        )}
-      </InputWrapper>
+      <FlexBetween>
+        <Flex style={{ gap: 24, flexGrow: 1 }}>
+          <IconWrapper>
+            <LinkEmail />
+          </IconWrapper>
+          <InputWrapper>
+            <Input
+              placeholder="Please fill Email..."
+              defaultValue={inputEmail}
+              post={emailVerified}
+              onChange={(e) => {
+                setInputEmail(e.target.value);
+                setResendErrors();
+              }}
+            />
+            {counting ? (
+              <CountdownWrapper>{countdown}s</CountdownWrapper>
+            ) : (
+              (!verified || (inputEmail && inputEmail !== email)) && (
+                <PrimaryButton
+                  onClick={onResend}
+                  isLoading={resendLoading}
+                  style={{ width: 72, height: 40 }}
+                >
+                  Verify
+                </PrimaryButton>
+              )
+            )}
+          </InputWrapper>
+        </Flex>
+        <div className="flex items-center">
+          <Switch isUnset={isUnset} isOn={isOn} onToggle={onToggle} />
+        </div>
+      </FlexBetween>
+
       {resendErrors?.message && <ErrorText>{resendErrors?.message}</ErrorText>}
     </div>
   );

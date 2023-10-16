@@ -1,8 +1,9 @@
+import clsx from "clsx";
 import CopyButton from "./copyButton";
 
-export default function Copyable({ children, copyText = "", size }) {
+export default function Copyable({ children, className, copyText = "", size }) {
   return (
-    <span className="break-all">
+    <span className={clsx("break-all", className)}>
       {children}
       <div className="inline-flex ml-[8px] relative top-[2px]">
         <CopyButton copyText={copyText || children} size={size} />
