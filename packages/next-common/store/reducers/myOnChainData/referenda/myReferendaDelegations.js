@@ -6,7 +6,6 @@ const myReferendaDelegationSlice = createSlice({
   name,
   initialState: {
     delegations: [],
-    isLoading: false,
     trigger: 0,
   },
   reducers: {
