@@ -2,14 +2,18 @@ import PopupListWrapper from "../../styled/popupListWrapper";
 import React from "react";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
-import { Conviction } from "../../../utils/referendumCommon";
 import StyledList from "next-common/components/styledList";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
 import AddressUser from "next-common/components/user/addressUser";
+import { useSelector } from "react-redux";
+import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import { usePageProps } from "next-common/context/page";
 
-export default function AllMyDelegationPopupList({ myDelegationList = [] }) {
+export default function AllMyDelegationPopupList() {
   const { decimals } = useChainSettings();
+  const delegations = useSelector(myReferendaDelegationsSelector);
+  const { tracks } = usePageProps();
 
   const colWidths = {
     track: 154,
@@ -44,22 +48,24 @@ export default function AllMyDelegationPopupList({ myDelegationList = [] }) {
     },
   ];
 
-  const rows = myDelegationList.map((item) => {
+  const rows = delegations.map((item) => {
+    const track = tracks.find((track) => track.id === item.trackId);
     const row = [
-      <Gov2TrackTag key="track" name={item.track.name} />,
+      <Gov2TrackTag key="track" name={track.name || item.trackId} />,
       <AddressUser
         key="user"
-        add={item.delegation.target}
+        add={item.target}
         maxWidth={colWidths.delegatingTo}
       />,
       <CapitalTableItem
         key="capital"
         item={item}
-        capital={toPrecision(item.delegation.balance, decimals)}
-        conviction={Conviction[item.delegation.conviction]}
+        capital={toPrecision(item.balance, decimals)}
+        conviction={item.conviction}
       />,
     ];
 
+    row.key = item.trackId;
     return row;
   });
 

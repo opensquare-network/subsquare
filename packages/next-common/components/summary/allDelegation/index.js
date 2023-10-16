@@ -17,10 +17,12 @@ import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyD
 import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegatedPopup";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useChainSettings } from "next-common/context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
+import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -45,7 +47,9 @@ const ListButton = styled(Button)`
 
 export default function AllDelegation() {
   const dispatch = useDispatch();
-  const { myDelegationList, refresh } = useAllMyDelegationList();
+  useFetchMyReferendaDelegations();
+  const delegations = useSelector(myReferendaDelegationsSelector);
+  const { refresh } = useAllMyDelegationList();
   const { beenDelegatedList } = useAllBeenDelegatedList();
   const { hideActionButtons } = useChainSettings();
 
@@ -77,11 +81,11 @@ export default function AllDelegation() {
           />
         )}
 
-        {!!myDelegationList?.length && (
+        {!!delegations?.length && (
           <>
             <HStack space={8}>
               <GreyInfoPanel>
-                My delegation <Count>{myDelegationList.length}</Count>
+                My delegation <Count>{delegations.length}</Count>
               </GreyInfoPanel>
 
               <Tooltip content="My delegation detail">
@@ -94,10 +98,7 @@ export default function AllDelegation() {
             </HStack>
 
             {showAllMyDelegationPopup && (
-              <AllMyDelegationPopup
-                myDelegationList={myDelegationList}
-                setShow={setShowAllMyDelegationPopup}
-              />
+              <AllMyDelegationPopup setShow={setShowAllMyDelegationPopup} />
             )}
           </>
         )}
