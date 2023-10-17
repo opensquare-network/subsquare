@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 import { isLoadingReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import priorColumns from "./columns";
 import myFilteredReferendaPriorLocksSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
-import Track from "./track";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import Expiration from "./expiration";
 import HintMessage from "next-common/components/styled/hintMessage";
+import Track from "next-common/components/referenda/track/trackTag";
 
 export default function PriorLocks() {
   const isLoading = useSelector(isLoadingReferendaVotingSelector);

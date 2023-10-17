@@ -4,21 +4,21 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
 import StyledList from "next-common/components/styledList";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
-import Gov2TrackTag from "next-common/components/gov2/trackTag";
 import AddressUser from "next-common/components/user/addressUser";
 import { useSelector } from "react-redux";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
-import { usePageProps } from "next-common/context/page";
+import Track from "next-common/components/referenda/track/trackTag";
+import RemoveDelegation from "next-common/components/summary/democracyAllMyDelegationPopup/remove";
 
 export default function AllMyDelegationPopupList() {
   const { decimals } = useChainSettings();
   const delegations = useSelector(myReferendaDelegationsSelector);
-  const { tracks } = usePageProps();
 
   const colWidths = {
-    track: 154,
-    delegatingTo: 240,
-    capital: 168,
+    track: 160,
+    delegatingTo: 144,
+    capital: 160,
+    action: 80,
   };
 
   const columns = [
@@ -46,12 +46,19 @@ export default function AllMyDelegationPopupList() {
         minWidth: colWidths.capital,
       },
     },
+    {
+      name: "Action",
+      style: {
+        textAlign: "right",
+        width: colWidths.action,
+        minWidth: colWidths.action,
+      },
+    },
   ];
 
   const rows = delegations.map((item) => {
-    const track = tracks.find((track) => track.id === item.trackId);
     const row = [
-      <Gov2TrackTag key="track" name={track.name || item.trackId} />,
+      <Track key="track" id={item.trackId} />,
       <AddressUser
         key="user"
         add={item.target}
@@ -63,6 +70,7 @@ export default function AllMyDelegationPopupList() {
         capital={toPrecision(item.balance, decimals)}
         conviction={item.conviction}
       />,
+      <RemoveDelegation key="action" />,
     ];
 
     row.key = item.trackId;
