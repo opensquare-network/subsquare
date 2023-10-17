@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { LinkTelegram } from "@osn/icons/subsquare";
 import Switch from "./switch";
@@ -14,6 +14,7 @@ import {
   useUserDispatch,
 } from "next-common/context/user";
 import Copyable from "../copyable";
+import Loading from "../loading";
 
 const Wrapper = styled.div`
   display: flex;
@@ -35,18 +36,25 @@ const IconWrapper = styled.div`
 function TelegramLinkHint() {
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const user = useUser();
   const linkToken = user?.telegram?.linkToken;
 
   const generateToken = useCallback(() => {
-    nextApi.fetch("user/telegram/link-token").then(({ error }) => {
-      if (error) {
-        dispatch(newErrorToast(error.message));
-        return;
-      }
-      dispatch(newSuccessToast("Token generated"));
-      fetchAndUpdateUser(userDispatch);
-    });
+    setIsLoading(true);
+    nextApi
+      .fetch("user/telegram/link-token")
+      .then(({ error }) => {
+        if (error) {
+          dispatch(newErrorToast(error.message));
+          return;
+        }
+        dispatch(newSuccessToast("Token generated"));
+        fetchAndUpdateUser(userDispatch);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   return (
@@ -61,9 +69,15 @@ function TelegramLinkHint() {
           Generate Token
         </span>
       </span>
-      {linkToken && (
-        <div className="px-[12px] py-[8px] bg-neutral300 mt-[7px]">
-          <Copyable className="text-textSecondary">{`/link ${linkToken}`}</Copyable>
+      {(linkToken || isLoading) && (
+        <div className="rounded-[4px] px-[12px] py-[8px] bg-neutral300 mt-[7px]">
+          {isLoading ? (
+            <div className="flex justify-center">
+              <Loading size={20} />
+            </div>
+          ) : (
+            <Copyable className="text-textSecondary">{`/link ${linkToken}`}</Copyable>
+          )}
         </div>
       )}
     </div>
