@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { LinkTelegram } from "@osn/icons/subsquare";
 import Switch from "./switch";
@@ -45,6 +45,25 @@ function TelegramLinkHint() {
   );
   const now = useNow();
   const isExpired = linkTokenExpires < now;
+  const expMin = Math.min(5, Math.ceil((linkTokenExpires - now) / 1000 / 60));
+  const expSec = Math.ceil((linkTokenExpires - now) / 1000);
+  let countdown = `${expMin}mins`;
+  if (expMin === 1) {
+    countdown = `${expSec}secs`;
+  }
+
+  useEffect(() => {
+    if (!linkToken || isExpired) return;
+
+    const interval = setInterval(async () => {
+      fetchAndUpdateUser(userDispatch);
+    }, 30 * 1000);
+
+    return () => {
+      clearInterval(interval);
+      fetchAndUpdateUser(userDispatch);
+    };
+  }, [linkToken, isExpired, userDispatch]);
 
   const generateToken = useCallback(() => {
     setIsLoading(true);
@@ -85,7 +104,7 @@ function TelegramLinkHint() {
   }
 
   return (
-    <div className="flex flex-col bg-neutral200 py-[10px] px-[16px] grow text-textPrimary">
+    <div className="flex flex-col rounded-[8px] bg-neutral200 py-[10px] px-[16px] grow text-textPrimary">
       <span>
         1. Start with{" "}
         <a
@@ -99,7 +118,10 @@ function TelegramLinkHint() {
         and add your Telegram Chat as a member.
       </span>
       <span>
-        2. Send verification token to the bot. The token expires in 5mins.{" "}
+        2. Send verification token to the bot.
+        {linkToken && !isExpired
+          ? ` The token expires in ${countdown}.`
+          : ""}{" "}
         <span className="cursor-pointer text-theme500" onClick={generateToken}>
           Generate Token
         </span>
