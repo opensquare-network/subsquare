@@ -15,6 +15,7 @@ import {
 } from "next-common/context/user";
 import Copyable from "../copyable";
 import Loading from "../loading";
+import useNow from "next-common/hooks/useNow";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,17 +39,24 @@ function TelegramLinkHint() {
   const userDispatch = useUserDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const user = useUser();
-  const linkToken = user?.telegram?.linkToken;
+  const [linkToken, setLinkToken] = useState(user?.telegram?.linkToken);
+  const [linkTokenExpires, setLinkTokenExpires] = useState(
+    user?.telegram?.linkTokenExpires,
+  );
+  const now = useNow();
+  const isExpired = linkTokenExpires < now;
 
   const generateToken = useCallback(() => {
     setIsLoading(true);
     nextApi
       .fetch("user/telegram/link-token")
-      .then(({ error }) => {
+      .then(({ result, error }) => {
         if (error) {
           dispatch(newErrorToast(error.message));
           return;
         }
+        setLinkToken(result?.linkToken);
+        setLinkTokenExpires(result?.linkTokenExpires);
         dispatch(newSuccessToast("Token generated"));
         fetchAndUpdateUser(userDispatch);
       })
@@ -57,27 +65,48 @@ function TelegramLinkHint() {
       });
   }, []);
 
+  let tokenDisplay = null;
+  if (isLoading) {
+    tokenDisplay = (
+      <div className="flex justify-center">
+        <Loading size={20} />
+      </div>
+    );
+  } else if (linkToken && isExpired) {
+    tokenDisplay = (
+      <span className="text-textSecondary">
+        You token has expired, please try again
+      </span>
+    );
+  } else if (linkToken) {
+    tokenDisplay = (
+      <Copyable className="text-textSecondary">{`/link ${linkToken}`}</Copyable>
+    );
+  }
+
   return (
     <div className="flex flex-col bg-neutral200 py-[10px] px-[16px] grow text-textPrimary">
       <span>
-        1. Start with <span className="text-sapphire500">@subsquare_bot</span>{" "}
+        1. Start with{" "}
+        <a
+          className="text-sapphire500"
+          href="https://t.me/subsqauretestbot"
+          target="_blank"
+          rel="noreferrer"
+        >
+          @subsquare_bot
+        </a>{" "}
         and add your Telegram Chat as a member.
       </span>
       <span>
-        2. Send verification token to the bot.{" "}
+        2. Send verification token to the bot. The token expires in 5mins.{" "}
         <span className="cursor-pointer text-theme500" onClick={generateToken}>
           Generate Token
         </span>
       </span>
       {(linkToken || isLoading) && (
         <div className="rounded-[4px] px-[12px] py-[8px] bg-neutral300 mt-[7px]">
-          {isLoading ? (
-            <div className="flex justify-center">
-              <Loading size={20} />
-            </div>
-          ) : (
-            <Copyable className="text-textSecondary">{`/link ${linkToken}`}</Copyable>
-          )}
+          {tokenDisplay}
         </div>
       )}
     </div>
