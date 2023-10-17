@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { withCommonProps } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
@@ -8,8 +8,6 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import { isKeyRegisteredUser } from "next-common/utils";
-import { useRouter } from "next/router";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import Divider from "next-common/components/styled/layout/divider";
 import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
@@ -18,21 +16,17 @@ import {
   useUser,
   useUserDispatch,
 } from "next-common/context/user";
-import {
-  ContentWrapper,
-  WarningMessage,
-} from "next-common/components/setting/styled";
+import { ContentWrapper } from "next-common/components/setting/styled";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
-import NotificationEmail from "next-common/components/setting/notificationEmail";
-import NotificationTelegram from "next-common/components/setting/notificationTelegram";
 import useSubscription from "components/settings/subscription/useSubscription";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import Channels from "next-common/components/setting/channels";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -50,11 +44,9 @@ const Options = styled.div`
 
 export default function NotificationPage({ subscription, unsubscribe }) {
   const loginUser = useUser();
-  const isKeyUser = loginUser && isKeyRegisteredUser(loginUser);
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
   const user = loginUser;
   const {
     subscriptionComponent,
@@ -65,17 +57,16 @@ export default function NotificationPage({ subscription, unsubscribe }) {
   });
 
   const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
-    user?.activeNotificationChannels?.telegram,
+    user?.activeNotificationChannels?.telegram !== false,
   );
   const [isEmailChannelOn, setIsEmailChannelOn] = useState(
-    user?.activeNotificationChannels?.email,
+    user?.activeNotificationChannels?.email !== false,
   );
   const isActiveChannelsChanged =
-    !isTelegramChannelOn !== !user?.activeNotificationChannels?.telegram ||
-    !isEmailChannelOn !== !user?.activeNotificationChannels?.email;
+    isTelegramChannelOn !==
+      (user?.activeNotificationChannels?.telegram !== false) ||
+    isEmailChannelOn !== (user?.activeNotificationChannels?.email !== false);
 
-  const emailVerified =
-    loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
   const isVerifiedUser = loginUser?.emailVerified;
 
   const {
@@ -88,21 +79,6 @@ export default function NotificationPage({ subscription, unsubscribe }) {
     reply: !!loginUser?.notification?.reply,
     mention: !!loginUser?.notification?.mention,
   });
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (unsubscribe) {
-      if (loginUser === null) {
-        setShowLoginToUnsubscribe(true);
-      }
-      return;
-    }
-
-    if (loginUser === null) {
-      router.push("/");
-    }
-  }, [loginUser, router, unsubscribe]);
 
   const updateNotificationSetting = async () => {
     if (saving) {
@@ -151,33 +127,13 @@ export default function NotificationPage({ subscription, unsubscribe }) {
 
   return (
     <SettingLayout>
-      {isKeyUser && (
-        <SettingSection>
-          <TitleContainer>Channels</TitleContainer>
-          <ContentWrapper>
-            <div className="flex flex-col gap-[16px]">
-              {showLoginToUnsubscribe && (
-                <WarningMessage>
-                  Please login to unsubscribe notifications
-                </WarningMessage>
-              )}
-              {emailVerified && (
-                <WarningMessage>
-                  Please set the email to receive notifications
-                </WarningMessage>
-              )}
-              <NotificationEmail
-                isOn={isEmailChannelOn}
-                setIsOn={setIsEmailChannelOn}
-              />
-              <NotificationTelegram
-                isOn={isTelegramChannelOn}
-                setIsOn={setIsTelegramChannelOn}
-              />
-            </div>
-          </ContentWrapper>
-        </SettingSection>
-      )}
+      <Channels
+        unsubscribe={unsubscribe}
+        isEmailChannelOn={isEmailChannelOn}
+        setIsEmailChannelOn={setIsEmailChannelOn}
+        isTelegramChannelOn={isTelegramChannelOn}
+        setIsTelegramChannelOn={setIsTelegramChannelOn}
+      />
 
       <SettingSection>
         <TitleContainer>Notification Settings</TitleContainer>

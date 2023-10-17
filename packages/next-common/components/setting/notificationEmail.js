@@ -20,6 +20,7 @@ import { LinkEmail } from "@osn/icons/subsquare";
 import Flex from "../styled/flex";
 import FlexBetween from "../styled/flexBetween";
 import Switch from "./switch";
+import { isKeyRegisteredUser } from "next-common/utils";
 
 const IconWrapper = styled.div`
   display: flex;
@@ -68,6 +69,7 @@ const CountdownWrapper = styled.div`
 export default function NotificationEmail({ isOn, setIsOn }) {
   const dispatch = useDispatch();
   const user = useUser();
+  const isKeyUser = user && isKeyRegisteredUser(user);
   const email = user?.email;
   const verified = user?.emailVerified;
   const [resendLoading, setResendLoading] = useState(false);
@@ -142,6 +144,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
           </IconWrapper>
           <InputWrapper>
             <Input
+              disabled={!isKeyUser}
               placeholder="Please fill Email..."
               defaultValue={inputEmail}
               post={emailVerified}
@@ -153,7 +156,8 @@ export default function NotificationEmail({ isOn, setIsOn }) {
             {counting ? (
               <CountdownWrapper>{countdown}s</CountdownWrapper>
             ) : (
-              (!verified || (inputEmail && inputEmail !== email)) && (
+              inputEmail &&
+              (!verified || inputEmail !== email) && (
                 <PrimaryButton
                   onClick={onResend}
                   isLoading={resendLoading}
