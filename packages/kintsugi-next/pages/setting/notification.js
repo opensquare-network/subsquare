@@ -90,7 +90,7 @@ export default function Notification({ unsubscribe, subscription }) {
     try {
       let error;
 
-      ({ error } = await nextApi.patch("user/active-channels", {
+      ({ error } = await nextApi.patch("user/active-notification-channels", {
         email: !!isEmailChannelOn,
         telegram: !!isTelegramChannelOn,
       }));
