@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { withCommonProps } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
@@ -8,8 +8,6 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import { isKeyRegisteredUser } from "next-common/utils";
-import { useRouter } from "next/router";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import {
   SettingSection,
@@ -26,8 +24,8 @@ import {
 import { CACHE_KEY } from "next-common/utils/constants";
 import useSubscription from "components/settings/useSubscription";
 import Cookies from "cookies";
-import NotificationEmail from "next-common/components/setting/notificationEmail";
 import { ContentWrapper } from "next-common/components/setting/styled";
+import Channels from "next-common/components/setting/channels";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -35,16 +33,6 @@ const ButtonWrapper = styled.div`
   > button {
     width: 80px;
   }
-`;
-
-const WarningMessage = styled.div`
-  color: var(--red500);
-  background: var(--red100);
-  border-radius: 4px;
-  padding: 12px 16px;
-  font-size: 14px;
-  line-height: 140%;
-  margin-bottom: 16px;
 `;
 
 const Options = styled.div`
@@ -55,15 +43,22 @@ const Options = styled.div`
 
 export default function Notification({ unsubscribe, subscription }) {
   const loginUser = useUser();
-  const isKeyUser = loginUser && isKeyRegisteredUser(loginUser);
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
   const user = loginUser;
 
-  const emailVerified =
-    loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
+  const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
+    user?.activeNotificationChannels?.telegram !== false,
+  );
+  const [isEmailChannelOn, setIsEmailChannelOn] = useState(
+    user?.activeNotificationChannels?.email !== false,
+  );
+  const isActiveChannelsChanged =
+    isTelegramChannelOn !==
+      (user?.activeNotificationChannels?.telegram !== false) ||
+    isEmailChannelOn !== (user?.activeNotificationChannels?.email !== false);
+
   const isVerifiedUser = loginUser?.emailVerified;
 
   const {
@@ -85,21 +80,6 @@ export default function Notification({ unsubscribe, subscription }) {
     subscription,
   });
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (unsubscribe) {
-      if (loginUser === null) {
-        setShowLoginToUnsubscribe(true);
-      }
-      return;
-    }
-
-    if (loginUser === null) {
-      router.push("/");
-    }
-  }, [loginUser, router, unsubscribe]);
-
   const updateNotificationSetting = async () => {
     if (saving) {
       return;
@@ -107,52 +87,53 @@ export default function Notification({ unsubscribe, subscription }) {
 
     setSaving(true);
 
-    const data = {
-      ...getDiscussionOptionValues(),
-    };
+    try {
+      let error;
 
-    const { result, error } = await nextApi.patch("user/notification", data);
-    if (result) {
+      ({ error } = await nextApi.patch("user/active-channels", {
+        email: !!isEmailChannelOn,
+        telegram: !!isTelegramChannelOn,
+      }));
+      if (error) {
+        dispatch(newErrorToast(error.message));
+        return;
+      }
+
+      const data = {
+        ...getDiscussionOptionValues(),
+      };
+
+      ({ error } = await nextApi.patch("user/notification", data));
+      if (error) {
+        dispatch(newErrorToast(error.message));
+        return;
+      }
+
       await fetchAndUpdateUser(userDispatch);
 
       if (isSubscriptionChanged) {
-        const { result, error } = await updateSubscriptionSetting();
-        if (result) {
-          dispatch(newSuccessToast("Settings updated"));
-        }
+        const { error } = await updateSubscriptionSetting();
         if (error) {
           dispatch(newErrorToast(error.message));
+          return;
         }
       }
-    } else if (error) {
-      dispatch(newErrorToast(error.message));
+
+      dispatch(newSuccessToast("Settings updated"));
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   return (
     <SettingLayout>
-      {isKeyUser && (
-        <SettingSection>
-          <TitleContainer>Email</TitleContainer>
-          <ContentWrapper>
-            {showLoginToUnsubscribe && (
-              <WarningMessage>
-                Please login to unsubscribe notifications
-              </WarningMessage>
-            )}
-            {emailVerified && (
-              <WarningMessage>
-                Please set the email to receive notifications
-              </WarningMessage>
-            )}
-            <NotificationEmail
-              email={user?.email}
-              verified={user?.emailVerified}
-            />
-          </ContentWrapper>
-        </SettingSection>
-      )}
+      <Channels
+        unsubscribe={unsubscribe}
+        isEmailChannelOn={isEmailChannelOn}
+        setIsEmailChannelOn={setIsEmailChannelOn}
+        isTelegramChannelOn={isTelegramChannelOn}
+        setIsTelegramChannelOn={setIsTelegramChannelOn}
+      />
 
       <SettingSection>
         <TitleContainer>Notification Settings</TitleContainer>
@@ -166,7 +147,9 @@ export default function Notification({ unsubscribe, subscription }) {
             <PrimaryButton
               disabled={
                 !isVerifiedUser ||
-                (!isNotificationChanged && !isSubscriptionChanged)
+                (!isNotificationChanged &&
+                  !isSubscriptionChanged &&
+                  !isActiveChannelsChanged)
               }
               onClick={updateNotificationSetting}
               isLoading={saving}
