@@ -3,11 +3,7 @@ import useReferendaReferendumOptions from "next-common/components/setting/notifi
 import useFellowshipReferendumOptions from "next-common/components/setting/notification/useFellowshipReferendumOptions";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function useOpenGovSubscription(
-  subscription,
-  saving,
-  isVerifiedUser,
-) {
+export default function useOpenGovSubscription(subscription, saving, disabled) {
   const { hasFellowship, hasReferenda } = useChainSettings();
 
   const {
@@ -15,7 +11,7 @@ export default function useOpenGovSubscription(
     getReferendaReferendumOptionValues,
     isChanged: isReferendaReferendumOptionsChanged,
   } = useReferendaReferendumOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     referendaSubmitted: subscription?.referendaSubmitted,
     referendaDecisionStarted: subscription?.referendaDecisionStarted,
@@ -34,7 +30,7 @@ export default function useOpenGovSubscription(
     getFellowshipReferendumOptionValues,
     isChanged: isFellowshipReferendumOptionsChanged,
   } = useFellowshipReferendumOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     fellowshipSubmitted: subscription?.fellowshipSubmitted,
     fellowshipDecisionStarted: subscription?.fellowshipDecisionStarted,

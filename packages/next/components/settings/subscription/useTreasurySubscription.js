@@ -9,7 +9,7 @@ import useTreasuryProposalOptions from "next-common/components/setting/notificat
 export default function useTreasurySubscription(
   subscription,
   saving,
-  isVerifiedUser,
+  disabled,
 ) {
   const homeMenus = getHomeMenu();
 
@@ -36,7 +36,7 @@ export default function useTreasurySubscription(
     getTreasuryProposalOptionValues,
     isChanged: isTreasuryProposalOptionsChanged,
   } = useTreasuryProposalOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
     treasuryProposalApproved: subscription?.treasuryProposalApproved,
@@ -49,7 +49,7 @@ export default function useTreasurySubscription(
     getTreasuryTipOptionValues,
     isChanged: isTreasuryTipOptionsChanged,
   } = useTreasuryTipOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     treasuryTipNew: subscription?.treasuryTipNew,
     treasuryTipTip: subscription?.treasuryTipTip,
@@ -62,7 +62,7 @@ export default function useTreasurySubscription(
     getTreasuryBountyOptionValues,
     isChanged: isTreasuryBountyOptionsChanged,
   } = useTreasuryBountyOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     treasuryBountyProposed: subscription?.treasuryBountyProposed,
     treasuryBountyAwarded: subscription?.treasuryBountyAwarded,
@@ -77,7 +77,7 @@ export default function useTreasurySubscription(
     getTreasuryChildBountyOptionValues,
     isChanged: isTreasuryChildBountyOptionsChanged,
   } = useTreasuryChildBountyOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     treasuryChildBountyAdded: subscription?.treasuryChildBountyAdded,
     treasuryChildBountyAwarded: subscription?.treasuryChildBountyAwarded,

@@ -7,7 +7,7 @@ import useDemocracyReferendumOptions from "next-common/components/setting/notifi
 export default function useDemocracySubscription(
   subscription,
   saving,
-  isVerifiedUser,
+  disabled,
 ) {
   const homeMenus = getHomeMenu();
 
@@ -29,7 +29,7 @@ export default function useDemocracySubscription(
     getDemocracyProposalOptionValues,
     isChanged: isDemocracyProposalOptionsChanged,
   } = useDemocracyProposalOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     democracyProposalProposed: subscription?.democracyProposalProposed,
     democracyProposalCanceled: subscription?.democracyProposalCanceled,
@@ -40,7 +40,7 @@ export default function useDemocracySubscription(
     getDemocracyReferendumOptionValues,
     isChanged: isDemocracyReferendumOptionsChanged,
   } = useDemocracyReferendumOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     democracyReferendumStarted: subscription?.democracyReferendumStarted,
     democracyReferendumPassed: subscription?.democracyReferendumPassed,

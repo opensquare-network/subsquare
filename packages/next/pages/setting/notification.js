@@ -56,13 +56,15 @@ export default function NotificationPage({ subscription }) {
   });
 
   const isVerifiedUser = loginUser?.emailVerified;
+  const telegramLinked = loginUser?.telegram?.chat;
+  const disabled = !isVerifiedUser && !telegramLinked;
 
   const {
     discussionOptionsComponent,
     getDiscussionOptionValues,
     isChanged: isNotificationChanged,
   } = useDiscussionOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     reply: !!loginUser?.notification?.reply,
     mention: !!loginUser?.notification?.mention,
@@ -117,8 +119,7 @@ export default function NotificationPage({ subscription }) {
           <ButtonWrapper>
             <PrimaryButton
               disabled={
-                !isVerifiedUser ||
-                (!isNotificationChanged && !isSubscriptionChanged)
+                disabled || (!isNotificationChanged && !isSubscriptionChanged)
               }
               onClick={updateNotificationSetting}
               isLoading={saving}
