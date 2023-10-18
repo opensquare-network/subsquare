@@ -27,7 +27,7 @@ export default function TelegramLinkHint() {
   const now = useNow();
   const isExpired = linkTokenExpires < now;
   const expMin = Math.min(5, Math.floor((linkTokenExpires - now) / 1000 / 60));
-  const expSec = Math.ceil((linkTokenExpires - now) / 1000);
+  const expSec = Math.floor((linkTokenExpires - now) / 1000);
   let countdown = `${expMin}mins`;
   if (expMin === 0) {
     countdown = `${expSec}secs`;
