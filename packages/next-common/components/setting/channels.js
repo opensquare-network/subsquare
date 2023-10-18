@@ -85,7 +85,8 @@ export default function Channels() {
           )}
           {emailNotSet && telegramNotSet && (
             <WarningMessage>
-              Please set the email or telegram to receive notifications
+              Please bind an email or a telegram account to receive
+              notifications.
             </WarningMessage>
           )}
           <NotificationEmail
