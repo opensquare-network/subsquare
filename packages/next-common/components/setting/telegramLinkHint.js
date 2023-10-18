@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import {
   newErrorToast,
@@ -13,6 +13,7 @@ import {
 import Copyable from "../copyable";
 import Loading from "../loading";
 import useNow from "next-common/hooks/useNow";
+import useRepeat from "next-common/hooks/useRepeat";
 
 export default function TelegramLinkHint() {
   const dispatch = useDispatch();
@@ -25,25 +26,23 @@ export default function TelegramLinkHint() {
   );
   const now = useNow();
   const isExpired = linkTokenExpires < now;
-  const expMin = Math.min(5, Math.ceil((linkTokenExpires - now) / 1000 / 60));
+  const expMin = Math.min(5, Math.floor((linkTokenExpires - now) / 1000 / 60));
   const expSec = Math.ceil((linkTokenExpires - now) / 1000);
   let countdown = `${expMin}mins`;
-  if (expMin === 1) {
+  if (expMin === 0) {
     countdown = `${expSec}secs`;
+  } else if (expSec % 60) {
+    countdown += ` ${expSec % 60}secs`;
   }
 
-  useEffect(() => {
-    if (!linkToken || isExpired) return;
+  const refreshData = useCallback(async () => {
+    await fetchAndUpdateUser(userDispatch);
+  }, [userDispatch]);
 
-    const interval = setInterval(async () => {
-      fetchAndUpdateUser(userDispatch);
-    }, 30 * 1000);
-
-    return () => {
-      clearInterval(interval);
-      fetchAndUpdateUser(userDispatch);
-    };
-  }, [linkToken, isExpired, userDispatch]);
+  useRepeat(refreshData, {
+    delay: 5 * 1000,
+    isStop: !linkToken || isExpired,
+  });
 
   const generateToken = useCallback(() => {
     setIsLoading(true);
@@ -98,7 +97,7 @@ export default function TelegramLinkHint() {
         and add your Telegram Chat as a member.
       </span>
       <span>
-        2. Send verification token to the bot.
+        2. Copy and send following message to the bot.
         {linkToken && !isExpired
           ? ` The token expires in ${countdown}.`
           : ""}{" "}
