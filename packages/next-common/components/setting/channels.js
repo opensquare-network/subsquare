@@ -24,7 +24,7 @@ export default function Channels({
   const isKeyUser = loginUser && isKeyRegisteredUser(loginUser);
   const router = useRouter();
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
-  const emailVerified = isKeyUser && !loginUser.emailVerified;
+  const emailNotSet = isKeyUser && !loginUser.email;
 
   useEffect(() => {
     if (unsubscribe) {
@@ -49,9 +49,9 @@ export default function Channels({
               Please login to unsubscribe notifications
             </WarningMessage>
           )}
-          {emailVerified && (
+          {emailNotSet && (
             <WarningMessage>
-              Please set and verify the email to receive notifications
+              Please set the email to receive notifications
             </WarningMessage>
           )}
           <NotificationEmail
