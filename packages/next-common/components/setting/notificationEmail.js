@@ -203,7 +203,11 @@ export default function NotificationEmail({ isOn, setIsOn }) {
           <div>
             <div className="hidden max-sm:flex">{mbVerify}</div>
           </div>
-          <Switch isUnset={isUnset} isOn={isOn} onToggle={onToggle} />
+          <Switch
+            isUnset={isUnset || !verified}
+            isOn={isOn}
+            onToggle={onToggle}
+          />
         </div>
       </div>
 
