@@ -27,8 +27,8 @@ export default function Channels() {
   const loginUser = useUser();
   const router = useRouter();
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
-  const emailNotSet = !loginUser.email;
-  const telegramNotSet = !loginUser.telegram?.chat;
+  const emailNotSet = !loginUser?.email;
+  const telegramNotSet = !loginUser?.telegram?.chat;
   const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
     loginUser?.activeNotificationChannels?.telegram !== false,
   );
