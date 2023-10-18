@@ -79,8 +79,6 @@ export default function NotificationEmail({ isOn, setIsOn }) {
     useCountdown(60);
   const userDispatch = useUserDispatch();
 
-  const isUnset = !email;
-
   useEffect(() => {
     if (counting && countdown % 5 === 0) {
       fetchAndUpdateUser(userDispatch).then(() => {
@@ -204,7 +202,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
             <div className="hidden max-sm:flex">{mbVerify}</div>
           </div>
           <Switch
-            isUnset={isUnset || !verified}
+            isUnset={!email || !verified}
             isOn={isOn}
             onToggle={onToggle}
           />
