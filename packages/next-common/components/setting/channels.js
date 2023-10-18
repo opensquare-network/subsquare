@@ -9,22 +9,57 @@ import {
 import NotificationEmail from "next-common/components/setting/notificationEmail";
 import NotificationTelegram from "next-common/components/setting/notificationTelegram";
 import { useEffect, useState } from "react";
-import { useUser } from "next-common/context/user";
+import {
+  fetchAndUpdateUser,
+  useUser,
+  useUserDispatch,
+} from "next-common/context/user";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
+import { usePageProps } from "next-common/context/page";
+import nextApi from "next-common/services/nextApi";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
-export default function Channels({
-  unsubscribe,
-  isEmailChannelOn,
-  setIsEmailChannelOn,
-  isTelegramChannelOn,
-  setIsTelegramChannelOn,
-}) {
+export default function Channels() {
+  const dispatch = useDispatch();
+  const userDispatch = useUserDispatch();
+  const { unsubscribe } = usePageProps();
   const loginUser = useUser();
   const isKeyUser = loginUser && isKeyRegisteredUser(loginUser);
   const router = useRouter();
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
   const emailNotSet = isKeyUser && !loginUser.email;
+  const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
+    loginUser?.activeNotificationChannels?.telegram !== false,
+  );
+  const [isEmailChannelOn, setIsEmailChannelOn] = useState(
+    loginUser?.activeNotificationChannels?.email !== false,
+  );
+  const isActiveChannelsChanged =
+    isTelegramChannelOn !==
+      (loginUser?.activeNotificationChannels?.telegram !== false) ||
+    isEmailChannelOn !==
+      (loginUser?.activeNotificationChannels?.email !== false);
+
+  useEffect(() => {
+    if (!isActiveChannelsChanged) {
+      return;
+    }
+
+    nextApi
+      .patch("user/active-notification-channels", {
+        email: !!isEmailChannelOn,
+        telegram: !!isTelegramChannelOn,
+      })
+      .then(({ error }) => {
+        if (error) {
+          dispatch(newErrorToast(error.message));
+          return;
+        }
+        fetchAndUpdateUser(userDispatch);
+      });
+  }, [isActiveChannelsChanged, userDispatch]);
 
   useEffect(() => {
     if (unsubscribe) {

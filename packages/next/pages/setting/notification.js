@@ -42,12 +42,11 @@ const Options = styled.div`
   gap: 24px;
 `;
 
-export default function NotificationPage({ subscription, unsubscribe }) {
+export default function NotificationPage({ subscription }) {
   const loginUser = useUser();
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
-  const user = loginUser;
   const {
     subscriptionComponent,
     isSubscriptionChanged,
@@ -55,17 +54,6 @@ export default function NotificationPage({ subscription, unsubscribe }) {
   } = useSubscription({
     subscription,
   });
-
-  const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
-    user?.activeNotificationChannels?.telegram !== false,
-  );
-  const [isEmailChannelOn, setIsEmailChannelOn] = useState(
-    user?.activeNotificationChannels?.email !== false,
-  );
-  const isActiveChannelsChanged =
-    isTelegramChannelOn !==
-      (user?.activeNotificationChannels?.telegram !== false) ||
-    isEmailChannelOn !== (user?.activeNotificationChannels?.email !== false);
 
   const isVerifiedUser = loginUser?.emailVerified;
 
@@ -88,28 +76,15 @@ export default function NotificationPage({ subscription, unsubscribe }) {
     setSaving(true);
 
     try {
-      let error;
-
-      ({ error } = await nextApi.patch("user/active-notification-channels", {
-        email: !!isEmailChannelOn,
-        telegram: !!isTelegramChannelOn,
-      }));
-      if (error) {
-        dispatch(newErrorToast(error.message));
-        return;
-      }
-
       const data = {
         ...getDiscussionOptionValues(),
       };
 
-      ({ error } = await nextApi.patch("user/notification", data));
+      const { error } = await nextApi.patch("user/notification", data);
       if (error) {
         dispatch(newErrorToast(error.message));
         return;
       }
-
-      await fetchAndUpdateUser(userDispatch);
 
       if (isSubscriptionChanged) {
         const { error } = await updateSubscriptionSetting();
@@ -119,6 +94,8 @@ export default function NotificationPage({ subscription, unsubscribe }) {
         }
       }
 
+      await fetchAndUpdateUser(userDispatch);
+
       dispatch(newSuccessToast("Settings updated"));
     } finally {
       setSaving(false);
@@ -127,13 +104,7 @@ export default function NotificationPage({ subscription, unsubscribe }) {
 
   return (
     <SettingLayout>
-      <Channels
-        unsubscribe={unsubscribe}
-        isEmailChannelOn={isEmailChannelOn}
-        setIsEmailChannelOn={setIsEmailChannelOn}
-        isTelegramChannelOn={isTelegramChannelOn}
-        setIsTelegramChannelOn={setIsTelegramChannelOn}
-      />
+      <Channels />
 
       <SettingSection>
         <TitleContainer>Notification Settings</TitleContainer>
@@ -147,9 +118,7 @@ export default function NotificationPage({ subscription, unsubscribe }) {
             <PrimaryButton
               disabled={
                 !isVerifiedUser ||
-                (!isNotificationChanged &&
-                  !isSubscriptionChanged &&
-                  !isActiveChannelsChanged)
+                (!isNotificationChanged && !isSubscriptionChanged)
               }
               onClick={updateNotificationSetting}
               isLoading={saving}
