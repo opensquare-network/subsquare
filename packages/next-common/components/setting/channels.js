@@ -15,7 +15,6 @@ import {
   useUserDispatch,
 } from "next-common/context/user";
 import { useRouter } from "next/router";
-import { isKeyRegisteredUser } from "next-common/utils";
 import { usePageProps } from "next-common/context/page";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -26,10 +25,10 @@ export default function Channels() {
   const userDispatch = useUserDispatch();
   const { unsubscribe } = usePageProps();
   const loginUser = useUser();
-  const isKeyUser = loginUser && isKeyRegisteredUser(loginUser);
   const router = useRouter();
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
-  const emailNotSet = isKeyUser && !loginUser.email;
+  const emailNotSet = !loginUser.email;
+  const telegramNotSet = !loginUser.telegram?.chat;
   const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
     loginUser?.activeNotificationChannels?.telegram !== false,
   );
@@ -84,9 +83,9 @@ export default function Channels() {
               Please login to unsubscribe notifications
             </WarningMessage>
           )}
-          {emailNotSet && (
+          {emailNotSet && telegramNotSet && (
             <WarningMessage>
-              Please set the email to receive notifications
+              Please set the email or telegram to receive notifications
             </WarningMessage>
           )}
           <NotificationEmail
