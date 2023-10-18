@@ -169,7 +169,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
             )}
           </InputWrapper>
         </Flex>
-        <div className="flex items-center">
+        <div className="flex items-center w-[148px] justify-end">
           <Switch isUnset={isUnset} isOn={isOn} onToggle={onToggle} />
         </div>
       </FlexBetween>

@@ -4,9 +4,8 @@ import Toggle from "../toggle";
 const Wrapper = styled.div`
   display: flex;
   gap: 16px;
-  width: 100px;
+  align-items: center;
   justify-content: right;
-  margin-left: 24px;
 `;
 
 export default function Switch({ isUnset, isOn, onToggle }) {
