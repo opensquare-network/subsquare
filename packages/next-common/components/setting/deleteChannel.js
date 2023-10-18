@@ -57,7 +57,7 @@ export default function DeleteChannel() {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   return (
-    <div className="flex items-center ml-[8px] [&_svg_path]:fill-textPrimary">
+    <div className="flex items-center [&_svg_path]:fill-textPrimary">
       <Tooltip content={"Unlink"}>
         <SystemTrash
           className="cursor-pointer"

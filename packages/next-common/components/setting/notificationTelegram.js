@@ -6,10 +6,6 @@ import { useUser } from "next-common/context/user";
 import DeleteChannel from "./deleteChannel";
 import TelegramLinkHint from "./telegramLinkHint";
 
-const Wrapper = styled.div`
-  display: flex;
-`;
-
 const IconWrapper = styled.div`
   display: flex;
   padding: 8px 0;
@@ -42,17 +38,17 @@ export default function NotificationTelegram({ isOn, setIsOn }) {
   const isUnset = !telegram?.chat;
 
   return (
-    <Wrapper>
-      <div style={{ display: "flex", gap: 24, flexGrow: 1 }}>
+    <div className="flex gap-[8px] max-sm:flex-col">
+      <div className="flex gap-[24px] grow max-sm:gap-[8px] max-sm:flex-col">
         <IconWrapper>
           <LinkTelegram />
         </IconWrapper>
         {isUnset ? <TelegramLinkHint /> : <TelegramLinkInfo />}
       </div>
-      <div className="flex justify-between w-[148px]">
+      <div className="flex justify-between w-[140px] h-[40px] max-sm:w-full">
         <div className="flex">{!isUnset && <DeleteChannel />}</div>
         <Switch isUnset={isUnset} isOn={isOn} onToggle={() => setIsOn(!isOn)} />
       </div>
-    </Wrapper>
+    </div>
   );
 }

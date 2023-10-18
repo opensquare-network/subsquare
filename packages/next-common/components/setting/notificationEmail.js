@@ -17,14 +17,14 @@ import {
 import PrimaryButton from "../buttons/primaryButton";
 import EmailJunkWarning from "./emailJunkWarning";
 import { LinkEmail } from "@osn/icons/subsquare";
-import Flex from "../styled/flex";
-import FlexBetween from "../styled/flexBetween";
 import Switch from "./switch";
 import { isKeyRegisteredUser } from "next-common/utils";
+import GhostButton from "../buttons/ghostButton";
 
 const IconWrapper = styled.div`
   display: flex;
   align-items: center;
+  min-height: 40px;
 
   svg {
     width: 24px;
@@ -93,11 +93,18 @@ export default function NotificationEmail({ isOn, setIsOn }) {
     resetCountdown();
   }
 
-  const onResend = async () => {
+  const onVerify = async () => {
     setResendLoading(true);
-    const { result, error } = await nextApi.post("user/setemail", {
-      email: inputEmail,
-    });
+
+    let promise;
+    if (isKeyUser) {
+      promise = nextApi.post("user/setemail", {
+        email: inputEmail,
+      });
+    } else {
+      promise = nextApi.post("user/resendverifyemail");
+    }
+    const { result, error } = await promise;
     if (result) {
       startCountdown();
       dispatch(
@@ -134,45 +141,71 @@ export default function NotificationEmail({ isOn, setIsOn }) {
     setIsOn(!isOn);
   };
 
+  const verify = counting ? (
+    <div className="flex items-center max-sm:hidden">
+      <CountdownWrapper>{countdown}s</CountdownWrapper>
+    </div>
+  ) : (
+    inputEmail &&
+    (!verified || inputEmail !== email) && (
+      <div className="flex items-center max-sm:hidden">
+        <PrimaryButton
+          onClick={onVerify}
+          isLoading={resendLoading}
+          style={{ width: 72, height: 40 }}
+        >
+          Verify
+        </PrimaryButton>
+      </div>
+    )
+  );
+
+  const mbVerify = counting ? (
+    <CountdownWrapper>{countdown}s</CountdownWrapper>
+  ) : (
+    inputEmail &&
+    (!verified || inputEmail !== email) && (
+      <GhostButton
+        onClick={onVerify}
+        isLoading={resendLoading}
+        style={{ width: 72, height: 40 }}
+      >
+        Verify
+      </GhostButton>
+    )
+  );
+
   return (
     <div>
       {email && <EmailJunkWarning />}
-      <FlexBetween>
-        <Flex style={{ gap: 24, flexGrow: 1 }}>
-          <IconWrapper>
-            <LinkEmail />
-          </IconWrapper>
-          <InputWrapper>
-            <Input
-              disabled={!isKeyUser}
-              placeholder="Please fill Email..."
-              defaultValue={inputEmail}
-              post={emailVerified}
-              onChange={(e) => {
-                setInputEmail(e.target.value);
-                setResendErrors();
-              }}
-            />
-            {counting ? (
-              <CountdownWrapper>{countdown}s</CountdownWrapper>
-            ) : (
-              inputEmail &&
-              (!verified || inputEmail !== email) && (
-                <PrimaryButton
-                  onClick={onResend}
-                  isLoading={resendLoading}
-                  style={{ width: 72, height: 40 }}
-                >
-                  Verify
-                </PrimaryButton>
-              )
-            )}
-          </InputWrapper>
-        </Flex>
-        <div className="flex items-center w-[148px] justify-end">
+      <div className="flex max-sm:flex-col gap-[8px]">
+        <div className="flex gap-[8px] grow">
+          <div className="flex gap-[24px] grow max-sm:gap-[8px] max-sm:flex-col">
+            <IconWrapper>
+              <LinkEmail />
+            </IconWrapper>
+            <InputWrapper>
+              <Input
+                disabled={!isKeyUser}
+                placeholder="Please fill Email..."
+                defaultValue={inputEmail}
+                post={emailVerified}
+                onChange={(e) => {
+                  setInputEmail(e.target.value);
+                  setResendErrors();
+                }}
+              />
+            </InputWrapper>
+          </div>
+          {verify}
+        </div>
+        <div className="flex items-center w-[140px] h-[40px] justify-between max-sm:w-full">
+          <div>
+            <div className="hidden max-sm:flex">{mbVerify}</div>
+          </div>
           <Switch isUnset={isUnset} isOn={isOn} onToggle={onToggle} />
         </div>
-      </FlexBetween>
+      </div>
 
       {resendErrors?.message && <ErrorText>{resendErrors?.message}</ErrorText>}
     </div>
