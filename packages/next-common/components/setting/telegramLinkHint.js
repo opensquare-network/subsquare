@@ -88,7 +88,7 @@ export default function TelegramLinkHint() {
         1. Start with{" "}
         <a
           className="text-sapphire500"
-          href="https://t.me/subsqauretestbot"
+          href="https://t.me/subsquare_bot"
           target="_blank"
           rel="noreferrer"
         >
