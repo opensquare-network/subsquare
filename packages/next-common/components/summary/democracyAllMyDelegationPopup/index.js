@@ -8,9 +8,13 @@ import HStack from "next-common/components/styled/hStack";
 import GreyInfoPanel from "../styled/greyInfoPanel";
 import Tooltip from "next-common/components/tooltip";
 import RemoveButton from "next-common/components/removeButton";
-import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import {
+  incMyReferendaDelegationsTrigger,
+  myReferendaDelegationsSelector,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { useSelector } from "react-redux";
 import UndelegateAllPopup from "../delegation/undelegateAllPopup";
+import { useDispatch } from "react-redux";
 
 const StyledPopup = styled(BaseVotesPopup)`
   width: 610px;
@@ -21,6 +25,7 @@ const Count = styled.span`
 `;
 
 function AllDelegationsBar() {
+  const dispatch = useDispatch();
   const delegations = useSelector(myReferendaDelegationsSelector);
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +53,9 @@ function AllDelegationsBar() {
           onClose={() => setShowPopup(false)}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          onInBlock={() => {
+            dispatch(incMyReferendaDelegationsTrigger());
+          }}
         />
       )}
     </>
