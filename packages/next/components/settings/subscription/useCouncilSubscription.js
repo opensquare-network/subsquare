@@ -3,11 +3,7 @@ import { checkSubMenu } from "./common";
 import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
 
-export default function useCouncilSubscription(
-  subscription,
-  saving,
-  isVerifiedUser,
-) {
+export default function useCouncilSubscription(subscription, saving, disabled) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(
@@ -24,7 +20,7 @@ export default function useCouncilSubscription(
     getCouncilMotionOptionValues,
     isChanged: isCouncilMotionOptionsChanged,
   } = useCouncilMotionOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     councilMotionProposed: subscription?.councilMotionProposed,
     councilMotionVoted: subscription?.councilMotionVoted,

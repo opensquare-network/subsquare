@@ -6,6 +6,10 @@ import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
   font-size: 14px;
 
   input {

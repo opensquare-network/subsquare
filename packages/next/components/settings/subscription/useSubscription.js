@@ -15,33 +15,35 @@ export default function useSubscription({ subscription: _subscription }) {
   const [subscription, setSubscription] = useState(_subscription);
 
   const isVerifiedUser = loginUser?.emailVerified;
+  const telegramLinked = loginUser?.telegram?.chat;
+  const disabled = !isVerifiedUser && !telegramLinked;
 
   const { treasuryOptions, isTreasuryOptionsChanged, getTreasuryOptionValues } =
-    useTreasurySubscription(subscription, saving, isVerifiedUser);
+    useTreasurySubscription(subscription, saving, disabled);
 
   const { councilOptions, isCouncilOptionsChanged, getCouncilOptionValues } =
-    useCouncilSubscription(subscription, saving, isVerifiedUser);
+    useCouncilSubscription(subscription, saving, disabled);
 
   const { techCommOptions, isTechCommOptionsChanged, getTechCommOptionValues } =
-    useTechCommSubscription(subscription, saving, isVerifiedUser);
+    useTechCommSubscription(subscription, saving, disabled);
 
   const {
     democracyOptions,
     isDemocracyOptionsChanged,
     getDemocracyOptionValues,
-  } = useDemocracySubscription(subscription, saving, isVerifiedUser);
+  } = useDemocracySubscription(subscription, saving, disabled);
 
   const { openGovOptions, isOpenGovOptionsChanged, getOpenGovOptionValues } =
-    useOpenGovSubscription(subscription, saving, isVerifiedUser);
+    useOpenGovSubscription(subscription, saving, disabled);
 
   const {
     advisoryOptions,
     isAdvisoryCommitteeOptionsChanged,
     getAdvisoryCommitteeOptionValues,
-  } = useAdvisoryCommitteeSubscription(subscription, saving, isVerifiedUser);
+  } = useAdvisoryCommitteeSubscription(subscription, saving, disabled);
 
   const canSave =
-    isVerifiedUser &&
+    !disabled &&
     (isTreasuryOptionsChanged ||
       isCouncilOptionsChanged ||
       isTechCommOptionsChanged ||

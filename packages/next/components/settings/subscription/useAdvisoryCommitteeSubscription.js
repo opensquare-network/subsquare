@@ -6,7 +6,7 @@ import FoldableSections from "next-common/components/setting/notification/foldab
 export default function useAdvisoryCommitteeSubscription(
   subscription,
   saving,
-  isVerifiedUser,
+  disabled,
 ) {
   const homeMenus = getHomeMenu();
 
@@ -20,7 +20,7 @@ export default function useAdvisoryCommitteeSubscription(
     getAdvisoryCommitteeOptionValues,
     isChanged: isAdvisoryCommitteeOptionsChanged,
   } = useAdvisoryCommitteeOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     advisoryCommitteeProposed: subscription?.advisoryCommitteeProposed,
     advisoryCommitteeVoted: subscription?.advisoryCommitteeVoted,

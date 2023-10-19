@@ -14,13 +14,15 @@ export default function useSubscription({ subscription: _subscription }) {
   const [subscription, setSubscription] = useState(_subscription);
 
   const isVerifiedUser = loginUser?.emailVerified;
+  const telegramLinked = loginUser?.telegram?.chat;
+  const disabled = !isVerifiedUser && !telegramLinked;
 
   const {
     treasuryProposalOptionsComponent,
     getTreasuryProposalOptionValues,
     isChanged: isTreasuryProposalOptionsChanged,
   } = useTreasuryProposalOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
     treasuryProposalApproved: subscription?.treasuryProposalApproved,
@@ -34,7 +36,7 @@ export default function useSubscription({ subscription: _subscription }) {
     isChanged: isTechCommMotionOptionsChanged,
   } = useTechCommMotionOptions({
     isKintsugi: true,
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     tcMotionExecuted: subscription?.tcMotionExecuted,
   });
@@ -44,7 +46,7 @@ export default function useSubscription({ subscription: _subscription }) {
     getDemocracyProposalOptionValues,
     isChanged: isDemocracyProposalOptionsChanged,
   } = useDemocracyProposalOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     democracyProposalProposed: subscription?.democracyProposalProposed,
     democracyProposalCanceled: subscription?.democracyProposalCanceled,
@@ -56,7 +58,7 @@ export default function useSubscription({ subscription: _subscription }) {
     isChanged: isDemocracyReferendumOptionsChanged,
   } = useDemocracyReferendumOptions({
     isKintsugi: true,
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     democracyReferendumStarted: subscription?.democracyReferendumStarted,
     democracyReferendumPassed: subscription?.democracyReferendumPassed,
@@ -69,7 +71,7 @@ export default function useSubscription({ subscription: _subscription }) {
   });
 
   const canSave =
-    isVerifiedUser &&
+    !disabled &&
     (isTreasuryProposalOptionsChanged ||
       isTechCommMotionOptionsChanged ||
       isDemocracyProposalOptionsChanged ||

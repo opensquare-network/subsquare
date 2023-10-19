@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { withCommonProps } from "next-common/lib";
 import nextApi, { ssrNextApi } from "next-common/services/nextApi";
@@ -8,8 +8,6 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import { isKeyRegisteredUser } from "next-common/utils";
-import { useRouter } from "next/router";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import Divider from "next-common/components/styled/layout/divider";
 import useDiscussionOptions from "next-common/components/setting/notification/useDiscussionOptions";
@@ -18,20 +16,17 @@ import {
   useUser,
   useUserDispatch,
 } from "next-common/context/user";
-import {
-  ContentWrapper,
-  WarningMessage,
-} from "next-common/components/setting/styled";
+import { ContentWrapper } from "next-common/components/setting/styled";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
-import NotificationEmail from "next-common/components/setting/notificationEmail";
 import useSubscription from "components/settings/subscription/useSubscription";
 import Cookies from "cookies";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import Channels from "next-common/components/setting/channels";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -47,14 +42,11 @@ const Options = styled.div`
   gap: 24px;
 `;
 
-export default function NotificationPage({ subscription, unsubscribe }) {
+export default function NotificationPage({ subscription }) {
   const loginUser = useUser();
-  const isKeyUser = loginUser && isKeyRegisteredUser(loginUser);
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const [saving, setSaving] = useState(false);
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
-  const user = loginUser;
   const {
     subscriptionComponent,
     isSubscriptionChanged,
@@ -63,35 +55,20 @@ export default function NotificationPage({ subscription, unsubscribe }) {
     subscription,
   });
 
-  const emailVerified =
-    loginUser && isKeyRegisteredUser(loginUser) && !loginUser.emailVerified;
   const isVerifiedUser = loginUser?.emailVerified;
+  const telegramLinked = loginUser?.telegram?.chat;
+  const disabled = !isVerifiedUser && !telegramLinked;
 
   const {
     discussionOptionsComponent,
     getDiscussionOptionValues,
     isChanged: isNotificationChanged,
   } = useDiscussionOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     reply: !!loginUser?.notification?.reply,
     mention: !!loginUser?.notification?.mention,
   });
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (unsubscribe) {
-      if (loginUser === null) {
-        setShowLoginToUnsubscribe(true);
-      }
-      return;
-    }
-
-    if (loginUser === null) {
-      router.push("/");
-    }
-  }, [loginUser, router, unsubscribe]);
 
   const updateNotificationSetting = async () => {
     if (saving) {
@@ -100,54 +77,36 @@ export default function NotificationPage({ subscription, unsubscribe }) {
 
     setSaving(true);
 
-    const data = {
-      ...getDiscussionOptionValues(),
-    };
+    try {
+      const data = {
+        ...getDiscussionOptionValues(),
+      };
 
-    const { result, error } = await nextApi.patch("user/notification", data);
-    if (result) {
-      await fetchAndUpdateUser(userDispatch);
+      const { error } = await nextApi.patch("user/notification", data);
+      if (error) {
+        dispatch(newErrorToast(error.message));
+        return;
+      }
 
       if (isSubscriptionChanged) {
-        const { result, error } = await updateSubscriptionSetting();
-        if (result) {
-          dispatch(newSuccessToast("Settings updated"));
-        }
+        const { error } = await updateSubscriptionSetting();
         if (error) {
           dispatch(newErrorToast(error.message));
+          return;
         }
       }
-    }
-    if (error) {
-      dispatch(newErrorToast(error.message));
-    }
 
-    setSaving(false);
+      await fetchAndUpdateUser(userDispatch);
+
+      dispatch(newSuccessToast("Settings updated"));
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <SettingLayout>
-      {isKeyUser && (
-        <SettingSection>
-          <TitleContainer>Email</TitleContainer>
-          <ContentWrapper>
-            {showLoginToUnsubscribe && (
-              <WarningMessage>
-                Please login to unsubscribe notifications
-              </WarningMessage>
-            )}
-            {emailVerified && (
-              <WarningMessage>
-                Please set the email to receive notifications
-              </WarningMessage>
-            )}
-            <NotificationEmail
-              email={user?.email}
-              verified={user?.emailVerified}
-            />
-          </ContentWrapper>
-        </SettingSection>
-      )}
+      <Channels />
 
       <SettingSection>
         <TitleContainer>Notification Settings</TitleContainer>
@@ -160,8 +119,7 @@ export default function NotificationPage({ subscription, unsubscribe }) {
           <ButtonWrapper>
             <PrimaryButton
               disabled={
-                !isVerifiedUser ||
-                (!isNotificationChanged && !isSubscriptionChanged)
+                disabled || (!isNotificationChanged && !isSubscriptionChanged)
               }
               onClick={updateNotificationSetting}
               isLoading={saving}
