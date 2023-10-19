@@ -1,11 +1,22 @@
 import RemoveButton from "next-common/components/removeButton";
-import noop from "lodash.noop";
+import UndelegatePopup from "../delegation/undelegatePopup";
+import { useState } from "react";
 
 export default function RemoveDelegation({ trackId }) {
-  console.log("trackId", trackId);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
-      <RemoveButton onClick={noop} />
+      <RemoveButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <UndelegatePopup
+          trackId={trackId}
+          onClose={() => setShowPopup(false)}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
     </>
   );
 }

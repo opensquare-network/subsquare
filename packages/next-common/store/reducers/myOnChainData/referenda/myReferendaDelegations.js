@@ -25,5 +25,6 @@ export const {
 
 export const myReferendaDelegationsSelector = (state) =>
   state[name].delegations;
+export const myReferendaDelegationsTrigger = (state) => state[name].trigger;
 
 export default myReferendaDelegationSlice.reducer;

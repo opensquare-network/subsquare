@@ -70,7 +70,7 @@ export default function AllMyDelegationPopupList() {
         capital={toPrecision(item.balance, decimals)}
         conviction={item.conviction}
       />,
-      <RemoveDelegation key="action" />,
+      <RemoveDelegation key="action" trackId={item.trackId} />,
     ];
 
     row.key = item.trackId;
