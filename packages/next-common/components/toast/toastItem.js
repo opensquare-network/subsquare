@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { removeToast } from "../../store/reducers/toastSlice";
 import Loading from "../loading";
-import { toast } from "sonner";
 import { cn } from "next-common/utils";
 import {
   SystemClose,
@@ -42,7 +41,6 @@ export default function ToastItem({ type, message, id }) {
         className="[&_path]:fill-textTertiary"
         onClick={() => {
           dispatch(removeToast(id));
-          toast.dismiss(id);
         }}
       />
     </div>

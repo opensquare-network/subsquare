@@ -5,13 +5,45 @@ import Input from "../input";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
-import { EmailVerify, InputWrapper } from "./styled";
+import { EmailVerify } from "./styled";
 import useCountdown from "../../utils/hooks/useCountdown";
 import CircleCheck from "../../assets/imgs/icons/circle-check.svg";
 import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
-import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
+import {
+  fetchAndUpdateUser,
+  useUser,
+  useUserDispatch,
+} from "../../context/user";
 import PrimaryButton from "../buttons/primaryButton";
 import EmailJunkWarning from "./emailJunkWarning";
+import { LinkEmail } from "@osn/icons/subsquare";
+import Switch from "./switch";
+import { isKeyRegisteredUser } from "next-common/utils";
+import GhostButton from "../buttons/ghostButton";
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    path {
+      fill: var(--textTertiary);
+    }
+  }
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-grow: 1;
+
+  > :first-child {
+    flex-grow: 1;
+  }
+`;
 
 const CountdownWrapper = styled.div`
   display: flex;
@@ -34,8 +66,12 @@ const CountdownWrapper = styled.div`
   color: var(--textPrimary);
 `;
 
-export default function NotificationEmail({ email, verified }) {
+export default function NotificationEmail({ isOn, setIsOn }) {
   const dispatch = useDispatch();
+  const user = useUser();
+  const isKeyUser = user && isKeyRegisteredUser(user);
+  const email = user?.email;
+  const verified = user?.emailVerified;
   const [resendLoading, setResendLoading] = useState(false);
   const [resendErrors, setResendErrors] = useState();
   const [inputEmail, setInputEmail] = useState(email);
@@ -55,11 +91,18 @@ export default function NotificationEmail({ email, verified }) {
     resetCountdown();
   }
 
-  const onResend = async () => {
+  const onVerify = async () => {
     setResendLoading(true);
-    const { result, error } = await nextApi.post("user/setemail", {
-      email: inputEmail,
-    });
+
+    let promise;
+    if (isKeyUser) {
+      promise = nextApi.post("user/setemail", {
+        email: inputEmail,
+      });
+    } else {
+      promise = nextApi.post("user/resendverifyemail");
+    }
+    const { result, error } = await promise;
     if (result) {
       startCountdown();
       dispatch(
@@ -92,33 +135,80 @@ export default function NotificationEmail({ email, verified }) {
     }
   }
 
+  const onToggle = () => {
+    setIsOn(!isOn);
+  };
+
+  const verify = counting ? (
+    <div className="flex items-center max-sm:hidden">
+      <CountdownWrapper>{countdown}s</CountdownWrapper>
+    </div>
+  ) : (
+    inputEmail &&
+    (!verified || inputEmail !== email) && (
+      <div className="flex items-center max-sm:hidden">
+        <PrimaryButton
+          onClick={onVerify}
+          isLoading={resendLoading}
+          style={{ width: 72, height: 40 }}
+        >
+          Verify
+        </PrimaryButton>
+      </div>
+    )
+  );
+
+  const mbVerify = counting ? (
+    <CountdownWrapper>{countdown}s</CountdownWrapper>
+  ) : (
+    inputEmail &&
+    (!verified || inputEmail !== email) && (
+      <GhostButton
+        onClick={onVerify}
+        isLoading={resendLoading}
+        style={{ width: 72, height: 40 }}
+      >
+        Verify
+      </GhostButton>
+    )
+  );
+
   return (
     <div>
       {email && <EmailJunkWarning />}
-      <InputWrapper>
-        <Input
-          placeholder="Please fill Email..."
-          defaultValue={inputEmail}
-          post={emailVerified}
-          onChange={(e) => {
-            setInputEmail(e.target.value);
-            setResendErrors();
-          }}
-        />
-        {counting ? (
-          <CountdownWrapper>{countdown}s</CountdownWrapper>
-        ) : (
-          (!verified || inputEmail !== email) && (
-            <PrimaryButton
-              onClick={onResend}
-              isLoading={resendLoading}
-              style={{ width: 72, height: 40 }}
-            >
-              Verify
-            </PrimaryButton>
-          )
-        )}
-      </InputWrapper>
+      <div className="flex max-sm:flex-col gap-[8px]">
+        <div className="flex gap-[8px] grow">
+          <div className="flex gap-[24px] grow max-sm:gap-[8px] max-sm:flex-col">
+            <IconWrapper>
+              <LinkEmail />
+            </IconWrapper>
+            <InputWrapper>
+              <Input
+                disabled={!isKeyUser}
+                placeholder="Please fill Email..."
+                defaultValue={inputEmail}
+                post={emailVerified}
+                onChange={(e) => {
+                  setInputEmail(e.target.value);
+                  setResendErrors();
+                }}
+              />
+            </InputWrapper>
+          </div>
+          {verify}
+        </div>
+        <div className="flex items-center w-[140px] h-[40px] justify-between max-sm:w-full">
+          <div>
+            <div className="hidden max-sm:flex">{mbVerify}</div>
+          </div>
+          <Switch
+            isUnset={!email || !verified}
+            isOn={isOn}
+            onToggle={onToggle}
+          />
+        </div>
+      </div>
+
       {resendErrors?.message && <ErrorText>{resendErrors?.message}</ErrorText>}
     </div>
   );

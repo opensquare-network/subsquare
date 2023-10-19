@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 const MAX_TOASTS = 6;
 let count = 0;
@@ -19,6 +20,7 @@ const toastSlice = createSlice({
     },
     removeToast(state, { payload }) {
       state.toasts = state.toasts.filter((item) => item.id !== payload);
+      toast.dismiss(payload);
     },
     updateToast(state, { payload }) {
       state.toasts = state.toasts.map((t) => {

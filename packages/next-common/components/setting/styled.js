@@ -67,7 +67,6 @@ export const WarningMessage = styled.div`
   padding: 12px 16px;
   font-size: 14px;
   line-height: 140%;
-  margin-bottom: 16px;
 `;
 
 export const InfoMessage = styled(GreyPanel)`

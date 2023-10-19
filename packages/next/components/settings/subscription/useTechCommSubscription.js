@@ -6,7 +6,7 @@ import useTechCommMotionOptions from "next-common/components/setting/notificatio
 export default function useTechCommSubscription(
   subscription,
   saving,
-  isVerifiedUser,
+  disabled,
 ) {
   const homeMenus = getHomeMenu();
 
@@ -24,7 +24,7 @@ export default function useTechCommSubscription(
     getTechCommMotionOptionValues,
     isChanged: isTechCommMotionOptionsChanged,
   } = useTechCommMotionOptions({
-    disabled: !isVerifiedUser,
+    disabled,
     saving,
     tcMotionProposed: subscription?.tcMotionProposed,
     tcMotionVoted: subscription?.tcMotionVoted,
