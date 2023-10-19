@@ -31,19 +31,22 @@ function AllDelegationsBar() {
   const [isLoading, setIsLoading] = useState(false);
 
   const trackIds = useMemo(() => {
-    return delegations.map((item) => item.trackId);
+    return (delegations || []).map((item) => item.trackId);
   }, [delegations]);
 
   return (
     <>
       <HStack space={8}>
         <GreyInfoPanel>
-          My delegation <Count>{delegations.length}</Count>
+          My delegation <Count>{delegations?.length || 0}</Count>
         </GreyInfoPanel>
 
         <Tooltip content="Remove all delegations">
           <div>
-            <RemoveButton onClick={() => setShowPopup(true)} />
+            <RemoveButton
+              disabled={!delegations?.length}
+              onClick={() => setShowPopup(true)}
+            />
           </div>
         </Tooltip>
       </HStack>
