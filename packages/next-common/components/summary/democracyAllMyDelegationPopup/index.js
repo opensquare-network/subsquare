@@ -50,7 +50,7 @@ function AllDelegationsBar() {
           My delegation <Count>{delegations?.length || 0}</Count>
         </GreyInfoPanel>
 
-        <Tooltip content="Remove all delegations">
+        <Tooltip content="Remove all">
           <div>
             <RemoveButton
               disabled={!delegations?.length}

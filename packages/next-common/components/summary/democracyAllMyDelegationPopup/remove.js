@@ -6,6 +6,7 @@ import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
 import UndelegatePopup from "../delegation/undelegatePopup";
 import MoonUndelegatePopup from "../delegation/undelegatePopup/moonPopup";
+import Tooltip from "next-common/components/tooltip";
 
 export default function RemoveDelegation({ trackId }) {
   const dispatch = useDispatch();
@@ -20,7 +21,9 @@ export default function RemoveDelegation({ trackId }) {
 
   return (
     <>
-      <RemoveButton onClick={() => setShowPopup(true)} />
+      <Tooltip content={"Remove"}>
+        <RemoveButton onClick={() => setShowPopup(true)} />
+      </Tooltip>
       {showPopup && (
         <TheUndelegatePopup
           trackId={trackId}
