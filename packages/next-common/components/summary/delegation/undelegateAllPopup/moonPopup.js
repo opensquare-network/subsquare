@@ -97,7 +97,7 @@ async function submitExtrinsic({
   }
 }
 
-export default function MoonUndelegatePopup({
+export default function MoonUndelegateAllPopup({
   trackIds,
   onClose,
   isLoading,

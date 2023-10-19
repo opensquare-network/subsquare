@@ -22,7 +22,10 @@ import { useChainSettings } from "next-common/context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
-import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import {
+  incMyReferendaDelegationsTrigger,
+  myReferendaDelegationsSelector,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -63,6 +66,7 @@ export default function AllDelegation() {
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
     refresh();
+    dispatch(incMyReferendaDelegationsTrigger());
     dispatch(newSuccessToast("Delegate success"));
   }, [dispatch, refresh]);
 

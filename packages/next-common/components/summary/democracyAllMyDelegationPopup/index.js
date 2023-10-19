@@ -13,8 +13,11 @@ import {
   myReferendaDelegationsSelector,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { useSelector } from "react-redux";
-import UndelegateAllPopup from "../delegation/undelegateAllPopup";
 import { useDispatch } from "react-redux";
+import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import isMoonChain from "next-common/utils/isMoonChain";
+import UndelegateAllPopup from "../delegation/undelegateAllPopup";
+import MoonUndelegateAllPopup from "../delegation/undelegateAllPopup/moonPopup";
 
 const StyledPopup = styled(BaseVotesPopup)`
   width: 610px;
@@ -29,6 +32,12 @@ function AllDelegationsBar() {
   const delegations = useSelector(myReferendaDelegationsSelector);
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const isUseMetamask = useIsUseMetamask();
+
+  let TheUndelegatePopup = UndelegateAllPopup;
+  if (isMoonChain() && isUseMetamask) {
+    TheUndelegatePopup = MoonUndelegateAllPopup;
+  }
 
   const trackIds = useMemo(() => {
     return (delegations || []).map((item) => item.trackId);
@@ -51,7 +60,7 @@ function AllDelegationsBar() {
         </Tooltip>
       </HStack>
       {showPopup && (
-        <UndelegateAllPopup
+        <TheUndelegatePopup
           trackIds={trackIds}
           onClose={() => setShowPopup(false)}
           isLoading={isLoading}
