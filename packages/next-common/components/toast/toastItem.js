@@ -23,26 +23,34 @@ export default function ToastItem({ type, message, id }) {
     <div
       className={cn(
         "w-full h-full",
-        "flex items-center gap-x-2",
-        "p-4",
-        "bg-neutral100 shadow-200",
-        "text14Medium text-textPrimary",
-        "rounded-xl border-l-4 border-transparent",
-        type === "success" && "border-green500",
-        type === "warning" && "border-orange500",
-        type === "error" && "border-red500",
-        type === "pending" && "border-blue500",
+        "shadow-200",
+        "border border-neutral300 rounded-lg",
       )}
     >
-      {icons[type]}
-      <div className="w-full">{message}</div>
-      <SystemClose
-        role="button"
-        className="[&_path]:fill-textTertiary"
-        onClick={() => {
-          dispatch(removeToast(id));
-        }}
-      />
+      <div
+        className={cn(
+          "w-full h-full",
+          "flex items-center gap-x-2",
+          "p-4",
+          "bg-neutral100",
+          "text14Medium text-textPrimary",
+          "rounded-[inherit] border-l-[7px] border-transparent",
+          type === "success" && "border-green500",
+          type === "warning" && "border-orange500",
+          type === "error" && "border-red500",
+          type === "pending" && "border-blue500",
+        )}
+      >
+        {icons[type]}
+        <div className="w-full">{message}</div>
+        <SystemClose
+          role="button"
+          className="[&_path]:fill-textTertiary"
+          onClick={() => {
+            dispatch(removeToast(id));
+          }}
+        />
+      </div>
     </div>
   );
 }
