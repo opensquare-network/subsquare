@@ -49,8 +49,11 @@ export function ModuleTabProvider({
   queryName = "type",
 }) {
   const router = useRouter();
+  const qTab = availableTabs.find(
+    (tab) => tab.tabId === router.query?.[queryName],
+  )?.tabId;
   const [selectedTabId, setSelectedTabId] = React.useState(
-    router.query?.[queryName] || defaultTab || availableTabs[0]?.tabId,
+    qTab || defaultTab || availableTabs[0]?.tabId,
   );
   const isFirstTab = availableTabs[0]?.tabId === selectedTabId;
   const noAvailableTabs = availableTabs.length === 0;
