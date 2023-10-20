@@ -54,7 +54,7 @@ export default function SelectedValueBox({
         setShowDropDown(!showDropDown);
       }}
     >
-      <div className="flex grow flex-wrap gap-2 text14Medium">
+      <div className="flex grow flex-wrap gap-2 text14Medium text-textPrimary">
         {selectedTracks}
       </div>
       <div
