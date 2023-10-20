@@ -27,6 +27,7 @@ const Title = styled(TitleContainer)`
 
 export default function MyVoteCommon({
   votes,
+  votesManagementPath,
   hasOnchainVote,
   setShowRemoveVotePopup,
 }) {
@@ -67,7 +68,7 @@ export default function MyVoteCommon({
 
         <div className="flex justify-end gap-[16px]">
           {hasVotesManagement && (
-            <LinkButton href="/votes">
+            <LinkButton href={votesManagementPath}>
               <span>Manage My Votes</span>
             </LinkButton>
           )}
