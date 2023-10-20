@@ -5,7 +5,7 @@ import useSplitVote from "./voteHooks/useSplitVote";
 import PopupContent from "./popupContent";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 
-export async function submitPolkadotExtrinsic({
+export async function submitSubstrateExtrinsic({
   api,
   getVoteTx,
   dispatch,
@@ -45,7 +45,7 @@ export default function Popup(props) {
       useStandardVote={useStandardVote}
       useSplitVote={useSplitVote}
       VoteTypeTab={AyeNaySplitTab}
-      submitExtrinsic={submitPolkadotExtrinsic}
+      submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     />
   );

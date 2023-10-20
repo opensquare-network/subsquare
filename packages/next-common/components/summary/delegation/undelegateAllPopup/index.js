@@ -5,7 +5,7 @@ import PopupCommon from "./popupCommon";
 
 export async function submitSubstrateExtrinsic({
   api,
-  trackId,
+  trackIds,
   dispatch,
   setLoading,
   onInBlock,
@@ -13,7 +13,20 @@ export async function submitSubstrateExtrinsic({
   isMounted,
   onClose,
 }) {
-  let tx = api.tx.convictionVoting.undelegate(trackId);
+  if (!trackIds || trackIds.length === 0) {
+    return;
+  }
+
+  const txs = trackIds.map((trackId) =>
+    api.tx.convictionVoting.undelegate(trackId),
+  );
+
+  let tx;
+  if (txs.length === 1) {
+    tx = txs[0];
+  } else {
+    tx = api.tx.utility.batch(txs);
+  }
 
   if (signerAccount?.proxyAddress) {
     tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -30,8 +43,8 @@ export async function submitSubstrateExtrinsic({
   });
 }
 
-export default function UndelegatePopup({
-  trackId,
+export default function UndelegateAllPopup({
+  trackIds,
   onClose,
   isLoading,
   setIsLoading = emptyFunction,
@@ -39,7 +52,7 @@ export default function UndelegatePopup({
 }) {
   return (
     <PopupCommon
-      trackId={trackId}
+      trackIds={trackIds}
       onClose={onClose}
       isLoading={isLoading}
       setIsLoading={setIsLoading}

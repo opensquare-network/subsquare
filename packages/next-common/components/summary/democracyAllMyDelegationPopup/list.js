@@ -2,19 +2,23 @@ import PopupListWrapper from "../../styled/popupListWrapper";
 import React from "react";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
-import { Conviction } from "../../../utils/referendumCommon";
 import StyledList from "next-common/components/styledList";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
-import Gov2TrackTag from "next-common/components/gov2/trackTag";
 import AddressUser from "next-common/components/user/addressUser";
+import { useSelector } from "react-redux";
+import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import Track from "next-common/components/referenda/track/trackTag";
+import RemoveDelegation from "next-common/components/summary/democracyAllMyDelegationPopup/remove";
 
-export default function AllMyDelegationPopupList({ myDelegationList = [] }) {
+export default function AllMyDelegationPopupList() {
   const { decimals } = useChainSettings();
+  const delegations = useSelector(myReferendaDelegationsSelector);
 
   const colWidths = {
-    track: 154,
-    delegatingTo: 240,
-    capital: 168,
+    track: 160,
+    delegatingTo: 144,
+    capital: 160,
+    action: 80,
   };
 
   const columns = [
@@ -42,24 +46,34 @@ export default function AllMyDelegationPopupList({ myDelegationList = [] }) {
         minWidth: colWidths.capital,
       },
     },
+    {
+      name: "Action",
+      style: {
+        textAlign: "right",
+        width: colWidths.action,
+        minWidth: colWidths.action,
+      },
+    },
   ];
 
-  const rows = myDelegationList.map((item) => {
+  const rows = delegations.map((item) => {
     const row = [
-      <Gov2TrackTag key="track" name={item.track.name} />,
+      <Track key="track" id={item.trackId} />,
       <AddressUser
         key="user"
-        add={item.delegation.target}
+        add={item.target}
         maxWidth={colWidths.delegatingTo}
       />,
       <CapitalTableItem
         key="capital"
         item={item}
-        capital={toPrecision(item.delegation.balance, decimals)}
-        conviction={Conviction[item.delegation.conviction]}
+        capital={toPrecision(item.balance, decimals)}
+        conviction={item.conviction}
       />,
+      <RemoveDelegation key="action" trackId={item.trackId} />,
     ];
 
+    row.key = item.trackId;
     return row;
   });
 

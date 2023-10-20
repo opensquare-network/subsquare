@@ -1,6 +1,5 @@
 import flexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import styled from "styled-components";
-import { useAllMyDelegationList } from "next-common/utils/hooks/referenda/useAllMyDelegationList";
 import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import { Button } from "next-common/components/summary/styled";
 import VStackOrigin from "next-common/components/styled/vStack";
@@ -10,17 +9,22 @@ import Flex from "next-common/components/styled/flex";
 import GreyInfoPanel from "next-common/components/summary/styled/greyInfoPanel";
 import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
-import DelegatePopup from "components/gov2/delegatePopup";
-import MoonDelegatePopup from "components/gov2/delegatePopup/moonPopup";
+import DelegatePopup from "next-common/components/gov2/delegatePopup";
+import MoonDelegatePopup from "next-common/components/gov2/delegatePopup/moonPopup";
 import { useCallback, useState } from "react";
 import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyDelegationPopup";
 import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegatedPopup";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useChainSettings } from "next-common/context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
+import {
+  incMyReferendaDelegationsTrigger,
+  myReferendaDelegationsSelector,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -45,7 +49,8 @@ const ListButton = styled(Button)`
 
 export default function AllDelegation() {
   const dispatch = useDispatch();
-  const { myDelegationList, refresh } = useAllMyDelegationList();
+  useFetchMyReferendaDelegations();
+  const delegations = useSelector(myReferendaDelegationsSelector);
   const { beenDelegatedList } = useAllBeenDelegatedList();
   const { hideActionButtons } = useChainSettings();
 
@@ -58,9 +63,9 @@ export default function AllDelegation() {
 
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
-    refresh();
+    dispatch(incMyReferendaDelegationsTrigger());
     dispatch(newSuccessToast("Delegate success"));
-  }, [dispatch, refresh]);
+  }, [dispatch]);
 
   let Popup = DelegatePopup;
   if (isMoonChain() && isUseMetamask) {
@@ -77,11 +82,11 @@ export default function AllDelegation() {
           />
         )}
 
-        {!!myDelegationList?.length && (
+        {!!delegations?.length && (
           <>
             <HStack space={8}>
               <GreyInfoPanel>
-                My delegation <Count>{myDelegationList.length}</Count>
+                My delegation <Count>{delegations.length}</Count>
               </GreyInfoPanel>
 
               <Tooltip content="My delegation detail">
@@ -94,10 +99,7 @@ export default function AllDelegation() {
             </HStack>
 
             {showAllMyDelegationPopup && (
-              <AllMyDelegationPopup
-                myDelegationList={myDelegationList}
-                setShow={setShowAllMyDelegationPopup}
-              />
+              <AllMyDelegationPopup setShow={setShowAllMyDelegationPopup} />
             )}
           </>
         )}

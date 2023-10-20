@@ -4,7 +4,7 @@ import PopupContent from "./popupContent";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { emptyFunction } from "next-common/utils";
 
-export async function submitPolkadotExtrinsic({
+export async function submitSubstrateExtrinsic({
   api,
   conviction,
   bnVoteBalance,
@@ -43,7 +43,7 @@ export default function DelegatePopup(props) {
       title="Delegate"
       Component={PopupContent}
       autoCloseAfterLogin={true}
-      submitExtrinsic={submitPolkadotExtrinsic}
+      submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     />
   );

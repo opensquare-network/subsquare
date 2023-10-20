@@ -6,7 +6,7 @@ export default function useIsUseMetamask() {
 
   useEffect(() => {
     setIsMetamask(isUseMetamask());
-  }, []);
+  });
 
   return isMetamask;
 }

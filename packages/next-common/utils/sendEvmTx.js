@@ -23,7 +23,6 @@ export async function sendEvmTx({
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
   signerAddress,
-  isMounted,
 }) {
   const ethereum = getEthereum();
   if (!ethereum) {
@@ -88,12 +87,15 @@ export async function sendEvmTx({
         onClose();
       },
       onInBlock: (receipt) => {
+        setLoading(false);
         dispatch(removeToast(toastId));
         onInBlock(receipt);
       },
     });
   } catch (e) {
     dispatch(removeToast(toastId));
+    setLoading(false);
+
     if (e.info?.error?.code === 4001) {
       dispatch(newWarningToast(e.info?.error?.message));
     } else {
@@ -102,10 +104,6 @@ export async function sendEvmTx({
           e.info?.error?.data?.message || e.info?.error?.message || e.message,
         ),
       );
-    }
-  } finally {
-    if (isMounted.current) {
-      setLoading(false);
     }
   }
 }

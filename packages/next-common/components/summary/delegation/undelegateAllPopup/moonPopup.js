@@ -3,11 +3,13 @@ import { emptyFunction } from "next-common/utils";
 import PopupCommon from "./popupCommon";
 import isUseMetamask from "next-common/utils/isUseMetamask";
 import { submitSubstrateExtrinsic } from ".";
-import { encodeUnDelegateData } from "next-common/utils/moonPrecompiles/democracy";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
+import { encodeUnDelegateData } from "next-common/utils/moonPrecompiles/convictionVoting";
+import { encodeBatchAllData } from "next-common/utils/moonPrecompiles/batch";
 
 async function submitMoonMetamaskExtrinsic({
+  trackIds,
   dispatch,
   setLoading,
   onInBlock = emptyFunction,
@@ -15,7 +17,31 @@ async function submitMoonMetamaskExtrinsic({
   signerAccount,
   isMounted,
 }) {
-  let { callTo, callData } = encodeUnDelegateData();
+  let { callTo, callData } = encodeUnDelegateData({ trackId: trackIds[0] });
+
+  if (trackIds.length > 1) {
+    let toParam = [],
+      valueParam = [],
+      callDataParam = [],
+      gasLimitParam = [];
+
+    toParam.push(callTo);
+    callDataParam.push(callData);
+
+    for (let n = 1; n < trackIds.length; n++) {
+      let { callTo, callData } = encodeUnDelegateData({ trackId: trackIds[n] });
+
+      toParam.push(callTo);
+      callDataParam.push(callData);
+    }
+
+    ({ callTo, callData } = encodeBatchAllData({
+      to: toParam,
+      value: valueParam,
+      callData: callDataParam,
+      gasLimit: gasLimitParam,
+    }));
+  }
 
   if (signerAccount?.proxyAddress) {
     ({ callTo, callData } = encodeProxyData({
@@ -39,6 +65,7 @@ async function submitMoonMetamaskExtrinsic({
 
 async function submitExtrinsic({
   api,
+  trackIds,
   dispatch,
   setLoading,
   onInBlock = emptyFunction,
@@ -48,6 +75,7 @@ async function submitExtrinsic({
 }) {
   if (isUseMetamask()) {
     await submitMoonMetamaskExtrinsic({
+      trackIds,
       dispatch,
       setLoading,
       onInBlock,
@@ -58,6 +86,7 @@ async function submitExtrinsic({
   } else {
     await submitSubstrateExtrinsic({
       api,
+      trackIds,
       dispatch,
       setLoading,
       onInBlock,
@@ -68,7 +97,8 @@ async function submitExtrinsic({
   }
 }
 
-export default function MoonUndelegatePopup({
+export default function MoonUndelegateAllPopup({
+  trackIds,
   onClose,
   isLoading,
   setIsLoading = emptyFunction,
@@ -76,6 +106,7 @@ export default function MoonUndelegatePopup({
 }) {
   return (
     <PopupCommon
+      trackIds={trackIds}
       onClose={onClose}
       isLoading={isLoading}
       setIsLoading={setIsLoading}

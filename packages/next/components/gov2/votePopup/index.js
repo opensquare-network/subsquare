@@ -3,7 +3,7 @@ import useStandardVote from "components/referenda/popup/voteHooks/useStandardVot
 import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 import PopupContent from "./popupContent";
-import { submitPolkadotExtrinsic } from "components/referenda/popup";
+import { submitSubstrateExtrinsic } from "components/referenda/popup";
 
 export default function Popup(props) {
   return (
@@ -13,7 +13,7 @@ export default function Popup(props) {
       useStandardVote={useStandardVote}
       useSplitVote={useSplitVote}
       useSplitAbstainVote={useSplitAbstainVote}
-      submitExtrinsic={submitPolkadotExtrinsic}
+      submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     />
   );

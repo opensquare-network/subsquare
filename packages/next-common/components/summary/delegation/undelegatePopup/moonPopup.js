@@ -2,7 +2,7 @@ import React from "react";
 import { emptyFunction } from "next-common/utils";
 import PopupCommon from "./popupCommon";
 import isUseMetamask from "next-common/utils/isUseMetamask";
-import { submitPolkadotExtrinsic } from ".";
+import { submitSubstrateExtrinsic } from ".";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
 import { encodeUnDelegateData } from "next-common/utils/moonPrecompiles/convictionVoting";
@@ -59,7 +59,7 @@ async function submitExtrinsic({
       isMounted,
     });
   } else {
-    await submitPolkadotExtrinsic({
+    await submitSubstrateExtrinsic({
       api,
       trackId,
       dispatch,

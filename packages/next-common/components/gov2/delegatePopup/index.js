@@ -3,7 +3,7 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PopupContent from "./popupContent";
 
-export async function submitPolkadotExtrinsic({
+export async function submitSubstrateExtrinsic({
   api,
   trackIds,
   conviction,
@@ -58,7 +58,7 @@ export default function DelegatePopup(props) {
       title="Delegate"
       Component={PopupContent}
       autoCloseAfterLogin={true}
-      submitExtrinsic={submitPolkadotExtrinsic}
+      submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     />
   );

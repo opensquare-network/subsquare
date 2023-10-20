@@ -9,6 +9,7 @@ import DelegationInfo from "next-common/components/summary/democracySummaryDeleg
 import DelegationButton from "./delegationButton";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { useChainSettings } from "next-common/context/chain";
+import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,6 +29,7 @@ export default function Delegation({ trackId }) {
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
     refresh();
+    dispatch(incMyReferendaDelegationsTrigger());
     dispatch(newSuccessToast("Delegate success"));
   }, [dispatch, refresh]);
 

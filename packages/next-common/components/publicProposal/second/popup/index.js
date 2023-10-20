@@ -4,7 +4,7 @@ import PopupContent from "./popupContent";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-export async function submitPolkadotExtrinsic({
+export async function submitSubstrateExtrinsic({
   api,
   proposalIndex,
   depositorUpperBound,
@@ -54,7 +54,7 @@ export default function Popup(props) {
     <PopupWithSigner
       title="Second"
       Component={PopupContent}
-      submitExtrinsic={submitPolkadotExtrinsic}
+      submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     />
   );
