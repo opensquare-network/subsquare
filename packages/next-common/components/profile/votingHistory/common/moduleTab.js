@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Tab from "next-common/components/tab";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -49,8 +49,34 @@ export function ModuleTabProvider({
 }) {
   const router = useRouter();
   const [selectedTabId, setSelectedTabId] = React.useState(
-    router.query?.tab || defaultTab,
+    router.query?.tab || defaultTab || availableTabs[0]?.tabId,
   );
+  const isFirstTab = availableTabs[0]?.tabId === selectedTabId;
+
+  useEffect(() => {
+    let [urlPath, urlQuery] = router.asPath.split("?");
+    let needUpdate = false;
+
+    const urlSearch = new URLSearchParams(urlQuery);
+    if (
+      isFirstTab &&
+      urlSearch.has("tab") &&
+      urlSearch.get("tab") !== selectedTabId
+    ) {
+      urlSearch.delete("tab");
+      needUpdate = true;
+    } else if (!isFirstTab && urlSearch.get("tab") !== selectedTabId) {
+      urlSearch.set("tab", selectedTabId);
+      needUpdate = true;
+    }
+
+    if (needUpdate) {
+      urlQuery = urlSearch.size > 0 ? `?${urlSearch.toString()}` : "";
+      router.push(urlPath + urlQuery, undefined, {
+        shallow: true,
+      });
+    }
+  }, [router, isFirstTab, selectedTabId]);
 
   return (
     <ModuleTabContext.Provider
