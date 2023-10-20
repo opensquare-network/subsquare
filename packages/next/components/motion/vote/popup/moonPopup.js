@@ -7,7 +7,7 @@ import { sendEvmTx } from "next-common/utils/sendEvmTx";
 import isUseMetamask from "next-common/utils/isUseMetamask";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { submitPolkadotExtrinsic } from ".";
+import { submitSubstrateExtrinsic } from ".";
 import PopupContent from "./popupContent";
 
 export async function submitMoonMetamaskExtrinsic({
@@ -101,7 +101,7 @@ async function submitExtrinsic({
       isMounted,
     });
   } else {
-    await submitPolkadotExtrinsic({
+    await submitSubstrateExtrinsic({
       api,
       chain,
       type,

@@ -3,7 +3,7 @@ import AyeNayTab from "./ayeNayTab";
 import useMoonStandardVote from "./voteHooks/useMoonStandardVote";
 import useMoonSplitVote from "./voteHooks/useMoonSplitVote";
 import PopupContent from "./popupContent";
-import { submitPolkadotExtrinsic } from "./index";
+import { submitSubstrateExtrinsic } from "./index";
 import isUseMetamask from "next-common/utils/isUseMetamask";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
@@ -67,7 +67,7 @@ export async function submitExtrinsic({
       isMounted,
     });
   } else {
-    await submitPolkadotExtrinsic({
+    await submitSubstrateExtrinsic({
       api,
       getVoteTx,
       dispatch,

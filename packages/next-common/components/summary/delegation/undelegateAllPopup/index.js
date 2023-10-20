@@ -3,7 +3,7 @@ import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PopupCommon from "./popupCommon";
 
-export async function submitPolkadotExtrinsic({
+export async function submitSubstrateExtrinsic({
   api,
   trackIds,
   dispatch,
@@ -57,7 +57,7 @@ export default function UndelegateAllPopup({
       isLoading={isLoading}
       setIsLoading={setIsLoading}
       onInBlock={onInBlock}
-      submitExtrinsic={submitPolkadotExtrinsic}
+      submitExtrinsic={submitSubstrateExtrinsic}
     />
   );
 }

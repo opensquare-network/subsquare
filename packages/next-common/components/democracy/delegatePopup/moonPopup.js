@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupContent from "./popupContent";
 import { emptyFunction } from "next-common/utils";
-import { submitPolkadotExtrinsic } from ".";
+import { submitSubstrateExtrinsic } from ".";
 import isUseMetamask from "next-common/utils/isUseMetamask";
 import { encodeDelegateData } from "next-common/utils/moonPrecompiles/democracy";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
@@ -70,7 +70,7 @@ async function submitExtrinsic({
       isMounted,
     });
   } else {
-    await submitPolkadotExtrinsic({
+    await submitSubstrateExtrinsic({
       api,
       conviction,
       bnVoteBalance,
