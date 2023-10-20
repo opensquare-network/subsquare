@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.6.1
+date: 2023-10-19
+
+- [Medium]Support notifications by telegram.
+- Add spam folder check warning message on email binding components.
+- Improve delegation info number format on referendum detail page.
+- Enhance toast style, and make it more striking.
+- Add off-chain voting links on my votes page.
+- Upgrade dependencies.
+- Implement accordion card component.
+- Shorten referendum breadcrumb.
+
+
 ### 3.6.0
 date: 2023-10-12
 - Allow post authors and admins to delete a discussion post.
