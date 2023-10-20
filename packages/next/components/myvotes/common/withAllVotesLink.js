@@ -14,7 +14,7 @@ export default function WithAllVotesLink({ children, isReferenda = false }) {
 
       <div className="flex ml-6">
         <ExternalLink
-          href={`/user/${address}/votes?tab=${
+          href={`/user/${address}/votes?type=${
             isReferenda ? Referenda : Democracy
           }`}
           className="text14Medium text-theme500"

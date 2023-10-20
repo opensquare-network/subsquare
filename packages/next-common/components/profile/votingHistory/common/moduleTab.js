@@ -46,12 +46,14 @@ export function ModuleTabProvider({
   availableTabs = [],
   defaultTab,
   children,
+  queryName = "type",
 }) {
   const router = useRouter();
   const [selectedTabId, setSelectedTabId] = React.useState(
-    router.query?.tab || defaultTab || availableTabs[0]?.tabId,
+    router.query?.[queryName] || defaultTab || availableTabs[0]?.tabId,
   );
   const isFirstTab = availableTabs[0]?.tabId === selectedTabId;
+  const noAvailableTabs = availableTabs.length === 0;
 
   useEffect(() => {
     let [urlPath, urlQuery] = router.asPath.split("?");
@@ -60,13 +62,17 @@ export function ModuleTabProvider({
     const urlSearch = new URLSearchParams(urlQuery);
     if (
       isFirstTab &&
-      urlSearch.has("tab") &&
-      urlSearch.get("tab") !== selectedTabId
+      urlSearch.has(queryName) &&
+      urlSearch.get(queryName) !== selectedTabId
     ) {
-      urlSearch.delete("tab");
+      urlSearch.delete(queryName);
       needUpdate = true;
-    } else if (!isFirstTab && urlSearch.get("tab") !== selectedTabId) {
-      urlSearch.set("tab", selectedTabId);
+    } else if (
+      !isFirstTab &&
+      !noAvailableTabs &&
+      urlSearch.get(queryName) !== selectedTabId
+    ) {
+      urlSearch.set(queryName, selectedTabId);
       needUpdate = true;
     }
 
@@ -76,7 +82,7 @@ export function ModuleTabProvider({
         shallow: true,
       });
     }
-  }, [router, isFirstTab, selectedTabId]);
+  }, [router, isFirstTab, noAvailableTabs, selectedTabId]);
 
   return (
     <ModuleTabContext.Provider
