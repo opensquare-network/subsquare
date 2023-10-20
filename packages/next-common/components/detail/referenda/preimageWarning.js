@@ -21,7 +21,8 @@ function Warning() {
 
 export default function PreimageWarning() {
   const state = usePostState();
-  const { proposalHash, proposal } = useOnchainData();
+  const onchainData = useOnchainData();
+  const { proposalHash, proposal, inlineCall } = onchainData;
 
   const inFinalState = [
     gov2State.Rejected,
@@ -31,7 +32,7 @@ export default function PreimageWarning() {
     gov2State.Cancelled,
     gov2State.Executed,
   ].includes(state);
-  if (inFinalState || !proposalHash || proposal?.inline) {
+  if (inFinalState || !proposalHash || proposal?.inline || inlineCall) {
     return null;
   }
 

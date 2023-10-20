@@ -29,7 +29,7 @@ export default function Gov2ReferendumCall() {
           />,
         ]
       : null,
-    proposal?.call
+    proposal?.call && !inlineCall
       ? [
           <Proposal
             key={"call"}
