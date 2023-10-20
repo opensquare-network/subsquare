@@ -1,6 +1,5 @@
 import flexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import styled from "styled-components";
-import { useAllMyDelegationList } from "next-common/utils/hooks/referenda/useAllMyDelegationList";
 import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import { Button } from "next-common/components/summary/styled";
 import VStackOrigin from "next-common/components/styled/vStack";
@@ -52,7 +51,6 @@ export default function AllDelegation() {
   const dispatch = useDispatch();
   useFetchMyReferendaDelegations();
   const delegations = useSelector(myReferendaDelegationsSelector);
-  const { refresh } = useAllMyDelegationList();
   const { beenDelegatedList } = useAllBeenDelegatedList();
   const { hideActionButtons } = useChainSettings();
 
@@ -65,11 +63,11 @@ export default function AllDelegation() {
 
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
-    refresh();
     dispatch(incMyReferendaDelegationsTrigger());
     dispatch(newSuccessToast("Delegate success"));
-  }, [dispatch, refresh]);
+  }, [dispatch]);
 
+  console.log(isUseMetamask, isMoonChain());
   let Popup = DelegatePopup;
   if (isMoonChain() && isUseMetamask) {
     Popup = MoonDelegatePopup;
