@@ -67,7 +67,6 @@ export default function AllDelegation() {
     dispatch(newSuccessToast("Delegate success"));
   }, [dispatch]);
 
-  console.log(isUseMetamask, isMoonChain());
   let Popup = DelegatePopup;
   if (isMoonChain() && isUseMetamask) {
     Popup = MoonDelegatePopup;

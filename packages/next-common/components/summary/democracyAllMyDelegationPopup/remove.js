@@ -22,7 +22,7 @@ export default function RemoveDelegation({ trackId }) {
   return (
     <>
       <Tooltip content={"Remove"}>
-        <RemoveButton onClick={() => setShowPopup(true)} />
+        <RemoveButton disabled={isLoading} onClick={() => setShowPopup(true)} />
       </Tooltip>
       {showPopup && (
         <TheUndelegatePopup

@@ -53,7 +53,7 @@ function AllDelegationsBar() {
         <Tooltip content="Remove all">
           <div>
             <RemoveButton
-              disabled={!delegations?.length}
+              disabled={!delegations?.length || isLoading}
               onClick={() => setShowPopup(true)}
             />
           </div>
