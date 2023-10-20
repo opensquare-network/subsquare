@@ -96,6 +96,7 @@ export async function sendTx({
         }
 
         if (status.isInBlock) {
+          setLoading(false);
           blockHash = status.asInBlock.toString();
 
           for (const event of events) {
@@ -160,15 +161,12 @@ export async function sendTx({
     onClose();
   } catch (e) {
     dispatch(removeToast(toastId));
+    setLoading(false);
 
     if (e.message === "Cancelled") {
       dispatch(newWarningToast(e.message));
     } else {
       dispatch(newErrorToast(e.message));
-    }
-  } finally {
-    if (isMounted.current) {
-      setLoading(false);
     }
   }
 }
