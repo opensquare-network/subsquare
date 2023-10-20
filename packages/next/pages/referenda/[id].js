@@ -20,9 +20,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
-import BreadcrumbWrapper, {
-  BreadcrumbHideOnMobileText,
-} from "next-common/components/detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import CheckUnFinalized from "components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
 import ReferendaDetail from "next-common/components/detail/referenda";
@@ -86,14 +84,7 @@ function UnFinalizedBreadcrumb({ id }) {
             content: "Referenda",
           },
           {
-            content: (
-              <>
-                <BreadcrumbHideOnMobileText>
-                  Referendum
-                </BreadcrumbHideOnMobileText>{" "}
-                {`#${id}`}
-              </>
-            ),
+            content: `#${id}`,
           },
         ]}
       />

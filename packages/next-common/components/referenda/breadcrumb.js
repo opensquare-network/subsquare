@@ -1,8 +1,6 @@
 import React from "react";
 import Breadcrumb from "../_Breadcrumb";
-import BreadcrumbWrapper, {
-  BreadcrumbHideOnMobileText,
-} from "../detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper from "../detail/common/BreadcrumbWrapper";
 import startCase from "lodash.startcase";
 import { useTrack } from "../../context/post/gov2/track";
 import { usePost } from "../../context/post";
@@ -18,12 +16,7 @@ function getBreadcrumbItems(track = {}, referendumIndex) {
       content: startCase(track.name),
     },
     {
-      content: (
-        <>
-          <BreadcrumbHideOnMobileText>Referendum</BreadcrumbHideOnMobileText>{" "}
-          {`#${referendumIndex}`}
-        </>
-      ),
+      content: `#${referendumIndex}`,
     },
   ];
 }
