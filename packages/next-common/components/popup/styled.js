@@ -125,12 +125,10 @@ export const DelegatingValue = styled(GreyPanel)`
     line-height: 100%;
 
     > .proxy-label {
+      display: flex;
+      align-items: center;
       color: var(--textSecondary);
-    }
-
-    > .proxy-addr {
-      color: var(--sapphire500);
-      margin-left: 8px;
+      margin-right: 8px;
     }
   }
 `;

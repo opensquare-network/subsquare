@@ -2,6 +2,7 @@ import {
   DelegatingInfo,
   DelegatingValue,
 } from "next-common/components/popup/styled";
+import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { addressEllipsis, toPrecision } from "next-common/utils";
 import { convictionToLockX } from "utils/referendumUtil";
@@ -12,7 +13,6 @@ export default function Delegating({ addressVoteDelegate }) {
   const addressVoteDelegateConviction = addressVoteDelegate?.conviction;
   const addressVoteDelegateTarget = addressVoteDelegate?.target;
   const shortAddr = addressEllipsis(addressVoteDelegateTarget);
-  const { subscanDomain } = node;
 
   return (
     <div>
@@ -31,16 +31,7 @@ export default function Delegating({ addressVoteDelegate }) {
         </div>
         <div className="proxy">
           <div className="proxy-label">Delegation</div>
-          <a
-            className="proxy-addr"
-            href={`https://${
-              subscanDomain || node.value
-            }.subscan.io/account/${addressVoteDelegateTarget}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {shortAddr}
-          </a>
+          <AddressUser add={addressVoteDelegateTarget} fontSize={12} />
         </div>
       </DelegatingValue>
     </div>
