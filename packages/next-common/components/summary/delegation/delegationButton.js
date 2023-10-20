@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "next-common/components/summary/styled";
-import DelegatePopup from "components/gov2/delegatePopup";
-import MoonDelegatePopup from "components/gov2/delegatePopup/moonPopup";
+import DelegatePopup from "next-common/components/gov2/delegatePopup";
+import MoonDelegatePopup from "next-common/components/gov2/delegatePopup/moonPopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
 import UndelegatePopup from "./undelegatePopup";
