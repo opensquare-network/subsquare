@@ -41,7 +41,7 @@ export default function Toast() {
       toastOptions={{
         className: "w-full !h-[68px]",
       }}
-      className="!w-[400px] !top-24 !right-6 max-sm:!w-full"
+      className="!w-[400px] !top-24 !right-6 max-sm:!w-full pointer-events-auto"
       position="top-right"
       expand
       visibleToasts={6}
