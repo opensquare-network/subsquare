@@ -52,7 +52,6 @@ export default function UndelegateAllPopup({
 }) {
   return (
     <PopupCommon
-      title="Undelegate All"
       trackIds={trackIds}
       onClose={onClose}
       isLoading={isLoading}

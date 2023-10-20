@@ -8,7 +8,6 @@ import { emptyFunction } from "next-common/utils";
 import SignerPopup from "next-common/components/signerPopup";
 
 export default function PopupCommon({
-  title,
   trackIds,
   onClose,
   isLoading,
@@ -59,7 +58,7 @@ export default function PopupCommon({
 
   return (
     <SignerPopup
-      title={title || "Undelegate"}
+      title="Undelegate All"
       actionCallback={removeDelegating}
       onClose={onClose}
       isLoading={isLoading}
