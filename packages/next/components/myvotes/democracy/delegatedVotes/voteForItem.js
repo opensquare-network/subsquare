@@ -6,14 +6,17 @@ import VotingGuard from "./votingGuard";
 import useDelegatedVoteLock from "./useDelegatedVoteLock";
 import VoteLock from "../../vote/lock";
 import VoteItemGuard from "./voteItemGuard";
+import { useMemo } from "react";
 
 export function DelegatedVoteLock({ referendumInfo, targetVote }) {
   const voting = useSelector(myDemocracyVotingSelector);
-  const delegatedVote = {
-    isDelegating: true,
-    balance: voting.balance,
-    conviction: voting.conviction,
-  };
+  const delegatedVote = useMemo(() => {
+    return {
+      isDelegating: true,
+      balance: voting.balance,
+      conviction: voting.conviction,
+    };
+  }, [voting]);
 
   const lockInfo = useDelegatedVoteLock(
     referendumInfo,
@@ -34,7 +37,7 @@ export function DelegatedVoteLock({ referendumInfo, targetVote }) {
 export default function DelegatedVoteForItem({ targetVote, referendumInfo }) {
   const voting = useSelector(myDemocracyVotingSelector);
   const { balance, conviction } = voting || {};
-  const { aye } = targetVote?.vote || {};
+  const { aye } = targetVote || {};
 
   return (
     <VoteItemGuard targetVote={targetVote}>
