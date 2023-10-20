@@ -50,7 +50,6 @@ export async function sendTx({
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
   signerAddress,
-  isMounted,
   section: sectionName,
   method: methodName,
 }) {
@@ -63,7 +62,6 @@ export async function sendTx({
       onSubmitted,
       onClose,
       signerAddress,
-      isMounted,
       section: sectionName,
       method: methodName,
     });
