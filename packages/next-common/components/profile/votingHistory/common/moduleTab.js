@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Tab from "next-common/components/tab";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -46,11 +46,46 @@ export function ModuleTabProvider({
   availableTabs = [],
   defaultTab,
   children,
+  queryName = "type",
 }) {
   const router = useRouter();
+  const qTab = availableTabs.find(
+    (tab) => tab.tabId === router.query?.[queryName],
+  )?.tabId;
   const [selectedTabId, setSelectedTabId] = React.useState(
-    router.query?.tab || defaultTab,
+    qTab || defaultTab || availableTabs[0]?.tabId,
   );
+  const isFirstTab = availableTabs[0]?.tabId === selectedTabId;
+  const noAvailableTabs = availableTabs.length === 0;
+
+  useEffect(() => {
+    let [urlPath, urlQuery] = router.asPath.split("?");
+    let needUpdate = false;
+
+    const urlSearch = new URLSearchParams(urlQuery);
+    if (
+      isFirstTab &&
+      urlSearch.has(queryName) &&
+      urlSearch.get(queryName) !== selectedTabId
+    ) {
+      urlSearch.delete(queryName);
+      needUpdate = true;
+    } else if (
+      !isFirstTab &&
+      !noAvailableTabs &&
+      urlSearch.get(queryName) !== selectedTabId
+    ) {
+      urlSearch.set(queryName, selectedTabId);
+      needUpdate = true;
+    }
+
+    if (needUpdate) {
+      urlQuery = urlSearch.size > 0 ? `?${urlSearch.toString()}` : "";
+      router.push(urlPath + urlQuery, undefined, {
+        shallow: true,
+      });
+    }
+  }, [router, isFirstTab, noAvailableTabs, selectedTabId]);
 
   return (
     <ModuleTabContext.Provider

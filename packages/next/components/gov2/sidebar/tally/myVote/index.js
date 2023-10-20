@@ -45,7 +45,7 @@ export default function MyVote() {
   return (
     <>
       <MyVoteCommon
-        votesManagementPath={`/votes?tab=${Referenda}`}
+        votesManagementPath={`/votes?type=${Referenda}`}
         votes={votes}
         hasOnchainVote={hasOnchainVote}
         setShowRemoveVotePopup={setShowRemoveVotePopup}

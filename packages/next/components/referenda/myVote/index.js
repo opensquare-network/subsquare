@@ -39,7 +39,7 @@ export default function MyVote() {
   return (
     <>
       <MyVoteCommon
-        votesManagementPath={`/votes?tab=${Democracy}`}
+        votesManagementPath={`/votes?type=${Democracy}`}
         votes={votes}
         hasOnchainVote={hasDirectOnchainVote}
         setShowRemoveVotePopup={setShowRemoveVotePopup}
