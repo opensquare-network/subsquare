@@ -10,6 +10,7 @@ import RemoveReferendaVotePopup from "next-common/components/myReferendumVote/re
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import isNil from "lodash.isnil";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { Referenda } from "next-common/components/profile/votingHistory/common";
 
 export default function MyVote() {
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
@@ -44,6 +45,7 @@ export default function MyVote() {
   return (
     <>
       <MyVoteCommon
+        votesManagementPath={`/votes?tab=${Referenda}`}
         votes={votes}
         hasOnchainVote={hasOnchainVote}
         setShowRemoveVotePopup={setShowRemoveVotePopup}

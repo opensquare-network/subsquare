@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import Tab from "next-common/components/tab";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 export const Referenda = "Referenda";
 export const Democracy = "Democracy";
@@ -46,7 +47,11 @@ export function ModuleTabProvider({
   defaultTab,
   children,
 }) {
-  const [selectedTabId, setSelectedTabId] = React.useState(defaultTab);
+  const router = useRouter();
+  const [selectedTabId, setSelectedTabId] = React.useState(
+    router.query?.tab || defaultTab,
+  );
+
   return (
     <ModuleTabContext.Provider
       value={{ availableTabs, selectedTabId, setSelectedTabId }}

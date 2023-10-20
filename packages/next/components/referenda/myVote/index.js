@@ -10,6 +10,7 @@ import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/re
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 import isNil from "lodash.isnil";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { Democracy } from "next-common/components/profile/votingHistory/common";
 
 export default function MyVote() {
   const post = usePost();
@@ -38,6 +39,7 @@ export default function MyVote() {
   return (
     <>
       <MyVoteCommon
+        votesManagementPath={`/votes?tab=${Democracy}`}
         votes={votes}
         hasOnchainVote={hasDirectOnchainVote}
         setShowRemoveVotePopup={setShowRemoveVotePopup}
