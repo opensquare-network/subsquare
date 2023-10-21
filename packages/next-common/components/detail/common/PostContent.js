@@ -5,7 +5,7 @@ import { cn } from "next-common/utils";
 import GhostButton from "next-common/components/buttons/ghostButton";
 
 const collapsedHeight = 640;
-const moreLessHeightThreshold = 1200;
+const moreLessHeightThreshold = 2000;
 
 export default function PostContent() {
   const post = usePost();
