@@ -7,7 +7,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
-import DelegateVoteStatus from "components/referenda/popup/delegateVoteStatus";
 import NoVoteRecord from "components/referenda/popup/noVoteRecord";
 import LoadingVoteStatus from "components/referenda/popup/loadingVoteStatus";
 import Delegating from "components/referenda/popup/delegating";
@@ -24,6 +23,7 @@ import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferenda
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
 import { LoadingPanel } from "components/referenda/popup/popupContent";
+import { normalizeOnchainVote } from "next-common/utils/vote";
 
 function VotePanel({
   referendumIndex,
@@ -48,6 +48,8 @@ function VotePanel({
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const votes = normalizeOnchainVote(addressVote);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
@@ -139,16 +141,10 @@ function VotePanel({
         addressVote?.split ||
         addressVote?.splitAbstain) && (
         <VStack space={8}>
-          {addressVote?.standard && (
-            <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
-          )}
-          {addressVote?.split && (
-            <SplitVoteStatus addressVoteSplit={addressVote?.split} />
-          )}
+          {addressVote?.standard && <StandardVoteStatus votes={votes} />}
+          {addressVote?.split && <SplitVoteStatus votes={votes} />}
           {addressVote?.splitAbstain && (
-            <SplitAbstainVoteStatus
-              addressVoteSplit={addressVote?.splitAbstain}
-            />
+            <SplitAbstainVoteStatus votes={votes} />
           )}
           <WarningMessage>
             Resubmitting the vote will override the current voting record
@@ -156,7 +152,7 @@ function VotePanel({
         </VStack>
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
-        <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
+        <StandardVoteStatus votes={votes} />
       )}
       {addressVoteIsLoading && <LoadingVoteStatus />}
 
