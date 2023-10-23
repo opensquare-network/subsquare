@@ -7,7 +7,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
-import DelegateVoteStatus from "./delegateVoteStatus";
 import NoVoteRecord from "./noVoteRecord";
 import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
@@ -23,6 +22,7 @@ import VStack from "next-common/components/styled/vStack";
 import { WarningMessage } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
+import { normalizeOnchainVote } from "next-common/utils/vote";
 
 export function LoadingPanel() {
   return (
@@ -60,6 +60,8 @@ function VotePanel({
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const votes = normalizeOnchainVote(addressVote);
 
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
@@ -143,19 +145,15 @@ function VotePanel({
         )}
       {(addressVote?.standard || addressVote?.split) && (
         <VStack space={8}>
-          {addressVote?.standard && (
-            <StandardVoteStatus addressVoteStandard={addressVote?.standard} />
-          )}
-          {addressVote?.split && (
-            <SplitVoteStatus addressVoteSplit={addressVote?.split} />
-          )}
+          {addressVote?.standard && <StandardVoteStatus votes={votes} />}
+          {addressVote?.split && <SplitVoteStatus votes={votes} />}
           <WarningMessage>
             Resubmitting the vote will override the current voting record
           </WarningMessage>
         </VStack>
       )}
       {addressVote?.delegating && addressVoteDelegateVoted && (
-        <DelegateVoteStatus addressVoteDelegate={addressVote?.delegating} />
+        <StandardVoteStatus votes={votes} />
       )}
       {addressVoteIsLoading && <LoadingVoteStatus />}
 

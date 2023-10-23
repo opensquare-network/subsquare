@@ -1,48 +1,86 @@
-import {
-  DelegatingInfo,
-  DelegatingValue,
-} from "next-common/components/popup/styled";
+import BigNumber from "bignumber.js";
+import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
-import { addressEllipsis, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
+import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
+import tw from "tailwind-styled-components";
 import { convictionToLockX } from "utils/referendumUtil";
+
+const DelegationInfoPanel = tw.div`
+  flex
+  flex-col
+  rounded-[8px]
+  bg-neutral200
+  py-[10px]
+  px-[16px]
+  gap-[8px]
+`;
+
+const InfoList = tw.ul`
+  flex
+  flex-col
+  gap-[4px]
+`;
+
+const InfoItem = tw.li`
+  flex
+  justify-between
+  items-center
+`;
+
+const InfoItemName = tw.span`
+  text-textSecondary
+  text14Medium
+`;
+
+const InfoItemValue = tw.span`
+  text-textPrimary
+  text14Medium
+`;
+
+const Hint = tw.span`
+  text12Medium
+  text-textTertiary
+`;
 
 export default function Delegating({ addressVoteDelegate }) {
   const node = useChainSettings();
   const addressVoteDelegateBalance = addressVoteDelegate?.balance;
   const addressVoteDelegateConviction = addressVoteDelegate?.conviction;
   const addressVoteDelegateTarget = addressVoteDelegate?.target;
-  const shortAddr = addressEllipsis(addressVoteDelegateTarget);
-  const { subscanDomain } = node;
+
+  const capital = toPrecision(addressVoteDelegateBalance, node.decimals);
+  const votes = new BigNumber(capital)
+    .times(convictionToLockXNumber(addressVoteDelegateConviction))
+    .toString();
 
   return (
-    <div>
-      <DelegatingInfo>
-        This address is delegating to {shortAddr}, and it can not vote directly.
-      </DelegatingInfo>
-      <DelegatingValue>
-        <div className="vote">
-          <div className="balance">
-            {toPrecision(addressVoteDelegateBalance, node.decimals)}{" "}
-            {node.voteSymbol || node.symbol}
-          </div>
-          <div className="conviction">
+    <DelegationInfoPanel>
+      <InfoList>
+        <InfoItem>
+          <InfoItemName>Delegated to</InfoItemName>
+          <AddressUser add={addressVoteDelegateTarget} />
+        </InfoItem>
+        <InfoItem>
+          <InfoItemName>Capital</InfoItemName>
+          <InfoItemValue>
+            {capital} {node.voteSymbol || node.symbol}
+          </InfoItemValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoItemName>Conviction</InfoItemName>
+          <InfoItemValue>
             {convictionToLockX(addressVoteDelegateConviction)}
-          </div>
-        </div>
-        <div className="proxy">
-          <div className="proxy-label">Delegation</div>
-          <a
-            className="proxy-addr"
-            href={`https://${
-              subscanDomain || node.value
-            }.subscan.io/account/${addressVoteDelegateTarget}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {shortAddr}
-          </a>
-        </div>
-      </DelegatingValue>
-    </div>
+          </InfoItemValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoItemName>Votes</InfoItemName>
+          <InfoItemValue>
+            {votes} {node.voteSymbol || node.symbol}
+          </InfoItemValue>
+        </InfoItem>
+      </InfoList>
+      <Hint>Delegation votes can not be voted directly.</Hint>
+    </DelegationInfoPanel>
   );
 }
