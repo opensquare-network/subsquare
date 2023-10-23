@@ -80,7 +80,7 @@ export default function Delegating({ addressVoteDelegate }) {
           </InfoItemValue>
         </InfoItem>
       </InfoList>
-      <Hint>This address is being delegated and can not vote directly.</Hint>
+      <Hint>Delegation votes can not be voted directly.</Hint>
     </DelegationInfoPanel>
   );
 }
