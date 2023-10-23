@@ -10,6 +10,10 @@ const Wrapper = styled.div`
 `;
 
 export default function DelegationStatus({ delegatingTarget }) {
+  if (!delegatingTarget) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <span className="text-textTertiary text14Medium">Delegated vote by</span>
