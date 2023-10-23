@@ -1,11 +1,11 @@
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import useAdvisoryCommitteeOptions from "next-common/components/setting/notification/useAdvisoryCommitteeOptions";
 import { checkSubMenu } from "./common";
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
+import AccordionCard from "next-common/components/styled/containers/accordionCard";
+import { Options } from "next-common/components/setting/notification/styled";
 
 export default function useAdvisoryCommitteeSubscription(
   subscription,
-  saving,
   disabled,
 ) {
   const homeMenus = getHomeMenu();
@@ -21,7 +21,6 @@ export default function useAdvisoryCommitteeSubscription(
     isChanged: isAdvisoryCommitteeOptionsChanged,
   } = useAdvisoryCommitteeOptions({
     disabled,
-    saving,
     advisoryCommitteeProposed: subscription?.advisoryCommitteeProposed,
     advisoryCommitteeVoted: subscription?.advisoryCommitteeVoted,
     advisoryCommitteeApproved: subscription?.advisoryCommitteeApproved,
@@ -31,9 +30,11 @@ export default function useAdvisoryCommitteeSubscription(
   let advisoryOptions = null;
   if (hasAdvisoryCommittee) {
     advisoryOptions = (
-      <FoldableSections title="Advisory Committee">
-        {hasAdvisoryCommittee && advisoryCommitteeOptionsComponent}
-      </FoldableSections>
+      <AccordionCard title="Advisory Committee" defaultOpen={true}>
+        <Options>
+          {hasAdvisoryCommittee && advisoryCommitteeOptionsComponent}
+        </Options>
+      </AccordionCard>
     );
   }
 

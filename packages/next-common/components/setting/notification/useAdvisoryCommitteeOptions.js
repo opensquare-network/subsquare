@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useAdvisoryCommitteeOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function useAdvisoryCommitteeOptions({ disabled, ...data }) {
   const [advisoryCommitteeProposed, setAdvisoryCommitteeProposed] = useState(
     !!data.advisoryCommitteeProposed?.isOn,
   );
@@ -20,14 +16,18 @@ export default function useAdvisoryCommitteeOptions({
   const [advisoryCommitteeDisApproved, setAdvisoryCommitteeDisApproved] =
     useState(!!data.advisoryCommitteeDisApproved?.isOn);
 
-  const isChanged =
-    advisoryCommitteeProposed !== !!data.advisoryCommitteeProposed?.isOn ||
-    advisoryCommitteeVoted !== !!data.advisoryCommitteeVoted?.isOn ||
-    advisoryCommitteeApproved !== !!data.advisoryCommitteeApproved?.isOn ||
-    advisoryCommitteeDisApproved !== !!data.advisoryCommitteeDisApproved?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    advisoryCommitteeProposed,
+    advisoryCommitteeVoted,
+    advisoryCommitteeApproved,
+    advisoryCommitteeDisApproved,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

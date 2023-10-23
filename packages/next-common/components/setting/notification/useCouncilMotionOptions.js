@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
+export default function useCouncilMotionOptions({ disabled, ...data }) {
   const [councilMotionProposed, setCouncilMotionProposed] = useState(
     !!data.councilMotionProposed?.isOn,
   );
@@ -17,14 +17,18 @@ export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
     !!data.councilMotionDisApproved?.isOn,
   );
 
-  const isChanged =
-    councilMotionProposed !== !!data.councilMotionProposed?.isOn ||
-    councilMotionVoted !== !!data.councilMotionVoted?.isOn ||
-    councilMotionApproved !== !!data.councilMotionApproved?.isOn ||
-    councilMotionDisApproved !== !!data.councilMotionDisApproved?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    councilMotionProposed,
+    councilMotionVoted,
+    councilMotionApproved,
+    councilMotionDisApproved,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

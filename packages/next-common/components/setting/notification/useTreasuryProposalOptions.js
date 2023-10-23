@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useTreasuryProposalOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function useTreasuryProposalOptions({ disabled, ...data }) {
   const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(
     !!data.treasuryProposalProposed?.isOn,
   );
@@ -21,14 +17,18 @@ export default function useTreasuryProposalOptions({
     !!data.treasuryProposalRejected?.isOn,
   );
 
-  const isChanged =
-    treasuryProposalProposed !== !!data.treasuryProposalProposed?.isOn ||
-    treasuryProposalApproved !== !!data.treasuryProposalApproved?.isOn ||
-    treasuryProposalAwarded !== !!data.treasuryProposalAwarded?.isOn ||
-    treasuryProposalRejected !== !!data.treasuryProposalRejected?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    treasuryProposalProposed,
+    treasuryProposalApproved,
+    treasuryProposalAwarded,
+    treasuryProposalRejected,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

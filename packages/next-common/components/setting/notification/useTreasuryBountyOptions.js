@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useTreasuryBountyOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function useTreasuryBountyOptions({ disabled, ...data }) {
   const [treasuryBountyProposed, setTreasuryBountyProposed] = useState(
     !!data.treasuryBountyProposed?.isOn,
   );
@@ -27,16 +23,20 @@ export default function useTreasuryBountyOptions({
     !!data.treasuryBountyRejected?.isOn,
   );
 
-  const isChanged =
-    treasuryBountyProposed !== !!data.treasuryBountyProposed?.isOn ||
-    treasuryBountyAwarded !== !!data.treasuryBountyAwarded?.isOn ||
-    treasuryBountyApproved !== !!data.treasuryBountyApproved?.isOn ||
-    treasuryBountyCanceled !== !!data.treasuryBountyCanceled?.isOn ||
-    treasuryBountyClaimed !== !!data.treasuryBountyClaimed?.isOn ||
-    treasuryBountyRejected !== !!data.treasuryBountyRejected?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    treasuryBountyProposed,
+    treasuryBountyAwarded,
+    treasuryBountyApproved,
+    treasuryBountyCanceled,
+    treasuryBountyClaimed,
+    treasuryBountyRejected,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

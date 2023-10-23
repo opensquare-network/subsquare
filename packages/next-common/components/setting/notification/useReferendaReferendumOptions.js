@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useReferendaReferendumOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function useReferendaReferendumOptions({ disabled, ...data }) {
   const [referendaSubmitted, setReferendaSubmitted] = useState(
     !!data.referendaSubmitted?.isOn,
   );
@@ -39,20 +35,24 @@ export default function useReferendaReferendumOptions({
     !!data.referendaRejected?.isOn,
   );
 
-  const isChanged =
-    referendaSubmitted !== !!data.referendaSubmitted?.isOn ||
-    referendaDecisionStarted !== !!data.referendaDecisionStarted?.isOn ||
-    referendaConfirmStarted !== !!data.referendaConfirmStarted?.isOn ||
-    referendaCancelled !== !!data.referendaCancelled?.isOn ||
-    referendaExecuted !== !!data.referendaExecuted?.isOn ||
-    referendaConfirmAborted !== !!data.referendaConfirmAborted?.isOn ||
-    referendaConfirmed !== !!data.referendaConfirmed?.isOn ||
-    referendaKilled !== !!data.referendaKilled?.isOn ||
-    referendaTimedout !== !!data.referendaTimedout?.isOn ||
-    referendaRejected !== !!data.referendaRejected?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    referendaSubmitted,
+    referendaDecisionStarted,
+    referendaConfirmStarted,
+    referendaCancelled,
+    referendaExecuted,
+    referendaConfirmAborted,
+    referendaConfirmed,
+    referendaKilled,
+    referendaTimedout,
+    referendaRejected,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useFellowshipReferendumOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function useFellowshipReferendumOptions({ disabled, ...data }) {
   const [fellowshipSubmitted, setFellowshipSubmitted] = useState(
     !!data.fellowshipSubmitted?.isOn,
   );
@@ -39,20 +35,24 @@ export default function useFellowshipReferendumOptions({
     !!data.fellowshipRejected?.isOn,
   );
 
-  const isChanged =
-    fellowshipSubmitted !== !!data.fellowshipSubmitted?.isOn ||
-    fellowshipDecisionStarted !== !!data.fellowshipDecisionStarted?.isOn ||
-    fellowshipConfirmStarted !== !!data.fellowshipConfirmStarted?.isOn ||
-    fellowshipCancelled !== !!data.fellowshipCancelled?.isOn ||
-    fellowshipExecuted !== !!data.fellowshipExecuted?.isOn ||
-    fellowshipConfirmAborted !== !!data.fellowshipConfirmAborted?.isOn ||
-    fellowshipConfirmed !== !!data.fellowshipConfirmed?.isOn ||
-    fellowshipKilled !== !!data.fellowshipKilled?.isOn ||
-    fellowshipTimedout !== !!data.fellowshipTimedout?.isOn ||
-    fellowshipRejected !== !!data.fellowshipRejected?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    fellowshipSubmitted,
+    fellowshipDecisionStarted,
+    fellowshipConfirmStarted,
+    fellowshipCancelled,
+    fellowshipExecuted,
+    fellowshipConfirmAborted,
+    fellowshipConfirmed,
+    fellowshipKilled,
+    fellowshipTimedout,
+    fellowshipRejected,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

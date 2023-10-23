@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
 export default function useTechCommMotionOptions({
   isKintsugi,
-  saving,
   disabled,
   ...data
 }) {
@@ -26,15 +25,19 @@ export default function useTechCommMotionOptions({
     !!data.tcMotionExecuted?.isOn,
   );
 
-  const isChanged =
-    tcMotionProposed !== !!data.tcMotionProposed?.isOn ||
-    tcMotionVoted !== !!data.tcMotionVoted?.isOn ||
-    tcMotionApproved !== !!data.tcMotionApproved?.isOn ||
-    tcMotionDisApproved !== !!data.tcMotionDisApproved?.isOn ||
-    tcMotionExecuted !== !!data.tcMotionExecuted?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    tcMotionProposed,
+    tcMotionVoted,
+    tcMotionApproved,
+    tcMotionDisApproved,
+    tcMotionExecuted,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

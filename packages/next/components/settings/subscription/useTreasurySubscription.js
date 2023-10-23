@@ -1,16 +1,13 @@
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useTreasuryChildBountyOptions from "next-common/components/setting/notification/useTreasuryChildBountyOptions";
 import useTreasuryBountyOptions from "next-common/components/setting/notification/useTreasuryBountyOptions";
 import useTreasuryTipOptions from "next-common/components/setting/notification/useTreasuryTipOptions";
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
+import AccordionCard from "next-common/components/styled/containers/accordionCard";
+import { Options } from "next-common/components/setting/notification/styled";
 
-export default function useTreasurySubscription(
-  subscription,
-  saving,
-  disabled,
-) {
+export default function useTreasurySubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(
@@ -37,7 +34,6 @@ export default function useTreasurySubscription(
     isChanged: isTreasuryProposalOptionsChanged,
   } = useTreasuryProposalOptions({
     disabled,
-    saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
     treasuryProposalApproved: subscription?.treasuryProposalApproved,
     treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
@@ -50,7 +46,6 @@ export default function useTreasurySubscription(
     isChanged: isTreasuryTipOptionsChanged,
   } = useTreasuryTipOptions({
     disabled,
-    saving,
     treasuryTipNew: subscription?.treasuryTipNew,
     treasuryTipTip: subscription?.treasuryTipTip,
     treasuryTipClosed: subscription?.treasuryTipClosed,
@@ -63,7 +58,6 @@ export default function useTreasurySubscription(
     isChanged: isTreasuryBountyOptionsChanged,
   } = useTreasuryBountyOptions({
     disabled,
-    saving,
     treasuryBountyProposed: subscription?.treasuryBountyProposed,
     treasuryBountyAwarded: subscription?.treasuryBountyAwarded,
     treasuryBountyApproved: subscription?.treasuryBountyApproved,
@@ -78,7 +72,6 @@ export default function useTreasurySubscription(
     isChanged: isTreasuryChildBountyOptionsChanged,
   } = useTreasuryChildBountyOptions({
     disabled,
-    saving,
     treasuryChildBountyAdded: subscription?.treasuryChildBountyAdded,
     treasuryChildBountyAwarded: subscription?.treasuryChildBountyAwarded,
     treasuryChildBountyCanceled: subscription?.treasuryChildBountyCanceled,
@@ -94,12 +87,14 @@ export default function useTreasurySubscription(
       hasTreasuryChildBounty)
   ) {
     treasuryOptions = (
-      <FoldableSections title="Treasury">
-        {hasTreasuryProposal && treasuryProposalOptionsComponent}
-        {hasTreasuryTip && treasuryTipOptionsComponent}
-        {hasTreasuryBounty && treasuryBountyOptionsComponent}
-        {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
-      </FoldableSections>
+      <AccordionCard title="Treasury" defaultOpen={true}>
+        <Options>
+          {hasTreasuryProposal && treasuryProposalOptionsComponent}
+          {hasTreasuryTip && treasuryTipOptionsComponent}
+          {hasTreasuryBounty && treasuryBountyOptionsComponent}
+          {hasTreasuryChildBounty && treasuryChildBountyOptionsComponent}
+        </Options>
+      </AccordionCard>
     );
   }
 

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
+export default function useTreasuryTipOptions({ disabled, ...data }) {
   const [treasuryTipNew, setTreasuryTipNew] = useState(
     !!data.treasuryTipNew?.isOn,
   );
@@ -17,14 +17,13 @@ export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
     !!data.treasuryTipRetracted?.isOn,
   );
 
-  const isChanged =
-    treasuryTipNew !== !!data.treasuryTipNew?.isOn ||
-    treasuryTipTip !== !!data.treasuryTipTip?.isOn ||
-    treasuryTipClosed !== !!data.treasuryTipClosed?.isOn ||
-    treasuryTipRetracted !== !!data.treasuryTipRetracted?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [treasuryTipNew, treasuryTipTip, treasuryTipClosed, treasuryTipRetracted]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
-export default function useDemocracyProposalOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function useDemocracyProposalOptions({ disabled, ...data }) {
   const [democracyProposalProposed, setDemocracyProposalProposed] = useState(
     !!data.democracyProposalProposed?.isOn,
   );
@@ -15,12 +11,13 @@ export default function useDemocracyProposalOptions({
     !!data.democracyProposalCanceled?.isOn,
   );
 
-  const isChanged =
-    democracyProposalProposed !== !!data.democracyProposalProposed?.isOn ||
-    democracyProposalCanceled !== !!data.democracyProposalCanceled?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [democracyProposalProposed, democracyProposalCanceled]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

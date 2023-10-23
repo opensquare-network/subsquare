@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
 
 export default function useDemocracyReferendumOptions({
   isKintsugi,
-  saving,
   disabled,
   ...data
 }) {
@@ -27,20 +26,21 @@ export default function useDemocracyReferendumOptions({
   const [democracyReferendumFastTrack, setDemocracyReferendumFastTrack] =
     useState(!!data.democracyReferendumFastTrack?.isOn);
 
-  const isChanged =
-    democracyReferendumStarted !== !!data.democracyReferendumStarted?.isOn ||
-    democracyReferendumPassed !== !!data.democracyReferendumPassed?.isOn ||
-    democracyReferendumNotPassed !==
-      !!data.democracyReferendumNotPassed?.isOn ||
-    democracyReferendumCancelled !==
-      !!data.democracyReferendumCancelled?.isOn ||
-    democracyReferendumExecuted !== !!data.democracyReferendumExecuted?.isOn ||
-    democracyReferendumNotExecuted !==
-      !!data.democracyReferendumNotExecuted?.isOn ||
-    democracyReferendumFastTrack !== !!data.democracyReferendumFastTrack?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [
+    democracyReferendumStarted,
+    democracyReferendumPassed,
+    democracyReferendumNotPassed,
+    democracyReferendumCancelled,
+    democracyReferendumExecuted,
+    democracyReferendumNotExecuted,
+    democracyReferendumFastTrack,
+  ]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };

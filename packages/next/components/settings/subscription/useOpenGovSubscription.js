@@ -1,9 +1,10 @@
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useReferendaReferendumOptions from "next-common/components/setting/notification/useReferendaReferendumOptions";
 import useFellowshipReferendumOptions from "next-common/components/setting/notification/useFellowshipReferendumOptions";
 import { useChainSettings } from "next-common/context/chain";
+import AccordionCard from "next-common/components/styled/containers/accordionCard";
+import { Options } from "next-common/components/setting/notification/styled";
 
-export default function useOpenGovSubscription(subscription, saving, disabled) {
+export default function useOpenGovSubscription(subscription, disabled) {
   const { hasFellowship, hasReferenda } = useChainSettings();
 
   const {
@@ -12,7 +13,6 @@ export default function useOpenGovSubscription(subscription, saving, disabled) {
     isChanged: isReferendaReferendumOptionsChanged,
   } = useReferendaReferendumOptions({
     disabled,
-    saving,
     referendaSubmitted: subscription?.referendaSubmitted,
     referendaDecisionStarted: subscription?.referendaDecisionStarted,
     referendaConfirmStarted: subscription?.referendaConfirmStarted,
@@ -31,7 +31,6 @@ export default function useOpenGovSubscription(subscription, saving, disabled) {
     isChanged: isFellowshipReferendumOptionsChanged,
   } = useFellowshipReferendumOptions({
     disabled,
-    saving,
     fellowshipSubmitted: subscription?.fellowshipSubmitted,
     fellowshipDecisionStarted: subscription?.fellowshipDecisionStarted,
     fellowshipConfirmStarted: subscription?.fellowshipConfirmStarted,
@@ -47,10 +46,12 @@ export default function useOpenGovSubscription(subscription, saving, disabled) {
   let openGovOptions = null;
   if (hasFellowship || hasReferenda) {
     openGovOptions = (
-      <FoldableSections title="Open Gov">
-        {hasReferenda && referendaReferendumOptionsComponent}
-        {hasFellowship && fellowshipReferendumOptionsComponent}
-      </FoldableSections>
+      <AccordionCard title="Open Gov" defaultOpen={true}>
+        <Options>
+          {hasReferenda && referendaReferendumOptionsComponent}
+          {hasFellowship && fellowshipReferendumOptionsComponent}
+        </Options>
+      </AccordionCard>
     );
   }
 

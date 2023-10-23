@@ -1,9 +1,10 @@
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
+import AccordionCard from "next-common/components/styled/containers/accordionCard";
+import { Options } from "next-common/components/setting/notification/styled";
 
-export default function useCouncilSubscription(subscription, saving, disabled) {
+export default function useCouncilSubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(
@@ -21,7 +22,6 @@ export default function useCouncilSubscription(subscription, saving, disabled) {
     isChanged: isCouncilMotionOptionsChanged,
   } = useCouncilMotionOptions({
     disabled,
-    saving,
     councilMotionProposed: subscription?.councilMotionProposed,
     councilMotionVoted: subscription?.councilMotionVoted,
     councilMotionApproved: subscription?.councilMotionApproved,
@@ -31,9 +31,9 @@ export default function useCouncilSubscription(subscription, saving, disabled) {
   let councilOptions = null;
   if (hasCouncil && hasCouncilMotion) {
     councilOptions = (
-      <FoldableSections title="Council">
-        {hasCouncilMotion && councilMotionOptionsComponent}
-      </FoldableSections>
+      <AccordionCard title="Council" defaultOpen={true}>
+        <Options>{hasCouncilMotion && councilMotionOptionsComponent}</Options>
+      </AccordionCard>
     );
   }
 

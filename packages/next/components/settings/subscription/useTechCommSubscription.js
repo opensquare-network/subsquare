@@ -1,13 +1,10 @@
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
+import AccordionCard from "next-common/components/styled/containers/accordionCard";
+import { Options } from "next-common/components/setting/notification/styled";
 
-export default function useTechCommSubscription(
-  subscription,
-  saving,
-  disabled,
-) {
+export default function useTechCommSubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasTechComm, menu: techCommMenu } = checkSubMenu(
@@ -25,7 +22,6 @@ export default function useTechCommSubscription(
     isChanged: isTechCommMotionOptionsChanged,
   } = useTechCommMotionOptions({
     disabled,
-    saving,
     tcMotionProposed: subscription?.tcMotionProposed,
     tcMotionVoted: subscription?.tcMotionVoted,
     tcMotionApproved: subscription?.tcMotionApproved,
@@ -35,9 +31,9 @@ export default function useTechCommSubscription(
   let techCommOptions = null;
   if (hasTechComm && hasTechCommMotion) {
     techCommOptions = (
-      <FoldableSections title="Tech-Comm.">
-        {hasTechCommMotion && techCommMotionOptionsComponent}
-      </FoldableSections>
+      <AccordionCard title="Tech-Comm." defaultOpen={true}>
+        <Options>{hasTechCommMotion && techCommMotionOptionsComponent}</Options>
+      </AccordionCard>
     );
   }
 

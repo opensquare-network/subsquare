@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import nextApi from "next-common/services/nextApi";
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
 import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
 import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
 import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import { Options } from "next-common/components/setting/notification/styled";
 import { useUser } from "next-common/context/user";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import useDeepCompareEffect from "use-deep-compare-effect";
+import { useDispatch } from "react-redux";
+import { usePageProps } from "next-common/context/page";
+import debounce from "lodash.debounce";
+import AccordionCard from "next-common/components/styled/containers/accordionCard";
 
-export default function useSubscription({ subscription: _subscription }) {
+export default function OnChainEventsSubscription() {
+  const dispatch = useDispatch();
   const loginUser = useUser();
-  const [saving, setSaving] = useState(false);
-  const [subscription, setSubscription] = useState(_subscription);
+  const { subscription } = usePageProps();
 
   const isVerifiedUser = loginUser?.emailVerified;
   const telegramLinked = loginUser?.telegram?.chat;
@@ -23,7 +28,6 @@ export default function useSubscription({ subscription: _subscription }) {
     isChanged: isTreasuryProposalOptionsChanged,
   } = useTreasuryProposalOptions({
     disabled,
-    saving,
     treasuryProposalProposed: subscription?.treasuryProposalProposed,
     treasuryProposalApproved: subscription?.treasuryProposalApproved,
     treasuryProposalAwarded: subscription?.treasuryProposalAwarded,
@@ -37,7 +41,6 @@ export default function useSubscription({ subscription: _subscription }) {
   } = useTechCommMotionOptions({
     isKintsugi: true,
     disabled,
-    saving,
     tcMotionExecuted: subscription?.tcMotionExecuted,
   });
 
@@ -47,7 +50,6 @@ export default function useSubscription({ subscription: _subscription }) {
     isChanged: isDemocracyProposalOptionsChanged,
   } = useDemocracyProposalOptions({
     disabled,
-    saving,
     democracyProposalProposed: subscription?.democracyProposalProposed,
     democracyProposalCanceled: subscription?.democracyProposalCanceled,
   });
@@ -59,7 +61,6 @@ export default function useSubscription({ subscription: _subscription }) {
   } = useDemocracyReferendumOptions({
     isKintsugi: true,
     disabled,
-    saving,
     democracyReferendumStarted: subscription?.democracyReferendumStarted,
     democracyReferendumPassed: subscription?.democracyReferendumPassed,
     democracyReferendumNotPassed: subscription?.democracyReferendumNotPassed,
@@ -77,50 +78,48 @@ export default function useSubscription({ subscription: _subscription }) {
       isDemocracyProposalOptionsChanged ||
       isDemocracyReferendumOptionsChanged);
 
-  const fetchSubscriptionSetting = async () => {
-    const { result } = await nextApi.fetch("user/subscription");
-    if (result) {
-      setSubscription(result);
-    }
+  const onchainOptionValues = {
+    ...getTreasuryProposalOptionValues(),
+    ...getTechCommMotionOptionValues(),
+    ...getDemocracyProposalOptionValues(),
+    ...getDemocracyReferendumOptionValues(),
   };
 
-  const updateSubscriptionSetting = async () => {
-    setSaving(true);
-
-    const data = {
-      ...getTreasuryProposalOptionValues(),
-      ...getTechCommMotionOptionValues(),
-      ...getDemocracyProposalOptionValues(),
-      ...getDemocracyReferendumOptionValues(),
-    };
-
-    const { result, error } = await nextApi.patch("user/subscription", data);
-    if (result) {
-      await fetchSubscriptionSetting();
-    }
-    setSaving(false);
-
-    return { result, error };
-  };
-
-  const subscriptionComponent = (
-    <Options>
-      <FoldableSections title="Treasury">
-        {treasuryProposalOptionsComponent}
-      </FoldableSections>
-      <FoldableSections title="Tech-Comm.">
-        {techCommMotionOptionsComponent}
-      </FoldableSections>
-      <FoldableSections title="Democracy">
-        {democracyProposalOptionsComponent}
-        {democracyReferendumOptionsComponent}
-      </FoldableSections>
-    </Options>
+  const saveOnchainOptions = useMemo(
+    () =>
+      debounce(async (onchainOptionValues) => {
+        nextApi
+          .patch("user/subscription", onchainOptionValues)
+          .then(({ error }) => {
+            if (error) {
+              dispatch(newErrorToast(error.message));
+            }
+          });
+      }, 1000),
+    [dispatch],
   );
 
-  return {
-    subscriptionComponent,
-    isSubscriptionChanged: canSave,
-    updateSubscriptionSetting,
-  };
+  useDeepCompareEffect(() => {
+    if (!canSave) {
+      return;
+    }
+    saveOnchainOptions(onchainOptionValues);
+  }, [saveOnchainOptions, canSave, onchainOptionValues]);
+
+  return (
+    <>
+      <AccordionCard title="Treasury" defaultOpen={true}>
+        <Options>{treasuryProposalOptionsComponent}</Options>
+      </AccordionCard>
+      <AccordionCard title="Tech-Comm." defaultOpen={true}>
+        <Options>{techCommMotionOptionsComponent}</Options>
+      </AccordionCard>
+      <AccordionCard title="Democracy" defaultOpen={true}>
+        <Options>
+          {democracyProposalOptionsComponent}
+          {democracyReferendumOptionsComponent}
+        </Options>
+      </AccordionCard>
+    </>
+  );
 }

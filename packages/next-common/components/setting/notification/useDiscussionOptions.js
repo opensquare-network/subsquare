@@ -1,16 +1,19 @@
-import React from "react";
-import { Label, ToggleItem } from "./styled";
+import React, { useEffect } from "react";
+import { ToggleItem } from "./styled";
 import Toggle from "../../toggle";
 import { useCallback, useState } from "react";
 
-export default function useDiscussionOptions({ saving, disabled, ...data }) {
+export default function useDiscussionOptions({ disabled, ...data }) {
   const [reply, setReply] = useState(!!data.reply);
   const [mention, setMention] = useState(!!data.mention);
 
-  const isChanged = !!data.reply !== reply || !!data.mention !== mention;
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    setIsChanged(true);
+  }, [reply, mention]);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
     }
   };
@@ -22,7 +25,6 @@ export default function useDiscussionOptions({ saving, disabled, ...data }) {
 
   const discussionOptionsComponent = (
     <div>
-      <Label>Discussion</Label>
       <ToggleItem>
         <div>Notify me about comments on my posts</div>
         <Toggle

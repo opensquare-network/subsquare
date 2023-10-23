@@ -1,14 +1,11 @@
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { checkSubMenu } from "./common";
-import FoldableSections from "next-common/components/setting/notification/foldableSections";
 import useDemocracyProposalOptions from "next-common/components/setting/notification/useDemocracyProposalOptions";
 import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
+import AccordionCard from "next-common/components/styled/containers/accordionCard";
+import { Options } from "next-common/components/setting/notification/styled";
 
-export default function useDemocracySubscription(
-  subscription,
-  saving,
-  disabled,
-) {
+export default function useDemocracySubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { hasMenu: hasDemocracy, menu: democracyMenu } = checkSubMenu(
@@ -30,7 +27,6 @@ export default function useDemocracySubscription(
     isChanged: isDemocracyProposalOptionsChanged,
   } = useDemocracyProposalOptions({
     disabled,
-    saving,
     democracyProposalProposed: subscription?.democracyProposalProposed,
     democracyProposalCanceled: subscription?.democracyProposalCanceled,
   });
@@ -41,7 +37,6 @@ export default function useDemocracySubscription(
     isChanged: isDemocracyReferendumOptionsChanged,
   } = useDemocracyReferendumOptions({
     disabled,
-    saving,
     democracyReferendumStarted: subscription?.democracyReferendumStarted,
     democracyReferendumPassed: subscription?.democracyReferendumPassed,
     democracyReferendumNotPassed: subscription?.democracyReferendumNotPassed,
@@ -54,10 +49,12 @@ export default function useDemocracySubscription(
   let democracyOptions = null;
   if (hasDemocracy && (hasDemocracyProposal || hasDemocracyReferenda)) {
     democracyOptions = (
-      <FoldableSections title="Democracy">
-        {hasDemocracyProposal && democracyProposalOptionsComponent}
-        {hasDemocracyReferenda && democracyReferendumOptionsComponent}
-      </FoldableSections>
+      <AccordionCard title="Democracy" defaultOpen={true}>
+        <Options>
+          {hasDemocracyProposal && democracyProposalOptionsComponent}
+          {hasDemocracyReferenda && democracyReferendumOptionsComponent}
+        </Options>
+      </AccordionCard>
     );
   }
 
