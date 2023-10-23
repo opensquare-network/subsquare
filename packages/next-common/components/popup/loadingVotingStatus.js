@@ -1,21 +1,23 @@
 import React from "react";
 
 import styled from "styled-components";
-import { StatusWrapper } from "./styled";
 import Loading from "../loading";
 
-const LoadingWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-grow: 1;
+  padding: 15px 16px;
+  min-height: 38px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
   justify-content: center;
 `;
 
 export default function LoadingVotingStatus() {
   return (
-    <StatusWrapper>
-      <LoadingWrapper>
-        <Loading size={14} />
-      </LoadingWrapper>
-    </StatusWrapper>
+    <Wrapper>
+      <Loading size={14} />
+    </Wrapper>
   );
 }
