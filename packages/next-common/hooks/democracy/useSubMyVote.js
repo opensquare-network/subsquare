@@ -36,6 +36,7 @@ export default function useSubMyDemocracyVote(address) {
 
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!api || !address || !api.query.democracy) {
@@ -61,6 +62,7 @@ export default function useSubMyDemocracyVote(address) {
             ...vote,
             delegations: jsonVoting.direct.delegations,
           });
+          setIsLoaded(true);
         }
 
         if (!jsonVoting.delegating) {
@@ -77,6 +79,7 @@ export default function useSubMyDemocracyVote(address) {
         ).then((delegatingVote) => {
           setVote(delegatingVote);
           setIsLoading(false);
+          setIsLoaded(true);
         });
       })
       .then((result) => {
@@ -93,5 +96,6 @@ export default function useSubMyDemocracyVote(address) {
   return {
     vote,
     isLoading,
+    isLoaded,
   };
 }
