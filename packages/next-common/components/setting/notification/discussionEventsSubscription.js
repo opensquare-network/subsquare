@@ -1,7 +1,7 @@
 import debounce from "lodash.debounce";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import useDiscussionOptions from "./useDiscussionOptions";
 import { useUser } from "next-common/context/user";
@@ -27,16 +27,17 @@ export default function DiscussionEventsSubscription() {
     mention: !!loginUser?.notification?.mention,
   });
 
-  const saveDiscussionOptions = useCallback(
-    debounce(async (discussionOptionValues) => {
-      nextApi
-        .patch("user/notification", discussionOptionValues)
-        .then(({ error }) => {
-          if (error) {
-            dispatch(newErrorToast(error.message));
-          }
-        });
-    }, 1000),
+  const saveDiscussionOptions = useMemo(
+    () =>
+      debounce(async (discussionOptionValues) => {
+        nextApi
+          .patch("user/notification", discussionOptionValues)
+          .then(({ error }) => {
+            if (error) {
+              dispatch(newErrorToast(error.message));
+            }
+          });
+      }, 1000),
     [dispatch],
   );
 
