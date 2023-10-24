@@ -6,29 +6,30 @@ import useTreasuryTipOptions from "next-common/components/setting/notification/u
 import useTreasuryProposalOptions from "next-common/components/setting/notification/useTreasuryProposalOptions";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
 import { Options } from "next-common/components/setting/notification/styled";
+import { Names } from "next-common/utils/consts/menu/treasury";
 
 export default function useTreasurySubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasTreasury, menu: treasuryMenu } = checkSubMenu(
     homeMenus,
-    "TREASURY",
+    Names.treasury,
   );
   const { isMenuActive: hasTreasuryProposal } = checkSubMenu(
     treasuryMenu?.items,
-    "Proposals",
+    Names.proposals,
   );
   const { isMenuActive: hasTreasuryTip } = checkSubMenu(
     treasuryMenu?.items,
-    "Tips",
+    Names.tips,
   );
   const { isMenuActive: hasTreasuryBounty } = checkSubMenu(
     treasuryMenu?.items,
-    "Bounties",
+    Names.bounties,
   );
   const { isMenuActive: hasTreasuryChildBounty } = checkSubMenu(
     treasuryMenu?.items,
-    "Child Bounties",
+    Names.childBounties,
   );
 
   const {

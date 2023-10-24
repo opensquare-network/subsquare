@@ -4,21 +4,22 @@ import useDemocracyProposalOptions from "next-common/components/setting/notifica
 import useDemocracyReferendumOptions from "next-common/components/setting/notification/useDemocracyReferendumOptions";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
 import { Options } from "next-common/components/setting/notification/styled";
+import { Names } from "next-common/utils/consts/menu/democracy";
 
 export default function useDemocracySubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasDemocracy, menu: democracyMenu } = checkSubMenu(
     homeMenus,
-    "DEMOCRACY",
+    Names.democracy,
   );
   const { isMenuActive: hasDemocracyProposal } = checkSubMenu(
     democracyMenu?.items,
-    "Proposals",
+    Names.democracyProposals,
   );
   const { isMenuActive: hasDemocracyReferenda } = checkSubMenu(
     democracyMenu?.items,
-    "Referenda",
+    Names.referenda,
   );
 
   const {

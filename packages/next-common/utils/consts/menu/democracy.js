@@ -2,8 +2,15 @@ import React from "react";
 import Chains from "../chains";
 import { MenuDemocracy } from "@osn/icons/subsquare";
 
+export const Names = {
+  democracy: "DEMOCRACY",
+  referenda: "Referenda",
+  democracyProposals: "Public Proposals",
+  democracyExternals: "External Proposals",
+};
+
 const democracy = {
-  name: "DEMOCRACY",
+  name: Names.democracy,
   excludeToChains: [
     Chains.kabocha,
     Chains.development,
@@ -17,7 +24,7 @@ const democracy = {
   items: [
     {
       value: "referenda",
-      name: "Referenda",
+      name: Names.referenda,
       pathname: "/democracy/referenda",
       extraMatchNavMenuActivePathnames: [
         "/democracy/statistics",
@@ -26,14 +33,14 @@ const democracy = {
     },
     {
       value: "democracyProposals",
-      name: "Public Proposals",
+      name: Names.democracyProposals,
       pathname: "/democracy/proposals",
       extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
     },
     {
       value: "democracyExternals",
       excludeToChains: [Chains.kintsugi, Chains.interlay],
-      name: "External Proposals",
+      name: Names.democracyExternals,
       pathname: "/democracy/externals",
       extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
     },

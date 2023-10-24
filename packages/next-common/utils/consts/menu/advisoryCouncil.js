@@ -3,21 +3,27 @@ import Chains from "../chains";
 import React from "react";
 import { MenuAdvisoryCommittee } from "@osn/icons/subsquare";
 
+export const Names = {
+  advisoryCommittee: "ADVISORY COMMITTEE",
+  advisoryMotions: "Motions",
+  advisoryCouncilMembers: "Members",
+};
+
 const advisoryCommittee = {
-  name: "ADVISORY COMMITTEE",
+  name: Names.advisoryCommittee,
   excludeToChains: getExcludeChains([Chains.zeitgeist]),
   icon: <MenuAdvisoryCommittee />,
   pathname: "/advisory-committee",
   items: [
     {
       value: "advisoryMotions",
-      name: "Motions",
+      name: Names.advisoryMotions,
       pathname: "/advisory-committee/motions",
       extraMatchNavMenuActivePathnames: ["/advisory-committee/motions/[id]"],
     },
     {
       value: "advisoryCouncilMembers",
-      name: "Members",
+      name: Names.advisoryCouncilMembers,
       pathname: "/advisory-committee/members",
     },
   ],

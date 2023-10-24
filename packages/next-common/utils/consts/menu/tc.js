@@ -2,8 +2,14 @@ import Chains from "../chains";
 import React from "react";
 import { MenuTechComm } from "@osn/icons/subsquare";
 
+export const Names = {
+  techComm: "Technical Committee",
+  techCommProposals: "Proposals",
+  techCommMembers: "Members",
+};
+
 const techComm = {
-  name: "Technical Committee",
+  name: Names.techComm,
   excludeToChains: [
     Chains.kabocha,
     Chains.centrifuge,
@@ -19,13 +25,13 @@ const techComm = {
   items: [
     {
       value: "techCommProposals",
-      name: "Proposals",
+      name: Names.techCommProposals,
       pathname: "/techcomm/proposals",
       extraMatchNavMenuActivePathnames: ["/techcomm/proposals/[id]"],
     },
     {
       value: "techCommMembers",
-      name: "Members",
+      name: Names.techCommMembers,
       pathname: "/techcomm/members",
     },
   ],

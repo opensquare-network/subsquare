@@ -3,17 +3,18 @@ import { checkSubMenu } from "./common";
 import useCouncilMotionOptions from "next-common/components/setting/notification/useCouncilMotionOptions";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
 import { Options } from "next-common/components/setting/notification/styled";
+import { Names } from "next-common/utils/consts/menu/council";
 
 export default function useCouncilSubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasCouncil, menu: councilMenu } = checkSubMenu(
     homeMenus,
-    "COUNCIL",
+    Names.council,
   );
   const { isMenuActive: hasCouncilMotion } = checkSubMenu(
     councilMenu?.items,
-    "Motions",
+    Names.motions,
   );
 
   const {

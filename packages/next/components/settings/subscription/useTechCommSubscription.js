@@ -3,17 +3,18 @@ import { checkSubMenu } from "./common";
 import useTechCommMotionOptions from "next-common/components/setting/notification/useTechCommMotionOptions";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
 import { Options } from "next-common/components/setting/notification/styled";
+import { Names } from "next-common/utils/consts/menu/tc";
 
 export default function useTechCommSubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasTechComm, menu: techCommMenu } = checkSubMenu(
     homeMenus,
-    "Technical Committee",
+    Names.techComm,
   );
   const { isMenuActive: hasTechCommMotion } = checkSubMenu(
     techCommMenu?.items,
-    "Proposals",
+    Names.techCommProposals,
   );
 
   const {

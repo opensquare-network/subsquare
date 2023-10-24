@@ -3,6 +3,7 @@ import useAdvisoryCommitteeOptions from "next-common/components/setting/notifica
 import { checkSubMenu } from "./common";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
 import { Options } from "next-common/components/setting/notification/styled";
+import { Names } from "next-common/utils/consts/menu/advisoryCouncil";
 
 export default function useAdvisoryCommitteeSubscription(
   subscription,
@@ -12,7 +13,7 @@ export default function useAdvisoryCommitteeSubscription(
 
   const { isMenuActive: hasAdvisoryCommittee } = checkSubMenu(
     homeMenus,
-    "ADVISORY COMMITTEE",
+    Names.advisoryCommittee,
   );
 
   const {
