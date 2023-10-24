@@ -8,12 +8,12 @@ import TechCommSubscription from "components/settings/subscription/techCommSubsc
 export default function OnChainEventsSubscription() {
   return (
     <>
-      <TreasurySubscription />
-      <CouncilSubscription />
-      <TechCommSubscription />
-      <DemocracySubscription />
       <OpenGovSubscription />
+      <DemocracySubscription />
+      <CouncilSubscription />
+      <TreasurySubscription />
       <AdvisoryCommitteeSubscription />
+      <TechCommSubscription />
     </>
   );
 }
