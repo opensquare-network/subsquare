@@ -1,10 +1,18 @@
+import React from "react";
 import Chains from "../chains";
 import { getExcludeChains } from "../../viewfuncs";
-import React from "react";
 import { MenuTreasury } from "@osn/icons/subsquare";
 
+export const Names = {
+  treasury: "TREASURY",
+  proposals: "Proposals",
+  bounties: "Bounties",
+  childBounties: "Child Bounties",
+  tips: "Tips",
+};
+
 const treasury = {
-  name: "TREASURY",
+  name: Names.treasury,
   excludeToChains: [
     Chains.kabocha,
     Chains["westend-collectives"],
@@ -15,13 +23,13 @@ const treasury = {
   items: [
     {
       value: "proposals",
-      name: "Proposals",
+      name: Names.proposals,
       pathname: "/treasury/proposals",
       extraMatchNavMenuActivePathnames: ["/treasury/proposals/[id]"],
     },
     {
       value: "bounties",
-      name: "Bounties",
+      name: Names.bounties,
       pathname: "/treasury/bounties",
       extraMatchNavMenuActivePathnames: ["/treasury/bounties/[id]"],
       excludeToChains: [
@@ -41,7 +49,7 @@ const treasury = {
     },
     {
       value: "child-bounties",
-      name: "Child Bounties",
+      name: Names.childBounties,
       pathname: "/treasury/child-bounties",
       extraMatchNavMenuActivePathnames: ["/treasury/child-bounties/[id]"],
       excludeToChains: getExcludeChains([
@@ -54,7 +62,7 @@ const treasury = {
     },
     {
       value: "tips",
-      name: "Tips",
+      name: Names.tips,
       pathname: "/treasury/tips",
       extraMatchNavMenuActivePathnames: ["/treasury/tips/[id]"],
       excludeToChains: [

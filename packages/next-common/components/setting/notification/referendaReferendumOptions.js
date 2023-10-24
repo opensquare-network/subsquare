@@ -1,90 +1,71 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useReferendaReferendumOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function ReferendaReferendumOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [referendaSubmitted, setReferendaSubmitted] = useState(
-    !!data.referendaSubmitted?.isOn,
+    !!subscription.referendaSubmitted?.isOn,
   );
   const [referendaDecisionStarted, setReferendaDecisionStarted] = useState(
-    !!data.referendaDecisionStarted?.isOn,
+    !!subscription.referendaDecisionStarted?.isOn,
   );
   const [referendaConfirmStarted, setReferendaConfirmStarted] = useState(
-    !!data.referendaConfirmStarted?.isOn,
+    !!subscription.referendaConfirmStarted?.isOn,
   );
   const [referendaCancelled, setReferendaCancelled] = useState(
-    !!data.referendaCancelled?.isOn,
+    !!subscription.referendaCancelled?.isOn,
   );
   const [referendaConfirmAborted, setReferendaConfirmAborted] = useState(
-    !!data.referendaConfirmAborted?.isOn,
+    !!subscription.referendaConfirmAborted?.isOn,
   );
   const [referendaConfirmed, setReferendaConfirmed] = useState(
-    !!data.referendaConfirmed?.isOn,
+    !!subscription.referendaConfirmed?.isOn,
   );
   const [referendaExecuted, setReferendaExecuted] = useState(
-    !!data.referendaExecuted?.isOn,
+    !!subscription.referendaExecuted?.isOn,
   );
   const [referendaKilled, setReferendaKilled] = useState(
-    !!data.referendaKilled?.isOn,
+    !!subscription.referendaKilled?.isOn,
   );
   const [referendaTimedout, setReferendaTimedout] = useState(
-    !!data.referendaTimedout?.isOn,
+    !!subscription.referendaTimedout?.isOn,
   );
   const [referendaRejected, setReferendaRejected] = useState(
-    !!data.referendaRejected?.isOn,
+    !!subscription.referendaRejected?.isOn,
   );
 
-  const isChanged =
-    referendaSubmitted !== !!data.referendaSubmitted?.isOn ||
-    referendaDecisionStarted !== !!data.referendaDecisionStarted?.isOn ||
-    referendaConfirmStarted !== !!data.referendaConfirmStarted?.isOn ||
-    referendaCancelled !== !!data.referendaCancelled?.isOn ||
-    referendaExecuted !== !!data.referendaExecuted?.isOn ||
-    referendaConfirmAborted !== !!data.referendaConfirmAborted?.isOn ||
-    referendaConfirmed !== !!data.referendaConfirmed?.isOn ||
-    referendaKilled !== !!data.referendaKilled?.isOn ||
-    referendaTimedout !== !!data.referendaTimedout?.isOn ||
-    referendaRejected !== !!data.referendaRejected?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getReferendaReferendumOptionValues = useCallback(
-    () => ({
-      referendaSubmitted,
-      referendaDecisionStarted,
-      referendaConfirmStarted,
-      referendaCancelled,
-      referendaExecuted,
-      referendaConfirmAborted,
-      referendaConfirmed,
-      referendaKilled,
-      referendaTimedout,
-      referendaRejected,
-    }),
-    [
-      referendaSubmitted,
-      referendaDecisionStarted,
-      referendaConfirmStarted,
-      referendaCancelled,
-      referendaExecuted,
-      referendaConfirmAborted,
-      referendaConfirmed,
-      referendaKilled,
-      referendaTimedout,
-      referendaRejected,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    referendaSubmitted,
+    referendaDecisionStarted,
+    referendaConfirmStarted,
+    referendaCancelled,
+    referendaExecuted,
+    referendaConfirmAborted,
+    referendaConfirmed,
+    referendaKilled,
+    referendaTimedout,
+    referendaRejected,
+  });
 
-  const referendaReferendumOptionsComponent = (
+  return (
     <div>
       <SubLabel>Referenda</SubLabel>
       <ToggleItem>
@@ -145,10 +126,4 @@ export default function useReferendaReferendumOptions({
       </ToggleItem>
     </div>
   );
-
-  return {
-    referendaReferendumOptionsComponent,
-    getReferendaReferendumOptionValues,
-    isChanged,
-  };
 }

@@ -6,11 +6,16 @@ import { MenuReferenda } from "@osn/icons/subsquare";
 
 export const name = "REFERENDA";
 
+export const Names = {
+  referenda: "REFERENDA",
+  all: "All",
+};
+
 export function getReferendaMenu(tracks = [], currentTrackId) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
 
   const menu = {
-    name,
+    name: Names.referenda,
     excludeToChains: getExcludeChains([
       Chains.development,
       Chains.kusama,
@@ -26,7 +31,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
     items: [
       {
         value: "all",
-        name: "All",
+        name: Names.all,
         pathname: "/referenda",
         activeCount: totalActiveCount,
         extraMatchNavMenuActivePathnames: ["/referenda/statistics"],

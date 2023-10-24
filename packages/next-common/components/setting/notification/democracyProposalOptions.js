@@ -1,39 +1,39 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useDemocracyProposalOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function DemocracyProposalOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [democracyProposalProposed, setDemocracyProposalProposed] = useState(
-    !!data.democracyProposalProposed?.isOn,
+    !!subscription.democracyProposalProposed?.isOn,
   );
   const [democracyProposalCanceled, setDemocracyProposalCanceled] = useState(
-    !!data.democracyProposalCanceled?.isOn,
+    !!subscription.democracyProposalCanceled?.isOn,
   );
 
-  const isChanged =
-    democracyProposalProposed !== !!data.democracyProposalProposed?.isOn ||
-    democracyProposalCanceled !== !!data.democracyProposalCanceled?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getDemocracyProposalOptionValues = useCallback(
-    () => ({
-      democracyProposalProposed,
-      democracyProposalCanceled,
-    }),
-    [democracyProposalProposed, democracyProposalCanceled],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    democracyProposalProposed,
+    democracyProposalCanceled,
+  });
 
-  const democracyProposalOptionsComponent = (
+  return (
     <div>
       <SubLabel>Public Proposals</SubLabel>
       <ToggleItem>
@@ -54,10 +54,4 @@ export default function useDemocracyProposalOptions({
       </ToggleItem>
     </div>
   );
-
-  return {
-    democracyProposalOptionsComponent,
-    getDemocracyProposalOptionValues,
-    isChanged,
-  };
 }

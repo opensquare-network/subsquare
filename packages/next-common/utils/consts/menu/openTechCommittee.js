@@ -1,18 +1,24 @@
 import { MenuOpenTechComm } from "@osn/icons/subsquare";
 
+export const Names = {
+  openTechCommittee: "OPEN TECH.COMM.",
+  openTechCommitteeProposals: "Proposals",
+  openTechCommitteeMembers: "Members",
+};
+
 const openTechCommittee = {
-  name: "OPEN TECH.COMM.",
+  name: Names.openTechCommittee,
   icon: <MenuOpenTechComm />,
   items: [
     {
       value: "openTechCommitteeProposals",
-      name: "Proposals",
+      name: Names.openTechCommitteeProposals,
       pathname: "/open-techcomm/proposals",
       extraMatchNavMenuActivePathnames: ["/open-techcomm/proposals/[id]"],
     },
     {
       value: "openTechCommitteeMembers",
-      name: "Members",
+      name: Names.openTechCommitteeMembers,
       pathname: "/open-techcomm/members",
     },
   ],

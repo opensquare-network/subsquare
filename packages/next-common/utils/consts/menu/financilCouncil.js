@@ -3,21 +3,27 @@ import Chains from "../chains";
 import React from "react";
 import { MenuFinancialCouncil } from "@osn/icons/subsquare";
 
+export const Names = {
+  financialCouncil: "FINANCIAL COUNCIL",
+  financialMotions: "Motions",
+  financialCouncilMembers: "Members",
+};
+
 const financialCouncil = {
-  name: "FINANCIAL COUNCIL",
+  name: Names.financialCouncil,
   excludeToChains: getExcludeChains([Chains.karura, Chains.acala]),
   icon: <MenuFinancialCouncil />,
   pathname: "/financial-council",
   items: [
     {
       value: "financialMotions",
-      name: "Motions",
+      name: Names.financialMotions,
       pathname: "/financial-council/motions",
       extraMatchNavMenuActivePathnames: ["/financial-council/motions/[id]"],
     },
     {
       value: "financialCouncilMembers",
-      name: "Members",
+      name: Names.financialCouncilMembers,
       pathname: "/financial-council/members",
     },
   ],

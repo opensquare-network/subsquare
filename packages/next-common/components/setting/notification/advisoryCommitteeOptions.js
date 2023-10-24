@@ -1,53 +1,46 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useAdvisoryCommitteeOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function AdvisoryCommitteeOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [advisoryCommitteeProposed, setAdvisoryCommitteeProposed] = useState(
-    !!data.advisoryCommitteeProposed?.isOn,
+    !!subscription.advisoryCommitteeProposed?.isOn,
   );
   const [advisoryCommitteeVoted, setAdvisoryCommitteeVoted] = useState(
-    !!data.advisoryCommitteeVoted?.isOn,
+    !!subscription.advisoryCommitteeVoted?.isOn,
   );
   const [advisoryCommitteeApproved, setAdvisoryCommitteeApproved] = useState(
-    !!data.advisoryCommitteeApproved?.isOn,
+    !!subscription.advisoryCommitteeApproved?.isOn,
   );
   const [advisoryCommitteeDisApproved, setAdvisoryCommitteeDisApproved] =
-    useState(!!data.advisoryCommitteeDisApproved?.isOn);
+    useState(!!subscription.advisoryCommitteeDisApproved?.isOn);
 
-  const isChanged =
-    advisoryCommitteeProposed !== !!data.advisoryCommitteeProposed?.isOn ||
-    advisoryCommitteeVoted !== !!data.advisoryCommitteeVoted?.isOn ||
-    advisoryCommitteeApproved !== !!data.advisoryCommitteeApproved?.isOn ||
-    advisoryCommitteeDisApproved !== !!data.advisoryCommitteeDisApproved?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getAdvisoryCommitteeOptionValues = useCallback(
-    () => ({
-      advisoryCommitteeProposed,
-      advisoryCommitteeVoted,
-      advisoryCommitteeApproved,
-      advisoryCommitteeDisApproved,
-    }),
-    [
-      advisoryCommitteeProposed,
-      advisoryCommitteeVoted,
-      advisoryCommitteeApproved,
-      advisoryCommitteeDisApproved,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    advisoryCommitteeProposed,
+    advisoryCommitteeVoted,
+    advisoryCommitteeApproved,
+    advisoryCommitteeDisApproved,
+  });
 
-  const advisoryCommitteeOptionsComponent = (
+  return (
     <div>
       <SubLabel>Committees</SubLabel>
       <ToggleItem>
@@ -79,10 +72,4 @@ export default function useAdvisoryCommitteeOptions({
       </ToggleItem>
     </div>
   );
-
-  return {
-    advisoryCommitteeOptionsComponent,
-    getAdvisoryCommitteeOptionValues,
-    isChanged,
-  };
 }

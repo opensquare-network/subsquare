@@ -1,66 +1,55 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useTreasuryBountyOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function TreasuryBountyOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [treasuryBountyProposed, setTreasuryBountyProposed] = useState(
-    !!data.treasuryBountyProposed?.isOn,
+    !!subscription.treasuryBountyProposed?.isOn,
   );
   const [treasuryBountyAwarded, setTreasuryBountyAwarded] = useState(
-    !!data.treasuryBountyAwarded?.isOn,
+    !!subscription.treasuryBountyAwarded?.isOn,
   );
   const [treasuryBountyApproved, setTreasuryBountyApproved] = useState(
-    !!data.treasuryBountyApproved?.isOn,
+    !!subscription.treasuryBountyApproved?.isOn,
   );
   const [treasuryBountyCanceled, setTreasuryBountyCanceled] = useState(
-    !!data.treasuryBountyCanceled?.isOn,
+    !!subscription.treasuryBountyCanceled?.isOn,
   );
   const [treasuryBountyClaimed, setTreasuryBountyClaimed] = useState(
-    !!data.treasuryBountyClaimed?.isOn,
+    !!subscription.treasuryBountyClaimed?.isOn,
   );
   const [treasuryBountyRejected, setTreasuryBountyRejected] = useState(
-    !!data.treasuryBountyRejected?.isOn,
+    !!subscription.treasuryBountyRejected?.isOn,
   );
 
-  const isChanged =
-    treasuryBountyProposed !== !!data.treasuryBountyProposed?.isOn ||
-    treasuryBountyAwarded !== !!data.treasuryBountyAwarded?.isOn ||
-    treasuryBountyApproved !== !!data.treasuryBountyApproved?.isOn ||
-    treasuryBountyCanceled !== !!data.treasuryBountyCanceled?.isOn ||
-    treasuryBountyClaimed !== !!data.treasuryBountyClaimed?.isOn ||
-    treasuryBountyRejected !== !!data.treasuryBountyRejected?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getTreasuryBountyOptionValues = useCallback(
-    () => ({
-      treasuryBountyProposed,
-      treasuryBountyAwarded,
-      treasuryBountyApproved,
-      treasuryBountyCanceled,
-      treasuryBountyClaimed,
-      treasuryBountyRejected,
-    }),
-    [
-      treasuryBountyProposed,
-      treasuryBountyAwarded,
-      treasuryBountyApproved,
-      treasuryBountyCanceled,
-      treasuryBountyClaimed,
-      treasuryBountyRejected,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    treasuryBountyProposed,
+    treasuryBountyAwarded,
+    treasuryBountyApproved,
+    treasuryBountyCanceled,
+    treasuryBountyClaimed,
+    treasuryBountyRejected,
+  });
 
-  const treasuryBountyOptionsComponent = (
+  return (
     <div>
       <SubLabel>Bounties</SubLabel>
       <ToggleItem>
@@ -98,10 +87,4 @@ export default function useTreasuryBountyOptions({
       </ToggleItem>
     </div>
   );
-
-  return {
-    treasuryBountyOptionsComponent,
-    getTreasuryBountyOptionValues,
-    isChanged,
-  };
 }

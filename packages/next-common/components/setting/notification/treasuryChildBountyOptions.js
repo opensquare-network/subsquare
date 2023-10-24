@@ -1,53 +1,46 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useTreasuryChildBountyOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function TreasuryChildBountyOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [treasuryChildBountyAdded, setTreasuryChildBountyAdded] = useState(
-    !!data.treasuryChildBountyAdded?.isOn,
+    !!subscription.treasuryChildBountyAdded?.isOn,
   );
   const [treasuryChildBountyAwarded, setTreasuryChildBountyAwarded] = useState(
-    !!data.treasuryChildBountyAwarded?.isOn,
+    !!subscription.treasuryChildBountyAwarded?.isOn,
   );
   const [treasuryChildBountyCanceled, setTreasuryChildBountyCanceled] =
-    useState(!!data.treasuryChildBountyCanceled?.isOn);
+    useState(!!subscription.treasuryChildBountyCanceled?.isOn);
   const [treasuryChildBountyClaimed, setTreasuryChildBountyClaimed] = useState(
-    !!data.treasuryChildBountyClaimed?.isOn,
+    !!subscription.treasuryChildBountyClaimed?.isOn,
   );
 
-  const isChanged =
-    treasuryChildBountyAdded !== !!data.treasuryChildBountyAdded?.isOn ||
-    treasuryChildBountyAwarded !== !!data.treasuryChildBountyAwarded?.isOn ||
-    treasuryChildBountyCanceled !== !!data.treasuryChildBountyCanceled?.isOn ||
-    treasuryChildBountyClaimed !== !!data.treasuryChildBountyClaimed?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getTreasuryChildBountyOptionValues = useCallback(
-    () => ({
-      treasuryChildBountyAdded,
-      treasuryChildBountyAwarded,
-      treasuryChildBountyCanceled,
-      treasuryChildBountyClaimed,
-    }),
-    [
-      treasuryChildBountyAdded,
-      treasuryChildBountyAwarded,
-      treasuryChildBountyCanceled,
-      treasuryChildBountyClaimed,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    treasuryChildBountyAdded,
+    treasuryChildBountyAwarded,
+    treasuryChildBountyCanceled,
+    treasuryChildBountyClaimed,
+  });
 
-  const treasuryChildBountyOptionsComponent = (
+  return (
     <div>
       <SubLabel>Child bounties</SubLabel>
       <ToggleItem>
@@ -74,10 +67,4 @@ export default function useTreasuryChildBountyOptions({
       </ToggleItem>
     </div>
   );
-
-  return {
-    treasuryChildBountyOptionsComponent,
-    getTreasuryChildBountyOptionValues,
-    isChanged,
-  };
 }

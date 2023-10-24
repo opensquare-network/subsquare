@@ -1,45 +1,47 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
+export default function TreasuryTipOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [treasuryTipNew, setTreasuryTipNew] = useState(
-    !!data.treasuryTipNew?.isOn,
+    !!subscription.treasuryTipNew?.isOn,
   );
   const [treasuryTipTip, setTreasuryTipTip] = useState(
-    !!data.treasuryTipTip?.isOn,
+    !!subscription.treasuryTipTip?.isOn,
   );
   const [treasuryTipClosed, setTreasuryTipClosed] = useState(
-    !!data.treasuryTipClosed?.isOn,
+    !!subscription.treasuryTipClosed?.isOn,
   );
   const [treasuryTipRetracted, setTreasuryTipRetracted] = useState(
-    !!data.treasuryTipRetracted?.isOn,
+    !!subscription.treasuryTipRetracted?.isOn,
   );
 
-  const isChanged =
-    treasuryTipNew !== !!data.treasuryTipNew?.isOn ||
-    treasuryTipTip !== !!data.treasuryTipTip?.isOn ||
-    treasuryTipClosed !== !!data.treasuryTipClosed?.isOn ||
-    treasuryTipRetracted !== !!data.treasuryTipRetracted?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getTreasuryTipOptionValues = useCallback(
-    () => ({
-      treasuryTipNew,
-      treasuryTipTip,
-      treasuryTipClosed,
-      treasuryTipRetracted,
-    }),
-    [treasuryTipNew, treasuryTipTip, treasuryTipClosed, treasuryTipRetracted],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    treasuryTipNew,
+    treasuryTipTip,
+    treasuryTipClosed,
+    treasuryTipRetracted,
+  });
 
-  const treasuryTipOptionsComponent = (
+  return (
     <div>
       <SubLabel>Tips</SubLabel>
       <ToggleItem>
@@ -71,10 +73,4 @@ export default function useTreasuryTipOptions({ saving, disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    treasuryTipOptionsComponent,
-    getTreasuryTipOptionValues,
-    isChanged,
-  };
 }

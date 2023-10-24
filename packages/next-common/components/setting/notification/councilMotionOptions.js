@@ -1,50 +1,47 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
+export default function CouncilMotionOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [councilMotionProposed, setCouncilMotionProposed] = useState(
-    !!data.councilMotionProposed?.isOn,
+    !!subscription.councilMotionProposed?.isOn,
   );
   const [councilMotionVoted, setCouncilMotionVoted] = useState(
-    !!data.councilMotionVoted?.isOn,
+    !!subscription.councilMotionVoted?.isOn,
   );
   const [councilMotionApproved, setCouncilMotionApproved] = useState(
-    !!data.councilMotionApproved?.isOn,
+    !!subscription.councilMotionApproved?.isOn,
   );
   const [councilMotionDisApproved, setCouncilMotionDisApproved] = useState(
-    !!data.councilMotionDisApproved?.isOn,
+    !!subscription.councilMotionDisApproved?.isOn,
   );
 
-  const isChanged =
-    councilMotionProposed !== !!data.councilMotionProposed?.isOn ||
-    councilMotionVoted !== !!data.councilMotionVoted?.isOn ||
-    councilMotionApproved !== !!data.councilMotionApproved?.isOn ||
-    councilMotionDisApproved !== !!data.councilMotionDisApproved?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getCouncilMotionOptionValues = useCallback(
-    () => ({
-      councilMotionProposed,
-      councilMotionVoted,
-      councilMotionApproved,
-      councilMotionDisApproved,
-    }),
-    [
-      councilMotionProposed,
-      councilMotionVoted,
-      councilMotionApproved,
-      councilMotionDisApproved,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    councilMotionProposed,
+    councilMotionVoted,
+    councilMotionApproved,
+    councilMotionDisApproved,
+  });
 
-  const councilMotionOptionsComponent = (
+  return (
     <div>
       <SubLabel>Motions</SubLabel>
       <ToggleItem>
@@ -76,10 +73,4 @@ export default function useCouncilMotionOptions({ saving, disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    councilMotionOptionsComponent,
-    getCouncilMotionOptionValues,
-    isChanged,
-  };
 }

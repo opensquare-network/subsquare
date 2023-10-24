@@ -1,90 +1,71 @@
 import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function useFellowshipReferendumOptions({
-  saving,
-  disabled,
-  ...data
-}) {
+export default function FellowshipReferendumOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [fellowshipSubmitted, setFellowshipSubmitted] = useState(
-    !!data.fellowshipSubmitted?.isOn,
+    !!subscription.fellowshipSubmitted?.isOn,
   );
   const [fellowshipDecisionStarted, setFellowshipDecisionStarted] = useState(
-    !!data.fellowshipDecisionStarted?.isOn,
+    !!subscription.fellowshipDecisionStarted?.isOn,
   );
   const [fellowshipConfirmStarted, setFellowshipConfirmStarted] = useState(
-    !!data.fellowshipConfirmStarted?.isOn,
+    !!subscription.fellowshipConfirmStarted?.isOn,
   );
   const [fellowshipCancelled, setFellowshipCancelled] = useState(
-    !!data.fellowshipCancelled?.isOn,
+    !!subscription.fellowshipCancelled?.isOn,
   );
   const [fellowshipConfirmAborted, setFellowshipConfirmAborted] = useState(
-    !!data.fellowshipConfirmAborted?.isOn,
+    !!subscription.fellowshipConfirmAborted?.isOn,
   );
   const [fellowshipConfirmed, setFellowshipConfirmed] = useState(
-    !!data.fellowshipConfirmed?.isOn,
+    !!subscription.fellowshipConfirmed?.isOn,
   );
   const [fellowshipExecuted, setFellowshipExecuted] = useState(
-    !!data.fellowshipExecuted?.isOn,
+    !!subscription.fellowshipExecuted?.isOn,
   );
   const [fellowshipKilled, setFellowshipKilled] = useState(
-    !!data.fellowshipKilled?.isOn,
+    !!subscription.fellowshipKilled?.isOn,
   );
   const [fellowshipTimedout, setFellowshipTimedout] = useState(
-    !!data.fellowshipTimedout?.isOn,
+    !!subscription.fellowshipTimedout?.isOn,
   );
   const [fellowshipRejected, setFellowshipRejected] = useState(
-    !!data.fellowshipRejected?.isOn,
+    !!subscription.fellowshipRejected?.isOn,
   );
 
-  const isChanged =
-    fellowshipSubmitted !== !!data.fellowshipSubmitted?.isOn ||
-    fellowshipDecisionStarted !== !!data.fellowshipDecisionStarted?.isOn ||
-    fellowshipConfirmStarted !== !!data.fellowshipConfirmStarted?.isOn ||
-    fellowshipCancelled !== !!data.fellowshipCancelled?.isOn ||
-    fellowshipExecuted !== !!data.fellowshipExecuted?.isOn ||
-    fellowshipConfirmAborted !== !!data.fellowshipConfirmAborted?.isOn ||
-    fellowshipConfirmed !== !!data.fellowshipConfirmed?.isOn ||
-    fellowshipKilled !== !!data.fellowshipKilled?.isOn ||
-    fellowshipTimedout !== !!data.fellowshipTimedout?.isOn ||
-    fellowshipRejected !== !!data.fellowshipRejected?.isOn;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getFellowshipReferendumOptionValues = useCallback(
-    () => ({
-      fellowshipSubmitted,
-      fellowshipDecisionStarted,
-      fellowshipConfirmStarted,
-      fellowshipCancelled,
-      fellowshipExecuted,
-      fellowshipConfirmAborted,
-      fellowshipConfirmed,
-      fellowshipKilled,
-      fellowshipTimedout,
-      fellowshipRejected,
-    }),
-    [
-      fellowshipSubmitted,
-      fellowshipDecisionStarted,
-      fellowshipConfirmStarted,
-      fellowshipCancelled,
-      fellowshipExecuted,
-      fellowshipConfirmAborted,
-      fellowshipConfirmed,
-      fellowshipKilled,
-      fellowshipTimedout,
-      fellowshipRejected,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    fellowshipSubmitted,
+    fellowshipDecisionStarted,
+    fellowshipConfirmStarted,
+    fellowshipCancelled,
+    fellowshipExecuted,
+    fellowshipConfirmAborted,
+    fellowshipConfirmed,
+    fellowshipKilled,
+    fellowshipTimedout,
+    fellowshipRejected,
+  });
 
-  const fellowshipReferendumOptionsComponent = (
+  return (
     <div>
       <SubLabel>Fellowship</SubLabel>
       <ToggleItem>
@@ -145,10 +126,4 @@ export default function useFellowshipReferendumOptions({
       </ToggleItem>
     </div>
   );
-
-  return {
-    fellowshipReferendumOptionsComponent,
-    getFellowshipReferendumOptionValues,
-    isChanged,
-  };
 }

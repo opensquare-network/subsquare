@@ -8,11 +8,17 @@ import { MenuFellowship } from "@osn/icons/subsquare";
 
 export const name = "FELLOWSHIP";
 
+export const Names = {
+  fellowship: "FELLOWSHIP",
+  members: "Members",
+  all: "All",
+};
+
 export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
   const menu = {
-    name,
+    name: Names.fellowship,
     excludeToChains: getExcludeChains([
       Chains.development,
       Chains.kusama,
@@ -29,7 +35,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
     items: [
       {
         value: "fellowship-members",
-        name: "Members",
+        name: Names.members,
         pathname: "/fellowship/members",
       },
       {
@@ -43,7 +49,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       },
       {
         value: "all",
-        name: "All",
+        name: Names.all,
         pathname: "/fellowship",
         activeCount: totalActiveCount,
       },

@@ -1,19 +1,25 @@
 import { MenuFinancialCouncil } from "@osn/icons/subsquare";
 
+export const Names = {
+  treasuryCouncil: "TREASURY COUNCIL",
+  motions: "Motions",
+  councilMembers: "Members",
+};
+
 const treasuryCouncil = {
-  name: "TREASURY COUNCIL",
+  name: Names.treasuryCouncil,
   pathname: "/treasury-council",
   icon: <MenuFinancialCouncil />,
   items: [
     {
       value: "motions",
-      name: "Motions",
+      name: Names.motions,
       pathname: "/treasury-council/motions",
       extraMatchNavMenuActivePathnames: ["/treasury-council/motions/[id]"],
     },
     {
       value: "councilMembers",
-      name: "Members",
+      name: Names.councilMembers,
       pathname: "/treasury-council/members",
     },
   ],

@@ -35,21 +35,12 @@ export default function Channels() {
   const [isEmailChannelOn, setIsEmailChannelOn] = useState(
     loginUser?.activeNotificationChannels?.email !== false,
   );
-  const isActiveChannelsChanged =
-    isTelegramChannelOn !==
-      (loginUser?.activeNotificationChannels?.telegram !== false) ||
-    isEmailChannelOn !==
-      (loginUser?.activeNotificationChannels?.email !== false);
 
   useEffect(() => {
-    if (!isActiveChannelsChanged) {
-      return;
-    }
-
     nextApi
       .patch("user/active-notification-channels", {
-        email: !!isEmailChannelOn,
-        telegram: !!isTelegramChannelOn,
+        email: isEmailChannelOn,
+        telegram: isTelegramChannelOn,
       })
       .then(({ error }) => {
         if (error) {
@@ -58,7 +49,7 @@ export default function Channels() {
         }
         fetchAndUpdateUser(userDispatch);
       });
-  }, [isActiveChannelsChanged, userDispatch]);
+  }, [isEmailChannelOn, isTelegramChannelOn, userDispatch]);
 
   useEffect(() => {
     if (unsubscribe) {

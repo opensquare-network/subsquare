@@ -1,28 +1,36 @@
 import React from "react";
-import { Label, ToggleItem } from "./styled";
+import { ToggleItem } from "./styled";
 import Toggle from "../../toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import {
+  useDebounceAutoSaveDiscussionOptions,
+  useIsDiscussionOptionsDisabled,
+} from "./common";
+import { useUser } from "next-common/context/user";
 
-export default function useDiscussionOptions({ saving, disabled, ...data }) {
+export default function DiscussionOptions() {
+  const user = useUser();
+  const data = user?.notification;
+  const disabled = useIsDiscussionOptionsDisabled();
   const [reply, setReply] = useState(!!data.reply);
   const [mention, setMention] = useState(!!data.mention);
 
-  const isChanged = !!data.reply !== reply || !!data.mention !== mention;
+  const [isChanged, setIsChanged] = useState(false);
 
   const changeGuard = (setter) => (data) => {
-    if (!saving && !disabled) {
+    if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getDiscussionOptionValues = useCallback(
-    () => ({ reply, mention }),
-    [reply, mention],
-  );
+  useDebounceAutoSaveDiscussionOptions(isChanged, {
+    reply,
+    mention,
+  });
 
-  const discussionOptionsComponent = (
+  return (
     <div>
-      <Label>Discussion</Label>
       <ToggleItem>
         <div>Notify me about comments on my posts</div>
         <Toggle
@@ -41,10 +49,4 @@ export default function useDiscussionOptions({ saving, disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    discussionOptionsComponent,
-    getDiscussionOptionValues,
-    isChanged,
-  };
 }
