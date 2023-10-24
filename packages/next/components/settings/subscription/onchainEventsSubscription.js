@@ -87,12 +87,12 @@ export default function OnChainEventsSubscription() {
 
   return (
     <>
-      {openGovOptions && openGovOptions}
-      {treasuryOptions && treasuryOptions}
-      {councilOptions && councilOptions}
-      {techCommOptions && techCommOptions}
-      {advisoryOptions && advisoryOptions}
-      {democracyOptions && democracyOptions}
+      {openGovOptions}
+      {treasuryOptions}
+      {councilOptions}
+      {techCommOptions}
+      {advisoryOptions}
+      {democracyOptions}
     </>
   );
 }
