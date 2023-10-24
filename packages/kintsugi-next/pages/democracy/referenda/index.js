@@ -12,10 +12,9 @@ export default function DemocracyReferendaPage({ posts, chain, summary }) {
     normalizeReferendaListItem(chain, item),
   );
   const category = businessCategory.democracyReferenda;
-  const title = "Democracy " + category;
   const seoInfo = {
-    title,
-    desc: title,
+    title: category,
+    desc: category,
   };
 
   return (
