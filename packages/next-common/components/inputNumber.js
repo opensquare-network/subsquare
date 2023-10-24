@@ -19,7 +19,7 @@ const NumberController = styled(TwNumberController)`
   box-shadow: -1px 0 0 0 var(--neutral400);
 `;
 
-const NumberSteper = tw.button`
+const NumberStepper = tw.button`
   flex items-center justify-center flex-1
   border-none
   bg-transparent
@@ -79,13 +79,13 @@ export default function InputNumber({
       onChange={handleChange}
       suffix={
         <NumberController>
-          <NumberSteper onClick={handleUp}>
+          <NumberStepper onClick={handleUp}>
             <Caret down={false} />
-          </NumberSteper>
+          </NumberStepper>
           <Divider />
-          <NumberSteper onClick={handleDown}>
+          <NumberStepper onClick={handleDown}>
             <Caret />
-          </NumberSteper>
+          </NumberStepper>
         </NumberController>
       }
       suffixStyle={{ right: 0, height: "100%" }}
