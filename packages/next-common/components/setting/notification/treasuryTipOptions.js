@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useTreasuryTipOptions({ disabled, ...data }) {
+export default function TreasuryTipOptions({ disabled, ...data }) {
   const [treasuryTipNew, setTreasuryTipNew] = useState(
     !!data.treasuryTipNew?.isOn,
   );
@@ -18,27 +19,22 @@ export default function useTreasuryTipOptions({ disabled, ...data }) {
   );
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [treasuryTipNew, treasuryTipTip, treasuryTipClosed, treasuryTipRetracted]);
 
   const changeGuard = (setter) => (data) => {
     if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getTreasuryTipOptionValues = useCallback(
-    () => ({
-      treasuryTipNew,
-      treasuryTipTip,
-      treasuryTipClosed,
-      treasuryTipRetracted,
-    }),
-    [treasuryTipNew, treasuryTipTip, treasuryTipClosed, treasuryTipRetracted],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    treasuryTipNew,
+    treasuryTipTip,
+    treasuryTipClosed,
+    treasuryTipRetracted,
+  });
 
-  const treasuryTipOptionsComponent = (
+  return (
     <div>
       <SubLabel>Tips</SubLabel>
       <ToggleItem>
@@ -70,10 +66,4 @@ export default function useTreasuryTipOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    treasuryTipOptionsComponent,
-    getTreasuryTipOptionValues,
-    isChanged,
-  };
 }

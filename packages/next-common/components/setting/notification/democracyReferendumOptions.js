@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useDemocracyReferendumOptions({
+export default function DemocracyReferendumOptions({
   isKintsugi,
   disabled,
   ...data
@@ -27,9 +28,15 @@ export default function useDemocracyReferendumOptions({
     useState(!!data.democracyReferendumFastTrack?.isOn);
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [
+
+  const changeGuard = (setter) => (data) => {
+    if (!disabled) {
+      setter(data);
+      setIsChanged(true);
+    }
+  };
+
+  useDebounceAutoSaveOnChainOptions(isChanged, {
     democracyReferendumStarted,
     democracyReferendumPassed,
     democracyReferendumNotPassed,
@@ -37,36 +44,9 @@ export default function useDemocracyReferendumOptions({
     democracyReferendumExecuted,
     democracyReferendumNotExecuted,
     democracyReferendumFastTrack,
-  ]);
+  });
 
-  const changeGuard = (setter) => (data) => {
-    if (!disabled) {
-      setter(data);
-    }
-  };
-
-  const getDemocracyReferendumOptionValues = useCallback(
-    () => ({
-      democracyReferendumStarted,
-      democracyReferendumPassed,
-      democracyReferendumNotPassed,
-      democracyReferendumCancelled,
-      democracyReferendumExecuted,
-      democracyReferendumNotExecuted,
-      ...(isKintsugi ? { democracyReferendumFastTrack } : {}),
-    }),
-    [
-      democracyReferendumStarted,
-      democracyReferendumPassed,
-      democracyReferendumNotPassed,
-      democracyReferendumCancelled,
-      democracyReferendumExecuted,
-      democracyReferendumNotExecuted,
-      democracyReferendumFastTrack,
-    ],
-  );
-
-  const democracyReferendumOptionsComponent = (
+  return (
     <div>
       <SubLabel>Referenda</SubLabel>
       <ToggleItem>
@@ -119,10 +99,4 @@ export default function useDemocracyReferendumOptions({
       )}
     </div>
   );
-
-  return {
-    democracyReferendumOptionsComponent,
-    getDemocracyReferendumOptionValues,
-    isChanged,
-  };
 }

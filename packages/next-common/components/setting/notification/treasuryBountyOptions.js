@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useTreasuryBountyOptions({ disabled, ...data }) {
+export default function TreasuryBountyOptions({ disabled, ...data }) {
   const [treasuryBountyProposed, setTreasuryBountyProposed] = useState(
     !!data.treasuryBountyProposed?.isOn,
   );
@@ -24,43 +25,24 @@ export default function useTreasuryBountyOptions({ disabled, ...data }) {
   );
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [
+
+  const changeGuard = (setter) => (data) => {
+    if (!disabled) {
+      setter(data);
+      setIsChanged(true);
+    }
+  };
+
+  useDebounceAutoSaveOnChainOptions(isChanged, {
     treasuryBountyProposed,
     treasuryBountyAwarded,
     treasuryBountyApproved,
     treasuryBountyCanceled,
     treasuryBountyClaimed,
     treasuryBountyRejected,
-  ]);
+  });
 
-  const changeGuard = (setter) => (data) => {
-    if (!disabled) {
-      setter(data);
-    }
-  };
-
-  const getTreasuryBountyOptionValues = useCallback(
-    () => ({
-      treasuryBountyProposed,
-      treasuryBountyAwarded,
-      treasuryBountyApproved,
-      treasuryBountyCanceled,
-      treasuryBountyClaimed,
-      treasuryBountyRejected,
-    }),
-    [
-      treasuryBountyProposed,
-      treasuryBountyAwarded,
-      treasuryBountyApproved,
-      treasuryBountyCanceled,
-      treasuryBountyClaimed,
-      treasuryBountyRejected,
-    ],
-  );
-
-  const treasuryBountyOptionsComponent = (
+  return (
     <div>
       <SubLabel>Bounties</SubLabel>
       <ToggleItem>
@@ -98,10 +80,4 @@ export default function useTreasuryBountyOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    treasuryBountyOptionsComponent,
-    getTreasuryBountyOptionValues,
-    isChanged,
-  };
 }

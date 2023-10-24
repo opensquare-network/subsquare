@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useFellowshipReferendumOptions({ disabled, ...data }) {
+export default function FellowshipReferendumOptions({ disabled, ...data }) {
   const [fellowshipSubmitted, setFellowshipSubmitted] = useState(
     !!data.fellowshipSubmitted?.isOn,
   );
@@ -36,9 +37,15 @@ export default function useFellowshipReferendumOptions({ disabled, ...data }) {
   );
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [
+
+  const changeGuard = (setter) => (data) => {
+    if (!disabled) {
+      setter(data);
+      setIsChanged(true);
+    }
+  };
+
+  useDebounceAutoSaveOnChainOptions(isChanged, {
     fellowshipSubmitted,
     fellowshipDecisionStarted,
     fellowshipConfirmStarted,
@@ -49,42 +56,9 @@ export default function useFellowshipReferendumOptions({ disabled, ...data }) {
     fellowshipKilled,
     fellowshipTimedout,
     fellowshipRejected,
-  ]);
+  });
 
-  const changeGuard = (setter) => (data) => {
-    if (!disabled) {
-      setter(data);
-    }
-  };
-
-  const getFellowshipReferendumOptionValues = useCallback(
-    () => ({
-      fellowshipSubmitted,
-      fellowshipDecisionStarted,
-      fellowshipConfirmStarted,
-      fellowshipCancelled,
-      fellowshipExecuted,
-      fellowshipConfirmAborted,
-      fellowshipConfirmed,
-      fellowshipKilled,
-      fellowshipTimedout,
-      fellowshipRejected,
-    }),
-    [
-      fellowshipSubmitted,
-      fellowshipDecisionStarted,
-      fellowshipConfirmStarted,
-      fellowshipCancelled,
-      fellowshipExecuted,
-      fellowshipConfirmAborted,
-      fellowshipConfirmed,
-      fellowshipKilled,
-      fellowshipTimedout,
-      fellowshipRejected,
-    ],
-  );
-
-  const fellowshipReferendumOptionsComponent = (
+  return (
     <div>
       <SubLabel>Fellowship</SubLabel>
       <ToggleItem>
@@ -145,10 +119,4 @@ export default function useFellowshipReferendumOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    fellowshipReferendumOptionsComponent,
-    getFellowshipReferendumOptionValues,
-    isChanged,
-  };
 }

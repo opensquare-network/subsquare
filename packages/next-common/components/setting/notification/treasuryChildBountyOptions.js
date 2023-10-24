@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useTreasuryChildBountyOptions({ disabled, ...data }) {
+export default function TreasuryChildBountyOptions({ disabled, ...data }) {
   const [treasuryChildBountyAdded, setTreasuryChildBountyAdded] = useState(
     !!data.treasuryChildBountyAdded?.isOn,
   );
@@ -17,37 +18,22 @@ export default function useTreasuryChildBountyOptions({ disabled, ...data }) {
   );
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [
-    treasuryChildBountyAdded,
-    treasuryChildBountyAwarded,
-    treasuryChildBountyCanceled,
-    treasuryChildBountyClaimed,
-  ]);
 
   const changeGuard = (setter) => (data) => {
     if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getTreasuryChildBountyOptionValues = useCallback(
-    () => ({
-      treasuryChildBountyAdded,
-      treasuryChildBountyAwarded,
-      treasuryChildBountyCanceled,
-      treasuryChildBountyClaimed,
-    }),
-    [
-      treasuryChildBountyAdded,
-      treasuryChildBountyAwarded,
-      treasuryChildBountyCanceled,
-      treasuryChildBountyClaimed,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    treasuryChildBountyAdded,
+    treasuryChildBountyAwarded,
+    treasuryChildBountyCanceled,
+    treasuryChildBountyClaimed,
+  });
 
-  const treasuryChildBountyOptionsComponent = (
+  return (
     <div>
       <SubLabel>Child bounties</SubLabel>
       <ToggleItem>
@@ -74,10 +60,4 @@ export default function useTreasuryChildBountyOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    treasuryChildBountyOptionsComponent,
-    getTreasuryChildBountyOptionValues,
-    isChanged,
-  };
 }

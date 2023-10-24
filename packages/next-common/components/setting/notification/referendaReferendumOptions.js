@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useReferendaReferendumOptions({ disabled, ...data }) {
+export default function ReferendaReferendumOptions({ disabled, ...data }) {
   const [referendaSubmitted, setReferendaSubmitted] = useState(
     !!data.referendaSubmitted?.isOn,
   );
@@ -36,9 +37,15 @@ export default function useReferendaReferendumOptions({ disabled, ...data }) {
   );
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [
+
+  const changeGuard = (setter) => (data) => {
+    if (!disabled) {
+      setter(data);
+      setIsChanged(true);
+    }
+  };
+
+  useDebounceAutoSaveOnChainOptions(isChanged, {
     referendaSubmitted,
     referendaDecisionStarted,
     referendaConfirmStarted,
@@ -49,42 +56,9 @@ export default function useReferendaReferendumOptions({ disabled, ...data }) {
     referendaKilled,
     referendaTimedout,
     referendaRejected,
-  ]);
+  });
 
-  const changeGuard = (setter) => (data) => {
-    if (!disabled) {
-      setter(data);
-    }
-  };
-
-  const getReferendaReferendumOptionValues = useCallback(
-    () => ({
-      referendaSubmitted,
-      referendaDecisionStarted,
-      referendaConfirmStarted,
-      referendaCancelled,
-      referendaExecuted,
-      referendaConfirmAborted,
-      referendaConfirmed,
-      referendaKilled,
-      referendaTimedout,
-      referendaRejected,
-    }),
-    [
-      referendaSubmitted,
-      referendaDecisionStarted,
-      referendaConfirmStarted,
-      referendaCancelled,
-      referendaExecuted,
-      referendaConfirmAborted,
-      referendaConfirmed,
-      referendaKilled,
-      referendaTimedout,
-      referendaRejected,
-    ],
-  );
-
-  const referendaReferendumOptionsComponent = (
+  return (
     <div>
       <SubLabel>Referenda</SubLabel>
       <ToggleItem>
@@ -145,10 +119,4 @@ export default function useReferendaReferendumOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    referendaReferendumOptionsComponent,
-    getReferendaReferendumOptionValues,
-    isChanged,
-  };
 }

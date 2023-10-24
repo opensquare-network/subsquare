@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useTreasuryProposalOptions({ disabled, ...data }) {
+export default function TreasuryProposalOptions({ disabled, ...data }) {
   const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(
     !!data.treasuryProposalProposed?.isOn,
   );
@@ -18,37 +19,22 @@ export default function useTreasuryProposalOptions({ disabled, ...data }) {
   );
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [
-    treasuryProposalProposed,
-    treasuryProposalApproved,
-    treasuryProposalAwarded,
-    treasuryProposalRejected,
-  ]);
 
   const changeGuard = (setter) => (data) => {
     if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getTreasuryProposalOptionValues = useCallback(
-    () => ({
-      treasuryProposalProposed,
-      treasuryProposalApproved,
-      treasuryProposalAwarded,
-      treasuryProposalRejected,
-    }),
-    [
-      treasuryProposalProposed,
-      treasuryProposalApproved,
-      treasuryProposalAwarded,
-      treasuryProposalRejected,
-    ],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    treasuryProposalProposed,
+    treasuryProposalApproved,
+    treasuryProposalAwarded,
+    treasuryProposalRejected,
+  });
 
-  const treasuryProposalOptionsComponent = (
+  return (
     <div>
       <SubLabel>Proposals</SubLabel>
       <ToggleItem>
@@ -80,10 +66,4 @@ export default function useTreasuryProposalOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    treasuryProposalOptionsComponent,
-    getTreasuryProposalOptionValues,
-    isChanged,
-  };
 }

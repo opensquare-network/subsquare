@@ -1,29 +1,28 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ToggleItem } from "./styled";
 import Toggle from "../../toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { useDebounceAutoSaveDiscussionOptions } from "./common";
 
-export default function useDiscussionOptions({ disabled, ...data }) {
+export default function DiscussionOptions({ disabled, ...data }) {
   const [reply, setReply] = useState(!!data.reply);
   const [mention, setMention] = useState(!!data.mention);
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [reply, mention]);
 
   const changeGuard = (setter) => (data) => {
     if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getDiscussionOptionValues = useCallback(
-    () => ({ reply, mention }),
-    [reply, mention],
-  );
+  useDebounceAutoSaveDiscussionOptions(isChanged, {
+    reply,
+    mention,
+  });
 
-  const discussionOptionsComponent = (
+  return (
     <div>
       <ToggleItem>
         <div>Notify me about comments on my posts</div>
@@ -43,10 +42,4 @@ export default function useDiscussionOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    discussionOptionsComponent,
-    getDiscussionOptionValues,
-    isChanged,
-  };
 }

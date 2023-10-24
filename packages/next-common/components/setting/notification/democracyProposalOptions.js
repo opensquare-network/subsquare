@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Toggle from "next-common/components/toggle";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
+import { useDebounceAutoSaveOnChainOptions } from "./common";
 
-export default function useDemocracyProposalOptions({ disabled, ...data }) {
+export default function DemocracyProposalOptions({ disabled, ...data }) {
   const [democracyProposalProposed, setDemocracyProposalProposed] = useState(
     !!data.democracyProposalProposed?.isOn,
   );
@@ -12,25 +13,20 @@ export default function useDemocracyProposalOptions({ disabled, ...data }) {
   );
 
   const [isChanged, setIsChanged] = useState(false);
-  useEffect(() => {
-    setIsChanged(true);
-  }, [democracyProposalProposed, democracyProposalCanceled]);
 
   const changeGuard = (setter) => (data) => {
     if (!disabled) {
       setter(data);
+      setIsChanged(true);
     }
   };
 
-  const getDemocracyProposalOptionValues = useCallback(
-    () => ({
-      democracyProposalProposed,
-      democracyProposalCanceled,
-    }),
-    [democracyProposalProposed, democracyProposalCanceled],
-  );
+  useDebounceAutoSaveOnChainOptions(isChanged, {
+    democracyProposalProposed,
+    democracyProposalCanceled,
+  });
 
-  const democracyProposalOptionsComponent = (
+  return (
     <div>
       <SubLabel>Public Proposals</SubLabel>
       <ToggleItem>
@@ -51,10 +47,4 @@ export default function useDemocracyProposalOptions({ disabled, ...data }) {
       </ToggleItem>
     </div>
   );
-
-  return {
-    democracyProposalOptionsComponent,
-    getDemocracyProposalOptionValues,
-    isChanged,
-  };
 }
