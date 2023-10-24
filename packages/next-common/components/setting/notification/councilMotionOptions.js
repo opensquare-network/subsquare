@@ -2,20 +2,27 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function CouncilMotionOptions({ disabled, ...data }) {
+export default function CouncilMotionOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [councilMotionProposed, setCouncilMotionProposed] = useState(
-    !!data.councilMotionProposed?.isOn,
+    !!subscription.councilMotionProposed?.isOn,
   );
   const [councilMotionVoted, setCouncilMotionVoted] = useState(
-    !!data.councilMotionVoted?.isOn,
+    !!subscription.councilMotionVoted?.isOn,
   );
   const [councilMotionApproved, setCouncilMotionApproved] = useState(
-    !!data.councilMotionApproved?.isOn,
+    !!subscription.councilMotionApproved?.isOn,
   );
   const [councilMotionDisApproved, setCouncilMotionDisApproved] = useState(
-    !!data.councilMotionDisApproved?.isOn,
+    !!subscription.councilMotionDisApproved?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

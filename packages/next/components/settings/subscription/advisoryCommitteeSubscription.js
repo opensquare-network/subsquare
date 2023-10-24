@@ -5,10 +5,7 @@ import AccordionCard from "next-common/components/styled/containers/accordionCar
 import { Options } from "next-common/components/setting/notification/styled";
 import { Names } from "next-common/utils/consts/menu/advisoryCouncil";
 
-export default function AdvisoryCommitteeSubscription({
-  subscription,
-  disabled,
-}) {
+export default function AdvisoryCommitteeSubscription() {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasAdvisoryCommittee } = checkSubMenu(
@@ -23,17 +20,7 @@ export default function AdvisoryCommitteeSubscription({
   return (
     <AccordionCard title="Advisory Committee" defaultOpen={true}>
       <Options>
-        {hasAdvisoryCommittee && (
-          <AdvisoryCommitteeOptions
-            disabled={disabled}
-            advisoryCommitteeProposed={subscription?.advisoryCommitteeProposed}
-            advisoryCommitteeVoted={subscription?.advisoryCommitteeVoted}
-            advisoryCommitteeApproved={subscription?.advisoryCommitteeApproved}
-            advisoryCommitteeDisApproved={
-              subscription?.advisoryCommitteeDisApproved
-            }
-          />
-        )}
+        <AdvisoryCommitteeOptions />
       </Options>
     </AccordionCard>
   );

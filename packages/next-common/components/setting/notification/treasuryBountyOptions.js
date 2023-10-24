@@ -2,26 +2,33 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function TreasuryBountyOptions({ disabled, ...data }) {
+export default function TreasuryBountyOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [treasuryBountyProposed, setTreasuryBountyProposed] = useState(
-    !!data.treasuryBountyProposed?.isOn,
+    !!subscription.treasuryBountyProposed?.isOn,
   );
   const [treasuryBountyAwarded, setTreasuryBountyAwarded] = useState(
-    !!data.treasuryBountyAwarded?.isOn,
+    !!subscription.treasuryBountyAwarded?.isOn,
   );
   const [treasuryBountyApproved, setTreasuryBountyApproved] = useState(
-    !!data.treasuryBountyApproved?.isOn,
+    !!subscription.treasuryBountyApproved?.isOn,
   );
   const [treasuryBountyCanceled, setTreasuryBountyCanceled] = useState(
-    !!data.treasuryBountyCanceled?.isOn,
+    !!subscription.treasuryBountyCanceled?.isOn,
   );
   const [treasuryBountyClaimed, setTreasuryBountyClaimed] = useState(
-    !!data.treasuryBountyClaimed?.isOn,
+    !!subscription.treasuryBountyClaimed?.isOn,
   );
   const [treasuryBountyRejected, setTreasuryBountyRejected] = useState(
-    !!data.treasuryBountyRejected?.isOn,
+    !!subscription.treasuryBountyRejected?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

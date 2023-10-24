@@ -8,7 +8,7 @@ import AccordionCard from "next-common/components/styled/containers/accordionCar
 import { Options } from "next-common/components/setting/notification/styled";
 import { Names } from "next-common/utils/consts/menu/treasury";
 
-export default function TreasurySubscription({ subscription, disabled }) {
+export default function TreasurySubscription() {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasTreasury, menu: treasuryMenu } = checkSubMenu(
@@ -45,50 +45,10 @@ export default function TreasurySubscription({ subscription, disabled }) {
   return (
     <AccordionCard title="Treasury" defaultOpen={true}>
       <Options>
-        {hasTreasuryProposal && (
-          <TreasuryProposalOptions
-            disabled={disabled}
-            treasuryProposalProposed={subscription?.treasuryProposalProposed}
-            treasuryProposalApproved={subscription?.treasuryProposalApproved}
-            treasuryProposalAwarded={subscription?.treasuryProposalAwarded}
-            treasuryProposalRejected={subscription?.treasuryProposalRejected}
-          />
-        )}
-        {hasTreasuryTip && (
-          <TreasuryTipOptions
-            disabled={disabled}
-            treasuryTipNew={subscription?.treasuryTipNew}
-            treasuryTipTip={subscription?.treasuryTipTip}
-            treasuryTipClosed={subscription?.treasuryTipClosed}
-            treasuryTipRetracted={subscription?.treasuryTipRetracted}
-          />
-        )}
-        {hasTreasuryBounty && (
-          <TreasuryBountyOptions
-            disabled={disabled}
-            treasuryBountyProposed={subscription?.treasuryBountyProposed}
-            treasuryBountyAwarded={subscription?.treasuryBountyAwarded}
-            treasuryBountyApproved={subscription?.treasuryBountyApproved}
-            treasuryBountyCanceled={subscription?.treasuryBountyCanceled}
-            treasuryBountyClaimed={subscription?.treasuryBountyClaimed}
-            treasuryBountyRejected={subscription?.treasuryBountyRejected}
-          />
-        )}
-        {hasTreasuryChildBounty && (
-          <TreasuryChildBountyOptions
-            disabled={disabled}
-            treasuryChildBountyAdded={subscription?.treasuryChildBountyAdded}
-            treasuryChildBountyAwarded={
-              subscription?.treasuryChildBountyAwarded
-            }
-            treasuryChildBountyCanceled={
-              subscription?.treasuryChildBountyCanceled
-            }
-            treasuryChildBountyClaimed={
-              subscription?.treasuryChildBountyClaimed
-            }
-          />
-        )}
+        {hasTreasuryProposal && <TreasuryProposalOptions />}
+        {hasTreasuryTip && <TreasuryTipOptions />}
+        {hasTreasuryBounty && <TreasuryBountyOptions />}
+        {hasTreasuryChildBounty && <TreasuryChildBountyOptions />}
       </Options>
     </AccordionCard>
   );

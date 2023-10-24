@@ -2,38 +2,45 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function ReferendaReferendumOptions({ disabled, ...data }) {
+export default function ReferendaReferendumOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [referendaSubmitted, setReferendaSubmitted] = useState(
-    !!data.referendaSubmitted?.isOn,
+    !!subscription.referendaSubmitted?.isOn,
   );
   const [referendaDecisionStarted, setReferendaDecisionStarted] = useState(
-    !!data.referendaDecisionStarted?.isOn,
+    !!subscription.referendaDecisionStarted?.isOn,
   );
   const [referendaConfirmStarted, setReferendaConfirmStarted] = useState(
-    !!data.referendaConfirmStarted?.isOn,
+    !!subscription.referendaConfirmStarted?.isOn,
   );
   const [referendaCancelled, setReferendaCancelled] = useState(
-    !!data.referendaCancelled?.isOn,
+    !!subscription.referendaCancelled?.isOn,
   );
   const [referendaConfirmAborted, setReferendaConfirmAborted] = useState(
-    !!data.referendaConfirmAborted?.isOn,
+    !!subscription.referendaConfirmAborted?.isOn,
   );
   const [referendaConfirmed, setReferendaConfirmed] = useState(
-    !!data.referendaConfirmed?.isOn,
+    !!subscription.referendaConfirmed?.isOn,
   );
   const [referendaExecuted, setReferendaExecuted] = useState(
-    !!data.referendaExecuted?.isOn,
+    !!subscription.referendaExecuted?.isOn,
   );
   const [referendaKilled, setReferendaKilled] = useState(
-    !!data.referendaKilled?.isOn,
+    !!subscription.referendaKilled?.isOn,
   );
   const [referendaTimedout, setReferendaTimedout] = useState(
-    !!data.referendaTimedout?.isOn,
+    !!subscription.referendaTimedout?.isOn,
   );
   const [referendaRejected, setReferendaRejected] = useState(
-    !!data.referendaRejected?.isOn,
+    !!subscription.referendaRejected?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

@@ -2,14 +2,21 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function DemocracyProposalOptions({ disabled, ...data }) {
+export default function DemocracyProposalOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [democracyProposalProposed, setDemocracyProposalProposed] = useState(
-    !!data.democracyProposalProposed?.isOn,
+    !!subscription.democracyProposalProposed?.isOn,
   );
   const [democracyProposalCanceled, setDemocracyProposalCanceled] = useState(
-    !!data.democracyProposalCanceled?.isOn,
+    !!subscription.democracyProposalCanceled?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

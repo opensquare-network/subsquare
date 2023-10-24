@@ -2,20 +2,27 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function TreasuryTipOptions({ disabled, ...data }) {
+export default function TreasuryTipOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [treasuryTipNew, setTreasuryTipNew] = useState(
-    !!data.treasuryTipNew?.isOn,
+    !!subscription.treasuryTipNew?.isOn,
   );
   const [treasuryTipTip, setTreasuryTipTip] = useState(
-    !!data.treasuryTipTip?.isOn,
+    !!subscription.treasuryTipTip?.isOn,
   );
   const [treasuryTipClosed, setTreasuryTipClosed] = useState(
-    !!data.treasuryTipClosed?.isOn,
+    !!subscription.treasuryTipClosed?.isOn,
   );
   const [treasuryTipRetracted, setTreasuryTipRetracted] = useState(
-    !!data.treasuryTipRetracted?.isOn,
+    !!subscription.treasuryTipRetracted?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

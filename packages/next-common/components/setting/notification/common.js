@@ -1,4 +1,5 @@
 import debounce from "lodash.debounce";
+import { useUser } from "next-common/context/user";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useMemo } from "react";
@@ -59,4 +60,17 @@ export function useDebounceAutoSaveDiscussionOptions(
     }
     saveDiscussionOptions(discussionOptionValues);
   }, [saveDiscussionOptions, isChanged, discussionOptionValues]);
+}
+
+export function useIsDiscussionOptionsDisabled() {
+  const loginUser = useUser();
+  return !loginUser?.emailVerified;
+}
+
+export function useIsOnChainOptionsDisabled() {
+  const loginUser = useUser();
+
+  const isVerifiedUser = loginUser?.emailVerified;
+  const telegramLinked = loginUser?.telegram?.chat;
+  return !isVerifiedUser && !telegramLinked;
 }

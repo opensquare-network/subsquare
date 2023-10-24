@@ -6,7 +6,7 @@ import AccordionCard from "next-common/components/styled/containers/accordionCar
 import { Options } from "next-common/components/setting/notification/styled";
 import { Names } from "next-common/utils/consts/menu/democracy";
 
-export default function DemocracySubscription({ subscription, disabled }) {
+export default function DemocracySubscription() {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasDemocracy, menu: democracyMenu } = checkSubMenu(
@@ -29,34 +29,8 @@ export default function DemocracySubscription({ subscription, disabled }) {
   return (
     <AccordionCard title="Democracy" defaultOpen={true}>
       <Options>
-        {hasDemocracyProposal && (
-          <DemocracyProposalOptions
-            disabled={disabled}
-            democracyProposalProposed={subscription?.democracyProposalProposed}
-            democracyProposalCanceled={subscription?.democracyProposalCanceled}
-          />
-        )}
-        {hasDemocracyReferenda && (
-          <DemocracyReferendumOptions
-            disabled={disabled}
-            democracyReferendumStarted={
-              subscription?.democracyReferendumStarted
-            }
-            democracyReferendumPassed={subscription?.democracyReferendumPassed}
-            democracyReferendumNotPassed={
-              subscription?.democracyReferendumNotPassed
-            }
-            democracyReferendumCancelled={
-              subscription?.democracyReferendumCancelled
-            }
-            democracyReferendumExecuted={
-              subscription?.democracyReferendumExecuted
-            }
-            democracyReferendumNotExecuted={
-              subscription?.democracyReferendumNotExecuted
-            }
-          />
-        )}
+        {hasDemocracyProposal && <DemocracyProposalOptions />}
+        {hasDemocracyReferenda && <DemocracyReferendumOptions />}
       </Options>
     </AccordionCard>
   );

@@ -2,9 +2,16 @@ import React from "react";
 import { ToggleItem } from "./styled";
 import Toggle from "../../toggle";
 import { useState } from "react";
-import { useDebounceAutoSaveDiscussionOptions } from "./common";
+import {
+  useDebounceAutoSaveDiscussionOptions,
+  useIsDiscussionOptionsDisabled,
+} from "./common";
+import { useUser } from "next-common/context/user";
 
-export default function DiscussionOptions({ disabled, ...data }) {
+export default function DiscussionOptions() {
+  const user = useUser();
+  const data = user?.notification;
+  const disabled = useIsDiscussionOptionsDisabled();
   const [reply, setReply] = useState(!!data.reply);
   const [mention, setMention] = useState(!!data.mention);
 

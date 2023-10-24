@@ -2,20 +2,27 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function TreasuryProposalOptions({ disabled, ...data }) {
+export default function TreasuryProposalOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [treasuryProposalProposed, setTreasuryProposalProposed] = useState(
-    !!data.treasuryProposalProposed?.isOn,
+    !!subscription.treasuryProposalProposed?.isOn,
   );
   const [treasuryProposalApproved, setTreasuryProposalApproved] = useState(
-    !!data.treasuryProposalApproved?.isOn,
+    !!subscription.treasuryProposalApproved?.isOn,
   );
   const [treasuryProposalAwarded, setTreasuryProposalAwarded] = useState(
-    !!data.treasuryProposalAwarded?.isOn,
+    !!subscription.treasuryProposalAwarded?.isOn,
   );
   const [treasuryProposalRejected, setTreasuryProposalRejected] = useState(
-    !!data.treasuryProposalRejected?.isOn,
+    !!subscription.treasuryProposalRejected?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

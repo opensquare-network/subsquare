@@ -2,28 +2,34 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useCallback, useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
+import { useChain } from "next-common/context/chain";
 
-export default function TechCommMotionOptions({
-  isKintsugi,
-  disabled,
-  ...data
-}) {
+export default function TechCommMotionOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+  const chain = useChain();
+  const isKintsugi = ["kintsugi", "interlay"].includes(chain);
+
   const [tcMotionProposed, setTcMotionProposed] = useState(
-    !!data.tcMotionProposed?.isOn,
+    !!subscription.tcMotionProposed?.isOn,
   );
   const [tcMotionVoted, setTcMotionVoted] = useState(
-    !!data.tcMotionVoted?.isOn,
+    !!subscription.tcMotionVoted?.isOn,
   );
   const [tcMotionApproved, setTcMotionApproved] = useState(
-    !!data.tcMotionApproved?.isOn,
+    !!subscription.tcMotionApproved?.isOn,
   );
   const [tcMotionDisApproved, setTcMotionDisApproved] = useState(
-    !!data.tcMotionDisApproved?.isOn,
+    !!subscription.tcMotionDisApproved?.isOn,
   );
   // for kintsugi/interlay only
   const [tcMotionExecuted, setTcMotionExecuted] = useState(
-    !!data.tcMotionExecuted?.isOn,
+    !!subscription.tcMotionExecuted?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

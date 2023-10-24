@@ -5,7 +5,7 @@ import AccordionCard from "next-common/components/styled/containers/accordionCar
 import { Options } from "next-common/components/setting/notification/styled";
 import { Names } from "next-common/utils/consts/menu/tc";
 
-export default function TechCommSubscription({ subscription, disabled }) {
+export default function TechCommSubscription() {
   const homeMenus = getHomeMenu();
 
   const { isMenuActive: hasTechComm, menu: techCommMenu } = checkSubMenu(
@@ -24,15 +24,7 @@ export default function TechCommSubscription({ subscription, disabled }) {
   return (
     <AccordionCard title="Tech-Comm." defaultOpen={true}>
       <Options>
-        {hasTechCommMotion && (
-          <TechCommMotionOptions
-            disabled={disabled}
-            tcMotionProposed={subscription?.tcMotionProposed}
-            tcMotionVoted={subscription?.tcMotionVoted}
-            tcMotionApproved={subscription?.tcMotionApproved}
-            tcMotionDisApproved={subscription?.tcMotionDisApproved}
-          />
-        )}
+        <TechCommMotionOptions />
       </Options>
     </AccordionCard>
   );

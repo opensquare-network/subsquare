@@ -2,38 +2,45 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function FellowshipReferendumOptions({ disabled, ...data }) {
+export default function FellowshipReferendumOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [fellowshipSubmitted, setFellowshipSubmitted] = useState(
-    !!data.fellowshipSubmitted?.isOn,
+    !!subscription.fellowshipSubmitted?.isOn,
   );
   const [fellowshipDecisionStarted, setFellowshipDecisionStarted] = useState(
-    !!data.fellowshipDecisionStarted?.isOn,
+    !!subscription.fellowshipDecisionStarted?.isOn,
   );
   const [fellowshipConfirmStarted, setFellowshipConfirmStarted] = useState(
-    !!data.fellowshipConfirmStarted?.isOn,
+    !!subscription.fellowshipConfirmStarted?.isOn,
   );
   const [fellowshipCancelled, setFellowshipCancelled] = useState(
-    !!data.fellowshipCancelled?.isOn,
+    !!subscription.fellowshipCancelled?.isOn,
   );
   const [fellowshipConfirmAborted, setFellowshipConfirmAborted] = useState(
-    !!data.fellowshipConfirmAborted?.isOn,
+    !!subscription.fellowshipConfirmAborted?.isOn,
   );
   const [fellowshipConfirmed, setFellowshipConfirmed] = useState(
-    !!data.fellowshipConfirmed?.isOn,
+    !!subscription.fellowshipConfirmed?.isOn,
   );
   const [fellowshipExecuted, setFellowshipExecuted] = useState(
-    !!data.fellowshipExecuted?.isOn,
+    !!subscription.fellowshipExecuted?.isOn,
   );
   const [fellowshipKilled, setFellowshipKilled] = useState(
-    !!data.fellowshipKilled?.isOn,
+    !!subscription.fellowshipKilled?.isOn,
   );
   const [fellowshipTimedout, setFellowshipTimedout] = useState(
-    !!data.fellowshipTimedout?.isOn,
+    !!subscription.fellowshipTimedout?.isOn,
   );
   const [fellowshipRejected, setFellowshipRejected] = useState(
-    !!data.fellowshipRejected?.isOn,
+    !!subscription.fellowshipRejected?.isOn,
   );
 
   const [isChanged, setIsChanged] = useState(false);

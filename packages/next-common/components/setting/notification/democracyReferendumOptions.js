@@ -2,30 +2,36 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
+import { useChain } from "next-common/context/chain";
 
-export default function DemocracyReferendumOptions({
-  isKintsugi,
-  disabled,
-  ...data
-}) {
+export default function DemocracyReferendumOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+  const chain = useChain();
+  const isKintsugi = ["kintsugi", "interlay"].includes(chain);
+
   const [democracyReferendumStarted, setDemocracyReferendumStarted] = useState(
-    !!data.democracyReferendumStarted?.isOn,
+    !!subscription.democracyReferendumStarted?.isOn,
   );
   const [democracyReferendumPassed, setDemocracyReferendumPassed] = useState(
-    !!data.democracyReferendumPassed?.isOn,
+    !!subscription.democracyReferendumPassed?.isOn,
   );
   const [democracyReferendumNotPassed, setDemocracyReferendumNotPassed] =
-    useState(!!data.democracyReferendumNotPassed?.isOn);
+    useState(!!subscription.democracyReferendumNotPassed?.isOn);
   const [democracyReferendumCancelled, setDemocracyReferendumCancelled] =
-    useState(!!data.democracyReferendumCancelled?.isOn);
+    useState(!!subscription.democracyReferendumCancelled?.isOn);
   const [democracyReferendumExecuted, setDemocracyReferendumExecuted] =
-    useState(!!data.democracyReferendumExecuted?.isOn);
+    useState(!!subscription.democracyReferendumExecuted?.isOn);
   const [democracyReferendumNotExecuted, setDemocracyReferendumNotExecuted] =
-    useState(!!data.democracyReferendumNotExecuted?.isOn);
+    useState(!!subscription.democracyReferendumNotExecuted?.isOn);
   // for kintsugi/interlay only
   const [democracyReferendumFastTrack, setDemocracyReferendumFastTrack] =
-    useState(!!data.democracyReferendumFastTrack?.isOn);
+    useState(!!subscription.democracyReferendumFastTrack?.isOn);
 
   const [isChanged, setIsChanged] = useState(false);
 

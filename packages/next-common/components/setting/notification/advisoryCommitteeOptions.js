@@ -2,20 +2,27 @@ import React from "react";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
 import { SubLabel, ToggleItem } from "./styled";
-import { useDebounceAutoSaveOnChainOptions } from "./common";
+import {
+  useDebounceAutoSaveOnChainOptions,
+  useIsOnChainOptionsDisabled,
+} from "./common";
+import { usePageProps } from "next-common/context/page";
 
-export default function AdvisoryCommitteeOptions({ disabled, ...data }) {
+export default function AdvisoryCommitteeOptions() {
+  const disabled = useIsOnChainOptionsDisabled();
+  const { subscription } = usePageProps();
+
   const [advisoryCommitteeProposed, setAdvisoryCommitteeProposed] = useState(
-    !!data.advisoryCommitteeProposed?.isOn,
+    !!subscription.advisoryCommitteeProposed?.isOn,
   );
   const [advisoryCommitteeVoted, setAdvisoryCommitteeVoted] = useState(
-    !!data.advisoryCommitteeVoted?.isOn,
+    !!subscription.advisoryCommitteeVoted?.isOn,
   );
   const [advisoryCommitteeApproved, setAdvisoryCommitteeApproved] = useState(
-    !!data.advisoryCommitteeApproved?.isOn,
+    !!subscription.advisoryCommitteeApproved?.isOn,
   );
   const [advisoryCommitteeDisApproved, setAdvisoryCommitteeDisApproved] =
-    useState(!!data.advisoryCommitteeDisApproved?.isOn);
+    useState(!!subscription.advisoryCommitteeDisApproved?.isOn);
 
   const [isChanged, setIsChanged] = useState(false);
 
