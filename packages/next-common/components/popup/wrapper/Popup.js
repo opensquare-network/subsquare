@@ -24,7 +24,11 @@ export default function Popup({
     <Dialog.Root open onOpenChange={onClose}>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content asChild onEscapeKeyDown={onClose}>
+        <Dialog.Content
+          asChild
+          onEscapeKeyDown={onClose}
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <div
             className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
             style={{ zIndex: zOverlay }}
