@@ -10,6 +10,7 @@ export default function useSubMyReferendaVote(
   const api = useApi();
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!api || !address || !api.query.convictionVoting) {
@@ -36,6 +37,7 @@ export default function useSubMyReferendaVote(
             ...vote,
             delegations: jsonVoting.casting.delegations,
           });
+          setIsLoaded(true);
         }
 
         if (!jsonVoting.delegating) {
@@ -55,14 +57,14 @@ export default function useSubMyReferendaVote(
             )?.[1];
 
             if (!vote?.standard) {
-              setIsLoading(false);
               setVote({
                 delegating: {
                   ...jsonVoting.delegating,
                   conviction: Conviction[conviction],
                 },
               });
-
+              setIsLoading(false);
+              setIsLoaded(true);
               return;
             }
 
@@ -78,6 +80,7 @@ export default function useSubMyReferendaVote(
               },
             });
             setIsLoading(false);
+            setIsLoaded(true);
           });
       })
       .then((result) => {
@@ -94,5 +97,6 @@ export default function useSubMyReferendaVote(
   return {
     vote,
     isLoading,
+    isLoaded,
   };
 }

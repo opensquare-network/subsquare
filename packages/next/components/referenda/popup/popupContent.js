@@ -21,7 +21,6 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import VStack from "next-common/components/styled/vStack";
 import { WarningMessage } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
-import useIsLoaded from "next-common/hooks/useIsLoaded";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 
 export function LoadingPanel() {
@@ -190,9 +189,11 @@ export default function PopupContent({
     api,
     signerAccount?.address,
   );
-  const { vote: addressVote, isLoading: addressVoteIsLoading } =
-    useSubMyDemocracyVote(signerAccount?.realAddress);
-  const addressVoteIsLoaded = useIsLoaded(addressVoteIsLoading);
+  const {
+    vote: addressVote,
+    isLoading: addressVoteIsLoading,
+    isLoaded: addressVoteIsLoaded,
+  } = useSubMyDemocracyVote(signerAccount?.realAddress);
 
   let content = <LoadingPanel />;
 

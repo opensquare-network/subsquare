@@ -21,7 +21,6 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import useIsLoaded from "next-common/hooks/useIsLoaded";
 import { LoadingPanel } from "components/referenda/popup/popupContent";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 
@@ -192,9 +191,15 @@ export default function PopupContent({
     signerAccount?.address,
   );
 
-  const { vote: addressVote, isLoading: addressVoteIsLoading } =
-    useSubMyReferendaVote(trackId, referendumIndex, signerAccount?.realAddress);
-  const addressVoteIsLoaded = useIsLoaded(addressVoteIsLoading);
+  const {
+    vote: addressVote,
+    isLoading: addressVoteIsLoading,
+    isLoaded: addressVoteIsLoaded,
+  } = useSubMyReferendaVote(
+    trackId,
+    referendumIndex,
+    signerAccount?.realAddress,
+  );
 
   let content = <LoadingPanel />;
 
