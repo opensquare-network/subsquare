@@ -8,15 +8,15 @@ import { Options } from "next-common/components/setting/notification/styled";
 export default function useDemocracySubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
-  const { hasMenu: hasDemocracy, menu: democracyMenu } = checkSubMenu(
+  const { isMenuActive: hasDemocracy, menu: democracyMenu } = checkSubMenu(
     homeMenus,
     "DEMOCRACY",
   );
-  const { hasMenu: hasDemocracyProposal } = checkSubMenu(
+  const { isMenuActive: hasDemocracyProposal } = checkSubMenu(
     democracyMenu?.items,
     "Proposals",
   );
-  const { hasMenu: hasDemocracyReferenda } = checkSubMenu(
+  const { isMenuActive: hasDemocracyReferenda } = checkSubMenu(
     democracyMenu?.items,
     "Referenda",
   );

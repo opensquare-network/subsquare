@@ -10,7 +10,7 @@ export default function useAdvisoryCommitteeSubscription(
 ) {
   const homeMenus = getHomeMenu();
 
-  const { hasMenu: hasAdvisoryCommittee } = checkSubMenu(
+  const { isMenuActive: hasAdvisoryCommittee } = checkSubMenu(
     homeMenus,
     "ADVISORY COMMITTEE",
   );

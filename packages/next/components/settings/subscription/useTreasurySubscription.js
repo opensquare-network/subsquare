@@ -10,20 +10,23 @@ import { Options } from "next-common/components/setting/notification/styled";
 export default function useTreasurySubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
-  const { hasMenu: hasTreasury, menu: treasuryMenu } = checkSubMenu(
+  const { isMenuActive: hasTreasury, menu: treasuryMenu } = checkSubMenu(
     homeMenus,
     "TREASURY",
   );
-  const { hasMenu: hasTreasuryProposal } = checkSubMenu(
+  const { isMenuActive: hasTreasuryProposal } = checkSubMenu(
     treasuryMenu?.items,
     "Proposals",
   );
-  const { hasMenu: hasTreasuryTip } = checkSubMenu(treasuryMenu?.items, "Tips");
-  const { hasMenu: hasTreasuryBounty } = checkSubMenu(
+  const { isMenuActive: hasTreasuryTip } = checkSubMenu(
+    treasuryMenu?.items,
+    "Tips",
+  );
+  const { isMenuActive: hasTreasuryBounty } = checkSubMenu(
     treasuryMenu?.items,
     "Bounties",
   );
-  const { hasMenu: hasTreasuryChildBounty } = checkSubMenu(
+  const { isMenuActive: hasTreasuryChildBounty } = checkSubMenu(
     treasuryMenu?.items,
     "Child Bounties",
   );

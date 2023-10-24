@@ -7,11 +7,11 @@ import { Options } from "next-common/components/setting/notification/styled";
 export default function useCouncilSubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
-  const { hasMenu: hasCouncil, menu: councilMenu } = checkSubMenu(
+  const { isMenuActive: hasCouncil, menu: councilMenu } = checkSubMenu(
     homeMenus,
     "COUNCIL",
   );
-  const { hasMenu: hasCouncilMotion } = checkSubMenu(
+  const { isMenuActive: hasCouncilMotion } = checkSubMenu(
     councilMenu?.items,
     "Motions",
   );

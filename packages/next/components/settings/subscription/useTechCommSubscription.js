@@ -7,11 +7,11 @@ import { Options } from "next-common/components/setting/notification/styled";
 export default function useTechCommSubscription(subscription, disabled) {
   const homeMenus = getHomeMenu();
 
-  const { hasMenu: hasTechComm, menu: techCommMenu } = checkSubMenu(
+  const { isMenuActive: hasTechComm, menu: techCommMenu } = checkSubMenu(
     homeMenus,
-    "TECH.COMM.",
+    "Technical Committee",
   );
-  const { hasMenu: hasTechCommMotion } = checkSubMenu(
+  const { isMenuActive: hasTechCommMotion } = checkSubMenu(
     techCommMenu?.items,
     "Proposals",
   );
