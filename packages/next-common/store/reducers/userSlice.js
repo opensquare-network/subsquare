@@ -6,6 +6,7 @@ const userSlice = createSlice({
     user: undefined,
     isEditingPost: false,
     loginOpen: false,
+    redirectUrl: null,
   },
   reducers: {
     setUser: (state, { payload }) => {
@@ -17,12 +18,17 @@ const userSlice = createSlice({
     setLoginOpen: (state, { payload }) => {
       state.loginOpen = payload;
     },
+    setRedirectUrl(state, { payload }) {
+      state.redirectUrl = payload;
+    },
   },
 });
 
 export const isEditingPostSelector = (state) => state.user?.isEditingPost;
 export const loginOpenSelector = (state) => state.user?.loginOpen;
+export const loginRedirectUrlSelector = (state) => state.user?.redirectUrl;
 
-export const { setUser, setEditingPost, setLoginOpen } = userSlice.actions;
+export const { setUser, setEditingPost, setLoginOpen, setRedirectUrl } =
+  userSlice.actions;
 
 export default userSlice.reducer;
