@@ -6,7 +6,7 @@ export function SubscribeTip() {
   return (
     <Link
       className="flex gap-1 items-center p-[6px] bg-theme100 rounded-[16px] overflow-hidden"
-      href="/settings/notification"
+      href="/settings/notifications"
     >
       <div className="inline-flex">
         <SystemTip className="[&_path]:fill-theme500" width={20} height={20} />
