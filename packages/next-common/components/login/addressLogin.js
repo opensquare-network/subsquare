@@ -20,6 +20,8 @@ import {
   useConnectedAddressDispatch,
 } from "next-common/context/connectedAddress";
 import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
+import { useSelector } from "react-redux";
+import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -50,6 +52,7 @@ export default function AddressLogin({ setView }) {
   const connectedAddressDispatch = useConnectedAddressDispatch();
   const isLoginPage = router.pathname === "/login";
   const [lastLoginAddress, setLastLoginAddress] = useState();
+  const redirectUrl = useSelector(loginRedirectUrlSelector);
 
   useEffect(() => {
     const info = getStorageAddressInfo(CACHE_KEY.lastLoginAddress);
@@ -123,6 +126,9 @@ export default function AddressLogin({ setView }) {
               if (isLoginPage) {
                 router.replace(router.query?.redirect || "/");
               } else {
+                if (redirectUrl) {
+                  router.push(redirectUrl);
+                }
                 closeLoginPopup();
               }
             } else {

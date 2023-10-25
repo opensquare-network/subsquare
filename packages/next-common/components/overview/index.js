@@ -1,12 +1,19 @@
-import Link from "next/link";
 import { SystemTip } from "@osn/icons/subsquare";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import { useCallback } from "react";
 
 export function SubscribeTip() {
+  const { openLoginPopup } = useLoginPopup();
+
+  const goSubscriptionSetting = useCallback(() => {
+    openLoginPopup("/settings/notifications");
+  }, []);
+
   return (
-    <Link
-      className="flex gap-1 items-center p-[6px] bg-theme100 rounded-[16px] overflow-hidden"
-      href="/settings/notification"
+    <div
+      className="flex cursor-pointer gap-1 items-center p-[6px] bg-theme100 rounded-[16px] overflow-hidden"
+      onClick={goSubscriptionSetting}
     >
       <div className="inline-flex">
         <SystemTip className="[&_path]:fill-theme500" width={20} height={20} />
@@ -15,7 +22,7 @@ export function SubscribeTip() {
         <span className="underline text-theme500 font-medium">Subscribe</span>{" "}
         on-chain events
       </span>
-    </Link>
+    </div>
   );
 }
 
