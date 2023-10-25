@@ -9,20 +9,12 @@ import {
 import NotificationEmail from "next-common/components/setting/notificationEmail";
 import NotificationTelegram from "next-common/components/setting/notificationTelegram";
 import { useEffect, useState } from "react";
-import {
-  fetchAndUpdateUser,
-  useUser,
-  useUserDispatch,
-} from "next-common/context/user";
+import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { usePageProps } from "next-common/context/page";
-import nextApi from "next-common/services/nextApi";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
+import { useDebounceAutoSaveActiveChannelOptions } from "./notification/common";
 
 export default function Channels() {
-  const dispatch = useDispatch();
-  const userDispatch = useUserDispatch();
   const { unsubscribe } = usePageProps();
   const loginUser = useUser();
   const router = useRouter();
@@ -35,21 +27,17 @@ export default function Channels() {
   const [isEmailChannelOn, setIsEmailChannelOn] = useState(
     loginUser?.activeNotificationChannels?.email !== false,
   );
+  const [isChanged, setIsChanged] = useState(false);
 
-  useEffect(() => {
-    nextApi
-      .patch("user/active-notification-channels", {
-        email: isEmailChannelOn,
-        telegram: isTelegramChannelOn,
-      })
-      .then(({ error }) => {
-        if (error) {
-          dispatch(newErrorToast(error.message));
-          return;
-        }
-        fetchAndUpdateUser(userDispatch);
-      });
-  }, [isEmailChannelOn, isTelegramChannelOn, userDispatch]);
+  const updateOption = (setter) => (data) => {
+    setter(data);
+    setIsChanged(true);
+  };
+
+  useDebounceAutoSaveActiveChannelOptions(isChanged, {
+    email: isEmailChannelOn,
+    telegram: isTelegramChannelOn,
+  });
 
   useEffect(() => {
     if (unsubscribe) {
@@ -82,11 +70,11 @@ export default function Channels() {
           )}
           <NotificationEmail
             isOn={isEmailChannelOn}
-            setIsOn={setIsEmailChannelOn}
+            setIsOn={updateOption(setIsEmailChannelOn)}
           />
           <NotificationTelegram
             isOn={isTelegramChannelOn}
-            setIsOn={setIsTelegramChannelOn}
+            setIsOn={updateOption(setIsTelegramChannelOn)}
           />
         </div>
       </ContentWrapper>

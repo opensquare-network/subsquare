@@ -1,7 +1,10 @@
 import debounce from "lodash.debounce";
 import { useUser } from "next-common/context/user";
 import nextApi from "next-common/services/nextApi";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import useDeepCompareEffect from "use-deep-compare-effect";
@@ -20,7 +23,9 @@ export function useDebounceAutoSaveOnChainOptions(
           .then(({ error }) => {
             if (error) {
               dispatch(newErrorToast(error.message));
+              return;
             }
+            dispatch(newSuccessToast("Settings saved", 1000));
           });
       }, 1000),
     [dispatch],
@@ -48,7 +53,9 @@ export function useDebounceAutoSaveDiscussionOptions(
           .then(({ error }) => {
             if (error) {
               dispatch(newErrorToast(error.message));
+              return;
             }
+            dispatch(newSuccessToast("Settings saved", 1000));
           });
       }, 1000),
     [dispatch],
@@ -60,6 +67,36 @@ export function useDebounceAutoSaveDiscussionOptions(
     }
     saveDiscussionOptions(discussionOptionValues);
   }, [saveDiscussionOptions, isChanged, discussionOptionValues]);
+}
+
+export function useDebounceAutoSaveActiveChannelOptions(
+  isChanged,
+  activeChannelOptionValues,
+) {
+  const dispatch = useDispatch();
+
+  const saveActiveChannelOptions = useMemo(
+    () =>
+      debounce(async (activeChannelOptionValues) => {
+        nextApi
+          .patch("user/active-notification-channels", activeChannelOptionValues)
+          .then(({ error }) => {
+            if (error) {
+              dispatch(newErrorToast(error.message));
+              return;
+            }
+            dispatch(newSuccessToast("Settings saved", 1000));
+          });
+      }, 1000),
+    [dispatch],
+  );
+
+  useDeepCompareEffect(() => {
+    if (!isChanged) {
+      return;
+    }
+    saveActiveChannelOptions(activeChannelOptionValues);
+  }, [saveActiveChannelOptions, isChanged, activeChannelOptionValues]);
 }
 
 export function useIsDiscussionOptionsDisabled() {
