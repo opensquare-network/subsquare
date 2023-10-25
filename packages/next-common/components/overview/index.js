@@ -5,19 +5,15 @@ import ChainSocialLinks from "next-common/components/chain/socialLinks";
 export function SubscribeTip() {
   return (
     <Link
-      className="flex gap-1 items-center p-[6px] bg-neutral200 rounded-[16px] overflow-hidden"
+      className="flex gap-1 items-center p-[6px] bg-theme100 rounded-[16px] overflow-hidden"
       href="/setting/notification"
     >
       <div className="inline-flex">
-        <SystemTip
-          className="[&_path]:fill-textTertiary"
-          width={20}
-          height={20}
-        />
+        <SystemTip className="[&_path]:fill-theme500" width={20} height={20} />
       </div>
-      <span className="text-[14px] leading-[20px] whitespace-nowrap text-textSecondary">
-        <span className="text-theme500 font-medium">Subscribe</span> on-chain
-        events
+      <span className="text-[14px] leading-[20px] whitespace-nowrap text-theme500">
+        <span className="underline text-theme500 font-medium">Subscribe</span>{" "}
+        on-chain events
       </span>
     </Link>
   );
