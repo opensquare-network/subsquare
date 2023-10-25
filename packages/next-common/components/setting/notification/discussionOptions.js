@@ -10,10 +10,9 @@ import { useUser } from "next-common/context/user";
 
 export default function DiscussionOptions() {
   const user = useUser();
-  const data = user?.notification;
   const disabled = useIsDiscussionOptionsDisabled();
-  const [reply, setReply] = useState(!!data.reply);
-  const [mention, setMention] = useState(!!data.mention);
+  const [reply, setReply] = useState(!!user?.notification.reply);
+  const [mention, setMention] = useState(!!user?.notification.mention);
 
   const [isChanged, setIsChanged] = useState(false);
 
