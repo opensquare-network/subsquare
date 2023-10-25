@@ -126,10 +126,10 @@ export default function AddressLogin({ setView }) {
               if (isLoginPage) {
                 router.replace(router.query?.redirect || "/");
               } else {
+                closeLoginPopup();
                 if (redirectUrl) {
                   router.push(redirectUrl);
                 }
-                closeLoginPopup();
               }
             } else {
               // Save account name for Email page

@@ -41,10 +41,10 @@ export default function MailLogin({ setView }) {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         updateUser(res.result, userDispatch);
+        closeLoginPopup();
         if (redirectUrl) {
           router.push(redirectUrl);
         }
-        closeLoginPopup();
       } else if (res.error) {
         setErrors(res.error);
       }
