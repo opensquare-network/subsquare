@@ -31,25 +31,25 @@ export default function SettingLayout(props) {
     if (isKintsugi) {
       tabs = [
         { label: "Account", url: "/settings/key-account" },
-        { label: "Notification", url: "/settings/notification" },
+        { label: "Notifications", url: "/settings/notification" },
       ];
     } else {
       tabs = [
         { label: "Account", url: "/settings/key-account" },
         { label: "Proxy", url: "/settings/proxy" },
-        { label: "Notification", url: "/settings/notification" },
+        { label: "Notifications", url: "/settings/notification" },
       ];
     }
   } else {
     tabs = [
       { label: "Account", url: "/settings/account" },
       { label: "Link Address", url: "/settings/linked-address" },
-      { label: "Notification", url: "/settings/notification" },
+      { label: "Notifications", url: "/settings/notification" },
     ];
   }
 
   return (
-    <ListLayout title={"Setting"} tabs={tabs} {...props}>
+    <ListLayout title={"Settings"} tabs={tabs} {...props}>
       <Wrapper>{props.children}</Wrapper>
     </ListLayout>
   );
