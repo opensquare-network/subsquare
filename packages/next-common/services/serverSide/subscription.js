@@ -20,5 +20,5 @@ export async function fetchUserSubscription(context) {
     options,
   );
 
-  return subscription;
+  return subscription || {};
 }
