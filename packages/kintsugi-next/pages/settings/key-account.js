@@ -1,29 +1,35 @@
-import { useEffect } from "react";
 import { withCommonProps } from "next-common/lib";
 import { ContentWrapper } from "next-common/components/setting/styled";
-import Username from "next-common/components/setting/username";
-import Email from "next-common/components/setting/email";
-import Password from "next-common/components/setting/password";
+import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
+import { encodeAddressToChain } from "next-common/services/address";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
+import { useEffect } from "react";
 import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
+import { useChain } from "next-common/context/chain";
 import { useUser } from "next-common/context/user";
 
-export default function Account() {
+export default function KeyAccount() {
+  const chain = useChain();
   const loginUser = useUser();
+  const user = loginUser;
+  const address = user?.publicKey
+    ? encodeAddressToChain(Buffer.from(user?.publicKey, "hex"), chain)
+    : "";
+
   const router = useRouter();
 
   useEffect(() => {
     if (loginUser === null) {
       router.push("/");
     }
-    if (loginUser && isKeyRegisteredUser(loginUser)) {
-      router.push("/setting/key-account");
+    if (loginUser && !isKeyRegisteredUser(loginUser)) {
+      router.push("/settings/account");
     }
   }, [loginUser, router]);
 
@@ -31,24 +37,9 @@ export default function Account() {
     <>
       <SettingLayout>
         <SettingSection>
-          <TitleContainer>Username</TitleContainer>
+          <TitleContainer>Web3 Address</TitleContainer>
           <ContentWrapper>
-            <Username username={loginUser?.username} />
-          </ContentWrapper>
-        </SettingSection>
-        <SettingSection>
-          <TitleContainer>Email</TitleContainer>
-          <ContentWrapper>
-            <Email
-              email={loginUser?.email}
-              verified={loginUser?.emailVerified}
-            />
-          </ContentWrapper>
-        </SettingSection>
-        <SettingSection>
-          <TitleContainer>Change Password</TitleContainer>
-          <ContentWrapper>
-            <Password />
+            <Web3Address address={address} />
           </ContentWrapper>
         </SettingSection>
         <SettingSection>

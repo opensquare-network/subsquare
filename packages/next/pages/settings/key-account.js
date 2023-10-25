@@ -1,10 +1,8 @@
-import { useEffect } from "react";
-import Username from "next-common/components/setting/username";
-import Email from "next-common/components/setting/email";
-import Password from "next-common/components/setting/password";
+import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { isKeyRegisteredUser } from "next-common/utils";
+import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import {
   SettingSection,
@@ -14,37 +12,27 @@ import { ContentWrapper } from "next-common/components/setting/styled";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import { useUser } from "next-common/context/user";
 
-export default function AccountSettingPage() {
+export default function KeyAccountSettingPage() {
   const loginUser = useUser();
+  const address = loginUser?.address || "";
+
   const router = useRouter();
 
   useEffect(() => {
     if (loginUser === null) {
       router.push("/");
     }
-    if (loginUser && isKeyRegisteredUser(loginUser)) {
-      router.push("/setting/key-account");
+    if (loginUser && !isKeyRegisteredUser(loginUser)) {
+      router.push("/settings/account");
     }
   }, [loginUser, router]);
 
   return (
     <SettingLayout>
       <SettingSection>
-        <TitleContainer>Username</TitleContainer>
+        <TitleContainer>Web3 Address</TitleContainer>
         <ContentWrapper>
-          <Username username={loginUser?.username} />
-        </ContentWrapper>
-      </SettingSection>
-      <SettingSection>
-        <TitleContainer>Email</TitleContainer>
-        <ContentWrapper>
-          <Email email={loginUser?.email} verified={loginUser?.emailVerified} />
-        </ContentWrapper>
-      </SettingSection>
-      <SettingSection>
-        <TitleContainer>Change Password</TitleContainer>
-        <ContentWrapper>
-          <Password />
+          <Web3Address address={address} />
         </ContentWrapper>
       </SettingSection>
       <SettingSection>
