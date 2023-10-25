@@ -41,6 +41,7 @@ const bifrostPolkadot = {
   subscanDomain: "bifrost",
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  useVoteCall: true,
   description:
     "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
   cssVarsLight: {
