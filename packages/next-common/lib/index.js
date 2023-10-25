@@ -34,7 +34,7 @@ export function withCommonProps(
       ssrNextApi.fetch(adminsApi),
     ]);
 
-    if (context.resolvedUrl?.startsWith("/setting/") && !user) {
+    if (context.resolvedUrl?.startsWith("/settings/") && !user) {
       const { unsubscribe } = context.query;
       if (!unsubscribe) {
         return redirect("/");

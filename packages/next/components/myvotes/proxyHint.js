@@ -11,7 +11,7 @@ export default function ProxyHint({ style }) {
   return (
     <HintMessage style={style}>
       Votes of your proxied account, please&nbsp;
-      <NextLink href="/setting/proxy">unset your proxy setting</NextLink>
+      <NextLink href="/settings/proxy">unset your proxy setting</NextLink>
       &nbsp;to see the votes of login account.
     </HintMessage>
   );

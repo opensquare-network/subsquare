@@ -30,21 +30,21 @@ export default function SettingLayout(props) {
   if (isKeyAccount) {
     if (isKintsugi) {
       tabs = [
-        { label: "Account", url: "/setting/key-account" },
-        { label: "Notification", url: "/setting/notification" },
+        { label: "Account", url: "/settings/key-account" },
+        { label: "Notification", url: "/settings/notification" },
       ];
     } else {
       tabs = [
-        { label: "Account", url: "/setting/key-account" },
-        { label: "Proxy", url: "/setting/proxy" },
-        { label: "Notification", url: "/setting/notification" },
+        { label: "Account", url: "/settings/key-account" },
+        { label: "Proxy", url: "/settings/proxy" },
+        { label: "Notification", url: "/settings/notification" },
       ];
     }
   } else {
     tabs = [
-      { label: "Account", url: "/setting/account" },
-      { label: "Link Address", url: "/setting/linked-address" },
-      { label: "Notification", url: "/setting/notification" },
+      { label: "Account", url: "/settings/account" },
+      { label: "Link Address", url: "/settings/linked-address" },
+      { label: "Notification", url: "/settings/notification" },
     ];
   }
 

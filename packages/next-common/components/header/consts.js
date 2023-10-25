@@ -12,7 +12,7 @@ export const accountMenu = [
     value: "settings",
     name: "Settings",
     icon: <SystemSetting className="[&_path]:stroke-textSecondary" />,
-    pathname: "/setting/account",
+    pathname: "/settings/account",
   },
   logoutSetting,
 ];
@@ -22,7 +22,7 @@ export const accountMenuForKeyAccount = [
     value: "settings",
     name: "Settings",
     icon: <SystemSetting className="[&_path]:stroke-textSecondary" />,
-    pathname: "/setting/key-account",
+    pathname: "/settings/key-account",
   },
   logoutSetting,
 ];
