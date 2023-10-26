@@ -40,7 +40,7 @@ export default function PopupContent({
   const dispatch = useDispatch();
   const api = useApi();
   const signerAccount = useSignerAccount();
-  const [isVoted, setIsVoted] = useState(true);
+  const [isVoted, setIsVoted] = useState(false);
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 

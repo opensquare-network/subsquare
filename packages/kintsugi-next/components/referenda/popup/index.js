@@ -27,7 +27,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
-  const [isVoted, setIsVoted] = useState(true);
+  const [isVoted, setIsVoted] = useState(false);
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
