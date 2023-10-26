@@ -23,10 +23,10 @@ import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferenda
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { LoadingPanel } from "components/referenda/popup/popupContent";
 import { normalizeOnchainVote } from "next-common/utils/vote";
+import VoteSuccessful from "./voteSuccessful";
 
 function VotePanel({
   referendumIndex,
-  onClose,
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
   useStandardVote,
@@ -108,7 +108,6 @@ function VotePanel({
       setLoading: setIsLoading,
       onInBlock,
       onSubmitted,
-      onClose,
       signerAccount,
       isMounted,
     });
@@ -178,6 +177,7 @@ export default function PopupContent({
   useSplitAbstainVote,
   submitExtrinsic = emptyFunction,
 }) {
+  const [isVoted, setIsVoted] = useState(false);
   const signerAccount = useSignerAccount();
 
   const api = useApi();
@@ -207,9 +207,11 @@ export default function PopupContent({
     content = (
       <VotePanel
         referendumIndex={referendumIndex}
-        onClose={onClose}
         onSubmitted={onSubmitted}
-        onInBlock={onInBlock}
+        onInBlock={() => {
+          setIsVoted(true);
+          onInBlock();
+        }}
         useStandardVote={useStandardVote}
         useSplitVote={useSplitVote}
         useSplitAbstainVote={useSplitAbstainVote}
@@ -219,6 +221,10 @@ export default function PopupContent({
         addressVoteIsLoading={addressVoteIsLoading}
       />
     );
+  }
+
+  if (isVoted) {
+    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
   }
 
   return (

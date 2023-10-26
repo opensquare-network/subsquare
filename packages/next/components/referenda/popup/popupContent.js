@@ -22,6 +22,7 @@ import VStack from "next-common/components/styled/vStack";
 import { WarningMessage } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
 import { normalizeOnchainVote } from "next-common/utils/vote";
+import VoteSuccessful from "components/gov2/votePopup/voteSuccessful";
 
 export function LoadingPanel() {
   return (
@@ -38,7 +39,6 @@ export function LoadingPanel() {
 
 function VotePanel({
   referendumIndex,
-  onClose,
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
   useStandardVote,
@@ -115,7 +115,6 @@ function VotePanel({
       setLoading: setIsLoading,
       onInBlock,
       onSubmitted,
-      onClose,
       signerAccount,
       isMounted,
     });
@@ -178,6 +177,7 @@ export default function PopupContent({
   VoteTypeTab,
   submitExtrinsic = emptyFunction,
 }) {
+  const [isVoted, setIsVoted] = useState(false);
   const signerAccount = useSignerAccount();
 
   const api = useApi();
@@ -201,9 +201,11 @@ export default function PopupContent({
     content = (
       <VotePanel
         referendumIndex={referendumIndex}
-        onClose={onClose}
         onSubmitted={onSubmitted}
-        onInBlock={onInBlock}
+        onInBlock={() => {
+          setIsVoted(true);
+          onInBlock();
+        }}
         useStandardVote={useStandardVote}
         useSplitVote={useSplitVote}
         VoteTypeTab={VoteTypeTab}
@@ -213,6 +215,10 @@ export default function PopupContent({
         addressVoteIsLoading={addressVoteIsLoading}
       />
     );
+  }
+
+  if (isVoted) {
+    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
   }
 
   return (
