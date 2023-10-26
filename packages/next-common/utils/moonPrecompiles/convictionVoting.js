@@ -9,6 +9,9 @@ const convictionVotingAbi = [
   "function voteNo(uint32 pollIndex,uint256 voteAmount,uint8 conviction)",
   "function voteSplit(uint32 pollIndex, uint256 aye, uint256 nay)",
   "function voteSplitAbstain(uint32 pollIndex,uint256 aye,uint256 nay,uint256 abstain)",
+  "function removeVote(uint32 pollIndex)",
+  "function removeVoteForTrack(uint32 pollIndex, uint16 trackId)",
+  "function unlock(uint16 trackId, address target)",
 ];
 
 export function encodeDelegateData({
@@ -87,6 +90,41 @@ export function encodeVoteSplitAbstainData({ pollIndex, aye, nay, abstain }) {
     aye,
     nay,
     abstain,
+  ]);
+  return {
+    callTo: CONVICTION_VOTING_ADDRESS,
+    callData,
+  };
+}
+
+export function encodeRemoveVoteData({ pollIndex }) {
+  const contractInterface = new ethers.Interface(convictionVotingAbi);
+  const callData = contractInterface.encodeFunctionData("removeVote", [
+    pollIndex,
+  ]);
+  return {
+    callTo: CONVICTION_VOTING_ADDRESS,
+    callData,
+  };
+}
+
+export function encodeRemoveVoteForTrackData({ pollIndex, trackId }) {
+  const contractInterface = new ethers.Interface(convictionVotingAbi);
+  const callData = contractInterface.encodeFunctionData("removeVoteForTrack", [
+    pollIndex,
+    trackId,
+  ]);
+  return {
+    callTo: CONVICTION_VOTING_ADDRESS,
+    callData,
+  };
+}
+
+export function encodeUnlockData({ trackId, targetAddress }) {
+  const contractInterface = new ethers.Interface(convictionVotingAbi);
+  const callData = contractInterface.encodeFunctionData("unlock", [
+    trackId,
+    targetAddress,
   ]);
   return {
     callTo: CONVICTION_VOTING_ADDRESS,
