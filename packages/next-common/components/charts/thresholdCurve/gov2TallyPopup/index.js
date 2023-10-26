@@ -1,18 +1,19 @@
 import React from "react";
-import Popup from "../../popup/wrapper/Popup";
+import Popup from "../../../popup/wrapper/Popup";
 import { emptyFunction } from "next-common/utils";
-import "../globalConfig";
-import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
+import "../../globalConfig";
+import ThresholdCurvesGov2TallyLegend from "../legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
-} from "../../../context/post/gov2/threshold";
-import ThresholdSupportCard from "./thresholdCards/support";
-import ThresholdApprovalCard from "./thresholdCards/approval";
+} from "../../../../context/post/gov2/threshold";
+import ThresholdSupportCard from "../thresholdCards/support";
+import ThresholdApprovalCard from "../thresholdCards/approval";
 import ReferendaCurveChart from "next-common/components/charts/thresholdCurve/referendaCurveChart";
 import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/fellowshipCurveChart";
 import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import ConfirmationEstimation from "next-common/components/charts/thresholdCurve/gov2TallyPopup/confirmationEstimation";
 
 function PopupChartContent({ isFellowship = false }) {
   if (isFellowship) {
@@ -49,6 +50,11 @@ export default function ThresholdCurvesGov2TallyPopup({
           supportPercentage={supportPercentage}
         />
       </Flex>
+
+      <ConfirmationEstimation
+        approvePercentage={approvalPercentage}
+        supportPercentage={supportPercentage}
+      />
 
       <div className="mt-[16px]">
         <HowOpenGovWorks anchor="referenda" />
