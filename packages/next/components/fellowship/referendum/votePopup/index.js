@@ -17,6 +17,7 @@ import Rank from "./rank";
 import VStack from "next-common/components/styled/vStack";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import VoteSuccessful from "./voteSuccessful";
 
 function PopupContent({
   referendumIndex,
@@ -24,6 +25,7 @@ function PopupContent({
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
 }) {
+  const [isVoted, setIsVoted] = useState(false);
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -74,13 +76,20 @@ function PopupContent({
           setLoadingState(VoteLoadingEnum.None);
         }
       },
-      onInBlock,
+      onInBlock: () => {
+        setIsVoted(true);
+        onInBlock();
+      },
       onSubmitted,
       onClose,
       signerAddress,
       isMounted,
     });
   };
+
+  if (isVoted) {
+    return <VoteSuccessful vote={vote} onClose={onClose} />;
+  }
 
   return (
     <>
