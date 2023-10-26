@@ -195,6 +195,10 @@ export default function PopupContent({
     isLoaded: addressVoteIsLoaded,
   } = useSubMyDemocracyVote(signerAccount?.realAddress);
 
+  if (isVoted) {
+    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
+  }
+
   let content = <LoadingPanel />;
 
   if (addressVoteIsLoaded) {
@@ -215,10 +219,6 @@ export default function PopupContent({
         addressVoteIsLoading={addressVoteIsLoading}
       />
     );
-  }
-
-  if (isVoted) {
-    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
   }
 
   return (
