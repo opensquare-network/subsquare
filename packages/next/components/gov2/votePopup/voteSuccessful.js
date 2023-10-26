@@ -17,7 +17,7 @@ export default function VoteSuccessful({ addressVote, onClose }) {
         <span>Vote for</span>
         <span className="text-textTertiary">{voteType}</span>
       </VoteFor>
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col">
         {votes.map((vote, i) => (
           <VoteItem key={i} vote={vote} />
         ))}
