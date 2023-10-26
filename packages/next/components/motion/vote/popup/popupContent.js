@@ -16,7 +16,7 @@ import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import VoteSuccessful from "./voteSuccessful";
+import VoteSuccessful from "next-common/components/motion/voteSuccessful";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
