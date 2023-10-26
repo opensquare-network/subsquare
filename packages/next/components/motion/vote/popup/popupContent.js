@@ -16,6 +16,7 @@ import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import VoteSuccessful from "./voteSuccessful";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -39,6 +40,7 @@ export default function PopupContent({
   const dispatch = useDispatch();
   const api = useApi();
   const signerAccount = useSignerAccount();
+  const [isVoted, setIsVoted] = useState(true);
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
@@ -80,13 +82,19 @@ export default function PopupContent({
       dispatch,
       setLoading,
       onFinalized,
-      onInBlock,
+      onInBlock: () => {
+        setIsVoted(true);
+        onInBlock();
+      },
       onSubmitted,
-      onClose,
       signerAccount,
       isMounted,
     });
   };
+
+  if (isVoted) {
+    return <VoteSuccessful vote={currentVote} onClose={onClose} />;
+  }
 
   return (
     <>

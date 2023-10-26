@@ -81,7 +81,6 @@ function PopupContent({
         onInBlock();
       },
       onSubmitted,
-      onClose,
       signerAddress,
       isMounted,
     });

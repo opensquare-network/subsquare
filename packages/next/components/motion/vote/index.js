@@ -27,7 +27,7 @@ export default function Vote({
   onInBlock = emptyFunction,
 }) {
   const type = useDetailType();
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
   const { hideActionButtons } = useChainSettings();
   const isUseMetamask = useIsUseMetamask();
 
