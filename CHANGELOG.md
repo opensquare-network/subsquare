@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.6.3
+date: 2023-10-27
+
+- Show estimated confirmation start time on OpenGov referendum page.
+- Show a feedback popup after users vote a referendum.
+- Fix removing vote call fro moonriver.
+
 ### 3.6.2
 date: 2023-10-26
 - Enable removing my delegations on referenda delegation popup.
