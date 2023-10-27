@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.6.2
+date: 2023-10-26
+- Enable removing my delegations on referenda delegation popup.
+- Add query params for profile votes, so we can locate different vote type when page render.
+- Refactor the vote popup view for address who have delegated their votes.
+- Improve accordion component on notifications page.
+- Show toast when notifications are saved.
+- Enable vote calls for bifrost polkadot.
+- Upgrade dependency of next.js from 13.3.0 to 13.5.0.
+- Fix styles.
+
 ### 3.6.1
 date: 2023-10-19
 

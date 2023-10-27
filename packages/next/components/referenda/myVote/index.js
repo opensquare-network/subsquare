@@ -7,15 +7,25 @@ import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 import { useState } from "react";
 import { usePost } from "next-common/context/post";
 import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
+import MoonRemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup/moonPopup";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 import isNil from "lodash.isnil";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Democracy } from "next-common/components/profile/votingHistory/common";
+import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 export default function MyVote() {
   const post = usePost();
   const referendumIndex = post?.referendumIndex;
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
+  const isUseMetamask = useIsUseMetamask();
+
+  let Popup = RemoveDemocracyVotePopup;
+  if (isMoonChain() && isUseMetamask) {
+    Popup = MoonRemoveDemocracyVotePopup;
+  }
+
   const allVotes = useSelector(allVotesSelector);
   let votes = useMyVotes(allVotes);
 
@@ -45,7 +55,7 @@ export default function MyVote() {
         setShowRemoveVotePopup={setShowRemoveVotePopup}
       />
       {showRemovePopup && (
-        <RemoveDemocracyVotePopup
+        <Popup
           referendumIndex={referendumIndex}
           onClose={() => setShowRemoveVotePopup(false)}
         />

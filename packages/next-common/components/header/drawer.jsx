@@ -100,7 +100,7 @@ export default function SidebarAccount() {
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
-          <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
+          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
         </ButtonWrapper>
       )}
       {user && (

@@ -52,7 +52,7 @@ export default function Comments({ data: commentsData, loading }) {
 
       {!isLogin && (
         <div className="flex justify-end mt-4">
-          <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
+          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
         </div>
       )}
     </div>
