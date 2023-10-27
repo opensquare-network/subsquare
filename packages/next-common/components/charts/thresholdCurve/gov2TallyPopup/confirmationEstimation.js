@@ -1,17 +1,7 @@
-import isNil from "lodash.isnil";
-import { usePostState } from "next-common/context/post";
-import { gov2State } from "next-common/utils/consts/state";
 import Tooltip from "next-common/components/tooltip";
 import dayjs from "dayjs";
 import useConfirmationEstimateTime from "next-common/hooks/useConfirmationEstimateTime";
-
-function PercentageGuard({ approvePercentage, supportPercentage, children }) {
-  if (isNil(approvePercentage) || isNil(supportPercentage)) {
-    return null;
-  }
-
-  return children;
-}
+import ConfirmationEstimationGuard from "next-common/hooks/tally/confirmationEstimationGuard";
 
 function Estimation({ approvePercentage, supportPercentage }) {
   const { estimatedTimeToConfirm, maybeConfirmAtTimestamp } =
@@ -39,13 +29,8 @@ export default function ConfirmationEstimation({
   approvePercentage,
   supportPercentage,
 }) {
-  const state = usePostState();
-  if (gov2State.Deciding !== state) {
-    return null;
-  }
-
   return (
-    <PercentageGuard
+    <ConfirmationEstimationGuard
       approvePercentage={approvePercentage}
       supportPercentage={supportPercentage}
     >
@@ -53,6 +38,6 @@ export default function ConfirmationEstimation({
         approvePercentage={approvePercentage}
         supportPercentage={supportPercentage}
       />
-    </PercentageGuard>
+    </ConfirmationEstimationGuard>
   );
 }
