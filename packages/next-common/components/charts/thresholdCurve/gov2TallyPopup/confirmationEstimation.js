@@ -1,7 +1,7 @@
 import Tooltip from "next-common/components/tooltip";
 import dayjs from "dayjs";
 import useConfirmationEstimateTime from "next-common/hooks/useConfirmationEstimateTime";
-import ConfirmationEstimationGuard from "next-common/hooks/tally/confirmationEstimationGuard";
+import ConfirmationEstimationGuard from "next-common/components/tally/confirmationEstimationGuard";
 
 function Estimation({ approvePercentage, supportPercentage }) {
   const { estimatedTimeToConfirm, maybeConfirmAtTimestamp } =
