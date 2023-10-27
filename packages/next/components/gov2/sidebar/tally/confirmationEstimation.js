@@ -5,7 +5,19 @@ import ConfirmationEstimationGuard from "next-common/hooks/tally/confirmationEst
 
 function Estimation({ approvePercentage, supportPercentage }) {
   const { estimatedTimeToConfirm, maybeConfirmAtTimestamp } =
-    useConfirmationEstimateTime({ approvePercentage, supportPercentage });
+    useConfirmationEstimateTime({
+      approvePercentage,
+      supportPercentage,
+      units: {
+        day: "d",
+        days: "d",
+        hr: "h",
+        hrs: "hs",
+        min: "m",
+        mins: "m",
+        s: "s",
+      },
+    });
 
   if (!estimatedTimeToConfirm || !maybeConfirmAtTimestamp) {
     return null;

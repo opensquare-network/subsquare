@@ -75,16 +75,25 @@ export function useEstimateTimestampAtBlockHeight(blockHeight) {
   return estimatedTime;
 }
 
-export function useEstimateTimeFromNowToBlockHeight(blockHeight) {
+export function useEstimateTimeFromNowToBlockHeight(blockHeight, units) {
   const currentHeight = useSelector(nodesHeightSelector);
-  const result = useEstimateBlocksTime(blockHeight - currentHeight);
+  const result = useEstimateBlocksTime(blockHeight - currentHeight, units);
   if (!currentHeight) {
     return "";
   }
   return result;
 }
 
-export function useEstimateBlocksTime(blocks) {
+export function useEstimateBlocksTime(blocks, units) {
+  const {
+    day = "day",
+    days: daysUnit = "days",
+    hr = "hr",
+    hrs = "hrs",
+    min = "min",
+    mins = "mins",
+    s = "s",
+  } = units || {};
   const blockTime = useSelector(blockTimeSelector);
   const [estimatedTime, setEstimatedTime] = useState("");
   useEffect(() => {
@@ -92,10 +101,10 @@ export function useEstimateBlocksTime(blocks) {
     const time = extractTime(Math.abs(value));
     const { days, hours, minutes, seconds } = time;
     const timeStr = [
-      days ? (days > 1 ? `${days} days` : "1 day") : null,
-      hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
-      minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
-      seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
+      days ? (days > 1 ? `${days} ${daysUnit}` : `1 ${day}`) : null,
+      hours ? (hours > 1 ? `${hours} ${hrs}` : `1 ${hr}`) : null,
+      minutes ? (minutes > 1 ? `${minutes} ${mins}` : `1 ${min}`) : null,
+      seconds ? (seconds > 1 ? `${seconds} ${s}` : `1 ${s}`) : null,
     ]
       .filter((s) => !!s)
       .slice(0, 2)
