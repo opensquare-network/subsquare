@@ -81,6 +81,8 @@ export default function useConfirmationEstimateTime({
   if (
     new BigNumber(approvalX).gt(1) ||
     new BigNumber(supportX).gt(1) ||
+    new BigNumber(approvalX).lt(0) ||
+    new BigNumber(supportX).lt(0) ||
     isNil(estimated)
   ) {
     return {};
