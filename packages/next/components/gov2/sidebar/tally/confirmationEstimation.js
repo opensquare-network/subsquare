@@ -29,7 +29,9 @@ function Estimation({ approvePercentage, supportPercentage }) {
           "YYYY-MM-DD HH:mm",
         )}, estimated by current voting result`}
       >
-        <span className="text-theme500">{estimatedTimeToConfirm}</span>
+        <span className="text-theme500 text14Bold">
+          {estimatedTimeToConfirm}
+        </span>
       </Tooltip>
     </div>
   );

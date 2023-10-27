@@ -27,7 +27,9 @@ function Estimation({ approvePercentage, supportPercentage }) {
       <Tooltip
         content={dayjs(maybeConfirmAtTimestamp).format("YYYY-MM-DD HH:mm")}
       >
-        <span className="text-theme500">{estimatedTimeToConfirm}</span>
+        <span className="text-theme500 text14Bold">
+          {estimatedTimeToConfirm}
+        </span>
       </Tooltip>
     </div>
   );
