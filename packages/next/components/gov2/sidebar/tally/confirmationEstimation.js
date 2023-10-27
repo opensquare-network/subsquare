@@ -20,7 +20,7 @@ function Estimation({ approvePercentage, supportPercentage }) {
       <Tooltip
         content={`${dayjs(maybeConfirmAtTimestamp).format(
           "YYYY-MM-DD HH:mm",
-        )}, estimated by current voting result`}
+        )}, estimated by current tally`}
       >
         <span className="text-theme500 text14Bold">
           {estimatedTimeToConfirm}

@@ -13,7 +13,7 @@ function Estimation({ approvePercentage, supportPercentage }) {
 
   return (
     <div className="px-[16px] py-[10px] rounded-[8px] bg-neutral200 text-textSecondary text14Medium">
-      Based on current voting results, the referenda will start confirmation in{" "}
+      Estimated by current tally, the referenda will start confirmation in{" "}
       <Tooltip
         content={dayjs(maybeConfirmAtTimestamp).format("YYYY-MM-DD HH:mm")}
       >
