@@ -17,6 +17,7 @@ import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote from "../../../hooks/democracy/useSubMyDemocracyVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import VoteSuccessful from "./voteSuccessful";
 
 function PopupContent({
   referendumIndex,
@@ -26,6 +27,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
+  const [isVoted, setIsVoted] = useState(false);
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
@@ -98,13 +100,19 @@ function PopupContent({
           setLoadingState(VoteLoadingEnum.None);
         }
       },
-      onInBlock,
+      onInBlock: () => {
+        setIsVoted(true);
+        onInBlock();
+      },
       onSubmitted,
-      onClose,
       signerAddress,
       isMounted,
     });
   };
+
+  if (isVoted) {
+    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
+  }
 
   return (
     <>

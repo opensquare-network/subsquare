@@ -101,7 +101,7 @@ export default function HeaderAccount() {
     <>
       <Wrapper ref={ref}>
         {!user ? (
-          <PrimaryButton onClick={openLoginPopup}>Login</PrimaryButton>
+          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
         ) : (
           <GhostButton onClick={() => setShow(!show)}>
             <SystemUser user={user} noEvent />
