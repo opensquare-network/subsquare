@@ -8,6 +8,8 @@ import {
   setLatestHeight,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import useCurrentBlockHeightAndTime from "./useCurrentBlockHeightAndTime";
 
 const DEFAULT_TIME = new BN(6_000);
 
@@ -53,6 +55,33 @@ export function useSubscribeChainHead(api) {
       });
     }
   }, [api]);
+}
+
+export function useEstimateTimestampAtBlockHeight(blockHeight) {
+  const [estimatedTime, setEstimatedTime] = useState();
+  const blockTime = useSelector(blockTimeSelector);
+  const [currentHeight, currentTimestamp] = useCurrentBlockHeightAndTime();
+
+  useEffect(() => {
+    if (!currentHeight || !currentTimestamp || !blockTime) {
+      return;
+    }
+    const blocks = blockHeight - currentHeight;
+    setEstimatedTime(
+      new BigNumber(blockTime).times(blocks).plus(currentTimestamp).toNumber(),
+    );
+  }, [currentHeight, currentTimestamp, blockTime, blockHeight]);
+
+  return estimatedTime;
+}
+
+export function useEstimateTimeFromNowToBlockHeight(blockHeight) {
+  const currentHeight = useSelector(nodesHeightSelector);
+  const result = useEstimateBlocksTime(blockHeight - currentHeight);
+  if (!currentHeight) {
+    return "";
+  }
+  return result;
 }
 
 export function useEstimateBlocksTime(blocks) {

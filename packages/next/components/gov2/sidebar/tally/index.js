@@ -17,6 +17,11 @@ import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import useVotesFromServer from "next-common/utils/gov2/useVotesFromServer";
 import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
+import ConfirmationEstimation from "./confirmationEstimation";
+import {
+  useApprovalPercentage,
+  useSupportPercentage,
+} from "next-common/context/post/gov2/percentage";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -31,6 +36,9 @@ export default function Gov2Tally() {
   const tally = useReferendumTally();
   const approvalThreshold = useApprovalThreshold();
   const supportPerbill = useSupportPerbill(tally);
+
+  const approvalPercentage = useApprovalPercentage(tally);
+  const supportPercentage = useSupportPercentage(supportPerbill);
 
   useFetchReferendaTallyHistory(referendumIndex);
   const issuance = useReferendaIssuance();
@@ -54,6 +62,10 @@ export default function Gov2Tally() {
 
       <Support supportPerbill={supportPerbill} value={tally?.support} />
       <Issuance issuance={issuance} />
+      <ConfirmationEstimation
+        approvePercentage={approvalPercentage}
+        supportPercentage={supportPercentage}
+      />
 
       <VotesInfo />
     </SecondaryCardDetail>
