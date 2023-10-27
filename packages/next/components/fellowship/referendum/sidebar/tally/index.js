@@ -18,6 +18,11 @@ import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup"
 import Calls from "./voteCalls";
 import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
+import {
+  useApprovalPercentage,
+  useSupportPercentage,
+} from "next-common/context/post/gov2/percentage";
+import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -42,6 +47,9 @@ export default function FellowshipTally() {
   useFellowshipVotes(referendumIndex, votingFinishHeight);
   const supportPerbill = useFellowshipPerbill();
 
+  const approvalPercentage = useApprovalPercentage(tally);
+  const supportPercentage = useSupportPercentage(supportPerbill);
+
   return (
     <SecondaryCardDetail>
       <Title className="!px-0">
@@ -64,6 +72,10 @@ export default function FellowshipTally() {
       <SupportBar supportPerbill={supportPerbill} />
       <BareAye value={tally.bareAyes} />
       <MaxVoters />
+      <ConfirmationEstimation
+        approvePercentage={approvalPercentage}
+        supportPercentage={supportPercentage}
+      />
 
       <Footer>
         <AllVotes />

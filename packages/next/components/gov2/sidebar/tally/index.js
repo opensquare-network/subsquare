@@ -17,7 +17,7 @@ import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import useVotesFromServer from "next-common/utils/gov2/useVotesFromServer";
 import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
-import ConfirmationEstimation from "./confirmationEstimation";
+import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
 import {
   useApprovalPercentage,
   useSupportPercentage,
