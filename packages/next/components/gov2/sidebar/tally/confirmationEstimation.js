@@ -8,15 +8,6 @@ function Estimation({ approvePercentage, supportPercentage }) {
     useConfirmationEstimateTime({
       approvePercentage,
       supportPercentage,
-      units: {
-        day: "d",
-        days: "d",
-        hr: "h",
-        hrs: "hs",
-        min: "m",
-        mins: "m",
-        s: "s",
-      },
     });
 
   if (!estimatedTimeToConfirm || !maybeConfirmAtTimestamp) {
@@ -25,7 +16,7 @@ function Estimation({ approvePercentage, supportPercentage }) {
 
   return (
     <div className="my-[16px] px-[16px] py-[10px] rounded-[8px] bg-neutral200 text-textSecondary text14Medium">
-      Start confirmation in{" "}
+      Confirmation in{" "}
       <Tooltip
         content={`${dayjs(maybeConfirmAtTimestamp).format(
           "YYYY-MM-DD HH:mm",
