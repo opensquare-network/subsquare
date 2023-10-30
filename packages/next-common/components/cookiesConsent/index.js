@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 import isNil from "lodash.isnil";
 import { cn } from "next-common/utils";
-import { SystemClose } from "@osn/icons/subsquare";
 import PrimaryButton from "../buttons/primaryButton";
+import { useNavCollapsed } from "next-common/context/nav";
+import GhostButton from "../buttons/ghostButton";
 
 export default function CookiesConsent() {
   const [show, setShow] = useState(false);
@@ -11,6 +12,7 @@ export default function CookiesConsent() {
   useEffect(() => {
     setShow(isNil(isAcceptCookies));
   }, [isAcceptCookies]);
+  const [navCollapsed] = useNavCollapsed();
 
   function handleAccept() {
     setIsAcceptCookies(true, { expires: 30 });
@@ -31,32 +33,26 @@ export default function CookiesConsent() {
   return (
     <div
       className={cn(
-        " w-[432px] max-sm:w-full",
-        "fixed right-6 bottom-24",
-        "max-sm:right-0 max-sm:left-0 max-sm:bottom-12",
+        "flex justify-center w-full",
+        "fixed right-0 bottom-0",
+        "bg-neutral100 shadow-100",
+        "border border-neutral300",
+        navCollapsed ? "max-w-[calc(100%-72px)]" : "max-w-[calc(100%-300px)]",
       )}
     >
       <div
-        className={cn(
-          "bg-neutral100 shadow-100",
-          "border border-neutral300 rounded-lg p-6",
-          "space-y-4",
-        )}
+        className={cn("flex flex-wrap w-full gap-[24px] max-w-[1200px] p-6")}
       >
-        <div className="flex justify-between items-center">
+        <div>
           <p className="text-textPrimary text16Bold">We Use Cookies!</p>
-          <SystemClose
-            className="[&_path]:fill-textTertiary"
-            role="button"
-            onClick={handleIgnore}
-          />
+          <p className="text14Medium text-textSecondary">
+            This site uses cookies to improve your browsing experience, to show
+            you personalized content, to analyze our website traffic.
+          </p>
         </div>
 
-        <p className="text14Medium text-textSecondary">
-          We use cookies to improve your experience on our site.
-        </p>
-
-        <div className="flex justify-end">
+        <div className="flex items-center grow justify-end gap-[8px]">
+          <GhostButton onClick={handleIgnore}>Dismiss</GhostButton>
           <PrimaryButton onClick={handleAccept}>Got it</PrimaryButton>
         </div>
       </div>
