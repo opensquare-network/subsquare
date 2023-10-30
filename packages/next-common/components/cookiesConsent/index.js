@@ -53,7 +53,7 @@ export default function CookiesConsent() {
 
         <div className="flex items-center grow justify-end gap-[8px]">
           <GhostButton onClick={handleIgnore}>Dismiss</GhostButton>
-          <PrimaryButton onClick={handleAccept}>Got it</PrimaryButton>
+          <PrimaryButton onClick={handleAccept}>Accept</PrimaryButton>
         </div>
       </div>
     </div>
