@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
@@ -15,14 +15,16 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { useChainSettings } from "next-common/context/chain";
 import { Aye, Nay, Split } from "./ayeNaySplitTab";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
+import useSubMyDemocracyVote, {
+  getDemocracyDirectVote,
+} from "next-common/hooks/democracy/useSubMyVote";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import VStack from "next-common/components/styled/vStack";
 import { WarningMessage } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
 import { normalizeOnchainVote } from "next-common/utils/vote";
-import VoteSuccessful from "components/gov2/votePopup/voteSuccessful";
+import { useShowVoteSuccessful } from "next-common/components/vote";
 
 export function LoadingPanel() {
   return (
@@ -48,6 +50,7 @@ function VotePanel({
   votingBalance,
   addressVote,
   addressVoteIsLoading,
+  onClose,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -117,6 +120,7 @@ function VotePanel({
       onSubmitted,
       signerAccount,
       isMounted,
+      onClose,
     });
   };
 
@@ -177,7 +181,7 @@ export default function PopupContent({
   VoteTypeTab,
   submitExtrinsic = emptyFunction,
 }) {
-  const [isVoted, setIsVoted] = useState(false);
+  const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
 
   const api = useApi();
@@ -195,9 +199,17 @@ export default function PopupContent({
     isLoaded: addressVoteIsLoaded,
   } = useSubMyDemocracyVote(signerAccount?.realAddress);
 
-  if (isVoted) {
-    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
-  }
+  const getMyVoteAndShowSuccessful = useCallback(async () => {
+    const addressVote = await getDemocracyDirectVote(
+      api,
+      signerAccount?.realAddress,
+      referendumIndex,
+    );
+    if (!addressVote) {
+      return;
+    }
+    showVoteSuccessful(addressVote);
+  }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
   let content = <LoadingPanel />;
 
@@ -207,9 +219,10 @@ export default function PopupContent({
         referendumIndex={referendumIndex}
         onSubmitted={onSubmitted}
         onInBlock={() => {
-          setIsVoted(true);
+          getMyVoteAndShowSuccessful();
           onInBlock();
         }}
+        onClose={onClose}
         useStandardVote={useStandardVote}
         useSplitVote={useSplitVote}
         VoteTypeTab={VoteTypeTab}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
@@ -19,11 +19,13 @@ import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
+import useSubMyReferendaVote, {
+  getReferendaDirectVote,
+} from "next-common/hooks/referenda/useSubMyReferendaVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { LoadingPanel } from "components/referenda/popup/popupContent";
 import { normalizeOnchainVote } from "next-common/utils/vote";
-import VoteSuccessful from "./voteSuccessful";
+import { useShowVoteSuccessful } from "next-common/components/vote";
 
 function VotePanel({
   referendumIndex,
@@ -36,6 +38,7 @@ function VotePanel({
   votingBalance,
   addressVote,
   addressVoteIsLoading,
+  onClose,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -110,6 +113,7 @@ function VotePanel({
       onSubmitted,
       signerAccount,
       isMounted,
+      onClose,
     });
   };
 
@@ -177,7 +181,7 @@ export default function PopupContent({
   useSplitAbstainVote,
   submitExtrinsic = emptyFunction,
 }) {
-  const [isVoted, setIsVoted] = useState(false);
+  const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
 
   const api = useApi();
@@ -201,9 +205,24 @@ export default function PopupContent({
     signerAccount?.realAddress,
   );
 
-  if (isVoted) {
-    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
-  }
+  const getMyVoteAndShowSuccessful = useCallback(async () => {
+    const addressVote = await getReferendaDirectVote(
+      api,
+      signerAccount?.realAddress,
+      trackId,
+      referendumIndex,
+    );
+    if (!addressVote) {
+      return;
+    }
+    showVoteSuccessful(addressVote);
+  }, [
+    api,
+    trackId,
+    referendumIndex,
+    signerAccount?.realAddress,
+    showVoteSuccessful,
+  ]);
 
   let content = <LoadingPanel />;
 
@@ -213,9 +232,10 @@ export default function PopupContent({
         referendumIndex={referendumIndex}
         onSubmitted={onSubmitted}
         onInBlock={() => {
-          setIsVoted(true);
+          getMyVoteAndShowSuccessful();
           onInBlock();
         }}
+        onClose={onClose}
         useStandardVote={useStandardVote}
         useSplitVote={useSplitVote}
         useSplitAbstainVote={useSplitAbstainVote}

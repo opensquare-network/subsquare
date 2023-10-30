@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import isNil from "lodash.isnil";
@@ -15,9 +15,11 @@ import VoteButton from "next-common/components/popup/voteButton";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
-import useSubMyDemocracyVote from "../../../hooks/democracy/useSubMyDemocracyVote";
+import useSubMyDemocracyVote, {
+  getDemocracyDirectVote,
+} from "next-common/hooks/democracy/useSubMyVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import VoteSuccessful from "./voteSuccessful";
+import { useShowVoteSuccessful } from "next-common/components/vote";
 
 function PopupContent({
   referendumIndex,
@@ -27,7 +29,7 @@ function PopupContent({
 }) {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
-  const [isVoted, setIsVoted] = useState(false);
+  const showVoteSuccessful = useShowVoteSuccessful();
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
@@ -44,6 +46,18 @@ function PopupContent({
     useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const isMounted = useIsMounted();
+
+  const getMyVoteAndShowSuccessful = useCallback(async () => {
+    const addressVote = await getDemocracyDirectVote(
+      api,
+      signerAccount?.realAddress,
+      referendumIndex,
+    );
+    if (!addressVote) {
+      return;
+    }
+    showVoteSuccessful(addressVote);
+  }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -101,18 +115,15 @@ function PopupContent({
         }
       },
       onInBlock: () => {
-        setIsVoted(true);
+        getMyVoteAndShowSuccessful();
         onInBlock();
       },
       onSubmitted,
       signerAddress,
       isMounted,
+      onClose,
     });
   };
-
-  if (isVoted) {
-    return <VoteSuccessful addressVote={addressVote} onClose={onClose} />;
-  }
 
   return (
     <>

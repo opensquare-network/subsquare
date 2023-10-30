@@ -2,6 +2,29 @@ import { useEffect, useState } from "react";
 import { Conviction, isAye } from "../../utils/referendumCommon";
 import useApi from "next-common/utils/hooks/useApi";
 
+export async function getReferendaDirectVote(
+  api,
+  address,
+  trackId,
+  referendumIndex,
+) {
+  const voting = await api.query.convictionVoting.votingFor(address, trackId);
+  const jsonVoting = voting?.toJSON();
+  if (!jsonVoting) {
+    return;
+  }
+
+  if (!jsonVoting.casting) {
+    return;
+  }
+
+  const vote = (jsonVoting.casting.votes || []).find(
+    (vote) => vote[0] === referendumIndex,
+  )?.[1];
+
+  return vote;
+}
+
 export default function useSubMyReferendaVote(
   trackId,
   referendumIndex,

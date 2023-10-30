@@ -9,6 +9,8 @@ import Popup from "../votePopup";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { useChainSettings } from "next-common/context/chain";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import { VoteSuccessfulProvider } from "next-common/components/vote";
+import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 
 export default function FellowshipReferendumSideBar() {
   const post = usePost();
@@ -33,12 +35,14 @@ export default function FellowshipReferendumSideBar() {
           </PrimaryButton>
         </InlineWrapper>
       )}
-      {showVote && (
-        <Popup
-          onClose={() => setShowVote(false)}
-          referendumIndex={referendumIndex}
-        />
-      )}
+      <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
+        {showVote && (
+          <Popup
+            onClose={() => setShowVote(false)}
+            referendumIndex={referendumIndex}
+          />
+        )}
+      </VoteSuccessfulProvider>
 
       <InlineWrapper>
         <HowOpenGovWorks anchor="polkadot-fellowship" />

@@ -30,6 +30,23 @@ async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
   };
 }
 
+export async function getDemocracyDirectVote(api, address, referendumIndex) {
+  const voting = await api.query.democracy.votingOf(address);
+  const jsonVoting = voting?.toJSON();
+  if (!jsonVoting) {
+    return;
+  }
+
+  if (!jsonVoting.direct) {
+    return;
+  }
+  const vote = (jsonVoting.direct.votes || []).find(
+    (vote) => vote[0] === referendumIndex,
+  )?.[1];
+
+  return vote;
+}
+
 export default function useSubMyDemocracyVote(address) {
   const api = useApi();
   const { referendumIndex } = useOnchainData();

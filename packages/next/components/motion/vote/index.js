@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { emptyFunction } from "next-common/utils";
 import { useDetailType } from "next-common/context/page";
@@ -9,6 +9,8 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import { VoteSuccessfulProvider } from "next-common/components/vote";
+import VoteSuccessfulPopup from "next-common/components/motion/voteSuccessful";
 
 const VotePopup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -30,6 +32,11 @@ export default function Vote({
   const [showPopup, setShowPopup] = useState(false);
   const { hideActionButtons } = useChainSettings();
   const isUseMetamask = useIsUseMetamask();
+  const refVotes = useRef();
+
+  useEffect(() => {
+    refVotes.current = votes;
+  }, [votes]);
 
   let Popup = VotePopup;
   if (isMoonChain() && isUseMetamask) {
@@ -47,16 +54,19 @@ export default function Vote({
           <Action setShowPopup={setShowPopup} />
         )}
       </RightBarWrapper>
-      {showPopup && (
-        <Popup
-          votes={votes}
-          motionHash={motionHash}
-          motionIndex={motionIndex}
-          type={type}
-          onClose={() => setShowPopup(false)}
-          onInBlock={onInBlock}
-        />
-      )}
+      <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
+        {showPopup && (
+          <Popup
+            votes={votes}
+            refVotes={refVotes}
+            motionHash={motionHash}
+            motionIndex={motionIndex}
+            type={type}
+            onClose={() => setShowPopup(false)}
+            onInBlock={onInBlock}
+          />
+        )}
+      </VoteSuccessfulProvider>
     </>
   );
 }

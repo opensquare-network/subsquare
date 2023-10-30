@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useApi";
@@ -16,7 +16,7 @@ import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import VoteSuccessful from "next-common/components/motion/voteSuccessful";
+import { useShowVoteSuccessful } from "next-common/components/vote";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -26,6 +26,7 @@ const SignerWrapper = styled.div`
 
 export default function PopupContent({
   votes,
+  refVotes,
   isLoadingVotes,
   motionHash,
   motionIndex,
@@ -40,7 +41,7 @@ export default function PopupContent({
   const dispatch = useDispatch();
   const api = useApi();
   const signerAccount = useSignerAccount();
-  const [isVoted, setIsVoted] = useState(false);
+  const showVoteSuccessful = useShowVoteSuccessful();
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
@@ -48,6 +49,20 @@ export default function PopupContent({
   const currentVote = votes.find(
     (item) => item[0] === signerAccount?.realAddress,
   );
+
+  const getMyVoteAndShowSuccessful = useCallback(async () => {
+    const votes = refVotes?.current;
+    if (!votes) {
+      return;
+    }
+    const currentVote = votes.find(
+      (item) => item[0] === signerAccount?.realAddress,
+    );
+    if (!currentVote) {
+      return;
+    }
+    showVoteSuccessful(currentVote);
+  }, [refVotes, signerAccount?.realAddress, showVoteSuccessful]);
 
   const isMounted = useIsMounted();
 
@@ -83,18 +98,15 @@ export default function PopupContent({
       setLoading,
       onFinalized,
       onInBlock: () => {
-        setIsVoted(true);
+        getMyVoteAndShowSuccessful();
         onInBlock();
       },
       onSubmitted,
       signerAccount,
       isMounted,
+      onClose,
     });
   };
-
-  if (isVoted) {
-    return <VoteSuccessful vote={currentVote} onClose={onClose} />;
-  }
 
   return (
     <>
