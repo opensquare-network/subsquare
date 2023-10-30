@@ -2,6 +2,20 @@ import { useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useApi from "next-common/utils/hooks/useApi";
 
+export async function getKintDemocracyDirectVote(
+  api,
+  address,
+  referendumIndex,
+) {
+  const voting = await api.query.democracy?.votingOf(address);
+  const jsonVoting = voting?.toJSON();
+  const vote = (jsonVoting?.votes || []).find(
+    (vote) => vote[0] === referendumIndex,
+  )?.[1];
+
+  return vote;
+}
+
 export default function useSubMyDemocracyVote(referendumIndex, address) {
   const api = useApi();
 
