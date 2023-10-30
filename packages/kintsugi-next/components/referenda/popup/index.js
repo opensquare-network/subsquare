@@ -16,8 +16,8 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote, {
-  getDemocracyDirectVote,
-} from "next-common/hooks/democracy/useSubMyVote";
+  getKintDemocracyDirectVote,
+} from "../../../hooks/democracy/useSubMyDemocracyVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 
@@ -48,7 +48,7 @@ function PopupContent({
   const isMounted = useIsMounted();
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
-    const addressVote = await getDemocracyDirectVote(
+    const addressVote = await getKintDemocracyDirectVote(
       api,
       signerAccount?.realAddress,
       referendumIndex,
