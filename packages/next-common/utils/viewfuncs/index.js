@@ -120,7 +120,7 @@ export function abbreviateBigNumber(x, fixed = 2) {
     { bigNumber: new BigNumber("1000000000000000"), abbr: "Q" },
   ];
   bigNumbers.forEach((data) => {
-    if (value.isGreaterThan(data.bigNumber)) {
+    if (value.isGreaterThanOrEqualTo(data.bigNumber)) {
       divideBy = data.bigNumber;
       fmt.suffix = data.abbr;
     }
