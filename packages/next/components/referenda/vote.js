@@ -29,6 +29,8 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import WithAddress from "next-common/components/common/withAddress";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import { VoteSuccessfulProvider } from "next-common/components/vote";
+import VoteSuccessfulPopup from "components/gov2/votePopup/voteSuccessful";
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,
@@ -164,13 +166,15 @@ function Vote({ referendumIndex }) {
         </PrimaryButton>
       )}
 
-      {showVote && (
-        <Popup
-          onClose={() => setShowVote(false)}
-          referendumIndex={referendumIndex}
-          onInBlock={updateVoteProgress}
-        />
-      )}
+      <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
+        {showVote && (
+          <Popup
+            onClose={() => setShowVote(false)}
+            referendumIndex={referendumIndex}
+            onInBlock={updateVoteProgress}
+          />
+        )}
+      </VoteSuccessfulProvider>
       {showFlattenedVotesList && (
         <FlattenedVotesPopup setShowVoteList={setShowFlattenedVotesList} />
       )}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useApi from "next-common/utils/hooks/useApi";
@@ -17,7 +17,8 @@ import Rank from "./rank";
 import VStack from "next-common/components/styled/vStack";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import VoteSuccessful from "./voteSuccessful";
+import { useShowVoteSuccessful } from "next-common/components/vote";
+import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
 
 function PopupContent({
   referendumIndex,
@@ -25,7 +26,7 @@ function PopupContent({
   onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
 }) {
-  const [isVoted, setIsVoted] = useState(false);
+  const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const showErrorToast = (message) => dispatch(newErrorToast(message));
@@ -40,6 +41,18 @@ function PopupContent({
     referendumIndex,
     signerAccount?.realAddress,
   );
+
+  const getMyVoteAndShowSuccessful = useCallback(async () => {
+    const addressVote = await getFellowshipVote(
+      api,
+      referendumIndex,
+      signerAccount?.realAddress,
+    );
+    if (!addressVote) {
+      return;
+    }
+    showVoteSuccessful(addressVote);
+  }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
   const doVote = async (aye) => {
     if (
@@ -77,18 +90,15 @@ function PopupContent({
         }
       },
       onInBlock: () => {
-        setIsVoted(true);
+        getMyVoteAndShowSuccessful();
         onInBlock();
       },
       onSubmitted,
       signerAddress,
       isMounted,
+      onClose,
     });
   };
-
-  if (isVoted) {
-    return <VoteSuccessful vote={vote} onClose={onClose} />;
-  }
 
   return (
     <>

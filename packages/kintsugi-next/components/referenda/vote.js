@@ -34,6 +34,8 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import VotesInfo from "./votesInfo";
 import ExternalLink from "next-common/components/externalLink";
 import WithAddress from "next-common/components/common/withAddress";
+import { VoteSuccessfulProvider } from "next-common/components/vote";
+import VoteSuccessfulPopup from "./popup/voteSuccessful";
 
 const Popup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -245,14 +247,16 @@ function Vote({ referendumInfo, referendumIndex }) {
         How {capitalize(chain)} Governance Works.
       </ExternalLink>
 
-      {showVote && (
-        <Popup
-          onClose={() => setShowVote(false)}
-          referendumIndex={referendumIndex}
-          onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
-          onInBlock={updateVoteProgress}
-        />
-      )}
+      <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
+        {showVote && (
+          <Popup
+            onClose={() => setShowVote(false)}
+            referendumIndex={referendumIndex}
+            onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
+            onInBlock={updateVoteProgress}
+          />
+        )}
+      </VoteSuccessfulProvider>
     </RightBarWrapper>
   );
 }

@@ -13,6 +13,8 @@ import MyVote from "./tally/myVote";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import WithAddress from "next-common/components/common/withAddress";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import { VoteSuccessfulProvider } from "next-common/components/vote";
+import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 
 const VotePopup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -56,13 +58,15 @@ export default function Gov2Sidebar() {
           </PrimaryButton>
         </InlineWrapper>
       )}
-      {showVote && (
-        <Popup
-          onClose={() => setShowVote(false)}
-          referendumIndex={referendumIndex}
-          trackId={trackId}
-        />
-      )}
+      <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
+        {showVote && (
+          <Popup
+            onClose={() => setShowVote(false)}
+            referendumIndex={referendumIndex}
+            trackId={trackId}
+          />
+        )}
+      </VoteSuccessfulProvider>
 
       <InlineWrapper>
         <HowOpenGovWorks anchor="referenda" />

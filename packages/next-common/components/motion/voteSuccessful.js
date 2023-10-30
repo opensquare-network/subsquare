@@ -1,5 +1,6 @@
 import { Aye, Nay } from "next-common/components/profile/votingHistory/common";
 import { VoteSuccessfulWrapper, VoteFor } from "next-common/components/vote";
+import Popup from "../popup/wrapper/Popup";
 
 export function VoteItem({ vote }) {
   if (!vote) {
@@ -22,13 +23,15 @@ export function VoteItem({ vote }) {
   );
 }
 
-export default function VoteSuccessful({ vote, onClose }) {
+export default function VoteSuccessfulPopup({ addressVote, onClose }) {
   return (
-    <VoteSuccessfulWrapper onClose={onClose}>
-      <VoteFor>
-        <span>Vote for</span>
-      </VoteFor>
-      <VoteItem vote={vote} />
-    </VoteSuccessfulWrapper>
+    <Popup title="Vote" onClose={onClose}>
+      <VoteSuccessfulWrapper onClose={onClose}>
+        <VoteFor>
+          <span>Vote for</span>
+        </VoteFor>
+        <VoteItem vote={addressVote} />
+      </VoteSuccessfulWrapper>
+    </Popup>
   );
 }
