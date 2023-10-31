@@ -21,7 +21,7 @@ export default function TrackPage({
   posts,
   title,
   tracks,
-  referendaTrackSummary,
+  trackReferendaSummary,
   period,
   status,
 }) {
@@ -51,7 +51,7 @@ export default function TrackPage({
       seoInfo={seoInfo}
       title={`[${period.id}] Origin: ${period.origin}`}
       periodData={period}
-      summaryData={referendaTrackSummary}
+      summaryData={trackReferendaSummary}
     >
       <PostList
         title="List"
@@ -95,7 +95,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const [
     { result: posts },
-    { result: referendaTrackSummary },
+    { result: trackReferendaSummary },
     { result: period },
   ] = await Promise.all([
     ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
@@ -115,7 +115,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       tracks,
       fellowshipTracks,
       summary: summary ?? {},
-      referendaTrackSummary: referendaTrackSummary ?? {},
+      trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
       status,
     },
