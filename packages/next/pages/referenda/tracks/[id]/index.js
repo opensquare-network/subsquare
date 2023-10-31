@@ -114,7 +114,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       title: "Referenda " + startCase(track.name),
       tracks,
       fellowshipTracks,
-      summary,
+      summary: summary ?? {},
       referendaTrackSummary: referendaTrackSummary ?? {},
       period: period ?? {},
       status,
