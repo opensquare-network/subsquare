@@ -3,11 +3,8 @@ import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
 import getChainSettings from "next-common/utils/consts/settings";
 
 export async function fetchSummary() {
-  const { result, error } = await ssrNextApi.fetch("summary");
-  if (error) {
-    return {};
-  }
-  return result;
+  const { result } = await ssrNextApi.fetch("summary");
+  return result || {};
 }
 
 async function fetchAll() {
