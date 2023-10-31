@@ -12,7 +12,11 @@ import businessCategory from "next-common/utils/consts/business/category";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default function FellowshipPage({ posts, fellowshipTracks, summary }) {
+export default function FellowshipPage({
+  posts,
+  fellowshipTracks,
+  fellowshipSummary,
+}) {
   const title = "Fellowship Referenda";
   const seoInfo = { title, desc: title };
 
@@ -25,7 +29,7 @@ export default function FellowshipPage({ posts, fellowshipTracks, summary }) {
       seoInfo={seoInfo}
       title={title}
       description="All active and history referenda of various tracks."
-      summary={<Gov2Summary summary={summary} />}
+      summary={<Gov2Summary summary={fellowshipSummary} />}
     >
       <PostList
         title="List"
@@ -45,7 +49,7 @@ export default function FellowshipPage({ posts, fellowshipTracks, summary }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
 
-  const [tracksProps, { result: posts }, { result: summary }] =
+  const [tracksProps, { result: posts }, { result: fellowshipSummary }] =
     await Promise.all([
       fetchOpenGovTracksProps(),
       ssrNextApi.fetch(fellowshipReferendumsApi, {
@@ -59,7 +63,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       posts: posts ?? EmptyList,
       ...tracksProps,
-      summary: summary ?? {},
+      fellowshipSummary: fellowshipSummary ?? {},
     },
   };
 });

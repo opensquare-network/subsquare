@@ -9,42 +9,56 @@ export const Names = {
   democracyExternals: "External Proposals",
 };
 
-const democracy = {
-  name: Names.democracy,
-  excludeToChains: [
-    Chains.kabocha,
-    Chains.development,
-    Chains["westend-collectives"],
-    Chains.collectives,
-    Chains.vara,
-  ],
-  archivedToChains: [Chains.kusama],
-  icon: <MenuDemocracy />,
-  pathname: "/democracy",
-  items: [
-    {
-      value: "referenda",
-      name: Names.referenda,
-      pathname: "/democracy/referenda",
-      extraMatchNavMenuActivePathnames: [
-        "/democracy/statistics",
-        "/democracy/referenda/[id]",
-      ],
-    },
-    {
-      value: "democracyProposals",
-      name: Names.democracyProposals,
-      pathname: "/democracy/proposals",
-      extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
-    },
-    {
-      value: "democracyExternals",
-      excludeToChains: [Chains.kintsugi, Chains.interlay],
-      name: Names.democracyExternals,
-      pathname: "/democracy/externals",
-      extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
-    },
-  ],
-};
+export function getDemocracyMenu(summary) {
+  const activeReferenda = summary?.referenda?.active || 0;
+  const activePublicProposals = summary?.publicProposals?.active || 0;
+  const activeExternalProposals = summary?.externalProposals?.active || 0;
+  const totalActiveCount =
+    activeReferenda + activePublicProposals + activeExternalProposals;
+
+  return {
+    name: Names.democracy,
+    excludeToChains: [
+      Chains.kabocha,
+      Chains.development,
+      Chains["westend-collectives"],
+      Chains.collectives,
+      Chains.vara,
+    ],
+    archivedToChains: [Chains.kusama],
+    activeCount: totalActiveCount,
+    icon: <MenuDemocracy />,
+    pathname: "/democracy",
+    items: [
+      {
+        value: "referenda",
+        name: Names.referenda,
+        activeCount: activeReferenda,
+        pathname: "/democracy/referenda",
+        extraMatchNavMenuActivePathnames: [
+          "/democracy/statistics",
+          "/democracy/referenda/[id]",
+        ],
+      },
+      {
+        value: "democracyProposals",
+        name: Names.democracyProposals,
+        activeCount: activePublicProposals,
+        pathname: "/democracy/proposals",
+        extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
+      },
+      {
+        value: "democracyExternals",
+        excludeToChains: [Chains.kintsugi, Chains.interlay],
+        name: Names.democracyExternals,
+        activeCount: activeExternalProposals,
+        pathname: "/democracy/externals",
+        extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
+      },
+    ],
+  };
+}
+
+const democracy = getDemocracyMenu();
 
 export default democracy;

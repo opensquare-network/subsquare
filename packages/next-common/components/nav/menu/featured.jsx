@@ -6,8 +6,9 @@ import NavMenuItem from "./item";
 import { useRouter } from "next/router";
 
 export default function NavFeaturedMenu({ collapsed }) {
-  const { tracks, fellowshipTracks, detail } = usePageProps();
+  const { tracks, fellowshipTracks, summary, detail } = usePageProps();
   const featuredMenu = getFeaturedMenu({
+    summary,
     tracks,
     fellowshipTracks,
     currentTrackId: detail?.track,

@@ -18,7 +18,7 @@ export default function ReferendaPage({
   posts,
   title,
   tracks,
-  summary,
+  gov2ReferendaSummary,
   status,
 }) {
   const router = useRouter();
@@ -43,7 +43,11 @@ export default function ReferendaPage({
   const seoInfo = { title, desc: title };
 
   return (
-    <ReferendaLayout seoInfo={seoInfo} title={title} summaryData={summary}>
+    <ReferendaLayout
+      seoInfo={seoInfo}
+      title={title}
+      summaryData={gov2ReferendaSummary}
+    >
       <PostList
         title="List"
         titleCount={posts.total}
@@ -74,7 +78,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const status = upperFirst(camelCase(statusQuery));
 
-  const [tracksProps, { result: posts }, { result: summary }] =
+  const [tracksProps, { result: posts }, { result: gov2ReferendaSummary }] =
     await Promise.all([
       fetchOpenGovTracksProps(),
       ssrNextApi.fetch(gov2ReferendumsApi, {
@@ -90,7 +94,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       posts: posts ?? EmptyList,
       title: "OpenGov Referenda",
       ...tracksProps,
-      summary: summary ?? {},
+      gov2ReferendaSummary: gov2ReferendaSummary ?? {},
       status,
     },
   };

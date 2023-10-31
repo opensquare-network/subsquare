@@ -1,5 +1,4 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
 import {
   Democracy,
   ModuleTabProvider,
@@ -39,15 +38,11 @@ export default function DemocracyVotes({ summary }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const [tracksProps, { result: summary }] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    ssrNextApi.fetch("summary"),
-  ]);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       ...tracksProps,
-      summary: summary ?? {},
     },
   };
 });
