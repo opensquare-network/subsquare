@@ -1,6 +1,6 @@
-import { withCommonProps } from "next-common/lib";
 import EmailPage from "next-common/components/emailPage/email";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default EmailPage;
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = getServerSidePropsWithTracks;

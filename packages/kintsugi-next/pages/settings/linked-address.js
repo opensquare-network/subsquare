@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
-import { withCommonProps } from "next-common/lib";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { useUser } from "next-common/context/user";
+import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
@@ -29,4 +29,4 @@ export default function LinkedAddress() {
   );
 }
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = serverSidePropsWithSummary;

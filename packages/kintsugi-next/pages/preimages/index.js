@@ -1,7 +1,7 @@
-import { withCommonProps } from "next-common/lib";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import usePreimageHashs from "next-common/hooks/usePreimageHashs";
+import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
 
 export default function Preimages() {
   const title = "Preimages";
@@ -20,4 +20,4 @@ export default function Preimages() {
   );
 }
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = serverSidePropsWithSummary;

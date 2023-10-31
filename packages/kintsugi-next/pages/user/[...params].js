@@ -9,17 +9,20 @@ export const getServerSideProps = withCommonProps(async (context) => {
     params: [id],
   } = context.query;
 
-  const [{ result: summary }, { result: user }] = await Promise.all([
-    ssrNextApi.fetch(`users/${id}/counts`),
-    ssrNextApi.fetch(`users/${id}`),
-  ]);
+  const [{ result: userSummary }, { result: user }, { result: summary }] =
+    await Promise.all([
+      ssrNextApi.fetch(`users/${id}/counts`),
+      ssrNextApi.fetch(`users/${id}`),
+      ssrNextApi.fetch("summary"),
+    ]);
 
   return {
     props: {
       id,
-      summary: summary ?? {},
+      userSummary: userSummary ?? {},
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
+      summary: summary ?? {},
     },
   };
 });
