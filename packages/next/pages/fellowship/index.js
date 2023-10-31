@@ -62,8 +62,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
   return {
     props: {
       posts: posts ?? EmptyList,
-      ...tracksProps,
       fellowshipSummary: fellowshipSummary ?? {},
+      ...tracksProps,
     },
   };
 });

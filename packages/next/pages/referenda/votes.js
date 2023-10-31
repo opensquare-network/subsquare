@@ -47,8 +47,8 @@ export const getServerSideProps = withCommonProps(async () => {
 
   return {
     props: {
-      ...tracksProps,
       referendaSummary: referendaSummary ?? {},
+      ...tracksProps,
     },
   };
 });

@@ -50,7 +50,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
     }),
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
-  console.log(tracksProps);
 
   return {
     props: {

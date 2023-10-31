@@ -11,6 +11,7 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 function AdvisoryCommitteeMotionContent() {
   const motion = usePost();
@@ -72,11 +73,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     `advisory-motions/${motion._id}/comments`,
     context,
   );
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       motion: motion ?? null,
       comments: comments ?? EmptyList,
+      ...tracksProps,
     },
   };
 });

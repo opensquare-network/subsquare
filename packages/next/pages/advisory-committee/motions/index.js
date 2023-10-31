@@ -6,6 +6,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { useChainSettings } from "next-common/context/chain";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import { fetchList } from "next-common/services/list";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default function MotionsPage({ motions }) {
   const chainSettings = useChainSettings();
@@ -41,10 +42,12 @@ export default function MotionsPage({ motions }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const motions = await fetchList("advisory-motions", context);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       motions,
+      ...tracksProps,
     },
   };
 });

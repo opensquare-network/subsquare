@@ -93,9 +93,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       posts: posts ?? EmptyList,
       title: "OpenGov Referenda",
-      ...tracksProps,
       gov2ReferendaSummary: gov2ReferendaSummary ?? {},
       status,
+      ...tracksProps,
     },
   };
 });
