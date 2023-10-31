@@ -13,6 +13,9 @@ export const Names = {
 
 export function getAllianceMenu(summary) {
   const activeAllianceMotions = summary?.allianceMotions?.active || 0;
+  const activeAllianceAnnouncements =
+    summary?.allianceAnnouncements?.active || 0;
+  const totalActiveCount = activeAllianceMotions + activeAllianceAnnouncements;
 
   const motions = {
     value: "allianceMotions",
@@ -39,6 +42,7 @@ export function getAllianceMenu(summary) {
     name: Names.allianceAnnouncements,
     pathname: "/alliance/announcements",
     extraMatchNavMenuActivePathnames: ["/alliance/announcements/[id]"],
+    activeCount: activeAllianceAnnouncements,
   };
 
   return {
@@ -49,7 +53,7 @@ export function getAllianceMenu(summary) {
     ]),
     icon: <MenuAlliance />,
     pathname: "/alliance",
-    activeCount: activeAllianceMotions,
+    activeCount: totalActiveCount,
     items: [announcements, motions, unscrupulous, members],
   };
 }

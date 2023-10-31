@@ -3,15 +3,15 @@ import { getDemocracyMenu } from "./democracy";
 import { getTreasuryMenu } from "./treasury";
 import { getCouncilMenu } from "./council";
 import { getTechCommMenu } from "./tc";
-import { getFinancialCouncilMenu } from "./financilCouncil";
+import { getFinancialCouncilMenu } from "./financialCouncil";
 import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
-import alliance from "./alliance";
+import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { getTreasuryCouncilMenu } from "./treasuryCouncil";
 import { getOpenTechCommMenu } from "./openTechCommittee";
 import { CHAIN } from "next-common/utils/constants";
+import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
 
 export function getHomeMenu({
@@ -44,7 +44,7 @@ export function getHomeMenu({
     getTechCommMenu(summary),
     getFinancialCouncilMenu(summary),
     getAdvisoryCommitteeMenu(summary),
-    alliance,
+    getAllianceMenu(summary),
     preImages,
   ];
 }
