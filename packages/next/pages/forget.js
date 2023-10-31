@@ -1,6 +1,6 @@
 import Forget from "next-common/components/pages/forget";
-import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { withCommonProps } from "next-common/lib";
 
 export default Forget;
 
-export const getServerSideProps = getServerSidePropsWithTracks;
+export const getServerSideProps = withCommonProps();

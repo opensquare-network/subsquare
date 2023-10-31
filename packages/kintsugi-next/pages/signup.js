@@ -1,6 +1,6 @@
 import SignUpPage from "@subsquare/next/pages/signup";
-import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
+import { withCommonProps } from "next-common/lib";
 
 export default SignUpPage;
 
-export const getServerSideProps = serverSidePropsWithSummary;
+export const getServerSideProps = withCommonProps();

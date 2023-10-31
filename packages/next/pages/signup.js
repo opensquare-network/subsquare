@@ -16,7 +16,7 @@ import GhostButton from "next-common/components/buttons/ghostButton";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
 import { updateUser, useUser, useUserDispatch } from "next-common/context/user";
-import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { withCommonProps } from "next-common/lib";
 
 const Title = styled.div`
   font-weight: bold;
@@ -251,4 +251,4 @@ export default function Signup() {
   );
 }
 
-export const getServerSideProps = getServerSidePropsWithTracks;
+export const getServerSideProps = withCommonProps();

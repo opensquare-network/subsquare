@@ -1,6 +1,6 @@
 import Verify from "next-common/components/pages/verify";
-import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { withCommonProps } from "next-common/lib";
 
 export default Verify;
 
-export const getServerSideProps = getServerSidePropsWithTracks;
+export const getServerSideProps = withCommonProps();
