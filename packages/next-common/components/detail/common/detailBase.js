@@ -44,7 +44,7 @@ export default function DetailContentBase({ head, title, meta, children }) {
       {head}
 
       {title}
-      <div className="py-2" />
+      {title && meta && <div className="py-2" />}
       {meta}
 
       {children}

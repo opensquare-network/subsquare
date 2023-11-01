@@ -13,16 +13,18 @@ export default function TreasuryProposalDetail() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <DetailContentBase>
-      {!isEditing && (
-        <>
-          <TreasuryAwardCountDown />
-          <TreasuryProposalNavigation />
-        </>
-      )}
-      <PostTitle />
-      <div className="py-2" />
-      <TreasuryProposalPostMeta />
+    <DetailContentBase
+      head={
+        !isEditing && (
+          <>
+            <TreasuryAwardCountDown />
+            <TreasuryProposalNavigation />
+          </>
+        )
+      }
+      title={<PostTitle />}
+      meta={<TreasuryProposalPostMeta />}
+    >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );

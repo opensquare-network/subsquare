@@ -13,11 +13,11 @@ export default function BountyDetail() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <DetailContentBase>
-      {!isEditing && <BountyCountDown />}
-      <PostTitle />
-      <div className="py-2" />
-      <BountyPostMeta />
+    <DetailContentBase
+      head={!isEditing && <BountyCountDown />}
+      title={<PostTitle />}
+      meta={<BountyPostMeta />}
+    >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );

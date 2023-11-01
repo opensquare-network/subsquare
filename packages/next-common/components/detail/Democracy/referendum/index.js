@@ -14,17 +14,19 @@ export default function DemocracyReferendaDetail() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <DetailContentBase>
-      {!isEditing && (
-        <>
-          <ExecutionCountdown />
-          <ReferendumVoteEndCountDown />
-          <ReferendumNavigation />
-        </>
-      )}
-      <PostTitle />
-      <div className="py-2" />
-      <DemocracyReferendumMeta />
+    <DetailContentBase
+      head={
+        !isEditing && (
+          <>
+            <ExecutionCountdown />
+            <ReferendumVoteEndCountDown />
+            <ReferendumNavigation />
+          </>
+        )
+      }
+      title={<PostTitle />}
+      meta={<DemocracyReferendumMeta />}
+    >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );

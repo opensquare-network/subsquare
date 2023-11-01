@@ -15,15 +15,17 @@ export default function ChildBountyDetail() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <DetailContentBase>
-      {!isEditing && (
-        <>
-          <ChildBountyCountDown data={post.onchainData} />
-        </>
-      )}
-      <PostTitle />
-      <div className="py-2" />
-      <BountyPostMeta isChild />
+    <DetailContentBase
+      head={
+        !isEditing && (
+          <>
+            <ChildBountyCountDown data={post.onchainData} />
+          </>
+        )
+      }
+      title={<PostTitle />}
+      meta={<BountyPostMeta isChild />}
+    >
       <ArticleContent setIsEdit={setIsEdit} />
     </DetailContentBase>
   );

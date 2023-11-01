@@ -12,15 +12,17 @@ export default function TipDetail() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <DetailContentBase>
-      {!isEditing && (
-        <>
-          <CloseCountDown />
-        </>
-      )}
-      <PostTitle />
-      <div className="py-2" />
-      <TipPostMeta />
+    <DetailContentBase
+      head={
+        !isEditing && (
+          <>
+            <CloseCountDown />
+          </>
+        )
+      }
+      title={<PostTitle />}
+      meta={<TipPostMeta />}
+    >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );

@@ -15,19 +15,21 @@ export default function FellowshipReferendaDetail() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <DetailContentBase>
-      {!isEditing && (
-        <>
-          <PreimageWarning />
-          <TimeoutGuard>
-            <FellowshipTimeoutCountdown />
-          </TimeoutGuard>
-          <FellowshipWhitelistNavigation />
-        </>
-      )}
-      <PostTitle />
-      <div className="py-2" />
-      <ReferendaPostMeta isFellowship />
+    <DetailContentBase
+      head={
+        !isEditing && (
+          <>
+            <PreimageWarning />
+            <TimeoutGuard>
+              <FellowshipTimeoutCountdown />
+            </TimeoutGuard>
+            <FellowshipWhitelistNavigation />
+          </>
+        )
+      }
+      title={<PostTitle />}
+      meta={<ReferendaPostMeta isFellowship />}
+    >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
