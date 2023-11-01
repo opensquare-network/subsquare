@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@interlay/monetary-js": "0.5.4",
-    "@osn/icons": "^1.35.0",
+    "@osn/icons": "^1.36.0",
     "@osn/polkadot-react-identicon": "^1.0.8",
     "@osn/previewer": "^0.12.5",
     "@osn/provider-options": "1.1.0",

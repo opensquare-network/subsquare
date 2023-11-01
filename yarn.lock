@@ -2106,10 +2106,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.35.0":
-  version: 1.35.0
-  resolution: "@osn/icons@npm:1.35.0"
-  checksum: 3d6b86a7fba1facd83bbc43ddd2813d4d244d98efa9bf2fb6515ceac37713a0b0605a422f744e31b5ecafd80c7e9060ce90a5f6df292443d3d1684eea18eb86d
+"@osn/icons@npm:^1.36.0":
+  version: 1.36.0
+  resolution: "@osn/icons@npm:1.36.0"
+  checksum: e611f7a6e73bb6f1133567afa51a10986e1165667d1de774d909809c7849ee4eba69f199a0aafdc1fce494b92c4f2fa63de5acacb9524a8a7427f067454c01b4
   languageName: node
   linkType: hard
 
@@ -3388,7 +3388,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.35.0
+    "@osn/icons": ^1.36.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3423,7 +3423,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.35.0
+    "@osn/icons": ^1.36.0
     "@osn/previewer": ^0.12.5
     "@osn/rich-text-editor": ^0.6.2
     "@svgr/webpack": ^7.0.0
@@ -8442,7 +8442,7 @@ __metadata:
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.35.0
+    "@osn/icons": ^1.36.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^0.12.5
     "@osn/provider-options": 1.1.0
