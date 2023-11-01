@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useChainSettings } from "next-common/context/chain";
 import DelegationStatus from "./delegationStatus";
 import tw from "tailwind-styled-components";
+import HintMessage from "../styled/hintMessage";
+import useIsProxySet from "next-common/hooks/useIsProxySet";
 
 export const LinkButton = tw(Link)`
   cursor-pointer
@@ -33,6 +35,7 @@ export default function MyVoteCommon({
 }) {
   const { hasReferenda, noDemocracyModule } = useChainSettings();
   const hasVotesManagement = hasReferenda || !noDemocracyModule;
+  const isProxySet = useIsProxySet();
 
   if (!votes || votes.length === 0) {
     return null;
@@ -65,6 +68,8 @@ export default function MyVoteCommon({
         {isDelegating && (
           <DelegationStatus delegatingTarget={delegatingTarget} />
         )}
+
+        {isProxySet && <HintMessage>Votes of proxied account</HintMessage>}
 
         <div className="flex justify-end gap-[16px]">
           {hasVotesManagement && (
