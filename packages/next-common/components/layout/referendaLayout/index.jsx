@@ -6,10 +6,8 @@ import { useUser } from "next-common/context/user";
 
 function HeadContent() {
   return (
-    <div className="flex flex-col gap-[16px]">
-      <div className="md:hidden">
-        <SubscribeTip />
-      </div>
+    <div className="md:hidden">
+      <SubscribeTip />
     </div>
   );
 }
