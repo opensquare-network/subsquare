@@ -49,6 +49,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     // FIXME: ai, remove flag
     !post.aiSummaryContent && {
       label: "AI Summary",
+      tooltip: "Powered by OpenAI",
       content: (
         <RichTextStyleWrapper>
           <AISummaryContent />

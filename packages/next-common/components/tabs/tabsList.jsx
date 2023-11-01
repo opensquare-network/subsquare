@@ -1,5 +1,6 @@
 import { cn } from "next-common/utils";
 import noop from "lodash.noop";
+import Tooltip from "../tooltip";
 
 export default function TabsList({
   tabs = [],
@@ -18,23 +19,24 @@ export default function TabsList({
         const active = tab.active ?? activeTabLabel === tab.label;
 
         return (
-          <li
-            key={idx}
-            role="button"
-            className={cn(
-              itemClassName,
-              active ? itemActiveClassName : "border-transparent",
-            )}
-            onClick={() => onTabClick(tab)}
-          >
-            {tab.label}
-            {!!tab.activeCount && (
-              <span className="ml-1 text-textTertiary text14Medium">
-                {tab.activeCount}
-              </span>
-            )}
-            {tab.labelExtra}
-          </li>
+          <Tooltip key={idx} content={tab.tooltip}>
+            <li
+              role="button"
+              className={cn(
+                itemClassName,
+                active ? itemActiveClassName : "border-transparent",
+              )}
+              onClick={() => onTabClick(tab)}
+            >
+              {tab.label}
+              {!!tab.activeCount && (
+                <span className="ml-1 text-textTertiary text14Medium">
+                  {tab.activeCount}
+                </span>
+              )}
+              {tab.labelExtra}
+            </li>
+          </Tooltip>
         );
       })}
     </ul>
