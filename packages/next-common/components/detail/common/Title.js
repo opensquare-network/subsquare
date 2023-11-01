@@ -19,13 +19,6 @@ const TitleWrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
-  word-break: break-word;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-`;
-
 const Index = styled.div`
   float: left;
   font-weight: 500;
@@ -42,9 +35,14 @@ export default function PostTitle() {
   return (
     <TitleWrapper className="text-textPrimary">
       {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title className={cn(isEditing && "!text-textDisabled select-none")}>
+      <h1
+        className={cn(
+          "text20Bold",
+          isEditing && "!text-textDisabled select-none",
+        )}
+      >
         {title}
-      </Title>
+      </h1>
     </TitleWrapper>
   );
 }
