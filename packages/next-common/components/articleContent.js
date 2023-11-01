@@ -63,13 +63,15 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       {!post.content && <NonEdited setIsEdit={setIsEdit} />}
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
-      <Tabs
-        activeTabLabel={activeTab}
-        tabs={tabs}
-        onTabClick={(tab) => {
-          setActiveTab(tab.label);
-        }}
-      />
+      {post.content && (
+        <Tabs
+          activeTabLabel={activeTab}
+          tabs={tabs}
+          onTabClick={(tab) => {
+            setActiveTab(tab.label);
+          }}
+        />
+      )}
 
       {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
       {post.poll && (
