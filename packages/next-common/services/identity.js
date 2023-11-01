@@ -1,4 +1,5 @@
 import debounce from "lodash.debounce";
+import QuickLRU from "quick-lru";
 
 class Deferred {
   constructor() {
@@ -9,7 +10,7 @@ class Deferred {
   }
 }
 
-const cachedIdentities = new Map();
+const cachedIdentities = new QuickLRU({ maxSize: 1000 });
 let pendingQueries = new Map();
 
 const delayQuery = debounce(() => {
