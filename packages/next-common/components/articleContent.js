@@ -64,13 +64,15 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
       {post.content && (
-        <Tabs
-          activeTabLabel={activeTab}
-          tabs={tabs}
-          onTabClick={(tab) => {
-            setActiveTab(tab.label);
-          }}
-        />
+        <div className="mt-6">
+          <Tabs
+            activeTabLabel={activeTab}
+            tabs={tabs}
+            onTabClick={(tab) => {
+              setActiveTab(tab.label);
+            }}
+          />
+        </div>
       )}
 
       {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
