@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { toPolkassemblyDiscussionAuthor } from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
 import Info from "next-common/components/styled/info";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
-import Divider from "next-common/components/styled/layout/divider";
 import { useChain } from "next-common/context/chain";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 
@@ -36,7 +35,7 @@ export default function PolkassemblyDetailHeader() {
   return (
     <>
       <PostTitle />
-      <Divider className="my-4" />
+      <div className="py-2" />
       <div className="flex items-center justify-between flex-nowrap">
         <DividerWrapper>
           <PolkassemblyUser
