@@ -8,6 +8,7 @@ import Channels from "next-common/components/setting/channels";
 import OnChainEventsSubscription from "components/settings/onchainEventsSubscription";
 import DiscussionEventsSubscription from "next-common/components/setting/notification/discussionEventsSubscription";
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
+import { ssrNextApi } from "next-common/services/nextApi";
 
 export default function Notification() {
   return (
@@ -27,12 +28,14 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { unsubscribe } = context.query;
 
   const subscription = await fetchUserSubscription(context);
+  const { result: summary } = await ssrNextApi.fetch("summary");
 
   return {
     props: {
       chain,
       unsubscribe: unsubscribe ?? null,
       subscription: subscription ?? null,
+      summary: summary ?? {},
     },
   };
 });

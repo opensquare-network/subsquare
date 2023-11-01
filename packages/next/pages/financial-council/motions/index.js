@@ -4,6 +4,7 @@ import { toFinancialMotionsListItem } from "next-common/utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchList } from "next-common/services/list";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default function MotionsPage({ motions }) {
   const items = (motions.items || []).map((item) =>
@@ -35,10 +36,12 @@ export default function MotionsPage({ motions }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const motions = await fetchList("financial-motions", context);
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       motions,
+      ...tracksProps,
     },
   };
 });

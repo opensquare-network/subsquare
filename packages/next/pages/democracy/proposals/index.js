@@ -43,12 +43,11 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const [{ result: proposals }, { result: summary }] = await Promise.all([
+  const [{ result: proposals }] = await Promise.all([
     nextApi.fetch("democracy/proposals", {
       page: page ?? 1,
       pageSize: pageSize ?? defaultPageSize,
     }),
-    nextApi.fetch("summary"),
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
 
@@ -57,7 +56,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
       chain,
       proposals: proposals ?? EmptyList,
       ...tracksProps,
-      summary: summary ?? {},
     },
   };
 });

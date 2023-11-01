@@ -21,9 +21,8 @@ export default function TrackStatisticsPage({
   turnout,
   delegatee,
   delegators,
-  summary,
-
-  referendumsSummary,
+  trackSummary,
+  trackReferendaSummary,
   period,
 }) {
   const title = "OpenGov Statistics";
@@ -34,7 +33,7 @@ export default function TrackStatisticsPage({
     <ReferendaTrackLayout
       seoInfo={seoInfo}
       title={`[${period.id}] Origin: ${period.origin}`}
-      summaryData={referendumsSummary}
+      summaryData={trackReferendaSummary}
       periodData={period}
     >
       <div className="space-y-6">
@@ -63,7 +62,7 @@ export default function TrackStatisticsPage({
               apiRoot={`referenda/tracks/${track.id}`}
               delegatee={delegatee}
               delegators={delegators}
-              summary={summary}
+              summary={trackSummary}
             />
           </div>
         </div>
@@ -75,7 +74,7 @@ export default function TrackStatisticsPage({
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();
+  const { tracks, fellowshipTracks, summary } = await fetchOpenGovTracksProps();
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -88,9 +87,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: turnout },
     { result: delegatee },
     { result: delegators },
-    { result: summary },
-
-    { result: referendumsSummary },
+    { result: trackSummary },
+    { result: trackReferendaSummary },
     { result: period },
   ] = await Promise.all([
     ssrNextApi.fetch(`referenda/tracks/${id}/turnout`),
@@ -103,7 +101,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
       pageSize: 25,
     }),
     ssrNextApi.fetch(`referenda/tracks/${id}/summary`),
-
     ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
     ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
   ]);
@@ -117,8 +114,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,
       summary: summary ?? {},
-
-      referendumsSummary: referendumsSummary ?? {},
+      trackSummary: trackSummary ?? {},
+      trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
     },
   };

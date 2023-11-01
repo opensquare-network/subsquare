@@ -8,33 +8,41 @@ export const Names = {
   techCommMembers: "Members",
 };
 
-const techComm = {
-  name: Names.techComm,
-  excludeToChains: [
-    Chains.kabocha,
-    Chains.centrifuge,
-    Chains.altair,
-    Chains.development,
-    Chains["westend-collectives"],
-    Chains.collectives,
-    Chains.vara,
-  ],
-  archivedToChains: [Chains.kusama],
-  icon: <MenuTechComm />,
-  pathname: "/techcomm",
-  items: [
-    {
-      value: "techCommProposals",
-      name: Names.techCommProposals,
-      pathname: "/techcomm/proposals",
-      extraMatchNavMenuActivePathnames: ["/techcomm/proposals/[id]"],
-    },
-    {
-      value: "techCommMembers",
-      name: Names.techCommMembers,
-      pathname: "/techcomm/members",
-    },
-  ],
-};
+export function getTechCommMenu(summary) {
+  const activeTechCommMotions = summary?.techCommMotions?.active || 0;
+
+  return {
+    name: Names.techComm,
+    excludeToChains: [
+      Chains.kabocha,
+      Chains.centrifuge,
+      Chains.altair,
+      Chains.development,
+      Chains["westend-collectives"],
+      Chains.collectives,
+      Chains.vara,
+    ],
+    archivedToChains: [Chains.kusama],
+    activeCount: activeTechCommMotions,
+    icon: <MenuTechComm />,
+    pathname: "/techcomm",
+    items: [
+      {
+        value: "techCommProposals",
+        name: Names.techCommProposals,
+        pathname: "/techcomm/proposals",
+        extraMatchNavMenuActivePathnames: ["/techcomm/proposals/[id]"],
+        activeCount: activeTechCommMotions,
+      },
+      {
+        value: "techCommMembers",
+        name: Names.techCommMembers,
+        pathname: "/techcomm/members",
+      },
+    ],
+  };
+}
+
+const techComm = getTechCommMenu();
 
 export default techComm;

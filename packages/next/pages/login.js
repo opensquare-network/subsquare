@@ -1,6 +1,6 @@
 import { getRedirectHomeProps } from "next-common/services/serverSide";
 
-export default function Proposal() {
+export default function Login() {
   return "Please login on home page";
 }
 

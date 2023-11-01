@@ -1,4 +1,3 @@
-import { withCommonProps } from "next-common/lib";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
@@ -13,6 +12,7 @@ import {
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { useChain } from "next-common/context/chain";
 import { useUser } from "next-common/context/user";
+import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
 
 export default function KeyAccount() {
   const chain = useChain();
@@ -53,4 +53,4 @@ export default function KeyAccount() {
   );
 }
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = serverSidePropsWithSummary;

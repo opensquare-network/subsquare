@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { withCommonProps } from "next-common/lib";
 import { ContentWrapper } from "next-common/components/setting/styled";
 import Username from "next-common/components/setting/username";
 import Email from "next-common/components/setting/email";
@@ -13,6 +12,7 @@ import {
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { useUser } from "next-common/context/user";
+import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
 
 export default function Account() {
   const loginUser = useUser();
@@ -62,4 +62,4 @@ export default function Account() {
   );
 }
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = serverSidePropsWithSummary;

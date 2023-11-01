@@ -21,7 +21,7 @@ export default function TrackPage({
   posts,
   title,
   tracks,
-  summary,
+  trackReferendaSummary,
   period,
   status,
 }) {
@@ -51,7 +51,7 @@ export default function TrackPage({
       seoInfo={seoInfo}
       title={`[${period.id}] Origin: ${period.origin}`}
       periodData={period}
-      summaryData={summary}
+      summaryData={trackReferendaSummary}
     >
       <PostList
         title="List"
@@ -84,7 +84,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const status = upperFirst(camelCase(statusQuery));
 
-  const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();
+  const { tracks, fellowshipTracks, summary } = await fetchOpenGovTracksProps();
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -93,16 +93,19 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return to404();
   }
 
-  const [{ result: posts }, { result: summary }, { result: period }] =
-    await Promise.all([
-      ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
-        page,
-        pageSize,
-        status,
-      }),
-      ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-      ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
-    ]);
+  const [
+    { result: posts },
+    { result: trackReferendaSummary },
+    { result: period },
+  ] = await Promise.all([
+    ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
+      page,
+      pageSize,
+      status,
+    }),
+    ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
+    ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+  ]);
 
   return {
     props: {
@@ -112,6 +115,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       tracks,
       fellowshipTracks,
       summary: summary ?? {},
+      trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
       status,
     },

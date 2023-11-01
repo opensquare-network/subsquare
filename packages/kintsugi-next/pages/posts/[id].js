@@ -49,6 +49,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
   );
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
+  const { result: summary } = await nextApi.fetch("summary");
+
   return {
     props: {
       detail,
@@ -56,6 +58,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       votes,
       myVote: myVote ?? null,
       chain,
+      summary: summary ?? {},
     },
   };
 });

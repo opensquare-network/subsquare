@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
-export default function ReferendaVotesPage({ summary }) {
+export default function ReferendaVotesPage({ referendaSummary }) {
   const user = useUser();
   const router = useRouter();
 
@@ -27,7 +27,11 @@ export default function ReferendaVotesPage({ summary }) {
   const seoInfo = { title, desc: title };
 
   return (
-    <ReferendaLayout seoInfo={seoInfo} title={title} summaryData={summary}>
+    <ReferendaLayout
+      seoInfo={seoInfo}
+      title={title}
+      summaryData={referendaSummary}
+    >
       <ModuleTabProvider defaultTab={Referenda}>
         <ModuleVotes />
       </ModuleTabProvider>
@@ -36,15 +40,15 @@ export default function ReferendaVotesPage({ summary }) {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const [tracksProps, { result: summary }] = await Promise.all([
+  const [tracksProps, { result: referendaSummary }] = await Promise.all([
     fetchOpenGovTracksProps(),
     ssrNextApi.fetch(gov2ReferendumsSummaryApi),
   ]);
 
   return {
     props: {
+      referendaSummary: referendaSummary ?? {},
       ...tracksProps,
-      summary: summary ?? {},
     },
   };
 });
