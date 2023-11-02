@@ -1,7 +1,7 @@
 import nextApi from "./nextApi";
 
 const OPENAI_API_END_POINT =
-  process.env.NEXT_PUBLIC_OPENAI_API_END_POINT || "https://api.openai.com/";
+  process.env.NEXT_PUBLIC_OPENAI_API_END_POINT || "https://api.openai.com";
 const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 const AZURE_OPENAI_RESOURCE_NAME =
   process.env.NEXT_PUBLIC_AZURE_OPENAI_RESOURCE_NAME;
@@ -11,7 +11,7 @@ const AZURE_OPENAI_API_VERSION =
   process.env.NEXT_PUBLIC_AZURE_OPENAI_API_VERSION;
 const AZURE_OPENAI_API_KEY = process.env.NEXT_PUBLIC_AZURE_OPENAI_API_KEY;
 
-const openaiUrl = OPENAI_API_END_POINT + "v1/chat/completions";
+const openaiUrl = OPENAI_API_END_POINT + "/v1/chat/completions";
 const azureOpenaiUrl = `https://${AZURE_OPENAI_RESOURCE_NAME}.openai.azure.com/openai/deployments/${AZURE_OPENAI_DEPLOYMENT_ID}/chat/completions?api-version=${AZURE_OPENAI_API_VERSION}`;
 
 const PROMPT = `I want you to act as a Wikipedia page.
@@ -20,7 +20,6 @@ intructions you must follow:
 - Don't copy the original text
 - Don't include any code
 - Start with "This post is"
-- Response me with markdown format
 `;
 
 const openaiModelOptions = {
@@ -39,7 +38,7 @@ export async function aiSummarise({ provider = "openai", post }) {
   let apiUrl = "";
   let content = "";
 
-  // TODO: post contentType html, stripe out html tags
+  // TODO: post contentType html, stripe out html tags, keep `br`
   // TODO: post contentType markdown
   if (post.contentType === "markdown") {
     content = post.content;
