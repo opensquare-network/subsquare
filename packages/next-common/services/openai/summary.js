@@ -1,11 +1,13 @@
+import sanitizeHtml from "sanitize-html";
 import { openai } from ".";
 
 export async function fetchSummary({ post, type }) {
   let summary = "";
   let content = "";
 
-  // TODO: post contentType html, stripe out html tags, keep `br`
-  // TODO: post contentType markdown
+  if (post.contentType === "html") {
+    content = cleanHtml(post.content);
+  }
   if (post.contentType === "markdown") {
     content = post.content;
   }
@@ -42,4 +44,20 @@ Instructions you must follow:
   }
 
   return summary;
+}
+
+function cleanHtml(raw = "") {
+  const ignoreTags = ["code"];
+
+  let html = sanitizeHtml(raw, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.filter(
+      (tag) => !ignoreTags.includes(tag),
+    ),
+    allowedAttributes: {},
+  });
+
+  // stripe html tags
+  html = html.replace(/<[^>]*>/g, "");
+
+  return html;
 }
