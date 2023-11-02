@@ -8,8 +8,9 @@ import { useChain } from "next-common/context/chain";
 import isNil from "lodash.isnil";
 import nextApi from "next-common/services/nextApi";
 import uniqBy from "lodash.uniqby";
+import QuickLRU from "quick-lru";
 
-const dataCache = {};
+const dataCache = new QuickLRU({ maxSize: 100 });
 
 export function usePolkassemblyPostData({
   polkassemblyId,
@@ -28,8 +29,8 @@ export function usePolkassemblyPostData({
     }
 
     const cacheKey = `${polkassemblyPostType}:${polkassemblyId}`;
-    if (dataCache[cacheKey]) {
-      const data = dataCache[cacheKey];
+    if (dataCache.has(cacheKey)) {
+      const data = dataCache.get(cacheKey);
       setComments(data.comments);
       setPostReactions(data.postReactions);
       setCommentsCount(data.commentsCount);
@@ -56,11 +57,11 @@ export function usePolkassemblyPostData({
             chain,
           );
           const commentsCount = result?.comments?.length;
-          dataCache[cacheKey] = {
+          dataCache.set(cacheKey, {
             comments,
             postReactions,
             commentsCount,
-          };
+          });
 
           setComments(comments);
           setPostReactions(postReactions);

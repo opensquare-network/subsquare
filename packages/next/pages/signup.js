@@ -7,7 +7,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
-import { withCommonProps } from "next-common/lib";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
@@ -17,6 +16,7 @@ import GhostButton from "next-common/components/buttons/ghostButton";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
 import { updateUser, useUser, useUserDispatch } from "next-common/context/user";
+import { withCommonProps } from "next-common/lib";
 
 const Title = styled.div`
   font-weight: bold;

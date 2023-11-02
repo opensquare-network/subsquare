@@ -10,17 +10,19 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const [{ result: proposals }] = await Promise.all([
+  const [{ result: proposals }, { result: summary }] = await Promise.all([
     nextApi.fetch("treasury/proposals", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
     }),
+    nextApi.fetch("summary"),
   ]);
 
   return {
     props: {
       chain,
       proposals: proposals ?? EmptyList,
+      summary: summary ?? {},
     },
   };
 });

@@ -74,10 +74,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
+  const { result: summary } = await nextApi.fetch("summary");
+
   return {
     props: {
       motion: motion ?? null,
       comments: comments ?? EmptyList,
+      summary: summary ?? {},
     },
   };
 });

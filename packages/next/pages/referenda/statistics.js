@@ -16,8 +16,8 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 export default function ReferendaStatisticsPage({
   tracksStats,
   delegatee,
-  summary,
-  referendumsSummary,
+  democracyReferendaSummary,
+  gov2ReferendaSummary,
 }) {
   const title = "OpenGov Statistics";
   const seoInfo = { title, desc: title };
@@ -27,7 +27,7 @@ export default function ReferendaStatisticsPage({
     <ReferendaLayout
       seoInfo={seoInfo}
       title={title}
-      summaryData={referendumsSummary}
+      summaryData={gov2ReferendaSummary}
     >
       <div className="space-y-6">
         <div>
@@ -39,8 +39,8 @@ export default function ReferendaStatisticsPage({
               !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
             )}
           >
-            <ReferendaSummary summary={summary} />
-            <OpenGovTurnoutSummary summary={summary} />
+            <ReferendaSummary summary={democracyReferendaSummary} />
+            <OpenGovTurnoutSummary summary={democracyReferendaSummary} />
           </div>
         </div>
 
@@ -70,9 +70,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const [
     { result: tracksStats },
     { result: delegatee },
-    { result: summary },
+    { result: democracyReferendaSummary },
     tracksProps,
-    { result: referendumsSummary },
+    { result: gov2ReferendaSummary },
   ] = await Promise.all([
     ssrNextApi.fetch("referenda/tracks"),
     ssrNextApi.fetch("referenda/delegatee", {
@@ -89,10 +89,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       tracksStats: tracksStats ?? [],
       delegatee: delegatee ?? EmptyList,
-      summary: summary ?? [],
+      democracyReferendaSummary: democracyReferendaSummary ?? [],
+      gov2ReferendaSummary: gov2ReferendaSummary ?? {},
 
       ...tracksProps,
-      referendumsSummary: referendumsSummary ?? {},
     },
   };
 });

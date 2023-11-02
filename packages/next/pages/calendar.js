@@ -1,4 +1,3 @@
-import { withCommonProps } from "next-common/lib";
 import FullCalendar from "next-common/components/calendar/fullCalendar";
 import DayEvents from "next-common/components/calendar/dayEvents";
 import { useCallback, useState } from "react";
@@ -9,7 +8,7 @@ import {
 } from "next-common/hooks/calendar";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { cn } from "next-common/utils";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide/serverSidePropsWithTracks";
 
 export default function CalendarPage() {
   const [date, setDate] = useState(new Date());
@@ -52,12 +51,4 @@ export default function CalendarPage() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

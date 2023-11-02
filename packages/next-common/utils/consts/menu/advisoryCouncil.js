@@ -9,24 +9,32 @@ export const Names = {
   advisoryCouncilMembers: "Members",
 };
 
-const advisoryCommittee = {
-  name: Names.advisoryCommittee,
-  excludeToChains: getExcludeChains([Chains.zeitgeist]),
-  icon: <MenuAdvisoryCommittee />,
-  pathname: "/advisory-committee",
-  items: [
-    {
-      value: "advisoryMotions",
-      name: Names.advisoryMotions,
-      pathname: "/advisory-committee/motions",
-      extraMatchNavMenuActivePathnames: ["/advisory-committee/motions/[id]"],
-    },
-    {
-      value: "advisoryCouncilMembers",
-      name: Names.advisoryCouncilMembers,
-      pathname: "/advisory-committee/members",
-    },
-  ],
-};
+export function getAdvisoryCommitteeMenu(summary) {
+  const activeAdvisoryMotions = summary?.advisoryMotions?.active || 0;
+
+  return {
+    name: Names.advisoryCommittee,
+    excludeToChains: getExcludeChains([Chains.zeitgeist]),
+    activeCount: activeAdvisoryMotions,
+    icon: <MenuAdvisoryCommittee />,
+    pathname: "/advisory-committee",
+    items: [
+      {
+        value: "advisoryMotions",
+        name: Names.advisoryMotions,
+        pathname: "/advisory-committee/motions",
+        extraMatchNavMenuActivePathnames: ["/advisory-committee/motions/[id]"],
+        activeCount: activeAdvisoryMotions,
+      },
+      {
+        value: "advisoryCouncilMembers",
+        name: Names.advisoryCouncilMembers,
+        pathname: "/advisory-committee/members",
+      },
+    ],
+  };
+}
+
+const advisoryCommittee = getAdvisoryCommitteeMenu();
 
 export default advisoryCommittee;

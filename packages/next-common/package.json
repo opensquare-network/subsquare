@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@interlay/monetary-js": "0.5.4",
-    "@osn/icons": "^1.36.0",
+    "@osn/icons": "^1.37.1",
     "@osn/polkadot-react-identicon": "^1.0.8",
     "@osn/previewer": "^0.12.5",
     "@osn/provider-options": "1.1.0",
@@ -62,6 +62,7 @@
     "lodash.uniqby": "^4.7.0",
     "md5": "^2.3.0",
     "moment": "^2.29.4",
+    "quick-lru": "^7.0.0",
     "react": "^18.2.0",
     "react-big-calendar": "^1.6.8",
     "react-chartjs-2": "^5.1.0",

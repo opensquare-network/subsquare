@@ -14,9 +14,12 @@ export const getServerSideProps = withCommonProps(async (context) => {
   }
   const { result: posts } = await nextApi.fetch("posts", q);
 
+  const { result: summary } = await nextApi.fetch("summary");
+
   return {
     props: {
       posts: posts ?? EmptyList,
+      summary: summary ?? {},
     },
   };
 });

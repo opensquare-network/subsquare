@@ -98,12 +98,14 @@ export default function Home({ overview, chain }) {
 
 export const getServerSideProps = withCommonProps(async () => {
   const chain = process.env.CHAIN;
-  const { result } = await nextApi.fetch("overview");
+  const { result: overview } = await nextApi.fetch("overview");
+  const { result: summary } = await nextApi.fetch("summary");
 
   return {
     props: {
       chain,
-      overview: result ?? null,
+      overview: overview ?? null,
+      summary: summary ?? {},
     },
   };
 });

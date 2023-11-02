@@ -1,5 +1,5 @@
-import { withCommonProps } from "next-common/lib";
 import Forget from "next-common/components/pages/forget";
+import { withCommonProps } from "next-common/lib";
 
 export default Forget;
 

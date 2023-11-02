@@ -16,9 +16,9 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 export default function DemocracyStatisticsPage({
   delegatee,
   delegators,
-  summary,
+  democracySummary,
   turnout,
-  referendumsSummary,
+  summary,
 }) {
   const { hasDemocracy } = useChainSettings();
 
@@ -30,7 +30,7 @@ export default function DemocracyStatisticsPage({
     <DemocracyReferendaLayout
       seoInfo={seoInfo}
       title={title}
-      summaryData={referendumsSummary}
+      summaryData={summary}
     >
       <div className="space-y-6">
         <div>
@@ -58,7 +58,7 @@ export default function DemocracyStatisticsPage({
               <DemocracyStatistics
                 delegatee={delegatee}
                 delegators={delegators}
-                summary={summary}
+                summary={democracySummary}
               />
             </div>
           </div>
@@ -72,10 +72,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const [
     { result: delegatee },
     { result: delegators },
-    { result: summary },
+    { result: democracySummary },
     { result: turnout },
-
-    { result: referendumsSummary },
   ] = await Promise.all([
     nextApi.fetch("democracy/delegatee", {
       sort: JSON.stringify(["delegatedVotes", "desc"]),
@@ -87,8 +85,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
     }),
     nextApi.fetch("democracy/summary"),
     nextApi.fetch("democracy/referenda/turnout"),
-
-    nextApi.fetch("summary"),
   ]);
 
   const normailizedTurnout = turnout?.map((item) => ({
@@ -104,10 +100,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,
-      summary: summary ?? {},
+      democracySummary: democracySummary ?? {},
       turnout: normailizedTurnout ?? [],
-
-      referendumsSummary: referendumsSummary ?? {},
       ...tracksProps,
     },
   };

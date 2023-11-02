@@ -1,5 +1,3 @@
-import { withCommonProps } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
 import {
   Democracy,
   ModuleTabProvider,
@@ -9,7 +7,7 @@ import DemocracyReferendaLayout from "next-common/components/layout/democracyLay
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default function DemocracyVotes({ summary }) {
   const user = useUser();
@@ -38,16 +36,4 @@ export default function DemocracyVotes({ summary }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const [tracksProps, { result: summary }] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    ssrNextApi.fetch("summary"),
-  ]);
-
-  return {
-    props: {
-      ...tracksProps,
-      summary: summary ?? {},
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;

@@ -1,20 +1,21 @@
 import commonMenus from "./common";
-import democracy from "./democracy";
-import treasury from "./treasury";
-import council from "./council";
-import techComm from "./tc";
-import financialCouncil from "./financilCouncil";
-import advisoryCommittee from "./advisoryCouncil";
-import alliance from "./alliance";
+import { getDemocracyMenu } from "./democracy";
+import { getTreasuryMenu } from "./treasury";
+import { getCouncilMenu } from "./council";
+import { getTechCommMenu } from "./tc";
+import { getFinancialCouncilMenu } from "./financialCouncil";
+import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
+import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
-import isMoonChain from "next-common/utils/isMoonChain";
-import treasuryCouncil from "./treasuryCouncil";
-import openTechCommittee from "./openTechCommittee";
+import { getTreasuryCouncilMenu } from "./treasuryCouncil";
+import { getOpenTechCommMenu } from "./openTechCommittee";
 import { CHAIN } from "next-common/utils/constants";
+import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
 
 export function getHomeMenu({
+  summary = {},
   tracks = [],
   fellowshipTracks = [],
   currentTrackId,
@@ -23,12 +24,12 @@ export function getHomeMenu({
     return [
       commonMenus,
       getReferendaMenu(tracks, currentTrackId),
-      democracy,
-      treasury,
-      council,
-      treasuryCouncil,
-      techComm,
-      openTechCommittee,
+      getDemocracyMenu(summary),
+      getTreasuryMenu(summary),
+      getCouncilMenu(summary),
+      getTreasuryCouncilMenu(summary),
+      getTechCommMenu(summary),
+      getOpenTechCommMenu(summary),
       preImages,
     ];
   }
@@ -37,13 +38,13 @@ export function getHomeMenu({
     commonMenus,
     getReferendaMenu(tracks, currentTrackId),
     getFellowshipMenu(fellowshipTracks, currentTrackId),
-    democracy,
-    treasury,
-    council,
-    techComm,
-    financialCouncil,
-    advisoryCommittee,
-    alliance,
+    getDemocracyMenu(summary),
+    getTreasuryMenu(summary),
+    getCouncilMenu(summary),
+    getTechCommMenu(summary),
+    getFinancialCouncilMenu(summary),
+    getAdvisoryCommitteeMenu(summary),
+    getAllianceMenu(summary),
     preImages,
   ];
 }
@@ -57,11 +58,17 @@ export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
 }
 
 export function getFeaturedMenu({
+  summary = {},
   tracks = [],
   fellowshipTracks = [],
   currentTrackId,
 }) {
-  const menu = getHomeMenu({ tracks, fellowshipTracks, currentTrackId });
+  const menu = getHomeMenu({
+    summary,
+    tracks,
+    fellowshipTracks,
+    currentTrackId,
+  });
   // drop common menu
   const featureMenuData = menu.slice(1);
   return featureMenuData

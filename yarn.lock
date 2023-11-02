@@ -2106,10 +2106,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.36.0":
-  version: 1.36.0
-  resolution: "@osn/icons@npm:1.36.0"
-  checksum: e611f7a6e73bb6f1133567afa51a10986e1165667d1de774d909809c7849ee4eba69f199a0aafdc1fce494b92c4f2fa63de5acacb9524a8a7427f067454c01b4
+"@osn/icons@npm:^1.37.1":
+  version: 1.37.1
+  resolution: "@osn/icons@npm:1.37.1"
+  checksum: 8035a37423f5931feac3f5703596f9fe31adbd73c2beeabf933a209978471bf79d7bbad5afa8d21ec02dd0f638b899f758e87500ba0c35ac4cd80a36339a754a
   languageName: node
   linkType: hard
 
@@ -3388,7 +3388,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.36.0
+    "@osn/icons": ^1.37.1
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3423,7 +3423,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.36.0
+    "@osn/icons": ^1.37.1
     "@osn/previewer": ^0.12.5
     "@osn/rich-text-editor": ^0.6.2
     "@svgr/webpack": ^7.0.0
@@ -8451,7 +8451,7 @@ __metadata:
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.36.0
+    "@osn/icons": ^1.37.1
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^0.12.5
     "@osn/provider-options": 1.1.0
@@ -8502,6 +8502,7 @@ __metadata:
     lodash.uniqby: ^4.7.0
     md5: ^2.3.0
     moment: ^2.29.4
+    quick-lru: ^7.0.0
     react: ^18.2.0
     react-big-calendar: ^1.6.8
     react-chartjs-2: ^5.1.0
@@ -9312,6 +9313,13 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: b676f8c040cdc5b12723ad2f91414d267605b26419d5c821ff03befa817ddd10e238d22b25d604920340fd73efd8ba795465a0377c4adf45a4a41e4234e42dc4
+  languageName: node
+  linkType: hard
+
+"quick-lru@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "quick-lru@npm:7.0.0"
+  checksum: a178af41f7a912efee41f01bd9d6a3f8a62729e68d3d14f236aaf2512dced7a587f6a2c65ea3bfd241f127721508e6dda6a65176c46f498046afde790ea4ef08
   languageName: node
   linkType: hard
 

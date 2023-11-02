@@ -23,7 +23,7 @@ const getCategoryByRoute = (route, categories = []) => {
 };
 
 export default function Posted() {
-  const { route, summary, id } = usePageProps();
+  const { route, userSummary: summary, id } = usePageProps();
   const postedRoute = route.replace(/^posted\//, "");
 
   const overview = {

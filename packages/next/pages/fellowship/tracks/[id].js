@@ -19,7 +19,7 @@ export default function TrackPage({
   posts,
   title,
   fellowshipTracks,
-  summary,
+  trackReferendaSummary,
   period,
 }) {
   const seoInfo = { title, desc: title };
@@ -34,7 +34,7 @@ export default function TrackPage({
       description={period.description}
       summary={
         <Gov2TrackSummary
-          summary={summary}
+          summary={trackReferendaSummary}
           period={period}
           titleExtra={`[${period.id}]`}
         />
@@ -58,7 +58,7 @@ export default function TrackPage({
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page = 1, page_size: pageSize = 50, id } = context.query;
 
-  const { tracks, fellowshipTracks } = await fetchOpenGovTracksProps();
+  const { tracks, fellowshipTracks, summary } = await fetchOpenGovTracksProps();
   let track = fellowshipTracks.find(
     (trackItem) => trackItem.id === parseInt(id),
   );
@@ -69,23 +69,27 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return to404();
   }
 
-  const [{ result: posts }, { result: summary }, { result: period }] =
-    await Promise.all([
-      ssrNextApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
-        page,
-        pageSize,
-      }),
-      ssrNextApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id)),
-      ssrNextApi.fetch(fellowshipReferendumsTracksApi(track?.id)),
-    ]);
+  const [
+    { result: posts },
+    { result: trackReferendaSummary },
+    { result: period },
+  ] = await Promise.all([
+    ssrNextApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
+      page,
+      pageSize,
+    }),
+    ssrNextApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id)),
+    ssrNextApi.fetch(fellowshipReferendumsTracksApi(track?.id)),
+  ]);
 
   return {
     props: {
       posts: posts ?? EmptyList,
       title: "Fellowship " + startCase(track.name),
+      summary: summary ?? {},
       tracks,
       fellowshipTracks,
-      summary: summary ?? {},
+      trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
     },
   };
