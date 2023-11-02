@@ -1,4 +1,4 @@
-import nextApi from "./nextApi";
+import nextApi from "../nextApi";
 
 const OPENAI_API_END_POINT =
   process.env.NEXT_PUBLIC_OPENAI_API_END_POINT || "https://api.openai.com";
@@ -26,7 +26,10 @@ const defaultModelOptions = {
   max_tokens: 400,
 };
 
-async function openai({ provider = "openai", ...payload }, fetchOptions = {}) {
+export async function openai(
+  { provider = "openai", ...payload },
+  fetchOptions = {},
+) {
   let apiUrl = "";
 
   const headers = {};
@@ -54,48 +57,4 @@ async function openai({ provider = "openai", ...payload }, fetchOptions = {}) {
       },
     },
   );
-}
-
-export async function fetchSummary({ post, type }) {
-  let summary = "";
-  let content = "";
-
-  // TODO: post contentType html, stripe out html tags, keep `br`
-  // TODO: post contentType markdown
-  if (post.contentType === "markdown") {
-    content = post.content;
-  }
-
-  if (!content) {
-    return summary;
-  }
-
-  const resp = await openai({
-    messages: [
-      {
-        role: "system",
-        content: `I want you to act as a Wikipedia page.
-Summarise SubSquare ${type} post content you are provided.
-Instructions you must follow:
-- For a second-grade student in 5 bullet points
-- Don't give any redundant markdown
-`,
-      },
-      {
-        role: "user",
-        content,
-      },
-    ],
-  });
-
-  if (resp.result) {
-    const choices = resp.result.choices;
-    summary = choices?.[0]?.message?.content?.trim?.();
-  }
-
-  if (resp.error) {
-    throw resp.error;
-  }
-
-  return summary;
 }
