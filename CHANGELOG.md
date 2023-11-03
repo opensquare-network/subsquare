@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.6.4
+date: 2023-11-03
+
+- Show active proposal numbers on menu for democracy, treasury and various collectives.
+- Implement new style of cookie consent popup.
+- Take place old map with an LRU cache.
+- Add subscription tip component on referenda list panel.
+- Fix empty box icon.
+
 ### 3.6.3
 date: 2023-10-27
 
