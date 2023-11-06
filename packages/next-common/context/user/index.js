@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createContext, useContext, useReducer } from "react";
 import nextApi from "../../services/nextApi";
 import { emptyFunction } from "../../utils";
@@ -11,6 +11,10 @@ const UserDispatchContext = createContext(emptyFunction);
 
 export default function UserProvider({ user, children }) {
   const [initialUser, dispatch] = useReducer(userReducer, user);
+  useEffect(() => {
+    dispatch({ type: USER_UPDATE_ACTION, user });
+  }, [user]);
+
   return (
     <UserContext.Provider value={initialUser}>
       <UserDispatchContext.Provider value={dispatch}>
