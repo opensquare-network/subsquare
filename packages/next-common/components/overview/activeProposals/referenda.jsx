@@ -19,13 +19,19 @@ export default function ActiveReferenda() {
   return (
     <div className="space-y-4">
       {menu.map((m, idx) => (
-        <Tmpl key={idx} {...m} />
+        <ActiveProposalTemplate key={idx} {...m} />
       ))}
     </div>
   );
 }
 
-function Tmpl({ name = "", icon, pathname, activeCount, items = [] }) {
+function ActiveProposalTemplate({
+  name = "",
+  icon,
+  pathname,
+  activeCount,
+  items = [],
+}) {
   const hasAllPage = items.some((m) => m.value === "all");
 
   let title = (
