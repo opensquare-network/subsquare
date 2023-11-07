@@ -6,6 +6,10 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
+import tw from "tailwind-styled-components";
+import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
+import { useRouter } from "next/router";
+import { isKeyRegisteredUser } from "next-common/utils";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -42,11 +46,52 @@ function Account() {
   );
 }
 
+const IconButton = tw.div`
+  cursor-pointer
+  flex
+  justify-center
+  items-center
+  w-[32px]
+  h-[32px]
+  rounded-[8px]
+  bg-neutral200
+`;
+
 export default function AccountInfoPanel() {
+  const router = useRouter();
+  const user = useUser();
+  const isKeyUser = isKeyRegisteredUser(user);
+
+  const goProfile = () => {
+    router.push(`/user/${user?.address}`);
+  };
+
+  const goSetting = () => {
+    if (isKeyUser) {
+      router.push("/settings/key-account");
+    } else {
+      router.push("/settings/account");
+    }
+  };
+
   return (
     <Wrapper>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center grow">
         <Account />
+        <div className="flex gap-[16px]">
+          <IconButton
+            className="[&_svg_path]:fill-textSecondary"
+            onClick={goProfile}
+          >
+            <SystemProfile width={20} height={20} />
+          </IconButton>
+          <IconButton
+            className="[&_svg_path]:stroke-textSecondary"
+            onClick={goSetting}
+          >
+            <SystemSetting width={20} height={20} />
+          </IconButton>
+        </div>
       </div>
     </Wrapper>
   );

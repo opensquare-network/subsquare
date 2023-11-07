@@ -13,7 +13,11 @@ export default function NoLinkAddress() {
     <Wrapper>
       <div className="flex justify-between gap-[16px] grow">
         <div className="flex gap-[12px]">
-          <SystemDisconnect width={40} height={40} />
+          <SystemDisconnect
+            className="[&_path]:fill-textTertiary"
+            width={40}
+            height={40}
+          />
           <div className="flex flex-col">
             <span className="text-textPrimary text14Bold">
               Please Link Your Web3 Address
