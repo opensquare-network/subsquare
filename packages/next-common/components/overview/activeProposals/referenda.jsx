@@ -42,7 +42,9 @@ function ActiveProposalTemplate({
       )}
     >
       <span className="mr-2 [&_svg_path]:fill-textSecondary">{icon}</span>
-      {name?.toLowerCase?.()}
+      <span className="group-hover/title:underline">
+        {name?.toLowerCase?.()}
+      </span>
       <span className="text14Medium text-textTertiary ml-1">{activeCount}</span>
     </div>
   );
@@ -50,7 +52,7 @@ function ActiveProposalTemplate({
     title = (
       <Link
         href={pathname}
-        className="cursor-pointer hover:underline"
+        className="group/title cursor-pointer"
         onClick={(e) => e.stopPropagation()}
       >
         {title}
