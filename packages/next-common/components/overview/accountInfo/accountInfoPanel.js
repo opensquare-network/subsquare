@@ -9,7 +9,17 @@ import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
 import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { isKeyRegisteredUser } from "next-common/utils";
+import {
+  addressEllipsis,
+  isKeyRegisteredUser,
+  toPrecision,
+} from "next-common/utils";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import useAccountInfo from "next-common/hooks/useAccountInfo";
+import Chains from "next-common/utils/consts/chains";
+import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
+import isEmpty from "lodash.isempty";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -38,8 +48,14 @@ function Account() {
       <DisplayUserAvatar />
       <div className="flex flex-col">
         <DisplayUser />
-        <Copyable className="text-textTertiary text14Medium">
+        <Copyable className="max-md:hidden text-textTertiary text14Medium">
           {user?.address}
+        </Copyable>
+        <Copyable
+          className="md:hidden text-textTertiary text14Medium"
+          copyText={user?.address}
+        >
+          {addressEllipsis(user?.address)}
         </Copyable>
       </div>
     </div>
@@ -57,7 +73,7 @@ const IconButton = tw.div`
   bg-neutral200
 `;
 
-export default function AccountInfoPanel() {
+function AccountHead() {
   const router = useRouter();
   const user = useUser();
   const isKeyUser = isKeyRegisteredUser(user);
@@ -75,24 +91,134 @@ export default function AccountInfoPanel() {
   };
 
   return (
-    <Wrapper>
-      <div className="flex justify-between items-center grow">
-        <Account />
-        <div className="flex gap-[16px]">
-          <IconButton
-            className="[&_svg_path]:fill-textSecondary"
-            onClick={goProfile}
-          >
-            <SystemProfile width={20} height={20} />
-          </IconButton>
-          <IconButton
-            className="[&_svg_path]:stroke-textSecondary"
-            onClick={goSetting}
-          >
-            <SystemSetting width={20} height={20} />
-          </IconButton>
-        </div>
+    <div className="flex justify-between items-center grow">
+      <Account />
+      <div className="flex gap-[16px]">
+        <IconButton
+          className="[&_svg_path]:fill-textSecondary"
+          onClick={goProfile}
+        >
+          <SystemProfile width={20} height={20} />
+        </IconButton>
+        <IconButton
+          className="[&_svg_path]:stroke-textSecondary"
+          onClick={goSetting}
+        >
+          <SystemSetting width={20} height={20} />
+        </IconButton>
       </div>
+    </div>
+  );
+}
+
+function BalanceItem({ title, value }) {
+  const { symbol, decimals } = useChainSettings();
+  return (
+    <div className="flex flex-col grow">
+      <span className="text-textTertiary text12Medium">{title}</span>
+      <span className="text-textPrimary text16Bold [&_.value-display-symbol]:text-textTertiary">
+        <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
+      </span>
+    </div>
+  );
+}
+
+function EmptyBalanceItem({ title }) {
+  return (
+    <div className="flex flex-col grow">
+      <span className="text-textTertiary text12Medium">{title}</span>
+      <span className="text-textTertiary text16Bold">-</span>
+    </div>
+  );
+}
+
+function Balances({ accountInfo }) {
+  const router = useRouter();
+  const user = useUser();
+  const isKeyUser = isKeyRegisteredUser(user);
+
+  const goSetting = () => {
+    if (isKeyUser) {
+      router.push("/settings/key-account");
+    } else {
+      router.push("/settings/account");
+    }
+  };
+
+  const showTransferrable = !isEmpty(accountInfo?.data?.transferrable);
+  const showLocked = !isEmpty(accountInfo?.data?.lockedBalance);
+
+  return (
+    <div className="flex w-full max-md:flex-col">
+      <div className="grid md:grid-flow-col max-md:grid-cols-2 grow gap-[16px]">
+        <BalanceItem title="Total Balance" value={accountInfo?.data?.total} />
+        {showTransferrable ? (
+          <BalanceItem
+            title="Transferable"
+            value={accountInfo?.data?.transferrable}
+          />
+        ) : (
+          <BalanceItem title="Free" value={accountInfo?.data?.free} />
+        )}
+        {showLocked ? (
+          <BalanceItem
+            title="Locked"
+            value={accountInfo?.data?.lockedBalance}
+          />
+        ) : (
+          <EmptyBalanceItem title="Locked" />
+        )}
+      </div>
+      <div className="flex justify-end items-end md:w-1/4 max-md:mt-[16px]">
+        <span
+          className="cursor-pointer text14Medium text-theme500 mt-[8px]"
+          onClick={goSetting}
+        >
+          Manage Account
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function AssetInfo() {
+  const user = useUser();
+  const accountInfo = useAccountInfo(user?.address);
+
+  if (!accountInfo) {
+    return null;
+  }
+
+  return <Balances accountInfo={accountInfo} />;
+}
+
+function KintAssetInfo() {
+  const user = useUser();
+  const accountInfo = useKintAccountInfo(user?.address);
+
+  if (!accountInfo) {
+    return null;
+  }
+
+  return <Balances accountInfo={accountInfo} />;
+}
+
+const Divider = tw.div`
+  w-full
+  h-[1px]
+  my-[16px]
+  bg-neutral300
+`;
+
+export default function AccountInfoPanel() {
+  const chain = useChain();
+  const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
+
+  return (
+    <Wrapper className="flex-col">
+      <AccountHead />
+      <Divider />
+      {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
     </Wrapper>
   );
 }

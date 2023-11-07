@@ -8,8 +8,8 @@ export default function NotLoginPanel() {
 
   return (
     <Wrapper>
-      <div className="flex justify-between gap-[16px] grow">
-        <div className="flex gap-[12px]">
+      <div className="flex justify-between gap-[16px] grow max-md:flex-col">
+        <div className="flex gap-[12px] grow max-md:flex-col">
           <SystemDisconnect
             className="[&_path]:fill-textTertiary"
             width={40}
@@ -22,7 +22,9 @@ export default function NotLoginPanel() {
             </span>
           </div>
         </div>
-        <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
+        <div className="flex justify-end items-center grow">
+          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
+        </div>
       </div>
     </Wrapper>
   );
