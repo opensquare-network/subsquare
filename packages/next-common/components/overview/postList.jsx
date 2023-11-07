@@ -1,6 +1,7 @@
 import sumBy from "lodash.sumby";
 import PostList from "../postList";
 import EmptyOverview from "./emptyOverview";
+import NewOverview from "./newOverview";
 
 export default function OverviewPostList({ overviewData = [] }) {
   const allCategoriesCount = sumBy(overviewData ?? [], (item) => {
@@ -23,5 +24,11 @@ export default function OverviewPostList({ overviewData = [] }) {
       ))
     );
 
-  return <div className="space-y-6">{content}</div>;
+  return (
+    <div className="space-y-6">
+      <NewOverview />
+
+      {content}
+    </div>
+  );
 }
