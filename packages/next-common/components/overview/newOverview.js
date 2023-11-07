@@ -9,9 +9,13 @@ const Wrapper = tw.div`
 
 export default function NewOverview() {
   return (
-    <Wrapper>
+    <Wrapper className="gap-y-6">
       <AccountInfo />
-      <ActiveProposals />
+
+      <div>
+        <ActiveProposals />
+        {/* news */}
+      </div>
     </Wrapper>
   );
 }
