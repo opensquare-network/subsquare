@@ -15,7 +15,6 @@ export default function ActiveReferenda() {
   const menu = getFeaturedMenu({ tracks, fellowshipTracks, summary })
     .filter((m) => !m.excludeToChains?.includes?.(chain))
     .filter((m) => m.items);
-  console.log(menu);
 
   return (
     <div className="space-y-4">
