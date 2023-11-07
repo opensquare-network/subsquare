@@ -20,6 +20,8 @@ import Chains from "next-common/utils/consts/chains";
 import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
 import isEmpty from "lodash.isempty";
 import ValueDisplay from "next-common/components/valueDisplay";
+import Loading from "next-common/components/loading";
+import Tooltip from "next-common/components/tooltip";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -94,18 +96,22 @@ function AccountHead() {
     <div className="flex justify-between items-center grow">
       <Account />
       <div className="flex gap-[16px]">
-        <IconButton
-          className="[&_svg_path]:fill-textSecondary"
-          onClick={goProfile}
-        >
-          <SystemProfile width={20} height={20} />
-        </IconButton>
-        <IconButton
-          className="[&_svg_path]:stroke-textSecondary"
-          onClick={goSetting}
-        >
-          <SystemSetting width={20} height={20} />
-        </IconButton>
+        <Tooltip content="Profile">
+          <IconButton
+            className="[&_svg_path]:fill-textSecondary"
+            onClick={goProfile}
+          >
+            <SystemProfile width={20} height={20} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip content="Settings">
+          <IconButton
+            className="[&_svg_path]:stroke-textSecondary"
+            onClick={goSetting}
+          >
+            <SystemSetting width={20} height={20} />
+          </IconButton>
+        </Tooltip>
       </div>
     </div>
   );
@@ -132,6 +138,30 @@ function EmptyBalanceItem({ title }) {
   );
 }
 
+function BalanceItems({ accountInfo }) {
+  const showTransferrable = !isEmpty(accountInfo?.data?.transferrable);
+  const showLocked = !isEmpty(accountInfo?.data?.lockedBalance);
+
+  return (
+    <div className="grid md:grid-flow-col max-md:grid-cols-2 grow gap-[16px]">
+      <BalanceItem title="Total Balance" value={accountInfo?.data?.total} />
+      {showTransferrable ? (
+        <BalanceItem
+          title="Transferable"
+          value={accountInfo?.data?.transferrable}
+        />
+      ) : (
+        <BalanceItem title="Free" value={accountInfo?.data?.free} />
+      )}
+      {showLocked ? (
+        <BalanceItem title="Locked" value={accountInfo?.data?.lockedBalance} />
+      ) : (
+        <EmptyBalanceItem title="Locked" />
+      )}
+    </div>
+  );
+}
+
 function Balances({ accountInfo }) {
   const router = useRouter();
   const user = useUser();
@@ -145,30 +175,9 @@ function Balances({ accountInfo }) {
     }
   };
 
-  const showTransferrable = !isEmpty(accountInfo?.data?.transferrable);
-  const showLocked = !isEmpty(accountInfo?.data?.lockedBalance);
-
   return (
     <div className="flex w-full max-md:flex-col">
-      <div className="grid md:grid-flow-col max-md:grid-cols-2 grow gap-[16px]">
-        <BalanceItem title="Total Balance" value={accountInfo?.data?.total} />
-        {showTransferrable ? (
-          <BalanceItem
-            title="Transferable"
-            value={accountInfo?.data?.transferrable}
-          />
-        ) : (
-          <BalanceItem title="Free" value={accountInfo?.data?.free} />
-        )}
-        {showLocked ? (
-          <BalanceItem
-            title="Locked"
-            value={accountInfo?.data?.lockedBalance}
-          />
-        ) : (
-          <EmptyBalanceItem title="Locked" />
-        )}
-      </div>
+      <BalanceItems accountInfo={accountInfo} />
       <div className="flex justify-end items-end md:w-1/4 max-md:mt-[16px]">
         <span
           className="cursor-pointer text14Medium text-theme500 mt-[8px]"
@@ -181,12 +190,20 @@ function Balances({ accountInfo }) {
   );
 }
 
+function AssetInfoLoading() {
+  return (
+    <div className="flex justify-center w-full my-[12px]">
+      <Loading size={20} />
+    </div>
+  );
+}
+
 function AssetInfo() {
   const user = useUser();
   const accountInfo = useAccountInfo(user?.address);
 
   if (!accountInfo) {
-    return null;
+    return <AssetInfoLoading />;
   }
 
   return <Balances accountInfo={accountInfo} />;
@@ -197,7 +214,7 @@ function KintAssetInfo() {
   const accountInfo = useKintAccountInfo(user?.address);
 
   if (!accountInfo) {
-    return null;
+    return <AssetInfoLoading />;
   }
 
   return <Balances accountInfo={accountInfo} />;
