@@ -25,7 +25,7 @@ export default function useAddressBalance(api, address) {
   const chain = useChain();
   const isMounted = useIsMounted();
   const [balance, setBalance] = useState(0);
-  const [loadingBalance, setLoadingBalance] = useState(false);
+  const [loadingBalance, setLoadingBalance] = useState(true);
 
   useEffect(() => {
     if (!address) {
@@ -34,6 +34,7 @@ export default function useAddressBalance(api, address) {
 
     if (balanceMap.has(address)) {
       setBalance(balanceMap.get(address));
+      setLoadingBalance(false);
       return;
     }
 
@@ -48,19 +49,13 @@ export default function useAddressBalance(api, address) {
       promise = querySystemAccountBalance(api, address);
     }
 
-    setLoadingBalance(true);
-    promise
-      .then((balance) => {
-        if (isMounted.current) {
-          setBalance(balance);
-          balanceMap.set(address, balance);
-        }
-      })
-      .finally(() => {
-        if (isMounted.current) {
-          setLoadingBalance(false);
-        }
-      });
+    promise.then((balance) => {
+      if (isMounted.current) {
+        setBalance(balance);
+        balanceMap.set(address, balance);
+        setLoadingBalance(false);
+      }
+    });
   }, [api, chain, address, isMounted]);
 
   return [balance, loadingBalance];
