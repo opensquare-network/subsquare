@@ -164,15 +164,9 @@ function BalanceItems({ accountInfo }) {
 
 function Balances({ accountInfo }) {
   const router = useRouter();
-  const user = useUser();
-  const isKeyUser = isKeyRegisteredUser(user);
 
-  const goSetting = () => {
-    if (isKeyUser) {
-      router.push("/settings/key-account");
-    } else {
-      router.push("/settings/account");
-    }
+  const goAccount = () => {
+    router.push("/account/votes");
   };
 
   return (
@@ -181,7 +175,7 @@ function Balances({ accountInfo }) {
       <div className="flex justify-end items-end md:w-1/4 max-md:mt-[16px]">
         <span
           className="cursor-pointer text14Medium text-theme500 mt-[8px]"
-          onClick={goSetting}
+          onClick={goAccount}
         >
           Manage Account
         </span>
