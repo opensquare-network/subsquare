@@ -7,6 +7,7 @@ import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import Gravatar from "../gravatar";
+import Link from "next/link";
 
 function PolkassemblyUser({
   user,
@@ -51,15 +52,19 @@ function PolkassemblyUser({
       {showAvatar && (
         <AvatarWrapper fontSize={fontSize}>{avatar}</AvatarWrapper>
       )}
-      <LinkWrapper
-        href={user.polkassemblyUserLink}
-        target="_blank"
-        rel="noreferrer"
-        color={color}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {userIdentity}
-      </LinkWrapper>
+      {address ? (
+        <Link href={`/user/${address}/votes`}>{userIdentity}</Link>
+      ) : (
+        <LinkWrapper
+          href={user.polkassemblyUserLink}
+          target="_blank"
+          rel="noreferrer"
+          color={color}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {userIdentity}
+        </LinkWrapper>
+      )}
     </UserWrapper>
   );
 }
