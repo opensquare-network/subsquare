@@ -243,7 +243,7 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
     if (user?.address) {
       tabs.push({
         label: "Account",
-        url: "/votes",
+        url: "/account/votes",
       });
     }
   }

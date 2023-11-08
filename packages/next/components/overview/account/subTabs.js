@@ -12,7 +12,7 @@ export function AccountSubTabs() {
           </Title>
         );
       },
-      url: "/votes",
+      url: "/account/votes",
     },
   ];
 
