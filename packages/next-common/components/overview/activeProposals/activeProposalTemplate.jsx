@@ -2,8 +2,11 @@ import AccordionCard from "next-common/components/styled/containers/accordionCar
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Tabs from "next-common/components/tabs";
 import { cn } from "next-common/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import Pagination from "next-common/components/pagination";
+import StyledList from "next-common/components/styledList";
+import nextApi from "next-common/services/nextApi";
 
 export default function ActiveProposalTemplate({
   name = "",
@@ -51,7 +54,7 @@ export default function ActiveProposalTemplate({
       return {
         label: m.name,
         activeCount: m.activeCount,
-        content: <div>{m.name}</div>,
+        content: <ContentTemplate {...m} />,
       };
     });
 
@@ -65,5 +68,51 @@ export default function ActiveProposalTemplate({
         onTabClick={(tab) => setActiveTabLabel(tab.label)}
       />
     </AccordionCard>
+  );
+}
+
+function ContentTemplate({ columns, api, formatter = (i) => i }) {
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
+  const [result, setResult] = useState({});
+
+  useEffect(() => {
+    if (api) {
+      nextApi
+        .fetch(api?.path, { ...api.params, page, pageSize })
+        .then((resp) => {
+          if (resp.result) {
+            setResult(resp.result);
+          }
+        });
+    }
+  }, [api, page, pageSize]);
+
+  const rows = result?.items?.map((item) => {
+    const data = formatter(item);
+    return columns.map((col) => col.cellRender?.(data, item, result.items));
+  });
+
+  return (
+    <div>
+      <StyledList
+        className="!shadow-none !border-none !p-0"
+        columns={columns?.map((col) => ({
+          ...col,
+          name: <div className="text14Medium tracking-normal">{col.name}</div>,
+        }))}
+        rows={rows}
+      />
+
+      <Pagination
+        page={page}
+        pageSize={pageSize}
+        total={result.total || 0}
+        onPageChange={(e, newPage) => {
+          e.preventDefault();
+          setPage(newPage);
+        }}
+      />
+    </div>
   );
 }
