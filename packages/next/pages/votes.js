@@ -43,7 +43,7 @@ export default function Votes({ overview }) {
 
   if (user?.address) {
     tabs.push({
-      label: "My Votes",
+      label: "Account",
       url: "/votes",
     });
   }

@@ -242,7 +242,7 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
   if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
     if (user?.address) {
       tabs.push({
-        label: "My Votes",
+        label: "Account",
         url: "/votes",
       });
     }
