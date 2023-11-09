@@ -40,7 +40,7 @@ function BountySidebar() {
           )}
         </Title>
         <BorderedRow>
-          <Header>Total Fund</Header>
+          <Header>Balance</Header>
           {isLoading ? <Value>-</Value> : <SymbolValue value={balance} />}
         </BorderedRow>
         <BorderedRow>
