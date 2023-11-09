@@ -53,29 +53,35 @@ function getColumns(item) {
   return [
     getReferendumPostTitleColumn(),
     track === "all" && trackColumn,
-    track !== "all" && requestColumn,
+    track !== "all" && track !== 0 && requestColumn,
     getVoteSummaryColumn({ type: businessCategory.openGovReferenda }),
     getStatusTagColumn({ category: businessCategory.openGovReferenda }),
   ].filter(Boolean);
 }
 
-export function getActiveProposalReferenda({ tracks }) {
+export function getActiveProposalReferenda({ tracks, activeProposals }) {
   const menu = getReferendaMenu(tracks);
 
   const items = menu.items?.map((item) => {
     const track = item.value;
 
-    const params = {};
+    const api = {
+      path: "overview/referenda",
+      params: {},
+      // data from server side for SSR
+      initData: null,
+    };
+
     if (track !== "all") {
-      params.track = track;
+      api.params.track = track;
+    }
+    if (track === "all") {
+      api.initData = activeProposals.referenda;
     }
 
     return {
       ...item,
-      api: {
-        path: "overview/referenda",
-        params,
-      },
+      api,
       formatter: (data) => normalizeGov2ReferendaListItem(data, tracks),
       columns: getColumns(item),
     };

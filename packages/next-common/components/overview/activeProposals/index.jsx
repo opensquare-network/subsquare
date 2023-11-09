@@ -6,9 +6,9 @@ import { useChain } from "next-common/context/chain";
 
 export default function ActiveProposals() {
   const chain = useChain();
-  const { tracks } = usePageProps();
+  const { tracks, activeProposals } = usePageProps();
 
-  const referenda = getActiveProposalReferenda({ tracks });
+  const referenda = getActiveProposalReferenda({ tracks, activeProposals });
 
   const items = [referenda].filter(
     (item) => !item.excludeToChains?.includes?.(chain),

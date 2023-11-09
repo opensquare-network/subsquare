@@ -50,8 +50,9 @@ export default function ActiveProposalTemplate({
   const tabs = (items || [])
     .filter((m) => m.activeCount)
     .sort((a, b) => b.activeCount - a.activeCount)
-    .map((m) => {
+    .map((m, idx) => {
       return {
+        lazy: idx !== 0,
         label: m.name,
         activeCount: m.activeCount,
         content: <TableTemplate {...m} />,
@@ -74,16 +75,22 @@ export default function ActiveProposalTemplate({
 function TableTemplate({ columns, api, formatter = (i) => i }) {
   const [page, setPage] = useState(1);
   const pageSize = 8;
-  const [result, setResult] = useState({});
+  const [result, setResult] = useState(api?.initData);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (api) {
+    if (api?.path) {
+      setLoading(true);
+
       nextApi
         .fetch(api?.path, { ...api.params, page, pageSize })
         .then((resp) => {
           if (resp.result) {
             setResult(resp.result);
           }
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, [api, page, pageSize]);
@@ -102,12 +109,14 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
           name: <div className="text14Medium tracking-normal">{col.name}</div>,
         }))}
         rows={rows}
+        loading={loading}
+        noDataText="No active proposals"
       />
 
       <Pagination
         page={page}
         pageSize={pageSize}
-        total={result.total || 0}
+        total={result?.total || 0}
         onPageChange={(e, newPage) => {
           e.preventDefault();
           setPage(newPage);
