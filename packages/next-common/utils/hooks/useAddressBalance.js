@@ -49,13 +49,18 @@ export default function useAddressBalance(api, address) {
       promise = querySystemAccountBalance(api, address);
     }
 
-    promise.then((balance) => {
-      if (isMounted.current) {
-        setBalance(balance);
-        balanceMap.set(address, balance);
-        setLoadingBalance(false);
-      }
-    });
+    promise
+      .then((balance) => {
+        if (isMounted.current) {
+          setBalance(balance);
+          balanceMap.set(address, balance);
+        }
+      })
+      .finally(() => {
+        if (isMounted.current) {
+          setLoadingBalance(false);
+        }
+      });
   }, [api, chain, address, isMounted]);
 
   return [balance, loadingBalance];
