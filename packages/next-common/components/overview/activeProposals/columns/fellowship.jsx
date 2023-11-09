@@ -1,7 +1,6 @@
 import businessCategory from "next-common/utils/consts/business/category";
 import {
   getReferendumPostTitleColumn,
-  getRequestColumn,
   getStatusTagColumn,
   getTrackColumn,
   getVoteSummaryColumn,
@@ -15,7 +14,6 @@ function getColumns(item) {
   return [
     getReferendumPostTitleColumn(),
     track === "all" && getTrackColumn({ hrefPrefix: "/fellowship/tracks" }),
-    track !== "all" && track !== 0 && getRequestColumn(),
     getVoteSummaryColumn({ type: businessCategory.fellowship }),
     getStatusTagColumn({ category: businessCategory.fellowship }),
   ].filter(Boolean);
