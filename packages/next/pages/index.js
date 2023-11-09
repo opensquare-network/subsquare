@@ -37,6 +37,7 @@ import {
 } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
 
 export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const chain = useChain();
@@ -277,10 +278,12 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
 export const getServerSideProps = withCommonProps(async () => {
   const { result } = await nextApi.fetch("overview");
   const tracksProps = await fetchOpenGovTracksProps();
+  const activeProposals = await fetchActiveProposalsProps();
 
   return {
     props: {
       overview: result ?? null,
+      activeProposals,
       ...tracksProps,
     },
   };
