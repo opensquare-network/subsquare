@@ -8,7 +8,13 @@ export function getReferendumPostTitleColumn() {
     name: "Referendum",
     className: "text-left",
     cellRender(data) {
-      return <ListPostTitle data={data} href={data.detailLink} />;
+      return (
+        <ListPostTitle
+          className="line-clamp-1"
+          data={data}
+          href={data.detailLink}
+        />
+      );
     },
   };
 }
