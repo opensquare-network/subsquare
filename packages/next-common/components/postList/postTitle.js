@@ -8,6 +8,7 @@ export default function ListPostTitle({ data = {}, href, className = "" }) {
 
   return (
     <div
+      title={title}
       className={cn(
         "flex-1 overflow-hidden text-textPrimary text16Medium",
         className,
