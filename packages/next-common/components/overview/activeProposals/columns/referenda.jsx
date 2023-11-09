@@ -3,57 +3,19 @@ import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normaliz
 import businessCategory from "next-common/utils/consts/business/category";
 import {
   getReferendumPostTitleColumn,
+  getRequestColumn,
   getStatusTagColumn,
+  getTrackColumn,
   getVoteSummaryColumn,
 } from "./common";
-import Gov2TrackTag from "next-common/components/gov2/trackTag";
-import Link from "next/link";
-import isNil from "lodash.isnil";
-import { toPrecision } from "next-common/utils";
-import ValueDisplay from "next-common/components/valueDisplay";
-import getChainSettings from "next-common/utils/consts/settings";
-import { CHAIN } from "next-common/utils/constants";
-
-const trackColumn = {
-  name: "Track",
-  className: "w-40 text-left",
-  cellRender(data) {
-    return (
-      <Link href={`/referenda/tracks/${data.track}`}>
-        <Gov2TrackTag name={data.trackName} />
-      </Link>
-    );
-  },
-};
-
-const requestColumn = {
-  name: "Request",
-  className: "w-40 text-left",
-  cellRender(data) {
-    const { decimals, symbol } = getChainSettings(CHAIN);
-    const postValue = data.onchainData?.isTreasury
-      ? data.onchainData?.treasuryInfo?.amount
-      : data.value;
-
-    return !isNil(postValue) ? (
-      <ValueDisplay
-        className="text14Medium"
-        value={toPrecision(postValue, decimals)}
-        symbol={symbol}
-      />
-    ) : (
-      "--"
-    );
-  },
-};
 
 function getColumns(item) {
   const track = item.value;
 
   return [
     getReferendumPostTitleColumn(),
-    track === "all" && trackColumn,
-    track !== "all" && track !== 0 && requestColumn,
+    track === "all" && getTrackColumn({ hrefPrefix: "/referenda/tracks" }),
+    track !== "all" && track !== 0 && getRequestColumn(),
     getVoteSummaryColumn({ type: businessCategory.openGovReferenda }),
     getStatusTagColumn({ category: businessCategory.openGovReferenda }),
   ].filter(Boolean);
