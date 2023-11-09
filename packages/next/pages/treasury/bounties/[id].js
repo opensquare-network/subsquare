@@ -42,7 +42,12 @@ function BountyContent() {
           !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />
         }
         childBountiesCount={childBounties.total}
-        metadata={<Metadata meta={detail.onchainData?.meta} />}
+        metadata={
+          <Metadata
+            meta={detail.onchainData?.meta}
+            address={detail.onchainData?.address}
+          />
+        }
         timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
         timelineCount={timelineData.length}
       />

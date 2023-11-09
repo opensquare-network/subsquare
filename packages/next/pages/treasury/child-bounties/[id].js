@@ -36,7 +36,12 @@ function ChildBountyContent() {
       <ChildBountyDetail />
       <Claim />
       <DetailMultiTabs
-        metadata={<Metadata meta={post?.onchainData?.meta} />}
+        metadata={
+          <Metadata
+            meta={post?.onchainData?.meta}
+            address={post?.onchainData?.address}
+          />
+        }
         timeline={<Timeline onchainData={post?.onchainData} />}
       />
     </ContentWithComment>
