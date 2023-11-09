@@ -35,14 +35,14 @@ const requestColumn = {
       ? data.onchainData?.treasuryInfo?.amount
       : data.value;
 
-    return (
-      !isNil(postValue) && (
-        <ValueDisplay
-          className="text14Medium"
-          value={toPrecision(postValue, decimals)}
-          symbol={symbol}
-        />
-      )
+    return !isNil(postValue) ? (
+      <ValueDisplay
+        className="text14Medium"
+        value={toPrecision(postValue, decimals)}
+        symbol={symbol}
+      />
+    ) : (
+      "--"
     );
   },
 };
