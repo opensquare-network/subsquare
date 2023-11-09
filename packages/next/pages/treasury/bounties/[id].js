@@ -20,7 +20,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import Sidebar from "./sidebar";
+import BountySidebar from "./sidebar";
 
 function BountyContent() {
   const { childBounties } = usePageProps();
@@ -36,7 +36,7 @@ function BountyContent() {
   return (
     <ContentWithComment>
       <BountyDetail />
-      <Sidebar />
+      <BountySidebar />
       <DetailMultiTabs
         childBounties={
           !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />

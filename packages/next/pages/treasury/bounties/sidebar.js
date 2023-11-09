@@ -10,19 +10,19 @@ import {
   Value,
 } from "next-common/components/referenda/tally/styled";
 import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import useApi from "next-common/utils/hooks/useApi";
 import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
+import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
 `;
 
-function Sidebar() {
+function BountySidebar() {
   const api = useApi();
   const { address } = useOnchainData();
-  const [balance, loadingBalance] = useAddressBalance(api, address);
+  const [balance, loadingBalance] = useSubAddressBalance(api, address);
   const { childBounties } = usePageProps();
 
   if (!address) {
@@ -53,4 +53,4 @@ function Sidebar() {
   );
 }
 
-export default memo(Sidebar);
+export default memo(BountySidebar);
