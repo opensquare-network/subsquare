@@ -44,7 +44,7 @@ export async function fetchActiveProposalsProps() {
     "overview/treasury-proposals",
   );
   activeProposalsData.treasury.bounties = await fetcher("overview/bounties");
-  activeProposalsData.treasury.childBounties = await fetcher(
+  activeProposalsData.treasury["child-bounties"] = await fetcher(
     "overview/child-bounties",
   );
   activeProposalsData.treasury.tips = await fetcher("overview/tips");
