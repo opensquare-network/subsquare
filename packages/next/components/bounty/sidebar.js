@@ -21,7 +21,7 @@ const Title = styled(TitleContainer)`
 function BountySidebar() {
   const api = useApi();
   const { address } = useOnchainData();
-  const [balance, loadingBalance] = useSubAddressBalance(api, address);
+  const { balance, isLoading } = useSubAddressBalance(api, address);
   const { childBounties } = usePageProps();
 
   if (!address) {
@@ -33,7 +33,7 @@ function BountySidebar() {
       <SecondaryCardDetail>
         <Title className="!px-0">
           <span>Balance</span>
-          {loadingBalance && (
+          {isLoading && (
             <div>
               <Loading size={16} />
             </div>
@@ -41,7 +41,7 @@ function BountySidebar() {
         </Title>
         <BorderedRow>
           <Header>Total Fund</Header>
-          {loadingBalance ? <Value>-</Value> : <SymbolValue value={balance} />}
+          {isLoading ? <Value>-</Value> : <SymbolValue value={balance} />}
         </BorderedRow>
         <BorderedRow>
           <Header>Child Bounties</Header>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function useSubAddressBalance(api, address) {
   const chain = useChain();
   const [balance, setBalance] = useState(0);
-  const [loadingBalance, setLoadingBalance] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!api || !address) {
@@ -21,7 +21,7 @@ export default function useSubAddressBalance(api, address) {
           .toString();
 
         setBalance(balance);
-        setLoadingBalance(false);
+        setIsLoading(false);
       })
       .then((result) => (unsub = result));
 
@@ -32,5 +32,5 @@ export default function useSubAddressBalance(api, address) {
     };
   }, [api, chain, address]);
 
-  return [balance, loadingBalance];
+  return { balance, isLoading };
 }
