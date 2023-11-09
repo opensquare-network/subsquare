@@ -1,7 +1,7 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ActiveProposalTemplate from "./activeProposalTemplate";
 import { usePageProps } from "next-common/context/page";
-import { getActiveProposalReferenda } from "./getActiveProposalReferenda";
+import { getActiveProposalReferenda } from "./columns/referenda";
 import { useChain } from "next-common/context/chain";
 
 export default function ActiveProposals() {

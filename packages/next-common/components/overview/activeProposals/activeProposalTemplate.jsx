@@ -54,7 +54,7 @@ export default function ActiveProposalTemplate({
       return {
         label: m.name,
         activeCount: m.activeCount,
-        content: <ContentTemplate {...m} />,
+        content: <TableTemplate {...m} />,
       };
     });
 
@@ -71,7 +71,7 @@ export default function ActiveProposalTemplate({
   );
 }
 
-function ContentTemplate({ columns, api, formatter = (i) => i }) {
+function TableTemplate({ columns, api, formatter = (i) => i }) {
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const [result, setResult] = useState({});
