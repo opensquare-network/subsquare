@@ -11,7 +11,7 @@ import {
 } from "next-common/components/referenda/tally/styled";
 import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
 import useApi from "next-common/utils/hooks/useApi";
-import { useOnchainData } from "next-common/context/post";
+import { usePost } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 
@@ -21,7 +21,8 @@ const Title = styled(TitleContainer)`
 
 function BountySidebar() {
   const api = useApi();
-  const { address } = useOnchainData();
+  const post = usePost();
+  const { address } = post?.onchainData || {};
   const [balance, loadingBalance] = useSubAddressBalance(api, address);
   const { childBounties } = usePageProps();
 
