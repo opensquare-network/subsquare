@@ -3,14 +3,19 @@ import ActiveProposalTemplate from "./activeProposalTemplate";
 import { usePageProps } from "next-common/context/page";
 import { getActiveProposalReferenda } from "./columns/referenda";
 import { useChain } from "next-common/context/chain";
+import { getActiveProposalFellowship } from "./columns/fellowship";
 
 export default function ActiveProposals() {
   const chain = useChain();
-  const { tracks, activeProposals } = usePageProps();
+  const { tracks, fellowshipTracks, activeProposals } = usePageProps();
 
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
+  const fellowship = getActiveProposalFellowship({
+    fellowshipTracks,
+    activeProposals,
+  });
 
-  const items = [referenda].filter(
+  const items = [referenda, fellowship].filter(
     (item) => !item.excludeToChains?.includes?.(chain),
   );
 
