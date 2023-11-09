@@ -1,4 +1,3 @@
-import { memo } from "react";
 import styled from "styled-components";
 import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
@@ -11,7 +10,7 @@ import {
 } from "next-common/components/referenda/tally/styled";
 import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
 import useApi from "next-common/utils/hooks/useApi";
-import { usePost } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 
@@ -21,8 +20,7 @@ const Title = styled(TitleContainer)`
 
 function BountySidebar() {
   const api = useApi();
-  const post = usePost();
-  const { address } = post?.onchainData || {};
+  const { address } = useOnchainData();
   const [balance, loadingBalance] = useSubAddressBalance(api, address);
   const { childBounties } = usePageProps();
 
@@ -54,4 +52,4 @@ function BountySidebar() {
   );
 }
 
-export default memo(BountySidebar);
+export default BountySidebar;

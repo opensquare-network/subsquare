@@ -20,7 +20,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import BountySidebar from "./sidebar";
+import BountySidebar from "components/bounty/sidebar";
 
 function BountyContent() {
   const { childBounties } = usePageProps();
