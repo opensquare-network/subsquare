@@ -65,7 +65,11 @@ export function getTrackColumn({ hrefPrefix = "", ...props }) {
     className: "w-40 text-left",
     cellRender(data) {
       return (
-        <Link href={`${hrefPrefix}/${data.track}`} {...props}>
+        <Link
+          className="inline-flex"
+          href={`${hrefPrefix}/${data.track}`}
+          {...props}
+        >
           <Gov2TrackTag name={data.trackName} />
         </Link>
       );
@@ -85,7 +89,7 @@ export function getRequestColumn() {
 
       return !isNil(postValue) ? (
         <ValueDisplay
-          className="text14Medium"
+          className="text14Medium text-textPrimary"
           value={toPrecision(postValue, decimals)}
           symbol={symbol}
         />
