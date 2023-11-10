@@ -1,7 +1,9 @@
 import useFetchMyTreasuryProposalDeposits from "./useFetchMyTreasuryProposalDeposits";
-import useFetchMyTreasuryBountyDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits/useFetchMyTreasuryBountyDeposits";
+import useFetchMyTreasuryBountyDeposits from "./useFetchMyTreasuryBountyDeposits";
+import useFetchMyTreasuryTipDeposits from "./useFetchMyTreasuryTipDeposits";
 
 export default function useFetchMyTreasuryDeposits() {
   useFetchMyTreasuryProposalDeposits();
   useFetchMyTreasuryBountyDeposits();
+  useFetchMyTreasuryTipDeposits();
 }

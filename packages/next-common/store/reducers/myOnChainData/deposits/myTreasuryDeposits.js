@@ -8,6 +8,7 @@ const myTreasuryProposalDepositsSlice = createSlice({
     proposalDeposits: null,
     bountyBonds: null,
     bountyCuratorDeposits: null,
+    tipDeposits: null,
   },
   reducers: {
     setProposalDeposits(state, { payload }) {
@@ -19,6 +20,9 @@ const myTreasuryProposalDepositsSlice = createSlice({
     setBountyCuratorDeposits(state, { payload }) {
       state.bountyCuratorDeposits = payload;
     },
+    setTipDeposits(state, { payload }) {
+      state.tipDeposits = payload;
+    },
   },
 });
 
@@ -26,6 +30,7 @@ export const {
   setProposalDeposits: setTreasuryProposalDeposits,
   setBountyBonds,
   setBountyCuratorDeposits,
+  setTipDeposits,
 } = myTreasuryProposalDepositsSlice.actions;
 
 export default myTreasuryProposalDepositsSlice.reducer;
