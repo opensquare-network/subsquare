@@ -1,0 +1,53 @@
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useEffect } from "react";
+import useApi from "next-common/utils/hooks/useApi";
+import { useDispatch } from "react-redux";
+import { setDemocracyDeposits } from "next-common/store/reducers/myOnChainData/deposits/myDemocracyDeposits";
+
+async function queryAddressDeposits(api, address) {
+  const entries = await api.query.democracy.depositOf.entries();
+  return entries.reduce((result, [storageKey, optionalStorage]) => {
+    const proposalIndex = storageKey.args[0].toNumber();
+    if (!optionalStorage.isSome) {
+      return result;
+    }
+
+    const storage = optionalStorage.unwrap();
+    const rawDepositors = storage[0];
+    const depositors = rawDepositors.map((i) => i.toString());
+    const eachDepositValue = storage[1].toString();
+    const depositCount = depositors.filter(
+      (depositor) => depositor === address,
+    ).length;
+
+    if (depositCount > 0) {
+      return [
+        ...result,
+        {
+          proposalIndex,
+          depositCount,
+          eachDepositValue,
+        },
+      ];
+    } else {
+      return result;
+    }
+  }, []);
+}
+
+export default function useFetchMyDemocracyDeposit() {
+  const realAddress = useRealAddress();
+  const api = useApi();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!api || !realAddress || !api.query?.democracy) {
+      return;
+    }
+
+    queryAddressDeposits(api, realAddress).then((data) => {
+      dispatch(setDemocracyDeposits(data));
+      // todo: populate democracy proposal context info
+    });
+  }, [api, realAddress, dispatch]);
+}

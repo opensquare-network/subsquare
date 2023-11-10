@@ -37,6 +37,7 @@ import {
 } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import useFetchMyDemocracyDeposit from "next-common/hooks/account/deposit/useFetchMyDemocracyDeposit";
 
 export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const chain = useChain();
@@ -46,6 +47,8 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const isZeitgeist = chain === Chains.zeitgeist;
   const chainSettings = useChainSettings();
   const user = useUser();
+
+  useFetchMyDemocracyDeposit();
 
   const discussionsCategory = [
     {
