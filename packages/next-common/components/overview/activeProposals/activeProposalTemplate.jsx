@@ -7,6 +7,8 @@ import Link from "next/link";
 import Pagination from "next-common/components/pagination";
 import StyledList from "next-common/components/styledList";
 import nextApi from "next-common/services/nextApi";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import last from "lodash.last";
 
 export default function ActiveProposalTemplate({
   name = "",
@@ -77,6 +79,7 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
   const pageSize = 8;
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(false);
+  const { sm } = useScreenSize();
 
   useEffect(() => {
     if (api?.path) {
@@ -102,16 +105,22 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
 
   return (
     <div>
-      <StyledList
-        className="!shadow-none !border-none !p-0"
-        columns={columns?.map((col) => ({
-          ...col,
-          name: <div className="text14Medium tracking-normal">{col.name}</div>,
-        }))}
-        rows={rows}
-        loading={loading}
-        noDataText="No active proposals"
-      />
+      {sm ? (
+        <MobileList rows={rows} />
+      ) : (
+        <StyledList
+          className="!shadow-none !border-none !p-0"
+          columns={columns?.map((col) => ({
+            ...col,
+            name: (
+              <div className="text14Medium tracking-normal">{col.name}</div>
+            ),
+          }))}
+          rows={rows}
+          loading={loading}
+          noDataText="No active proposals"
+        />
+      )}
 
       <Pagination
         page={page}
@@ -122,6 +131,43 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
           setPage(newPage);
         }}
       />
+    </div>
+  );
+}
+
+function MobileList({ rows = [] }) {
+  return (
+    <div className="mb-4">
+      {rows.map((row, idx) => {
+        const title = row[0];
+        const status = last(row);
+        // without title and status
+        const rest = row.slice(1, -1);
+
+        return (
+          <div
+            key={idx}
+            className="py-4 first:pt-0 border-b border-neutral300 space-y-3"
+          >
+            {title}
+            <div className="flex items-center justify-between">
+              <div className="flex">
+                {rest.map((item, idx) => (
+                  <div key={idx} className="flex items-center">
+                    {item}
+                    {idx !== rest.length - 1 && (
+                      <span className="mx-2 text12Medium text-textTertiary">
+                        ·
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {status}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
