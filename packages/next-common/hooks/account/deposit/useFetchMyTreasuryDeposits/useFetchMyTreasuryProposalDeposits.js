@@ -8,11 +8,11 @@ import { setTreasuryProposalDeposits } from "next-common/store/reducers/myOnChai
 async function queryAddressDeposits(api, address) {
   const entries = await api.query.treasury.proposals.entries();
   return entries.reduce((result, [storageKey, optionalStorage]) => {
-    const proposalIndex = storageKey.args[0].toNumber();
     if (!optionalStorage.isSome) {
       return result;
     }
 
+    const proposalIndex = storageKey.args[0].toNumber();
     const storage = optionalStorage.unwrap();
     const bond = storage.bond.toString();
     const proposer = storage.proposer.toString();
