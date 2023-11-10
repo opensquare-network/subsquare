@@ -9,7 +9,7 @@ function getSectionOptions(api) {
     .sort()
     .filter((name) => Object.keys(api.tx[name]).length)
     .map((name) => ({
-      label: name,
+      label: <span className="text14Medium">{name}</span>,
       value: name,
     }));
 }
