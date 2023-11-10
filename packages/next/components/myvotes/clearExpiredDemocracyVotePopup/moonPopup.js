@@ -94,7 +94,8 @@ export default function MoonClearExpiredDemocracyVotePopup({ votes, onClose }) {
       actionCallback={doClearExpiredVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={<RelatedReferenda relatedReferenda={relatedReferenda} />}
-    />
+    >
+      <RelatedReferenda relatedReferenda={relatedReferenda} />
+    </SignerPopup>
   );
 }

@@ -34,6 +34,7 @@ const SelectWrapper = styled(FlexBetweenCenter)`
 
 const SelectInner = styled(FlexBetweenCenter)`
   width: 100%;
+  overflow: hidden;
 `;
 
 function Select({
@@ -44,12 +45,13 @@ function Select({
   maxDisplayItem,
   className = "",
   small = false,
+  itemHeight,
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
   useOnClickOutside(ref, () => setShowOptions(false));
 
-  const itemHeight = !small ? 40 : 32;
+  const theItemHeight = itemHeight || (!small ? 40 : 32);
 
   const handleShowOptions = () => {
     if (disabled) {
@@ -60,8 +62,10 @@ function Select({
   };
 
   const displayValue = useMemo(
-    () => options.find((option) => option.value === value)?.label,
-    [value],
+    () =>
+      options.find((option) => option.value === value)?.label ||
+      options[0]?.label,
+    [options, value],
   );
 
   return (
@@ -70,27 +74,32 @@ function Select({
       ref={ref}
       disabled={disabled}
       onClick={handleShowOptions}
-      itemHeight={itemHeight}
+      itemHeight={theItemHeight}
     >
       <SelectInner>
-        <span>{displayValue}</span>
-        <ArrowDown
-          className={cn(
-            showOptions && "rotate-180",
-            "w-5 h-5",
-            "[&_path]:stroke-textTertiary",
-          )}
-        />
+        <div className="overflow-hidden">{displayValue}</div>
+        <div>
+          <ArrowDown
+            className={cn(
+              showOptions && "rotate-180",
+              "w-5 h-5",
+              "[&_path]:stroke-textTertiary",
+            )}
+          />
+        </div>
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper itemHeight={itemHeight} maxDisplayItem={maxDisplayItem}>
+        <OptionsWrapper
+          itemHeight={theItemHeight}
+          maxDisplayItem={maxDisplayItem}
+        >
           {options.map((option) => (
             <Option
               key={option.value}
               active={value === option.value}
               onClick={() => onChange(option)}
-              height={itemHeight}
+              height={theItemHeight}
             >
               {option.label}
             </Option>
