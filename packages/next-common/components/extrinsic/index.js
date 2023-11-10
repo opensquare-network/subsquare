@@ -30,11 +30,13 @@ export default function Extrinsic() {
   const [sectionName, setSectionName] = useState("system");
   const [methodName, setMethodName] = useState("setCode");
   const [callState, setCallState] = useState();
+  console.log(callState);
 
   useEffect(() => {
     if (!api) return;
 
-    const fn = api.tx[sectionName][methodName];
+    const fn = api.tx[sectionName]?.[methodName];
+    if (!fn) return;
 
     setCallState((prev) =>
       prev?.extrinsic.fn.section === sectionName &&
@@ -55,7 +57,7 @@ export default function Extrinsic() {
         methodName={methodName}
         setMethodName={setMethodName}
       />
-      <Params params={callState?.params} />
+      <Params {...callState?.extrinsic} />
     </div>
   );
 }
