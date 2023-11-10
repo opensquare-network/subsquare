@@ -35,7 +35,7 @@ async function queryAddressDeposits(api, address) {
   }, []);
 }
 
-export default function useFetchMyDemocracyDeposit() {
+export default function useFetchMyDemocracyDeposits() {
   const realAddress = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();

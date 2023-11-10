@@ -37,7 +37,8 @@ import {
 } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import useFetchMyDemocracyDeposit from "next-common/hooks/account/deposit/useFetchMyDemocracyDeposit";
+import useFetchMyDemocracyDeposits from "next-common/hooks/account/deposit/useFetchMyDemocracyDeposits";
+import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
 
 export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const chain = useChain();
@@ -48,7 +49,8 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const chainSettings = useChainSettings();
   const user = useUser();
 
-  useFetchMyDemocracyDeposit();
+  useFetchMyDemocracyDeposits();
+  useFetchMyTreasuryDeposits();
 
   const discussionsCategory = [
     {
