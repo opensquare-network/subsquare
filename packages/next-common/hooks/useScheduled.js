@@ -328,7 +328,7 @@ function useScheduled() {
   const referendums = useReferendums(api);
   const [scheduled] = useCall(api?.query.scheduler?.agenda?.entries);
   const [sessionInfo] = useCall(api?.derive.session?.progress);
-  const [slashes] = useCall(api?.query.staking?.unappliedSlashes.entries);
+  const [slashes] = useCall(api?.query.staking?.unappliedSlashes?.entries);
   const [state, setState] = useState([]);
 
   useEffect(() => {
