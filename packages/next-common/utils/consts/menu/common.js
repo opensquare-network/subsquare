@@ -1,5 +1,4 @@
 import React from "react";
-import Chains from "../chains";
 import {
   MenuOverview,
   MenuDiscussions,
@@ -43,14 +42,7 @@ if (chainSettings.hasDiscussions !== false) {
   commonMenus.items.push(discussionsMenu);
 }
 
-if (
-  [
-    Chains.polkadot,
-    Chains.kusama,
-    Chains.moonriver,
-    Chains.collectives,
-  ].includes(process.env.NEXT_PUBLIC_CHAIN)
-) {
+if (chainSettings.hasPolkassemblyDiscussions) {
   commonMenus.items.push(polkassemblyMenu);
 }
 
