@@ -15,21 +15,27 @@ const itemOptions = {
     api: {
       path: "overview/democracy-referenda",
     },
-    formatter: (data) => normalizeReferendaListItem(CHAIN, data),
+    formatter(data) {
+      return normalizeReferendaListItem(CHAIN, data);
+    },
     category: businessCategory.democracyReferenda,
   },
   democracyProposals: {
     api: {
       path: "overview/public-proposals",
     },
-    formatter: (data) => normalizeProposalListItem(CHAIN, data),
+    formatter(data) {
+      return normalizeProposalListItem(CHAIN, data);
+    },
     category: businessCategory.democracyProposals,
   },
   democracyExternals: {
     api: {
       path: "overview/externals",
     },
-    formatter: (data) => normalizeExternalListItem(CHAIN, data),
+    formatter(data) {
+      return normalizeExternalListItem(CHAIN, data);
+    },
     category: businessCategory.democracyExternals,
   },
 };

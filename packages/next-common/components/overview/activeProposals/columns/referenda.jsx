@@ -9,18 +9,6 @@ import {
   getVoteSummaryColumn,
 } from "./common";
 
-function getColumns(item) {
-  const track = item.value;
-
-  return [
-    getReferendumPostTitleColumn(),
-    track === "all" && getTrackColumn({ hrefPrefix: "/referenda/tracks" }),
-    track !== "all" && track !== 0 && getRequestColumn(),
-    getVoteSummaryColumn({ type: businessCategory.openGovReferenda }),
-    getStatusTagColumn({ category: businessCategory.openGovReferenda }),
-  ].filter(Boolean);
-}
-
 export function getActiveProposalReferenda({ tracks, activeProposals }) {
   const menu = getReferendaMenu(tracks);
 
@@ -45,7 +33,13 @@ export function getActiveProposalReferenda({ tracks, activeProposals }) {
       ...item,
       api,
       formatter: (data) => normalizeGov2ReferendaListItem(data, tracks),
-      columns: getColumns(item),
+      columns: [
+        getReferendumPostTitleColumn(),
+        track === "all" && getTrackColumn({ hrefPrefix: "/referenda/tracks" }),
+        track !== "all" && track !== 0 && getRequestColumn(),
+        getVoteSummaryColumn({ type: businessCategory.openGovReferenda }),
+        getStatusTagColumn({ category: businessCategory.openGovReferenda }),
+      ].filter(Boolean),
     };
   });
 

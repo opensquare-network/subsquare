@@ -8,17 +8,6 @@ import {
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 
-function getColumns(item) {
-  const track = item.value;
-
-  return [
-    getReferendumPostTitleColumn(),
-    track === "all" && getTrackColumn({ hrefPrefix: "/fellowship/tracks" }),
-    getVoteSummaryColumn({ type: businessCategory.fellowship }),
-    getStatusTagColumn({ category: businessCategory.fellowship }),
-  ].filter(Boolean);
-}
-
 export function getActiveProposalFellowship({
   fellowshipTracks,
   activeProposals,
@@ -47,7 +36,12 @@ export function getActiveProposalFellowship({
       api,
       formatter: (data) =>
         normalizeFellowshipReferendaListItem(data, fellowshipTracks),
-      columns: getColumns(item),
+      columns: [
+        getReferendumPostTitleColumn(),
+        track === "all" && getTrackColumn({ hrefPrefix: "/fellowship/tracks" }),
+        getVoteSummaryColumn({ type: businessCategory.fellowship }),
+        getStatusTagColumn({ category: businessCategory.fellowship }),
+      ].filter(Boolean),
     };
   });
 

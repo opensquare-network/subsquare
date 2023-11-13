@@ -49,14 +49,6 @@ const itemOptions = {
   },
 };
 
-function getColumns(item) {
-  return [
-    getProposalPostTitleColumn(),
-    getRequestColumn(),
-    getStatusTagColumn({ category: itemOptions[item.value].category }),
-  ].filter(Boolean);
-}
-
 export function getActiveProposalTreasury({ summary, activeProposals }) {
   const menu = getTreasuryMenu(summary);
 
@@ -70,7 +62,11 @@ export function getActiveProposalTreasury({ summary, activeProposals }) {
         ...options.api,
         initData: activeProposals.treasury[item.value],
       },
-      columns: getColumns(item),
+      columns: [
+        getProposalPostTitleColumn(),
+        getRequestColumn(),
+        getStatusTagColumn({ category: options.category }),
+      ],
     };
   });
 
