@@ -1,5 +1,6 @@
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
+import { getCouncilMenu } from "next-common/utils/consts/menu/council";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
 
@@ -77,8 +78,12 @@ export async function fetchActiveProposalsProps() {
   }
 
   // council
-  activeProposalsData.council = {};
-  activeProposalsData.council.motions = await fetcher("overview/motions");
+  const councilMenu = getCouncilMenu();
+  const hasCouncil = !councilMenu.excludeToChains.includes(CHAIN);
+  if (hasCouncil) {
+    activeProposalsData.council = {};
+    activeProposalsData.council.motions = await fetcher("overview/motions");
+  }
 
   // technical committee
   activeProposalsData.technicalCommittee = {};
