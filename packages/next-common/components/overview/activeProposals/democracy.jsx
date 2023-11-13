@@ -50,7 +50,7 @@ export function getActiveProposalDemocracy({ summary, activeProposals }) {
       ...options,
       api: {
         ...options.api,
-        initValue: activeProposals.democracy[item.value],
+        initData: activeProposals.democracy?.[item.value],
       },
       columns: [
         getProposalPostTitleColumn(),
