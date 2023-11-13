@@ -42,24 +42,27 @@ const itemOptions = {
 
 export function getActiveProposalDemocracy({ summary, activeProposals }) {
   const menu = getDemocracyMenu(summary);
-  const items = menu.items.map((item) => {
-    const options = itemOptions[item.value];
+  const items = menu.items
+    ?.filter((item) => item.activeCount)
+    ?.filter((item) => !item.excludeToChains?.includes(CHAIN))
+    .map((item) => {
+      const options = itemOptions[item.value];
 
-    return {
-      ...item,
-      ...options,
-      api: {
-        ...options.api,
-        initData: activeProposals.democracy?.[item.value],
-      },
-      columns: [
-        getProposalPostTitleColumn(),
-        item.value === "referenda" &&
-          getVoteSummaryColumn({ type: businessCategory.democracyReferenda }),
-        getStatusTagColumn({ category: options.category }),
-      ].filter(Boolean),
-    };
-  });
+      return {
+        ...item,
+        ...options,
+        api: {
+          ...options.api,
+          initData: activeProposals.democracy?.[item.value],
+        },
+        columns: [
+          getProposalPostTitleColumn(),
+          item.value === "referenda" &&
+            getVoteSummaryColumn({ type: businessCategory.democracyReferenda }),
+          getStatusTagColumn({ category: options.category }),
+        ].filter(Boolean),
+      };
+    });
 
   return {
     ...menu,

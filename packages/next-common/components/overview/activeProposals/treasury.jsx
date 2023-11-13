@@ -52,23 +52,26 @@ const itemOptions = {
 export function getActiveProposalTreasury({ summary, activeProposals }) {
   const menu = getTreasuryMenu(summary);
 
-  const items = menu.items?.map((item) => {
-    const options = itemOptions[item.value];
+  const items = menu.items
+    ?.filter((item) => item.activeCount)
+    ?.filter((item) => !item.excludeToChains?.includes(CHAIN))
+    ?.map((item) => {
+      const options = itemOptions[item.value];
 
-    return {
-      ...item,
-      ...options,
-      api: {
-        ...options.api,
-        initData: activeProposals.treasury?.[item.value],
-      },
-      columns: [
-        getProposalPostTitleColumn(),
-        getRequestColumn(),
-        getStatusTagColumn({ category: options.category }),
-      ],
-    };
-  });
+      return {
+        ...item,
+        ...options,
+        api: {
+          ...options.api,
+          initData: activeProposals.treasury?.[item.value],
+        },
+        columns: [
+          getProposalPostTitleColumn(),
+          getRequestColumn(),
+          getStatusTagColumn({ category: options.category }),
+        ],
+      };
+    });
 
   return {
     ...menu,
