@@ -18,11 +18,15 @@ export async function fetchActiveProposalsProps() {
 
   // discussions
   const hasDiscussions = chainSettings.hasDiscussions !== false;
+  activeProposalsData.discussions = {};
   if (hasDiscussions) {
-    activeProposalsData.discussions = await fetcher("overview/discussions");
+    activeProposalsData.discussions.subsquare = await fetcher(
+      "overview/discussions",
+    );
   }
   if (chainSettings.hasPolkassemblyDiscussions) {
     // TODO
+    // activeProposalsData.discussions.polkassembly = await fetcher("overview/discussions");
   }
 
   // referenda

@@ -2,15 +2,19 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import ActiveProposalTemplate from "./activeProposalTemplate";
 import { usePageProps } from "next-common/context/page";
 import { getActiveProposalReferenda } from "./referenda";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { getActiveProposalFellowship } from "./fellowship";
 import { getActiveProposalDemocracy } from "./democracy";
 import { getActiveProposalTreasury } from "./treasury";
+import { getActiveDiscussions } from "./discussions";
 
 export default function ActiveProposals() {
   const chain = useChain();
+  const chainSettings = useChainSettings();
+  const hasDiscussions = chainSettings.hasDiscussions !== false;
   const { tracks, fellowshipTracks, summary, activeProposals } = usePageProps();
 
+  const discussions = getActiveDiscussions({ activeProposals });
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
   const fellowship = getActiveProposalFellowship({
     fellowshipTracks,
@@ -19,9 +23,15 @@ export default function ActiveProposals() {
   const democracy = getActiveProposalDemocracy({ summary, activeProposals });
   const treasury = getActiveProposalTreasury({ summary, activeProposals });
 
-  const items = [referenda, fellowship, democracy, treasury].filter(
-    (item) => !item.excludeToChains?.includes?.(chain),
-  );
+  const items = [
+    hasDiscussions && discussions,
+    referenda,
+    fellowship,
+    democracy,
+    treasury,
+  ]
+    .filter(Boolean)
+    .filter((item) => !item.excludeToChains?.includes?.(chain));
 
   return (
     <div>
