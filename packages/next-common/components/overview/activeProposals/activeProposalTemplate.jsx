@@ -51,7 +51,6 @@ export default function ActiveProposalTemplate({
 
   const tabs = (items || [])
     .filter((m) => m.activeCount)
-    .sort((a, b) => b.activeCount - a.activeCount)
     .map((m, idx) => {
       return {
         lazy: idx !== 0,
