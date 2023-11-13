@@ -17,7 +17,7 @@ export function getReferendumPostTitleColumn() {
     cellRender(data) {
       return (
         <ListPostTitle
-          className="line-clamp-1 mr-4"
+          className="line-clamp-1 mr-4 text14Medium"
           data={data}
           href={data.detailLink}
         />
