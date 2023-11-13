@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 function getData(storage) {
   if (storage.isApproved) {
     return storage.asApproved;
@@ -59,13 +61,19 @@ export default async function queryAddressDeposits(
         decisionDeposit = extractDeposit(ongoing.decisionDeposit);
       }
 
-      if (submissionDeposit?.who === address) {
+      if (
+        submissionDeposit?.who === address &&
+        new BigNumber(submissionDeposit?.amount).gt(0)
+      ) {
         submissionDeposits.push({
           referendumIndex,
           deposit: submissionDeposit?.amount,
         });
       }
-      if (decisionDeposit?.who === address) {
+      if (
+        decisionDeposit?.who === address &&
+        new BigNumber(decisionDeposit?.amount).gt(0)
+      ) {
         decisionDeposits.push({
           referendumIndex,
           deposit: decisionDeposit?.amount,
