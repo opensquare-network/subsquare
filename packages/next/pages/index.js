@@ -41,6 +41,7 @@ import useFetchMyDemocracyDeposits from "next-common/hooks/account/deposit/useFe
 import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
 import useFetchMyReferendaDeposits from "next-common/hooks/account/deposit/referenda";
 import useFetchMyFellowshipDeposits from "next-common/hooks/account/deposit/useFetchMyFellowshipDeposits";
+import useFetchMyPreimageDeposits from "next-common/hooks/account/deposit/useFetchMyPreimageDeposits";
 
 export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const chain = useChain();
@@ -55,6 +56,7 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
   useFetchMyTreasuryDeposits();
   useFetchMyReferendaDeposits();
   useFetchMyFellowshipDeposits();
+  useFetchMyPreimageDeposits();
 
   const discussionsCategory = [
     {
