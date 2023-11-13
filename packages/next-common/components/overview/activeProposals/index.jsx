@@ -1,11 +1,11 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ActiveProposalTemplate from "./activeProposalTemplate";
 import { usePageProps } from "next-common/context/page";
-import { getActiveProposalReferenda } from "./columns/referenda";
+import { getActiveProposalReferenda } from "./referenda";
 import { useChain } from "next-common/context/chain";
-import { getActiveProposalFellowship } from "./columns/fellowship";
-import { getActiveProposalDemocracy } from "./columns/democracy";
-import { getActiveProposalTreasury } from "./columns/treasury";
+import { getActiveProposalFellowship } from "./fellowship";
+import { getActiveProposalDemocracy } from "./democracy";
+import { getActiveProposalTreasury } from "./treasury";
 
 export default function ActiveProposals() {
   const chain = useChain();

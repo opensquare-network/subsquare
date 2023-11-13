@@ -4,7 +4,7 @@ import {
   getStatusTagColumn,
   getTrackColumn,
   getVoteSummaryColumn,
-} from "./common";
+} from "./columns/common";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 

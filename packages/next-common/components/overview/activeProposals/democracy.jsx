@@ -7,7 +7,7 @@ import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
   getVoteSummaryColumn,
-} from "./common";
+} from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {

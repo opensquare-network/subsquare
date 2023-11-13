@@ -7,7 +7,7 @@ import {
   getStatusTagColumn,
   getTrackColumn,
   getVoteSummaryColumn,
-} from "./common";
+} from "./columns/common";
 
 export function getActiveProposalReferenda({ tracks, activeProposals }) {
   const menu = getReferendaMenu(tracks);
