@@ -4,6 +4,7 @@ import { usePageProps } from "next-common/context/page";
 import { getActiveProposalReferenda } from "./columns/referenda";
 import { useChain } from "next-common/context/chain";
 import { getActiveProposalFellowship } from "./columns/fellowship";
+import { getActiveProposalDemocracy } from "./columns/democracy";
 import { getActiveProposalTreasury } from "./columns/treasury";
 
 export default function ActiveProposals() {
@@ -15,9 +16,10 @@ export default function ActiveProposals() {
     fellowshipTracks,
     activeProposals,
   });
+  const democracy = getActiveProposalDemocracy({ summary, activeProposals });
   const treasury = getActiveProposalTreasury({ summary, activeProposals });
 
-  const items = [referenda, fellowship, treasury].filter(
+  const items = [referenda, fellowship, democracy, treasury].filter(
     (item) => !item.excludeToChains?.includes?.(chain),
   );
 
