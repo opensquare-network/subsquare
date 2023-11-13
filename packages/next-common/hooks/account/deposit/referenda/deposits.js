@@ -30,32 +30,53 @@ export default async function queryAddressDeposits(
   pallet = "referenda",
 ) {
   const entries = await api.query[pallet].referendumInfoFor.entries();
-  return entries.reduce((result, [storageKey, optionalStorage]) => {
-    if (!optionalStorage.isSome) {
-      return result;
-    }
+  return entries.reduce(
+    (result, [storageKey, optionalStorage]) => {
+      if (!optionalStorage.isSome) {
+        return result;
+      }
 
-    const referendumIndex = storageKey.args[0].toNumber();
-    const storage = optionalStorage.unwrap();
-    if (
-      storage.isRejected ||
-      storage.isApproved ||
-      storage.isCancelled ||
-      storage.isTimedOut
-    ) {
-      const data = getData(storage);
-      const submissionDeposit = extractDeposit(data[1]);
-      const decisionDeposit = extractDeposit(data[2]);
-      console.log(
-        "referendumIndex",
-        referendumIndex,
-        "data",
-        data,
-        "submissionDeposit",
-        submissionDeposit,
-        "decisionDeposit",
-        decisionDeposit,
-      );
-    }
-  }, []);
+      const { submissionDeposits, decisionDeposits } = result;
+      const referendumIndex = storageKey.args[0].toNumber();
+      const storage = optionalStorage.unwrap();
+      let submissionDeposit;
+      let decisionDeposit;
+      if (
+        storage.isRejected ||
+        storage.isApproved ||
+        storage.isCancelled ||
+        storage.isTimedOut
+      ) {
+        const data = getData(storage);
+        submissionDeposit = extractDeposit(data[1]);
+        decisionDeposit = extractDeposit(data[2]);
+      } else if (storage.isOngoing) {
+        const ongoing = storage.asOngoing;
+        submissionDeposit = {
+          who: ongoing.submissionDeposit.who.toString(),
+          amount: ongoing.submissionDeposit.amount.toString(),
+        };
+        decisionDeposit = extractDeposit(ongoing.decisionDeposit);
+      }
+
+      if (submissionDeposit?.who === address) {
+        submissionDeposits.push({
+          referendumIndex,
+          deposit: submissionDeposit?.amount,
+        });
+      }
+      if (decisionDeposit?.who === address) {
+        decisionDeposits.push({
+          referendumIndex,
+          deposit: decisionDeposit?.amount,
+        });
+      }
+
+      return {
+        submissionDeposits,
+        decisionDeposits,
+      };
+    },
+    { submissionDeposits: [], decisionDeposits: [] },
+  );
 }
