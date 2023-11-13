@@ -8,11 +8,13 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 export default function ConfirmEmail({ pin, email, identity, setErrors }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { closeLoginPopup } = useLoginPopup();
 
   const submit = async () => {
     try {
@@ -20,6 +22,7 @@ export default function ConfirmEmail({ pin, email, identity, setErrors }) {
       //an identified email address will be bind right after called user/setemail
       if (identity?.info?.email === email && identity?.isAuthorized) {
         await nextApi.post("user/setemail", { email });
+        closeLoginPopup();
         return router.replace("/");
       }
 
@@ -33,6 +36,7 @@ export default function ConfirmEmail({ pin, email, identity, setErrors }) {
             "Verification code has been confirmed, you can subscribe for notifications now.",
           ),
         );
+        closeLoginPopup();
         router.replace("/");
       } else if (error) {
         setErrors(error);

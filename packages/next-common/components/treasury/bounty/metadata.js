@@ -3,18 +3,23 @@ import KVList from "../../listInfo/kvList";
 import Anchor from "../../styled/anchor";
 import SymbolBalance from "../../values/symbolBalance";
 import AddressUser from "next-common/components/user/addressUser";
+import Copyable from "next-common/components/copyable";
 
 /**
  *
  * @param meta {proposer, beneficiary, value, bond, status}
  * @constructor
  */
-function BountyMetadata({ meta }) {
+function BountyMetadata({ meta, address }) {
   if (!meta) {
     return null;
   }
 
   const metadata = meta ? Object.entries(meta) : [];
+  if (address) {
+    metadata.push(["address", address]);
+  }
+
   const normalized = metadata.map(([key, value]) => {
     let normalizedValue = value;
 
@@ -36,6 +41,10 @@ function BountyMetadata({ meta }) {
         break;
       case "status":
         normalizedValue = Object.keys(value)[0];
+        break;
+      case "address":
+        normalizedValue = <Copyable>{address}</Copyable>;
+        break;
     }
 
     return [key, normalizedValue];

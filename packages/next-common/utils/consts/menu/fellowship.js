@@ -26,6 +26,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       Chains.moonriver,
       Chains.moonbeam,
       Chains.bifrost,
+      Chains["bifrost-polkadot"],
       Chains["westend-collectives"],
       Chains.vara,
     ]),
