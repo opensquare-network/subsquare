@@ -1,5 +1,6 @@
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
+import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
 
 async function fetcher(url) {
@@ -11,43 +12,65 @@ async function fetcher(url) {
 }
 
 export async function fetchActiveProposalsProps() {
-  const { hasReferenda, hasFellowship, hasDemocracy } = getChainSettings(CHAIN);
+  const chainSettings = getChainSettings(CHAIN);
+
   const activeProposalsData = {};
 
+  // discussions
+  const hasDiscussions = chainSettings.hasDiscussions !== false;
+  if (hasDiscussions) {
+    activeProposalsData.discussions = await fetcher("overview/discussions");
+  }
+  if (chainSettings.hasPolkassemblyDiscussions) {
+    // TODO
+  }
+
   // referenda
-  if (hasReferenda) {
+  if (chainSettings.hasReferenda) {
     activeProposalsData.referenda = await fetcher("overview/referenda");
   }
 
   // fellowship
-  if (hasFellowship) {
+  if (chainSettings.hasFellowship) {
     activeProposalsData.fellowship = await fetcher("overview/fellowship");
   }
 
   // democracy
-  if (hasDemocracy !== false) {
+  if (chainSettings.hasDemocracy !== false) {
     activeProposalsData.democracy = {};
     activeProposalsData.democracy.referenda = await fetcher(
       "overview/democracy-referenda",
     );
-    activeProposalsData.democracy.publicProposals = await fetcher(
+    /* activeProposalsData.democracy.publicProposals = await fetcher(
       "overview/public-proposals",
     );
     activeProposalsData.democracy.externalProposals = await fetcher(
       "overview/externals",
-    );
+    ); */
   }
 
   // treasury
-  activeProposalsData.treasury = {};
-  activeProposalsData.treasury.proposals = await fetcher(
-    "overview/treasury-proposals",
+  const treasuryMenu = getTreasuryMenu();
+  const hasTreasury = !treasuryMenu.excludeToChains.includes(CHAIN);
+  const treasuryMenuItems = treasuryMenu.items.filter(
+    (m) => !m.excludeToChains?.includes(CHAIN),
   );
-  activeProposalsData.treasury.bounties = await fetcher("overview/bounties");
-  activeProposalsData.treasury["child-bounties"] = await fetcher(
-    "overview/child-bounties",
-  );
-  activeProposalsData.treasury.tips = await fetcher("overview/tips");
+  const firstTreasuryMenuItem = treasuryMenuItems[0];
+  if (hasTreasury) {
+    activeProposalsData.treasury = {};
+    const initDataApiMap = {
+      proposals: "overview/treasury-proposals",
+      bounties: "overview/bounties",
+      "child-bounties": "overview/child-bounties",
+      tips: "overview/tips",
+    };
+    const initDataApi = initDataApiMap[firstTreasuryMenuItem.value];
+    if (initDataApi) {
+      activeProposalsData.treasury[firstTreasuryMenuItem.value] = await fetcher(
+        initDataApi,
+      );
+    }
+  }
 
   // council
   activeProposalsData.council = {};
@@ -60,7 +83,6 @@ export async function fetchActiveProposalsProps() {
   );
 
   /* await Promise.all([
-    // nextApi.fetch("overview/discussions"),
     nextApi.fetch("overview/financial-motions"),
     nextApi.fetch("overview/alliance-motions"),
     nextApi.fetch("overview/alliance-announcements"),
