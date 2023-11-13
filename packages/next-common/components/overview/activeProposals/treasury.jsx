@@ -60,7 +60,7 @@ export function getActiveProposalTreasury({ summary, activeProposals }) {
       ...options,
       api: {
         ...options.api,
-        initData: activeProposals.treasury[item.value],
+        initData: activeProposals.treasury?.[item.value],
       },
       columns: [
         getProposalPostTitleColumn(),
