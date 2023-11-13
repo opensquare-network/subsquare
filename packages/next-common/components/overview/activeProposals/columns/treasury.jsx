@@ -65,11 +65,11 @@ export function getActiveProposalTreasury({ summary, activeProposals }) {
 
     return {
       ...item,
+      ...options,
       api: {
         ...options.api,
         initData: activeProposals.treasury[item.value],
       },
-      formatter: options.formatter,
       columns: getColumns(item),
     };
   });
