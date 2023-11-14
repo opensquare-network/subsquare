@@ -16,6 +16,7 @@ import AmountParam from "./amountParam";
 import IntegerParam from "./integerParam";
 import Hash160Param from "./hash160Param";
 import Hash512Param from "./hash512Param";
+import CallParam from "./callParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -44,7 +45,7 @@ const componentDef = [
   { c: BalanceParam, t: ["Amount", "Balance", "BalanceOf"] },
   { c: TextParam, t: ["bool"] },
   { c: BytesParam, t: ["Bytes", "Vec<u8>"] },
-  { c: TextParam, t: ["Call", "Proposal", "RuntimeCall"] },
+  { c: CallParam, t: ["Call", "Proposal", "RuntimeCall"] },
   { c: TextParam, t: ["PalletAllianceCid"] },
   { c: TextParam, t: ["Code"] },
   { c: TextParam, t: ["Raw", "RuntimeSessionKeys", "Keys"] },
