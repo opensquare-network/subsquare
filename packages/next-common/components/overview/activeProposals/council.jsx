@@ -1,8 +1,8 @@
 import { CHAIN } from "next-common/utils/constants";
-import { getCouncilMenu } from "next-common/utils/consts/menu/council";
+import { getCouncilMenu, Names } from "next-common/utils/consts/menu/council";
 
 const itemOptions = {
-  motions: {
+  [Names.council]: {
     api: {
       path: "overview/motions",
     },
@@ -23,7 +23,7 @@ export function getActiveProposalCouncil({ summary, activeProposals }) {
         ...options,
         api: {
           ...options.api,
-          initData: activeProposals.council?.[item.value],
+          initData: activeProposals[Names.council]?.[item.value],
         },
       };
     });

@@ -1,10 +1,14 @@
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
-import { getCouncilMenu } from "next-common/utils/consts/menu/council";
+import {
+  getCouncilMenu,
+  Names as councilNames,
+} from "next-common/utils/consts/menu/council";
 import {
   getFinancialCouncilMenu,
   Names as financialCouncilNames,
 } from "next-common/utils/consts/menu/financialCouncil";
+import { Names as tcNames } from "next-common/utils/consts/menu/tc";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
 
@@ -85,17 +89,17 @@ export async function fetchActiveProposalsProps() {
   const councilMenu = getCouncilMenu();
   const hasCouncil = !councilMenu.excludeToChains.includes(CHAIN);
   if (hasCouncil) {
-    activeProposalsData.council = {};
-    activeProposalsData.council.motions = await fetcher("overview/motions");
+    activeProposalsData[councilNames.council] = {};
+    activeProposalsData[councilNames.council][councilNames.motions] =
+      await fetcher("overview/motions");
   }
 
   // technical committee
   const hasTechComm = chainSettings.hasTechComm !== false;
   if (hasTechComm) {
-    activeProposalsData.technicalCommittee = {};
-    activeProposalsData.technicalCommittee.proposals = await fetcher(
-      "overview/tc-motions",
-    );
+    activeProposalsData[tcNames.techComm] = {};
+    activeProposalsData[tcNames.techComm][tcNames.techCommProposals] =
+      await fetcher("overview/tc-motions");
   }
 
   // financial council
