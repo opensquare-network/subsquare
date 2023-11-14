@@ -1,10 +1,11 @@
 import { CHAIN } from "next-common/utils/constants";
 import { getCouncilMenu, Names } from "next-common/utils/consts/menu/council";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const itemOptions = {
   [Names.council]: {
     api: {
-      path: "overview/motions",
+      path: isMoonChain() ? "overview/moon-council" : "overview/motions",
     },
   },
 };

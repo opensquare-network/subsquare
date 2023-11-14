@@ -19,6 +19,7 @@ import {
 import { Names as tcNames } from "next-common/utils/consts/menu/tc";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 async function fetcher(url) {
   const resp = await nextApi.fetch(url);
@@ -99,7 +100,9 @@ export async function fetchActiveProposalsProps() {
   if (hasCouncil) {
     activeProposalsData[councilNames.council] = {};
     activeProposalsData[councilNames.council][councilNames.motions] =
-      await fetcher("overview/motions");
+      await fetcher(
+        isMoonChain() ? "overview/moon-council" : "overview/motions",
+      );
   }
 
   // technical committee
@@ -142,7 +145,6 @@ export async function fetchActiveProposalsProps() {
   }
 
   /* await Promise.all([
-    nextApi.fetch("overview/moon-council"),
     nextApi.fetch("overview/open-tc-motion"),
   ]); */
 
