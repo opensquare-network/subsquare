@@ -14,18 +14,27 @@ export default function useSubscribeAccount() {
       return;
     }
 
-    api.query.system.account(realAddress, (info) => {
-      const free = info.data.free.toString();
-      const reserved = info.data.reserved.toString();
-      const frozen = info.data.frozen.toString();
+    let unsub;
+    api.query.system
+      .account(realAddress, (info) => {
+        const free = info.data.free.toString();
+        const reserved = info.data.reserved.toString();
+        const frozen = info.data.frozen.toString();
 
-      dispatch(
-        setMyAccountInfo({
-          free,
-          reserved,
-          frozen,
-        }),
-      );
-    });
+        dispatch(
+          setMyAccountInfo({
+            free,
+            reserved,
+            frozen,
+          }),
+        );
+      })
+      .then((result) => (unsub = result));
+
+    return () => {
+      if (unsub) {
+        unsub();
+      }
+    };
   }, [api, realAddress, dispatch]);
 }
