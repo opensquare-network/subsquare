@@ -9,7 +9,6 @@ import StyledList from "next-common/components/styledList";
 import nextApi from "next-common/services/nextApi";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import last from "lodash.last";
-import { useIsFirstRender } from "usehooks-ts";
 
 export default function ActiveProposalTemplate({
   name = "",
@@ -18,8 +17,6 @@ export default function ActiveProposalTemplate({
   activeCount,
   items = [],
 }) {
-  const isFirst = useIsFirstRender();
-
   const hasAllPage = items.some((m) => m.value === "all");
 
   let title = (
@@ -59,7 +56,7 @@ export default function ActiveProposalTemplate({
         lazy: idx !== 0,
         label: m.name,
         activeCount: m.activeCount,
-        content: <TableTemplate isFirst={isFirst} {...m} />,
+        content: <TableTemplate {...m} />,
       };
     });
 
@@ -76,15 +73,16 @@ export default function ActiveProposalTemplate({
   );
 }
 
-function TableTemplate({ isFirst, columns, api, formatter = (i) => i }) {
+function TableTemplate({ columns, api, formatter = (i) => i }) {
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(false);
   const { sm } = useScreenSize();
+  const [isFirst, setIsFirst] = useState(true);
 
   useEffect(() => {
-    if (isFirst) {
+    if (isFirst && page === 1) {
       return;
     }
 
@@ -99,6 +97,7 @@ function TableTemplate({ isFirst, columns, api, formatter = (i) => i }) {
           }
         })
         .finally(() => {
+          setIsFirst(false);
           setLoading(false);
         });
     }
