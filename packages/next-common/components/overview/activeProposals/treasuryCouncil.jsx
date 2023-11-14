@@ -3,6 +3,11 @@ import {
   getTreasuryCouncilMenu,
   Names,
 } from "next-common/utils/consts/menu/treasuryCouncil";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+} from "./columns/common";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {
   [Names.treasuryCouncil]: {
@@ -28,6 +33,12 @@ export function getActiveProposalTreasuryCouncil({ summary, activeProposals }) {
           ...options.api,
           initData: activeProposals[Names.treasuryCouncil]?.[item.value],
         },
+        columns: [
+          getProposalPostTitleColumn(),
+          getStatusTagColumn({
+            category: businessCategory.treasuryCouncilMotions,
+          }),
+        ],
       };
     });
 
