@@ -81,18 +81,19 @@ export async function fetchActiveProposalsProps(summary = {}) {
       .filter((m) => !m.excludeToChains?.includes(CHAIN))
       .filter((m) => m.activeCount);
     const firstTreasuryMenuItem = treasuryMenuItems[0];
-    const initDataApiMap = {
-      proposals: "overview/treasury-proposals",
-      bounties: "overview/bounties",
-      "child-bounties": "overview/child-bounties",
-      tips: "overview/tips",
-    };
-    const initDataApi = initDataApiMap[firstTreasuryMenuItem.value];
-    if (initDataApi) {
-      activeProposalsData.treasury = {};
-      activeProposalsData.treasury[firstTreasuryMenuItem.value] = await fetcher(
-        initDataApi,
-      );
+    if (firstTreasuryMenuItem) {
+      const initDataApiMap = {
+        proposals: "overview/treasury-proposals",
+        bounties: "overview/bounties",
+        "child-bounties": "overview/child-bounties",
+        tips: "overview/tips",
+      };
+      const initDataApi = initDataApiMap[firstTreasuryMenuItem.value];
+      if (initDataApi) {
+        activeProposalsData.treasury = {};
+        activeProposalsData.treasury[firstTreasuryMenuItem.value] =
+          await fetcher(initDataApi);
+      }
     }
   }
 
@@ -135,15 +136,18 @@ export async function fetchActiveProposalsProps(summary = {}) {
       .filter((m) => !m.excludeToChains?.includes(CHAIN))
       .filter((m) => m.activeCount);
     const firstAllianceMenuItem = allianceMenuItems[0];
-    const initDataApiMap = {
-      allianceMotions: "overview/alliance-motions",
-      allianceAnnouncements: "overview/alliance-announcements",
-    };
-    const initDataApi = initDataApiMap[firstAllianceMenuItem.value];
-    if (initDataApi) {
-      activeProposalsData[allianceNames.alliance] = {};
-      activeProposalsData[allianceNames.alliance][firstAllianceMenuItem.value] =
-        await fetcher(initDataApi);
+    if (firstAllianceMenuItem) {
+      const initDataApiMap = {
+        allianceMotions: "overview/alliance-motions",
+        allianceAnnouncements: "overview/alliance-announcements",
+      };
+      const initDataApi = initDataApiMap[firstAllianceMenuItem.value];
+      if (initDataApi) {
+        activeProposalsData[allianceNames.alliance] = {};
+        activeProposalsData[allianceNames.alliance][
+          firstAllianceMenuItem.value
+        ] = await fetcher(initDataApi);
+      }
     }
   }
 
