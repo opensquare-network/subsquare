@@ -19,6 +19,7 @@ import {
 import { Names as openTechCommNames } from "next-common/utils/consts/menu/openTechCommittee";
 import { Names as tcNames } from "next-common/utils/consts/menu/tc";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
+import { Names as treasuryCouncilNames } from "next-common/utils/consts/menu/treasuryCouncil";
 import getChainSettings from "next-common/utils/consts/settings";
 import isMoonChain from "next-common/utils/isMoonChain";
 
@@ -145,8 +146,13 @@ export async function fetchActiveProposalsProps() {
     ] = await fetcher("overview/advisory-motions");
   }
 
-  // moon
+  // moonriver
   if (isMoonChain()) {
+    activeProposalsData[treasuryCouncilNames.treasuryCouncil] = {};
+    activeProposalsData[treasuryCouncilNames.treasuryCouncil] = await fetcher(
+      "overview/motions",
+    );
+
     activeProposalsData[openTechCommNames.openTechCommittee] = {};
     activeProposalsData[openTechCommNames.openTechCommittee][
       openTechCommNames.openTechCommitteeProposals

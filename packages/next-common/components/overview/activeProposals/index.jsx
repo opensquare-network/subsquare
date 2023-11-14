@@ -14,6 +14,7 @@ import { getActiveProposalAlliance } from "./alliance";
 import { getActiveProposalAdvisoryCommittee } from "./advisoryCommittee";
 import { getActiveProposalOpenTechComm } from "./openTechComm";
 import isMoonChain from "next-common/utils/isMoonChain";
+import { getActiveProposalTreasuryCouncil } from "./treasuryCouncil";
 
 export default function ActiveProposals() {
   const chain = useChain();
@@ -40,6 +41,10 @@ export default function ActiveProposals() {
     summary,
     activeProposals,
   });
+  const treasuryCouncil = getActiveProposalTreasuryCouncil({
+    summary,
+    activeProposals,
+  });
   const openTechComm = getActiveProposalOpenTechComm({
     summary,
     activeProposals,
@@ -52,6 +57,7 @@ export default function ActiveProposals() {
     democracy,
     treasury,
     council,
+    isMoonChain() && treasuryCouncil,
     tc,
     financialCouncil,
     alliance,
