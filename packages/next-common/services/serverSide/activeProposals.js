@@ -153,9 +153,9 @@ export async function fetchActiveProposalsProps(summary = {}) {
     !advisoryCommitteeMenu.excludeToChains.includes(CHAIN);
   if (hasAdvisoryCommittee) {
     activeProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
-    activeProposalsData[asAdvisoryCommitteeNames.advisoryCommittee][
-      asAdvisoryCommitteeNames.advisoryMotions
-    ] = await fetcher("overview/advisory-motions");
+    activeProposalsData[
+      asAdvisoryCommitteeNames.advisoryCommittee
+    ].advisoryMotions = await fetcher("overview/advisory-motions");
   }
 
   // moonriver

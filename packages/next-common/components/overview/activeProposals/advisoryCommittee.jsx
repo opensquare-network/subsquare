@@ -3,9 +3,14 @@ import {
   getAdvisoryCommitteeMenu,
   Names,
 } from "next-common/utils/consts/menu/advisoryCouncil";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+} from "./columns/common";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {
-  [Names.advisoryMotions]: {
+  advisoryMotions: {
     api: {
       path: "overview/advisory-motions",
     },
@@ -31,6 +36,10 @@ export function getActiveProposalAdvisoryCommittee({
           ...options.api,
           initData: activeProposals[Names.advisoryMotions]?.[item.value],
         },
+        columns: [
+          getProposalPostTitleColumn(),
+          getStatusTagColumn({ category: businessCategory.advisoryMotions }),
+        ],
       };
     });
 
