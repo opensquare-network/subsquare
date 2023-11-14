@@ -10,7 +10,7 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {
-  [Names.financialMotions]: {
+  financialMotions: {
     api: {
       path: "overview/financial-motions",
     },

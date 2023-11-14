@@ -102,10 +102,9 @@ export async function fetchActiveProposalsProps(summary = {}) {
   const hasCouncil = !councilMenu.excludeToChains.includes(CHAIN);
   if (hasCouncil) {
     activeProposalsData[councilNames.council] = {};
-    activeProposalsData[councilNames.council][councilNames.motions] =
-      await fetcher(
-        isMoonChain() ? "overview/moon-council" : "overview/motions",
-      );
+    activeProposalsData[councilNames.council].motions = await fetcher(
+      isMoonChain() ? "overview/moon-council" : "overview/motions",
+    );
   }
 
   // technical committee
@@ -123,9 +122,9 @@ export async function fetchActiveProposalsProps(summary = {}) {
     !financialCouncilMenu.excludeToChains.includes(CHAIN);
   if (hasFinancialCouncil) {
     activeProposalsData[financialCouncilNames.financialCouncil] = {};
-    activeProposalsData[financialCouncilNames.financialCouncil][
-      financialCouncilNames.financialMotions
-    ] = await fetcher("overview/financial-motions");
+    activeProposalsData[
+      financialCouncilNames.financialCouncil
+    ].financialMotions = await fetcher("overview/financial-motions");
   }
 
   // alliance
@@ -170,9 +169,9 @@ export async function fetchActiveProposalsProps(summary = {}) {
     );
 
     activeProposalsData[openTechCommNames.openTechCommittee] = {};
-    activeProposalsData[openTechCommNames.openTechCommittee][
-      openTechCommNames.openTechCommitteeProposals
-    ] = await fetcher("overview/open-tc-motion");
+    activeProposalsData[
+      openTechCommNames.openTechCommittee
+    ].openTechCommitteeProposals = await fetcher("overview/open-tc-motion");
   }
 
   return activeProposalsData;

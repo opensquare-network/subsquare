@@ -8,7 +8,7 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {
-  [Names.council]: {
+  motions: {
     api: {
       path: isMoonChain() ? "overview/moon-council" : "overview/motions",
     },
