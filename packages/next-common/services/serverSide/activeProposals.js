@@ -1,6 +1,10 @@
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
 import { getCouncilMenu } from "next-common/utils/consts/menu/council";
+import {
+  getFinancialCouncilMenu,
+  Names as financialCouncilNames,
+} from "next-common/utils/consts/menu/financialCouncil";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
 
@@ -94,8 +98,18 @@ export async function fetchActiveProposalsProps() {
     );
   }
 
+  // financial council
+  const financialCouncilMenu = getFinancialCouncilMenu();
+  const hasFinancialCouncil =
+    !financialCouncilMenu.excludeToChains.includes(CHAIN);
+  if (hasFinancialCouncil) {
+    activeProposalsData[financialCouncilNames.financialCouncil] = {};
+    activeProposalsData[financialCouncilNames.financialCouncil][
+      financialCouncilNames.financialMotions
+    ] = await fetcher("overview/financial-motions");
+  }
+
   /* await Promise.all([
-    nextApi.fetch("overview/financial-motions"),
     nextApi.fetch("overview/alliance-motions"),
     nextApi.fetch("overview/alliance-announcements"),
     nextApi.fetch("overview/advisory-motions"),
