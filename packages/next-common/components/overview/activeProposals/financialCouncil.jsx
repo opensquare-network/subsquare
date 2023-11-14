@@ -7,7 +7,7 @@ import {
 const itemOptions = {
   [Names.financialMotions]: {
     api: {
-      path: "overview/tc-motions",
+      path: "overview/financial-motions",
     },
   },
 };
