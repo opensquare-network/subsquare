@@ -41,8 +41,8 @@ export default function ActiveProposals() {
 
   const items = [
     hasDiscussions && discussions,
-    referenda,
-    fellowship,
+    chainSettings.hasReferenda && referenda,
+    chainSettings.hasFellowship && fellowship,
     democracy,
     treasury,
     council,
