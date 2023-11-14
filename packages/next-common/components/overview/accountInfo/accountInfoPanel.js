@@ -9,20 +9,13 @@ import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
 import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import {
-  addressEllipsis,
-  isKeyRegisteredUser,
-  toPrecision,
-} from "next-common/utils";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { addressEllipsis, isKeyRegisteredUser } from "next-common/utils";
+import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
-import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
-import isEmpty from "lodash.isempty";
-import ValueDisplay from "next-common/components/valueDisplay";
-import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
 import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
 import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
+import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -118,95 +111,14 @@ function AccountHead() {
   );
 }
 
-function BalanceItem({ title, value }) {
-  const { symbol, decimals } = useChainSettings();
-  return (
-    <div className="flex flex-col grow">
-      <span className="text-textTertiary text12Medium">{title}</span>
-      <span className="text-textPrimary text16Bold [&_.value-display-symbol]:text-textTertiary">
-        <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
-      </span>
-    </div>
-  );
-}
-
-function EmptyBalanceItem({ title }) {
-  return (
-    <div className="flex flex-col grow">
-      <span className="text-textTertiary text12Medium">{title}</span>
-      <span className="text-textTertiary text16Bold">-</span>
-    </div>
-  );
-}
-
-function BalanceItems({ accountInfo }) {
-  const showTransferrable = !isEmpty(accountInfo?.data?.transferrable);
-  const showLocked = !isEmpty(accountInfo?.data?.lockedBalance);
-
-  return (
-    <div className="grid md:grid-flow-col max-md:grid-cols-2 grow gap-[16px]">
-      <BalanceItem title="Total Balance" value={accountInfo?.data?.total} />
-      {showTransferrable ? (
-        <BalanceItem
-          title="Transferable"
-          value={accountInfo?.data?.transferrable}
-        />
-      ) : (
-        <BalanceItem title="Free" value={accountInfo?.data?.free} />
-      )}
-      {showLocked ? (
-        <BalanceItem title="Locked" value={accountInfo?.data?.lockedBalance} />
-      ) : (
-        <EmptyBalanceItem title="Locked" />
-      )}
-    </div>
-  );
-}
-
-function Balances({ accountInfo }) {
-  const router = useRouter();
-
-  const goAccount = () => {
-    router.push("/account/votes");
-  };
-
-  return (
-    <div className="flex w-full max-md:flex-col">
-      <BalanceItems accountInfo={accountInfo} />
-      <div className="flex justify-end items-end md:w-1/4 max-md:mt-[16px]">
-        <span
-          className="cursor-pointer text14Medium text-theme500 mt-[8px]"
-          onClick={goAccount}
-        >
-          Manage Account
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function AssetInfoLoading() {
-  return (
-    <div className="flex justify-center w-full my-[12px]">
-      <Loading size={20} />
-    </div>
-  );
-}
-
 function AssetInfo() {
   useSubscribeAccount();
   return <AccountBalances />;
 }
 
 function KintAssetInfo() {
-  const user = useUser();
-  const accountInfo = useKintAccountInfo(user?.address);
-
-  if (!accountInfo) {
-    return <AssetInfoLoading />;
-  }
-
-  return <Balances accountInfo={accountInfo} />;
+  useSubKintsugiAccount();
+  return <AccountBalances />;
 }
 
 const Divider = tw.div`
