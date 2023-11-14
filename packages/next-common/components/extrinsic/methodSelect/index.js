@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Select from "next-common/components/select";
 import useApi from "next-common/utils/hooks/useApi";
 
@@ -53,6 +53,16 @@ export default function MethodSelect({
     () => getMethodOptions(api, sectionName),
     [sectionName, api],
   );
+
+  useEffect(() => {
+    if (!options || options.length === 0) return;
+
+    const option = options.find((option) => option.value === methodName);
+    if (!option) {
+      setMethodName(options[0].value);
+    }
+  }, [options]);
+
   return (
     <Select
       value={methodName}

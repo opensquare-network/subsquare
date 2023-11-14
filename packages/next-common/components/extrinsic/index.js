@@ -30,7 +30,6 @@ export default function Extrinsic() {
   const [sectionName, setSectionName] = useState("system");
   const [methodName, setMethodName] = useState("setCode");
   const [callState, setCallState] = useState();
-  console.log(callState);
 
   useEffect(() => {
     if (!api) return;
