@@ -16,6 +16,7 @@ import {
   getFinancialCouncilMenu,
   Names as financialCouncilNames,
 } from "next-common/utils/consts/menu/financialCouncil";
+import { Names as openTechCommNames } from "next-common/utils/consts/menu/openTechCommittee";
 import { Names as tcNames } from "next-common/utils/consts/menu/tc";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -144,9 +145,13 @@ export async function fetchActiveProposalsProps() {
     ] = await fetcher("overview/advisory-motions");
   }
 
-  /* await Promise.all([
-    nextApi.fetch("overview/open-tc-motion"),
-  ]); */
+  // moon
+  if (isMoonChain()) {
+    activeProposalsData[openTechCommNames.openTechCommittee] = {};
+    activeProposalsData[openTechCommNames.openTechCommittee][
+      openTechCommNames.openTechCommitteeProposals
+    ] = await fetcher("overview/open-tc-motion");
+  }
 
   return activeProposalsData;
 }

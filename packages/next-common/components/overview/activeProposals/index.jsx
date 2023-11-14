@@ -12,6 +12,8 @@ import { getActiveProposalsTechComm } from "./tc";
 import { getActiveProposalsFinancialCouncil } from "./financialCouncil";
 import { getActiveProposalAlliance } from "./alliance";
 import { getActiveProposalsAdvisoryCommittee } from "./advisoryCommittee";
+import { getActiveProposalsOpenTechComm } from "./openTechComm";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 export default function ActiveProposals() {
   const chain = useChain();
@@ -38,6 +40,10 @@ export default function ActiveProposals() {
     summary,
     activeProposals,
   });
+  const openTechComm = getActiveProposalsOpenTechComm({
+    summary,
+    activeProposals,
+  });
 
   const items = [
     hasDiscussions && discussions,
@@ -50,6 +56,7 @@ export default function ActiveProposals() {
     financialCouncil,
     alliance,
     advisoryCommittee,
+    isMoonChain() && openTechComm,
   ]
     .filter(Boolean)
     .filter((item) => !item.excludeToChains?.includes?.(chain));
