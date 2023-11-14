@@ -4,7 +4,7 @@ import SignerPopup from "next-common/components/signerPopup";
 
 export default function NewPreimagePopup({ onClose }) {
   return (
-    <SignerPopup title="New Preimage" onClose={onClose}>
+    <SignerPopup wide title="New Preimage" onClose={onClose}>
       <div>
         <PopupLabel text="Propose" />
         <Extrinsic />

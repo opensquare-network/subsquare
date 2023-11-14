@@ -7,6 +7,8 @@ import BalanceParam from "./balanceParam";
 import TextParam from "./textParam";
 import useApi from "next-common/utils/hooks/useApi";
 import EnumParam from "./enumParam";
+import StructParam from "./structParam";
+import NullParam from "./nullParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -55,12 +57,12 @@ const componentDef = [
   { c: TextParam, t: ["KeyValue"] },
   { c: TextParam, t: ["Vec<KeyValue>"] },
   { c: TextParam, t: ["Moment", "MomentOf"] },
-  { c: TextParam, t: ["Null"] },
+  { c: NullParam, t: ["Null"] },
   { c: TextParam, t: ["OpaqueCall"] },
   { c: TextParam, t: ["Option"] },
   { c: TextParam, t: ["String", "Text"] },
-  { c: TextParam, t: ["Struct"] },
-  { c: TextParam, t: ["Tuple"] },
+  { c: StructParam, t: ["Struct"] },
+  { c: StructParam, t: ["Tuple"] },
   { c: TextParam, t: ["Vec", "BTreeSet"] },
   { c: TextParam, t: ["VecFixed"] },
   { c: TextParam, t: ["Vote"] },
@@ -164,7 +166,7 @@ export default function Param({ name, def }) {
   return (
     <div className="flex flex-col gap-[8px]">
       <span className="text12Bold whitespace-nowrap overflow-hidden">
-        {name}: {def.type}
+        {name && `${name}:`} {def.type}
         {def.typeName && `(${def.typeName})`}
       </span>
       <Component def={def} />
