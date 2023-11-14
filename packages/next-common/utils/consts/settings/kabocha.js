@@ -8,6 +8,7 @@ const kabocha = {
   // decimals: 0,
   // hasElections: true,
   hasSubscan: true,
+  hasTechComm: false,
 };
 
 export default kabocha;

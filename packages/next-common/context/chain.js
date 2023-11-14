@@ -1,9 +1,8 @@
-import React, { createContext, useContext } from "react";
+import { createContext, useContext } from "react";
 import getChainSettings from "../utils/consts/settings";
 import democracy from "../utils/consts/menu/democracy";
 import treasury from "../utils/consts/menu/treasury";
 import council from "../utils/consts/menu/council";
-import techComm from "../utils/consts/menu/tc";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
@@ -76,6 +75,6 @@ export function useMenuHasCouncil() {
 }
 
 export function useMenuHasTechComm() {
-  const chain = useChain();
-  return !techComm.excludeToChains.includes(chain);
+  const chainSettings = useChainSettings();
+  return chainSettings.hasTechComm !== false;
 }
