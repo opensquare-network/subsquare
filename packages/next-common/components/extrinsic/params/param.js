@@ -10,6 +10,12 @@ import EnumParam from "./enumParam";
 import StructParam from "./structParam";
 import NullParam from "./nullParam";
 import VectorParam from "./vectorParam";
+import Hash256Param from "./hash256Param";
+import BytesParam from "./bytesParam";
+import AmountParam from "./amountParam";
+import IntegerParam from "./integerParam";
+import Hash160Param from "./hash160Param";
+import Hash512Param from "./hash512Param";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -28,36 +34,27 @@ const componentDef = [
     t: ["AccountId", "Address", "LookupSource", "MultiAddress"],
   },
   {
-    c: TextParam,
-    t: [
-      "AccountIndex",
-      "i8",
-      "i16",
-      "i32",
-      "i64",
-      "i128",
-      "u8",
-      "u16",
-      "u32",
-      "u64",
-      "u128",
-      "u256",
-    ],
+    c: IntegerParam,
+    t: ["i8", "i16", "i32", "i64", "i128"],
+  },
+  {
+    c: AmountParam,
+    t: ["AccountIndex", "u8", "u16", "u32", "u64", "u128", "u256"],
   },
   { c: BalanceParam, t: ["Amount", "Balance", "BalanceOf"] },
   { c: TextParam, t: ["bool"] },
-  { c: TextParam, t: ["Bytes", "Vec<u8>"] },
+  { c: BytesParam, t: ["Bytes", "Vec<u8>"] },
   { c: TextParam, t: ["Call", "Proposal", "RuntimeCall"] },
   { c: TextParam, t: ["PalletAllianceCid"] },
   { c: TextParam, t: ["Code"] },
   { c: TextParam, t: ["Raw", "RuntimeSessionKeys", "Keys"] },
   { c: EnumParam, t: ["Enum"] },
-  { c: TextParam, t: ["Hash", "H256"] },
-  { c: TextParam, t: ["H160"] },
-  { c: TextParam, t: ["H512"] },
+  { c: Hash256Param, t: ["Hash", "H256"] },
+  { c: Hash160Param, t: ["H160"] },
+  { c: Hash512Param, t: ["H512"] },
   { c: TextParam, t: ["KeyValue"] },
   { c: TextParam, t: ["Vec<KeyValue>"] },
-  { c: TextParam, t: ["Moment", "MomentOf"] },
+  { c: AmountParam, t: ["Moment", "MomentOf"] },
   { c: NullParam, t: ["Null"] },
   { c: TextParam, t: ["OpaqueCall"] },
   { c: TextParam, t: ["Option"] },
@@ -164,6 +161,7 @@ export default function Param({ name, def }) {
   const api = useApi();
   const registry = api?.registry;
   const Component = findComponent({ registry, def });
+
   return (
     <div className="flex flex-col gap-[8px]">
       <span className="text12Bold whitespace-nowrap overflow-hidden">

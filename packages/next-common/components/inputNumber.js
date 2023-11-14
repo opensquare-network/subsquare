@@ -38,7 +38,7 @@ const Input = styled(InputOrigin)`
 `;
 
 export default function InputNumber({
-  min = 0,
+  min = -Infinity,
   max = Infinity,
   value,
   setValue = noop,
