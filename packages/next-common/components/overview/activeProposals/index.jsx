@@ -6,13 +6,13 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import { getActiveProposalFellowship } from "./fellowship";
 import { getActiveProposalDemocracy } from "./democracy";
 import { getActiveProposalTreasury } from "./treasury";
-import { getActiveDiscussions } from "./discussions";
+import { getActiveProposalDiscussions } from "./discussions";
 import { getActiveProposalCouncil } from "./council";
-import { getActiveProposalsTechComm } from "./tc";
-import { getActiveProposalsFinancialCouncil } from "./financialCouncil";
+import { getActiveProposalTechComm } from "./tc";
+import { getActiveProposalFinancialCouncil } from "./financialCouncil";
 import { getActiveProposalAlliance } from "./alliance";
-import { getActiveProposalsAdvisoryCommittee } from "./advisoryCommittee";
-import { getActiveProposalsOpenTechComm } from "./openTechComm";
+import { getActiveProposalAdvisoryCommittee } from "./advisoryCommittee";
+import { getActiveProposalOpenTechComm } from "./openTechComm";
 import isMoonChain from "next-common/utils/isMoonChain";
 
 export default function ActiveProposals() {
@@ -21,7 +21,7 @@ export default function ActiveProposals() {
   const hasDiscussions = chainSettings.hasDiscussions !== false;
   const { tracks, fellowshipTracks, summary, activeProposals } = usePageProps();
 
-  const discussions = getActiveDiscussions({ activeProposals });
+  const discussions = getActiveProposalDiscussions({ activeProposals });
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
   const fellowship = getActiveProposalFellowship({
     fellowshipTracks,
@@ -30,17 +30,17 @@ export default function ActiveProposals() {
   const democracy = getActiveProposalDemocracy({ summary, activeProposals });
   const treasury = getActiveProposalTreasury({ summary, activeProposals });
   const council = getActiveProposalCouncil({ summary, activeProposals });
-  const tc = getActiveProposalsTechComm({ summary, activeProposals });
-  const financialCouncil = getActiveProposalsFinancialCouncil({
+  const tc = getActiveProposalTechComm({ summary, activeProposals });
+  const financialCouncil = getActiveProposalFinancialCouncil({
     summary,
     activeProposals,
   });
   const alliance = getActiveProposalAlliance({ summary, activeProposals });
-  const advisoryCommittee = getActiveProposalsAdvisoryCommittee({
+  const advisoryCommittee = getActiveProposalAdvisoryCommittee({
     summary,
     activeProposals,
   });
-  const openTechComm = getActiveProposalsOpenTechComm({
+  const openTechComm = getActiveProposalOpenTechComm({
     summary,
     activeProposals,
   });

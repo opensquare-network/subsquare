@@ -9,7 +9,7 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalsTechComm({ summary, activeProposals }) {
+export function getActiveProposalTechComm({ summary, activeProposals }) {
   const menu = getTechCommMenu(summary);
 
   const items = menu.items

@@ -2,7 +2,7 @@ import { discussionsMenu } from "next-common/utils/consts/menu/common";
 import { getProposalPostTitleColumn } from "./columns/common";
 
 // FIXME: overview, need discussions active count from server
-export function getActiveDiscussions({ activeProposals }) {
+export function getActiveProposalDiscussions({ activeProposals }) {
   const items = [
     {
       value: "subsquare",

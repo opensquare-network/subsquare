@@ -12,7 +12,7 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalsFinancialCouncil({
+export function getActiveProposalFinancialCouncil({
   summary,
   activeProposals,
 }) {

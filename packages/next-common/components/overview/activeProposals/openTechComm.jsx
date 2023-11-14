@@ -12,7 +12,7 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalsOpenTechComm({ summary, activeProposals }) {
+export function getActiveProposalOpenTechComm({ summary, activeProposals }) {
   const menu = getOpenTechCommMenu(summary);
 
   const items = menu.items

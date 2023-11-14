@@ -12,7 +12,7 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalsAdvisoryCommittee({
+export function getActiveProposalAdvisoryCommittee({
   summary,
   activeProposals,
 }) {
