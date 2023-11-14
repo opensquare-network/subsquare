@@ -164,9 +164,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
   // moonriver
   if (isMoonChain()) {
     activeProposalsData[treasuryCouncilNames.treasuryCouncil] = {};
-    activeProposalsData[treasuryCouncilNames.treasuryCouncil] = await fetcher(
-      "overview/motions",
-    );
+    activeProposalsData[treasuryCouncilNames.treasuryCouncil].motions =
+      await fetcher("overview/motions");
 
     activeProposalsData[openTechCommNames.openTechCommittee] = {};
     activeProposalsData[
