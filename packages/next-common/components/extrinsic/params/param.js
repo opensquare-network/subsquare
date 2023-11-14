@@ -17,6 +17,10 @@ import IntegerParam from "./integerParam";
 import Hash160Param from "./hash160Param";
 import Hash512Param from "./hash512Param";
 import CallParam from "./callParam";
+import OptionParam from "./optionParam";
+import VoteParam from "./voteParam";
+import VoteThresholdParam from "./voteThresholdParam";
+import IndentPanel from "next-common/components/callTreeView/indentPanel";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -58,14 +62,14 @@ const componentDef = [
   { c: AmountParam, t: ["Moment", "MomentOf"] },
   { c: NullParam, t: ["Null"] },
   { c: TextParam, t: ["OpaqueCall"] },
-  { c: TextParam, t: ["Option"] },
+  { c: OptionParam, t: ["Option"] },
   { c: TextParam, t: ["String", "Text"] },
   { c: StructParam, t: ["Struct"] },
   { c: StructParam, t: ["Tuple"] },
   { c: VectorParam, t: ["Vec", "BTreeSet"] },
   { c: TextParam, t: ["VecFixed"] },
-  { c: TextParam, t: ["Vote"] },
-  { c: TextParam, t: ["VoteThreshold"] },
+  { c: VoteParam, t: ["Vote"] },
+  { c: VoteThresholdParam, t: ["VoteThreshold"] },
   { c: TextParam, t: ["Unknown"] },
 ];
 
@@ -158,18 +162,34 @@ function findComponent({ registry, def }) {
   return Component || TextParam;
 }
 
-export default function Param({ name, def }) {
+export default function Param({ name, def, indent = false }) {
   const api = useApi();
   const registry = api?.registry;
   const Component = findComponent({ registry, def });
 
-  return (
-    <div className="flex flex-col gap-[8px]">
+  if (Component === NullParam) {
+    return null;
+  }
+
+  if (Component === VoteParam) {
+    return <VoteParam def={def} />;
+  }
+
+  const content = (
+    <>
       <span className="text12Bold whitespace-nowrap overflow-hidden">
         {name && `${name}:`} {def.type}
         {def.typeName && `(${def.typeName})`}
       </span>
       <Component def={def} />
-    </div>
+    </>
+  );
+
+  if (!indent) {
+    return <div className="flex flex-col gap-[8px]">{content}</div>;
+  }
+
+  return (
+    <IndentPanel className="flex flex-col gap-[8px]">{content}</IndentPanel>
   );
 }

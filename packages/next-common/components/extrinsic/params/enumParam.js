@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { getTypeDef } from "@polkadot/types";
 import Select from "next-common/components/select";
 import useApi from "next-common/utils/hooks/useApi";
-import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import Param from "./param";
 
 function getSubTypes(registry, type) {
@@ -48,9 +47,12 @@ export default function EnumParam({ def }) {
         onChange={(o) => setEnumType(o.value)}
       />
       {subType && (
-        <IndentPanel className="flex flex-col gap-[8px]">
-          <Param key={subType.name} name={subType.name} def={subType} />
-        </IndentPanel>
+        <Param
+          key={subType.name}
+          name={subType.name}
+          def={subType}
+          indent={true}
+        />
       )}
     </div>
   );
