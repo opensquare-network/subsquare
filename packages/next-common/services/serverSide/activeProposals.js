@@ -128,12 +128,23 @@ export async function fetchActiveProposalsProps(summary = {}) {
   }
 
   // alliance
-  const allianceMenu = getAllianceMenu();
+  const allianceMenu = getAllianceMenu(summary);
   const hasAlliance = !allianceMenu.excludeToChains.includes(CHAIN);
   if (hasAlliance) {
-    activeProposalsData[allianceNames.alliance] = {};
-    activeProposalsData[allianceNames.alliance][allianceNames.allianceMotions] =
-      await fetcher("overview/alliance-motions");
+    const allianceMenuItems = allianceMenu.items
+      .filter((m) => !m.excludeToChains?.includes(CHAIN))
+      .filter((m) => m.activeCount);
+    const firstAllianceMenuItem = allianceMenuItems[0];
+    const initDataApiMap = {
+      allianceMotions: "overview/alliance-motions",
+      allianceAnnouncements: "overview/alliance-announcements",
+    };
+    const initDataApi = initDataApiMap[firstAllianceMenuItem.value];
+    if (initDataApi) {
+      activeProposalsData[allianceNames.alliance] = {};
+      activeProposalsData[allianceNames.alliance][firstAllianceMenuItem.value] =
+        await fetcher(initDataApi);
+    }
   }
 
   // advisory
