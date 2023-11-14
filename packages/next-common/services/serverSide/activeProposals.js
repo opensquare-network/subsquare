@@ -1,6 +1,10 @@
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
 import {
+  getAdvisoryCommitteeMenu,
+  Names as asAdvisoryCommitteeNames,
+} from "next-common/utils/consts/menu/advisoryCouncil";
+import {
   getAllianceMenu,
   Names as allianceNames,
 } from "next-common/utils/consts/menu/alliance";
@@ -126,8 +130,18 @@ export async function fetchActiveProposalsProps() {
       await fetcher("overview/alliance-motions");
   }
 
+  // advisory
+  const advisoryCommitteeMenu = getAdvisoryCommitteeMenu();
+  const hasAdvisoryCommittee =
+    !advisoryCommitteeMenu.excludeToChains.includes(CHAIN);
+  if (hasAdvisoryCommittee) {
+    activeProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
+    activeProposalsData[asAdvisoryCommitteeNames.advisoryCommittee][
+      asAdvisoryCommitteeNames.advisoryMotions
+    ] = await fetcher("overview/advisory-motions");
+  }
+
   /* await Promise.all([
-    nextApi.fetch("overview/advisory-motions"),
     nextApi.fetch("overview/moon-council"),
     nextApi.fetch("overview/open-tc-motion"),
   ]); */
