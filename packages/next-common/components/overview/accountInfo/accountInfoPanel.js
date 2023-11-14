@@ -15,13 +15,14 @@ import {
   toPrecision,
 } from "next-common/utils";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import useAccountInfo from "next-common/hooks/useAccountInfo";
 import Chains from "next-common/utils/consts/chains";
 import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
 import isEmpty from "lodash.isempty";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
+import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
+import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -193,14 +194,8 @@ function AssetInfoLoading() {
 }
 
 function AssetInfo() {
-  const user = useUser();
-  const accountInfo = useAccountInfo(user?.address);
-
-  if (!accountInfo) {
-    return <AssetInfoLoading />;
-  }
-
-  return <Balances accountInfo={accountInfo} />;
+  useSubscribeAccount();
+  return <AccountBalances />;
 }
 
 function KintAssetInfo() {
