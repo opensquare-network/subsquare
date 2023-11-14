@@ -76,12 +76,11 @@ export async function fetchActiveProposalsProps(summary = {}) {
   // treasury
   const treasuryMenu = getTreasuryMenu(summary);
   const hasTreasury = !treasuryMenu.excludeToChains.includes(CHAIN);
-  const treasuryMenuItems = treasuryMenu.items
-    .filter((m) => !m.excludeToChains?.includes(CHAIN))
-    .filter((m) => m.activeCount);
-  const firstTreasuryMenuItem = treasuryMenuItems[0];
   if (hasTreasury) {
-    activeProposalsData.treasury = {};
+    const treasuryMenuItems = treasuryMenu.items
+      .filter((m) => !m.excludeToChains?.includes(CHAIN))
+      .filter((m) => m.activeCount);
+    const firstTreasuryMenuItem = treasuryMenuItems[0];
     const initDataApiMap = {
       proposals: "overview/treasury-proposals",
       bounties: "overview/bounties",
@@ -90,6 +89,7 @@ export async function fetchActiveProposalsProps(summary = {}) {
     };
     const initDataApi = initDataApiMap[firstTreasuryMenuItem.value];
     if (initDataApi) {
+      activeProposalsData.treasury = {};
       activeProposalsData.treasury[firstTreasuryMenuItem.value] = await fetcher(
         initDataApi,
       );
