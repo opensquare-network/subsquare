@@ -1,6 +1,10 @@
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
 import {
+  getAllianceMenu,
+  Names as allianceNames,
+} from "next-common/utils/consts/menu/alliance";
+import {
   getCouncilMenu,
   Names as councilNames,
 } from "next-common/utils/consts/menu/council";
@@ -113,9 +117,16 @@ export async function fetchActiveProposalsProps() {
     ] = await fetcher("overview/financial-motions");
   }
 
+  // alliance
+  const allianceMenu = getAllianceMenu();
+  const hasAlliance = !allianceMenu.excludeToChains.includes(CHAIN);
+  if (hasAlliance) {
+    activeProposalsData[allianceNames.alliance] = {};
+    activeProposalsData[allianceNames.alliance][allianceNames.allianceMotions] =
+      await fetcher("overview/alliance-motions");
+  }
+
   /* await Promise.all([
-    nextApi.fetch("overview/alliance-motions"),
-    nextApi.fetch("overview/alliance-announcements"),
     nextApi.fetch("overview/advisory-motions"),
     nextApi.fetch("overview/moon-council"),
     nextApi.fetch("overview/open-tc-motion"),
