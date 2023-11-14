@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getTypeDef } from "@polkadot/types";
 import Select from "next-common/components/select";
 import useApi from "next-common/utils/hooks/useApi";
@@ -33,11 +33,15 @@ export default function EnumParam({ def }) {
     return getOptions(api?.registry, def);
   }, [api, def]);
 
-  const [enumType, setEnumType] = useState(options?.[0]?.value);
+  const [enumType, setEnumType] = useState();
+  useEffect(() => {
+    setEnumType(options?.[0]?.value);
+  }, [options]);
+
   const subType = (subTypes || []).find((item) => item.name === enumType);
 
   return (
-    <div>
+    <div className="flex flex-col gap-[8px]">
       <Select
         options={options}
         value={enumType}

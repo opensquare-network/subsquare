@@ -9,6 +9,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import EnumParam from "./enumParam";
 import StructParam from "./structParam";
 import NullParam from "./nullParam";
+import VectorParam from "./vectorParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -63,7 +64,7 @@ const componentDef = [
   { c: TextParam, t: ["String", "Text"] },
   { c: StructParam, t: ["Struct"] },
   { c: StructParam, t: ["Tuple"] },
-  { c: TextParam, t: ["Vec", "BTreeSet"] },
+  { c: VectorParam, t: ["Vec", "BTreeSet"] },
   { c: TextParam, t: ["VecFixed"] },
   { c: TextParam, t: ["Vote"] },
   { c: TextParam, t: ["VoteThreshold"] },
