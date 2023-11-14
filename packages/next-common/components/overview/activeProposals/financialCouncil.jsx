@@ -3,6 +3,11 @@ import {
   getFinancialCouncilMenu,
   Names,
 } from "next-common/utils/consts/menu/financialCouncil";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+} from "./columns/common";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {
   [Names.financialMotions]: {
@@ -31,6 +36,10 @@ export function getActiveProposalFinancialCouncil({
           ...options.api,
           initData: activeProposals[Names.financialCouncil]?.[item.value],
         },
+        columns: [
+          getProposalPostTitleColumn(),
+          getStatusTagColumn({ type: businessCategory.financialMotions }),
+        ],
       };
     });
 
