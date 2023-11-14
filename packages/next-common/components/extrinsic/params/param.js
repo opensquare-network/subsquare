@@ -21,6 +21,9 @@ import OptionParam from "./optionParam";
 import VoteParam from "./voteParam";
 import VoteThresholdParam from "./voteThresholdParam";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
+import AccountId20Param from "./accountId20Param";
+import AccountId32Param from "./accountId32Param";
+import VectorFixedParam from "./vectorFixedParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -67,7 +70,7 @@ const componentDef = [
   { c: StructParam, t: ["Struct"] },
   { c: StructParam, t: ["Tuple"] },
   { c: VectorParam, t: ["Vec", "BTreeSet"] },
-  { c: TextParam, t: ["VecFixed"] },
+  { c: VectorFixedParam, t: ["VecFixed"] },
   { c: VoteParam, t: ["Vote"] },
   { c: VoteThresholdParam, t: ["VoteThreshold"] },
   { c: TextParam, t: ["Unknown"] },
@@ -125,14 +128,18 @@ function fromDef({ displayName, info, lookupName, sub, type }) {
 }
 
 function findComponent({ registry, def }) {
+  if (!registry || !def) {
+    return NullParam;
+  }
+
   if (["AccountId20", "AccountId32"].includes(def.type)) {
     const defType = `AccountId${registry.createType("AccountId").length}`;
 
     if (def.type !== defType) {
       if (def.type === "AccountId20") {
-        return TextParam;
+        return AccountId20Param;
       } else {
-        return TextParam;
+        return AccountId32Param;
       }
     }
   }
@@ -140,7 +147,11 @@ function findComponent({ registry, def }) {
   const findOne = (type) => (type ? components[type] : null);
 
   const type = fromDef(def);
-  let Component = findOne(def.lookupName) || findOne(def.type) || findOne(type);
+  let Component =
+    findOne(def.lookupName) ||
+    findOne(def.typeName) ||
+    findOne(def.type) ||
+    findOne(type);
 
   if (!Component) {
     try {
