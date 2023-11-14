@@ -31,7 +31,7 @@ async function fetcher(url) {
   return {};
 }
 
-export async function fetchActiveProposalsProps() {
+export async function fetchActiveProposalsProps(summary = {}) {
   const chainSettings = getChainSettings(CHAIN);
 
   const activeProposalsData = {};
@@ -74,11 +74,11 @@ export async function fetchActiveProposalsProps() {
   }
 
   // treasury
-  const treasuryMenu = getTreasuryMenu();
+  const treasuryMenu = getTreasuryMenu(summary);
   const hasTreasury = !treasuryMenu.excludeToChains.includes(CHAIN);
-  const treasuryMenuItems = treasuryMenu.items.filter(
-    (m) => !m.excludeToChains?.includes(CHAIN),
-  );
+  const treasuryMenuItems = treasuryMenu.items
+    .filter((m) => !m.excludeToChains?.includes(CHAIN))
+    .filter((m) => m.activeCount);
   const firstTreasuryMenuItem = treasuryMenuItems[0];
   if (hasTreasury) {
     activeProposalsData.treasury = {};
@@ -111,8 +111,9 @@ export async function fetchActiveProposalsProps() {
   const hasTechComm = chainSettings.hasTechComm !== false;
   if (hasTechComm) {
     activeProposalsData[tcNames.techComm] = {};
-    activeProposalsData[tcNames.techComm][tcNames.techCommProposals] =
-      await fetcher("overview/tc-motions");
+    activeProposalsData[tcNames.techComm].techCommProposals = await fetcher(
+      "overview/tc-motions",
+    );
   }
 
   // financial council

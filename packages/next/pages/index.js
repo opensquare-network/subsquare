@@ -278,7 +278,7 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
 export const getServerSideProps = withCommonProps(async () => {
   const { result } = await nextApi.fetch("overview");
   const tracksProps = await fetchOpenGovTracksProps();
-  const activeProposals = await fetchActiveProposalsProps();
+  const activeProposals = await fetchActiveProposalsProps(tracksProps.summary);
 
   return {
     props: {
