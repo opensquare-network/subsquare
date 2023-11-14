@@ -1,6 +1,11 @@
 import { CHAIN } from "next-common/utils/constants";
 import { getCouncilMenu, Names } from "next-common/utils/consts/menu/council";
 import isMoonChain from "next-common/utils/isMoonChain";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+} from "./columns/common";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {
   [Names.council]: {
@@ -26,6 +31,10 @@ export function getActiveProposalCouncil({ summary, activeProposals }) {
           ...options.api,
           initData: activeProposals[Names.council]?.[item.value],
         },
+        columns: [
+          getProposalPostTitleColumn(),
+          getStatusTagColumn({ category: businessCategory.councilMotions }),
+        ],
       };
     });
 
