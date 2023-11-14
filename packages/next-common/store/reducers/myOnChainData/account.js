@@ -35,7 +35,7 @@ export const accountTotalBalanceSelector = createSelector(
   },
 );
 
-export const accountTransferableBalanceSelector = createSelector(
+export const accountTransferrableBalanceSelector = createSelector(
   accountInfoSelector,
   (info) => {
     if (!info) {
