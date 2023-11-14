@@ -86,10 +86,13 @@ export async function fetchActiveProposalsProps() {
   }
 
   // technical committee
-  activeProposalsData.technicalCommittee = {};
-  activeProposalsData.technicalCommittee.proposals = await fetcher(
-    "overview/tc-motions",
-  );
+  const hasTechComm = chainSettings.hasTechComm !== false;
+  if (hasTechComm) {
+    activeProposalsData.technicalCommittee = {};
+    activeProposalsData.technicalCommittee.proposals = await fetcher(
+      "overview/tc-motions",
+    );
+  }
 
   /* await Promise.all([
     nextApi.fetch("overview/financial-motions"),

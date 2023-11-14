@@ -8,6 +8,7 @@ import { getActiveProposalDemocracy } from "./democracy";
 import { getActiveProposalTreasury } from "./treasury";
 import { getActiveDiscussions } from "./discussions";
 import { getActiveProposalCouncil } from "./council";
+import { getActiveProposalsTechComm } from "./tc";
 
 export default function ActiveProposals() {
   const chain = useChain();
@@ -24,6 +25,7 @@ export default function ActiveProposals() {
   const democracy = getActiveProposalDemocracy({ summary, activeProposals });
   const treasury = getActiveProposalTreasury({ summary, activeProposals });
   const council = getActiveProposalCouncil({ summary, activeProposals });
+  const tc = getActiveProposalsTechComm({ summary, activeProposals });
 
   const items = [
     hasDiscussions && discussions,
@@ -32,6 +34,7 @@ export default function ActiveProposals() {
     democracy,
     treasury,
     council,
+    tc,
   ]
     .filter(Boolean)
     .filter((item) => !item.excludeToChains?.includes?.(chain));
