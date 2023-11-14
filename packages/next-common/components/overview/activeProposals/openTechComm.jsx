@@ -3,6 +3,11 @@ import {
   getOpenTechCommMenu,
   Names,
 } from "next-common/utils/consts/menu/openTechCommittee";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+} from "./columns/common";
+import businessCategory from "next-common/utils/consts/business/category";
 
 const itemOptions = {
   [Names.openTechCommitteeProposals]: {
@@ -28,6 +33,12 @@ export function getActiveProposalOpenTechComm({ summary, activeProposals }) {
           ...options.api,
           initData: activeProposals[Names.openTechCommittee]?.[item.value],
         },
+        columns: [
+          getProposalPostTitleColumn(),
+          getStatusTagColumn({
+            category: businessCategory.openTechCommitteeProposals,
+          }),
+        ],
       };
     });
 
