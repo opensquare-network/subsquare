@@ -70,6 +70,7 @@ export default function MethodSelect({
       onChange={(item) => setMethodName(item.value)}
       maxDisplayItem={5}
       itemHeight={56}
+      search
     />
   );
 }

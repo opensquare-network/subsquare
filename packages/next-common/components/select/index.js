@@ -6,6 +6,14 @@ import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { ArrowDown } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { OptionsWrapper } from "./styled";
+import Divider from "../styled/layout/divider";
+
+const SearchInput = styled.input`
+  width: 100%;
+  height: 32px;
+  outline: none;
+  padding: 10px 16px;
+`;
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
@@ -46,10 +54,23 @@ function Select({
   className = "",
   small = false,
   itemHeight,
+  search = false,
 }) {
   const ref = useRef();
+  const [searchText, setSearchText] = useState("");
   const [showOptions, setShowOptions] = useState(false);
   useOnClickOutside(ref, () => setShowOptions(false));
+
+  const filteredOptions = useMemo(() => {
+    if (!search || !searchText) {
+      return options;
+    }
+    return options.filter((option) =>
+      (option.text || option.value)
+        .toLowerCase()
+        .includes(searchText.toLowerCase()),
+    );
+  }, [options, search, searchText]);
 
   const theItemHeight = itemHeight || (!small ? 40 : 32);
 
@@ -57,13 +78,13 @@ function Select({
     if (disabled) {
       return;
     }
-
+    setSearchText("");
     setShowOptions(!showOptions);
   };
 
   const displayValue = useMemo(
-    () => options.find((option) => option.value === value)?.label,
-    [options, value],
+    () => filteredOptions.find((option) => option.value === value)?.label,
+    [filteredOptions, value],
   );
 
   return (
@@ -92,7 +113,17 @@ function Select({
           itemHeight={theItemHeight}
           maxDisplayItem={maxDisplayItem}
         >
-          {options.map((option) => (
+          {search && (
+            <>
+              <SearchInput
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+              />
+              <Divider style={{ margin: "8px 0" }} />
+            </>
+          )}
+          {filteredOptions.map((option) => (
             <Option
               key={option.value}
               active={value === option.value}
@@ -102,6 +133,11 @@ function Select({
               {option.label}
             </Option>
           ))}
+          {filteredOptions.length === 0 && (
+            <div className="text12Medium text-textTertiary text-center px-[16px] py-[10px]">
+              No results
+            </div>
+          )}
         </OptionsWrapper>
       )}
     </SelectWrapper>

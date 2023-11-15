@@ -24,6 +24,7 @@ import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import AccountId20Param from "./accountId20Param";
 import AccountId32Param from "./accountId32Param";
 import VectorFixedParam from "./vectorFixedParam";
+import BoolParam from "./boolParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -50,7 +51,7 @@ const componentDef = [
     t: ["AccountIndex", "u8", "u16", "u32", "u64", "u128", "u256"],
   },
   { c: BalanceParam, t: ["Amount", "Balance", "BalanceOf"] },
-  { c: TextParam, t: ["bool"] },
+  { c: BoolParam, t: ["bool"] },
   { c: BytesParam, t: ["Bytes", "Vec<u8>"] },
   { c: CallParam, t: ["Call", "Proposal", "RuntimeCall"] },
   { c: TextParam, t: ["PalletAllianceCid"] },

@@ -24,6 +24,7 @@ export default function SectionSelect({ sectionName, setSectionName }) {
       options={options}
       onChange={(item) => setSectionName(item.value)}
       maxDisplayItem={5}
+      search
     />
   );
 }
