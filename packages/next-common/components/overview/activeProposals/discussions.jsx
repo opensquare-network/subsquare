@@ -23,31 +23,39 @@ const lastActivityColumn = {
 export function getActiveProposalDiscussions({ activeProposals }) {
   const chainSettings = getChainSettings(CHAIN);
   const subsquare = activeProposals.discussions?.subsquare;
+  const polkassembly = activeProposals.discussions?.polkassembly;
+  const activeCount = subsquare?.total + polkassembly?.total || 0;
 
   const items = [
     {
+      lazy: false,
       value: "subsquare",
       name: "Subsquare",
       api: {
         path: "overview/discussions",
-        initData: activeProposals.discussions?.subsquare,
+        initData: subsquare,
       },
       activeCount: subsquare?.total,
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
       columns: [getProposalPostTitleColumn(), lastActivityColumn],
     },
     chainSettings.hasPolkassemblyDiscussions && {
+      lazy: false,
       value: "polkassembly",
       name: "Polkassembly",
-      activeCount: subsquare?.total,
+      api: {
+        path: "polkassembly-discussions",
+        initData: polkassembly,
+      },
+      activeCount: polkassembly?.total,
       formatter: (item) => normalizePolkassemblyDiscussionListItem(CHAIN, item),
-      columns: [getProposalPostTitleColumn()],
+      columns: [getProposalPostTitleColumn(), lastActivityColumn],
     },
   ].filter(Boolean);
 
   return {
     ...discussionsMenu,
-    activeCount: subsquare?.total,
+    activeCount,
     items,
   };
 }

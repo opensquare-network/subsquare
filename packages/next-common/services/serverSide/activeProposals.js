@@ -49,8 +49,9 @@ export async function fetchActiveProposalsProps(summary = {}) {
     );
   }
   if (chainSettings.hasPolkassemblyDiscussions) {
-    // TODO
-    // activeProposalsData.discussions.polkassembly = await fetcher("overview/discussions");
+    activeProposalsData.discussions.polkassembly = await fetcher(
+      "polkassembly-discussions",
+    );
   }
 
   // referenda
