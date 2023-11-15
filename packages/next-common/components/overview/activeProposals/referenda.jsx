@@ -8,6 +8,7 @@ import {
   getTrackColumn,
   getVoteSummaryColumn,
 } from "./columns/common";
+import { overviewApi } from "next-common/services/url";
 
 export function getActiveProposalReferenda({ tracks, activeProposals }) {
   const menu = getReferendaMenu(tracks);
@@ -16,7 +17,7 @@ export function getActiveProposalReferenda({ tracks, activeProposals }) {
     const track = item.value;
 
     const api = {
-      path: "overview/referenda",
+      path: overviewApi.referenda,
       params: {},
       // data from server side for SSR
       initData: null,

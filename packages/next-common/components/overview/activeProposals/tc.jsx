@@ -6,11 +6,12 @@ import {
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
+import { overviewApi } from "next-common/services/url";
 
 const itemOptions = {
   techCommProposals: {
     api: {
-      path: "overview/tc-motions",
+      path: overviewApi.tcMotions,
     },
     formatter: (data) => normalizeTechCommMotionListItem(CHAIN, data),
     category: businessCategory.tcProposals,

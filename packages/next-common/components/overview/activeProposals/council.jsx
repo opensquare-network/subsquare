@@ -1,16 +1,16 @@
 import { CHAIN } from "next-common/utils/constants";
 import { getCouncilMenu, Names } from "next-common/utils/consts/menu/council";
-import isMoonChain from "next-common/utils/isMoonChain";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
+import { overviewApi } from "next-common/services/url";
 
 const itemOptions = {
   motions: {
     api: {
-      path: isMoonChain() ? "overview/moon-council" : "overview/motions",
+      path: overviewApi.councilMotions,
     },
   },
 };

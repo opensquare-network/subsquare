@@ -22,6 +22,7 @@ import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import { Names as treasuryCouncilNames } from "next-common/utils/consts/menu/treasuryCouncil";
 import getChainSettings from "next-common/utils/consts/settings";
 import isMoonChain from "next-common/utils/isMoonChain";
+import { overviewApi } from "../url";
 
 export const activeProposalFetchParams = {
   pageSize: 10,
@@ -45,37 +46,37 @@ export async function fetchActiveProposalsProps(summary = {}) {
   activeProposalsData.discussions = {};
   if (hasDiscussions) {
     activeProposalsData.discussions.subsquare = await fetcher(
-      "overview/discussions",
+      overviewApi.discussions,
     );
   }
   if (chainSettings.hasPolkassemblyDiscussions) {
     activeProposalsData.discussions.polkassembly = await fetcher(
-      "polkassembly-discussions",
+      overviewApi.polkassemblyDiscussions,
     );
   }
 
   // referenda
   if (chainSettings.hasReferenda) {
-    activeProposalsData.referenda = await fetcher("overview/referenda");
+    activeProposalsData.referenda = await fetcher(overviewApi.referenda);
   }
 
   // fellowship
   if (chainSettings.hasFellowship) {
-    activeProposalsData.fellowship = await fetcher("overview/fellowship");
+    activeProposalsData.fellowship = await fetcher(overviewApi.fellowship);
   }
 
   // democracy
   if (chainSettings.hasDemocracy !== false) {
     activeProposalsData.democracy = {};
     activeProposalsData.democracy.referenda = await fetcher(
-      "overview/democracy-referenda",
+      overviewApi.democracyReferenda,
     );
-    /* activeProposalsData.democracy.publicProposals = await fetcher(
-      "overview/public-proposals",
+    activeProposalsData.democracy.publicProposals = await fetcher(
+      overviewApi.democracyPublicProposals,
     );
     activeProposalsData.democracy.externalProposals = await fetcher(
-      "overview/externals",
-    ); */
+      overviewApi.democracyExternalProposals,
+    );
   }
 
   // treasury
@@ -88,10 +89,10 @@ export async function fetchActiveProposalsProps(summary = {}) {
     const firstTreasuryMenuItem = treasuryMenuItems[0];
     if (firstTreasuryMenuItem) {
       const initDataApiMap = {
-        proposals: "overview/treasury-proposals",
-        bounties: "overview/bounties",
-        "child-bounties": "overview/child-bounties",
-        tips: "overview/tips",
+        proposals: overviewApi.treasuryProposals,
+        bounties: overviewApi.treasuryBounties,
+        "child-bounties": overviewApi.treasuryChildBounties,
+        tips: overviewApi.treasuryTips,
       };
       const initDataApi = initDataApiMap[firstTreasuryMenuItem.value];
       if (initDataApi) {
@@ -108,7 +109,7 @@ export async function fetchActiveProposalsProps(summary = {}) {
   if (hasCouncil) {
     activeProposalsData[councilNames.council] = {};
     activeProposalsData[councilNames.council].motions = await fetcher(
-      isMoonChain() ? "overview/moon-council" : "overview/motions",
+      overviewApi.councilMotions,
     );
   }
 
@@ -117,7 +118,7 @@ export async function fetchActiveProposalsProps(summary = {}) {
   if (hasTechComm) {
     activeProposalsData[tcNames.techComm] = {};
     activeProposalsData[tcNames.techComm].techCommProposals = await fetcher(
-      "overview/tc-motions",
+      overviewApi.tcMotions,
     );
   }
 
@@ -129,7 +130,7 @@ export async function fetchActiveProposalsProps(summary = {}) {
     activeProposalsData[financialCouncilNames.financialCouncil] = {};
     activeProposalsData[
       financialCouncilNames.financialCouncil
-    ].financialMotions = await fetcher("overview/financial-motions");
+    ].financialMotions = await fetcher(overviewApi.financialMotions);
   }
 
   // alliance
@@ -142,8 +143,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
     const firstAllianceMenuItem = allianceMenuItems[0];
     if (firstAllianceMenuItem) {
       const initDataApiMap = {
-        allianceMotions: "overview/alliance-motions",
-        allianceAnnouncements: "overview/alliance-announcements",
+        allianceMotions: overviewApi.allianceMotions,
+        allianceAnnouncements: overviewApi.allianceAnnouncements,
       };
       const initDataApi = initDataApiMap[firstAllianceMenuItem.value];
       if (initDataApi) {
@@ -163,19 +164,19 @@ export async function fetchActiveProposalsProps(summary = {}) {
     activeProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
     activeProposalsData[
       asAdvisoryCommitteeNames.advisoryCommittee
-    ].advisoryMotions = await fetcher("overview/advisory-motions");
+    ].advisoryMotions = await fetcher(overviewApi.advisoryMotions);
   }
 
   // moonriver
   if (isMoonChain()) {
     activeProposalsData[treasuryCouncilNames.treasuryCouncil] = {};
     activeProposalsData[treasuryCouncilNames.treasuryCouncil].motions =
-      await fetcher("overview/motions");
+      await fetcher(overviewApi.treasuryCouncilMotions);
 
     activeProposalsData[openTechCommNames.openTechCommittee] = {};
     activeProposalsData[
       openTechCommNames.openTechCommittee
-    ].openTechCommitteeProposals = await fetcher("overview/open-tc-motion");
+    ].openTechCommitteeProposals = await fetcher(overviewApi.openTCMotions);
   }
 
   return activeProposalsData;

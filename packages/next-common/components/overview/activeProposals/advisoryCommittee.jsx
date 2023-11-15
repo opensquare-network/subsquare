@@ -8,11 +8,12 @@ import {
   getStatusTagColumn,
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
+import { overviewApi } from "next-common/services/url";
 
 const itemOptions = {
   advisoryMotions: {
     api: {
-      path: "overview/advisory-motions",
+      path: overviewApi.advisoryMotions,
     },
   },
 };

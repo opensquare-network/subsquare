@@ -9,11 +9,12 @@ import {
   getVoteSummaryColumn,
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
+import { overviewApi } from "next-common/services/url";
 
 const itemOptions = {
   referenda: {
     api: {
-      path: "overview/democracy-referenda",
+      path: overviewApi.democracyReferenda,
     },
     formatter(data) {
       return normalizeReferendaListItem(CHAIN, data);
@@ -22,7 +23,7 @@ const itemOptions = {
   },
   democracyProposals: {
     api: {
-      path: "overview/public-proposals",
+      path: overviewApi.democracyPublicProposals,
     },
     formatter(data) {
       return normalizeProposalListItem(CHAIN, data);
@@ -31,7 +32,7 @@ const itemOptions = {
   },
   democracyExternals: {
     api: {
-      path: "overview/externals",
+      path: overviewApi.democracyExternalProposals,
     },
     formatter(data) {
       return normalizeExternalListItem(CHAIN, data);

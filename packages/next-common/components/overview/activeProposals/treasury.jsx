@@ -9,11 +9,12 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
+import { overviewApi } from "next-common/services/url";
 
 const itemOptions = {
   proposals: {
     api: {
-      path: "overview/treasury-proposals",
+      path: overviewApi.treasuryProposals,
     },
     formatter(data) {
       return normalizeTreasuryProposalListItem(CHAIN, data);
@@ -22,7 +23,7 @@ const itemOptions = {
   },
   bounties: {
     api: {
-      path: "overview/bounties",
+      path: overviewApi.treasuryBounties,
     },
     formatter(data) {
       return normalizeBountyListItem(CHAIN, data);
@@ -31,7 +32,7 @@ const itemOptions = {
   },
   "child-bounties": {
     api: {
-      path: "overview/child-bounties",
+      path: overviewApi.treasuryChildBounties,
     },
     formatter(data) {
       return normalizeBountyListItem(CHAIN, data);
@@ -40,7 +41,7 @@ const itemOptions = {
   },
   tips: {
     api: {
-      path: "overview/tips",
+      path: overviewApi.treasuryTips,
     },
     formatter(data) {
       return normalizeTipListItem(CHAIN, data);

@@ -7,6 +7,7 @@ import {
 } from "./columns/common";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
+import { overviewApi } from "next-common/services/url";
 
 export function getActiveProposalFellowship({
   fellowshipTracks,
@@ -18,7 +19,7 @@ export function getActiveProposalFellowship({
     const track = item.value;
 
     const api = {
-      path: "overview/fellowship",
+      path: overviewApi.fellowship,
       params: {},
       // data from server side for SSR
       initData: null,

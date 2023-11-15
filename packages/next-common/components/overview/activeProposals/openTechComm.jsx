@@ -8,11 +8,12 @@ import {
   getStatusTagColumn,
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
+import { overviewApi } from "next-common/services/url";
 
 const itemOptions = {
   openTechCommitteeProposals: {
     api: {
-      path: "overview/open-tc-motions",
+      path: overviewApi.openTCMotions,
     },
   },
 };

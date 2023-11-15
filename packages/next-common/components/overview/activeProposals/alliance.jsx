@@ -7,18 +7,19 @@ import {
 import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allianceMotion";
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 import businessCategory from "next-common/utils/consts/business/category";
+import { overviewApi } from "next-common/services/url";
 
 const itemOptions = {
   allianceMotions: {
     api: {
-      path: "overview/alliance-motions",
+      path: overviewApi.allianceMotions,
     },
     formatter: normalizeAllianceMotion,
     category: businessCategory.allianceMotions,
   },
   allianceAnnouncements: {
     api: {
-      path: "overview/alliance-announcements",
+      path: overviewApi.allianceAnnouncements,
     },
     formatter: normalizeAllianceAnnouncement,
     category: businessCategory.allianceAnnouncements,

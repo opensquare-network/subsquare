@@ -5,6 +5,7 @@ import { CHAIN } from "next-common/utils/constants";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
 import { timeDurationFromNow } from "next-common/utils";
 import getChainSettings from "next-common/utils/consts/settings";
+import { overviewApi } from "next-common/services/url";
 
 const lastActivityColumn = {
   name: "Last Activity",
@@ -32,7 +33,7 @@ export function getActiveProposalDiscussions({ activeProposals }) {
       value: "subsquare",
       name: "Subsquare",
       api: {
-        path: "overview/discussions",
+        path: overviewApi.discussions,
         initData: subsquare,
       },
       activeCount: subsquare?.total,
@@ -44,7 +45,7 @@ export function getActiveProposalDiscussions({ activeProposals }) {
       value: "polkassembly",
       name: "Polkassembly",
       api: {
-        path: "polkassembly-discussions",
+        path: overviewApi.polkassemblyDiscussions,
         initData: polkassembly,
       },
       activeCount: polkassembly?.total,
