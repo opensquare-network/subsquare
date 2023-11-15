@@ -24,7 +24,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import isMoonChain from "next-common/utils/isMoonChain";
 
 export const activeProposalFetchParams = {
-  pageSize: 8,
+  pageSize: 10,
 };
 
 async function fetcher(url) {
