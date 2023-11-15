@@ -156,18 +156,20 @@ function MobileList({ rows = [] }) {
           >
             {title}
             <div className="flex items-center justify-between">
-              <div className="flex">
-                {rest.map((item, idx) => (
-                  <div key={idx} className="flex items-center">
-                    {item}
-                    {idx !== rest.length - 1 && (
-                      <span className="mx-2 text12Medium text-textTertiary">
-                        ·
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
+              {!!rest?.length && (
+                <div className="flex">
+                  {rest.map((item, idx) => (
+                    <div key={idx} className="flex items-center">
+                      {item}
+                      {idx !== rest.length - 1 && (
+                        <span className="mx-2 text12Medium text-textTertiary">
+                          ·
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
               {status}
             </div>
           </div>

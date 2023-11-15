@@ -10,7 +10,13 @@ const lastActivityColumn = {
   name: "Last Activity",
   className: "w-40 text-left",
   cellRender(data) {
-    return data.time && <span>{timeDurationFromNow(data.time)}</span>;
+    return (
+      data.time && (
+        <span className="text14Medium text-textSecondary">
+          {timeDurationFromNow(data.time)}
+        </span>
+      )
+    );
   },
 };
 
