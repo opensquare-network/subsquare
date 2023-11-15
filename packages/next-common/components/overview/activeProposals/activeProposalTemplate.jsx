@@ -104,8 +104,10 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
   }, [api, page, isFirst]);
 
   const rows = result?.items?.map((item) => {
-    const data = formatter(item);
-    return columns.map((col) => col.cellRender?.(data, item, result.items));
+    const formattedItem = formatter(item);
+    return columns.map((col) =>
+      col.cellRender?.(formattedItem, item, result.items),
+    );
   });
 
   return (
