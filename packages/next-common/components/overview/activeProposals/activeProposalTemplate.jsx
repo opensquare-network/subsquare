@@ -56,7 +56,7 @@ export default function ActiveProposalTemplate({
     .filter((m) => m.activeCount)
     .map((m, idx) => {
       return {
-        lazy: idx !== 0,
+        lazy: m.lazy ?? idx !== 0,
         label: m.name,
         activeCount: m.activeCount,
         content: <TableTemplate {...m} />,
