@@ -6,18 +6,24 @@ import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs
 import { timeDurationFromNow } from "next-common/utils";
 import getChainSettings from "next-common/utils/consts/settings";
 import { overviewApi } from "next-common/services/url";
+import { useEffect, useState } from "react";
+
+function Time({ time }) {
+  const [text, setText] = useState("");
+  useEffect(() => setText(time), []);
+
+  return (
+    <span className="text14Medium text-textSecondary">
+      {timeDurationFromNow(text)}
+    </span>
+  );
+}
 
 const lastActivityColumn = {
   name: "Last Activity",
   className: "w-40 text-left",
   cellRender(data) {
-    return (
-      data.time && (
-        <span className="text14Medium text-textSecondary">
-          {timeDurationFromNow(data.time)}
-        </span>
-      )
-    );
+    return data.time && <Time time={data.time} />;
   },
 };
 
