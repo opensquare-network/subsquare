@@ -8,12 +8,15 @@ import {
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
+import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
+import { CHAIN } from "next-common/utils/constants";
 
 const itemOptions = {
   motions: {
     api: {
       path: overviewApi.treasuryCouncilMotions,
     },
+    formatter: (item) => normalizeTreasuryCouncilMotionListItem(CHAIN, item),
   },
 };
 
