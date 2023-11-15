@@ -1,25 +1,27 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useSymbol } from "next-common/context/chain";
 import { setMyAccountInfo } from "next-common/store/reducers/myOnChainData/account";
 
-export default function useSubscribeAccount() {
+export default function useSubKintsugiAccount() {
   const realAddress = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();
+  const symbol = useSymbol();
 
   useEffect(() => {
-    if (!api || !api.query.system?.account) {
+    if (!api || !api.query.tokens?.accounts) {
       return;
     }
 
     let unsub;
-    api.query.system
-      .account(realAddress, (info) => {
-        const free = info.data.free.toString();
-        const reserved = info.data.reserved.toString();
-        const frozen = info.data.frozen.toString();
+    api.query.tokens
+      .accounts(realAddress, { token: symbol }, (info) => {
+        const free = info.free.toString();
+        const reserved = info.reserved.toString();
+        const frozen = info.frozen.toString();
 
         dispatch(
           setMyAccountInfo({

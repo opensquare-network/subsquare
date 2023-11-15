@@ -3,7 +3,7 @@ import {
   accountInfoSelector,
   accountLockedBalanceSelector,
   accountTotalBalanceSelector,
-  accountTransferableBalanceSelector,
+  accountTransferrableBalanceSelector,
   isLoadingAccountInfoSelector,
 } from "next-common/store/reducers/myOnChainData/account";
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
@@ -12,7 +12,7 @@ export default function AccountBalances() {
   const accountInfo = useSelector(accountInfoSelector);
   const isLoading = useSelector(isLoadingAccountInfoSelector);
   const totalBalance = useSelector(accountTotalBalanceSelector);
-  const transferable = useSelector(accountTransferableBalanceSelector);
+  const transferrable = useSelector(accountTransferrableBalanceSelector);
   const locked = useSelector(accountLockedBalanceSelector);
 
   return (
@@ -23,8 +23,8 @@ export default function AccountBalances() {
         isLoading={isLoading}
       />
       <LoadableItem
-        title="Transferable"
-        value={transferable}
+        title="Transferrable"
+        value={transferrable}
         isLoading={isLoading}
       />
       <LoadableItem
