@@ -22,24 +22,25 @@ export function getActiveProposalTechComm({ summary, activeProposals }) {
   const menu = getTechCommMenu(summary);
 
   const items = menu.items
-    ?.filter((item) => item.activeCount)
-    ?.filter((item) => !item.excludeToChains?.includes(CHAIN))
     .map((item) => {
       const options = itemOptions[item.value];
 
-      return {
-        ...item,
-        ...options,
-        api: {
-          ...options.api,
-          initData: activeProposals[Names.techComm]?.[item.value],
-        },
-        columns: [
-          getProposalPostTitleColumn(),
-          getStatusTagColumn({ category: options.category }),
-        ],
-      };
-    });
+      if (options) {
+        return {
+          ...item,
+          ...options,
+          api: {
+            ...options.api,
+            initData: activeProposals[Names.techComm]?.[item.value],
+          },
+          columns: [
+            getProposalPostTitleColumn(),
+            getStatusTagColumn({ category: options.category }),
+          ],
+        };
+      }
+    })
+    .filter(Boolean);
 
   return {
     ...menu,

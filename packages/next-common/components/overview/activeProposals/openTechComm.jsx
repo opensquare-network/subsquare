@@ -1,4 +1,3 @@
-import { CHAIN } from "next-common/utils/constants";
 import {
   getOpenTechCommMenu,
   Names,
@@ -22,26 +21,27 @@ export function getActiveProposalOpenTechComm({ summary, activeProposals }) {
   const menu = getOpenTechCommMenu(summary);
 
   const items = menu.items
-    ?.filter((item) => item.activeCount)
-    ?.filter((item) => !item.excludeToChains?.includes(CHAIN))
     .map((item) => {
       const options = itemOptions[item.value];
 
-      return {
-        ...item,
-        ...options,
-        api: {
-          ...options.api,
-          initData: activeProposals[Names.openTechCommittee]?.[item.value],
-        },
-        columns: [
-          getProposalPostTitleColumn(),
-          getStatusTagColumn({
-            category: businessCategory.openTechCommitteeProposals,
-          }),
-        ],
-      };
-    });
+      if (options) {
+        return {
+          ...item,
+          ...options,
+          api: {
+            ...options.api,
+            initData: activeProposals[Names.openTechCommittee]?.[item.value],
+          },
+          columns: [
+            getProposalPostTitleColumn(),
+            getStatusTagColumn({
+              category: businessCategory.openTechCommitteeProposals,
+            }),
+          ],
+        };
+      }
+    })
+    .filter(Boolean);
 
   return {
     ...menu,

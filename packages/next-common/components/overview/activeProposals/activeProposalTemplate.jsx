@@ -12,6 +12,7 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import last from "lodash.last";
 import isNil from "lodash.isnil";
 import { useUpdateEffect } from "usehooks-ts";
+import { useChain } from "next-common/context/chain";
 
 export default function ActiveProposalTemplate({
   name = "",
@@ -20,6 +21,7 @@ export default function ActiveProposalTemplate({
   activeCount,
   items = [],
 }) {
+  const chain = useChain();
   const hasAllPage = items.some((m) => m.value === "all");
 
   let title = (
@@ -53,7 +55,8 @@ export default function ActiveProposalTemplate({
   }
 
   const tabs = (items || [])
-    .filter((m) => m.activeCount)
+    ?.filter((item) => item.activeCount)
+    ?.filter((item) => !item.excludeToChains?.includes(chain))
     .map((m, idx) => {
       return {
         lazy: m.lazy ?? idx !== 0,

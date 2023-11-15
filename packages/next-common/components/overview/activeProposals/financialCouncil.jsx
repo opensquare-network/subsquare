@@ -1,4 +1,3 @@
-import { CHAIN } from "next-common/utils/constants";
 import {
   getFinancialCouncilMenu,
   Names,
@@ -25,24 +24,25 @@ export function getActiveProposalFinancialCouncil({
   const menu = getFinancialCouncilMenu(summary);
 
   const items = menu.items
-    ?.filter((item) => item.activeCount)
-    ?.filter((item) => !item.excludeToChains?.includes(CHAIN))
     .map((item) => {
       const options = itemOptions[item.value];
 
-      return {
-        ...item,
-        ...options,
-        api: {
-          ...options.api,
-          initData: activeProposals[Names.financialCouncil]?.[item.value],
-        },
-        columns: [
-          getProposalPostTitleColumn(),
-          getStatusTagColumn({ type: businessCategory.financialMotions }),
-        ],
-      };
-    });
+      if (options) {
+        return {
+          ...item,
+          ...options,
+          api: {
+            ...options.api,
+            initData: activeProposals[Names.financialCouncil]?.[item.value],
+          },
+          columns: [
+            getProposalPostTitleColumn(),
+            getStatusTagColumn({ type: businessCategory.financialMotions }),
+          ],
+        };
+      }
+    })
+    .filter(Boolean);
 
   return {
     ...menu,

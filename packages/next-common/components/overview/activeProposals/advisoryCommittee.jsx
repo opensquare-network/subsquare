@@ -1,4 +1,3 @@
-import { CHAIN } from "next-common/utils/constants";
 import {
   getAdvisoryCommitteeMenu,
   Names,
@@ -25,24 +24,25 @@ export function getActiveProposalAdvisoryCommittee({
   const menu = getAdvisoryCommitteeMenu(summary);
 
   const items = menu.items
-    ?.filter((item) => item.activeCount)
-    ?.filter((item) => !item.excludeToChains?.includes(CHAIN))
     .map((item) => {
       const options = itemOptions[item.value];
 
-      return {
-        ...item,
-        ...options,
-        api: {
-          ...options.api,
-          initData: activeProposals[Names.advisoryMotions]?.[item.value],
-        },
-        columns: [
-          getProposalPostTitleColumn(),
-          getStatusTagColumn({ category: businessCategory.advisoryMotions }),
-        ],
-      };
-    });
+      if (options) {
+        return {
+          ...item,
+          ...options,
+          api: {
+            ...options.api,
+            initData: activeProposals[Names.advisoryMotions]?.[item.value],
+          },
+          columns: [
+            getProposalPostTitleColumn(),
+            getStatusTagColumn({ category: businessCategory.advisoryMotions }),
+          ],
+        };
+      }
+    })
+    .filter(Boolean);
 
   return {
     ...menu,
