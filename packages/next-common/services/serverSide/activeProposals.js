@@ -23,8 +23,12 @@ import { Names as treasuryCouncilNames } from "next-common/utils/consts/menu/tre
 import getChainSettings from "next-common/utils/consts/settings";
 import isMoonChain from "next-common/utils/isMoonChain";
 
+export const activeProposalFetchParams = {
+  pageSize: 3,
+};
+
 async function fetcher(url) {
-  const resp = await nextApi.fetch(url);
+  const resp = await nextApi.fetch(url, activeProposalFetchParams);
   if (resp?.result) {
     return resp.result;
   }

@@ -7,6 +7,7 @@ import Link from "next/link";
 import Pagination from "next-common/components/pagination";
 import StyledList from "next-common/components/styledList";
 import nextApi from "next-common/services/nextApi";
+import { activeProposalFetchParams } from "next-common/services/serverSide/activeProposals";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import last from "lodash.last";
 
@@ -75,7 +76,6 @@ export default function ActiveProposalTemplate({
 
 function TableTemplate({ columns, api, formatter = (i) => i }) {
   const [page, setPage] = useState(1);
-  const pageSize = 8;
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(false);
   const { sm } = useScreenSize();
@@ -90,7 +90,7 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
       setLoading(true);
 
       nextApi
-        .fetch(api?.path, { ...api.params, page, pageSize })
+        .fetch(api?.path, { ...api.params, page, ...activeProposalFetchParams })
         .then((resp) => {
           if (resp.result) {
             setResult(resp.result);
@@ -101,7 +101,7 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
           setLoading(false);
         });
     }
-  }, [api, page, pageSize, isFirst]);
+  }, [api, page, isFirst]);
 
   const rows = result?.items?.map((item) => {
     const data = formatter(item);
@@ -129,7 +129,7 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
 
       <Pagination
         page={page}
-        pageSize={pageSize}
+        pageSize={activeProposalFetchParams.pageSize}
         total={result?.total || 0}
         onPageChange={(e, newPage) => {
           e.preventDefault();
