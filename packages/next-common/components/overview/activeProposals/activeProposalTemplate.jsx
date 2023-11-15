@@ -10,6 +10,8 @@ import nextApi from "next-common/services/nextApi";
 import { activeProposalFetchParams } from "next-common/services/serverSide/activeProposals";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import last from "lodash.last";
+import isNil from "lodash.isnil";
+import { useUpdateEffect } from "usehooks-ts";
 
 export default function ActiveProposalTemplate({
   name = "",
@@ -79,13 +81,8 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(false);
   const { sm } = useScreenSize();
-  const [isFirst, setIsFirst] = useState(true);
 
-  useEffect(() => {
-    if (isFirst && page === 1) {
-      return;
-    }
-
+  function fetchData() {
     if (api?.path) {
       setLoading(true);
 
@@ -97,11 +94,20 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
           }
         })
         .finally(() => {
-          setIsFirst(false);
           setLoading(false);
         });
     }
-  }, [api, page, isFirst]);
+  }
+
+  useEffect(() => {
+    if (!isNil(result)) {
+      return;
+    }
+
+    fetchData();
+  }, []);
+
+  useUpdateEffect(fetchData, [page]);
 
   const rows = result?.items?.map((item) => {
     const formattedItem = formatter(item);
