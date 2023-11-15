@@ -11,8 +11,16 @@ import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 
 const nodes = [
   {
-    name: "Vara",
+    name: "Vara1",
+    url: "wss://subscan-archive.vara-network.io/",
+  },
+  {
+    name: "Vara2",
     url: "wss://archive-rpc.vara-network.io/",
+  },
+  {
+    name: "Vara3",
+    url: "wss://archive.vara-network.io/",
   },
 ];
 
