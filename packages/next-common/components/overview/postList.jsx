@@ -8,8 +8,10 @@ export default function OverviewPostList({ overviewData = [] }) {
     return item?.items?.length;
   });
 
+  // TODO: overview, remove this
   const content =
-    allCategoriesCount <= 0 ? (
+    false ??
+    (allCategoriesCount <= 0 ? (
       <EmptyOverview />
     ) : (
       overviewData?.map?.((item) => (
@@ -22,7 +24,7 @@ export default function OverviewPostList({ overviewData = [] }) {
           type={item.type}
         />
       ))
-    );
+    ));
 
   return (
     <div className="space-y-6">
