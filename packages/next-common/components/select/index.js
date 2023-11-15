@@ -66,7 +66,7 @@ function Select({
       return options;
     }
     return options.filter((option) =>
-      (option.text || option.value)
+      (option.text || option.label)
         .toLowerCase()
         .includes(searchText.toLowerCase()),
     );
@@ -82,10 +82,10 @@ function Select({
     setShowOptions(!showOptions);
   };
 
-  const displayValue = useMemo(
-    () => filteredOptions.find((option) => option.value === value)?.label,
-    [filteredOptions, value],
-  );
+  const displayValue = useMemo(() => {
+    const item = filteredOptions.find((option) => option.value === value);
+    return item?.label || item?.text;
+  }, [filteredOptions, value]);
 
   return (
     <SelectWrapper
@@ -130,7 +130,7 @@ function Select({
               onClick={() => onChange(option)}
               height={theItemHeight}
             >
-              {option.label}
+              {option.label || option.text}
             </Option>
           ))}
           {filteredOptions.length === 0 && (

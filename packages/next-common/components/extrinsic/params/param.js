@@ -174,7 +174,7 @@ function findComponent({ registry, def }) {
   return Component || TextParam;
 }
 
-export default function Param({ name, def, indent = false }) {
+export default function Param({ name, def, indent = false, value, setValue }) {
   const api = useApi();
   const registry = api?.registry;
   const Component = findComponent({ registry, def });
@@ -184,7 +184,7 @@ export default function Param({ name, def, indent = false }) {
   }
 
   if (Component === VoteParam) {
-    return <VoteParam def={def} />;
+    return <VoteParam def={def} value={value} setValue={setValue} />;
   }
 
   const content = (
@@ -193,7 +193,7 @@ export default function Param({ name, def, indent = false }) {
         {name && `${name}:`} {def.type}
         {def.typeName && `(${def.typeName})`}
       </span>
-      <Component def={def} />
+      <Component def={def} value={value} setValue={setValue} />
     </>
   );
 

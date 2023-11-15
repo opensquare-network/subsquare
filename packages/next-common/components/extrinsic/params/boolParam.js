@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Select from "next-common/components/select/index.js";
 
@@ -7,9 +7,7 @@ const options = [
   { label: "Yes", value: true },
 ];
 
-export default function BoolParam() {
-  const [value, setValue] = useState(0);
-
+export default function BoolParam({ value, setValue }) {
   return (
     <Select
       options={options}

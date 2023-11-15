@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Select from "next-common/components/select/index.js";
 
@@ -14,8 +14,7 @@ export const textMap = options.reduce((textMap, { text, value }) => {
   return textMap;
 }, {});
 
-export default function VoteThresholdParam() {
-  const [value, setValue] = useState(0);
+export default function VoteThresholdParam({ value, setValue }) {
   return (
     <Select
       options={options}

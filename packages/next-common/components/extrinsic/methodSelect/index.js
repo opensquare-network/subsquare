@@ -22,6 +22,7 @@ function getMethodOptions(api, sectionName) {
 
       return {
         key: `${sectionName}_${value}`,
+        text: `${value}(${inputs})`,
         label: (
           <div className="flex flex-col overflow-hidden">
             <div

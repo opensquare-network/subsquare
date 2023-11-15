@@ -5,7 +5,8 @@ import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import useParamDefs from "./useParamDefs";
 import useApi from "next-common/utils/hooks/useApi";
 import IconButton from "next-common/components/iconButton";
-import Param from "./param";
+import ItemParam from "./itemParam";
+import noop from "lodash.noop";
 
 function getParam([{ name, type }], index) {
   return {
@@ -28,7 +29,7 @@ export function getParams(inputParams, prev, max) {
   return params;
 }
 
-export default function VectorParam({ def }) {
+export default function VectorParam({ def, value = [], setValue = noop }) {
   const api = useApi();
   const registry = api?.registry;
   const inputParams = useParamDefs(registry, def);
@@ -46,6 +47,17 @@ export default function VectorParam({ def }) {
     [],
   );
 
+  const _setValue = useCallback(
+    (index, value) => {
+      setValue((prev) => {
+        const next = [...prev];
+        next[index] = value;
+        return next;
+      });
+    },
+    [setValue],
+  );
+
   return (
     <div className="flex flex-col">
       <IndentPanel className="flex flex-col gap-[8px]">
@@ -57,8 +69,15 @@ export default function VectorParam({ def }) {
             <SubtractIcon size={20} />
           </IconButton>
         </div>
-        {params.map((param) => (
-          <Param key={param.name} name={param?.name} def={param?.type} />
+        {params.map((param, index) => (
+          <ItemParam
+            key={param.name}
+            name={param?.name}
+            def={param?.type}
+            index={index}
+            value={value[index]}
+            setValue={_setValue}
+          />
         ))}
       </IndentPanel>
     </div>

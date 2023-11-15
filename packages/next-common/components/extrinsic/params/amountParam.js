@@ -1,7 +1,12 @@
 import InputNumber from "next-common/components/inputNumber";
-import { useState } from "react";
 
-export default function AmountParam() {
-  const [value, setValue] = useState(0);
-  return <InputNumber value={value} setValue={setValue} min={0} step={1} />;
+export default function AmountParam({ value, setValue }) {
+  return (
+    <InputNumber
+      value={value}
+      setValue={(v) => setValue(parseInt(v))}
+      min={0}
+      step={1}
+    />
+  );
 }

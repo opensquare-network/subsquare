@@ -14,7 +14,7 @@ function IncludeOption({ isOn, setIsOn }) {
   );
 }
 
-export default function OptionParam({ def }) {
+export default function OptionParam({ def, value, setValue }) {
   const [isOn, setIsOn] = useState(true);
   const subType = def?.sub;
 
@@ -24,7 +24,14 @@ export default function OptionParam({ def }) {
         <div className="flex justify-end gap-[8px]">
           <IncludeOption isOn={isOn} setIsOn={setIsOn} />
         </div>
-        {isOn && <Param name={subType?.name} def={subType} />}
+        {isOn && (
+          <Param
+            name={subType?.name}
+            def={subType}
+            value={value}
+            setValue={setValue}
+          />
+        )}
       </IndentPanel>
     </div>
   );

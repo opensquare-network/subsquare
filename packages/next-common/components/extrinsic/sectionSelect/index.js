@@ -10,6 +10,7 @@ function getSectionOptions(api) {
     .filter((name) => Object.keys(api.tx[name]).length)
     .map((name) => ({
       label: <span className="text14Medium">{name}</span>,
+      text: name,
       value: name,
     }));
 }

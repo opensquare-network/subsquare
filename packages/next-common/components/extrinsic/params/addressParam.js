@@ -1,23 +1,13 @@
 import AddressCombo from "next-common/components/addressCombo";
-import {
-  useExtensionAccounts,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
-import { useState } from "react";
+import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 
-export default function AddressParam() {
-  const signerAccount = useSignerAccount();
-  const [targetAddress, setTargetAddress] = useState(signerAccount?.address);
+export default function AddressParam({ value, setValue }) {
   const extensionAccounts = useExtensionAccounts();
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
     name: acc.meta.name,
   }));
   return (
-    <AddressCombo
-      address={targetAddress}
-      setAddress={setTargetAddress}
-      accounts={accounts}
-    />
+    <AddressCombo address={value} setAddress={setValue} accounts={accounts} />
   );
 }

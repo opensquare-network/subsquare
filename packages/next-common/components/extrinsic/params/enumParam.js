@@ -22,7 +22,7 @@ function getOptions(registry, type) {
   };
 }
 
-export default function EnumParam({ def }) {
+export default function EnumParam({ def, value, setValue }) {
   const api = useApi();
 
   const { options, subTypes } = useMemo(() => {
@@ -52,6 +52,8 @@ export default function EnumParam({ def }) {
           name={subType.name}
           def={subType}
           indent={true}
+          value={value}
+          setValue={setValue}
         />
       )}
     </div>

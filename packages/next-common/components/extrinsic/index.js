@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getTypeDef } from "@polkadot/types/create";
 import MethodSelect from "./methodSelect";
 import Params from "./params";
@@ -25,11 +25,16 @@ function getCallState(fn, values = []) {
   };
 }
 
-export default function Extrinsic() {
+export default function Extrinsic({ defaultSectionName, defaultMethodName }) {
   const api = useApi();
-  const [sectionName, setSectionName] = useState("system");
-  const [methodName, setMethodName] = useState("setCode");
+  const [sectionName, setSectionName] = useState(defaultSectionName);
+  const [methodName, setMethodName] = useState(defaultMethodName);
   const [callState, setCallState] = useState();
+  console.log(callState);
+
+  const setValue = useCallback((values) => {
+    setCallState((prev) => ({ ...prev, values }));
+  }, []);
 
   useEffect(() => {
     if (!api) return;
@@ -56,7 +61,12 @@ export default function Extrinsic() {
         methodName={methodName}
         setMethodName={setMethodName}
       />
-      <Params {...callState?.extrinsic} />
+      <Params
+        key={`${sectionName}.${methodName}:params`}
+        params={callState?.extrinsic?.params}
+        value={callState?.values}
+        setValue={setValue}
+      />
     </div>
   );
 }

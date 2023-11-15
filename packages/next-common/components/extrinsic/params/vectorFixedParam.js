@@ -25,7 +25,7 @@ export function getParams(inputParams, prev, max) {
   return params;
 }
 
-export default function VectorFixedParam({ def }) {
+export default function VectorFixedParam({ def, value, setValue }) {
   const api = useApi();
   const registry = api?.registry;
   const inputParams = useParamDefs(registry, def);
@@ -37,7 +37,13 @@ export default function VectorFixedParam({ def }) {
     <div className="flex flex-col">
       <IndentPanel className="flex flex-col gap-[8px]">
         {params.map((param) => (
-          <Param key={param.name} name={param?.name} def={param?.type} />
+          <Param
+            key={param.name}
+            name={param?.name}
+            def={param?.type}
+            value={value}
+            setValue={setValue}
+          />
         ))}
       </IndentPanel>
     </div>
