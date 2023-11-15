@@ -6,12 +6,14 @@ import {
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
+import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 
 const itemOptions = {
   motions: {
     api: {
       path: overviewApi.councilMotions,
     },
+    formatter: (item) => normalizeCouncilMotionListItem(CHAIN, item),
   },
 };
 
