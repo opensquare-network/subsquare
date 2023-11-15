@@ -8,12 +8,15 @@ import {
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
+import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
+import { CHAIN } from "next-common/utils/constants";
 
 const itemOptions = {
   openTechCommitteeProposals: {
     api: {
       path: overviewApi.openTCMotions,
     },
+    formatter: (item) => normalizeOpenTechCommProposalListItem(CHAIN, item),
   },
 };
 
