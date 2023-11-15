@@ -8,12 +8,14 @@ import {
 } from "./columns/common";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
+import { toAdvisoryMotionsListItem } from "next-common/utils/viewfuncs";
 
 const itemOptions = {
   advisoryMotions: {
     api: {
       path: overviewApi.advisoryMotions,
     },
+    formatter: toAdvisoryMotionsListItem,
   },
 };
 
