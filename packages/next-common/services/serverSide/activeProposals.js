@@ -44,16 +44,16 @@ export async function fetchActiveProposalsProps(summary = {}) {
 
   // discussions
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  activeProposalsData.discussions = {};
   if (hasDiscussions) {
+    activeProposalsData.discussions = {};
     activeProposalsData.discussions.subsquare = await fetcher(
       overviewApi.discussions,
     );
-  }
-  if (chainSettings.hasPolkassemblyDiscussions) {
-    activeProposalsData.discussions.polkassembly = await fetcher(
-      overviewApi.polkassemblyDiscussions,
-    );
+    if (chainSettings.hasPolkassemblyDiscussions) {
+      activeProposalsData.discussions.polkassembly = await fetcher(
+        overviewApi.polkassemblyDiscussions,
+      );
+    }
   }
 
   // referenda
