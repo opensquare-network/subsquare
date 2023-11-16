@@ -31,7 +31,7 @@ export function getActiveProposalDiscussions({ activeProposals }) {
   const chainSettings = getChainSettings(CHAIN);
   const subsquare = activeProposals.discussions?.subsquare;
   const polkassembly = activeProposals.discussions?.polkassembly;
-  const activeCount = subsquare?.total + polkassembly?.total || 0;
+  const activeCount = (subsquare?.total || 0) + (polkassembly?.total || 0);
 
   const items = [
     {
