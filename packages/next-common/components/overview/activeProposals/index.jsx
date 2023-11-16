@@ -51,7 +51,6 @@ export default function ActiveProposals() {
   });
 
   const items = [
-    hasDiscussions && discussions,
     chainSettings.hasReferenda && referenda,
     chainSettings.hasFellowship && fellowship,
     democracy,
@@ -63,6 +62,7 @@ export default function ActiveProposals() {
     alliance,
     advisoryCommittee,
     isMoonChain() && openTechComm,
+    hasDiscussions && discussions,
   ]
     .filter(Boolean)
     .filter((item) => !item.excludeToChains?.includes?.(chain))
