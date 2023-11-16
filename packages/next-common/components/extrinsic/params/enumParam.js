@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getTypeDef } from "@polkadot/types";
 import Select from "next-common/components/select";
 import useApi from "next-common/utils/hooks/useApi";
@@ -39,12 +39,24 @@ export default function EnumParam({ def, value, setValue }) {
 
   const subType = (subTypes || []).find((item) => item.name === enumType);
 
+  const _setValue = useCallback(
+    (type, v) => {
+      setValue({
+        [type]: v,
+      });
+    },
+    [setValue],
+  );
+
   return (
     <div className="flex flex-col gap-[8px]">
       <Select
         options={options}
         value={enumType}
-        onChange={(o) => setEnumType(o.value)}
+        onChange={(o) => {
+          setEnumType(o.value);
+          _setValue(o.value, undefined);
+        }}
       />
       {subType && (
         <Param
@@ -52,8 +64,8 @@ export default function EnumParam({ def, value, setValue }) {
           name={subType.name}
           def={subType}
           indent={true}
-          value={value}
-          setValue={setValue}
+          value={value?.[enumType]}
+          setValue={(v) => _setValue(enumType, v)}
         />
       )}
     </div>

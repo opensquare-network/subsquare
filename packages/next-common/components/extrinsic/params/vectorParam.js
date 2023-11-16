@@ -48,14 +48,12 @@ export default function VectorParam({ def, value = [], setValue = noop }) {
   );
 
   const _setValue = useCallback(
-    (index, value) => {
-      setValue((prev) => {
-        const next = [...prev];
-        next[index] = value;
-        return next;
-      });
+    (index, v) => {
+      const newValue = [...value];
+      newValue[index] = v;
+      setValue(newValue);
     },
-    [setValue],
+    [value, setValue],
   );
 
   return (

@@ -1,5 +1,5 @@
 import Select from "next-common/components/select";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const EMPTY_VOTE = { aye: true, conviction: 0 };
 
@@ -18,7 +18,7 @@ const optConv = [
   { label: "Locked6x", value: 6 },
 ];
 
-export default function VoteParam() {
+export default function VoteParam({ setValue }) {
   const [vote, setVote] = useState(EMPTY_VOTE);
 
   const onChangeVote = useCallback(
@@ -30,6 +30,10 @@ export default function VoteParam() {
     (conviction) => setVote(({ aye }) => ({ aye, conviction })),
     [],
   );
+
+  useEffect(() => {
+    setValue(vote);
+  }, [vote]);
 
   return (
     <div className="flex flex-col gap-[8px]">

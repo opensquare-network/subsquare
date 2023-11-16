@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import useParamDefs from "./useParamDefs";
 import useApi from "next-common/utils/hooks/useApi";
@@ -33,6 +33,15 @@ export default function VectorFixedParam({ def, value, setValue }) {
     getParams(inputParams, [], inputParams[0].length || 1),
   );
 
+  const _setValue = useCallback(
+    (index, v) => {
+      const newValue = [...value];
+      newValue[index] = v;
+      setValue(newValue);
+    },
+    [value, setValue],
+  );
+
   return (
     <div className="flex flex-col">
       <IndentPanel className="flex flex-col gap-[8px]">
@@ -42,7 +51,7 @@ export default function VectorFixedParam({ def, value, setValue }) {
             name={param?.name}
             def={param?.type}
             value={value}
-            setValue={setValue}
+            setValue={_setValue}
           />
         ))}
       </IndentPanel>

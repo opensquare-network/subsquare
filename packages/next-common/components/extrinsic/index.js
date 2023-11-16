@@ -25,16 +25,45 @@ function getCallState(fn, values = []) {
   };
 }
 
-export default function Extrinsic({ defaultSectionName, defaultMethodName }) {
+export default function Extrinsic({
+  defaultSectionName,
+  defaultMethodName,
+  // value,
+  setValue,
+}) {
   const api = useApi();
   const [sectionName, setSectionName] = useState(defaultSectionName);
   const [methodName, setMethodName] = useState(defaultMethodName);
   const [callState, setCallState] = useState();
   console.log(callState);
 
-  const setValue = useCallback((values) => {
+  const _setValue = useCallback((values) => {
     setCallState((prev) => ({ ...prev, values }));
   }, []);
+
+  useEffect(() => {
+    if (!callState) return;
+
+    const { extrinsic, values } = callState;
+    const { fn } = extrinsic;
+
+    if (fn.meta.fields.length !== values.length) {
+      setValue(undefined);
+      return;
+    }
+
+    for (let i = 0; i < values.length; i++) {
+      if (values[i] !== undefined) {
+        continue;
+      }
+      setValue(undefined);
+      return;
+    }
+
+    const tx = fn(...values);
+
+    setValue(tx);
+  }, [callState, setValue]);
 
   useEffect(() => {
     if (!api) return;
@@ -65,7 +94,7 @@ export default function Extrinsic({ defaultSectionName, defaultMethodName }) {
         key={`${sectionName}.${methodName}:params`}
         params={callState?.extrinsic?.params}
         value={callState?.values}
-        setValue={setValue}
+        setValue={_setValue}
       />
     </div>
   );

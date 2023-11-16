@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import Toggle from "next-common/components/toggle";
 import Param from "./param";
@@ -18,6 +18,17 @@ export default function OptionParam({ def, value, setValue }) {
   const [isOn, setIsOn] = useState(true);
   const subType = def?.sub;
 
+  const _setValue = useCallback(
+    (isOn, v) => {
+      if (!isOn) {
+        setValue(null);
+        return;
+      }
+      setValue(v);
+    },
+    [setValue],
+  );
+
   return (
     <div className="flex flex-col">
       <IndentPanel className="flex flex-col gap-[8px]">
@@ -29,7 +40,7 @@ export default function OptionParam({ def, value, setValue }) {
             name={subType?.name}
             def={subType}
             value={value}
-            setValue={setValue}
+            setValue={_setValue}
           />
         )}
       </IndentPanel>

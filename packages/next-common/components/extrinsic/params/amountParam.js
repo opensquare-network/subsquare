@@ -4,7 +4,7 @@ export default function AmountParam({ value, setValue }) {
   return (
     <InputNumber
       value={value}
-      setValue={(v) => setValue(parseInt(v))}
+      setValue={(v) => setValue(v ? parseInt(v) : undefined)}
       min={0}
       step={1}
     />

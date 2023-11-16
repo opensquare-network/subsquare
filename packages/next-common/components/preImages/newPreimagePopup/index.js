@@ -6,6 +6,10 @@ import PopupLabel from "next-common/components/popup/label";
 import SignerPopup from "next-common/components/signerPopup";
 import ExtrinsicInfo from "./info";
 import useApi from "next-common/utils/hooks/useApi";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -47,26 +51,81 @@ function getState(api, proposal) {
 
 export default function NewPreimagePopup({ onClose }) {
   const api = useApi();
-  const [{ encodedHash, encodedLength }, setState] = useState(EMPTY_PROPOSAL);
+  const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
+    useState(EMPTY_PROPOSAL);
+  const disabled = !api || !notePreimageTx;
+  const dispatch = useDispatch();
+  const isMounted = useIsMounted();
+  const [isLoading, setIsLoading] = useState(false);
 
   const setProposal = useCallback(
-    (proposal) => {
-      if (api) {
+    (tx) => {
+      if (!api) {
         return;
       }
-      setState(getState(api, proposal));
+      const state = getState(api, tx);
+      setState(state);
     },
     [api],
   );
 
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
+
+  const doConfirm = useCallback(
+    async (api, signerAccount) => {
+      if (!api) {
+        return showErrorToast("Chain network is not connected yet");
+      }
+
+      if (!signerAccount) {
+        return showErrorToast("Please login first");
+      }
+
+      const signerAddress = signerAccount.address;
+
+      let tx = notePreimageTx;
+
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
+
+      await sendTx({
+        tx,
+        setLoading: setIsLoading,
+        dispatch,
+        onClose,
+        signerAddress,
+        isMounted,
+      });
+    },
+    [
+      dispatch,
+      isMounted,
+      showErrorToast,
+      onClose,
+      setIsLoading,
+      notePreimageTx,
+    ],
+  );
+
   return (
-    <SignerPopup wide title="New Preimage" onClose={onClose}>
+    <SignerPopup
+      wide
+      title="New Preimage"
+      onClose={onClose}
+      disabled={disabled}
+      isLoading={isLoading}
+      actionCallback={doConfirm}
+    >
       <div>
         <PopupLabel text="Propose" />
         <Extrinsic
           defaultSectionName="system"
           defaultMethodName="setCode"
-          onChange={setProposal}
+          setValue={setProposal}
         />
         <ExtrinsicInfo
           preimageHash={encodedHash}
