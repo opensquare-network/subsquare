@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import Loading from "next-common/components/loading";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -56,7 +57,8 @@ export default function NewPreimagePopup({ onClose }) {
   const disabled = !api || !notePreimageTx;
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isLoading = !api;
 
   const setProposal = useCallback(
     (tx) => {
@@ -94,7 +96,7 @@ export default function NewPreimagePopup({ onClose }) {
 
       await sendTx({
         tx,
-        setLoading: setIsLoading,
+        setLoading: setIsSubmitting,
         dispatch,
         onClose,
         signerAddress,
@@ -106,7 +108,7 @@ export default function NewPreimagePopup({ onClose }) {
       isMounted,
       showErrorToast,
       onClose,
-      setIsLoading,
+      setIsSubmitting,
       notePreimageTx,
     ],
   );
@@ -117,21 +119,27 @@ export default function NewPreimagePopup({ onClose }) {
       title="New Preimage"
       onClose={onClose}
       disabled={disabled}
-      isLoading={isLoading}
+      isLoading={isSubmitting}
       actionCallback={doConfirm}
     >
-      <div>
-        <PopupLabel text="Propose" />
-        <Extrinsic
-          defaultSectionName="system"
-          defaultMethodName="setCode"
-          setValue={setProposal}
-        />
-        <ExtrinsicInfo
-          preimageHash={encodedHash}
-          preimageLength={encodedLength || 0}
-        />
-      </div>
+      {isLoading ? (
+        <div className="flex justify-center">
+          <Loading size={20} />
+        </div>
+      ) : (
+        <div>
+          <PopupLabel text="Propose" />
+          <Extrinsic
+            defaultSectionName="system"
+            defaultMethodName="setCode"
+            setValue={setProposal}
+          />
+          <ExtrinsicInfo
+            preimageHash={encodedHash}
+            preimageLength={encodedLength || 0}
+          />
+        </div>
+      )}
     </SignerPopup>
   );
 }

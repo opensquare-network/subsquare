@@ -2,10 +2,10 @@ import { getTypeDef } from "@polkadot/types";
 import { TypeDefInfo } from "@polkadot/types/types";
 import { isBn } from "@polkadot/util";
 
+import useApi from "next-common/utils/hooks/useApi";
 import AccountParam from "./accountParam";
 import BalanceParam from "./balanceParam";
 import TextParam from "./textParam";
-import useApi from "next-common/utils/hooks/useApi";
 import EnumParam from "./enumParam";
 import StructParam from "./structParam";
 import NullParam from "./nullParam";
