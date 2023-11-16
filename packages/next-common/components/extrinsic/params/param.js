@@ -130,7 +130,7 @@ function fromDef({ displayName, info, lookupName, sub, type }) {
 
 function findComponent({ registry, def }) {
   if (!registry || !def) {
-    return NullParam;
+    return { Component: NullParam, def };
   }
 
   if (["AccountId20", "AccountId32"].includes(def.type)) {
@@ -138,9 +138,9 @@ function findComponent({ registry, def }) {
 
     if (def.type !== defType) {
       if (def.type === "AccountId20") {
-        return AccountId20Param;
+        return { Component: AccountId20Param, def };
       } else {
-        return AccountId32Param;
+        return { Component: AccountId32Param, def };
       }
     }
   }
@@ -162,38 +162,40 @@ function findComponent({ registry, def }) {
       Component = findOne(raw.lookupName || raw.type) || findOne(fromDef(raw));
 
       if (Component) {
-        return Component;
+        return { Component, def: raw };
       } else if (isBn(instance)) {
-        return TextParam;
+        return { Component: TextParam, def: raw };
       }
     } catch (e) {
       console.error(`params: findComponent: ${e.message}`);
     }
   }
 
-  return Component || TextParam;
+  return { Component: Component || TextParam, def };
 }
 
 export default function Param({ name, def, indent = false, value, setValue }) {
   const api = useApi();
   const registry = api?.registry;
-  const Component = findComponent({ registry, def });
+  const { Component, def: _def } = findComponent({ registry, def });
+
+  const newDef = _def || def;
 
   if (Component === NullParam) {
     return null;
   }
 
   if (Component === VoteParam) {
-    return <VoteParam def={def} value={value} setValue={setValue} />;
+    return <VoteParam def={newDef} value={value} setValue={setValue} />;
   }
 
   const content = (
     <>
       <span className="text12Bold whitespace-nowrap overflow-hidden">
-        {name && `${name}:`} {def.type}
-        {def.typeName && `(${def.typeName})`}
+        {name && `${name}:`} {newDef.type}
+        {newDef.typeName && `(${newDef.typeName})`}
       </span>
-      <Component def={def} value={value} setValue={setValue} />
+      <Component def={newDef} value={value} setValue={setValue} />
     </>
   );
 
