@@ -73,8 +73,8 @@ export default function ActiveProposals() {
       <TitleContainer className="mb-4">Active Proposals</TitleContainer>
 
       <div className="space-y-4">
-        {items.map((item, idx) => (
-          <ActiveProposalTemplate key={idx} {...item} />
+        {items.map((item) => (
+          <ActiveProposalTemplate key={item.name} {...item} />
         ))}
       </div>
     </div>
