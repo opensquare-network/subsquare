@@ -25,6 +25,7 @@ import AccountId20Param from "./accountId20Param";
 import AccountId32Param from "./accountId32Param";
 import VectorFixedParam from "./vectorFixedParam";
 import BoolParam from "./boolParam";
+import TupleParam from "./tupleParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -69,7 +70,7 @@ const componentDef = [
   { c: OptionParam, t: ["Option"] },
   { c: TextParam, t: ["String", "Text"] },
   { c: StructParam, t: ["Struct"] },
-  { c: StructParam, t: ["Tuple"] },
+  { c: TupleParam, t: ["Tuple"] },
   { c: VectorParam, t: ["Vec", "BTreeSet"] },
   { c: VectorFixedParam, t: ["VecFixed"] },
   { c: VoteParam, t: ["Vote"] },

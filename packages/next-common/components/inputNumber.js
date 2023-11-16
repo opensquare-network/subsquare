@@ -60,16 +60,25 @@ export default function InputNumber({
 
   function handleUp() {
     if (value >= max) return;
-    setValue((v) => v + step);
+    if (isNaN(value)) {
+      setValue(0);
+      return;
+    }
+    setValue(value + step);
   }
 
   function handleDown() {
     if (value <= min) return;
-    setValue((v) => v - step);
+    if (isNaN(value)) {
+      setValue(0);
+      return;
+    }
+    setValue(value - step);
   }
 
   function onBlur() {
     if (Number(value) < min) setValue(min);
+    if (Number(value) > max) setValue(max);
   }
 
   return (

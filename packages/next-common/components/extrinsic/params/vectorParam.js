@@ -41,19 +41,14 @@ export default function VectorParam({ def, value = [], setValue = noop }) {
     setParams((prev) => getParams(inputParams, prev, count));
   }, [inputParams, count]);
 
+  useEffect(() => {
+    setValue((prev) => prev?.slice(0, count));
+  }, [setValue, count]);
+
   const _rowAdd = useCallback(() => setCount((count) => count + 1), []);
   const _rowRemove = useCallback(
     () => setCount((count) => Math.max(count - 1, 0)),
     [],
-  );
-
-  const _setValue = useCallback(
-    (index, v) => {
-      const newValue = [...value];
-      newValue[index] = v;
-      setValue(newValue);
-    },
-    [value, setValue],
   );
 
   return (
@@ -73,8 +68,8 @@ export default function VectorParam({ def, value = [], setValue = noop }) {
             name={param?.name}
             def={param?.type}
             index={index}
-            value={value[index]}
-            setValue={_setValue}
+            value={value}
+            setValue={setValue}
           />
         ))}
       </IndentPanel>

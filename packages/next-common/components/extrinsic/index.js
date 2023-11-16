@@ -37,8 +37,15 @@ export default function Extrinsic({
   const [callState, setCallState] = useState();
   console.log(callState);
 
-  const _setValue = useCallback((values) => {
-    setCallState((prev) => ({ ...prev, values }));
+  const _setValue = useCallback((valuesOrFunction) => {
+    if (typeof valuesOrFunction === "function") {
+      setCallState((prev) => ({
+        ...prev,
+        values: valuesOrFunction(prev?.values),
+      }));
+      return;
+    }
+    setCallState((prev) => ({ ...prev, values: valuesOrFunction }));
   }, []);
 
   useEffect(() => {

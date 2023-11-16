@@ -1,13 +1,5 @@
 import InputNumber from "next-common/components/inputNumber";
-import { useCallback, useEffect, useState } from "react";
 
-export default function AmountParam({ setValue }) {
-  const [num, setNum] = useState(0);
-  const _setNum = useCallback((v) => {
-    setNum(v);
-  }, []);
-  useEffect(() => {
-    setValue(num);
-  }, [num]);
-  return <InputNumber value={num} setValue={_setNum} min={0} step={1} />;
+export default function AmountParam({ value, setValue }) {
+  return <InputNumber value={value} setValue={setValue} min={0} step={1} />;
 }

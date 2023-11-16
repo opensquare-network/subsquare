@@ -19,7 +19,7 @@ export default function BalanceParam({ value, setValue }) {
           .toString(),
       );
     },
-    [value, setValue, decimals],
+    [setValue, decimals],
   );
   return <BalanceInput value={v} setValue={_setValue} symbol={symbol} />;
 }

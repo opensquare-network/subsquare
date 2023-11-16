@@ -9,14 +9,26 @@ export default function StructParam({ def, value, setValue }) {
   const v = Object.values(value || {});
 
   const _setValue = useCallback(
-    (values) => {
-      const v = {};
-      for (let i = 0; i < params.length; i++) {
-        v[params[i].name] = values[i];
+    (valuesOrFunction) => {
+      if (typeof valuesOrFunction === "function") {
+        setValue((prev) => {
+          const newValue = valuesOrFunction(Object.values(prev || {}));
+          const struct = {};
+          for (let i = 0; i < params.length; i++) {
+            struct[params[i].name] = newValue[i];
+          }
+          return struct;
+        });
+        return;
       }
-      setValue(v);
+
+      const struct = {};
+      for (let i = 0; i < params.length; i++) {
+        struct[params[i].name] = valuesOrFunction[i];
+      }
+      setValue(struct);
     },
-    [setValue],
+    [params, setValue],
   );
 
   return <Params params={params} value={v} setValue={_setValue} />;

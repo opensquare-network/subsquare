@@ -3,6 +3,7 @@ import { getTypeDef } from "@polkadot/types";
 import Select from "next-common/components/select";
 import useApi from "next-common/utils/hooks/useApi";
 import Param from "./param";
+import { useObjectItemState } from "next-common/hooks/useItemState";
 
 function getSubTypes(registry, type) {
   return getTypeDef(registry.createType(type.type).toRawType()).sub;
@@ -33,30 +34,40 @@ export default function EnumParam({ def, value, setValue }) {
   }, [api, def]);
 
   const [enumType, setEnumType] = useState();
-  useEffect(() => {
-    setEnumType(options?.[0]?.value);
-  }, [options?.[0]?.value]);
 
-  const subType = (subTypes || []).find((item) => item.name === enumType);
+  const [itemValue, setItemValue] = useObjectItemState({
+    items: value,
+    itemIndex: enumType,
+    setItems: setValue,
+  });
 
-  const _setValue = useCallback(
-    (type, v) => {
+  const onSelectEnumOption = useCallback(
+    (o) => {
+      if (enumType === o.value) return;
+      setEnumType(o.value);
       setValue({
-        [type]: v,
+        [o.value]: undefined,
       });
     },
-    [setValue],
+    [enumType],
   );
+
+  useEffect(() => {
+    const type = options?.[0]?.value;
+    setEnumType(type);
+    setValue({
+      [type]: undefined,
+    });
+  }, [options?.[0]?.value, setValue]);
+
+  const subType = (subTypes || []).find((item) => item.name === enumType);
 
   return (
     <div className="flex flex-col gap-[8px]">
       <Select
         options={options}
         value={enumType}
-        onChange={(o) => {
-          setEnumType(o.value);
-          _setValue(o.value, undefined);
-        }}
+        onChange={onSelectEnumOption}
         maxDisplayItem={5}
       />
       {subType && (
@@ -65,8 +76,8 @@ export default function EnumParam({ def, value, setValue }) {
           name={subType.name}
           def={subType}
           indent={true}
-          value={value?.[enumType]}
-          setValue={(v) => _setValue(enumType, v)}
+          value={itemValue}
+          setValue={setItemValue}
         />
       )}
     </div>

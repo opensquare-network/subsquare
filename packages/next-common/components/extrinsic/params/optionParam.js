@@ -19,21 +19,37 @@ export default function OptionParam({ def, value, setValue }) {
   const subType = def?.sub;
 
   const _setValue = useCallback(
-    (isOn, v) => {
+    (valuesOrFunction) => {
       if (!isOn) {
         setValue(null);
         return;
       }
-      setValue(v);
+
+      if (typeof valuesOrFunction === "function") {
+        setValue((prev) => valuesOrFunction(prev));
+        return;
+      }
+
+      setValue(valuesOrFunction);
     },
-    [setValue],
+    [isOn, setValue],
   );
+
+  const _setIsOn = useCallback(() => {
+    setIsOn((prev) => {
+      const isOn = !prev;
+      if (!isOn) {
+        setValue(null);
+      }
+      return isOn;
+    });
+  }, [setValue]);
 
   return (
     <div className="flex flex-col">
       <IndentPanel className="flex flex-col gap-[8px]">
         <div className="flex justify-end gap-[8px]">
-          <IncludeOption isOn={isOn} setIsOn={setIsOn} />
+          <IncludeOption isOn={isOn} setIsOn={_setIsOn} />
         </div>
         {isOn && (
           <Param
