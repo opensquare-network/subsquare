@@ -23,6 +23,7 @@ import { Names as treasuryCouncilNames } from "next-common/utils/consts/menu/tre
 import getChainSettings from "next-common/utils/consts/settings";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { overviewApi } from "../url";
+import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 
 export const activeProposalFetchParams = {
   pageSize: 10,
@@ -66,17 +67,28 @@ export async function fetchActiveProposalsProps(summary = {}) {
   }
 
   // democracy
-  if (chainSettings.hasDemocracy !== false) {
-    activeProposalsData.democracy = {};
-    activeProposalsData.democracy.referenda = await fetcher(
-      overviewApi.democracyReferenda,
-    );
-    activeProposalsData.democracy.publicProposals = await fetcher(
-      overviewApi.democracyPublicProposals,
-    );
-    activeProposalsData.democracy.externalProposals = await fetcher(
-      overviewApi.democracyExternalProposals,
-    );
+  const democracyMenu = getDemocracyMenu(summary);
+  const hasDemocracy =
+    chainSettings.hasDemocracy !== false ||
+    !democracyMenu.excludeToChains.includes(CHAIN) ||
+    !democracyMenu.archivedToChains.includes(CHAIN);
+  if (hasDemocracy) {
+    const democracyMenuItems = democracyMenu.items
+      .filter((m) => !m.excludeToChains?.includes(CHAIN))
+      .filter((m) => m.activeCount);
+    const firstDemocracyMenuItem = democracyMenuItems[0];
+    if (firstDemocracyMenuItem) {
+      const initDataApiMap = {
+        referenda: overviewApi.democracyReferenda,
+        democracyProposals: overviewApi.democracyPublicProposals,
+        democracyExternals: overviewApi.democracyExternalProposals,
+      };
+      const initDataApi = initDataApiMap[firstDemocracyMenuItem.value];
+      if (initDataApi) {
+        activeProposalsData.democracy = {};
+        activeProposalsData.democracy.referenda = await fetcher(initDataApi);
+      }
+    }
   }
 
   // treasury

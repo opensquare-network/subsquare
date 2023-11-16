@@ -65,7 +65,8 @@ export default function ActiveProposals() {
     isMoonChain() && openTechComm,
   ]
     .filter(Boolean)
-    .filter((item) => !item.excludeToChains?.includes?.(chain));
+    .filter((item) => !item.excludeToChains?.includes?.(chain))
+    .filter((item) => !item.archivedToChains?.includes?.(chain));
 
   return (
     <div>
