@@ -123,7 +123,7 @@ function KintAssetInfo() {
   return <AccountBalances />;
 }
 
-export default function AccountInfoPanel() {
+export default function AccountInfoPanel({ hideManageAccountLink }) {
   const chain = useChain();
   const isKintsugi = isKintsugiChain(chain);
 
@@ -134,11 +134,13 @@ export default function AccountInfoPanel() {
 
       {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
 
-      <div className="flex items-end justify-end mt-2">
-        <Link href="/account/votes" className="text14Medium text-theme500">
-          Manage Account
-        </Link>
-      </div>
+      {!hideManageAccountLink && (
+        <div className="flex items-end justify-end mt-2">
+          <Link href="/account/votes" className="text14Medium text-theme500">
+            Manage Account
+          </Link>
+        </div>
+      )}
     </NeutralPanel>
   );
 }

@@ -3,7 +3,7 @@ import NotLoginPanel from "./notLoginPanel";
 import AccountInfoPanel from "./accountInfoPanel";
 import NoLinkAddress from "./noLinkAddress";
 
-export default function AccountInfo() {
+export default function AccountInfo({ hideManageAccountLink }) {
   const user = useUser();
 
   if (!user) {
@@ -14,5 +14,5 @@ export default function AccountInfo() {
     return <NoLinkAddress />;
   }
 
-  return <AccountInfoPanel />;
+  return <AccountInfoPanel hideManageAccountLink={hideManageAccountLink} />;
 }
