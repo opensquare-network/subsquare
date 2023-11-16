@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getTypeDef } from "@polkadot/types/create";
 import MethodSelect from "./methodSelect";
 import Params from "./params";
 import SectionSelect from "./sectionSelect";
 import useApi from "next-common/utils/hooks/useApi";
+import { useObjectItemState } from "next-common/hooks/useItemState";
 
 function getParams({ meta }) {
   return meta.args.map(({ name, type, typeName }) => ({
@@ -37,16 +38,11 @@ export default function Extrinsic({
   const [callState, setCallState] = useState();
   console.log(callState);
 
-  const _setValue = useCallback((valuesOrFunction) => {
-    if (typeof valuesOrFunction === "function") {
-      setCallState((prev) => ({
-        ...prev,
-        values: valuesOrFunction(prev?.values),
-      }));
-      return;
-    }
-    setCallState((prev) => ({ ...prev, values: valuesOrFunction }));
-  }, []);
+  const [callValues, setCallValues] = useObjectItemState({
+    items: callState,
+    itemIndex: "values",
+    setItems: setCallState,
+  });
 
   useEffect(() => {
     if (!callState) return;
@@ -90,8 +86,8 @@ export default function Extrinsic({
       <Params
         key={`${sectionName}.${methodName}:params`}
         params={callState?.extrinsic?.params}
-        value={callState?.values}
-        setValue={_setValue}
+        value={callValues}
+        setValue={setCallValues}
       />
     </div>
   );
