@@ -100,6 +100,7 @@ function TableTemplate({
 }) {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
+  const [loading, setLoading] = useState(!api?.initData ?? true);
   const { sm } = useScreenSize();
 
   function fetchData() {
@@ -110,6 +111,9 @@ function TableTemplate({
           if (resp.result) {
             setResult(resp.result);
           }
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }
@@ -148,6 +152,7 @@ function TableTemplate({
               <div className="text14Medium tracking-normal">{col.name}</div>
             ),
           }))}
+          loading={loading}
           rows={rows}
           noDataText="No active proposals"
         />
