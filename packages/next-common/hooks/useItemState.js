@@ -29,12 +29,7 @@ export function useObjectItemState({ items, itemIndex, setItems }) {
     (valueOrFunction) => {
       setItems((items) => {
         const newItems = items ? { ...items } : {};
-        const updatedItems = getUpdatedItems(
-          newItems,
-          itemIndex,
-          valueOrFunction,
-        );
-        return updatedItems;
+        return getUpdatedItems(newItems, itemIndex, valueOrFunction);
       });
     },
     [itemIndex, setItems],

@@ -129,6 +129,18 @@ function fromDef({ displayName, info, lookupName, sub, type }) {
   }
 }
 
+const rawTypeCache = {};
+
+function getRawType(registry, type) {
+  if (rawTypeCache[type]) {
+    return rawTypeCache[type];
+  }
+  const instance = registry.createType(type);
+  const raw = getTypeDef(instance.toRawType());
+  rawTypeCache[type] = { instance, raw };
+  return { instance, raw };
+}
+
 function findComponent({ registry, def }) {
   if (!registry || !def) {
     return { Component: NullParam, def };
@@ -157,8 +169,7 @@ function findComponent({ registry, def }) {
 
   if (!Component) {
     try {
-      const instance = registry.createType(type);
-      const raw = getTypeDef(instance.toRawType());
+      const { instance, raw } = getRawType(registry, type);
 
       Component = findOne(raw.lookupName || raw.type) || findOne(fromDef(raw));
 

@@ -64,12 +64,15 @@ export default function Extrinsic({
     const fn = api.tx[sectionName]?.[methodName];
     if (!fn) return;
 
-    setCallState((prev) =>
-      prev?.extrinsic.fn.section === sectionName &&
-      prev?.extrinsic.fn.method === methodName
-        ? prev
-        : getCallState(fn),
-    );
+    setCallState((prev) => {
+      if (
+        prev?.extrinsic.fn.section === sectionName &&
+        prev?.extrinsic.fn.method === methodName
+      ) {
+        return prev;
+      }
+      return getCallState(fn);
+    });
   }, [api, sectionName, methodName]);
 
   return (
@@ -84,7 +87,6 @@ export default function Extrinsic({
         setMethodName={setMethodName}
       />
       <Params
-        key={`${sectionName}.${methodName}:params`}
         params={callState?.extrinsic?.params}
         value={callValues}
         setValue={setCallValues}

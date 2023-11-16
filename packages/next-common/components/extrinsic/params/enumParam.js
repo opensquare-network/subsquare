@@ -49,7 +49,7 @@ export default function EnumParam({ def, value, setValue }) {
         [o.value]: undefined,
       });
     },
-    [enumType],
+    [enumType, setValue],
   );
 
   useEffect(() => {
