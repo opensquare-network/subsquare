@@ -8,7 +8,7 @@ import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
 import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { addressEllipsis, isKeyRegisteredUser } from "next-common/utils";
+import { addressEllipsis, cn, isKeyRegisteredUser } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
@@ -17,6 +17,7 @@ import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccou
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { isKintsugiChain } from "next-common/utils/chain";
+import Link from "next/link";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -130,7 +131,23 @@ export default function AccountInfoPanel() {
     <NeutralPanel className="p-6">
       <AccountHead />
       <Divider margin={16} />
-      {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
+
+      <div
+        className={cn(
+          "grid grid-cols-4 gap-x-4",
+          "max-md:block max-md:space-y-4",
+        )}
+      >
+        <div className="col-span-3">
+          {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
+        </div>
+
+        <div className="flex items-end justify-end col-span-1">
+          <Link href="/account/votes" className="text14Medium text-theme500">
+            Manage Account
+          </Link>
+        </div>
+      </div>
     </NeutralPanel>
   );
 }
