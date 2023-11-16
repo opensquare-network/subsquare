@@ -15,10 +15,12 @@ import { getActiveProposalAdvisoryCommittee } from "./advisoryCommittee";
 import { getActiveProposalOpenTechComm } from "./openTechComm";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { getActiveProposalTreasuryCouncil } from "./treasuryCouncil";
+import Chains from "next-common/utils/consts/chains";
 
 export default function ActiveProposals() {
   const chain = useChain();
   const chainSettings = useChainSettings();
+  const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
   const { tracks, fellowshipTracks, summary, activeProposals } = usePageProps();
 
@@ -55,9 +57,9 @@ export default function ActiveProposals() {
     chainSettings.hasFellowship && fellowship,
     democracy,
     treasury,
-    council,
+    !isPolkadotChain && council,
     isMoonChain() && treasuryCouncil,
-    tc,
+    !isPolkadotChain && tc,
     financialCouncil,
     alliance,
     advisoryCommittee,
