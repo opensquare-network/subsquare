@@ -54,19 +54,31 @@ export default function ActiveProposalTemplate({
     return <SecondaryCard className="flex">{title}</SecondaryCard>;
   }
 
+  const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = (items || [])
     ?.filter((item) => item.activeCount)
     ?.filter((item) => !item.excludeToChains?.includes(chain))
-    .map((m, idx) => {
+    .map((m) => {
       return {
-        lazy: m.lazy ?? idx !== 0,
         label: m.name,
         activeCount: m.activeCount,
-        content: <TableTemplate {...m} />,
+        content: (
+          <TableTemplate
+            tabTableLoaded={tabTableLoaded}
+            label={m.name}
+            {...m}
+          />
+        ),
       };
     });
 
   const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
+  useEffect(() => {
+    setTabTableLoaded({
+      ...tabTableLoaded,
+      [activeTabLabel]: true,
+    });
+  }, [activeTabLabel]);
 
   return (
     <AccordionCard title={title} defaultOpen>
@@ -79,7 +91,13 @@ export default function ActiveProposalTemplate({
   );
 }
 
-function TableTemplate({ columns, api, formatter = (i) => i }) {
+function TableTemplate({
+  tabTableLoaded = {},
+  label,
+  columns,
+  api,
+  formatter = (i) => i,
+}) {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(false);
@@ -107,8 +125,12 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
       return;
     }
 
+    if (!tabTableLoaded[label]) {
+      return;
+    }
+
     fetchData();
-  }, []);
+  }, [tabTableLoaded]);
 
   useUpdateEffect(fetchData, [page]);
 
