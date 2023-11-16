@@ -1,5 +1,4 @@
 import Avatar from "next-common/components/avatar";
-import { Wrapper } from "./styled";
 import Gravatar from "next-common/components/gravatar";
 import { useUser } from "next-common/context/user";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
@@ -11,11 +10,13 @@ import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { addressEllipsis, isKeyRegisteredUser } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
 import Tooltip from "next-common/components/tooltip";
 import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
 import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
 import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
+import Divider from "next-common/components/styled/layout/divider";
+import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
+import { isKintsugiChain } from "next-common/utils/chain";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -121,22 +122,15 @@ function KintAssetInfo() {
   return <AccountBalances />;
 }
 
-const Divider = tw.div`
-  w-full
-  h-[1px]
-  my-[16px]
-  bg-neutral300
-`;
-
 export default function AccountInfoPanel() {
   const chain = useChain();
-  const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
+  const isKintsugi = isKintsugiChain(chain);
 
   return (
-    <Wrapper className="flex-col">
+    <NeutralPanel className="p-6">
       <AccountHead />
-      <Divider />
+      <Divider margin={16} />
       {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
-    </Wrapper>
+    </NeutralPanel>
   );
 }

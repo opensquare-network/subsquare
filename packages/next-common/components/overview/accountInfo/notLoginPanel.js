@@ -1,13 +1,13 @@
 import { SystemDisconnect } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import { Wrapper } from "./styled";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 
 export default function NotLoginPanel() {
   const { openLoginPopup } = useLoginPopup();
 
   return (
-    <Wrapper>
+    <NeutralPanel className="p-6">
       <div className="flex justify-between gap-[16px] grow max-md:flex-col">
         <div className="flex gap-[12px] grow max-md:flex-col">
           <SystemDisconnect
@@ -26,6 +26,6 @@ export default function NotLoginPanel() {
           <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
         </div>
       </div>
-    </Wrapper>
+    </NeutralPanel>
   );
 }

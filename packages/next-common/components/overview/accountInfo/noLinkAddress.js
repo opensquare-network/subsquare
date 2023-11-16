@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { SystemDisconnect } from "@osn/icons/subsquare";
-import { Wrapper } from "./styled";
 import GhostButton from "next-common/components/buttons/ghostButton";
+import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 
 export default function NoLinkAddress() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export default function NoLinkAddress() {
   };
 
   return (
-    <Wrapper>
+    <NeutralPanel className="p-6">
       <div className="flex justify-between gap-[16px] grow max-md:flex-col">
         <div className="flex gap-[12px] grow max-md:flex-col">
           <SystemDisconnect
@@ -31,6 +31,6 @@ export default function NoLinkAddress() {
           <GhostButton onClick={goLinkAddress}>Linked Address</GhostButton>
         </div>
       </div>
-    </Wrapper>
+    </NeutralPanel>
   );
 }
