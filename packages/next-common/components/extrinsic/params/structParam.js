@@ -10,13 +10,6 @@ export default function StructParam({ def, value, setValue }) {
 
   const _setValue = useCallback(
     (values) => {
-      for (let i = 0; i < values.length; i++) {
-        if (values[i] === undefined) {
-          setValue(undefined);
-          return;
-        }
-      }
-
       const v = {};
       for (let i = 0; i < params.length; i++) {
         v[params[i].name] = values[i];

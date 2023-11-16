@@ -47,22 +47,12 @@ export default function Extrinsic({
     const { extrinsic, values } = callState;
     const { fn } = extrinsic;
 
-    if (fn.meta.fields.length !== values.length) {
+    try {
+      const tx = fn(...values);
+      setValue(tx);
+    } catch (e) {
       setValue(undefined);
-      return;
     }
-
-    for (let i = 0; i < values.length; i++) {
-      if (values[i] !== undefined) {
-        continue;
-      }
-      setValue(undefined);
-      return;
-    }
-
-    const tx = fn(...values);
-
-    setValue(tx);
   }, [callState, setValue]);
 
   useEffect(() => {
