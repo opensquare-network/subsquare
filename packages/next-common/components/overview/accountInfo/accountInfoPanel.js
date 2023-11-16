@@ -8,7 +8,7 @@ import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
 import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { addressEllipsis, cn, isKeyRegisteredUser } from "next-common/utils";
+import { addressEllipsis, isKeyRegisteredUser } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
@@ -132,21 +132,12 @@ export default function AccountInfoPanel() {
       <AccountHead />
       <Divider margin={16} />
 
-      <div
-        className={cn(
-          "grid grid-cols-4 gap-x-4",
-          "max-md:block max-md:space-y-4",
-        )}
-      >
-        <div className="col-span-3">
-          {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
-        </div>
+      {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
 
-        <div className="flex items-end justify-end col-span-1">
-          <Link href="/account/votes" className="text14Medium text-theme500">
-            Manage Account
-          </Link>
-        </div>
+      <div className="flex items-end justify-end mt-2">
+        <Link href="/account/votes" className="text14Medium text-theme500">
+          Manage Account
+        </Link>
       </div>
     </NeutralPanel>
   );
