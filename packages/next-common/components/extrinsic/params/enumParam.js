@@ -35,7 +35,7 @@ export default function EnumParam({ def, value, setValue }) {
   const [enumType, setEnumType] = useState();
   useEffect(() => {
     setEnumType(options?.[0]?.value);
-  }, [options]);
+  }, [options?.[0]?.value]);
 
   const subType = (subTypes || []).find((item) => item.name === enumType);
 
