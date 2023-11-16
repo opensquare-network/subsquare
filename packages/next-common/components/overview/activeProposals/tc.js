@@ -1,9 +1,6 @@
 import { CHAIN } from "next-common/utils/constants";
 import { getTechCommMenu, Names } from "next-common/utils/consts/menu/tc";
-import {
-  getProposalPostTitleColumn,
-  getStatusTagColumn,
-} from "./columns/common";
+import { getProposalPostTitleColumn, getStatusTagColumn } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import { overviewApi } from "next-common/services/url";

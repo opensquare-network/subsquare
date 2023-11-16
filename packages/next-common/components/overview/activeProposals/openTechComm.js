@@ -2,10 +2,7 @@ import {
   getOpenTechCommMenu,
   Names,
 } from "next-common/utils/consts/menu/openTechCommittee";
-import {
-  getProposalPostTitleColumn,
-  getStatusTagColumn,
-} from "./columns/common";
+import { getProposalPostTitleColumn, getStatusTagColumn } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";

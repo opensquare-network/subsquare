@@ -1,5 +1,5 @@
 import { discussionsMenu } from "next-common/utils/consts/menu/common";
-import { getProposalPostTitleColumn } from "./columns/common";
+import { getProposalPostTitleColumn } from "./columns";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { CHAIN } from "next-common/utils/constants";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";

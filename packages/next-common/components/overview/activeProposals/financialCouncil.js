@@ -2,10 +2,7 @@ import {
   getFinancialCouncilMenu,
   Names,
 } from "next-common/utils/consts/menu/financialCouncil";
-import {
-  getProposalPostTitleColumn,
-  getStatusTagColumn,
-} from "./columns/common";
+import { getProposalPostTitleColumn, getStatusTagColumn } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import { toFinancialMotionsListItem } from "next-common/utils/viewfuncs";

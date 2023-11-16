@@ -7,7 +7,7 @@ import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
   getVoteSummaryColumn,
-} from "./columns/common";
+} from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 

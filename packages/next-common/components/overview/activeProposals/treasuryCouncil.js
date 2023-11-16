@@ -2,10 +2,7 @@ import {
   getTreasuryCouncilMenu,
   Names,
 } from "next-common/utils/consts/menu/treasuryCouncil";
-import {
-  getProposalPostTitleColumn,
-  getStatusTagColumn,
-} from "./columns/common";
+import { getProposalPostTitleColumn, getStatusTagColumn } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";

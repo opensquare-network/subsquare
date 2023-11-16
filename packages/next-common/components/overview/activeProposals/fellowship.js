@@ -4,7 +4,7 @@ import {
   getStatusTagColumn,
   getTrackColumn,
   getVoteSummaryColumn,
-} from "./columns/common";
+} from "./columns";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import { overviewApi } from "next-common/services/url";

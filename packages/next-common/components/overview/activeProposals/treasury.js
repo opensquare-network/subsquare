@@ -5,7 +5,7 @@ import {
   getProposalPostTitleColumn,
   getRequestColumn,
   getStatusTagColumn,
-} from "./columns/common";
+} from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";

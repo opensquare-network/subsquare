@@ -7,7 +7,7 @@ import {
   getStatusTagColumn,
   getTrackColumn,
   getVoteSummaryColumn,
-} from "./columns/common";
+} from "./columns";
 import { overviewApi } from "next-common/services/url";
 
 export function getActiveProposalReferenda({ tracks, activeProposals }) {
