@@ -100,22 +100,16 @@ function TableTemplate({
 }) {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
-  const [loading, setLoading] = useState(false);
   const { sm } = useScreenSize();
 
   function fetchData() {
     if (api?.path) {
-      setLoading(true);
-
       nextApi
         .fetch(api?.path, { ...api.params, page, ...activeProposalFetchParams })
         .then((resp) => {
           if (resp.result) {
             setResult(resp.result);
           }
-        })
-        .finally(() => {
-          setLoading(false);
         });
     }
   }
@@ -155,7 +149,6 @@ function TableTemplate({
             ),
           }))}
           rows={rows}
-          loading={loading}
           noDataText="No active proposals"
         />
       )}
