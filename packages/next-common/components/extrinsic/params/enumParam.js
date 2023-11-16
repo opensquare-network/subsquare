@@ -57,6 +57,7 @@ export default function EnumParam({ def, value, setValue }) {
           setEnumType(o.value);
           _setValue(o.value, undefined);
         }}
+        maxDisplayItem={5}
       />
       {subType && (
         <Param
