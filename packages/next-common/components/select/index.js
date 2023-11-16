@@ -109,10 +109,7 @@ function Select({
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper
-          itemHeight={theItemHeight}
-          maxDisplayItem={maxDisplayItem}
-        >
+        <OptionsWrapper>
           {search && (
             <>
               <SearchInput
@@ -123,19 +120,29 @@ function Select({
               <Divider style={{ margin: "8px 0" }} />
             </>
           )}
-          {filteredOptions.map((option) => (
-            <Option
-              key={option.value}
-              active={value === option.value}
-              onClick={() => onChange(option)}
-              height={theItemHeight}
-            >
-              {option.label || option.text}
-            </Option>
-          ))}
-          {filteredOptions.length === 0 && (
+          {filteredOptions.length === 0 ? (
             <div className="text12Medium text-textTertiary text-center px-[16px] py-[10px]">
               No results
+            </div>
+          ) : (
+            <div
+              className={cn(
+                maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
+              )}
+              style={{
+                maxHeight: maxDisplayItem && theItemHeight * maxDisplayItem,
+              }}
+            >
+              {filteredOptions.map((option) => (
+                <Option
+                  key={option.value}
+                  active={value === option.value}
+                  onClick={() => onChange(option)}
+                  height={theItemHeight}
+                >
+                  {option.label || option.text}
+                </Option>
+              ))}
             </div>
           )}
         </OptionsWrapper>
