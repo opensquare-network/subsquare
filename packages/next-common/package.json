@@ -67,6 +67,7 @@
     "react-chartjs-2": "^5.1.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-json-view": "^1.21.3",
     "react-redux": "^8.0.5",
     "react-slider": "^2.0.4",
