@@ -76,6 +76,7 @@ const vara = {
   hasStatescan: false,
   hasSubscan: true,
   hasDotreasury: false,
+  hasTechComm: false,
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,

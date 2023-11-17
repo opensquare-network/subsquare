@@ -9,18 +9,24 @@ export default function Tabs({
   activeTabLabel = "",
   onTabClick = noop,
 }) {
-  const [cached, setCached] = useState({});
+  const [lazyRendered, setLazyRendered] = useState({});
 
   useEffect(() => {
-    if (cached[activeTabLabel]) {
+    if (lazyRendered[activeTabLabel]) {
       return;
     }
 
-    setCached((v) => ({
+    setLazyRendered((v) => ({
       ...v,
       [activeTabLabel]: true,
     }));
   }, [activeTabLabel]);
+
+  useEffect(() => {
+    return () => {
+      setLazyRendered({});
+    };
+  }, []);
 
   return (
     <div>
@@ -35,7 +41,7 @@ export default function Tabs({
       <div className="mt-4">
         {tabs.map(
           (tab, idx) =>
-            cached[tab.label] && (
+            (lazyRendered[tab.label] || !tab.lazy) && (
               <div
                 key={idx}
                 className={cn(
