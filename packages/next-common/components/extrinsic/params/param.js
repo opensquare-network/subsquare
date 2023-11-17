@@ -59,7 +59,7 @@ const componentDef = [
   { c: BytesParam, t: ["Bytes", "Vec<u8>"] },
   { c: CallParam, t: ["Call", "Proposal", "RuntimeCall"] },
   { c: CidParam, t: ["PalletAllianceCid"] },
-  { c: TextParam, t: ["Code"] },
+  { c: BytesParam, t: ["Code"] },
   { c: RawParam, t: ["Raw", "RuntimeSessionKeys", "Keys"] },
   { c: EnumParam, t: ["Enum"] },
   { c: Hash256Param, t: ["Hash", "H256"] },
@@ -207,8 +207,8 @@ export default function Param({ name, def, indent = false, value, setValue }) {
   const content = (
     <>
       <span className="text12Bold whitespace-nowrap overflow-hidden">
-        {name && `${name}:`} {newDef.type}
-        {newDef.typeName && `(${newDef.typeName})`}
+        {name && `${name}:`} {def.type}
+        {def.typeName && ` (${def.typeName})`}
       </span>
       <Component def={newDef} value={value} setValue={setValue} />
     </>
