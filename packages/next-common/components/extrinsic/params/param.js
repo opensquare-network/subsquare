@@ -26,6 +26,9 @@ import AccountId32Param from "./accountId32Param";
 import VectorFixedParam from "./vectorFixedParam";
 import BoolParam from "./boolParam";
 import TupleParam from "./tupleParam";
+import RawParam from "./rawParam";
+import CidParam from "./cidParam";
+import KeyValueParam from "./keyValueParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -55,18 +58,18 @@ const componentDef = [
   { c: BoolParam, t: ["bool"] },
   { c: BytesParam, t: ["Bytes", "Vec<u8>"] },
   { c: CallParam, t: ["Call", "Proposal", "RuntimeCall"] },
-  { c: TextParam, t: ["PalletAllianceCid"] },
+  { c: CidParam, t: ["PalletAllianceCid"] },
   { c: TextParam, t: ["Code"] },
-  { c: TextParam, t: ["Raw", "RuntimeSessionKeys", "Keys"] },
+  { c: RawParam, t: ["Raw", "RuntimeSessionKeys", "Keys"] },
   { c: EnumParam, t: ["Enum"] },
   { c: Hash256Param, t: ["Hash", "H256"] },
   { c: Hash160Param, t: ["H160"] },
   { c: Hash512Param, t: ["H512"] },
-  { c: TextParam, t: ["KeyValue"] },
-  { c: TextParam, t: ["Vec<KeyValue>"] },
+  { c: KeyValueParam, t: ["KeyValue"] },
+  { c: VectorParam, t: ["Vec<KeyValue>"] },
   { c: AmountParam, t: ["Moment", "MomentOf"] },
   { c: NullParam, t: ["Null"] },
-  { c: TextParam, t: ["OpaqueCall"] },
+  { c: CallParam, t: ["OpaqueCall"] },
   { c: OptionParam, t: ["Option"] },
   { c: TextParam, t: ["String", "Text"] },
   { c: StructParam, t: ["Struct"] },
