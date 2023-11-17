@@ -118,6 +118,7 @@ export default function NewPreimagePopup({ onClose }) {
       wide
       title="New Preimage"
       onClose={onClose}
+      maskClosable={false}
       disabled={disabled}
       isLoading={isSubmitting}
       actionCallback={doConfirm}

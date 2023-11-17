@@ -8,6 +8,8 @@ export default function MaybeMetamaskSigner({
   autoCloseAfterLogin,
   title,
   Component,
+  wide,
+  maskClosable,
   ...props
 }) {
   const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
@@ -22,7 +24,12 @@ export default function MaybeMetamaskSigner({
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
     >
-      <Popup onClose={onClose} title={title}>
+      <Popup
+        wide={wide}
+        onClose={onClose}
+        title={title}
+        maskClosable={maskClosable}
+      >
         <Component onClose={onClose} {...props} />
       </Popup>
     </MaybeSignerConnected>
