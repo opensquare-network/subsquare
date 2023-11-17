@@ -13,6 +13,10 @@ const DEFAULT_NODES = [
     url: "wss://hk.p.bifrost-rpc.liebi.com/ws",
   },
   {
+    name: "LiebiEU",
+    url: "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
+  },
+  {
     name: "OnFinality",
     url: "wss://bifrost-polkadot.api.onfinality.io/public-ws",
   },
