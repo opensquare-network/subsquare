@@ -1,10 +1,9 @@
 import TextParam from "./textParam";
 
 import { CID, digest, varint } from "multiformats";
-import { isCodec } from "@polkadot/util";
 
 import { u8aToHex } from "@polkadot/util";
-import { useCallback, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 function fromIpfsCid(cid) {
   try {
@@ -16,7 +15,7 @@ function fromIpfsCid(cid) {
 
     return {
       codec,
-      hash: {
+      hash_: {
         code,
         digest: u8aToHex(digest),
       },
@@ -37,52 +36,40 @@ function toIpfsCid(cid) {
       version,
     } = cid;
 
-    // Since we use parse, encode into a fully-specified bytes to
-    // pass - <varint code> + <varint length> + bytes
-    const bytes = _bytes.toU8a(true);
-    const codeLen = varint.encodingLength(code.toNumber());
+    const bytes = Buffer.from(_bytes.replace(/^0x/, ""), "hex");
+    const codeLen = varint.encodingLength(code);
     const sizeLen = varint.encodingLength(bytes.length);
     const encoded = new Uint8Array(codeLen + sizeLen + bytes.length);
 
-    varint.encodeTo(code.toNumber(), encoded, 0);
+    varint.encodeTo(code, encoded, 0);
     varint.encodeTo(bytes.length, encoded, codeLen);
     encoded.set(bytes, codeLen + sizeLen);
 
-    return CID.create(
-      version.index,
-      codec.toNumber(),
-      digest.decode(encoded),
-    ).toString();
+    return CID.create(version, codec, digest.decode(encoded)).toString();
   } catch (error) {
-    console.error(`toIpfsCid: ${error.message}::`, cid.toHuman());
+    console.error(`toIpfsCid: ${error.message}::`, cid);
 
     return null;
   }
 }
 
 export default function CidParam({ value, setValue }) {
-  const cid = useMemo(() => {
-    if (!value) {
-      return null;
-    }
-    isCodec(value) ? toIpfsCid(value) : null;
-  }, [value]);
+  const [inputCid, setInputCid] = useState("");
+  const cid = useMemo(() => toIpfsCid(value), [value]);
+  console.log(cid, "===", inputCid);
 
-  const _setValue = useCallback(
-    (v) => {
-      if (!v) {
-        setValue(undefined);
-        return;
-      }
-      setValue(fromIpfsCid(v));
-    },
-    [setValue],
-  );
+  useEffect(() => {
+    if (!inputCid) {
+      setValue(undefined);
+      return;
+    }
+    setValue(fromIpfsCid(inputCid));
+  }, [inputCid]);
 
   return (
     <TextParam
-      value={cid ?? ""}
-      setValue={_setValue}
+      value={inputCid}
+      setValue={setInputCid}
       placeholder="IPFS compatible CID"
     />
   );
