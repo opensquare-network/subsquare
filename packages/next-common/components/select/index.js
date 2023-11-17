@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Option from "./option";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
@@ -60,6 +60,17 @@ function Select({
   const [searchText, setSearchText] = useState("");
   const [showOptions, setShowOptions] = useState(false);
   useOnClickOutside(ref, () => setShowOptions(false));
+  const selectedOptionRef = useRef();
+
+  useEffect(() => {
+    if (!showOptions || !selectedOptionRef.current) {
+      return;
+    }
+    selectedOptionRef.current.scrollIntoView({
+      block: "end",
+      inline: "nearest",
+    });
+  }, [showOptions, selectedOptionRef]);
 
   const filteredOptions = useMemo(() => {
     if (!search || !searchText) {
@@ -137,6 +148,7 @@ function Select({
                 <Option
                   key={option.value}
                   active={value === option.value}
+                  ref={value === option.value ? selectedOptionRef : undefined}
                   onClick={() => onChange(option)}
                   height={theItemHeight}
                 >
