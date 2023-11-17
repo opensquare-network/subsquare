@@ -50,7 +50,7 @@ function OpenGovGroupContent() {
           label="R"
           tooltip="Active referenda"
           href="/referenda"
-          value={gov2Referenda.active || 0}
+          value={gov2Referenda?.active || 0}
         />
       )}
       {hasFellowship && (
@@ -58,7 +58,7 @@ function OpenGovGroupContent() {
           label="F"
           tooltip="Active fellowship referenda"
           href="/fellowship"
-          value={fellowshipReferenda.active || 0}
+          value={fellowshipReferenda?.active || 0}
         />
       )}
     </ContentWrapper>
@@ -77,20 +77,20 @@ function DemocracyGroupContent() {
         label="R"
         tooltip="Active democracy referenda"
         href="/democracy/referenda"
-        value={referenda.active || 0}
+        value={referenda?.active || 0}
       />
       <SummaryTypeGroup
         label="P"
         tooltip="Active public proposals"
         href="/democracy/proposals"
-        value={publicProposals.active || 0}
+        value={publicProposals?.active || 0}
       />
       {showExternal && (
         <SummaryTypeGroup
           label="E"
           tooltip="Active external proposals"
           href="/democracy/externals"
-          value={externalProposals.active || 0}
+          value={externalProposals?.active || 0}
         />
       )}
     </ContentWrapper>
@@ -111,14 +111,14 @@ function TreasuryGroupContent() {
         label="P"
         tooltip="Active proposals"
         href="/treasury/proposals"
-        value={treasuryProposals.active || 0}
+        value={treasuryProposals?.active || 0}
       />
       {showTreasuryBounties && (
         <SummaryTypeGroup
           label="B"
           tooltip="Active bounties"
           href="/treasury/bounties"
-          value={bounties.active || 0}
+          value={bounties?.active || 0}
         />
       )}
       {showChildBounties && (
@@ -126,7 +126,7 @@ function TreasuryGroupContent() {
           label="b"
           tooltip="Active child bounties"
           href="/treasury/child-bounties"
-          value={childBounties.active || 0}
+          value={childBounties?.active || 0}
         />
       )}
       {showTips && (
@@ -134,7 +134,7 @@ function TreasuryGroupContent() {
           label="T"
           tooltip="Active tips"
           href="/treasury/tips"
-          value={tips.active || 0}
+          value={tips?.active || 0}
         />
       )}
     </ContentWrapper>
@@ -166,7 +166,7 @@ function CouncilGroupContent() {
           label="P"
           tooltip="Active T.C. proposals"
           href="/techcomm/proposals"
-          value={techCommMotions.active || 0}
+          value={techCommMotions?.active || 0}
         />
       )}
     </ContentWrapper>
