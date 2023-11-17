@@ -38,11 +38,9 @@ export default function BytesParam({ value, setValue }) {
       </div>
       {isUpload ? (
         <FileParam file={file} setFile={setFile}>
-          {(file) => (
-            <span className="px-[16px] py-[8px] text14Medium text-textSecondary italic">
-              {file.name} {formatNumber(file.data.length)} bytes
-            </span>
-          )}
+          <span className="text-textSecondary">
+            {file?.name} {formatNumber(file?.data.length)} bytes
+          </span>
         </FileParam>
       ) : (
         <TextParam

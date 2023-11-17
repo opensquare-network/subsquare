@@ -73,13 +73,9 @@ export default function FileParam({ children, accept, file, setFile }) {
       })}
     >
       <input {...getInputProps()} />
-      {file ? (
-        children(file)
-      ) : (
-        <span className="px-[16px] py-[8px] text14Medium text-textDisabled italic">
-          click to select or drag and drop the file here
-        </span>
-      )}
+      <span className="mx-[16px] my-[8px] text14Medium text-textDisabled italic overflow-hidden">
+        {file ? children : "click to select or drag and drop the file here"}
+      </span>
     </div>
   );
 }
