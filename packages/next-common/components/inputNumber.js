@@ -64,7 +64,7 @@ export default function InputNumber({
       setValue(0);
       return;
     }
-    setValue(value + step);
+    setValue(+value + step);
   }
 
   function handleDown() {
@@ -73,7 +73,7 @@ export default function InputNumber({
       setValue(0);
       return;
     }
-    setValue(value - step);
+    setValue(+value - step);
   }
 
   function onBlur() {
