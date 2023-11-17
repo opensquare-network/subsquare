@@ -30,13 +30,15 @@ export function getActiveProposalReferenda({ tracks, activeProposals }) {
       api.initData = activeProposals.referenda;
     }
 
+    const trackColumn = getTrackColumn({ hrefPrefix: "/referenda/tracks" });
+
     return {
       ...item,
       api,
       formatter: (data) => normalizeGov2ReferendaListItem(data, tracks),
       columns: [
         getReferendumPostTitleColumn(),
-        track === "all" && getTrackColumn({ hrefPrefix: "/referenda/tracks" }),
+        track === "all" ? trackColumn : { className: trackColumn.className },
         track !== "all" && track !== 0 && getRequestColumn(),
         getVoteSummaryColumn({ type: businessCategory.openGovReferenda }),
         getStatusTagColumn({ category: businessCategory.openGovReferenda }),

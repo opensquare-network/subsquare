@@ -2,7 +2,11 @@ import {
   getAdvisoryCommitteeMenu,
   Names,
 } from "next-common/utils/consts/menu/advisoryCouncil";
-import { getProposalPostTitleColumn, getStatusTagColumn } from "./columns";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+  getVoteSummaryColumn,
+} from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import { toAdvisoryMotionsListItem } from "next-common/utils/viewfuncs";
@@ -36,6 +40,8 @@ export function getActiveProposalAdvisoryCommittee({
           },
           columns: [
             getProposalPostTitleColumn(),
+            { className: "w-40" },
+            getVoteSummaryColumn(),
             getStatusTagColumn({ category: businessCategory.advisoryMotions }),
           ],
         };

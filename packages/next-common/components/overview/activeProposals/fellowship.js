@@ -32,6 +32,8 @@ export function getActiveProposalFellowship({
       api.initData = activeProposals.fellowship;
     }
 
+    const trackColumn = getTrackColumn({ hrefPrefix: "/fellowship/tracks" });
+
     return {
       ...item,
       api,
@@ -39,7 +41,7 @@ export function getActiveProposalFellowship({
         normalizeFellowshipReferendaListItem(data, fellowshipTracks),
       columns: [
         getReferendumPostTitleColumn(),
-        track === "all" && getTrackColumn({ hrefPrefix: "/fellowship/tracks" }),
+        track === "all" ? trackColumn : { className: trackColumn.className },
         getVoteSummaryColumn({ type: businessCategory.fellowship }),
         getStatusTagColumn({ category: businessCategory.fellowship }),
       ].filter(Boolean),

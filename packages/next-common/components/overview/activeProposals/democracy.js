@@ -57,10 +57,10 @@ export function getActiveProposalDemocracy({ summary, activeProposals }) {
           },
           columns: [
             getProposalPostTitleColumn(),
-            item.value === "referenda" &&
-              getVoteSummaryColumn({
-                type: businessCategory.democracyReferenda,
-              }),
+            { className: "w-40" },
+            getVoteSummaryColumn({
+              type: businessCategory.democracyReferenda,
+            }),
             getStatusTagColumn({ category: options.category }),
           ].filter(Boolean),
         };

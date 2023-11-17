@@ -1,5 +1,9 @@
 import { discussionsMenu } from "next-common/utils/consts/menu/common";
-import { getProposalPostTitleColumn } from "./columns";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+  getVoteSummaryColumn,
+} from "./columns";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { CHAIN } from "next-common/utils/constants";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
@@ -33,6 +37,13 @@ export function getActiveProposalDiscussions({ activeProposals }) {
   const polkassembly = activeProposals.discussions?.polkassembly;
   const activeCount = (subsquare?.total || 0) + (polkassembly?.total || 0);
 
+  const columns = [
+    getProposalPostTitleColumn(),
+    lastActivityColumn,
+    getVoteSummaryColumn(),
+    { ...getStatusTagColumn(), name: "" },
+  ];
+
   const items = [
     {
       lazy: false,
@@ -44,7 +55,7 @@ export function getActiveProposalDiscussions({ activeProposals }) {
       },
       activeCount: subsquare?.total,
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
-      columns: [getProposalPostTitleColumn(), lastActivityColumn],
+      columns,
     },
     chainSettings.hasPolkassemblyDiscussions && {
       lazy: false,
@@ -56,7 +67,7 @@ export function getActiveProposalDiscussions({ activeProposals }) {
       },
       activeCount: polkassembly?.total,
       formatter: (item) => normalizePolkassemblyDiscussionListItem(CHAIN, item),
-      columns: [getProposalPostTitleColumn(), lastActivityColumn],
+      columns,
     },
   ].filter(Boolean);
 

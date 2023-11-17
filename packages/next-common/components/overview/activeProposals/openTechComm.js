@@ -2,7 +2,11 @@ import {
   getOpenTechCommMenu,
   Names,
 } from "next-common/utils/consts/menu/openTechCommittee";
-import { getProposalPostTitleColumn, getStatusTagColumn } from "./columns";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+  getVoteSummaryColumn,
+} from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
@@ -34,6 +38,8 @@ export function getActiveProposalOpenTechComm({ summary, activeProposals }) {
           },
           columns: [
             getProposalPostTitleColumn(),
+            { className: "w-40" },
+            getVoteSummaryColumn(),
             getStatusTagColumn({
               category: businessCategory.openTechCommitteeProposals,
             }),

@@ -1,6 +1,10 @@
 import { CHAIN } from "next-common/utils/constants";
 import { getCouncilMenu, Names } from "next-common/utils/consts/menu/council";
-import { getProposalPostTitleColumn, getStatusTagColumn } from "./columns";
+import {
+  getProposalPostTitleColumn,
+  getStatusTagColumn,
+  getVoteSummaryColumn,
+} from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
@@ -31,6 +35,8 @@ export function getActiveProposalCouncil({ summary, activeProposals }) {
           },
           columns: [
             getProposalPostTitleColumn(),
+            { className: "w-40" },
+            getVoteSummaryColumn(),
             getStatusTagColumn({ category: businessCategory.councilMotions }),
           ],
         };
