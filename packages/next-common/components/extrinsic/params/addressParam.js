@@ -8,6 +8,10 @@ export default function AddressParam({ value, setValue }) {
     name: acc.meta.name,
   }));
   return (
-    <AddressCombo address={value} setAddress={setValue} accounts={accounts} />
+    <AddressCombo
+      address={value ?? ""}
+      setAddress={setValue}
+      accounts={accounts}
+    />
   );
 }

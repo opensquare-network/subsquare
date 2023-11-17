@@ -7,5 +7,5 @@ export default function AccountParam({ def, value, setValue }) {
     return <EnumParam def={def} value={value} setValue={setValue} />;
   }
 
-  return <AddressParam value={value} setValue={setValue} />;
+  return <AddressParam value={value ?? ""} setValue={setValue} />;
 }
