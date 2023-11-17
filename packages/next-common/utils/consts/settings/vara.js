@@ -11,8 +11,16 @@ import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 
 const nodes = [
   {
-    name: "Vara",
+    name: "Vara1",
+    url: "wss://subscan-archive.vara-network.io/",
+  },
+  {
+    name: "Vara2",
     url: "wss://archive-rpc.vara-network.io/",
+  },
+  {
+    name: "Vara3",
+    url: "wss://archive.vara-network.io/",
   },
 ];
 
@@ -68,6 +76,7 @@ const vara = {
   hasStatescan: false,
   hasSubscan: true,
   hasDotreasury: false,
+  hasTechComm: false,
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,

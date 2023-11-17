@@ -15,6 +15,7 @@ import OffChainVoting from "next-common/components/summary/externalInfo/offChain
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
+import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
 
 export default function Home({ overview, chain }) {
   const chainSettings = useChainSettings();
@@ -100,12 +101,14 @@ export const getServerSideProps = withCommonProps(async () => {
   const chain = process.env.CHAIN;
   const { result: overview } = await nextApi.fetch("overview");
   const { result: summary } = await nextApi.fetch("summary");
+  const activeProposals = await fetchActiveProposalsProps(summary);
 
   return {
     props: {
       chain,
       overview: overview ?? null,
       summary: summary ?? {},
+      activeProposals,
     },
   };
 });

@@ -128,7 +128,7 @@ function NavMobile() {
   return (
     <nav
       className={cn(
-        "bg-navigationBg dark:bg-neutral100 text-navigationText",
+        "border-b border-neutral300 bg-navigationBg dark:bg-neutral100 text-navigationText",
         "sm:hidden",
       )}
     >

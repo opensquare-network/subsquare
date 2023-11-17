@@ -1,14 +1,17 @@
 import sumBy from "lodash.sumby";
 import PostList from "../postList";
 import EmptyOverview from "./emptyOverview";
+import NewOverview from "./newOverview";
 
 export default function OverviewPostList({ overviewData = [] }) {
   const allCategoriesCount = sumBy(overviewData ?? [], (item) => {
     return item?.items?.length;
   });
 
+  // TODO: overview, remove this
   const content =
-    allCategoriesCount <= 0 ? (
+    false ??
+    (allCategoriesCount <= 0 ? (
       <EmptyOverview />
     ) : (
       overviewData?.map?.((item) => (
@@ -21,7 +24,13 @@ export default function OverviewPostList({ overviewData = [] }) {
           type={item.type}
         />
       ))
-    );
+    ));
 
-  return <div className="space-y-6">{content}</div>;
+  return (
+    <div className="space-y-6">
+      <NewOverview />
+
+      {content}
+    </div>
+  );
 }

@@ -1,3 +1,5 @@
+import isMoonChain from "next-common/utils/isMoonChain";
+
 // gov2
 export const gov2TracksApi = "gov2/tracks";
 export const gov2ReferendumsTrackApi = (trackId) =>
@@ -60,3 +62,26 @@ export const calendarEventsApi = "events";
 export const calendarUserEventsApi = "events/user-events";
 
 export const adminsApi = "admins";
+
+export const overviewApi = {
+  discussions: "posts",
+  polkassemblyDiscussions: "polkassembly-discussions",
+  referenda: "overview/referenda",
+  fellowship: "overview/fellowship",
+  democracyReferenda: "overview/democracy-referenda",
+  democracyPublicProposals: "overview/public-proposals",
+  democracyExternalProposals: "overview/externals",
+  treasuryProposals: "overview/treasury-proposals",
+  treasuryBounties: "overview/bounties",
+  treasuryChildBounties: "overview/child-bounties",
+  treasuryTips: "overview/tips",
+  councilMotions: isMoonChain() ? "overview/moon-council" : "overview/motions",
+  tcMotions: "overview/tc-motions",
+  financialMotions: "overview/financial-motions",
+  allianceMotions: "overview/alliance-motions",
+  allianceAnnouncements: "overview/alliance-announcements",
+  advisoryMotions: "overview/advisory-motions",
+  // moon
+  treasuryCouncilMotions: "overview/motions",
+  openTCMotions: "overview/open-tc-motion",
+};
