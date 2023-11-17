@@ -1,5 +1,4 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -18,7 +17,7 @@ import {
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
 
-export default function Votes({ overview }) {
+export default function Votes() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
@@ -64,7 +63,7 @@ export default function Votes({ overview }) {
       seoInfo={{ title: "" }}
       description={chainSettings.description}
       headContent={<ChainSocialLinks />}
-      summary={<SummaryComponent summaryData={overview?.summary} />}
+      summary={<SummaryComponent />}
       summaryFooter={externalInfo}
       tabs={tabs}
     >
@@ -74,12 +73,11 @@ export default function Votes({ overview }) {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const { result } = await nextApi.fetch("overview");
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      overview: result ?? null,
+      summary: tracksProps.summary,
       ...tracksProps,
     },
   };
