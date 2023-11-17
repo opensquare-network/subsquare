@@ -43,6 +43,8 @@ const rococo = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
+  hasReferenda: true,
+  hasFellowship: true,
   hasSubscan: true,
   description: "Polkadot’s Parachain Testnet",
   cssVarsLight: {

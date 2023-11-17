@@ -1,5 +1,4 @@
 import React from "react";
-import Chains from "../chains";
 import {
   MenuOverview,
   MenuDiscussions,
@@ -7,6 +6,10 @@ import {
   MenuCalendar,
   MenuOffChainVoting,
 } from "@osn/icons/subsquare";
+import getChainSettings from "../settings";
+import { CHAIN } from "next-common/utils/constants";
+
+const chainSettings = getChainSettings(CHAIN);
 
 let polkassemblyMenu = {
   value: "polkassembly",
@@ -14,6 +17,14 @@ let polkassemblyMenu = {
   pathname: "/polkassembly/discussions",
   extraMatchNavMenuActivePathnames: ["/polkassembly/posts/[id]"],
   icon: <MenuPolkassembly />,
+};
+
+export const discussionsMenu = {
+  value: "discussions",
+  name: "Discussions",
+  pathname: "/discussions",
+  extraMatchNavMenuActivePathnames: ["/posts/[id]"],
+  icon: <MenuDiscussions />,
 };
 
 const commonMenus = {
@@ -24,25 +35,14 @@ const commonMenus = {
       pathname: "/",
       icon: <MenuOverview />,
     },
-    {
-      value: "discussions",
-      name: "Discussions",
-      pathname: "/discussions",
-      extraMatchNavMenuActivePathnames: ["/posts/[id]"],
-      excludeToChains: [Chains.centrifuge, Chains.altair],
-      icon: <MenuDiscussions />,
-    },
   ],
 };
 
-if (
-  [
-    Chains.polkadot,
-    Chains.kusama,
-    Chains.moonriver,
-    Chains.collectives,
-  ].includes(process.env.NEXT_PUBLIC_CHAIN)
-) {
+if (chainSettings.hasDiscussions !== false) {
+  commonMenus.items.push(discussionsMenu);
+}
+
+if (chainSettings.hasPolkassemblyDiscussions) {
   commonMenus.items.push(polkassemblyMenu);
 }
 

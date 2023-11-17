@@ -12,7 +12,7 @@
   "dependencies": {
     "@interlay/monetary-js": "^0.5.3",
     "@next/env": "^13.3.0",
-    "@osn/icons": "^1.37.1",
+    "@osn/icons": "^1.38.0",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
     "clsx": "^1.2.1",
@@ -29,7 +29,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "sass": "^1.38.0",
-    "sharp": "^0.32.0",
+    "sharp": "^0.32.6",
     "sonner": "^1.0.3",
     "styled-components": "^5.3.9",
     "tailwind-merge": "^1.14.0",

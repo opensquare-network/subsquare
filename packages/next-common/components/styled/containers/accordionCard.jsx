@@ -16,7 +16,6 @@ export default function AccordionCard({ children, title = "", defaultOpen }) {
         className={cn(
           "flex items-center justify-between",
           "cursor-pointer p-6",
-          open && "pb-4",
         )}
         onClick={() => setOpen(!open)}
       >

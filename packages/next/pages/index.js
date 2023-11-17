@@ -42,6 +42,7 @@ import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFet
 import useFetchMyReferendaDeposits from "next-common/hooks/account/deposit/referenda";
 import useFetchMyFellowshipDeposits from "next-common/hooks/account/deposit/useFetchMyFellowshipDeposits";
 import useFetchMyPreimageDeposits from "next-common/hooks/account/deposit/useFetchMyPreimageDeposits";
+import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
 
 export default function HomePage({ overview, tracks, fellowshipTracks }) {
   const chain = useChain();
@@ -253,8 +254,8 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
   if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
     if (user?.address) {
       tabs.push({
-        label: "My Votes",
-        url: "/votes",
+        label: "Account",
+        url: "/account/votes",
       });
     }
   }
@@ -288,10 +289,12 @@ export default function HomePage({ overview, tracks, fellowshipTracks }) {
 export const getServerSideProps = withCommonProps(async () => {
   const { result } = await nextApi.fetch("overview");
   const tracksProps = await fetchOpenGovTracksProps();
+  const activeProposals = await fetchActiveProposalsProps(tracksProps.summary);
 
   return {
     props: {
       overview: result ?? null,
+      activeProposals,
       ...tracksProps,
     },
   };

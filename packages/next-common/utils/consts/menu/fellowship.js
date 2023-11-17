@@ -29,6 +29,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       Chains["bifrost-polkadot"],
       Chains["westend-collectives"],
       Chains.vara,
+      Chains.rococo,
     ]),
     activeCount: totalActiveCount,
     icon: <MenuFellowship />,
