@@ -4,11 +4,11 @@ import UrlTabs from "next-common/components/urlTabs";
 export function AccountSubTabs() {
   const tabs = [
     {
-      label: "My Votes",
+      label: "Votes",
       render({ active }) {
         return (
           <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
-            My Votes
+            Votes
           </Title>
         );
       },
