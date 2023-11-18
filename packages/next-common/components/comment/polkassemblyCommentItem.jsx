@@ -50,7 +50,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
       }
       content={
         <MarkdownPreviewer
-          content={comment.content}
+          content={comment.content || ""}
           plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
         />
       }
