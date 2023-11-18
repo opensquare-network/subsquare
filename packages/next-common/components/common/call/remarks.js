@@ -68,7 +68,9 @@ export default function extractRemarkMetaFields(call = {}) {
     data.push([
       key,
       <RemarkWrapper key={`remark-${i}`}>
-        <MarkdownPreviewer content={splitMarkdownBlockLevels(remarks[i])} />
+        <MarkdownPreviewer
+          content={splitMarkdownBlockLevels(remarks[i] || "")}
+        />
       </RemarkWrapper>,
     ]);
   }
