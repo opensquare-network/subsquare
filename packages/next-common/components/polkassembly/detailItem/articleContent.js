@@ -28,7 +28,7 @@ export default function ArticleContent({ postReactions }) {
       {post.content === "" && (
         <NoData text={"The post has not been edited by creator."} />
       )}
-      <MarkdownPreviewer content={post.content} />
+      <MarkdownPreviewer content={post.content || ""} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
       <PostDataSource />
       <PolkassemblyActions reactions={postReactions} />
