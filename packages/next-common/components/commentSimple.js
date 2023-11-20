@@ -286,7 +286,7 @@ export default function CommentSimple({ data }) {
               <RichTextStyleWrapper>
                 {data.contentType === "markdown" && (
                   <MarkdownPreviewer
-                    content={data.content}
+                    content={data.content || ""}
                     plugins={[
                       renderMentionIdentityUserPlugin(<IdentityOrAddr />),
                     ]}

@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
@@ -14,6 +13,7 @@ import {
 } from "../../../context/chain";
 import Summary from "../v2/base";
 import isMoonChain from "next-common/utils/isMoonChain";
+import { usePageProps } from "next-common/context/page";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -38,10 +38,10 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
   );
 }
 
-function OpenGovGroupContent({ summaryData }) {
+function OpenGovGroupContent() {
+  const { summary } = usePageProps();
   const { hasFellowship, hasReferenda } = useChainSettings();
-  const { activeGov2ReferendaCount, activeFellowshipReferendaCount } =
-    summaryData ?? {};
+  const { gov2Referenda, fellowshipReferenda } = summary ?? {};
 
   return (
     <ContentWrapper>
@@ -50,7 +50,7 @@ function OpenGovGroupContent({ summaryData }) {
           label="R"
           tooltip="Active referenda"
           href="/referenda"
-          value={activeGov2ReferendaCount}
+          value={gov2Referenda?.active || 0}
         />
       )}
       {hasFellowship && (
@@ -58,21 +58,18 @@ function OpenGovGroupContent({ summaryData }) {
           label="F"
           tooltip="Active fellowship referenda"
           href="/fellowship"
-          value={activeFellowshipReferendaCount}
+          value={fellowshipReferenda?.active || 0}
         />
       )}
     </ContentWrapper>
   );
 }
 
-function DemocracyGroupContent({ summaryData }) {
+function DemocracyGroupContent() {
+  const { summary } = usePageProps();
   const showExternal = useMenuHasDemocracyExternal();
 
-  const {
-    activeExternalProposalsCount,
-    activePublicProposalsCount,
-    activeReferendaCount,
-  } = summaryData ?? {};
+  const { referenda, publicProposals, externalProposals } = summary ?? {};
 
   return (
     <ContentWrapper>
@@ -80,37 +77,33 @@ function DemocracyGroupContent({ summaryData }) {
         label="R"
         tooltip="Active democracy referenda"
         href="/democracy/referenda"
-        value={activeReferendaCount}
+        value={referenda?.active || 0}
       />
       <SummaryTypeGroup
         label="P"
         tooltip="Active public proposals"
         href="/democracy/proposals"
-        value={activePublicProposalsCount}
+        value={publicProposals?.active || 0}
       />
       {showExternal && (
         <SummaryTypeGroup
           label="E"
           tooltip="Active external proposals"
           href="/democracy/externals"
-          value={activeExternalProposalsCount}
+          value={externalProposals?.active || 0}
         />
       )}
     </ContentWrapper>
   );
 }
 
-function TreasuryGroupContent({ summaryData }) {
+function TreasuryGroupContent() {
+  const { summary } = usePageProps();
   const showTreasuryBounties = useMenuHasTreasuryBounties();
   const showChildBounties = useMenuHasTreasuryChildBounties();
   const showTips = useMenuHasTreasuryTips();
 
-  const {
-    activeBountiesCount,
-    activeChildBountiesCount,
-    activeTipsCount,
-    activeTreasuryProposalsCount,
-  } = summaryData ?? {};
+  const { bounties, childBounties, tips, treasuryProposals } = summary ?? {};
 
   return (
     <ContentWrapper>
@@ -118,14 +111,14 @@ function TreasuryGroupContent({ summaryData }) {
         label="P"
         tooltip="Active proposals"
         href="/treasury/proposals"
-        value={activeTreasuryProposalsCount}
+        value={treasuryProposals?.active || 0}
       />
       {showTreasuryBounties && (
         <SummaryTypeGroup
           label="B"
           tooltip="Active bounties"
           href="/treasury/bounties"
-          value={activeBountiesCount}
+          value={bounties?.active || 0}
         />
       )}
       {showChildBounties && (
@@ -133,7 +126,7 @@ function TreasuryGroupContent({ summaryData }) {
           label="b"
           tooltip="Active child bounties"
           href="/treasury/child-bounties"
-          value={activeChildBountiesCount}
+          value={childBounties?.active || 0}
         />
       )}
       {showTips && (
@@ -141,22 +134,19 @@ function TreasuryGroupContent({ summaryData }) {
           label="T"
           tooltip="Active tips"
           href="/treasury/tips"
-          value={activeTipsCount}
+          value={tips?.active || 0}
         />
       )}
     </ContentWrapper>
   );
 }
 
-function CouncilGroupContent({ summaryData }) {
+function CouncilGroupContent() {
+  const { summary } = usePageProps();
   const showCouncil = useMenuHasCouncil();
   const showTc = useMenuHasTechComm();
 
-  let { activeMotionsCount, activeTechCommMotionsCount } = summaryData ?? {};
-
-  if (isMoonChain()) {
-    activeMotionsCount = summaryData?.activeMoonCouncilMotionsCount;
-  }
+  const { motions, techCommMotions, moonCouncilMotions } = summary ?? {};
 
   return (
     <ContentWrapper>
@@ -166,7 +156,9 @@ function CouncilGroupContent({ summaryData }) {
           label="M"
           tooltip="Active council motions"
           href="/council/motions"
-          value={activeMotionsCount}
+          value={
+            (isMoonChain() ? moonCouncilMotions.active : motions.active) || 0
+          }
         />
       )}
       {showTc && (
@@ -174,14 +166,14 @@ function CouncilGroupContent({ summaryData }) {
           label="P"
           tooltip="Active T.C. proposals"
           href="/techcomm/proposals"
-          value={activeTechCommMotionsCount}
+          value={techCommMotions?.active || 0}
         />
       )}
     </ContentWrapper>
   );
 }
 
-export default function OverviewSummary({ summaryData }) {
+export default function OverviewSummary() {
   const showCouncil = useMenuHasCouncil();
   const showTC = useMenuHasTechComm();
   const { hasFellowship, hasReferenda, noDemocracyModule } = useChainSettings();
@@ -190,20 +182,20 @@ export default function OverviewSummary({ summaryData }) {
   if (hasReferenda || hasFellowship) {
     items.push({
       title: "Open Gov",
-      content: <OpenGovGroupContent summaryData={summaryData} />,
+      content: <OpenGovGroupContent />,
     });
   }
 
   if (!noDemocracyModule) {
     items.push({
       title: "Democracy",
-      content: <DemocracyGroupContent summaryData={summaryData} />,
+      content: <DemocracyGroupContent />,
     });
   }
 
   items.push({
     title: "Treasury",
-    content: <TreasuryGroupContent summaryData={summaryData} />,
+    content: <TreasuryGroupContent />,
   });
 
   if (!noDemocracyModule) {
@@ -211,7 +203,7 @@ export default function OverviewSummary({ summaryData }) {
       title: `${showCouncil ? "Council" : ""}${
         showTC && showCouncil ? " / " : ""
       }${showTC ? "T.C." : ""}`,
-      content: <CouncilGroupContent summaryData={summaryData} />,
+      content: <CouncilGroupContent />,
     });
   }
 
