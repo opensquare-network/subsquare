@@ -2171,9 +2171,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/rich-text-editor@npm:^0.6.2":
-  version: 0.6.2
-  resolution: "@osn/rich-text-editor@npm:0.6.2"
+"@osn/rich-text-editor@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "@osn/rich-text-editor@npm:0.6.3"
   dependencies:
     lodash: ^4.17.21
     marked: ^4.0.15
@@ -2184,7 +2184,7 @@ __metadata:
     "@osn/previewer": ^0.10.3
     react: ^17.0.2
     styled-components: ^5.3.1
-  checksum: 3adb6f9d2cd369ed01df208a003efac845f083867e6a008d3f0108ac1d25e8607e6f73f7d27e8fce3911b6c7423f55fb0cf176b17365147bcdbf95e084fdc664
+  checksum: 39a9eaa02c4e2fec5608a22a90fd3ffd6ce6c84070640ae05d4d5ec018e0ea433a55ce8659135be899ce634407861179e06e048c8bc5fac136d60fc2d9718786
   languageName: node
   linkType: hard
 
@@ -3424,8 +3424,6 @@ __metadata:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.38.0
-    "@osn/previewer": ^0.12.5
-    "@osn/rich-text-editor": ^0.6.2
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -8484,6 +8482,7 @@ __metadata:
     "@osn/previewer": ^0.12.5
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.1.2
+    "@osn/rich-text-editor": ^0.6.3
     "@polkadot/api": ^10.9.1
     "@polkadot/extension-dapp": ^0.46.5
     "@radix-ui/react-dialog": ^1.0.4
