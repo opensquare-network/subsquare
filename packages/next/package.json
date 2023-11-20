@@ -11,8 +11,6 @@
   "dependencies": {
     "@next/env": "^13.3.0",
     "@osn/icons": "^1.37.1",
-    "@osn/previewer": "^0.12.5",
-    "@osn/rich-text-editor": "^0.6.2",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
     "clsx": "^1.2.1",
