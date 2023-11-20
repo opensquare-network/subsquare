@@ -28,6 +28,11 @@ function UrlTabs({ tabs = [], ...props }) {
                 target={isExternal ? "_blank" : "_self"}
               >
                 {tab.render ? tab.render({ active }) : tab.label}
+                {!!tab.activeCount && (
+                  <span className="ml-1 text-textTertiary text16Medium">
+                    {tab.activeCount}
+                  </span>
+                )}
               </Link>
             );
           },
