@@ -3,12 +3,13 @@ import { useRouter } from "next/router";
 import { isExternalLink } from "next-common/utils";
 import TabsList from "../tabsList";
 
-function UrlTabs({ tabs = [] }) {
+function UrlTabs({ tabs = [], ...props }) {
   const router = useRouter();
   const routePath = router.asPath.split("?")[0];
 
   return (
     <TabsList
+      {...props}
       tabs={tabs.map((tab, idx) => {
         const isExternal = isExternalLink(tab.url);
 
