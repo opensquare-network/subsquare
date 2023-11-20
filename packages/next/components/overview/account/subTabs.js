@@ -16,5 +16,5 @@ export function AccountSubTabs() {
     },
   ];
 
-  return <UrlTabs tabs={tabs} />;
+  return <UrlTabs className="ml-6" tabs={tabs} />;
 }
