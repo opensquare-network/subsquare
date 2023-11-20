@@ -1,23 +1,20 @@
-import { withCommonProps } from "next-common/lib";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { isCollectivesChain } from "next-common/utils/chain";
-import ListLayout from "next-common/components/layout/ListLayout";
-import OverviewSummary from "next-common/components/summary/overviewSummary";
-import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
-import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import { useUser } from "next-common/context/user";
+import ListLayout from "./ListLayout";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import MyVotes from "components/myvotes";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { isCollectivesChain } from "next-common/utils/chain";
+import AllianceOverviewSummary from "../summary/allianceOverviewSummary";
+import OverviewSummary from "../summary/overviewSummary";
+import ChainSocialLinks from "../chain/socialLinks";
 import {
   hasDefinedBounties,
   hasDefinedOffChainVoting,
 } from "next-common/utils/summaryExternalInfo";
-import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
-import Bounties from "next-common/components/summary/externalInfo/bounties";
+import OffChainVoting from "../summary/externalInfo/offChainVoting";
+import Bounties from "../summary/externalInfo/bounties";
+import { useEffect } from "react";
 
-export default function Votes() {
+export default function AccountLayout(props) {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
@@ -33,19 +30,16 @@ export default function Votes() {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
-  let tabs = [
+  const tabs = [
     {
       label: "Overview",
       url: "/",
     },
-  ];
-
-  if (user?.address) {
-    tabs.push({
+    user?.address && {
       label: "Account",
       url: "/account/votes",
-    });
-  }
+    },
+  ].filter(Boolean);
 
   let externalInfo = null;
   if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
@@ -66,19 +60,7 @@ export default function Votes() {
       summary={<SummaryComponent />}
       summaryFooter={externalInfo}
       tabs={tabs}
-    >
-      <MyVotes />
-    </ListLayout>
+      {...props}
+    />
   );
 }
-
-export const getServerSideProps = withCommonProps(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      summary: tracksProps.summary,
-      ...tracksProps,
-    },
-  };
-});
