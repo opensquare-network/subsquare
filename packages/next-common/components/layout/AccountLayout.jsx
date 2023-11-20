@@ -38,6 +38,7 @@ export default function AccountLayout(props) {
     user?.address && {
       label: "Account",
       url: "/account/votes",
+      extraMatchTabActivePathnames: ["/account/deposits"],
     },
   ].filter(Boolean);
 
