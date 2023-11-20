@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.6.5
+date: 2023-11-20
+
+- [Medium] Refactor the layout of overview page.
+- Show bounty balance on bounty detail page.
+- Enable OpenGov for Bifrost Polkadot and Rococo.
+- Update dependencies.
+
 ### 3.6.4
 date: 2023-11-03
 
