@@ -14,6 +14,17 @@ export function AccountSubTabs() {
       },
       url: "/account/votes",
     },
+    {
+      label: "Deposits",
+      render({ active }) {
+        return (
+          <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
+            Deposits
+          </Title>
+        );
+      },
+      url: "/account/deposits",
+    },
   ];
 
   return <UrlTabs className="ml-6" tabs={tabs} />;
