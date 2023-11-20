@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ### 3.6.5
+
 date: 2023-11-20
 
 - [Medium] Refactor the layout of overview page.
@@ -12,6 +13,7 @@ date: 2023-11-20
 - Fix my referenda votes unlock-able balance calculation.
 
 ### 3.6.4
+
 date: 2023-11-03
 
 - Show active proposal numbers on menu for democracy, treasury and various collectives.
@@ -21,6 +23,7 @@ date: 2023-11-03
 - Fix empty box icon.
 
 ### 3.6.3
+
 date: 2023-10-27
 
 - Show estimated confirmation start time on OpenGov referendum page.
@@ -28,7 +31,9 @@ date: 2023-10-27
 - Fix removing vote call fro moonriver.
 
 ### 3.6.2
+
 date: 2023-10-26
+
 - Enable removing my delegations on referenda delegation popup.
 - Add query params for profile votes, so we can locate different vote type when page render.
 - Refactor the vote popup view for address who have delegated their votes.
@@ -39,6 +44,7 @@ date: 2023-10-26
 - Fix styles.
 
 ### 3.6.1
+
 date: 2023-10-19
 
 - [Medium]Support notifications by telegram.
@@ -50,9 +56,10 @@ date: 2023-10-19
 - Implement accordion card component.
 - Shorten referendum breadcrumb.
 
-
 ### 3.6.0
+
 date: 2023-10-12
+
 - Allow post authors and admins to delete a discussion post.
 - Merge comments from subsquare and polkassembly.
 - Show my delegated OpenGov referenda votes on my votes management.
@@ -66,7 +73,9 @@ date: 2023-10-12
 - Fix styles.
 
 ### 3.5.2
+
 date: 2023-10-08
+
 - Fix referenda delegation voting checking.
 - Clear already stored votes data after leaving referendum detail page.
 - Refactor the complex user component.
@@ -77,14 +86,18 @@ date: 2023-10-08
 - Housekeeping: remove useless code.
 
 ### 3.5.1
+
 date: 2023-09-30
+
 - Improve content placer when proposal post has no context or no comments.
 - Improve loading effect for democracy vote popup.
 - Refactor code about my votes management.
 - Use scan height before latest chain height query.
 
 ### 3.5.0
+
 date: 2023-09-27
+
 - [Medium]Users don't have to login before signing an extrinsic.
 - [Medium]Show an address' delegated on chain votes for democracy pallet, while business for OpenGov referenda is still under developing.
 - Add a hint for users who have set a proxy that we're showing the on chain votes of the proxied account.
@@ -93,7 +106,9 @@ date: 2023-09-27
 - Fix OpenGov referenda confirmation progress bar if last confirmation abort doesn't cause a rejection.
 
 ### 3.4.8
+
 date: 2023-09-23
+
 - Show user balance on profile page.
 - Refactor curve components on referendum detail page and fix a bug the curve history chart may not appear.
 - Improve scan height subscription and remove redundant ones.
@@ -106,9 +121,10 @@ date: 2023-09-23
 - Fix dark mode style issues.
 - Show timeout countdown for fellowship referenda.
 
-
 ### 3.4.7
+
 date: 2023-09-18
+
 - Refactor various page components and fix post detail data subscription.
 - Refactor: pass `focusEditor` function through context and this will make code more clean.
 - Fix detail page bug due to removal of kintsugi/interlay treasury pallet.
@@ -116,7 +132,9 @@ date: 2023-09-18
 - Change the contact email to yongfeng@opensquare.network.
 
 ### 3.4.6
+
 date: 2023-09-13
+
 - Refactor detail page breadcrumbs.
 - Remove `withLoginUserRedux` wrapper function for page components.
 - Refactor the code to get list data of server side props.
@@ -128,14 +146,18 @@ date: 2023-09-13
 - Fix polkassembly discussion post thumbs up reaction view.
 
 ### 3.4.5
+
 date: 2023-09-05
+
 - Show my vote and support removing vote on referendum detail page.
 - Improve tally history line style of referendum curve chart, and improve chart initialization.
 - Implement conviction slider for democracy/referenda pallets.
 - Fix styles.
 
 ### 3.4.4
+
 date: 2023-09-01
+
 - Render `system#remark` call content with markdown previewer.
 - Refactor: Control detail page tabs with data in redux.
 - Styles enhancement
@@ -151,6 +173,7 @@ date: 2023-09-01
 - Refactor external link component and add subscan link for referenda.
 
 ### 3.4.3
+
 date: 2023-08-28
 
 - Add circle packing view for referenda/democracy votes distribution.
@@ -164,7 +187,9 @@ date: 2023-08-28
 - Fix bugs and styles.
 
 ### 3.4.2
+
 date: 2023-08-23
+
 - Refactor routes for referenda/democracy/treasury related pages.
 - Show confirmation attempts for OpenGov referenda.
 - Fix referenda confirmation bars.
@@ -174,7 +199,9 @@ date: 2023-08-23
 - Fix editor related styles.
 
 ### 3.4.1
+
 date: 2023-08-17
+
 - Add OpenSquare off-chain voting and bounties link to summary page.
 - Show OpenGov fellowship votes history on user profile page.
 - Add my votes tab to referenda and democracy page.
@@ -182,14 +209,18 @@ date: 2023-08-17
 - Fix styles.
 
 ### 3.4.0
+
 date: 2023-08-14
+
 - [Big]Support on-chain votes management, including support for referenda and democracy.
 - Fix countdown component default color.
 - Add on-chain events subscription warning tip on overview panel.
 - Fix styles.
 
 ### 3.3.5
+
 date: 2023-08-12
+
 - Feature: support upload images by OpenSquare editor.
 - Feature: support scam reporting for various posts.
 - Fix locking period color on dark mode.
@@ -201,9 +232,10 @@ date: 2023-08-12
 - Change users link to profile votes page on votes popup.
 - Fix reddit icon.
 
-
 ### 3.3.4
+
 date: 2023-08-02
+
 - Feature: add preimages page.
 - Feature: add show more/less for long post.
 - Fix: twitter summary card preview for various chains.
@@ -215,7 +247,9 @@ date: 2023-08-02
 - Improve lots of styles, including search box, borders, header, shadow, etc.
 
 ### 3.3.3
+
 date: 2023-08-01
+
 - Support login popup and refactor various login related pages.
 - Fix kintsugi/interlay treasury balance.
 - Refactor kintsugi/interlay democracy next launch related code.
@@ -225,7 +259,9 @@ date: 2023-08-01
 - Fix project logo dark mode color on navigation panel.
 
 ### 3.3.2
+
 date: 2023-07-27
+
 - Add OpenGov referendum confirmation toggle component, so we can see confirmation status in different views.
 - Correct referendum decision end calculation.
 - Fix tally support bar background color.
@@ -233,7 +269,9 @@ date: 2023-07-27
 - Clean useless code.
 
 ### 3.3.1
+
 date: 2023-07-26
+
 - Support [vara network](https://vara-network.io/).
 - Fix theme colors.
 - Hide votes tab for collectives chain.
@@ -242,7 +280,9 @@ date: 2023-07-26
 - Fix delegation bar on referendum detail page.
 
 ### 3.3.0
+
 date: 2023-07-23
+
 - [Big]New design development, including:
   - Sidebar menu.
   - List, detail, statistics, profile page refactor.
@@ -259,6 +299,7 @@ date: 2023-07-23
 - Fix markdown `ol` element view.
 
 ### 3.2.5
+
 date: 2023-07-04
 
 - Support moonriver.
@@ -271,6 +312,7 @@ date: 2023-07-04
 - Add api to get history votes of account.
 
 ### 3.2.4
+
 date: 2023-06-27
 
 - Implement Referenda delegation for multiple tracks at one time.
@@ -281,6 +323,7 @@ date: 2023-06-27
 - Introduce lodash.capitalize to take place the legacy util function.
 
 ### 3.2.3
+
 date:2023-06-22
 
 - Enable events subscription for polkadot collectives deployment.
@@ -289,6 +332,7 @@ date:2023-06-22
 - Improve OpenGov list page title.
 
 ### 3.2.2
+
 date: 2023-06-12
 
 - Show fellowship UI on polkadot collectives para chain.
@@ -301,7 +345,9 @@ date: 2023-06-12
 - Separate democracy/referenda votes scan with the main scan process, add a new api to serve new votes data, and adapt this in fronted.
 
 ## 3.2.1
+
 date: 2023-06-08
+
 - Refactor child bounty claim related components, and make child bounty claim button enabled only when it's mature.
 - Improve fellowship and referenda navigation components to better show their correlation.
 - Use subscription way to fetch referenda referendum tally instead of one time query and refactor related components.
@@ -311,8 +357,9 @@ date: 2023-06-08
 ## 3.2.0
 
 date: 06/02/2023
+
 - Refactor my delegation/been delegated popup UI, and align with that of delegation statistics.
-- Clicking motion close button trigger login modal if no account has login in. 
+- Clicking motion close button trigger login modal if no account has login in.
 - Allow anyone to claim a child bounty when it's mature.
 - Add `maxWidth` attribute for user component, so we can control the space taken by long identity name.
 - Add fellowship and referenda navigation UI to show their correlation with call whitelist.
@@ -322,7 +369,9 @@ date: 06/02/2023
 - Fix styles and bugs.
 
 ## 3.1.4
+
 date: 05/30/2023
+
 - Refactor detail container components.
 - Improve and fix tooltip components, previously some tooltips were hidden by other containers.
 - Add [achainable](https://www.achainable.com/) labels support for kusama.
@@ -330,41 +379,52 @@ date: 05/30/2023
 - Show tally bar on OpenGov and democracy referenda.
 
 ## 3.1.3
+
 date: 05/26/2023
+
 - Add nested votes view for democracy and OpenGov referenda.
 - Extract dedicated detail container components for treasury proposal, tip and OpenGov referendum.
 - Fix pages crash due to kusama drops democracy and tips pallet from metadata.
 
 ## 3.1.2
+
 date: 05/22/2023
+
 - Populate OpenGov referendum title by parity tip bot automatically.
 - Show voting countdown component for democracy referendum.
-- Refactor democracy referendum tally with hooks. 
+- Refactor democracy referendum tally with hooks.
 
 ## 3.1.1
+
 date: 05/23/2023
+
 - Support kintsugi democracy referenda statistics.
 - Update democracy statistics breadcrumb text.
-- Fix incorrect metamask interaction. 
+- Fix incorrect metamask interaction.
 
 ## 3.1.0
+
 date: 05/22/2023
+
 - Support OpenGov referenda tracks comparison statistics.
 - Support OpenGov statistics for each track.
 - Add democracy statistics for votes trend.
 - Correct council close button disable state.
 - Support evm compatible chains, like darwinia2.
 
-
 ## 3.0.5
+
 date: 05/05/2023
+
 - Show min enact period on OpenGov track panel.
 - Show OpenGov enactment status on referendum detail page.
 - Fix proposal hash is not shown on democracy referendum metadata.
 - Fix OpenGov referendum decision deposit popup can not be opened.
 
 ## 3.0.4
+
 date: 04/29/2023
+
 - Show delegation statistics for democracy.
 - Add components for OpenGov referendum preparing phase visualization.
 - Support users to place OpenGov referendum decision deposit.
@@ -376,7 +436,9 @@ date: 04/29/2023
 - Support end date setting to calendar user event.
 
 ## 3.0.3
+
 date: 04/17/2023
+
 - Upgrade to next.js v13, check [#2809](https://github.com/opensquare-network/subsquare/pull/2809).
 - Fix react hydration error, found after next.js v13 upgrade.
 - Fix cmd+k shortcut, currently we can use it on every page.
@@ -384,14 +446,18 @@ date: 04/17/2023
 - Enhance number input component. Now it supports max/min value.
 
 ## 3.0.2
+
 date: 04/06/2023
+
 - Support nest comments.
 - Support democracy public proposals batch seconds action.
 - Fix treasury bounty approve/reject voting state tag color.
 - Improve tally numbers' view on mobile page.
 
 ## 3.0.1
+
 date: 03/31/2023
+
 - Support closing collective motion.
 - Flatten menu, remove the separation of gov2 from gov1.
 - Improve CI build and style prettier.
@@ -402,7 +468,9 @@ date: 03/31/2023
 - Fix style issues.
 
 ## 3.0.0
+
 date: 03/27/2023
+
 - Add calendar feature which show history governance events and future events.
 - Fix fellowship section header, previously mistaken with referenda.
 - Show vote turnout percentage for democracy referenda.
@@ -410,13 +478,17 @@ date: 03/27/2023
 - Improve project config to avoid annoying LSP diagnostics.
 
 ## 2.9.9
+
 date: 03/22/2023
+
 - Support binding a discussion post for proposals.
 - Add a search box to header, google in site search for this release.
 - Improve and normalize various chain header logos.
 
 ## 2.9.8
+
 date: 03/13/2023
+
 - Add login user profile link to the dropdown menu.
 - Customize zeitgeist advisory committee motion market info.
 - Improve popup responsive style.
@@ -424,7 +496,9 @@ date: 03/13/2023
 - Improve husky hooks for eslint.
 
 ## 2.9.7
+
 date: 03/03/2023
+
 - Enable polkadot collectives.
 - Fix cmdk mask background color.
 - Improve eslint config and fix lint warnings.
