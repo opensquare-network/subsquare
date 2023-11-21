@@ -13,11 +13,6 @@ import {
 } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import useFetchMyDemocracyDeposits from "next-common/hooks/account/deposit/useFetchMyDemocracyDeposits";
-import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
-import useFetchMyReferendaDeposits from "next-common/hooks/account/deposit/referenda";
-import useFetchMyFellowshipDeposits from "next-common/hooks/account/deposit/useFetchMyFellowshipDeposits";
-import useFetchMyPreimageDeposits from "next-common/hooks/account/deposit/useFetchMyPreimageDeposits";
 import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
 import Overview from "next-common/components/overview/overview";
 
@@ -25,12 +20,6 @@ export default function HomePage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
-
-  useFetchMyDemocracyDeposits();
-  useFetchMyTreasuryDeposits();
-  useFetchMyReferendaDeposits();
-  useFetchMyFellowshipDeposits();
-  useFetchMyPreimageDeposits();
 
   const SummaryComponent = isCollectivesChain(chain)
     ? AllianceOverviewSummary
