@@ -4,12 +4,15 @@ import Tabs from "next-common/components/tabs";
 import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Pagination from "next-common/components/pagination";
+import StyledList from "next-common/components/styledList";
 import nextApi from "next-common/services/nextApi";
 import { activeProposalFetchParams } from "next-common/services/serverSide/activeProposals";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import last from "lodash.last";
 import isNil from "lodash.isnil";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
-import OverviewAccordionTable from "../accordionTable";
 
 export default function ActiveProposalTemplate({
   name = "",
@@ -98,6 +101,7 @@ function TableTemplate({
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(!api?.initData ?? true);
+  const { sm } = useScreenSize();
 
   function fetchData() {
     if (api?.path) {
@@ -136,14 +140,72 @@ function TableTemplate({
   });
 
   return (
-    <OverviewAccordionTable
-      columns={columns}
-      rows={rows}
-      page={page}
-      setPage={setPage}
-      loading={loading}
-      total={result?.total}
-      pageSize={activeProposalFetchParams.pageSize}
-    />
+    <div>
+      {sm ? (
+        <MobileList rows={rows} />
+      ) : (
+        <StyledList
+          className="!shadow-none !border-none !p-0"
+          columns={columns?.map((col) => ({
+            ...col,
+            name: (
+              <div className="text14Medium tracking-normal">{col.name}</div>
+            ),
+          }))}
+          loading={loading}
+          rows={rows}
+          noDataText="No active proposals"
+        />
+      )}
+
+      <Pagination
+        page={page}
+        pageSize={activeProposalFetchParams.pageSize}
+        total={result?.total || 0}
+        onPageChange={(e, newPage) => {
+          e.preventDefault();
+          setPage(newPage);
+        }}
+      />
+    </div>
+  );
+}
+
+function MobileList({ rows = [] }) {
+  return (
+    <div className="mb-4">
+      {rows.map((row, idx) => {
+        const title = row[0];
+        const status = last(row);
+        // without title and status
+        const rest = row.slice(1, -1);
+
+        return (
+          <div
+            key={idx}
+            className="py-4 first:pt-0 border-b border-neutral300 space-y-3"
+          >
+            {title}
+            <div className="flex items-center justify-between">
+              {!!rest?.length && (
+                <div className="flex">
+                  {rest.map((item, idx) => (
+                    <div key={idx} className="flex items-center">
+                      {item}
+                      {idx !== rest.length - 1 && (
+                        <span className="mx-2 text12Medium text-textTertiary">
+                          ·
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {status}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
