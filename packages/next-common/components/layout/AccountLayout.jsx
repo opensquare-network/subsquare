@@ -13,6 +13,7 @@ import {
 import OffChainVoting from "../summary/externalInfo/offChainVoting";
 import Bounties from "../summary/externalInfo/bounties";
 import { useEffect } from "react";
+import AccountInfo from "../overview/accountInfo";
 
 export default function AccountLayout(props) {
   const chain = useChain();
@@ -62,6 +63,12 @@ export default function AccountLayout(props) {
       summaryFooter={externalInfo}
       tabs={tabs}
       {...props}
-    />
+    >
+      <div className="mb-6">
+        <AccountInfo hideManageAccountLink />
+      </div>
+
+      {props.children}
+    </ListLayout>
   );
 }
