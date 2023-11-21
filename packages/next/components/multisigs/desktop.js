@@ -135,6 +135,7 @@ export default function DesktopList() {
       return;
     }
     dispatch(fetchMyMultisigs(chain, user?.address, page));
+    // dispatch(fetchMyMultisigs(chain, "13fnouKsAaWxBxCx9VarXBNyYo7vUCeTUbRmQBjytju8YqqB", page));
   }, [dispatch, chain, page, user?.address]);
 
   const onPageChange = useCallback((e, page) => {
