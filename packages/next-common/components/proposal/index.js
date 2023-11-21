@@ -40,7 +40,7 @@ const Header = styled.div`
   flex: 0 0 160px;
 `;
 
-const ArgsWrapper = styled.div`
+export const ArgsWrapper = styled.div`
   border-radius: 4px;
   border: 24px solid var(--neutral200);
   border-bottom: 24px solid var(--neutral200) !important;
@@ -80,7 +80,7 @@ const TagWrapper = styled.div`
   }
 `;
 
-function convertProposalForTableView(proposal, chain) {
+export function convertProposalForTableView(proposal, chain) {
   if (!proposal) {
     return {};
   }
@@ -167,7 +167,7 @@ function convertProposalForTableView(proposal, chain) {
   };
 }
 
-function convertProposalForJsonView(proposal, chain) {
+export function convertProposalForJsonView(proposal, chain) {
   if (!proposal) {
     return {};
   }

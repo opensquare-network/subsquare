@@ -1,10 +1,12 @@
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import isNil from "lodash.isnil";
 import DesktopList from "./desktop";
-import MobileList from "./mobile";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
+
+  // Fixme: MobileList is not implemented yet.
+  const MobileList = DesktopList;
 
   if (isNil(width)) {
     return null;

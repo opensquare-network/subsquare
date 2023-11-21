@@ -21,7 +21,7 @@ export const { setMyMultisigs } = multisigSlice.actions;
 export default multisigSlice.reducer;
 
 export const fetchMyMultisigs =
-  (chain, address, page = 1, pageSize = 10) =>
+  (chain, address, page = 1, pageSize = 25) =>
   async (dispatch) => {
     const { result, error } = await nextApi.fetch(
       `https://${chain}-multisig-api.statescan.io/graphql`,
@@ -84,5 +84,12 @@ export const fetchMyMultisigs =
 
     const { multisigs } = result.data || {};
 
-    dispatch(setMyMultisigs(multisigs));
+    const data = {
+      page,
+      pageSize,
+      total: multisigs?.total || 0,
+      items: multisigs?.multisigs || [],
+    };
+
+    dispatch(setMyMultisigs(data));
   };

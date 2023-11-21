@@ -18,7 +18,6 @@ export default function Multisigs() {
         chain,
         "13fnouKsAaWxBxCx9VarXBNyYo7vUCeTUbRmQBjytju8YqqB",
         1,
-        10,
       ),
     );
   }, [dispatch, chain, user]);

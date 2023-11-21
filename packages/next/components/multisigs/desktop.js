@@ -2,15 +2,20 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import NoBorderList from "next-common/components/styledList/noBorderList";
 import { ListCard } from "components/myvotes/styled";
 import { useSelector } from "react-redux";
-import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
+import {
+  fetchMyMultisigs,
+  myMultisigsSelector,
+} from "next-common/store/reducers/multisigSlice";
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
-import { textEllipsis } from "next-common/utils";
-import { useState } from "react";
+import { cn, textEllipsis } from "next-common/utils";
+import { useCallback, useState } from "react";
 import CallPopup from "./callPopup";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain } from "next-common/context/chain";
+import Pagination from "next-common/components/pagination";
+import { useDispatch } from "react-redux";
 
 function When({ height, index }) {
   const chain = useChain();
@@ -41,6 +46,7 @@ function Call({ when, callHash, call, callHex }) {
       </Copyable>
       {showPopup && (
         <CallPopup
+          call={call}
           callHex={callHex}
           blockHeight={when.height}
           setShow={setShowPopup}
@@ -91,8 +97,29 @@ function Signatories({ signatories, signatoriesCount }) {
   );
 }
 
+const MultisigStatus = {
+  Approving: "Approving",
+  Cancelled: "Cancelled",
+  Executed: "Executed",
+};
+
 function Status({ name }) {
-  return <span className="text-textPrimary">{name}</span>;
+  let textColor = "";
+  switch (name) {
+    case MultisigStatus.Approving: {
+      textColor = "text-theme500";
+      break;
+    }
+    case MultisigStatus.Cancelled: {
+      textColor = "text-red500";
+      break;
+    }
+    case MultisigStatus.Executed: {
+      textColor = "text-green500";
+      break;
+    }
+  }
+  return <span className={cn("text-textPrimary", textColor)}>{name}</span>;
 }
 
 export default function DesktopList() {
@@ -102,12 +129,7 @@ export default function DesktopList() {
   const columns = [
     {
       name: "Address",
-      style: {
-        textAlign: "left",
-        minWidth: "128px",
-        maxWidth: 600,
-        paddingRight: 16,
-      },
+      style: { textAlign: "left", width: "128px", minWidth: "128px" },
     },
     {
       name: "When",
@@ -115,7 +137,7 @@ export default function DesktopList() {
     },
     {
       name: "Call",
-      style: { textAlign: "left", width: "230px", minWidth: "128px" },
+      style: { textAlign: "left", minWidth: "280px" },
     },
     {
       name: "Approving",
@@ -131,7 +153,7 @@ export default function DesktopList() {
     },
   ];
 
-  const rows = (myMultisigs?.multisigs || []).map((multisig) => [
+  const rows = (myMultisigs?.items || []).map((multisig) => [
     <AddressUser key="address" add={multisig.address} />,
     <When key="when" {...multisig?.when} />,
     <Call key="call" {...multisig} />,
@@ -140,11 +162,30 @@ export default function DesktopList() {
     <Status key="status" {...multisig?.state} />,
   ]);
 
+  const dispatch = useDispatch();
+  const chain = useChain();
+
+  const onPageChange = useCallback(
+    (e, page) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dispatch(
+        fetchMyMultisigs(
+          chain,
+          "13fnouKsAaWxBxCx9VarXBNyYo7vUCeTUbRmQBjytju8YqqB",
+          page,
+        ),
+      );
+    },
+    [dispatch, chain],
+  );
+
   return (
     <ListCard>
       <ScrollerX>
         <NoBorderList loading={false} columns={columns} rows={rows} />
       </ScrollerX>
+      <Pagination {...myMultisigs} onPageChange={onPageChange} />
     </ListCard>
   );
 }
