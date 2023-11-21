@@ -17,6 +17,7 @@ import treasury from "./treasury";
 import preImagesReducer from "./preImagesSlice";
 import myOnChainData from "./myOnChainData";
 import detailReducer from "./detailSlice";
+import multisigSlice from "./multisigSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -36,4 +37,5 @@ export default combineReducers({
   preImages: preImagesReducer,
   ...myOnChainData,
   detail: detailReducer,
+  multisig: multisigSlice,
 });

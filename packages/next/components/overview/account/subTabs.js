@@ -14,6 +14,17 @@ export function AccountSubTabs() {
       },
       url: "/account/votes",
     },
+    {
+      label: "My Multisigs",
+      render({ active }) {
+        return (
+          <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
+            My Multisigs
+          </Title>
+        );
+      },
+      url: "/account/multisigs",
+    },
   ];
 
   return <UrlTabs tabs={tabs} />;
