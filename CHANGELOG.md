@@ -9,6 +9,7 @@ date: 2023-11-20
 - Show bounty balance on bounty detail page.
 - Enable OpenGov for Bifrost Polkadot and Rococo.
 - Update dependencies.
+- Fix my referenda votes unlock-able balance calculation.
 
 ### 3.6.4
 date: 2023-11-03
