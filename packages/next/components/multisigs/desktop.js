@@ -9,13 +9,14 @@ import {
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
 import { cn, textEllipsis } from "next-common/utils";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CallPopup from "./callPopup";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain } from "next-common/context/chain";
 import Pagination from "next-common/components/pagination";
 import { useDispatch } from "react-redux";
+import { useUser } from "next-common/context/user";
 
 function When({ height, index }) {
   const chain = useChain();
@@ -123,8 +124,24 @@ function Status({ name }) {
 }
 
 export default function DesktopList() {
+  const dispatch = useDispatch();
+  const chain = useChain();
+  const user = useUser();
+  const [page, setPage] = useState(1);
   const myMultisigs = useSelector(myMultisigsSelector);
-  console.log(myMultisigs);
+
+  useEffect(() => {
+    if (!user?.address) {
+      return;
+    }
+    dispatch(fetchMyMultisigs(chain, user?.address, page));
+  }, [dispatch, chain, page, user?.address]);
+
+  const onPageChange = useCallback((e, page) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPage(page);
+  }, []);
 
   const columns = [
     {
@@ -162,30 +179,12 @@ export default function DesktopList() {
     <Status key="status" {...multisig?.state} />,
   ]);
 
-  const dispatch = useDispatch();
-  const chain = useChain();
-
-  const onPageChange = useCallback(
-    (e, page) => {
-      e.preventDefault();
-      e.stopPropagation();
-      dispatch(
-        fetchMyMultisigs(
-          chain,
-          "13fnouKsAaWxBxCx9VarXBNyYo7vUCeTUbRmQBjytju8YqqB",
-          page,
-        ),
-      );
-    },
-    [dispatch, chain],
-  );
-
   return (
     <ListCard>
       <ScrollerX>
         <NoBorderList loading={false} columns={columns} rows={rows} />
       </ScrollerX>
-      <Pagination {...myMultisigs} onPageChange={onPageChange} />
+      <Pagination {...myMultisigs} page={page} onPageChange={onPageChange} />
     </ListCard>
   );
 }

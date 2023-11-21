@@ -20,6 +20,47 @@ export const { setMyMultisigs } = multisigSlice.actions;
 
 export default multisigSlice.reducer;
 
+const getMultisigsQuery = (address, page, pageSize) => `query MyMultisigsQuery {
+  multisigs(
+    limit: ${pageSize}
+    offset: ${(page - 1) * pageSize}
+    account: "${address}"
+  ) {
+    total
+    offset
+    limit
+    multisigs {
+      address
+      approvals
+      call
+      callHash
+      callHex
+      deposit
+      depositor
+      id
+      isFinal
+      signatories
+      signatoriesCount
+      threshold
+      when {
+        index
+        height
+      }
+      state {
+        name
+        args
+      }
+      indexer {
+        extrinsicIndex
+        eventIndex
+        blockTime
+        blockHeight
+        blockHash
+      }
+    }
+  }
+}`;
+
 export const fetchMyMultisigs =
   (chain, address, page = 1, pageSize = 25) =>
   async (dispatch) => {
@@ -31,48 +72,8 @@ export const fetchMyMultisigs =
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           extensions: {},
-          operationName: "MyQuery",
-          query: `
-            query MyQuery {
-              multisigs(
-                limit: ${pageSize}
-                offset: ${(page - 1) * pageSize}
-                account: "${address}"
-              ) {
-                total
-                offset
-                limit
-                multisigs {
-                  address
-                  approvals
-                  call
-                  callHash
-                  callHex
-                  deposit
-                  depositor
-                  id
-                  isFinal
-                  signatories
-                  signatoriesCount
-                  threshold
-                  when {
-                    index
-                    height
-                  }
-                  state {
-                    name
-                    args
-                  }
-                  indexer {
-                    extrinsicIndex
-                    eventIndex
-                    blockTime
-                    blockHeight
-                    blockHash
-                  }
-                }
-              }
-            }`,
+          operationName: "MyMultisigsQuery",
+          query: getMultisigsQuery(address, page, pageSize),
         }),
       },
     );
