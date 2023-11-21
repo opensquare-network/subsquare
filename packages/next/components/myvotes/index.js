@@ -5,7 +5,6 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 import { useChainSettings } from "next-common/context/chain";
 import ModuleVotes from "./moduleVotes";
-import AccountInfo from "next-common/components/overview/accountInfo";
 
 export default function MyVotes() {
   const { hasReferenda, noDemocracyModule } = useChainSettings();
@@ -26,9 +25,7 @@ export default function MyVotes() {
   }
 
   return (
-    <div className="space-y-6">
-      <AccountInfo hideManageAccountLink />
-
+    <div>
       <ModuleTabProvider availableTabs={availableTabs} defaultTab={defaultTab}>
         <ModuleVotes />
       </ModuleTabProvider>
