@@ -23,4 +23,9 @@ export const {
   setDecisionDeposits: setMyFellowshipDecisionDeposits,
 } = myFellowshipDepositsSlice.actions;
 
+export const myFellowshipSubmissionDepositsSelector = (state) =>
+  state[name].submissionDeposits;
+export const myFellowshipDecisionDepositsSelector = (state) =>
+  state[name].decisionDeposits;
+
 export default myFellowshipDepositsSlice.reducer;
