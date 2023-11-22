@@ -28,7 +28,7 @@ function getCallState(fn, values = []) {
 
 function getExtrinsicValues(value) {
   if (!value) {
-    return undefined;
+    return value;
   }
 
   if (value.isValid === undefined) {
@@ -39,12 +39,16 @@ function getExtrinsicValues(value) {
     return undefined;
   }
 
-  if (Array.isArray(value.data)) {
-    return value.data.map((v) => getExtrinsicValues(v));
+  if (!value.data) {
+    return value.data;
   }
 
-  if (value.data.registry) {
+  if (value.data?.registry) {
     return value.data;
+  }
+
+  if (Array.isArray(value.data)) {
+    return value.data.map((v) => getExtrinsicValues(v));
   }
 
   if (typeof value.data === "object") {
@@ -84,12 +88,14 @@ export default function Extrinsic({
     try {
       console.log(values);
       const fnValues = getExtrinsicValues(values);
+      console.log(fnValues);
       const tx = fn(...fnValues);
       setValue({
         isValid: true,
         data: tx,
       });
     } catch (e) {
+      console.error(e);
       setValue({
         isValid: false,
         data: undefined,

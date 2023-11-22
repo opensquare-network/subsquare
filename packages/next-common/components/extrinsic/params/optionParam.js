@@ -29,17 +29,11 @@ export default function OptionParam({ title, def, value, setValue }) {
       }
 
       if (typeof valuesOrFunction === "function") {
-        setValue((prev) => ({
-          isValid: true,
-          data: valuesOrFunction(prev),
-        }));
+        setValue((prev) => valuesOrFunction(prev));
         return;
       }
 
-      setValue({
-        isValid: true,
-        data: valuesOrFunction,
-      });
+      setValue(valuesOrFunction);
     },
     [isOn, setValue],
   );
@@ -59,12 +53,14 @@ export default function OptionParam({ title, def, value, setValue }) {
 
   return (
     <>
-      {title}
+      <div className="flex items-center justify-between">
+        {title}
+        <div className="flex justify-end gap-[8px]">
+          <IncludeOption isOn={isOn} setIsOn={_setIsOn} />
+        </div>
+      </div>
       <div className="flex flex-col">
         <IndentPanel className="flex flex-col gap-[8px]">
-          <div className="flex justify-end gap-[8px]">
-            <IncludeOption isOn={isOn} setIsOn={_setIsOn} />
-          </div>
           {isOn && (
             <Param
               name={subType?.name}

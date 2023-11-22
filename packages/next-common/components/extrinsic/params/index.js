@@ -36,7 +36,7 @@ export default function Params({ params, value, setValue = noop }) {
     <IndentPanel className="flex flex-col gap-[8px]">
       {params.map((param, index) => (
         <ItemParam
-          key={param?.name}
+          key={index}
           name={param?.name}
           def={param?.type}
           index={index}
