@@ -21,4 +21,9 @@ const myReferendaDepositsSlice = createSlice({
 export const { setSubmissionDeposits, setDecisionDeposits } =
   myReferendaDepositsSlice.actions;
 
+export const myReferendaSubmissionDepositsSelector = (state) =>
+  state[name].submissionDeposits;
+export const myReferendaDecisionDepositsSelector = (state) =>
+  state[name].decisionDeposits;
+
 export default myReferendaDepositsSlice.reducer;
