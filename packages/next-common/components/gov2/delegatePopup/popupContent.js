@@ -78,7 +78,7 @@ export default function PopupContent({
       return showErrorToast(err.message);
     }
 
-    if (bnVoteBalance.times(selectedTracks.length).gt(votingBalance)) {
+    if (bnVoteBalance.gt(votingBalance)) {
       return showErrorToast("Insufficient voting balance");
     }
 
