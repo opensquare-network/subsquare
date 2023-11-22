@@ -26,6 +26,38 @@ function getCallState(fn, values = []) {
   };
 }
 
+function getExtrinsicValues(value) {
+  if (!value) {
+    return undefined;
+  }
+
+  if (value.isValid === undefined) {
+    return value.data;
+  }
+
+  if (value.isValid !== true) {
+    return undefined;
+  }
+
+  if (Array.isArray(value.data)) {
+    return value.data.map((v) => getExtrinsicValues(v));
+  }
+
+  if (value.data.registry) {
+    return value.data;
+  }
+
+  if (typeof value.data === "object") {
+    const values = {};
+    for (const key in value.data) {
+      values[key] = getExtrinsicValues(value.data[key]);
+    }
+    return values;
+  }
+
+  return value.data;
+}
+
 export default function Extrinsic({
   defaultSectionName,
   defaultMethodName,
@@ -36,7 +68,6 @@ export default function Extrinsic({
   const [sectionName, setSectionName] = useState(defaultSectionName);
   const [methodName, setMethodName] = useState(defaultMethodName);
   const [callState, setCallState] = useState();
-  console.log(callState);
 
   const [callValues, setCallValues] = useObjectItemState({
     items: callState,
@@ -51,10 +82,17 @@ export default function Extrinsic({
     const { fn } = extrinsic;
 
     try {
-      const tx = fn(...values);
-      setValue(tx);
+      const fnValues = getExtrinsicValues(values);
+      const tx = fn(...fnValues);
+      setValue({
+        isValid: true,
+        data: tx,
+      });
     } catch (e) {
-      setValue(undefined);
+      setValue({
+        isValid: false,
+        data: undefined,
+      });
     }
   }, [callState, setValue]);
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import Select from "next-common/components/select/index.js";
 
@@ -8,11 +8,22 @@ const options = [
 ];
 
 export default function BoolParam({ value, setValue }) {
+  const { data } = value || {};
+  const _setValue = useCallback(
+    (data) => {
+      setValue({
+        isValid: true,
+        data,
+      });
+    },
+    [setValue],
+  );
+
   return (
     <Select
       options={options}
-      value={value}
-      onChange={(item) => setValue(item.value)}
+      value={data}
+      onChange={(item) => _setValue(item.value)}
     />
   );
 }

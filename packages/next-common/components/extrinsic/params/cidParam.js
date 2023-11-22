@@ -1,9 +1,7 @@
-import TextParam from "./textParam";
-
-import { CID, digest, varint } from "multiformats";
-
+import { CID } from "multiformats";
 import { u8aToHex } from "@polkadot/util";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback } from "react";
+import TextInput from "next-common/components/textInput";
 
 function fromIpfsCid(cid) {
   try {
@@ -28,48 +26,40 @@ function fromIpfsCid(cid) {
   }
 }
 
-function toIpfsCid(cid) {
-  try {
-    const {
-      codec,
-      hash_: { code, digest: _bytes },
-      version,
-    } = cid;
-
-    const bytes = Buffer.from(_bytes.replace(/^0x/, ""), "hex");
-    const codeLen = varint.encodingLength(code);
-    const sizeLen = varint.encodingLength(bytes.length);
-    const encoded = new Uint8Array(codeLen + sizeLen + bytes.length);
-
-    varint.encodeTo(code, encoded, 0);
-    varint.encodeTo(bytes.length, encoded, codeLen);
-    encoded.set(bytes, codeLen + sizeLen);
-
-    return CID.create(version, codec, digest.decode(encoded)).toString();
-  } catch (error) {
-    console.error(`toIpfsCid: ${error.message}::`, cid);
-
-    return null;
-  }
-}
-
 export default function CidParam({ value, setValue }) {
-  const [inputCid, setInputCid] = useState("");
-  const cid = useMemo(() => toIpfsCid(value), [value]);
-  console.log(cid, "===", inputCid);
+  const { data } = value || {};
 
-  useEffect(() => {
-    if (!inputCid) {
-      setValue(undefined);
-      return;
-    }
-    setValue(fromIpfsCid(inputCid));
-  }, [inputCid]);
+  const _setValue = useCallback(
+    (data) => {
+      if (!data) {
+        setValue({
+          isValid: false,
+          data,
+        });
+        return;
+      }
+
+      const cid = fromIpfsCid(data);
+      if (!cid) {
+        setValue({
+          isValid: false,
+          data,
+        });
+        return;
+      }
+
+      setValue({
+        isValid: true,
+        data: cid,
+      });
+    },
+    [setValue],
+  );
 
   return (
-    <TextParam
-      value={inputCid}
-      setValue={setInputCid}
+    <TextInput
+      value={data}
+      setValue={_setValue}
       placeholder="IPFS compatible CID"
     />
   );

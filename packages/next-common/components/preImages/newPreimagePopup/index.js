@@ -61,9 +61,12 @@ export default function NewPreimagePopup({ onClose }) {
   const isLoading = !api;
 
   const setProposal = useCallback(
-    (tx) => {
+    ({ isValid, data: tx }) => {
       if (!api) {
         return;
+      }
+      if (!isValid) {
+        return setState(EMPTY_PROPOSAL);
       }
       const state = getState(api, tx);
       setState(state);

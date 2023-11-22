@@ -32,7 +32,10 @@ export default function VoteParam({ setValue }) {
   );
 
   useEffect(() => {
-    setValue(vote);
+    setValue({
+      isValid: true,
+      data: vote,
+    });
   }, [vote]);
 
   return (

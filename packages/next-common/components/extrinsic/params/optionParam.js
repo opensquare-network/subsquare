@@ -21,16 +21,25 @@ export default function OptionParam({ def, value, setValue }) {
   const _setValue = useCallback(
     (valuesOrFunction) => {
       if (!isOn) {
-        setValue(null);
+        setValue({
+          isValid: true,
+          data: null,
+        });
         return;
       }
 
       if (typeof valuesOrFunction === "function") {
-        setValue((prev) => valuesOrFunction(prev));
+        setValue((prev) => ({
+          isValid: true,
+          data: valuesOrFunction(prev),
+        }));
         return;
       }
 
-      setValue(valuesOrFunction);
+      setValue({
+        isValid: true,
+        data: valuesOrFunction,
+      });
     },
     [isOn, setValue],
   );
@@ -39,7 +48,10 @@ export default function OptionParam({ def, value, setValue }) {
     setIsOn((prev) => {
       const isOn = !prev;
       if (!isOn) {
-        setValue(null);
+        setValue({
+          isValid: true,
+          data: null,
+        });
       }
       return isOn;
     });

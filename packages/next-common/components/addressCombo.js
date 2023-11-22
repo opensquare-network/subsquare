@@ -101,7 +101,12 @@ const IdentityName = styled.div`
   gap: 4px;
 `;
 
-export default function AddressCombo({ accounts, address, setAddress }) {
+export default function AddressCombo({
+  accounts,
+  address,
+  setAddress,
+  allowInvalidAddress = false,
+}) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(address);
@@ -142,19 +147,26 @@ export default function AddressCombo({ accounts, address, setAddress }) {
   }, [fetchAddressIdentity, address]);
 
   const onBlur = () => {
-    const isAddr = isAddress(inputAddress);
-    if (isAddr) {
-      const ss58Addr = normalizeAddress(inputAddress);
-      if (!ss58Addr) {
-        setAddress();
-        return;
-      }
-      setAddress(ss58Addr);
-      setInputAddress(ss58Addr);
-      setEdit(false);
-    } else {
-      setAddress();
+    if (allowInvalidAddress) {
+      setAddress(inputAddress);
+      return;
     }
+
+    const isAddr = isAddress(inputAddress);
+    if (!isAddr) {
+      setAddress();
+      return;
+    }
+
+    const ss58Addr = normalizeAddress(inputAddress);
+    if (!ss58Addr) {
+      setAddress();
+      return;
+    }
+
+    setAddress(ss58Addr);
+    setInputAddress(ss58Addr);
+    setEdit(false);
   };
 
   useOnClickOutside(ref, () => {

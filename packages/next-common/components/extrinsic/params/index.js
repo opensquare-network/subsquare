@@ -1,11 +1,36 @@
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import ItemParam from "./itemParam";
 import noop from "lodash.noop";
+import { useCallback } from "react";
 
-export default function Params({ params, value = [], setValue = noop }) {
+export default function Params({ params, value, setValue = noop }) {
   if (!params || params?.length === 0) {
     return null;
   }
+
+  const { data = [] } = value || {};
+  const _setValue = useCallback(
+    (valuesOrFunction) => {
+      if (typeof valuesOrFunction === "function") {
+        setValue(({ data }) => {
+          const newData = valuesOrFunction(data);
+          const isValid = newData?.every((item) => item?.isValid);
+          return {
+            isValid,
+            data: newData,
+          };
+        });
+        return;
+      }
+
+      const isValid = valuesOrFunction?.every((item) => item?.isValid);
+      setValue({
+        isValid,
+        data: valuesOrFunction,
+      });
+    },
+    [setValue],
+  );
 
   return (
     <IndentPanel className="flex flex-col gap-[8px]">
@@ -15,8 +40,8 @@ export default function Params({ params, value = [], setValue = noop }) {
           name={param?.name}
           def={param?.type}
           index={index}
-          value={value}
-          setValue={setValue}
+          value={data}
+          setValue={_setValue}
         />
       ))}
     </IndentPanel>

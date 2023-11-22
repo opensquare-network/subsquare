@@ -13,20 +13,32 @@ export default function StructParam({ def, value, setValue }) {
       if (typeof valuesOrFunction === "function") {
         setValue((prev) => {
           const newValue = valuesOrFunction(Object.values(prev || {}));
+
+          let isValid = true;
           const struct = {};
           for (let i = 0; i < params.length; i++) {
             struct[params[i].name] = newValue[i];
+            isValid = isValid && !newValue[i].isValid;
           }
-          return struct;
+
+          return {
+            isValid,
+            data: struct,
+          };
         });
         return;
       }
 
+      let isValid = true;
       const struct = {};
       for (let i = 0; i < params.length; i++) {
         struct[params[i].name] = valuesOrFunction[i];
+        isValid = isValid && !valuesOrFunction[i].isValid;
       }
-      setValue(struct);
+      setValue({
+        isValid,
+        data: struct,
+      });
     },
     [params, setValue],
   );

@@ -17,18 +17,25 @@ function UploadOption({ isUpload, setIsUpload }) {
 
 export default function BytesParam({ value, setValue }) {
   const [isUpload, setIsUpload] = useState(false);
-
   const _setIsUpload = useCallback(() => {
     setIsUpload((prev) => {
-      setValue("");
+      setValue({
+        isValid: false,
+        data: "",
+      });
       return !prev;
     });
   }, [setValue]);
 
   const [file, setFile] = useState();
   useEffect(() => {
-    if (!isUpload || !file) return;
-    setValue("0x" + Buffer.from(file.data).toString("hex"));
+    if (!isUpload || !file) {
+      return;
+    }
+    setValue({
+      isValid: true,
+      data: "0x" + Buffer.from(file.data).toString("hex"),
+    });
   }, [isUpload, file, setValue]);
 
   return (
@@ -44,8 +51,8 @@ export default function BytesParam({ value, setValue }) {
         </FileParam>
       ) : (
         <TextParam
-          value={value ?? ""}
-          setValue={(v) => setValue(v ? v : undefined)}
+          value={value}
+          setValue={setValue}
           placeholder="0x prefixed hex, e.g. 0x1234 or ascii data"
         />
       )}

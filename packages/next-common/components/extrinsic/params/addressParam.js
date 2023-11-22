@@ -1,5 +1,7 @@
 import AddressCombo from "next-common/components/addressCombo";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+import { isAddress } from "@polkadot/util-crypto";
+import { useCallback, useEffect } from "react";
 
 export default function AddressParam({ value, setValue }) {
   const extensionAccounts = useExtensionAccounts();
@@ -7,11 +9,40 @@ export default function AddressParam({ value, setValue }) {
     address: acc.address,
     name: acc.meta.name,
   }));
+
+  useEffect(() => {
+    setValue({
+      isValid: false,
+      data: "",
+    });
+  }, []);
+
+  const { data } = value || {};
+  const _setValue = useCallback(
+    (data) => {
+      if (!data) {
+        setValue({
+          isValid: false,
+          data: "",
+        });
+        return;
+      }
+
+      const isValid = isAddress(data);
+      setValue({
+        isValid,
+        data,
+      });
+    },
+    [setValue],
+  );
+
   return (
     <AddressCombo
-      address={value ?? ""}
-      setAddress={setValue}
+      address={data ?? ""}
+      setAddress={_setValue}
       accounts={accounts}
+      allowInvalidAddress
     />
   );
 }

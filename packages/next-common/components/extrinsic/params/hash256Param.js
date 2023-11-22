@@ -1,9 +1,9 @@
 import Toggle from "next-common/components/toggle";
-import TextParam from "./textParam";
 import { useEffect, useState } from "react";
 import FileParam from "./fileParam";
 import useApi from "next-common/utils/hooks/useApi";
 import { u8aToHex } from "@polkadot/util";
+import TextParam from "./textParam";
 
 function FileHashOption({ isFileHash, setIsFileHash }) {
   return (
@@ -17,13 +17,20 @@ function FileHashOption({ isFileHash, setIsFileHash }) {
 }
 
 export default function Hash256Param({ value, setValue }) {
+  const { data } = value || {};
   const api = useApi();
   const [isFileHash, setIsFileHash] = useState(false);
-
   const [file, setFile] = useState();
+
   useEffect(() => {
-    if (!api || !isFileHash || !file) return;
-    setValue(u8aToHex(api.registry.hash(file.data)));
+    if (!api || !isFileHash || !file) {
+      return;
+    }
+    const data = u8aToHex(api.registry.hash(file.data));
+    setValue({
+      isValid: true,
+      data,
+    });
   }, [api, isFileHash, file, setValue]);
 
   return (
@@ -33,12 +40,12 @@ export default function Hash256Param({ value, setValue }) {
       </div>
       {isFileHash ? (
         <FileParam file={file} setFile={setFile}>
-          <span className="text-textSecondary">{value}</span>
+          <span className="text-textSecondary">{data}</span>
         </FileParam>
       ) : (
         <TextParam
-          value={value ?? ""}
-          setValue={(v) => setValue(v ? v : undefined)}
+          value={value}
+          setValue={setValue}
           placeholder="0x prefixed hex, e.g. 0x1234 or ascii data"
         />
       )}

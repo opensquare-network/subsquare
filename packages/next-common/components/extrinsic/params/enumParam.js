@@ -3,7 +3,6 @@ import { getTypeDef } from "@polkadot/types";
 import Select from "next-common/components/select";
 import useApi from "next-common/utils/hooks/useApi";
 import Param from "./param";
-import { useObjectItemState } from "next-common/hooks/useItemState";
 
 function getSubTypes(registry, type) {
   return getTypeDef(registry.createType(type.type).toRawType()).sub;
@@ -35,28 +34,57 @@ export default function EnumParam({ def, value, setValue }) {
 
   const [enumType, setEnumType] = useState();
 
-  const [itemValue, setItemValue] = useObjectItemState({
-    items: value,
-    itemIndex: enumType,
-    setItems: setValue,
-  });
+  const itemValue = value?.data?.[enumType];
+  const setItemValue = useCallback(
+    (valuesOrFunction) => {
+      if (typeof valuesOrFunction === "function") {
+        setValue(({ data }) => {
+          const newData = valuesOrFunction(data?.[enumType]);
+          let isValid = true;
+          if (newData !== undefined) {
+            isValid = newData.isValid;
+          }
+          return {
+            isValid,
+            data: { [enumType]: newData },
+          };
+        });
+      }
+
+      const newData = valuesOrFunction;
+      let isValid = true;
+      if (newData !== undefined) {
+        isValid = newData.isValid;
+      }
+      setValue({
+        isValid,
+        data: { [enumType]: newData },
+      });
+      return;
+    },
+    [setValue, enumType],
+  );
 
   const onSelectEnumOption = useCallback(
     (o) => {
-      if (enumType === o.value) return;
+      if (enumType === o.value) {
+        return;
+      }
       setEnumType(o.value);
       setValue({
-        [o.value]: undefined,
+        isValid: true,
+        data: { [o.value]: undefined },
       });
     },
     [enumType, setValue],
   );
 
   useEffect(() => {
-    const type = options?.[0]?.value;
-    setEnumType(type);
+    const enumType = options?.[0]?.value;
+    setEnumType(enumType);
     setValue({
-      [type]: undefined,
+      isValid: true,
+      data: { [enumType]: undefined },
     });
   }, [options?.[0]?.value, setValue]);
 

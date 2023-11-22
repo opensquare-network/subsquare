@@ -29,7 +29,7 @@ export function getParams(inputParams, prev, max) {
   return params;
 }
 
-export default function VectorParam({ def, value = [], setValue = noop }) {
+export default function VectorParam({ def, value, setValue = noop }) {
   const api = useApi();
   const registry = api?.registry;
   const inputParams = useParamDefs(registry, def);
@@ -42,13 +42,44 @@ export default function VectorParam({ def, value = [], setValue = noop }) {
   }, [inputParams, count]);
 
   useEffect(() => {
-    setValue((prev) => prev?.slice(0, count));
+    setValue(({ data = [] } = {}) => {
+      const newData = data?.slice(0, count);
+      const isValid = newData?.every((item) => item?.isValid);
+      return {
+        isValid,
+        data: newData,
+      };
+    });
   }, [setValue, count]);
 
   const _rowAdd = useCallback(() => setCount((count) => count + 1), []);
   const _rowRemove = useCallback(
     () => setCount((count) => Math.max(count - 1, 0)),
     [],
+  );
+
+  const { data = [] } = value || {};
+  const _setValue = useCallback(
+    (valuesOrFunction) => {
+      if (typeof valuesOrFunction === "function") {
+        setValue(({ data }) => {
+          const newData = valuesOrFunction(data);
+          const isValid = newData?.every((item) => item?.isValid);
+          return {
+            isValid,
+            data: newData,
+          };
+        });
+        return;
+      }
+
+      const isValid = valuesOrFunction?.every((item) => item?.isValid);
+      setValue({
+        isValid,
+        data: valuesOrFunction,
+      });
+    },
+    [setValue],
   );
 
   return (
@@ -68,8 +99,8 @@ export default function VectorParam({ def, value = [], setValue = noop }) {
             name={param?.name}
             def={param?.type}
             index={index}
-            value={value}
-            setValue={setValue}
+            value={data}
+            setValue={_setValue}
           />
         ))}
       </IndentPanel>
