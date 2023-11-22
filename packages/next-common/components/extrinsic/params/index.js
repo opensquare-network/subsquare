@@ -12,7 +12,7 @@ export default function Params({ params, value, setValue = noop }) {
   const _setValue = useCallback(
     (valuesOrFunction) => {
       if (typeof valuesOrFunction === "function") {
-        setValue(({ data }) => {
+        setValue(({ data } = {}) => {
           const newData = valuesOrFunction(data);
           const isValid = newData?.every((item) => item?.isValid);
           return {

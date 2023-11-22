@@ -82,6 +82,7 @@ export default function Extrinsic({
     const { fn } = extrinsic;
 
     try {
+      console.log(values);
       const fnValues = getExtrinsicValues(values);
       const tx = fn(...fnValues);
       setValue({

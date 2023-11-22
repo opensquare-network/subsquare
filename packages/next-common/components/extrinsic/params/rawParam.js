@@ -1,5 +1,12 @@
 import TextParam from "./textParam";
 
-export default function RawParam({ value, setValue }) {
-  return <TextParam value={value} setValue={setValue} placeholder="Hex data" />;
+export default function RawParam({ title, value, setValue }) {
+  return (
+    <TextParam
+      title={title}
+      value={value}
+      setValue={setValue}
+      placeholder="Hex data"
+    />
+  );
 }

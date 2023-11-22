@@ -13,6 +13,7 @@ export default function MaybePolkadotSigner({
   Component,
   wide,
   maskClosable,
+  className,
   ...props
 }) {
   const dispatch = useDispatch();
@@ -77,6 +78,7 @@ export default function MaybePolkadotSigner({
         onClose={onClose}
         title={title}
         maskClosable={maskClosable}
+        className={className}
       >
         <Component onClose={onClose} {...props} />
       </Popup>

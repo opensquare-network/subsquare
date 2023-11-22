@@ -3,7 +3,7 @@ import { useExtensionAccounts } from "next-common/components/popupWithSigner/con
 import { isAddress } from "@polkadot/util-crypto";
 import { useCallback, useEffect } from "react";
 
-export default function AddressParam({ value, setValue }) {
+export default function AddressParam({ title, value, setValue }) {
   const extensionAccounts = useExtensionAccounts();
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
@@ -38,11 +38,14 @@ export default function AddressParam({ value, setValue }) {
   );
 
   return (
-    <AddressCombo
-      address={data ?? ""}
-      setAddress={_setValue}
-      accounts={accounts}
-      allowInvalidAddress
-    />
+    <>
+      {title}
+      <AddressCombo
+        address={data ?? ""}
+        setAddress={_setValue}
+        accounts={accounts}
+        allowInvalidAddress
+      />
+    </>
   );
 }

@@ -22,7 +22,7 @@ function getOptions(registry, type) {
   };
 }
 
-export default function EnumParam({ def, value, setValue }) {
+export default function EnumParam({ title, def, value, setValue }) {
   const api = useApi();
 
   const { options, subTypes } = useMemo(() => {
@@ -49,6 +49,7 @@ export default function EnumParam({ def, value, setValue }) {
             data: { [enumType]: newData },
           };
         });
+        return;
       }
 
       const newData = valuesOrFunction;
@@ -91,23 +92,27 @@ export default function EnumParam({ def, value, setValue }) {
   const subType = (subTypes || []).find((item) => item.name === enumType);
 
   return (
-    <div className="flex flex-col gap-[8px]">
-      <Select
-        options={options}
-        value={enumType}
-        onChange={onSelectEnumOption}
-        maxDisplayItem={5}
-      />
-      {subType && (
-        <Param
-          key={subType.name}
-          name={subType.name}
-          def={subType}
-          indent={true}
-          value={itemValue}
-          setValue={setItemValue}
+    <>
+      {title}
+
+      <div className="flex flex-col gap-[8px]">
+        <Select
+          options={options}
+          value={enumType}
+          onChange={onSelectEnumOption}
+          maxDisplayItem={5}
         />
-      )}
-    </div>
+        {subType && (
+          <Param
+            key={subType.name}
+            name={subType.name}
+            def={subType}
+            indent={true}
+            value={itemValue}
+            setValue={setItemValue}
+          />
+        )}
+      </div>
+    </>
   );
 }

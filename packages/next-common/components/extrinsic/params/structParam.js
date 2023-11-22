@@ -3,22 +3,28 @@ import useParamDefs from "./useParamDefs";
 import Params from ".";
 import { useCallback } from "react";
 
-export default function StructParam({ def, value, setValue }) {
+export default function StructParam({ title, def, value, setValue }) {
   const api = useApi();
   const params = useParamDefs(api?.registry, def);
-  const v = Object.values(value || {});
+  const structValues = {
+    isValid: !!value?.isValid,
+    data: Object.values(value?.data || {}),
+  };
 
   const _setValue = useCallback(
     (valuesOrFunction) => {
       if (typeof valuesOrFunction === "function") {
         setValue((prev) => {
-          const newValue = valuesOrFunction(Object.values(prev || {}));
+          const structValues = {
+            isValid: !!prev?.isValid,
+            data: Object.values(prev?.data || {}),
+          };
+          const newValue = valuesOrFunction(structValues);
 
-          let isValid = true;
+          const isValid = newValue.isValid;
           const struct = {};
           for (let i = 0; i < params.length; i++) {
-            struct[params[i].name] = newValue[i];
-            isValid = isValid && !newValue[i].isValid;
+            struct[params[i].name] = newValue.data[i];
           }
 
           return {
@@ -29,11 +35,11 @@ export default function StructParam({ def, value, setValue }) {
         return;
       }
 
-      let isValid = true;
+      const newValue = valuesOrFunction;
+      const isValid = newValue.isValid;
       const struct = {};
       for (let i = 0; i < params.length; i++) {
-        struct[params[i].name] = valuesOrFunction[i];
-        isValid = isValid && !valuesOrFunction[i].isValid;
+        struct[params[i].name] = newValue.data[i];
       }
       setValue({
         isValid,
@@ -43,5 +49,10 @@ export default function StructParam({ def, value, setValue }) {
     [params, setValue],
   );
 
-  return <Params params={params} value={v} setValue={_setValue} />;
+  return (
+    <>
+      {title}
+      <Params params={params} value={structValues} setValue={_setValue} />
+    </>
+  );
 }

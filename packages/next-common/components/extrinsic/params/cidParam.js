@@ -26,7 +26,7 @@ function fromIpfsCid(cid) {
   }
 }
 
-export default function CidParam({ value, setValue }) {
+export default function CidParam({ title, value, setValue }) {
   const { data } = value || {};
 
   const _setValue = useCallback(
@@ -57,10 +57,14 @@ export default function CidParam({ value, setValue }) {
   );
 
   return (
-    <TextInput
-      value={data}
-      setValue={_setValue}
-      placeholder="IPFS compatible CID"
-    />
+    <>
+      {title}
+
+      <TextInput
+        value={data}
+        setValue={_setValue}
+        placeholder="IPFS compatible CID"
+      />
+    </>
   );
 }

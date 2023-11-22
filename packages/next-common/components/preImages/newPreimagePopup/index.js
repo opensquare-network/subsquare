@@ -118,7 +118,7 @@ export default function NewPreimagePopup({ onClose }) {
 
   return (
     <SignerPopup
-      wide
+      className="w-[640px]"
       title="New Preimage"
       onClose={onClose}
       maskClosable={false}

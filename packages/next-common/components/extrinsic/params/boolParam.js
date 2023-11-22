@@ -7,7 +7,7 @@ const options = [
   { label: "Yes", value: true },
 ];
 
-export default function BoolParam({ value, setValue }) {
+export default function BoolParam({ title, value, setValue }) {
   const { data } = value || {};
   const _setValue = useCallback(
     (data) => {
@@ -20,10 +20,14 @@ export default function BoolParam({ value, setValue }) {
   );
 
   return (
-    <Select
-      options={options}
-      value={data}
-      onChange={(item) => _setValue(item.value)}
-    />
+    <>
+      {title}
+
+      <Select
+        options={options}
+        value={data}
+        onChange={(item) => _setValue(item.value)}
+      />
+    </>
   );
 }

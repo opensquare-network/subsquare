@@ -16,7 +16,7 @@ function FileHashOption({ isFileHash, setIsFileHash }) {
   );
 }
 
-export default function Hash256Param({ value, setValue }) {
+export default function Hash256Param({ title, value, setValue }) {
   const { data } = value || {};
   const api = useApi();
   const [isFileHash, setIsFileHash] = useState(false);
@@ -34,21 +34,30 @@ export default function Hash256Param({ value, setValue }) {
   }, [api, isFileHash, file, setValue]);
 
   return (
-    <div className="flex flex-col gap-[8px]">
-      <div className="flex justify-end gap-[8px]">
-        <FileHashOption isFileHash={isFileHash} setIsFileHash={setIsFileHash} />
+    <>
+      <div className="flex items-center justify-between">
+        {title}
+        <div className="flex justify-end gap-[8px]">
+          <FileHashOption
+            isFileHash={isFileHash}
+            setIsFileHash={setIsFileHash}
+          />
+        </div>
       </div>
-      {isFileHash ? (
-        <FileParam file={file} setFile={setFile}>
-          <span className="text-textSecondary">{data}</span>
-        </FileParam>
-      ) : (
-        <TextParam
-          value={value}
-          setValue={setValue}
-          placeholder="0x prefixed hex, e.g. 0x1234 or ascii data"
-        />
-      )}
-    </div>
+
+      <div className="flex flex-col gap-[8px]">
+        {isFileHash ? (
+          <FileParam file={file} setFile={setFile}>
+            <span className="text-textSecondary">{data}</span>
+          </FileParam>
+        ) : (
+          <TextParam
+            value={value}
+            setValue={setValue}
+            placeholder="0x prefixed hex, e.g. 0x1234 or ascii data"
+          />
+        )}
+      </div>
+    </>
   );
 }

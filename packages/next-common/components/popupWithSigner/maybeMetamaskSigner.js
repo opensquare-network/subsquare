@@ -10,6 +10,7 @@ export default function MaybeMetamaskSigner({
   Component,
   wide,
   maskClosable,
+  className,
   ...props
 }) {
   const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
@@ -29,6 +30,7 @@ export default function MaybeMetamaskSigner({
         onClose={onClose}
         title={title}
         maskClosable={maskClosable}
+        className={className}
       >
         <Component onClose={onClose} {...props} />
       </Popup>

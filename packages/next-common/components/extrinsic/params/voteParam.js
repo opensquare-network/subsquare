@@ -36,7 +36,7 @@ export default function VoteParam({ setValue }) {
       isValid: true,
       data: vote,
     });
-  }, [vote]);
+  }, [setValue, vote]);
 
   return (
     <div className="flex flex-col gap-[8px]">

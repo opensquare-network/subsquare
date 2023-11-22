@@ -15,7 +15,7 @@ function UploadOption({ isUpload, setIsUpload }) {
   );
 }
 
-export default function BytesParam({ value, setValue }) {
+export default function BytesParam({ title, value, setValue }) {
   const [isUpload, setIsUpload] = useState(false);
   const _setIsUpload = useCallback(() => {
     setIsUpload((prev) => {
@@ -39,23 +39,28 @@ export default function BytesParam({ value, setValue }) {
   }, [isUpload, file, setValue]);
 
   return (
-    <div className="flex flex-col gap-[8px]">
-      <div className="flex justify-end gap-[8px]">
-        <UploadOption isUpload={isUpload} setIsUpload={_setIsUpload} />
+    <>
+      <div className="flex items-center justify-between">
+        {title}
+        <div className="flex justify-end gap-[8px]">
+          <UploadOption isUpload={isUpload} setIsUpload={_setIsUpload} />
+        </div>
       </div>
-      {isUpload ? (
-        <FileParam file={file} setFile={setFile}>
-          <span className="text-textSecondary">
-            {file?.name} {formatNumber(file?.data.length)} bytes
-          </span>
-        </FileParam>
-      ) : (
-        <TextParam
-          value={value}
-          setValue={setValue}
-          placeholder="0x prefixed hex, e.g. 0x1234 or ascii data"
-        />
-      )}
-    </div>
+      <div className="flex flex-col gap-[8px]">
+        {isUpload ? (
+          <FileParam file={file} setFile={setFile}>
+            <span className="text-textSecondary">
+              {file?.name} {formatNumber(file?.data.length)} bytes
+            </span>
+          </FileParam>
+        ) : (
+          <TextParam
+            value={value}
+            setValue={setValue}
+            placeholder="0x prefixed hex, e.g. 0x1234 or ascii data"
+          />
+        )}
+      </div>
+    </>
   );
 }

@@ -196,22 +196,15 @@ export default function Param({ name, def, indent = false, value, setValue }) {
 
   const newDef = _def || def;
 
-  if (Component === NullParam) {
-    return null;
-  }
-
-  if (Component === VoteParam) {
-    return <VoteParam def={newDef} value={value} setValue={setValue} />;
-  }
+  const title = (
+    <span className="text12Bold whitespace-nowrap overflow-hidden">
+      {name && `${name}:`} {def.type}
+      {def.typeName && ` (${def.typeName})`}
+    </span>
+  );
 
   const content = (
-    <>
-      <span className="text12Bold whitespace-nowrap overflow-hidden">
-        {name && `${name}:`} {def.type}
-        {def.typeName && ` (${def.typeName})`}
-      </span>
-      <Component def={newDef} value={value} setValue={setValue} />
-    </>
+    <Component title={title} def={newDef} value={value} setValue={setValue} />
   );
 
   if (!indent) {

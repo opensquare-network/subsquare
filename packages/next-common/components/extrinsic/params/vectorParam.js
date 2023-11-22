@@ -29,7 +29,7 @@ export function getParams(inputParams, prev, max) {
   return params;
 }
 
-export default function VectorParam({ def, value, setValue = noop }) {
+export default function VectorParam({ title, def, value, setValue = noop }) {
   const api = useApi();
   const registry = api?.registry;
   const inputParams = useParamDefs(registry, def);
@@ -83,27 +83,34 @@ export default function VectorParam({ def, value, setValue = noop }) {
   );
 
   return (
-    <div className="flex flex-col">
-      <IndentPanel className="flex flex-col gap-[8px]">
+    <>
+      <div className="flex items-center justify-between">
+        {title}
         <div className="flex justify-end gap-[8px]">
           <IconButton onClick={_rowAdd}>
-            <PlusIcon size={20} />
+            <PlusIcon size={12} />
+            Add
           </IconButton>
           <IconButton onClick={_rowRemove}>
-            <SubtractIcon size={20} />
+            <SubtractIcon size={12} />
+            Remove
           </IconButton>
         </div>
-        {params.map((param, index) => (
-          <ItemParam
-            key={param.name}
-            name={param?.name}
-            def={param?.type}
-            index={index}
-            value={data}
-            setValue={_setValue}
-          />
-        ))}
-      </IndentPanel>
-    </div>
+      </div>
+      <div className="flex flex-col">
+        <IndentPanel className="flex flex-col gap-[8px]">
+          {params.map((param, index) => (
+            <ItemParam
+              key={param.name}
+              name={param?.name}
+              def={param?.type}
+              index={index}
+              value={data}
+              setValue={_setValue}
+            />
+          ))}
+        </IndentPanel>
+      </div>
+    </>
   );
 }

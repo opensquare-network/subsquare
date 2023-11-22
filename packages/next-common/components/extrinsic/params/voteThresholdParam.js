@@ -14,12 +14,16 @@ export const textMap = options.reduce((textMap, { text, value }) => {
   return textMap;
 }, {});
 
-export default function VoteThresholdParam({ value, setValue }) {
+export default function VoteThresholdParam({ title, value, setValue }) {
   return (
-    <Select
-      options={options}
-      value={value}
-      onChange={(item) => setValue(item.value)}
-    />
+    <>
+      {title}
+
+      <Select
+        options={options}
+        value={value}
+        onChange={(item) => setValue(item.value)}
+      />
+    </>
   );
 }

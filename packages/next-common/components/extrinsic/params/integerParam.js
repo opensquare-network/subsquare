@@ -1,7 +1,7 @@
 import InputNumber from "next-common/components/inputNumber";
 import { useCallback } from "react";
 
-export default function IntegerParam({ value, setValue }) {
+export default function IntegerParam({ title, value, setValue }) {
   const { data } = value || {};
   const _setValue = useCallback(
     (data) => {
@@ -21,5 +21,10 @@ export default function IntegerParam({ value, setValue }) {
     [setValue],
   );
 
-  return <InputNumber value={data ?? ""} setValue={_setValue} step={1} />;
+  return (
+    <>
+      {title}
+      <InputNumber value={data ?? ""} setValue={_setValue} step={1} />;
+    </>
+  );
 }

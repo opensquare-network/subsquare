@@ -1,7 +1,7 @@
 import InputText from "next-common/components/inputText";
 import { useCallback } from "react";
 
-export default function TextParam({ value, setValue, placeholder }) {
+export default function TextParam({ title, value, setValue, placeholder }) {
   const { data } = value || {};
 
   const _setValue = useCallback(
@@ -23,10 +23,13 @@ export default function TextParam({ value, setValue, placeholder }) {
   );
 
   return (
-    <InputText
-      value={data ?? ""}
-      setValue={_setValue}
-      placeholder={placeholder}
-    />
+    <>
+      {title}
+      <InputText
+        value={data ?? ""}
+        setValue={_setValue}
+        placeholder={placeholder}
+      />
+    </>
   );
 }

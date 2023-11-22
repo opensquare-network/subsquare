@@ -1,5 +1,10 @@
 import Extrinsic from "..";
 
-export default function CallParam({ value, setValue }) {
-  return <Extrinsic value={value} setValue={setValue} />;
+export default function CallParam({ title, value, setValue }) {
+  return (
+    <>
+      {title}
+      <Extrinsic value={value} setValue={setValue} />
+    </>
+  );
 }

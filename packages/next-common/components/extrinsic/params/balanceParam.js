@@ -3,7 +3,7 @@ import BalanceInput from "next-common/components/balanceInput";
 import { useChainSettings } from "next-common/context/chain";
 import { useEffect, useState } from "react";
 
-export default function BalanceParam({ setValue }) {
+export default function BalanceParam({ title, setValue }) {
   const [inputText, setInputText] = useState("");
   const { symbol, decimals } = useChainSettings();
 
@@ -28,6 +28,10 @@ export default function BalanceParam({ setValue }) {
   );
 
   return (
-    <BalanceInput value={inputText} setValue={setInputText} symbol={symbol} />
+    <>
+      {title}
+
+      <BalanceInput value={inputText} setValue={setInputText} symbol={symbol} />
+    </>
   );
 }

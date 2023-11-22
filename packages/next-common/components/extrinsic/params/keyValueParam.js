@@ -14,7 +14,7 @@ export function createParam(hex) {
   return compactAddLength(u8a);
 }
 
-export default function KeyValueParam({ setValue }) {
+export default function KeyValueParam({ title, setValue }) {
   const [data, setData] = useState({
     key: "",
     value: "",
@@ -37,23 +37,26 @@ export default function KeyValueParam({ setValue }) {
   }, [data]);
 
   return (
-    <div className="flex flex-col gap-[8px]">
+    <>
+      {title}
       <div className="flex flex-col gap-[8px]">
-        <span className="text12Bold whitespace-nowrap">key: [u8]</span>
-        <TextParam
-          value={data.key ?? ""}
-          setValue={onChangeKey}
-          placeholder="0x..."
-        />
+        <div className="flex flex-col gap-[8px]">
+          <span className="text12Bold whitespace-nowrap">key: [u8]</span>
+          <TextParam
+            value={data.key ?? ""}
+            setValue={onChangeKey}
+            placeholder="0x..."
+          />
+        </div>
+        <div className="flex flex-col gap-[8px]">
+          <span className="text12Bold whitespace-nowrap">value: [u8]</span>
+          <TextParam
+            value={data.value ?? ""}
+            setValue={onChangeValue}
+            placeholder="0x..."
+          />
+        </div>
       </div>
-      <div className="flex flex-col gap-[8px]">
-        <span className="text12Bold whitespace-nowrap">value: [u8]</span>
-        <TextParam
-          value={data.value ?? ""}
-          setValue={onChangeValue}
-          placeholder="0x..."
-        />
-      </div>
-    </div>
+    </>
   );
 }
