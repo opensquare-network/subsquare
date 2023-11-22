@@ -58,10 +58,6 @@ export default function ActiveProposalTemplate({
     );
   }
 
-  if (!activeCount) {
-    return <SecondaryCard className="flex">{title}</SecondaryCard>;
-  }
-
   const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = activeItems.map((m) => {
     return {
@@ -80,6 +76,10 @@ export default function ActiveProposalTemplate({
       [activeTabLabel]: true,
     });
   }, [activeTabLabel]);
+
+  if (!activeCount) {
+    return <SecondaryCard className="flex">{title}</SecondaryCard>;
+  }
 
   return (
     <AccordionCard title={title} defaultOpen>
