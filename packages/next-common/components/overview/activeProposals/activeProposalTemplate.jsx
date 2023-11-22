@@ -13,6 +13,7 @@ import last from "lodash.last";
 import isNil from "lodash.isnil";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
+import { first } from "lodash";
 
 export default function ActiveProposalTemplate({
   name = "",
@@ -22,7 +23,13 @@ export default function ActiveProposalTemplate({
   items = [],
 }) {
   const chain = useChain();
-  const hasAllPage = items.some((m) => m.value === "all");
+
+  const activeItems = (items || [])
+    .filter((item) => !isNil(item.activeCount))
+    .filter((item) => !item.excludeToChains?.includes(chain));
+
+  const firstActiveItem = first(activeItems);
+  const titleLink = firstActiveItem?.pathname ?? pathname;
 
   let title = (
     <div
@@ -38,10 +45,11 @@ export default function ActiveProposalTemplate({
       <span className="text14Medium text-textTertiary ml-1">{activeCount}</span>
     </div>
   );
-  if (hasAllPage) {
+
+  if (titleLink) {
     title = (
       <Link
-        href={pathname}
+        href={titleLink}
         className="group/title cursor-pointer"
         onClick={(e) => e.stopPropagation()}
       >
@@ -55,22 +63,15 @@ export default function ActiveProposalTemplate({
   }
 
   const [tabTableLoaded, setTabTableLoaded] = useState({});
-  const tabs = (items || [])
-    ?.filter((item) => item.activeCount)
-    ?.filter((item) => !item.excludeToChains?.includes(chain))
-    .map((m) => {
-      return {
-        label: m.name,
-        activeCount: m.activeCount,
-        content: (
-          <TableTemplate
-            tabTableLoaded={tabTableLoaded}
-            label={m.name}
-            {...m}
-          />
-        ),
-      };
-    });
+  const tabs = activeItems.map((m) => {
+    return {
+      label: m.name,
+      activeCount: m.activeCount,
+      content: (
+        <TableTemplate tabTableLoaded={tabTableLoaded} label={m.name} {...m} />
+      ),
+    };
+  });
 
   const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
   useEffect(() => {
