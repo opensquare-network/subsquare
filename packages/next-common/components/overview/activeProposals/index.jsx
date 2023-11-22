@@ -78,7 +78,7 @@ export default function ActiveProposals() {
 
   return (
     <div>
-      <TitleContainer className="mb-4">Active Proposals</TitleContainer>
+      <TitleContainer className="mb-4">Recent Proposals</TitleContainer>
 
       <div className="space-y-4">
         {items.map((item) => (
