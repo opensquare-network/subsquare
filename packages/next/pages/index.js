@@ -71,10 +71,10 @@ export default function HomePage() {
 
 export const getServerSideProps = withCommonProps(async () => {
   const tracksProps = await fetchOpenGovTracksProps();
-  const activeProposals = await fetchActiveProposalsProps(tracksProps.summary);
   const { result: overviewSummary } = await ssrNextApi.fetch(
     "overview/summary",
   );
+  const activeProposals = await fetchActiveProposalsProps(overviewSummary);
 
   return {
     props: {
