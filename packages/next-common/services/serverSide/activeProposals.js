@@ -86,7 +86,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
       const initDataApi = initDataApiMap[firstDemocracyMenuItem.value];
       if (initDataApi) {
         activeProposalsData.democracy = {};
-        activeProposalsData.democracy.referenda = await fetcher(initDataApi);
+        activeProposalsData.democracy[firstDemocracyMenuItem.value] =
+          await fetcher(initDataApi);
       }
     }
   }
