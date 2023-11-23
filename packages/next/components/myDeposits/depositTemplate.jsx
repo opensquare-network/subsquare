@@ -110,7 +110,9 @@ function TableTemplate({
       api
         .fetchData()
         .then((resp) => {
-          setResult(resp.result);
+          if (resp?.result) {
+            setResult(resp.result);
+          }
         })
         .finally(() => {
           setLoading(false);
