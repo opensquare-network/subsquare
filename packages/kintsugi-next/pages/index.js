@@ -45,8 +45,8 @@ export default function Home() {
 
 export const getServerSideProps = withCommonProps(async () => {
   const { result: summary } = await nextApi.fetch("summary");
-  const activeProposals = await fetchActiveProposalsProps(summary);
   const { result: overviewSummary } = await nextApi.fetch("overview/summary");
+  const activeProposals = await fetchActiveProposalsProps(overviewSummary);
 
   return {
     props: {
