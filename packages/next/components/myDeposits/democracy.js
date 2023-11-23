@@ -13,9 +13,8 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import { useSelector } from "react-redux";
-import DepositTemplate from "./depositTemplate";
 
-export default function MyDemocracyDeposits() {
+export function useDepositDemocracy() {
   useFetchMyDemocracyDeposits();
 
   const chain = useChain();
@@ -80,9 +79,9 @@ export default function MyDemocracyDeposits() {
     },
   ];
 
-  return (
-    <div>
-      <DepositTemplate {...menu} activeCount={activeCount} items={items} />
-    </div>
-  );
+  return {
+    ...menu,
+    activeCount,
+    items,
+  };
 }

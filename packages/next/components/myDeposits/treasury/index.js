@@ -1,12 +1,11 @@
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
 import { sum } from "lodash";
-import DepositTemplate from "../depositTemplate";
 import { useDepositTreasuryBountiesTab } from "./bounties";
 import { useDepositTreasuryProposalsTab } from "./proposals";
 import { useDepositTreasuryTipsTab } from "./tips";
 
-export default function MyTreasuryDeposits() {
+export function useDepositTreasury() {
   useFetchMyTreasuryDeposits();
 
   const proposals = useDepositTreasuryProposalsTab();
@@ -25,5 +24,9 @@ export default function MyTreasuryDeposits() {
   // TODO: exclude chains, ignore non-activeCount list?
   const items = [proposals, bounties, tips];
 
-  return <DepositTemplate {...menu} activeCount={activeCount} items={items} />;
+  return {
+    ...menu,
+    activeCount,
+    items,
+  };
 }

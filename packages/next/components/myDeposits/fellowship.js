@@ -17,9 +17,8 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { useSelector } from "react-redux";
-import DepositTemplate from "./depositTemplate";
 
-export default function MyFellowshipDeposits() {
+export function useDepositFellowship() {
   useFetchMyFellowshipDeposits();
 
   const { decimals, symbol } = useChainSettings();
@@ -123,9 +122,9 @@ export default function MyFellowshipDeposits() {
     },
   ];
 
-  return (
-    <div>
-      <DepositTemplate {...menu} activeCount={activeCount} items={items} />
-    </div>
-  );
+  return {
+    ...menu,
+    activeCount,
+    items,
+  };
 }
