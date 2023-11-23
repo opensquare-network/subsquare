@@ -46,7 +46,7 @@ export default function SearchInput({ shortcut = true, inputType }) {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search on SubSquare"
         onKeyDown={(event) => {
-          if (event.code === "Enter" || event.keyCode === 13) {
+          if (event.code === "Enter") {
             event.preventDefault();
             handleSearch();
           }

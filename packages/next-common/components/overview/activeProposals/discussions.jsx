@@ -49,7 +49,6 @@ export function getActiveProposalDiscussions({ activeProposals }) {
       lazy: false,
       value: "subsquare",
       name: "Subsquare",
-      pathname: "/discussions",
       api: {
         path: overviewApi.discussions,
         initData: subsquare,
@@ -62,7 +61,6 @@ export function getActiveProposalDiscussions({ activeProposals }) {
       lazy: false,
       value: "polkassembly",
       name: "Polkassembly",
-      pathname: "/polkassembly/discussions",
       api: {
         path: overviewApi.polkassemblyDiscussions,
         initData: polkassembly,
