@@ -4,17 +4,15 @@ import Tabs from "next-common/components/tabs";
 import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Pagination from "next-common/components/pagination";
-import StyledList from "next-common/components/styledList";
-import nextApi from "next-common/services/nextApi";
 import { activeProposalFetchParams } from "next-common/services/serverSide/activeProposals";
-import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import last from "lodash.last";
 import isNil from "lodash.isnil";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
-import { first } from "lodash";
+import { first, last } from "lodash";
 import Descriptions from "next-common/components/Descriptions";
+import Pagination from "next-common/components/pagination";
+import StyledList from "next-common/components/styledList";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
 export default function DepositTemplate({
   name = "",
@@ -93,12 +91,14 @@ export default function DepositTemplate({
     </AccordionCard>
   );
 }
+
 function TableTemplate({
   tabTableLoaded = {},
   label,
   columns,
   api,
   formatter = (i) => i,
+  tableHead,
 }) {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
@@ -111,17 +111,6 @@ function TableTemplate({
         .fetchData()
         .then((resp) => {
           if (resp?.result) {
-            setResult(resp.result);
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else if (api?.path) {
-      nextApi
-        .fetch(api?.path, { ...api.params, page, ...activeProposalFetchParams })
-        .then((resp) => {
-          if (resp.result) {
             setResult(resp.result);
           }
         })
@@ -144,7 +133,7 @@ function TableTemplate({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabTableLoaded]);
 
-  useUpdateEffect(fetchData, [page]);
+  useUpdateEffect(fetchData, [page, api.fetchData]);
 
   const rows = result?.items?.map((item) => {
     const formattedItem = formatter(item);
@@ -155,6 +144,8 @@ function TableTemplate({
 
   return (
     <div>
+      {tableHead}
+
       {sm ? (
         <MobileList rows={rows} columns={columns} />
       ) : (

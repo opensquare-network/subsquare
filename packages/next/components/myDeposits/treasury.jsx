@@ -22,12 +22,15 @@ import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalize
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import DepositTemplate from "./depositTemplate";
+import { useDepositTreasuryBountiesTab } from "./treasury/bounties";
 
 export default function MyTreasuryDeposits() {
   useFetchMyTreasuryDeposits();
 
   const chain = useChain();
   const { decimals, symbol } = useChainSettings();
+
+  const depositTreasuryBountiesTab = useDepositTreasuryBountiesTab();
 
   const proposalDeposits = useSelector(myTreasuryProposalDepositsSelector);
   const bountyBonds = useSelector(myTreasuryBountyBondsSelector);
@@ -36,15 +39,11 @@ export default function MyTreasuryDeposits() {
   );
   const tipDeposits = useSelector(myTreasuryTipDepositsSelector);
 
+  const bountyActiveCount =
+    sum([bountyBonds?.length, bountyCuratorDeposits?.length]) || 0;
   const activeCount =
-    sum([
-      proposalDeposits?.length,
-      bountyBonds?.length,
-      bountyCuratorDeposits?.length,
-      tipDeposits?.length,
-    ]) || 0;
-
-  console.log(bountyBonds, bountyCuratorDeposits);
+    sum([proposalDeposits?.length, bountyActiveCount, tipDeposits?.length]) ||
+    0;
 
   const menu = getTreasuryMenu();
   menu.pathname = menu.items[0].pathname;
@@ -89,6 +88,7 @@ export default function MyTreasuryDeposits() {
         },
       },
     },
+    depositTreasuryBountiesTab,
     {
       name: "Tips",
       activeCount: tipDeposits?.length || 0,
