@@ -24,6 +24,7 @@ export default function MyDemocracyDeposits() {
   const activeCount = deposits?.length || 0;
 
   const menu = getDemocracyMenu();
+  menu.pathname = menu.items[0].pathname;
 
   const items = [
     {
