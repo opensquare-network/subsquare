@@ -1,10 +1,10 @@
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
 import { sum } from "lodash";
-import DepositTemplate from "./depositTemplate";
-import { useDepositTreasuryBountiesTab } from "./treasury/bounties";
-import { useDepositTreasuryProposalsTab } from "./treasury/proposals";
-import { useDepositTreasuryTipsTab } from "./treasury/tips";
+import DepositTemplate from "../depositTemplate";
+import { useDepositTreasuryBountiesTab } from "./bounties";
+import { useDepositTreasuryProposalsTab } from "./proposals";
+import { useDepositTreasuryTipsTab } from "./tips";
 
 export default function MyTreasuryDeposits() {
   useFetchMyTreasuryDeposits();
