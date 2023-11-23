@@ -3,6 +3,7 @@ import { useChainSettings } from "next-common/context/chain";
 import MyDemocracyDeposits from "./democracy";
 import MyFellowshipDeposits from "./fellowship";
 import MyReferendaDeposits from "./referenda";
+import MyTreasuryDeposits from "./treasury";
 
 export default function MyDeposits() {
   const { hasReferenda, hasFellowship } = useChainSettings();
@@ -15,6 +16,7 @@ export default function MyDeposits() {
         {hasReferenda && <MyReferendaDeposits />}
         {hasFellowship && <MyFellowshipDeposits />}
         <MyDemocracyDeposits />
+        <MyTreasuryDeposits />
       </div>
     </div>
   );

@@ -33,4 +33,11 @@ export const {
   setTipDeposits,
 } = myTreasuryProposalDepositsSlice.actions;
 
+export const myTreasuryProposalDepositsSelector = (state) =>
+  state[name].proposalDeposits;
+export const myTreasuryBountyBondsSelector = (state) => state[name].bountyBonds;
+export const myTreasuryBountyCuratorDepositsSelector = (state) =>
+  state[name].bountyCuratorDeposits;
+export const myTreasuryTipDepositsSelector = (state) => state[name].tipDeposits;
+
 export default myTreasuryProposalDepositsSlice.reducer;
