@@ -1,28 +1,20 @@
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
 import { useSelector } from "react-redux";
-import {
-  myTreasuryBountyBondsSelector,
-  myTreasuryBountyCuratorDepositsSelector,
-  myTreasuryProposalDepositsSelector,
-  myTreasuryTipDepositsSelector,
-} from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
+import { myTreasuryTipDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import { sum } from "lodash";
-import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import {
-  getProposalPostTitleColumn,
-  getStatusTagColumn,
-} from "next-common/components/overview/activeProposals/columns";
+import { getStatusTagColumn } from "next-common/components/overview/activeProposals/columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { getBondBalanceColumn, getReasonPostTitleColumn } from "./columns";
+import { getReasonPostTitleColumn } from "./columns";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import DepositTemplate from "./depositTemplate";
 import { useDepositTreasuryBountiesTab } from "./treasury/bounties";
+import { useDepositTreasuryProposalsTab } from "./treasury/proposals";
 
 export default function MyTreasuryDeposits() {
   useFetchMyTreasuryDeposits();
@@ -30,64 +22,22 @@ export default function MyTreasuryDeposits() {
   const chain = useChain();
   const { decimals, symbol } = useChainSettings();
 
+  const depositTreasuryProposalsTab = useDepositTreasuryProposalsTab();
   const depositTreasuryBountiesTab = useDepositTreasuryBountiesTab();
 
-  const proposalDeposits = useSelector(myTreasuryProposalDepositsSelector);
-  const bountyBonds = useSelector(myTreasuryBountyBondsSelector);
-  const bountyCuratorDeposits = useSelector(
-    myTreasuryBountyCuratorDepositsSelector,
-  );
   const tipDeposits = useSelector(myTreasuryTipDepositsSelector);
 
-  const bountyActiveCount =
-    sum([bountyBonds?.length, bountyCuratorDeposits?.length]) || 0;
-  const activeCount =
-    sum([proposalDeposits?.length, bountyActiveCount, tipDeposits?.length]) ||
-    0;
+  const activeCount = sum([
+    depositTreasuryProposalsTab.activeCount,
+    depositTreasuryBountiesTab.activeCount,
+    tipDeposits?.length,
+  ]);
 
   const menu = getTreasuryMenu();
   menu.pathname = menu.items[0].pathname;
 
   const items = [
-    {
-      name: "Proposals",
-      activeCount: proposalDeposits?.length || 0,
-      formatter(item) {
-        return normalizeTreasuryProposalListItem(chain, item);
-      },
-      columns: [
-        getProposalPostTitleColumn(),
-        getBondBalanceColumn(),
-        getStatusTagColumn({ category: businessCategory.treasuryProposals }),
-      ],
-      api: {
-        async fetchData() {
-          if (proposalDeposits?.length) {
-            const fetchers = proposalDeposits.map((deposit) =>
-              nextApi.fetch(`treasury/proposals/${deposit.proposalIndex}`),
-            );
-
-            const resps = await Promise.all(fetchers);
-
-            const items = resps.map((resp, idx) => {
-              return {
-                ...resp.result,
-                ...proposalDeposits[idx],
-              };
-            });
-
-            return {
-              result: {
-                items,
-                total: activeCount,
-              },
-            };
-          }
-
-          return { result: EmptyList };
-        },
-      },
-    },
+    depositTreasuryProposalsTab,
     depositTreasuryBountiesTab,
     {
       name: "Tips",
