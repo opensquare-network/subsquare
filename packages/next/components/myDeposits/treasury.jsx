@@ -9,28 +9,21 @@ import { useDepositTreasuryTipsTab } from "./treasury/tips";
 export default function MyTreasuryDeposits() {
   useFetchMyTreasuryDeposits();
 
-  const depositTreasuryProposalsTab = useDepositTreasuryProposalsTab();
-  const depositTreasuryBountiesTab = useDepositTreasuryBountiesTab();
-  const depositTreasuryTipTab = useDepositTreasuryTipsTab();
+  const proposals = useDepositTreasuryProposalsTab();
+  const bounties = useDepositTreasuryBountiesTab();
+  const tips = useDepositTreasuryTipsTab();
 
   const activeCount = sum([
-    depositTreasuryProposalsTab.activeCount,
-    depositTreasuryBountiesTab.activeCount,
-    depositTreasuryTipTab.activeCount,
+    proposals.activeCount,
+    bounties.activeCount,
+    tips.activeCount,
   ]);
 
   const menu = getTreasuryMenu();
   menu.pathname = menu.items[0].pathname;
 
-  const items = [
-    depositTreasuryProposalsTab,
-    depositTreasuryBountiesTab,
-    depositTreasuryTipTab,
-  ];
+  // TODO: exclude chains, ignore non-activeCount list?
+  const items = [proposals, bounties, tips];
 
-  return (
-    <div>
-      <DepositTemplate {...menu} activeCount={activeCount} items={items} />
-    </div>
-  );
+  return <DepositTemplate {...menu} activeCount={activeCount} items={items} />;
 }
