@@ -49,7 +49,7 @@ export function getActiveProposalDiscussions({ summary, activeProposals }) {
       lazy: false,
       value: "subsquare",
       name: "Subsquare",
-      pathname: "/overview/discussions",
+      pathname: "/discussions",
       api: {
         path: overviewApi.discussions,
         initData: subsquare,
