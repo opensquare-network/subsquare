@@ -10,7 +10,7 @@ import {
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import { sum } from "lodash";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -18,12 +18,16 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { getBondBalanceColumn } from "./columns";
+import { getBondBalanceColumn, getReasonPostTitleColumn } from "./columns";
+import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { toPrecision } from "next-common/utils";
 
 export default function MyTreasuryDeposits() {
   useFetchMyTreasuryDeposits();
 
   const chain = useChain();
+  const { decimals, symbol } = useChainSettings();
 
   const proposalDeposits = useSelector(myTreasuryProposalDepositsSelector);
   const bountyBonds = useSelector(myTreasuryBountyBondsSelector);
@@ -40,12 +44,7 @@ export default function MyTreasuryDeposits() {
       tipDeposits?.length,
     ]) || 0;
 
-  console.log(
-    proposalDeposits,
-    bountyBonds,
-    bountyCuratorDeposits,
-    tipDeposits,
-  );
+  console.log(bountyBonds, bountyCuratorDeposits);
 
   const menu = getTreasuryMenu();
   menu.pathname = menu.items[0].pathname;
@@ -75,6 +74,63 @@ export default function MyTreasuryDeposits() {
               return {
                 ...resp.result,
                 ...proposalDeposits[idx],
+              };
+            });
+
+            return {
+              result: {
+                items,
+                total: activeCount,
+              },
+            };
+          }
+
+          return { result: EmptyList };
+        },
+      },
+    },
+    {
+      name: "Tips",
+      activeCount: tipDeposits?.length || 0,
+      formatter(item) {
+        return normalizeTipListItem(chain, item);
+      },
+      columns: [
+        getReasonPostTitleColumn(),
+        {
+          name: "Bond Balance",
+          className: "w-40 text-right",
+          cellRender(data) {
+            return (
+              <ValueDisplay
+                className="text14Medium text-textPrimary"
+                value={toPrecision(data.deposit, decimals)}
+                symbol={symbol}
+              />
+            );
+          },
+        },
+        getStatusTagColumn({ category: businessCategory.treasuryTips }),
+      ],
+      api: {
+        async fetchData() {
+          if (tipDeposits?.length) {
+            const fetchers = tipDeposits.map((deposit) =>
+              nextApi.fetch(`treasury/tips/${deposit.hash}`),
+            );
+
+            const resps = await Promise.all(fetchers);
+
+            const items = resps.map((resp, idx) => {
+              const result = resp.result;
+              return {
+                ...result,
+                ...tipDeposits[idx],
+                // NOTE: copied from backend
+                state: {
+                  state: result.onchainData?.state?.state,
+                  tipsCount: result.onchainData?.meta?.tips?.length || 0,
+                },
               };
             });
 
