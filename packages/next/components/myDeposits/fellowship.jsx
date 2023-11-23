@@ -1,4 +1,3 @@
-import ActiveProposalTemplate from "next-common/components/overview/activeProposals/activeProposalTemplate";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -18,6 +17,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { useSelector } from "react-redux";
+import DepositTemplate from "./depositTemplate";
 
 export default function MyFellowshipDeposits() {
   useFetchMyFellowshipDeposits();
@@ -125,11 +125,7 @@ export default function MyFellowshipDeposits() {
 
   return (
     <div>
-      <ActiveProposalTemplate
-        {...menu}
-        activeCount={activeCount}
-        items={items}
-      />
+      <DepositTemplate {...menu} activeCount={activeCount} items={items} />
     </div>
   );
 }

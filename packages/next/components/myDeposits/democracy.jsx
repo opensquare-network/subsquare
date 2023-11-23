@@ -1,4 +1,3 @@
-import ActiveProposalTemplate from "next-common/components/overview/activeProposals/activeProposalTemplate";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -14,6 +13,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import { useSelector } from "react-redux";
+import DepositTemplate from "./depositTemplate";
 
 export default function MyDemocracyDeposits() {
   useFetchMyDemocracyDeposits();
@@ -82,11 +82,7 @@ export default function MyDemocracyDeposits() {
 
   return (
     <div>
-      <ActiveProposalTemplate
-        {...menu}
-        activeCount={activeCount}
-        items={items}
-      />
+      <DepositTemplate {...menu} activeCount={activeCount} items={items} />
     </div>
   );
 }

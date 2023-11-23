@@ -1,4 +1,3 @@
-import ActiveProposalTemplate from "next-common/components/overview/activeProposals/activeProposalTemplate";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
 import { useSelector } from "react-redux";
@@ -22,6 +21,7 @@ import { getBondBalanceColumn, getReasonPostTitleColumn } from "./columns";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
+import DepositTemplate from "./depositTemplate";
 
 export default function MyTreasuryDeposits() {
   useFetchMyTreasuryDeposits();
@@ -150,11 +150,7 @@ export default function MyTreasuryDeposits() {
 
   return (
     <div>
-      <ActiveProposalTemplate
-        {...menu}
-        activeCount={activeCount}
-        items={items}
-      />
+      <DepositTemplate {...menu} activeCount={activeCount} items={items} />
     </div>
   );
 }

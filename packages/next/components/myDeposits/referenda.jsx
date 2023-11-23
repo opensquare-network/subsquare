@@ -1,4 +1,3 @@
-import ActiveProposalTemplate from "next-common/components/overview/activeProposals/activeProposalTemplate";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -18,6 +17,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { getReferendaMenu } from "next-common/utils/consts/menu/referenda";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import { useSelector } from "react-redux";
+import DepositTemplate from "./depositTemplate";
 
 export default function MyReferendaDeposits() {
   useFetchMyReferendaDeposits();
@@ -119,11 +119,7 @@ export default function MyReferendaDeposits() {
 
   return (
     <div>
-      <ActiveProposalTemplate
-        {...menu}
-        activeCount={activeCount}
-        items={items}
-      />
+      <DepositTemplate {...menu} activeCount={activeCount} items={items} />
     </div>
   );
 }
