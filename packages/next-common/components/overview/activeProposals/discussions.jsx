@@ -31,7 +31,7 @@ const lastActivityColumn = {
   },
 };
 
-export function getActiveProposalDiscussions({ activeProposals }) {
+export function getActiveProposalDiscussions({ summary, activeProposals }) {
   const chainSettings = getChainSettings(CHAIN);
   const subsquare = activeProposals.discussions?.subsquare;
   const polkassembly = activeProposals.discussions?.polkassembly;
@@ -54,7 +54,7 @@ export function getActiveProposalDiscussions({ activeProposals }) {
         path: overviewApi.discussions,
         initData: subsquare,
       },
-      activeCount: subsquare?.total,
+      activeCount: summary?.discussions?.active,
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
       columns,
     },

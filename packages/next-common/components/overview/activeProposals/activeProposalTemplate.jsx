@@ -69,7 +69,7 @@ export default function ActiveProposalTemplate({
     };
   });
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
+  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
   useEffect(() => {
     setTabTableLoaded({
       ...tabTableLoaded,
