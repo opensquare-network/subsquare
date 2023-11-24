@@ -6,42 +6,16 @@ import {
   myMultisigsSelector,
 } from "next-common/store/reducers/multisigSlice";
 import { AddressUser } from "next-common/components/user";
-import { Approving, Call, Signatories, Status, When } from "./fields";
+import { Approving, Call, Signatories, Status, When } from "../fields";
+import columns from "./colmns";
 
 export default function DesktopList() {
   const myMultisigs = useSelector(myMultisigsSelector);
   const isLoading = useSelector(multisigsIsLoadingSelector);
 
-  const columns = [
-    {
-      name: "Address",
-      style: { textAlign: "left", width: "128px", minWidth: "128px" },
-    },
-    {
-      name: "When",
-      style: { textAlign: "left", width: "128px", minWidth: "128px" },
-    },
-    {
-      name: "Call",
-      style: { textAlign: "left", minWidth: "280px" },
-    },
-    {
-      name: "Approving",
-      style: { textAlign: "left", width: "128px", minWidth: "128px" },
-    },
-    {
-      name: "Signatories",
-      style: { textAlign: "left", width: "128px", minWidth: "128px" },
-    },
-    {
-      name: "Status",
-      style: { textAlign: "right", width: "128px", minWidth: "128px" },
-    },
-  ];
-
   const rows = (myMultisigs?.items || []).map((multisig) => [
-    <AddressUser key="address" add={multisig.address} />,
     <When key="when" {...multisig?.when} />,
+    <AddressUser key="address" add={multisig.address} />,
     <Call key="call" {...multisig} />,
     <Approving key="approving" {...multisig} />,
     <Signatories key="signatories" {...multisig} />,
