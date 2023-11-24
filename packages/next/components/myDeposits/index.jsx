@@ -3,6 +3,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useDepositDemocracy } from "./democracy";
 import DepositTemplate from "./depositTemplate";
 import { useDepositFellowship } from "./fellowship";
+import MyDepositPreimages from "./preimages";
 import { useDepositReferenda } from "./referenda";
 import { useDepositTreasury } from "./treasury";
 
@@ -29,6 +30,8 @@ export default function MyDeposits() {
         {items.map((item) => (
           <DepositTemplate key={item.name} {...item} />
         ))}
+
+        <MyDepositPreimages />
       </div>
     </div>
   );

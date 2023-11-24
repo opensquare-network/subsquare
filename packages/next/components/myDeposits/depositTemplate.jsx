@@ -20,6 +20,7 @@ export default function DepositTemplate({
   pathname,
   activeCount,
   items = [],
+  children,
 }) {
   const chain = useChain();
 
@@ -70,6 +71,11 @@ export default function DepositTemplate({
 
   const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
   useEffect(() => {
+    setActiveTabLabel(tabs[0]?.label);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
+  useEffect(() => {
     setTabTableLoaded({
       ...tabTableLoaded,
       [activeTabLabel]: true,
@@ -83,11 +89,13 @@ export default function DepositTemplate({
 
   return (
     <AccordionCard title={title} defaultOpen>
-      <Tabs
-        tabs={tabs}
-        activeTabLabel={activeTabLabel}
-        onTabClick={(tab) => setActiveTabLabel(tab.label)}
-      />
+      {children || (
+        <Tabs
+          tabs={tabs}
+          activeTabLabel={activeTabLabel}
+          onTabClick={(tab) => setActiveTabLabel(tab.label)}
+        />
+      )}
     </AccordionCard>
   );
 }
@@ -133,7 +141,7 @@ function TableTemplate({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabTableLoaded]);
 
-  useUpdateEffect(fetchData, [page, api.fetchData]);
+  useUpdateEffect(fetchData, [page, api?.fetchData]);
 
   const rows = result?.items?.map((item) => {
     const formattedItem = formatter(item);
