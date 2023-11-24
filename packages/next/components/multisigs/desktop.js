@@ -31,7 +31,7 @@ export default function DesktopList() {
     },
     {
       name: "Status",
-      style: { textAlign: "left", width: "128px", minWidth: "128px" },
+      style: { textAlign: "right", width: "128px", minWidth: "128px" },
     },
   ];
 
