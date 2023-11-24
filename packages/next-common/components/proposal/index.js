@@ -218,16 +218,6 @@ export function convertProposalForJsonView(proposal, chain) {
   };
 }
 
-const tabsNoTreeView = [
-  { tabId: "table", tabTitle: "Table" },
-  { tabId: "json", tabTitle: "JSON" },
-];
-
-const tabsWithTreeView = [
-  { tabId: "tree", tabTitle: "Tree" },
-  ...tabsNoTreeView,
-];
-
 export default function Proposal({
   call = {},
   preImageHash,
@@ -238,8 +228,6 @@ export default function Proposal({
 }) {
   const chain = useChain();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
-
-  const tabs = preImageHash ? tabsWithTreeView : tabsNoTreeView;
 
   const { call: rawCall, isLoading: isLoadingRawCall } =
     usePreImageCallFromHash(preImageHash);
@@ -298,10 +286,10 @@ export default function Proposal({
         <CallDetailPopup
           tableViewData={dataTableData}
           jsonViewData={jsonViewData}
+          hasTreeViewData={!!preImageHash}
           rawCall={rawCall}
           isLoadingRawCall={isLoadingRawCall}
           setShow={setDetailPopupVisible}
-          tabs={tabs}
         />
       )}
     </Wrapper>

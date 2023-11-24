@@ -6,12 +6,6 @@ import {
 } from "next-common/components/proposal";
 import { useChain } from "next-common/context/chain";
 
-const tabs = [
-  { tabId: "tree", tabTitle: "Tree" },
-  { tabId: "table", tabTitle: "Table" },
-  { tabId: "json", tabTitle: "JSON" },
-];
-
 export default function CallPopup({ call, callHex, blockHeight, setShow }) {
   const { call: rawCall, isLoading: isLoadingRawCall } = useCallFromHex(
     callHex,
@@ -29,7 +23,6 @@ export default function CallPopup({ call, callHex, blockHeight, setShow }) {
       rawCall={rawCall}
       isLoadingRawCall={isLoadingRawCall}
       setShow={setShow}
-      tabs={tabs}
     />
   );
 }

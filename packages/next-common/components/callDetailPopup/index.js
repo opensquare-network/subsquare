@@ -4,6 +4,7 @@ import CallTree from "next-common/components/proposal/callTree";
 import Tab from "next-common/components/tab";
 import InnerDataTable from "next-common/components/table/innerDataTable";
 import dynamic from "next/dynamic";
+import { useMemo } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
@@ -13,11 +14,30 @@ const JsonView = dynamic(() => import("next-common/components/jsonView"), {
 export default function CallDetailPopup({
   tableViewData,
   jsonViewData,
+  hasTreeViewData = true,
   rawCall,
   isLoadingRawCall,
   setShow,
-  tabs,
 }) {
+  const hasTableData = !!tableViewData;
+  const hasJsonData = !!jsonViewData;
+
+  const tabs = useMemo(() => {
+    const tabs = [];
+
+    if (hasTreeViewData) {
+      tabs.push({ tabId: "tree", tabTitle: "Tree" });
+    }
+    if (hasTableData) {
+      tabs.push({ tabId: "table", tabTitle: "Table" });
+    }
+    if (hasJsonData) {
+      tabs.push({ tabId: "json", tabTitle: "JSON" });
+    }
+
+    return tabs;
+  }, [hasTreeViewData, hasTableData, hasJsonData]);
+
   const [storageTabId, setStorageTabId] = useLocalStorage(
     "callType",
     tabs[0].tabId,
