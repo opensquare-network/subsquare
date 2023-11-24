@@ -21,13 +21,7 @@ export default function MultisigsList() {
     if (!realAddress) {
       return;
     }
-    dispatch(
-      fetchMyMultisigs(
-        chain,
-        "1431TrfW3CxDyFSDuCSjxsMki9iF8ecMjW366LcSJZdveZYG",
-        page,
-      ),
-    );
+    dispatch(fetchMyMultisigs(chain, realAddress, page));
   }, [dispatch, chain, page, realAddress]);
 
   const onPageChange = useCallback((e, page) => {
