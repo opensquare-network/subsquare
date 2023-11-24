@@ -24,7 +24,7 @@ export default function DepositTemplate({
   const chain = useChain();
 
   const activeItems = (items || [])
-    .filter((item) => !isNil(item.activeCount))
+    .filter((item) => item.activeCount)
     .filter((item) => !item.excludeToChains?.includes(chain));
 
   const firstActiveItem = first(activeItems);
