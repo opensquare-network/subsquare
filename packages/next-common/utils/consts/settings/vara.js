@@ -73,6 +73,7 @@ const vara = {
   postLabels: defaultPostLabels,
   hasReferenda: true,
   hasFellowship: true,
+  hasDemocracy: false,
   hasStatescan: false,
   hasSubscan: true,
   hasDotreasury: false,
