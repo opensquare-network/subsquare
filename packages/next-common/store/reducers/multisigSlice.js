@@ -55,12 +55,7 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
       call
       callHash
       callHex
-      deposit
-      depositor
-      id
-      isFinal
       signatories
-      signatoriesCount
       threshold
       when {
         index
@@ -68,14 +63,6 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
       }
       state {
         name
-        args
-      }
-      indexer {
-        extrinsicIndex
-        eventIndex
-        blockTime
-        blockHeight
-        blockHash
       }
     }
   }
@@ -119,7 +106,7 @@ const getMultisigsCountQuery = (address) => `query MyQuery {
   multisigs(
     signatory: "${address}"
     multisigState: APPROVING
-    limit: 0
+    limit: 10
     offset: 0
   ) {
     total

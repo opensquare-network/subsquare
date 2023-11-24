@@ -27,7 +27,7 @@ export function Call({ when, callHash, call, callHex, right = false }) {
       {call ? (
         <span
           className={cn(
-            "cursor-pointer text14Medium",
+            "cursor-pointer text14Medium hover:underline",
             right ? "text-right" : "",
           )}
           onClick={() => setShowPopup(true)}
@@ -35,7 +35,7 @@ export function Call({ when, callHash, call, callHex, right = false }) {
           {call?.section}.{call?.method}
         </span>
       ) : (
-        <span className={right ? "text-right" : ""}>-</span>
+        <span className={right ? "text-right" : ""}>--</span>
       )}
       <Copyable
         className={right ? "text-right" : ""}
@@ -81,7 +81,7 @@ export function Approving({ approvals, threshold }) {
   );
 }
 
-export function Signatories({ signatories, signatoriesCount }) {
+export function Signatories({ signatories = [] }) {
   let signatoriesTip = null;
   if (signatories?.length > 0) {
     signatoriesTip = (
@@ -94,7 +94,7 @@ export function Signatories({ signatories, signatoriesCount }) {
   }
   return (
     <Tooltip content={signatoriesTip}>
-      <span className="text-textPrimary">{signatoriesCount}</span>
+      <span className="text-textPrimary">{signatories?.length}</span>
     </Tooltip>
   );
 }
