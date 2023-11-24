@@ -97,18 +97,7 @@ function Proposal({
   );
 }
 
-function parseStatus(status) {
-  const statusName = Object.keys(status || {})[0];
-  if (!statusName) return {};
-  const { deposit = [] } = status[statusName];
-  return {
-    statusName,
-    deposit,
-  };
-}
-
-export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
-  const realAddress = useRealAddress();
+export default function PreImagesTable({ data, searchValue }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const { columns } = useColumns([
     {
@@ -134,14 +123,8 @@ export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
   ]);
 
   const rows = (data || [])
-    .filter(([hash, status]) => {
+    .filter(([hash]) => {
       if (!hash.includes(searchValue.toLowerCase())) {
-        return false;
-      }
-
-      const { deposit } = parseStatus(status);
-      const [who] = deposit || [];
-      if (isMyDepositOn && who !== realAddress) {
         return false;
       }
 
