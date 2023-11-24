@@ -40,7 +40,7 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
   multisigs(
     limit: ${pageSize}
     offset: ${(page - 1) * pageSize}
-    account: "${address}"
+    signatory: "${address}"
   ) {
     total
     offset
