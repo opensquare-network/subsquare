@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "./toastSlice";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const multisigSlice = createSlice({
   name: "multisig",
@@ -25,6 +26,15 @@ export const myMultisigsCountSelector = (state) =>
 export const { setMyMultisigs, setMyMultisigsCount } = multisigSlice.actions;
 
 export default multisigSlice.reducer;
+
+function getMultisigApiUrl(chain) {
+  const settings = getChainSettings(chain);
+  if (!settings?.multisigApiPrefix) {
+    throw new Error(`Can not find multisig settings for ${chain}`);
+  }
+
+  return `https://${settings.multisigApiPrefix}-multisig-api.statescan.io/graphql`;
+}
 
 const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
   multisigs(
@@ -71,7 +81,7 @@ export const fetchMyMultisigs =
   (chain, address, page = 1, pageSize = 25) =>
   async (dispatch) => {
     const { result, error } = await nextApi.fetch(
-      `https://${chain}-multisig-api.statescan.io/graphql`,
+      getMultisigApiUrl(chain),
       {},
       {
         method: "POST",
@@ -114,7 +124,7 @@ const getMultisigsCountQuery = (address) => `query MyQuery {
 
 export const fetchMyMultisigsCount = (chain, address) => async (dispatch) => {
   const { result, error } = await nextApi.fetch(
-    `https://${chain}-multisig-api.statescan.io/graphql`,
+    getMultisigApiUrl(chain),
     {},
     {
       method: "POST",
