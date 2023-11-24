@@ -105,16 +105,7 @@ function TableTemplate({
   const { sm } = useScreenSize();
 
   function fetchData() {
-    if (api?.fetchData) {
-      api
-        .fetchData()
-        .then((resp) => {
-          setResult(resp.result);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else if (api?.path) {
+    if (api?.path) {
       nextApi
         .fetch(api?.path, { ...api.params, page, ...activeProposalFetchParams })
         .then((resp) => {
