@@ -26,7 +26,11 @@ export default function PreImagesList({ data }) {
         titleCount={data?.length}
         titleExtra={titleExtra}
       />
-      <PreImagesTable data={data} searchValue={searchValue} />
+      <PreImagesTable
+        data={data}
+        searchValue={searchValue}
+        isMyDepositOn={realAddress && isMyDepositOn}
+      />
     </div>
   );
 }
