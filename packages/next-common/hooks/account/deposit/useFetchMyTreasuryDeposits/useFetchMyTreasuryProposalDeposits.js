@@ -38,6 +38,7 @@ export default function useFetchMyTreasuryProposalDeposits() {
 
   useEffect(() => {
     if (!api || !realAddress || !api.query?.treasury) {
+      dispatch(setTreasuryProposalDeposits([]));
       return;
     }
 

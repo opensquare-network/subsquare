@@ -74,13 +74,9 @@ export default function useFetchMyTreasuryBountyDeposits() {
   const hasTreasuryBounties = useMenuHasTreasuryBounties();
 
   useEffect(() => {
-    if (!hasTreasuryBounties) {
+    if (!hasTreasuryBounties || !api || !realAddress || !api.query?.treasury) {
       dispatch(setBountyBonds([]));
       dispatch(setBountyCuratorDeposits([]));
-      return;
-    }
-
-    if (!api || !realAddress || !api.query?.treasury) {
       return;
     }
 

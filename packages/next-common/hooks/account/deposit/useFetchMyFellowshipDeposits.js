@@ -15,6 +15,8 @@ export default function useFetchMyFellowshipDeposits() {
 
   useEffect(() => {
     if (!api || !realAddress || !api.query?.fellowshipReferenda) {
+      dispatch(setMyFellowshipSubmissionDeposits([]));
+      dispatch(setMyFellowshipDecisionDeposits([]));
       return;
     }
 
