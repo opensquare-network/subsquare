@@ -1,14 +1,33 @@
 import ListTitleBar from "next-common/components/listTitleBar";
-import PreImagesTable from "./table";
+import DesktopList from "./desktop";
+import MobileList from "./mobile";
 import SearchBox from "./searchBox";
 import { useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useWindowSize } from "usehooks-ts";
+import isNil from "lodash.isnil";
+
+function parseStatus(status) {
+  const statusName = Object.keys(status || {})[0];
+  if (!statusName) return {};
+  const { deposit = [] } = status[statusName];
+  return {
+    statusName,
+    deposit,
+  };
+}
 
 export default function PreImagesList({ data }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
+
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
 
   const titleExtra = (
     <div className="flex items-center gap-[24px]">
@@ -19,18 +38,32 @@ export default function PreImagesList({ data }) {
     </div>
   );
 
+  let filteredData = (data || []).filter(([hash, status]) => {
+    if (!hash.includes(searchValue.toLowerCase())) {
+      return false;
+    }
+
+    const { deposit } = parseStatus(status);
+    const [who] = deposit || [];
+    if (isMyDepositOn && who !== realAddress) {
+      return false;
+    }
+
+    return true;
+  });
+
   return (
     <div className="flex flex-col gap-[16px]">
       <ListTitleBar
         title="List"
-        titleCount={data?.length}
+        titleCount={filteredData?.length}
         titleExtra={titleExtra}
       />
-      <PreImagesTable
-        data={data}
-        searchValue={searchValue}
-        isMyDepositOn={realAddress && isMyDepositOn}
-      />
+      {width > 1024 ? (
+        <DesktopList data={filteredData} />
+      ) : (
+        <MobileList data={filteredData} />
+      )}
     </div>
   );
 }
