@@ -15,6 +15,7 @@ import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
 import Overview from "next-common/components/overview/overview";
+import { ssrNextApi } from "next-common/services/nextApi";
 
 export default function HomePage() {
   const chain = useChain();
@@ -70,12 +71,16 @@ export default function HomePage() {
 
 export const getServerSideProps = withCommonProps(async () => {
   const tracksProps = await fetchOpenGovTracksProps();
-  const activeProposals = await fetchActiveProposalsProps(tracksProps.summary);
+  const { result: overviewSummary } = await ssrNextApi.fetch(
+    "overview/summary",
+  );
+  const activeProposals = await fetchActiveProposalsProps(overviewSummary);
 
   return {
     props: {
       activeProposals,
       summary: tracksProps.summary,
+      overviewSummary: overviewSummary || {},
       ...tracksProps,
     },
   };
