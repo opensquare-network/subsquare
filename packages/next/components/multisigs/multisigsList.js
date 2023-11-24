@@ -4,13 +4,10 @@ import DesktopList from "./desktop";
 import MobileList from "./mobile";
 import { ListCard } from "components/myvotes/styled";
 import Pagination from "next-common/components/pagination";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useChain } from "next-common/context/chain";
 import { useCallback, useEffect, useState } from "react";
-import {
-  fetchMyMultisigs,
-  myMultisigsSelector,
-} from "next-common/store/reducers/multisigSlice";
+import { fetchMyMultisigs } from "next-common/store/reducers/multisigSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function MultisigsList() {
@@ -19,7 +16,6 @@ export default function MultisigsList() {
   const chain = useChain();
   const realAddress = useRealAddress();
   const [page, setPage] = useState(1);
-  const myMultisigs = useSelector(myMultisigsSelector);
 
   useEffect(() => {
     if (!realAddress) {
@@ -41,7 +37,7 @@ export default function MultisigsList() {
   return (
     <ListCard>
       {width > 1024 ? <DesktopList /> : <MobileList />}
-      <Pagination {...myMultisigs} page={page} onPageChange={onPageChange} />
+      <Pagination page={page} onPageChange={onPageChange} />
     </ListCard>
   );
 }

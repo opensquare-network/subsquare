@@ -1,6 +1,9 @@
 import tw from "tailwind-styled-components";
 import AddressUser from "next-common/components/user/addressUser";
-import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
+import {
+  multisigsIsLoadingSelector,
+  myMultisigsSelector,
+} from "next-common/store/reducers/multisigSlice";
 import { useSelector } from "react-redux";
 import { Approving, Call, Signatories, Status, When } from "./fields";
 import Loading from "next-common/components/loading";
@@ -56,8 +59,9 @@ function Item(props) {
 
 export default function MobileList() {
   const myMultisigs = useSelector(myMultisigsSelector);
+  const isLoading = useSelector(multisigsIsLoadingSelector);
 
-  if (!myMultisigs) {
+  if (isLoading) {
     return (
       <div className="text-center py-[10px]">
         <Loading size={20} />

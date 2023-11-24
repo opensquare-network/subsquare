@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "./toastSlice";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -6,8 +6,8 @@ import getChainSettings from "next-common/utils/consts/settings";
 const multisigSlice = createSlice({
   name: "multisig",
   initialState: {
-    myMultisigs: [],
-    myMultisigsCount: 0,
+    myMultisigs: null,
+    myMultisigsCount: null,
   },
   reducers: {
     setMyMultisigs(state, { payload }) {
@@ -22,6 +22,10 @@ const multisigSlice = createSlice({
 export const myMultisigsSelector = (state) => state.multisig.myMultisigs;
 export const myMultisigsCountSelector = (state) =>
   state.multisig.myMultisigsCount;
+export const multisigsIsLoadingSelector = createSelector(
+  myMultisigsSelector,
+  (multisigs) => multisigs === null,
+);
 
 export const { setMyMultisigs, setMyMultisigsCount } = multisigSlice.actions;
 
@@ -113,8 +117,8 @@ export const fetchMyMultisigs =
 
 const getMultisigsCountQuery = (address) => `query MyQuery {
   multisigs(
-    signatory: ""
-    account: "${address}"
+    signatory: "${address}"
+    multisigState: APPROVING
     limit: 0
     offset: 0
   ) {
