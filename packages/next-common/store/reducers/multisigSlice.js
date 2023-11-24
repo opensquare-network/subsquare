@@ -6,21 +6,27 @@ const multisigSlice = createSlice({
   name: "multisig",
   initialState: {
     myMultisigs: [],
+    myMultisigsCount: 0,
   },
   reducers: {
     setMyMultisigs(state, { payload }) {
       state.myMultisigs = payload;
     },
+    setMyMultisigsCount(state, { payload }) {
+      state.myMultisigsCount = payload;
+    },
   },
 });
 
 export const myMultisigsSelector = (state) => state.multisig.myMultisigs;
+export const myMultisigsCountSelector = (state) =>
+  state.multisig.myMultisigsCount;
 
-export const { setMyMultisigs } = multisigSlice.actions;
+export const { setMyMultisigs, setMyMultisigsCount } = multisigSlice.actions;
 
 export default multisigSlice.reducer;
 
-const getMultisigsQuery = (address, page, pageSize) => `query MyMultisigsQuery {
+const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
   multisigs(
     limit: ${pageSize}
     offset: ${(page - 1) * pageSize}
@@ -72,7 +78,7 @@ export const fetchMyMultisigs =
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           extensions: {},
-          operationName: "MyMultisigsQuery",
+          operationName: "MyQuery",
           query: getMultisigsQuery(address, page, pageSize),
         }),
       },
@@ -94,3 +100,41 @@ export const fetchMyMultisigs =
 
     dispatch(setMyMultisigs(data));
   };
+
+const getMultisigsCountQuery = (address) => `query MyQuery {
+  multisigs(
+    signatory: ""
+    account: "${address}"
+    limit: 0
+    offset: 0
+  ) {
+    total
+  }
+}`;
+
+export const fetchMyMultisigsCount = (chain, address) => async (dispatch) => {
+  const { result, error } = await nextApi.fetch(
+    `https://${chain}-multisig-api.statescan.io/graphql`,
+    {},
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        extensions: {},
+        operationName: "MyQuery",
+        query: getMultisigsCountQuery(address),
+      }),
+    },
+  );
+
+  if (error) {
+    dispatch(newErrorToast(error.message));
+    return;
+  }
+
+  const { multisigs } = result.data || {};
+
+  const count = multisigs?.total || 0;
+
+  dispatch(setMyMultisigsCount(count));
+};

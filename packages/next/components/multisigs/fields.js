@@ -20,14 +20,22 @@ export function When({ height, index }) {
 
 export function Call({ when, callHash, call, callHex, right = false }) {
   const [showPopup, setShowPopup] = useState(false);
+
   return (
     <div className={cn("flex flex-col")}>
-      <span
-        className="cursor-pointer text14Medium"
-        onClick={() => setShowPopup(true)}
-      >
-        {call?.section}.{call?.method}
-      </span>
+      {call ? (
+        <span
+          className={cn(
+            "cursor-pointer text14Medium",
+            right ? "text-right" : "",
+          )}
+          onClick={() => setShowPopup(true)}
+        >
+          {call?.section}.{call?.method}
+        </span>
+      ) : (
+        <span className={right ? "text-right" : ""}>-</span>
+      )}
       <Copyable
         className={right ? "text-right" : ""}
         size={12}

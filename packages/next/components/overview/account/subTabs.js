@@ -1,6 +1,7 @@
 import { Title } from "components/myvotes/styled";
 import UrlTabs from "next-common/components/urlTabs";
 import { useChainSettings } from "next-common/context/chain";
+import MultisigsTitle from "./multisigsTitle";
 
 export function AccountSubTabs() {
   const { hasMultisig } = useChainSettings();
@@ -21,13 +22,9 @@ export function AccountSubTabs() {
 
   if (hasMultisig) {
     tabs.push({
-      label: "My Multisigs",
+      label: "Multisigs",
       render({ active }) {
-        return (
-          <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
-            My Multisigs
-          </Title>
-        );
+        return <MultisigsTitle active={active} />;
       },
       url: "/account/multisigs",
     });
