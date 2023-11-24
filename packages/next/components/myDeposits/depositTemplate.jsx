@@ -88,7 +88,7 @@ export default function DepositTemplate({
   if (!activeCount || loading) {
     return (
       <SecondaryCard>
-        {title}
+        <div className="flex">{title}</div>
 
         {loading && (
           <div className="mt-4 flex justify-center">
