@@ -23,7 +23,6 @@ export function useMyDepositTreasury() {
   const menu = getTreasuryMenu();
   menu.pathname = menu.items[0].pathname;
 
-  // TODO: exclude chains, ignore non-activeCount list?
   const items = [proposals, bounties, tips];
 
   return {

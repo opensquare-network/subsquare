@@ -7,6 +7,7 @@ import {
   setBountyBonds,
   setBountyCuratorDeposits,
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
+import { useMenuHasTreasuryBounties } from "next-common/context/chain";
 
 async function queryAddressDeposits(api, address) {
   const entries = await api.query.bounties.bounties.entries();
@@ -70,8 +71,15 @@ export default function useFetchMyTreasuryBountyDeposits() {
   const realAddress = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();
+  const hasTreasuryBounties = useMenuHasTreasuryBounties();
 
   useEffect(() => {
+    if (!hasTreasuryBounties) {
+      dispatch(setBountyBonds([]));
+      dispatch(setBountyCuratorDeposits([]));
+      return;
+    }
+
     if (!api || !realAddress || !api.query?.treasury) {
       return;
     }
@@ -81,5 +89,5 @@ export default function useFetchMyTreasuryBountyDeposits() {
       dispatch(setBountyBonds(bonds));
       dispatch(setBountyCuratorDeposits(curatorDeposits));
     });
-  }, [api, realAddress, dispatch]);
+  }, [api, realAddress, dispatch, hasTreasuryBounties]);
 }
