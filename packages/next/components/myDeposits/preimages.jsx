@@ -1,5 +1,5 @@
 import { SystemClose } from "@osn/icons/subsquare";
-import { sum } from "lodash";
+import { isNil, sum } from "lodash";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import PreimageDetailPopup from "next-common/components/preImages/preImageDetailPopup";
@@ -16,7 +16,6 @@ import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import usePreimage from "next-common/hooks/usePreimage";
-import usePreimageHashs from "next-common/hooks/usePreimageHashs";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { toPrecision } from "next-common/utils";
 import preImages from "next-common/utils/consts/menu/preImages";
@@ -24,11 +23,14 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import DepositTemplate from "./depositTemplate";
+import { useSelector } from "react-redux";
+import { myPreimageDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
 
 export default function MyDepositPreimages() {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const hashes = usePreimageHashs({ myDepositOnly: true });
-  const activeCount = sum([hashes?.length || 0]);
+  const statuses = useSelector(myPreimageDepositsSelector);
+  const activeCount = sum([statuses?.length || 0]);
+  const loading = isNil(statuses) || statuses?.length === 0;
 
   const { columns } = useColumns([
     {
@@ -57,7 +59,7 @@ export default function MyDepositPreimages() {
     },
   ]);
 
-  const rows = hashes?.map(([hash]) => {
+  const rows = statuses?.map(([hash]) => {
     return {
       useData() {
         const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
@@ -124,14 +126,14 @@ export default function MyDepositPreimages() {
       <DepositTemplate
         {...preImages}
         activeCount={activeCount}
-        loading={!hashes}
+        loading={loading}
       >
         <ScrollerX>
           <NoBorderList
             columns={columns}
             rows={rows}
             noDataText="No current preimages"
-            loading={!hashes}
+            loading={loading}
           />
         </ScrollerX>
       </DepositTemplate>
