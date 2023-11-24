@@ -8,7 +8,8 @@ import { useMyDepositReferenda } from "./referenda";
 import { useMyDepositTreasury } from "./treasury";
 
 export default function MyDeposits() {
-  const { hasReferenda, hasFellowship } = useChainSettings();
+  const { hasReferenda, hasFellowship, hasDemocracy, hasTreasury } =
+    useChainSettings();
 
   const referenda = useMyDepositReferenda();
   const fellowship = useMyDepositFellowship();
@@ -18,8 +19,8 @@ export default function MyDeposits() {
   const items = [
     hasReferenda && referenda,
     hasFellowship && fellowship,
-    democracy,
-    treasury,
+    hasDemocracy && democracy,
+    hasTreasury && treasury,
   ].filter(Boolean);
 
   return (
