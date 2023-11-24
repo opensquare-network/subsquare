@@ -105,7 +105,7 @@ export const MultisigStatus = {
   Executed: "Executed",
 };
 
-export function Status({ name }) {
+export function Status({ name, args = {} }) {
   let textColor = "";
   switch (name) {
     case MultisigStatus.Approving: {
@@ -117,7 +117,10 @@ export function Status({ name }) {
       break;
     }
     case MultisigStatus.Executed: {
-      textColor = "text-green500";
+      const {
+        result: { isErr },
+      } = args || {};
+      textColor = isErr ? "text-red500" : "text-green500";
       break;
     }
   }

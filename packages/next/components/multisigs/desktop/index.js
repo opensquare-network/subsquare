@@ -33,7 +33,11 @@ export default function DesktopList() {
       threshold={multisig.threshold}
     />,
     <Signatories key="signatories" signatories={multisig.signatories} />,
-    <Status key="status" name={multisig.state.name} />,
+    <Status
+      key="status"
+      name={multisig.state.name}
+      args={multisig.state.args}
+    />,
   ]);
 
   return (

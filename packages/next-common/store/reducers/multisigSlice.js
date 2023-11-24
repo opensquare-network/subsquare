@@ -63,6 +63,7 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
       }
       state {
         name
+        args
       }
     }
   }
