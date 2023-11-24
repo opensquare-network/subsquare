@@ -8,18 +8,16 @@ import { useSelector } from "react-redux";
 import { Approving, Call, Signatories, Status, When } from "./fields";
 import Loading from "next-common/components/loading";
 
-const FieldName = tw.span`
-  text-textTertiary
-`;
+const Field = tw.div`flex justify-between`;
 
-function Head({ address, state }) {
+const FieldName = tw.span`text-textTertiary`;
+
+function Head(props) {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between">
-        <AddressUser key="address" add={address} />
-      </div>
-      <div className="flex justify-end">
-        <Status key="status" {...state} />
+        <Call key="call" {...props} />
+        <Status key="status" {...props?.state} />
       </div>
     </div>
   );
@@ -28,22 +26,22 @@ function Head({ address, state }) {
 function Fields(props) {
   return (
     <div className="flex flex-col gap-[4px]">
-      <div className="flex justify-between">
+      <Field>
         <FieldName>When</FieldName>
         <When key="when" {...props?.when} />
-      </div>
-      <div className="flex justify-between">
-        <FieldName>Call</FieldName>
-        <Call key="call" right {...props} />
-      </div>
-      <div className="flex justify-between">
+      </Field>
+      <Field>
+        <FieldName>Address</FieldName>
+        <AddressUser key="address" add={props?.address} />
+      </Field>
+      <Field>
         <FieldName>Approving</FieldName>
         <Approving key="approving" {...props} />
-      </div>
-      <div className="flex justify-between">
+      </Field>
+      <Field>
         <FieldName>Signatories</FieldName>
         <Signatories key="signatories" {...props} />
-      </div>
+      </Field>
     </div>
   );
 }
