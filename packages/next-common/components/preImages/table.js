@@ -21,7 +21,7 @@ import AddressUser from "../user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import NoBorderList from "next-common/components/styledList/noBorderList";
 
-function Hash({ hash, proposal, setShowArgumentsDetail }) {
+export function PreimageHashCell({ hash, proposal, setShowArgumentsDetail }) {
   return (
     <div className="flex">
       <div className="flex items-center w-[160px]">
@@ -68,7 +68,7 @@ function Deposit({ hash, deposit, count, status, onUnnoteInBlock }) {
   );
 }
 
-function Proposal({
+export function PreimageProposalCell({
   proposal,
   proposalError,
   proposalWarning,
@@ -94,6 +94,14 @@ function Proposal({
         {doc}
       </span>
     </div>
+  );
+}
+
+export function PreimagesStatusCell({ statusName, count }) {
+  return (
+    <span key="status" className="capitalize text-textTertiary font-medium">
+      {statusName + (count ? `(${count})` : "")}
+    </span>
   );
 }
 
@@ -138,14 +146,14 @@ export default function PreImagesTable({ data, searchValue }) {
           const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
           const row = [
-            <Hash
+            <PreimageHashCell
               key="hash"
               hash={hash}
               proposal={preimage.proposal}
               setShowArgumentsDetail={setShowArgumentsDetail}
             />,
             isBytesLoaded ? (
-              <Proposal
+              <PreimageProposalCell
                 key="proposal"
                 proposal={preimage.proposal}
                 proposalError={preimage.proposalError}
@@ -177,13 +185,11 @@ export default function PreImagesTable({ data, searchValue }) {
             ),
             isStatusLoaded ? (
               preimage.statusName && (
-                <span
+                <PreimagesStatusCell
                   key="status"
-                  className="capitalize text-textTertiary font-medium"
-                >
-                  {preimage.statusName +
-                    (preimage.count ? `(${preimage.count})` : "")}
-                </span>
+                  statusName={preimage.statusName}
+                  count={preimage.count}
+                />
               )
             ) : (
               <FieldLoading />
