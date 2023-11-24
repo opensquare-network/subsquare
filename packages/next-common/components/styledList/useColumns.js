@@ -19,6 +19,7 @@ export default function useColumns(columnsData, defaultSortedColumn) {
         />
       ),
       style: col.style,
+      className: col.className,
     };
   });
 
