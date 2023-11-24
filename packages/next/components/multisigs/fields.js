@@ -120,5 +120,5 @@ export function Status({ name }) {
       break;
     }
   }
-  return <span className={cn("text-textPrimary", textColor)}>{name}</span>;
+  return <span className={cn("text14Medium", textColor)}>{name}</span>;
 }
