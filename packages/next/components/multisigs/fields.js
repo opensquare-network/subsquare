@@ -11,7 +11,8 @@ export function When({ height, index }) {
   return (
     <ExternalLink
       href={`https://${chain}.subscan.io/extrinsic/${height}-${index}`}
-      className="flex cursor-pointer gap-[4px] text-textPrimary"
+      className="hover:!underline flex cursor-pointer gap-[4px] text-textPrimary"
+      externalIcon={false}
     >
       {height.toLocaleString()}-{index}
     </ExternalLink>
