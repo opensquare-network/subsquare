@@ -105,7 +105,18 @@ export function PreimagesStatusCell({ statusName, count }) {
   );
 }
 
-export default function PreImagesTable({ data, searchValue }) {
+function parseStatus(status) {
+  const statusName = Object.keys(status || {})[0];
+  if (!statusName) return {};
+  const { deposit = [] } = status[statusName];
+  return {
+    statusName,
+    deposit,
+  };
+}
+
+export default function PreImagesTable({ data, searchValue, isMyDepositOn }) {
+  const realAddress = useRealAddress();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const { columns } = useColumns([
     {
@@ -131,8 +142,14 @@ export default function PreImagesTable({ data, searchValue }) {
   ]);
 
   const rows = (data || [])
-    .filter(([hash]) => {
+    .filter(([hash, status]) => {
       if (!hash.includes(searchValue.toLowerCase())) {
+        return false;
+      }
+
+      const { deposit } = parseStatus(status);
+      const [who] = deposit || [];
+      if (isMyDepositOn && who !== realAddress) {
         return false;
       }
 
