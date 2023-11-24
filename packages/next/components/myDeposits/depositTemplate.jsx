@@ -13,6 +13,7 @@ import Descriptions from "next-common/components/Descriptions";
 import Pagination from "next-common/components/pagination";
 import StyledList from "next-common/components/styledList";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import Loading from "next-common/components/loading";
 
 export default function DepositTemplate({
   name = "",
@@ -21,6 +22,7 @@ export default function DepositTemplate({
   activeCount,
   items = [],
   children,
+  loading,
 }) {
   const chain = useChain();
 
@@ -83,8 +85,18 @@ export default function DepositTemplate({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTabLabel]);
 
-  if (!activeCount) {
-    return <SecondaryCard className="flex">{title}</SecondaryCard>;
+  if (!activeCount || loading) {
+    return (
+      <SecondaryCard>
+        {title}
+
+        {loading && (
+          <div className="mt-4 flex justify-center">
+            <Loading size={24} />
+          </div>
+        )}
+      </SecondaryCard>
+    );
   }
 
   return (

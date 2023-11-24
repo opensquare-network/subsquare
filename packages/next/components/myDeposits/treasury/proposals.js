@@ -10,14 +10,17 @@ import businessCategory from "next-common/utils/consts/business/category";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { getBondBalanceColumn } from "../columns";
+import isNil from "lodash.isnil";
 
 export function useDepositTreasuryProposalsTab() {
   const chain = useChain();
   const proposalDeposits = useSelector(myTreasuryProposalDepositsSelector);
+  const loading = isNil(proposalDeposits);
 
   const activeCount = proposalDeposits?.length || 0;
 
   return {
+    loading,
     name: "Proposals",
     activeCount,
     formatter(item) {

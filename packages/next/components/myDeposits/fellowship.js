@@ -1,3 +1,4 @@
+import isNil from "lodash.isnil";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -28,6 +29,7 @@ export function useMyDepositFellowship() {
   const decisionDeposits = useSelector(myFellowshipDecisionDepositsSelector);
   const activeCount =
     (submissionDeposits?.length || 0) + (decisionDeposits?.length || 0);
+  const loading = isNil(submissionDeposits) || isNil(decisionDeposits);
 
   const menu = getFellowshipMenu();
 
@@ -126,5 +128,6 @@ export function useMyDepositFellowship() {
     ...menu,
     activeCount,
     items,
+    loading,
   };
 }

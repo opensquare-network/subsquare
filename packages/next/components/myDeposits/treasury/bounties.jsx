@@ -3,7 +3,7 @@ import {
   myTreasuryBountyBondsSelector,
   myTreasuryBountyCuratorDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
-import { sum } from "lodash";
+import { isNil, sum } from "lodash";
 import { useChain } from "next-common/context/chain";
 import {
   getProposalPostTitleColumn,
@@ -25,6 +25,7 @@ export function useDepositTreasuryBountiesTab() {
   const bountyCuratorDeposits = useSelector(
     myTreasuryBountyCuratorDepositsSelector,
   );
+  const loading = isNil(bountyBonds) || isNil(bountyCuratorDeposits);
 
   const bountyActiveCount =
     sum([bountyBonds?.length, bountyCuratorDeposits?.length]) || 0;
@@ -91,6 +92,7 @@ export function useDepositTreasuryBountiesTab() {
   }, [bountyBonds, bountyCuratorDeposits]);
 
   return {
+    loading,
     name: "Bounties",
     activeCount: bountyActiveCount,
     formatter(item) {

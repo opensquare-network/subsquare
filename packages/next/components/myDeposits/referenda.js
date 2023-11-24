@@ -1,3 +1,4 @@
+import isNil from "lodash.isnil";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -26,6 +27,7 @@ export function useMyDepositReferenda() {
   const decisionDeposits = useSelector(myReferendaDecisionDepositsSelector);
   const activeCount =
     (submissionDeposits?.length || 0) + (decisionDeposits?.length || 0);
+  const loading = isNil(submissionDeposits) || isNil(decisionDeposits);
 
   const menu = getReferendaMenu();
 
@@ -120,5 +122,6 @@ export function useMyDepositReferenda() {
     ...menu,
     activeCount,
     items,
+    loading,
   };
 }

@@ -12,6 +12,8 @@ export function useMyDepositTreasury() {
   const bounties = useDepositTreasuryBountiesTab();
   const tips = useDepositTreasuryTipsTab();
 
+  const loading = proposals.loading || bounties.loading || tips.loading;
+
   const activeCount = sum([
     proposals.activeCount,
     bounties.activeCount,
@@ -28,5 +30,6 @@ export function useMyDepositTreasury() {
     ...menu,
     activeCount,
     items,
+    loading,
   };
 }

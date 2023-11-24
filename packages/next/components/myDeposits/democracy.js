@@ -1,3 +1,4 @@
+import isNil from "lodash.isnil";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -21,6 +22,7 @@ export function useMyDepositDemocracy() {
   const { decimals, symbol } = useChainSettings();
   const deposits = useSelector(myDemocracyDepositsSelector);
   const activeCount = deposits?.length || 0;
+  const loading = isNil(deposits);
 
   const menu = getDemocracyMenu();
   menu.pathname = menu.items[0].pathname;
@@ -83,5 +85,6 @@ export function useMyDepositDemocracy() {
     ...menu,
     activeCount,
     items,
+    loading,
   };
 }

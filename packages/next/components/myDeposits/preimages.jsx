@@ -121,7 +121,11 @@ export default function MyDepositPreimages() {
 
   return (
     <div>
-      <DepositTemplate {...preImages} activeCount={activeCount}>
+      <DepositTemplate
+        {...preImages}
+        activeCount={activeCount}
+        loading={!hashes}
+      >
         <ScrollerX>
           <NoBorderList
             columns={columns}
