@@ -14,12 +14,26 @@ export default function DesktopList() {
   const isLoading = useSelector(multisigsIsLoadingSelector);
 
   const rows = (myMultisigs?.items || []).map((multisig) => [
-    <When key="when" {...multisig?.when} />,
+    <When
+      key="when"
+      height={multisig.when.height}
+      index={multisig.when.index}
+    />,
     <AddressUser key="address" add={multisig.address} />,
-    <Call key="call" {...multisig} />,
-    <Approving key="approving" {...multisig} />,
-    <Signatories key="signatories" {...multisig} />,
-    <Status key="status" {...multisig?.state} />,
+    <Call
+      key="call"
+      when={multisig.when}
+      call={multisig.call}
+      callHash={multisig.callHash}
+      callHex={multisig.callHex}
+    />,
+    <Approving
+      key="approving"
+      approvals={multisig.approvals}
+      threshold={multisig.threshold}
+    />,
+    <Signatories key="signatories" signatories={multisig.signatories} />,
+    <Status key="status" name={multisig.state.name} />,
   ]);
 
   return (
