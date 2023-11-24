@@ -14,7 +14,7 @@ import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import { useSelector } from "react-redux";
 
-export function useDepositDemocracy() {
+export function useMyDepositDemocracy() {
   useFetchMyDemocracyDeposits();
 
   const chain = useChain();

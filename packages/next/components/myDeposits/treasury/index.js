@@ -5,7 +5,7 @@ import { useDepositTreasuryBountiesTab } from "./bounties";
 import { useDepositTreasuryProposalsTab } from "./proposals";
 import { useDepositTreasuryTipsTab } from "./tips";
 
-export function useDepositTreasury() {
+export function useMyDepositTreasury() {
   useFetchMyTreasuryDeposits();
 
   const proposals = useDepositTreasuryProposalsTab();

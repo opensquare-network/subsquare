@@ -18,7 +18,7 @@ import { getReferendaMenu } from "next-common/utils/consts/menu/referenda";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import { useSelector } from "react-redux";
 
-export function useDepositReferenda() {
+export function useMyDepositReferenda() {
   useFetchMyReferendaDeposits();
 
   const { decimals, symbol } = useChainSettings();

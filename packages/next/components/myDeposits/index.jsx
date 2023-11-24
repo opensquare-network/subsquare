@@ -1,19 +1,19 @@
 import { AccountSubTabs } from "components/overview/account/subTabs";
 import { useChainSettings } from "next-common/context/chain";
-import { useDepositDemocracy } from "./democracy";
+import { useMyDepositDemocracy } from "./democracy";
 import DepositTemplate from "./depositTemplate";
-import { useDepositFellowship } from "./fellowship";
+import { useMyDepositFellowship } from "./fellowship";
 import MyDepositPreimages from "./preimages";
-import { useDepositReferenda } from "./referenda";
-import { useDepositTreasury } from "./treasury";
+import { useMyDepositReferenda } from "./referenda";
+import { useMyDepositTreasury } from "./treasury";
 
 export default function MyDeposits() {
   const { hasReferenda, hasFellowship } = useChainSettings();
 
-  const referenda = useDepositReferenda();
-  const fellowship = useDepositFellowship();
-  const democracy = useDepositDemocracy();
-  const treasury = useDepositTreasury();
+  const referenda = useMyDepositReferenda();
+  const fellowship = useMyDepositFellowship();
+  const democracy = useMyDepositDemocracy();
+  const treasury = useMyDepositTreasury();
 
   const items = [
     hasReferenda && referenda,
