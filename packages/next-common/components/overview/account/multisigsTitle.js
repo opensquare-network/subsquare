@@ -1,4 +1,3 @@
-import { Title } from "components/myvotes/styled";
 import { useChain } from "next-common/context/chain";
 import {
   fetchMyMultisigsCount,
@@ -7,6 +6,7 @@ import {
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { Title } from "./styled";
 
 export default function MultisigsTitle({ active }) {
   const dispatch = useDispatch();

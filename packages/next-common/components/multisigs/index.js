@@ -1,6 +1,6 @@
 import AccountInfo from "next-common/components/overview/accountInfo";
-import { AccountSubTabs } from "components/overview/account/subTabs";
 import MultisigsList from "./multisigsList";
+import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
 export default function Multisigs() {
   return (

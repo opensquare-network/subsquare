@@ -1,13 +1,16 @@
-import { Title } from "components/myvotes/styled";
 import UrlTabs from "next-common/components/urlTabs";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import MultisigsTitle from "./multisigsTitle";
+import { Title } from "./styled";
+import { isKintsugiChain } from "next-common/utils/chain";
 
-export function AccountSubTabs() {
+export default function AccountSubTabs() {
   const { hasMultisig } = useChainSettings();
+  const chain = useChain();
 
-  const tabs = [
-    {
+  const tabs = [];
+  if (!isKintsugiChain(chain)) {
+    tabs.push({
       label: "Votes",
       render({ active }) {
         return (
@@ -17,8 +20,8 @@ export function AccountSubTabs() {
         );
       },
       url: "/account/votes",
-    },
-  ];
+    });
+  }
 
   if (hasMultisig) {
     tabs.push({
