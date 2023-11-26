@@ -44,7 +44,6 @@ export default function DesktopList({ data }) {
         const dispatch = useDispatch();
         const triggerUpdate = useSelector(preImagesTriggerSelector);
         const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
-        console.log({ hash, preimage, isStatusLoaded, isBytesLoaded });
 
         const row = [
           <Hash
