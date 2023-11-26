@@ -12,45 +12,64 @@ const Field = tw.div`flex justify-between`;
 
 const FieldName = tw.span`text-textTertiary`;
 
-function Head(props) {
+function Head({ multisig }) {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between">
-        <Call key="call" {...props} />
-        <Status key="status" {...props?.state} />
+        <Call
+          key="call"
+          when={multisig.when}
+          call={multisig.call}
+          callHash={multisig.callHash}
+          callHex={multisig.callHex}
+        />
+        <Status
+          key="status"
+          name={multisig.state.name}
+          args={multisig.state.args}
+          updateAt={multisig.updateAt}
+        />
       </div>
     </div>
   );
 }
 
-function Fields(props) {
+function Fields({ multisig }) {
   return (
     <div className="flex flex-col gap-[4px]">
       <Field>
         <FieldName>When</FieldName>
-        <When key="when" {...props?.when} />
+        <When
+          key="when"
+          height={multisig.when.height}
+          index={multisig.when.index}
+        />
       </Field>
       <Field>
         <FieldName>Address</FieldName>
-        <AddressUser key="address" add={props?.address} />
+        <AddressUser key="address" add={multisig?.address} />
       </Field>
       <Field>
         <FieldName>Approving</FieldName>
-        <Approving key="approving" {...props} />
+        <Approving
+          key="approving"
+          approvals={multisig.approvals}
+          threshold={multisig.threshold}
+        />
       </Field>
       <Field>
         <FieldName>Signatories</FieldName>
-        <Signatories key="signatories" {...props} />
+        <Signatories key="signatories" signatories={multisig.signatories} />
       </Field>
     </div>
   );
 }
 
-function Item(props) {
+function Item({ multisig }) {
   return (
     <div className="flex flex-col py-[16px] gap-[12px]">
-      <Head {...props} />
-      <Fields {...props} />
+      <Head multisig={multisig} />
+      <Fields multisig={multisig} />
     </div>
   );
 }
@@ -78,7 +97,7 @@ export default function MobileList() {
   return (
     <div className="flex flex-col">
       {(myMultisigs?.items || []).map((item, index) => (
-        <Item key={index} {...item} />
+        <Item key={index} multisig={item} />
       ))}
     </div>
   );
