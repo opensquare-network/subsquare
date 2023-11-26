@@ -65,6 +65,11 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
         name
         args
       }
+      updateAt {
+        blockHeight
+        eventIndex
+        extrinsicIndex
+      }
     }
   }
 }`;

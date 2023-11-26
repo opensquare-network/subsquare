@@ -37,6 +37,7 @@ export default function DesktopList() {
       key="status"
       name={multisig.state.name}
       args={multisig.state.args}
+      updateAt={multisig.updateAt}
     />,
   ]);
 

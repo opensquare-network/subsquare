@@ -5,6 +5,7 @@ import CallPopup from "./callPopup";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain } from "next-common/context/chain";
+import ExplorerLink from "next-common/components/links/explorerLink";
 
 export function When({ height, index }) {
   const chain = useChain();
@@ -94,7 +95,7 @@ export function Signatories({ signatories = [] }) {
   }
   return (
     <Tooltip content={signatoriesTip}>
-      <span className="text-textPrimary">{signatories?.length}</span>
+      <span>{signatories?.length}</span>
     </Tooltip>
   );
 }
@@ -105,7 +106,7 @@ export const MultisigStatus = {
   Executed: "Executed",
 };
 
-export function Status({ name, args = {} }) {
+export function Status({ name, args = {}, updateAt }) {
   let textColor = "";
   switch (name) {
     case MultisigStatus.Approving: {
@@ -124,5 +125,17 @@ export function Status({ name, args = {} }) {
       break;
     }
   }
-  return <span className={cn("text14Medium", textColor)}>{name}</span>;
+
+  const textComponent = (
+    <span className={cn("text14Medium", textColor)}>{name}</span>
+  );
+
+  if (updateAt) {
+    return (
+      <ExplorerLink indexer={updateAt} style={{ display: "inline" }}>
+        {textComponent}
+      </ExplorerLink>
+    );
+  }
+  return textComponent;
 }
