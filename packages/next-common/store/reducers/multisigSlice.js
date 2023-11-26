@@ -75,7 +75,7 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
 }`;
 
 export const fetchMyMultisigs =
-  (chain, address, page = 1, pageSize = 25) =>
+  (chain, address, page = 1, pageSize = 15) =>
   async (dispatch) => {
     const { result, error } = await nextApi.fetch(
       getMultisigApiUrl(chain),
@@ -97,7 +97,6 @@ export const fetchMyMultisigs =
     }
 
     const { multisigs } = result.data || {};
-
     const data = {
       page,
       pageSize,
@@ -140,8 +139,6 @@ export const fetchMyMultisigsCount = (chain, address) => async (dispatch) => {
   }
 
   const { multisigs } = result.data || {};
-
   const count = multisigs?.total || 0;
-
   dispatch(setMyMultisigsCount(count));
 };
