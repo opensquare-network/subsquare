@@ -45,11 +45,7 @@ export default function PreImagesList({ data }) {
 
     const { deposit } = parseStatus(status);
     const [who] = deposit || [];
-    if (isMyDepositOn && who !== realAddress) {
-      return false;
-    }
-
-    return true;
+    return !isMyDepositOn || who === realAddress;
   });
 
   return (
