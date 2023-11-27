@@ -15,6 +15,12 @@ import StyledList from "next-common/components/styledList";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import Loading from "next-common/components/loading";
 
+const loadingContent = (
+  <div className="mt-4 mb-2 flex justify-center">
+    <Loading size={24} />
+  </div>
+);
+
 export default function DepositTemplate({
   name = "",
   icon,
@@ -88,11 +94,7 @@ export default function DepositTemplate({
       <SecondaryCard>
         <div className="flex">{title}</div>
 
-        {loading && (
-          <div className="mt-4 flex justify-center">
-            <Loading size={24} />
-          </div>
-        )}
+        {loading && loadingContent}
       </SecondaryCard>
     );
   }
@@ -164,7 +166,7 @@ function TableTemplate({
       {tableHead}
 
       {sm ? (
-        <MobileList rows={rows} columns={columns} />
+        <MobileList rows={rows} columns={columns} loading={loading} />
       ) : (
         <StyledList
           className="!shadow-none !border-none !p-0"
@@ -192,15 +194,26 @@ function TableTemplate({
     </div>
   );
 }
-function MobileList({ rows = [], columns = [] }) {
+
+function MobileList({ rows = [], columns = [], loading }) {
+  const hasActionColumn = last(columns).name === "";
+  const lastIndex = columns.length - (hasActionColumn ? 2 : 1);
+
+  if (loading) {
+    return loadingContent;
+  }
+
   return (
     <div className="mb-4">
       {rows.map((row, idx) => {
         const title = row[0];
-        const status = last(row);
+        const status = row[lastIndex];
+        const action = hasActionColumn ? last(row) : null;
         // without title and status
-        const rest = row.slice(1, -1);
-        const descriptionsLabels = columns.slice(1, -1).map((col) => col.name);
+        const rest = row.slice(1, lastIndex);
+        const descriptionsLabels = columns
+          .slice(1, lastIndex)
+          .map((col) => col.name);
 
         const descriptionItems = rest.map((value, idx) => {
           return {
@@ -219,7 +232,10 @@ function MobileList({ rows = [], columns = [] }) {
             key={idx}
             className="py-4 first:pt-0 border-b border-neutral300 space-y-3"
           >
-            {title}
+            <div className="flex items-center">
+              {title}
+              {action}
+            </div>
 
             <div className="flex items-center justify-end">{status}</div>
 

@@ -36,8 +36,8 @@ export function useDepositTreasuryBountiesTab() {
       count: bountyBonds?.length,
     },
     { label: "Curator Deposits", count: bountyCuratorDeposits?.length },
-  ];
-  const [sourceLabel, setSourceLabel] = useState(sources[0].label);
+  ].filter((source) => source.count);
+  const [sourceLabel, setSourceLabel] = useState(sources[0]?.label);
 
   const [bountyDepositsResult, setBountyDepositsResult] = useState(EmptyList);
   const [curatorDepositsResult, setCuratorDepositsResult] = useState(EmptyList);
@@ -105,13 +105,13 @@ export function useDepositTreasuryBountiesTab() {
     ],
     api: {
       async fetchData() {
-        return sourceLabel === sources[0].label
+        return sourceLabel === sources[0]?.label
           ? { result: bountyDepositsResult }
           : { result: curatorDepositsResult };
       },
     },
     tableHead: (
-      <div className="space-x-2 mb-2">
+      <div className="space-x-2 mb-4">
         {sources.map((source) => (
           <SwitchTag
             active={sourceLabel === source.label}
