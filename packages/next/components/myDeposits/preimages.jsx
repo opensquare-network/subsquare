@@ -178,10 +178,10 @@ function UnnoteButton({ hash, count, deposit, status }) {
         realAddress === who && (
           <Tooltip content={"Unnote"}>
             <GhostButton
-              className="!p-1.5 !w-7 !h-7 !rounded"
+              className="!p-1.5 !w-7 !h-7 !rounded !border-neutral400"
               onClick={() => setShowPopup(true)}
             >
-              <SystemClose className="w-4 h-4 [&_path]:fill-textPrimary" />
+              <SystemClose className="w-4 h-4 [&_path]:fill-textPrimary [&_path]:stroke-textPrimary" />
             </GhostButton>
           </Tooltip>
         )}
