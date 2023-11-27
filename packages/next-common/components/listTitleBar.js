@@ -9,6 +9,7 @@ const TitleLink = styled.a`
 `;
 
 export default function ListTitleBar({
+  className,
   title = "",
   titleCount = null,
   titleExtra = null,
@@ -16,7 +17,7 @@ export default function ListTitleBar({
 }) {
   return (
     <TitleContainer>
-      <div>
+      <div className={className}>
         {link ? (
           <Link href={link || ""} passHref legacyBehavior>
             <TitleLink>{title}</TitleLink>
