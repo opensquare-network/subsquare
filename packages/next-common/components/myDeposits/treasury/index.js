@@ -16,9 +16,9 @@ export function useMyDepositTreasury() {
 
   let loading = proposals.loading || bounties.loading;
   let activeCount = sum([proposals.activeCount, bounties.activeCount]);
-  if (hasTipsModule) {
+  if (hasTipsModule !== false) {
     activeCount += tips.activeCount;
-    loading = loading || tips || loading;
+    loading = loading || tips.loading;
   }
 
   const menu = getTreasuryMenu();

@@ -18,6 +18,7 @@ export default function MyDeposits() {
   const fellowship = useMyDepositFellowship();
   const democracy = useMyDepositDemocracy();
   const treasury = useMyDepositTreasury();
+
   const activeItems = [];
   const nonActiveItems = [];
   if (hasReferenda) {
