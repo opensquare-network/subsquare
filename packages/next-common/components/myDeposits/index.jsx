@@ -18,13 +18,23 @@ export default function MyDeposits() {
   const fellowship = useMyDepositFellowship();
   const democracy = useMyDepositDemocracy();
   const treasury = useMyDepositTreasury();
-
-  const items = [
-    hasReferenda && referenda,
-    hasFellowship && fellowship,
-    !chainSettings.noDemocracyModule && democracy,
-    hasTreasuryModule !== false && treasury,
-  ].filter(Boolean);
+  const activeItems = [];
+  const nonActiveItems = [];
+  if (hasReferenda) {
+    (referenda.activeCount > 0 ? activeItems : nonActiveItems).push(referenda);
+  }
+  if (hasFellowship) {
+    (fellowship.activeCount > 0 ? activeItems : nonActiveItems).push(
+      fellowship,
+    );
+  }
+  if (!chainSettings.noDemocracyModule) {
+    (democracy.activeCount > 0 ? activeItems : nonActiveItems).push(democracy);
+  }
+  if (hasTreasuryModule !== false) {
+    (treasury.activeCount > 0 ? activeItems : nonActiveItems).push(treasury);
+  }
+  const items = [...activeItems, ...nonActiveItems];
 
   return (
     <div className="space-y-6">
