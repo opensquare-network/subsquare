@@ -3,7 +3,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import MultisigsTitle from "./multisigsTitle";
 import { Title } from "./styled";
 import { isKintsugiChain } from "next-common/utils/chain";
-import { OverviewDepositsTitle } from "./depositTitle";
+import DepositsTitle from "./depositsTitle";
 
 export default function AccountSubTabs() {
   const { hasMultisig } = useChainSettings();
@@ -27,7 +27,7 @@ export default function AccountSubTabs() {
   tabs.push({
     label: "Deposits",
     render({ active }) {
-      return <OverviewDepositsTitle active={active} />;
+      return <DepositsTitle active={active} />;
     },
     url: "/account/deposits",
   });

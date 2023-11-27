@@ -1,6 +1,6 @@
 import { Title } from "./styled";
 
-export function OverviewDepositsTitle({ active }) {
+export default function DepositsTitle({ active }) {
   return (
     <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
       Deposits
