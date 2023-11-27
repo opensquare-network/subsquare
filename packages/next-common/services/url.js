@@ -64,7 +64,7 @@ export const calendarUserEventsApi = "events/user-events";
 export const adminsApi = "admins";
 
 export const overviewApi = {
-  discussions: "posts",
+  discussions: "overview/discussions",
   polkassemblyDiscussions: "polkassembly-discussions",
   referenda: "overview/referenda",
   fellowship: "overview/fellowship",

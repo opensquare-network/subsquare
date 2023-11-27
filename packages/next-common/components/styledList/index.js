@@ -31,7 +31,7 @@ function StyledList({
   noDataText = "No current votes",
 }) {
   const tableBodyRef = useRef();
-  let tableBody = null;
+  let tableBody;
 
   if (loading) {
     tableBody = <EmptyOrLoading loading={loading} />;

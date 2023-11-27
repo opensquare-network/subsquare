@@ -9,7 +9,7 @@ import SummaryItems from "next-common/components/summary/summaryItems";
 import BigNumber from "bignumber.js";
 import PriorInfo from "./prior";
 import LoadableContent from "next-common/components/common/loadableContent";
-import { AccountSubTabs } from "components/overview/account/subTabs";
+import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
