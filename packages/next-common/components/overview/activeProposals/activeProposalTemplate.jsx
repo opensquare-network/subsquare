@@ -25,7 +25,7 @@ export default function ActiveProposalTemplate({
   const chain = useChain();
 
   const activeItems = (items || [])
-    .filter((item) => !isNil(item.activeCount))
+    .filter((item) => item.activeCount)
     .filter((item) => !item.excludeToChains?.includes(chain));
 
   const firstActiveItem = first(activeItems);
@@ -69,7 +69,7 @@ export default function ActiveProposalTemplate({
     };
   });
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
+  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
   useEffect(() => {
     setTabTableLoaded({
       ...tabTableLoaded,

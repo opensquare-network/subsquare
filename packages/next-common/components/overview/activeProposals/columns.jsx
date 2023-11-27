@@ -9,6 +9,9 @@ import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import Link from "next/link";
+import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
+import businessCategory from "next-common/utils/consts/business/category";
+import { getMotionStateArgs } from "next-common/utils/collective/result";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -54,7 +57,36 @@ export function getStatusTagColumn(props) {
     name: "Status",
     className: "text-right w-[120px]",
     cellRender(data) {
-      return data.status && <Tag state={data.status} data={data} {...props} />;
+      const { category } = props || {};
+      let args, stateName;
+      if (
+        [
+          businessCategory.fellowship,
+          businessCategory.openGovReferenda,
+        ].includes(category)
+      ) {
+        stateName = data.state?.state || data?.state?.name;
+        args = getGov2ReferendumStateArgs(data?.state);
+      } else if (
+        [
+          businessCategory.councilMotions,
+          businessCategory.tcProposals,
+          businessCategory.advisoryMotions,
+          businessCategory.allianceMotions,
+          businessCategory.financialMotions,
+          businessCategory.treasuryCouncilMotions,
+          businessCategory.openTechCommitteeProposals,
+          businessCategory.collective,
+        ].includes(category)
+      ) {
+        args = getMotionStateArgs(data?.state);
+      }
+
+      return (
+        data.status && (
+          <Tag state={stateName || data.status} args={args} {...props} />
+        )
+      );
     },
   };
 }

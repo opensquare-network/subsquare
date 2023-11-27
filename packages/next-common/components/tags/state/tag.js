@@ -68,7 +68,7 @@ const categoryTagMap = {
   [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: AnnouncementTag,
 };
 
-export default function Tag({ category, state, link, args, data }) {
+export default function Tag({ category, state, link, args }) {
   let element = state;
   if (link) {
     element = <a href={link}>{state}</a>;
@@ -77,7 +77,7 @@ export default function Tag({ category, state, link, args, data }) {
 
   const Tag = categoryTagMap[category];
   if (Tag) {
-    return <Tag state={element} args={args} data={data} />;
+    return <Tag state={element} args={args} />;
   }
   return <ClosedTag>{element}</ClosedTag>;
 }

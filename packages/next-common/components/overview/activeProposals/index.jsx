@@ -22,9 +22,15 @@ export default function ActiveProposals() {
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  const { tracks, fellowshipTracks, summary, activeProposals } = usePageProps();
+  const { overviewSummary, activeProposals } = usePageProps();
+  const summary = overviewSummary;
+  const tracks = overviewSummary?.gov2ReferendaTracks;
+  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
 
-  const discussions = getActiveProposalDiscussions({ activeProposals });
+  const discussions = getActiveProposalDiscussions({
+    summary,
+    activeProposals,
+  });
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
   const fellowship = getActiveProposalFellowship({
     fellowshipTracks,
@@ -72,7 +78,7 @@ export default function ActiveProposals() {
 
   return (
     <div>
-      <TitleContainer className="mb-4">Active Proposals</TitleContainer>
+      <TitleContainer className="mb-4">Recent Proposals</TitleContainer>
 
       <div className="space-y-4">
         {items.map((item) => (
