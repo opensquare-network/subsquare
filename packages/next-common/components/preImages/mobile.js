@@ -10,6 +10,7 @@ import {
 import FieldLoading from "../icons/fieldLoading";
 import { Deposit, Hash, Proposal } from "./fields";
 import tw from "tailwind-styled-components";
+import DetailButton from "../detailButton";
 
 const FieldName = tw.span`text-textTertiary`;
 
@@ -20,33 +21,9 @@ function Item({ hash }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
 
   return (
-    <div className="flex flex-col py-[16px] gap-[12px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral300">
-      <div className="flex flex-col">
-        <Hash
-          key="hash"
-          hash={hash}
-          proposal={preimage.proposal}
-          setShowArgumentsDetail={setShowArgumentsDetail}
-        />
-        <div className="flex justify-end">
-          {isStatusLoaded ? (
-            preimage.statusName && (
-              <span
-                key="status"
-                className="capitalize text-textTertiary font-medium"
-              >
-                {preimage.statusName +
-                  (preimage.count ? `(${preimage.count})` : "")}
-              </span>
-            )
-          ) : (
-            <FieldLoading />
-          )}
-        </div>
-      </div>
-      <div className="flex flex-col gap-[4px]">
-        <div className="flex justify-between">
-          <FieldName>Arguments</FieldName>
+    <div className="flex flex-col py-[16px] gap-[12px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral300 text14Medium">
+      <div className="flex flex-col gap-[12px]">
+        <div className="flex justify-between gap-[24px]">
           {isBytesLoaded ? (
             <Proposal
               key="proposal"
@@ -58,6 +35,35 @@ function Item({ hash }) {
           ) : (
             <FieldLoading />
           )}
+          <div>
+            <DetailButton
+              disabled={!preimage.proposal}
+              onClick={() => setShowArgumentsDetail(preimage.proposal)}
+            />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          {isStatusLoaded ? (
+            preimage.statusName && (
+              <span key="status" className="capitalize text-textTertiary">
+                {preimage.statusName +
+                  (preimage.count ? `(${preimage.count})` : "")}
+              </span>
+            )
+          ) : (
+            <FieldLoading />
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col gap-[4px]">
+        <div className="flex justify-between">
+          <FieldName>Hash</FieldName>
+          <Hash
+            key="hash"
+            hash={hash}
+            proposal={preimage.proposal}
+            setShowArgumentsDetail={setShowArgumentsDetail}
+          />
         </div>
         <div className="flex justify-between">
           <FieldName>Deposit Balance</FieldName>

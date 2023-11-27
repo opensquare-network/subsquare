@@ -10,15 +10,15 @@ import AddressUser from "../user/addressUser";
 
 export function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
-    <div className="flex max-md:w-full max-md:justify-between">
-      <div className="flex items-center w-[160px]">
+    <div className="flex">
+      <div className="flex items-center md:w-[160px]">
         <Copyable className="max-md:flex max-md:items-center" copyText={hash}>
           <span className="text14Medium text-textPrimary inline-block w-[96px] truncate">
             {hash}
           </span>
         </Copyable>
       </div>
-      <div className="flex items-centers mx-[16px] max-md:mx-0">
+      <div className="flex items-centers mx-[16px] max-md:hidden">
         <DetailButton
           disabled={!proposal}
           onClick={() => setShowArgumentsDetail(proposal)}
@@ -86,12 +86,12 @@ export function Proposal({
   const { section, method, meta } = proposal || {};
   const doc = meta?.docs[0]?.toJSON();
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-md:overflow-hidden">
       <span
-        className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer"
+        className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer max-md:text-[16px] max-md:leading-[24px]"
         onClick={() => setShowArgumentsDetail(proposal)}
       >{`${section}.${method}`}</span>
-      <span className="text-textSecondary text-[12px] leading-[16px] max-md:hidden">
+      <span className="text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:whitespace-nowrap max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[20px]">
         {doc}
       </span>
     </div>
