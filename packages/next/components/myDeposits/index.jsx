@@ -9,10 +9,14 @@ import { useMyDepositReferenda } from "./referenda";
 import { useMyDepositTreasury } from "./treasury";
 
 export default function MyDeposits() {
-  const { hasReferenda, hasFellowship, hasDemocracy, hasTreasury } =
-    useChainSettings();
-
   useFetchMyPreimageDeposits();
+
+  const chainSettings = useChainSettings();
+  const { hasReferenda, hasFellowship, hasTreasury } = chainSettings;
+  const hasDemocracy =
+    chainSettings.hasDemocracy !== false ||
+    !chainSettings.noDemocracy ||
+    !chainSettings.noDemocracyModule;
 
   const referenda = useMyDepositReferenda();
   const fellowship = useMyDepositFellowship();
