@@ -6,6 +6,7 @@ import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
+import AddressUser from "next-common/components/user/addressUser";
 
 export function When({ height, index }) {
   const chain = useChain();
@@ -59,21 +60,31 @@ export function Call({ when, callHash, call, callHex, right = false }) {
   );
 }
 
-export function Approving({ approvals, threshold }) {
-  let approvalsTip = null;
-  if (approvals?.length > 0) {
-    approvalsTip = (
-      <ul>
-        {approvals?.map((approval, index) => (
-          <li key={`approval-${index}`}>{approval}</li>
-        ))}
-      </ul>
-    );
+function AddressesTooltip({ addresses = [] }) {
+  if (!addresses || addresses.length <= 0) {
+    return null;
   }
 
   return (
+    <ul>
+      {(addresses || []).map((address, index) => (
+        <li key={index} className="leading-6">
+          <AddressUser
+            add={address}
+            ellipsis={false}
+            color="var(--textPrimaryContrast)"
+            fontSize={12}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function Approving({ approvals, threshold }) {
+  return (
     <div className="flex gap-[2px] text-textTertiary">
-      <Tooltip content={approvalsTip}>
+      <Tooltip content={<AddressesTooltip addresses={approvals} />}>
         <span className="text-textPrimary">{approvals?.length || 0}</span>
       </Tooltip>
       <span>/</span>
@@ -83,18 +94,8 @@ export function Approving({ approvals, threshold }) {
 }
 
 export function Signatories({ signatories = [] }) {
-  let signatoriesTip = null;
-  if (signatories?.length > 0) {
-    signatoriesTip = (
-      <ul>
-        {signatories?.map((signatory, index) => (
-          <li key={`signatory-${index}`}>{signatory}</li>
-        ))}
-      </ul>
-    );
-  }
   return (
-    <Tooltip content={signatoriesTip}>
+    <Tooltip content={<AddressesTooltip addresses={signatories} />}>
       <span>{signatories?.length}</span>
     </Tooltip>
   );
