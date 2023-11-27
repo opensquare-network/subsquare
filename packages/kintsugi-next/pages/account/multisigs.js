@@ -1,23 +1,22 @@
 import { withCommonProps } from "next-common/lib";
-import MyVotes from "components/myvotes";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import AccountLayout from "next-common/components/account/layout";
+import Multisigs from "next-common/components/multisigs";
 
-export default function Votes() {
+export default function MyMultisigs() {
   return (
     <AccountLayout>
-      <MyVotes />
+      <Multisigs />
     </AccountLayout>
   );
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
+  const { result: summary } = await nextApi.fetch("summary");
 
   return {
     props: {
-      summary: tracksProps.summary,
-      ...tracksProps,
+      summary: summary ?? {},
     },
   };
 });
