@@ -3,11 +3,6 @@ import { isNil, sum } from "lodash";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import PreimageDetailPopup from "next-common/components/preImages/preImageDetailPopup";
-import {
-  PreimageHashCell,
-  PreimageProposalCell,
-  PreimagesStatusCell,
-} from "next-common/components/preImages/table";
 import UnnotePopup from "next-common/components/preImages/unnotePopup";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import NoBorderList from "next-common/components/styledList/noBorderList";
@@ -25,12 +20,50 @@ import { useDispatch } from "react-redux";
 import DepositTemplate from "./depositTemplate";
 import { useSelector } from "react-redux";
 import { myPreimageDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
+import { Hash, Proposal, Status } from "../preImages/fields";
+import { PreimageMobileListItemTemplate } from "../preImages/mobile";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import Loading from "../loading";
 
 export default function MyDepositPreimages() {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const statuses = useSelector(myPreimageDepositsSelector);
   const activeCount = sum([statuses?.length || 0]);
   const loading = isNil(statuses);
+  const { md } = useScreenSize();
+
+  return (
+    <div>
+      <DepositTemplate
+        {...preImages}
+        activeCount={activeCount}
+        loading={loading}
+      >
+        {md ? (
+          <MobileList
+            data={statuses}
+            setShowArgumentsDetail={setShowArgumentsDetail}
+          />
+        ) : (
+          <DesktopList
+            data={statuses}
+            setShowArgumentsDetail={setShowArgumentsDetail}
+          />
+        )}
+      </DepositTemplate>
+
+      {showArgumentsDetail && (
+        <PreimageDetailPopup
+          setShow={() => setShowArgumentsDetail(null)}
+          proposal={showArgumentsDetail}
+        />
+      )}
+    </div>
+  );
+}
+
+function DesktopList({ data, setShowArgumentsDetail }) {
+  const loading = isNil(data);
 
   const { columns } = useColumns([
     {
@@ -59,20 +92,20 @@ export default function MyDepositPreimages() {
     },
   ]);
 
-  const rows = statuses?.map(([hash]) => {
+  const rows = data?.map(([hash]) => {
     return {
       useData() {
         const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
 
         const row = [
-          <PreimageHashCell
+          <Hash
             key="hash"
             hash={hash}
             proposal={preimage.proposal}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />,
           isBytesLoaded ? (
-            <PreimageProposalCell
+            <Proposal
               key="proposal"
               proposal={preimage.proposal}
               proposalError={preimage.proposalError}
@@ -94,10 +127,7 @@ export default function MyDepositPreimages() {
           ),
           isStatusLoaded ? (
             preimage.statusName && (
-              <PreimagesStatusCell
-                statusName={preimage.statusName}
-                count={preimage.count}
-              />
+              <Status statusName={preimage.statusName} count={preimage.count} />
             )
           ) : (
             <FieldLoading />
@@ -122,29 +152,106 @@ export default function MyDepositPreimages() {
   });
 
   return (
-    <div>
-      <DepositTemplate
-        {...preImages}
-        activeCount={activeCount}
+    <ScrollerX>
+      <NoBorderList
+        columns={columns}
+        rows={rows}
+        noDataText="No current preimages"
         loading={loading}
-      >
-        <ScrollerX>
-          <NoBorderList
-            columns={columns}
-            rows={rows}
-            noDataText="No current preimages"
-            loading={loading}
-          />
-        </ScrollerX>
-      </DepositTemplate>
+      />
+    </ScrollerX>
+  );
+}
 
-      {showArgumentsDetail && (
-        <PreimageDetailPopup
-          setShow={() => setShowArgumentsDetail(null)}
-          proposal={showArgumentsDetail}
+function MobileList({ data, setShowArgumentsDetail }) {
+  const loading = isNil(data);
+
+  if (loading) {
+    return (
+      <div className="my-4 flex justify-center items-center">
+        <Loading size={24} />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {data.map(([hash]) => (
+        <MobileListItem
+          key={hash}
+          hash={hash}
+          setShowArgumentsDetail={setShowArgumentsDetail}
         />
-      )}
+      ))}
     </div>
+  );
+}
+function MobileListItem({ hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
+
+  return (
+    <PreimageMobileListItemTemplate
+      title={
+        isBytesLoaded ? (
+          <Proposal
+            key="proposal"
+            proposal={preimage.proposal}
+            proposalError={preimage.proposalError}
+            proposalWarning={preimage.proposalWarning}
+            setShowArgumentsDetail={setShowArgumentsDetail}
+          />
+        ) : (
+          <FieldLoading />
+        )
+      }
+      titleExtra={
+        isStatusLoaded && (
+          <UnnoteButton
+            hash={hash}
+            count={preimage.count}
+            deposit={preimage.deposit}
+            status={preimage.statusName}
+          />
+        )
+      }
+      status={
+        isStatusLoaded ? (
+          preimage.statusName && (
+            <Status
+              key="status"
+              statusName={preimage.statusName}
+              count={preimage.count}
+            />
+          )
+        ) : (
+          <FieldLoading />
+        )
+      }
+      hash={
+        <Hash
+          key="hash"
+          hash={hash}
+          proposal={preimage.proposal}
+          setShowArgumentsDetail={setShowArgumentsDetail}
+        />
+      }
+      depositBalance={
+        isStatusLoaded ? (
+          preimage.deposit && <BalanceCell deposit={preimage.deposit} />
+        ) : (
+          <FieldLoading />
+        )
+      }
+      length={
+        isStatusLoaded ? (
+          <span className="text-textPrimary">
+            {preimage.proposalLength?.toJSON()?.toLocaleString()}
+          </span>
+        ) : (
+          <FieldLoading />
+        )
+      }
+    />
   );
 }
 
@@ -154,7 +261,7 @@ function BalanceCell({ deposit }) {
 
   return (
     <ValueDisplay
-      className="whitespace-nowrap"
+      className="whitespace-nowrap text-textPrimary"
       value={toPrecision(amount.toJSON(), decimals)}
       symbol={symbol}
     />
