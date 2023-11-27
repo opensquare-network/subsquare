@@ -74,6 +74,7 @@ const vara = {
   hasReferenda: true,
   hasFellowship: true,
   hasDemocracy: false,
+  hasTipsModule: false,
   hasStatescan: false,
   hasSubscan: true,
   hasDotreasury: false,

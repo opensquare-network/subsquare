@@ -1,9 +1,10 @@
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
-import { sum } from "lodash";
+import sum from "lodash.sum";
 import { useDepositTreasuryBountiesTab } from "./bounties";
 import { useDepositTreasuryProposalsTab } from "./proposals";
 import { useDepositTreasuryTipsTab } from "./tips";
+import { useChainSettings } from "next-common/context/chain";
 
 export function useMyDepositTreasury() {
   useFetchMyTreasuryDeposits();
@@ -11,20 +12,19 @@ export function useMyDepositTreasury() {
   const proposals = useDepositTreasuryProposalsTab();
   const bounties = useDepositTreasuryBountiesTab();
   const tips = useDepositTreasuryTipsTab();
+  const { hasTipsModule } = useChainSettings();
 
-  const loading = proposals.loading || bounties.loading || tips.loading;
-
-  const activeCount = sum([
-    proposals.activeCount,
-    bounties.activeCount,
-    tips.activeCount,
-  ]);
+  let loading = proposals.loading || bounties.loading;
+  let activeCount = sum([proposals.activeCount, bounties.activeCount]);
+  if (hasTipsModule) {
+    activeCount += tips.activeCount;
+    loading = loading || tips || loading;
+  }
 
   const menu = getTreasuryMenu();
   menu.pathname = menu.items[0].pathname;
 
   const items = [proposals, bounties, tips];
-
   return {
     ...menu,
     activeCount,

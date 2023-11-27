@@ -80,7 +80,7 @@ export default function useFetchMyTreasuryBountyDeposits() {
       return;
     }
 
-    if (!api || !realAddress || !api.query?.treasury) {
+    if (!api || !realAddress || !api.query?.bounties) {
       return;
     }
 

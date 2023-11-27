@@ -8007,6 +8007,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.sum@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "lodash.sum@npm:4.0.2"
+  checksum: b33518c8bdb9b0f81a32e03afbc7577cfe6b7505daeedba73de9301fd1c6a268ec97d8d43bf03956a89a76db8fe24ffa04f977be278d1c3e679028d0e114ad33
+  languageName: node
+  linkType: hard
+
 "lodash.sumby@npm:^4.6.0":
   version: 4.6.0
   resolution: "lodash.sumby@npm:4.6.0"
@@ -8507,6 +8514,7 @@ __metadata:
     lodash.range: ^3.2.0
     lodash.set: ^4.3.2
     lodash.startcase: ^4.4.0
+    lodash.sum: ^4.0.2
     lodash.sumby: ^4.6.0
     lodash.uniq: ^4.5.0
     lodash.uniqby: ^4.7.0
