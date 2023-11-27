@@ -1,18 +1,18 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { useUser } from "next-common/context/user";
-import ListLayout from "./ListLayout";
-import { useRouter } from "next/router";
 import { isCollectivesChain } from "next-common/utils/chain";
-import AllianceOverviewSummary from "../summary/allianceOverviewSummary";
-import OverviewSummary from "../summary/overviewSummary";
-import ChainSocialLinks from "../chain/socialLinks";
+import ListLayout from "next-common/components/layout/ListLayout";
+import OverviewSummary from "next-common/components/summary/overviewSummary";
+import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
+import ChainSocialLinks from "next-common/components/chain/socialLinks";
+import { useUser } from "next-common/context/user";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import {
   hasDefinedBounties,
   hasDefinedOffChainVoting,
 } from "next-common/utils/summaryExternalInfo";
-import OffChainVoting from "../summary/externalInfo/offChainVoting";
-import Bounties from "../summary/externalInfo/bounties";
-import { useEffect } from "react";
+import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
+import Bounties from "next-common/components/summary/externalInfo/bounties";
 import AccountInfo from "../overview/accountInfo";
 
 export default function AccountLayout(props) {
@@ -31,17 +31,21 @@ export default function AccountLayout(props) {
     ? AllianceOverviewSummary
     : OverviewSummary;
 
-  const tabs = [
+  let tabs = [
     {
       label: "Overview",
       url: "/",
     },
-    user?.address && {
+  ];
+
+  if (user?.address) {
+    const active = router.pathname.startsWith("/account");
+    tabs.push({
       label: "Account",
-      url: "/account/votes",
-      extraMatchTabActivePathnames: ["/account/deposits"],
-    },
-  ].filter(Boolean);
+      url: "/account/vote",
+      active,
+    });
+  }
 
   let externalInfo = null;
   if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
