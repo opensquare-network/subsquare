@@ -81,7 +81,9 @@ function Item({ hash }) {
         <div className="flex justify-between">
           <FieldName>Length</FieldName>
           {isStatusLoaded ? (
-            preimage.proposalLength?.toJSON()?.toLocaleString()
+            <span className="text-textPrimary">
+              {preimage.proposalLength?.toJSON()?.toLocaleString()}
+            </span>
           ) : (
             <FieldLoading />
           )}

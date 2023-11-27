@@ -13,7 +13,9 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
     <div className="flex max-md:w-full max-md:justify-between">
       <div className="flex items-center w-[160px]">
         <Copyable className="max-md:flex max-md:items-center" copyText={hash}>
-          <span className="inline-block w-[96px] truncate">{hash}</span>
+          <span className="text14Medium text-textPrimary inline-block w-[96px] truncate">
+            {hash}
+          </span>
         </Copyable>
       </div>
       <div className="flex items-centers mx-[16px] max-md:mx-0">
@@ -86,7 +88,7 @@ export function Proposal({
   return (
     <div className="flex flex-col">
       <span
-        className="font-medium leading-[20px] hover:underline cursor-pointer"
+        className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer"
         onClick={() => setShowArgumentsDetail(proposal)}
       >{`${section}.${method}`}</span>
       <span className="text-textSecondary text-[12px] leading-[16px] max-md:hidden">
