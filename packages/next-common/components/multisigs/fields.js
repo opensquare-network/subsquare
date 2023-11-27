@@ -68,7 +68,7 @@ function AddressesTooltip({ addresses = [] }) {
   return (
     <ul>
       {(addresses || []).map((address, index) => (
-        <li key={index} className="leading-6">
+        <li key={index} className="leading-5">
           <AddressUser
             add={address}
             ellipsis={false}
