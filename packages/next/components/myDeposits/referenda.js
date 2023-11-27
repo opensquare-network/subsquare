@@ -18,6 +18,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { getReferendaMenu } from "next-common/utils/consts/menu/referenda";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import { useSelector } from "react-redux";
+import { getDepositRefundColumn } from "./columns";
 
 export function useMyDepositReferenda() {
   useFetchMyReferendaDeposits();
@@ -47,6 +48,7 @@ export function useMyDepositReferenda() {
         },
       },
       getStatusTagColumn({ category: businessCategory.openGovReferenda }),
+      getDepositRefundColumn({ pallet: "referenda" }),
     ],
     formatter: normalizeGov2ReferendaListItem,
   };

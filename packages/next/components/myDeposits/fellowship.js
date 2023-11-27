@@ -18,6 +18,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { useSelector } from "react-redux";
+import { getDepositRefundColumn } from "./columns";
 
 export function useMyDepositFellowship() {
   useFetchMyFellowshipDeposits();
@@ -49,6 +50,7 @@ export function useMyDepositFellowship() {
         },
       },
       getStatusTagColumn({ category: businessCategory.fellowship }),
+      getDepositRefundColumn({ pallet: "fellowshipReferenda" }),
     ],
     formatter: normalizeFellowshipReferendaListItem,
   };

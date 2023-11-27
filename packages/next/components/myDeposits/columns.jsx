@@ -1,9 +1,101 @@
+import { SystemClose } from "@osn/icons/subsquare";
 import isNil from "lodash.isnil";
+import GhostButton from "next-common/components/buttons/ghostButton";
 import ListPostTitle from "next-common/components/postList/postTitle";
+import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
+import useApi from "next-common/utils/hooks/useApi";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+
+const RefundPopup = dynamic(
+  () => import("next-common/components/gov2/referendum/metadata/refund/popup"),
+  { ssr: false },
+);
+
+export function getDepositRefundColumn({ pallet } = {}) {
+  return {
+    name: "",
+    className: "w-20 text-right",
+    cellRender(data) {
+      const { referendumIndex } = data;
+
+      return (
+        <Tooltip content="Refund">
+          <RefundButton pallet={pallet} referendumIndex={referendumIndex} />
+        </Tooltip>
+      );
+    },
+  };
+}
+function RefundButton({ pallet, referendumIndex }) {
+  const [showPopup, setShowPopup] = useState(false);
+  const api = useApi();
+  const isMounted = useIsMounted();
+  const [info, setInfo] = useState();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    let unsub;
+    api.query[pallet].referendumInfoFor(referendumIndex, (optionalInfo) => {
+      if (!isMounted.current || !optionalInfo.isSome) {
+        return;
+      }
+
+      setInfo(optionalInfo.unwrap().toJSON());
+    });
+
+    return () => {
+      if (unsub) {
+        unsub();
+      }
+    };
+  }, [api, referendumIndex]);
+
+  let disabled = true;
+  const { approved, rejected, timedOut, cancelled } = info || {};
+  const [, , deposit] = approved || rejected || timedOut || cancelled || [];
+
+  if (deposit) {
+    disabled = false;
+  }
+
+  return (
+    <>
+      <GhostButton
+        disabled={disabled}
+        className={cn(
+          "group",
+          "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
+          "disabled:bg-neutral100",
+        )}
+        onClick={() => setShowPopup(true)}
+      >
+        <SystemClose
+          className={cn(
+            "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
+            "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
+          )}
+        />
+      </GhostButton>
+
+      {showPopup && (
+        <RefundPopup
+          referendumIndex={referendumIndex}
+          pallet={pallet}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
+    </>
+  );
+}
 
 export function getReasonPostTitleColumn() {
   return {
