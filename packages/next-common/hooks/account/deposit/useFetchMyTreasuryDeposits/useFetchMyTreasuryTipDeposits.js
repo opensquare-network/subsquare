@@ -38,7 +38,12 @@ export default function useFetchMyTreasuryTipDeposits() {
   const hasTreasuryTips = useMenuHasTreasuryTips();
 
   useEffect(() => {
-    if (!hasTreasuryTips || !api || !realAddress || !api.query?.tips) {
+    if (!hasTreasuryTips) {
+      dispatch(setTipDeposits([]));
+      return;
+    }
+
+    if (!api || !realAddress || !api.query?.tips) {
       return;
     }
 
