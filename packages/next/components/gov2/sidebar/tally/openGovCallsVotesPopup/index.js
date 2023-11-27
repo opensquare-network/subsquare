@@ -151,7 +151,7 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items?.map((item) => {
-    const row = [
+    return [
       <AddressUser
         key="user"
         add={item.voter}
@@ -171,8 +171,6 @@ function VotesList({ items = [], loading }) {
         conviction={item.vote.vote.conviction}
       />,
     ];
-
-    return row;
   });
 
   return (

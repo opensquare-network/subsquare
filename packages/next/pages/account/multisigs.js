@@ -1,12 +1,12 @@
 import { withCommonProps } from "next-common/lib";
-import MyVotes from "components/myvotes";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import AccountLayout from "next-common/components/account/layout";
+import Multisigs from "next-common/components/multisigs";
 
-export default function Votes() {
+export default function MyMultisigs() {
   return (
     <AccountLayout>
-      <MyVotes />
+      <Multisigs />
     </AccountLayout>
   );
 }
