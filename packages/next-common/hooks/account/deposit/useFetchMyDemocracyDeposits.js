@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { setDemocracyDeposits } from "next-common/store/reducers/myOnChainData/deposits/myDemocracyDeposits";
+import { useChainSettings } from "next-common/context/chain";
 
 async function queryAddressDeposits(api, address) {
   const entries = await api.query.democracy.depositOf.entries();
@@ -39,9 +40,10 @@ export default function useFetchMyDemocracyDeposits() {
   const realAddress = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();
+  const { noDemocracyModule } = useChainSettings();
 
   useEffect(() => {
-    if (!api || !realAddress || !api.query?.democracy) {
+    if (!api || !realAddress || !api.query?.democracy || noDemocracyModule) {
       return;
     }
 

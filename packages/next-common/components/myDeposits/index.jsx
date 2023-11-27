@@ -15,10 +15,6 @@ export default function MyDeposits() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const { hasReferenda, hasFellowship, hasTreasury } = chainSettings;
-  const hasDemocracy =
-    chainSettings.hasDemocracy !== false ||
-    !chainSettings.noDemocracy ||
-    !chainSettings.noDemocracyModule;
 
   const referenda = useMyDepositReferenda();
   const fellowship = useMyDepositFellowship();
@@ -28,7 +24,7 @@ export default function MyDeposits() {
   const items = [
     hasReferenda && referenda,
     hasFellowship && fellowship,
-    hasDemocracy && democracy,
+    !chainSettings.noDemocracyModule && democracy,
     !isKintsugiChain(chain) && hasTreasury !== false && treasury,
   ].filter(Boolean);
 
