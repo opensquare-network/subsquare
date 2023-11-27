@@ -42,7 +42,6 @@ export default function useFetchMyDemocracyDeposits() {
 
   useEffect(() => {
     if (!api || !realAddress || !api.query?.democracy) {
-      dispatch(setDemocracyDeposits([]));
       return;
     }
 

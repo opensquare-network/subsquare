@@ -30,7 +30,7 @@ export default function MyDepositPreimages() {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const statuses = useSelector(myPreimageDepositsSelector);
   const activeCount = sum([statuses?.length || 0]);
-  const loading = isNil(statuses) || statuses?.length === 0;
+  const loading = isNil(statuses);
 
   const { columns } = useColumns([
     {
