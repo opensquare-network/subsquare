@@ -17,6 +17,7 @@ import { BaseTag } from "next-common/components/tags/state/styled";
 import { useEffect, useState } from "react";
 import { EmptyList } from "next-common/utils/constants";
 import nextApi from "next-common/services/nextApi";
+import { useShallowCompareEffect } from "react-use";
 
 export function useDepositTreasuryBountiesTab() {
   const chain = useChain();
@@ -30,17 +31,29 @@ export function useDepositTreasuryBountiesTab() {
   const bountyActiveCount =
     sum([bountyBonds?.length, bountyCuratorDeposits?.length]) || 0;
 
+  const [bountyDepositsResult, setBountyDepositsResult] = useState(EmptyList);
+  const [curatorDepositsResult, setCuratorDepositsResult] = useState(EmptyList);
+
   const sources = [
     {
       label: "Bounty Deposits",
       count: bountyBonds?.length,
+      data: bountyDepositsResult,
     },
-    { label: "Curator Deposits", count: bountyCuratorDeposits?.length },
+    {
+      label: "Curator Deposits",
+      count: bountyCuratorDeposits?.length,
+      data: curatorDepositsResult,
+    },
   ].filter((source) => source.count);
+
+  const labels = sources.map((source) => source.label);
   const [sourceLabel, setSourceLabel] = useState(sources[0]?.label);
 
-  const [bountyDepositsResult, setBountyDepositsResult] = useState(EmptyList);
-  const [curatorDepositsResult, setCuratorDepositsResult] = useState(EmptyList);
+  useShallowCompareEffect(() => {
+    setSourceLabel(labels[0]);
+  }, [labels]);
+
   useEffect(() => {
     if (bountyBonds?.length) {
       const fetchers = bountyBonds.map((deposit) =>
@@ -105,13 +118,15 @@ export function useDepositTreasuryBountiesTab() {
     ],
     api: {
       async fetchData() {
-        return sourceLabel === sources[0]?.label
-          ? { result: bountyDepositsResult }
-          : { result: curatorDepositsResult };
+        const result =
+          sources.find((source) => source.label === sourceLabel)?.data ??
+          EmptyList;
+
+        return { result };
       },
     },
     tableHead: (
-      <div className="space-x-2 mb-4">
+      <div className="flex items-center gap-x-2 mb-4">
         {sources.map((source) => (
           <SwitchTag
             active={sourceLabel === source.label}
