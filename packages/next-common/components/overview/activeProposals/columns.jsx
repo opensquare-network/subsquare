@@ -23,6 +23,7 @@ export function getReferendumPostTitleColumn() {
           className="line-clamp-1 mr-4 text14Medium"
           data={data}
           href={data.detailLink}
+          ellipsis
         />
       );
     },
