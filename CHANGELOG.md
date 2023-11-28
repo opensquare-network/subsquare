@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.6.5
+date: 2023-11-20
+
+- [Medium] Refactor the layout of overview page.
+- Show bounty balance on bounty detail page.
+- Enable OpenGov for Bifrost Polkadot and Rococo.
+- Update dependencies.
+- Fix my referenda votes unlock-able balance calculation.
+
+### 3.6.4
+date: 2023-11-03
+
+- Show active proposal numbers on menu for democracy, treasury and various collectives.
+- Implement new style of cookie consent popup.
+- Take place old map with an LRU cache.
+- Add subscription tip component on referenda list panel.
+- Fix empty box icon.
+
 ### 3.6.3
 date: 2023-10-27
 

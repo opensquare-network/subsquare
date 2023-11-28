@@ -13,6 +13,10 @@ const DEFAULT_NODES = [
     url: "wss://hk.p.bifrost-rpc.liebi.com/ws",
   },
   {
+    name: "LiebiEU",
+    url: "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
+  },
+  {
     name: "OnFinality",
     url: "wss://bifrost-polkadot.api.onfinality.io/public-ws",
   },
@@ -42,6 +46,8 @@ const bifrostPolkadot = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   useVoteCall: true,
+  hasReferenda: true,
+  hasFellowship: true,
   description:
     "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
   cssVarsLight: {

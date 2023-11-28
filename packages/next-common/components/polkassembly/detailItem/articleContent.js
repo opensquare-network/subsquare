@@ -20,10 +20,6 @@ const EditedLabel = styled.div`
 export default function ArticleContent({ postReactions, className = "" }) {
   const post = usePost();
 
-  if (!post) {
-    return null;
-  }
-
   const tabs = [
     {
       label: "Content",
@@ -45,6 +41,10 @@ export default function ArticleContent({ postReactions, className = "" }) {
   ].filter(Boolean);
   const [activeTab, setActiveTab] = useState(tabs[0].label);
 
+  if (!post) {
+    return null;
+  }
+
   return (
     <div className={className}>
       {post.content === "" && (
@@ -63,7 +63,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
         </div>
       )}
 
-      <MarkdownPreviewer content={post.content} />
+      <MarkdownPreviewer content={post.content || ""} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
       <PostDataSource />
       <PolkassemblyActions reactions={postReactions} />

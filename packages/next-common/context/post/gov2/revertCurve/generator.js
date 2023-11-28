@@ -14,6 +14,9 @@ export function makeRevertReciprocalFunc(factor, xOffset, yOffset) {
 export function makeRevertLinearFunc(length, floor, ceil) {
   return function (y) {
     const perbillY = new BigNumber(y).multipliedBy(multiplier);
+    if (new BigNumber(y).multipliedBy(multiplier).lte(floor)) {
+      return 2;
+    }
 
     const slope = new BigNumber(ceil).minus(floor).dividedBy(length);
     const deducted = new BigNumber(ceil).minus(perbillY);

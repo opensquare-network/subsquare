@@ -103,6 +103,9 @@ const polkadot = {
   hasStatescan: true,
   hasSubscan: true,
   hasDotreasury: true,
+  hasPolkassemblyDiscussions: true,
+  hasMultisig: true,
+  multisigApiPrefix: "dot",
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,

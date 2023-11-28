@@ -3,13 +3,13 @@ import { toPrecision } from "next-common/utils";
 import React from "react";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
-import { Title } from "../styled";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItems from "next-common/components/summary/summaryItems";
 import BigNumber from "bignumber.js";
 import PriorInfo from "./prior";
 import LoadableContent from "next-common/components/common/loadableContent";
+import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
 const ValueWrapper = styled.div`
   .value-display-symbol {
@@ -94,7 +94,7 @@ export default function ReferendaVoteSummary({
   return (
     <>
       <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
-        <Title>My Votes</Title>
+        <AccountSubTabs />
         <ModuleTab />
       </div>
       <SecondaryCard>

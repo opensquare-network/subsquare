@@ -13,11 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "@interlay/monetary-js": "0.5.4",
-    "@osn/icons": "^1.37.1",
+    "@osn/icons": "^1.38.0",
     "@osn/polkadot-react-identicon": "^1.0.8",
     "@osn/previewer": "^0.12.5",
     "@osn/provider-options": "1.1.0",
     "@osn/react-cmdk": "^1.1.2",
+    "@osn/rich-text-editor": "^0.6.3",
     "@polkadot/api": "^10.9.1",
     "@polkadot/extension-dapp": "^0.46.5",
     "@radix-ui/react-dialog": "^1.0.4",

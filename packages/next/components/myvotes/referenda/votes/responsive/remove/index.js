@@ -12,8 +12,6 @@ export default function RemoveVoteButton({ vote }) {
   const dispatch = useDispatch();
   const isUseMetamask = useIsUseMetamask();
 
-  console.log(111);
-
   let Popup = ReferendumRemovalPopup;
   if (isMoonChain() && isUseMetamask) {
     Popup = MoonReferendumRemovalPopup;

@@ -43,6 +43,8 @@ export default function DetailMultiTabs({
       ),
     },
     votesBubble && {
+      // NOTE: must have `lazy` flag
+      lazy: true,
       label: "Votes Bubble",
       labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
       content: (
