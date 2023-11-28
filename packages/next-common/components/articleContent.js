@@ -46,7 +46,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
         </RichTextStyleWrapper>
       ),
     },
-    post.aiSummaryContent && {
+    post.contentSummary?.summary && {
       label: "AI Summary",
       tooltip: "Powered by OpenAI",
       content: (
