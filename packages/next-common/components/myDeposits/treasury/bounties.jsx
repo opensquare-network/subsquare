@@ -34,7 +34,7 @@ export function useDepositTreasuryBountiesTab() {
   const [bountyDepositsResult, setBountyDepositsResult] = useState(EmptyList);
   const [curatorDepositsResult, setCuratorDepositsResult] = useState(EmptyList);
 
-  const sources = [
+  const subTabs = [
     {
       label: "Bounty Deposits",
       count: bountyBonds?.length,
@@ -45,14 +45,14 @@ export function useDepositTreasuryBountiesTab() {
       count: bountyCuratorDeposits?.length,
       data: curatorDepositsResult,
     },
-  ].filter((source) => source.count);
+  ].filter((subTab) => subTab.count);
 
-  const labels = sources.map((source) => source.label);
-  const [sourceLabel, setSourceLabel] = useState(sources[0]?.label);
+  const subTabLabels = subTabs.map((subTab) => subTab.label);
+  const [subTabActiveLabel, setSubTabActiveLabel] = useState(subTabLabels[0]);
 
   useShallowCompareEffect(() => {
-    setSourceLabel(labels[0]);
-  }, [labels]);
+    setSubTabActiveLabel(subTabLabels[0]);
+  }, [subTabLabels]);
 
   useEffect(() => {
     if (bountyBonds?.length) {
@@ -119,7 +119,7 @@ export function useDepositTreasuryBountiesTab() {
     api: {
       async fetchData() {
         const result =
-          sources.find((source) => source.label === sourceLabel)?.data ??
+          subTabs.find((subTab) => subTab.label === subTabActiveLabel)?.data ??
           EmptyList;
 
         return { result };
@@ -127,13 +127,13 @@ export function useDepositTreasuryBountiesTab() {
     },
     tableHead: (
       <div className="flex items-center gap-x-2 mb-4">
-        {sources.map((source) => (
+        {subTabs.map((subTab) => (
           <SwitchTag
-            active={sourceLabel === source.label}
-            key={source.label}
-            label={source.label}
-            count={source.count}
-            onClick={() => setSourceLabel(source.label)}
+            active={subTabActiveLabel === subTab.label}
+            key={subTab.label}
+            label={subTab.label}
+            count={subTab.count}
+            onClick={() => setSubTabActiveLabel(subTab.label)}
           />
         ))}
       </div>
