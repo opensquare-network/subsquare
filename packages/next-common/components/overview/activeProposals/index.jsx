@@ -16,6 +16,7 @@ import { getActiveProposalOpenTechComm } from "./openTechComm";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { getActiveProposalTreasuryCouncil } from "./treasuryCouncil";
 import Chains from "next-common/utils/consts/chains";
+import partition from "lodash.partition";
 
 export default function ActiveProposals() {
   const chain = useChain();
@@ -58,7 +59,7 @@ export default function ActiveProposals() {
     activeProposals,
   });
 
-  const items = [
+  const sections = [
     chainSettings.hasReferenda && referenda,
     chainSettings.hasFellowship && fellowship,
     democracy,
@@ -75,6 +76,13 @@ export default function ActiveProposals() {
     .filter(Boolean)
     .filter((item) => !item.excludeToChains?.includes?.(chain))
     .filter((item) => !item.archivedToChains?.includes?.(chain));
+
+  const [activeItems, nonActiveItems] = partition(
+    sections,
+    (item) => item.activeCount > 0,
+  );
+
+  const items = [...activeItems, ...nonActiveItems];
 
   return (
     <div>

@@ -8519,6 +8519,7 @@ __metadata:
     lodash.last: ^3.0.0
     lodash.noop: ^3.0.1
     lodash.orderby: ^4.6.0
+    lodash.partition: ^4.6.0
     lodash.pick: ^4.4.0
     lodash.range: ^3.2.0
     lodash.set: ^4.3.2
