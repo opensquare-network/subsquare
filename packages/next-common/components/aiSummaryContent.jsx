@@ -7,7 +7,7 @@ export default function AISummaryContent() {
 
   return (
     <div>
-      <MarkdownPreviewer content={post.aiSummaryContent} />
+      <MarkdownPreviewer content={post.contentSummary?.summary} />
 
       <p className="text14Medium text-textTertiary flex items-center">
         Powered by
