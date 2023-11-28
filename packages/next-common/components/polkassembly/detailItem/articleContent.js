@@ -25,7 +25,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
       label: "Content",
       content: (
         <RichTextStyleWrapper>
-          <MarkdownPreviewer content={post.content} />
+          <MarkdownPreviewer content={post.content || ""} />
         </RichTextStyleWrapper>
       ),
     },
@@ -63,7 +63,6 @@ export default function ArticleContent({ postReactions, className = "" }) {
         </div>
       )}
 
-      <MarkdownPreviewer content={post.content || ""} />
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
       <PostDataSource />
       <PolkassemblyActions reactions={postReactions} />
