@@ -147,12 +147,7 @@ function TableTemplate({
       ) : (
         <StyledList
           className="!shadow-none !border-none !p-0"
-          columns={columns?.map((col) => ({
-            ...col,
-            name: (
-              <div className="text14Medium tracking-normal">{col.name}</div>
-            ),
-          }))}
+          columns={columns}
           loading={loading}
           rows={rows}
           noDataText="No active proposals"
