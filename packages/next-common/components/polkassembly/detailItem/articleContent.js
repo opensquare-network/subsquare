@@ -5,7 +5,7 @@ import { MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import NoData from "next-common/components/noData";
 import { usePost } from "next-common/context/post";
-import AISummaryContent from "next-common/components/aiSummaryContent";
+import ContentSummary from "next-common/components/contentSummary";
 import { useState } from "react";
 import Tabs from "next-common/components/tabs";
 
@@ -34,7 +34,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
       tooltip: "Powered by OpenAI",
       content: (
         <RichTextStyleWrapper>
-          <AISummaryContent />
+          <ContentSummary />
         </RichTextStyleWrapper>
       ),
     },

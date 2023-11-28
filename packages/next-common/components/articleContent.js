@@ -11,7 +11,7 @@ import { usePost } from "../context/post";
 import { getBannerUrl } from "../utils/banner";
 import { isPostEdited } from "next-common/utils/post";
 import Tabs from "./tabs";
-import AISummaryContent from "./aiSummaryContent";
+import ContentSummary from "./contentSummary";
 
 const Wrapper = styled.div`
   :hover {
@@ -51,7 +51,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       tooltip: "Powered by OpenAI",
       content: (
         <RichTextStyleWrapper>
-          <AISummaryContent />
+          <ContentSummary />
         </RichTextStyleWrapper>
       ),
     },
