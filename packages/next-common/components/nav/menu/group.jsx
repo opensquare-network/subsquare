@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { capitalize } from "lodash";
+import { startCase, capitalize } from "lodash";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
@@ -54,7 +54,7 @@ export default function NavMenuGroup({
             <NavMenuItem
               onClick={toggleChildMenu}
               icon={menu.icon}
-              label={capitalize(menu.name)}
+              label={startCase(capitalize(menu.name))}
               activeCount={menu.activeCount}
               collapsed={collapsed}
               active={firstPath === menu.pathname}
@@ -77,7 +77,7 @@ export default function NavMenuGroup({
               <div className="pl-6">
                 <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-scroll scrollbar-pretty border border-navigationBorder">
                   <NavMenuItem
-                    label={capitalize(menu.name)}
+                    label={startCase(capitalize(menu.name))}
                     activeCount={menu.activeCount}
                     className="pointer-events-none"
                   />
