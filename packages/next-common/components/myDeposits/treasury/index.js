@@ -1,5 +1,4 @@
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
-import useFetchMyTreasuryDeposits from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits";
 import sum from "lodash.sum";
 import { useDepositTreasuryBountiesTab } from "./bounties";
 import { useDepositTreasuryProposalsTab } from "./proposals";
@@ -7,8 +6,6 @@ import { useDepositTreasuryTipsTab } from "./tips";
 import { useChainSettings } from "next-common/context/chain";
 
 export function useMyDepositTreasury() {
-  useFetchMyTreasuryDeposits();
-
   const proposals = useDepositTreasuryProposalsTab();
   const bounties = useDepositTreasuryBountiesTab();
   const tips = useDepositTreasuryTipsTab();

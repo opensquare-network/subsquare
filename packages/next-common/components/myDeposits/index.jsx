@@ -1,6 +1,5 @@
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
 import { useChainSettings } from "next-common/context/chain";
-import useFetchMyPreimageDeposits from "next-common/hooks/account/deposit/useFetchMyPreimageDeposits";
 import { useMyDepositDemocracy } from "./democracy";
 import DepositTemplate from "./depositTemplate";
 import { useMyDepositFellowship } from "./fellowship";
@@ -9,8 +8,6 @@ import { useMyDepositReferenda } from "./referenda";
 import { useMyDepositTreasury } from "./treasury";
 
 export default function MyDeposits() {
-  useFetchMyPreimageDeposits();
-
   const chainSettings = useChainSettings();
   const { hasReferenda, hasFellowship, hasTreasuryModule } = chainSettings;
 

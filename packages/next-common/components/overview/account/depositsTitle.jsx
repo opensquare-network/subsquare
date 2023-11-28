@@ -17,6 +17,7 @@ import {
   myTreasuryTipDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import sumBy from "lodash.sumby";
+import isNil from "lodash.isnil";
 
 export default function DepositsTitle({ active }) {
   const referendaSubmissionDeposits = useSelector(
@@ -42,27 +43,28 @@ export default function DepositsTitle({ active }) {
   const treasuryTipDeposits = useSelector(myTreasuryTipDepositsSelector);
   const preimageDeposits = useSelector(myPreimageDepositsSelector);
 
-  const count =
-    sumBy(
-      [
-        referendaSubmissionDeposits,
-        referendaDecisionDeposits,
-        fellowshipSubmissionDeposits,
-        fellowshipDecisionDeposits,
-        democracyDeposits,
-        treasuryProposalDeposits,
-        treasuryBountyBonds,
-        treasuryBountyCuratorDeposits,
-        treasuryTipDeposits,
-        preimageDeposits,
-      ],
-      "length",
-    ) || 0;
+  const count = sumBy(
+    [
+      referendaSubmissionDeposits,
+      referendaDecisionDeposits,
+      fellowshipSubmissionDeposits,
+      fellowshipDecisionDeposits,
+      democracyDeposits,
+      treasuryProposalDeposits,
+      treasuryBountyBonds,
+      treasuryBountyCuratorDeposits,
+      treasuryTipDeposits,
+      preimageDeposits,
+    ],
+    "length",
+  );
 
   return (
     <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
       Deposits
-      {true !== null && <span className="text-textTertiary mx-1">{count}</span>}
+      {!isNil(count) && count > 0 && (
+        <span className="text-textTertiary mx-1">{count}</span>
+      )}
     </Title>
   );
 }

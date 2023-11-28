@@ -14,8 +14,11 @@ import {
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
 import AccountInfo from "../overview/accountInfo";
+import { useFetchMyDepositsData } from "next-common/hooks/account/deposit";
 
 export default function AccountLayout(props) {
+  useFetchMyDepositsData();
+
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();

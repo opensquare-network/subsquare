@@ -5,7 +5,6 @@ import {
 } from "next-common/components/overview/activeProposals/columns";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import useFetchMyDemocracyDeposits from "next-common/hooks/account/deposit/useFetchMyDemocracyDeposits";
 import nextApi from "next-common/services/nextApi";
 import { myDemocracyDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myDemocracyDeposits";
 import { toPrecision } from "next-common/utils";
@@ -16,8 +15,6 @@ import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/nor
 import { useSelector } from "react-redux";
 
 export function useMyDepositDemocracy() {
-  useFetchMyDemocracyDeposits();
-
   const chain = useChain();
   const { decimals, symbol } = useChainSettings();
   const deposits = useSelector(myDemocracyDepositsSelector);

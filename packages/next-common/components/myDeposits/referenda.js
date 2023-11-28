@@ -5,7 +5,6 @@ import {
 } from "next-common/components/overview/activeProposals/columns";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import useFetchMyReferendaDeposits from "next-common/hooks/account/deposit/referenda";
 import nextApi from "next-common/services/nextApi";
 import { gov2ReferendumsDetailApi } from "next-common/services/url";
 import {
@@ -21,8 +20,6 @@ import { useSelector } from "react-redux";
 import { getDepositRefundColumn } from "./columns";
 
 export function useMyDepositReferenda() {
-  useFetchMyReferendaDeposits();
-
   const { decimals, symbol } = useChainSettings();
   const submissionDeposits = useSelector(myReferendaSubmissionDepositsSelector);
   const decisionDeposits = useSelector(myReferendaDecisionDepositsSelector);

@@ -5,7 +5,6 @@ import {
 } from "next-common/components/overview/activeProposals/columns";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import useFetchMyFellowshipDeposits from "next-common/hooks/account/deposit/useFetchMyFellowshipDeposits";
 import nextApi from "next-common/services/nextApi";
 import { getFellowshipReferendumUrl } from "next-common/services/url";
 import {
@@ -21,8 +20,6 @@ import { useSelector } from "react-redux";
 import { getDepositRefundColumn } from "./columns";
 
 export function useMyDepositFellowship() {
-  useFetchMyFellowshipDeposits();
-
   const { decimals, symbol } = useChainSettings();
   const submissionDeposits = useSelector(
     myFellowshipSubmissionDepositsSelector,
