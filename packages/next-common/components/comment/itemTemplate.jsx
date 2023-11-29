@@ -5,6 +5,7 @@ import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import noop from "lodash.noop";
 import Duration from "../duration";
 import { useComment } from "./context";
+import VoteTag from "./voteTag";
 
 const CommentItemTemplate = forwardRef(function Comp(
   {
@@ -43,7 +44,10 @@ const CommentItemTemplate = forwardRef(function Comp(
       {...props}
     >
       <div className="flex items-center justify-between flex-wrap min-h-[28px]">
-        {user}
+        <div className="flex gap-[8px] items-center">
+          {user}
+          <VoteTag />
+        </div>
         <div className="flex items-center">
           <p className="text12Medium text-textTertiary">
             <Duration time={comment.createdAt} />
