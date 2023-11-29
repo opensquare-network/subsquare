@@ -2,47 +2,51 @@ import { toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
-import { useSelector } from "react-redux";
-import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
-
-function VoteDelegation({ vote }) {
-  const { decimals, symbol } = useChainSettings();
-  const allNestedVotes = useSelector(allNestedVotesSelector);
-
-  const nestedVotes = vote.aye ? allNestedVotes.allAye : allNestedVotes.allNay;
-  const nestedVote = nestedVotes?.find((item) => item.account === vote.account);
-
-  const delegationsCount = nestedVote?.directVoterDelegations?.length ?? 0;
-  if (delegationsCount === 0) {
-    return null;
-  }
-
-  const totalDelegatedVotes = nestedVote?.totalDelegatedVotes ?? 0;
-  const delegationVotes = toPrecisionNumber(totalDelegatedVotes, decimals);
-  return (
-    <span>
-      Delegations: <ValueDisplay value={delegationVotes} symbol={symbol} />(
-      {delegationsCount})
-    </span>
-  );
-}
+import useDelegated from "next-common/components/comment/voteTag/referendaVoteTag/useDelegated";
+import BigNumber from "bignumber.js";
 
 export default function StandardVoteTooltipContent({ vote }) {
   const { decimals, symbol } = useChainSettings();
-  const votes = toPrecisionNumber(vote.votes, decimals);
-  const balance = toPrecisionNumber(vote.balance, decimals);
   const lockX = convictionToLockX(vote.conviction);
   const isDelegating = vote.isDelegating;
+  const { count: delegationsCount, delegations } = useDelegated(vote.account);
+  const totalVotes = new BigNumber(vote.votes).plus(delegations).toString();
 
   return (
     <div className="flex flex-col text12Medium leading-[16px] text-textPrimaryContrast">
-      <span className="text12Bold">Voted {vote.aye ? "Aye" : "Nay"}</span>
+      {delegationsCount > 0 && (
+        <span>
+          Total:{" "}
+          <ValueDisplay
+            value={toPrecisionNumber(totalVotes, decimals)}
+            symbol={symbol}
+          />
+        </span>
+      )}
       <span>
-        Votes: {<ValueDisplay value={votes} symbol={symbol} />}(
-        {<ValueDisplay value={balance} symbol={symbol} />}*{lockX}
+        {delegationsCount > 0 ? "Self" : "Votes"}:&nbsp;
+        <ValueDisplay
+          value={toPrecisionNumber(vote.votes, decimals)}
+          symbol={symbol}
+        />
+        (
+        <ValueDisplay
+          value={toPrecisionNumber(vote.balance, decimals)}
+          symbol={symbol}
+        />
+        *{lockX}
         {isDelegating && "/d"})
       </span>
-      {!isDelegating && <VoteDelegation vote={vote} />}
+      {delegationsCount > 0 && (
+        <span>
+          Delegations:{" "}
+          <ValueDisplay
+            value={toPrecisionNumber(delegations, decimals)}
+            symbol={symbol}
+          />
+          ({delegationsCount})
+        </span>
+      )}
     </div>
   );
 }
