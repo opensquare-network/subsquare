@@ -22,29 +22,24 @@ export default function MyDeposits() {
 
   const sections = [
     hasReferenda && {
-      key: "referenda",
       activeCount: referenda.activeCount,
-      content: <DepositTemplate {...referenda} />,
+      content: <DepositTemplate key="referenda" {...referenda} />,
     },
     hasFellowship && {
-      key: "fellowship",
       activeCount: fellowship.activeCount,
-      content: <DepositTemplate {...fellowship} />,
+      content: <DepositTemplate key="fellowship" {...fellowship} />,
     },
     !chainSettings.noDemocracyModule && {
-      key: "democracy",
       activeCount: democracy.activeCount,
-      content: <DepositTemplate {...democracy} />,
+      content: <DepositTemplate key="democracy" {...democracy} />,
     },
     hasTreasuryModule !== false && {
-      key: "treasury",
       activeCount: treasury.activeCount,
-      content: <DepositTemplate {...treasury} />,
+      content: <DepositTemplate key="treasury" {...treasury} />,
     },
     {
-      key: "preimages",
       activeCount: preimageStatuses?.length || 0,
-      content: <MyDepositPreimages />,
+      content: <MyDepositPreimages key="preimages" />,
     },
   ].filter(Boolean);
 
