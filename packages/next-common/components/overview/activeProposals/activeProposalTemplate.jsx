@@ -28,8 +28,8 @@ export default function ActiveProposalTemplate({
     .filter((item) => item.activeCount)
     .filter((item) => !item.excludeToChains?.includes(chain));
 
-  const firstActiveItem = first(activeItems);
-  const titleLink = firstActiveItem?.pathname ?? pathname;
+  const titleLink =
+    first(activeItems)?.pathname ?? first(items)?.pathname ?? pathname;
 
   let title = (
     <div

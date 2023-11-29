@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ArticleActions from "./actions/articleActions";
 import PostDataSource from "./postDataSource";
@@ -10,8 +10,10 @@ import PostContent from "./detail/common/PostContent";
 import { usePost } from "../context/post";
 import { getBannerUrl } from "../utils/banner";
 import { isPostEdited } from "next-common/utils/post";
+import Tabs from "./tabs";
+import ContentSummary from "./contentSummary";
 
-const Wrapper = styled(RichTextStyleWrapper)`
+const Wrapper = styled.div`
   :hover {
     .edit {
       display: block;
@@ -35,12 +37,58 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
   const post = usePost();
   const bannerUrl = getBannerUrl(post.bannerCid);
 
+  const postContent = (
+    <>
+      {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
+
+      <RichTextStyleWrapper>
+        <PostContent />
+      </RichTextStyleWrapper>
+
+      {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
+    </>
+  );
+
+  const tabs = [
+    {
+      label: "Content",
+      content: postContent,
+    },
+    post.contentSummary?.summary && {
+      label: "AI Summary",
+      tooltip: "Powered by OpenAI",
+      content: (
+        <RichTextStyleWrapper>
+          <ContentSummary />
+        </RichTextStyleWrapper>
+      ),
+    },
+  ].filter(Boolean);
+  const [activeTab, setActiveTab] = useState(tabs[0].label);
+
   return (
     <Wrapper className={className}>
       {!post.content && <NonEdited setIsEdit={setIsEdit} />}
-      {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
-      <PostContent />
-      {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
+
+      {post.content && (
+        <div className="mt-6">
+          {post.contentSummary?.summary ? (
+            <Tabs
+              activeTabLabel={activeTab}
+              tabs={tabs}
+              onTabClick={(tab) => {
+                setActiveTab(tab.label);
+              }}
+            />
+          ) : (
+            <>
+              <Divider className="my-4" />
+              {postContent}
+            </>
+          )}
+        </div>
+      )}
+
       {post.poll && (
         <>
           <Divider margin={16} />

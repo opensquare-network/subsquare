@@ -10,7 +10,7 @@ import {
   setEditingPost,
 } from "../../../store/reducers/userSlice";
 
-export default function DetailContentBase({ children }) {
+export default function DetailContentBase({ head, title, meta, children }) {
   const type = useDetailType();
   const postDispatch = usePostDispatch();
 
@@ -40,6 +40,13 @@ export default function DetailContentBase({ children }) {
   return (
     <div>
       {post?.isMalicious && <MaliciousHead />}
+
+      {head}
+
+      {title}
+      {title && meta && <div className="py-2" />}
+      {meta}
+
       {children}
     </div>
   );
