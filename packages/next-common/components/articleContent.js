@@ -42,6 +42,8 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       label: "Content",
       content: (
         <>
+          {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
+
           <RichTextStyleWrapper>
             <PostContent />
           </RichTextStyleWrapper>
@@ -65,7 +67,6 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
   return (
     <Wrapper className={className}>
       {!post.content && <NonEdited setIsEdit={setIsEdit} />}
-      {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
       {post.content && (
         <div className="mt-6">
