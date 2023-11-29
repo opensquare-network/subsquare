@@ -191,17 +191,18 @@ export function getBondBalanceColumn() {
     className: "w-40 text-right",
     cellRender(data) {
       const { decimals, symbol } = getChainSettings(CHAIN);
+      const bond = data.curatorDeposit || data.bond;
 
-      const bond = data.bond;
+      if (isNil(bond)) {
+        return "--";
+      }
 
-      return !isNil(bond) ? (
+      return (
         <ValueDisplay
           className="text14Medium text-textPrimary"
           value={toPrecision(bond, decimals)}
           symbol={symbol}
         />
-      ) : (
-        "--"
       );
     },
   };
