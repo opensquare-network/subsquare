@@ -24,13 +24,16 @@ import { Hash, Proposal, Status } from "../preImages/fields";
 import { PreimageMobileListItemTemplate } from "../preImages/mobile";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import Loading from "../loading";
+import { useNavCollapsed } from "next-common/context/nav";
 
 export default function MyDepositPreimages() {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const statuses = useSelector(myPreimageDepositsSelector);
   const activeCount = sum([statuses?.length || 0]);
   const loading = isNil(statuses);
-  const { lg } = useScreenSize();
+  const { sm, md } = useScreenSize();
+  const [navCollapsed] = useNavCollapsed();
+  const triggerSize = navCollapsed ? sm : md;
 
   return (
     <div>
@@ -39,13 +42,13 @@ export default function MyDepositPreimages() {
         activeCount={activeCount}
         loading={loading}
       >
-        {lg ? (
-          <DesktopList
+        {triggerSize ? (
+          <MobileList
             data={statuses}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />
         ) : (
-          <MobileList
+          <DesktopList
             data={statuses}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />
