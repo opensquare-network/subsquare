@@ -60,7 +60,7 @@ export default function TabsList({
             ...tab,
             render() {
               return (
-                <Tooltip content={tab.Tooltip}>
+                <Tooltip content={tab.tooltip}>
                   <div
                     className={cn(
                       itemClassName,
