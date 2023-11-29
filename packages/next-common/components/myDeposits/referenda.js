@@ -3,7 +3,6 @@ import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
 } from "next-common/components/overview/activeProposals/columns";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import nextApi from "next-common/services/nextApi";
 import { gov2ReferendumsDetailApi } from "next-common/services/url";
@@ -11,13 +10,16 @@ import {
   myReferendaDecisionDepositsSelector,
   myReferendaSubmissionDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myReferendaDeposits";
-import { toPrecision } from "next-common/utils";
 import { EmptyList } from "next-common/utils/constants";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getReferendaMenu } from "next-common/utils/consts/menu/referenda";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import { useSelector } from "react-redux";
-import { getDepositRefundColumn } from "./columns";
+import {
+  getDepositColumn,
+  getDecisionDepositRefundColumn,
+  getSubmissionDepositRefundColumn,
+} from "./columns";
 
 export function useMyDepositReferenda() {
   const { decimals, symbol } = useChainSettings();
@@ -29,32 +31,17 @@ export function useMyDepositReferenda() {
 
   const menu = getReferendaMenu();
 
-  const options = {
-    columns: [
-      getProposalPostTitleColumn(),
-      {
-        name: "Deposit",
-        className: "w-40 text-right",
-        cellRender(data) {
-          return (
-            <ValueDisplay
-              value={toPrecision(data.deposit, decimals)}
-              symbol={symbol}
-            />
-          );
-        },
-      },
-      getStatusTagColumn({ category: businessCategory.openGovReferenda }),
-      getDepositRefundColumn({ pallet: "referenda" }),
-    ],
-    formatter: normalizeGov2ReferendaListItem,
-  };
-
   const items = [
     {
-      ...options,
       name: "Submission Deposits",
       activeCount: submissionDeposits?.length || 0,
+      formatter: normalizeGov2ReferendaListItem,
+      columns: [
+        getProposalPostTitleColumn(),
+        getDepositColumn({ decimals, symbol }),
+        getStatusTagColumn({ category: businessCategory.openGovReferenda }),
+        getSubmissionDepositRefundColumn({ pallet: "referenda" }),
+      ],
       api: {
         async fetchData() {
           if (submissionDeposits?.length) {
@@ -84,9 +71,15 @@ export function useMyDepositReferenda() {
       },
     },
     {
-      ...options,
       name: "Decision Deposits",
       activeCount: decisionDeposits?.length || 0,
+      formatter: normalizeGov2ReferendaListItem,
+      columns: [
+        getProposalPostTitleColumn(),
+        getDepositColumn({ decimals, symbol }),
+        getStatusTagColumn({ category: businessCategory.openGovReferenda }),
+        getDecisionDepositRefundColumn({ pallet: "referenda" }),
+      ],
       api: {
         async fetchData() {
           if (decisionDeposits?.length) {

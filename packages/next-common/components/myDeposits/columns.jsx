@@ -17,7 +17,7 @@ const RefundPopup = dynamic(
   { ssr: false },
 );
 
-export function getDepositRefundColumn({ pallet } = {}) {
+export function getSubmissionDepositRefundColumn({ pallet } = {}) {
   return {
     name: "",
     className: "w-20 text-right",
@@ -26,13 +26,70 @@ export function getDepositRefundColumn({ pallet } = {}) {
 
       return (
         <Tooltip content="Refund">
-          <RefundButton pallet={pallet} referendumIndex={referendumIndex} />
+          <SubmissionDepositRefundButton
+            pallet={pallet}
+            referendumIndex={referendumIndex}
+          />
         </Tooltip>
       );
     },
   };
 }
-function RefundButton({ pallet, referendumIndex }) {
+
+function SubmissionDepositRefundButton({ pallet, referendumIndex }) {
+  const [showPopup, setShowPopup] = useState(false);
+  // TODO: logic
+
+  return (
+    <>
+      <GhostButton
+        disabled // TODO: disabled
+        className={cn(
+          "group",
+          "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
+          "disabled:bg-neutral100",
+        )}
+        onClick={() => setShowPopup(true)}
+      >
+        <SystemClose
+          className={cn(
+            "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
+            "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
+          )}
+        />
+      </GhostButton>
+
+      {showPopup && (
+        <RefundPopup
+          referendumIndex={referendumIndex}
+          pallet={pallet}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
+    </>
+  );
+}
+
+export function getDecisionDepositRefundColumn({ pallet } = {}) {
+  return {
+    name: "",
+    className: "w-20 text-right",
+    cellRender(data) {
+      const { referendumIndex } = data;
+
+      return (
+        <Tooltip content="Refund">
+          <DecisionDepositRefundButton
+            pallet={pallet}
+            referendumIndex={referendumIndex}
+          />
+        </Tooltip>
+      );
+    },
+  };
+}
+
+function DecisionDepositRefundButton({ pallet, referendumIndex }) {
   const [showPopup, setShowPopup] = useState(false);
   const api = useApi();
   const isMounted = useIsMounted();
@@ -95,6 +152,21 @@ function RefundButton({ pallet, referendumIndex }) {
       )}
     </>
   );
+}
+
+export function getDepositColumn({ decimals, symbol }) {
+  return {
+    name: "Deposit",
+    className: "w-40 text-right",
+    cellRender(data) {
+      return (
+        <ValueDisplay
+          value={toPrecision(data.deposit, decimals)}
+          symbol={symbol}
+        />
+      );
+    },
+  };
 }
 
 export function getReasonPostTitleColumn() {

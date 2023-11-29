@@ -3,7 +3,6 @@ import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
 } from "next-common/components/overview/activeProposals/columns";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import nextApi from "next-common/services/nextApi";
 import { getFellowshipReferendumUrl } from "next-common/services/url";
@@ -11,13 +10,16 @@ import {
   myFellowshipDecisionDepositsSelector,
   myFellowshipSubmissionDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myFellowshipDeposits";
-import { toPrecision } from "next-common/utils";
 import { EmptyList } from "next-common/utils/constants";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { useSelector } from "react-redux";
-import { getDepositRefundColumn } from "./columns";
+import {
+  getDepositColumn,
+  getDecisionDepositRefundColumn,
+  getSubmissionDepositRefundColumn,
+} from "./columns";
 
 export function useMyDepositFellowship() {
   const { decimals, symbol } = useChainSettings();
@@ -31,32 +33,17 @@ export function useMyDepositFellowship() {
 
   const menu = getFellowshipMenu();
 
-  const options = {
-    columns: [
-      getProposalPostTitleColumn(),
-      {
-        name: "Deposit",
-        className: "w-40 text-right",
-        cellRender(data) {
-          return (
-            <ValueDisplay
-              value={toPrecision(data.deposit, decimals)}
-              symbol={symbol}
-            />
-          );
-        },
-      },
-      getStatusTagColumn({ category: businessCategory.fellowship }),
-      getDepositRefundColumn({ pallet: "fellowshipReferenda" }),
-    ],
-    formatter: normalizeFellowshipReferendaListItem,
-  };
-
   const items = [
     {
-      ...options,
       name: "Submission Deposits",
       activeCount: submissionDeposits?.length || 0,
+      formatter: normalizeFellowshipReferendaListItem,
+      columns: [
+        getProposalPostTitleColumn(),
+        getDepositColumn({ decimals, symbol }),
+        getStatusTagColumn({ category: businessCategory.fellowship }),
+        getSubmissionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
+      ],
       api: {
         async fetchData() {
           if (submissionDeposits?.length) {
@@ -88,9 +75,15 @@ export function useMyDepositFellowship() {
       },
     },
     {
-      ...options,
       name: "Decision Deposits",
       activeCount: decisionDeposits?.length || 0,
+      formatter: normalizeFellowshipReferendaListItem,
+      columns: [
+        getProposalPostTitleColumn(),
+        getDepositColumn({ decimals, symbol }),
+        getStatusTagColumn({ category: businessCategory.fellowship }),
+        getDecisionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
+      ],
       api: {
         async fetchData() {
           if (decisionDeposits?.length) {
