@@ -15,31 +15,33 @@ import ValueDisplay from "../valueDisplay";
 
 const TagWrapper = tw.span`py-[2px] px-[8px] rounded-[10px] text12Medium`;
 
+function VoteDelegation({ vote }) {
+  const { decimals, symbol } = useChainSettings();
+  const allNestedVotes = useSelector(allNestedVotesSelector);
+
+  const nestedVotes = vote.aye ? allNestedVotes.allAye : allNestedVotes.allNay;
+  const nestedVote = nestedVotes?.find((item) => item.account === vote.account);
+
+  const delegationsCount = nestedVote?.directVoterDelegations?.length ?? 0;
+  if (delegationsCount === 0) {
+    return null;
+  }
+
+  const totalDelegatedVotes = nestedVote?.totalDelegatedVotes ?? 0;
+  const delegationVotes = toPrecisionNumber(totalDelegatedVotes, decimals);
+  return (
+    <span>
+      Delegations: <ValueDisplay value={delegationVotes} symbol={symbol} />(
+      {delegationsCount})
+    </span>
+  );
+}
+
 function StandardVoteTooltipContent({ vote }) {
   const { decimals, symbol } = useChainSettings();
   const votes = toPrecisionNumber(vote.votes, decimals);
   const balance = toPrecisionNumber(vote.balance, decimals);
   const lockX = convictionToLockX(vote.conviction);
-  const allNestedVotes = useSelector(allNestedVotesSelector);
-
-  let delegation = null;
-  if (allNestedVotes?.directVoterDelegations?.length > 0) {
-    const nestedVotes = vote.aye
-      ? allNestedVotes.allAye
-      : allNestedVotes.allNay;
-    const nestedVote = nestedVotes?.find(
-      (item) => item.account === vote.account,
-    );
-    const delegationsCount = nestedVote?.directVoterDelegations?.length ?? 0;
-    const totalDelegatedVotes = nestedVote?.totalDelegatedVotes ?? 0;
-    const delegationVotes = toPrecisionNumber(totalDelegatedVotes, decimals);
-    delegation = (
-      <span>
-        Delegations: <ValueDisplay value={delegationVotes} symbol={symbol} />(
-        {delegationsCount})
-      </span>
-    );
-  }
 
   return (
     <div className="flex flex-col text12Medium leading-[16px] text-textPrimaryContrast">
@@ -48,7 +50,7 @@ function StandardVoteTooltipContent({ vote }) {
         Votes: {<ValueDisplay value={votes} symbol={symbol} />}(
         {<ValueDisplay value={balance} symbol={symbol} />}*{lockX})
       </span>
-      {delegation}
+      <VoteDelegation vote={vote} />
     </div>
   );
 }
