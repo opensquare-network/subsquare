@@ -19,7 +19,6 @@ import { getMotionStateArgs } from "next-common/utils/collective/result";
 import AnnouncementNavigate from "./announcementNavigate";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
-import Divider from "next-common/components/styled/layout/divider";
 import PostUser from "next-common/components/detail/container/postMeta/postUser";
 import tw from "tailwind-styled-components";
 
@@ -69,7 +68,7 @@ export default function MotionHead({ motion, type }) {
       <DemocracyNavigate motion={motion.onchainData} />
       <AnnouncementNavigate />
       <PostTitle />
-      <Divider className="my-4" />
+      <div className="py-2" />
       <div className="flex justify-between flex-nowrap">
         <DividerWrapper>
           <PostUser />
