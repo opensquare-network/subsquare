@@ -1,37 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import isNil from "lodash.isnil";
 import { usePost, usePostTitle } from "../../../context/post";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import { cn } from "next-common/utils";
-
-const TitleWrapper = styled.div`
-  overflow: hidden;
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 20px;
-      line-height: 28px;
-      color: var(--textTertiary);
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Title = styled.div`
-  word-break: break-word;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-`;
-
-const Index = styled.div`
-  float: left;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-`;
 
 export default function PostTitle() {
   const post = usePost();
@@ -40,11 +12,16 @@ export default function PostTitle() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <TitleWrapper className="text-textPrimary">
-      {!isNil(index) && <Index>{`#${index}`}</Index>}
-      <Title className={cn(isEditing && "!text-textDisabled select-none")}>
+    <h1 className="text-textPrimary text20Bold overflow-hidden">
+      {!isNil(index) && (
+        <>
+          <span>{`#${index}`}</span>
+          <span className="text-textTertiary mx-2">·</span>
+        </>
+      )}
+      <span className={cn(isEditing && "!text-textDisabled select-none")}>
         {title}
-      </Title>
-    </TitleWrapper>
+      </span>
+    </h1>
   );
 }

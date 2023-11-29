@@ -19,7 +19,6 @@ import ReferendumVoteEndCountDown from "next-common/components/democracy/referen
 import { useDetailType } from "next-common/context/page";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
-import Divider from "../styled/layout/divider";
 
 export default function DetailHeader({ countDown = null }) {
   const type = useDetailType();
@@ -55,7 +54,7 @@ export default function DetailHeader({ countDown = null }) {
         <AnnouncementNavigation />
         {countDown}
         <PostTitle />
-        <Divider className="my-4" />
+        <div className="py-2" />
         <PostMeta />
       </>
     )
