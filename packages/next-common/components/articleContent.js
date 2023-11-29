@@ -37,20 +37,22 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
   const post = usePost();
   const bannerUrl = getBannerUrl(post.bannerCid);
 
+  const postContent = (
+    <>
+      {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
+
+      <RichTextStyleWrapper>
+        <PostContent />
+      </RichTextStyleWrapper>
+
+      {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
+    </>
+  );
+
   const tabs = [
     {
       label: "Content",
-      content: (
-        <>
-          {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
-
-          <RichTextStyleWrapper>
-            <PostContent />
-          </RichTextStyleWrapper>
-
-          {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
-        </>
-      ),
+      content: postContent,
     },
     post.contentSummary?.summary && {
       label: "AI Summary",
@@ -70,13 +72,20 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
 
       {post.content && (
         <div className="mt-6">
-          <Tabs
-            activeTabLabel={activeTab}
-            tabs={tabs}
-            onTabClick={(tab) => {
-              setActiveTab(tab.label);
-            }}
-          />
+          {post.contentSummary?.summary ? (
+            <Tabs
+              activeTabLabel={activeTab}
+              tabs={tabs}
+              onTabClick={(tab) => {
+                setActiveTab(tab.label);
+              }}
+            />
+          ) : (
+            <>
+              <Divider className="my-4" />
+              {postContent}
+            </>
+          )}
         </div>
       )}
 

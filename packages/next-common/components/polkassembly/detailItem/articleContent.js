@@ -8,6 +8,7 @@ import { usePost } from "next-common/context/post";
 import ContentSummary from "next-common/components/contentSummary";
 import { useState } from "react";
 import Tabs from "next-common/components/tabs";
+import Divider from "next-common/components/styled/layout/divider";
 
 const EditedLabel = styled.div`
   margin-top: 8px;
@@ -20,20 +21,20 @@ const EditedLabel = styled.div`
 export default function ArticleContent({ postReactions, className = "" }) {
   const post = usePost();
 
+  const postContent = (
+    <>
+      <RichTextStyleWrapper>
+        <MarkdownPreviewer content={post.content || ""} />
+      </RichTextStyleWrapper>
+
+      {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
+    </>
+  );
+
   const tabs = [
     {
       label: "Content",
-      content: (
-        <>
-          <RichTextStyleWrapper>
-            <MarkdownPreviewer content={post.content || ""} />
-          </RichTextStyleWrapper>
-
-          {post.createdAt !== post.updatedAt && (
-            <EditedLabel>Edited</EditedLabel>
-          )}
-        </>
-      ),
+      content: postContent,
     },
     post.contentSummary?.summary && {
       label: "AI Summary",
@@ -59,13 +60,20 @@ export default function ArticleContent({ postReactions, className = "" }) {
 
       {post.content && (
         <div className="mt-6">
-          <Tabs
-            activeTabLabel={activeTab}
-            tabs={tabs}
-            onTabClick={(tab) => {
-              setActiveTab(tab.label);
-            }}
-          />
+          {post.contentSummary?.summary ? (
+            <Tabs
+              activeTabLabel={activeTab}
+              tabs={tabs}
+              onTabClick={(tab) => {
+                setActiveTab(tab.label);
+              }}
+            />
+          ) : (
+            <>
+              <Divider className="my-4" />
+              {postContent}
+            </>
+          )}
         </div>
       )}
 
