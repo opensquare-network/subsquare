@@ -1,8 +1,8 @@
 import { toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "../valueDisplay";
+import ValueDisplay from "next-common/components/valueDisplay";
 
-export function SplitVoteTooltipContent({ votes }) {
+export default function SplitVoteTooltipContent({ votes }) {
   const { decimals, symbol } = useChainSettings();
   const ayeVote = votes.find((item) => item.aye);
   const nayVote = votes.find((item) => item.aye === false);

@@ -1,6 +1,6 @@
 import { toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "../valueDisplay";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 export default function SplitAbstainVoteTooltipContent({ votes }) {
   const { decimals, symbol } = useChainSettings();

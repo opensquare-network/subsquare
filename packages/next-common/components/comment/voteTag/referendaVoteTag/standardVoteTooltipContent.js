@@ -1,9 +1,9 @@
 import { toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "../valueDisplay";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import { useSelector } from "react-redux";
-import { allNestedVotesSelector } from "../../../../store/reducers/referenda/votes/selectors";
+import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 function VoteDelegation({ vote }) {
   const { decimals, symbol } = useChainSettings();

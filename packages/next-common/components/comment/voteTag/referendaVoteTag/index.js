@@ -1,9 +1,9 @@
 import { allDirectVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import { useSelector } from "react-redux";
-import { useComment } from "./context";
+import { useComment } from "../../context";
 import tw from "tailwind-styled-components";
-import Tooltip from "../tooltip";
-import { SplitVoteTooltipContent } from "./splitVoteTooltipContent";
+import Tooltip from "next-common/components/tooltip";
+import SplitVoteTooltipContent from "./splitVoteTooltipContent";
 import SplitAbstainVoteTooltipContent from "./splitAbstainTooltipContent";
 import StandardVoteTooltipContent from "./standardVoteTooltipContent";
 
