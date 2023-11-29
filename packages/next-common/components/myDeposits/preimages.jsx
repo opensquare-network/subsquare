@@ -30,7 +30,7 @@ export default function MyDepositPreimages() {
   const statuses = useSelector(myPreimageDepositsSelector);
   const activeCount = sum([statuses?.length || 0]);
   const loading = isNil(statuses);
-  const { md } = useScreenSize();
+  const { lg } = useScreenSize();
 
   return (
     <div>
@@ -39,13 +39,13 @@ export default function MyDepositPreimages() {
         activeCount={activeCount}
         loading={loading}
       >
-        {md ? (
-          <MobileList
+        {lg ? (
+          <DesktopList
             data={statuses}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />
         ) : (
-          <DesktopList
+          <MobileList
             data={statuses}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />
