@@ -50,13 +50,13 @@ export default function RefundDecisionDeposit({ pallet = "referenda" }) {
     };
   }, [api, referendumIndex]);
 
-  const { approved, rejected, timedout, cancelled } = info || {};
-  const possibleValue = approved || rejected || timedout || cancelled;
+  const { approved, rejected, timedOut, cancelled } = info || {};
+  const possibleValue = approved || rejected || timedOut || cancelled;
   if (!possibleValue) {
     return null;
   }
 
-  const [, , deposit] = approved || rejected || timedout || cancelled;
+  const [, , deposit] = approved || rejected || timedOut || cancelled;
   if (!deposit) {
     return <Wrapper>Refunded</Wrapper>;
   }
