@@ -24,9 +24,15 @@ export default function ArticleContent({ postReactions, className = "" }) {
     {
       label: "Content",
       content: (
-        <RichTextStyleWrapper>
-          <MarkdownPreviewer content={post.content || ""} />
-        </RichTextStyleWrapper>
+        <>
+          <RichTextStyleWrapper>
+            <MarkdownPreviewer content={post.content || ""} />
+          </RichTextStyleWrapper>
+
+          {post.createdAt !== post.updatedAt && (
+            <EditedLabel>Edited</EditedLabel>
+          )}
+        </>
       ),
     },
     post.contentSummary?.summary && {
@@ -63,7 +69,6 @@ export default function ArticleContent({ postReactions, className = "" }) {
         </div>
       )}
 
-      {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
       <PostDataSource />
       <PolkassemblyActions reactions={postReactions} />
     </div>

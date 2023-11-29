@@ -41,9 +41,13 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     {
       label: "Content",
       content: (
-        <RichTextStyleWrapper>
-          <PostContent />
-        </RichTextStyleWrapper>
+        <>
+          <RichTextStyleWrapper>
+            <PostContent />
+          </RichTextStyleWrapper>
+
+          {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
+        </>
       ),
     },
     post.contentSummary?.summary && {
@@ -75,7 +79,6 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
         </div>
       )}
 
-      {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
       {post.poll && (
         <>
           <Divider margin={16} />
