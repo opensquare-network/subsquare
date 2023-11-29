@@ -1,9 +1,14 @@
 import noop from "lodash.noop";
 import { cn } from "next-common/utils";
+import { forwardRef } from "react";
 
-export default function TabsList({ tabs = [], onTabClick = noop, ...props }) {
+export default forwardRef(function TabsList(
+  { tabs = [], onTabClick = noop, ...props },
+  ref,
+) {
   return (
     <ul
+      ref={ref}
       {...props}
       className={cn(
         "flex space-x-6 overflow-x-auto scrollbar-hidden",
@@ -24,4 +29,4 @@ export default function TabsList({ tabs = [], onTabClick = noop, ...props }) {
       })}
     </ul>
   );
-}
+});

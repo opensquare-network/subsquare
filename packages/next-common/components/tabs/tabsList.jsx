@@ -1,7 +1,8 @@
 import { cn } from "next-common/utils";
 import noop from "lodash.noop";
 import List from "../tabsList";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useWindowSize } from "usehooks-ts";
 
 const SPACE = 1;
 
@@ -13,9 +14,15 @@ export default function TabsList({
 }) {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
+  const ref = useRef(null);
+  const { width } = useWindowSize();
 
   function onScroll(event) {
     const target = event.target;
+    handleGradientBlanketVisible(target);
+  }
+
+  function handleGradientBlanketVisible(target) {
     const { scrollLeft, scrollWidth, clientWidth } = target;
     const scrollSpace = scrollWidth - clientWidth;
 
@@ -23,12 +30,19 @@ export default function TabsList({
     setShowRight(scrollLeft < scrollSpace - SPACE);
   }
 
+  useEffect(() => {
+    if (ref.current) {
+      handleGradientBlanketVisible(ref.current);
+    }
+  }, [ref, width]);
+
   return (
     <div className="relative">
       <GradientBlanket className={cn(showLeft && "opacity-100")} />
       <GradientBlanket reversed className={cn(showRight && "opacity-100")} />
 
       <List
+        ref={ref}
         onScroll={onScroll}
         {...props}
         onTabClick={onTabClick}
