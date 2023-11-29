@@ -32,13 +32,15 @@ export default function StandardVoteTooltipContent({ vote }) {
   const votes = toPrecisionNumber(vote.votes, decimals);
   const balance = toPrecisionNumber(vote.balance, decimals);
   const lockX = convictionToLockX(vote.conviction);
+  const isDelegating = vote.isDelegating;
 
   return (
     <div className="flex flex-col text12Medium leading-[16px] text-textPrimaryContrast">
       <span className="text12Bold">Voted {vote.aye ? "Aye" : "Nay"}</span>
       <span>
         Votes: {<ValueDisplay value={votes} symbol={symbol} />}(
-        {<ValueDisplay value={balance} symbol={symbol} />}*{lockX})
+        {<ValueDisplay value={balance} symbol={symbol} />}*{lockX}
+        {isDelegating && "/d"})
       </span>
       <VoteDelegation vote={vote} />
     </div>

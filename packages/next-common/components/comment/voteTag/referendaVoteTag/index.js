@@ -1,27 +1,47 @@
-import { allDirectVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import { useSelector } from "react-redux";
 import { useComment } from "../../context";
-import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import SplitVoteTooltipContent from "./splitVoteTooltipContent";
 import SplitAbstainVoteTooltipContent from "./splitAbstainTooltipContent";
 import StandardVoteTooltipContent from "./standardVoteTooltipContent";
+import { cn } from "next-common/utils";
+import { useMemo } from "react";
 
-const TagWrapper = tw.span`py-[2px] px-[8px] rounded-[10px] text12Medium`;
+function TagWrapper({ className, tooltipContent, children }) {
+  return (
+    <Tooltip content={tooltipContent}>
+      <div
+        className={cn(
+          "py-[2px] px-[8px] rounded-[10px] text12Medium",
+          className,
+        )}
+      >
+        {children}
+      </div>
+    </Tooltip>
+  );
+}
 
 function StandardAyeTag({ vote }) {
   return (
-    <Tooltip content={<StandardVoteTooltipContent vote={vote} />}>
-      <TagWrapper className="bg-green100 text-green500">Aye</TagWrapper>
-    </Tooltip>
+    <TagWrapper
+      className="bg-green100 text-green500"
+      tooltipContent={<StandardVoteTooltipContent vote={vote} />}
+    >
+      Aye
+    </TagWrapper>
   );
 }
 
 function StandardNayTag({ vote }) {
   return (
-    <Tooltip content={<StandardVoteTooltipContent vote={vote} />}>
-      <TagWrapper className="bg-red100 text-red500">Nay</TagWrapper>
-    </Tooltip>
+    <TagWrapper
+      className="bg-red100 text-red500"
+      tooltipContent={<StandardVoteTooltipContent vote={vote} />}
+    >
+      Nay
+    </TagWrapper>
   );
 }
 
@@ -35,44 +55,47 @@ function StandardVoteTag({ vote }) {
 
 function SplitVoteTag({ votes }) {
   return (
-    <Tooltip content={<SplitVoteTooltipContent votes={votes} />}>
-      <TagWrapper className="bg-neutral300 text-textSecondary">
-        Split
-      </TagWrapper>
-    </Tooltip>
+    <TagWrapper
+      className="bg-neutral300 text-textSecondary"
+      tooltipContent={<SplitVoteTooltipContent votes={votes} />}
+    >
+      Split
+    </TagWrapper>
   );
 }
 
 function SplitAbstainVoteTag({ votes }) {
   return (
-    <Tooltip content={<SplitAbstainVoteTooltipContent votes={votes} />}>
-      <TagWrapper className="bg-neutral300 text-textSecondary">
-        SplitAbstain
-      </TagWrapper>
-    </Tooltip>
+    <TagWrapper
+      className="bg-neutral300 text-textSecondary"
+      tooltipContent={<SplitAbstainVoteTooltipContent votes={votes} />}
+    >
+      SplitAbstain
+    </TagWrapper>
   );
 }
 
 export default function ReferendaVoteTag() {
   const comment = useComment();
-  const allDirectVotes = useSelector(allDirectVotesSelector);
+  const allVotes = useSelector(allVotesSelector);
 
-  const user = comment.author;
-  const votes = (allDirectVotes || []).filter(
-    (item) => item.account === user.address,
+  const user = comment?.author;
+  const votes = useMemo(
+    () => (allVotes || []).filter((item) => item.account === user?.address),
+    [allVotes, user?.address],
   );
 
   if (votes.length === 0) {
     return null;
   }
 
-  const voteItem = votes[0];
+  const firstVoteItem = votes[0];
 
-  if (voteItem.isStandard) {
-    return <StandardVoteTag vote={voteItem} />;
-  } else if (voteItem.isSplit) {
+  if (firstVoteItem.isStandard || firstVoteItem.isDelegating) {
+    return <StandardVoteTag vote={firstVoteItem} />;
+  } else if (firstVoteItem.isSplit) {
     return <SplitVoteTag votes={votes} />;
-  } else if (voteItem.isSplitAbstain) {
+  } else if (firstVoteItem.isSplitAbstain) {
     return <SplitAbstainVoteTag votes={votes} />;
   }
 
