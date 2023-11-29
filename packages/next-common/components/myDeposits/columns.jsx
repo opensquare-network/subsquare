@@ -7,10 +7,9 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { cn, toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import useApi from "next-common/utils/hooks/useApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSubReferendumInfo from "next-common/components/myDeposits/referenda/useSubReferendumInfo";
 
 const RefundPopup = dynamic(
   () => import("next-common/components/gov2/referendum/metadata/refund/popup"),
@@ -91,30 +90,7 @@ export function getDecisionDepositRefundColumn({ pallet } = {}) {
 
 function DecisionDepositRefundButton({ pallet, referendumIndex }) {
   const [showPopup, setShowPopup] = useState(false);
-  const api = useApi();
-  const isMounted = useIsMounted();
-  const [info, setInfo] = useState();
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    let unsub;
-    api.query[pallet].referendumInfoFor(referendumIndex, (optionalInfo) => {
-      if (!isMounted.current || !optionalInfo.isSome) {
-        return;
-      }
-
-      setInfo(optionalInfo.unwrap().toJSON());
-    });
-
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    };
-  }, [api, referendumIndex]);
+  const info = useSubReferendumInfo(pallet, referendumIndex);
 
   let disabled = true;
   const { approved, rejected, timedOut, cancelled } = info || {};
