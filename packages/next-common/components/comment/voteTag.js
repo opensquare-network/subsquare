@@ -69,7 +69,7 @@ function SplitAbstainVoteTooltipContent({ votes }) {
       <span className="text12Bold">Voted SplitAbstain</span>
       <span>Aye: {<ValueDisplay value={aye} symbol={symbol} />}</span>
       <span>Nay: {<ValueDisplay value={nay} symbol={symbol} />}</span>
-      <span>Aye: {<ValueDisplay value={abstain} symbol={symbol} />}</span>
+      <span>Abstain: {<ValueDisplay value={abstain} symbol={symbol} />}</span>
     </div>
   );
 }
