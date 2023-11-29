@@ -42,7 +42,7 @@ export default function StandardVoteTooltipContent({ vote }) {
         {<ValueDisplay value={balance} symbol={symbol} />}*{lockX}
         {isDelegating && "/d"})
       </span>
-      <VoteDelegation vote={vote} />
+      {!isDelegating && <VoteDelegation vote={vote} />}
     </div>
   );
 }
