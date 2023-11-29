@@ -6,6 +6,9 @@ import { useMyDepositFellowship } from "./fellowship";
 import MyDepositPreimages from "./preimages";
 import { useMyDepositReferenda } from "./referenda";
 import { useMyDepositTreasury } from "./treasury";
+import partition from "lodash.partition";
+import { myPreimageDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
+import { useSelector } from "react-redux";
 
 export default function MyDeposits() {
   const chainSettings = useChainSettings();
@@ -15,35 +18,48 @@ export default function MyDeposits() {
   const fellowship = useMyDepositFellowship();
   const democracy = useMyDepositDemocracy();
   const treasury = useMyDepositTreasury();
+  const preimageStatuses = useSelector(myPreimageDepositsSelector);
 
-  const activeItems = [];
-  const nonActiveItems = [];
-  if (hasReferenda) {
-    (referenda.activeCount > 0 ? activeItems : nonActiveItems).push(referenda);
-  }
-  if (hasFellowship) {
-    (fellowship.activeCount > 0 ? activeItems : nonActiveItems).push(
-      fellowship,
-    );
-  }
-  if (!chainSettings.noDemocracyModule) {
-    (democracy.activeCount > 0 ? activeItems : nonActiveItems).push(democracy);
-  }
-  if (hasTreasuryModule !== false) {
-    (treasury.activeCount > 0 ? activeItems : nonActiveItems).push(treasury);
-  }
-  const items = [...activeItems, ...nonActiveItems];
+  const sections = [
+    hasReferenda && {
+      key: "referenda",
+      activeCount: referenda.activeCount,
+      content: <DepositTemplate {...referenda} />,
+    },
+    hasFellowship && {
+      key: "fellowship",
+      activeCount: fellowship.activeCount,
+      content: <DepositTemplate {...fellowship} />,
+    },
+    !chainSettings.noDemocracyModule && {
+      key: "democracy",
+      activeCount: democracy.activeCount,
+      content: <DepositTemplate {...democracy} />,
+    },
+    hasTreasuryModule !== false && {
+      key: "treasury",
+      activeCount: treasury.activeCount,
+      content: <DepositTemplate {...treasury} />,
+    },
+    {
+      key: "preimages",
+      activeCount: preimageStatuses?.length || 0,
+      content: <MyDepositPreimages />,
+    },
+  ].filter(Boolean);
+
+  const [activeSections, nonActiveSections] = partition(
+    sections,
+    (section) => section.activeCount > 0,
+  );
 
   return (
     <div className="space-y-6">
       <AccountSubTabs />
 
       <div className="space-y-6">
-        {items.map((item) => (
-          <DepositTemplate key={item.name} {...item} />
-        ))}
-
-        <MyDepositPreimages />
+        {activeSections.map((section) => section.content)}
+        {nonActiveSections.map((section) => section.content)}
       </div>
     </div>
   );
