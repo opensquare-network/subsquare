@@ -34,21 +34,26 @@ export default function PostDataSource() {
 
   return (
     !!sources.length && (
-      <div className="flex items-center space-x-3">
-        {sources.map((source) => (
-          <ExternalLink
-            key={source.link}
-            href={source.link}
-            externalIcon={false}
-            className={cn(
-              "[&_svg]:w-5 [&_svg]:h-5",
-              "[&_svg_path]:fill-textTertiary [&_svg_path]:hover:fill-textSecondary",
-            )}
-          >
-            {source.label}
-          </ExternalLink>
-        ))}
-      </div>
+      <>
+        <div className="flex items-center h-5 mx-4">
+          <div className="h-4 w-0 border-x border-neutral400" />
+        </div>
+        <div className="flex items-center space-x-3">
+          {sources.map((source) => (
+            <ExternalLink
+              key={source.link}
+              href={source.link}
+              externalIcon={false}
+              className={cn(
+                "[&_svg]:w-5 [&_svg]:h-5",
+                "[&_svg_path]:fill-textTertiary [&_svg_path]:hover:fill-textSecondary",
+              )}
+            >
+              {source.label}
+            </ExternalLink>
+          ))}
+        </div>
+      </>
     )
   );
 }

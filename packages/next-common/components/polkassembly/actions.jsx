@@ -44,14 +44,7 @@ export default function PolkassemblyActions({ reactions, extraActions }) {
           showThumbsUpList={showThumbsUpList}
           setShowThumbsUpList={setShowThumbsUpList}
         />
-        {extraActions && (
-          <>
-            <div className="flex items-center h-5 mx-4">
-              <div className="h-4 w-0 border-x border-neutral400" />
-            </div>
-            {extraActions}
-          </>
-        )}
+        {extraActions}
       </Wrapper>
       {showThumbsUpList && thumbsUpReactions.length > 0 && (
         <GreyWrapper style={{ marginTop: 10 }}>

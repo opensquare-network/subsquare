@@ -79,14 +79,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
         />
         <Share />
 
-        {extraActions && (
-          <>
-            <div className="flex items-center h-5 mx-4">
-              <div className="h-4 w-0 border-x border-neutral400" />
-            </div>
-            {extraActions}
-          </>
-        )}
+        {extraActions}
       </Wrapper>
 
       {isLogin && <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />}
