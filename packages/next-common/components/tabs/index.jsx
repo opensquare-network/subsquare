@@ -38,13 +38,14 @@ export default function Tabs({
 
       <Divider />
 
-      <div className="mt-4">
+      <div className="mt-4 flex">
         {tabs.map(
           (tab, idx) =>
             (lazyRendered[tab.label] || !tab.lazy) && (
               <div
                 key={idx}
                 className={cn(
+                  "w-full",
                   "hidden",
                   activeTabLabel === tab.label && "!block",
                 )}

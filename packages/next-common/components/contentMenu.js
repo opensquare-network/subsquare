@@ -28,7 +28,6 @@ import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 
 const Wrapper = styled.div`
-  margin-left: auto;
   position: relative;
 
   > img {
@@ -245,7 +244,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
   return (
     <Wrapper className="edit" ref={ref}>
       <SystemMore
-        className="w-4 h-4 [&_path]:fill-textTertiary cursor-pointer"
+        className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
       />
       {show && (

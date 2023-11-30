@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import ArticleActions from "./actions/articleActions";
-import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
@@ -12,6 +11,7 @@ import { getBannerUrl } from "../utils/banner";
 import { isPostEdited } from "next-common/utils/post";
 import Tabs from "./tabs";
 import ContentSummary from "./contentSummary";
+import PostDataSource from "./postDataSource";
 
 const Wrapper = styled.div`
   :hover {
@@ -19,14 +19,6 @@ const Wrapper = styled.div`
       display: block;
     }
   }
-`;
-
-const EditedLabel = styled.div`
-  margin-top: 8px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  color: var(--textTertiary);
 `;
 
 const BannerImage = styled.img`
@@ -41,11 +33,13 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     <>
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
-      <RichTextStyleWrapper>
+      <RichTextStyleWrapper className="[&_.markdown-body>*]:first:mt-0">
         <PostContent />
       </RichTextStyleWrapper>
 
-      {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
+      {isPostEdited(post) && (
+        <span className="text12Medium text-textTertiary">Edited</span>
+      )}
     </>
   );
 
@@ -58,7 +52,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       label: "AI Summary",
       tooltip: "Powered by OpenAI",
       content: (
-        <RichTextStyleWrapper>
+        <RichTextStyleWrapper className="[&_.markdown-body>*]:first:mt-0">
           <ContentSummary />
         </RichTextStyleWrapper>
       ),
@@ -82,7 +76,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
             />
           ) : (
             <>
-              <Divider className="my-4" />
+              <Divider />
               {postContent}
             </>
           )}
@@ -95,8 +89,8 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
           <Poll />
         </>
       )}
-      <PostDataSource />
-      <ArticleActions setIsEdit={setIsEdit} />
+
+      <ArticleActions setIsEdit={setIsEdit} extraActions={<PostDataSource />} />
     </Wrapper>
   );
 }

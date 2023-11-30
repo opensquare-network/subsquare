@@ -3,9 +3,10 @@ import { usePost } from "../context/post";
 import { useChain, useChainSettings } from "../context/chain";
 import { getPolkassemblyLink } from "next-common/utils/polkassembly";
 import { useDetailType } from "../context/page";
-import { GreyPanel } from "./styled/containers/greyPanel";
 import ExternalLink from "./externalLink";
 import { getSubscanLink } from "next-common/utils/subscan";
+import { LinkPolkassembly, LinkSubscan } from "@osn/icons/subsquare";
+import { cn } from "next-common/utils";
 
 export default function PostDataSource() {
   const post = usePost();
@@ -15,7 +16,7 @@ export default function PostDataSource() {
 
   const sources = [
     {
-      label: "Polkassembly",
+      label: <LinkPolkassembly />,
       when: [
         Chains.kusama,
         Chains.polkadot,
@@ -25,7 +26,7 @@ export default function PostDataSource() {
       link: getPolkassemblyLink(type, post),
     },
     {
-      label: "Subscan",
+      label: <LinkSubscan />,
       when: chainSettings.hasSubscan,
       link: getSubscanLink(chain, type, post),
     },
@@ -33,13 +34,26 @@ export default function PostDataSource() {
 
   return (
     !!sources.length && (
-      <GreyPanel className="!rounded-lg px-4 py-2.5 mt-4 space-x-4">
-        {sources.map((source) => (
-          <ExternalLink key={source.link} href={source.link}>
-            {source.label}
-          </ExternalLink>
-        ))}
-      </GreyPanel>
+      <>
+        <div className="flex items-center h-5 mx-4">
+          <div className="h-4 w-0 border-x border-neutral400" />
+        </div>
+        <div className="flex items-center space-x-3">
+          {sources.map((source) => (
+            <ExternalLink
+              key={source.link}
+              href={source.link}
+              externalIcon={false}
+              className={cn(
+                "[&_svg]:w-5 [&_svg]:h-5",
+                "[&_svg_path]:fill-textTertiary [&_svg_path]:hover:fill-textSecondary",
+              )}
+            >
+              {source.label}
+            </ExternalLink>
+          ))}
+        </div>
+      </>
     )
   );
 }
