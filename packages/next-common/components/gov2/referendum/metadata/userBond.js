@@ -5,7 +5,7 @@ import Tooltip from "../../../tooltip";
 import styled from "styled-components";
 import Flex from "../../../styled/flex";
 import { useDecimals, useVoteSymbol } from "../../../../context/chain";
-import RefundDecisionDeposit from "next-common/components/gov2/referendum/metadata/refund";
+import RefundDecisionDeposit from "next-common/components/gov2/referendum/metadata/decisionDepositRefund";
 import AddressUser from "next-common/components/user/addressUser";
 
 const BondValueWrapper = styled(Flex)`

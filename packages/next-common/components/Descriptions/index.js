@@ -19,6 +19,7 @@ export default function Descriptions({ title = "", items = [] }) {
                 "h-11",
                 "flex justify-between items-center text-textPrimary",
                 "border-t border-neutral300 first:border-t-0",
+                item.className,
               )}
             >
               <div className="text14Medium">{item.label}</div>

@@ -42,7 +42,10 @@ const westendCollectives = {
   hasStatescan: true,
   hasFellowship: true,
   hasTechComm: false,
+  hasDemocracy: false,
+  hasTreasury: false,
   showAccountManagementTab: false,
+  hasTreasuryModule: false,
   cssVarsLight: {
     theme100: "rgba(239,72,106,0.10)",
     theme300: "rgba(239,72,106,0.40)",

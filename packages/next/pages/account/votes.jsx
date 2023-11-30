@@ -1,9 +1,9 @@
 import { withCommonProps } from "next-common/lib";
+import AccountLayout from "next-common/components/layout/AccountLayout";
 import MyVotes from "components/myvotes";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import AccountLayout from "next-common/components/account/layout";
 
-export default function Votes() {
+export default function AccountVotesPage() {
   return (
     <AccountLayout>
       <MyVotes />

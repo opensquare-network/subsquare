@@ -11,7 +11,7 @@ import {
 import FieldLoading from "../icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import NoBorderList from "next-common/components/styledList/noBorderList";
-import { Deposit, Hash, Proposal } from "./fields";
+import { Deposit, Hash, Proposal, Status } from "./fields";
 
 export default function DesktopList({ data }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
@@ -85,13 +85,11 @@ export default function DesktopList({ data }) {
           ),
           isStatusLoaded ? (
             preimage.statusName && (
-              <span
+              <Status
                 key="status"
-                className="capitalize text-textTertiary font-medium"
-              >
-                {preimage.statusName +
-                  (preimage.count ? `(${preimage.count})` : "")}
-              </span>
+                statusName={preimage.statusName}
+                count={preimage.count}
+              />
             )
           ) : (
             <FieldLoading />
