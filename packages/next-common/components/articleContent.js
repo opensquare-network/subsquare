@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import ArticleActions from "./actions/articleActions";
-import PostDataSource from "./postDataSource";
 import Poll from "./poll";
 import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
@@ -12,6 +11,7 @@ import { getBannerUrl } from "../utils/banner";
 import { isPostEdited } from "next-common/utils/post";
 import Tabs from "./tabs";
 import ContentSummary from "./contentSummary";
+import PostDataSource from "./postDataSource";
 
 const Wrapper = styled.div`
   :hover {
@@ -95,8 +95,8 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
           <Poll />
         </>
       )}
-      <PostDataSource />
-      <ArticleActions setIsEdit={setIsEdit} />
+
+      <ArticleActions setIsEdit={setIsEdit} extraActions={<PostDataSource />} />
     </Wrapper>
   );
 }

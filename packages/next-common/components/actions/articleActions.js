@@ -17,7 +17,7 @@ import { toApiType } from "next-common/utils/viewfuncs";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-export default function ArticleActions({ setIsEdit }) {
+export default function ArticleActions({ setIsEdit, extraActions }) {
   const isLogin = useIsLogin();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
@@ -78,6 +78,15 @@ export default function ArticleActions({ setIsEdit }) {
           setShowThumbsUpList={setShowThumbsUpList}
         />
         <Share />
+
+        {extraActions && (
+          <>
+            <div className="flex items-center h-5 mx-4">
+              <div className="h-4 w-0 border-x border-neutral400" />
+            </div>
+            {extraActions}
+          </>
+        )}
       </Wrapper>
 
       {isLogin && <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />}
