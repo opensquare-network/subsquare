@@ -35,12 +35,10 @@ export function getSubmissionDepositRefundColumn({ pallet } = {}) {
       const { referendumIndex } = data;
 
       return (
-        <Tooltip content="Refund">
-          <SubmissionDepositRefundButton
-            pallet={pallet}
-            referendumIndex={referendumIndex}
-          />
-        </Tooltip>
+        <SubmissionDepositRefundButton
+          pallet={pallet}
+          referendumIndex={referendumIndex}
+        />
       );
     },
   };
@@ -58,24 +56,30 @@ function SubmissionDepositRefundButton({ pallet, referendumIndex }) {
     disabled = false;
   }
 
+  let tooltip = disabled
+    ? "Can be refunded if approved or cancelled"
+    : "Refund";
+
   return (
     <>
-      <GhostButton
-        disabled={disabled}
-        className={cn(
-          "group",
-          "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
-          "disabled:bg-neutral100",
-        )}
-        onClick={() => setShowPopup(true)}
-      >
-        <SystemClose
+      <Tooltip content={tooltip}>
+        <GhostButton
+          disabled={disabled}
           className={cn(
-            "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
-            "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
+            "group",
+            "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
+            "disabled:bg-neutral100",
           )}
-        />
-      </GhostButton>
+          onClick={() => setShowPopup(true)}
+        >
+          <SystemClose
+            className={cn(
+              "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
+              "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
+            )}
+          />
+        </GhostButton>
+      </Tooltip>
 
       {showPopup && (
         <SubmissionDepositRefundPopup
@@ -96,12 +100,10 @@ export function getDecisionDepositRefundColumn({ pallet } = {}) {
       const { referendumIndex } = data;
 
       return (
-        <Tooltip content="Refund">
-          <DecisionDepositRefundButton
-            pallet={pallet}
-            referendumIndex={referendumIndex}
-          />
-        </Tooltip>
+        <DecisionDepositRefundButton
+          pallet={pallet}
+          referendumIndex={referendumIndex}
+        />
       );
     },
   };
@@ -112,31 +114,35 @@ function DecisionDepositRefundButton({ pallet, referendumIndex }) {
   const info = useSubReferendumInfo(pallet, referendumIndex);
 
   let disabled = true;
-  const { approved, rejected, timedOut, cancelled } = info || {};
+  const { approved, rejected, timedOut, cancelled, ongoing } = info || {};
   const [, , deposit] = approved || rejected || timedOut || cancelled || [];
 
   if (deposit) {
     disabled = false;
   }
 
+  const tooltip = ongoing ? "Still under decision" : "Refund";
+
   return (
     <>
-      <GhostButton
-        disabled={disabled}
-        className={cn(
-          "group",
-          "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
-          "disabled:bg-neutral100",
-        )}
-        onClick={() => setShowPopup(true)}
-      >
-        <SystemClose
+      <Tooltip content={tooltip}>
+        <GhostButton
+          disabled={disabled}
           className={cn(
-            "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
-            "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
+            "group",
+            "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
+            "disabled:bg-neutral100",
           )}
-        />
-      </GhostButton>
+          onClick={() => setShowPopup(true)}
+        >
+          <SystemClose
+            className={cn(
+              "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
+              "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
+            )}
+          />
+        </GhostButton>
+      </Tooltip>
 
       {showPopup && (
         <DecisionDepositRefundPopup
