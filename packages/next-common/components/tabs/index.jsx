@@ -45,6 +45,7 @@ export default function Tabs({
               <div
                 key={idx}
                 className={cn(
+                  "w-full",
                   "hidden",
                   activeTabLabel === tab.label && "!block",
                 )}
