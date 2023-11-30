@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import BigNumber from "bignumber.js";
 import { setTipDeposits } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
+import { useMenuHasTreasuryTips } from "next-common/context/chain";
 
 async function queryAddressDeposits(api, address) {
   const entries = await api.query.tips.tips.entries();
@@ -34,8 +35,14 @@ export default function useFetchMyTreasuryTipDeposits() {
   const realAddress = useRealAddress();
   const api = useApi();
   const dispatch = useDispatch();
+  const hasTreasuryTips = useMenuHasTreasuryTips();
 
   useEffect(() => {
+    if (!hasTreasuryTips) {
+      dispatch(setTipDeposits([]));
+      return;
+    }
+
     if (!api || !realAddress || !api.query?.tips) {
       return;
     }
@@ -43,5 +50,5 @@ export default function useFetchMyTreasuryTipDeposits() {
     queryAddressDeposits(api, realAddress).then((data) => {
       dispatch(setTipDeposits(data));
     });
-  }, [api, realAddress, dispatch]);
+  }, [api, realAddress, dispatch, hasTreasuryTips]);
 }

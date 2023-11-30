@@ -10,15 +10,17 @@ export default function useFetchMyPreimageDeposits() {
   const preimageStatuses = usePreimageHashs();
 
   useEffect(() => {
-    const myPreimageStatuses = (preimageStatuses || []).filter(
-      (preimageStatus) => {
-        const [, status] = preimageStatus;
-        const statusValue = status.unrequested || status.requested;
-        const [depositor] = statusValue.deposit || [];
-        return depositor === realAddress;
-      },
-    );
+    if (preimageStatuses?.length) {
+      const myPreimageStatuses = (preimageStatuses || []).filter(
+        (preimageStatus) => {
+          const [, status] = preimageStatus;
+          const statusValue = status.unrequested || status.requested;
+          const [depositor] = statusValue.deposit || [];
+          return depositor === realAddress;
+        },
+      );
 
-    dispatch(setMyPreimageStatuses(myPreimageStatuses));
+      dispatch(setMyPreimageStatuses(myPreimageStatuses));
+    }
   }, [realAddress, preimageStatuses]);
 }

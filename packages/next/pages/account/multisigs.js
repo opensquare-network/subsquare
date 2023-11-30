@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import AccountLayout from "next-common/components/account/layout";
+import AccountLayout from "next-common/components/layout/AccountLayout";
 import Multisigs from "next-common/components/multisigs";
 
 export default function MyMultisigs() {

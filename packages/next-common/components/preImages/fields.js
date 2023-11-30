@@ -97,3 +97,11 @@ export function Proposal({
     </div>
   );
 }
+
+export function Status({ statusName, count }) {
+  return (
+    <span key="status" className="capitalize text-textTertiary text14Medium">
+      {statusName + (count ? `(${count})` : "")}
+    </span>
+  );
+}

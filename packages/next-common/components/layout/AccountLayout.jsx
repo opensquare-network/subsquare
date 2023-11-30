@@ -13,8 +13,12 @@ import {
 } from "next-common/utils/summaryExternalInfo";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
+import AccountInfo from "../overview/accountInfo";
+import { useFetchMyDepositsData } from "next-common/hooks/account/deposit";
 
-export default function AccountLayout({ children }) {
+export default function AccountLayout(props) {
+  useFetchMyDepositsData();
+
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
@@ -65,8 +69,13 @@ export default function AccountLayout({ children }) {
       summary={<SummaryComponent />}
       summaryFooter={externalInfo}
       tabs={tabs}
+      {...props}
     >
-      {children}
+      <div className="mb-6">
+        <AccountInfo hideManageAccountLink />
+      </div>
+
+      {props.children}
     </ListLayout>
   );
 }

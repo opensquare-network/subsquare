@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import AccountLayout from "next-common/components/account/layout";
+import AccountLayout from "next-common/components/layout/AccountLayout";
 import Multisigs from "next-common/components/multisigs";
 
 export default function MyMultisigs() {

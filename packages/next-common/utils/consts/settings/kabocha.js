@@ -9,6 +9,8 @@ const kabocha = {
   // hasElections: true,
   hasSubscan: true,
   hasTechComm: false,
+  hasDemocracy: false,
+  hasTreasury: false,
 };
 
 export default kabocha;

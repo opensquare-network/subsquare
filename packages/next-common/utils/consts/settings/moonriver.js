@@ -45,6 +45,7 @@ const moonriver = {
   showReferendaReferendumDelegationPercentage: true,
   subscanDomain: "moonriver",
   hasReferenda: true,
+  hasTipsModule: false,
   hasPolkassemblyDiscussions: true,
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,

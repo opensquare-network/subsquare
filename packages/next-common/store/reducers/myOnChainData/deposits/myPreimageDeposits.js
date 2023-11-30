@@ -16,4 +16,7 @@ const myPreimageDepositsSlice = createSlice({
 
 export const { setMyPreimageStatuses } = myPreimageDepositsSlice.actions;
 
+export const myPreimageDepositsSelector = (state) =>
+  state[name].myPreimageStatuses;
+
 export default myPreimageDepositsSlice.reducer;

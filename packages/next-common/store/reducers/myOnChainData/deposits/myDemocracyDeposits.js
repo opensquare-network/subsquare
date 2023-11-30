@@ -17,4 +17,6 @@ const myDemocracyDepositsSlice = createSlice({
 export const { setDeposits: setDemocracyDeposits } =
   myDemocracyDepositsSlice.actions;
 
+export const myDemocracyDepositsSelector = (state) => state[name].deposits;
+
 export default myDemocracyDepositsSlice.reducer;
