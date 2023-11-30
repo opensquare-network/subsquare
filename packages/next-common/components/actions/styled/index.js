@@ -1,12 +1,11 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { GreyPanel } from "../../styled/containers/greyPanel";
+import { cn } from "next-common/utils";
 
 export const Wrapper = styled(Flex)`
   align-items: flex-start;
   flex-wrap: wrap;
-  margin-top: 16px;
-  height: 22px;
   color: var(--textSecondary);
 `;
 
@@ -29,52 +28,23 @@ export const GreyItem = styled.div`
   }
 `;
 
-export const Item = styled(Flex)`
-  cursor: default;
-
-  ${(p) =>
-    !p.noHover &&
-    css`
-      cursor: pointer;
-      :hover {
-        color: var(--textSecondary);
-        > svg {
-          path {
-            fill: var(--textSecondary);
-          }
-        }
-      }
-    `}
-
-  ${(p) =>
-    p.highlight
-      ? css`
-          color: var(--textSecondary);
-          > svg {
-            path {
-              fill: var(--textSecondary);
-            }
-          }
-        `
-      : css`
-          color: var(--textTertiary);
-          > svg {
-            path {
-              fill: var(--textTertiary);
-            }
-          }
-        `}
-
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 100%;
-
-  :not(:first-child) {
-    margin-left: 17px;
-  }
-
-  > svg {
-    margin-right: 8px;
-  }
-`;
+/**
+ * @param {{noHover, highlight} & React.HTMLProps<HTMLDivElement>} props
+ */
+export function Item({ noHover, highlight, ...props } = {}) {
+  return (
+    <Flex
+      role="button"
+      {...props}
+      className={cn(
+        "text14Medium",
+        "text-textTertiary [&_svg_path]:fill-textTertiary",
+        "space-x-2",
+        "hover:text-textSecondary [&_svg_path]:hover:fill-textSecondary",
+        noHover && "pointer-events-none",
+        highlight && "text-textSecondary [&_svg_path]:fill-textSecondary",
+        props.className,
+      )}
+    />
+  );
+}

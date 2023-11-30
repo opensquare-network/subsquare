@@ -8,8 +8,6 @@ import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 const Wrapper = styled(Flex)`
   align-items: flex-start;
   flex-wrap: wrap;
-  margin-top: 16px;
-  height: 22px;
 `;
 
 const GreyWrapper = styled(GreyPanel)`
@@ -31,7 +29,7 @@ const GreyItem = styled.div`
   }
 `;
 
-export default function PolkassemblyActions({ reactions }) {
+export default function PolkassemblyActions({ reactions, extraActions }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const thumbsUpReactions = (reactions || []).filter((r) => r.reaction === 1);
 
@@ -46,6 +44,7 @@ export default function PolkassemblyActions({ reactions }) {
           showThumbsUpList={showThumbsUpList}
           setShowThumbsUpList={setShowThumbsUpList}
         />
+        {extraActions}
       </Wrapper>
       {showThumbsUpList && thumbsUpReactions.length > 0 && (
         <GreyWrapper style={{ marginTop: 10 }}>

@@ -16,7 +16,7 @@ export default function ListPostTitle({
       title={title}
       className={cn(
         "flex-1 overflow-hidden text-textPrimary text16Medium",
-        "flex",
+        ellipsis && "flex",
         className,
       )}
     >

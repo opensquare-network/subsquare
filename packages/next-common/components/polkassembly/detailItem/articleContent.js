@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import PolkassemblyActions from "next-common/components/polkassembly/actions";
-import PostDataSource from "next-common/components/postDataSource";
 import { MarkdownPreviewer } from "@osn/previewer";
 import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import NoData from "next-common/components/noData";
@@ -9,6 +8,7 @@ import ContentSummary from "next-common/components/contentSummary";
 import { useState } from "react";
 import Tabs from "next-common/components/tabs";
 import Divider from "next-common/components/styled/layout/divider";
+import PostDataSource from "next-common/components/postDataSource";
 
 const EditedLabel = styled.div`
   margin-top: 8px;
@@ -70,15 +70,17 @@ export default function ArticleContent({ postReactions, className = "" }) {
             />
           ) : (
             <>
-              <Divider className="my-4" />
+              <Divider />
               {postContent}
             </>
           )}
         </div>
       )}
 
-      <PostDataSource />
-      <PolkassemblyActions reactions={postReactions} />
+      <PolkassemblyActions
+        reactions={postReactions}
+        extraActions={<PostDataSource />}
+      />
     </div>
   );
 }

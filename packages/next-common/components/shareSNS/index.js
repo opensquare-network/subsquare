@@ -1,27 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ShareSvg from "../../assets/imgs/icons/share.svg";
-import Flex from "../styled/flex";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import copy from "copy-to-clipboard";
 import { OptionItem, OptionWrapper } from "../internalDropdown/styled";
 import { getShare2SNStext } from "../../utils/post/share";
 import { usePost } from "../../context/post";
 import { useDetailType } from "../../context/page";
-
-const ShareIcon = styled(ShareSvg)``;
+import { Item } from "../actions/styled";
+import { SystemShare } from "@osn/icons/subsquare";
 
 const Wrapper = styled.div`
   position: relative;
   display: flex;
-  padding-left: 16px;
-  height: 14px;
-  color: var(--textTertiary);
-  cursor: pointer;
-
-  > div {
-    gap: 8px;
-  }
 
   svg {
     rect {
@@ -82,14 +72,15 @@ export default function Share() {
 
   return (
     <Wrapper ref={ref}>
-      <Flex
+      <Item
         onClick={() => {
           setShowShare(true);
         }}
       >
-        <ShareIcon className="share" />
+        <SystemShare className="w-5 h-5" />
         <span>Share</span>
-      </Flex>
+      </Item>
+
       {showShare && (
         <OptionWrapper>
           <OptionItem>

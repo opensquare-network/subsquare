@@ -1,5 +1,4 @@
-import React from "react";
-import ReplyIcon from "../../assets/imgs/icons/reply.svg";
+import { SystemReply } from "@osn/icons/subsquare";
 import { Item } from "./styled";
 
 export default function ReplyButton({ noHover, onReply }) {
@@ -12,7 +11,7 @@ export default function ReplyButton({ noHover, onReply }) {
       }}
       noHover={noHover}
     >
-      <ReplyIcon />
+      <SystemReply className="w-5 h-5" />
       <div>Reply</div>
     </Item>
   );
