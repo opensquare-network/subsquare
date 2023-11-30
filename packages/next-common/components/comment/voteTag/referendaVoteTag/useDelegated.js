@@ -1,9 +1,4 @@
-import { useSelector } from "react-redux";
-import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
-
-export default function useDelegated(address) {
-  const allNestedVotes = useSelector(allNestedVotesSelector);
-
+export default function useDelegated(address, allNestedVotes) {
   const allVotes = [...allNestedVotes.allAye, ...allNestedVotes.allNay];
   const nestedVote = allVotes.find((item) => item.account === address);
 

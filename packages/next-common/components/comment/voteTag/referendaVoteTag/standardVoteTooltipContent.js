@@ -5,11 +5,14 @@ import { convictionToLockX } from "next-common/utils/referendumCommon";
 import useDelegated from "next-common/components/comment/voteTag/referendaVoteTag/useDelegated";
 import BigNumber from "bignumber.js";
 
-export default function StandardVoteTooltipContent({ vote }) {
+export default function StandardVoteTooltipContent({ vote, allNestedVotes }) {
   const { decimals, symbol } = useChainSettings();
   const lockX = convictionToLockX(vote.conviction);
   const isDelegating = vote.isDelegating;
-  const { count: delegationsCount, delegations } = useDelegated(vote.account);
+  const { count: delegationsCount, delegations } = useDelegated(
+    vote.account,
+    allNestedVotes,
+  );
   const totalVotes = new BigNumber(vote.votes).plus(delegations).toString();
 
   return (
