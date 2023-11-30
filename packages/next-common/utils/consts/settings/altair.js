@@ -52,6 +52,7 @@ const altair = {
   hasSubscan: true,
   hasDiscussions: false,
   hasTechComm: false,
+  hasTipsModule: false,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
   cssVarsLight: {

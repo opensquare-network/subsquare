@@ -8,7 +8,7 @@ export function Headers({ columns }) {
       <tr>
         {columns.map((col, index) => (
           <StyledTh key={index} style={col.style} className={col.className}>
-            <div className="text12Bold h-[inherit]">{col.name}</div>
+            <div className="h-[inherit]">{col.name}</div>
           </StyledTh>
         ))}
       </tr>

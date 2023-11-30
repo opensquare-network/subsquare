@@ -41,10 +41,10 @@ export default function PreImagesList({ data }) {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <div className="flex max-md:flex-col items-center gap-[24px] max-md:px-[24px] max-md:gap-[8px]">
+      <div className="flex max-md:flex-col items-center gap-[24px] max-md:px-[24px] max-md:gap-[8px] mr-6 max-md:mr-0">
         <div className="flex grow justify-between max-md:w-full">
           <ListTitleBar
-            className="ml-[-24px]"
+            className={"max-md:-ml-6"}
             title="List"
             titleCount={filteredData?.length}
           />

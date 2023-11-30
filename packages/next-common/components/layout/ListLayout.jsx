@@ -6,6 +6,7 @@ import { isExternalLink } from "next-common/utils";
 import noop from "lodash.noop";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import Divider from "../styled/layout/divider";
+import isNil from "lodash.isnil";
 
 /**
  * @typedef {{
@@ -13,6 +14,7 @@ import Divider from "../styled/layout/divider";
  *  url?: string
  *  active?: boolean
  *  onClick?(): void
+ *  extraMatchTabActivePathnames?: string[]
  * }} Tab
  */
 
@@ -122,6 +124,18 @@ function Tabs({ tabs = [] }) {
         );
         const itemActiveClassName = "border-theme500 text-theme500";
 
+        let active = tab.active;
+        if (isNil(active)) {
+          if (tab.exactMatch === false) {
+            active = routePath.startsWith(tab.url);
+          } else {
+            active = [
+              tab.url,
+              ...(tab.extraMatchTabActivePathnames ?? []),
+            ].includes(routePath);
+          }
+        }
+
         return (
           <li key={idx}>
             {tab.url ? (
@@ -130,12 +144,7 @@ function Tabs({ tabs = [] }) {
                 target={isExternal ? "_blank" : "_self"}
                 className={cn(
                   itemClassName,
-                  tab.active ??
-                    (tab.exactMatch === false
-                      ? routePath.startsWith(tab.url)
-                      : routePath === tab.url)
-                    ? itemActiveClassName
-                    : "border-transparent",
+                  active ? itemActiveClassName : "border-transparent",
                 )}
               >
                 {tab.label}

@@ -31,7 +31,7 @@ export default function MyReferendaVotes() {
   return (
     <>
       <WithAllVotesLink isReferenda={true}>
-        <ol className="flex">
+        <ol className="flex ml-6 space-x-6">
           <li className="cursor-pointer" onClick={() => setTab(tabs.votes)}>
             <VotesListTitle
               disabled={tab !== tabs.votes}
