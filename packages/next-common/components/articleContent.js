@@ -82,7 +82,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
             />
           ) : (
             <>
-              <Divider className="my-4" />
+              <Divider />
               {postContent}
             </>
           )}
