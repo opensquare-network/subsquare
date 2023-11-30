@@ -1,4 +1,7 @@
-import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import {
+  allNestedVotesSelector,
+  allVotesSelector,
+} from "next-common/store/reducers/referenda/votes/selectors";
 import { useSelector } from "react-redux";
 import { useComment } from "../../context";
 import Tooltip from "next-common/components/tooltip";
@@ -23,37 +26,49 @@ function TagWrapper({ className, tooltipContent, children }) {
   );
 }
 
-function StandardAyeTag({ vote }) {
+function StandardAyeTag({ tooltipContent }) {
   return (
     <TagWrapper
       className="bg-green100 text-green500"
-      tooltipContent={<StandardVoteTooltipContent vote={vote} />}
+      tooltipContent={tooltipContent}
     >
       Aye
     </TagWrapper>
   );
 }
 
-function StandardNayTag({ vote }) {
+function StandardNayTag({ tooltipContent }) {
   return (
     <TagWrapper
       className="bg-red100 text-red500"
-      tooltipContent={<StandardVoteTooltipContent vote={vote} />}
+      tooltipContent={tooltipContent}
     >
       Nay
     </TagWrapper>
   );
 }
 
-function StandardVoteTag({ vote }) {
+export function StandardVoteTagWithTooltipContent({ vote, tooltipContent }) {
   if (vote.aye) {
-    return <StandardAyeTag vote={vote} />;
+    return <StandardAyeTag tooltipContent={tooltipContent} />;
   } else {
-    return <StandardNayTag vote={vote} />;
+    return <StandardNayTag tooltipContent={tooltipContent} />;
   }
 }
 
-function SplitVoteTag({ votes }) {
+export function StandardVoteTag({ vote, allNestedVotes }) {
+  const tooltipContent = (
+    <StandardVoteTooltipContent vote={vote} allNestedVotes={allNestedVotes} />
+  );
+  return (
+    <StandardVoteTagWithTooltipContent
+      vote={vote}
+      tooltipContent={tooltipContent}
+    />
+  );
+}
+
+export function SplitVoteTag({ votes }) {
   return (
     <TagWrapper
       className="bg-neutral300 text-textSecondary"
@@ -64,7 +79,7 @@ function SplitVoteTag({ votes }) {
   );
 }
 
-function SplitAbstainVoteTag({ votes }) {
+export function SplitAbstainVoteTag({ votes }) {
   return (
     <TagWrapper
       className="bg-neutral300 text-textSecondary"
@@ -78,6 +93,7 @@ function SplitAbstainVoteTag({ votes }) {
 export default function ReferendaVoteTag() {
   const comment = useComment();
   const allVotes = useSelector(allVotesSelector);
+  const allNestedVotes = useSelector(allNestedVotesSelector);
 
   const user = comment?.author;
   const votes = useMemo(
@@ -92,7 +108,9 @@ export default function ReferendaVoteTag() {
   const firstVoteItem = votes[0];
 
   if (firstVoteItem.isStandard || firstVoteItem.isDelegating) {
-    return <StandardVoteTag vote={firstVoteItem} />;
+    return (
+      <StandardVoteTag vote={firstVoteItem} allNestedVotes={allNestedVotes} />
+    );
   } else if (firstVoteItem.isSplit) {
     return <SplitVoteTag votes={votes} />;
   } else if (firstVoteItem.isSplitAbstain) {

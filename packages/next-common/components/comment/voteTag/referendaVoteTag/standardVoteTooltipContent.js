@@ -2,14 +2,33 @@ import { toPrecisionNumber } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
-import useDelegated from "next-common/components/comment/voteTag/referendaVoteTag/useDelegated";
 import BigNumber from "bignumber.js";
 
-export default function StandardVoteTooltipContent({ vote }) {
+function getDelegated(address, allNestedVotes) {
+  const allVotes = [...allNestedVotes.allAye, ...allNestedVotes.allNay];
+  const nestedVote = allVotes.find((item) => item.account === address);
+
+  const delegationsCount = nestedVote?.directVoterDelegations?.length ?? 0;
+  if (delegationsCount === 0) {
+    return {
+      count: 0,
+      delegations: 0,
+    };
+  }
+
+  return {
+    count: delegationsCount,
+    delegations: nestedVote?.totalDelegatedVotes ?? 0,
+  };
+}
+
+export default function StandardVoteTooltipContent({ vote, allNestedVotes }) {
   const { decimals, symbol } = useChainSettings();
   const lockX = convictionToLockX(vote.conviction);
-  const isDelegating = vote.isDelegating;
-  const { count: delegationsCount, delegations } = useDelegated(vote.account);
+  const { count: delegationsCount, delegations } = getDelegated(
+    vote.account,
+    allNestedVotes,
+  );
   const totalVotes = new BigNumber(vote.votes).plus(delegations).toString();
 
   return (
@@ -35,7 +54,7 @@ export default function StandardVoteTooltipContent({ vote }) {
           symbol={symbol}
         />
         *{lockX}
-        {isDelegating && "/d"})
+        {vote.isDelegating && "/d"})
       </span>
       {delegationsCount > 0 && (
         <span>
