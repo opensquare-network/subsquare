@@ -41,7 +41,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     <>
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
-      <RichTextStyleWrapper>
+      <RichTextStyleWrapper className="[&_.markdown-body>*]:first:mt-0">
         <PostContent />
       </RichTextStyleWrapper>
 
@@ -58,7 +58,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       label: "AI Summary",
       tooltip: "Powered by OpenAI",
       content: (
-        <RichTextStyleWrapper>
+        <RichTextStyleWrapper className="[&_.markdown-body>*]:first:mt-0">
           <ContentSummary />
         </RichTextStyleWrapper>
       ),

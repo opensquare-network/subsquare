@@ -30,7 +30,6 @@ export default function PostContent() {
         "flex flex-col",
         "relative",
         postContentCollapsed && "max-h-[640px] overflow-hidden",
-        showToggleButton && "-mt-[14px]",
       )}
     >
       {post.contentType === "markdown" && (
