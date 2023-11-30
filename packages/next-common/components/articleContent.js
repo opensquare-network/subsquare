@@ -21,14 +21,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const EditedLabel = styled.div`
-  margin-top: 8px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  color: var(--textTertiary);
-`;
-
 const BannerImage = styled.img`
   width: 100%;
 `;
@@ -45,7 +37,9 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
         <PostContent />
       </RichTextStyleWrapper>
 
-      {isPostEdited(post) && <EditedLabel>Edited</EditedLabel>}
+      {isPostEdited(post) && (
+        <span className="text12Medium text-textTertiary">Edited</span>
+      )}
     </>
   );
 
