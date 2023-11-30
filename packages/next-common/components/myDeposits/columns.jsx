@@ -11,8 +11,19 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import useSubReferendumInfo from "next-common/components/myDeposits/referenda/useSubReferendumInfo";
 
-const RefundPopup = dynamic(
-  () => import("next-common/components/gov2/referendum/metadata/refund/popup"),
+const SubmissionDepositRefundPopup = dynamic(
+  () =>
+    import(
+      "next-common/components/gov2/referendum/metadata/submissionDepositRefund/popup"
+    ),
+  { ssr: false },
+);
+
+const DecisionDepositRefundPopup = dynamic(
+  () =>
+    import(
+      "next-common/components/gov2/referendum/metadata/decisionDepositRefund/popup"
+    ),
   { ssr: false },
 );
 
@@ -37,12 +48,20 @@ export function getSubmissionDepositRefundColumn({ pallet } = {}) {
 
 function SubmissionDepositRefundButton({ pallet, referendumIndex }) {
   const [showPopup, setShowPopup] = useState(false);
-  // TODO: logic
+  const info = useSubReferendumInfo(pallet, referendumIndex);
+
+  let disabled = true;
+  const { approved, cancelled } = info || {};
+  const [, deposit] = approved || cancelled || [];
+
+  if (deposit) {
+    disabled = false;
+  }
 
   return (
     <>
       <GhostButton
-        disabled // TODO: disabled
+        disabled={disabled}
         className={cn(
           "group",
           "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
@@ -59,7 +78,7 @@ function SubmissionDepositRefundButton({ pallet, referendumIndex }) {
       </GhostButton>
 
       {showPopup && (
-        <RefundPopup
+        <SubmissionDepositRefundPopup
           referendumIndex={referendumIndex}
           pallet={pallet}
           onClose={() => setShowPopup(false)}
@@ -120,7 +139,7 @@ function DecisionDepositRefundButton({ pallet, referendumIndex }) {
       </GhostButton>
 
       {showPopup && (
-        <RefundPopup
+        <DecisionDepositRefundPopup
           referendumIndex={referendumIndex}
           pallet={pallet}
           onClose={() => setShowPopup(false)}
