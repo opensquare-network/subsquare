@@ -65,8 +65,8 @@ export default function ArticleActions({ setIsEdit }) {
   };
 
   return (
-    <>
-      <Wrapper>
+    <div className="mt-4 flex items-center justify-between">
+      <Wrapper className="space-x-4">
         <ReplyButton onReply={focusEditor} noHover={!isLogin || isAuthor} />
         <ThumbsUp
           count={post?.reactions?.length}
@@ -78,12 +78,11 @@ export default function ArticleActions({ setIsEdit }) {
           setShowThumbsUpList={setShowThumbsUpList}
         />
         <Share />
-        {isLogin && (
-          <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />
-        )}
       </Wrapper>
 
+      {isLogin && <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />}
+
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}
-    </>
+    </div>
   );
 }
