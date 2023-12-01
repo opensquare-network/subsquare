@@ -77,7 +77,6 @@ const interlay = {
   description:
     "Interlay is building the safest and easiest way to use Bitcoin in decentralized finance: a one-stop-shop for all things Bitcoin finance, including trading, lending, and staking.",
   useVoteCall: true,
-  showAccountManagementTab: false,
   hasMultisig: true,
   multisigApiPrefix: "interlay",
   hasTreasuryModule: false,

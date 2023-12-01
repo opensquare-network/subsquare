@@ -15,6 +15,7 @@ import OffChainVoting from "next-common/components/summary/externalInfo/offChain
 import Bounties from "next-common/components/summary/externalInfo/bounties";
 import AccountInfo from "../overview/accountInfo";
 import { useFetchMyDepositsData } from "next-common/hooks/account/deposit";
+import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 
 export default function AccountLayout(props) {
   useFetchMyDepositsData();
@@ -23,6 +24,7 @@ export default function AccountLayout(props) {
   const chainSettings = useChainSettings();
   const user = useUser();
   const router = useRouter();
+  const url = useAccountUrl();
 
   useEffect(() => {
     if (!user?.address) {
@@ -45,7 +47,7 @@ export default function AccountLayout(props) {
     const active = router.pathname.startsWith("/account");
     tabs.push({
       label: "Account",
-      url: "/account/vote",
+      url,
       active,
     });
   }
