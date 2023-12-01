@@ -35,4 +35,5 @@ export const Input = styled.input`
   box-sizing: border-box;
   width: 100%;
   border-radius: 4px;
+  font-size: 14px;
 `;
