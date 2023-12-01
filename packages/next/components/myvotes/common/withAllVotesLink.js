@@ -3,16 +3,22 @@ import {
   Democracy,
   Referenda,
 } from "next-common/components/profile/votingHistory/common";
+import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function WithAllVotesLink({ children, isReferenda = false }) {
   const address = useRealAddress();
 
   return (
-    <div className="flex items-center justify-between">
+    <div
+      className={cn(
+        "flex items-center justify-between mx-6",
+        "max-sm:flex-col max-sm:gap-y-3 max-sm:items-start",
+      )}
+    >
       {children}
 
-      <div className="flex ml-6">
+      <div className="flex">
         <ExternalLink
           href={`/user/${address}/votes?type=${
             isReferenda ? Referenda : Democracy
