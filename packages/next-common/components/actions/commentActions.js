@@ -103,7 +103,7 @@ export default function CommentActions({
 
   return (
     <>
-      <Wrapper>
+      <Wrapper className="space-x-4">
         <ReplyButton onReply={startReply} noHover={!isLoggedIn || ownComment} />
         <ThumbsUp
           count={reactions?.length}
