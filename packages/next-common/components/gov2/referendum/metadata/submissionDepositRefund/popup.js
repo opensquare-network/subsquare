@@ -1,43 +1,25 @@
-import PopupWithSigner from "next-common/components/popupWithSigner";
 import React, { useState } from "react";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { emptyFunction } from "next-common/utils";
-import Signer from "next-common/components/popup/fields/signerField";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
 import PopupLabel from "next-common/components/popup/label";
-import styled from "styled-components";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import SignerPopup from "next-common/components/signerPopup";
+import { Input } from "../styled";
 
-const Input = styled.input`
-  background: var(--neutral200) !important;
-  all: unset;
-  padding: 12px 16px;
-  flex-grow: 1;
-  color: var(--textPrimary);
-  box-sizing: border-box;
-  width: 100%;
-  border-radius: 4px;
-`;
-
-function PopupContent({
+export default function SubmissionDepositRefundPopup({
   pallet = "referenda",
   referendumIndex,
   onClose = emptyFunction,
 }) {
-  const api = useApi();
   const isMounted = useIsMounted();
-
   const dispatch = useDispatch();
-  const signerAccount = useSignerAccount();
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
   const [calling, setCalling] = useState(false);
 
-  const doRefund = async () => {
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
+  const doRefund = async (api, signerAccount) => {
     if (!api) {
       return showErrorToast("Chain network is not connected yet");
     }
@@ -58,29 +40,17 @@ function PopupContent({
   };
 
   return (
-    <>
-      <Signer />
+    <SignerPopup
+      title="Refund submission deposit"
+      actionCallback={doRefund}
+      isLoading={calling}
+    >
       <div>
         <PopupLabel text="Referendum Index" />
         <div>
           <Input disabled={true} value={referendumIndex} />
         </div>
       </div>
-      <PopupButtonWrapper>
-        <PrimaryButton isLoading={calling} onClick={doRefund}>
-          Confirm
-        </PrimaryButton>
-      </PopupButtonWrapper>
-    </>
-  );
-}
-
-export default function SubmissionDepositRefundPopup(props) {
-  return (
-    <PopupWithSigner
-      title="Refund submission deposit"
-      Component={PopupContent}
-      {...props}
-    />
+    </SignerPopup>
   );
 }

@@ -72,7 +72,8 @@ export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
       actionCallback={doClearExpiredVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={<RelatedReferenda relatedReferenda={relatedReferenda} />}
-    />
+    >
+      <RelatedReferenda relatedReferenda={relatedReferenda} />
+    </SignerPopup>
   );
 }

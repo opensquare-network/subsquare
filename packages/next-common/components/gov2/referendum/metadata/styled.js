@@ -25,3 +25,14 @@ export const RefundWrapper = styled.div`
     color: var(--theme500);
   }
 `;
+
+export const Input = styled.input`
+  background: var(--neutral200) !important;
+  all: unset;
+  padding: 12px 16px;
+  flex-grow: 1;
+  color: var(--textPrimary);
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 4px;
+`;
