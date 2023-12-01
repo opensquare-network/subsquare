@@ -63,7 +63,9 @@ export default function DepositsTitle({ active }) {
     <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
       Deposits
       {!isNil(count) && (
-        <span className="text-textTertiary mx-1">{count || 0}</span>
+        <span className="text-textTertiary mx-1 text16Medium">
+          {count || 0}
+        </span>
       )}
     </Title>
   );

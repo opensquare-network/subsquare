@@ -31,11 +31,7 @@ const Wrapper = styled.div`
   }
   @media screen and (max-width: 768px) {
     .tabs-container {
-      margin: 0 24px;
       flex-grow: 1;
-    }
-    .tab-item {
-      width: auto;
     }
   }
 `;
