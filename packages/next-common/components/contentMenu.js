@@ -177,7 +177,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   return (
     <Wrapper className="edit" ref={ref}>
       <SystemMore
-        className="w-4 h-4 [&_path]:fill-textTertiary cursor-pointer"
+        className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
       />
       {show && (
