@@ -12,7 +12,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import usePreimage from "next-common/hooks/usePreimage";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import preImages from "next-common/utils/consts/menu/preImages";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useState } from "react";
@@ -281,20 +281,31 @@ function UnnoteButton({ hash, count, deposit, status }) {
     dispatch(incPreImagesTrigger());
   }
 
+  const disabled =
+    count === 0 &&
+    status.toLowerCase() === "unrequested" &&
+    realAddress === who;
+
   return (
     <>
-      {count === 0 &&
-        status.toLowerCase() === "unrequested" &&
-        realAddress === who && (
-          <Tooltip content={"Unnote"}>
-            <GhostButton
-              className="!p-1.5 !w-7 !h-7 !rounded !border-neutral400"
-              onClick={() => setShowPopup(true)}
-            >
-              <SystemClose className="w-4 h-4 [&_path]:fill-textPrimary [&_path]:stroke-textPrimary" />
-            </GhostButton>
-          </Tooltip>
-        )}
+      <Tooltip content={"Unnote"}>
+        <GhostButton
+          disabled={disabled}
+          className={cn(
+            "group",
+            "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
+            "disabled:bg-neutral100",
+          )}
+          onClick={() => setShowPopup(true)}
+        >
+          <SystemClose
+            className={cn(
+              "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
+              "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
+            )}
+          />
+        </GhostButton>
+      </Tooltip>
       {showPopup && (
         <UnnotePopup
           hash={hash}
