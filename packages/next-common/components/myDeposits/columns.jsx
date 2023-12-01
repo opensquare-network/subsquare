@@ -1,15 +1,14 @@
-import { SystemClose } from "@osn/icons/subsquare";
 import isNil from "lodash.isnil";
-import GhostButton from "next-common/components/buttons/ghostButton";
 import ListPostTitle from "next-common/components/postList/postTitle";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { cn, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import useSubReferendumInfo from "next-common/components/myDeposits/referenda/useSubReferendumInfo";
+import MyDepositUndoButton from "./undoButton";
 
 const SubmissionDepositRefundPopup = dynamic(
   () =>
@@ -63,22 +62,10 @@ function SubmissionDepositRefundButton({ pallet, referendumIndex }) {
   return (
     <>
       <Tooltip content={tooltip}>
-        <GhostButton
+        <MyDepositUndoButton
           disabled={disabled}
-          className={cn(
-            "group",
-            "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
-            "disabled:bg-neutral100",
-          )}
           onClick={() => setShowPopup(true)}
-        >
-          <SystemClose
-            className={cn(
-              "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
-              "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
-            )}
-          />
-        </GhostButton>
+        />
       </Tooltip>
 
       {showPopup && (
@@ -126,22 +113,10 @@ function DecisionDepositRefundButton({ pallet, referendumIndex }) {
   return (
     <>
       <Tooltip content={tooltip}>
-        <GhostButton
+        <MyDepositUndoButton
           disabled={disabled}
-          className={cn(
-            "group",
-            "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
-            "disabled:bg-neutral100",
-          )}
           onClick={() => setShowPopup(true)}
-        >
-          <SystemClose
-            className={cn(
-              "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
-              "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
-            )}
-          />
-        </GhostButton>
+        />
       </Tooltip>
 
       {showPopup && (

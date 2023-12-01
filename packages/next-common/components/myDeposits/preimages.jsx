@@ -1,6 +1,4 @@
-import { SystemClose } from "@osn/icons/subsquare";
 import { isNil, sum } from "lodash";
-import GhostButton from "next-common/components/buttons/ghostButton";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import PreimageDetailPopup from "next-common/components/preImages/preImageDetailPopup";
 import UnnotePopup from "next-common/components/preImages/unnotePopup";
@@ -12,7 +10,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import usePreimage from "next-common/hooks/usePreimage";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import { cn, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import preImages from "next-common/utils/consts/menu/preImages";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useState } from "react";
@@ -25,6 +23,7 @@ import { PreimageMobileListItemTemplate } from "../preImages/mobile";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import Loading from "../loading";
 import { useNavCollapsed } from "next-common/context/nav";
+import MyDepositUndoButton from "./undoButton";
 
 export default function MyDepositPreimages() {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
@@ -289,22 +288,10 @@ function UnnoteButton({ hash, count, deposit, status }) {
   return (
     <>
       <Tooltip content={"Unnote"}>
-        <GhostButton
+        <MyDepositUndoButton
           disabled={disabled}
-          className={cn(
-            "group",
-            "!p-1.5 !w-7 !h-7 !rounded !border-neutral400",
-            "disabled:bg-neutral100",
-          )}
           onClick={() => setShowPopup(true)}
-        >
-          <SystemClose
-            className={cn(
-              "w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary",
-              "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
-            )}
-          />
-        </GhostButton>
+        />
       </Tooltip>
       {showPopup && (
         <UnnotePopup
