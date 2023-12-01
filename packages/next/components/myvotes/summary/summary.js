@@ -1,5 +1,5 @@
 import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import React from "react";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
@@ -93,7 +93,12 @@ export default function ReferendaVoteSummary({
 
   return (
     <>
-      <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
+      <div
+        className={cn(
+          "flex justify-between items-center gap-3 mx-6",
+          "max-sm:block max-sm:space-y-3",
+        )}
+      >
         <AccountSubTabs />
         <ModuleTab />
       </div>

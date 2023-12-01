@@ -280,7 +280,7 @@ function UnnoteButton({ hash, count, deposit, status }) {
     dispatch(incPreImagesTrigger());
   }
 
-  const disabled =
+  const enabled =
     count === 0 &&
     status.toLowerCase() === "unrequested" &&
     realAddress === who;
@@ -289,7 +289,7 @@ function UnnoteButton({ hash, count, deposit, status }) {
     <>
       <Tooltip content={"Unnote"}>
         <MyDepositUndoButton
-          disabled={disabled}
+          disabled={!enabled}
           onClick={() => setShowPopup(true)}
         />
       </Tooltip>
