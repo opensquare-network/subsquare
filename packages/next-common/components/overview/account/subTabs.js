@@ -6,7 +6,7 @@ import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
 import Chains from "next-common/utils/consts/chains";
 
-export default function AccountSubTabs() {
+export default function AccountSubTabs({ className = "" }) {
   const { hasMultisig } = useChainSettings();
   const chain = useChain();
 
@@ -46,5 +46,5 @@ export default function AccountSubTabs() {
     });
   }
 
-  return <UrlTabs className="ml-6" tabs={tabs} />;
+  return <UrlTabs tabs={tabs} className={className} />;
 }

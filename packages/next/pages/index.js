@@ -36,7 +36,7 @@ export default function HomePage() {
     },
   ];
 
-  if (user?.address) {
+  if (user?.address && chainSettings.showAccountManagementTab !== false) {
     tabs.push({
       label: "Account",
       url,

@@ -51,7 +51,7 @@ export default function MyDeposits() {
 
   return (
     <div className="space-y-6">
-      <AccountSubTabs />
+      <AccountSubTabs className="mx-6" />
 
       <div className="space-y-6">
         {activeSections.map((section) => section.content)}

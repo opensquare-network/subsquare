@@ -22,7 +22,9 @@ export default function MultisigsTitle({ active }) {
     <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
       Multisigs
       {myMultisigsCount !== null && (
-        <span className="text-textTertiary mx-1">{myMultisigsCount || 0}</span>
+        <span className="text-textTertiary mx-1 text16Medium">
+          {myMultisigsCount || 0}
+        </span>
       )}
     </Title>
   );
