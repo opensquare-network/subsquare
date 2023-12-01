@@ -7,6 +7,7 @@ import myFilteredReferendaPriorLocksSelector from "next-common/store/reducers/my
 import PriorLocks from "./priors";
 import WithAllVotesLink from "../../common/withAllVotesLink";
 import VotesListTitle from "../../common/votesListTitle";
+import TabsList from "next-common/components/tabsList";
 
 const tabs = Object.freeze({
   votes: 1,
@@ -19,31 +20,53 @@ function PriorLocksTitle({ disabled }) {
   return (
     <div className="flex gap-[8px]">
       <Title disabled={disabled}>Prior Locks</Title>
-      <span className="text-textTertiary">{filteredLocks.length}</span>
+      <span className="text-textTertiary text16Medium">
+        {filteredLocks.length}
+      </span>
     </div>
   );
 }
 
 export default function MyReferendaVotes() {
   const referendaVotes = useSelector(myReferendaVotesSelector);
-  const [tab, setTab] = useState(tabs.votes);
+  const [activeTabId, setActiveTabId] = useState(tabs.votes);
+
+  const tabsListItems = [
+    {
+      id: tabs.votes,
+      label: "On-chain Votes",
+      render() {
+        return (
+          <VotesListTitle
+            disabled={activeTabId !== tabs.votes}
+            length={referendaVotes?.length || 0}
+          />
+        );
+      },
+    },
+    {
+      id: tabs.priors,
+      label: "Prior Locks",
+      render() {
+        return <PriorLocksTitle disabled={activeTabId !== tabs.priors} />;
+      },
+    },
+  ];
 
   return (
     <>
       <WithAllVotesLink isReferenda={true}>
-        <ol className="flex ml-6 space-x-6">
-          <li className="cursor-pointer" onClick={() => setTab(tabs.votes)}>
-            <VotesListTitle
-              disabled={tab !== tabs.votes}
-              length={referendaVotes?.length || 0}
-            />
-          </li>
-          <li className="cursor-pointer" onClick={() => setTab(tabs.priors)}>
-            <PriorLocksTitle disabled={tab !== tabs.priors} />
-          </li>
-        </ol>
+        <TabsList
+          tabs={tabsListItems}
+          onTabClick={(item) => setActiveTabId(item.id)}
+        />
       </WithAllVotesLink>
-      {tab === tabs.votes ? <ResponsiveReferendaVotes /> : <PriorLocks />}
+
+      {activeTabId === tabs.votes ? (
+        <ResponsiveReferendaVotes />
+      ) : (
+        <PriorLocks />
+      )}
     </>
   );
 }
