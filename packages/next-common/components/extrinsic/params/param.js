@@ -197,7 +197,7 @@ export default function Param({ name, def, indent = false, value, setValue }) {
   const newDef = _def || def;
 
   const title = (
-    <span className="text12Bold whitespace-nowrap overflow-hidden">
+    <span className="text12Bold text-textPrimary whitespace-nowrap overflow-hidden">
       {name && `${name}:`} {def.type}
       {def.typeName && ` (${def.typeName})`}
     </span>
