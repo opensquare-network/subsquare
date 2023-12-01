@@ -21,18 +21,18 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function DecisionDepositRefund({ pallet = "referenda" }) {
+export default function SubmissionDepositRefund({ pallet = "referenda" }) {
   const { referendumIndex } = useOnchainData();
   const [showPopup, setShowPopup] = useState(false);
   const info = useSubReferendumInfo(pallet, referendumIndex);
 
-  const { approved, rejected, timedOut, cancelled } = info || {};
-  const possibleValue = approved || rejected || timedOut || cancelled;
+  const { approved, cancelled } = info || {};
+  const possibleValue = approved || cancelled;
   if (!possibleValue) {
     return null;
   }
 
-  const [, , deposit] = approved || rejected || timedOut || cancelled;
+  const [, deposit] = possibleValue;
   if (!deposit) {
     return <Wrapper>Refunded</Wrapper>;
   }
