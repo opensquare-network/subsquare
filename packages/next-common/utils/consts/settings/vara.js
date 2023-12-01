@@ -71,6 +71,7 @@ const vara = {
   navLogoDark: ProjectLogoVaraDark,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
+  noDemocracyModule: true,
   hasReferenda: true,
   hasFellowship: true,
   hasDemocracy: false,
