@@ -11,7 +11,7 @@ import Overview from "next-common/components/overview/overview";
 import { useUser } from "next-common/context/user";
 
 export default function Home() {
-  const { name, description, hasMultisig } = useChainSettings();
+  const { name, description } = useChainSettings();
   const user = useUser();
 
   let externalInfo = null;
@@ -31,10 +31,10 @@ export default function Home() {
     },
   ];
 
-  if (hasMultisig && user?.address) {
+  if (user?.address) {
     tabs.push({
       label: "Account",
-      url: "/account/multisigs",
+      url: "/account/deposits",
     });
   }
 

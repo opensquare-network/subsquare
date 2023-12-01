@@ -126,6 +126,7 @@ function KintAssetInfo() {
 export default function AccountInfoPanel({ hideManageAccountLink }) {
   const chain = useChain();
   const isKintsugi = isKintsugiChain(chain);
+  const link = `/account/${isKintsugi ? "deposits" : "votes"}`;
 
   return (
     <NeutralPanel className="p-6">
@@ -136,7 +137,7 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
 
       {!hideManageAccountLink && (
         <div className="flex items-end justify-end mt-2">
-          <Link href="/account/votes" className="text14Medium text-theme500">
+          <Link href={link} className="text14Medium text-theme500">
             Manage Account
           </Link>
         </div>
