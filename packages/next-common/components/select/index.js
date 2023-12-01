@@ -14,6 +14,9 @@ const SearchInput = styled.input`
   outline: none;
   padding: 10px 16px;
   background: var(--neutral100);
+  &::placeholder {
+    color: var(--textTertiary);
+  }
 `;
 
 const SelectWrapper = styled(FlexBetweenCenter)`
