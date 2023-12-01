@@ -103,19 +103,24 @@ export default function CommentActions({
 
   return (
     <>
-      <Wrapper className="space-x-4">
-        <ReplyButton onReply={startReply} noHover={!isLoggedIn || ownComment} />
-        <ThumbsUp
-          count={reactions?.length}
-          noHover={!isLoggedIn || ownComment}
-          highlight={isLoggedIn && thumbUp}
-          toggleThumbUp={toggleThumbUp}
-          thumbUpLoading={thumbUpLoading}
-          showThumbsUpList={showThumbsUpList}
-          setShowThumbsUpList={setShowThumbsUpList}
-        />
+      <div className="flex items-center justify-between">
+        <Wrapper className="space-x-4">
+          <ReplyButton
+            onReply={startReply}
+            noHover={!isLoggedIn || ownComment}
+          />
+          <ThumbsUp
+            count={reactions?.length}
+            noHover={!isLoggedIn || ownComment}
+            highlight={isLoggedIn && thumbUp}
+            toggleThumbUp={toggleThumbUp}
+            thumbUpLoading={thumbUpLoading}
+            showThumbsUpList={showThumbsUpList}
+            setShowThumbsUpList={setShowThumbsUpList}
+          />
+        </Wrapper>
         <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />
-      </Wrapper>
+      </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <CommentEditor

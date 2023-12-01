@@ -113,6 +113,7 @@ const polkadot = {
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   hideNewTreasuryProposalButton: true,
+  noDemocracyModule: true,
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",
     theme300: "rgba(230,0,122,0.40)",
