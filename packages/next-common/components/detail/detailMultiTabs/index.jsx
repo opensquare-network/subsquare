@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Tabs from "../../tabs";
 import { useTimelineData } from "next-common/context/post";
-import { ThemedTag } from "next-common/components/tags/state/styled";
 import VotesBubbleViewTabs from "./votesBubbleViewTabs";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
@@ -46,7 +45,6 @@ export default function DetailMultiTabs({
       // NOTE: must have `lazy` flag
       lazy: true,
       label: "Votes Bubble",
-      labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
       content: (
         <div className="space-y-4">
           {hasVotesViewTabs && <VotesBubbleViewTabs />}
