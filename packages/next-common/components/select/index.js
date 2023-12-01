@@ -13,6 +13,7 @@ const SearchInput = styled.input`
   height: 32px;
   outline: none;
   padding: 10px 16px;
+  background: var(--neutral100);
 `;
 
 const SelectWrapper = styled(FlexBetweenCenter)`
@@ -127,6 +128,7 @@ function Select({
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onClick={(e) => e.stopPropagation()}
+                placeholder="Please input search text here..."
               />
               <Divider style={{ margin: "8px 0" }} />
             </>
