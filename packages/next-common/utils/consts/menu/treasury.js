@@ -88,6 +88,7 @@ export function getTreasuryMenu(summary) {
           Chains.moonriver,
           Chains.moonbeam,
           Chains.vara,
+          Chains.turing,
         ],
         activeCount: activeTips,
       },
