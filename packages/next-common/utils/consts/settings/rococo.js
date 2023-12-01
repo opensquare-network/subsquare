@@ -45,6 +45,8 @@ const rococo = {
   postLabels: defaultPostLabels,
   hasReferenda: true,
   hasFellowship: true,
+  hasTipsModule: false,
+  noDemocracyModule: true,
   hasSubscan: true,
   description: "Polkadot’s Parachain Testnet",
   cssVarsLight: {
