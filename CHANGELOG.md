@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.0
+date: 2023-12-01
+
+- [Big]Show my multisigs on account page.
+- [Big]Show my deposits on account page, and a user can refund referenda deposits.
+- Introduce AI summary for posts.
+- Show vote info besides commenter on OpenGov and democracy referendum detail page.
+- Improve preimages page layout on mobile screen.
+- Fix and improve styles.
+
 ### 3.6.5
 date: 2023-11-20
 
