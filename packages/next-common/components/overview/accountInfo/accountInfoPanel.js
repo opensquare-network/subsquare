@@ -18,6 +18,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { isKintsugiChain } from "next-common/utils/chain";
 import Link from "next/link";
+import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -126,7 +127,7 @@ function KintAssetInfo() {
 export default function AccountInfoPanel({ hideManageAccountLink }) {
   const chain = useChain();
   const isKintsugi = isKintsugiChain(chain);
-  const link = `/account/${isKintsugi ? "deposits" : "votes"}`;
+  const link = useAccountUrl();
 
   return (
     <NeutralPanel className="p-6">

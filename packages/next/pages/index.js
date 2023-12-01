@@ -16,11 +16,13 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
 import Overview from "next-common/components/overview/overview";
 import { ssrNextApi } from "next-common/services/nextApi";
+import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 
 export default function HomePage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
+  const url = useAccountUrl();
 
   const SummaryComponent = isCollectivesChain(chain)
     ? AllianceOverviewSummary
@@ -34,13 +36,11 @@ export default function HomePage() {
     },
   ];
 
-  if (chainSettings.hasReferenda || !chainSettings.noDemocracyModule) {
-    if (user?.address) {
-      tabs.push({
-        label: "Account",
-        url: "/account/votes",
-      });
-    }
+  if (user?.address) {
+    tabs.push({
+      label: "Account",
+      url,
+    });
   }
 
   let externalInfo = null;

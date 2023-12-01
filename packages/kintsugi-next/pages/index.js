@@ -9,10 +9,12 @@ import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
 import Overview from "next-common/components/overview/overview";
 import { useUser } from "next-common/context/user";
+import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 
 export default function Home() {
   const { name, description } = useChainSettings();
   const user = useUser();
+  const url = useAccountUrl();
 
   let externalInfo = null;
   if (hasDefinedOffChainVoting()) {
@@ -34,7 +36,7 @@ export default function Home() {
   if (user?.address) {
     tabs.push({
       label: "Account",
-      url: "/account/deposits",
+      url,
     });
   }
 

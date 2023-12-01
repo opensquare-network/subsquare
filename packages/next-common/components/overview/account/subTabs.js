@@ -4,13 +4,17 @@ import MultisigsTitle from "./multisigsTitle";
 import { Title } from "./styled";
 import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
+import Chains from "next-common/utils/consts/chains";
 
 export default function AccountSubTabs() {
   const { hasMultisig } = useChainSettings();
   const chain = useChain();
 
   const tabs = [];
-  if (!isKintsugiChain(chain)) {
+  if (
+    !isKintsugiChain(chain) &&
+    ![Chains.collectives, Chains["westend-collectives"]].includes(chain)
+  ) {
     tabs.push({
       label: "Votes",
       render({ active }) {
