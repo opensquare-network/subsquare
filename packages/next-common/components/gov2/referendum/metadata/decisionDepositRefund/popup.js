@@ -44,6 +44,7 @@ export default function DecisionDepositRefundPopup({
       title="Refund decision deposit"
       actionCallback={doRefund}
       isLoading={calling}
+      onClose={onClose}
     >
       <div>
         <PopupLabel text="Referendum Index" />
