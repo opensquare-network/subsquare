@@ -9,6 +9,7 @@ import { useMyDepositTreasury } from "./treasury";
 import partition from "lodash.partition";
 import { myPreimageDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
 import { useSelector } from "react-redux";
+import IdentityDeposit from "./identity";
 
 export default function MyDeposits() {
   const chainSettings = useChainSettings();
@@ -56,6 +57,7 @@ export default function MyDeposits() {
         {activeSections.map((section) => section.content)}
         {nonActiveSections.map((section) => section.content)}
       </div>
+      <IdentityDeposit />
     </div>
   );
 }
