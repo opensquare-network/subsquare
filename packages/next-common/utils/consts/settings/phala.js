@@ -70,6 +70,8 @@ const phala = {
   description:
     "Phala Network, an off-chain compute network powered by Secure Enclaves, can be utilized to build the MEV core stack with minimal trust assumptions.",
   useVoteCall: true,
+  hasMultisig: true,
+  multisigApiPrefix: "phala",
   cssVarsLight: {
     theme100: "rgba(205,250,80,0.10)",
     theme300: "rgba(205,250,80,0.40)",
