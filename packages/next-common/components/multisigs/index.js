@@ -6,7 +6,7 @@ export default function Multisigs() {
     <div className="space-y-6">
       <div className="flex flex-col gap-[16px]">
         <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
-          <AccountSubTabs />
+          <AccountSubTabs className="mx-6" />
         </div>
         <MultisigsList />
       </div>
