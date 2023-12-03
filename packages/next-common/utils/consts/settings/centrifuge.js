@@ -71,6 +71,8 @@ const centrifuge = {
   hasTipsModule: false,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
+  hasMultisig: true,
+  multisigApiPrefix: "cfg",
   cssVarsLight: {
     theme100: "rgba(18,83,255,0.10)",
     theme300: "rgba(18,83,255,0.40)",

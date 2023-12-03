@@ -46,6 +46,8 @@ const khala = {
   description:
     "Khala Network is the canary network of Phala launched on Kusama and is responsible for the technical and economic testing of Phala Network.",
   useVoteCall: true,
+  hasMultisig: true,
+  multisigApiPrefix: "khala",
   cssVarsLight: {
     theme100: "rgba(2,255,255,0.10)",
     theme300: "rgba(2,255,255,0.40)",
