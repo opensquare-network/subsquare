@@ -65,7 +65,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
   };
 
   return (
-    <div className="mt-4 flex items-center justify-between">
+    <div className="mt-4">
       <Wrapper className="space-x-4">
         <ReplyButton onReply={focusEditor} noHover={!isLogin || isAuthor} />
         <ThumbsUp
