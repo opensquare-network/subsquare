@@ -1,5 +1,6 @@
 import {
   myIdentityDepositSelector,
+  myMainIdentityNameSelector,
   myIdentitySubsCountSelector,
   myIdentitySubsDepositSelector,
   myIdentitySubsSelector,
@@ -7,6 +8,7 @@ import {
 import { useSelector } from "react-redux";
 
 export default function useMyIdentityDeposit() {
+  const mainIdentityName = useSelector(myMainIdentityNameSelector);
   const identityDeposit = useSelector(myIdentityDepositSelector);
   const subsDeposit = useSelector(myIdentitySubsDepositSelector);
   const subsCount = useSelector(myIdentitySubsCountSelector);
@@ -29,8 +31,13 @@ export default function useMyIdentityDeposit() {
   }
 
   return {
+    mainIdentityName,
+    identityDeposit,
     totalDeposit: totalDeposit.toString(),
     depositsCount,
     subs,
+    averageSubDeposit: subsCount
+      ? (bnSubsDeposit / BigInt(subsCount)).toString()
+      : "0",
   };
 }

@@ -78,10 +78,9 @@ export default function Identity({ identity, fontSize = 14, maxWidth }) {
           </div>
         </Tooltip>
       ) : (
-        <Display
-          fontSize={fontSize}
-          maxWidth={maxWidth}
-        >{displayName}</Display>
+        <Display fontSize={fontSize} maxWidth={maxWidth}>
+          {displayName}
+        </Display>
       )}
     </Wrapper>
   );

@@ -4,6 +4,7 @@ import {
   setIdentityDeposit,
   setSubsDeposits,
   setSubs,
+  setIdentityDisplayName,
 } from "next-common/store/reducers/myOnChainData/deposits/myIdentityDeposits";
 import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -29,6 +30,10 @@ export default function useSubMyIdentityDeposit() {
           dispatch(setIdentityDeposit("0"));
           return;
         }
+        const displayName =
+          identity.unwrap()?.info?.display?.asRaw?.toHuman() || "";
+        dispatch(setIdentityDisplayName(displayName));
+
         const identityDeposit =
           identity.value.deposit?.toBigInt().toString() || "0";
         dispatch(setIdentityDeposit(identityDeposit));
