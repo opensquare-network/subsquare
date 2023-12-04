@@ -70,7 +70,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
             />
           ) : (
             <>
-              <Divider />
+              <Divider className="mb-4" />
               {postContent}
             </>
           )}
