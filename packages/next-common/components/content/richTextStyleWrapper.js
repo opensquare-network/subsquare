@@ -13,6 +13,8 @@ const RichTextStyleWrapper = styled.div`
   div.markdown-body {
     hr {
       background-color: var(--neutral300);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
     }
 
     span.mention,
