@@ -17,6 +17,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { getActiveProposalTreasuryCouncil } from "./treasuryCouncil";
 import Chains from "next-common/utils/consts/chains";
 import partition from "lodash.partition";
+import EmptyRecentProposals from "./empty";
 
 export default function ActiveProposals() {
   const chain = useChain();
@@ -88,11 +89,15 @@ export default function ActiveProposals() {
     <div>
       <TitleContainer className="mb-4">Recent Proposals</TitleContainer>
 
-      <div className="space-y-4">
-        {items.map((item) => (
-          <ActiveProposalTemplate key={item.name} {...item} />
-        ))}
-      </div>
+      {!activeItems.length ? (
+        <EmptyRecentProposals />
+      ) : (
+        <div className="space-y-4">
+          {items.map((item) => (
+            <ActiveProposalTemplate key={item.name} {...item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
