@@ -7,8 +7,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "../valueDisplay";
 import { toPrecisionNumber } from "next-common/utils";
 
-export default function IdentityDeposit() {
-  const address = useRealAddress();
+function AddressIdentityDeposit({ address }) {
   const deposit = useIdentityDeposit(address);
   const { decimals, symbol } = useChainSettings();
 
@@ -28,4 +27,14 @@ export default function IdentityDeposit() {
       </div>
     </SecondaryCard>
   );
+}
+
+export default function IdentityDeposit() {
+  const address = useRealAddress();
+
+  if (!address) {
+    return null;
+  }
+
+  return <AddressIdentityDeposit address={address} />;
 }
