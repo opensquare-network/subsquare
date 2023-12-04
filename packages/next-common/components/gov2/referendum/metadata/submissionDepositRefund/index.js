@@ -4,6 +4,8 @@ import SubLink from "next-common/components/styled/subLink";
 import dynamic from "next/dynamic";
 import useSubReferendumInfo from "next-common/components/myDeposits/referenda/useSubReferendumInfo";
 import { RefundWrapper } from "../styled";
+import isNil from "lodash.isnil";
+import BigNumber from "bignumber.js";
 
 const RefundPopup = dynamic(() => import("./popup"), { ssr: false });
 
@@ -19,8 +21,10 @@ export default function SubmissionDepositRefund({ pallet = "referenda" }) {
   }
 
   const [, deposit] = possibleValue;
-  if (!deposit) {
+  if (isNil(deposit)) {
     return <RefundWrapper>Refunded</RefundWrapper>;
+  } else if (new BigNumber(deposit).eq(0)) {
+    return null;
   }
 
   return (
