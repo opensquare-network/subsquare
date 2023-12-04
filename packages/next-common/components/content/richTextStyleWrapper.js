@@ -11,6 +11,10 @@ const RichTextStyleWrapper = styled.div`
   div.ql-editor,
   div.html-body,
   div.markdown-body {
+    & > *:first-child {
+      margin-top: 0;
+    }
+
     hr {
       background-color: var(--neutral300);
       margin-top: 1rem;

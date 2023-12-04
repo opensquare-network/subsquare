@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 
 const BannerImage = styled.img`
   width: 100%;
+  margin-bottom: 1rem;
 `;
 
 export default function ArticleContent({ setIsEdit, className = "" }) {
@@ -33,7 +34,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     <>
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
-      <RichTextStyleWrapper className="[&_.markdown-body>*]:first:mt-0">
+      <RichTextStyleWrapper>
         <PostContent />
       </RichTextStyleWrapper>
 
@@ -52,7 +53,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       label: "AI Summary",
       tooltip: "Powered by OpenAI",
       content: (
-        <RichTextStyleWrapper className="[&_.markdown-body>*]:first:mt-0">
+        <RichTextStyleWrapper>
           <ContentSummary />
         </RichTextStyleWrapper>
       ),
@@ -76,7 +77,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
             />
           ) : (
             <>
-              <Divider />
+              <Divider className="mb-4" />
               {postContent}
             </>
           )}
