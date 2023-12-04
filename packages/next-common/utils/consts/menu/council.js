@@ -28,7 +28,7 @@ export function getCouncilMenu(summary) {
       Chains.collectives,
       Chains.vara,
     ],
-    archivedToChains: [Chains.kusama],
+    archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: activeMotions,
     icon: <MenuCouncil />,
     pathname: "/council",
