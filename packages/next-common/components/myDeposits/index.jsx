@@ -9,16 +9,21 @@ import { useMyDepositTreasury } from "./treasury";
 import partition from "lodash.partition";
 import { myPreimageDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
 import { useSelector } from "react-redux";
+import useSubMyIdentityDeposit from "next-common/hooks/useSubMyIdentityDeposit";
+import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 import IdentityDeposit from "./identity";
 
 export default function MyDeposits() {
   const chainSettings = useChainSettings();
   const { hasReferenda, hasFellowship, hasTreasuryModule } = chainSettings;
+  useSubMyIdentityDeposit();
 
   const referenda = useMyDepositReferenda();
   const fellowship = useMyDepositFellowship();
   const democracy = useMyDepositDemocracy();
   const treasury = useMyDepositTreasury();
+  const identity = useMyIdentityDeposit();
+
   const preimageStatuses = useSelector(myPreimageDepositsSelector);
 
   const sections = [
@@ -42,6 +47,10 @@ export default function MyDeposits() {
       activeCount: preimageStatuses?.length || 0,
       content: <MyDepositPreimages key="preimages" />,
     },
+    {
+      activeCount: identity?.depositsCount || 0,
+      content: <IdentityDeposit key="identity" />,
+    },
   ].filter(Boolean);
 
   const [activeSections, nonActiveSections] = partition(
@@ -57,7 +66,6 @@ export default function MyDeposits() {
         {activeSections.map((section) => section.content)}
         {nonActiveSections.map((section) => section.content)}
       </div>
-      <IdentityDeposit />
     </div>
   );
 }
