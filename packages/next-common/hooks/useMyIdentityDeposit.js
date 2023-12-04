@@ -22,13 +22,6 @@ export default function useMyIdentityDeposit() {
     totalDeposit += subsDeposit;
     depositsCount += subsCount;
   }
-  console.log({
-    totalDeposit,
-    depositsCount,
-    identityDeposit,
-    subsDeposit,
-    subsCount,
-  });
 
   return {
     totalDeposit,
