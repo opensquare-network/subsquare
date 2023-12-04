@@ -10,8 +10,12 @@ import {
 
 const collectivesEndpoints = [
   {
-    name: "Parity",
-    url: "wss://polkadot-collectives-rpc.polkadot.io/",
+    name: "Dewllir",
+    url: "wss://polkadot-collectives-rpc.dwellir.com/",
+  },
+  {
+    name: "Dewllir Tunisia",
+    url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
   },
   {
     name: "OnFinality",
