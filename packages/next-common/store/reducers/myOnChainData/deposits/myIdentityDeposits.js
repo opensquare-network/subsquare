@@ -7,7 +7,7 @@ const myIdentityDepositsSlice = createSlice({
   initialState: {
     identityDeposit: null,
     subsDeposit: null,
-    subsCount: 0,
+    subs: null,
   },
   reducers: {
     setIdentityDeposit(state, { payload }) {
@@ -16,17 +16,19 @@ const myIdentityDepositsSlice = createSlice({
     setSubsDeposits(state, { payload }) {
       state.subsDeposit = payload;
     },
-    setSubsCount(state, { payload }) {
-      state.subsCount = payload;
+    setSubs(state, { payload }) {
+      state.subs = payload;
     },
   },
 });
 
-export const { setIdentityDeposit, setSubsDeposits, setSubsCount } =
+export const { setIdentityDeposit, setSubsDeposits, setSubs } =
   myIdentityDepositsSlice.actions;
 
 export const myIdentityDepositSelector = (state) => state[name].identityDeposit;
 export const myIdentitySubsDepositSelector = (state) => state[name].subsDeposit;
-export const myIdentitySubsCountSelector = (state) => state[name].subsCount;
+export const myIdentitySubsSelector = (state) => state[name].subs;
+export const myIdentitySubsCountSelector = (state) =>
+  state[name].subs?.length || 0;
 
 export default myIdentityDepositsSlice.reducer;
