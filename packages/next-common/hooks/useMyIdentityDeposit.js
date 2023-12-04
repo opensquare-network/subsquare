@@ -13,18 +13,21 @@ export default function useMyIdentityDeposit() {
   let totalDeposit = 0n;
   let depositsCount = 0;
 
-  if (identityDeposit) {
-    totalDeposit += identityDeposit;
+  const bnIdentityDeposit = BigInt(identityDeposit || 0);
+  const bnSubsDeposit = BigInt(subsDeposit || 0);
+
+  if (bnIdentityDeposit) {
+    totalDeposit += bnIdentityDeposit;
     depositsCount += 1;
   }
 
-  if (subsDeposit) {
-    totalDeposit += subsDeposit;
+  if (bnSubsDeposit) {
+    totalDeposit += bnSubsDeposit;
     depositsCount += subsCount;
   }
 
   return {
-    totalDeposit,
+    totalDeposit: totalDeposit.toString(),
     depositsCount,
   };
 }

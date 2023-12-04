@@ -26,10 +26,11 @@ export default function useSubMyIdentityDeposit() {
     api.query.identity
       ?.identityOf(address, (identity) => {
         if (!identity || identity.isNone) {
-          dispatch(setIdentityDeposit(0n));
+          dispatch(setIdentityDeposit("0"));
           return;
         }
-        const identityDeposit = identity.value.deposit?.toBigInt() || 0n;
+        const identityDeposit =
+          identity.value.deposit?.toBigInt().toString() || "0";
         dispatch(setIdentityDeposit(identityDeposit));
       })
       .then((result) => (unsubIdentityOf = result));
@@ -38,11 +39,11 @@ export default function useSubMyIdentityDeposit() {
     api.query.identity
       ?.subsOf(address, (subs) => {
         if (!subs) {
-          dispatch(setSubsDeposits(0n));
+          dispatch(setSubsDeposits("0"));
           dispatch(setSubsCount(0));
           return;
         }
-        const subsDeposit = subs[0]?.toBigInt() || 0n;
+        const subsDeposit = subs[0]?.toBigInt().toString() || "0";
         dispatch(setSubsDeposits(subsDeposit));
         const subsCount = subs[1]?.length || 0;
         dispatch(setSubsCount(subsCount));

@@ -9,14 +9,12 @@ import { useMyDepositTreasury } from "./treasury";
 import partition from "lodash.partition";
 import { myPreimageDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
 import { useSelector } from "react-redux";
-import useSubMyIdentityDeposit from "next-common/hooks/useSubMyIdentityDeposit";
 import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 import IdentityDeposit from "./identity";
 
 export default function MyDeposits() {
   const chainSettings = useChainSettings();
   const { hasReferenda, hasFellowship, hasTreasuryModule } = chainSettings;
-  useSubMyIdentityDeposit();
 
   const referenda = useMyDepositReferenda();
   const fellowship = useMyDepositFellowship();
