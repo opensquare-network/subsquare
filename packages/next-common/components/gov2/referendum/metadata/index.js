@@ -3,7 +3,7 @@ import React from "react";
 import isNil from "lodash.isnil";
 import { GreyText, ValueWrapper } from "./styled";
 import BlockPeriod from "./blockPeriod";
-import UserBond, { DecisionUserBond } from "./userBond";
+import { DecisionUserBond, SubmissionUserBond } from "./userBond";
 import { useTrack } from "../../../../context/post/gov2/track";
 import { useOnchainData } from "next-common/context/post";
 import Copyable from "next-common/components/copyable";
@@ -35,9 +35,10 @@ export default function Gov2ReferendumMetadata({ info, pallet = "referenda" }) {
   const metadata = [
     [
       "Submission",
-      <UserBond
+      <SubmissionUserBond
         address={info?.submissionDeposit?.who}
         bond={info?.submissionDeposit?.amount}
+        pallet={pallet}
         key="submission-bond"
       />,
     ],

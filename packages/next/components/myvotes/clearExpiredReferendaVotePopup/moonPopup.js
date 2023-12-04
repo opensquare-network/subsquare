@@ -129,12 +129,11 @@ export default function MoonClearExpiredReferendaVotePopup({
       actionCallback={doClearExpiredVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={
-        <ExtraInfo
-          relatedReferenda={relatedReferenda}
-          relatedTracks={unlockTracks}
-        />
-      }
-    />
+    >
+      <ExtraInfo
+        relatedReferenda={relatedReferenda}
+        relatedTracks={unlockTracks}
+      />
+    </SignerPopup>
   );
 }

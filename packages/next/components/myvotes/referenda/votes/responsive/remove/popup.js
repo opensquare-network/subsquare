@@ -51,9 +51,8 @@ export default function ReferendumRemovalPopup({
       actionCallback={doRemoveVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={
-        <RelatedReferenda relatedReferenda={[vote?.referendumIndex]} />
-      }
-    />
+    >
+      <RelatedReferenda relatedReferenda={[vote?.referendumIndex]} />
+    </SignerPopup>
   );
 }

@@ -110,12 +110,11 @@ export default function ClearExpiredReferendaVotePopup({
       actionCallback={doClearExpiredVote}
       onClose={onClose}
       isLoading={isLoading}
-      extraContent={
-        <ExtraInfo
-          relatedReferenda={relatedReferenda}
-          relatedTracks={unlockTracks}
-        />
-      }
-    />
+    >
+      <ExtraInfo
+        relatedReferenda={relatedReferenda}
+        relatedTracks={unlockTracks}
+      />
+    </SignerPopup>
   );
 }
