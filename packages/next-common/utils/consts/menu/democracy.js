@@ -25,7 +25,7 @@ export function getDemocracyMenu(summary) {
       Chains.collectives,
       Chains.vara,
     ],
-    archivedToChains: [Chains.kusama],
+    archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: totalActiveCount,
     icon: <MenuDemocracy />,
     pathname: "/democracy",
