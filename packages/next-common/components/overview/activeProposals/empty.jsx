@@ -25,7 +25,7 @@ export default function EmptyRecentProposals() {
       <div>
         <NoData
           className="p-0"
-          head="OOPS! Can't find any proposals"
+          head="No proposals recently"
           text={
             <span className="whitespace-nowrap">
               Recent proposals will be displayed on this page.
