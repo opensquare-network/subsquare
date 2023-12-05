@@ -21,6 +21,23 @@ const loadingContent = (
   </div>
 );
 
+export function DepositTitle({ title, icon, extra = null }) {
+  return (
+    <div
+      className={cn(
+        "flex items-center",
+        "text14Bold text-textPrimary capitalize",
+      )}
+    >
+      <span className="mr-2 [&_svg_path]:fill-textSecondary">{icon}</span>
+      <span className="group-hover/title:underline">
+        {title?.toLowerCase?.()}
+      </span>
+      {extra}
+    </div>
+  );
+}
+
 export default function DepositTemplate({
   name = "",
   icon,
@@ -40,18 +57,15 @@ export default function DepositTemplate({
   const titleLink = firstActiveItem?.pathname ?? pathname;
 
   let title = (
-    <div
-      className={cn(
-        "flex items-center",
-        "text14Bold text-textPrimary capitalize",
-      )}
-    >
-      <span className="mr-2 [&_svg_path]:fill-textSecondary">{icon}</span>
-      <span className="group-hover/title:underline">
-        {name?.toLowerCase?.()}
-      </span>
-      <span className="text14Medium text-textTertiary ml-1">{activeCount}</span>
-    </div>
+    <DepositTitle
+      title={name}
+      icon={icon}
+      extra={
+        <span className="text14Medium text-textTertiary ml-1">
+          {activeCount}
+        </span>
+      }
+    />
   );
 
   if (titleLink) {

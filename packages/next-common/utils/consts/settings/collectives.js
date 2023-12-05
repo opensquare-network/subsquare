@@ -68,6 +68,7 @@ const collectives = {
   hasTipsModule: false,
   noDemocracy: true,
   noDemocracyModule: true,
+  noIdentityModule: true,
   showAchainableLabels: true,
   showAccountManagementTab: false,
   description:

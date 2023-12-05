@@ -1,3 +1,4 @@
+import useSubMyIdentityDeposit from "next-common/hooks/useSubMyIdentityDeposit";
 import useFetchMyReferendaDeposits from "./referenda";
 import useFetchMyDemocracyDeposits from "./useFetchMyDemocracyDeposits";
 import useFetchMyFellowshipDeposits from "./useFetchMyFellowshipDeposits";
@@ -10,4 +11,5 @@ export function useFetchMyDepositsData() {
   useFetchMyDemocracyDeposits();
   useFetchMyTreasuryDeposits();
   useFetchMyPreimageDeposits();
+  useSubMyIdentityDeposit();
 }
