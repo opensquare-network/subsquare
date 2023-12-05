@@ -35,7 +35,7 @@ export default function MobileList() {
       <AddressUser key="address-main" add={address} fontSize={16} />,
       <ValueDisplay
         key="deposit"
-        className="text14Medium"
+        className="text14Medium text-textPrimary"
         value={toPrecisionNumber(identityDeposit, decimals)}
         symbol={symbol}
       />,
@@ -48,7 +48,7 @@ export default function MobileList() {
       />,
       <ValueDisplay
         key={`deposit-sub-${index}`}
-        className="text14Medium"
+        className="text14Medium text-textPrimary"
         value={toPrecisionNumber(averageSubDeposit, decimals)}
         symbol={symbol}
       />,
