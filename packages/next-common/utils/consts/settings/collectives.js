@@ -70,7 +70,6 @@ const collectives = {
   noDemocracyModule: true,
   noIdentityModule: true,
   showAchainableLabels: true,
-  showAccountManagementTab: false,
   description:
     "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
   cssVarsLight: {
