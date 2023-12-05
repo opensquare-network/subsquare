@@ -15,7 +15,7 @@ export default function ThumbsUp({
   setShowThumbsUpList = noop,
 }) {
   return (
-    <>
+    <div className="flex items-center">
       <Item
         noHover={noHover}
         highlight={highlight}
@@ -41,6 +41,6 @@ export default function ThumbsUp({
           )}
         />
       )}
-    </>
+    </div>
   );
 }
