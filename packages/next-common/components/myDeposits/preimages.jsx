@@ -273,7 +273,7 @@ function BalanceCell({ deposit }) {
 function UnnoteButton({ hash, count, deposit, status }) {
   const realAddress = useRealAddress();
   const dispatch = useDispatch();
-  const { who } = deposit;
+  const { who } = deposit || {};
   const [showPopup, setShowPopup] = useState(false);
 
   function onInBlock() {

@@ -6,6 +6,7 @@ export default function useSubIdentityDisplay(address) {
   const [_super, setSuper] = useState();
   const [parentIdentity, setParentIdentity] = useState();
   const [parentAccount, data] = _super?.unwrap() || [];
+  const [isLoading, setIsLoading] = useState(true);
 
   const parentAddress = parentAccount?.toJSON();
   const subName = data?.asRaw?.toHuman() || "";
@@ -23,12 +24,14 @@ export default function useSubIdentityDisplay(address) {
     if (!api || !parentAddress) {
       return;
     }
-    api.query.identity
-      ?.identityOf(parentAddress)
-      .then((result) => setParentIdentity(result));
+    api.query.identity?.identityOf(parentAddress).then((result) => {
+      setParentIdentity(result);
+      setIsLoading(false);
+    });
   }, [parentAddress]);
 
   return {
+    isLoading,
     displayParent: parentName,
     display: subName,
   };
