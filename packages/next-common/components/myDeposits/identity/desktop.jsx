@@ -27,7 +27,7 @@ export default function DesktopList() {
       <AddressUser key="address-main" add={address} />,
       <ValueDisplay
         key="deposit"
-        className="text14Medium"
+        className="text14Medium text-textPrimary"
         value={toPrecisionNumber(identityDeposit, decimals)}
         symbol={symbol}
       />,
@@ -36,7 +36,7 @@ export default function DesktopList() {
       <SubIdentityUser key={`address-sub-${index}`} add={address} />,
       <ValueDisplay
         key={`deposit-sub-${index}`}
-        className="text14Medium"
+        className="text14Medium text-textPrimary"
         value={toPrecisionNumber(averageSubDeposit, decimals)}
         symbol={symbol}
       />,
