@@ -66,23 +66,27 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
 
   return (
     <div className="mt-4">
-      <Wrapper className="space-x-4">
-        <ReplyButton onReply={focusEditor} noHover={!isLogin || isAuthor} />
-        <ThumbsUp
-          count={post?.reactions?.length}
-          noHover={!isLogin || isAuthor}
-          highlight={thumbsUp}
-          toggleThumbUp={toggleThumbUp}
-          thumbUpLoading={thumbUpLoading}
-          showThumbsUpList={showThumbsUpList}
-          setShowThumbsUpList={setShowThumbsUpList}
-        />
-        <Share />
+      <div className="flex items-center justify-between">
+        <Wrapper className="space-x-4">
+          <ReplyButton onReply={focusEditor} noHover={!isLogin || isAuthor} />
+          <ThumbsUp
+            count={post?.reactions?.length}
+            noHover={!isLogin || isAuthor}
+            highlight={thumbsUp}
+            toggleThumbUp={toggleThumbUp}
+            thumbUpLoading={thumbUpLoading}
+            showThumbsUpList={showThumbsUpList}
+            setShowThumbsUpList={setShowThumbsUpList}
+          />
+          <Share />
 
-        {extraActions}
-      </Wrapper>
+          {extraActions}
+        </Wrapper>
 
-      {isLogin && <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />}
+        {isLogin && (
+          <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />
+        )}
+      </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}
     </div>
