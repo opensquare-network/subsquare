@@ -28,6 +28,7 @@ const calamari = {
   decimals: 12,
   blockTime: 12000,
   hasElections: false,
+  noIdentityModule: true,
   ss58Format: 78,
   snsCoverCid: "bafybeig2mirpdoj3cowecbxiafo335abg3rlz6uhsfficemwtft75ykpqu",
   endpoints: DEFAULT_CALAMARI_NODES,

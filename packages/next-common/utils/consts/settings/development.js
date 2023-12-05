@@ -28,6 +28,7 @@ const development = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
   hasStatescan: true,
+  noIdentityModule: true,
   hasTechComm: false,
   blockTime: 3000,
   postLabels: defaultPostLabels,
