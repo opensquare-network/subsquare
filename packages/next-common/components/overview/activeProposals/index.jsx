@@ -78,12 +78,7 @@ export default function ActiveProposals() {
     .filter((item) => !item.excludeToChains?.includes?.(chain))
     .filter((item) => !item.archivedToChains?.includes?.(chain));
 
-  const [activeItems, nonActiveItems] = partition(
-    sections,
-    (item) => item.activeCount > 0,
-  );
-
-  const items = [...activeItems, ...nonActiveItems];
+  const [activeItems] = partition(sections, (item) => item.activeCount > 0);
 
   return (
     <div>
@@ -93,7 +88,7 @@ export default function ActiveProposals() {
         <EmptyRecentProposals />
       ) : (
         <div className="space-y-4">
-          {items.map((item) => (
+          {activeItems.map((item) => (
             <ActiveProposalTemplate key={item.name} {...item} />
           ))}
         </div>
