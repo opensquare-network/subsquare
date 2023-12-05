@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.1
+
+date: 2023-12-05
+
+- Show my identity deposits.
+- Support refunding referenda submission deposit.
+- Not show empty proposal sections on overview page.
+- Correct dotreasury links.
+- Archive gov1 sections for polkadot/rococo.
+- Fix article content styles.
+- Update dependencies.
+
 ### 3.7.0
 
 date: 2023-12-01
