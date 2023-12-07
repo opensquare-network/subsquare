@@ -63,7 +63,12 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
 
   return (
     <Wrapper className={className}>
-      {!post.content && <NonEdited setIsEdit={setIsEdit} />}
+      {!post.content && (
+        <>
+          <Divider className="mb-4" />
+          <NonEdited setIsEdit={setIsEdit} />
+        </>
+      )}
 
       {post.content && (
         <div className="mt-6">
