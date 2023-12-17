@@ -16,10 +16,6 @@ const defaultHydradxEndpoints = [
     name: "Dwellir",
     url: "wss://hydradx-rpc.dwellir.com",
   },
-  {
-    name: "OnFinality",
-    url: "wss://hydradx.api.onfinality.io/public-ws",
-  },
 ];
 
 const links = [
