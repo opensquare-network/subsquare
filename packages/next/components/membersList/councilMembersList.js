@@ -1,62 +1,11 @@
-import styled, { withTheme } from "styled-components";
-import {
-  bigNumber2Locale,
-  decimalPlaces,
-  toPrecision,
-} from "next-common/utils";
-import { useState } from "react";
+import { withTheme } from "styled-components";
+import { toPrecision } from "next-common/utils";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useChainSettings } from "next-common/context/chain";
 import MemberListTable from "next-common/components/memberListTable";
 import AddressUser from "next-common/components/user/addressUser";
-
-const Wrapper = styled.div`
-  > :not(:first-child) {
-    margin-top: 16px;
-  }
-
-  @media screen and (max-width: 392px) {
-    .autohide {
-      display: none;
-    }
-    th.clickable {
-      color: var(--textSecondary);
-      cursor: pointer;
-      pointer-events: auto;
-    }
-  }
-`;
-
-const Member = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const BalanceWrapper = styled.span`
-  color: var(--textPrimary);
-`;
-const SymbolWrapper = styled.span`
-  color: var(--textTertiary);
-`;
-
-function Balance({ value }) {
-  const node = useChainSettings();
-
-  return (
-    <div>
-      <BalanceWrapper>
-        {bigNumber2Locale(
-          decimalPlaces(toPrecision(value ?? 0, node.decimals), 4),
-        )}
-      </BalanceWrapper>
-      <SymbolWrapper style={{ color: "#9DA9BB", marginLeft: "8px" }}>
-        {node.symbol}
-      </SymbolWrapper>
-    </div>
-  );
-}
+import ValueDisplay from "next-common/components/valueDisplay";
 
 function MembersList({
   category,
@@ -65,47 +14,54 @@ function MembersList({
   loading = false,
   hasElections = false,
 }) {
-  const [hideColumn, setHideColumn] = useState("votes");
+  const chainSettings = useChainSettings();
 
-  const columns = [{ name: "MEMBERS", style: { textAlign: "left" } }];
+  const columns = [
+    {
+      name: "Members",
+      style: { textAlign: "left" },
+    },
+  ];
 
   if (hasElections) {
     columns.push(
       {
-        name: "BACKING",
-        style: { textAlign: "right" },
-        className: hideColumn === "backing" ? "autohide" : "clickable",
-        onClick: () => setHideColumn("backing"),
+        name: "Backing",
+        style: { width: 240, textAlign: "right" },
       },
       {
-        name: "VOTES",
-        style: { textAlign: "right" },
-        className: hideColumn === "votes" ? "autohide" : "clickable",
-        onClick: () => setHideColumn("votes"),
+        name: "Votes",
+        style: { width: 160, textAlign: "right" },
       },
     );
   }
 
   const rows = items.map((item) => {
     const row = [
-      <Member key={item.address}>
+      <div key={item.address} className="flex items-center gap-2">
         <AddressUser add={item.address} />
         {item.address === prime && <PrimeAddressMark />}
-      </Member>,
+      </div>,
     ];
 
     if (hasElections) {
-      row.push(<Balance value={item.backing} />, item.votes ?? "--");
+      row.push(
+        <ValueDisplay
+          value={toPrecision(item.backing, chainSettings.decimals)}
+          symbol={chainSettings.symbol}
+        />,
+        item.votes ?? "--",
+      );
     }
 
     return row;
   });
 
   return (
-    <Wrapper>
+    <div>
       <TitleContainer>{category}</TitleContainer>
       <MemberListTable columns={columns} rows={rows} loading={loading} />
-    </Wrapper>
+    </div>
   );
 }
 

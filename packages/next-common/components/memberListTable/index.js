@@ -1,130 +1,72 @@
-import React, { Fragment } from "react";
-import styled, { withTheme } from "styled-components";
+import Descriptions from "../Descriptions";
+import StyledList from "../styledList";
 import Loading from "../loading";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
-const StyledTable = styled.table`
-  width: 100%;
-  background: var(--neutral100);
-  border: 1px solid var(--neutral300);
-  color: var(--textPrimary);
-  box-sizing: border-box;
-  box-shadow: var(--shadow100);
-  border-radius: 6px;
-  padding: 24px;
-`;
-
-const StyledTh = styled.th`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0.16em;
-  color: var(--textTertiary);
-  pointer-events: none;
-`;
-
-const StyledTd = styled.td`
-  padding: 12px 0 12px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 100%;
-  color: var(--textPrimary);
-`;
-
-const EmptyTd = styled.td`
-  padding: 12px 0 12px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: var(--textTertiary);
-`;
-
-const RowSplitter = ({ backgroundColor, padding }) => (
-  <tr>
-    <td colSpan="3" style={{ padding }}>
-      <div style={{ height: "1px", backgroundColor }} />
-    </td>
-  </tr>
+const loadingContent = (
+  <div className="mt-4 mb-2 flex justify-center">
+    <Loading size={24} />
+  </div>
 );
 
-function EmptyOrLoading({ loading }) {
-  return (
-    <tr>
-      <EmptyTd colSpan="3">
-        {loading ? <Loading size={16} /> : "No current members"}
-      </EmptyTd>
-    </tr>
+export default function MemberListTable({
+  columns = [],
+  rows = [],
+  loading = false,
+  noDataText = "No current members",
+  ...restProps
+}) {
+  const { sm } = useScreenSize();
+
+  return sm ? (
+    <MobileList rows={rows} columns={columns} loading={loading} />
+  ) : (
+    <StyledList
+      columns={columns}
+      rows={rows}
+      loading={loading}
+      noDataText={noDataText}
+      {...restProps}
+    />
   );
 }
 
-function DataRow({ row, columns }) {
-  return (
-    <tr>
-      {row?.map((val, i) => (
-        <StyledTd
-          key={i}
-          style={columns[i].style}
-          className={columns[i].className}
-        >
-          {val}
-        </StyledTd>
-      ))}
-    </tr>
-  );
-}
-
-function DataRows({ rows, columns }) {
-  return rows.map((row, index) => (
-    <Fragment key={index}>
-      <DataRow row={row} columns={columns} />
-      {index !== rows.length - 1 && (
-        <RowSplitter backgroundColor="var(--neutral300)" />
-      )}
-    </Fragment>
-  ));
-}
-
-function Headers({ columns }) {
-  return (
-    <thead>
-      <tr>
-        {columns.map((col, index) => (
-          <StyledTh
-            key={index}
-            style={col.style}
-            className={col.className}
-            onClick={col.onClick}
-          >
-            {col.name}
-          </StyledTh>
-        ))}
-      </tr>
-      <RowSplitter
-        backgroundColor="var(--neutral300)"
-        padding={"16px 0 4px 0"}
-      />
-    </thead>
-  );
-}
-
-function MemberListTable({ columns = [], rows = [], loading = false }) {
-  let tableBody = null;
-
-  if (rows?.length > 0) {
-    tableBody = <DataRows rows={rows} columns={columns} />;
-  } else {
-    tableBody = <EmptyOrLoading loading={loading} />;
+function MobileList({ rows = [], columns = [], loading }) {
+  if (loading) {
+    return loadingContent;
   }
 
   return (
-    <StyledTable>
-      <Headers columns={columns} />
-      <tbody>{tableBody}</tbody>
-    </StyledTable>
+    <NeutralPanel className="p-6">
+      {rows.map((row, idx) => {
+        const title = row[0];
+        const rest = row.slice(1);
+        const descriptionsLabels = columns.slice(1).map((col) => col.name);
+
+        const descriptionItems = rest.map((value, idx) => {
+          return {
+            label: (
+              <span className="text-textTertiary">
+                {descriptionsLabels[idx]}
+              </span>
+            ),
+            value,
+            className: "h-auto",
+          };
+        });
+
+        return (
+          <div
+            key={idx}
+            className="py-4 first:pt-0 border-b border-neutral300 space-y-3"
+          >
+            <div className="flex items-center">{title}</div>
+
+            <Descriptions items={descriptionItems} bordered={false} />
+          </div>
+        );
+      })}
+    </NeutralPanel>
   );
 }
-
-export default withTheme(MemberListTable);

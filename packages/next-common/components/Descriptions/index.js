@@ -3,7 +3,11 @@
 import React from "react";
 import { cn } from "next-common/utils";
 
-export default function Descriptions({ title = "", items = [] }) {
+export default function Descriptions({
+  title = "",
+  items = [],
+  bordered = true,
+}) {
   return (
     <div className="w-full">
       {title && (
@@ -18,7 +22,7 @@ export default function Descriptions({ title = "", items = [] }) {
               className={cn(
                 "h-11",
                 "flex justify-between items-center text-textPrimary",
-                "border-t border-neutral300 first:border-t-0",
+                bordered && "border-t border-neutral300 first:border-t-0",
                 item.className,
               )}
             >
