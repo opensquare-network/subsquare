@@ -71,8 +71,7 @@ function Select({
       return;
     }
     selectedOptionRef.current.scrollIntoView({
-      block: "end",
-      inline: "nearest",
+      block: "nearest",
     });
   }, [showOptions, selectedOptionRef]);
 
