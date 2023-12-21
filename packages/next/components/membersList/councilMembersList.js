@@ -47,6 +47,7 @@ function MembersList({
     if (hasElections) {
       row.push(
         <ValueDisplay
+          className="text14Medium"
           value={toPrecision(item.backing, chainSettings.decimals)}
           symbol={chainSettings.symbol}
         />,
