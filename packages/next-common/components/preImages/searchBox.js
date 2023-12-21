@@ -31,7 +31,7 @@ const Wrapper = styled.div`
 
 export default function SearchBox({ value, setValue }) {
   return (
-    <Wrapper>
+    <Wrapper className="max-md:!w-full">
       <div>
         <SystemSearch
           width={20}

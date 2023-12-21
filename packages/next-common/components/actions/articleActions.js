@@ -17,7 +17,7 @@ import { toApiType } from "next-common/utils/viewfuncs";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-export default function ArticleActions({ setIsEdit }) {
+export default function ArticleActions({ setIsEdit, extraActions }) {
   const isLogin = useIsLogin();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
@@ -65,25 +65,30 @@ export default function ArticleActions({ setIsEdit }) {
   };
 
   return (
-    <>
-      <Wrapper>
-        <ReplyButton onReply={focusEditor} noHover={!isLogin || isAuthor} />
-        <ThumbsUp
-          count={post?.reactions?.length}
-          noHover={!isLogin || isAuthor}
-          highlight={thumbsUp}
-          toggleThumbUp={toggleThumbUp}
-          thumbUpLoading={thumbUpLoading}
-          showThumbsUpList={showThumbsUpList}
-          setShowThumbsUpList={setShowThumbsUpList}
-        />
-        <Share />
+    <div className="mt-4">
+      <div className="flex items-center justify-between">
+        <Wrapper className="space-x-4">
+          <ReplyButton onReply={focusEditor} noHover={!isLogin || isAuthor} />
+          <ThumbsUp
+            count={post?.reactions?.length}
+            noHover={!isLogin || isAuthor}
+            highlight={thumbsUp}
+            toggleThumbUp={toggleThumbUp}
+            thumbUpLoading={thumbUpLoading}
+            showThumbsUpList={showThumbsUpList}
+            setShowThumbsUpList={setShowThumbsUpList}
+          />
+          <Share />
+
+          {extraActions}
+        </Wrapper>
+
         {isLogin && (
           <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />
         )}
-      </Wrapper>
+      </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}
-    </>
+    </div>
   );
 }

@@ -4,7 +4,6 @@ import { withCommonProps } from "next-common/lib";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { useChainSettings } from "next-common/context/chain";
-import { lowerCase } from "lodash";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
@@ -12,7 +11,7 @@ import { fetchList } from "next-common/services/list";
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-  const { hasDotreasury, symbol } = useChainSettings();
+  const { hasDotreasury } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
@@ -33,7 +32,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         },
         hasDotreasury && {
           label: "Statistics",
-          url: `https://dotreasury.com/${lowerCase(symbol)}/proposals`,
+          url: `https://${chain}.dotreasury.com`,
         },
       ].filter(Boolean)}
     >

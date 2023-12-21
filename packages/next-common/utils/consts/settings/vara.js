@@ -71,8 +71,11 @@ const vara = {
   navLogoDark: ProjectLogoVaraDark,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
+  noDemocracyModule: true,
   hasReferenda: true,
   hasFellowship: true,
+  hasDemocracy: false,
+  hasTipsModule: false,
   hasStatescan: false,
   hasSubscan: true,
   hasDotreasury: false,
@@ -80,6 +83,8 @@ const vara = {
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
+  hasMultisig: true,
+  multisigApiPrefix: "vara",
   description:
     "Vara is an ultra-fast and scalable Layer-1 decentralized network powered by the Gear Protocol.",
   cssVarsLight: {

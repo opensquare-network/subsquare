@@ -84,6 +84,8 @@ const kintsugi = {
   description:
     "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
   useVoteCall: true,
+  hasTreasuryModule: false,
+  hasTipsModule: false,
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",
     theme300: "rgba(247,205,69,0.40)",

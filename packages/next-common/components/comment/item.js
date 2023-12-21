@@ -126,7 +126,7 @@ function CommentItemImpl({
             <>
               {comment.contentType === "markdown" && (
                 <MarkdownPreviewer
-                  content={comment.content}
+                  content={comment.content || ""}
                   plugins={[
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />),
                   ]}

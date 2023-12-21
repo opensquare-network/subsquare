@@ -2,7 +2,12 @@ import { ArrowUp } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { useState } from "react";
 
-export default function AccordionCard({ children, title = "", defaultOpen }) {
+export default function AccordionCard({
+  children,
+  extra,
+  title = "",
+  defaultOpen,
+}) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
@@ -20,10 +25,16 @@ export default function AccordionCard({ children, title = "", defaultOpen }) {
         onClick={() => setOpen(!open)}
       >
         <h4 className="text14Bold text-textPrimary">{title}</h4>
-        <ArrowUp
-          role="button"
-          className={cn("[&_path]:stroke-textTertiary", !open && "rotate-180")}
-        />
+        <div className="flex gap-[4px]">
+          {extra}
+          <ArrowUp
+            role="button"
+            className={cn(
+              "[&_path]:stroke-textTertiary",
+              !open && "rotate-180",
+            )}
+          />
+        </div>
       </div>
 
       <div className={cn(!open && "hidden", "p-6 pt-0")}>{children}</div>

@@ -8,6 +8,7 @@ import {
 } from "../../store/reducers/nodeSlice";
 import { sleep } from "../index";
 import { useChain } from "../../context/chain";
+import useApi from "next-common/utils/hooks/useApi";
 
 const TIMEOUT = 10000;
 let count = 0;
@@ -48,12 +49,9 @@ const useUpdateNodesDelay = () => {
   const nodesSetting = useSelector(nodesSelector);
   const currentNode = useSelector(currentNodeSelector);
   const dispatch = useDispatch();
+  const api = useApi();
 
   useEffect(() => {
-    if (!chain) {
-      return;
-    }
-
     const intervalId = setInterval(async () => {
       const updateNodes = (nodesSetting || []).filter(
         (item) => item.url === currentNode || item.update,
@@ -69,7 +67,7 @@ const useUpdateNodesDelay = () => {
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [dispatch, nodesSetting, chain, currentNode]);
+  }, [api, dispatch, nodesSetting, chain, currentNode]);
 };
 
 export default useUpdateNodesDelay;

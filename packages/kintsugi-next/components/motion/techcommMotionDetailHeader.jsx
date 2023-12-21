@@ -9,7 +9,6 @@ import { usePost } from "next-common/context/post";
 import { isMotionEnded } from "next-common/utils";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import MotionEnd from "next-common/components/motionEnd";
-import Divider from "next-common/components/styled/layout/divider";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function TechcommMotionDetailHeader({ motion }) {
@@ -44,7 +43,7 @@ export default function TechcommMotionDetailHeader({ motion }) {
         </>
       )}
       <PostTitle />
-      <Divider className="my-4" />
+      <div className="py-2" />
       <PostMeta />
     </>
   );

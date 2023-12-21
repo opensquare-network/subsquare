@@ -8,8 +8,7 @@ export const StyledTable = styled.table`
 `;
 
 export const StyledTh = tw.th`
-  text12Bold text-textTertiary
-  tracking-[0.16em]
+  text-textTertiary text14Medium tracking-normal
   pt-2 pb-4
   h-3
 `;

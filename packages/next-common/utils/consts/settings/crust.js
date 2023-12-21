@@ -65,6 +65,7 @@ const crust = {
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  showAccountManagementTab: false,
   description:
     "CRUST implements the incentive layer protocol for decentralized storage. It is adaptable to multiple storage layer protocols such as IPFS, and provides support for the application layer. ",
   cssVarsLight: {

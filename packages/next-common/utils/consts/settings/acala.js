@@ -80,7 +80,10 @@ const acala = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
+  noIdentityModule: true,
   useVoteCall: true,
+  hasMultisig: true,
+  multisigApiPrefix: "acala",
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   cssVarsLight: {
     theme100: "rgba(100,90,255,0.10)",

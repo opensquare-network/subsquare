@@ -69,6 +69,7 @@ const turing = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
+  useVoteCall: true,
   description: "The Web 3.0 Hub for Automated DeFi and Payments",
   cssVarsLight: {
     theme100: "rgba(168,44,190,0.10)",

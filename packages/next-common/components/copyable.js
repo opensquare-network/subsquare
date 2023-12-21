@@ -5,7 +5,7 @@ export default function Copyable({ children, className, copyText = "", size }) {
   return (
     <span className={clsx("break-all", className)}>
       {children}
-      <div className="inline-flex ml-[8px] relative top-[2px]">
+      <div className="inline-flex ml-[8px] relative">
         <CopyButton copyText={copyText || children} size={size} />
       </div>
     </span>

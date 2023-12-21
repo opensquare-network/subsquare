@@ -19,38 +19,39 @@ export default async function getApi(chain, endpoint) {
     throw new Error(`Invalid chain: ${chain} to construct api`);
   }
 
-  if (!apiInstanceMap.has(endpoint)) {
-    const provider = new WsProvider(endpoint, 1000);
-    let options = { provider };
-
-    let customizedOptions;
-    if ([Chains.karura, Chains.acala].includes(chain)) {
-      customizedOptions = karuraOptions;
-    } else if ([Chains.khala, Chains.phala].includes(chain)) {
-      customizedOptions = khalaOptions;
-    } else if (chain === Chains.bifrost) {
-      customizedOptions = bifrostOptions;
-    } else if (chain === Chains.polkadex) {
-      customizedOptions = polkadexOptions;
-    } else if (chain === Chains.crust) {
-      customizedOptions = crustOptions;
-    } else if (chain === Chains.crab) {
-      customizedOptions = crabOptions;
-    } else if (chain === Chains.zeitgeist) {
-      customizedOptions = zeitgeistOptions;
-    } else if (chain === Chains.altair) {
-      customizedOptions = altairOptions;
-    } else {
-      customizedOptions = allOptions[chain] || {};
-    }
-
-    const api = ApiPromise.create({
-      ...customizedOptions,
-      ...options,
-    });
-
-    apiInstanceMap.set(endpoint, api);
+  if (apiInstanceMap.has(endpoint)) {
+    return await apiInstanceMap.get(endpoint);
   }
 
+  const provider = new WsProvider(endpoint, 1000);
+  let options = { provider };
+
+  let customizedOptions;
+  if ([Chains.karura, Chains.acala].includes(chain)) {
+    customizedOptions = karuraOptions;
+  } else if ([Chains.khala, Chains.phala].includes(chain)) {
+    customizedOptions = khalaOptions;
+  } else if (chain === Chains.bifrost) {
+    customizedOptions = bifrostOptions;
+  } else if (chain === Chains.polkadex) {
+    customizedOptions = polkadexOptions;
+  } else if (chain === Chains.crust) {
+    customizedOptions = crustOptions;
+  } else if (chain === Chains.crab) {
+    customizedOptions = crabOptions;
+  } else if (chain === Chains.zeitgeist) {
+    customizedOptions = zeitgeistOptions;
+  } else if (chain === Chains.altair) {
+    customizedOptions = altairOptions;
+  } else {
+    customizedOptions = allOptions[chain] || {};
+  }
+
+  const api = ApiPromise.create({
+    ...customizedOptions,
+    ...options,
+  });
+
+  apiInstanceMap.set(endpoint, api);
   return await apiInstanceMap.get(endpoint);
 }

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-
-import InnerDataTable from "../table/innerDataTable";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 import { hexEllipsis, toPrecision } from "../../utils";
@@ -11,25 +9,17 @@ import { hexIsValidUTF8 } from "../../utils/utf8validate";
 import { useChain } from "../../context/chain";
 import getChainSettings from "../../utils/consts/settings";
 import needCheckUtf8 from "./needCheckUtf8";
-import Popup from "../popup/wrapper/Popup";
 import { ThemedTag } from "../tags/state/styled";
 import { InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
-import Tab from "../tab";
-import { useLocalStorage } from "usehooks-ts";
+import CallDetailPopup from "../callDetailPopup";
 import ProposalChildCalls from "./childCalls";
-import CallTree from "./callTree";
 import usePreImageCallFromHash from "./preImage";
 
 const LongText = dynamic(() => import("../longText"), {
   ssr: false,
 });
-
-const JsonView = dynamic(
-  () => import("../jsonView").catch((e) => console.error(e)),
-  { ssr: false },
-);
 
 const Header = styled.div`
   font-style: normal;
@@ -40,7 +30,7 @@ const Header = styled.div`
   flex: 0 0 160px;
 `;
 
-const ArgsWrapper = styled.div`
+export const ArgsWrapper = styled.div`
   border-radius: 4px;
   border: 24px solid var(--neutral200);
   border-bottom: 24px solid var(--neutral200) !important;
@@ -80,7 +70,7 @@ const TagWrapper = styled.div`
   }
 `;
 
-function convertProposalForTableView(proposal, chain) {
+export function convertProposalForTableView(proposal, chain) {
   if (!proposal) {
     return {};
   }
@@ -167,7 +157,7 @@ function convertProposalForTableView(proposal, chain) {
   };
 }
 
-function convertProposalForJsonView(proposal, chain) {
+export function convertProposalForJsonView(proposal, chain) {
   if (!proposal) {
     return {};
   }
@@ -228,16 +218,6 @@ function convertProposalForJsonView(proposal, chain) {
   };
 }
 
-const tabsNoTreeView = [
-  { tabId: "table", tabTitle: "Table" },
-  { tabId: "json", tabTitle: "JSON" },
-];
-
-const tabsWithTreeView = [
-  { tabId: "tree", tabTitle: "Tree" },
-  ...tabsNoTreeView,
-];
-
 export default function Proposal({
   call = {},
   preImageHash,
@@ -249,22 +229,11 @@ export default function Proposal({
   const chain = useChain();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
 
-  const tabs = preImageHash ? tabsWithTreeView : tabsNoTreeView;
-
-  const [storageTabId, setStorageTabId] = useLocalStorage(
-    "callType",
-    tabs[0].tabId,
-  );
-  // When the storage call type is tree, but tree view is unavailable here,
-  // just use the first available call type instead.
-  const selectedTabId =
-    tabs.find((item) => item.tabId === storageTabId)?.tabId || tabs[0].tabId;
-  const setSelectedTabId = setStorageTabId;
-
   const { call: rawCall, isLoading: isLoadingRawCall } =
     usePreImageCallFromHash(preImageHash);
 
   const tableViewData = convertProposalForTableView(call, chain);
+  const jsonViewData = convertProposalForJsonView(call, chain);
 
   let dataTableData;
   if (shorten) {
@@ -314,30 +283,14 @@ export default function Proposal({
       )}
 
       {detailPopupVisible && (
-        <Popup
-          title="Call Detail"
-          onClose={() => setDetailPopupVisible(false)}
-          className="w-[650px]"
-        >
-          <Tab
-            tabs={tabs}
-            selectedTabId={selectedTabId}
-            setSelectedTabId={setSelectedTabId}
-          />
-          {selectedTabId === "tree" && (
-            <CallTree call={rawCall} isLoading={isLoadingRawCall} />
-          )}
-          {selectedTabId === "table" && (
-            <ArgsWrapper className="wrapper text-textPrimary">
-              <InnerDataTable data={dataTableData} />
-            </ArgsWrapper>
-          )}
-          {selectedTabId === "json" && (
-            <ArgsWrapper className="wrapper">
-              <JsonView src={convertProposalForJsonView(call, chain)} />
-            </ArgsWrapper>
-          )}
-        </Popup>
+        <CallDetailPopup
+          tableViewData={dataTableData}
+          jsonViewData={jsonViewData}
+          hasTreeViewData={!!preImageHash}
+          rawCall={rawCall}
+          isLoadingRawCall={isLoadingRawCall}
+          setShow={setDetailPopupVisible}
+        />
       )}
     </Wrapper>
   );

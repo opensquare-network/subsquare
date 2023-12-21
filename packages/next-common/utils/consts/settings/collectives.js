@@ -10,8 +10,12 @@ import {
 
 const collectivesEndpoints = [
   {
-    name: "Parity",
-    url: "wss://polkadot-collectives-rpc.polkadot.io/",
+    name: "Dewllir",
+    url: "wss://polkadot-collectives-rpc.dwellir.com/",
+  },
+  {
+    name: "Dewllir Tunisia",
+    url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
   },
   {
     name: "OnFinality",
@@ -57,10 +61,14 @@ const collectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
-  hasPolkassemblyDiscussions: true,
+  hasPolkassemblyDiscussions: false,
   hasTechComm: false,
+  hasDemocracy: false,
+  hasTreasuryModule: false,
+  hasTipsModule: false,
   noDemocracy: true,
   noDemocracyModule: true,
+  noIdentityModule: true,
   showAchainableLabels: true,
   description:
     "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",

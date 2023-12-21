@@ -16,10 +16,6 @@ const defaultHydradxEndpoints = [
     name: "Dwellir",
     url: "wss://hydradx-rpc.dwellir.com",
   },
-  {
-    name: "OnFinality",
-    url: "wss://hydradx.api.onfinality.io/public-ws",
-  },
 ];
 
 const links = [
@@ -69,6 +65,8 @@ const hydradx = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   useVoteCall: true,
+  hasMultisig: true,
+  multisigApiPrefix: "hydradx",
   description:
     "HydraDX is a next-gen DeFi protocol which is designed to bring an ocean of liquidity to Polkadot. Our tool for the job the HydraDX Omnipool - an innovative Automated Market Maker (AMM) which unlocks unparalleled efficiencies by combining all assets in a single trading pool.",
   cssVarsLight: {

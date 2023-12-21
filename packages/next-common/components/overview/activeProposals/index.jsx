@@ -16,15 +16,23 @@ import { getActiveProposalOpenTechComm } from "./openTechComm";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { getActiveProposalTreasuryCouncil } from "./treasuryCouncil";
 import Chains from "next-common/utils/consts/chains";
+import partition from "lodash.partition";
+import EmptyRecentProposals from "./empty";
 
 export default function ActiveProposals() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  const { tracks, fellowshipTracks, summary, activeProposals } = usePageProps();
+  const { overviewSummary, activeProposals } = usePageProps();
+  const summary = overviewSummary;
+  const tracks = overviewSummary?.gov2ReferendaTracks;
+  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
 
-  const discussions = getActiveProposalDiscussions({ activeProposals });
+  const discussions = getActiveProposalDiscussions({
+    summary,
+    activeProposals,
+  });
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
   const fellowship = getActiveProposalFellowship({
     fellowshipTracks,
@@ -52,7 +60,7 @@ export default function ActiveProposals() {
     activeProposals,
   });
 
-  const items = [
+  const sections = [
     chainSettings.hasReferenda && referenda,
     chainSettings.hasFellowship && fellowship,
     democracy,
@@ -70,15 +78,21 @@ export default function ActiveProposals() {
     .filter((item) => !item.excludeToChains?.includes?.(chain))
     .filter((item) => !item.archivedToChains?.includes?.(chain));
 
+  const [activeItems] = partition(sections, (item) => item.activeCount > 0);
+
   return (
     <div>
-      <TitleContainer className="mb-4">Active Proposals</TitleContainer>
+      <TitleContainer className="mb-4">Recent Proposals</TitleContainer>
 
-      <div className="space-y-4">
-        {items.map((item) => (
-          <ActiveProposalTemplate key={item.name} {...item} />
-        ))}
-      </div>
+      {!activeItems.length ? (
+        <EmptyRecentProposals />
+      ) : (
+        <div className="space-y-4">
+          {activeItems.map((item) => (
+            <ActiveProposalTemplate key={item.name} {...item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

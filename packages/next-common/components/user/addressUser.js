@@ -8,27 +8,20 @@ import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import DeletedAccount from "./deletedAccount";
 
-function AddressUser({
-  add,
+export function AddressUserImpl({
+  address,
+  identity,
+  hasIdentity,
+  maxWidth,
   showAvatar = true,
   fontSize = 14,
   noEvent = false,
-  maxWidth: propMaxWidth,
   noTooltip = false,
   color,
   linkToVotesPage = false,
   ellipsis = true,
   externalLink,
 }) {
-  const address = add;
-  const [identity, hasIdentity] = useIdentityInfo(address);
-
-  const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
-
-  if (!address) {
-    return <DeletedAccount fontSize={fontSize} />;
-  }
-
   const userIdentity = hasIdentity ? (
     <Identity identity={identity} fontSize={fontSize} maxWidth={maxWidth} />
   ) : (
@@ -80,6 +73,45 @@ function AddressUser({
       )}
       {userIdentityLink}
     </UserWrapper>
+  );
+}
+
+function AddressUser({
+  add,
+  showAvatar = true,
+  fontSize = 14,
+  noEvent = false,
+  maxWidth: propMaxWidth,
+  noTooltip = false,
+  color,
+  linkToVotesPage = false,
+  ellipsis = true,
+  externalLink,
+}) {
+  const address = add;
+  const [identity, hasIdentity] = useIdentityInfo(address);
+
+  const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
+
+  if (!address) {
+    return <DeletedAccount fontSize={fontSize} />;
+  }
+
+  return (
+    <AddressUserImpl
+      address={address}
+      identity={identity}
+      hasIdentity={hasIdentity}
+      maxWidth={maxWidth}
+      showAvatar={showAvatar}
+      fontSize={fontSize}
+      noEvent={noEvent}
+      noTooltip={noTooltip}
+      color={color}
+      linkToVotesPage={linkToVotesPage}
+      ellipsis={ellipsis}
+      externalLink={externalLink}
+    />
   );
 }
 

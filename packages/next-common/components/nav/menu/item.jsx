@@ -52,7 +52,7 @@ export default function NavMenuItem({
         <span>
           {label}{" "}
           {!!activeCount && (
-            <span className="ml-2 text-navigationTextTertiary">
+            <span className="ml-1 text-navigationTextTertiary">
               {activeCount}
             </span>
           )}

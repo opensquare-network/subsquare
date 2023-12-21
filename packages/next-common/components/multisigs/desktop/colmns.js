@@ -1,0 +1,33 @@
+const columns = [
+  {
+    name: "When",
+    style: { textAlign: "left", width: "120px", minWidth: "120px" },
+  },
+  {
+    name: "Multisig Address",
+    style: {
+      textAlign: "left",
+      width: "200px",
+      minWidth: "200px",
+      paddingRight: "16px",
+    },
+  },
+  {
+    name: "Call",
+    style: { textAlign: "left", minWidth: "280px" },
+  },
+  {
+    name: "Approving",
+    style: { textAlign: "left", width: "128px", minWidth: "128px" },
+  },
+  {
+    name: "Signatories",
+    style: { textAlign: "left", width: "128px", minWidth: "128px" },
+  },
+  {
+    name: "Status",
+    style: { textAlign: "right", width: "128px", minWidth: "128px" },
+  },
+];
+
+export default columns;

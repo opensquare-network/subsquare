@@ -3,7 +3,12 @@ import ReasonLink from "../reasonLink";
 import Link from "next/link";
 import { cn } from "next-common/utils";
 
-export default function ListPostTitle({ data = {}, href, className = "" }) {
+export default function ListPostTitle({
+  data = {},
+  href,
+  className = "",
+  ellipsis = false,
+}) {
   let title = data.title?.trim() || "--";
 
   return (
@@ -11,6 +16,7 @@ export default function ListPostTitle({ data = {}, href, className = "" }) {
       title={title}
       className={cn(
         "flex-1 overflow-hidden text-textPrimary text16Medium",
+        ellipsis && "flex",
         className,
       )}
     >
@@ -20,7 +26,10 @@ export default function ListPostTitle({ data = {}, href, className = "" }) {
 
       <Link
         href={href}
-        className="cursor-pointer hover:underline"
+        className={cn(
+          "cursor-pointer hover:underline",
+          ellipsis && "!break-all line-clamp-1",
+        )}
         style={{ wordBreak: "break-word" }}
       >
         {title}

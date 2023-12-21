@@ -16,6 +16,10 @@ const DEFAULT_BIFROST_NODES = [
     url: "wss://bifrost-rpc.liebi.com/ws",
   },
   {
+    name: "LiebiUS",
+    url: "wss://us.bifrost-rpc.liebi.com/ws",
+  },
+  {
     name: "OnFinality",
     url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
   },
@@ -76,6 +80,8 @@ const bifrost = {
   description:
     "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
   useVoteCall: true,
+  hasMultisig: true,
+  multisigApiPrefix: "kbnc",
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
     theme300: "rgba(84,43,251,0.40)",

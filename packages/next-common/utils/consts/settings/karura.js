@@ -79,6 +79,7 @@ const karura = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
+  noIdentityModule: true,
   useVoteCall: true,
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   cssVarsLight: {

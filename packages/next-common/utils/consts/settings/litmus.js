@@ -59,6 +59,10 @@ const litmus = {
   hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
+  hasTipsModule: false,
+  noIdentityModule: true,
+  hasMultisig: true,
+  multisigApiPrefix: "litmus",
   description:
     "Litmus is a companion canary network to Litentry and connects to the Kusama ecosystem as parachain.",
   cssVarsLight: {
