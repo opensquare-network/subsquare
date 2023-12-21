@@ -7,6 +7,7 @@ const proposalTagMap = {
   Canceled: NegativeTag,
   Cleared: NegativeTag,
   ProposalCanceled: NegativeTag,
+  Removed: ClosedTag,
 
   // In timeline
   FastTracked: PositiveTag,
@@ -26,6 +27,7 @@ const externalTagMap = {
   Tabled: PositiveTag,
   Overwritten: NegativeTag,
   Vetoed: NegativeTag,
+  Removed: ClosedTag,
 
   // In timeline
   externalProposeMajority: StartTag,
@@ -50,6 +52,8 @@ const referendumTagMap = {
   Executed: PositiveTag,
   PreimageMissing: NegativeTag,
   PreimageInvalid: NegativeTag,
+
+  Removed: ClosedTag,
 };
 
 export function DemocracyReferendumTag({ state, args }) {

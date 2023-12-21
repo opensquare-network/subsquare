@@ -29,9 +29,9 @@ function PublicProposalContent() {
   const publicProposal = post?.onchainData;
   const proposalIndex = publicProposal?.proposalIndex;
   const state = publicProposal?.state?.state;
-  const isEnded = ["Tabled", "Canceled", "Cleared"].includes(state);
+  const isEnded = ["Tabled", "Canceled", "Cleared", "Removed"].includes(state);
   const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
-  const hasCanceled = ["Canceled", "Cleared"].includes(state);
+  const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
   const timeline = publicProposal?.timeline;
   const lastTimelineBlockHeight =
