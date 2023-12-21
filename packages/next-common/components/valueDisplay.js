@@ -43,7 +43,7 @@ export default function ValueDisplay({
     }
   }
 
-  let wrapper = (
+  let container = (
     <span
       className={cn(
         "text14Medium",
@@ -56,8 +56,8 @@ export default function ValueDisplay({
   );
 
   if (showTooltip) {
-    wrapper = <Tooltip content={tooltipContent}>{wrapper}</Tooltip>;
+    container = <Tooltip content={tooltipContent}>{container}</Tooltip>;
   }
 
-  return wrapper;
+  return container;
 }
