@@ -36,7 +36,7 @@ export default function PostDataSource() {
     !!sources.length && (
       <>
         <div className="flex items-center h-5 mx-4">
-          <div className="h-4 w-0 border-x border-neutral400" />
+          <div className="h-4 w-0 border-r border-neutral400" />
         </div>
         <div className="flex items-center space-x-3">
           {sources.map((source) => (
