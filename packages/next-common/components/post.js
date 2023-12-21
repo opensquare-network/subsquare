@@ -105,10 +105,6 @@ const FooterWrapper = styled(Flex)`
 
 const TitleExtraValue = styled(Flex)`
   color: var(--textPrimary);
-
-  .value-display-symbol {
-    color: var(--textTertiary);
-  }
 `;
 const TitleExtra = tw.div`
   text14Medium

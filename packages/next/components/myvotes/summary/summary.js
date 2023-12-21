@@ -1,7 +1,5 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { cn, toPrecision } from "next-common/utils";
-import React from "react";
-import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
@@ -11,18 +9,12 @@ import PriorInfo from "./prior";
 import LoadableContent from "next-common/components/common/loadableContent";
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
-const ValueWrapper = styled.div`
-  .value-display-symbol {
-    color: var(--textTertiary);
-  }
-`;
-
 function CountSummaryContent({ count }) {
   return <span>{(count || 0).toLocaleString()}</span>;
 }
 
 function TextSummaryContent({ value }) {
-  return <ValueWrapper>{value}</ValueWrapper>;
+  return <div>{value}</div>;
 }
 
 function TokenValueContent({ value }) {

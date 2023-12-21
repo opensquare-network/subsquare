@@ -10,7 +10,7 @@ export default function LoadableItem({ title, value, isLoading = false }) {
     <div className="flex flex-col grow">
       <span className="text-textTertiary text12Medium mb-1">{title}</span>
       <LoadableContent isLoading={isLoading}>
-        <span className="text-textPrimary text16Bold [&_.value-display-symbol]:text-textTertiary">
+        <span className="text-textPrimary text16Bold">
           <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
         </span>
       </LoadableContent>

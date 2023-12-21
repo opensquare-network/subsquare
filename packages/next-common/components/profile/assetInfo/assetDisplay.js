@@ -45,7 +45,6 @@ const ItemTitle = tw.span`
 const ItemValue = tw.span`
   text-textPrimary
   text14Bold
-  [&_.value-display-symbol]:text-textTertiary
 `;
 
 const isEmpty = (value) => !value || new BigNumber(value).isZero();

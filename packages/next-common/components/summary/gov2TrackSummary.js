@@ -81,7 +81,7 @@ export default function Gov2TrackSummary({ summary, period }) {
           {
             title: "Decision Deposit",
             content: (
-              <span className="[&_.value-display-symbol]:text-textTertiary">
+              <span>
                 <ValueDisplay
                   value={toPrecision(decisionDeposit, decimals)}
                   symbol={symbol}

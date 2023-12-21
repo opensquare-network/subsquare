@@ -9,7 +9,7 @@ export default function ValueDisplay({
   className,
 }) {
   const tooltipContent = `${value} ${symbol}`;
-  const symbolContent = <span>{symbol}</span>;
+  const symbolContent = <span className="text-textTertiary">{symbol}</span>;
 
   let content = (
     <>
@@ -44,13 +44,7 @@ export default function ValueDisplay({
   }
 
   let container = (
-    <span
-      className={cn(
-        "text14Medium",
-        "inline-flex items-center gap-x-0.5",
-        className,
-      )}
-    >
+    <span className={cn("inline-flex items-center gap-x-0.5", className)}>
       {content}
     </span>
   );
