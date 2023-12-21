@@ -58,7 +58,7 @@ function MembersList({
   });
 
   return (
-    <div className="">
+    <div>
       <TitleContainer>{category}</TitleContainer>
       <MemberListTable columns={columns} rows={rows} loading={loading} />
     </div>
