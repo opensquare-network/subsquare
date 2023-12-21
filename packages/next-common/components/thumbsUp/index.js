@@ -36,7 +36,7 @@ export default function ThumbsUp({
           onClick={() => setShowThumbsUpList(!showThumbsUpList)}
           className={cn(
             "w-5 h-5 ml-1",
-            "[&_path]:!fill-none [&_path]:stroke-textSecondary",
+            "[&_path]:!fill-none [&_path]:stroke-textTertiary",
             showThumbsUpList && "rotate-180",
           )}
         />
