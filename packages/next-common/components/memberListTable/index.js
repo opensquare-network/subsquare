@@ -1,130 +1,19 @@
-import React, { Fragment } from "react";
-import styled, { withTheme } from "styled-components";
-import Loading from "../loading";
+import StyledList from "../styledList";
 
-const StyledTable = styled.table`
-  width: 100%;
-  background: var(--neutral100);
-  border: 1px solid var(--neutral300);
-  color: var(--textPrimary);
-  box-sizing: border-box;
-  box-shadow: var(--shadow100);
-  border-radius: 6px;
-  padding: 24px;
-`;
-
-const StyledTh = styled.th`
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0.16em;
-  color: var(--textTertiary);
-  pointer-events: none;
-`;
-
-const StyledTd = styled.td`
-  padding: 12px 0 12px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 100%;
-  color: var(--textPrimary);
-`;
-
-const EmptyTd = styled.td`
-  padding: 12px 0 12px 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 140%;
-  text-align: center;
-  color: var(--textTertiary);
-`;
-
-const RowSplitter = ({ backgroundColor, padding }) => (
-  <tr>
-    <td colSpan="3" style={{ padding }}>
-      <div style={{ height: "1px", backgroundColor }} />
-    </td>
-  </tr>
-);
-
-function EmptyOrLoading({ loading }) {
+export default function MemberListTable({
+  columns = [],
+  rows = [],
+  loading = false,
+  noDataText = "No current members",
+  ...restProps
+}) {
   return (
-    <tr>
-      <EmptyTd colSpan="3">
-        {loading ? <Loading size={16} /> : "No current members"}
-      </EmptyTd>
-    </tr>
+    <StyledList
+      columns={columns}
+      rows={rows}
+      loading={loading}
+      noDataText={noDataText}
+      {...restProps}
+    />
   );
 }
-
-function DataRow({ row, columns }) {
-  return (
-    <tr>
-      {row?.map((val, i) => (
-        <StyledTd
-          key={i}
-          style={columns[i].style}
-          className={columns[i].className}
-        >
-          {val}
-        </StyledTd>
-      ))}
-    </tr>
-  );
-}
-
-function DataRows({ rows, columns }) {
-  return rows.map((row, index) => (
-    <Fragment key={index}>
-      <DataRow row={row} columns={columns} />
-      {index !== rows.length - 1 && (
-        <RowSplitter backgroundColor="var(--neutral300)" />
-      )}
-    </Fragment>
-  ));
-}
-
-function Headers({ columns }) {
-  return (
-    <thead>
-      <tr>
-        {columns.map((col, index) => (
-          <StyledTh
-            key={index}
-            style={col.style}
-            className={col.className}
-            onClick={col.onClick}
-          >
-            {col.name}
-          </StyledTh>
-        ))}
-      </tr>
-      <RowSplitter
-        backgroundColor="var(--neutral300)"
-        padding={"16px 0 4px 0"}
-      />
-    </thead>
-  );
-}
-
-function MemberListTable({ columns = [], rows = [], loading = false }) {
-  let tableBody = null;
-
-  if (rows?.length > 0) {
-    tableBody = <DataRows rows={rows} columns={columns} />;
-  } else {
-    tableBody = <EmptyOrLoading loading={loading} />;
-  }
-
-  return (
-    <StyledTable>
-      <Headers columns={columns} />
-      <tbody>{tableBody}</tbody>
-    </StyledTable>
-  );
-}
-
-export default withTheme(MemberListTable);
