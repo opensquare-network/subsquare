@@ -1,4 +1,4 @@
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -6,12 +6,6 @@ import { useChainSettings } from "next-common/context/chain";
 import MemberListTable from "next-common/components/memberListTable";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
-
-const Member = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
 
 function MembersList({
   category,
@@ -44,10 +38,10 @@ function MembersList({
 
   const rows = items.map((item) => {
     const row = [
-      <Member key={item.address}>
+      <div key={item.address} className="flex items-center gap-2">
         <AddressUser add={item.address} />
         {item.address === prime && <PrimeAddressMark />}
-      </Member>,
+      </div>,
     ];
 
     if (hasElections) {
