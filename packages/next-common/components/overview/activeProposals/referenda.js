@@ -38,7 +38,7 @@ export function getActiveProposalReferenda({ tracks, activeProposals }) {
       formatter: (data) => normalizeGov2ReferendaListItem(data, tracks),
       columns: [
         getReferendumPostTitleColumn(),
-        track === "all" ? trackColumn : { className: trackColumn.className },
+        track === "all" && trackColumn,
         track !== "all" && track !== 0 && getRequestColumn(),
         getVoteSummaryColumn({ type: businessCategory.openGovReferenda }),
         getStatusTagColumn({ category: businessCategory.openGovReferenda }),
