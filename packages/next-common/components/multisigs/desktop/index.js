@@ -6,7 +6,14 @@ import {
   myMultisigsSelector,
 } from "next-common/store/reducers/multisigSlice";
 import { AddressUser } from "next-common/components/user";
-import { Approving, Call, Signatories, Status, When } from "../fields";
+import {
+  Approving,
+  Call,
+  Signatories,
+  Status,
+  When,
+  SignStatus,
+} from "../fields";
 import columns from "./colmns";
 
 export default function DesktopList() {
@@ -39,6 +46,7 @@ export default function DesktopList() {
       args={multisig.state.args}
       updateAt={multisig.updateAt}
     />,
+    <SignStatus key="signStatus" multisig={multisig} />,
   ]);
 
   return (
