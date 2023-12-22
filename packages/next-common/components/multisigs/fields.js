@@ -16,6 +16,7 @@ import {
 import GhostButton from "../buttons/ghostButton";
 import noop from "lodash.noop";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import SignerPopup from "../signerPopup";
 
 export function When({ height, index }) {
   const chain = useChain();
@@ -152,6 +153,8 @@ export function Status({ name, args = {}, updateAt }) {
 
 export function SignStatus({ multisig = {} }) {
   const realAddress = useRealAddress();
+  const [signPopupVisible, setSignPopupVisible] = useState(false);
+  const [cancelPopupVisible, setCancelPopupVisible] = useState(false);
 
   const { state, approvals } = multisig;
   const isApproved = approvals?.includes(realAddress);
@@ -164,16 +167,43 @@ export function SignStatus({ multisig = {} }) {
       <>
         {isApproved && (
           <Tooltip content="Cancel">
-            <SignStatusButton>
+            <SignStatusButton
+              onClick={() => {
+                setCancelPopupVisible(true);
+              }}
+            >
               <SystemClose className="w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary" />
             </SignStatusButton>
           </Tooltip>
         )}
         <Tooltip content="Sign">
-          <SignStatusButton>
+          <SignStatusButton
+            onClick={() => {
+              setSignPopupVisible(true);
+            }}
+          >
             <SystemSignature className="w-4 h-4 [&_path]:stroke-textPrimary [&_path]:stroke-2" />
           </SignStatusButton>
         </Tooltip>
+
+        {cancelPopupVisible && (
+          <SignerPopup
+            title="Signature"
+            confirmText="Cancel"
+            onClose={() => {
+              setCancelPopupVisible(false);
+            }}
+          />
+        )}
+        {signPopupVisible && (
+          <SignerPopup
+            title="Signature"
+            confirmText="Approve"
+            onClose={() => {
+              setSignPopupVisible(false);
+            }}
+          />
+        )}
       </>
     );
   } else {
