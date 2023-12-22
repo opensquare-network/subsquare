@@ -65,6 +65,14 @@ export default function MultisigSignField({ multisig = {} }) {
     });
   }
 
+  async function doApprove(api, signerAccount) {
+    await action(api, signerAccount, "approveAsMulti");
+  }
+
+  async function doCancel(api, signerAccount) {
+    await action(api, signerAccount, "cancelAsMulti");
+  }
+
   let content;
   if (name === MultisigStatus.Approving) {
     content = (
@@ -94,26 +102,22 @@ export default function MultisigSignField({ multisig = {} }) {
           <SignerPopup
             title="Signature"
             confirmText="Cancel"
-            loading={loading}
+            isLoading={loading}
             onClose={() => {
               setCancelPopupVisible(false);
             }}
-            actionCallback={(api, signerAccount) => {
-              action(api, signerAccount, "cancelAsMulti");
-            }}
+            actionCallback={doCancel}
           />
         )}
         {signPopupVisible && (
           <SignerPopup
             title="Signature"
             confirmText="Approve"
-            loading={loading}
+            isLoading={loading}
             onClose={() => {
               setSignPopupVisible(false);
             }}
-            actionCallback={(api, signerAccount) => {
-              action(api, signerAccount, "approveAsMulti");
-            }}
+            actionCallback={doApprove}
           />
         )}
       </>
