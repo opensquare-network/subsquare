@@ -12,16 +12,58 @@ import { MultisigStatus } from "./fields";
 import GhostButton from "../buttons/ghostButton";
 import noop from "lodash.noop";
 import { cn } from "next-common/utils";
+import { sendTx } from "next-common/utils/sendTx";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import isNil from "lodash.isnil";
 
 export default function MultisigSignField({ multisig = {} }) {
   const realAddress = useRealAddress();
   const [signPopupVisible, setSignPopupVisible] = useState(false);
   const [cancelPopupVisible, setCancelPopupVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const { state, approvals } = multisig;
   const isApproved = approvals?.includes(realAddress);
 
   const name = state.name;
+
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
+  async function action(api, signerAccount, apiModule) {
+    if (!api) {
+      return showErrorToast("Chain network is not connected yet");
+    }
+
+    const fn = api?.tx?.multisig?.[apiModule];
+
+    if (isNil(fn)) {
+      return showErrorToast("Multisig method is not support");
+    }
+
+    const signerAddress = signerAccount.address;
+    const otherSigners = approvals.filter((a) => a !== signerAddress);
+
+    const tx = fn(
+      multisig.threshold,
+      otherSigners,
+      multisig.when,
+      multisig.callHash,
+      // FIXME: maxWeight
+    );
+
+    await sendTx({
+      tx,
+      setLoading,
+      dispatch,
+      signerAddress,
+      onClose() {
+        setSignPopupVisible(false);
+        setCancelPopupVisible(false);
+      },
+    });
+  }
 
   let content;
   if (name === MultisigStatus.Approving) {
@@ -52,8 +94,12 @@ export default function MultisigSignField({ multisig = {} }) {
           <SignerPopup
             title="Signature"
             confirmText="Cancel"
+            loading={loading}
             onClose={() => {
               setCancelPopupVisible(false);
+            }}
+            actionCallback={(api, signerAccount) => {
+              action(api, signerAccount, "cancelAsMulti");
             }}
           />
         )}
@@ -61,8 +107,12 @@ export default function MultisigSignField({ multisig = {} }) {
           <SignerPopup
             title="Signature"
             confirmText="Approve"
+            loading={loading}
             onClose={() => {
               setSignPopupVisible(false);
+            }}
+            actionCallback={(api, signerAccount) => {
+              action(api, signerAccount, "approveAsMulti");
             }}
           />
         )}
