@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.2
+
+date: 2023-12-22
+
+- Support removed tag for democracy to handle democracy pallet removal from polkadot and rococo.
+- Fix UI issues with council member list.
+- Fix value display symbol color.
+- Update @osn/previewer.
+
 ### 3.7.1
 
 date: 2023-12-05
