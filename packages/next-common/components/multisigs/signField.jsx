@@ -121,11 +121,15 @@ export default function MultisigSignField({ multisig = {} }) {
   } else {
     content = isApproved ? (
       <Tooltip content="You didn't sign this multisig">
-        <SystemVoteAbstain className="w-4 h-4" />
+        <span className="inline-flex p-1.5">
+          <SystemVoteAbstain className="w-4 h-4" />
+        </span>
       </Tooltip>
     ) : (
       <Tooltip content="You approved this multisig">
-        <SystemVoteAye className="w-4 h-4" />
+        <span className="inline-flex p-1.5">
+          <SystemVoteAye className="w-4 h-4" />
+        </span>
       </Tooltip>
     );
   }
