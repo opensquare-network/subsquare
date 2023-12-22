@@ -7,16 +7,6 @@ import ExternalLink from "next-common/components/externalLink";
 import { useChain } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import AddressUser from "next-common/components/user/addressUser";
-import {
-  SystemClose,
-  SystemSignature,
-  SystemVoteAbstain,
-  SystemVoteAye,
-} from "@osn/icons/subsquare";
-import GhostButton from "../buttons/ghostButton";
-import noop from "lodash.noop";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import SignerPopup from "../signerPopup";
 
 export function When({ height, index }) {
   const chain = useChain();
@@ -149,85 +139,4 @@ export function Status({ name, args = {}, updateAt }) {
     );
   }
   return textComponent;
-}
-
-export function SignStatus({ multisig = {} }) {
-  const realAddress = useRealAddress();
-  const [signPopupVisible, setSignPopupVisible] = useState(false);
-  const [cancelPopupVisible, setCancelPopupVisible] = useState(false);
-
-  const { state, approvals } = multisig;
-  const isApproved = approvals?.includes(realAddress);
-
-  const name = state.name;
-
-  let content;
-  if (name === MultisigStatus.Approving) {
-    content = (
-      <>
-        {isApproved && (
-          <Tooltip content="Cancel">
-            <SignStatusButton
-              onClick={() => {
-                setCancelPopupVisible(true);
-              }}
-            >
-              <SystemClose className="w-4 h-4 [&_path]:stroke-textPrimary [&_path]:fill-textPrimary" />
-            </SignStatusButton>
-          </Tooltip>
-        )}
-        <Tooltip content="Sign">
-          <SignStatusButton
-            onClick={() => {
-              setSignPopupVisible(true);
-            }}
-          >
-            <SystemSignature className="w-4 h-4 [&_path]:stroke-textPrimary [&_path]:stroke-2" />
-          </SignStatusButton>
-        </Tooltip>
-
-        {cancelPopupVisible && (
-          <SignerPopup
-            title="Signature"
-            confirmText="Cancel"
-            onClose={() => {
-              setCancelPopupVisible(false);
-            }}
-          />
-        )}
-        {signPopupVisible && (
-          <SignerPopup
-            title="Signature"
-            confirmText="Approve"
-            onClose={() => {
-              setSignPopupVisible(false);
-            }}
-          />
-        )}
-      </>
-    );
-  } else {
-    content = isApproved ? (
-      <Tooltip content="You didn't sign this multisig">
-        <SystemVoteAbstain className="w-4 h-4" />
-      </Tooltip>
-    ) : (
-      <Tooltip content="You approved this multisig">
-        <SystemVoteAye className="w-4 h-4" />
-      </Tooltip>
-    );
-  }
-
-  return <div className="flex items-center justify-end gap-x-2">{content}</div>;
-}
-
-function SignStatusButton({ children, onClick = noop }) {
-  return (
-    <GhostButton
-      className={cn("group", "!p-1.5 !w-7 !h-7 !rounded !border-neutral400")}
-      onClick={onClick}
-    >
-      {children}
-    </GhostButton>
-  );
 }
