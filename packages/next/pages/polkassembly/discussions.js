@@ -4,8 +4,8 @@ import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
-import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import DiscussionsLayout from "next-common/components/layout/DiscussionsLayout";
 
 export default function DiscussionsPage({ posts, chain }) {
   const items = (posts.items || []).map((item) =>
@@ -16,7 +16,7 @@ export default function DiscussionsPage({ posts, chain }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout seoInfo={seoInfo} title={category}>
+    <DiscussionsLayout seoInfo={seoInfo} title={category}>
       <PostList
         category={category}
         title="List"
@@ -28,7 +28,7 @@ export default function DiscussionsPage({ posts, chain }) {
           total: posts.total,
         }}
       />
-    </ListLayout>
+    </DiscussionsLayout>
   );
 }
 
