@@ -5,14 +5,10 @@ import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import DiscussionsLayout from "next-common/components/layout/DiscussionsLayout";
 import { useChain } from "next-common/context/chain";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
-import { SystemPlus } from "@osn/icons/subsquare";
-import { useRouter } from "next/router";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default function DiscussionsPage({ posts }) {
   const chain = useChain();
-  const router = useRouter();
   const items = (posts.items || []).map((item) =>
     normalizeDiscussionListItem(chain, item),
   );
@@ -21,23 +17,7 @@ export default function DiscussionsPage({ posts }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <DiscussionsLayout
-      seoInfo={seoInfo}
-      title={category}
-      summaryFooter={
-        <div className="flex justify-end">
-          <PrimaryButton
-            small
-            icon={
-              <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
-            }
-            onClick={() => router.push("/posts/create")}
-          >
-            New Post
-          </PrimaryButton>
-        </div>
-      }
-    >
+    <DiscussionsLayout seoInfo={seoInfo} title={category}>
       <PostList
         category={category}
         title="List"
