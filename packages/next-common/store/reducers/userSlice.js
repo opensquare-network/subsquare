@@ -7,6 +7,7 @@ const userSlice = createSlice({
     isEditingPost: false,
     loginOpen: false,
     redirectUrl: null,
+    initView: "web3",
   },
   reducers: {
     setUser: (state, { payload }) => {
@@ -21,14 +22,23 @@ const userSlice = createSlice({
     setRedirectUrl(state, { payload }) {
       state.redirectUrl = payload;
     },
+    setInitView(state, { payload }) {
+      state.initView = payload;
+    },
   },
 });
 
 export const isEditingPostSelector = (state) => state.user?.isEditingPost;
 export const loginOpenSelector = (state) => state.user?.loginOpen;
 export const loginRedirectUrlSelector = (state) => state.user?.redirectUrl;
+export const initViewSelector = (state) => state.user?.initView;
 
-export const { setUser, setEditingPost, setLoginOpen, setRedirectUrl } =
-  userSlice.actions;
+export const {
+  setUser,
+  setEditingPost,
+  setLoginOpen,
+  setRedirectUrl,
+  setInitView,
+} = userSlice.actions;
 
 export default userSlice.reducer;

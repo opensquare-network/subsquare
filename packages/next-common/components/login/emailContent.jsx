@@ -11,11 +11,12 @@ import { CACHE_KEY } from "../../utils/constants";
 import { useCookieValue } from "../../utils/hooks/useCookieValue";
 import { useChain } from "next-common/context/chain";
 import { useUser } from "next-common/context/user";
-import { useLocalStorage } from "usehooks-ts";
+// import { useLocalStorage } from "usehooks-ts";
 import { GreyPanel } from "../styled/containers/greyPanel";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useRouter } from "next/router";
 import { SystemCheckboxOff, SystemCheckboxOn } from "@osn/icons/subsquare";
+import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 
 const Label = styled.div`
   margin-bottom: 8px;
@@ -30,9 +31,14 @@ const Label = styled.div`
 export default function LoginEmailContent() {
   const chain = useChain();
   const loginUser = useUser();
+  const { connectedWallet } = useConnectedWalletContext();
+  console.log({
+    connectedWallet,
+  });
   const address = loginUser?.address;
-  const [accountMap] = useLocalStorage(CACHE_KEY.accountMap, {});
-  const accountName = accountMap?.[address];
+  // const [accountMap] = useLocalStorage(CACHE_KEY.accountMap, {});
+  // const accountName = accountMap?.[address];
+  const accountName = connectedWallet?.name;
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");

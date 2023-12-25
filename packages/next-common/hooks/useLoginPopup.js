@@ -1,5 +1,6 @@
 import {
   loginOpenSelector,
+  setInitView,
   setLoginOpen,
   setRedirectUrl,
 } from "next-common/store/reducers/userSlice";
@@ -17,7 +18,13 @@ export function useLoginPopup() {
 
   return {
     loginPopupOpen,
-    openLoginPopup: (redirectUrl) => toggleLogin(true, redirectUrl),
-    closeLoginPopup: () => toggleLogin(false, null),
+    openLoginPopup: ({ redirectUrl, initView = "web3" } = {}) => {
+      dispatch(setInitView(initView));
+      toggleLogin(true, redirectUrl);
+    },
+    closeLoginPopup: () => {
+      dispatch(setInitView("web3"));
+      toggleLogin(false, null);
+    },
   };
 }

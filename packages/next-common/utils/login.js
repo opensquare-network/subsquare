@@ -1,23 +1,34 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import nextApi from "../../services/nextApi";
-import { newErrorToast } from "../../store/reducers/toastSlice";
-import { encodeAddressToChain } from "../../services/address";
+import nextApi from "next-common/services/nextApi";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { encodeAddressToChain } from "next-common/services/address";
 import { stringToHex } from "@polkadot/util";
-import { updateUser, useUserDispatch } from "../../context/user";
-import { useChain } from "../../context/chain";
+import { updateUser, useUserDispatch } from "next-common/context/user";
+import { useChain } from "next-common/context/chain";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
+import { CACHE_KEY } from "./constants";
+import { useCookieValue } from "./hooks/useCookieValue";
+import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 export function useEnsureConnectedWalletLoggedIn() {
   const chain = useChain();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userDispatch = useUserDispatch();
   const { connectedWallet } = useConnectedWalletContext();
   const { injectedWeb3 } = useInjectedWeb3();
+  const [dontRemindEmail] = useCookieValue(CACHE_KEY.dontRemindEmail);
+  const redirectUrl = useSelector(loginRedirectUrlSelector);
+  const isLoginPage = router.pathname === "/login";
+  const { openLoginPopup } = useLoginPopup();
 
   const signWith = useCallback(
     async (message, address, walletName) => {
@@ -25,11 +36,12 @@ export function useEnsureConnectedWalletLoggedIn() {
         return await personalSign(stringToHex(message), address);
       }
 
-      const wallet = injectedWeb3.find((w) => w.name === walletName);
-      if (!wallet) {
+      const extension = injectedWeb3?.[walletName];
+      if (!extension) {
         return;
       }
 
+      const wallet = await extension.enable("subsquare");
       const { signature } = await wallet.signer.signRaw({
         type: "bytes",
         data: stringToHex(message),
@@ -41,7 +53,7 @@ export function useEnsureConnectedWalletLoggedIn() {
     [injectedWeb3],
   );
 
-  const doLogin = useCallback(async () => {
+  const login = useCallback(async () => {
     setLoading(true);
     try {
       const address = encodeAddressToChain(connectedWallet.address, chain);
@@ -77,6 +89,14 @@ export function useEnsureConnectedWalletLoggedIn() {
         );
         if (loginResult) {
           updateUser(loginResult, userDispatch);
+
+          if (redirectUrl) {
+            router.push(redirectUrl);
+          }
+
+          if (!loginResult.email && !dontRemindEmail) {
+            openLoginPopup({ initView: "email" });
+          }
         }
 
         if (loginError) {
@@ -88,10 +108,21 @@ export function useEnsureConnectedWalletLoggedIn() {
     } finally {
       setLoading(false);
     }
-  }, [signWith, connectedWallet, chain, dispatch, userDispatch]);
+  }, [
+    signWith,
+    connectedWallet,
+    chain,
+    dispatch,
+    userDispatch,
+    openLoginPopup,
+    router,
+    isLoginPage,
+    dontRemindEmail,
+    redirectUrl,
+  ]);
 
   return {
-    doLogin,
+    login,
     loading,
   };
 }

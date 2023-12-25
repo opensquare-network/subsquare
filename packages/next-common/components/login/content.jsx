@@ -6,9 +6,9 @@ import LoginAccountLoginContent from "./accountLoginContent";
 /**
  * @description used in login popup and login page
  */
-export default function LoginContent() {
+export default function LoginContent({ initView = "web3" }) {
   // web3, account, email
-  const [view, setView] = useState("web3");
+  const [view, setView] = useState(initView);
 
   return (
     <>

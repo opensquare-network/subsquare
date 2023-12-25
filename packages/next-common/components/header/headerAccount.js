@@ -62,7 +62,8 @@ function ProfileMenuItem({ onClick }) {
 
 export default function HeaderAccount() {
   const user = useUser();
-  const { connectedWallet } = useConnectedWalletContext();
+  const { connectedWallet, disconnect: disconnectWallet } =
+    useConnectedWalletContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -81,6 +82,7 @@ export default function HeaderAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
+      disconnectWallet();
       await logoutUser(userDispatch);
     } else if (item.pathname) {
       await router.push(item.pathname);
@@ -131,7 +133,7 @@ export default function HeaderAccount() {
         {show && (
           <Menu>
             {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
-            {menu.map((item, index) => (
+            {menu?.map((item, index) => (
               <Fragment key={index}>
                 <Item onClick={() => handleAccountMenu(item)}>
                   {item.icon}

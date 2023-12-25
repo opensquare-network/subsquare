@@ -16,7 +16,7 @@ export function SubscribeTip() {
       router.push(url);
       return;
     }
-    openLoginPopup(url);
+    openLoginPopup({ redirectUrl: url });
   }, [user]);
 
   return (
