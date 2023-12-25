@@ -42,6 +42,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   const {
+    connectedWallet,
     loginUser,
     admins,
     themeMode,
@@ -57,6 +58,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Provider store={store}>
         <GlobalProvider
+          connectedWallet={connectedWallet}
           user={loginUser}
           admins={admins}
           chain={process.env.NEXT_PUBLIC_CHAIN}

@@ -11,21 +11,29 @@ import {
 import { ContentWrapper } from "next-common/components/setting/styled";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import { useUser } from "next-common/context/user";
+import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 
 export default function KeyAccountSettingPage() {
   const loginUser = useUser();
-  const address = loginUser?.address || "";
+  const { connectedWallet } = useConnectedWalletContext();
+
+  let address = null;
+  if (loginUser) {
+    address = loginUser?.address;
+  } else if (connectedWallet) {
+    address = connectedWallet?.address;
+  }
 
   const router = useRouter();
 
   useEffect(() => {
-    if (loginUser === null) {
+    if (!loginUser && !connectedWallet) {
       router.push("/");
     }
     if (loginUser && !isKeyRegisteredUser(loginUser)) {
       router.push("/settings/account");
     }
-  }, [loginUser, router]);
+  }, [loginUser, connectedWallet, router]);
 
   return (
     <SettingLayout>

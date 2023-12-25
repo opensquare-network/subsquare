@@ -13,7 +13,8 @@ import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import GhostButton from "../buttons/ghostButton.js";
 import { SystemProfile } from "@osn/icons/subsquare";
-import SystemUser from "../user/systemUser.js";
+import { useConnectedWalletContext } from "next-common/context/connectedWallet/index.js";
+import { SystemUser, AddressUser } from "../user";
 
 const Wrapper = Relative;
 
@@ -61,6 +62,7 @@ function ProfileMenuItem({ onClick }) {
 
 export default function HeaderAccount() {
   const user = useUser();
+  const { connectedWallet } = useConnectedWalletContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -76,10 +78,6 @@ export default function HeaderAccount() {
       setShow(false);
     }
   }, [windowSize]);
-
-  const menu = isKeyRegisteredUser(user)
-    ? accountMenuForKeyAccount
-    : accountMenu;
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
@@ -97,16 +95,38 @@ export default function HeaderAccount() {
     router.push(`/user/${user.address}`);
   };
 
+  let menu = null;
+  if (user) {
+    if (isKeyRegisteredUser(user)) {
+      menu = accountMenuForKeyAccount;
+    } else {
+      menu = accountMenu;
+    }
+  } else if (connectedWallet) {
+    menu = accountMenuForKeyAccount;
+  }
+
+  let connectBtn = (
+    <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
+  );
+  if (user) {
+    connectBtn = (
+      <GhostButton onClick={() => setShow(!show)}>
+        <SystemUser user={user} noEvent />
+      </GhostButton>
+    );
+  } else if (connectedWallet) {
+    connectBtn = (
+      <GhostButton onClick={() => setShow(!show)}>
+        <AddressUser add={connectedWallet?.address} noEvent />
+      </GhostButton>
+    );
+  }
+
   return (
     <>
       <Wrapper ref={ref}>
-        {!user ? (
-          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
-        ) : (
-          <GhostButton onClick={() => setShow(!show)}>
-            <SystemUser user={user} noEvent />
-          </GhostButton>
-        )}
+        {connectBtn}
 
         {show && (
           <Menu>

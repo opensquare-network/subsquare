@@ -7,8 +7,10 @@ import NavProvider from "./nav";
 import { SocketProvider } from "./socket";
 import { ConnectedAddressProvider } from "./connectedAddress";
 import { AdminProvider } from "./admin";
+import { ConnectedWalletProvider } from "./connectedWallet";
 
 export default function GlobalProvider({
+  connectedWallet,
   user,
   admins,
   chain,
@@ -22,20 +24,22 @@ export default function GlobalProvider({
     <SocketProvider>
       <ThemeModeProvider defaultThemeMode={themeMode}>
         <ChainProvider chain={chain}>
-          <UserProvider user={user}>
-            <AdminProvider admins={admins}>
-              <ConnectedAddressProvider>
-                <NavProvider
-                  navCollapsed={navCollapsed}
-                  navSubmenuVisible={navSubmenuVisible}
-                >
-                  <PageProvider pageProperties={pageProperties}>
-                    {children}
-                  </PageProvider>
-                </NavProvider>
-              </ConnectedAddressProvider>
-            </AdminProvider>
-          </UserProvider>
+          <ConnectedWalletProvider connectedWallet={connectedWallet}>
+            <UserProvider user={user}>
+              <AdminProvider admins={admins}>
+                <ConnectedAddressProvider>
+                  <NavProvider
+                    navCollapsed={navCollapsed}
+                    navSubmenuVisible={navSubmenuVisible}
+                  >
+                    <PageProvider pageProperties={pageProperties}>
+                      {children}
+                    </PageProvider>
+                  </NavProvider>
+                </ConnectedAddressProvider>
+              </AdminProvider>
+            </UserProvider>
+          </ConnectedWalletProvider>
         </ChainProvider>
       </ThemeModeProvider>
     </SocketProvider>

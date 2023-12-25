@@ -28,13 +28,25 @@ export function withCommonProps(
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const detailPageProperties = getDetailPageProperties(context);
 
+    const connectedWalletCookie = cookies.get(CACHE_KEY.connectedWallet);
+    let connectedWallet = null;
+    try {
+      connectedWallet = JSON.parse(decodeURIComponent(connectedWalletCookie));
+    } catch (e) {
+      // ignore
+    }
+
     const [props, { result: user }, { result: admins }] = await Promise.all([
       getServerSideProps(context),
       fetchProfile(cookies),
       ssrNextApi.fetch(adminsApi),
     ]);
 
-    if (context.resolvedUrl?.startsWith("/settings/") && !user) {
+    if (
+      context.resolvedUrl?.startsWith("/settings/") &&
+      !user &&
+      !connectedWallet
+    ) {
       const { unsubscribe } = context.query;
       if (!unsubscribe) {
         return redirect("/");
@@ -48,6 +60,7 @@ export function withCommonProps(
         ...props.props,
         chain: process.env.CHAIN,
         loginUser: user ?? null,
+        connectedWallet: connectedWallet ?? null,
         admins: admins ?? [],
         themeMode: themeMode ?? null,
         navCollapsed: navCollapsed || false,

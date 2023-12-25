@@ -9,11 +9,44 @@ import Channels from "next-common/components/setting/channels";
 import OnChainEventsSubscription from "components/settings/subscription/onchainEventsSubscription";
 import DiscussionEventsSubscription from "next-common/components/setting/notification/discussionEventsSubscription";
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
+import RequireSignature from "next-common/components/setting/requireSignature";
+import { useConnectedWalletContext } from "next-common/context/connectedWallet";
+import { useUser } from "next-common/context/user";
+import { useEffect, useState } from "react";
+import { usePageProps } from "next-common/context/page";
+import { useRouter } from "next/router";
 
 export default function NotificationPage() {
+  const { unsubscribe } = usePageProps();
+  const loginUser = useUser();
+  const { connectedWallet } = useConnectedWalletContext();
+  const router = useRouter();
+  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+
+  useEffect(() => {
+    if (unsubscribe) {
+      if (!loginUser && !connectedWallet) {
+        setShowLoginToUnsubscribe(true);
+      }
+      return;
+    }
+
+    if (!loginUser && !connectedWallet) {
+      router.push("/");
+    }
+  }, [loginUser, connectedWallet, router, unsubscribe]);
+
+  if (!loginUser && connectedWallet) {
+    return (
+      <SettingLayout>
+        <RequireSignature />
+      </SettingLayout>
+    );
+  }
+
   return (
     <SettingLayout>
-      <Channels />
+      <Channels showLoginToUnsubscribe={showLoginToUnsubscribe} />
       <SettingSection>
         <TitleContainer>Notification Settings</TitleContainer>
         <DiscussionEventsSubscription />

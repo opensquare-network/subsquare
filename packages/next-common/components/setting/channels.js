@@ -8,17 +8,12 @@ import {
 } from "next-common/components/styled/containers/titleContainer";
 import NotificationEmail from "next-common/components/setting/notificationEmail";
 import NotificationTelegram from "next-common/components/setting/notificationTelegram";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser } from "next-common/context/user";
-import { useRouter } from "next/router";
-import { usePageProps } from "next-common/context/page";
 import { useDebounceAutoSaveActiveChannelOptions } from "./notification/common";
 
-export default function Channels() {
-  const { unsubscribe } = usePageProps();
+export default function Channels({ showLoginToUnsubscribe }) {
   const loginUser = useUser();
-  const router = useRouter();
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
   const emailNotSet = !loginUser?.email;
   const telegramNotSet = !loginUser?.telegram?.chat;
   const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
@@ -38,19 +33,6 @@ export default function Channels() {
     email: isEmailChannelOn,
     telegram: isTelegramChannelOn,
   });
-
-  useEffect(() => {
-    if (unsubscribe) {
-      if (loginUser === null) {
-        setShowLoginToUnsubscribe(true);
-      }
-      return;
-    }
-
-    if (loginUser === null) {
-      router.push("/");
-    }
-  }, [loginUser, router, unsubscribe]);
 
   return (
     <SettingSection>
