@@ -86,16 +86,13 @@ export default function Extrinsic({
     const { fn } = extrinsic;
 
     try {
-      console.log(values);
       const fnValues = getExtrinsicValues(values);
-      console.log(fnValues);
       const tx = fn(...fnValues);
       setValue({
         isValid: true,
         data: tx,
       });
     } catch (e) {
-      console.error(e);
       setValue({
         isValid: false,
         data: undefined,
