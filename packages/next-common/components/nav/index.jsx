@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
 import { useEffect } from "react";
+import ChainLogo from "./logo";
 
 export default function Nav() {
   return (
@@ -33,32 +34,6 @@ function BrandingHint() {
   return (
     <div className="text12Medium mt-1 max-sm:mt-0 text-navigationTextTertiary">
       Governance by Subsquare
-    </div>
-  );
-}
-
-function ChainLogo({ className = "" }) {
-  const chainSettings = useChainSettings();
-
-  if (!chainSettings.navLogo || !chainSettings.navLogoDark) {
-    return null;
-  }
-
-  // NOTE: workaround, should find some React way to check is same source
-  const logo =
-    // check is same source
-    chainSettings.navLogo === chainSettings.navLogoDark ? (
-      <chainSettings.navLogo />
-    ) : (
-      <>
-        <chainSettings.navLogo className="dark:hidden" />
-        <chainSettings.navLogoDark className="hidden dark:block" />
-      </>
-    );
-
-  return (
-    <div className={className}>
-      <Link href="/">{logo}</Link>
     </div>
   );
 }
