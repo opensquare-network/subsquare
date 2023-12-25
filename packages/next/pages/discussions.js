@@ -2,7 +2,7 @@ import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
-import ListLayout from "next-common/components/layout/ListLayout";
+import DiscussionsLayout from "next-common/components/layout/DiscussionsLayout";
 import { useChain } from "next-common/context/chain";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
@@ -21,7 +21,7 @@ export default function DiscussionsPage({ posts }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout
+    <DiscussionsLayout
       seoInfo={seoInfo}
       title={category}
       summaryFooter={
@@ -49,7 +49,7 @@ export default function DiscussionsPage({ posts }) {
           total: posts.total,
         }}
       />
-    </ListLayout>
+    </DiscussionsLayout>
   );
 }
 
