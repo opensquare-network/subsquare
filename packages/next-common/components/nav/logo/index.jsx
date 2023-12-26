@@ -1,6 +1,6 @@
 import { useChainSettings } from "next-common/context/chain";
 import Link from "next/link";
-import ChainLogoChristmasEffects from "./christmasEffects";
+import ChainLogoChristmasBackground from "./christmasBackground";
 import { cn } from "next-common/utils";
 
 export default function ChainLogo({ className = "" }) {
@@ -23,11 +23,11 @@ export default function ChainLogo({ className = "" }) {
     );
 
   return (
-    <div className={cn(className)}>
-      <Link href="/" className="relative">
-        <ChainLogoChristmasEffects />
+    <div className={cn("relative", className)}>
+      <Link href="/" className="z-[1]">
         {logo}
       </Link>
+      <ChainLogoChristmasBackground />
     </div>
   );
 }
