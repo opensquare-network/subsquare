@@ -7970,6 +7970,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.find@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.find@npm:4.6.0"
+  checksum: b737f849a4fe36f5c3664ea636780dda2fde18335021faf80cdfdcb300ed75441da6f55cfd6de119092d8bb2ddbc4433f4a8de4b99c0b9c8640465b0901c717c
+  languageName: node
+  linkType: hard
+
 "lodash.findlast@npm:^4.6.0":
   version: 4.6.0
   resolution: "lodash.findlast@npm:4.6.0"
@@ -8622,6 +8629,7 @@ __metadata:
     lodash.countby: ^4.6.0
     lodash.debounce: ^4.0.8
     lodash.difference: ^4.5.0
+    lodash.find: ^4.6.0
     lodash.findlast: ^4.6.0
     lodash.findlastindex: ^4.6.0
     lodash.flatten: ^4.4.0
