@@ -1,6 +1,7 @@
 import { CACHE_KEY } from "next-common/utils/constants";
 import { clearCookie, setCookie } from "next-common/utils/viewfuncs/cookies";
 import { createContext, useCallback, useContext, useState } from "react";
+import { fetchAndUpdateUser, useUserDispatch } from "../user";
 
 const ConnectedWalletContext = createContext(null);
 
@@ -10,12 +11,17 @@ export function ConnectedWalletProvider({
   connectedWallet: _connectedWallet,
   children,
 }) {
+  const userDispatch = useUserDispatch();
   const [connectedWallet, setConnectedWallet] = useState(_connectedWallet);
 
-  const connect = useCallback((wallet) => {
-    setConnectedWallet(wallet);
-    setCookie(CACHE_KEY.connectedWallet, JSON.stringify(wallet), 365);
-  }, []);
+  const connect = useCallback(
+    (wallet) => {
+      setConnectedWallet(wallet);
+      setCookie(CACHE_KEY.connectedWallet, JSON.stringify(wallet), 365);
+      fetchAndUpdateUser(userDispatch);
+    },
+    [userDispatch],
+  );
 
   const disconnect = useCallback(() => {
     setConnectedWallet(null);

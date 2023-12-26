@@ -26,9 +26,9 @@ export default function GlobalProvider({
     <SocketProvider>
       <ThemeModeProvider defaultThemeMode={themeMode}>
         <ChainProvider chain={chain}>
-          <ConnectedWalletProvider connectedWallet={connectedWallet}>
-            <ConnectedUserProvider connectedUser={connectedUser}>
-              <UserProvider user={user}>
+          <UserProvider user={user}>
+            <ConnectedWalletProvider connectedWallet={connectedWallet}>
+              <ConnectedUserProvider connectedUser={connectedUser}>
                 <AdminProvider admins={admins}>
                   <ConnectedAddressProvider>
                     <NavProvider
@@ -41,9 +41,9 @@ export default function GlobalProvider({
                     </NavProvider>
                   </ConnectedAddressProvider>
                 </AdminProvider>
-              </UserProvider>
-            </ConnectedUserProvider>
-          </ConnectedWalletProvider>
+              </ConnectedUserProvider>
+            </ConnectedWalletProvider>
+          </UserProvider>
         </ChainProvider>
       </ThemeModeProvider>
     </SocketProvider>

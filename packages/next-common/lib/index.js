@@ -11,6 +11,7 @@ import { adminsApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { getConnectedWallet } from "next-common/services/serverSide/getConnectedWallet";
 import fetchConnectedUser from "./fetchConnectedUser";
+// import { cookies as getCookies } from "next/headers";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -25,6 +26,7 @@ export function withCommonProps(
     }
 
     const cookies = new Cookies(context.req, context.res);
+    // console.log(getCookies());
     const themeMode = cookies.get(CACHE_KEY.themeMode);
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
@@ -34,7 +36,7 @@ export function withCommonProps(
     const [props, { result: user }, { result: admins }, connectedUser] =
       await Promise.all([
         getServerSideProps(context),
-        fetchProfile(cookies),
+        fetchProfile(context),
         ssrNextApi.fetch(adminsApi),
         fetchConnectedUser(cookies),
       ]);
@@ -56,7 +58,7 @@ export function withCommonProps(
       props: {
         ...props.props,
         chain: process.env.CHAIN,
-        loginUser: user ?? null,
+        user: user ?? null,
         connectedWallet: connectedWallet ?? null,
         connectedUser: connectedUser ?? null,
         admins: admins ?? [],

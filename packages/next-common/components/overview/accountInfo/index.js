@@ -10,7 +10,7 @@ export default function AccountInfo({ hideManageAccountLink }) {
     return <NotLoginPanel />;
   }
 
-  if (!user.address) {
+  if (user && !user.address) {
     return <NoLinkAddress />;
   }
 

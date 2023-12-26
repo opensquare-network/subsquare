@@ -12,18 +12,16 @@ import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import { useEffect } from "react";
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
-import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 
 export default function ProxyPage() {
   const loginUser = useUser();
   const router = useRouter();
-  const { connectedWallet } = useConnectedWalletContext();
 
   useEffect(() => {
-    if (!loginUser && !connectedWallet) {
+    if (!loginUser) {
       router.push("/");
     }
-  }, [loginUser, connectedWallet, router]);
+  }, [loginUser, router]);
 
   return (
     <SettingLayout>

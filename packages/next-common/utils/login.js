@@ -19,7 +19,7 @@ import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 export function useEnsureConnectedWalletLoggedIn() {
   const chain = useChain();
-  const loginUser = useUser();
+  const user = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -128,12 +128,12 @@ export function useEnsureConnectedWalletLoggedIn() {
   ]);
 
   const ensureLogin = useCallback(async () => {
-    if (loginUser) {
+    if (user && user.isLogin) {
       // Already logged
       return true;
     }
     return await login();
-  }, [dispatch, loginUser, login]);
+  }, [user, login]);
 
   return {
     login,
