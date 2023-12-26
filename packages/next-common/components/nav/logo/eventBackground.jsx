@@ -1,33 +1,49 @@
 import { useChainSettings } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
 import dayjs from "dayjs";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
-
-const MONTH = 11;
-const START_DATE = 23;
-const END_DATE = 31;
+import find from "lodash.find";
 
 const now = dayjs();
-const isBetweenChristmas =
-  now.month() === MONTH && now.date() >= START_DATE && now.date() <= END_DATE;
+const events = [
+  {
+    name: "christmas",
+    month: 12,
+    startDate: 23,
+    endDate: 31,
+    background: "christmas",
+  },
+];
+
+const event = find(events, (event) => {
+  return (
+    now.month() + 1 === event.month &&
+    now.date() >= event.startDate &&
+    now.date() <= event.endDate
+  );
+});
 
 export default function ChainLogoEventBackground() {
   const chainSettings = useChainSettings();
-  const isKusama = chainSettings.value === Chains.kusama;
   const [navCollapsed] = useNavCollapsed();
 
+  chainSettings;
+
   return (
-    isBetweenChristmas && (
+    event && (
       <div
         className={cn(
           "absolute inset-0",
           navCollapsed && "hidden",
           "bg-no-repeat bg-cover",
-          "bg-[url('/bg-christmas-light.png')]",
-          isKusama && "bg-[url('/bg-christmas-kusama-light.png')]",
-          "dark:bg-[url('/bg-christmas-dark.png')]",
+          "[background-image:var(--event-light-background)]",
+          "dark:[background-image:var(--event-dark-background)]",
         )}
+        style={{
+          "--event-light-background": `url('/project-menu-bg-${event.background}-light-light.png')`,
+          "--event-dark-background": `url('/project-menu-bg-${event.background}-dark.png')`,
+          // backgroundImage: "var(--event-light-background)",
+        }}
       />
     )
   );
