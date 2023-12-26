@@ -10,6 +10,7 @@ import fetchProfile from "next-common/lib/fetchProfile";
 import { adminsApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { getConnectedWallet } from "next-common/services/serverSide/getConnectedWallet";
+import fetchConnectedUser from "./fetchConnectedUser";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -28,13 +29,15 @@ export function withCommonProps(
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const detailPageProperties = getDetailPageProperties(context);
-    const connectedWallet = getConnectedWallet(context);
+    const connectedWallet = getConnectedWallet(cookies);
 
-    const [props, { result: user }, { result: admins }] = await Promise.all([
-      getServerSideProps(context),
-      fetchProfile(cookies),
-      ssrNextApi.fetch(adminsApi),
-    ]);
+    const [props, { result: user }, { result: admins }, connectedUser] =
+      await Promise.all([
+        getServerSideProps(context),
+        fetchProfile(cookies),
+        ssrNextApi.fetch(adminsApi),
+        fetchConnectedUser(cookies),
+      ]);
 
     if (
       context.resolvedUrl?.startsWith("/settings/") &&
@@ -55,6 +58,7 @@ export function withCommonProps(
         chain: process.env.CHAIN,
         loginUser: user ?? null,
         connectedWallet: connectedWallet ?? null,
+        connectedUser: connectedUser ?? null,
         admins: admins ?? [],
         themeMode: themeMode ?? null,
         navCollapsed: navCollapsed || false,

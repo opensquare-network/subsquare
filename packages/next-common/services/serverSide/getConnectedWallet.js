@@ -1,9 +1,6 @@
 import { CACHE_KEY } from "next-common/utils/constants";
-import Cookies from "cookies";
 
-export function getConnectedWallet(context) {
-  const cookies = new Cookies(context.req, context.res);
-
+export function getConnectedWallet(cookies) {
   const connectedWalletCookie = cookies.get(CACHE_KEY.connectedWallet);
 
   let connectedWallet = null;

@@ -55,6 +55,10 @@ export function useEnsureConnectedWalletLoggedIn() {
   );
 
   const login = useCallback(async () => {
+    if (!connectedWallet) {
+      return false;
+    }
+
     setLoading(true);
     try {
       const address = encodeAddressToChain(connectedWallet.address, chain);
@@ -63,16 +67,13 @@ export function useEnsureConnectedWalletLoggedIn() {
 
       if (error) {
         dispatch(newErrorToast(error.message));
-      }
-
-      if (!result?.challenge) {
-        return;
+        return false;
       }
 
       let challengeAnswer;
       try {
         challengeAnswer = await signWith(
-          result.challenge,
+          result?.challenge,
           connectedWallet.address,
           connectedWallet.wallet,
         );
@@ -80,7 +81,7 @@ export function useEnsureConnectedWalletLoggedIn() {
         if (e.message !== "Cancelled") {
           dispatch(newErrorToast(e.message));
         }
-        return;
+        return false;
       }
 
       try {
@@ -98,13 +99,17 @@ export function useEnsureConnectedWalletLoggedIn() {
           if (!loginResult.email && !dontRemindEmail) {
             openLoginPopup({ initView: "email" });
           }
+
+          return true;
         }
 
         if (loginError) {
           dispatch(newErrorToast(loginError.message));
+          return false;
         }
       } catch (e) {
         dispatch(newErrorToast(e.message));
+        return false;
       }
     } finally {
       setLoading(false);
@@ -127,14 +132,7 @@ export function useEnsureConnectedWalletLoggedIn() {
       // Already logged
       return true;
     }
-    try {
-      await login();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return true;
-    }
-
-    return false;
+    return await login();
   }, [dispatch, loginUser, login]);
 
   return {

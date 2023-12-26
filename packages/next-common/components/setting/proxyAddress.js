@@ -7,18 +7,15 @@ import {
   newSuccessToast,
 } from "../../store/reducers/toastSlice";
 import { InputWrapper } from "./styled";
-import {
-  fetchAndUpdateUser,
-  useUser,
-  useUserDispatch,
-} from "../../context/user";
+import { fetchAndUpdateUser, useUserDispatch } from "../../context/user";
 import ErrorMessage from "../styled/errorMessage";
 import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
-import { usePageProps } from "next-common/context/page";
 import { useEnsureConnectedWalletLoggedIn } from "next-common/utils/login";
+import { useConnectedAddress } from "next-common/context/connectedAddress";
+import { useConnectedWallet } from "next-common/context/connectedWallet";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -38,12 +35,10 @@ const SuccessMessage = styled.div`
 export default function ProxyAddress() {
   const api = useApi();
   const dispatch = useDispatch();
-  const loginUser = useUser();
-  const { userPublicInfo } = usePageProps();
-  const proxyAddress = loginUser
-    ? loginUser?.proxyAddress
-    : userPublicInfo?.proxyAddress;
-  const address = loginUser ? loginUser?.address : userPublicInfo?.address;
+  const connectedUser = useConnectedAddress();
+  const connectedWallet = useConnectedWallet();
+  const proxyAddress = connectedUser?.proxyAddress;
+  const address = connectedWallet?.address;
 
   const [inputAddress, setInputAddres] = useState(proxyAddress || "");
   const [isLoading, setIsLoading] = useState(false);
@@ -93,15 +88,15 @@ export default function ProxyAddress() {
 
     setIsLoading(true);
 
-    if (!ensureLogin()) {
-      return;
-    }
-
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { success, proxyTypes } = await checkProxy(
         api,
         inputAddress,
-        loginUser?.address,
+        address,
       );
       if (proxyTypes.length === 0) {
         setErrorMsg("Can't find the proxy setting on-chain.");
@@ -136,11 +131,11 @@ export default function ProxyAddress() {
   const onUnset = async () => {
     setIsLoading(true);
 
-    if (!ensureLogin()) {
-      return;
-    }
-
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { result, error } = await nextApi.delete("user/proxyaddress");
       if (result) {
         await fetchAndUpdateUser(userDispatch);

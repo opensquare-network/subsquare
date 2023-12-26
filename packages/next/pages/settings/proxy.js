@@ -8,12 +8,23 @@ import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { withCommonProps } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
-import { getConnectedWallet } from "next-common/services/serverSide/getConnectedWallet";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { useEffect } from "react";
+import { useUser } from "next-common/context/user";
+import { useRouter } from "next/router";
+import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 
 export default function ProxyPage() {
+  const loginUser = useUser();
+  const router = useRouter();
+  const { connectedWallet } = useConnectedWalletContext();
+
+  useEffect(() => {
+    if (!loginUser && !connectedWallet) {
+      router.push("/");
+    }
+  }, [loginUser, connectedWallet, router]);
+
   return (
     <SettingLayout>
       <SettingSection>
@@ -30,21 +41,4 @@ export default function ProxyPage() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const connectedWallet = getConnectedWallet(context);
-  let userPublicInfo = null;
-  if (connectedWallet) {
-    const { result } = await ssrNextApi.fetch(
-      `/users/${connectedWallet.address}/public-info`,
-    );
-    userPublicInfo = result;
-  }
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      userPublicInfo,
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = getServerSidePropsWithTracks;
