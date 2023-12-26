@@ -2115,10 +2115,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.41.0":
-  version: 1.41.0
-  resolution: "@osn/icons@npm:1.41.0"
-  checksum: 7013b3e19776b2e89e43fe62c7841878476c4cf1095cc8086e5d9a121ed1a489a2c063a8ae9c84c942d7d2ff9db33ac7f08bd4f27cca427762039cef79546122
+"@osn/icons@npm:^1.47.0":
+  version: 1.47.0
+  resolution: "@osn/icons@npm:1.47.0"
+  checksum: ab28b130a4698c5ff11f9d11b1f129c261a5bcae2c1b47d595a6b251cbfdbaa0c71ab51d2310f0ef1f340e6dfaa49bc0f921664b449d68ba4ab96e8688174fba
   languageName: node
   linkType: hard
 
@@ -3397,7 +3397,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.41.0
+    "@osn/icons": ^1.47.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3432,7 +3432,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.41.0
+    "@osn/icons": ^1.47.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -4301,6 +4301,13 @@ __metadata:
   version: 2.0.0
   resolution: "astral-regex@npm:2.0.0"
   checksum: 876231688c66400473ba505731df37ea436e574dd524520294cc3bbc54ea40334865e01fa0d074d74d036ee874ee7e62f486ea38bc421ee8e6a871c06f011766
+  languageName: node
+  linkType: hard
+
+"attr-accept@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "attr-accept@npm:2.2.2"
+  checksum: 496f7249354ab53e522510c1dc8f67a1887382187adde4dc205507d2f014836a247073b05e9d9ea51e2e9c7f71b0d2aa21730af80efa9af2d68303e5f0565c4d
   languageName: node
   linkType: hard
 
@@ -6555,6 +6562,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"file-selector@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "file-selector@npm:0.6.0"
+  dependencies:
+    tslib: ^2.4.0
+  checksum: 7d051b6e5d793f3c6e2ab287ba5e7c2c6a0971bccc9d56e044c8047ba483e18f60fc0b5771c951dc707c0d15f4f36ccb4f1f1aaf385d21ec8f7700dadf8325ba
+  languageName: node
+  linkType: hard
+
 "fill-range@npm:^7.0.1":
   version: 7.0.1
   resolution: "fill-range@npm:7.0.1"
@@ -7970,6 +7986,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.find@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.find@npm:4.6.0"
+  checksum: b737f849a4fe36f5c3664ea636780dda2fde18335021faf80cdfdcb300ed75441da6f55cfd6de119092d8bb2ddbc4433f4a8de4b99c0b9c8640465b0901c717c
+  languageName: node
+  linkType: hard
+
 "lodash.findlast@npm:^4.6.0":
   version: 4.6.0
   resolution: "lodash.findlast@npm:4.6.0"
@@ -8590,7 +8613,7 @@ __metadata:
   dependencies:
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.41.0
+    "@osn/icons": ^1.47.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^0.12.7
     "@osn/provider-options": 1.1.0
@@ -8622,6 +8645,7 @@ __metadata:
     lodash.countby: ^4.6.0
     lodash.debounce: ^4.0.8
     lodash.difference: ^4.5.0
+    lodash.find: ^4.6.0
     lodash.findlast: ^4.6.0
     lodash.findlastindex: ^4.6.0
     lodash.flatten: ^4.4.0
@@ -8649,6 +8673,7 @@ __metadata:
     react-chartjs-2: ^5.1.0
     react-datepicker: ^4.8.0
     react-dom: ^18.2.0
+    react-dropzone: ^14.2.3
     react-json-view: ^1.21.3
     react-redux: ^8.0.5
     react-slider: ^2.0.4
@@ -9610,6 +9635,19 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
   checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
+  languageName: node
+  linkType: hard
+
+"react-dropzone@npm:^14.2.3":
+  version: 14.2.3
+  resolution: "react-dropzone@npm:14.2.3"
+  dependencies:
+    attr-accept: ^2.2.2
+    file-selector: ^0.6.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ">= 16.8 || 18.0.0"
+  checksum: 174b744d5ca898cf3d84ec1aeb6cef5211c446697e45dc8ece8287a03d291f8d07253206d5a1247ef156fd385d65e7de666d4d5c2986020b8543b8f2434e8b40
   languageName: node
   linkType: hard
 

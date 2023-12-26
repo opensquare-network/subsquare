@@ -14,19 +14,26 @@ const columns = [
   },
   {
     name: "Call",
-    style: { textAlign: "left", minWidth: "280px" },
+    style: { textAlign: "left", minWidth: "256px" },
   },
   {
     name: "Approving",
-    style: { textAlign: "left", width: "128px", minWidth: "128px" },
+    style: { textAlign: "left", width: "120px", minWidth: "120px" },
   },
   {
     name: "Signatories",
-    style: { textAlign: "left", width: "128px", minWidth: "128px" },
+    style: { textAlign: "left", width: "120px", minWidth: "120px" },
   },
   {
     name: "Status",
-    style: { textAlign: "right", width: "128px", minWidth: "128px" },
+    style: { textAlign: "right", width: "160px", minWidth: "160px" },
+  },
+  {
+    name: "",
+    style: {
+      width: 80,
+      minWidth: 80,
+    },
   },
 ];
 

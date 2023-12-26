@@ -89,7 +89,9 @@ function AchainableLebels({ labels }) {
 export default function AchainableProfile({ id }) {
   const data = useAchainableData(id);
   const { labels } = data || {};
-  const visibleLabels = labels?.filter(({ result }) => result);
+  const visibleLabels = labels?.filter(
+    (label) => label.result && label.name !== "Is Polkadot Fellowship Member",
+  );
 
   if (!visibleLabels || !visibleLabels.length) {
     return null;

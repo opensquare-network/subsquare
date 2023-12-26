@@ -13,14 +13,14 @@ function getInitNodeUrl(chain) {
 
   const settings = getChainSettings(chain);
   const chainNodes = settings.endpoints;
+  if (chainNodes.length <= 0) {
+    throw new Error(`Can not find nodes for ${chain}`);
+  }
+
   const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
   if (node) {
     return node.url;
-  } else if (chainNodes) {
-    return chainNodes[0].url;
   }
-
-  throw new Error(`Can not find nodes for ${chain}`);
 }
 
 const nodeSlice = createSlice({
@@ -32,7 +32,7 @@ const nodeSlice = createSlice({
   },
   reducers: {
     setCurrentNode(state, { payload }) {
-      const { url, refresh } = payload;
+      const { url, refresh, saveLocalStorage = true } = payload;
       const beforeUrl = state.currentNode;
 
       state.currentNode = url;
@@ -43,11 +43,18 @@ const nodeSlice = createSlice({
           return item;
         }
       });
-      localStorage.setItem("nodeUrl", url);
+
+      if (saveLocalStorage) {
+        localStorage.setItem("nodeUrl", url);
+      }
 
       if (refresh) {
         window.location.href = `https://${chain}.subsquare.io`;
       }
+    },
+    removeCurrentNode(state) {
+      localStorage.removeItem("nodeUrl");
+      state.currentNode = null;
     },
     setNodesDelay(state, { payload }) {
       (payload || []).forEach((item) => {
@@ -65,7 +72,11 @@ export const currentNodeSelector = (state) => state.node?.currentNode;
 export const nodesSelector = (state) => state.node?.nodes;
 export const nodesHeightSelector = (state) => state.node?.nodesHeight;
 
-export const { setCurrentNode, setNodesDelay, setNodeBlockHeight } =
-  nodeSlice.actions;
+export const {
+  setCurrentNode,
+  removeCurrentNode,
+  setNodesDelay,
+  setNodeBlockHeight,
+} = nodeSlice.actions;
 
 export default nodeSlice.reducer;

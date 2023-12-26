@@ -8,6 +8,7 @@ import {
 import { AddressUser } from "next-common/components/user";
 import { Approving, Call, Signatories, Status, When } from "../fields";
 import columns from "./colmns";
+import MultisigSignField from "../signField";
 
 export default function DesktopList() {
   const myMultisigs = useSelector(myMultisigsSelector);
@@ -39,6 +40,7 @@ export default function DesktopList() {
       args={multisig.state.args}
       updateAt={multisig.updateAt}
     />,
+    <MultisigSignField key="signStatus" multisig={multisig} />,
   ]);
 
   return (

@@ -1,8 +1,6 @@
-import React from "react";
 import {
   MenuOverview,
   MenuDiscussions,
-  MenuPolkassembly,
   MenuCalendar,
   MenuOffChainVoting,
 } from "@osn/icons/subsquare";
@@ -11,19 +9,15 @@ import { CHAIN } from "next-common/utils/constants";
 
 const chainSettings = getChainSettings(CHAIN);
 
-let polkassemblyMenu = {
-  value: "polkassembly",
-  name: "Polkassembly",
-  pathname: "/polkassembly/discussions",
-  extraMatchNavMenuActivePathnames: ["/polkassembly/posts/[id]"],
-  icon: <MenuPolkassembly />,
-};
-
 export const discussionsMenu = {
   value: "discussions",
   name: "Discussions",
   pathname: "/discussions",
-  extraMatchNavMenuActivePathnames: ["/posts/[id]"],
+  extraMatchNavMenuActivePathnames: [
+    "/posts/[id]",
+    "/polkassembly/discussions",
+    "/polkassembly/posts/[id]",
+  ],
   icon: <MenuDiscussions />,
 };
 
@@ -40,10 +34,6 @@ const commonMenus = {
 
 if (chainSettings.hasDiscussions !== false) {
   commonMenus.items.push(discussionsMenu);
-}
-
-if (chainSettings.hasPolkassemblyDiscussions) {
-  commonMenus.items.push(polkassemblyMenu);
 }
 
 commonMenus.items.push({

@@ -7,6 +7,7 @@ import {
 import { useSelector } from "react-redux";
 import { Approving, Call, Signatories, Status, When } from "./fields";
 import Loading from "next-common/components/loading";
+import MultisigSignField from "./signField";
 
 const Field = tw.div`flex justify-between`;
 
@@ -14,22 +15,15 @@ const FieldName = tw.span`text-textTertiary`;
 
 function Head({ multisig }) {
   return (
-    <div className="flex flex-col">
-      <div className="flex justify-between">
-        <Call
-          key="call"
-          when={multisig.when}
-          call={multisig.call}
-          callHash={multisig.callHash}
-          callHex={multisig.callHex}
-        />
-        <Status
-          key="status"
-          name={multisig.state.name}
-          args={multisig.state.args}
-          updateAt={multisig.updateAt}
-        />
-      </div>
+    <div className="flex justify-between items-start">
+      <Call
+        key="call"
+        when={multisig.when}
+        call={multisig.call}
+        callHash={multisig.callHash}
+        callHex={multisig.callHex}
+      />
+      <MultisigSignField multisig={multisig} />
     </div>
   );
 }
@@ -37,6 +31,15 @@ function Head({ multisig }) {
 function Fields({ multisig }) {
   return (
     <div className="flex flex-col gap-[4px]">
+      <Field className="mb-3">
+        <FieldName></FieldName>
+        <Status
+          key="status"
+          name={multisig.state.name}
+          args={multisig.state.args}
+          updateAt={multisig.updateAt}
+        />
+      </Field>
       <Field>
         <FieldName>When</FieldName>
         <When
