@@ -11,19 +11,18 @@ export default function ChainLogo({ className = "" }) {
   }
 
   // NOTE: workaround, should find some React way to check is same source
+  // check is same source
   const isDarkLogoOnLightMode =
     chainSettings.navLogo === chainSettings.navLogoDark;
 
-  const logo =
-    // check is same source
-    isDarkLogoOnLightMode ? (
-      <chainSettings.navLogo />
-    ) : (
-      <>
-        <chainSettings.navLogo className="dark:hidden" />
-        <chainSettings.navLogoDark className="hidden dark:block" />
-      </>
-    );
+  const logo = isDarkLogoOnLightMode ? (
+    <chainSettings.navLogo />
+  ) : (
+    <>
+      <chainSettings.navLogo className="dark:hidden" />
+      <chainSettings.navLogoDark className="hidden dark:block" />
+    </>
+  );
 
   return (
     <div className={cn("relative", className)}>
