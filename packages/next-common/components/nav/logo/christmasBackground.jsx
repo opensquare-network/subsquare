@@ -28,9 +28,7 @@ export default function ChainLogoChristmasBackground() {
           isKusama && "bg-[url('/bg-christmas-kusama-light.png')]",
           "dark:bg-[url('/bg-christmas-dark.png')]",
         )}
-      >
-        {/* <img src="/bg-christmas-light.png" alt="" /> */}
-      </div>
+      />
     )
   );
 }
