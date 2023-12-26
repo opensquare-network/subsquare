@@ -12,7 +12,7 @@ const now = dayjs();
 const isBetweenChristmas =
   now.month() === MONTH && now.date() >= START_DATE && now.date() <= END_DATE;
 
-export default function ChainLogoChristmasBackground() {
+export default function ChainLogoEventBackground() {
   const chainSettings = useChainSettings();
   const isKusama = chainSettings.value === Chains.kusama;
   const [navCollapsed] = useNavCollapsed();

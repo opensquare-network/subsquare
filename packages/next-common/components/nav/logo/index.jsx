@@ -1,6 +1,6 @@
 import { useChainSettings } from "next-common/context/chain";
 import Link from "next/link";
-import ChainLogoChristmasBackground from "./christmasBackground";
+import ChainLogoEventBackground from "./eventBackground";
 import { cn } from "next-common/utils";
 
 export default function ChainLogo({ className = "" }) {
@@ -27,7 +27,7 @@ export default function ChainLogo({ className = "" }) {
       <Link href="/" className="z-[1]">
         {logo}
       </Link>
-      <ChainLogoChristmasBackground />
+      <ChainLogoEventBackground />
     </div>
   );
 }
