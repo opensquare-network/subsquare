@@ -26,9 +26,9 @@ const event = find(events, (event) => {
 export default function ChainLogoEventBackground({ preferDark }) {
   const [navCollapsed] = useNavCollapsed();
 
-  const lightBackground = `url('/project-menu-bg-${event.background}-light-${
+  const lightBackground = `url('/project-menu-bg-${event.background}-${
     preferDark ? "dark" : "light"
-  }.png')`;
+  }-light.png')`;
   const darkBackground = `url('/project-menu-bg-${event.background}-dark.png')`;
 
   return (
