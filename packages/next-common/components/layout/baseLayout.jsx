@@ -14,6 +14,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
 import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
 import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
+import useConnectApis from "next-common/services/chain/apis/useConnectApis";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -21,12 +22,13 @@ import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useS
 export default function BaseLayout({ children, seoInfo = {} }) {
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
+  useConnectApis();
+  useUpdateNodesDelay();
 
   const api = useApi();
   useBlockTime(api);
   useSubscribeChainHead(api);
 
-  useUpdateNodesDelay();
   useStoreDemocracyLockPeriod();
   useStoreConvictionVotingLockPeriod();
 
