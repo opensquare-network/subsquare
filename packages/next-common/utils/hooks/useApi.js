@@ -1,22 +1,37 @@
-import getApi from "../../services/chain/api";
-import { useSelector } from "react-redux";
-import { currentNodeSelector } from "../../store/reducers/nodeSlice";
+import getApi, { getBestApi } from "../../services/chain/api";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  currentNodeSelector,
+  setCurrentNode,
+} from "../../store/reducers/nodeSlice";
 import { useChain } from "../../context/chain";
 import { useEffect, useState } from "react";
+import { getApiMap } from "next-common/services/chain/apis/new";
 
 let lastApi;
 
 export default function useApi() {
   const chain = useChain();
-  const endpoint = useSelector(currentNodeSelector);
+  const currentEndpoint = useSelector(currentNodeSelector);
   const [api, setApi] = useState();
+  const apiMap = getApiMap();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getApi(chain, endpoint).then((api) => {
-      lastApi = api;
-      setApi(api);
-    });
-  }, [endpoint]);
+    if (currentEndpoint) {
+      getApi(chain, currentEndpoint).then((api) => {
+        lastApi = api;
+        setApi(api);
+      });
+    } else {
+      getBestApi(apiMap).then((api) => {
+        lastApi = api;
+        setApi(api);
+        const endpoint = api._options.provider.endpoint;
+        dispatch(setCurrentNode({ url: endpoint, saveLocalStorage: false }));
+      });
+    }
+  }, [currentEndpoint, apiMap, dispatch]);
 
   return api;
 }

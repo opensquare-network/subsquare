@@ -13,14 +13,14 @@ function getInitNodeUrl(chain) {
 
   const settings = getChainSettings(chain);
   const chainNodes = settings.endpoints;
+  if (chainNodes.length <= 0) {
+    throw new Error(`Can not find nodes for ${chain}`);
+  }
+
   const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
   if (node) {
     return node.url;
-  } else if (chainNodes) {
-    return chainNodes[0].url;
   }
-
-  throw new Error(`Can not find nodes for ${chain}`);
 }
 
 const nodeSlice = createSlice({
@@ -32,7 +32,7 @@ const nodeSlice = createSlice({
   },
   reducers: {
     setCurrentNode(state, { payload }) {
-      const { url, refresh } = payload;
+      const { url, refresh, saveLocalStorage = true } = payload;
       const beforeUrl = state.currentNode;
 
       state.currentNode = url;
@@ -43,7 +43,10 @@ const nodeSlice = createSlice({
           return item;
         }
       });
-      localStorage.setItem("nodeUrl", url);
+
+      if (saveLocalStorage) {
+        localStorage.setItem("nodeUrl", url);
+      }
 
       if (refresh) {
         window.location.href = `https://${chain}.subsquare.io`;

@@ -5,3 +5,12 @@ export default async function getApi(chain, endpoint) {
   await api.isReady;
   return api;
 }
+
+export function getBestApi(apiMap) {
+  let promises = [];
+  for (const api of apiMap.values()) {
+    promises.push(api.isReady);
+  }
+
+  return Promise.any(promises);
+}
