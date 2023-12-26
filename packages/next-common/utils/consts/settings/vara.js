@@ -4,7 +4,6 @@ import {
   ProjectIconVaraDark,
   ProjectIconVaraLight,
   ProjectLogoVaraDark,
-  ProjectLogoVaraLight,
 } from "@osn/icons/subsquare";
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
@@ -67,7 +66,7 @@ const vara = {
   links,
   avatar: ProjectIconVaraLight,
   darkAvatar: ProjectIconVaraDark,
-  navLogo: ProjectLogoVaraLight,
+  navLogo: ProjectLogoVaraDark,
   navLogoDark: ProjectLogoVaraDark,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
