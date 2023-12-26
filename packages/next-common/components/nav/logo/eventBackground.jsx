@@ -1,3 +1,7 @@
+// file format:
+// - light: project-menu-bg-{event.name}-{light|dark}-dark.png
+// - dark:  project-menu-bg-{event.name}-dark.png
+
 import dayjs from "dayjs";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
@@ -11,7 +15,6 @@ const events = [
     month: 12,
     startDate: 23,
     endDate: 31,
-    background: "christmas",
   },
 ];
 
@@ -26,10 +29,10 @@ const event = find(events, (event) => {
 export default function ChainLogoEventBackground({ preferDark }) {
   const [navCollapsed] = useNavCollapsed();
 
-  const lightBackground = `url('/project-menu-bg-${event.background}-${
+  const lightBackground = `url('/project-menu-bg-${event.name}-${
     preferDark ? "dark" : "light"
   }-light.png')`;
-  const darkBackground = `url('/project-menu-bg-${event.background}-dark.png')`;
+  const darkBackground = `url('/project-menu-bg-${event.name}-dark.png')`;
 
   return (
     event && (
