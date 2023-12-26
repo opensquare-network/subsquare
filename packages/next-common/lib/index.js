@@ -9,6 +9,7 @@ import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
 import { adminsApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
+import { getConnectedWallet } from "next-common/services/serverSide/getConnectedWallet";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -27,14 +28,7 @@ export function withCommonProps(
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const detailPageProperties = getDetailPageProperties(context);
-
-    const connectedWalletCookie = cookies.get(CACHE_KEY.connectedWallet);
-    let connectedWallet = null;
-    try {
-      connectedWallet = JSON.parse(decodeURIComponent(connectedWalletCookie));
-    } catch (e) {
-      // ignore
-    }
+    const connectedWallet = getConnectedWallet(context);
 
     const [props, { result: user }, { result: admins }] = await Promise.all([
       getServerSideProps(context),

@@ -8,7 +8,10 @@ import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
-import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { withCommonProps } from "next-common/lib";
+import { ssrNextApi } from "next-common/services/nextApi";
+import { getConnectedWallet } from "next-common/services/serverSide/getConnectedWallet";
 
 export default function ProxyPage() {
   return (
@@ -27,4 +30,21 @@ export default function ProxyPage() {
   );
 }
 
-export const getServerSideProps = getServerSidePropsWithTracks;
+export const getServerSideProps = withCommonProps(async (context) => {
+  const connectedWallet = getConnectedWallet(context);
+  let userPublicInfo = null;
+  if (connectedWallet) {
+    const { result } = await ssrNextApi.fetch(
+      `/users/${connectedWallet.address}/public-info`,
+    );
+    userPublicInfo = result;
+  }
+  const tracksProps = await fetchOpenGovTracksProps();
+
+  return {
+    props: {
+      userPublicInfo,
+      ...tracksProps,
+    },
+  };
+});

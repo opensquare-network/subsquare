@@ -4,7 +4,7 @@ import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { encodeAddressToChain } from "next-common/services/address";
 import { stringToHex } from "@polkadot/util";
-import { updateUser, useUserDispatch } from "next-common/context/user";
+import { updateUser, useUser, useUserDispatch } from "next-common/context/user";
 import { useChain } from "next-common/context/chain";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
@@ -19,6 +19,7 @@ import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 export function useEnsureConnectedWalletLoggedIn() {
   const chain = useChain();
+  const loginUser = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -121,8 +122,24 @@ export function useEnsureConnectedWalletLoggedIn() {
     redirectUrl,
   ]);
 
+  const ensureLogin = useCallback(async () => {
+    if (loginUser) {
+      // Already logged
+      return true;
+    }
+    try {
+      await login();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+      return true;
+    }
+
+    return false;
+  }, [dispatch, loginUser, login]);
+
   return {
     login,
+    ensureLogin,
     loading,
   };
 }

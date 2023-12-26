@@ -17,6 +17,8 @@ import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
+import { usePageProps } from "next-common/context/page";
+import { useEnsureConnectedWalletLoggedIn } from "next-common/utils/login";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -37,40 +39,43 @@ export default function ProxyAddress() {
   const api = useApi();
   const dispatch = useDispatch();
   const loginUser = useUser();
-  const [inputAddress, setInputAddres] = useState(
-    loginUser?.proxyAddress || "",
-  );
+  const { userPublicInfo } = usePageProps();
+  const proxyAddress = loginUser
+    ? loginUser?.proxyAddress
+    : userPublicInfo?.proxyAddress;
+  const address = loginUser ? loginUser?.address : userPublicInfo?.address;
+
+  const [inputAddress, setInputAddres] = useState(proxyAddress || "");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
   const [successMsg, setSuccessMsg] = useState();
   const userDispatch = useUserDispatch();
-  const isSet = !!loginUser?.proxyAddress;
+  const isSet = !!proxyAddress;
+  const { ensureLogin } = useEnsureConnectedWalletLoggedIn();
 
   useEffect(() => {
-    setInputAddres(loginUser?.proxyAddress || "");
+    setInputAddres(proxyAddress || "");
     setErrorMsg();
     setSuccessMsg();
 
-    if (api && loginUser?.proxyAddress) {
-      checkProxy(api, loginUser?.proxyAddress, loginUser?.address).then(
-        ({ success, proxyTypes }) => {
-          if (proxyTypes.length === 0) {
-            setErrorMsg("Can't find the proxy setting on-chain.");
-            return;
-          }
-          if (proxyTypes.length > 0 && !success) {
-            setErrorMsg(
-              `Proxy type: ${proxyTypes.join(
-                ",",
-              )}. Proxy type should be Governance, NonTransfer, or Any.`,
-            );
-            return;
-          }
-          setSuccessMsg(`Proxy type: ${proxyTypes.join(",")}`);
-        },
-      );
+    if (api && proxyAddress) {
+      checkProxy(api, proxyAddress, address).then(({ success, proxyTypes }) => {
+        if (proxyTypes.length === 0) {
+          setErrorMsg("Can't find the proxy setting on-chain.");
+          return;
+        }
+        if (proxyTypes.length > 0 && !success) {
+          setErrorMsg(
+            `Proxy type: ${proxyTypes.join(
+              ",",
+            )}. Proxy type should be Governance, NonTransfer, or Any.`,
+          );
+          return;
+        }
+        setSuccessMsg(`Proxy type: ${proxyTypes.join(",")}`);
+      });
     }
-  }, [api, loginUser?.proxyAddress]);
+  }, [api, proxyAddress, address]);
 
   const onSet = async () => {
     setErrorMsg();
@@ -87,6 +92,10 @@ export default function ProxyAddress() {
     }
 
     setIsLoading(true);
+
+    if (!ensureLogin()) {
+      return;
+    }
 
     try {
       const { success, proxyTypes } = await checkProxy(
@@ -126,6 +135,11 @@ export default function ProxyAddress() {
 
   const onUnset = async () => {
     setIsLoading(true);
+
+    if (!ensureLogin()) {
+      return;
+    }
+
     try {
       const { result, error } = await nextApi.delete("user/proxyaddress");
       if (result) {
