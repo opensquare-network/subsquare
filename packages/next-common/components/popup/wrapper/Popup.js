@@ -27,7 +27,11 @@ export default function Popup({
         <Dialog.Overlay />
         <Dialog.Content
           asChild
-          onEscapeKeyDown={onClose}
+          onEscapeKeyDown={(event) => {
+            if (!maskClosable) {
+              event.preventDefault();
+            }
+          }}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <div
