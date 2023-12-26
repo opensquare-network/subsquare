@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import getApi from "../../services/chain/api";
 import { setNodesDelay } from "../../store/reducers/nodeSlice";
 import { sleep } from "../index";
 import { useChain } from "../../context/chain";
@@ -30,9 +29,8 @@ const testNet = async (api) => {
   return await Promise.race([fetchApiTime(api), timeout(TIMEOUT)]);
 };
 
-async function updateNodeDelay(chain, url) {
+async function getNodeDelay(chain, api) {
   try {
-    const api = await getApi(chain, url);
     return await testNet(api);
   } catch (e) {
     console.error("we have a error to test network", e);
@@ -51,7 +49,7 @@ function useUpdateNodesDelay() {
 
       if (endpointUrls && endpointUrls.length > 0) {
         const url = endpointUrls[count % endpointUrls.length];
-        const delay = await updateNodeDelay(chain, url);
+        const delay = await getNodeDelay(chain, apiMap.get(url));
         dispatch(setNodesDelay([{ url, delay }]));
       }
 
