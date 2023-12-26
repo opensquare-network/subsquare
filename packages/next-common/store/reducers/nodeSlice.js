@@ -52,6 +52,10 @@ const nodeSlice = createSlice({
         window.location.href = `https://${chain}.subsquare.io`;
       }
     },
+    removeCurrentNode(state) {
+      localStorage.removeItem("nodeUrl");
+      state.currentNode = null;
+    },
     setNodesDelay(state, { payload }) {
       (payload || []).forEach((item) => {
         const node = (state.nodes || []).find((node) => item.url === node.url);
@@ -68,7 +72,11 @@ export const currentNodeSelector = (state) => state.node?.currentNode;
 export const nodesSelector = (state) => state.node?.nodes;
 export const nodesHeightSelector = (state) => state.node?.nodesHeight;
 
-export const { setCurrentNode, setNodesDelay, setNodeBlockHeight } =
-  nodeSlice.actions;
+export const {
+  setCurrentNode,
+  removeCurrentNode,
+  setNodesDelay,
+  setNodeBlockHeight,
+} = nodeSlice.actions;
 
 export default nodeSlice.reducer;

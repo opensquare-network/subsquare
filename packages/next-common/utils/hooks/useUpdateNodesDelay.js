@@ -47,7 +47,13 @@ function useUpdateNodesDelay() {
     const intervalId = setInterval(async () => {
       const endpointUrls = [...apiMap.keys()];
 
-      if (endpointUrls && endpointUrls.length > 0) {
+      if (count === 0) {
+        // update delay for all endpoints at the first time
+        for (const url of endpointUrls) {
+          const delay = await getNodeDelay(chain, apiMap.get(url));
+          dispatch(setNodesDelay([{ url, delay }]));
+        }
+      } else if (endpointUrls && endpointUrls.length > 0) {
         const url = endpointUrls[count % endpointUrls.length];
         const delay = await getNodeDelay(chain, apiMap.get(url));
         dispatch(setNodesDelay([{ url, delay }]));
