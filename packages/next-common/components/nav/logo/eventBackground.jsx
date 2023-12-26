@@ -1,10 +1,10 @@
-import { useChainSettings } from "next-common/context/chain";
 import dayjs from "dayjs";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import find from "lodash.find";
 
 const now = dayjs();
+
 const events = [
   {
     name: "christmas",
@@ -23,11 +23,13 @@ const event = find(events, (event) => {
   );
 });
 
-export default function ChainLogoEventBackground() {
-  const chainSettings = useChainSettings();
+export default function ChainLogoEventBackground({ preferDark }) {
   const [navCollapsed] = useNavCollapsed();
 
-  chainSettings;
+  const lightBackground = `url('/project-menu-bg-${event.background}-light-${
+    preferDark ? "dark" : "light"
+  }.png')`;
+  const darkBackground = `url('/project-menu-bg-${event.background}-dark.png')`;
 
   return (
     event && (
@@ -40,9 +42,8 @@ export default function ChainLogoEventBackground() {
           "dark:[background-image:var(--event-dark-background)]",
         )}
         style={{
-          "--event-light-background": `url('/project-menu-bg-${event.background}-light-light.png')`,
-          "--event-dark-background": `url('/project-menu-bg-${event.background}-dark.png')`,
-          // backgroundImage: "var(--event-light-background)",
+          "--event-light-background": lightBackground,
+          "--event-dark-background": darkBackground,
         }}
       />
     )

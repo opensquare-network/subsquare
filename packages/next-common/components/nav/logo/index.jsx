@@ -11,9 +11,12 @@ export default function ChainLogo({ className = "" }) {
   }
 
   // NOTE: workaround, should find some React way to check is same source
+  const isDarkLogoOnLightMode =
+    chainSettings.navLogo === chainSettings.navLogoDark;
+
   const logo =
     // check is same source
-    chainSettings.navLogo === chainSettings.navLogoDark ? (
+    isDarkLogoOnLightMode ? (
       <chainSettings.navLogo />
     ) : (
       <>
@@ -27,7 +30,7 @@ export default function ChainLogo({ className = "" }) {
       <Link href="/" className="z-[1]">
         {logo}
       </Link>
-      <ChainLogoEventBackground />
+      <ChainLogoEventBackground preferDark={isDarkLogoOnLightMode} />
     </div>
   );
 }
