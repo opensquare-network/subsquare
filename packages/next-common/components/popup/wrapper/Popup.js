@@ -13,6 +13,7 @@ export default function Popup({
   className = "",
   wide,
   extra,
+  maskClosable = true,
 }) {
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
@@ -26,14 +27,18 @@ export default function Popup({
         <Dialog.Overlay />
         <Dialog.Content
           asChild
-          onEscapeKeyDown={onClose}
+          onEscapeKeyDown={(event) => {
+            if (!maskClosable) {
+              event.preventDefault();
+            }
+          }}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <div
             className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
             style={{ zIndex: zOverlay }}
             onMouseDown={(event) => {
-              if (event.target === event.currentTarget) {
+              if (maskClosable && event.target === event.currentTarget) {
                 onClose();
               }
             }}

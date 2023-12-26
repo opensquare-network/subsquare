@@ -11,6 +11,9 @@ export default function MaybePolkadotSigner({
   autoCloseAfterLogin,
   title,
   Component,
+  wide,
+  maskClosable,
+  className,
   ...props
 }) {
   const dispatch = useDispatch();
@@ -70,7 +73,13 @@ export default function MaybePolkadotSigner({
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
     >
-      <Popup onClose={onClose} title={title}>
+      <Popup
+        wide={wide}
+        onClose={onClose}
+        title={title}
+        maskClosable={maskClosable}
+        className={className}
+      >
         <Component onClose={onClose} {...props} />
       </Popup>
     </MaybeSignerConnected>

@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 
-export function OptionsWrapper({ itemHeight, maxDisplayItem, ...props }) {
+export function OptionsWrapper(props) {
   return (
     <div
       {...props}
@@ -12,12 +12,7 @@ export function OptionsWrapper({ itemHeight, maxDisplayItem, ...props }) {
         "w-[calc(100%+2px)]",
         "text-textPrimary",
         "dark:border dark:border-neutral300",
-        maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
       )}
-      style={{
-        maxHeight: maxDisplayItem && itemHeight * maxDisplayItem,
-        ...props.style,
-      }}
     />
   );
 }

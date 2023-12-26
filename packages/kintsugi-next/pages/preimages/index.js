@@ -2,6 +2,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import usePreimageHashs from "next-common/hooks/usePreimageHashs";
 import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
+import PreImagesFooter from "next-common/components/preImages/footer";
 
 export default function Preimages() {
   const title = "Preimages";
@@ -14,6 +15,7 @@ export default function Preimages() {
       seoInfo={seoInfo}
       title={title}
       description="Preimage can be submitted and stored on-chain against the hash later, upon the proposal's dispatch."
+      summaryFooter={<PreImagesFooter />}
     >
       <PreImagesList data={hashs} />
     </ListLayout>

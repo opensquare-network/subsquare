@@ -11,6 +11,7 @@ function PopupContent({
   actionCallback = emptyFunction,
   isLoading = false,
   confirmText = "Confirm",
+  disabled = false,
   children,
 }) {
   const api = useApi();
@@ -22,6 +23,7 @@ function PopupContent({
       {children}
       <PopupButtonWrapper>
         <PrimaryButton
+          disabled={disabled}
           isLoading={isLoading}
           onClick={() => actionCallback(api, signerAccount)}
         >

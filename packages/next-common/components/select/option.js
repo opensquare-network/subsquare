@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled, { css } from "styled-components";
 
 const OptionWrapper = styled.div`
@@ -24,13 +24,10 @@ const OptionWrapper = styled.div`
     `}
 `;
 
-function Option({
-  active = false,
-  children,
-  onClick = () => {},
-  height,
-  ...rest
-}) {
+function Option(
+  { active = false, children, onClick = () => {}, height, ...rest },
+  ref,
+) {
   return (
     <OptionWrapper
       role="option"
@@ -38,10 +35,11 @@ function Option({
       onClick={onClick}
       height={height}
       {...rest}
+      ref={ref}
     >
       {children}
     </OptionWrapper>
   );
 }
 
-export default Option;
+export default forwardRef(Option);
