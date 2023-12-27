@@ -6,7 +6,7 @@ import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import { accountMenu } from "./consts";
 import PrimaryButton from "../buttons/primaryButton";
-import { logoutUser, useUser, useUserDispatch } from "../../context/user";
+import { useUser } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
@@ -75,14 +75,12 @@ export default function SidebarAccount() {
   const user = useUser();
   const router = useRouter();
   const node = useChainSettings();
-  const userDispatch = useUserDispatch();
   const { openLoginPopup } = useLoginPopup();
   const { disconnect: disconnectWallet } = useConnectedWalletContext();
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      disconnectWallet();
-      await logoutUser(userDispatch);
+      await disconnectWallet();
     } else if (item.pathname) {
       await router.push(item.pathname);
     }

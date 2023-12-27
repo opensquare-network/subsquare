@@ -7,7 +7,7 @@ import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { isKeyRegisteredUser } from "../../utils";
 import { accountMenu, accountMenuForKeyAccount } from "./consts";
-import { logoutUser, useUser, useUserDispatch } from "../../context/user";
+import { useUser } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
@@ -68,7 +68,6 @@ export default function HeaderAccount() {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const userDispatch = useUserDispatch();
   const isMounted = useIsMounted();
   const { openLoginPopup } = useLoginPopup();
 
@@ -82,8 +81,7 @@ export default function HeaderAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      disconnectWallet();
-      await logoutUser(userDispatch);
+      await disconnectWallet();
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
