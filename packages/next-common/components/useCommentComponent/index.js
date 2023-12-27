@@ -17,7 +17,7 @@ export default function useCommentComponent() {
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown",
+    loginUser?.preference?.editor || "markdown",
   );
 
   const users = useMentionList(post, commentsData);
