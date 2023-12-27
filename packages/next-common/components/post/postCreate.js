@@ -17,7 +17,7 @@ import { useUser } from "../../context/user";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import PostLabel from "./postLabel";
 import Editor from "../editor";
-import { useEnsureConnectedWalletLoggedIn } from "next-common/utils/login";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -75,7 +75,7 @@ export default function PostCreate() {
   const [isAdvanced, setIsAdvanced] = useState(false);
   const isEmpty = content === "" || content === "<p><br></p>";
   const [selectedLabels, setSelectedLabels] = useState([]);
-  const { ensureLogin } = useEnsureConnectedWalletLoggedIn();
+  const { ensureLogin } = useEnsureLogin();
 
   const createPost = async () => {
     setCreating(true);

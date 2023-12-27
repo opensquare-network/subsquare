@@ -17,7 +17,7 @@ import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
-import { useEnsureConnectedWalletLoggedIn } from "next-common/utils/login";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -47,7 +47,7 @@ export default function ProxyAddress() {
   const [successMsg, setSuccessMsg] = useState();
   const userDispatch = useUserDispatch();
   const isSet = !!proxyAddress;
-  const { ensureLogin } = useEnsureConnectedWalletLoggedIn();
+  const { ensureLogin } = useEnsureLogin();
 
   useEffect(() => {
     setInputAddres(proxyAddress || "");

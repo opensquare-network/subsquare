@@ -1,23 +1,23 @@
 import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { stringToHex } from "@polkadot/util";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
 import { encodeAddressToChain } from "next-common/services/address";
-import { stringToHex } from "@polkadot/util";
 import { updateUser, useUser, useUserDispatch } from "next-common/context/user";
+import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 import { useChain } from "next-common/context/chain";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import { useConnectedWalletContext } from "next-common/context/connectedWallet";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
-import { CACHE_KEY } from "./constants";
-import { useCookieValue } from "./hooks/useCookieValue";
-import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import { CACHE_KEY } from "next-common/utils/constants";
+import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 
-export function useEnsureConnectedWalletLoggedIn() {
+export function useEnsureLogin() {
   const chain = useChain();
   const user = useUser();
   const router = useRouter();
@@ -56,6 +56,7 @@ export function useEnsureConnectedWalletLoggedIn() {
 
   const login = useCallback(async () => {
     if (!connectedWallet) {
+      dispatch(newErrorToast("Connected wallet is not found."));
       return false;
     }
 
@@ -129,7 +130,7 @@ export function useEnsureConnectedWalletLoggedIn() {
 
   const ensureLogin = useCallback(async () => {
     if (user && user.isLogin) {
-      // Already logged
+      // Already login
       return true;
     }
     return await login();

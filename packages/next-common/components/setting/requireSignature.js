@@ -1,16 +1,18 @@
-import { useEnsureConnectedWalletLoggedIn } from "next-common/utils/login";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import PrimaryButton from "../buttons/primaryButton";
 import { ContentWrapper, InfoMessage } from "./styled";
 
 export default function RequireSignature() {
-  const { login } = useEnsureConnectedWalletLoggedIn();
+  const { ensureLogin } = useEnsureLogin();
   return (
     <ContentWrapper>
       <InfoMessage>
         Please complete your signature before continuing with notification
         Settings.
       </InfoMessage>
-      <PrimaryButton onClick={login}>Sign with connected wallet</PrimaryButton>
+      <PrimaryButton onClick={ensureLogin}>
+        Sign with connected wallet
+      </PrimaryButton>
     </ContentWrapper>
   );
 }

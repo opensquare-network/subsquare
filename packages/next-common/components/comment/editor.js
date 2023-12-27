@@ -13,7 +13,7 @@ import { useChain } from "../../context/chain";
 import { useDetailType } from "../../context/page";
 import noop from "lodash.noop";
 import Editor from "../editor";
-import { useEnsureConnectedWalletLoggedIn } from "next-common/utils/login";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -59,7 +59,7 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useIsMountedBool();
-  const { ensureLogin } = useEnsureConnectedWalletLoggedIn();
+  const { ensureLogin } = useEnsureLogin();
 
   const createComment = async () => {
     if (!isMounted()) {
