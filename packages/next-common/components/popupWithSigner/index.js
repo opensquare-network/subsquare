@@ -20,8 +20,6 @@ export default function PopupWithSigner({
     return <SelectWalletPopup onClose={onClose} />;
   }
 
-  //TODO: handle case of user logged in but connected address is empty
-
   if (connectedWallet?.wallet === WalletTypes.METAMASK) {
     return (
       <MaybeMetamaskSigner
