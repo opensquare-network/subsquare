@@ -37,6 +37,7 @@ const moonriver = {
   endpoints: DEFAULT_MOONRIVER_NODES,
   navLogo: ProjectLogoMoonriverDark,
   navLogoDark: ProjectLogoMoonriverDark,
+  navPreferDark: true,
   avatar: ProjectIconMoonriverLight,
   darkAvatar: ProjectIconMoonriverDark,
   group: MenuGroups.KusamaAndParachains,

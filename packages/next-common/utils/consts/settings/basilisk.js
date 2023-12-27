@@ -58,6 +58,7 @@ const basilisk = {
   darkAvatar: ProjectIconBasiliskDark,
   navLogo: ProjectLogoBasiliskDark,
   navLogoDark: ProjectLogoBasiliskDark,
+  navPreferDark: true,
   endpoints: DEFAULT_BASILISK_NODES,
   links,
   group: MenuGroups.KusamaAndParachains,

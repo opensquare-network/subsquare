@@ -68,6 +68,7 @@ const vara = {
   darkAvatar: ProjectIconVaraDark,
   navLogo: ProjectLogoVaraDark,
   navLogoDark: ProjectLogoVaraDark,
+  navPreferDark: true,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   noDemocracyModule: true,

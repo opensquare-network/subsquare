@@ -69,6 +69,7 @@ const litentry = {
   darkAvatar: ProjectIconLitentryDark,
   navLogo: ProjectLogoLitentryDark,
   navLogoDark: ProjectLogoLitentryDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
   hasStatescan: true,

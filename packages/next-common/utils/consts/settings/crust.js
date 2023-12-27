@@ -61,6 +61,7 @@ const crust = {
   darkAvatar: ProjectIconCrustDark,
   navLogo: ProjectLogoCrustDark,
   navLogoDark: ProjectLogoCrustDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,

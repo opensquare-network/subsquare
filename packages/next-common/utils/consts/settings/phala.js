@@ -63,6 +63,7 @@ const phala = {
   darkAvatar: ProjectIconPhalaDark,
   navLogo: ProjectLogoPhalaDark,
   navLogoDark: ProjectLogoPhalaDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,

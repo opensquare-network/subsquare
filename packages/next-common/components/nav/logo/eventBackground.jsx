@@ -1,11 +1,12 @@
 // file format:
-// - light: project-menu-bg-{event.name}-{light|dark}-dark.png
+// - light: project-menu-bg-{event.name}-{light|dark}-light.png
 // - dark:  project-menu-bg-{event.name}-dark.png
 
 import dayjs from "dayjs";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import find from "lodash.find";
+import { useChainSettings } from "next-common/context/chain";
 
 const now = dayjs();
 
@@ -26,11 +27,12 @@ const event = find(events, (event) => {
   );
 });
 
-export default function ChainLogoEventBackground({ preferDark }) {
+export default function ChainLogoEventBackground() {
   const [navCollapsed] = useNavCollapsed();
+  const chainSettings = useChainSettings();
 
   const lightBackground = `url('/project-menu-bg-${event.name}-${
-    preferDark ? "dark" : "light"
+    chainSettings.navPreferDark ? "dark" : "light"
   }-light.png')`;
   const darkBackground = `url('/project-menu-bg-${event.name}-dark.png')`;
 

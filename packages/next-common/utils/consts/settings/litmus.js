@@ -53,6 +53,7 @@ const litmus = {
   darkAvatar: ProjectIconLitmusDark,
   navLogo: ProjectLogoLitmusLight,
   navLogoDark: ProjectLogoLitmusLight,
+  navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
   hasStatescan: true,
