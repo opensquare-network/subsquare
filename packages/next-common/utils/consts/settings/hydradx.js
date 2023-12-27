@@ -59,6 +59,7 @@ const hydradx = {
   darkAvatar: ProjectIconHydradxDark,
   navLogo: ProjectLogoHydradxDark,
   navLogoDark: ProjectLogoHydradxDark,
+  navPreferDark: true,
   endpoints: defaultHydradxEndpoints,
   links,
   group: MenuGroups.PolkadotAndParachains,

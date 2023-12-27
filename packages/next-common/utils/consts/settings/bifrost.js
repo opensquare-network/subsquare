@@ -69,6 +69,7 @@ const bifrost = {
   darkAvatar: ProjectIconBifrostKusamaDark,
   navLogo: ProjectLogoBifrostKusamaDark,
   navLogoDark: ProjectLogoBifrostKusamaDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
   subscanDomain: "bifrost-kusama",

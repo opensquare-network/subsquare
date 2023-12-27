@@ -57,6 +57,7 @@ const zeitgeist = {
   darkAvatar: ProjectIconZeigeistDark,
   navLogo: ProjectLogoZeigeistDark,
   navLogoDark: ProjectLogoZeigeistDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],

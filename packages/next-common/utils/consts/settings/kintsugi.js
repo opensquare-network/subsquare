@@ -77,6 +77,7 @@ const kintsugi = {
   darkAvatar: ProjectIconKintsugiDark,
   navLogo: ProjectLogoKintsugiDark,
   navLogoDark: ProjectLogoKintsugiDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),

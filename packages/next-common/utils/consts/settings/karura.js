@@ -75,6 +75,7 @@ const karura = {
   darkAvatar: ProjectIconKaruraDark,
   navLogo: ProjectLogoKaruraDark,
   navLogoDark: ProjectLogoKaruraDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],

@@ -40,6 +40,7 @@ const bifrostPolkadot = {
   darkAvatar: ProjectIconBifrostPolkadotDark,
   navLogo: ProjectLogoBifrostPolkadotDark,
   navLogoDark: ProjectLogoBifrostPolkadotDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
   subscanDomain: "bifrost",

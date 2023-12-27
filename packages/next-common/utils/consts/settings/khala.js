@@ -39,6 +39,7 @@ const khala = {
   darkAvatar: ProjectIconKhalaDark,
   navLogo: ProjectLogoKhalaDark,
   navLogoDark: ProjectLogoKhalaDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
