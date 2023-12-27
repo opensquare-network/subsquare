@@ -14,7 +14,7 @@ import { useUser } from "next-common/context/user";
 
 export default function KeyAccountSettingPage() {
   const loginUser = useUser();
-  const address = loginUser?.address;
+  const address = loginUser?.address || "";
 
   const router = useRouter();
 
