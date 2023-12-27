@@ -13,6 +13,9 @@ import useForm from "../../utils/hooks/useForm";
 import { updateUser, useUserDispatch } from "../../context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import Link from "next/link";
+import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -25,6 +28,8 @@ export default function MailLogin({ setView }) {
   const [loading, setLoading] = useState(false);
   const userDispatch = useUserDispatch();
   const { closeLoginPopup } = useLoginPopup();
+  const redirectUrl = useSelector(loginRedirectUrlSelector);
+  const router = useRouter();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -37,6 +42,9 @@ export default function MailLogin({ setView }) {
       if (res.result) {
         updateUser(res.result, userDispatch);
         closeLoginPopup();
+        if (redirectUrl) {
+          router.push(redirectUrl);
+        }
       } else if (res.error) {
         setErrors(res.error);
       }
