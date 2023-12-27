@@ -1,5 +1,5 @@
 // file format:
-// - light: project-menu-bg-{event.name}-{light|dark}-dark.png
+// - light: project-menu-bg-{event.name}-{light|dark}-light.png
 // - dark:  project-menu-bg-{event.name}-dark.png
 
 import dayjs from "dayjs";
