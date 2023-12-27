@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.3
+
+date: 2023-12-27
+
+- [Big]Support creating new preimage on preimages page.
+- Improve RPC endpoints selection and fault toleration.
+- Merge polkassembly and subsquare discussions to a single page.
+- Create a merry Christmas logo background.
+- Show multisig status on my account multisig page.
+- Fix styles.
+
 ### 3.7.2
 
 date: 2023-12-22
