@@ -10,6 +10,9 @@ import WalletAddressSelect from "./walletAddressSelect";
 import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
 import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 import { encodeAddressToChain } from "next-common/services/address";
+import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -27,6 +30,8 @@ export default function AddressLogin({ setView }) {
   const { closeLoginPopup } = useLoginPopup();
   const [lastLoginAddress, setLastLoginAddress] = useState();
   const { connect: connectWallet } = useConnectedWalletContext();
+  const router = useRouter();
+  const redirectUrl = useSelector(loginRedirectUrlSelector);
 
   useEffect(() => {
     const info = getStorageAddressInfo(CACHE_KEY.lastLoginAddress);
@@ -48,6 +53,9 @@ export default function AddressLogin({ setView }) {
       name: selectedAccount.name,
     });
     closeLoginPopup();
+    if (redirectUrl) {
+      router.push(redirectUrl);
+    }
   };
 
   return (

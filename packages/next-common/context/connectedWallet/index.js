@@ -24,9 +24,7 @@ export function ConnectedWalletProvider({
     async (wallet) => {
       setConnectedWallet(wallet);
       setCookie(CACHE_KEY.connectedWallet, JSON.stringify(wallet), 365);
-      if (user?.isLogin) {
-        await fetchAndUpdateUser(userDispatch);
-      }
+      await fetchAndUpdateUser(userDispatch);
     },
     [user, userDispatch],
   );
@@ -36,6 +34,8 @@ export function ConnectedWalletProvider({
     clearCookie(CACHE_KEY.connectedWallet);
     if (user?.isLogin) {
       await logoutUser(userDispatch);
+    } else {
+      await fetchAndUpdateUser(userDispatch);
     }
   }, [user, userDispatch]);
 
