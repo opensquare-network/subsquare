@@ -9,8 +9,8 @@ import {
 } from "react";
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
-import { useConnectedAddress } from "next-common/context/connectedAddress";
 import { isSameAddress } from "next-common/utils";
+import { useConnectedWallet } from "next-common/context/connectedWallet";
 
 export const SignerContext = createContext();
 
@@ -51,13 +51,13 @@ function useSetSigner() {
 export function SignerContextProvider({ children, extensionAccounts }) {
   const [signerAccount, setSignerAccount] = useState();
   const user = useUser();
-  const connectedAddress = useConnectedAddress();
+  const connectedWallet = useConnectedWallet();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
   const setSigner = useSetSigner();
 
   useEffect(() => {
-    if (!userAddress && !connectedAddress) {
+    if (!userAddress && !connectedWallet) {
       return;
     }
 
@@ -69,7 +69,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       account = extensionAccounts?.find(
         (item) =>
           isSameAddress(item.address, userAddress) &&
-          item.meta?.source === connectedAddress?.wallet,
+          item.meta?.source === connectedWallet?.wallet,
       );
       if (account) {
         isLoggedInAddress = true;
@@ -77,11 +77,11 @@ export function SignerContextProvider({ children, extensionAccounts }) {
     }
 
     // Check connected wallet address
-    if (!account && connectedAddress) {
+    if (!account && connectedWallet) {
       account = extensionAccounts?.find(
         (item) =>
-          isSameAddress(item.address, connectedAddress?.address) &&
-          item.meta?.source === connectedAddress?.wallet,
+          isSameAddress(item.address, connectedWallet?.address) &&
+          item.meta?.source === connectedWallet?.wallet,
       );
       if (account) {
         isLoggedInAddress = false;
@@ -101,13 +101,13 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       proxyAddress,
       realAddress: isLoggedInAddress
         ? proxyAddress || userAddress
-        : connectedAddress?.address,
+        : connectedWallet?.address,
       isLoggedInAddress,
     });
   }, [
     extensionAccounts,
     userAddress,
-    connectedAddress,
+    connectedWallet,
     proxyAddress,
     setSigner,
   ]);

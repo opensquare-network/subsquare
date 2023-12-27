@@ -41,7 +41,7 @@ export default function CommentActions({
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown",
+    loginUser?.preference?.editor || "markdown",
   );
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();

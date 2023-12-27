@@ -94,23 +94,23 @@ export default function ProxyAddress() {
         return;
       }
 
-      // const { success, proxyTypes } = await checkProxy(
-      //   api,
-      //   inputAddress,
-      //   address,
-      // );
-      // if (proxyTypes.length === 0) {
-      //   setErrorMsg("Can't find the proxy setting on-chain.");
-      //   return;
-      // }
-      // if (proxyTypes.length > 0 && !success) {
-      //   setErrorMsg(
-      //     `Proxy type: ${proxyTypes.join(
-      //       ",",
-      //     )}. Proxy type should be Governance, NonTransfer, or Any.`,
-      //   );
-      //   return;
-      // }
+      const { success, proxyTypes } = await checkProxy(
+        api,
+        inputAddress,
+        address,
+      );
+      if (proxyTypes.length === 0) {
+        setErrorMsg("Can't find the proxy setting on-chain.");
+        return;
+      }
+      if (proxyTypes.length > 0 && !success) {
+        setErrorMsg(
+          `Proxy type: ${proxyTypes.join(
+            ",",
+          )}. Proxy type should be Governance, NonTransfer, or Any.`,
+        );
+        return;
+      }
 
       const { result, error } = await nextApi.put("user/proxyaddress", {
         address: inputAddress,

@@ -4,7 +4,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybePolkadotSigner from "./maybePolkadotSigner";
 import MaybeMetamaskSigner from "./maybeMetamaskSigner";
 import SelectWalletPopup from "../selectWallet";
-import { useConnectedAddress } from "next-common/context/connectedAddress";
+import { useConnectedWallet } from "next-common/context/connectedWallet";
 
 export default function PopupWithSigner({
   Component,
@@ -14,15 +14,15 @@ export default function PopupWithSigner({
   ...props
 }) {
   const loginUser = useUser();
-  const connectedAddress = useConnectedAddress();
+  const connectedWallet = useConnectedWallet();
 
-  if (!loginUser && !connectedAddress) {
+  if (!loginUser && !connectedWallet) {
     return <SelectWalletPopup onClose={onClose} />;
   }
 
   //TODO: handle case of user logged in but connected address is empty
 
-  if (connectedAddress?.wallet === WalletTypes.METAMASK) {
+  if (connectedWallet?.wallet === WalletTypes.METAMASK) {
     return (
       <MaybeMetamaskSigner
         onClose={onClose}

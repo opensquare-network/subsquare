@@ -5,11 +5,7 @@ import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
 import WalletAddressSelect from "../login/walletAddressSelect";
-import {
-  setConnectedAddress,
-  useConnectedAddress,
-  useConnectedAddressDispatch,
-} from "next-common/context/connectedAddress";
+import { useConnectedWalletContext } from "next-common/context/connectedWallet";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -22,8 +18,7 @@ export default function SelectWalletContent() {
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
-  const connectedAddress = useConnectedAddress();
-  const connectedAddressDispatch = useConnectedAddressDispatch();
+  const { connectedWallet, connect } = useConnectedWalletContext();
 
   const doConnectAddress = async () => {
     if (!selectedAccount?.address) {
@@ -31,7 +26,8 @@ export default function SelectWalletContent() {
       return;
     }
 
-    setConnectedAddress(connectedAddressDispatch, {
+    connect({
+      name: selectedAccount.name,
       address: selectedAccount.address,
       wallet: selectedAccount.meta?.source || selectedWallet,
     });
@@ -49,7 +45,7 @@ export default function SelectWalletContent() {
           setSelectWallet={setSelectWallet}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
-          lastUsedAddress={connectedAddress?.address}
+          lastUsedAddress={connectedWallet?.address}
         />
 
         <ButtonWrapper>
