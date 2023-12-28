@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { logoutUser, useUserDispatch } from "next-common/context/user";
+import { logoutUser, useUserContext } from "next-common/context/user";
 import { CACHE_KEY } from "next-common/utils/constants";
 
 export default function SystemVersionUpgrade({ children }) {
-  const userDispatch = useUserDispatch();
+  const userContext = useUserContext();
 
   useEffect(() => {
     // Detect old storage key
@@ -14,9 +14,9 @@ export default function SystemVersionUpgrade({ children }) {
       localStorage.removeItem(CACHE_KEY.lastLoggedInAddress);
       localStorage.removeItem(CACHE_KEY.lastLoginExtension);
       // Require user to re-login
-      logoutUser(userDispatch);
+      logoutUser(userContext);
     }
-  }, [userDispatch]);
+  }, [userContext]);
 
   return children;
 }

@@ -1,20 +1,20 @@
 import PostCreate from "next-common/components/post/postCreate";
 import { useEffect } from "react";
-import { useIsLogin } from "next-common/context/user";
+import { useIsLoggedIn } from "next-common/context/user";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default function PostCreatePage() {
-  const isLogin = useIsLogin();
+  const isLoggedIn = useIsLoggedIn();
   const { openLoginPopup } = useLoginPopup();
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!isLoggedIn) {
       openLoginPopup();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogin]);
+  }, [isLoggedIn]);
 
   const breadcrumbItems = [
     {

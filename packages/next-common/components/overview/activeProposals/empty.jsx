@@ -2,17 +2,17 @@ import { SystemPlus } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import NoData from "next-common/components/noData";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import { useIsLogin } from "next-common/context/user";
+import { useIsLoggedIn } from "next-common/context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useRouter } from "next/router";
 
 export default function EmptyRecentProposals() {
   const { openLoginPopup } = useLoginPopup();
-  const isLogin = useIsLogin();
+  const isLoggedIn = useIsLoggedIn();
   const router = useRouter();
 
   function handleNewDiscussion() {
-    if (!isLogin) {
+    if (!isLoggedIn) {
       openLoginPopup();
       return;
     }

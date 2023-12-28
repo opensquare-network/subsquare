@@ -3,7 +3,7 @@ import { useUser } from "../../context/user";
 import { isSameAddress } from "../../utils";
 import SelectWalletPopup from "../selectWallet";
 import { SignerContextProvider } from "./context";
-import { useConnectedWallet } from "next-common/context/connectedWallet";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
 
 export default function MaybeSignerConnected({
   children,
@@ -11,14 +11,14 @@ export default function MaybeSignerConnected({
   onClose,
 }) {
   const loginUser = useUser();
-  const connectedWallet = useConnectedWallet();
+  const connectedAccount = useConnectedAccount();
 
   if (
-    !(loginUser?.address || connectedWallet) ||
+    !(loginUser?.address || connectedAccount) ||
     !extensionAccounts?.find(
       (acc) =>
         isSameAddress(acc.address, loginUser?.address) ||
-        isSameAddress(acc.address, connectedWallet?.address),
+        isSameAddress(acc.address, connectedAccount?.address),
     )
   ) {
     return <SelectWalletPopup onClose={onClose} />;

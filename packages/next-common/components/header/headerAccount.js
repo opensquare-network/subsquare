@@ -13,7 +13,7 @@ import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import GhostButton from "../buttons/ghostButton.js";
 import { SystemProfile } from "@osn/icons/subsquare";
-import { useConnectedWalletContext } from "next-common/context/connectedWallet/index.js";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { SystemUser, AddressUser } from "../user";
 
 const Wrapper = Relative;
@@ -62,8 +62,8 @@ function ProfileMenuItem({ onClick }) {
 
 export default function HeaderAccount() {
   const user = useUser();
-  const { connectedWallet, disconnect: disconnectWallet } =
-    useConnectedWalletContext();
+  const { connectedAccount, disconnect: disconnectAccount } =
+    useConnectedAccountContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -81,7 +81,7 @@ export default function HeaderAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await disconnectWallet();
+      await disconnectAccount();
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
@@ -102,7 +102,7 @@ export default function HeaderAccount() {
     } else {
       menu = accountMenu;
     }
-  } else if (connectedWallet) {
+  } else if (connectedAccount) {
     menu = accountMenuForKeyAccount;
   }
 
@@ -115,10 +115,10 @@ export default function HeaderAccount() {
         <SystemUser user={user} noEvent />
       </GhostButton>
     );
-  } else if (connectedWallet) {
+  } else if (connectedAccount) {
     connectBtn = (
       <GhostButton onClick={() => setShow(!show)}>
-        <AddressUser add={connectedWallet?.address} noEvent />
+        <AddressUser add={connectedAccount?.address} noEvent />
       </GhostButton>
     );
   }

@@ -10,7 +10,7 @@ import { InputWrapper } from "./styled";
 import {
   fetchAndUpdateUser,
   useUser,
-  useUserDispatch,
+  useUserContext,
 } from "../../context/user";
 import ErrorMessage from "../styled/errorMessage";
 import useApi from "../../utils/hooks/useApi";
@@ -45,7 +45,7 @@ export default function ProxyAddress() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
   const [successMsg, setSuccessMsg] = useState();
-  const userDispatch = useUserDispatch();
+  const userContext = useUserContext();
   const isSet = !!proxyAddress;
   const { ensureLogin } = useEnsureLogin();
 
@@ -116,7 +116,7 @@ export default function ProxyAddress() {
         address: inputAddress,
       });
       if (result) {
-        await fetchAndUpdateUser(userDispatch);
+        await fetchAndUpdateUser(userContext);
         dispatch(newSuccessToast("The proxy address has been set."));
       }
       if (error) {
@@ -139,7 +139,7 @@ export default function ProxyAddress() {
 
       const { result, error } = await nextApi.delete("user/proxyaddress");
       if (result) {
-        await fetchAndUpdateUser(userDispatch);
+        await fetchAndUpdateUser(userContext);
         dispatch(newSuccessToast("The proxy address has been unset."));
       }
       if (error) {

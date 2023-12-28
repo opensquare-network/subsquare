@@ -12,7 +12,7 @@ import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 import {
   fetchAndUpdateUser,
   useUser,
-  useUserDispatch,
+  useUserContext,
 } from "../../context/user";
 import PrimaryButton from "../buttons/primaryButton";
 import EmailJunkWarning from "./emailJunkWarning";
@@ -77,15 +77,13 @@ export default function NotificationEmail({ isOn, setIsOn }) {
   const [inputEmail, setInputEmail] = useState(email);
   const { countdown, counting, startCountdown, resetCountdown } =
     useCountdown(60);
-  const userDispatch = useUserDispatch();
+  const userContext = useUserContext();
 
   useEffect(() => {
     if (counting && countdown % 5 === 0) {
-      fetchAndUpdateUser(userDispatch).then(() => {
-        // todo: maybe log the count
-      });
+      fetchAndUpdateUser(userContext);
     }
-  }, [userDispatch, counting, countdown]);
+  }, [userContext, counting, countdown]);
 
   if (counting && (countdown === 0 || (email === inputEmail && verified))) {
     resetCountdown();

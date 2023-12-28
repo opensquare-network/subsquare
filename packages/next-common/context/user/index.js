@@ -1,79 +1,91 @@
-import React, { useEffect } from "react";
-import { createContext, useContext, useReducer } from "react";
+import React, { useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import nextApi from "../../services/nextApi";
-import { emptyFunction } from "../../utils";
-
-export const USER_UPDATE_ACTION = "UPDATE";
-export const USER_LOGOUT_ACTION = "LOGOUT";
 
 const UserContext = createContext(null);
-const UserDispatchContext = createContext(emptyFunction);
 
-export default function UserProvider({ user, children }) {
-  const [initialUser, dispatch] = useReducer(userReducer, user);
+export default function UserProvider({
+  user: _user,
+  userStatus: _userStatus,
+  children,
+}) {
+  const [user, setUser] = useState(_user);
+  const [userStatus, setUserStatus] = useState(_userStatus);
   useEffect(() => {
-    dispatch({ type: USER_UPDATE_ACTION, user });
-  }, [user]);
+    setUser(_user);
+    setUserStatus(_userStatus);
+  }, [_user, _userStatus]);
 
   return (
-    <UserContext.Provider value={initialUser}>
-      <UserDispatchContext.Provider value={dispatch}>
-        {children}
-      </UserDispatchContext.Provider>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        userStatus,
+        setUserStatus,
+      }}
+    >
+      {children}
     </UserContext.Provider>
   );
 }
 
+export function useUserContext() {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUserContext must be used within a UserProvider");
+  }
+  return context;
+}
+
 export function useUser() {
-  return useContext(UserContext);
+  const { user } = useUserContext();
+  return user;
 }
 
-export function useIsLogin() {
-  const user = useContext(UserContext);
-  return !!user;
+export function useSetUser() {
+  const { setUser } = useUserContext();
+  return setUser;
 }
 
-export function useUserDispatch() {
-  return useContext(UserDispatchContext);
+export function useIsLoggedIn() {
+  const { userStatus } = useUserContext();
+  return userStatus?.isLoggedIn;
 }
 
-function userReducer(post, action) {
-  if (action.type === USER_UPDATE_ACTION) {
-    return action.user;
-  } else if (action.type === USER_LOGOUT_ACTION) {
-    return null;
+export function useSetUserStatus() {
+  const { setUserStatus } = useUserContext();
+  return setUserStatus;
+}
+
+export async function fetchAndUpdateUser(userContext) {
+  const { setUser, setUserStatus } = userContext;
+  const options = {
+    method: "GET",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+  };
+  const [{ result: user }, { result: userStatus }] = await Promise.all([
+    nextApi.fetch("user/profile", {}, options),
+    nextApi.fetch("user/status", {}, options),
+  ]);
+
+  if (user) {
+    setUser(user);
+  } else {
+    setUser(null);
   }
 
-  throw new Error(`Unknown user action: ${action.type}`);
-}
-
-export function updateUser(user, dispatch) {
-  dispatch({
-    type: USER_UPDATE_ACTION,
-    user,
-  });
-}
-
-export async function fetchAndUpdateUser(dispatch) {
-  const { result, error } = await nextApi.fetch(
-    "user/profile",
-    {},
-    {
-      method: "GET",
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-    },
-  );
-
-  if (result) {
-    updateUser(result, dispatch);
-  }
-  if (error && error.status === 401) {
-    updateUser(null, dispatch);
+  if (userStatus) {
+    setUserStatus(userStatus);
+  } else {
+    setUserStatus(null);
   }
 }
 
-export async function logoutUser(dispatch) {
+export async function logoutUser(userContext) {
+  const { setUser, setUserStatus } = userContext;
   await nextApi.post("auth/logout");
-  dispatch({ type: USER_LOGOUT_ACTION });
+  setUser(null);
+  setUserStatus(null);
 }

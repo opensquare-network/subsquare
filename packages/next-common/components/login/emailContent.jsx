@@ -15,7 +15,7 @@ import { GreyPanel } from "../styled/containers/greyPanel";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useRouter } from "next/router";
 import { SystemCheckboxOff, SystemCheckboxOn } from "@osn/icons/subsquare";
-import { useConnectedWalletContext } from "next-common/context/connectedWallet";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 const Label = styled.div`
   margin-bottom: 8px;
@@ -30,9 +30,9 @@ const Label = styled.div`
 export default function LoginEmailContent() {
   const chain = useChain();
   const loginUser = useUser();
-  const { connectedWallet } = useConnectedWalletContext();
+  const { connectedAccount } = useConnectedAccountContext();
   const address = loginUser?.address;
-  const accountName = connectedWallet?.name;
+  const accountName = connectedAccount?.name;
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
@@ -56,7 +56,7 @@ export default function LoginEmailContent() {
 
   return (
     <div className="space-y-6">
-      <PageTitleContainer>Login to SubSquare</PageTitleContainer>
+      <PageTitleContainer>Bind Email</PageTitleContainer>
 
       <GreyPanel className="text14Medium px-4 py-2.5 !rounded-lg text-textSecondary">
         Set email for receiving notifications

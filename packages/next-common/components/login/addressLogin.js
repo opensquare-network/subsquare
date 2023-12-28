@@ -8,7 +8,7 @@ import { useChain } from "../../context/chain";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import WalletAddressSelect from "./walletAddressSelect";
 import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
-import { useConnectedWalletContext } from "next-common/context/connectedWallet";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { encodeAddressToChain } from "next-common/services/address";
 import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
 import { useSelector } from "react-redux";
@@ -29,7 +29,7 @@ export default function AddressLogin({ setView }) {
   const dispatch = useDispatch();
   const { closeLoginPopup } = useLoginPopup();
   const [lastLoginAddress, setLastLoginAddress] = useState();
-  const { connect: connectWallet } = useConnectedWalletContext();
+  const { connect: connectAccount } = useConnectedAccountContext();
   const router = useRouter();
   const redirectUrl = useSelector(loginRedirectUrlSelector);
 
@@ -47,7 +47,7 @@ export default function AddressLogin({ setView }) {
     }
 
     const address = encodeAddressToChain(selectedAccount.address, chain);
-    connectWallet({
+    connectAccount({
       address,
       wallet: selectedWallet,
       name: selectedAccount.name,

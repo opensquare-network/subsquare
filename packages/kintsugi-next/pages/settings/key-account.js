@@ -16,8 +16,7 @@ import { serverSidePropsWithSummary } from "next-common/services/serverSide/serv
 
 export default function KeyAccount() {
   const chain = useChain();
-  const loginUser = useUser();
-  const user = loginUser;
+  const user = useUser();
   const address = user?.publicKey
     ? encodeAddressToChain(Buffer.from(user?.publicKey, "hex"), chain)
     : "";
@@ -25,31 +24,29 @@ export default function KeyAccount() {
   const router = useRouter();
 
   useEffect(() => {
-    if (loginUser === null) {
+    if (user === null) {
       router.push("/");
     }
-    if (loginUser && !isKeyRegisteredUser(loginUser)) {
+    if (user && !isKeyRegisteredUser(user)) {
       router.push("/settings/account");
     }
-  }, [loginUser, router]);
+  }, [user, router]);
 
   return (
-    <>
-      <SettingLayout>
-        <SettingSection>
-          <TitleContainer>Web3 Address</TitleContainer>
-          <ContentWrapper>
-            <Web3Address address={address} />
-          </ContentWrapper>
-        </SettingSection>
-        <SettingSection>
-          <TitleContainer>Logout</TitleContainer>
-          <ContentWrapper>
-            <Logout />
-          </ContentWrapper>
-        </SettingSection>
-      </SettingLayout>
-    </>
+    <SettingLayout>
+      <SettingSection>
+        <TitleContainer>Web3 Address</TitleContainer>
+        <ContentWrapper>
+          <Web3Address address={address} />
+        </ContentWrapper>
+      </SettingSection>
+      <SettingSection>
+        <TitleContainer>Logout</TitleContainer>
+        <ContentWrapper>
+          <Logout />
+        </ContentWrapper>
+      </SettingSection>
+    </SettingLayout>
   );
 }
 

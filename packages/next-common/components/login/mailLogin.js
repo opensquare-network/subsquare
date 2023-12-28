@@ -2,15 +2,15 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import nextApi from "../../services/nextApi";
-import ErrorText from "../ErrorText";
+import nextApi from "next-common/services/nextApi";
+import ErrorText from "next-common/components/ErrorText";
 import { FormButtonsWrapper, FormInputsWrapper, FormWrapper } from "./styled";
 import Username from "./username";
 import Password from "./password";
-import GhostButton from "../buttons/ghostButton";
-import PrimaryButton from "../buttons/primaryButton";
-import useForm from "../../utils/hooks/useForm";
-import { updateUser, useUserDispatch } from "../../context/user";
+import GhostButton from "next-common/components/buttons/ghostButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
+import useForm from "next-common/utils/hooks/useForm";
+import { useSetUser } from "next-common/context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import Link from "next/link";
 import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
@@ -26,7 +26,7 @@ const ForgetPassword = styled.div`
 export default function MailLogin({ setView }) {
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const userDispatch = useUserDispatch();
+  const setUser = useSetUser();
   const { closeLoginPopup } = useLoginPopup();
   const redirectUrl = useSelector(loginRedirectUrlSelector);
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function MailLogin({ setView }) {
       setLoading(true);
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
-        updateUser(res.result, userDispatch);
+        setUser(res.result);
         closeLoginPopup();
         if (redirectUrl) {
           router.push(redirectUrl);

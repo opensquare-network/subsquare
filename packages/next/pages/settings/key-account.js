@@ -13,19 +13,19 @@ import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import { useUser } from "next-common/context/user";
 
 export default function KeyAccountSettingPage() {
-  const loginUser = useUser();
-  const address = loginUser?.address || "";
+  const user = useUser();
+  const address = user?.address || "";
 
   const router = useRouter();
 
   useEffect(() => {
-    if (!loginUser) {
+    if (!user) {
       router.push("/");
     }
-    if (loginUser && !isKeyRegisteredUser(loginUser)) {
+    if (user && !isKeyRegisteredUser(user)) {
       router.push("/settings/account");
     }
-  }, [loginUser, router]);
+  }, [user, router]);
 
   return (
     <SettingLayout>

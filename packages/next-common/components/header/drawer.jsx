@@ -12,7 +12,7 @@ import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import SystemUser from "../user/systemUser";
-import { useConnectedWalletContext } from "next-common/context/connectedWallet";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 const Wrapper = styled.div``;
 
@@ -76,11 +76,11 @@ export default function SidebarAccount() {
   const router = useRouter();
   const node = useChainSettings();
   const { openLoginPopup } = useLoginPopup();
-  const { disconnect: disconnectWallet } = useConnectedWalletContext();
+  const { disconnect: disconnectAccount } = useConnectedAccountContext();
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await disconnectWallet();
+      await disconnectAccount();
     } else if (item.pathname) {
       await router.push(item.pathname);
     }

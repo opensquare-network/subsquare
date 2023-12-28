@@ -11,54 +11,59 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { useUser } from "next-common/context/user";
+import { useIsLoggedIn, useUser } from "next-common/context/user";
 import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
+import RequireSignature from "next-common/components/setting/requireSignature";
 
 export default function Account() {
-  const loginUser = useUser();
   const router = useRouter();
+  const user = useUser();
+  const isLoggedIn = useIsLoggedIn();
 
   useEffect(() => {
-    if (loginUser === null) {
+    if (user === null) {
       router.push("/");
     }
-    if (loginUser && isKeyRegisteredUser(loginUser)) {
+    if (user && isKeyRegisteredUser(user)) {
       router.push("/settings/key-account");
     }
-  }, [loginUser, router]);
+  }, [user, router]);
+
+  if (user && !isLoggedIn) {
+    return (
+      <SettingLayout>
+        <RequireSignature name="account" />
+      </SettingLayout>
+    );
+  }
 
   return (
-    <>
-      <SettingLayout>
-        <SettingSection>
-          <TitleContainer>Username</TitleContainer>
-          <ContentWrapper>
-            <Username username={loginUser?.username} />
-          </ContentWrapper>
-        </SettingSection>
-        <SettingSection>
-          <TitleContainer>Email</TitleContainer>
-          <ContentWrapper>
-            <Email
-              email={loginUser?.email}
-              verified={loginUser?.emailVerified}
-            />
-          </ContentWrapper>
-        </SettingSection>
-        <SettingSection>
-          <TitleContainer>Change Password</TitleContainer>
-          <ContentWrapper>
-            <Password />
-          </ContentWrapper>
-        </SettingSection>
-        <SettingSection>
-          <TitleContainer>Logout</TitleContainer>
-          <ContentWrapper>
-            <Logout />
-          </ContentWrapper>
-        </SettingSection>
-      </SettingLayout>
-    </>
+    <SettingLayout>
+      <SettingSection>
+        <TitleContainer>Username</TitleContainer>
+        <ContentWrapper>
+          <Username username={user?.username} />
+        </ContentWrapper>
+      </SettingSection>
+      <SettingSection>
+        <TitleContainer>Email</TitleContainer>
+        <ContentWrapper>
+          <Email email={user?.email} verified={user?.emailVerified} />
+        </ContentWrapper>
+      </SettingSection>
+      <SettingSection>
+        <TitleContainer>Change Password</TitleContainer>
+        <ContentWrapper>
+          <Password />
+        </ContentWrapper>
+      </SettingSection>
+      <SettingSection>
+        <TitleContainer>Logout</TitleContainer>
+        <ContentWrapper>
+          <Logout />
+        </ContentWrapper>
+      </SettingSection>
+    </SettingLayout>
   );
 }
 

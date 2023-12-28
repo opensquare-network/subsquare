@@ -10,7 +10,7 @@ import DiscussionEventsSubscription from "next-common/components/setting/notific
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
 import { ssrNextApi } from "next-common/services/nextApi";
 import RequireSignature from "next-common/components/setting/requireSignature";
-import { useUser } from "next-common/context/user";
+import { useUser, useIsLoggedIn } from "next-common/context/user";
 import { useEffect, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import { useRouter } from "next/router";
@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 export default function Notification() {
   const { unsubscribe } = usePageProps();
   const user = useUser();
+  const isLoggedIn = useIsLoggedIn();
   const router = useRouter();
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
 
@@ -34,10 +35,10 @@ export default function Notification() {
     }
   }, [user, router, unsubscribe]);
 
-  if (user && !user.isLogin) {
+  if (user && !isLoggedIn) {
     return (
       <SettingLayout>
-        <RequireSignature />
+        <RequireSignature name="notification" />
       </SettingLayout>
     );
   }

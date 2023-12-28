@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
-import { useUser } from "next-common/context/user";
+import { useIsLoggedIn, useUser } from "next-common/context/user";
+import RequireSignature from "next-common/components/setting/requireSignature";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
@@ -13,14 +14,23 @@ const LinkedAddressComp = dynamic(
 );
 
 export default function LinkedAddressPage() {
-  const loginUser = useUser();
+  const user = useUser();
+  const isLoggedIn = useIsLoggedIn();
   const router = useRouter();
 
   useEffect(() => {
-    if (loginUser === null) {
+    if (user === null) {
       router.push("/");
     }
-  }, [loginUser, router]);
+  }, [user, router]);
+
+  if (user && !isLoggedIn) {
+    return (
+      <SettingLayout>
+        <RequireSignature name="account" />
+      </SettingLayout>
+    );
+  }
 
   return (
     <SettingLayout>

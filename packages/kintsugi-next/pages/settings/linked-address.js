@@ -2,8 +2,9 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { useUser } from "next-common/context/user";
+import { useIsLoggedIn, useUser } from "next-common/context/user";
 import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
+import RequireSignature from "next-common/components/setting/requireSignature";
 
 const LinkedAddressComp = dynamic(
   () => import("next-common/components/linkedAddress"),
@@ -13,14 +14,23 @@ const LinkedAddressComp = dynamic(
 );
 
 export default function LinkedAddress() {
-  const loginUser = useUser();
   const router = useRouter();
+  const user = useUser();
+  const isLoggedIn = useIsLoggedIn();
 
   useEffect(() => {
-    if (loginUser === null) {
+    if (user === null) {
       router.push("/");
     }
-  }, [loginUser, router]);
+  }, [user, router]);
+
+  if (user && !isLoggedIn) {
+    return (
+      <SettingLayout>
+        <RequireSignature name="link address" />
+      </SettingLayout>
+    );
+  }
 
   return (
     <SettingLayout>

@@ -4,7 +4,7 @@ import { useUser } from "next-common/context/user";
 import { isKeyRegisteredUser } from "next-common/utils";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
-import { useConnectedWalletContext } from "next-common/context/connectedWallet";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,10 +22,10 @@ const Wrapper = styled.div`
 
 export default function SettingLayout(props) {
   const user = useUser();
-  const { connectedWallet } = useConnectedWalletContext();
+  const { connectedAccount } = useConnectedAccountContext();
   const chain = useChain();
   const isKeyAccount =
-    (user && isKeyRegisteredUser(user)) || (!user && connectedWallet);
+    (user && isKeyRegisteredUser(user)) || (!user && connectedAccount);
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
   let tabs = [];

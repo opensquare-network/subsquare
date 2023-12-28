@@ -15,7 +15,7 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
-import { updateUser, useUser, useUserDispatch } from "next-common/context/user";
+import { useSetUser, useUser } from "next-common/context/user";
 import { withCommonProps } from "next-common/lib";
 
 const Title = styled.div`
@@ -81,7 +81,7 @@ export default function Signup() {
   const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
-  const userDispatch = useUserDispatch();
+  const setUser = useSetUser();
 
   if (emailSent && countdown === 0) {
     router.replace("/");
@@ -102,7 +102,7 @@ export default function Signup() {
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
         if (isMounted.current) {
-          updateUser(res.result, userDispatch);
+          setUser(res.result);
           setSuccess(true);
         }
         sendVerifyEmail();

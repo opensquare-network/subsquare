@@ -98,7 +98,7 @@ export const CACHE_KEY = {
   dontRemindEmail: "dont-remind-email",
   navCollapsed: "nav-collapsed",
   navSubmenuVisible: "nav-submenu-visible",
-  connectedWallet: "connected-wallet",
+  connectedAccount: "connected-account",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

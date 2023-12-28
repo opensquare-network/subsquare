@@ -1,14 +1,14 @@
 import { ssrNextApi } from "next-common/services/nextApi";
-import { getConnectedWallet } from "next-common/services/serverSide/getConnectedWallet";
+import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
 
 export default async function fetchConnectedUser(cookies) {
-  const connectedWallet = getConnectedWallet(cookies);
-  if (!connectedWallet) {
+  const connectedAccount = getConnectedAccount(cookies);
+  if (!connectedAccount) {
     return null;
   }
 
   const { result } = ssrNextApi.fetch(
-    `users/${connectedWallet?.address}/public-info`,
+    `users/${connectedAccount?.address}/public-info`,
   );
   if (!result) {
     return null;
