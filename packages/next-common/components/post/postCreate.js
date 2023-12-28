@@ -59,7 +59,7 @@ const UploaderWrapper = styled.div`
 `;
 
 export default function PostCreate() {
-  const loginUser = useUser();
+  const user = useUser();
   const chain = useChain();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -67,7 +67,7 @@ export default function PostCreate() {
   const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference?.editor || "markdown",
+    user?.preference?.editor || "markdown",
   );
   const [bannerCid, setBannerCid] = useState(null);
   const [formValue, setFormValue] = useState({});

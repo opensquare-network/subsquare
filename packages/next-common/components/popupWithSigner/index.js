@@ -13,10 +13,10 @@ export default function PopupWithSigner({
   autoCloseAfterLogin,
   ...props
 }) {
-  const loginUser = useUser();
+  const user = useUser();
   const connectedAccount = useConnectedAccount();
 
-  if (!loginUser && !connectedAccount) {
+  if (!user && !connectedAccount) {
     return <SelectWalletPopup onClose={onClose} />;
   }
 

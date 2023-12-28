@@ -10,14 +10,14 @@ export default function MaybeSignerConnected({
   extensionAccounts,
   onClose,
 }) {
-  const loginUser = useUser();
+  const user = useUser();
   const connectedAccount = useConnectedAccount();
 
   if (
-    !(loginUser?.address || connectedAccount) ||
+    !(user?.address || connectedAccount) ||
     !extensionAccounts?.find(
       (acc) =>
-        isSameAddress(acc.address, loginUser?.address) ||
+        isSameAddress(acc.address, user?.address) ||
         isSameAddress(acc.address, connectedAccount?.address),
     )
   ) {

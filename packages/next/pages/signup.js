@@ -71,10 +71,10 @@ const FormWrapper = styled.form`
 `;
 
 export default function Signup() {
-  const loginUser = useUser();
+  const user = useUser();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [success, setSuccess] = useState(!!loginUser);
+  const [success, setSuccess] = useState(!!user);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -145,7 +145,7 @@ export default function Signup() {
   };
 
   useEffect(() => {
-    if (loginUser?.emailVerified) {
+    if (user?.emailVerified) {
       showErrorToast("You have already verified email address.");
       return setTimeout(() => {
         // router.replace("/");

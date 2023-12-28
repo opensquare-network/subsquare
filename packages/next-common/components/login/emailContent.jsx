@@ -29,9 +29,9 @@ const Label = styled.div`
  */
 export default function LoginEmailContent() {
   const chain = useChain();
-  const loginUser = useUser();
+  const user = useUser();
   const { connectedAccount } = useConnectedAccountContext();
-  const address = loginUser?.address;
+  const address = user?.address;
   const accountName = connectedAccount?.name;
   const [errors, setErrors] = useState();
   const [email, setEmail] = useState("");

@@ -60,6 +60,7 @@ export function useSetUserStatus() {
 
 export async function fetchAndUpdateUser(userContext) {
   const { setUser, setUserStatus } = userContext;
+
   const options = {
     method: "GET",
     credentials: "same-origin",
@@ -70,17 +71,8 @@ export async function fetchAndUpdateUser(userContext) {
     nextApi.fetch("user/status", {}, options),
   ]);
 
-  if (user) {
-    setUser(user);
-  } else {
-    setUser(null);
-  }
-
-  if (userStatus) {
-    setUserStatus(userStatus);
-  } else {
-    setUserStatus(null);
-  }
+  setUser(user ?? null);
+  setUserStatus(userStatus ?? null);
 }
 
 export async function logoutUser(userContext) {

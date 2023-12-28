@@ -6,18 +6,18 @@ import LoginEmailContent from "../login/emailContent";
 import { useUser } from "next-common/context/user";
 
 const EmailPage = () => {
-  const loginUser = useUser();
-  const address = loginUser?.address;
+  const user = useUser();
+  const address = user?.address;
 
   const router = useRouter();
 
   useEffect(() => {
-    if (loginUser === null) {
+    if (user === null) {
       // router.push("/login");
     } else if (!address) {
       // router.push("/");
     }
-  }, [address, loginUser, router]);
+  }, [address, user, router]);
 
   return (
     <>

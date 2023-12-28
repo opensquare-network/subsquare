@@ -36,13 +36,12 @@ export default function CommentActions({
     reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const chain = useChain();
-  const loginUser = useUser();
   const post = usePost();
   const editorWrapperRef = useRef();
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference?.editor || "markdown",
+    user?.preference?.editor || "markdown",
   );
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();

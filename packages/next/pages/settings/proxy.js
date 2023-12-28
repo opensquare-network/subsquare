@@ -14,14 +14,14 @@ import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 
 export default function ProxyPage() {
-  const loginUser = useUser();
+  const user = useUser();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loginUser) {
+    if (!user) {
       router.push("/");
     }
-  }, [loginUser, router]);
+  }, [user, router]);
 
   return (
     <SettingLayout>

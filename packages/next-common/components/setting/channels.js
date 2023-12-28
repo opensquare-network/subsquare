@@ -13,14 +13,14 @@ import { useUser } from "next-common/context/user";
 import { useDebounceAutoSaveActiveChannelOptions } from "./notification/common";
 
 export default function Channels({ showLoginToUnsubscribe }) {
-  const loginUser = useUser();
-  const emailNotSet = !loginUser?.email;
-  const telegramNotSet = !loginUser?.telegram?.chat;
+  const user = useUser();
+  const emailNotSet = !user?.email;
+  const telegramNotSet = !user?.telegram?.chat;
   const [isTelegramChannelOn, setIsTelegramChannelOn] = useState(
-    loginUser?.activeNotificationChannels?.telegram !== false,
+    user?.activeNotificationChannels?.telegram !== false,
   );
   const [isEmailChannelOn, setIsEmailChannelOn] = useState(
-    loginUser?.activeNotificationChannels?.email !== false,
+    user?.activeNotificationChannels?.email !== false,
   );
   const [isChanged, setIsChanged] = useState(false);
 
