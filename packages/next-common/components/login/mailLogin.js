@@ -85,7 +85,7 @@ export default function MailLogin({ setView }) {
             setView("web3");
           }}
         >
-          Login with web3 address
+          Connect with web3 address
         </GhostButton>
       </FormButtonsWrapper>
 

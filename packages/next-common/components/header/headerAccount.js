@@ -107,7 +107,7 @@ export default function HeaderAccount() {
   }
 
   let connectBtn = (
-    <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
+    <PrimaryButton onClick={() => openLoginPopup()}>Connect</PrimaryButton>
   );
   if (user) {
     connectBtn = (
