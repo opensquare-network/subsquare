@@ -2,6 +2,7 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { clearCookie, setCookie } from "next-common/utils/viewfuncs/cookies";
 import { createContext, useCallback, useContext, useState } from "react";
 import {
+  USER_LOGOUT_ACTION,
   fetchAndUpdateUser,
   logoutUser,
   useUser,
@@ -35,7 +36,7 @@ export function ConnectedWalletProvider({
     if (user?.isLogin) {
       await logoutUser(userDispatch);
     } else {
-      await fetchAndUpdateUser(userDispatch);
+      userDispatch({ type: USER_LOGOUT_ACTION });
     }
   }, [user, userDispatch]);
 
