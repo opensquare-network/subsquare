@@ -8,7 +8,7 @@ import { useIsThumbUp } from "../../context/post/isThumbUp";
 import ThumbsUp from "../thumbsUp";
 import { PostContextMenu } from "../contentMenu";
 import ThumbUpList from "./thumbUpList";
-import { useIsLoggedIn } from "../../context/user";
+import { useUser } from "../../context/user";
 import { useFocusEditor } from "next-common/context/post/editor";
 import { useDispatch } from "react-redux";
 import { useDetailType } from "next-common/context/page";
@@ -16,9 +16,11 @@ import nextApi from "next-common/services/nextApi";
 import { toApiType } from "next-common/utils/viewfuncs";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
-  const isLoggedIn = useIsLoggedIn();
+  const user = useUser();
+  const { ensureLoin } = useEnsureLogin();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
   const thumbsUp = useIsThumbUp();
@@ -33,12 +35,16 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
   const thumbUp = useIsThumbUp();
 
   const toggleThumbUp = async () => {
-    if (!isLoggedIn || isAuthor || thumbUpLoading) {
+    if (!user || isAuthor || thumbUpLoading) {
       return;
     }
 
     setThumbUpLoading(true);
     try {
+      if (!(await ensureLoin())) {
+        return;
+      }
+
       let result, error;
 
       if (thumbUp) {
@@ -68,13 +74,10 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
     <div className="mt-4">
       <div className="flex items-center justify-between">
         <Wrapper className="space-x-4">
-          <ReplyButton
-            onReply={focusEditor}
-            noHover={!isLoggedIn || isAuthor}
-          />
+          <ReplyButton onReply={focusEditor} noHover={!user || isAuthor} />
           <ThumbsUp
             count={post?.reactions?.length}
-            noHover={!isLoggedIn || isAuthor}
+            noHover={!user || isAuthor}
             highlight={thumbsUp}
             toggleThumbUp={toggleThumbUp}
             thumbUpLoading={thumbUpLoading}
@@ -86,9 +89,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
           {extraActions}
         </Wrapper>
 
-        {isLoggedIn && (
-          <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />
-        )}
+        {user && <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />}
       </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}

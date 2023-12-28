@@ -1,7 +1,7 @@
 import CommentItem from "./item";
 import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
-import { useIsLoggedIn } from "../../context/user";
+import { useUser } from "../../context/user";
 import { cn } from "next-common/utils";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import PrimaryButton from "../buttons/primaryButton";
@@ -10,7 +10,7 @@ import Loading from "../loading";
 
 export default function Comments({ data: commentsData, loading }) {
   const { items } = commentsData;
-  const isLoggedIn = useIsLoggedIn();
+  const user = useUser();
   const { openLoginPopup } = useLoginPopup();
 
   let content;
@@ -50,7 +50,7 @@ export default function Comments({ data: commentsData, loading }) {
 
       {content}
 
-      {!isLoggedIn && (
+      {!user && (
         <div className="flex justify-end mt-4">
           <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
         </div>

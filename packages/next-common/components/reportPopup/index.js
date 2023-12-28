@@ -11,6 +11,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const options = [
   {
@@ -36,6 +37,7 @@ export default function ReportPopup({ setShow = noop }) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState("malicious");
   const post = usePost();
+  const { ensureLogin } = useEnsureLogin();
 
   const doReport = useCallback(async () => {
     if (!post) {
@@ -45,6 +47,10 @@ export default function ReportPopup({ setShow = noop }) {
 
     setIsLoading(true);
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const reason = options.find(
         (item) => item.value === selectedOption,
       ).label;
@@ -75,7 +81,7 @@ export default function ReportPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, post, selectedOption]);
+  }, [dispatch, post, selectedOption, ensureLogin]);
 
   return (
     <Popup title="Report" onClose={() => setShow(false)}>
