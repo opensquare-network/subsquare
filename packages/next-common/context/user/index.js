@@ -53,6 +53,11 @@ export function useIsLoggedIn() {
   return userStatus?.isLoggedIn;
 }
 
+export function useIsAccountConnectedOnly() {
+  const { user, userStatus } = useUserContext();
+  return user && !userStatus?.isLoggedIn;
+}
+
 export function useSetUserStatus() {
   const { setUserStatus } = useUserContext();
   return setUserStatus;
