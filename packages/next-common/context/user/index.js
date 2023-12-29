@@ -80,6 +80,22 @@ export async function fetchAndUpdateUser(userContext) {
   setUserStatus(userStatus ?? null);
 }
 
+export async function fetchAndUpdateUserStatus(userContext) {
+  const { setUserStatus } = userContext;
+
+  const { result: userStatus } = await nextApi.fetch(
+    "user/status",
+    {},
+    {
+      method: "GET",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+    },
+  );
+
+  setUserStatus(userStatus ?? null);
+}
+
 export async function logoutUser(userContext) {
   const { setUser, setUserStatus } = userContext;
   await nextApi.post("auth/logout");

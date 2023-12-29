@@ -10,14 +10,16 @@ import Password from "./password";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import useForm from "next-common/utils/hooks/useForm";
-import { useSetUser, useUserContext } from "next-common/context/user";
+import {
+  fetchAndUpdateUserStatus,
+  useSetUser,
+  useUserContext,
+} from "next-common/context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import Link from "next/link";
 import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -32,8 +34,7 @@ export default function MailLogin({ setView }) {
   const { closeLoginPopup } = useLoginPopup();
   const redirectUrl = useSelector(loginRedirectUrlSelector);
   const router = useRouter();
-  const dispatch = useDispatch();
-  const { setUserStatus } = useUserContext();
+  const userContext = useUserContext();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -45,14 +46,7 @@ export default function MailLogin({ setView }) {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         setUser(res.result);
-        const { result: userStatusResult, error: userStatusError } =
-          await nextApi.fetch("user/status");
-        if (userStatusResult) {
-          setUserStatus(userStatusResult);
-        } else if (userStatusError) {
-          dispatch(newErrorToast(userStatusError.message));
-        }
-
+        fetchAndUpdateUserStatus(userContext);
         closeLoginPopup();
         if (redirectUrl) {
           router.push(redirectUrl);

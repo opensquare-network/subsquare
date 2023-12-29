@@ -9,7 +9,11 @@ import { InfoWrapper, Redirect } from "next-common/components/login/styled";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import GhostButton from "../buttons/ghostButton";
 import { LoginCard } from "../styled/containers/loginCard";
-import { useSetUser } from "next-common/context/user";
+import {
+  fetchAndUpdateUserStatus,
+  useSetUser,
+  useUserContext,
+} from "next-common/context/user";
 
 export default function Verify() {
   const [errors, setErrors] = useState();
@@ -19,6 +23,7 @@ export default function Verify() {
   const isMounted = useIsMounted();
   const { countdown, counting: success, startCountdown } = useCountdown(3);
   const setUser = useSetUser();
+  const userContext = useUserContext();
 
   useEffect(() => {
     if (success && countdown === 0) {
@@ -38,10 +43,11 @@ export default function Verify() {
         email,
         token,
       })
-      .catch(({ result, error }) => {
+      .then(({ result, error }) => {
         if (result) {
           if (isMounted.current) {
             setUser(result);
+            fetchAndUpdateUserStatus(userContext);
             startCountdown();
           }
         } else if (error) {

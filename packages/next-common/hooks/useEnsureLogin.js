@@ -10,7 +10,8 @@ import { encodeAddressToChain } from "next-common/services/address";
 import {
   useSetUser,
   useIsLoggedIn,
-  useSetUserStatus,
+  fetchAndUpdateUserStatus,
+  useUserContext,
 } from "next-common/context/user";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useChain } from "next-common/context/chain";
@@ -21,7 +22,7 @@ import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 export function useEnsureLogin() {
   const chain = useChain();
   const setUser = useSetUser();
-  const setUserStatus = useSetUserStatus();
+  const userContext = useUserContext();
   const isLoggedIn = useIsLoggedIn();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -91,15 +92,7 @@ export function useEnsureLogin() {
         );
         if (loginResult) {
           setUser(loginResult);
-
-          const { result: userStatusResult, error: userStatusError } =
-            await nextApi.fetch("user/status");
-          if (userStatusResult) {
-            setUserStatus(userStatusResult);
-          } else if (userStatusError) {
-            dispatch(newErrorToast(userStatusError.message));
-          }
-
+          fetchAndUpdateUserStatus(userContext);
           if (redirectUrl) {
             router.push(redirectUrl);
           }
@@ -122,7 +115,6 @@ export function useEnsureLogin() {
     chain,
     dispatch,
     setUser,
-    setUserStatus,
     router,
     redirectUrl,
   ]);
