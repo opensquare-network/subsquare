@@ -50,9 +50,9 @@ const khala = {
   hasMultisig: true,
   multisigApiPrefix: "khala",
   cssVarsLight: {
-    theme100: "rgba(2,255,255,0.10)",
-    theme300: "rgba(2,255,255,0.40)",
-    theme500: "rgba(2,255,255,1)",
+    theme100: "rgba(5,227,227,0.10)",
+    theme300: "rgba(5,227,227,0.40)",
+    theme500: "rgba(5,227,227,1)",
     navigationBg: "rgba(0,0,0,1)",
     navigationActive: "rgba(255,255,255,0.10)",
     navigationBorder: "rgba(255,255,255,0.12)",
@@ -61,12 +61,12 @@ const khala = {
     navigationIcon: "var(--textSecondaryContrast)",
   },
   cssVarsDark: {
-    theme100: "rgba(2,255,255,0.10)",
-    theme300: "rgba(2,255,255,0.40)",
-    theme500: "rgba(2,255,255,1)",
+    theme100: "rgba(5,227,227,0.10)",
+    theme300: "rgba(5,227,227,0.40)",
+    theme500: "rgba(5,227,227,1)",
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
-    navigationBorder: "var(--neutral300)",
+    navigationBorder: "rgba(39,42,58,1)",
   },
 };
 
