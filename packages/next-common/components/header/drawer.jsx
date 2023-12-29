@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
-import { accountMenu } from "./consts";
+import { getAccountMenu } from "./consts";
 import PrimaryButton from "../buttons/primaryButton";
-import { useUser } from "../../context/user";
+import { useUser, useUserContext } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
@@ -77,6 +77,8 @@ export default function SidebarAccount() {
   const node = useChainSettings();
   const { openLoginPopup } = useLoginPopup();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const userContext = useUserContext();
+  const accountMenu = getAccountMenu(userContext);
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {

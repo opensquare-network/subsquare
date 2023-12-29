@@ -5,9 +5,8 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
-import { isKeyRegisteredUser } from "../../utils";
-import { accountMenu, accountMenuForKeyAccount } from "./consts";
-import { useUser } from "../../context/user";
+import { getAccountMenu } from "./consts";
+import { useUser, useUserContext } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
@@ -70,6 +69,8 @@ export default function HeaderAccount() {
   const windowSize = useWindowSize();
   const isMounted = useIsMounted();
   const { openLoginPopup } = useLoginPopup();
+  const userContext = useUserContext();
+  const menu = getAccountMenu(userContext);
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -94,17 +95,6 @@ export default function HeaderAccount() {
   const openUserProfile = () => {
     router.push(`/user/${user.address}`);
   };
-
-  let menu = null;
-  if (user) {
-    if (isKeyRegisteredUser(user)) {
-      menu = accountMenuForKeyAccount;
-    } else {
-      menu = accountMenu;
-    }
-  } else if (connectedAccount) {
-    menu = accountMenuForKeyAccount;
-  }
 
   let connectBtn = (
     <PrimaryButton onClick={() => openLoginPopup()}>Connect</PrimaryButton>

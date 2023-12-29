@@ -1,9 +1,16 @@
 import React from "react";
 import { SystemLogout, SystemSetting } from "@osn/icons/subsquare";
+import { isKeyRegisteredUser } from "next-common/utils";
 
 const logoutItem = {
   value: "logout",
   name: "Logout",
+  icon: <SystemLogout className="[&_path]:fill-textSecondary" />,
+};
+
+const disconnectItem = {
+  value: "logout",
+  name: "Disconnect",
   icon: <SystemLogout className="[&_path]:fill-textSecondary" />,
 };
 
@@ -21,6 +28,12 @@ const web3AccountItem = {
   pathname: "/settings/key-account",
 };
 
-export const accountMenu = [web2AccountItem, logoutItem];
-
-export const accountMenuForKeyAccount = [web3AccountItem, logoutItem];
+export const getAccountMenu = (userContext) => {
+  const { user, userStatus } = userContext;
+  const isLoggedIn = userStatus?.isLoggedIn;
+  const isKeyUser = isKeyRegisteredUser(user);
+  if (isKeyUser || !isLoggedIn) {
+    return [web3AccountItem, disconnectItem];
+  }
+  return [web2AccountItem, logoutItem];
+};
