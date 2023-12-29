@@ -3,10 +3,12 @@ import { useRouter } from "next/router";
 import { ButtonWrapper } from "./styled";
 import GhostButton from "../buttons/ghostButton";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { useIsLoggedIn } from "next-common/context/user";
 
 export default function Logout() {
   const router = useRouter();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const isLoggedIn = useIsLoggedIn();
 
   return (
     <ButtonWrapper>
@@ -17,7 +19,7 @@ export default function Logout() {
           await router.replace("/");
         }}
       >
-        Logout my account
+        {isLoggedIn ? "Logout my account" : "Disconnect wallet"}
       </GhostButton>
     </ButtonWrapper>
   );

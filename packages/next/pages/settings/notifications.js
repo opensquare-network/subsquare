@@ -1,57 +1,16 @@
 import { withCommonProps } from "next-common/lib";
-import SettingLayout from "next-common/components/layout/settingLayout";
-import {
-  SettingSection,
-  TitleContainer,
-} from "next-common/components/styled/containers/titleContainer";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import Channels from "next-common/components/setting/channels";
-import OnChainEventsSubscription from "components/settings/subscription/onchainEventsSubscription";
-import DiscussionEventsSubscription from "next-common/components/setting/notification/discussionEventsSubscription";
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
-import RequireSignature from "next-common/components/setting/requireSignature";
-import { useIsLoggedIn, useUser } from "next-common/context/user";
-import { useEffect, useState } from "react";
+import Notification from "next-common/components/setting/pages/notification";
+import OnChainEventsSubscription from "components/settings/subscription/onchainEventsSubscription";
 import { usePageProps } from "next-common/context/page";
-import { useRouter } from "next/router";
 
 export default function NotificationPage() {
-  const { unsubscribe } = usePageProps();
-  const user = useUser();
-  const isLoggedIn = useIsLoggedIn();
-  const router = useRouter();
-  const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
-
-  useEffect(() => {
-    if (unsubscribe) {
-      if (!user) {
-        setShowLoginToUnsubscribe(true);
-      }
-      return;
-    }
-
-    if (!user) {
-      router.push("/");
-    }
-  }, [user, router, unsubscribe]);
-
-  if (user && !isLoggedIn) {
-    return (
-      <SettingLayout>
-        <RequireSignature name="notification" />
-      </SettingLayout>
-    );
-  }
-
+  const { ssrTimestamp } = usePageProps();
   return (
-    <SettingLayout>
-      <Channels showLoginToUnsubscribe={showLoginToUnsubscribe} />
-      <SettingSection>
-        <TitleContainer>Notification Settings</TitleContainer>
-        <DiscussionEventsSubscription />
-        <OnChainEventsSubscription />
-      </SettingSection>
-    </SettingLayout>
+    <Notification>
+      <OnChainEventsSubscription key={ssrTimestamp} />
+    </Notification>
   );
 }
 
@@ -66,6 +25,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       subscription: subscription ?? null,
       unsubscribe: unsubscribe ?? null,
+      ssrTimestamp: Date.now(),
       ...tracksProps,
     },
   };
