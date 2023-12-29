@@ -11,13 +11,13 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { useIsWalletConnectedOnly, useUser } from "next-common/context/user";
+import { useIsAccountConnectedOnly, useUser } from "next-common/context/user";
 import RequireSignature from "next-common/components/setting/requireSignature";
 
 export default function Web2Account() {
   const router = useRouter();
   const user = useUser();
-  const isWalletConnectedOnly = useIsWalletConnectedOnly();
+  const isAccountConnectedOnly = useIsAccountConnectedOnly();
 
   useEffect(() => {
     if (!user) {
@@ -28,7 +28,7 @@ export default function Web2Account() {
     }
   }, [user, router]);
 
-  if (isWalletConnectedOnly) {
+  if (isAccountConnectedOnly) {
     return (
       <SettingLayout>
         <RequireSignature name="account" />

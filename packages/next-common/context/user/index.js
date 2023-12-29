@@ -53,7 +53,7 @@ export function useIsLoggedIn() {
   return userStatus?.isLoggedIn;
 }
 
-export function useIsWalletConnectedOnly() {
+export function useIsAccountConnectedOnly() {
   const { user, userStatus } = useUserContext();
   return user && !userStatus?.isLoggedIn;
 }
