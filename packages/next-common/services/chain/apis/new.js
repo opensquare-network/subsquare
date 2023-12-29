@@ -47,17 +47,21 @@ async function getOptions(chain, endpoint) {
   };
 }
 
+async function newApiPromise(chain, endpoint) {
+  const options = await getOptions(chain, endpoint);
+  return new ApiPromise(options);
+}
+
 export default async function newApi(chain, endpoint) {
   if (!Object.keys(Chains).includes(chain)) {
     throw new Error(`Invalid chain: ${chain} to construct api`);
   }
 
   if (!apiMap.has(endpoint)) {
-    const options = await getOptions(chain, endpoint);
-    const api = new ApiPromise(options);
-    apiMap.set(endpoint, api);
+    apiMap.set(endpoint, newApiPromise(chain, endpoint));
   }
-  return apiMap.get(endpoint);
+
+  return await apiMap.get(endpoint);
 }
 
 export function getApiMap() {
