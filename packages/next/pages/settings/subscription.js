@@ -6,7 +6,7 @@ export default function Notification() {
 
 export const getServerSideProps = getRedirectServerSidePropsByContext((ctx) =>
   ctx.resolvedUrl?.replace(
-    /^\/setting\/notification/,
+    /^\/settings\/subscription/,
     "/settings/notifications",
   ),
 );

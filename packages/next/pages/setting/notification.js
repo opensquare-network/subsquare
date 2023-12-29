@@ -1,12 +1,12 @@
+import { getRedirectServerSidePropsByContext } from "next-common/services/serverSide";
+
 export default function Notification() {
   return "Please visit `/settings/notifications`";
 }
 
-export const getServerSideProps = function () {
-  return {
-    redirect: {
-      permanent: true,
-      destination: "/settings/notifications",
-    },
-  };
-};
+export const getServerSideProps = getRedirectServerSidePropsByContext((ctx) =>
+  ctx.resolvedUrl?.replace(
+    /^\/setting\/notification/,
+    "/settings/notifications",
+  ),
+);
