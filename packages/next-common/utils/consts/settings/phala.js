@@ -74,9 +74,9 @@ const phala = {
   hasMultisig: true,
   multisigApiPrefix: "phala",
   cssVarsLight: {
-    theme100: "rgba(205,250,80,0.10)",
-    theme300: "rgba(205,250,80,0.40)",
-    theme500: "rgba(205,250,80,1)",
+    theme100: "rgba(192,236,69,0.10)",
+    theme300: "rgba(192,236,69,0.40)",
+    theme500: "rgba(192,236,69,1)",
     navigationBg: "rgba(0,0,0,1)",
     navigationActive: "rgba(255,255,255,0.10)",
     navigationBorder: "rgba(255,255,255,0.12)",
@@ -85,12 +85,12 @@ const phala = {
     navigationIcon: "var(--textSecondaryContrast)",
   },
   cssVarsDark: {
-    theme100: "rgba(205,250,80,0.10)",
-    theme300: "rgba(205,250,80,0.40)",
-    theme500: "rgba(205,250,80,1)",
+    theme100: "rgba(192,236,69,0.10)",
+    theme300: "rgba(192,236,69,0.40)",
+    theme500: "rgba(192,236,69,1)",
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
-    navigationBorder: "var(--neutral300)",
+    navigationBorder: "rgba(39,42,58,1)",
   },
 };
 
