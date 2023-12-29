@@ -1,4 +1,3 @@
-import getApi from "../../services/chain/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   currentNodeSelector,
@@ -8,6 +7,7 @@ import {
 import { useChain, useChainSettings } from "../../context/chain";
 import { useEffect, useState } from "react";
 import useCandidateNodes from "next-common/services/chain/apis/useCandidateNodes";
+import getApiInSeconds, { getApi } from "next-common/services/chain/api";
 
 let lastApi;
 
@@ -21,7 +21,7 @@ export default function useApi() {
 
   useEffect(() => {
     if (currentEndpoint) {
-      getApi(chain, currentEndpoint)
+      getApiInSeconds(chain, currentEndpoint)
         .then((api) => {
           lastApi = api;
           setApi(api);
