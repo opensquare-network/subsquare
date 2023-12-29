@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.4
+
+date: 2023-12-29
+
+- Improve RPC connections by caching metadata.
+- Improve theme color for basilisk, khala and phala.
+- Redirect legacy subscription page to notifications page.
+
 ### 3.7.3
 
 date: 2023-12-27
