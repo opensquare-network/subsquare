@@ -12,7 +12,6 @@ export default async function getMetadata(provider) {
     localStorage.setItem(id, metadata);
   }
 
-  console.log("metadata", metadata);
   return {
     id,
     metadata,
