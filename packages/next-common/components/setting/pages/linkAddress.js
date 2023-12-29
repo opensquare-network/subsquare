@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { useIsLoggedIn, useUser } from "next-common/context/user";
+import { useIsWalletConnectedOnly, useUser } from "next-common/context/user";
 import RequireSignature from "next-common/components/setting/requireSignature";
 
 const LinkedAddressComp = dynamic(
@@ -14,8 +14,8 @@ const LinkedAddressComp = dynamic(
 
 export default function LinkedAddress() {
   const user = useUser();
-  const isLoggedIn = useIsLoggedIn();
   const router = useRouter();
+  const isWalletConnectedOnly = useIsWalletConnectedOnly();
 
   useEffect(() => {
     if (!user) {
@@ -23,7 +23,7 @@ export default function LinkedAddress() {
     }
   }, [user, router]);
 
-  if (user && !isLoggedIn) {
+  if (isWalletConnectedOnly) {
     return (
       <SettingLayout>
         <RequireSignature name="link address" />

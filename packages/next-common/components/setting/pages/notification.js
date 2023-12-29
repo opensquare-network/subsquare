@@ -6,7 +6,11 @@ import {
 import Channels from "next-common/components/setting/channels";
 import DiscussionEventsSubscription from "next-common/components/setting/notification/discussionEventsSubscription";
 import RequireSignature from "next-common/components/setting/requireSignature";
-import { useIsLoggedIn, useUser } from "next-common/context/user";
+import {
+  useIsLoggedIn,
+  useIsWalletConnectedOnly,
+  useUser,
+} from "next-common/context/user";
 import { useEffect, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import { useRouter } from "next/router";
@@ -18,6 +22,7 @@ export default function Notification({ children }) {
   const isLoggedIn = useIsLoggedIn();
   const router = useRouter();
   const [showLoginToUnsubscribe, setShowLoginToUnsubscribe] = useState(false);
+  const isWalletConnectedOnly = useIsWalletConnectedOnly();
 
   useEffect(() => {
     if (unsubscribe) {
@@ -36,7 +41,7 @@ export default function Notification({ children }) {
     router.replace(router.asPath);
   }, [isLoggedIn]);
 
-  if (user && !isLoggedIn) {
+  if (isWalletConnectedOnly) {
     return (
       <SettingLayout>
         <RequireSignature name="notification" />
