@@ -13,7 +13,7 @@ import { overviewApi } from "next-common/services/url";
 import { useEffect, useState } from "react";
 
 function Time({ time }) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(time);
   useEffect(() => setText(time), []);
 
   return (
