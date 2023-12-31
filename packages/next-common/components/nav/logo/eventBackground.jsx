@@ -31,6 +31,10 @@ export default function ChainLogoEventBackground() {
   const [navCollapsed] = useNavCollapsed();
   const chainSettings = useChainSettings();
 
+  if (!event) {
+    return null;
+  }
+
   const lightBackground = `url('/project-menu-bg-${event.name}-${
     chainSettings.navPreferDark ? "dark" : "light"
   }-light.png')`;
