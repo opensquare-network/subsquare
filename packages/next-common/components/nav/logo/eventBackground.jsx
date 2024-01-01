@@ -7,8 +7,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import find from "lodash.find";
 import { useChainSettings } from "next-common/context/chain";
-
-const now = dayjs();
+import { useMemo } from "react";
 
 const events = [
   {
@@ -19,17 +18,24 @@ const events = [
   },
 ];
 
-const event = find(events, (event) => {
-  return (
-    now.month() + 1 === event.month &&
-    now.date() >= event.startDate &&
-    now.date() <= event.endDate
-  );
-});
+function useEvent() {
+  const now = dayjs();
+
+  return useMemo(() => {
+    return find(events, (event) => {
+      return (
+        now.month() + 1 === event.month &&
+        now.date() >= event.startDate &&
+        now.date() <= event.endDate
+      );
+    });
+  }, [now]);
+}
 
 export default function ChainLogoEventBackground() {
   const [navCollapsed] = useNavCollapsed();
   const chainSettings = useChainSettings();
+  const event = useEvent();
 
   if (!event) {
     return null;
