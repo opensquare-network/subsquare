@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "next-common/components/pagination";
 import VStack from "next-common/components/styled/vStack";
 import styled from "styled-components";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import StyledList from "next-common/components/styledList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Flex from "next-common/components/styled/flex";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -16,6 +15,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import startCase from "lodash.startcase";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import tw from "tailwind-styled-components";
+import DataList from "next-common/components/dataList";
 
 const ConvictionText = styled.span`
   width: 40px;
@@ -146,7 +146,7 @@ export default function DelegationTabList({ delegatee }) {
     <VStack space={16}>
       <ScrollerX>
         <MyPopupListWrapper>
-          <StyledList columns={columns} rows={rows} loading={!isLoaded} />
+          <DataList columns={columns} rows={rows} loading={!isLoaded} />
         </MyPopupListWrapper>
       </ScrollerX>
       <Pagination {...pagination} />

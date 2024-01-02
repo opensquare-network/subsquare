@@ -19,7 +19,7 @@ export default function CapitalTableItem({ capital, item, tab, conviction }) {
     <div className="inline-flex text14Medium">
       <ValueDisplay value={capital} symbol={symbol} />
       {hasLabel && (
-        <span className="w-[60px] text-textTertiary">
+        <span className="w-[60px] text-textTertiary text-right">
           <VoteLabel {...item} conviction={conviction} tab={tab} />
         </span>
       )}

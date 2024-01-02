@@ -1,14 +1,13 @@
 import PopupListWrapper from "../../styled/popupListWrapper";
-import React from "react";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
-import StyledList from "next-common/components/styledList";
 import CapitalTableItem from "next-common/components/popup/capitalTableItem";
 import AddressUser from "next-common/components/user/addressUser";
 import { useSelector } from "react-redux";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import Track from "next-common/components/referenda/track/trackTag";
 import RemoveDelegation from "next-common/components/summary/democracyAllMyDelegationPopup/remove";
+import DataList from "next-common/components/dataList";
 
 export default function AllMyDelegationPopupList() {
   const { decimals } = useChainSettings();
@@ -79,7 +78,7 @@ export default function AllMyDelegationPopupList() {
 
   return (
     <PopupListWrapper>
-      <StyledList
+      <DataList
         columns={columns}
         rows={rows}
         noDataText="No current delegations"

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { withTheme } from "styled-components";
 import { Headers } from "./headers";
 import DataRows from "./dataRows";
 import { EmptyTd, StyledTable } from "next-common/components/styled/table";
@@ -20,7 +19,7 @@ function EmptyOrLoading({ loading, noDataText = "" }) {
   );
 }
 
-function StyledList({
+export default function StyledList({
   columns = [],
   rows = [],
   loading = false,
@@ -63,5 +62,3 @@ function StyledList({
     </StyledTable>
   );
 }
-
-export default withTheme(StyledList);

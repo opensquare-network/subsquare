@@ -3,7 +3,6 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import PreimageDetailPopup from "next-common/components/preImages/preImageDetailPopup";
 import UnnotePopup from "next-common/components/preImages/unnotePopup";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -24,6 +23,7 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import Loading from "../loading";
 import { useNavCollapsed } from "next-common/context/nav";
 import MyDepositUndoButton from "./undoButton";
+import DataList from "../dataList";
 
 export default function MyDepositPreimages() {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
@@ -155,7 +155,8 @@ function DesktopList({ data, setShowArgumentsDetail }) {
 
   return (
     <ScrollerX>
-      <NoBorderList
+      <DataList
+        className="w-auto"
         columns={columns}
         rows={rows}
         noDataText="No current preimages"

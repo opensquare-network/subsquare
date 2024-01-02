@@ -3,7 +3,6 @@ import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
@@ -15,6 +14,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -119,15 +119,14 @@ function VotesList({ items = [], loading, tab }) {
   const columns = [
     {
       name: "ACCOUNT",
-      style: { minWidth: 276, textAlign: "left" },
     },
     {
       name: "CAPITAL",
-      style: { minWidth: 188, textAlign: "right" },
+      className: "w-[188px] text-right",
     },
     {
       name: "VOTES",
-      style: { minWidth: 128, textAlign: "right" },
+      className: "w-[128px] text-right",
     },
   ];
 
@@ -137,7 +136,7 @@ function VotesList({ items = [], loading, tab }) {
 
     return [
       <AddressUser
-        key="user"
+        key={item.account}
         add={item.account}
         noTooltip
         maxWidth={276}
@@ -160,8 +159,8 @@ function VotesList({ items = [], loading, tab }) {
   return (
     <>
       <PopupListWrapper>
-        <StyledList
-          items={items}
+        <DataList
+          scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}

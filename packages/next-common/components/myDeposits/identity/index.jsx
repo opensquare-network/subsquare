@@ -4,15 +4,50 @@ import { MenuIdentity } from "@osn/icons/subsquare";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecisionNumber } from "next-common/utils";
 import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
-import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import ValueDisplay from "../../valueDisplay";
 import AccordionCard from "../../styled/containers/accordionCard";
-import MobileList from "./mobile";
-import DesktopList from "./desktop";
+import DataList from "next-common/components/dataList";
+import SubIdentityUser from "../../user/subIdentityUser";
+import { AddressUser } from "../../user";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function DepositList() {
-  const { sm } = useScreenSize();
-  return sm ? <MobileList /> : <DesktopList />;
+  const address = useRealAddress();
+  const { identityDeposit, subs, averageSubDeposit } = useMyIdentityDeposit();
+  const { decimals, symbol } = useChainSettings();
+
+  const columns = [
+    {
+      name: "Address",
+      style: { width: 176, textAlign: "left" },
+    },
+    {
+      name: "Deposit Balance",
+      style: { width: 168, textAlign: "right" },
+    },
+  ];
+  const rows = [
+    [
+      <AddressUser key="address-main" add={address} />,
+      <ValueDisplay
+        key="deposit"
+        className="text14Medium text-textPrimary"
+        value={toPrecisionNumber(identityDeposit, decimals)}
+        symbol={symbol}
+      />,
+    ],
+    ...(subs || []).map(([address], index) => [
+      <SubIdentityUser key={`address-sub-${index}`} add={address} />,
+      <ValueDisplay
+        key={`deposit-sub-${index}`}
+        className="text14Medium text-textPrimary"
+        value={toPrecisionNumber(averageSubDeposit, decimals)}
+        symbol={symbol}
+      />,
+    ]),
+  ];
+
+  return <DataList columns={columns} rows={rows} noDataText="No items" />;
 }
 
 export default function IdentityDeposit() {
