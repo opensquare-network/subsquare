@@ -1,10 +1,6 @@
-import { CACHE_KEY } from "./constants";
+import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import WalletTypes from "./consts/walletTypes";
-import getStorageAddressInfo from "./getStorageAddressInfo";
 
 export default function isUseMetamask() {
-  return (
-    getStorageAddressInfo(CACHE_KEY.lastConnectedAddress)?.wallet ===
-    WalletTypes.METAMASK
-  );
+  return getCookieConnectedAccount()?.wallet === WalletTypes.METAMASK;
 }

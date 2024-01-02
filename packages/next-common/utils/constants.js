@@ -88,14 +88,11 @@ export const BalanceDecimals = {
 
 export const CACHE_KEY = {
   lastConnectedAddress: "lastConnectedAddress",
-  lastLoginAddress: "lastLoginAddress",
   lastLoggedInAddress: "lastLoggedInAddress",
   lastLoginExtension: "lastLoginExtension",
-  accountMap: "accountMap",
   themeMode: "theme-mode",
   authToken: "auth-token",
   acceptCookies: "accept-cookies",
-  dontRemindEmail: "dont-remind-email",
   navCollapsed: "nav-collapsed",
   navSubmenuVisible: "nav-submenu-visible",
   connectedAccount: "connected-account",

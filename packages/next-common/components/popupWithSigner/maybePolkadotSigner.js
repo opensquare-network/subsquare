@@ -4,7 +4,8 @@ import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import Popup from "../popup/wrapper/Popup";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
+import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
+import { CACHE_KEY } from "next-common/utils/constants";
 
 export default function MaybePolkadotSigner({
   onClose,
@@ -20,7 +21,6 @@ export default function MaybePolkadotSigner({
   const { injectedWeb3, loading } = useInjectedWeb3();
   const [polkadotAccounts, setPolkadotAccounts] = useState([]);
   const [detecting, setDetecting] = useState(true);
-  const connectedAccount = useConnectedAccount();
 
   useEffect(() => {
     (async () => {
@@ -33,11 +33,14 @@ export default function MaybePolkadotSigner({
           return;
         }
 
-        if (!connectedAccount) {
+        const lastConnectedAddress = getStorageAddressInfo(
+          CACHE_KEY.lastConnectedAddress,
+        );
+        if (!lastConnectedAddress) {
           return;
         }
 
-        const extension = injectedWeb3?.[connectedAccount?.wallet];
+        const extension = injectedWeb3?.[lastConnectedAddress?.wallet];
 
         if (!extension) {
           return;
@@ -50,7 +53,7 @@ export default function MaybePolkadotSigner({
             ...item,
             meta: {
               name: item.name,
-              source: connectedAccount?.wallet,
+              source: lastConnectedAddress?.wallet,
             },
           })),
         );
@@ -61,7 +64,7 @@ export default function MaybePolkadotSigner({
         setDetecting(false);
       }
     })();
-  }, [injectedWeb3, loading, connectedAccount]);
+  }, [injectedWeb3, loading]);
 
   if (detecting) {
     return null;

@@ -13,19 +13,16 @@ const ConnectedAccountContext = createContext(null);
 
 export default ConnectedAccountContext;
 
-export function ConnectedAccountProvider({
-  connectedAccount: _connectedAccount,
-  children,
-}) {
+export function ConnectedAccountProvider({ children }) {
   const user = useUser();
   const isLoggedIn = useIsLoggedIn();
   const userContext = useUserContext();
-  const [connectedAccount, setConnectedAccount] = useState(_connectedAccount);
+  const [connectedAccount, setConnectedAccount] = useState();
 
   const connect = useCallback(
-    async (wallet) => {
-      setConnectedAccount(wallet);
-      setCookie(CACHE_KEY.connectedAccount, JSON.stringify(wallet), 365);
+    async (account) => {
+      setConnectedAccount(account);
+      setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
       await fetchAndUpdateUser(userContext);
     },
     [user, userContext],

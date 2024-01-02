@@ -28,15 +28,15 @@ export default function AddressLogin({ setView }) {
   const [web3Error, setWeb3Error] = useState();
   const dispatch = useDispatch();
   const { closeLoginPopup } = useLoginPopup();
-  const [lastLoginAddress, setLastLoginAddress] = useState();
+  const [lastConnectedAddress, setLastConnectedAddress] = useState();
   const { connect: connectAccount } = useConnectedAccountContext();
   const router = useRouter();
   const redirectUrl = useSelector(loginRedirectUrlSelector);
 
   useEffect(() => {
-    const info = getStorageAddressInfo(CACHE_KEY.lastLoginAddress);
+    const info = getStorageAddressInfo(CACHE_KEY.lastConnectedAddress);
     if (info) {
-      setLastLoginAddress(info);
+      setLastConnectedAddress(info);
     }
   }, []);
 
@@ -47,11 +47,17 @@ export default function AddressLogin({ setView }) {
     }
 
     const address = encodeAddressToChain(selectedAccount.address, chain);
-    connectAccount({
+    const accountInfo = {
       address,
       wallet: selectedWallet,
       name: selectedAccount.name,
-    });
+    };
+    connectAccount(accountInfo);
+    localStorage.setItem(
+      CACHE_KEY.lastConnectedAddress,
+      JSON.stringify(accountInfo),
+    );
+
     closeLoginPopup();
     if (redirectUrl) {
       router.push(redirectUrl);
@@ -69,7 +75,7 @@ export default function AddressLogin({ setView }) {
         setSelectedAccount={setSelectedAccount}
         web3Error={web3Error}
         setWeb3Error={setWeb3Error}
-        lastUsedAddress={lastLoginAddress?.address}
+        lastUsedAddress={lastConnectedAddress?.address}
       />
       <ButtonWrapper>
         {selectedWallet && (

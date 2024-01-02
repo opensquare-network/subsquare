@@ -10,7 +10,6 @@ import fetchProfile from "next-common/lib/fetchProfile";
 import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
-import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -29,7 +28,6 @@ export function withCommonProps(
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const detailPageProperties = getDetailPageProperties(context);
-    const connectedAccount = getConnectedAccount(cookies);
 
     const [
       props,
@@ -43,11 +41,7 @@ export function withCommonProps(
       ssrNextApi.fetch(adminsApi),
     ]);
 
-    if (
-      context.resolvedUrl?.startsWith("/settings/") &&
-      !user &&
-      !connectedAccount
-    ) {
+    if (context.resolvedUrl?.startsWith("/settings/") && !user) {
       const { unsubscribe } = context.query;
       if (!unsubscribe) {
         return redirect("/");
@@ -62,7 +56,6 @@ export function withCommonProps(
         chain: process.env.CHAIN,
         user: user ?? null,
         userStatus: userStatus ?? null,
-        connectedAccount: connectedAccount ?? null,
         admins: admins ?? [],
         themeMode: themeMode ?? null,
         navCollapsed: navCollapsed || false,

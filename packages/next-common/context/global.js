@@ -9,7 +9,6 @@ import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
 
 export default function GlobalProvider({
-  connectedAccount,
   user,
   userStatus,
   admins,
@@ -25,7 +24,7 @@ export default function GlobalProvider({
       <ThemeModeProvider defaultThemeMode={themeMode}>
         <ChainProvider chain={chain}>
           <UserProvider user={user} userStatus={userStatus}>
-            <ConnectedAccountProvider connectedAccount={connectedAccount}>
+            <ConnectedAccountProvider>
               <AdminProvider admins={admins}>
                 <NavProvider
                   navCollapsed={navCollapsed}
