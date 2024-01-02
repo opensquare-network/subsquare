@@ -7,7 +7,7 @@ import FoldButton from "../eventInfoCard/foldButton";
 import DeleteSVG from "./delete.svg";
 import Flex from "../../../styled/flex";
 import DeleteEventModal from "./deleteEventModal";
-import { useIsLoggedIn } from "../../../../context/user";
+import { useUser } from "../../../../context/user";
 import Tooltip from "next-common/components/tooltip";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 
@@ -84,7 +84,7 @@ export default function Title({
 }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isAdmin = useIsAdmin();
-  const isLoggedIn = useIsLoggedIn();
+  const user = useUser();
 
   return (
     <Wrapper>
@@ -95,7 +95,7 @@ export default function Title({
         <div>
           <EventTag event={event} />
         </div>
-        {isLoggedIn && (
+        {user && (
           <DeleteButton
             onClick={() => setShowDeleteModal(true)}
             disabled={!isAdmin}
