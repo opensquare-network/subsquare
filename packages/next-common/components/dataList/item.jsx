@@ -71,17 +71,19 @@ function MobileContent({ row = [], data, columns }) {
   const [first, ...rest] = restRowItems;
 
   const descriptionsLabels = restColumns.slice(1).map((col) => col.name);
-  const descriptionItems = rest.filter(Boolean).map((value, idx) => {
-    return (
-      value && {
-        label: (
-          <span className="text-textTertiary">{descriptionsLabels[idx]}</span>
-        ),
-        value,
-        className: "h-auto mt-2",
-      }
-    );
-  });
+  const descriptionItems = rest
+    .map((value, idx) => {
+      return (
+        value && {
+          label: (
+            <span className="text-textTertiary">{descriptionsLabels[idx]}</span>
+          ),
+          value,
+          className: "h-auto mt-2",
+        }
+      );
+    })
+    .filter(Boolean);
 
   return (
     <div className="sm:hidden sm:py-4 space-y-3">
