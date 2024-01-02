@@ -3,16 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: undefined,
     isEditingPost: false,
     loginOpen: false,
     redirectUrl: null,
     initView: "web3",
   },
   reducers: {
-    setUser: (state, { payload }) => {
-      state.user = payload;
-    },
     setEditingPost: (state, { payload }) => {
       state.isEditingPost = payload;
     },
@@ -33,12 +29,7 @@ export const loginOpenSelector = (state) => state.user?.loginOpen;
 export const loginRedirectUrlSelector = (state) => state.user?.redirectUrl;
 export const initViewSelector = (state) => state.user?.initView;
 
-export const {
-  setUser,
-  setEditingPost,
-  setLoginOpen,
-  setRedirectUrl,
-  setInitView,
-} = userSlice.actions;
+export const { setEditingPost, setLoginOpen, setRedirectUrl, setInitView } =
+  userSlice.actions;
 
 export default userSlice.reducer;
