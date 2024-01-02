@@ -9,7 +9,7 @@ export default function DataList({
   columns = [],
   rows = [],
   loading = false,
-  scrollToFirstRowOnChange = true,
+  scrollToFirstRowOnChange = false,
   className = "",
   noDataText = "No current votes",
   bordered = false,
