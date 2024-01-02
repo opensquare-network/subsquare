@@ -16,7 +16,13 @@ export default function NoData({
 
       {head && <p className={cn("text16Bold text-textPrimary mb-2")}>{head}</p>}
 
-      <p className={cn("text14Medium text-textTertiary")}>{text}</p>
+      <p
+        className={cn(
+          "text14Medium text-textTertiary inline-flex items-center",
+        )}
+      >
+        {text}
+      </p>
     </div>
   );
 }
