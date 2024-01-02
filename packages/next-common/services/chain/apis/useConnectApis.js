@@ -1,24 +1,15 @@
 import { useChain } from "next-common/context/chain";
-import getEndpointFromLocalStorage from "next-common/services/chain/apis/endpointLocalStorage";
-import getChainSettings from "next-common/utils/consts/settings";
 import { useEffect } from "react";
 import newApi from "next-common/services/chain/apis/new";
+import useCandidateNodes from "next-common/services/chain/apis/useCandidateNodes";
 
 export default function useConnectApis() {
   const chain = useChain();
-  const savedEndpoint = getEndpointFromLocalStorage(chain);
-  const settings = getChainSettings(chain);
-  const chainNodes = settings.endpoints;
+  const candidateNodes = useCandidateNodes();
 
   useEffect(() => {
-    const first3Nodes = chainNodes.slice(0, 3);
-    const candidates = new Set(first3Nodes);
-    if (savedEndpoint) {
-      candidates.add(savedEndpoint);
+    for (const endpoint of candidateNodes) {
+      newApi(chain, endpoint);
     }
-
-    for (const endpoint of candidates) {
-      newApi(chain, endpoint.url);
-    }
-  }, [chain, savedEndpoint, chainNodes]);
+  }, [chain, candidateNodes]);
 }

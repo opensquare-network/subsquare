@@ -65,6 +65,7 @@ const turing = {
   darkAvatar: ProjectIconTuringDark,
   navLogo: ProjectLogoTuringDark,
   navLogoDark: ProjectLogoTuringDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,

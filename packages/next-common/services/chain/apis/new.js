@@ -10,10 +10,11 @@ import allOptions, {
   zeitgeistOptions,
 } from "@osn/provider-options";
 import crabOptions from "next-common/services/chain/crab";
+import getMetadata from "next-common/services/chain/apis/metadata";
 
 const apiMap = new Map();
 
-function getOptions(chain, endpoint) {
+async function getOptions(chain, endpoint) {
   const provider = new WsProvider(endpoint, 1000);
   let options = { provider };
 
@@ -38,22 +39,29 @@ function getOptions(chain, endpoint) {
     customizedOptions = allOptions[chain] || {};
   }
 
+  const { id, metadata } = await getMetadata(provider);
   return {
     ...customizedOptions,
     ...options,
+    metadata: { [id]: metadata },
   };
 }
 
-export default function newApi(chain, endpoint) {
+async function newApiPromise(chain, endpoint) {
+  const options = await getOptions(chain, endpoint);
+  return new ApiPromise(options);
+}
+
+export default async function newApi(chain, endpoint) {
   if (!Object.keys(Chains).includes(chain)) {
     throw new Error(`Invalid chain: ${chain} to construct api`);
   }
 
   if (!apiMap.has(endpoint)) {
-    const api = new ApiPromise(getOptions(chain, endpoint));
-    apiMap.set(endpoint, api);
+    apiMap.set(endpoint, newApiPromise(chain, endpoint));
   }
-  return apiMap.get(endpoint);
+
+  return await apiMap.get(endpoint);
 }
 
 export function getApiMap() {

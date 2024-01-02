@@ -46,6 +46,7 @@ const altair = {
   darkAvatar: ProjectIconAltairDark,
   navLogo: ProjectLogoAltairDark,
   navLogoDark: ProjectLogoAltairDark,
+  navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),

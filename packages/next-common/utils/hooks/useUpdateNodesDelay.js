@@ -4,6 +4,7 @@ import { setNodesDelay } from "../../store/reducers/nodeSlice";
 import { sleep } from "../index";
 import { useChain } from "../../context/chain";
 import { getApiMap } from "next-common/services/chain/apis/new";
+import useCandidateNodes from "next-common/services/chain/apis/useCandidateNodes";
 
 const TIMEOUT = 10000;
 let count = 0;
@@ -29,7 +30,7 @@ const testNet = async (api) => {
   return await Promise.race([fetchApiTime(api), timeout(TIMEOUT)]);
 };
 
-async function getNodeDelay(chain, api) {
+async function getNodeDelay(api) {
   try {
     return await testNet(api);
   } catch (e) {
@@ -38,32 +39,36 @@ async function getNodeDelay(chain, api) {
   }
 }
 
+async function updateUrlDelay(url, dispatch) {
+  const apiMap = getApiMap();
+  const api = await apiMap.get(url);
+  const delay = await getNodeDelay(api);
+  dispatch(setNodesDelay([{ url, delay }]));
+}
+
 function useUpdateNodesDelay() {
   const chain = useChain();
   const dispatch = useDispatch();
-  const apiMap = getApiMap();
+  const candidateNodes = useCandidateNodes();
 
   useEffect(() => {
     const intervalId = setInterval(async () => {
-      const endpointUrls = [...apiMap.keys()];
-
-      if (count === 0) {
+      const apiMap = getApiMap();
+      if (count++ === 0) {
         // update delay for all endpoints at the first time
-        for (const url of endpointUrls) {
-          const delay = await getNodeDelay(chain, apiMap.get(url));
-          dispatch(setNodesDelay([{ url, delay }]));
-        }
-      } else if (endpointUrls && endpointUrls.length > 0) {
-        const url = endpointUrls[count % endpointUrls.length];
-        const delay = await getNodeDelay(chain, apiMap.get(url));
+        await Promise.all(
+          candidateNodes.map((url) => updateUrlDelay(url, dispatch)),
+        );
+      } else if (candidateNodes && candidateNodes.length > 0) {
+        const url = candidateNodes[count % candidateNodes.length];
+        const api = await apiMap.get(url);
+        const delay = await getNodeDelay(api);
         dispatch(setNodesDelay([{ url, delay }]));
       }
-
-      count++;
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [apiMap, dispatch, chain]);
+  }, [dispatch, chain, candidateNodes]);
 }
 
 export default useUpdateNodesDelay;

@@ -1,4 +1,3 @@
-import getApi, { getBestApi } from "../../services/chain/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   currentNodeSelector,
@@ -7,7 +6,8 @@ import {
 } from "../../store/reducers/nodeSlice";
 import { useChain, useChainSettings } from "../../context/chain";
 import { useEffect, useState } from "react";
-import { getApiMap } from "next-common/services/chain/apis/new";
+import useCandidateNodes from "next-common/services/chain/apis/useCandidateNodes";
+import getApiInSeconds, { getApi } from "next-common/services/chain/api";
 
 let lastApi;
 
@@ -15,13 +15,13 @@ export default function useApi() {
   const chain = useChain();
   const currentEndpoint = useSelector(currentNodeSelector);
   const [api, setApi] = useState();
-  const apiMap = getApiMap();
   const dispatch = useDispatch();
   const { endpoints } = useChainSettings();
+  const candidateNodes = useCandidateNodes();
 
   useEffect(() => {
     if (currentEndpoint) {
-      getApi(chain, currentEndpoint)
+      getApiInSeconds(chain, currentEndpoint)
         .then((api) => {
           lastApi = api;
           setApi(api);
@@ -32,18 +32,16 @@ export default function useApi() {
           }
         });
     } else {
-      getBestApi(apiMap)
-        .then((api) => {
-          lastApi = api;
-          setApi(api);
-          const endpoint = api._options.provider.endpoint;
-          dispatch(setCurrentNode({ url: endpoint, saveLocalStorage: false }));
-        })
-        .catch(() => {
-          // ignore it
-        });
+      Promise.any(
+        candidateNodes.map((endpoint) => getApi(chain, endpoint)),
+      ).then((api) => {
+        lastApi = api;
+        setApi(api);
+        const endpoint = api._options.provider.endpoint;
+        dispatch(setCurrentNode({ url: endpoint, saveLocalStorage: false }));
+      });
     }
-  }, [currentEndpoint, apiMap, dispatch, endpoints]);
+  }, [currentEndpoint, chain, dispatch, endpoints, candidateNodes]);
 
   return api;
 }

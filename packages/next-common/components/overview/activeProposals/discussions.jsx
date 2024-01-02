@@ -15,6 +15,9 @@ import { useEffect, useState } from "react";
 function Time({ time }) {
   const [text, setText] = useState("");
   useEffect(() => setText(time), []);
+  if (!text) {
+    return null;
+  }
 
   return (
     <span className="text14Medium text-textSecondary">

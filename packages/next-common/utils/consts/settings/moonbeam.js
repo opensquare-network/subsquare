@@ -35,6 +35,7 @@ const moonbeam = {
   darkAvatar: ProjectIconMoonbeamDark,
   navLogo: ProjectLogoMoonbeamDark,
   navLogoDark: ProjectLogoMoonbeamDark,
+  navPreferDark: true,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,

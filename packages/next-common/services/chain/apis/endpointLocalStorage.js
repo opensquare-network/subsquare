@@ -10,5 +10,6 @@ export default function getEndpointFromLocalStorage(chain) {
 
   const settings = getChainSettings(chain);
   const chainNodes = settings.endpoints;
-  return (chainNodes || []).find(({ url }) => url === localNodeUrl);
+  const targetNode = (chainNodes || []).find(({ url }) => url === localNodeUrl);
+  return targetNode?.url;
 }

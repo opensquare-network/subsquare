@@ -87,6 +87,7 @@ const kusama = {
   darkAvatar: ProjectIconKusamaDark,
   navLogo: ProjectLogoKusamaDark,
   navLogoDark: ProjectLogoKusamaDark,
+  navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
   links,
   hasReferenda: true,

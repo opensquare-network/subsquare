@@ -41,7 +41,7 @@ export default function Channels({ showLoginToUnsubscribe }) {
         <div className="flex flex-col gap-[16px]">
           {showLoginToUnsubscribe && (
             <WarningMessage>
-              Please login to unsubscribe notifications
+              Please login to manage notifications
             </WarningMessage>
           )}
           {emailNotSet && telegramNotSet && (
