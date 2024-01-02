@@ -58,11 +58,6 @@ export function useIsAccountConnectedOnly() {
   return user && !userStatus?.isLoggedIn;
 }
 
-export function useSetUserStatus() {
-  const { setUserStatus } = useUserContext();
-  return setUserStatus;
-}
-
 export async function fetchAndUpdateUser(userContext) {
   const { setUser, setUserStatus } = userContext;
 
