@@ -93,6 +93,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
 
   const onVerify = async () => {
     setResendLoading(true);
+    setResendErrors();
 
     let promise;
     if (isKeyUser) {
