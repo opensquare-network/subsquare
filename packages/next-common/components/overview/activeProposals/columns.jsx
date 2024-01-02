@@ -38,7 +38,9 @@ export function getProposalPostTitleColumn() {
 
 export function getVoteSummaryColumn(props) {
   return {
-    name: "",
+    name: "Vote Summary",
+    // NOTE: also used as placeholder column
+    headClassName: "sm:opacity-0 whitespace-nowrap",
     className: "w-6",
     cellRender(data) {
       const hasTally = data.onchainData?.tally || data.onchainData?.info?.tally;
