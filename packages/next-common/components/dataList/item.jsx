@@ -64,7 +64,7 @@ function MobileContent({ row = [], data, columns }) {
   const actionIdx = hasAction ? items.length - 1 : -1;
   const statusIdx = findLastIndex(
     items,
-    (item) => item.name?.toLowerCase() === "status",
+    (item) => item.name?.toLowerCase?.() === "status",
   );
   const action = items[actionIdx];
   const restItems = items.filter(
