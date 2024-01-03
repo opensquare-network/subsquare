@@ -157,7 +157,6 @@ function DesktopList({ data, setShowArgumentsDetail }) {
   return (
     <ScrollerX>
       <DataList
-        className="w-auto"
         columns={columns}
         rows={rows}
         noDataText="No current preimages"
