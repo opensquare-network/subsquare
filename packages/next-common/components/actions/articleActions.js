@@ -20,7 +20,7 @@ import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
   const user = useUser();
-  const { ensureLoin } = useEnsureLogin();
+  const { ensureLogin } = useEnsureLogin();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
   const thumbsUp = useIsThumbUp();
@@ -41,7 +41,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureLoin())) {
+      if (!(await ensureLogin())) {
         return;
       }
 
