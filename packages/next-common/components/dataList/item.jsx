@@ -79,7 +79,7 @@ function MobileContent({ row = [], data, columns }) {
             <span className="text-textTertiary">{descriptionsLabels[idx]}</span>
           ),
           value,
-          className: "h-auto mt-2",
+          className: "h-auto mt-2 items-start",
         }
       );
     })
