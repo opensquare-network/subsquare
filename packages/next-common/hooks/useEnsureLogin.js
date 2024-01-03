@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { stringToHex } from "@polkadot/util";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { LoginResult } from "next-common/store/reducers/userSlice";
@@ -14,11 +13,9 @@ import {
   useUser,
 } from "next-common/context/user";
 import { useChain } from "next-common/context/chain";
-import { personalSign } from "next-common/utils/metamask";
-import WalletTypes from "next-common/utils/consts/walletTypes";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useLoginPopup } from "./useLoginPopup";
 import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
+import { useSignMessage } from "./useSignMessage";
 
 export function useEnsureLogin() {
   const chain = useChain();
@@ -29,31 +26,8 @@ export function useEnsureLogin() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { injectedWeb3 } = useInjectedWeb3();
   const { openLoginPopup, waitForClose } = useLoginPopup();
-
-  const signWith = useCallback(
-    async (message, address, walletName) => {
-      if (walletName === WalletTypes.METAMASK) {
-        return await personalSign(stringToHex(message), address);
-      }
-
-      const extension = injectedWeb3?.[walletName];
-      if (!extension) {
-        return;
-      }
-
-      const wallet = await extension.enable("subsquare");
-      const { signature } = await wallet.signer.signRaw({
-        type: "bytes",
-        data: stringToHex(message),
-        address,
-      });
-
-      return signature;
-    },
-    [injectedWeb3],
-  );
+  const signMsg = useSignMessage();
 
   const login = useCallback(async () => {
     const connectedAccount = getCookieConnectedAccount();
@@ -71,7 +45,7 @@ export function useEnsureLogin() {
 
       let challengeAnswer;
       try {
-        challengeAnswer = await signWith(
+        challengeAnswer = await signMsg(
           result?.challenge,
           connectedAccount.address,
           connectedAccount.wallet,
@@ -103,7 +77,7 @@ export function useEnsureLogin() {
     } finally {
       setLoading(false);
     }
-  }, [signWith, chain, dispatch, setUser, router]);
+  }, [signMsg, chain, dispatch, setUser, router]);
 
   const ensureLogin = useCallback(async () => {
     if (isLoggedIn) {

@@ -16,13 +16,12 @@ import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 import Popup from "./popup/wrapper/Popup";
 import SelectWallet from "./wallet/selectWallet";
-import { stringToHex } from "@polkadot/util";
-import { getWallets } from "../utils/consts/connect";
 import { fetchAndUpdateUser, useUser, useUserContext } from "../context/user";
 import { useChain } from "../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import PrimaryButton from "./buttons/primaryButton";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -142,7 +141,6 @@ export default function LinkedAddress() {
   const chain = useChain();
   const isMounted = useIsMounted();
   const user = useUser();
-  const [wallet, setWallet] = useState();
   const [showSelectWallet, setShowSelectWallet] = useState(false);
   const [selectedWallet, setSelectWallet] = useState("");
   const [hasExtension, setHasExtension] = useState(true);
@@ -150,6 +148,7 @@ export default function LinkedAddress() {
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
   const userContext = useUserContext();
+  const signMsg = useSignMessage();
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
@@ -163,7 +162,7 @@ export default function LinkedAddress() {
 
   const showSelectWalletModal = () => setShowSelectWallet(true);
 
-  const unlinkAddress = async (chain, address) => {
+  const unlinkAddress = async (address) => {
     const { error, result } = await nextApi.delete(`user/linkaddr/${address}`);
     await fetchAndUpdateUser(userContext);
 
@@ -176,54 +175,33 @@ export default function LinkedAddress() {
     }
   };
 
-  const linkAddress = async (chain, address, source) => {
+  const linkAddress = async (address) => {
     const { result, error } = await nextApi.fetch(`user/linkaddr/${address}`);
-    if (result) {
-      let signature;
-
-      let injector = wallet;
-      if (
-        !getWallets().some(
-          ({ extensionName }) => extensionName === selectedWallet,
-        )
-      ) {
-        const extensionDapp = await import("@polkadot/extension-dapp");
-        if (source) {
-          injector = await extensionDapp.web3FromSource(source);
-        } else {
-          injector = await extensionDapp.web3FromAddress(address);
-        }
-      }
-
-      try {
-        const signResult = await injector.signer.signRaw({
-          type: "bytes",
-          data: stringToHex(result?.challenge),
-          address,
-        });
-        signature = signResult.signature;
-      } catch (e) {
-        console.log("Sign request is cancelled");
-        return;
-      }
-
-      const { error: confirmError, result: confirmResult } = await nextApi.post(
-        `user/linkaddr/${result?.attemptId}`,
-        { challengeAnswer: signature },
-      );
-
-      await fetchAndUpdateUser(userContext);
-      if (confirmResult) {
-        dispatch(newSuccessToast("Link address successfully!"));
-      }
-
-      if (confirmError) {
-        dispatch(newErrorToast(confirmError.message));
-      }
-    }
-
     if (error) {
       dispatch(newErrorToast(error.message));
+      return;
+    }
+
+    let signature;
+    try {
+      signature = await signMsg(result?.challenge, address, selectedWallet);
+    } catch (e) {
+      console.log("Sign request is cancelled");
+      return;
+    }
+
+    const { error: confirmError, result: confirmResult } = await nextApi.post(
+      `user/linkaddr/${result?.attemptId}`,
+      { challengeAnswer: signature, signer: selectedWallet },
+    );
+
+    await fetchAndUpdateUser(userContext);
+    if (confirmResult) {
+      dispatch(newSuccessToast("Link address successfully!"));
+    }
+
+    if (confirmError) {
+      dispatch(newErrorToast(confirmError.message));
     }
   };
 
@@ -297,7 +275,7 @@ export default function LinkedAddress() {
                   {isSameAddress(user?.address, activeChainAddress) ? (
                     <LinkWrapper
                       onClick={() => {
-                        unlinkAddress(activeChain, activeChainAddress);
+                        unlinkAddress(activeChainAddress);
                       }}
                     >
                       <AddressLinkIcon />
@@ -306,11 +284,7 @@ export default function LinkedAddress() {
                   ) : (
                     <LinkWrapper
                       onClick={() => {
-                        linkAddress(
-                          activeChain,
-                          activeChainAddress,
-                          item.meta?.source,
-                        );
+                        linkAddress(activeChainAddress, item.meta?.source);
                       }}
                     >
                       <UnLinkIcon />
@@ -328,7 +302,6 @@ export default function LinkedAddress() {
             selectedWallet={selectedWallet}
             setSelectWallet={setSelectWallet}
             setAccounts={setAccounts}
-            setWallet={setWallet}
             onSelect={() => setShowSelectWallet(false)}
           />
         </Popup>
