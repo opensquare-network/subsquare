@@ -13,11 +13,14 @@ const ConnectedAccountContext = createContext(null);
 
 export default ConnectedAccountContext;
 
-export function ConnectedAccountProvider({ children }) {
+export function ConnectedAccountProvider({
+  connectedAccount: _connectedAccount,
+  children,
+}) {
   const user = useUser();
   const isLoggedIn = useIsLoggedIn();
   const userContext = useUserContext();
-  const [connectedAccount, setConnectedAccount] = useState();
+  const [connectedAccount, setConnectedAccount] = useState(_connectedAccount);
 
   const connect = useCallback(
     async (account) => {

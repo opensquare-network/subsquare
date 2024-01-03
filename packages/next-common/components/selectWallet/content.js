@@ -20,7 +20,7 @@ export default function SelectWalletContent() {
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
-  const { connect: connectWallet } = useConnectedAccountContext();
+  const { connect: connectAccount } = useConnectedAccountContext();
   const lastConnectedAddress = getStorageAddressInfo(
     CACHE_KEY.lastConnectedAddress,
   );
@@ -31,8 +31,7 @@ export default function SelectWalletContent() {
       return;
     }
 
-    connectWallet({
-      name: selectedAccount.name,
+    await connectAccount({
       address: selectedAccount.address,
       wallet: selectedAccount.meta?.source || selectedWallet,
     });

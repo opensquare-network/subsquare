@@ -73,7 +73,7 @@ export default function PostCreate() {
   const [formValue, setFormValue] = useState({});
   const [errors, setErrors] = useState();
   const [isAdvanced, setIsAdvanced] = useState(false);
-  const isEmpty = content === "" || content === "<p><br></p>";
+  const isEmpty = title === "" || content === "" || content === "<p><br></p>";
   const [selectedLabels, setSelectedLabels] = useState([]);
   const { ensureLogin } = useEnsureLogin();
 

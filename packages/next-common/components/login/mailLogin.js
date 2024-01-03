@@ -17,9 +17,11 @@ import {
 } from "next-common/context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import Link from "next/link";
-import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import {
+  LoginResult,
+  setLoginResult,
+} from "next-common/store/reducers/userSlice";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -28,12 +30,11 @@ const ForgetPassword = styled.div`
 `;
 
 export default function MailLogin({ setView }) {
+  const dispatch = useDispatch();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const setUser = useSetUser();
   const { closeLoginPopup } = useLoginPopup();
-  const redirectUrl = useSelector(loginRedirectUrlSelector);
-  const router = useRouter();
   const userContext = useUserContext();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
@@ -46,11 +47,9 @@ export default function MailLogin({ setView }) {
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
         setUser(res.result);
-        fetchAndUpdateUserStatus(userContext);
+        await fetchAndUpdateUserStatus(userContext);
+        dispatch(setLoginResult(LoginResult.LoggedIn));
         closeLoginPopup();
-        if (redirectUrl) {
-          router.push(redirectUrl);
-        }
       } else if (res.error) {
         setErrors(res.error);
       }

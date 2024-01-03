@@ -107,9 +107,11 @@ export default function HeaderAccount() {
         </GhostButton>
       );
     } else {
-      <GhostButton onClick={() => setShow(!show)}>
-        <AddressUser add={user?.address} noEvent />
-      </GhostButton>;
+      connectBtn = (
+        <GhostButton onClick={() => setShow(!show)}>
+          <AddressUser add={user?.address} noEvent />
+        </GhostButton>
+      );
     }
   }
 
