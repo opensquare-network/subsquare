@@ -23,23 +23,15 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
       <Item>
         <span>Been delegated</span>
         <ValueDisplay
-          value={
-            <TextSecondary>
-              {toPrecision(delegations?.votes || 0, decimals)}
-            </TextSecondary>
-          }
-          symbol={<TextSecondary>{symbol}</TextSecondary>}
+          value={toPrecision(delegations?.votes || 0, decimals)}
+          symbol={symbol}
         />
       </Item>
       <Item>
         <span>Capital</span>
         <ValueDisplay
-          value={
-            <TextSecondary>
-              {toPrecision(delegations?.capital || 0, decimals)}
-            </TextSecondary>
-          }
-          symbol={<TextSecondary>{symbol}</TextSecondary>}
+          value={toPrecision(delegations?.capital || 0, decimals)}
+          symbol={symbol}
         />
       </Item>
       <Item>
