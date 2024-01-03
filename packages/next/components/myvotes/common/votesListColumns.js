@@ -3,7 +3,6 @@ export const proposalColumnDefinition = {
   style: {
     textAlign: "left",
     minWidth: "230px",
-    maxWidth: 600,
     paddingRight: 16,
   },
 };

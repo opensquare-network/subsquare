@@ -11,14 +11,14 @@ import AddressUser from "../user/addressUser";
 export function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
     <div className="flex">
-      <div className="flex items-center md:w-[160px]">
+      <div className="flex items-center">
         <Copyable className="max-md:flex max-md:items-center" copyText={hash}>
           <span className="text14Medium text-textPrimary inline-block w-[96px] truncate">
             {hash}
           </span>
         </Copyable>
       </div>
-      <div className="flex items-centers mx-[16px] max-md:hidden">
+      <div className="flex items-centers ml-[16px]">
         <DetailButton
           disabled={!proposal}
           onClick={() => setShowArgumentsDetail(proposal)}
