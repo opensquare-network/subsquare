@@ -83,6 +83,7 @@ export default function DataList({
         listOverflow && "min-w-min",
         "scrollbar-pretty",
         "text-textPrimary",
+        "bg-neutral100",
         bordered &&
           cn("p-6", "border border-neutral300 shadow-100", "rounded-md"),
         className,
