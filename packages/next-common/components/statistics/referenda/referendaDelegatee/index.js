@@ -13,6 +13,7 @@ import Tooltip from "next-common/components/tooltip";
 import startCase from "lodash.startcase";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
 
 function getSortParams(sortedColumn) {
   if (!sortedColumn) {
@@ -162,9 +163,9 @@ export default function ReferendaDelegatee({ delegatee }) {
 
   return (
     <div>
-      <div className="flex max-sm:overflow-x-auto scrollbar-pretty">
+      <ScrollerX>
         <DataList columns={columns} rows={rows} />
-      </div>
+      </ScrollerX>
       <Pagination
         {...delegateeList}
         onPageChange={(e, page) => {
