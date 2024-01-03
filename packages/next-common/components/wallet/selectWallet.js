@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { getWallets } from "../../utils/consts/connect";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import { emptyFunction } from "../../utils";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import { useChainSettings } from "next-common/context/chain";
@@ -19,14 +18,15 @@ import {
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
+import noop from "lodash.noop";
 
 export default function SelectWallet({
   selectedWallet,
   setSelectWallet,
   setAccounts,
-  setWallet = emptyFunction,
-  onSelect = emptyFunction,
-  onAccessGranted = emptyFunction,
+  setWallet = noop,
+  onSelect = noop,
+  onAccessGranted = noop,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -116,37 +116,38 @@ export default function SelectWallet({
     ],
   );
 
-  useEffect(() => {
-    if (!selectedWallet) {
-      return;
-    }
+  const loadWalletAccounts = useCallback(
+    async (wallet) => {
+      if (!wallet) {
+        return;
+      }
 
-    switch (selectedWallet) {
-      case WalletTypes.POLKADOT_JS:
-      case WalletTypes.POLKAGATE:
-      case WalletTypes.SUBWALLET_JS:
-      case WalletTypes.TALISMAN: {
-        loadPolkadotAccounts(selectedWallet);
-        onSelect(selectedWallet);
-        break;
-      }
-      case WalletTypes.METAMASK: {
-        loadMetaMaskAccounts(selectedWallet);
-        onSelect(selectedWallet);
-        break;
-      }
-      case WalletTypes.NOVA: {
-        if (isEvmChain()) {
-          loadMetaMaskAccounts(WalletTypes.METAMASK);
-          onSelect(WalletTypes.METAMASK);
-        } else {
-          loadPolkadotAccounts(WalletTypes.POLKADOT_JS);
-          onSelect(WalletTypes.POLKADOT_JS);
+      setSelectWallet(wallet);
+
+      switch (wallet) {
+        case WalletTypes.POLKADOT_JS:
+        case WalletTypes.POLKAGATE:
+        case WalletTypes.SUBWALLET_JS:
+        case WalletTypes.TALISMAN: {
+          await loadPolkadotAccounts(wallet);
+          break;
         }
-        break;
+        case WalletTypes.METAMASK: {
+          await loadMetaMaskAccounts(wallet);
+          break;
+        }
+        case WalletTypes.NOVA: {
+          if (isEvmChain()) {
+            await loadMetaMaskAccounts(WalletTypes.METAMASK);
+          } else {
+            await loadPolkadotAccounts(WalletTypes.POLKADOT_JS);
+          }
+          break;
+        }
       }
-    }
-  }, [selectedWallet, loadPolkadotAccounts, loadMetaMaskAccounts, onSelect]);
+    },
+    [loadPolkadotAccounts, loadMetaMaskAccounts],
+  );
 
   return (
     <div className="space-y-2">
@@ -159,7 +160,10 @@ export default function SelectWallet({
             <MetaMaskWallet
               key={index}
               wallet={wallet}
-              onClick={() => setSelectWallet(wallet.extensionName)}
+              onClick={async () => {
+                await loadWalletAccounts(wallet.extensionName);
+                onSelect();
+              }}
               selected={selected}
               loading={loading}
             />
@@ -171,7 +175,10 @@ export default function SelectWallet({
             <NovaWallet
               key={index}
               wallet={wallet}
-              onClick={() => setSelectWallet(wallet.extensionName)}
+              onClick={async () => {
+                await loadWalletAccounts(wallet.extensionName);
+                onSelect();
+              }}
               selected={selected}
               loading={loading}
             />
@@ -182,7 +189,10 @@ export default function SelectWallet({
           <PolkadotWallet
             key={index}
             wallet={wallet}
-            onClick={() => setSelectWallet(wallet.extensionName)}
+            onClick={async () => {
+              await loadWalletAccounts(wallet.extensionName);
+              onSelect();
+            }}
             selected={selected}
             loading={loading}
           />

@@ -327,11 +327,9 @@ export default function LinkedAddress() {
           <SelectWallet
             selectedWallet={selectedWallet}
             setSelectWallet={setSelectWallet}
-            onAccessGranted={() => {
-              setShowSelectWallet(false);
-            }}
             setAccounts={setAccounts}
             setWallet={setWallet}
+            onSelect={() => setShowSelectWallet(false)}
           />
         </Popup>
       )}
