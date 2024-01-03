@@ -18,6 +18,7 @@ const PopupListWrapper = styled(TwDiv)`
   )};
   & .datalist-body {
     max-height: 400px;
+    overflow-x: hidden;
   }
   table {
     border: none;
