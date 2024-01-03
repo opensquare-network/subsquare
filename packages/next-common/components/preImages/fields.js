@@ -10,7 +10,7 @@ import AddressUser from "../user/addressUser";
 
 export function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
-    <div className="flex">
+    <div className="flex justify-between">
       <div className="flex items-center">
         <Copyable className="max-md:flex max-md:items-center" copyText={hash}>
           <span className="text14Medium text-textPrimary inline-block w-[96px] truncate">
@@ -18,7 +18,7 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
           </span>
         </Copyable>
       </div>
-      <div className="flex items-centers ml-[16px]">
+      <div className="flex items-centers pr-4">
         <DetailButton
           disabled={!proposal}
           onClick={() => setShowArgumentsDetail(proposal)}
