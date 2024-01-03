@@ -9,7 +9,6 @@ const columns = [
       textAlign: "left",
       width: "200px",
       minWidth: "200px",
-      paddingRight: "16px",
     },
   },
   {

@@ -20,7 +20,7 @@ export default function DesktopList() {
       height={multisig.when.height}
       index={multisig.when.index}
     />,
-    <AddressUser key="address" add={multisig.address} />,
+    <AddressUser key="address" add={multisig.address} maxWidth={200} />,
     <Call
       key="call"
       when={multisig.when}
