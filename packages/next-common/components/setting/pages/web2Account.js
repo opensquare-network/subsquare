@@ -5,28 +5,32 @@ import Email from "next-common/components/setting/email";
 import Password from "next-common/components/setting/password";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
-import { isKeyRegisteredUser } from "next-common/utils";
 import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { useIsAccountConnectedOnly, useUser } from "next-common/context/user";
+import {
+  useIsAccountConnectedOnly,
+  useIsWeb3User,
+  useUser,
+} from "next-common/context/user";
 import RequireSignature from "next-common/components/setting/requireSignature";
 
 export default function Web2Account() {
   const router = useRouter();
   const user = useUser();
+  const isWeb3User = useIsWeb3User();
   const isAccountConnectedOnly = useIsAccountConnectedOnly();
 
   useEffect(() => {
     if (!user) {
       router.push("/");
     }
-    if (user && isKeyRegisteredUser(user)) {
+    if (isWeb3User) {
       router.push("/settings/key-account");
     }
-  }, [user, router]);
+  }, [user, isWeb3User, router]);
 
   if (isAccountConnectedOnly) {
     return (

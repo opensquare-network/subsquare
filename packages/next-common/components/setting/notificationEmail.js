@@ -69,7 +69,7 @@ const CountdownWrapper = styled.div`
 export default function NotificationEmail({ isOn, setIsOn }) {
   const dispatch = useDispatch();
   const user = useUser();
-  const isKeyUser = user && isKeyRegisteredUser(user);
+  const isWeb3User = user && isKeyRegisteredUser(user);
   const email = user?.email;
   const verified = user?.emailVerified;
   const [resendLoading, setResendLoading] = useState(false);
@@ -93,7 +93,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
     setResendLoading(true);
 
     let promise;
-    if (isKeyUser) {
+    if (isWeb3User) {
       promise = nextApi.post("user/setemail", {
         email: inputEmail,
       });
@@ -182,7 +182,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
             </IconWrapper>
             <InputWrapper>
               <Input
-                disabled={!isKeyUser}
+                disabled={!isWeb3User}
                 placeholder="Please fill Email..."
                 defaultValue={inputEmail}
                 post={emailVerified}

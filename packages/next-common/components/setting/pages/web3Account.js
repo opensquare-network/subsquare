@@ -2,17 +2,17 @@ import { ContentWrapper } from "next-common/components/setting/styled";
 import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
-import { isKeyRegisteredUser } from "next-common/utils";
 import { useEffect } from "react";
 import {
   SettingSection,
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { useUser } from "next-common/context/user";
+import { useIsWeb3User, useUser } from "next-common/context/user";
 
 export default function Web3Account() {
   const user = useUser();
+  const isWeb3User = useIsWeb3User();
   const address = user?.address || "";
 
   const router = useRouter();
@@ -21,10 +21,10 @@ export default function Web3Account() {
     if (!user) {
       router.push("/");
     }
-    if (user && !isKeyRegisteredUser(user)) {
+    if (!isWeb3User) {
       router.push("/settings/account");
     }
-  }, [user, router]);
+  }, [user, isWeb3User, router]);
 
   return (
     <SettingLayout>
