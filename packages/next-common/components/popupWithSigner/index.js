@@ -4,8 +4,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybePolkadotSigner from "./maybePolkadotSigner";
 import MaybeMetamaskSigner from "./maybeMetamaskSigner";
 import SelectWalletPopup from "../selectWallet";
-import { CACHE_KEY } from "next-common/utils/constants";
-import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 export default function PopupWithSigner({
   Component,
@@ -15,15 +14,13 @@ export default function PopupWithSigner({
   ...props
 }) {
   const user = useUser();
+  const { lastConnectedAccount } = useConnectedAccountContext();
 
   if (!user) {
     return <SelectWalletPopup onClose={onClose} />;
   }
 
-  const lastConnectedAddress = getStorageAddressInfo(
-    CACHE_KEY.lastConnectedAddress,
-  );
-  if (lastConnectedAddress?.wallet === WalletTypes.METAMASK) {
+  if (lastConnectedAccount?.wallet === WalletTypes.METAMASK) {
     return (
       <MaybeMetamaskSigner
         onClose={onClose}

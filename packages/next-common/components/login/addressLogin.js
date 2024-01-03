@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
-import { CACHE_KEY } from "../../utils/constants";
 import { useChain } from "../../context/chain";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import WalletAddressSelect from "./walletAddressSelect";
-import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { encodeAddressToChain } from "next-common/services/address";
 import {
@@ -29,15 +27,8 @@ export default function AddressLogin({ setView }) {
   const [web3Error, setWeb3Error] = useState();
   const dispatch = useDispatch();
   const { closeLoginPopup } = useLoginPopup();
-  const [lastConnectedAddress, setLastConnectedAddress] = useState();
-  const { connect: connectAccount } = useConnectedAccountContext();
-
-  useEffect(() => {
-    const info = getStorageAddressInfo(CACHE_KEY.lastConnectedAddress);
-    if (info) {
-      setLastConnectedAddress(info);
-    }
-  }, []);
+  const { lastConnectedAccount, connect: connectAccount } =
+    useConnectedAccountContext();
 
   const doWeb3Login = async () => {
     if (!selectedAccount?.address) {
@@ -51,10 +42,6 @@ export default function AddressLogin({ setView }) {
       wallet: selectedWallet,
     };
     await connectAccount(accountInfo);
-    localStorage.setItem(
-      CACHE_KEY.lastConnectedAddress,
-      JSON.stringify(accountInfo),
-    );
     dispatch(setLoginResult(LoginResult.Connected));
 
     closeLoginPopup();
@@ -71,7 +58,7 @@ export default function AddressLogin({ setView }) {
         setSelectedAccount={setSelectedAccount}
         web3Error={web3Error}
         setWeb3Error={setWeb3Error}
-        lastUsedAddress={lastConnectedAddress?.address}
+        lastUsedAddress={lastConnectedAccount?.address}
       />
       <ButtonWrapper>
         {selectedWallet && (

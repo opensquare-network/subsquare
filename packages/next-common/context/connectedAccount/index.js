@@ -1,13 +1,19 @@
 import { CACHE_KEY } from "next-common/utils/constants";
 import { clearCookie, setCookie } from "next-common/utils/viewfuncs/cookies";
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   fetchAndUpdateUser,
   logoutUser,
   useIsLoggedIn,
-  useUser,
   useUserContext,
 } from "../user";
+import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
 
 const ConnectedAccountContext = createContext(null);
 
@@ -17,19 +23,17 @@ export function ConnectedAccountProvider({
   connectedAccount: _connectedAccount,
   children,
 }) {
-  const user = useUser();
   const isLoggedIn = useIsLoggedIn();
   const userContext = useUserContext();
   const [connectedAccount, setConnectedAccount] = useState(_connectedAccount);
+  const [lastConnectedAccount, setLastConnectedAccount] = useState();
 
-  const connect = useCallback(
-    async (account) => {
-      setConnectedAccount(account);
-      setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
-      await fetchAndUpdateUser(userContext);
-    },
-    [user, userContext],
-  );
+  useEffect(() => {
+    const info = getStorageAddressInfo(CACHE_KEY.lastConnectedAccount);
+    if (info) {
+      setLastConnectedAccount(info);
+    }
+  }, []);
 
   const disconnect = useCallback(async () => {
     setConnectedAccount(null);
@@ -42,10 +46,26 @@ export function ConnectedAccountProvider({
     }
   }, [isLoggedIn, userContext]);
 
+  const connect = useCallback(
+    async (account) => {
+      await disconnect();
+      setConnectedAccount(account);
+      setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
+      setLastConnectedAccount(account);
+      localStorage.setItem(
+        CACHE_KEY.lastConnectedAccount,
+        JSON.stringify(account),
+      );
+      await fetchAndUpdateUser(userContext);
+    },
+    [disconnect, userContext],
+  );
+
   return (
     <ConnectedAccountContext.Provider
       value={{
         connectedAccount,
+        lastConnectedAccount,
         connect,
         disconnect,
       }}
