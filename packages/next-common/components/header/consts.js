@@ -31,8 +31,8 @@ const web3AccountItem = {
 export const getAccountMenu = (userContext) => {
   const { user, userStatus } = userContext;
   const isLoggedIn = userStatus?.isLoggedIn;
-  const isKeyUser = isKeyRegisteredUser(user);
-  if (isKeyUser || !isLoggedIn) {
+  const isWeb3User = isKeyRegisteredUser(user);
+  if (isWeb3User || !isLoggedIn) {
     return [web3AccountItem, disconnectItem];
   }
   return [web2AccountItem, logoutItem];

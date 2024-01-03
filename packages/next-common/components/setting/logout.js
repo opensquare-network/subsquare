@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { ButtonWrapper } from "./styled";
 import GhostButton from "../buttons/ghostButton";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
-import { useIsKeyUser, useIsLoggedIn } from "next-common/context/user";
+import { useIsWeb3User, useIsLoggedIn } from "next-common/context/user";
 
 export default function Logout() {
   const router = useRouter();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
   const isLoggedIn = useIsLoggedIn();
-  const isKeyUser = useIsKeyUser();
+  const isWeb3User = useIsWeb3User();
 
   return (
     <ButtonWrapper>
@@ -20,7 +20,7 @@ export default function Logout() {
           await router.replace("/");
         }}
       >
-        {isKeyUser || !isLoggedIn ? "Disconnect wallet" : "Logout my account"}
+        {isWeb3User || !isLoggedIn ? "Disconnect wallet" : "Logout my account"}
       </GhostButton>
     </ButtonWrapper>
   );

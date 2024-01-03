@@ -54,7 +54,7 @@ export function useIsLoggedIn() {
   return userStatus?.isLoggedIn;
 }
 
-export function useIsKeyUser() {
+export function useIsWeb3User() {
   const { user, userStatus } = useUserContext();
   return user && (!userStatus?.isSignedUp || isKeyRegisteredUser(user));
 }

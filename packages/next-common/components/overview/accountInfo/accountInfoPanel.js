@@ -1,6 +1,6 @@
 import Avatar from "next-common/components/avatar";
 import Gravatar from "next-common/components/gravatar";
-import { useIsKeyUser, useUser } from "next-common/context/user";
+import { useIsWeb3User, useUser } from "next-common/context/user";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
@@ -75,14 +75,14 @@ const IconButton = tw.div`
 function AccountHead() {
   const router = useRouter();
   const user = useUser();
-  const isKeyUser = useIsKeyUser();
+  const isWeb3User = useIsWeb3User();
 
   const goProfile = () => {
     router.push(`/user/${user?.address}`);
   };
 
   const goSetting = () => {
-    if (isKeyUser) {
+    if (isWeb3User) {
       router.push("/settings/key-account");
     } else {
       router.push("/settings/account");

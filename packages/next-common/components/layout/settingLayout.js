@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ListLayout from "next-common/components/layout/ListLayout";
-import { useIsKeyUser } from "next-common/context/user";
+import { useIsWeb3User } from "next-common/context/user";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 
@@ -19,20 +19,20 @@ const Wrapper = styled.div`
 `;
 
 export default function SettingLayout(props) {
-  const isKeyUser = useIsKeyUser();
+  const isWeb3User = useIsWeb3User();
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
   const accountTab = {
     label: "Account",
-    url: `/settings/${isKeyUser ? "key-account" : "account"}`,
+    url: `/settings/${isWeb3User ? "key-account" : "account"}`,
   };
   const notificationsTab = {
     label: "Notifications",
     url: "/settings/notifications",
   };
   let tabs = [accountTab, notificationsTab];
-  if (!isKeyUser) {
+  if (!isWeb3User) {
     tabs.splice(1, 0, {
       label: "Link Address",
       url: "/settings/linked-address",

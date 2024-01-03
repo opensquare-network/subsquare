@@ -12,7 +12,7 @@ import {
 import SettingLayout from "next-common/components/layout/settingLayout";
 import {
   useIsAccountConnectedOnly,
-  useIsKeyUser,
+  useIsWeb3User,
   useUser,
 } from "next-common/context/user";
 import RequireSignature from "next-common/components/setting/requireSignature";
@@ -20,17 +20,17 @@ import RequireSignature from "next-common/components/setting/requireSignature";
 export default function Web2Account() {
   const router = useRouter();
   const user = useUser();
-  const isKeyUser = useIsKeyUser();
+  const isWeb3User = useIsWeb3User();
   const isAccountConnectedOnly = useIsAccountConnectedOnly();
 
   useEffect(() => {
     if (!user) {
       router.push("/");
     }
-    if (isKeyUser) {
+    if (isWeb3User) {
       router.push("/settings/key-account");
     }
-  }, [user, isKeyUser, router]);
+  }, [user, isWeb3User, router]);
 
   if (isAccountConnectedOnly) {
     return (

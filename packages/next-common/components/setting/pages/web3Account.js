@@ -8,11 +8,11 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
-import { useIsKeyUser, useUser } from "next-common/context/user";
+import { useIsWeb3User, useUser } from "next-common/context/user";
 
 export default function Web3Account() {
   const user = useUser();
-  const isKeyUser = useIsKeyUser();
+  const isWeb3User = useIsWeb3User();
   const address = user?.address || "";
 
   const router = useRouter();
@@ -21,10 +21,10 @@ export default function Web3Account() {
     if (!user) {
       router.push("/");
     }
-    if (!isKeyUser) {
+    if (!isWeb3User) {
       router.push("/settings/account");
     }
-  }, [user, isKeyUser, router]);
+  }, [user, isWeb3User, router]);
 
   return (
     <SettingLayout>
