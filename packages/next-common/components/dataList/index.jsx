@@ -3,7 +3,7 @@ import { cn } from "next-common/utils";
 import NoData from "../noData";
 import DataListItem from "./item";
 import { useDeepCompareEffect } from "react-use";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function DataList({
   columns = [],
@@ -15,7 +15,19 @@ export default function DataList({
   bordered = false,
 }) {
   let content;
+  const listRef = useRef();
   const bodyRef = useRef();
+
+  const [listOverflow, setListOverflow] = useState(false);
+  useEffect(() => {
+    const parent = listRef.current?.parentElement;
+    const parentWidth = parent?.clientWidth;
+    const listWidth = listRef.current?.scrollWidth;
+
+    if (listWidth > parentWidth) {
+      setListOverflow(true);
+    }
+  }, [listRef]);
 
   useDeepCompareEffect(() => {
     if (scrollToFirstRowOnChange) {
@@ -33,7 +45,7 @@ export default function DataList({
         ?.split(" ")
         ?.some((className) => className.startsWith("w-")) &&
         !column?.style?.width &&
-        "flex-1",
+        "flex-1 w-full",
       column.className,
     ),
   );
@@ -63,10 +75,12 @@ export default function DataList({
 
   return (
     <div
+      ref={listRef}
       role="list"
       className={cn(
         "datalist",
-        "min-w-full",
+        "w-full",
+        listOverflow && "min-w-min",
         "scrollbar-pretty",
         "text-textPrimary",
         bordered &&
@@ -77,7 +91,6 @@ export default function DataList({
       <div
         className={cn(
           "flex items-center pb-3",
-          "min-w-min",
           "border-b border-neutral300",
           "max-sm:hidden",
         )}
@@ -97,10 +110,7 @@ export default function DataList({
         ))}
       </div>
 
-      <div
-        ref={bodyRef}
-        className={cn("datalist-body", "min-w-full", "scrollbar-pretty")}
-      >
+      <div ref={bodyRef} className={cn("datalist-body", "scrollbar-pretty")}>
         {content}
       </div>
     </div>

@@ -12,7 +12,6 @@ export default function DataListItem({ columns, row, columnClassNames }) {
     <div
       role="listitem"
       className={cn(
-        "min-w-min",
         "flex items-center py-4",
         "max-sm:block",
         onClick && "cursor-pointer",
