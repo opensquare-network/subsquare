@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import nextApi from "../../services/nextApi";
+import { isKeyRegisteredUser } from "next-common/utils";
 
 const UserContext = createContext(null);
 
@@ -51,6 +52,11 @@ export function useSetUser() {
 export function useIsLoggedIn() {
   const { userStatus } = useUserContext();
   return userStatus?.isLoggedIn;
+}
+
+export function useIsKeyUser() {
+  const { user, userStatus } = useUserContext();
+  return user && (!userStatus?.isSignedUp || isKeyRegisteredUser(user));
 }
 
 export function useIsAccountConnectedOnly() {

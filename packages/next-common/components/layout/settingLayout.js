@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import ListLayout from "next-common/components/layout/ListLayout";
-import { useIsLoggedIn, useUser } from "next-common/context/user";
-import { isKeyRegisteredUser } from "next-common/utils";
+import { useIsKeyUser } from "next-common/context/user";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 
@@ -20,15 +19,13 @@ const Wrapper = styled.div`
 `;
 
 export default function SettingLayout(props) {
-  const user = useUser();
-  const isLoggedIn = useIsLoggedIn();
+  const isKeyUser = useIsKeyUser();
   const chain = useChain();
-  const isKeyAccount = !user || !isLoggedIn || isKeyRegisteredUser(user);
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
   let tabs = [];
 
-  if (isKeyAccount) {
+  if (isKeyUser) {
     if (isKintsugi) {
       tabs = [
         { label: "Account", url: "/settings/key-account" },
