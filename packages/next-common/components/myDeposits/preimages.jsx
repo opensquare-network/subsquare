@@ -70,7 +70,8 @@ function DesktopList({ data, setShowArgumentsDetail }) {
   const { columns } = useColumns([
     {
       name: "Hash",
-      className: "text-left w-40",
+      // 160 + 16(gap) + 28(button)
+      className: "text-left w-[204px]",
     },
     {
       name: "Arguments",

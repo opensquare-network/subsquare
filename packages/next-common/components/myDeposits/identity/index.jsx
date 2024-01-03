@@ -19,7 +19,6 @@ function DepositList() {
   const columns = [
     {
       name: "Address",
-      style: { width: 176, textAlign: "left" },
     },
     {
       name: "Deposit Balance",
