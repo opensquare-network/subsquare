@@ -29,7 +29,11 @@ export default function DataList({
     cn(
       "text14Medium",
       // if has no width specific, make it flex
-      !column.className?.includes("w-") && !column?.style?.width && "flex-1",
+      !column.className
+        ?.split(" ")
+        ?.some((className) => className.startsWith("w-")) &&
+        !column?.style?.width &&
+        "flex-1",
       column.className,
     ),
   );
