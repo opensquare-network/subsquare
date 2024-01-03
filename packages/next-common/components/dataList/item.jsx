@@ -37,7 +37,7 @@ export default function DataListItem({ columns, row, columnClassNames }) {
 
 function DesktopContent({ data, row, columns, columnClassNames }) {
   return (
-    <div className="max-sm:hidden w-full flex items-center">
+    <div className="max-sm:hidden w-full flex items-center gap-x-4">
       {(data ?? row)?.map((item, idx) => (
         <div
           key={idx}
@@ -52,33 +52,31 @@ function DesktopContent({ data, row, columns, columnClassNames }) {
 }
 
 function MobileContent({ row = [], data, columns }) {
-  const actionColumnIdx = findLastIndex(
-    columns,
-    (column) => column.name === "",
+  const items = columns.map((col, idx) => {
+    return {
+      name: col.name,
+      value: data?.[idx] || row?.[idx],
+    };
+  });
+
+  const actionIdx = findLastIndex(items, (item) => item.name === "");
+  const statusIdx = findLastIndex(
+    items,
+    (item) => item.name?.toLowerCase() === "status",
   );
-  const statusColumnIdx = findLastIndex(
-    columns,
-    (column) => column.name?.toLowerCase() === "status",
-  );
-  const actionColumn = columns[actionColumnIdx];
-  const restColumns = columns.filter(
-    (_, idx) => ![actionColumnIdx, statusColumnIdx].includes(idx),
-  );
-  const restRowItems = (data || row).filter(
-    (_, idx) => ![actionColumnIdx, statusColumnIdx].includes(idx),
+  const action = items[actionIdx];
+  const restItems = items.filter(
+    (_, idx) => ![actionIdx, statusIdx].includes(idx),
   );
 
-  const [first, ...rest] = restRowItems;
+  const [first, ...rest] = restItems;
 
-  const descriptionsLabels = restColumns.slice(1).map((col) => col.name);
   const descriptionItems = rest
-    .map((value, idx) => {
+    .map((item) => {
       return (
-        value && {
-          label: (
-            <span className="text-textTertiary">{descriptionsLabels[idx]}</span>
-          ),
-          value,
+        item && {
+          label: <span className="text-textTertiary">{item.name}</span>,
+          value: item.value,
           className: "h-auto mt-2 items-start",
         }
       );
@@ -89,11 +87,11 @@ function MobileContent({ row = [], data, columns }) {
     <div className="sm:hidden sm:py-4 space-y-3">
       <div>
         <div className="flex items-center justify-between">
-          {first}
-          {actionColumn && row[actionColumnIdx]}
+          {first.value}
+          {action && items[actionIdx]?.value}
         </div>
-        {statusColumnIdx && (
-          <div className="flex justify-end pt-3">{row[statusColumnIdx]}</div>
+        {statusIdx && (
+          <div className="flex justify-end pt-3">{items[statusIdx]?.value}</div>
         )}
       </div>
 
