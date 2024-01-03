@@ -28,7 +28,8 @@ export default function DataList({
   const columnClassNames = columns.map((column) =>
     cn(
       "text14Medium",
-      !column.className?.includes("w-") && "flex-1",
+      // if has no width specific, make it flex
+      !column.className?.includes("w-") && !column?.style?.width && "flex-1",
       column.className,
     ),
   );
@@ -62,7 +63,6 @@ export default function DataList({
       className={cn(
         "datalist",
         "text-textPrimary",
-        "w-full",
         bordered &&
           cn(
             "p-6",
@@ -97,7 +97,7 @@ export default function DataList({
 
       <div
         ref={bodyRef}
-        className="datalist-body overflow-x-hidden overflow-y-auto scrollbar-pretty"
+        className="datalist-body w-full overflow-x-hidden overflow-y-auto scrollbar-pretty"
       >
         {content}
       </div>
