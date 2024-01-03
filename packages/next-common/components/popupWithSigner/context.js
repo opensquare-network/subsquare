@@ -59,14 +59,9 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       return;
     }
 
-    let account = null;
-
-    // Check user login address first
-    if (userAddress) {
-      account = extensionAccounts?.find((item) =>
-        isSameAddress(item.address, userAddress),
-      );
-    }
+    const account = extensionAccounts?.find((item) =>
+      isSameAddress(item.address, userAddress),
+    );
 
     if (!account) {
       setSignerAccount();
