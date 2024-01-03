@@ -10,7 +10,7 @@ import {
 } from "next-common/store/reducers/preImagesSlice";
 import FieldLoading from "../icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 
 export default function DesktopList({ data }) {
@@ -18,23 +18,23 @@ export default function DesktopList({ data }) {
   const { columns } = useColumns([
     {
       name: "Hash",
-      style: { textAlign: "left", width: "220px" },
+      style: { textAlign: "left", minWidth: "204px" },
     },
     {
       name: "Arguments",
-      style: { textAlign: "left", minWidth: "360px" },
+      style: { textAlign: "left", minWidth: "388px" },
     },
     {
       name: "Depositor",
-      style: { textAlign: "left", width: "128px", minWidth: "128px" },
+      style: { textAlign: "left", width: "160px", minWidth: "160px" },
     },
     {
       name: "Length",
-      style: { textAlign: "right", width: "128px", minWidth: "96px" },
+      style: { textAlign: "right", width: "80px", minWidth: "80px" },
     },
     {
       name: "Status",
-      style: { textAlign: "right", width: "128px", minWidth: "128px" },
+      style: { textAlign: "right", width: "160px", minWidth: "160px" },
     },
   ]);
 
@@ -106,7 +106,8 @@ export default function DesktopList({ data }) {
   return (
     <SecondaryCard>
       <ScrollerX>
-        <NoBorderList
+        <DataList
+          // className="min-w-min"
           columns={columns}
           rows={rows}
           noDataText="No current preimages"

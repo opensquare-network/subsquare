@@ -11,7 +11,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 
 const Wrapper = styled.div``;
 
@@ -123,7 +123,7 @@ export default function Delegator({ delegators, apiRoot = "democracy" }) {
     <Wrapper>
       <div id="header"></div>
       <ScrollerX>
-        <NoBorderList columns={columns} rows={rows} />
+        <DataList columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...delegatorsList}

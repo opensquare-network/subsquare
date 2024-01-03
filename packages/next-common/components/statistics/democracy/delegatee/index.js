@@ -12,7 +12,7 @@ import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 
 const Wrapper = styled.div``;
 
@@ -139,7 +139,7 @@ export default function DemocracyDelegatee({
     <Wrapper>
       <div id="header"></div>
       <ScrollerX>
-        <NoBorderList columns={columns} rows={rows} />
+        <DataList columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...delegateeList}

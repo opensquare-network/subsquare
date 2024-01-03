@@ -12,7 +12,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import Tooltip from "next-common/components/tooltip";
 import startCase from "lodash.startcase";
 import AddressUser from "next-common/components/user/addressUser";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 
 function getSortParams(sortedColumn) {
   if (!sortedColumn) {
@@ -163,7 +163,7 @@ export default function ReferendaDelegatee({ delegatee }) {
   return (
     <div>
       <div className="flex max-sm:overflow-x-auto scrollbar-pretty">
-        <NoBorderList columns={columns} rows={rows} />
+        <DataList columns={columns} rows={rows} />
       </div>
       <Pagination
         {...delegateeList}

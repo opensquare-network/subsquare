@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 import {
   multisigsIsLoadingSelector,
   myMultisigsSelector,
@@ -45,7 +45,7 @@ export default function DesktopList() {
 
   return (
     <ScrollerX>
-      <NoBorderList
+      <DataList
         loading={isLoading}
         columns={columns}
         rows={rows}

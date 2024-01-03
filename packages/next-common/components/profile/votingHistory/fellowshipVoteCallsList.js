@@ -7,7 +7,7 @@ import {
   ReferendumTag,
 } from "./common";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 
 export default function FellowshipVoteCallsList({ data, fetchData, page }) {
   const { columns } = useColumns([
@@ -40,7 +40,7 @@ export default function FellowshipVoteCallsList({ data, fetchData, page }) {
   return (
     <>
       <ScrollerX>
-        <NoBorderList loading={!data} columns={columns} rows={rows} />
+        <DataList loading={!data} columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...data}
