@@ -1,6 +1,10 @@
-import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import WalletTypes from "./consts/walletTypes";
+import { CACHE_KEY } from "./constants";
+import getStorageAddressInfo from "./getStorageAddressInfo";
 
 export default function isUseTalisman() {
-  return getCookieConnectedAccount()?.wallet === WalletTypes.TALISMAN;
+  return (
+    getStorageAddressInfo(CACHE_KEY.lastConnectedAddress)?.wallet ===
+    WalletTypes.TALISMAN
+  );
 }
