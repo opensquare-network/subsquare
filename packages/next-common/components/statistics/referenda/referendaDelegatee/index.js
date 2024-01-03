@@ -65,7 +65,7 @@ export default function ReferendaDelegatee({ delegatee }) {
     [
       {
         name: "ADDRESS",
-        style: { textAlign: "left", maxWidth: "268px", minWidth: "268px" },
+        style: { textAlign: "left", minWidth: "268px" },
       },
       {
         name: "TRACKS",
