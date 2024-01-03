@@ -66,20 +66,18 @@ export default function DataList({
       role="list"
       className={cn(
         "datalist",
+        "min-w-full",
+        "scrollbar-pretty",
         "text-textPrimary",
         bordered &&
-          cn(
-            "p-6",
-            "border border-neutral300 shadow-100",
-            "rounded-md",
-            "bg-neutral100",
-          ),
+          cn("p-6", "border border-neutral300 shadow-100", "rounded-md"),
         className,
       )}
     >
       <div
         className={cn(
           "flex items-center pb-3",
+          "min-w-min",
           "border-b border-neutral300",
           "max-sm:hidden",
         )}
@@ -101,7 +99,7 @@ export default function DataList({
 
       <div
         ref={bodyRef}
-        className="datalist-body w-full overflow-x-hidden overflow-y-auto scrollbar-pretty"
+        className={cn("datalist-body", "min-w-full", "scrollbar-pretty")}
       >
         {content}
       </div>

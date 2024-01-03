@@ -1,6 +1,7 @@
 import findLastIndex from "lodash.findlastindex";
 import { cn } from "next-common/utils";
 import Descriptions from "../Descriptions";
+import last from "lodash.last";
 
 export default function DataListItem({ columns, row, columnClassNames }) {
   const { onClick, useData } = row ?? {};
@@ -11,7 +12,7 @@ export default function DataListItem({ columns, row, columnClassNames }) {
     <div
       role="listitem"
       className={cn(
-        "max-w-full w-full",
+        "min-w-min",
         "flex items-center py-4",
         "max-sm:block",
         onClick && "cursor-pointer",
@@ -37,7 +38,7 @@ export default function DataListItem({ columns, row, columnClassNames }) {
 
 function DesktopContent({ data, row, columns, columnClassNames }) {
   return (
-    <div className="max-sm:hidden w-full flex items-center gap-x-4">
+    <div className="max-sm:hidden w-full flex items-center">
       {(data ?? row)?.map((item, idx) => (
         <div
           key={idx}
@@ -59,7 +60,9 @@ function MobileContent({ row = [], data, columns }) {
     };
   });
 
-  const actionIdx = findLastIndex(items, (item) => item.name === "");
+  const hasAction = last(items).name === "";
+
+  const actionIdx = hasAction ? items.length - 1 : -1;
   const statusIdx = findLastIndex(
     items,
     (item) => item.name?.toLowerCase() === "status",
