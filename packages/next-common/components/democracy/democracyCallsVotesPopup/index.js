@@ -125,7 +125,7 @@ function VotesList({ items = [], loading }) {
   const columns = [
     {
       name: "VOTES",
-      style: { minWidth: 264, textAlign: "left" },
+      style: { minWidth: 240, textAlign: "left" },
     },
     {
       name: "DATE",
@@ -133,7 +133,7 @@ function VotesList({ items = [], loading }) {
     },
     {
       name: "CAPITAL",
-      style: { width: 168, textAlign: "right" },
+      style: { width: 160, textAlign: "right" },
     },
   ];
 
