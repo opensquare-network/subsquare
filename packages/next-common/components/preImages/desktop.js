@@ -107,7 +107,6 @@ export default function DesktopList({ data }) {
     <SecondaryCard>
       <ScrollerX>
         <DataList
-          // className="min-w-min"
           columns={columns}
           rows={rows}
           noDataText="No current preimages"
