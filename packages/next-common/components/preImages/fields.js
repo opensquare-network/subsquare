@@ -18,7 +18,7 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
           </span>
         </Copyable>
       </div>
-      <div className="flex items-centers pr-4">
+      <div className="flex items-centers pr-4 max-md:hidden">
         <DetailButton
           disabled={!proposal}
           onClick={() => setShowArgumentsDetail(proposal)}
