@@ -1,8 +1,7 @@
 import React from "react";
-import { addressEllipsis } from "../../utils";
+import { addressEllipsis, isKeyRegisteredUser } from "../../utils";
 import Tooltip from "../tooltip";
 import Username from "./username";
-import { useIsKeyUser } from "next-common/context/user";
 
 export default function UserDisplay({
   user,
@@ -12,7 +11,7 @@ export default function UserDisplay({
   noTooltip,
   ellipsis,
 }) {
-  const isKeyUser = useIsKeyUser(user);
+  const isKeyUser = isKeyRegisteredUser(user);
 
   let username = user?.username;
   let tip = user?.username;
