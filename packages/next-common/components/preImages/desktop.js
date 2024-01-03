@@ -18,7 +18,7 @@ export default function DesktopList({ data }) {
   const { columns } = useColumns([
     {
       name: "Hash",
-      style: { textAlign: "left", minWidth: "204px" },
+      style: { textAlign: "left", width: "204px" },
     },
     {
       name: "Arguments",
