@@ -4,6 +4,7 @@ import NoData from "../noData";
 import DataListItem from "./item";
 import { useDeepCompareEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
+import { useNavCollapsed } from "next-common/context/nav";
 
 export default function DataList({
   columns = [],
@@ -17,6 +18,7 @@ export default function DataList({
   let content;
   const listRef = useRef();
   const bodyRef = useRef();
+  const [navCollapsed] = useNavCollapsed();
 
   const [listOverflow, setListOverflow] = useState(false);
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function DataList({
     if (listWidth > parentWidth) {
       setListOverflow(true);
     }
-  }, [listRef]);
+  }, [listRef, navCollapsed]);
 
   useDeepCompareEffect(() => {
     if (scrollToFirstRowOnChange) {
