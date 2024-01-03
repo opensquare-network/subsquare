@@ -9,6 +9,7 @@ export default function MemberListTable({
 }) {
   return (
     <DataList
+      bordered
       rows={rows}
       columns={columns}
       loading={loading}
