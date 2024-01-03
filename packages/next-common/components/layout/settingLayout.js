@@ -23,27 +23,22 @@ export default function SettingLayout(props) {
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
-  let tabs = [];
-
-  if (isKeyUser) {
-    if (isKintsugi) {
-      tabs = [
-        { label: "Account", url: "/settings/key-account" },
-        { label: "Notifications", url: "/settings/notifications" },
-      ];
-    } else {
-      tabs = [
-        { label: "Account", url: "/settings/key-account" },
-        { label: "Proxy", url: "/settings/proxy" },
-        { label: "Notifications", url: "/settings/notifications" },
-      ];
-    }
-  } else {
-    tabs = [
-      { label: "Account", url: "/settings/account" },
-      { label: "Link Address", url: "/settings/linked-address" },
-      { label: "Notifications", url: "/settings/notifications" },
-    ];
+  const accountTab = {
+    label: "Account",
+    url: `/settings/${isKeyUser ? "key-account" : "account"}`,
+  };
+  const notificationsTab = {
+    label: "Notifications",
+    url: "/settings/notifications",
+  };
+  let tabs = [accountTab, notificationsTab];
+  if (!isKeyUser) {
+    tabs.splice(1, 0, {
+      label: "Link Address",
+      url: "/settings/linked-address",
+    });
+  } else if (!isKintsugi) {
+    tabs.splice(1, 0, { label: "Proxy", url: "/settings/proxy" });
   }
 
   return (
