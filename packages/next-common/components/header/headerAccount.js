@@ -6,7 +6,7 @@ import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { getAccountMenu } from "./consts";
-import { useUser, useUserContext } from "../../context/user";
+import { useIsLoggedIn, useUser, useUserContext } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
@@ -61,8 +61,8 @@ function ProfileMenuItem({ onClick }) {
 
 export default function HeaderAccount() {
   const user = useUser();
-  const { connectedAccount, disconnect: disconnectAccount } =
-    useConnectedAccountContext();
+  const isLoggedIn = useIsLoggedIn();
+  const { disconnect: disconnectAccount } = useConnectedAccountContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -100,17 +100,19 @@ export default function HeaderAccount() {
     <PrimaryButton onClick={() => openLoginPopup()}>Connect</PrimaryButton>
   );
   if (user) {
-    connectBtn = (
-      <GhostButton onClick={() => setShow(!show)}>
-        <SystemUser user={user} noEvent />
-      </GhostButton>
-    );
-  } else if (connectedAccount) {
-    connectBtn = (
-      <GhostButton onClick={() => setShow(!show)}>
-        <AddressUser add={connectedAccount?.address} noEvent />
-      </GhostButton>
-    );
+    if (isLoggedIn) {
+      connectBtn = (
+        <GhostButton onClick={() => setShow(!show)}>
+          <SystemUser user={user} noEvent />
+        </GhostButton>
+      );
+    } else {
+      connectBtn = (
+        <GhostButton onClick={() => setShow(!show)}>
+          <AddressUser add={user?.address} noEvent />
+        </GhostButton>
+      );
+    }
   }
 
   return (

@@ -10,7 +10,6 @@ import {
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
 
 export const SignerContext = createContext();
 
@@ -51,42 +50,18 @@ function useSetSigner() {
 export function SignerContextProvider({ children, extensionAccounts }) {
   const [signerAccount, setSignerAccount] = useState();
   const user = useUser();
-  const connectedAccount = useConnectedAccount();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
   const setSigner = useSetSigner();
 
   useEffect(() => {
-    if (!userAddress && !connectedAccount) {
+    if (!userAddress) {
       return;
     }
 
-    let account = null;
-    let isLoggedInAddress = false;
-
-    // Check user login address first
-    if (userAddress) {
-      account = extensionAccounts?.find(
-        (item) =>
-          isSameAddress(item.address, userAddress) &&
-          item.meta?.source === connectedAccount?.wallet,
-      );
-      if (account) {
-        isLoggedInAddress = true;
-      }
-    }
-
-    // Check connected wallet address
-    if (!account && connectedAccount) {
-      account = extensionAccounts?.find(
-        (item) =>
-          isSameAddress(item.address, connectedAccount?.address) &&
-          item.meta?.source === connectedAccount?.wallet,
-      );
-      if (account) {
-        isLoggedInAddress = false;
-      }
-    }
+    const account = extensionAccounts?.find((item) =>
+      isSameAddress(item.address, userAddress),
+    );
 
     if (!account) {
       setSignerAccount();
@@ -99,18 +74,9 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       ...account,
       name: account.meta?.name,
       proxyAddress,
-      realAddress: isLoggedInAddress
-        ? proxyAddress || userAddress
-        : connectedAccount?.address,
-      isLoggedInAddress,
+      realAddress: proxyAddress || userAddress,
     });
-  }, [
-    extensionAccounts,
-    userAddress,
-    connectedAccount,
-    proxyAddress,
-    setSigner,
-  ]);
+  }, [extensionAccounts, userAddress, proxyAddress, setSigner]);
 
   return (
     <SignerContext.Provider

@@ -18,7 +18,8 @@ export default function SelectWalletContent() {
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
-  const { connectedAccount, connect } = useConnectedAccountContext();
+  const { lastConnectedAccount, connect: connectAccount } =
+    useConnectedAccountContext();
 
   const doConnectAddress = async () => {
     if (!selectedAccount?.address) {
@@ -26,8 +27,7 @@ export default function SelectWalletContent() {
       return;
     }
 
-    connect({
-      name: selectedAccount.name,
+    await connectAccount({
       address: selectedAccount.address,
       wallet: selectedAccount.meta?.source || selectedWallet,
     });
@@ -45,7 +45,7 @@ export default function SelectWalletContent() {
           setSelectWallet={setSelectWallet}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
-          lastUsedAddress={connectedAccount?.address}
+          lastUsedAddress={lastConnectedAccount?.address}
         />
 
         <ButtonWrapper>

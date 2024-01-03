@@ -4,7 +4,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybePolkadotSigner from "./maybePolkadotSigner";
 import MaybeMetamaskSigner from "./maybeMetamaskSigner";
 import SelectWalletPopup from "../selectWallet";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 export default function PopupWithSigner({
   Component,
@@ -14,13 +14,13 @@ export default function PopupWithSigner({
   ...props
 }) {
   const user = useUser();
-  const connectedAccount = useConnectedAccount();
+  const { lastConnectedAccount } = useConnectedAccountContext();
 
-  if (!user && !connectedAccount) {
+  if (!user) {
     return <SelectWalletPopup onClose={onClose} />;
   }
 
-  if (connectedAccount?.wallet === WalletTypes.METAMASK) {
+  if (lastConnectedAccount?.wallet === WalletTypes.METAMASK) {
     return (
       <MaybeMetamaskSigner
         onClose={onClose}

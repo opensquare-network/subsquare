@@ -1,12 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export const LoginResult = {
+  Connected: "connected",
+  LoggedIn: "loggedIn",
+};
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
     isEditingPost: false,
     loginOpen: false,
-    redirectUrl: null,
-    initView: "web3",
+    loginResult: null,
   },
   reducers: {
     setEditingPost: (state, { payload }) => {
@@ -15,21 +19,17 @@ const userSlice = createSlice({
     setLoginOpen: (state, { payload }) => {
       state.loginOpen = payload;
     },
-    setRedirectUrl(state, { payload }) {
-      state.redirectUrl = payload;
-    },
-    setInitView(state, { payload }) {
-      state.initView = payload;
+    setLoginResult(state, { payload }) {
+      state.loginResult = payload;
     },
   },
 });
 
 export const isEditingPostSelector = (state) => state.user?.isEditingPost;
 export const loginOpenSelector = (state) => state.user?.loginOpen;
-export const loginRedirectUrlSelector = (state) => state.user?.redirectUrl;
-export const initViewSelector = (state) => state.user?.initView;
+export const loginResultSelector = (state) => state.user?.loginResult;
 
-export const { setEditingPost, setLoginOpen, setRedirectUrl, setInitView } =
+export const { setEditingPost, setLoginOpen, setLoginResult } =
   userSlice.actions;
 
 export default userSlice.reducer;

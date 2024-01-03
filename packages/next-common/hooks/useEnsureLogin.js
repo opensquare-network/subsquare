@@ -1,35 +1,36 @@
 import { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { stringToHex } from "@polkadot/util";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
+import { LoginResult } from "next-common/store/reducers/userSlice";
 import { encodeAddressToChain } from "next-common/services/address";
 import {
   useSetUser,
   useIsLoggedIn,
   fetchAndUpdateUserStatus,
   useUserContext,
+  useUser,
 } from "next-common/context/user";
-import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useChain } from "next-common/context/chain";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
+import { useLoginPopup } from "./useLoginPopup";
+import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 
 export function useEnsureLogin() {
   const chain = useChain();
+  const user = useUser();
   const setUser = useSetUser();
   const userContext = useUserContext();
   const isLoggedIn = useIsLoggedIn();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { connectedAccount } = useConnectedAccountContext();
   const { injectedWeb3 } = useInjectedWeb3();
-  const redirectUrl = useSelector(loginRedirectUrlSelector);
+  const { openLoginPopup, waitForClose } = useLoginPopup();
 
   const signWith = useCallback(
     async (message, address, walletName) => {
@@ -55,10 +56,7 @@ export function useEnsureLogin() {
   );
 
   const login = useCallback(async () => {
-    if (!connectedAccount) {
-      dispatch(newErrorToast("Connected wallet is not found."));
-      return false;
-    }
+    const connectedAccount = getCookieConnectedAccount();
 
     setLoading(true);
     try {
@@ -93,10 +91,6 @@ export function useEnsureLogin() {
         if (loginResult) {
           setUser(loginResult);
           fetchAndUpdateUserStatus(userContext);
-          if (redirectUrl) {
-            router.push(redirectUrl);
-          }
-
           return true;
         } else if (loginError) {
           dispatch(newErrorToast(loginError.message));
@@ -109,23 +103,30 @@ export function useEnsureLogin() {
     } finally {
       setLoading(false);
     }
-  }, [
-    signWith,
-    connectedAccount,
-    chain,
-    dispatch,
-    setUser,
-    router,
-    redirectUrl,
-  ]);
+  }, [signWith, chain, dispatch, setUser, router]);
 
   const ensureLogin = useCallback(async () => {
     if (isLoggedIn) {
       // Already login
       return true;
     }
-    return await login();
-  }, [isLoggedIn, login]);
+
+    if (user) {
+      // Not login yet
+      return await login();
+    }
+
+    // Not connect yet
+    openLoginPopup();
+    const loginResult = await waitForClose();
+    if (loginResult === LoginResult.Connected) {
+      return await login();
+    } else if (loginResult === LoginResult.LoggedIn) {
+      return true;
+    }
+
+    return false;
+  }, [user, isLoggedIn, login, openLoginPopup, waitForClose]);
 
   return {
     login,

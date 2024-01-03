@@ -1,10 +1,10 @@
 import WalletTypes from "./consts/walletTypes";
-import getStorageAddressInfo from "./getStorageAddressInfo";
 import { CACHE_KEY } from "./constants";
+import getStorageAddressInfo from "./getStorageAddressInfo";
 
 export default function isUseTalisman() {
   return (
-    getStorageAddressInfo(CACHE_KEY.lastConnectedAddress)?.wallet ===
+    getStorageAddressInfo(CACHE_KEY.lastConnectedAccount)?.wallet ===
     WalletTypes.TALISMAN
   );
 }

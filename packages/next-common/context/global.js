@@ -9,9 +9,9 @@ import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
 
 export default function GlobalProvider({
-  connectedAccount,
   user,
   userStatus,
+  connectedAccount,
   admins,
   chain,
   themeMode,

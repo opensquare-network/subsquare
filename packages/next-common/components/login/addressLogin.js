@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
-import { CACHE_KEY } from "../../utils/constants";
 import { useChain } from "../../context/chain";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import WalletAddressSelect from "./walletAddressSelect";
-import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { encodeAddressToChain } from "next-common/services/address";
-import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import {
+  LoginResult,
+  setLoginResult,
+} from "next-common/store/reducers/userSlice";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -28,17 +27,8 @@ export default function AddressLogin({ setView }) {
   const [web3Error, setWeb3Error] = useState();
   const dispatch = useDispatch();
   const { closeLoginPopup } = useLoginPopup();
-  const [lastLoginAddress, setLastLoginAddress] = useState();
-  const { connect: connectAccount } = useConnectedAccountContext();
-  const router = useRouter();
-  const redirectUrl = useSelector(loginRedirectUrlSelector);
-
-  useEffect(() => {
-    const info = getStorageAddressInfo(CACHE_KEY.lastLoginAddress);
-    if (info) {
-      setLastLoginAddress(info);
-    }
-  }, []);
+  const { lastConnectedAccount, connect: connectAccount } =
+    useConnectedAccountContext();
 
   const doWeb3Login = async () => {
     if (!selectedAccount?.address) {
@@ -47,15 +37,14 @@ export default function AddressLogin({ setView }) {
     }
 
     const address = encodeAddressToChain(selectedAccount.address, chain);
-    connectAccount({
+    const accountInfo = {
       address,
       wallet: selectedWallet,
-      name: selectedAccount.name,
-    });
+    };
+    await connectAccount(accountInfo);
+    dispatch(setLoginResult(LoginResult.Connected));
+
     closeLoginPopup();
-    if (redirectUrl) {
-      router.push(redirectUrl);
-    }
   };
 
   return (
@@ -69,7 +58,7 @@ export default function AddressLogin({ setView }) {
         setSelectedAccount={setSelectedAccount}
         web3Error={web3Error}
         setWeb3Error={setWeb3Error}
-        lastUsedAddress={lastLoginAddress?.address}
+        lastUsedAddress={lastConnectedAccount?.address}
       />
       <ButtonWrapper>
         {selectedWallet && (
