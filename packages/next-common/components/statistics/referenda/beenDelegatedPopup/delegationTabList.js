@@ -16,11 +16,7 @@ import startCase from "lodash.startcase";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import tw from "tailwind-styled-components";
 import DataList from "next-common/components/dataList";
-
-const ConvictionText = styled.span`
-  width: 40px;
-  color: var(--textTertiary);
-`;
+import { ConvictionText } from "../../styled";
 
 const TrackNameText = tw.div`
   inline-flex items-center flex-nowrap

@@ -12,13 +12,9 @@ import { convictionToLockX } from "next-common/utils/referendumCommon";
 import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
+import { ConvictionText } from "../../styled";
 
 const Wrapper = styled.div``;
-
-const ConvictionText = styled.span`
-  width: 40px;
-  color: var(--textTertiary);
-`;
 
 function getSortParams(sortedColumn) {
   if (!sortedColumn) {

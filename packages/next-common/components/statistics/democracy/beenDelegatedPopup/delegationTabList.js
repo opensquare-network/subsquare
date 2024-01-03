@@ -13,11 +13,7 @@ import { convictionToLockX } from "next-common/utils/referendumCommon";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
-
-const ConvictionText = styled.span`
-  width: 40px;
-  color: var(--textTertiary);
-`;
+import { ConvictionText } from "../../styled";
 
 const MyPopupListWrapper = styled(PopupListWrapper)`
   thead,

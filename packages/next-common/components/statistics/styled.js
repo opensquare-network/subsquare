@@ -35,3 +35,9 @@ text14Bold
 text-textPrimary
 mb-6
 `;
+
+export const ConvictionText = tw.span`
+  w-10
+  text-textTertiary
+  text-right
+`;
