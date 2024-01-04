@@ -29,7 +29,6 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 
 function VotePanel({
   referendumIndex,
-  onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
   useStandardVote,
   useSplitVote,
@@ -110,7 +109,6 @@ function VotePanel({
       dispatch,
       setLoading: setIsLoading,
       onInBlock,
-      onSubmitted,
       signerAccount,
       isMounted,
       onClose,
@@ -174,8 +172,6 @@ export default function PopupContent({
   referendumIndex,
   trackId,
   onClose,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
   useStandardVote,
   useSplitVote,
   useSplitAbstainVote,
@@ -230,10 +226,8 @@ export default function PopupContent({
     content = (
       <VotePanel
         referendumIndex={referendumIndex}
-        onSubmitted={onSubmitted}
         onInBlock={() => {
           getMyVoteAndShowSuccessful();
-          onInBlock();
         }}
         onClose={onClose}
         useStandardVote={useStandardVote}
