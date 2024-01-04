@@ -30,9 +30,9 @@ export function ConnectedAccountProvider({
   }, []);
 
   const disconnect = useCallback(async () => {
+    await logoutUser(userContext);
     setConnectedAccount(null);
     clearCookie(CACHE_KEY.connectedAccount);
-    await logoutUser(userContext);
   }, [userContext]);
 
   const connect = useCallback(
