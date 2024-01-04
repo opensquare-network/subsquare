@@ -6,9 +6,7 @@ export default function DelegateeSummary({ delegatee }) {
   return (
     <SecondaryCard>
       <StatisticsTitle>Delegatee</StatisticsTitle>
-      <div className="overflow-x-scroll">
-        <ReferendaDelegatee delegatee={delegatee} />
-      </div>
+      <ReferendaDelegatee delegatee={delegatee} />
     </SecondaryCard>
   );
 }

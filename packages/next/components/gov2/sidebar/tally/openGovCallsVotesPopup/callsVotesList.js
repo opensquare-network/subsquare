@@ -15,7 +15,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 
 const VoteTime = styled.div`
@@ -68,7 +68,7 @@ function CallsVotesList({ items, theme, loading = false }) {
                     </VoteTime>
                   </StyledTd>
                   <StyledTd style={{ textAlign: "right", width: 168 }}>
-                    <CapitalTableItem
+                    <CapitalListItem
                       item={item}
                       capital={toPrecision(item.vote.balance, node.decimals)}
                       conviction={item.vote.vote.conviction}

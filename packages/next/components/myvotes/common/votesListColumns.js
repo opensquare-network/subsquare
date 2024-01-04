@@ -3,24 +3,23 @@ export const proposalColumnDefinition = {
   style: {
     textAlign: "left",
     minWidth: "230px",
-    maxWidth: 600,
     paddingRight: 16,
   },
 };
 
 export const voteColumnDefinition = {
   name: "Vote for",
-  style: { textAlign: "left", width: "128px", minWidth: "128px" },
+  style: { textAlign: "left", width: 264 },
 };
 
 export const statusColumnDefinition = {
   name: "Status",
-  style: { textAlign: "right", width: "128px", minWidth: "128px" },
+  style: { textAlign: "right", width: 160 },
 };
 
 export const actionColumnDefinition = {
   name: "",
-  style: { textAlign: "right", width: "64px", minWidth: "64px" },
+  style: { textAlign: "right", width: 80 },
 };
 
 export const commonVoteColumnsDefinition = [

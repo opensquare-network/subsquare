@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import VotesTab, {
   tabs,
 } from "next-common/components/democracy/flattenedVotesPopup/tab";
 import Pagination from "next-common/components/pagination";
-import StyledList from "next-common/components/styledList";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -86,8 +86,8 @@ function VotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <StyledList
-        items={items}
+      <DataList
+        scrollToFirstRowOnChange
         loading={loading}
         columns={columns}
         rows={rows}

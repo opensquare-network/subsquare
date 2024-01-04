@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Pagination from "next-common/components/pagination";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 export default function DelegationsList({ delegations }) {
   const [detailListPage, setDetailListPage] = useState(1);
@@ -76,7 +76,7 @@ function DetailDelegatorList({ items = [] }) {
         maxWidth={296}
         linkToVotesPage
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(capital, chainSettings.decimals)}
@@ -93,7 +93,7 @@ function DetailDelegatorList({ items = [] }) {
 
   return (
     <PopupListWrapper className="max-sm:[&_table_tbody]:!max-h-[180px]">
-      <StyledList items={items} columns={columns} rows={rows} />
+      <DataList scrollToFirstRowOnChange columns={columns} rows={rows} />
     </PopupListWrapper>
   );
 }

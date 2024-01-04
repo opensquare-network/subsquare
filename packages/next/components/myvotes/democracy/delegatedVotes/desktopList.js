@@ -10,7 +10,7 @@ import getPostTitle from "./getPostTitle";
 import DelegationHint from "./hint";
 import ProxyHint from "../../proxyHint";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 
 export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
@@ -45,11 +45,7 @@ export default function DesktopList() {
       <ProxyHint style={{ marginBottom: 4 }} />
       <DelegationHint style={{ marginBottom: 8 }} />
       <ScrollerX>
-        <NoBorderList
-          columns={columns}
-          rows={rows}
-          loading={!myDelegatedVotes}
-        />
+        <DataList columns={columns} rows={rows} loading={!myDelegatedVotes} />
       </ScrollerX>
     </ListCard>
   );

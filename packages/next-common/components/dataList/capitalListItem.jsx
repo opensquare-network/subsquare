@@ -5,7 +5,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import isNil from "lodash.isnil";
 
-export default function CapitalTableItem({ capital, item, tab, conviction }) {
+export default function CapitalListItem({ capital, item, tab, conviction }) {
   const chainSettings = useChainSettings();
   const chain = useChain();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
@@ -19,7 +19,7 @@ export default function CapitalTableItem({ capital, item, tab, conviction }) {
     <div className="inline-flex text14Medium">
       <ValueDisplay value={capital} symbol={symbol} />
       {hasLabel && (
-        <span className="w-[60px] text-textTertiary">
+        <span className="w-[60px] text-textTertiary text-right">
           <VoteLabel {...item} conviction={conviction} tab={tab} />
         </span>
       )}

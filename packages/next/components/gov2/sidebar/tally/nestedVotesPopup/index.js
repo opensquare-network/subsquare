@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
-import StyledList from "next-common/components/styledList";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
@@ -16,6 +15,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import voteTabs from "../common/voteTabs";
 import filterTabs from "../common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 export default function NestedVotesPopup({
   setShowVoteList,
@@ -127,26 +127,25 @@ function VotesList({ items = [], loading }) {
   const columns = [
     {
       name: "ACCOUNT",
-      style: { minWidth: 296, textAlign: "left" },
     },
     {
       name: "DELEGATORS",
-      style: { minWidth: 128, textAlign: "right" },
+      className: "w-[128px] text-right",
     },
     {
       name: "VOTES",
-      style: { minWidth: 128, textAlign: "right" },
+      className: "w-[128px] text-right",
     },
     {
       name: "",
-      style: { textAlign: "right", width: 40, minWidth: 40 },
+      className: "w-10 text-right",
     },
   ];
 
   const rows = items.map((item) => {
     const row = [
       <AddressUser
-        key="user"
+        key={item.account}
         add={item.account}
         noTooltip
         maxWidth={296}
@@ -174,8 +173,8 @@ function VotesList({ items = [], loading }) {
   return (
     <>
       <PopupListWrapper>
-        <StyledList
-          items={items}
+        <DataList
+          scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}
