@@ -49,8 +49,8 @@ export function getLinkIcon(link) {
   } else if (url.host.endsWith("subsquare.io")) {
     return (
       <>
-        <ProjectIconSubsquareLight className="w-5 h-5 dark:hidden" />
-        <ProjectIconSubsquareDark className="w-5 h-5 hidden dark:block" />
+        <ProjectIconSubsquareLight className="w-5 h-5 dark:!hidden" />
+        <ProjectIconSubsquareDark className="w-5 h-5 !hidden dark:!inline" />
       </>
     );
   }
