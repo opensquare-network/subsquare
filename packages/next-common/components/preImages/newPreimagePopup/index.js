@@ -11,6 +11,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Loading from "next-common/components/loading";
+import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -104,6 +105,7 @@ export default function NewPreimagePopup({ onClose }) {
         onClose,
         signerAddress,
         isMounted,
+        onFinalized: () => dispatch(incPreImagesTrigger),
       });
     },
     [

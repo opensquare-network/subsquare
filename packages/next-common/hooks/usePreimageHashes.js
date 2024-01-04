@@ -3,7 +3,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useSelector } from "react-redux";
 
-export default function usePreimageHashs() {
+export default function usePreimageHashes() {
   const trigger = useSelector(preImagesTriggerSelector);
 
   const api = useApi();
