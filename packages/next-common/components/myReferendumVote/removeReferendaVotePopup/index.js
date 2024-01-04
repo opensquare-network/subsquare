@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 
@@ -12,7 +10,6 @@ export default function RemoveReferendaVotePopup({
   trackId,
   referendumIndex,
   onClose,
-  onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -47,21 +44,12 @@ export default function RemoveReferendaVotePopup({
         tx,
         setLoading: setIsLoading,
         dispatch,
-        onInBlock,
         onClose,
         signerAddress,
         isMounted,
       });
     },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onInBlock,
-      onClose,
-      trackId,
-      referendumIndex,
-    ],
+    [dispatch, isMounted, showErrorToast, onClose, trackId, referendumIndex],
   );
 
   return (
