@@ -34,6 +34,7 @@ export const useAccountMenu = () => {
   if (isWeb3User) {
     return [web3AccountItem, disconnectItem];
   } else if (!isLoggedIn) {
+    // web2 account with binded address connected
     return [web2AccountItem, disconnectItem];
   } else {
     return [web2AccountItem, logoutItem];
