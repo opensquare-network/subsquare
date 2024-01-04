@@ -4,14 +4,15 @@ import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
-import { accountMenu } from "./consts";
 import PrimaryButton from "../buttons/primaryButton";
-import { logoutUser, useUser, useUserDispatch } from "../../context/user";
+import { useUser } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import SystemUser from "../user/systemUser";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { useAccountMenu } from "./useAccountMenu";
 
 const Wrapper = styled.div``;
 
@@ -74,12 +75,13 @@ export default function SidebarAccount() {
   const user = useUser();
   const router = useRouter();
   const node = useChainSettings();
-  const userDispatch = useUserDispatch();
   const { openLoginPopup } = useLoginPopup();
+  const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const accountMenu = useAccountMenu();
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await logoutUser(userDispatch);
+      await disconnectAccount();
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
@@ -100,7 +102,9 @@ export default function SidebarAccount() {
       <Title>ACCOUNT</Title>
       {!user && (
         <ButtonWrapper>
-          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
+          <PrimaryButton onClick={() => openLoginPopup()}>
+            Connect
+          </PrimaryButton>
         </ButtonWrapper>
       )}
       {user && (

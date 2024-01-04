@@ -1,5 +1,4 @@
 import { useState } from "react";
-import LoginEmailContent from "./emailContent";
 import LoginWeb3LoginContent from "./web3LoginContent";
 import LoginAccountLoginContent from "./accountLoginContent";
 
@@ -15,8 +14,6 @@ export default function LoginContent() {
       {view === "web3" && <LoginWeb3LoginContent setView={setView} />}
 
       {view === "account" && <LoginAccountLoginContent setView={setView} />}
-
-      {view === "email" && <LoginEmailContent setView={setView} />}
     </>
   );
 }

@@ -17,6 +17,7 @@ import { useUser } from "../../context/user";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import PostLabel from "./postLabel";
 import Editor from "../editor";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -58,7 +59,7 @@ const UploaderWrapper = styled.div`
 `;
 
 export default function PostCreate() {
-  const loginUser = useUser();
+  const user = useUser();
   const chain = useChain();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -66,19 +67,25 @@ export default function PostCreate() {
   const [creating, setCreating] = useState(false);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown",
+    user?.preference?.editor || "markdown",
   );
   const [bannerCid, setBannerCid] = useState(null);
   const [formValue, setFormValue] = useState({});
   const [errors, setErrors] = useState();
   const [isAdvanced, setIsAdvanced] = useState(false);
-  const isEmpty = content === "" || content === "<p><br></p>";
+  const isEmpty = title === "" || content === "" || content === "<p><br></p>";
   const [selectedLabels, setSelectedLabels] = useState([]);
+  const { ensureLogin } = useEnsureLogin();
 
   const createPost = async () => {
     setCreating(true);
-    const result = await nextApi
-      .post(
+
+    try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
+      const { result, error } = await nextApi.post(
         "posts",
         {
           chain,
@@ -90,18 +97,19 @@ export default function PostCreate() {
           ...formValue,
         },
         { credentials: "include" },
-      )
-      .finally(() => {
-        setCreating(false);
-      });
-    if (result.error) {
-      if (result.error.data) {
-        setErrors(result.error);
+      );
+
+      if (error) {
+        if (error.data) {
+          setErrors(error);
+        } else {
+          dispatch(newErrorToast(error.message));
+        }
       } else {
-        dispatch(newErrorToast(result.error.message));
+        router.push(`/posts/${result}`);
       }
-    } else {
-      router.push(`/posts/${result.result}`);
+    } finally {
+      setCreating(false);
     }
   };
 

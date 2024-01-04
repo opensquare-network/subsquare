@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import {
   fetchAndUpdateUser,
   useUser,
-  useUserDispatch,
+  useUserContext,
 } from "next-common/context/user";
 import Copyable from "../copyable";
 import Loading from "../loading";
@@ -17,7 +17,7 @@ import useRepeat from "next-common/hooks/useRepeat";
 
 export default function TelegramLinkHint() {
   const dispatch = useDispatch();
-  const userDispatch = useUserDispatch();
+  const userContext = useUserContext();
   const [isLoading, setIsLoading] = useState(false);
   const user = useUser();
   const [linkToken, setLinkToken] = useState(user?.telegram?.linkToken);
@@ -36,8 +36,8 @@ export default function TelegramLinkHint() {
   }
 
   const refreshData = useCallback(async () => {
-    await fetchAndUpdateUser(userDispatch);
-  }, [userDispatch]);
+    await fetchAndUpdateUser(userContext);
+  }, [userContext]);
 
   useRepeat(refreshData, {
     delay: 5 * 1000,
@@ -56,12 +56,12 @@ export default function TelegramLinkHint() {
         setLinkToken(result?.linkToken);
         setLinkTokenExpires(result?.linkTokenExpires);
         dispatch(newSuccessToast("Token generated"));
-        fetchAndUpdateUser(userDispatch);
+        fetchAndUpdateUser(userContext);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [userContext]);
 
   let tokenDisplay = null;
   if (isLoading) {

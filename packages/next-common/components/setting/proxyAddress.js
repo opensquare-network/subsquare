@@ -10,13 +10,14 @@ import { InputWrapper } from "./styled";
 import {
   fetchAndUpdateUser,
   useUser,
-  useUserDispatch,
+  useUserContext,
 } from "../../context/user";
 import ErrorMessage from "../styled/errorMessage";
 import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -36,41 +37,41 @@ const SuccessMessage = styled.div`
 export default function ProxyAddress() {
   const api = useApi();
   const dispatch = useDispatch();
-  const loginUser = useUser();
-  const [inputAddress, setInputAddres] = useState(
-    loginUser?.proxyAddress || "",
-  );
+  const user = useUser();
+  const proxyAddress = user?.proxyAddress;
+  const address = user?.address;
+
+  const [inputAddress, setInputAddres] = useState(proxyAddress || "");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
   const [successMsg, setSuccessMsg] = useState();
-  const userDispatch = useUserDispatch();
-  const isSet = !!loginUser?.proxyAddress;
+  const userContext = useUserContext();
+  const isSet = !!proxyAddress;
+  const { ensureLogin } = useEnsureLogin();
 
   useEffect(() => {
-    setInputAddres(loginUser?.proxyAddress || "");
+    setInputAddres(proxyAddress || "");
     setErrorMsg();
     setSuccessMsg();
 
-    if (api && loginUser?.proxyAddress) {
-      checkProxy(api, loginUser?.proxyAddress, loginUser?.address).then(
-        ({ success, proxyTypes }) => {
-          if (proxyTypes.length === 0) {
-            setErrorMsg("Can't find the proxy setting on-chain.");
-            return;
-          }
-          if (proxyTypes.length > 0 && !success) {
-            setErrorMsg(
-              `Proxy type: ${proxyTypes.join(
-                ",",
-              )}. Proxy type should be Governance, NonTransfer, or Any.`,
-            );
-            return;
-          }
-          setSuccessMsg(`Proxy type: ${proxyTypes.join(",")}`);
-        },
-      );
+    if (api && proxyAddress) {
+      checkProxy(api, proxyAddress, address).then(({ success, proxyTypes }) => {
+        if (proxyTypes.length === 0) {
+          setErrorMsg("Can't find the proxy setting on-chain.");
+          return;
+        }
+        if (proxyTypes.length > 0 && !success) {
+          setErrorMsg(
+            `Proxy type: ${proxyTypes.join(
+              ",",
+            )}. Proxy type should be Governance, NonTransfer, or Any.`,
+          );
+          return;
+        }
+        setSuccessMsg(`Proxy type: ${proxyTypes.join(",")}`);
+      });
     }
-  }, [api, loginUser?.proxyAddress]);
+  }, [api, proxyAddress, address]);
 
   const onSet = async () => {
     setErrorMsg();
@@ -89,10 +90,14 @@ export default function ProxyAddress() {
     setIsLoading(true);
 
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { success, proxyTypes } = await checkProxy(
         api,
         inputAddress,
-        loginUser?.address,
+        address,
       );
       if (proxyTypes.length === 0) {
         setErrorMsg("Can't find the proxy setting on-chain.");
@@ -111,7 +116,7 @@ export default function ProxyAddress() {
         address: inputAddress,
       });
       if (result) {
-        await fetchAndUpdateUser(userDispatch);
+        await fetchAndUpdateUser(userContext);
         dispatch(newSuccessToast("The proxy address has been set."));
       }
       if (error) {
@@ -126,10 +131,15 @@ export default function ProxyAddress() {
 
   const onUnset = async () => {
     setIsLoading(true);
+
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { result, error } = await nextApi.delete("user/proxyaddress");
       if (result) {
-        await fetchAndUpdateUser(userDispatch);
+        await fetchAndUpdateUser(userContext);
         dispatch(newSuccessToast("The proxy address has been unset."));
       }
       if (error) {

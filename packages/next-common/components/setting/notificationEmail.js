@@ -12,7 +12,7 @@ import CircleWarning from "../../assets/imgs/icons/circle-warning.svg";
 import {
   fetchAndUpdateUser,
   useUser,
-  useUserDispatch,
+  useUserContext,
 } from "../../context/user";
 import PrimaryButton from "../buttons/primaryButton";
 import EmailJunkWarning from "./emailJunkWarning";
@@ -69,7 +69,7 @@ const CountdownWrapper = styled.div`
 export default function NotificationEmail({ isOn, setIsOn }) {
   const dispatch = useDispatch();
   const user = useUser();
-  const isKeyUser = user && isKeyRegisteredUser(user);
+  const isWeb3User = user && isKeyRegisteredUser(user);
   const email = user?.email;
   const verified = user?.emailVerified;
   const [resendLoading, setResendLoading] = useState(false);
@@ -77,15 +77,13 @@ export default function NotificationEmail({ isOn, setIsOn }) {
   const [inputEmail, setInputEmail] = useState(email);
   const { countdown, counting, startCountdown, resetCountdown } =
     useCountdown(60);
-  const userDispatch = useUserDispatch();
+  const userContext = useUserContext();
 
   useEffect(() => {
     if (counting && countdown % 5 === 0) {
-      fetchAndUpdateUser(userDispatch).then(() => {
-        // todo: maybe log the count
-      });
+      fetchAndUpdateUser(userContext);
     }
-  }, [userDispatch, counting, countdown]);
+  }, [userContext, counting, countdown]);
 
   if (counting && (countdown === 0 || (email === inputEmail && verified))) {
     resetCountdown();
@@ -96,7 +94,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
     setResendErrors();
 
     let promise;
-    if (isKeyUser) {
+    if (isWeb3User) {
       promise = nextApi.post("user/setemail", {
         email: inputEmail,
       });
@@ -185,7 +183,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
             </IconWrapper>
             <InputWrapper>
               <Input
-                disabled={!isKeyUser}
+                disabled={!isWeb3User}
                 placeholder="Please fill Email..."
                 defaultValue={inputEmail}
                 post={emailVerified}

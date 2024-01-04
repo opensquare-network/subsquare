@@ -87,17 +87,20 @@ export const BalanceDecimals = {
 };
 
 export const CACHE_KEY = {
-  lastConnectedAddress: "lastConnectedAddress",
-  lastLoginAddress: "lastLoginAddress",
+  lastConnectedAccount: "lastConnectedAddress",
+
+  // @deprecated
+  // use `lastConnectedAccount` instead
+  // following 2 keys are for migration purpose only
   lastLoggedInAddress: "lastLoggedInAddress",
   lastLoginExtension: "lastLoginExtension",
-  accountMap: "accountMap",
+
   themeMode: "theme-mode",
   authToken: "auth-token",
   acceptCookies: "accept-cookies",
-  dontRemindEmail: "dont-remind-email",
   navCollapsed: "nav-collapsed",
   navSubmenuVisible: "nav-submenu-visible",
+  connectedAccount: "connected-account",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

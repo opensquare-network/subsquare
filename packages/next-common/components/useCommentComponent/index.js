@@ -8,7 +8,7 @@ import { usePostCommentsData } from "next-common/hooks/usePostComments";
 import { usePost } from "next-common/context/post";
 
 export default function useCommentComponent() {
-  const loginUser = useUser();
+  const user = useUser();
   const post = usePost();
   const postId = post._id;
   const { commentsData, loading } = usePostCommentsData();
@@ -17,7 +17,7 @@ export default function useCommentComponent() {
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown",
+    user?.preference?.editor || "markdown",
   );
 
   const users = useMentionList(post, commentsData);
@@ -27,7 +27,7 @@ export default function useCommentComponent() {
   const CommentComponent = (
     <div>
       <Comments data={commentsData} loading={loading} />
-      {loginUser && (
+      {user && (
         <CommentEditor
           postId={postId}
           ref={editorWrapperRef}

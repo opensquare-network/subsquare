@@ -16,6 +16,7 @@ import DateSelectModal from "../dateSelectModal";
 import noop from "lodash.noop";
 import { calendarUserEventsApi } from "../../../services/url";
 import { PopupButtonWrapper } from "../../popup/wrapper";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 function PopupContent({ onClose, refresh = noop }) {
   const dispatch = useDispatch();
@@ -28,9 +29,16 @@ function PopupContent({ onClose, refresh = noop }) {
   const [showStartDateSelectModal, setShowStartDateSelectModal] =
     useState(false);
   const [showEndDateSelectModal, setShowEndDateSelectModal] = useState(false);
+  const { ensureLogin } = useEnsureLogin();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-  const showSuccessToast = (message) => dispatch(newSuccessToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [],
+  );
+  const showSuccessToast = useCallback(
+    (message) => dispatch(newSuccessToast(message)),
+    [],
+  );
 
   const submit = useCallback(async () => {
     if (!title) {
@@ -55,6 +63,10 @@ function PopupContent({ onClose, refresh = noop }) {
 
     setIsLoading(true);
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { result, error } = await nextApi.post(
         calendarUserEventsApi,
         {
@@ -83,7 +95,18 @@ function PopupContent({ onClose, refresh = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [title, link, description, startDate, endDate]);
+  }, [
+    title,
+    link,
+    description,
+    startDate,
+    endDate,
+    refresh,
+    onClose,
+    showErrorToast,
+    showSuccessToast,
+    ensureLogin,
+  ]);
 
   const onSelectStartDate = useCallback((date) => {
     setStartDate(date);

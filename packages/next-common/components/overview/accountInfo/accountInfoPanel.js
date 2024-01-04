@@ -1,6 +1,6 @@
 import Avatar from "next-common/components/avatar";
 import Gravatar from "next-common/components/gravatar";
-import { useUser } from "next-common/context/user";
+import { useIsWeb3User, useUser } from "next-common/context/user";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
@@ -8,7 +8,7 @@ import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
 import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { addressEllipsis, isKeyRegisteredUser } from "next-common/utils";
+import { addressEllipsis } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
@@ -75,14 +75,14 @@ const IconButton = tw.div`
 function AccountHead() {
   const router = useRouter();
   const user = useUser();
-  const isKeyUser = isKeyRegisteredUser(user);
+  const isWeb3User = useIsWeb3User();
 
   const goProfile = () => {
     router.push(`/user/${user?.address}`);
   };
 
   const goSetting = () => {
-    if (isKeyUser) {
+    if (isWeb3User) {
       router.push("/settings/key-account");
     } else {
       router.push("/settings/account");

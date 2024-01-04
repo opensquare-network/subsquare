@@ -6,13 +6,13 @@ import { useDispatch } from "react-redux";
 import Popup from "../popup/wrapper/Popup";
 import GhostButton from "../buttons/ghostButton";
 import PrimaryButton from "../buttons/primaryButton";
-import { fetchAndUpdateUser, useUserDispatch } from "next-common/context/user";
+import { fetchAndUpdateUser, useUserContext } from "next-common/context/user";
 import Tooltip from "../tooltip";
 
 function DeletePopup({ onClose }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState();
-  const userDispatch = useUserDispatch();
+  const userContext = useUserContext();
 
   const doDelete = useCallback(async () => {
     setIsLoading(true);
@@ -23,13 +23,13 @@ function DeletePopup({ onClose }) {
         return;
       }
       onClose();
-      fetchAndUpdateUser(userDispatch);
+      fetchAndUpdateUser(userContext);
     } catch (e) {
       console.error(e);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [userContext]);
 
   return (
     <Popup title="Unlink Confirmation" onClose={onClose}>

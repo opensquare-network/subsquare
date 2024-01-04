@@ -28,7 +28,7 @@ export default function NoLinkAddress() {
           </div>
         </div>
         <div className="flex justify-end items-center grow">
-          <GhostButton onClick={goLinkAddress}>Linked Address</GhostButton>
+          <GhostButton onClick={goLinkAddress}>Link Address</GhostButton>
         </div>
       </div>
     </NeutralPanel>

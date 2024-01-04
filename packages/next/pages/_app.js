@@ -42,7 +42,9 @@ function MyApp({ Component, pageProps }) {
   }
 
   const {
-    loginUser,
+    connectedAccount,
+    user,
+    userStatus,
     admins,
     themeMode,
     pageProperties,
@@ -57,7 +59,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Provider store={store}>
         <GlobalProvider
-          user={loginUser}
+          connectedAccount={connectedAccount}
+          user={user}
+          userStatus={userStatus}
           admins={admins}
           chain={process.env.NEXT_PUBLIC_CHAIN}
           themeMode={themeMode}

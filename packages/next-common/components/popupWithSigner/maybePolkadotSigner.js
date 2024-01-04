@@ -4,7 +4,9 @@ import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import Popup from "../popup/wrapper/Popup";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useConnectedAddress } from "next-common/context/connectedAddress";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { useChainSettings } from "next-common/context/chain";
+import ChainTypes from "next-common/utils/consts/chainTypes";
 
 export default function MaybePolkadotSigner({
   onClose,
@@ -20,7 +22,8 @@ export default function MaybePolkadotSigner({
   const { injectedWeb3, loading } = useInjectedWeb3();
   const [polkadotAccounts, setPolkadotAccounts] = useState([]);
   const [detecting, setDetecting] = useState(true);
-  const connectedAddress = useConnectedAddress();
+  const { lastConnectedAccount } = useConnectedAccountContext();
+  const { chainType } = useChainSettings();
 
   useEffect(() => {
     (async () => {
@@ -33,11 +36,11 @@ export default function MaybePolkadotSigner({
           return;
         }
 
-        if (!connectedAddress) {
+        if (!lastConnectedAccount) {
           return;
         }
 
-        const extension = injectedWeb3?.[connectedAddress?.wallet];
+        const extension = injectedWeb3?.[lastConnectedAccount?.wallet];
 
         if (!extension) {
           return;
@@ -45,12 +48,17 @@ export default function MaybePolkadotSigner({
 
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
+
+        let filter = (item) => item.type !== "ethereum";
+        if (chainType === ChainTypes.ETHEREUM) {
+          filter = (item) => item.type === "ethereum";
+        }
         setPolkadotAccounts(
-          extensionAccounts.map((item) => ({
+          extensionAccounts.filter(filter).map((item) => ({
             ...item,
             meta: {
               name: item.name,
-              source: connectedAddress?.wallet,
+              source: lastConnectedAccount?.wallet,
             },
           })),
         );
@@ -61,7 +69,7 @@ export default function MaybePolkadotSigner({
         setDetecting(false);
       }
     })();
-  }, [injectedWeb3, loading, connectedAddress]);
+  }, [lastConnectedAccount, injectedWeb3, loading, chainType]);
 
   if (detecting) {
     return null;

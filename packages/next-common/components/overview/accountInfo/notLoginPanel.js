@@ -16,14 +16,16 @@ export default function NotLoginPanel() {
             height={40}
           />
           <div className="flex flex-col">
-            <span className="text-textPrimary text14Bold">Please Login</span>
+            <span className="text-textPrimary text14Bold">Please Connect</span>
             <span className="text-textTertiary text14Medium">
               Connect to network and participate in on-chain governance
             </span>
           </div>
         </div>
         <div className="flex justify-end items-center grow">
-          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
+          <PrimaryButton onClick={() => openLoginPopup()}>
+            Connect
+          </PrimaryButton>
         </div>
       </div>
     </NeutralPanel>
