@@ -21,6 +21,7 @@ const ButtonWrapper = styled.div`
 
 export default function AddressLogin({ setView }) {
   const chain = useChain();
+  const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState();
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -36,15 +37,22 @@ export default function AddressLogin({ setView }) {
       return;
     }
 
-    const address = encodeAddressToChain(selectedAccount.address, chain);
-    const accountInfo = {
-      address,
-      wallet: selectedWallet,
-    };
-    await connectAccount(accountInfo);
-    dispatch(setLoginResult(LoginResult.Connected));
+    setIsLoading(true);
+    try {
+      const address = encodeAddressToChain(selectedAccount.address, chain);
+      const accountInfo = {
+        address,
+        wallet: selectedWallet,
+      };
+      await connectAccount(accountInfo);
+      dispatch(setLoginResult(LoginResult.Connected));
 
-    closeLoginPopup();
+      closeLoginPopup();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -64,6 +72,7 @@ export default function AddressLogin({ setView }) {
         {selectedWallet && (
           <PrimaryButton
             isFill
+            isLoading={isLoading}
             onClick={doWeb3Login}
             disabled={!selectedAccount}
           >
