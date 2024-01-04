@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -11,13 +11,11 @@ import SignerPopup from "next-common/components/signerPopup";
 export default function UnnotePopup({
   hash,
   onClose,
-  isLoading,
-  setIsLoading = emptyFunction,
-  onSubmitted = emptyFunction,
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+  const [isLoading, setIsLoading] = useState(false);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -46,7 +44,6 @@ export default function UnnotePopup({
         setLoading: setIsLoading,
         dispatch,
         onInBlock,
-        onSubmitted,
         onClose,
         signerAddress,
         isMounted,
@@ -57,7 +54,6 @@ export default function UnnotePopup({
       isMounted,
       showErrorToast,
       onInBlock,
-      onSubmitted,
       onClose,
       hash,
       setIsLoading,
