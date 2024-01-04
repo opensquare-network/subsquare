@@ -1,6 +1,6 @@
 import React from "react";
 import { SystemLogout, SystemSetting } from "@osn/icons/subsquare";
-import { isKeyRegisteredUser } from "next-common/utils";
+import { useIsLoggedIn, useIsWeb3User } from "next-common/context/user";
 
 const logoutItem = {
   value: "logout",
@@ -28,10 +28,9 @@ const web3AccountItem = {
   pathname: "/settings/key-account",
 };
 
-export const getAccountMenu = (userContext) => {
-  const { user, userStatus } = userContext;
-  const isLoggedIn = userStatus?.isLoggedIn;
-  const isWeb3User = isKeyRegisteredUser(user);
+export const useAccountMenu = () => {
+  const isLoggedIn = useIsLoggedIn();
+  const isWeb3User = useIsWeb3User();
   if (isWeb3User) {
     return [web3AccountItem, disconnectItem];
   } else if (!isLoggedIn) {

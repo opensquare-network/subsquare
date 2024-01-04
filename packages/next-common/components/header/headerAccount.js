@@ -5,8 +5,7 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
-import { getAccountMenu } from "./consts";
-import { useIsLoggedIn, useUser, useUserContext } from "../../context/user";
+import { useIsLoggedIn, useUser } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
@@ -14,6 +13,7 @@ import GhostButton from "../buttons/ghostButton.js";
 import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { SystemUser, AddressUser } from "../user";
+import { useAccountMenu } from "./useAccountMenu.js";
 
 const Wrapper = Relative;
 
@@ -69,8 +69,7 @@ export default function HeaderAccount() {
   const windowSize = useWindowSize();
   const isMounted = useIsMounted();
   const { openLoginPopup } = useLoginPopup();
-  const userContext = useUserContext();
-  const menu = getAccountMenu(userContext);
+  const menu = useAccountMenu();
 
   useOnClickOutside(ref, () => setShow(false));
 
