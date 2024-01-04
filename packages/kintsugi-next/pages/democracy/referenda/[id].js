@@ -41,7 +41,7 @@ function ReferendumContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   const api = useApi();
-  const { referendumStatus } = useMaybeFetchReferendumStatus(
+  const referendumStatus = useMaybeFetchReferendumStatus(
     post?.onchainData,
     api,
   );

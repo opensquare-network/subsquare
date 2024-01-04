@@ -11,7 +11,7 @@ export function useDemocracyReferendumHash() {
   const post = usePost();
   const timeline = useTimelineData();
   const onchainData = post?.onchainData;
-  const { referendumStatus } = useMaybeFetchReferendumStatus(onchainData, api);
+  const referendumStatus = useMaybeFetchReferendumStatus(onchainData, api);
   const proposal = referendumStatus?.proposal;
   const proposalHash = referendumStatus?.proposalHash;
   const preImage = onchainData?.preImage;
