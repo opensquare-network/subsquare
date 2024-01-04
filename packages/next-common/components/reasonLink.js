@@ -13,10 +13,10 @@ export default function ReasonLink({ text, hideText = false }) {
   const links = extractLinks(text);
 
   return (
-    <div className="flex items-center">
+    <span>
       {!hideText && <span>{text}</span>}
       {!!links?.length && (
-        <span className="inline-flex ml-2 space-x-2">
+        <span className="inline-flex ml-2 gap-x-2">
           {links.map((link) => {
             let svgIcon;
             try {
@@ -28,7 +28,7 @@ export default function ReasonLink({ text, hideText = false }) {
             return (
               <Link
                 key={link}
-                className="inline-flex items-center"
+                className="relative bottom-0.5 [&_svg]:inline"
                 href={link}
                 target="_blank"
               >
@@ -38,6 +38,6 @@ export default function ReasonLink({ text, hideText = false }) {
           })}
         </span>
       )}
-    </div>
+    </span>
   );
 }
