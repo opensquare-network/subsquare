@@ -64,7 +64,7 @@ export function useEnsureLogin() {
         );
         if (loginResult) {
           setUser(loginResult);
-          fetchAndUpdateUserStatus(userContext);
+          await fetchAndUpdateUserStatus(userContext);
           return true;
         } else if (loginError) {
           dispatch(newErrorToast(loginError.message));
