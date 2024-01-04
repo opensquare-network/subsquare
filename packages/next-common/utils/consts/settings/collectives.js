@@ -61,6 +61,7 @@ const collectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
+  hasFellowshipParams: true,
   hasPolkassemblyDiscussions: false,
   hasTechComm: false,
   hasDemocracy: false,
