@@ -1,17 +1,17 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import { isLoadingVoteCallsSelector } from "next-common/store/reducers/fellowship/voteCalls";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import styled from "styled-components";
 import useFellowshipFetchVoteCalls from "./useFellowshipFetchVoteCalls";
 import { useOnchainData } from "next-common/context/post";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -120,8 +120,8 @@ function VotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <StyledList
-        items={items}
+      <DataList
+        scrollToFirstRowOnChange
         loading={loading}
         columns={columns}
         rows={rows}

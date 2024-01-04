@@ -157,7 +157,7 @@ function CouncilGroupContent() {
           tooltip="Active council motions"
           href="/council/motions"
           value={
-            (isMoonChain() ? moonCouncilMotions.active : motions.active) || 0
+            (isMoonChain() ? moonCouncilMotions?.active : motions?.active) || 0
           }
         />
       )}

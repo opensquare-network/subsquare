@@ -15,7 +15,7 @@ const FieldName = tw.span`text-textTertiary`;
 
 function Head({ multisig }) {
   return (
-    <div className="flex justify-between items-start">
+    <div className="flex justify-between items-start text-textPrimary">
       <Call
         key="call"
         when={multisig.when}
@@ -30,7 +30,7 @@ function Head({ multisig }) {
 
 function Fields({ multisig }) {
   return (
-    <div className="flex flex-col gap-[4px]">
+    <div className="flex flex-col gap-[4px] text-textPrimary">
       <Field className="mb-3">
         <FieldName></FieldName>
         <Status

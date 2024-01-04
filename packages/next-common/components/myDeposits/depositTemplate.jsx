@@ -8,12 +8,10 @@ import { activeProposalFetchParams } from "next-common/services/serverSide/activ
 import isNil from "lodash.isnil";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
-import { first, last } from "lodash";
-import Descriptions from "next-common/components/Descriptions";
+import { first } from "lodash";
 import Pagination from "next-common/components/pagination";
-import StyledList from "next-common/components/styledList";
-import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import Loading from "next-common/components/loading";
+import DataList from "../dataList";
 
 const loadingContent = (
   <div className="mt-4 mb-2 flex justify-center">
@@ -137,7 +135,6 @@ function TableTemplate({
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(!api?.initData ?? true);
-  const { sm } = useScreenSize();
 
   function fetchData() {
     if (api?.fetchData) {
@@ -179,17 +176,12 @@ function TableTemplate({
     <div>
       {tableHead}
 
-      {sm ? (
-        <MobileList rows={rows} columns={columns} loading={loading} />
-      ) : (
-        <StyledList
-          className="!shadow-none !border-none !p-0"
-          columns={columns}
-          loading={loading}
-          rows={rows}
-          noDataText="No active proposals"
-        />
-      )}
+      <DataList
+        columns={columns}
+        loading={loading}
+        rows={rows}
+        noDataText="No active proposals"
+      />
 
       <Pagination
         page={page}
@@ -200,58 +192,6 @@ function TableTemplate({
           setPage(newPage);
         }}
       />
-    </div>
-  );
-}
-
-function MobileList({ rows = [], columns = [], loading }) {
-  const hasActionColumn = last(columns).name === "";
-  const lastIndex = columns.length - (hasActionColumn ? 2 : 1);
-
-  if (loading) {
-    return loadingContent;
-  }
-
-  return (
-    <div className="mb-4">
-      {rows.map((row, idx) => {
-        const title = row[0];
-        const status = row[lastIndex];
-        const action = hasActionColumn ? last(row) : null;
-        // without title and status
-        const rest = row.slice(1, lastIndex);
-        const descriptionsLabels = columns
-          .slice(1, lastIndex)
-          .map((col) => col.name);
-
-        const descriptionItems = rest.map((value, idx) => {
-          return {
-            label: (
-              <span className="text-textTertiary">
-                {descriptionsLabels[idx]}
-              </span>
-            ),
-            value,
-            className: "h-auto",
-          };
-        });
-
-        return (
-          <div
-            key={idx}
-            className="py-4 first:pt-0 border-b border-neutral300 space-y-3"
-          >
-            <div className="flex items-center">
-              {title}
-              {action}
-            </div>
-
-            <div className="flex items-center justify-end">{status}</div>
-
-            <Descriptions items={descriptionItems} />
-          </div>
-        );
-      })}
     </div>
   );
 }

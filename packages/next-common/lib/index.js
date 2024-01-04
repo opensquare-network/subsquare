@@ -7,8 +7,10 @@ import {
 import { CACHE_KEY } from "../utils/constants";
 import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
+import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
+import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -27,10 +29,17 @@ export function withCommonProps(
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
     const detailPageProperties = getDetailPageProperties(context);
+    const connectedAccount = getConnectedAccount(cookies);
 
-    const [props, { result: user }, { result: admins }] = await Promise.all([
+    const [
+      props,
+      { result: user },
+      { result: userStatus },
+      { result: admins },
+    ] = await Promise.all([
       getServerSideProps(context),
-      fetchProfile(cookies),
+      fetchProfile(context),
+      fetchUserStatus(context),
       ssrNextApi.fetch(adminsApi),
     ]);
 
@@ -47,7 +56,9 @@ export function withCommonProps(
       props: {
         ...props.props,
         chain: process.env.CHAIN,
-        loginUser: user ?? null,
+        user: user ?? null,
+        userStatus: userStatus ?? null,
+        connectedAccount: connectedAccount ?? null,
         admins: admins ?? [],
         themeMode: themeMode ?? null,
         navCollapsed: navCollapsed || false,

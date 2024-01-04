@@ -4,6 +4,7 @@ import ErrorText from "next-common/components/ErrorText";
 import GhostButton from "./buttons/ghostButton";
 import PrimaryButton from "./buttons/primaryButton";
 import Editor from "./editor";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -30,12 +31,16 @@ export default function EditInput({
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
   const [errors, setErrors] = useState();
+  const { ensureLogin } = useEnsureLogin();
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
   const onUpdate = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
+      if (!(await ensureLogin())) {
+        return;
+      }
       const { result, error } = await update(content, contentType);
       if (error) {
         setErrors(error);

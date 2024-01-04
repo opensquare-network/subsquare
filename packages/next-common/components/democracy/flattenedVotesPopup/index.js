@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -20,6 +19,7 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 export default function VotesPopup({ setShowVoteList }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -112,15 +112,14 @@ function VotesList({ loading, items = [] }) {
   const columns = [
     {
       name: "ACCOUNT",
-      style: { minWidth: 276, textAlign: "left" },
     },
     {
       name: "CAPITAL",
-      style: { minWidth: 188, textAlign: "right" },
+      className: "w-[188px] text-right",
     },
     {
       name: "VOTES",
-      style: { minWidth: 128, textAlign: "right" },
+      className: "w-[128px] text-right",
     },
   ];
 
@@ -135,7 +134,7 @@ function VotesList({ loading, items = [] }) {
         maxWidth={276}
         linkToVotesPage
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(capital, chainSettings.decimals)}
@@ -153,8 +152,8 @@ function VotesList({ loading, items = [] }) {
   return (
     <>
       <PopupListWrapper>
-        <StyledList
-          items={items}
+        <DataList
+          scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}

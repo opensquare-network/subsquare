@@ -1,6 +1,6 @@
 import { ListCard } from "../../../styled";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 import { useSelector } from "react-redux";
 import { isLoadingReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import priorColumns from "./columns";
@@ -42,7 +42,7 @@ export default function PriorLocks() {
         Prior locks are due to previous removed votes.
       </HintMessage>
       <ScrollerX>
-        <NoBorderList
+        <DataList
           isLoading={isLoading}
           columns={priorColumns}
           rows={rows}

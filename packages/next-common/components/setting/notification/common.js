@@ -100,14 +100,14 @@ export function useDebounceAutoSaveActiveChannelOptions(
 }
 
 export function useIsDiscussionOptionsDisabled() {
-  const loginUser = useUser();
-  return !loginUser?.emailVerified;
+  const user = useUser();
+  return !user?.emailVerified;
 }
 
 export function useIsOnChainOptionsDisabled() {
-  const loginUser = useUser();
+  const user = useUser();
 
-  const isVerifiedUser = loginUser?.emailVerified;
-  const telegramLinked = loginUser?.telegram?.chat;
+  const isVerifiedUser = user?.emailVerified;
+  const telegramLinked = user?.telegram?.chat;
   return !isVerifiedUser && !telegramLinked;
 }

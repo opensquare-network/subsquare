@@ -5,11 +5,13 @@ import ThemeModeProvider from "./theme";
 import PageProvider from "./page";
 import NavProvider from "./nav";
 import { SocketProvider } from "./socket";
-import { ConnectedAddressProvider } from "./connectedAddress";
 import { AdminProvider } from "./admin";
+import { ConnectedAccountProvider } from "./connectedAccount";
 
 export default function GlobalProvider({
   user,
+  userStatus,
+  connectedAccount,
   admins,
   chain,
   themeMode,
@@ -22,9 +24,9 @@ export default function GlobalProvider({
     <SocketProvider>
       <ThemeModeProvider defaultThemeMode={themeMode}>
         <ChainProvider chain={chain}>
-          <UserProvider user={user}>
-            <AdminProvider admins={admins}>
-              <ConnectedAddressProvider>
+          <UserProvider user={user} userStatus={userStatus}>
+            <ConnectedAccountProvider connectedAccount={connectedAccount}>
+              <AdminProvider admins={admins}>
                 <NavProvider
                   navCollapsed={navCollapsed}
                   navSubmenuVisible={navSubmenuVisible}
@@ -33,8 +35,8 @@ export default function GlobalProvider({
                     {children}
                   </PageProvider>
                 </NavProvider>
-              </ConnectedAddressProvider>
-            </AdminProvider>
+              </AdminProvider>
+            </ConnectedAccountProvider>
           </UserProvider>
         </ChainProvider>
       </ThemeModeProvider>

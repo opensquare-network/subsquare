@@ -16,6 +16,7 @@ export default function useFetchMyReferendaDelegations() {
 
   useEffect(() => {
     if (!api || !realAddress) {
+      dispatch(setMyReferendaDelegations([]));
       return;
     }
 

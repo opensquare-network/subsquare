@@ -6,7 +6,6 @@ import VotesTab, {
 import Pagination from "next-common/components/pagination";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -21,6 +20,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 export default function CheckAllVotesPopup({ setShowVoteList = () => {} }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -136,7 +136,7 @@ function VotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <StyledList rows={rows} columns={columns} loading={loading} />
+      <DataList rows={rows} columns={columns} loading={loading} />
     </PopupListWrapper>
   );
 }

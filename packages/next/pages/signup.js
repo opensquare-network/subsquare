@@ -15,7 +15,7 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
-import { updateUser, useUser, useUserDispatch } from "next-common/context/user";
+import { useSetUser, useUser } from "next-common/context/user";
 import { withCommonProps } from "next-common/lib";
 
 const Title = styled.div`
@@ -71,17 +71,17 @@ const FormWrapper = styled.form`
 `;
 
 export default function Signup() {
-  const loginUser = useUser();
+  const user = useUser();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [success, setSuccess] = useState(!!loginUser);
+  const [success, setSuccess] = useState(!!user);
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [agreeError, setAgreeError] = useState();
   const isMounted = useIsMounted();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
-  const userDispatch = useUserDispatch();
+  const setUser = useSetUser();
 
   if (emailSent && countdown === 0) {
     router.replace("/");
@@ -102,7 +102,7 @@ export default function Signup() {
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
         if (isMounted.current) {
-          updateUser(res.result, userDispatch);
+          setUser(res.result);
           setSuccess(true);
         }
         sendVerifyEmail();
@@ -145,7 +145,7 @@ export default function Signup() {
   };
 
   useEffect(() => {
-    if (loginUser?.emailVerified) {
+    if (user?.emailVerified) {
       showErrorToast("You have already verified email address.");
       return setTimeout(() => {
         // router.replace("/");
