@@ -88,8 +88,13 @@ export const BalanceDecimals = {
 
 export const CACHE_KEY = {
   lastConnectedAccount: "lastConnectedAddress",
+
+  // @deprecated
+  // use `lastConnectedAccount` instead
+  // following 2 keys are for migration purpose only
   lastLoggedInAddress: "lastLoggedInAddress",
   lastLoginExtension: "lastLoginExtension",
+
   themeMode: "theme-mode",
   authToken: "auth-token",
   acceptCookies: "accept-cookies",
