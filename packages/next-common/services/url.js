@@ -44,6 +44,8 @@ export const fellowshipReferendumsApi = "fellowship/referenda";
 export const fellowshipReferendumsSummaryApi =
   fellowshipReferendumsApi + "/summary";
 
+export const fellowshipParamsApi = "fellowship/params";
+
 // calender events
 /**
  * param `begin_time`, `end_time`
