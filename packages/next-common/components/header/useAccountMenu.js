@@ -14,17 +14,19 @@ const disconnectItem = {
   icon: <SystemLogout className="[&_path]:fill-textSecondary" />,
 };
 
-const web2AccountItem = {
+const settingsCommon = {
   value: "settings",
   name: "Settings",
   icon: <SystemSetting className="[&_path]:stroke-textSecondary" />,
+};
+
+const web2AccountItem = {
+  ...settingsCommon,
   pathname: "/settings/account",
 };
 
 const web3AccountItem = {
-  value: "settings",
-  name: "Settings",
-  icon: <SystemSetting className="[&_path]:stroke-textSecondary" />,
+  ...settingsCommon,
   pathname: "/settings/key-account",
 };
 
