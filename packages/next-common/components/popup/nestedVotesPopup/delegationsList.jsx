@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Pagination from "next-common/components/pagination";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/datalist/capitalListItem";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
@@ -76,7 +76,7 @@ function DetailDelegatorList({ items = [] }) {
         maxWidth={296}
         linkToVotesPage
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(capital, chainSettings.decimals)}

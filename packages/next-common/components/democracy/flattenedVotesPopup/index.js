@@ -3,7 +3,7 @@ import VotesTab, { tabs } from "./tab";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/datalist/capitalListItem";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -134,7 +134,7 @@ function VotesList({ loading, items = [] }) {
         maxWidth={276}
         linkToVotesPage
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(capital, chainSettings.decimals)}

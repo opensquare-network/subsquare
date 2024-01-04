@@ -3,7 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 
 import { useChainSettings } from "next-common/context/chain";
 import PopupListWrapper from "../../../styled/popupListWrapper";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/datalist/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 
@@ -51,7 +51,7 @@ function DelegationList({ items, loading = false }) {
         add={item.delegator}
         maxWidth={colWidths.address}
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(item.balance, node.decimals)}

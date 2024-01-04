@@ -6,7 +6,7 @@ import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/datalist/capitalListItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
@@ -142,7 +142,7 @@ function VotesList({ items = [], loading, tab }) {
         maxWidth={276}
         linkToVotesPage
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(capital, chainSettings.decimals)}

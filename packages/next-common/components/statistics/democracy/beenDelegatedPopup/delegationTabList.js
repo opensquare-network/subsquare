@@ -9,11 +9,10 @@ import Flex from "next-common/components/styled/flex";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import { convictionToLockX } from "next-common/utils/referendumCommon";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
-import { ConvictionText } from "../../styled";
+import CapitalListItem from "next-common/components/datalist/capitalListItem";
 
 const MyPopupListWrapper = styled(PopupListWrapper)`
   thead,
@@ -106,13 +105,12 @@ export default function DelegationTabList({
     <Flex key="account">
       <AddressUser add={item.account} maxWidth={296} />
     </Flex>,
-    <Flex key="capital" style={{ justifyContent: "right" }}>
-      <ValueDisplay
-        value={toPrecision(item.balance || 0, decimals)}
-        symbol={voteSymbol || symbol}
-      />
-      <ConvictionText>{convictionToLockX(item.conviction)}</ConvictionText>
-    </Flex>,
+    <CapitalListItem
+      key="capital"
+      item={item}
+      capital={toPrecision(item.balance || 0, decimals)}
+      value={item.conviction}
+    />,
     <ValueDisplay
       key="votes"
       value={toPrecision(item.votes || 0, decimals)}

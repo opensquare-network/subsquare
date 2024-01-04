@@ -1,7 +1,7 @@
 import PopupListWrapper from "../../styled/popupListWrapper";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/datalist/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 import { useSelector } from "react-redux";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
@@ -63,7 +63,7 @@ export default function AllMyDelegationPopupList() {
         add={item.target}
         maxWidth={colWidths.delegatingTo}
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(item.balance, decimals)}

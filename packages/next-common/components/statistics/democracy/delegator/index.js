@@ -8,11 +8,10 @@ import Flex from "next-common/components/styled/flex";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { convictionToLockX } from "next-common/utils/referendumCommon";
 import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
-import { ConvictionText } from "../../styled";
+import CapitalListItem from "next-common/components/datalist/capitalListItem";
 
 const Wrapper = styled.div``;
 
@@ -98,13 +97,12 @@ export default function Delegator({ delegators, apiRoot = "democracy" }) {
       <Flex key="delegatee">
         <AddressUser add={item.delegatee} maxWidth={230} />
       </Flex>,
-      <Flex key="capital" style={{ justifyContent: "right" }}>
-        <ValueDisplay
-          value={toPrecision(item.balance || 0, decimals)}
-          symbol={voteSymbol || symbol}
-        />
-        <ConvictionText>{convictionToLockX(item.conviction)}</ConvictionText>
-      </Flex>,
+      <CapitalListItem
+        key="capital"
+        item={item}
+        capital={toPrecision(item.balance || 0, decimals)}
+        value={item.conviction}
+      />,
       <ValueDisplay
         key="votes"
         value={toPrecision(item.votes || 0, decimals)}
