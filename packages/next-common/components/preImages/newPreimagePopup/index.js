@@ -105,7 +105,8 @@ export default function NewPreimagePopup({ onClose }) {
         onClose,
         signerAddress,
         isMounted,
-        onFinalized: () => dispatch(incPreImagesTrigger),
+        onInBlock: () => dispatch(incPreImagesTrigger()),
+        onFinalized: () => dispatch(incPreImagesTrigger()),
       });
     },
     [

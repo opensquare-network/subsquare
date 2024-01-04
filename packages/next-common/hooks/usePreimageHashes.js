@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 export default function usePreimageHashes() {
   const trigger = useSelector(preImagesTriggerSelector);
+  console.log("usePreimageHashes", trigger);
 
   const api = useApi();
   const [allStatus] = useCall(api?.query.preimage?.statusFor.entries, [], {
