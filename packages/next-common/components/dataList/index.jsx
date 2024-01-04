@@ -2,9 +2,10 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import NoData from "../noData";
 import DataListItem from "./item";
-import { useDeepCompareEffect } from "react-use";
+import { useDeepCompareEffect, useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 
 export default function DataList({
   columns = [],
@@ -21,15 +22,23 @@ export default function DataList({
   const [navCollapsed] = useNavCollapsed();
 
   const [listOverflow, setListOverflow] = useState(false);
-  useEffect(() => {
-    const parent = listRef.current?.parentElement;
-    const parentWidth = parent?.clientWidth;
-    const listWidth = listRef.current?.scrollWidth;
+  const screenSize = useScreenSize();
+  function handleListOverflowSize() {
+    const parentEl = listRef.current?.parentElement;
+    const listEl = listRef.current;
+    if (!parentEl || !listEl) {
+      return;
+    }
+
+    const parentWidth = parentEl?.clientWidth;
+    const listWidth = listEl?.scrollWidth;
 
     if (listWidth > parentWidth) {
       setListOverflow(true);
     }
-  }, [listRef, navCollapsed]);
+  }
+  useUpdateEffect(handleListOverflowSize, [screenSize, navCollapsed]);
+  useEffect(handleListOverflowSize, [listRef]);
 
   useDeepCompareEffect(() => {
     if (scrollToFirstRowOnChange) {
