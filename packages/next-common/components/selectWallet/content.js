@@ -14,6 +14,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function SelectWalletContent() {
+  const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState();
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -27,10 +28,17 @@ export default function SelectWalletContent() {
       return;
     }
 
-    await connectAccount({
-      address: selectedAccount.address,
-      wallet: selectedAccount.meta?.source || selectedWallet,
-    });
+    setIsLoading(true);
+    try {
+      await connectAccount({
+        address: selectedAccount.address,
+        wallet: selectedAccount.meta?.source || selectedWallet,
+      });
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -52,6 +60,7 @@ export default function SelectWalletContent() {
           {selectedWallet && (
             <PrimaryButton
               isFill
+              isLoading={isLoading}
               onClick={doConnectAddress}
               disabled={!selectedAccount}
             >
