@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -6,7 +6,6 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import { emptyFunction } from "next-common/utils";
 
 export default function CloseMotionPopup({
   chain,
@@ -17,13 +16,10 @@ export default function CloseMotionPopup({
   encodedCallLength,
   hasFailed,
   onClose,
-  isLoading,
-  setIsLoading = emptyFunction,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+  const [isLoading, setIsLoading] = useState(false);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -60,8 +56,6 @@ export default function CloseMotionPopup({
       tx,
       setLoading: setIsLoading,
       dispatch,
-      onInBlock,
-      onSubmitted,
       onClose,
       signerAddress,
       isMounted,
