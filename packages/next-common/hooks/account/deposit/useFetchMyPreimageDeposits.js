@@ -1,13 +1,13 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import usePreimageHashs from "next-common/hooks/usePreimageHashs";
+import usePreimageHashes from "next-common/hooks/usePreimageHashes";
 import { setMyPreimageStatuses } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
 
 export default function useFetchMyPreimageDeposits() {
   const realAddress = useRealAddress();
   const dispatch = useDispatch();
-  const preimageStatuses = usePreimageHashs();
+  const preimageStatuses = usePreimageHashes();
 
   useEffect(() => {
     if (preimageStatuses?.length) {
