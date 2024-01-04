@@ -1,7 +1,7 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
 
-export default function FellowshipOffBoardTimeoutCard() {
+export default function FellowshipParamsOffBoardTimeoutCard() {
   const { fellowshipParams } = usePageProps();
 
   return (

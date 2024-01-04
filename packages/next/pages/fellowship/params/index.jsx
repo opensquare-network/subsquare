@@ -1,6 +1,6 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import FellowshipOffBoardTimeoutCard from "next-common/components/fellowship/params/off-boardTimeout";
+import FellowshipParamsOffBoardTimeoutCard from "next-common/components/fellowship/params/off-boardTimeout";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { fellowshipParamsApi } from "next-common/services/url";
 import { withCommonProps } from "next-common/lib";
@@ -12,7 +12,7 @@ export default function FellowshipParamsPage() {
   return (
     <ListLayout seoInfo={seoInfo} title={title}>
       <div className="space-y-4">
-        <FellowshipOffBoardTimeoutCard />
+        <FellowshipParamsOffBoardTimeoutCard />
       </div>
     </ListLayout>
   );
