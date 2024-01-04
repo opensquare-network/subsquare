@@ -38,11 +38,12 @@ export function Item({ noHover, highlight, ...props } = {}) {
       {...props}
       className={cn(
         "text14Medium",
-        "text-textTertiary [&_svg_path]:fill-textTertiary",
+        "text-textTertiary [&_svg_path]:fill-textTertiary [&_svg_path]:stroke-textTertiary",
         "space-x-2",
-        "hover:text-textSecondary [&_svg_path]:hover:fill-textSecondary",
+        "hover:text-textSecondary [&_svg_path]:hover:fill-textSecondary [&_svg_path]:hover:stroke-textSecondary",
         noHover && "pointer-events-none",
-        highlight && "text-textSecondary [&_svg_path]:fill-textSecondary",
+        highlight &&
+          "text-textSecondary [&_svg_path]:fill-textSecondary [&_svg_path]:stroke-textSecondary",
         props.className,
       )}
     />
