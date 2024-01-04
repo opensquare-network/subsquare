@@ -7,12 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import {
-  fetchAndUpdateUser,
-  logoutUser,
-  useIsLoggedIn,
-  useUserContext,
-} from "../user";
+import { fetchAndUpdateUser, logoutUser, useUserContext } from "../user";
 import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
 
 const ConnectedAccountContext = createContext(null);
@@ -23,7 +18,6 @@ export function ConnectedAccountProvider({
   connectedAccount: _connectedAccount,
   children,
 }) {
-  const isLoggedIn = useIsLoggedIn();
   const userContext = useUserContext();
   const [connectedAccount, setConnectedAccount] = useState(_connectedAccount);
   const [lastConnectedAccount, setLastConnectedAccount] = useState();
@@ -38,13 +32,8 @@ export function ConnectedAccountProvider({
   const disconnect = useCallback(async () => {
     setConnectedAccount(null);
     clearCookie(CACHE_KEY.connectedAccount);
-    if (isLoggedIn) {
-      await logoutUser(userContext);
-    } else {
-      userContext.setUser(null);
-      userContext.setUserStatus(null);
-    }
-  }, [isLoggedIn, userContext]);
+    await logoutUser(userContext);
+  }, [userContext]);
 
   const connect = useCallback(
     async (account) => {
