@@ -39,11 +39,12 @@ export function ConnectedAccountProvider({
     async (account) => {
       await disconnect();
       setConnectedAccount(account);
-      setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
+      const connectedAccountJsonStr = JSON.stringify(account);
+      setCookie(CACHE_KEY.connectedAccount, connectedAccountJsonStr, 365);
       setLastConnectedAccount(account);
       localStorage.setItem(
         CACHE_KEY.lastConnectedAccount,
-        JSON.stringify(account),
+        connectedAccountJsonStr,
       );
       await fetchAndUpdateUser(userContext);
     },
