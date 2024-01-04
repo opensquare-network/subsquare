@@ -5,6 +5,8 @@ import Popup from "../popup/wrapper/Popup";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { useChainSettings } from "next-common/context/chain";
+import ChainTypes from "next-common/utils/consts/chainTypes";
 
 export default function MaybePolkadotSigner({
   onClose,
@@ -21,6 +23,7 @@ export default function MaybePolkadotSigner({
   const [polkadotAccounts, setPolkadotAccounts] = useState([]);
   const [detecting, setDetecting] = useState(true);
   const { lastConnectedAccount } = useConnectedAccountContext();
+  const { chainType } = useChainSettings();
 
   useEffect(() => {
     (async () => {
@@ -45,8 +48,13 @@ export default function MaybePolkadotSigner({
 
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
+
+        let filter = (item) => item.type !== "ethereum";
+        if (chainType === ChainTypes.ETHEREUM) {
+          filter = (item) => item.type === "ethereum";
+        }
         setPolkadotAccounts(
-          extensionAccounts.map((item) => ({
+          extensionAccounts.filter(filter).map((item) => ({
             ...item,
             meta: {
               name: item.name,
@@ -61,7 +69,7 @@ export default function MaybePolkadotSigner({
         setDetecting(false);
       }
     })();
-  }, [lastConnectedAccount, injectedWeb3, loading]);
+  }, [lastConnectedAccount, injectedWeb3, loading, chainType]);
 
   if (detecting) {
     return null;
