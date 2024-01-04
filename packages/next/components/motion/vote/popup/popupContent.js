@@ -31,8 +31,6 @@ export default function PopupContent({
   motionHash,
   motionIndex,
   onClose,
-  onSubmitted = emptyFunction,
-  onFinalized = emptyFunction,
   onInBlock = emptyFunction,
   type,
   submitExtrinsic = emptyFunction,
@@ -96,12 +94,10 @@ export default function PopupContent({
       approve,
       dispatch,
       setLoading,
-      onFinalized,
       onInBlock: () => {
         getMyVoteAndShowSuccessful();
         onInBlock();
       },
-      onSubmitted,
       signerAccount,
       isMounted,
       onClose,
