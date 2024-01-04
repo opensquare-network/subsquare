@@ -4,15 +4,15 @@ import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
-import { getAccountMenu } from "./consts";
 import PrimaryButton from "../buttons/primaryButton";
-import { useUser, useUserContext } from "../../context/user";
+import { useUser } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import SystemUser from "../user/systemUser";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { useAccountMenu } from "./useAccountMenu";
 
 const Wrapper = styled.div``;
 
@@ -77,8 +77,7 @@ export default function SidebarAccount() {
   const node = useChainSettings();
   const { openLoginPopup } = useLoginPopup();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
-  const userContext = useUserContext();
-  const accountMenu = getAccountMenu(userContext);
+  const accountMenu = useAccountMenu();
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
