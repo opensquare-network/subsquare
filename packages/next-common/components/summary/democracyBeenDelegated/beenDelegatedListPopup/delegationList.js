@@ -3,7 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 
 import { useChainSettings } from "next-common/context/chain";
 import PopupListWrapper from "../../../styled/popupListWrapper";
-import CapitalListItem from "next-common/components/datalist/capitalListItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 

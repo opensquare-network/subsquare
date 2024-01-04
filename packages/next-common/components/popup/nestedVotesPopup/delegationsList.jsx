@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Pagination from "next-common/components/pagination";
-import CapitalListItem from "next-common/components/datalist/capitalListItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";

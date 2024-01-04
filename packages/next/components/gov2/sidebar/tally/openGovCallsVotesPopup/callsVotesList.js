@@ -15,7 +15,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import CapitalListItem from "next-common/components/datalist/capitalListItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 
 const VoteTime = styled.div`

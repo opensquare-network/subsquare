@@ -11,7 +11,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
-import CapitalListItem from "next-common/components/datalist/capitalListItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 
 const Wrapper = styled.div``;
 

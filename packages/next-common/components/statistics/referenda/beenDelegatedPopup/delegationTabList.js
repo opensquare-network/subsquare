@@ -15,7 +15,7 @@ import startCase from "lodash.startcase";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import tw from "tailwind-styled-components";
 import DataList from "next-common/components/dataList";
-import CapitalListItem from "next-common/components/datalist/capitalListItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 
 const TrackNameText = tw.div`
   inline-flex items-center flex-nowrap

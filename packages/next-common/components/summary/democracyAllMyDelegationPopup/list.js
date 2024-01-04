@@ -1,7 +1,7 @@
 import PopupListWrapper from "../../styled/popupListWrapper";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
-import CapitalListItem from "next-common/components/datalist/capitalListItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 import { useSelector } from "react-redux";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";

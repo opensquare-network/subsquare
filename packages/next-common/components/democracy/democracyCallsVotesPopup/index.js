@@ -7,7 +7,7 @@ import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import CapitalListItem from "next-common/components/datalist/capitalListItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
