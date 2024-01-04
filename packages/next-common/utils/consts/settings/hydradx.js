@@ -7,6 +7,13 @@ import {
   ProjectLogoHydradxDark,
 } from "@osn/icons/subsquare";
 
+const testEndPoints = [
+  {
+    name: "Galactic Council",
+    url: "wss://rpc.nice.hydration.cloud/",
+  },
+];
+
 const defaultHydradxEndpoints = [
   {
     name: "Galactic Council",
@@ -60,7 +67,10 @@ const hydradx = {
   navLogo: ProjectLogoHydradxDark,
   navLogoDark: ProjectLogoHydradxDark,
   navPreferDark: true,
-  endpoints: defaultHydradxEndpoints,
+  endpoints:
+    process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
+      ? testEndPoints
+      : defaultHydradxEndpoints,
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
