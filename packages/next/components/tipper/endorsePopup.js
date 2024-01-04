@@ -21,12 +21,7 @@ import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
-function PopupContent({
-  tipHash,
-  onClose,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
-}) {
+function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const api = useApi();
@@ -76,7 +71,6 @@ function PopupContent({
       dispatch,
       setLoading: setTipping,
       onInBlock,
-      onSubmitted,
       onClose,
       signerAddress,
       isMounted,
