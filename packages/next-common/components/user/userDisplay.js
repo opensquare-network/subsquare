@@ -11,12 +11,12 @@ export default function UserDisplay({
   noTooltip,
   ellipsis,
 }) {
-  const isKeyUser = isKeyRegisteredUser(user);
+  const isWeb3User = isKeyRegisteredUser(user);
 
   let username = user?.username;
   let tip = user?.username;
 
-  if (isKeyUser) {
+  if (isWeb3User) {
     username = ellipsis ? addressEllipsis(user?.address) : user?.address;
     tip = user?.address;
   }

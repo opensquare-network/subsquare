@@ -1,25 +1,16 @@
 import { withCommonProps } from "next-common/lib";
-import SettingLayout from "next-common/components/layout/settingLayout";
-import {
-  SettingSection,
-  TitleContainer,
-} from "next-common/components/styled/containers/titleContainer";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import Channels from "next-common/components/setting/channels";
-import OnChainEventsSubscription from "components/settings/subscription/onchainEventsSubscription";
-import DiscussionEventsSubscription from "next-common/components/setting/notification/discussionEventsSubscription";
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
+import Notification from "next-common/components/setting/pages/notification";
+import OnChainEventsSubscription from "components/settings/subscription/onchainEventsSubscription";
+import { usePageProps } from "next-common/context/page";
 
 export default function NotificationPage() {
+  const { ssrTimestamp } = usePageProps();
   return (
-    <SettingLayout>
-      <Channels />
-      <SettingSection>
-        <TitleContainer>Notification Settings</TitleContainer>
-        <DiscussionEventsSubscription />
-        <OnChainEventsSubscription />
-      </SettingSection>
-    </SettingLayout>
+    <Notification>
+      <OnChainEventsSubscription key={ssrTimestamp} />
+    </Notification>
   );
 }
 
@@ -34,6 +25,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       subscription: subscription ?? null,
       unsubscribe: unsubscribe ?? null,
+      ssrTimestamp: Date.now(),
       ...tracksProps,
     },
   };

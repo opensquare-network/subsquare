@@ -73,7 +73,7 @@ const links = [
   },
   {
     name: "github",
-    url: "https://github.com/paritytech/polkadot/",
+    url: "https://github.com/paritytech/polkadot-sdk",
   },
   {
     name: "element",

@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import noop from "lodash.noop";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import Pagination from "next-common/components/pagination";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
@@ -24,6 +23,7 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "../common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -126,19 +126,18 @@ function VotesList({ items = [], loading }) {
   const columns = [
     {
       name: "ACCOUNT",
-      style: { minWidth: 296, textAlign: "left" },
     },
     {
       name: "DELEGATORS",
-      style: { minWidth: 128, textAlign: "right" },
+      className: "w-[128px] text-right",
     },
     {
       name: "VOTES",
-      style: { minWidth: 128, textAlign: "right" },
+      className: "w-[128px] text-right",
     },
     {
       name: "",
-      style: { textAlign: "right", width: 40, minWidth: 40 },
+      className: "w-10 text-right",
     },
   ];
 
@@ -173,8 +172,8 @@ function VotesList({ items = [], loading }) {
   return (
     <>
       <PopupListWrapper>
-        <StyledList
-          items={items}
+        <DataList
+          scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}

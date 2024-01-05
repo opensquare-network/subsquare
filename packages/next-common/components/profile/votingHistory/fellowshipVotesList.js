@@ -2,13 +2,13 @@ import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
 import { FellowshipVoteItem, PostTitle, ReferendumTag } from "./common";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 
 export default function FellowshipVotesList({ data, fetchData, page }) {
   const columnsDefinition = [
     {
       name: "Proposal",
-      style: { textAlign: "left", minWidth: "230px", maxWidth: 600 },
+      style: { textAlign: "left", minWidth: "230px" },
     },
     {
       name: "Vote",
@@ -39,7 +39,7 @@ export default function FellowshipVotesList({ data, fetchData, page }) {
   return (
     <>
       <ScrollerX>
-        <NoBorderList loading={!data} columns={columns} rows={rows} />
+        <DataList loading={!data} columns={columns} rows={rows} />
       </ScrollerX>
       <Pagination
         {...data}

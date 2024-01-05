@@ -1,14 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import { isLoadingVoteCallsSelector } from "next-common/store/reducers/gov2ReferendumSlice";
 import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
@@ -20,6 +19,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -138,15 +138,15 @@ function VotesList({ items = [], loading }) {
   const columns = [
     {
       name: "VOTES",
-      style: { minWidth: 264, textAlign: "left" },
+      style: { minWidth: 240, textAlign: "left" },
     },
     {
       name: "DATE",
-      style: { minWidth: 160, textAlign: "left" },
+      style: { width: 160, textAlign: "left" },
     },
     {
       name: "CAPITAL",
-      style: { minWidth: 168, textAlign: "right" },
+      style: { width: 160, textAlign: "right" },
     },
   ];
 
@@ -164,7 +164,7 @@ function VotesList({ items = [], loading }) {
           {formatTime(item.indexer.blockTime)}
         </ExplorerLink>
       </VoteTime>,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(item.vote.balance, chainSettings.decimals)}
@@ -175,8 +175,8 @@ function VotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <StyledList
-        items={items}
+      <DataList
+        scrollToFirstRowOnChange
         loading={loading}
         columns={columns}
         rows={rows}

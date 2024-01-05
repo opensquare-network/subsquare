@@ -1,23 +1,19 @@
 import { useRouter } from "next/router";
 import { SystemTip } from "@osn/icons/subsquare";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
-import { useUser } from "next-common/context/user";
-import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useCallback } from "react";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export function SubscribeTip() {
   const router = useRouter();
-  const user = useUser();
-  const { openLoginPopup } = useLoginPopup();
+  const { ensureLogin } = useEnsureLogin();
 
-  const goSubscriptionSetting = useCallback(() => {
-    const url = "/settings/notifications";
-    if (user) {
-      router.push(url);
+  const goSubscriptionSetting = useCallback(async () => {
+    if (!(await ensureLogin())) {
       return;
     }
-    openLoginPopup(url);
-  }, [user]);
+    router.push("/settings/notifications");
+  }, [ensureLogin, router]);
 
   return (
     <div

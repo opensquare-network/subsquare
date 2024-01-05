@@ -5,6 +5,7 @@ import PrimaryButton from "../buttons/primaryButton";
 import { PopupButtonWrapper } from "../popup/wrapper";
 import { useDispatch } from "react-redux";
 import GhostButton from "../buttons/ghostButton";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export default function DeletePopup({
   itemName = "item",
@@ -13,19 +14,23 @@ export default function DeletePopup({
 }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const { ensureLogin } = useEnsureLogin();
 
   const doDelete = useCallback(async () => {
     setIsLoading(true);
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
       await deletePost();
       setShow(false);
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch]);
+  }, [dispatch, ensureLogin, deletePost]);
 
   return (
-    <Popup title="Report" onClose={() => setShow(false)}>
+    <Popup title="Delete" onClose={() => setShow(false)}>
       <div className="text-[14px] text-textPrimary">
         This will delete this {itemName} permanently. You will not be able to
         recover it.

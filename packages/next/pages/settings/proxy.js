@@ -9,8 +9,20 @@ import {
   TitleContainer,
 } from "next-common/components/styled/containers/titleContainer";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { useEffect } from "react";
+import { useUser } from "next-common/context/user";
+import { useRouter } from "next/router";
 
 export default function ProxyPage() {
+  const user = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user, router]);
+
   return (
     <SettingLayout>
       <SettingSection>

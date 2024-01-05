@@ -5,7 +5,7 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePostOnChainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceInput from "next-common/components/balanceInput";
-import { emptyFunction, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import React, { useState } from "react";
 import PopupLabel from "next-common/components/popup/label";
 import Input from "next-common/components/input";
@@ -16,11 +16,7 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
-function PopupContent({
-  onClose = emptyFunction,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
-}) {
+function PopupContent() {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const api = useApi();
@@ -46,9 +42,6 @@ function PopupContent({
       tx,
       dispatch,
       setLoading: setCalling,
-      onInBlock,
-      onSubmitted,
-      onClose,
       signerAddress: signerAccount.address,
       isMounted,
     });

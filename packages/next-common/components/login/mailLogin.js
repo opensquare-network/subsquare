@@ -2,20 +2,26 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import nextApi from "../../services/nextApi";
-import ErrorText from "../ErrorText";
+import nextApi from "next-common/services/nextApi";
+import ErrorText from "next-common/components/ErrorText";
 import { FormButtonsWrapper, FormInputsWrapper, FormWrapper } from "./styled";
 import Username from "./username";
 import Password from "./password";
-import GhostButton from "../buttons/ghostButton";
-import PrimaryButton from "../buttons/primaryButton";
-import useForm from "../../utils/hooks/useForm";
-import { updateUser, useUserDispatch } from "../../context/user";
+import GhostButton from "next-common/components/buttons/ghostButton";
+import PrimaryButton from "next-common/components/buttons/primaryButton";
+import useForm from "next-common/utils/hooks/useForm";
+import {
+  fetchAndUpdateUserStatus,
+  useSetUser,
+  useUserContext,
+} from "next-common/context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { loginRedirectUrlSelector } from "next-common/store/reducers/userSlice";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  LoginResult,
+  setLoginResult,
+} from "next-common/store/reducers/userSlice";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -24,12 +30,12 @@ const ForgetPassword = styled.div`
 `;
 
 export default function MailLogin({ setView }) {
+  const dispatch = useDispatch();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const userDispatch = useUserDispatch();
+  const setUser = useSetUser();
   const { closeLoginPopup } = useLoginPopup();
-  const router = useRouter();
-  const redirectUrl = useSelector(loginRedirectUrlSelector);
+  const userContext = useUserContext();
 
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
@@ -40,11 +46,10 @@ export default function MailLogin({ setView }) {
       setLoading(true);
       const res = await nextApi.post("auth/login", formData);
       if (res.result) {
-        updateUser(res.result, userDispatch);
+        setUser(res.result);
+        await fetchAndUpdateUserStatus(userContext);
+        dispatch(setLoginResult(LoginResult.LoggedIn));
         closeLoginPopup();
-        if (redirectUrl) {
-          router.push(redirectUrl);
-        }
       } else if (res.error) {
         setErrors(res.error);
       }
@@ -85,7 +90,7 @@ export default function MailLogin({ setView }) {
             setView("web3");
           }}
         >
-          Login with web3 address
+          Connect with web3 address
         </GhostButton>
       </FormButtonsWrapper>
 

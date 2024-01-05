@@ -1,19 +1,14 @@
-import React from "react";
-import styled from "styled-components";
 import SortedSVG from "./sorted.svg";
-
-const Wrapper = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-`;
 
 export default function SortableColumn({ name, sorted = true, onClick }) {
   return (
-    <Wrapper onClick={onClick}>
-      {sorted && <SortedSVG />}
+    <div
+      role="button"
+      onClick={onClick}
+      className="max-sm:pointer-events-none inline-flex items-center gap-2"
+    >
+      {sorted && <SortedSVG className="max-sm:hidden" />}
       <span>{name}</span>
-    </Wrapper>
+    </div>
   );
 }

@@ -14,9 +14,17 @@ export default function NoData({
         <SystemEmptyBox className="[&_path]:stroke-textTertiary mx-auto mb-2" />
       )}
 
-      {head && <p className={cn("text16Bold text-textPrimary mb-2")}>{head}</p>}
+      {head && (
+        <div className={cn("text16Bold text-textPrimary mb-2")}>{head}</div>
+      )}
 
-      <p className={cn("text14Medium text-textTertiary")}>{text}</p>
+      <div
+        className={cn(
+          "text14Medium text-textTertiary inline-flex items-center",
+        )}
+      >
+        {text}
+      </div>
     </div>
   );
 }

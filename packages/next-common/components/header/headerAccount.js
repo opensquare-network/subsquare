@@ -5,15 +5,15 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
-import { isKeyRegisteredUser } from "../../utils";
-import { accountMenu, accountMenuForKeyAccount } from "./consts";
-import { logoutUser, useUser, useUserDispatch } from "../../context/user";
+import { useIsLoggedIn, useUser } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import PrimaryButton from "../buttons/primaryButton.js";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import GhostButton from "../buttons/ghostButton.js";
 import { SystemProfile } from "@osn/icons/subsquare";
-import SystemUser from "../user/systemUser.js";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
+import { SystemUser, AddressUser } from "../user";
+import { useAccountMenu } from "./useAccountMenu.js";
 
 const Wrapper = Relative;
 
@@ -61,13 +61,15 @@ function ProfileMenuItem({ onClick }) {
 
 export default function HeaderAccount() {
   const user = useUser();
+  const isLoggedIn = useIsLoggedIn();
+  const { disconnect: disconnectAccount } = useConnectedAccountContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const userDispatch = useUserDispatch();
   const isMounted = useIsMounted();
   const { openLoginPopup } = useLoginPopup();
+  const menu = useAccountMenu();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -77,13 +79,9 @@ export default function HeaderAccount() {
     }
   }, [windowSize]);
 
-  const menu = isKeyRegisteredUser(user)
-    ? accountMenuForKeyAccount
-    : accountMenu;
-
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await logoutUser(userDispatch);
+      await disconnectAccount();
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
@@ -97,21 +95,34 @@ export default function HeaderAccount() {
     router.push(`/user/${user.address}`);
   };
 
+  let connectBtn = (
+    <PrimaryButton onClick={() => openLoginPopup()}>Connect</PrimaryButton>
+  );
+  if (user) {
+    if (isLoggedIn) {
+      connectBtn = (
+        <GhostButton onClick={() => setShow(!show)}>
+          <SystemUser user={user} noEvent />
+        </GhostButton>
+      );
+    } else {
+      connectBtn = (
+        <GhostButton onClick={() => setShow(!show)}>
+          <AddressUser add={user?.address} noEvent />
+        </GhostButton>
+      );
+    }
+  }
+
   return (
     <>
       <Wrapper ref={ref}>
-        {!user ? (
-          <PrimaryButton onClick={() => openLoginPopup()}>Login</PrimaryButton>
-        ) : (
-          <GhostButton onClick={() => setShow(!show)}>
-            <SystemUser user={user} noEvent />
-          </GhostButton>
-        )}
+        {connectBtn}
 
         {show && (
           <Menu>
             {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
-            {menu.map((item, index) => (
+            {menu?.map((item, index) => (
               <Fragment key={index}>
                 <Item onClick={() => handleAccountMenu(item)}>
                   {item.icon}

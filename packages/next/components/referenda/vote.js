@@ -1,16 +1,13 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useState } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
-import useApi from "next-common/utils/hooks/useApi";
 import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   electorateSelector,
-  fetchReferendumStatus,
   isLoadingElectorateSelector,
-  isLoadingReferendumStatusSelector,
 } from "next-common/store/reducers/referendumSlice";
 import SubLink from "next-common/components/styled/subLink";
 import VoteBar from "next-common/components/referenda/voteBar";
@@ -22,7 +19,7 @@ import useIsDemocracyPassing from "next-common/context/post/democracy/referendum
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import useDemocracyThreshold from "next-common/context/post/democracy/referendum/threshold";
 import useIsDemocracyPassed from "next-common/context/post/democracy/referendum/result";
-import useSubDemocracyTally from "next-common/hooks/democracy/tally";
+import useLatestDemocracyTally from "next-common/hooks/democracy/tally";
 import { useChainSettings } from "next-common/context/chain";
 import Calls from "./voteCalls";
 import isMoonChain from "next-common/utils/isMoonChain";
@@ -77,12 +74,10 @@ const RejectStatus = styled(Status)`
 `;
 
 function Vote({ referendumIndex }) {
-  const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
   const [showFlattenedVotesList, setShowFlattenedVotesList] = useState(false);
   const [showNestedVotesList, setShowNestedVotesList] = useState(false);
-  const api = useApi();
-  const tally = useSubDemocracyTally();
+  const tally = useLatestDemocracyTally();
   const isPassing = useIsDemocracyPassing(tally);
   const threshold = useDemocracyThreshold();
   const isPassed = useIsDemocracyPassed();
@@ -91,9 +86,6 @@ function Vote({ referendumIndex }) {
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const electorate = useSelector(electorateSelector);
 
-  const isLoadingReferendumStatus = useSelector(
-    isLoadingReferendumStatusSelector,
-  );
   const isVoteFinished = useIsDemocracyVoteFinished();
   const isUseMetamask = useIsUseMetamask();
 
@@ -101,10 +93,6 @@ function Vote({ referendumIndex }) {
   if (isMoonChain() && isUseMetamask) {
     Popup = MoonVotePopup;
   }
-
-  const updateVoteProgress = useCallback(() => {
-    dispatch(fetchReferendumStatus(api, referendumIndex));
-  }, [dispatch, api, referendumIndex]);
 
   let finishedResult;
   if (isVoteFinished) {
@@ -120,11 +108,7 @@ function Vote({ referendumIndex }) {
       <SecondaryCardDetail>
         <Title className="!px-0">
           <span>Votes</span>
-          <div>
-            {isLoadingReferendumStatus || isElectorateLoading ? (
-              <Loading size={16} />
-            ) : null}
-          </div>
+          <div>{isElectorateLoading ? <Loading size={16} /> : null}</div>
         </Title>
 
         <VoteBar tally={tally} electorate={electorate} threshold={threshold} />
@@ -171,7 +155,6 @@ function Vote({ referendumIndex }) {
           <Popup
             onClose={() => setShowVote(false)}
             referendumIndex={referendumIndex}
-            onInBlock={updateVoteProgress}
           />
         )}
       </VoteSuccessfulProvider>

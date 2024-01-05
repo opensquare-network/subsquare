@@ -5,11 +5,7 @@ import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "../buttons/primaryButton";
 import WalletAddressSelect from "../login/walletAddressSelect";
-import {
-  setConnectedAddress,
-  useConnectedAddress,
-  useConnectedAddressDispatch,
-} from "next-common/context/connectedAddress";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -18,12 +14,13 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function SelectWalletContent() {
+  const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState();
   const [selectedWallet, setSelectWallet] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
-  const connectedAddress = useConnectedAddress();
-  const connectedAddressDispatch = useConnectedAddressDispatch();
+  const { lastConnectedAccount, connect: connectAccount } =
+    useConnectedAccountContext();
 
   const doConnectAddress = async () => {
     if (!selectedAccount?.address) {
@@ -31,10 +28,17 @@ export default function SelectWalletContent() {
       return;
     }
 
-    setConnectedAddress(connectedAddressDispatch, {
-      address: selectedAccount.address,
-      wallet: selectedAccount.meta?.source || selectedWallet,
-    });
+    setIsLoading(true);
+    try {
+      await connectAccount({
+        address: selectedAccount.address,
+        wallet: selectedAccount.meta?.source || selectedWallet,
+      });
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,13 +53,14 @@ export default function SelectWalletContent() {
           setSelectWallet={setSelectWallet}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
-          lastUsedAddress={connectedAddress?.address}
+          lastUsedAddress={lastConnectedAccount?.address}
         />
 
         <ButtonWrapper>
           {selectedWallet && (
             <PrimaryButton
               isFill
+              isLoading={isLoading}
               onClick={doConnectAddress}
               disabled={!selectedAccount}
             >

@@ -9,7 +9,11 @@ import { InfoWrapper, Redirect } from "next-common/components/login/styled";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import GhostButton from "../buttons/ghostButton";
 import { LoginCard } from "../styled/containers/loginCard";
-import { updateUser, useUserDispatch } from "next-common/context/user";
+import {
+  fetchAndUpdateUserStatus,
+  useSetUser,
+  useUserContext,
+} from "next-common/context/user";
 
 export default function Verify() {
   const [errors, setErrors] = useState();
@@ -18,7 +22,8 @@ export default function Verify() {
   const { email, token } = router.query;
   const isMounted = useIsMounted();
   const { countdown, counting: success, startCountdown } = useCountdown(3);
-  const userDispatch = useUserDispatch();
+  const setUser = useSetUser();
+  const userContext = useUserContext();
 
   useEffect(() => {
     if (success && countdown === 0) {
@@ -27,30 +32,36 @@ export default function Verify() {
   }, [success, countdown]);
 
   useEffect(() => {
-    if (email && token) {
-      setLoading(true);
-      const doVerify = async (email, token) => {
-        const res = await nextApi.post("auth/verify", {
-          email,
-          token,
-        });
-        if (res.result) {
+    if (!email || !token) {
+      return;
+    }
+
+    setLoading(true);
+
+    nextApi
+      .post("auth/verify", {
+        email,
+        token,
+      })
+      .then(({ result, error }) => {
+        if (result) {
           if (isMounted.current) {
-            updateUser(res.result, userDispatch);
+            setUser(result);
+            fetchAndUpdateUserStatus(userContext);
             startCountdown();
           }
-        } else if (res.error) {
+        } else if (error) {
           if (isMounted.current) {
-            setErrors(res.error);
+            setErrors(error);
           }
         }
+      })
+      .finally(() => {
         if (isMounted.current) {
           setLoading(false);
         }
-      };
-      doVerify(email, token);
-    }
-  }, [email, token, router, isMounted, startCountdown]);
+      });
+  }, [email, token, isMounted, startCountdown, setUser]);
 
   return (
     <>

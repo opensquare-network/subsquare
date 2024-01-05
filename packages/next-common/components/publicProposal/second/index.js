@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import countBy from "lodash.countby";
 import BigNumber from "bignumber.js";
 import Loading from "../../loading";
-import { emptyFunction } from "../../../utils";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
 import useApi from "../../../utils/hooks/useApi";
 import Tooltip from "../../tooltip";
@@ -209,7 +208,6 @@ export default function Second({
           depositRequired={depositRequired}
           onClose={() => setShowPopup(false)}
           onInBlock={() => setTriggerUpdate(Date.now())}
-          onSubmitted={emptyFunction}
           useAddressVotingBalance={useAddressVotingBalance}
         />
       )}

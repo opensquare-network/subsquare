@@ -16,6 +16,7 @@ import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export default function CommentActions({
   updateComment = noop,
@@ -26,22 +27,21 @@ export default function CommentActions({
 }) {
   const comment = useComment();
   const user = useUser();
+  const { ensureLogin } = useEnsureLogin();
   const reactions = comment.reactions;
   const author = comment.author;
-  const isLoggedIn = !!user;
-  const ownComment = isLoggedIn && author?.username === user.username;
+  const ownComment = user && author?.username === user.username;
   const thumbUp =
-    isLoggedIn &&
+    user &&
     reactions?.findIndex((r) => r.user?.username === user.username) > -1;
 
   const chain = useChain();
-  const loginUser = useUser();
   const post = usePost();
   const editorWrapperRef = useRef();
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
-    loginUser?.preference.editor || "markdown",
+    user?.preference?.editor || "markdown",
   );
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();
@@ -73,31 +73,37 @@ export default function CommentActions({
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   const toggleThumbUp = async () => {
-    if (isLoggedIn && !ownComment && !thumbUpLoading) {
-      setThumbUpLoading(true);
-      try {
-        let result, error;
+    if (!user || ownComment || thumbUpLoading) {
+      return;
+    }
 
-        if (thumbUp) {
-          ({ result, error } = await nextApi.delete(
-            `comments/${comment._id}/reaction`,
-          ));
-        } else {
-          ({ result, error } = await nextApi.put(
-            `comments/${comment._id}/reaction`,
-            { reaction: 1 },
-          ));
-        }
-
-        if (result) {
-          await updateComment();
-        }
-        if (error) {
-          dispatch(newErrorToast(error.message));
-        }
-      } finally {
-        setThumbUpLoading(false);
+    setThumbUpLoading(true);
+    try {
+      if (!(await ensureLogin())) {
+        return;
       }
+
+      let result, error;
+
+      if (thumbUp) {
+        ({ result, error } = await nextApi.delete(
+          `comments/${comment._id}/reaction`,
+        ));
+      } else {
+        ({ result, error } = await nextApi.put(
+          `comments/${comment._id}/reaction`,
+          { reaction: 1 },
+        ));
+      }
+
+      if (result) {
+        await updateComment();
+      }
+      if (error) {
+        dispatch(newErrorToast(error.message));
+      }
+    } finally {
+      setThumbUpLoading(false);
     }
   };
 
@@ -105,14 +111,11 @@ export default function CommentActions({
     <>
       <div className="flex items-center justify-between">
         <Wrapper className="space-x-4">
-          <ReplyButton
-            onReply={startReply}
-            noHover={!isLoggedIn || ownComment}
-          />
+          <ReplyButton onReply={startReply} noHover={!user || ownComment} />
           <ThumbsUp
             count={reactions?.length}
-            noHover={!isLoggedIn || ownComment}
-            highlight={isLoggedIn && thumbUp}
+            noHover={!user || ownComment}
+            highlight={thumbUp}
             toggleThumbUp={toggleThumbUp}
             thumbUpLoading={thumbUpLoading}
             showThumbsUpList={showThumbsUpList}

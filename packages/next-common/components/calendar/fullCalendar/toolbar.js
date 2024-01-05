@@ -7,7 +7,7 @@ import CaretRight from "../../icons/caretRight";
 import Flex from "../../styled/flex";
 import CreateEventButton from "./createEventButton";
 import noop from "lodash.noop";
-import { useIsLogin } from "../../../context/user";
+import { useUser } from "../../../context/user";
 import { OnlyDesktop } from "../../styled/responsive";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 
@@ -26,7 +26,7 @@ export default function FullCalendarToolbar({
   onCreateEvent = noop,
 }) {
   const isAdmin = useIsAdmin();
-  const isLogin = useIsLogin();
+  const user = useUser();
 
   function gotoToday() {
     onNavigate("TODAY");
@@ -60,7 +60,7 @@ export default function FullCalendarToolbar({
           <OnlyDesktop>
             <Button onClick={gotoToday}>Today</Button>
           </OnlyDesktop>
-          {isLogin && (
+          {user && (
             <CreateEventButton onClick={onCreateEvent} disabled={!isAdmin} />
           )}
         </Flex>

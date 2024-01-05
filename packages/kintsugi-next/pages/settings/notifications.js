@@ -1,25 +1,16 @@
 import { withCommonProps } from "next-common/lib";
-import {
-  SettingSection,
-  TitleContainer,
-} from "next-common/components/styled/containers/titleContainer";
-import SettingLayout from "next-common/components/layout/settingLayout";
-import Channels from "next-common/components/setting/channels";
-import OnChainEventsSubscription from "components/settings/onchainEventsSubscription";
-import DiscussionEventsSubscription from "next-common/components/setting/notification/discussionEventsSubscription";
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
 import { ssrNextApi } from "next-common/services/nextApi";
+import Notification from "next-common/components/setting/pages/notification";
+import OnChainEventsSubscription from "components/settings/onchainEventsSubscription";
+import { usePageProps } from "next-common/context/page";
 
-export default function Notification() {
+export default function NotificationPage() {
+  const { ssrTimestamp } = usePageProps();
   return (
-    <SettingLayout>
-      <Channels />
-      <SettingSection>
-        <TitleContainer>Notification Settings</TitleContainer>
-        <DiscussionEventsSubscription />
-        <OnChainEventsSubscription />
-      </SettingSection>
-    </SettingLayout>
+    <Notification>
+      <OnChainEventsSubscription key={ssrTimestamp} />
+    </Notification>
   );
 }
 
@@ -35,6 +26,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       chain,
       unsubscribe: unsubscribe ?? null,
       subscription: subscription ?? null,
+      ssrTimestamp: Date.now(),
       summary: summary ?? {},
     },
   };

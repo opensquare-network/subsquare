@@ -1,12 +1,11 @@
-import React from "react";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 
 import { useChainSettings } from "next-common/context/chain";
 import PopupListWrapper from "../../../styled/popupListWrapper";
-import StyledList from "next-common/components/styledList";
-import CapitalTableItem from "next-common/components/popup/capitalTableItem";
+import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
+import DataList from "next-common/components/dataList";
 
 function DelegationList({ items, loading = false }) {
   const node = useChainSettings();
@@ -52,7 +51,7 @@ function DelegationList({ items, loading = false }) {
         add={item.delegator}
         maxWidth={colWidths.address}
       />,
-      <CapitalTableItem
+      <CapitalListItem
         key="capital"
         item={item}
         capital={toPrecision(item.balance, node.decimals)}
@@ -69,7 +68,7 @@ function DelegationList({ items, loading = false }) {
 
   return (
     <PopupListWrapper>
-      <StyledList columns={columns} rows={rows} loading={loading} />
+      <DataList columns={columns} rows={rows} loading={loading} />
     </PopupListWrapper>
   );
 }

@@ -21,12 +21,7 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
-function PopupContent({
-  onClose,
-  onInBlock = emptyFunction,
-  onFinalized = emptyFunction,
-  onSubmitted = emptyFunction,
-}) {
+function PopupContent({ onClose, onFinalized = emptyFunction }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();
@@ -86,11 +81,10 @@ function PopupContent({
       dispatch,
       setLoading,
       onFinalized,
-      onInBlock: (eventData) => {
-        const [tipHash] = eventData;
-        onInBlock(signerAddress, tipHash);
+      onInBlock: () => {
+        // const [tipHash] = eventData;
+        // todo: when the extrinsic success and in block, redirect the page to the tip detail page
       },
-      onSubmitted,
       onClose,
       signerAddress,
       isMounted,

@@ -32,15 +32,11 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
         <span>Delegating to</span>
         <AddressUser add={delegating.target} />
         <ValueDisplay
-          value={
-            <TextSecondary>
-              {toPrecision(
-                delegating.balance * ConvictionSupport[delegating.conviction],
-                node.decimals,
-              )}
-            </TextSecondary>
-          }
-          symbol={<TextSecondary>{node.symbol}</TextSecondary>}
+          value={toPrecision(
+            delegating.balance * ConvictionSupport[delegating.conviction],
+            node.decimals,
+          )}
+          symbol={node.symbol}
         />
       </Item>
 

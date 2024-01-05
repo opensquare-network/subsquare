@@ -1,23 +1,15 @@
-import React from "react";
-import { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 
-export default function CloseTipPopup({
-  tipHash,
-  onClose,
-  isLoading,
-  setIsLoading = emptyFunction,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
-}) {
+export default function CloseTipPopup({ tipHash, onClose }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
+  const [isLoading, setIsLoading] = useState(false);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -45,23 +37,12 @@ export default function CloseTipPopup({
         tx,
         setLoading: setIsLoading,
         dispatch,
-        onInBlock,
-        onSubmitted,
         onClose,
         signerAddress,
         isMounted,
       });
     },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onInBlock,
-      onSubmitted,
-      onClose,
-      tipHash,
-      setIsLoading,
-    ],
+    [dispatch, isMounted, showErrorToast, onClose, tipHash, setIsLoading],
   );
 
   return (

@@ -3,7 +3,6 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import PreimageDetailPopup from "next-common/components/preImages/preImageDetailPopup";
 import UnnotePopup from "next-common/components/preImages/unnotePopup";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
 import useColumns from "next-common/components/styledList/useColumns";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -25,6 +24,7 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import Loading from "../loading";
 import { useNavCollapsed } from "next-common/context/nav";
 import MyDepositUndoButton from "./undoButton";
+import DataList from "../dataList";
 
 function createUsePreimageHook(hash, setShowArgumentsDetail, usePreimage) {
   return () => {
@@ -129,7 +129,8 @@ function DesktopList({ data, setShowArgumentsDetail }) {
   const { columns } = useColumns([
     {
       name: "Hash",
-      className: "text-left w-40",
+      // 160 + 16(gap) + 28(button)
+      className: "text-left w-[204px]",
     },
     {
       name: "Arguments",
@@ -165,7 +166,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
 
   return (
     <ScrollerX>
-      <NoBorderList
+      <DataList
         columns={columns}
         rows={rows}
         noDataText="No current preimages"

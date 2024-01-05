@@ -12,7 +12,7 @@ import MyReferendaVoteTag from "../stateTag";
 import RemoveVoteButton from "./remove";
 import ProxyHint from "../../../proxyHint";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import NoBorderList from "next-common/components/styledList/noBorderList";
+import DataList from "next-common/components/dataList";
 
 export default function DesktopList() {
   const referendaVotes = useSelector(myReferendaVotesSelector);
@@ -50,7 +50,7 @@ export default function DesktopList() {
     <ListCard>
       <ProxyHint style={{ marginBottom: 24 }} />
       <ScrollerX>
-        <NoBorderList loading={isLoading} columns={columns} rows={rows} />
+        <DataList loading={isLoading} columns={columns} rows={rows} />
       </ScrollerX>
     </ListCard>
   );

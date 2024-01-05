@@ -1,4 +1,3 @@
-import React from "react";
 import noop from "lodash.noop";
 import styled from "styled-components";
 import PopupListWrapper from "../../styled/popupListWrapper";
@@ -6,7 +5,7 @@ import ValueDisplay from "../../valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "../../../context/chain";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
-import StyledList from "next-common/components/styledList";
+import DataList from "next-common/components/dataList";
 
 const TrackItemWrapper = styled.div`
   display: inline-block;
@@ -51,7 +50,7 @@ export default function AllBeenDelegatedPopupAllList({
 
   return (
     <PopupListWrapper>
-      <StyledList
+      <DataList
         columns={columns}
         rows={rows}
         noDataText="No current delegations"

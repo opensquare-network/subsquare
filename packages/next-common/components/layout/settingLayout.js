@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import ListLayout from "next-common/components/layout/ListLayout";
-import { useUser } from "next-common/context/user";
-import { isKeyRegisteredUser } from "next-common/utils";
+import { useIsWeb3User } from "next-common/context/user";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 
@@ -20,32 +19,26 @@ const Wrapper = styled.div`
 `;
 
 export default function SettingLayout(props) {
-  const user = useUser();
+  const isWeb3User = useIsWeb3User();
   const chain = useChain();
-  const isKeyAccount = user && isKeyRegisteredUser(user);
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
-  let tabs = [];
-
-  if (isKeyAccount) {
-    if (isKintsugi) {
-      tabs = [
-        { label: "Account", url: "/settings/key-account" },
-        { label: "Notifications", url: "/settings/notifications" },
-      ];
-    } else {
-      tabs = [
-        { label: "Account", url: "/settings/key-account" },
-        { label: "Proxy", url: "/settings/proxy" },
-        { label: "Notifications", url: "/settings/notifications" },
-      ];
-    }
-  } else {
-    tabs = [
-      { label: "Account", url: "/settings/account" },
-      { label: "Link Address", url: "/settings/linked-address" },
-      { label: "Notifications", url: "/settings/notifications" },
-    ];
+  const accountTab = {
+    label: "Account",
+    url: `/settings/${isWeb3User ? "key-account" : "account"}`,
+  };
+  const notificationsTab = {
+    label: "Notifications",
+    url: "/settings/notifications",
+  };
+  let tabs = [accountTab, notificationsTab];
+  if (!isWeb3User) {
+    tabs.splice(1, 0, {
+      label: "Link Address",
+      url: "/settings/linked-address",
+    });
+  } else if (!isKintsugi) {
+    tabs.splice(1, 0, { label: "Proxy", url: "/settings/proxy" });
   }
 
   return (
