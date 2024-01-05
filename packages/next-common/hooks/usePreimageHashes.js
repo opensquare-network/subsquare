@@ -8,9 +8,11 @@ function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
 
   const api = useApi();
-  const [allStatus] = useCall(api?.query.preimage?.[method].entries, [], {
+  const preimageStatus = useCall(api?.query.preimage?.[method]?.entries, [], {
     trigger,
   });
+
+  const [allStatus] = preimageStatus || [];
 
   return useMemo(
     () =>
@@ -33,4 +35,25 @@ export function useOldPreimageHashes() {
 
 export function usePreimageHashes() {
   return usePreimageHashesCommon("requestStatusFor");
+}
+
+export function useCombinedPreimageHashes() {
+  const oldHashes = useOldPreimageHashes();
+  const newHashes = usePreimageHashes();
+
+  const hashes = useMemo(() => {
+    const hashes = newHashes.map((data) => ({
+      data,
+      method: "requestStatusFor",
+    }));
+    for (const item of oldHashes) {
+      const [oldHash] = item;
+      if (!newHashes.some(([newHash]) => newHash === oldHash)) {
+        hashes.push({ data: item, method: "statusFor" });
+      }
+    }
+    return hashes;
+  }, [oldHashes, newHashes]);
+
+  return hashes;
 }

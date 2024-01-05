@@ -8,13 +8,18 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useWindowSize } from "usehooks-ts";
 import isNil from "lodash.isnil";
 
-function parseStatus(status) {
+function parseStatus(status, method) {
   const statusName = Object.keys(status || {})[0];
   if (!statusName) return {};
   const { deposit = [], ticket = [] } = status[statusName];
+  if (method === "statusFor") {
+    return {
+      statusName,
+      deposit,
+    };
+  }
   return {
     statusName,
-    deposit,
     ticket,
   };
 }
@@ -23,6 +28,12 @@ export default function PreImagesList({ data }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
+  console.log({
+    data,
+    searchValue,
+    isMyDepositOn,
+    realAddress,
+  });
 
   const { width } = useWindowSize();
 
@@ -32,12 +43,12 @@ export default function PreImagesList({ data }) {
 
   let filteredData = useMemo(
     () =>
-      (data || []).filter(({ data: [hash, status] }) => {
+      (data || []).filter(({ data: [hash, status], method }) => {
         if (!hash.includes(searchValue.toLowerCase())) {
           return false;
         }
 
-        const { deposit, ticket } = parseStatus(status);
+        const { deposit, ticket } = parseStatus(status, method);
         const [who] = ticket || deposit || [];
         return !isMyDepositOn || who === realAddress;
       }),

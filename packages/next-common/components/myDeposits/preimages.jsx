@@ -9,6 +9,7 @@ import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import usePreimage from "next-common/hooks/usePreimage";
+import useOldPreimage from "next-common/hooks/useOldPreimage";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { toPrecision } from "next-common/utils";
 import preImages from "next-common/utils/consts/menu/preImages";
@@ -24,6 +25,64 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import Loading from "../loading";
 import { useNavCollapsed } from "next-common/context/nav";
 import MyDepositUndoButton from "./undoButton";
+
+function createUsePreimageHook(hash, setShowArgumentsDetail, usePreimage) {
+  return () => {
+    const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
+    const deposit = preimage?.ticket || preimage?.deposit;
+
+    const row = [
+      <Hash
+        key="hash"
+        hash={hash}
+        proposal={preimage.proposal}
+        setShowArgumentsDetail={setShowArgumentsDetail}
+      />,
+      isBytesLoaded ? (
+        <Proposal
+          key="proposal"
+          proposal={preimage.proposal}
+          proposalError={preimage.proposalError}
+          proposalWarning={preimage.proposalWarning}
+          setShowArgumentsDetail={setShowArgumentsDetail}
+        />
+      ) : (
+        <FieldLoading />
+      ),
+      isStatusLoaded ? (
+        deposit && <BalanceCell deposit={deposit} />
+      ) : (
+        <FieldLoading />
+      ),
+      isStatusLoaded ? (
+        preimage.proposalLength?.toJSON()?.toLocaleString()
+      ) : (
+        <FieldLoading />
+      ),
+      isStatusLoaded ? (
+        preimage.statusName && (
+          <Status statusName={preimage.statusName} count={preimage.count} />
+        )
+      ) : (
+        <FieldLoading />
+      ),
+      isStatusLoaded ? (
+        <UnnoteButton
+          hash={hash}
+          count={preimage.count}
+          deposit={deposit}
+          status={preimage.statusName}
+        />
+      ) : (
+        <FieldLoading />
+      ),
+    ];
+
+    row.key = hash;
+
+    return row;
+  };
+}
 
 export default function MyDepositPreimages() {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
@@ -94,62 +153,13 @@ function DesktopList({ data, setShowArgumentsDetail }) {
     },
   ]);
 
-  const rows = data?.map(([hash]) => {
+  const rows = data?.map(({ data: [hash], method }) => {
     return {
-      useData() {
-        const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
-
-        const row = [
-          <Hash
-            key="hash"
-            hash={hash}
-            proposal={preimage.proposal}
-            setShowArgumentsDetail={setShowArgumentsDetail}
-          />,
-          isBytesLoaded ? (
-            <Proposal
-              key="proposal"
-              proposal={preimage.proposal}
-              proposalError={preimage.proposalError}
-              proposalWarning={preimage.proposalWarning}
-              setShowArgumentsDetail={setShowArgumentsDetail}
-            />
-          ) : (
-            <FieldLoading />
-          ),
-          isStatusLoaded ? (
-            preimage.deposit && <BalanceCell deposit={preimage.deposit} />
-          ) : (
-            <FieldLoading />
-          ),
-          isStatusLoaded ? (
-            preimage.proposalLength?.toJSON()?.toLocaleString()
-          ) : (
-            <FieldLoading />
-          ),
-          isStatusLoaded ? (
-            preimage.statusName && (
-              <Status statusName={preimage.statusName} count={preimage.count} />
-            )
-          ) : (
-            <FieldLoading />
-          ),
-          isStatusLoaded ? (
-            <UnnoteButton
-              hash={hash}
-              count={preimage.count}
-              deposit={preimage.deposit}
-              status={preimage.statusName}
-            />
-          ) : (
-            <FieldLoading />
-          ),
-        ];
-
-        row.key = hash;
-
-        return row;
-      },
+      useData: createUsePreimageHook(
+        hash,
+        setShowArgumentsDetail,
+        method === "requestStatusFor" ? usePreimage : useOldPreimage,
+      ),
     };
   });
 
@@ -178,18 +188,22 @@ function MobileList({ data, setShowArgumentsDetail }) {
 
   return (
     <div>
-      {data.map(([hash]) => (
+      {data.map(({ data: [hash], method }) => (
         <MobileListItem
           key={hash}
           hash={hash}
           setShowArgumentsDetail={setShowArgumentsDetail}
+          usePreimage={
+            method === "requestStatusFor" ? usePreimage : useOldPreimage
+          }
         />
       ))}
     </div>
   );
 }
-function MobileListItem({ hash, setShowArgumentsDetail }) {
+function MobileListItem({ hash, setShowArgumentsDetail, usePreimage }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
+  const deposit = preimage?.ticket || preimage?.deposit;
 
   return (
     <PreimageMobileListItemTemplate
@@ -211,7 +225,7 @@ function MobileListItem({ hash, setShowArgumentsDetail }) {
           <UnnoteButton
             hash={hash}
             count={preimage.count}
-            deposit={preimage.deposit}
+            deposit={deposit}
             status={preimage.statusName}
           />
         )
@@ -239,7 +253,7 @@ function MobileListItem({ hash, setShowArgumentsDetail }) {
       }
       depositBalance={
         isStatusLoaded ? (
-          preimage.deposit && <BalanceCell deposit={preimage.deposit} />
+          deposit && <BalanceCell deposit={deposit} />
         ) : (
           <FieldLoading />
         )
