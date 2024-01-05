@@ -37,10 +37,6 @@ export function usePreImage(preImageHash) {
   return { preImage, isLoading };
 }
 
-const parsePreImageCall = (bytes, api) => {
-  return api.registry.createType("Proposal", bytes);
-};
-
 const getBlockApi = async (api, blockHash) => {
   if (blockHash) {
     return api.at(blockHash);
@@ -71,7 +67,7 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
     let proposalHex = preImage.isGov2 ? preImage?.hex : preImage.data;
     getBlockApi(api, blockHash)
       .then((blockApi) => {
-        return parsePreImageCall(proposalHex, blockApi);
+        return blockApi.registry.createType("Proposal", proposalHex);
       })
       .then((callInfo) => {
         if (callInfo) {
