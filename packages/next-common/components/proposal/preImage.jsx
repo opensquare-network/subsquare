@@ -47,6 +47,14 @@ const parseDemocracyPreImageCall = (bytes, api) => {
   return api.registry.createType("Proposal", bytes);
 };
 
+function parsePreImageCall(bytes, api) {
+  try {
+    return parseGov2PreImageCall(bytes, api);
+  } catch (e) {
+    return parseDemocracyPreImageCall(bytes, api);
+  }
+}
+
 const getBlockApi = async (api, blockHash) => {
   if (blockHash) {
     return api.at(blockHash);
@@ -75,22 +83,18 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
 
     const blockHash = preImage?.indexer.blockHash;
     let proposalHex;
-    let parseCall;
-
     if (preImage.isGov2) {
       // Gov2 preImage
       proposalHex = preImage?.hex;
-      parseCall = parseGov2PreImageCall;
     } else {
       // Democracy preImage
       proposalHex = preImage?.data;
-      parseCall = parseDemocracyPreImageCall;
     }
 
     getBlockApi(api, blockHash)
       .then((blockApi) => {
         const bytes = hexToU8a(proposalHex);
-        return parseCall(bytes, blockApi);
+        return parsePreImageCall(bytes, blockApi);
       })
       .then((callInfo) => {
         if (callInfo) {
