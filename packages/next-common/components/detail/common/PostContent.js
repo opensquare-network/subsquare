@@ -4,6 +4,7 @@ import { usePost } from "../../../context/post";
 import { cn } from "next-common/utils";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
+import "@osn/previewer/styles.css";
 
 const collapsedHeight = 640;
 const moreLessHeightThreshold = 2000;
