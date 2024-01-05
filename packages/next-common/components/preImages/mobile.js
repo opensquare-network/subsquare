@@ -1,6 +1,7 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useState } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
+import useOldPreimage from "next-common/hooks/useOldPreimage";
 import PreimageDetailPopup from "./preImageDetailPopup";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,11 +15,12 @@ import DetailButton from "../detailButton";
 
 const FieldName = tw.span`text-textTertiary`;
 
-function Item({ hash }) {
+function Item({ hash, usePreimage }) {
   const dispatch = useDispatch();
   const triggerUpdate = useSelector(preImagesTriggerSelector);
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
+  const deposit = preimage?.ticket || preimage?.deposit;
 
   return (
     <>
@@ -65,10 +67,10 @@ function Item({ hash }) {
         }
         depositBalance={
           isStatusLoaded ? (
-            preimage.deposit && (
+            deposit && (
               <Deposit
                 key="deposit"
-                deposit={preimage.deposit}
+                deposit={deposit}
                 hash={hash}
                 count={preimage.count}
                 status={preimage.statusName}
@@ -105,8 +107,14 @@ function Item({ hash }) {
 export default function MobileList({ data }) {
   return (
     <SecondaryCard>
-      {data.map(([hash]) => (
-        <Item key={hash} hash={hash} />
+      {data.map(({ data: [hash], method }) => (
+        <Item
+          key={hash}
+          hash={hash}
+          usePreimage={
+            method === "requestStatusFor" ? usePreimage : useOldPreimage
+          }
+        />
       ))}
     </SecondaryCard>
   );
