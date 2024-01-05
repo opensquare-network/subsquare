@@ -5,7 +5,7 @@ import isNil from "lodash.isnil";
 import { useAddressVotingBalance } from "utils/hooks";
 import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { checkInputValue, emptyFunction } from "next-common/utils";
+import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -21,12 +21,7 @@ import useSubMyDemocracyVote, {
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 
-function PopupContent({
-  referendumIndex,
-  onClose,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
-}) {
+function PopupContent({ referendumIndex, onClose }) {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
@@ -116,9 +111,7 @@ function PopupContent({
       },
       onInBlock: () => {
         getMyVoteAndShowSuccessful();
-        onInBlock();
       },
-      onSubmitted,
       signerAddress,
       isMounted,
       onClose,

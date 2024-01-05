@@ -7,7 +7,6 @@ import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
-import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -17,7 +16,7 @@ import DemocracyReferendaDetail from "next-common/components/detail/Democracy/re
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import ReferendumCall from "next-common/components/democracy/call";
@@ -28,6 +27,9 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
+import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
+import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 
 function ReferendumContent() {
   const post = usePost();
@@ -38,12 +40,11 @@ function ReferendumContent() {
   const { timeline = [], preImage } = onchainData;
 
   useSubscribePostDetail(post?.referendumIndex);
+  useSetReferendumStatus();
+  useSubDemocracyReferendumStatus(post?.referendumIndex);
 
   const api = useApi();
-  const referendumStatus = useMaybeFetchReferendumStatus(
-    post?.onchainData,
-    api,
-  );
+  const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
   const { call: inlineCall } = useInlineCall(timeline, proposal);
