@@ -82,6 +82,7 @@ const karura = {
   hasSubscan: true,
   noIdentityModule: true,
   useVoteCall: true,
+  useNewPreimagePallet: true,
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   cssVarsLight: {
     theme100: "rgba(229,15,89,0.10)",

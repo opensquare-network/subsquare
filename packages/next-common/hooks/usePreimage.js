@@ -1,136 +1,17 @@
 import { useMemo } from "react";
 
 import { Option } from "@polkadot/types";
-import {
-  BN,
-  BN_ZERO,
-  formatNumber,
-  isString,
-  isU8a,
-  objectSpread,
-  u8aToHex,
-} from "@polkadot/util";
+import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
 import useApi from "next-common/utils/hooks/useApi";
+import { createResult, getPreimageHash } from "./useOldPreimage";
 
-/**
- * @internal Determine if we are working with current generation (H256,u32)
- * or previous generation H256 params to the preimageFor storage entry
- */
-export function getParamType(api) {
-  if (
-    api?.query.preimage &&
-    api?.query.preimage.preimageFor &&
-    api?.query.preimage.preimageFor.creator.meta.type.isMap
-  ) {
-    const { type } = api.registry.lookup.getTypeDef(
-      api.query.preimage.preimageFor.creator.meta.type.asMap.key,
-    );
-
-    if (type === "H256") {
-      return "hash";
-    } else if (type === "(H256,u32)") {
-      return "hashAndLen";
-    } else {
-      // we are clueless :()
-    }
-  }
-
-  return "unknown";
-}
-
-/** @internal Unwraps a passed preimage hash into components */
-export function getPreimageHash(api, hashOrBounded) {
-  let proposalHash;
-  let inlineData;
-
-  if (isString(hashOrBounded)) {
-    proposalHash = hashOrBounded;
-  } else if (isU8a(hashOrBounded)) {
-    proposalHash = hashOrBounded.toHex();
-  } else {
-    const bounded = hashOrBounded;
-
-    if (bounded.isInline) {
-      inlineData = bounded.asInline.toU8a(true);
-      proposalHash = u8aToHex(api?.registry.hash(inlineData));
-    } else if (hashOrBounded.isLegacy) {
-      proposalHash = hashOrBounded.asLegacy.hash_.toHex();
-    } else if (hashOrBounded.isLookup) {
-      proposalHash = hashOrBounded.asLookup.hash_.toHex();
-    } else {
-      console.error(
-        `Unhandled FrameSupportPreimagesBounded type ${hashOrBounded.type}`,
-      );
-    }
-  }
-
-  return {
-    inlineData,
-    paramsStatus: proposalHash && [proposalHash],
-    proposalHash,
-    resultPreimageHash: proposalHash && {
-      count: 0,
-      isCompleted: false,
-      isHashParam: getParamType(api) === "hash",
-      proposalHash,
-      proposalLength: inlineData && new BN(inlineData.length),
-      registry: api?.registry,
-      status: null,
-    },
-  };
-}
-
-/** @internal Creates a final result */
-function createResult(interimResult, optBytes) {
-  const callData = isU8a(optBytes) ? optBytes : optBytes.unwrapOr(null);
-  let proposal = null;
-  let proposalError = null;
-  let proposalWarning = null;
-  let proposalLength;
-
-  if (callData) {
-    try {
-      proposal = interimResult.registry.createType("Call", callData);
-
-      const callLength = proposal.encodedLength;
-
-      if (interimResult.proposalLength) {
-        const storeLength = interimResult.proposalLength.toNumber();
-
-        if (callLength !== storeLength) {
-          proposalWarning = `Decoded call length does not match on-chain stored preimage length (${formatNumber(
-            callLength,
-          )} bytes vs ${formatNumber(storeLength)} bytes)`;
-        }
-      } else {
-        // for the old style, we set the actual length
-        proposalLength = new BN(callLength);
-      }
-    } catch (error) {
-      // console.error(error);
-
-      proposalError = "Unable to decode preimage bytes into a valid Call";
-    }
-  } else {
-    proposalWarning = "No preimage bytes found";
-  }
-
-  return objectSpread({}, interimResult, {
-    isCompleted: true,
-    proposal,
-    proposalError,
-    proposalLength: proposalLength || interimResult.proposalLength,
-    proposalWarning,
-  });
-}
-
-/** @internal Helper to unwrap a deposit tuple into a structure */
-function convertDeposit(deposit) {
-  return deposit
+/** @internal Helper to unwrap a ticket tuple into a structure */
+function convertTicket(ticket) {
+  return ticket
     ? {
-        amount: deposit[1],
-        who: deposit[0].toString(),
+        amount: ticket[1],
+        who: ticket[0].toString(),
       }
     : undefined;
 }
@@ -149,25 +30,25 @@ function getBytesParams(interimResult, optStatus) {
         // FIXME Cannot recall how to deal with these
         // (unlike Unrequested below, didn't have an example)
       } else {
-        const { count, deposit, len } = asRequested;
+        const { count, maybeTicket, maybeLen } = asRequested;
 
         result.count = count.toNumber();
-        result.deposit = convertDeposit(deposit.unwrapOr(null));
-        result.proposalLength = len.unwrapOr(BN_ZERO);
+        result.ticket = convertTicket(maybeTicket.unwrapOr(null));
+        result.proposalLength = maybeLen.unwrapOr(BN_ZERO);
         result.statusName = "requested";
       }
     } else if (result.status.isUnrequested) {
       const asUnrequested = result.status.asUnrequested;
 
       if (asUnrequested instanceof Option) {
-        result.deposit = convertDeposit(
+        result.ticket = convertTicket(
           // old-style conversion
           asUnrequested.unwrapOr(null),
         );
       } else {
-        const { deposit, len } = result.status.asUnrequested;
+        const { ticket, len } = result.status.asUnrequested;
 
-        result.deposit = convertDeposit(deposit);
+        result.ticket = convertTicket(ticket);
         result.proposalLength = len;
         result.statusName = "unrequested";
       }
@@ -196,7 +77,7 @@ export default function usePreimage(hashOrBounded) {
   );
 
   const [optStatus, , isStatusLoaded] = useCall(
-    !inlineData && paramsStatus && api?.query.preimage?.statusFor,
+    !inlineData && paramsStatus && api?.query.preimage?.requestStatusFor,
     paramsStatus ? paramsStatus : [undefined],
   );
 

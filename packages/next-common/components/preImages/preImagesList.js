@@ -2,7 +2,7 @@ import ListTitleBar from "next-common/components/listTitleBar";
 import DesktopList from "./desktop";
 import MobileList from "./mobile";
 import SearchBox from "./searchBox";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useWindowSize } from "usehooks-ts";
@@ -11,10 +11,11 @@ import isNil from "lodash.isnil";
 function parseStatus(status) {
   const statusName = Object.keys(status || {})[0];
   if (!statusName) return {};
-  const { deposit = [] } = status[statusName];
+  const { deposit = [], ticket = [] } = status[statusName];
   return {
     statusName,
     deposit,
+    ticket,
   };
 }
 
@@ -29,15 +30,19 @@ export default function PreImagesList({ data }) {
     return null;
   }
 
-  let filteredData = (data || []).filter(([hash, status]) => {
-    if (!hash.includes(searchValue.toLowerCase())) {
-      return false;
-    }
+  let filteredData = useMemo(
+    () =>
+      (data || []).filter(({ data: [hash, status] }) => {
+        if (!hash.includes(searchValue.toLowerCase())) {
+          return false;
+        }
 
-    const { deposit } = parseStatus(status);
-    const [who] = deposit || [];
-    return !isMyDepositOn || who === realAddress;
-  });
+        const { deposit, ticket } = parseStatus(status);
+        const [who] = ticket || deposit || [];
+        return !isMyDepositOn || who === realAddress;
+      }),
+    [data, searchValue, isMyDepositOn, realAddress],
+  );
 
   return (
     <div className="flex flex-col gap-[16px]">

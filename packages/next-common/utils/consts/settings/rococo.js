@@ -47,6 +47,7 @@ const rococo = {
   hasFellowship: true,
   hasTipsModule: false,
   noDemocracyModule: true,
+  useNewPreimagePallet: true,
   hasSubscan: true,
   description: "Polkadot’s Parachain Testnet",
   cssVarsLight: {
