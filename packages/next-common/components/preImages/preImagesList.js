@@ -28,12 +28,6 @@ export default function PreImagesList({ data }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
-  console.log({
-    data,
-    searchValue,
-    isMyDepositOn,
-    realAddress,
-  });
 
   const { width } = useWindowSize();
 
