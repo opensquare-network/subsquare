@@ -49,9 +49,13 @@ export default function MaybePolkadotSigner({
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
 
-        let filter = (item) => item.type !== "ethereum";
+        let filter = () => true;
         if (chainType === ChainTypes.ETHEREUM) {
           filter = (item) => item.type === "ethereum";
+        } else if (chainType === ChainTypes.MIXED) {
+          filter = () => true;
+        } else {
+          filter = (item) => item.type !== "ethereum";
         }
         setPolkadotAccounts(
           extensionAccounts.filter(filter).map((item) => ({

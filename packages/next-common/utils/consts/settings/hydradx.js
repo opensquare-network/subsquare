@@ -6,6 +6,7 @@ import {
   ProjectIconHydradxLight,
   ProjectLogoHydradxDark,
 } from "@osn/icons/subsquare";
+import ChainTypes from "../chainTypes";
 
 const testEndPoints = [
   {
@@ -52,6 +53,21 @@ const links = [
   },
 ];
 
+const hydradxTestnet = {
+  endpoints: testEndPoints,
+  chainType: ChainTypes.MIXED,
+  ethereumNetwork: {
+    chainId: "0x3640e",
+    chainName: "HydraDX",
+    rpcUrls: ["https://rpc.hydradx.cloud"],
+    blockExplorerUrls: ["https://explorer.evm.hydration.cloud"],
+    nativeCurrency: {
+      symbol: "WETH",
+      decimals: 18,
+    },
+  },
+};
+
 const hydradx = {
   value: Chains.hydradx,
   name: "HydraDX",
@@ -67,10 +83,7 @@ const hydradx = {
   navLogo: ProjectLogoHydradxDark,
   navLogoDark: ProjectLogoHydradxDark,
   navPreferDark: true,
-  endpoints:
-    process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
-      ? testEndPoints
-      : defaultHydradxEndpoints,
+  endpoints: defaultHydradxEndpoints,
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
@@ -99,6 +112,7 @@ const hydradx = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? hydradxTestnet : {}),
 };
 
 export default hydradx;

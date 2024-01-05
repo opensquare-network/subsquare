@@ -50,7 +50,7 @@ export default function SelectWallet({
           extensionAccounts = extensionAccounts.filter(
             (acc) => acc.type === ChainTypes.ETHEREUM,
           );
-        } else {
+        } else if (chainType !== ChainTypes.MIXED) {
           extensionAccounts = extensionAccounts.filter(
             (acc) => acc.type !== ChainTypes.ETHEREUM,
           );
