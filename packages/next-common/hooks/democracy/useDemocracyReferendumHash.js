@@ -2,16 +2,15 @@
 
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import { usePost, useTimelineData } from "next-common/context/post";
-import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 
 export function useDemocracyReferendumHash() {
-  const api = useApi();
   const post = usePost();
   const timeline = useTimelineData();
   const onchainData = post?.onchainData;
-  const referendumStatus = useMaybeFetchReferendumStatus(onchainData, api);
+  const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
   const proposalHash = referendumStatus?.proposalHash;
   const preImage = onchainData?.preImage;

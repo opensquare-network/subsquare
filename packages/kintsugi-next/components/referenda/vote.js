@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
@@ -10,25 +10,21 @@ import {
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
-import useApi from "next-common/utils/hooks/useApi";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   electorateSelector,
-  fetchReferendumStatus,
   isLoadingElectorateSelector,
-  isLoadingReferendumStatusSelector,
   referendumStatusSelector,
-  setIsLoadingReferendumStatus,
 } from "next-common/store/reducers/referendumSlice";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
 import TallyInfo from "next-common/components/referenda/tally/info";
-import useSubDemocracyTally from "next-common/hooks/democracy/tally";
+import useLatestDemocracyTally from "next-common/hooks/democracy/tally";
 import capitalize from "lodash.capitalize";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import VotesInfo from "./votesInfo";
@@ -117,21 +113,12 @@ const NaysBar = styled.div`
 
 function Vote({ referendumInfo, referendumIndex }) {
   const chain = useChain();
-  const dispatch = useDispatch();
   const [showVote, setShowVote] = useState(false);
-  const api = useApi();
-  const tally = useSubDemocracyTally();
+  const tally = useLatestDemocracyTally();
 
   const electorate = useSelector(electorateSelector);
   const isElectorateLoading = useSelector(isLoadingElectorateSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
-  const isLoadingReferendumStatus = useSelector(
-    isLoadingReferendumStatusSelector,
-  );
-
-  const updateVoteProgress = useCallback(() => {
-    dispatch(fetchReferendumStatus(api, referendumIndex));
-  }, [dispatch, api, referendumIndex]);
 
   const node = useChainSettings(chain);
   const decimals = node.decimals;
@@ -160,11 +147,7 @@ function Vote({ referendumInfo, referendumIndex }) {
       <SecondaryCardDetail>
         <Title className="!px-0">
           <span>Votes</span>
-          <div>
-            {isLoadingReferendumStatus || isElectorateLoading ? (
-              <Loading size={16} />
-            ) : null}
-          </div>
+          <div>{isElectorateLoading ? <Loading size={16} /> : null}</div>
         </Title>
 
         <BarWrapper>
@@ -252,8 +235,6 @@ function Vote({ referendumInfo, referendumIndex }) {
           <Popup
             onClose={() => setShowVote(false)}
             referendumIndex={referendumIndex}
-            onSubmitted={() => dispatch(setIsLoadingReferendumStatus(true))}
-            onInBlock={updateVoteProgress}
           />
         )}
       </VoteSuccessfulProvider>

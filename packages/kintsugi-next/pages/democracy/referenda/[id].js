@@ -10,12 +10,11 @@ import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import useMaybeFetchReferendumStatus from "next-common/utils/hooks/referenda/useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import isNil from "lodash.isnil";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
@@ -30,8 +29,10 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
+import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
+import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 
 function ReferendumContent() {
   const dispatch = useDispatch();
@@ -39,13 +40,11 @@ function ReferendumContent() {
   const { publicProposal } = usePageProps();
 
   useSubscribePostDetail(post?.referendumIndex);
+  useSetReferendumStatus();
+  useSubDemocracyReferendumStatus(post?.referendumIndex);
 
   const api = useApi();
-  const referendumStatus = useMaybeFetchReferendumStatus(
-    post?.onchainData,
-    api,
-  );
-
+  const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
   useMaybeFetchElectorate(post?.onchainData, api);
