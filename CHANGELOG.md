@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.0
+
+date: 2024-01-06
+
+- [Big] Implement web3 address connect and remove login.
+- [Medium] Refactor list/table component form better render user experience.
+- Support preimage pallet `requestStatusFor` storage.
+- Refactor democracy referendum status data with subscription.
+- Fix next.js SSR warning and bump @osn/previwer.
+- Remove useless callbacks when submitting extrinsics.
+- Remove ‰ and keep only % for percentage view.
+- Update democracy votes more times when tally changed.
+- Fix: auto clean error when email verify button clicked.
+- Fix and improve styles.
+
 ### 3.7.4
 
 date: 2023-12-29
