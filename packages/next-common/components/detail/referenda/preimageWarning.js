@@ -12,7 +12,7 @@ function Warning() {
     proposalHash,
   ]);
 
-  if ((status && status.isEmpty) || (requestStatus && requestStatus.isEmpty)) {
+  if (status && status.isEmpty && requestStatus && requestStatus.isEmpty) {
     return <Malicious>Preimage not found on chain</Malicious>;
   }
 
