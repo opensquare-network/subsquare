@@ -5,17 +5,21 @@ import startCase from "lodash.startcase";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
+import getChainSettings from "../settings";
+import { CHAIN } from "next-common/utils/constants";
 
 export const name = "FELLOWSHIP";
 
 export const Names = {
   fellowship: "FELLOWSHIP",
   members: "Members",
+  params: "Params",
   all: "All",
 };
 
 export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
+  const chainSettings = getChainSettings(CHAIN);
 
   const menu = {
     name: Names.fellowship,
@@ -40,6 +44,11 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         name: Names.members,
         pathname: "/fellowship/members",
       },
+      chainSettings.hasFellowshipParams && {
+        value: "fellowship-params",
+        name: Names.params,
+        pathname: "/fellowship/params",
+      },
       {
         component: (
           <Divider
@@ -55,7 +64,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         pathname: "/fellowship",
         activeCount: totalActiveCount,
       },
-    ],
+    ].filter(Boolean),
   };
 
   const resolveFellowshipTrackItem = (track) => {

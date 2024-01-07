@@ -24,7 +24,7 @@ const SelectWrapper = styled(FlexBetweenCenter)`
   font-size: 14px;
   background: var(--neutral100);
   border: 1px solid var(--neutral400);
-  border-radius: 4px;
+  border-radius: 6px;
   height: ${(p) => p.itemHeight}px;
   padding: 10px 16px;
   cursor: pointer;

@@ -15,6 +15,7 @@ export default function DataList({
   className = "",
   noDataText = "No current votes",
   bordered = false,
+  highlightedIndexes = [],
 }) {
   let content;
   const listRef = useRef();
@@ -78,6 +79,7 @@ export default function DataList({
             columnClassNames={columnClassNames}
             columnStyles={columnStyles}
             columns={columns}
+            highlighted={highlightedIndexes.includes(idx)}
           />
         ))}
       </div>
@@ -96,7 +98,7 @@ export default function DataList({
         "text-textPrimary",
         "bg-neutral100",
         bordered &&
-          cn("p-6", "border border-neutral300 shadow-100", "rounded-md"),
+          cn("p-6", "border border-neutral300 shadow-100", "rounded-xl"),
         className,
       )}
     >
