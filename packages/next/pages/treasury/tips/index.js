@@ -1,10 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
 import dynamic from "next/dynamic";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import { lowerCase } from "lodash";
@@ -28,18 +25,8 @@ export default function TipsPage({ tips: ssrTips }) {
   const [showPopup, setShowPopup] = useState(false);
   const [tips, setTips] = useState(ssrTips);
   useEffect(() => setTips(ssrTips), [ssrTips]);
-  const isMounted = useIsMounted();
   const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
   const hasTips = useHasTips();
-
-  const refreshPageData = useCallback(async () => {
-    const { result } = await nextApi.fetch("treasury/tips");
-    if (result && isMounted.current) {
-      setTips(result);
-    }
-  }, [isMounted]);
-
-  const onNewTipFinalized = useWaitSyncBlock("Tip created", refreshPageData);
 
   const items = (tips.items || []).map((item) =>
     normalizeTipListItem(chain, item),
@@ -91,12 +78,7 @@ export default function TipsPage({ tips: ssrTips }) {
           total: tips.total,
         }}
       />
-      {showPopup && (
-        <Popup
-          onClose={() => setShowPopup(false)}
-          onFinalized={onNewTipFinalized}
-        />
-      )}
+      {showPopup && <Popup onClose={() => setShowPopup(false)} />}
     </ListLayout>
   );
 }
