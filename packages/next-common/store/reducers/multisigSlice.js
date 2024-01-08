@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { newErrorToast } from "./toastSlice";
 import fetchMultisigs, {
   fetchMultisigsCount,
@@ -23,10 +23,6 @@ const multisigSlice = createSlice({
 export const myMultisigsSelector = (state) => state.multisig.myMultisigs;
 export const myMultisigsCountSelector = (state) =>
   state.multisig.myMultisigsCount;
-export const multisigsIsLoadingSelector = createSelector(
-  myMultisigsSelector,
-  (multisigs) => multisigs === null,
-);
 
 export const { setMyMultisigs, setMyMultisigsCount } = multisigSlice.actions;
 

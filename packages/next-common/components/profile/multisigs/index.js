@@ -1,5 +1,4 @@
-import { usePageProps } from "next-common/context/page";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useChain } from "next-common/context/chain";
 import {
   fetchProfileMultisigs,
@@ -11,37 +10,36 @@ import WithPageWidth from "next-common/components/common/withPageWidth";
 import { ListCard } from "next-common/components/overview/styled";
 import DesktopList from "next-common/components/multisigs/desktop";
 import MobileList from "next-common/components/multisigs/mobile";
-import Pagination from "next-common/components/pagination";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 function Multisigs() {
   const { width } = useWindowSize();
-  const { id } = usePageProps();
+  const address = useProfileAddress();
   const chain = useChain();
-  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const profileMultisigs = useSelector(profileMultisigsSelector);
   const {
     items: multisigs = [],
-    pageSize = 1,
+    pageSize = 15,
     total = 0,
   } = profileMultisigs || {};
   const isLoading = profileMultisigs === null;
 
+  const { page, component: pageComponent } = usePaginationComponent(
+    total,
+    pageSize,
+  );
+
   useEffect(() => {
-    if (!isPolkadotAddress(id)) {
+    if (!isPolkadotAddress(address)) {
       return;
     }
 
     // todo: convert id to substrate address
-    dispatch(fetchProfileMultisigs(chain, id, page));
-  }, [dispatch, chain, page, id]);
-
-  const onPageChange = useCallback((e, page) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setPage(page);
-  }, []);
+    dispatch(fetchProfileMultisigs(chain, address, page));
+  }, [dispatch, chain, page, address]);
 
   return (
     <ListCard>
@@ -50,12 +48,7 @@ function Multisigs() {
       ) : (
         <MobileList multisigs={multisigs} isLoading={isLoading} />
       )}
-      <Pagination
-        page={page}
-        onPageChange={onPageChange}
-        total={total}
-        pageSize={pageSize}
-      />
+      {pageComponent}
     </ListCard>
   );
 }

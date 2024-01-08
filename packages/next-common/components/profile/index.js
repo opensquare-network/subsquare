@@ -17,7 +17,7 @@ export default function ProfilePage({ user, id }) {
     <ListLayout
       header={
         <>
-          <ProfileBreadcrumbs />
+          <ProfileBreadcrumbs id={id} />
           <Bio address={address} user={user} id={id} />
         </>
       }
