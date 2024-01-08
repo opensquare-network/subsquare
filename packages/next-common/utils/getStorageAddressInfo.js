@@ -29,7 +29,9 @@ export default function getStorageAddressInfo(key) {
   }
 
   if (
-    chainSettings.chainType !== ChainTypes.ETHEREUM &&
+    ![ChainTypes.ETHEREUM, ChainTypes.MIXED].includes(
+      chainSettings.chainType,
+    ) &&
     !isPolkadotAddress(info.address)
   ) {
     return;
