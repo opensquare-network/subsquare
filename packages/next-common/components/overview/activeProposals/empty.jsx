@@ -2,10 +2,12 @@ import { SystemPlus } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import NoData from "next-common/components/noData";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
+import { useChainSettings } from "next-common/context/chain";
 import { useRouter } from "next/router";
 
 export default function EmptyRecentProposals() {
   const router = useRouter();
+  const chainSettings = useChainSettings();
 
   function handleNewDiscussion() {
     router.push("/posts/create");
@@ -25,16 +27,18 @@ export default function EmptyRecentProposals() {
           }
         />
 
-        <div className="mt-4 text-center">
-          <PrimaryButton
-            onClick={handleNewDiscussion}
-            icon={
-              <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
-            }
-          >
-            New Discussion
-          </PrimaryButton>
-        </div>
+        {chainSettings.hasDiscussions && (
+          <div className="mt-4 text-center">
+            <PrimaryButton
+              onClick={handleNewDiscussion}
+              icon={
+                <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
+              }
+            >
+              New Discussion
+            </PrimaryButton>
+          </div>
+        )}
       </div>
     </NeutralPanel>
   );
