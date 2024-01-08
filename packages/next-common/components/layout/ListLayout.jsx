@@ -23,6 +23,7 @@ import isNil from "lodash.isnil";
  * seoInfo?: Record<string, string>
  * children: JSX.Element
  * title: string
+ * children: React.ReactNode
  * description: string
  * headContent?: JSX.Element
  * summary?: JSX.Element

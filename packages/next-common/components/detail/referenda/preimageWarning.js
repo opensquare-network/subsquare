@@ -7,16 +7,16 @@ import { gov2State } from "next-common/utils/consts/state";
 function Warning() {
   const { proposalHash } = useOnchainData();
   const api = useApi();
-  let [status, isLoading] = useCall(api?.query?.preimage?.statusFor, [
+  const [status] = useCall(api?.query?.preimage?.statusFor, [proposalHash]);
+  const [requestStatus] = useCall(api?.query?.preimage?.requestStatusFor, [
     proposalHash,
   ]);
-  if (isLoading || !status) {
-    return null;
-  }
 
-  if (status.isEmpty) {
+  if (status && status.isEmpty && requestStatus && requestStatus.isEmpty) {
     return <Malicious>Preimage not found on chain</Malicious>;
   }
+
+  return null;
 }
 
 export default function PreimageWarning() {

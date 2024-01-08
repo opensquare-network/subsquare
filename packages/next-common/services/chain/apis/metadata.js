@@ -9,7 +9,12 @@ export default async function getMetadata(provider) {
   let metadata = localStorage.getItem(id);
   if (!metadata) {
     metadata = await provider.send("state_getMetadata", []);
-    localStorage.setItem(id, metadata);
+    try {
+      localStorage.setItem(id, metadata);
+    } catch (e) {
+      // ignore and the metadata size may exceed localstorage quota
+      // todo: use indexeddb to store metadata
+    }
   }
 
   return {

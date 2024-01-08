@@ -1,14 +1,13 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import PreImagesList from "next-common/components/preImages/preImagesList";
-import usePreimageHashes from "next-common/hooks/usePreimageHashes";
-import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
+import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import PreImagesFooter from "next-common/components/preImages/footer";
+import { serverSidePropsWithSummary } from "next-common/services/serverSide/serverSidePropsWithSummary";
 
-export default function Preimages() {
+export default function PreimagesPage() {
   const title = "Preimages";
   const seoInfo = { title, desc: title };
-
-  const hashes = usePreimageHashes();
+  const hashes = useCombinedPreimageHashes();
 
   return (
     <ListLayout

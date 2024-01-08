@@ -3,7 +3,12 @@ import { cn } from "next-common/utils";
 import Descriptions from "../Descriptions";
 import last from "lodash.last";
 
-export default function DataListItem({ columns, row, columnClassNames }) {
+export default function DataListItem({
+  columns,
+  row,
+  columnClassNames,
+  highlighted,
+}) {
   const { onClick, useData } = row ?? {};
 
   const data = useData?.();
@@ -15,6 +20,15 @@ export default function DataListItem({ columns, row, columnClassNames }) {
         "flex items-center py-4",
         "max-sm:block",
         onClick && "cursor-pointer",
+        "relative",
+        "z-10",
+        highlighted &&
+          cn(
+            "after:absolute after:inset-0",
+            "after:content-[''] after:bg-neutral200",
+            "after:-z-10",
+            "after:-mx-6",
+          ),
       )}
       onClick={onClick}
     >
