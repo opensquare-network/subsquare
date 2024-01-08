@@ -10,6 +10,10 @@ import {
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
+import { evmToSubstrateAddress } from "next-common/utils/hydradxUtil";
+import { normalizeAddress } from "next-common/utils/address";
 
 export const SignerContext = createContext();
 
@@ -98,4 +102,24 @@ export function useSignerAccount() {
 export function useExtensionAccounts() {
   const { extensionAccounts } = useContext(SignerContext);
   return extensionAccounts;
+}
+
+export function useSignerRealAddress() {
+  const signerAccount = useSignerAccount();
+  const chain = useChain();
+  let realAddress = signerAccount?.realAddress;
+  if (chain === Chains.hydradx) {
+    return evmToSubstrateAddress(realAddress);
+  }
+  return normalizeAddress(realAddress);
+}
+
+export function useSignerAddress() {
+  const { signerAccount } = useContext(SignerContext);
+  const chain = useChain();
+  let signerAddress = signerAccount?.address;
+  if (chain === Chains.hydradx) {
+    return evmToSubstrateAddress(signerAddress);
+  }
+  return normalizeAddress(signerAddress);
 }

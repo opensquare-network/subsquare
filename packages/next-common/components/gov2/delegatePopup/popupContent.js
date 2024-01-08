@@ -21,7 +21,9 @@ import MultiTrack from "next-common/components/popup/fields/multiTrackField";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import {
   useExtensionAccounts,
+  useSignerAddress,
   useSignerAccount,
+  useSignerRealAddress,
 } from "next-common/components/popupWithSigner/context";
 
 export default function PopupContent({
@@ -43,13 +45,16 @@ export default function PopupContent({
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
+  const realAddress = useSignerRealAddress();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress,
+    realAddress,
   );
+
+  const signerAddress = useSignerAddress();
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address,
+    signerAddress,
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
