@@ -22,9 +22,9 @@ export default function DataListItem({
         "max-sm:block",
         onClick && "cursor-pointer",
         "relative",
-        "z-10",
         highlighted &&
           cn(
+            "z-0",
             "after:absolute after:inset-0",
             "after:content-[''] after:bg-neutral200",
             "after:-z-10",
