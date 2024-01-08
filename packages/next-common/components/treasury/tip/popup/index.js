@@ -5,7 +5,7 @@ import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue, emptyFunction } from "../../../../utils";
+import { checkInputValue } from "../../../../utils";
 import PopupWithSigner from "../../../popupWithSigner";
 import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
@@ -20,8 +20,9 @@ import {
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useRouter } from "next/router";
 
-function PopupContent({ onClose, onFinalized = emptyFunction }) {
+function PopupContent({ onClose }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();
@@ -33,6 +34,7 @@ function PopupContent({ onClose, onFinalized = emptyFunction }) {
   const [inputValue, setInputValue] = useState("0");
   const { decimals } = useChainSettings();
   const api = useApi();
+  const router = useRouter();
 
   const [beneficiary, setBeneficiary] = useState();
 
@@ -80,10 +82,12 @@ function PopupContent({ onClose, onFinalized = emptyFunction }) {
       tx,
       dispatch,
       setLoading,
-      onFinalized,
-      onInBlock: () => {
-        // const [tipHash] = eventData;
-        // todo: when the extrinsic success and in block, redirect the page to the tip detail page
+      onInBlock: (eventData, blockHash) => {
+        api?.rpc.chain.getHeader(blockHash).then((header) => {
+          const blockNumber = header.number.toNumber();
+          const [tipHash] = eventData;
+          router.push(`/treasury/tips/${blockNumber}_${tipHash}`);
+        });
       },
       onClose,
       signerAddress,

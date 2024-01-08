@@ -138,12 +138,12 @@ export async function sendTx({
               continue;
             }
             const eventData = data.toJSON();
-            onInBlock(eventData);
+            onInBlock(eventData, blockHash);
             break;
           }
 
           if (!sectionName || !methodName) {
-            onInBlock();
+            onInBlock(undefined, blockHash);
           }
         }
       },
