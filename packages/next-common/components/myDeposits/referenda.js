@@ -21,53 +21,57 @@ import {
   getSubmissionDepositRefundColumn,
 } from "./columns";
 
-export function useMyDepositReferenda() {
+export async function fetchAndPopulateReferendaDetail(deposits = []) {
+  if (deposits.length <= 0) {
+    return { result: EmptyList };
+  }
+
+  const fetchers = deposits.map((deposit) =>
+    nextApi.fetch(gov2ReferendumsDetailApi(deposit.referendumIndex)),
+  );
+  const resps = await Promise.all(fetchers);
+  const items = resps.map((resp, idx) => {
+    return {
+      ...resp.result,
+      ...deposits[idx],
+    };
+  });
+
+  return {
+    result: {
+      items,
+      total: deposits.length,
+    },
+  };
+}
+
+export function getReferendaDepositCommonColumns(decimals, symbol) {
+  return [
+    getProposalPostTitleColumn(),
+    getDepositColumn({ decimals, symbol }),
+    getStatusTagColumn({ category: businessCategory.openGovReferenda }),
+  ];
+}
+
+export function useReferendaTableItems(
+  submissionDeposits = [],
+  decisionDeposits = [],
+) {
   const { decimals, symbol } = useChainSettings();
-  const submissionDeposits = useSelector(myReferendaSubmissionDepositsSelector);
-  const decisionDeposits = useSelector(myReferendaDecisionDepositsSelector);
-  const activeCount =
-    (submissionDeposits?.length || 0) + (decisionDeposits?.length || 0);
-  const loading = isNil(submissionDeposits) || isNil(decisionDeposits);
-
-  const menu = getReferendaMenu();
-
-  const items = [
+  return [
     {
       name: "Submission Deposits",
       activeCount: submissionDeposits?.length || 0,
       formatter: normalizeGov2ReferendaListItem,
       columns: [
-        getProposalPostTitleColumn(),
-        getDepositColumn({ decimals, symbol }),
-        getStatusTagColumn({ category: businessCategory.openGovReferenda }),
+        ...getReferendaDepositCommonColumns(decimals, symbol),
         getSubmissionDepositRefundColumn({ pallet: "referenda" }),
       ],
       api: {
-        async fetchData() {
-          if (submissionDeposits?.length) {
-            const fetchers = submissionDeposits.map((deposit) =>
-              nextApi.fetch(gov2ReferendumsDetailApi(deposit.referendumIndex)),
-            );
-
-            const resps = await Promise.all(fetchers);
-
-            const items = resps.map((resp, idx) => {
-              return {
-                ...resp.result,
-                ...submissionDeposits[idx],
-              };
-            });
-
-            return {
-              result: {
-                items,
-                total: activeCount,
-              },
-            };
-          }
-
-          return { result: EmptyList };
-        },
+        fetchData: fetchAndPopulateReferendaDetail.bind(
+          null,
+          submissionDeposits,
+        ),
       },
     },
     {
@@ -75,40 +79,25 @@ export function useMyDepositReferenda() {
       activeCount: decisionDeposits?.length || 0,
       formatter: normalizeGov2ReferendaListItem,
       columns: [
-        getProposalPostTitleColumn(),
-        getDepositColumn({ decimals, symbol }),
-        getStatusTagColumn({ category: businessCategory.openGovReferenda }),
+        ...getReferendaDepositCommonColumns(decimals, symbol),
         getDecisionDepositRefundColumn({ pallet: "referenda" }),
       ],
       api: {
-        async fetchData() {
-          if (decisionDeposits?.length) {
-            const fetchers = decisionDeposits.map((deposit) =>
-              nextApi.fetch(gov2ReferendumsDetailApi(deposit.referendumIndex)),
-            );
-
-            const resps = await Promise.all(fetchers);
-
-            const items = resps.map((resp, idx) => {
-              return {
-                ...resp.result,
-                ...decisionDeposits[idx],
-              };
-            });
-
-            return {
-              result: {
-                items,
-                total: activeCount,
-              },
-            };
-          }
-
-          return { result: EmptyList };
-        },
+        fetchData: fetchAndPopulateReferendaDetail.bind(null, decisionDeposits),
       },
     },
   ];
+}
+
+export function useMyDepositReferenda() {
+  const submissionDeposits = useSelector(myReferendaSubmissionDepositsSelector);
+  const decisionDeposits = useSelector(myReferendaDecisionDepositsSelector);
+  const activeCount =
+    (submissionDeposits?.length || 0) + (decisionDeposits?.length || 0);
+  const loading = isNil(submissionDeposits) || isNil(decisionDeposits);
+
+  const menu = getReferendaMenu();
+  const items = useReferendaTableItems(submissionDeposits, decisionDeposits);
 
   return {
     ...menu,

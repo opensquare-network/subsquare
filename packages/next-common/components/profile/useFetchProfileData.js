@@ -4,11 +4,13 @@ import { fetchProfileMultisigsCount } from "next-common/store/reducers/profile/m
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useChain } from "next-common/context/chain";
 import { useDispatch } from "react-redux";
+import useFetchProfileDepositsData from "next-common/hooks/profile/deposit";
 
 export default function useFetchProfileData() {
   const chain = useChain();
   const address = useProfileAddress();
   const dispatch = useDispatch();
+  useFetchProfileDepositsData();
 
   useEffect(() => {
     if (!isPolkadotAddress(address)) {
