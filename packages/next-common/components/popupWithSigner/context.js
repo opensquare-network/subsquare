@@ -11,9 +11,7 @@ import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
-import { evmToSubstrateAddress } from "next-common/utils/hydradxUtil";
-import { normalizeAddress } from "next-common/utils/address";
+import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 export const SignerContext = createContext();
 
@@ -57,6 +55,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
   const setSigner = useSetSigner();
+  const chain = useChain();
 
   useEffect(() => {
     if (!userAddress) {
@@ -74,13 +73,22 @@ export function SignerContextProvider({ children, extensionAccounts }) {
 
     setSigner(account);
 
+    const address = account?.address;
+
     setSignerAccount({
       ...account,
       name: account.meta?.name,
+      address,
+      normalizedAddress: getApiNormalizedAddress(address, chain),
       proxyAddress,
+      normalizedProxyAddress: getApiNormalizedAddress(proxyAddress, chain),
       realAddress: proxyAddress || userAddress,
+      normalizedRealAddress: getApiNormalizedAddress(
+        proxyAddress || userAddress,
+        chain,
+      ),
     });
-  }, [extensionAccounts, userAddress, proxyAddress, setSigner]);
+  }, [extensionAccounts, userAddress, proxyAddress, setSigner, chain]);
 
   return (
     <SignerContext.Provider
@@ -104,22 +112,7 @@ export function useExtensionAccounts() {
   return extensionAccounts;
 }
 
-export function useSignerRealAddress() {
-  const signerAccount = useSignerAccount();
+export function useApiNormalizedAddress(address) {
   const chain = useChain();
-  let realAddress = signerAccount?.realAddress;
-  if (chain === Chains.hydradx) {
-    return evmToSubstrateAddress(realAddress);
-  }
-  return normalizeAddress(realAddress);
-}
-
-export function useSignerAddress() {
-  const { signerAccount } = useContext(SignerContext);
-  const chain = useChain();
-  let signerAddress = signerAccount?.address;
-  if (chain === Chains.hydradx) {
-    return evmToSubstrateAddress(signerAddress);
-  }
-  return normalizeAddress(signerAddress);
+  return getApiNormalizedAddress(address, chain);
 }

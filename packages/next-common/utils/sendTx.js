@@ -11,6 +11,7 @@ import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
 import isUseMetamask from "./isUseMetamask";
 import { sendEvmTx } from "./sendEvmTx";
+import { getApiNormalizedAddress } from "./hydradxUtil";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -80,7 +81,11 @@ export async function sendTx({
     setLoading(true);
 
     const api = getLastApi();
-    const account = await api.query.system.account(signerAddress);
+    let normalizedSignerAddress = getApiNormalizedAddress(
+      signerAddress,
+      process.env.NEXT_PUBLIC_CHAIN,
+    );
+    const account = await api.query.system.account(normalizedSignerAddress);
 
     let blockHash = null;
     const unsub = await tx.signAndSend(

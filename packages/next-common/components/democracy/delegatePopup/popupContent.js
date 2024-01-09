@@ -19,10 +19,9 @@ import Target from "./target";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import {
+  useApiNormalizedAddress,
   useExtensionAccounts,
-  useSignerAddress,
   useSignerAccount,
-  useSignerRealAddress,
 } from "next-common/components/popupWithSigner/context";
 
 export default function PopupContent({
@@ -37,21 +36,20 @@ export default function PopupContent({
   const extensionAccounts = useExtensionAccounts();
 
   const [targetAddress, setTargetAddress] = useState("");
+  const normalizedTargetAddress = useApiNormalizedAddress(targetAddress);
 
   const api = useApi();
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
-  const realAddress = useSignerRealAddress();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    realAddress,
+    signerAccount?.normalizedRealAddress,
   );
 
-  const signerAddress = useSignerAddress();
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAddress,
+    signerAccount?.normalizedAddress,
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -97,11 +95,18 @@ export default function PopupContent({
       );
     }
 
+    console.log({
+      signerAccount,
+      extensionAccounts,
+      targetAddress,
+      normalizedTargetAddress,
+    });
+
     await submitExtrinsic({
       api,
       conviction,
       bnVoteBalance,
-      targetAddress,
+      targetAddress: normalizedTargetAddress,
       dispatch,
       setLoading: setIsLoading,
       onInBlock,

@@ -2,21 +2,20 @@ import React from "react";
 import useApi from "next-common/utils/hooks/useApi";
 import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
-import {
-  useSignerAddress,
-  useSignerRealAddress,
-} from "../popupWithSigner/context";
+import { useSignerAccount } from "../popupWithSigner/context";
 
 export default function SignerWithBalance() {
   const api = useApi();
+  const signerAccount = useSignerAccount();
 
-  const realAddress = useSignerRealAddress();
-  const [balance, loadingBalance] = useAddressBalance(api, realAddress);
+  const [balance, loadingBalance] = useAddressBalance(
+    api,
+    signerAccount.realAddress,
+  );
 
-  const signerAddress = useSignerAddress();
   const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
-    signerAddress,
+    signerAccount.address,
   );
 
   return (
