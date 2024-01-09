@@ -1,9 +1,3 @@
-import { useSelector } from "react-redux";
-import {
-  myTreasuryBountyBondsSelector,
-  myTreasuryBountyCuratorDepositsSelector,
-} from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
-import { isNil, sum } from "lodash";
 import { useChain } from "next-common/context/chain";
 import {
   getProposalPostTitleColumn,
@@ -18,14 +12,15 @@ import { useEffect, useState } from "react";
 import { EmptyList } from "next-common/utils/constants";
 import nextApi from "next-common/services/nextApi";
 import { useShallowCompareEffect } from "react-use";
+import isNil from "lodash.isnil";
+import sum from "lodash.sum";
 
-export function useDepositTreasuryBountiesTab() {
+export function useDepositTreasuryBountiesTab(
+  bountyBonds = [],
+  bountyCuratorDeposits = [],
+) {
   const chain = useChain();
 
-  const bountyBonds = useSelector(myTreasuryBountyBondsSelector);
-  const bountyCuratorDeposits = useSelector(
-    myTreasuryBountyCuratorDepositsSelector,
-  );
   const loading = isNil(bountyBonds) || isNil(bountyCuratorDeposits);
 
   const bountyActiveCount =

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import BigNumber from "bignumber.js";
 import { setTreasuryProposalDeposits } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 
-async function queryAddressDeposits(api, address) {
+export async function queryAddressDeposits(api, address) {
   const entries = await api.query.treasury.proposals.entries();
   return entries.reduce((result, [storageKey, optionalStorage]) => {
     if (!optionalStorage.isSome) {

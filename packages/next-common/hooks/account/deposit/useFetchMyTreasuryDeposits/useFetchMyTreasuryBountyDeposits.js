@@ -9,7 +9,7 @@ import {
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import { useMenuHasTreasuryBounties } from "next-common/context/chain";
 
-async function queryAddressDeposits(api, address) {
+export async function queryAddressDeposits(api, address) {
   const entries = await api.query.bounties.bounties.entries();
   return entries.reduce(
     (result, [storageKey, optionalStorage]) => {

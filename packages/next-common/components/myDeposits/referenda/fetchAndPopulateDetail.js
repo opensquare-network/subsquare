@@ -8,12 +8,17 @@ import {
 const referenda = "referenda";
 const fellowshipReferenda = "fellowshipReferenda";
 const democracy = "democracy";
+const treasuryProposal = "treasuryProposal";
 
 export async function fetchAndPopulateDetail(
   deposits = [],
   pallet = referenda,
 ) {
-  if (![referenda, fellowshipReferenda, democracy].includes(pallet)) {
+  if (
+    ![referenda, fellowshipReferenda, democracy, treasuryProposal].includes(
+      pallet,
+    )
+  ) {
     throw new Error(
       `Unknown pallet: ${pallet} when fetch and populate detail info`,
     );
@@ -29,6 +34,8 @@ export async function fetchAndPopulateDetail(
       url = getFellowshipReferendumUrl(deposit.referendumIndex);
     } else if (democracy === pallet) {
       url = `democracy/proposals/${deposit.proposalIndex}`;
+    } else if (treasuryProposal === pallet) {
+      url = `treasury/proposals/${deposit.proposalIndex}`;
     }
     return nextApi.fetch(url);
   });
