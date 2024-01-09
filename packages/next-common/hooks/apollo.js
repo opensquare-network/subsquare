@@ -1,7 +1,8 @@
-import { ApolloClient, useQuery } from "@apollo/client";
+import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 
 const doTreasuryEcoClient = new ApolloClient({
   uri: "https://eco-api.dotreasury.com/graphql",
+  cache: new InMemoryCache(),
 });
 
 /**
