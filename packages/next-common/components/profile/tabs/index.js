@@ -1,8 +1,11 @@
 import { useChainSettings } from "next-common/context/chain";
+import { useSelector } from "react-redux";
+import { profileActiveMultisigsCountSelector } from "next-common/store/reducers/profile/multisig";
 
 export default function useProfileTabs(id) {
   const { hasReferenda, hasFellowship, noDemocracy, hasMultisig } =
     useChainSettings();
+  const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
 
   const tabs = [
     {
@@ -23,6 +26,7 @@ export default function useProfileTabs(id) {
     tabs.push({
       label: "Multisigs",
       url: `/user/${id}/multisigs`,
+      count: activeMultisigsCount,
     });
   }
 

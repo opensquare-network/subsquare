@@ -6,12 +6,14 @@ import Bio from "./bio";
 import useProfileTabs from "next-common/components/profile/tabs";
 import ProfileBreadcrumbs from "next-common/components/profile/breadcrumbs";
 import useProfileTabContent from "next-common/components/profile/tabs/content";
+import useFetchProfileData from "next-common/components/profile/useFetchProfileData";
 
 export default function ProfilePage({ user, id }) {
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
   const tabs = useProfileTabs(address);
   const tabContent = useProfileTabContent(address);
+  useFetchProfileData();
 
   return (
     <ListLayout
