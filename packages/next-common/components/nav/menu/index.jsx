@@ -34,7 +34,7 @@ export default function NavMenu({ collapsed }) {
         <MainMenu
           collapsed={collapsed}
           featuredMenu={featuredMenu}
-          archivedMenu={archivedMenu}
+          hasArchivedMenu={!!archivedMenu?.length}
         />
       )}
 
@@ -45,7 +45,7 @@ export default function NavMenu({ collapsed }) {
   );
 }
 
-function MainMenu({ collapsed, featuredMenu = [], archivedMenu = [] }) {
+function MainMenu({ collapsed, featuredMenu = [], hasArchivedMenu = false }) {
   return (
     <>
       <NavCommonMenu collapsed={collapsed} />
@@ -53,7 +53,7 @@ function MainMenu({ collapsed, featuredMenu = [], archivedMenu = [] }) {
       <NavMenuDivider />
       <NavFeaturedMenu collapsed={collapsed} menu={featuredMenu} />
 
-      {!!archivedMenu?.length && (
+      {hasArchivedMenu && (
         <>
           <NavMenuDivider />
           <ArchivedMenuButton collapsed={collapsed} />
