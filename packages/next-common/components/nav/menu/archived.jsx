@@ -1,16 +1,12 @@
-import { usePageProps } from "next-common/context/page";
-import { getArchivedMenu } from "next-common/utils/consts/menu";
 import { useNavSubmenuVisible } from "next-common/context/nav";
 import NavMenuGroup from "./group";
 
-export default function NavArchivedMenu({ collapsed }) {
-  const { tracks, fellowshipTracks } = usePageProps();
+export default function NavArchivedMenu({ collapsed, menu = [] }) {
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
-  const archivedMenu = getArchivedMenu({ tracks, fellowshipTracks });
 
   return (
     <ul>
-      {archivedMenu?.map((menu) => (
+      {menu?.map((menu) => (
         <li key={menu.name}>
           {menu.name && menu.items && (
             <NavMenuGroup
