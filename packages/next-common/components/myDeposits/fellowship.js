@@ -16,13 +16,85 @@ import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { useSelector } from "react-redux";
 import {
-  getDepositColumn,
   getDecisionDepositRefundColumn,
+  getDepositColumn,
   getSubmissionDepositRefundColumn,
 } from "./columns";
 
-export function useMyDepositFellowship() {
+export async function fetchAndPopulateFellowshipDetail(deposits = []) {
+  if (deposits.length <= 0) {
+    return { result: EmptyList };
+  }
+
+  const fetchers = deposits.map((deposit) =>
+    nextApi.fetch(getFellowshipReferendumUrl(deposit.referendumIndex)),
+  );
+
+  const resps = await Promise.all(fetchers);
+  const items = resps.map((resp, idx) => {
+    return {
+      ...resp.result,
+      ...deposits[idx],
+    };
+  });
+
+  return {
+    result: {
+      items,
+      total: deposits.length,
+    },
+  };
+}
+
+export function getFellowshipDepositCommonColumns(decimals, symbol) {
+  return [
+    getProposalPostTitleColumn(),
+    getDepositColumn({ decimals, symbol }),
+    getStatusTagColumn({ category: businessCategory.fellowship }),
+  ];
+}
+
+export function useFellowshipTableItems(
+  submissionDeposits = [],
+  decisionDeposits = [],
+) {
   const { decimals, symbol } = useChainSettings();
+
+  return [
+    {
+      name: "Submission Deposits",
+      activeCount: submissionDeposits?.length || 0,
+      formatter: normalizeFellowshipReferendaListItem,
+      columns: [
+        ...getFellowshipDepositCommonColumns(decimals, symbol),
+        getSubmissionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
+      ],
+      api: {
+        fetchData: fetchAndPopulateFellowshipDetail.bind(
+          null,
+          submissionDeposits,
+        ),
+      },
+    },
+    {
+      name: "Decision Deposits",
+      activeCount: decisionDeposits?.length || 0,
+      formatter: normalizeFellowshipReferendaListItem,
+      columns: [
+        ...getFellowshipDepositCommonColumns(decimals, symbol),
+        getDecisionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
+      ],
+      api: {
+        fetchData: fetchAndPopulateFellowshipDetail.bind(
+          null,
+          decisionDeposits,
+        ),
+      },
+    },
+  ];
+}
+
+export function useMyDepositFellowship() {
   const submissionDeposits = useSelector(
     myFellowshipSubmissionDepositsSelector,
   );
@@ -32,89 +104,7 @@ export function useMyDepositFellowship() {
   const loading = isNil(submissionDeposits) || isNil(decisionDeposits);
 
   const menu = getFellowshipMenu();
-
-  const items = [
-    {
-      name: "Submission Deposits",
-      activeCount: submissionDeposits?.length || 0,
-      formatter: normalizeFellowshipReferendaListItem,
-      columns: [
-        getProposalPostTitleColumn(),
-        getDepositColumn({ decimals, symbol }),
-        getStatusTagColumn({ category: businessCategory.fellowship }),
-        getSubmissionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
-      ],
-      api: {
-        async fetchData() {
-          if (submissionDeposits?.length) {
-            const fetchers = submissionDeposits.map((deposit) =>
-              nextApi.fetch(
-                getFellowshipReferendumUrl(deposit.referendumIndex),
-              ),
-            );
-
-            const resps = await Promise.all(fetchers);
-
-            const items = resps.map((resp, idx) => {
-              return {
-                ...resp.result,
-                ...submissionDeposits[idx],
-              };
-            });
-
-            return {
-              result: {
-                items,
-                total: activeCount,
-              },
-            };
-          }
-
-          return { result: EmptyList };
-        },
-      },
-    },
-    {
-      name: "Decision Deposits",
-      activeCount: decisionDeposits?.length || 0,
-      formatter: normalizeFellowshipReferendaListItem,
-      columns: [
-        getProposalPostTitleColumn(),
-        getDepositColumn({ decimals, symbol }),
-        getStatusTagColumn({ category: businessCategory.fellowship }),
-        getDecisionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
-      ],
-      api: {
-        async fetchData() {
-          if (decisionDeposits?.length) {
-            const fetchers = decisionDeposits.map((deposit) =>
-              nextApi.fetch(
-                getFellowshipReferendumUrl(deposit.referendumIndex),
-              ),
-            );
-
-            const resps = await Promise.all(fetchers);
-
-            const items = resps.map((resp, idx) => {
-              return {
-                ...resp.result,
-                ...decisionDeposits[idx],
-              };
-            });
-
-            return {
-              result: {
-                items,
-                total: activeCount,
-              },
-            };
-          }
-
-          return { result: EmptyList };
-        },
-      },
-    },
-  ];
+  const items = useFellowshipTableItems(submissionDeposits, decisionDeposits);
 
   return {
     ...menu,
