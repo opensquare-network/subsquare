@@ -154,6 +154,11 @@ function Tabs({ tabs = [] }) {
                     ↗
                   </span>
                 )}
+                {!isNil(tab.count) && (
+                  <span className="text-textTertiary mx-1 text14Medium">
+                    {tab.count || 0}
+                  </span>
+                )}
               </Link>
             ) : (
               <div

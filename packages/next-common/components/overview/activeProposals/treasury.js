@@ -58,6 +58,11 @@ export function getActiveProposalTreasury({ summary, activeProposals }) {
     ?.map((item) => {
       const options = itemOptions[item.value];
 
+      const requestColumn = getRequestColumn();
+      if (item.value === "tips") {
+        requestColumn.name = "Value";
+      }
+
       if (options) {
         return {
           ...item,
@@ -68,7 +73,7 @@ export function getActiveProposalTreasury({ summary, activeProposals }) {
           },
           columns: [
             getProposalPostTitleColumn(),
-            getRequestColumn(),
+            requestColumn,
             getVoteSummaryColumn(),
             getStatusTagColumn({ category: options.category }),
           ],

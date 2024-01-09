@@ -1,20 +1,12 @@
-import { useSelector } from "react-redux";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
-import {
-  multisigsIsLoadingSelector,
-  myMultisigsSelector,
-} from "next-common/store/reducers/multisigSlice";
 import { AddressUser } from "next-common/components/user";
 import { Approving, Call, Signatories, Status, When } from "../fields";
 import columns from "./colmns";
 import MultisigSignField from "../signField";
 
-export default function DesktopList() {
-  const myMultisigs = useSelector(myMultisigsSelector);
-  const isLoading = useSelector(multisigsIsLoadingSelector);
-
-  const rows = (myMultisigs?.items || []).map((multisig) => [
+export default function DesktopList({ multisigs = [], isLoading = false }) {
+  const rows = (multisigs || []).map((multisig) => [
     <When
       key="when"
       height={multisig.when.height}

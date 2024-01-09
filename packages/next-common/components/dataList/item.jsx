@@ -2,6 +2,7 @@ import findLastIndex from "lodash.findlastindex";
 import { cn } from "next-common/utils";
 import Descriptions from "../Descriptions";
 import last from "lodash.last";
+import isNil from "lodash.isnil";
 
 export default function DataListItem({
   columns,
@@ -21,9 +22,9 @@ export default function DataListItem({
         "max-sm:block",
         onClick && "cursor-pointer",
         "relative",
-        "z-10",
         highlighted &&
           cn(
+            "z-0",
             "after:absolute after:inset-0",
             "after:content-[''] after:bg-neutral200",
             "after:-z-10",
@@ -90,7 +91,7 @@ function MobileContent({ row = [], data, columns }) {
   const descriptionItems = rest
     .map((item) => {
       return (
-        item && {
+        !isNil(item?.value) && {
           label: <span className="text-textTertiary">{item.name}</span>,
           value: item.value,
           className: "h-auto mt-2 items-start",

@@ -1,5 +1,6 @@
 import MultisigsList from "./multisigsList";
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
+import WithPageWidth from "next-common/components/common/withPageWidth";
 
 export default function Multisigs() {
   return (
@@ -8,7 +9,9 @@ export default function Multisigs() {
         <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
           <AccountSubTabs className="mx-6" />
         </div>
-        <MultisigsList />
+        <WithPageWidth>
+          <MultisigsList />
+        </WithPageWidth>
       </div>
     </div>
   );

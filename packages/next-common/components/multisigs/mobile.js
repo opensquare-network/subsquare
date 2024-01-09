@@ -1,10 +1,5 @@
 import tw from "tailwind-styled-components";
 import AddressUser from "next-common/components/user/addressUser";
-import {
-  multisigsIsLoadingSelector,
-  myMultisigsSelector,
-} from "next-common/store/reducers/multisigSlice";
-import { useSelector } from "react-redux";
 import { Approving, Call, Signatories, Status, When } from "./fields";
 import Loading from "next-common/components/loading";
 import MultisigSignField from "./signField";
@@ -77,10 +72,7 @@ function Item({ multisig }) {
   );
 }
 
-export default function MobileList() {
-  const myMultisigs = useSelector(myMultisigsSelector);
-  const isLoading = useSelector(multisigsIsLoadingSelector);
-
+export default function MobileList({ multisigs = [], isLoading = false }) {
   if (isLoading) {
     return (
       <div className="text-center py-[10px]">
@@ -89,7 +81,7 @@ export default function MobileList() {
     );
   }
 
-  if (myMultisigs?.items?.length === 0) {
+  if (multisigs?.length === 0) {
     return (
       <div className="text-textTertiary text-center py-[10px]">
         No current multisigs
@@ -99,7 +91,7 @@ export default function MobileList() {
 
   return (
     <div className="flex flex-col">
-      {(myMultisigs?.items || []).map((item, index) => (
+      {(multisigs || []).map((item, index) => (
         <Item key={index} multisig={item} />
       ))}
     </div>
