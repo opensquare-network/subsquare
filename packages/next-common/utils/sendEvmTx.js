@@ -87,10 +87,10 @@ export async function sendEvmTx({
         onSubmitted(signerAddress);
         onClose();
       },
-      onInBlock: (receipt) => {
+      onInBlock: () => {
         setLoading(false);
         dispatch(removeToast(toastId));
-        onInBlock(receipt);
+        onInBlock();
       },
     });
   } catch (e) {

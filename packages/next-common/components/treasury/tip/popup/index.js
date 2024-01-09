@@ -89,6 +89,9 @@ function PopupContent({ onClose }) {
       dispatch,
       setLoading,
       onInBlock: (eventData, blockHash) => {
+        if (!eventData || !blockHash) {
+          return;
+        }
         api?.rpc.chain.getHeader(blockHash).then((header) => {
           const blockNumber = header.number.toNumber();
           const [tipHash] = eventData;
