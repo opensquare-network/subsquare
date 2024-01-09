@@ -4,46 +4,20 @@ import {
   getStatusTagColumn,
 } from "next-common/components/overview/activeProposals/columns";
 import { useChainSettings } from "next-common/context/chain";
-import nextApi from "next-common/services/nextApi";
-import { gov2ReferendumsDetailApi } from "next-common/services/url";
 import {
   myReferendaDecisionDepositsSelector,
   myReferendaSubmissionDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myReferendaDeposits";
-import { EmptyList } from "next-common/utils/constants";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getReferendaMenu } from "next-common/utils/consts/menu/referenda";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import { useSelector } from "react-redux";
 import {
-  getDepositColumn,
   getDecisionDepositRefundColumn,
+  getDepositColumn,
   getSubmissionDepositRefundColumn,
 } from "./columns";
-
-export async function fetchAndPopulateReferendaDetail(deposits = []) {
-  if (deposits.length <= 0) {
-    return { result: EmptyList };
-  }
-
-  const fetchers = deposits.map((deposit) =>
-    nextApi.fetch(gov2ReferendumsDetailApi(deposit.referendumIndex)),
-  );
-  const resps = await Promise.all(fetchers);
-  const items = resps.map((resp, idx) => {
-    return {
-      ...resp.result,
-      ...deposits[idx],
-    };
-  });
-
-  return {
-    result: {
-      items,
-      total: deposits.length,
-    },
-  };
-}
+import { fetchAndPopulateDetail } from "next-common/components/myDeposits/referenda/fetchAndPopulateDetail";
 
 export function getReferendaDepositCommonColumns(decimals, symbol) {
   return [
@@ -68,10 +42,7 @@ export function useReferendaTableItems(
         getSubmissionDepositRefundColumn({ pallet: "referenda" }),
       ],
       api: {
-        fetchData: fetchAndPopulateReferendaDetail.bind(
-          null,
-          submissionDeposits,
-        ),
+        fetchData: fetchAndPopulateDetail.bind(null, submissionDeposits),
       },
     },
     {
@@ -83,7 +54,7 @@ export function useReferendaTableItems(
         getDecisionDepositRefundColumn({ pallet: "referenda" }),
       ],
       api: {
-        fetchData: fetchAndPopulateReferendaDetail.bind(null, decisionDeposits),
+        fetchData: fetchAndPopulateDetail.bind(null, decisionDeposits),
       },
     },
   ];

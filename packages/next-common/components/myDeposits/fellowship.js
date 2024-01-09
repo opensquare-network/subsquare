@@ -4,13 +4,10 @@ import {
   getStatusTagColumn,
 } from "next-common/components/overview/activeProposals/columns";
 import { useChainSettings } from "next-common/context/chain";
-import nextApi from "next-common/services/nextApi";
-import { getFellowshipReferendumUrl } from "next-common/services/url";
 import {
   myFellowshipDecisionDepositsSelector,
   myFellowshipSubmissionDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myFellowshipDeposits";
-import { EmptyList } from "next-common/utils/constants";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
@@ -20,31 +17,7 @@ import {
   getDepositColumn,
   getSubmissionDepositRefundColumn,
 } from "./columns";
-
-export async function fetchAndPopulateFellowshipDetail(deposits = []) {
-  if (deposits.length <= 0) {
-    return { result: EmptyList };
-  }
-
-  const fetchers = deposits.map((deposit) =>
-    nextApi.fetch(getFellowshipReferendumUrl(deposit.referendumIndex)),
-  );
-
-  const resps = await Promise.all(fetchers);
-  const items = resps.map((resp, idx) => {
-    return {
-      ...resp.result,
-      ...deposits[idx],
-    };
-  });
-
-  return {
-    result: {
-      items,
-      total: deposits.length,
-    },
-  };
-}
+import { fetchAndPopulateDetail } from "next-common/components/myDeposits/referenda/fetchAndPopulateDetail";
 
 export function getFellowshipDepositCommonColumns(decimals, symbol) {
   return [
@@ -70,9 +43,10 @@ export function useFellowshipTableItems(
         getSubmissionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
       ],
       api: {
-        fetchData: fetchAndPopulateFellowshipDetail.bind(
+        fetchData: fetchAndPopulateDetail.bind(
           null,
           submissionDeposits,
+          "fellowshipReferenda",
         ),
       },
     },
@@ -85,9 +59,10 @@ export function useFellowshipTableItems(
         getDecisionDepositRefundColumn({ pallet: "fellowshipReferenda" }),
       ],
       api: {
-        fetchData: fetchAndPopulateFellowshipDetail.bind(
+        fetchData: fetchAndPopulateDetail.bind(
           null,
           decisionDeposits,
+          "fellowshipReferenda",
         ),
       },
     },
