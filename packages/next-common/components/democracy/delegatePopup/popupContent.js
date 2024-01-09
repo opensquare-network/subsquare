@@ -95,13 +95,6 @@ export default function PopupContent({
       );
     }
 
-    console.log({
-      signerAccount,
-      extensionAccounts,
-      targetAddress,
-      normalizedTargetAddress,
-    });
-
     await submitExtrinsic({
       api,
       conviction,

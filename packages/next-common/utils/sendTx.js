@@ -12,6 +12,7 @@ import isEvmChain from "./isEvmChain";
 import isUseMetamask from "./isUseMetamask";
 import { sendEvmTx } from "./sendEvmTx";
 import { getApiNormalizedAddress } from "./hydradxUtil";
+import isMixedChain from "./isMixedChain";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -54,7 +55,7 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
-  if (isEvmChain() && isUseMetamask()) {
+  if ((isEvmChain() || isMixedChain()) && isUseMetamask()) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
       dispatch,

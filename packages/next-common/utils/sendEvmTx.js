@@ -10,6 +10,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { getEthereum, requestAccounts, switchNetwork } from "./metamask";
 import getChainSettings from "./consts/settings";
+import Chains from "./consts/chains";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -123,8 +124,26 @@ async function dispatchCall({
     data: data,
   };
   await dryRun(provider, tx);
-  tx.gasLimit = await provider.estimateGas(tx);
-  const sentTx = await signer.sendTransaction(tx);
+
+  let sentTx = null;
+
+  if (process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx) {
+    const [gas, feeData] = await Promise.all([
+      provider.estimateGas(tx),
+      provider.getFeeData(),
+    ]);
+
+    sentTx = await signer.sendTransaction({
+      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+      maxFeePerGas: feeData.maxFeePerGas,
+      gasLimit: (gas * 11n) / 10n, // add 10%
+      ...tx,
+    });
+  } else {
+    tx.gasLimit = await provider.estimateGas(tx);
+    sentTx = await signer.sendTransaction(tx);
+  }
+
   onSubmitted();
   let receipt = await sentTx.wait();
   onInBlock(receipt);
