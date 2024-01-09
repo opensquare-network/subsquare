@@ -24,5 +24,5 @@ export default function useFetchMyPreimageDeposits() {
     } else {
       dispatch(setMyPreimageStatuses([]));
     }
-  }, [realAddress, preimageStatuses]);
+  }, [realAddress, preimageStatuses, dispatch]);
 }

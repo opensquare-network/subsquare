@@ -24,7 +24,6 @@ export default function useFetchProfileFellowshipDeposits() {
     }
 
     queryAddressDeposits(api, address, "fellowshipReferenda").then((data) => {
-      console.log("data", data);
       const { submissionDeposits, decisionDeposits } = data;
       dispatch(setProfileFellowshipSubmissionDeposits(submissionDeposits));
       dispatch(setProfileFellowshipDecisionDeposits(decisionDeposits));

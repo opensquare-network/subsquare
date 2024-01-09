@@ -5,6 +5,9 @@ import partition from "lodash.partition";
 import useProfileFellowshipDepositsData from "next-common/components/profile/deposits/fellowship";
 import useProfileDemocracyDepositsData from "next-common/components/profile/deposits/democracy";
 import useProfileTreasuryDepositsData from "next-common/components/profile/deposits/treasury";
+import { useSelector } from "react-redux";
+import { profilePreimageDepositsSelector } from "next-common/store/reducers/profile/deposits/preimage";
+import MyDepositPreimages from "next-common/components/myDeposits/preimages";
 
 export default function ProfileDeposits() {
   const chainSettings = useChainSettings();
@@ -15,6 +18,8 @@ export default function ProfileDeposits() {
   const fellowship = useProfileFellowshipDepositsData();
   const democracy = useProfileDemocracyDepositsData();
   const treasury = useProfileTreasuryDepositsData();
+
+  const preimageStatuses = useSelector(profilePreimageDepositsSelector);
 
   const sections = [
     hasReferenda && {
@@ -32,6 +37,12 @@ export default function ProfileDeposits() {
     hasTreasuryModule !== false && {
       activeCount: treasury.activeCount,
       content: <DepositTemplate key="treasury" {...treasury} />,
+    },
+    {
+      activeCount: preimageStatuses?.length || 0,
+      content: (
+        <MyDepositPreimages key="preimages" statuses={preimageStatuses} />
+      ),
     },
   ].filter(Boolean);
 

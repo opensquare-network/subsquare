@@ -16,8 +16,6 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import DepositTemplate from "./depositTemplate";
-import { useSelector } from "react-redux";
-import { myPreimageDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
 import { Hash, Proposal, Status } from "../preImages/fields";
 import { PreimageMobileListItemTemplate } from "../preImages/mobile";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
@@ -84,9 +82,8 @@ function createUsePreimageHook(hash, setShowArgumentsDetail, usePreimage) {
   };
 }
 
-export default function MyDepositPreimages() {
+export default function MyDepositPreimages({ statuses }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const statuses = useSelector(myPreimageDepositsSelector);
   const activeCount = sum([statuses?.length || 0]);
   const loading = isNil(statuses);
   const { sm, md } = useScreenSize();

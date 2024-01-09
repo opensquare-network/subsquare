@@ -49,7 +49,9 @@ export default function MyDeposits() {
     },
     {
       activeCount: preimageStatuses?.length || 0,
-      content: <MyDepositPreimages key="preimages" />,
+      content: (
+        <MyDepositPreimages key="preimages" statuses={preimageStatuses} />
+      ),
     },
     !noIdentityModule && {
       activeCount: identity?.depositsCount || 0,

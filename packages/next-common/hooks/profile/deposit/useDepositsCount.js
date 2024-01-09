@@ -14,6 +14,7 @@ import {
   profileFellowshipSubmissionDepositsSelector,
 } from "next-common/store/reducers/profile/deposits/fellowship";
 import { profileDemocracyDepositsSelector } from "next-common/store/reducers/profile/deposits/democracy";
+import { profilePreimageDepositsSelector } from "next-common/store/reducers/profile/deposits/preimage";
 
 function getLength(items) {
   return (items || []).length;
@@ -41,6 +42,8 @@ export default function useDepositsCount() {
     profileFellowshipDecisionDepositsSelector,
   );
 
+  const preimageStatuses = useSelector(profilePreimageDepositsSelector);
+
   const democracyDeposits = useSelector(profileDemocracyDepositsSelector);
 
   return [
@@ -53,6 +56,7 @@ export default function useDepositsCount() {
     fellowshipSubmissionDeposits,
     fellowshipDecisionDeposits,
     democracyDeposits,
+    preimageStatuses,
   ].reduce((result, deposit) => {
     return result + getLength(deposit);
   }, 0);
