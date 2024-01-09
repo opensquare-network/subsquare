@@ -18,7 +18,7 @@ export default function SummaryItems({ items, className }) {
         <div key={index} className="flex-1 flex justify-between">
           <div>
             {item.title && <SummaryTitle>{item.title}</SummaryTitle>}
-            <Content>{item.content}</Content>
+            <Content className="flex">{item.content}</Content>
           </div>
           {item.suffix && <div>{item.suffix}</div>}
         </div>
