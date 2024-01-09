@@ -1,25 +1,16 @@
-import { usePageProps } from "next-common/context/page";
-import { getFeaturedMenu } from "next-common/utils/consts/menu";
 import { useNavSubmenuVisible } from "next-common/context/nav";
 import NavMenuGroup from "./group";
 import NavMenuItem from "./item";
 import { useRouter } from "next/router";
 
-export default function NavFeaturedMenu({ collapsed }) {
-  const { tracks, fellowshipTracks, summary, detail } = usePageProps();
-  const featuredMenu = getFeaturedMenu({
-    summary,
-    tracks,
-    fellowshipTracks,
-    currentTrackId: detail?.track,
-  });
+export default function NavFeaturedMenu({ collapsed, menu = [] }) {
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
 
   const router = useRouter();
 
   return (
     <ul>
-      {featuredMenu?.map((menu) => (
+      {menu?.map((menu) => (
         <li key={menu.name}>
           {menu.name &&
             (menu.items ? (

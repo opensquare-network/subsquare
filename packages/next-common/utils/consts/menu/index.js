@@ -13,6 +13,7 @@ import { getOpenTechCommMenu } from "./openTechCommittee";
 import { CHAIN } from "next-common/utils/constants";
 import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
+import partition from "lodash.partition";
 
 export function getHomeMenu({
   summary = {},
@@ -57,51 +58,61 @@ export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
   return commonMenu.items;
 }
 
-export function getFeaturedMenu({
+export function getNavMenu({
   summary = {},
   tracks = [],
   fellowshipTracks = [],
   currentTrackId,
-}) {
+} = {}) {
   const menu = getHomeMenu({
     summary,
     tracks,
     fellowshipTracks,
     currentTrackId,
   });
-  // drop common menu
-  const featureMenuData = menu.slice(1);
-  return featureMenuData
-    .map((m) => {
-      if (m?.archivedToChains?.includes?.(CHAIN)) {
-        return null;
-      }
 
-      if (m?.excludeToChains?.includes?.(CHAIN)) {
-        return null;
-      }
+  const featuredMenu = [];
+  const archivedMenu = [];
 
-      return {
-        ...m,
-        items: m.items?.filter?.((i) => !i?.excludeToChains?.includes?.(CHAIN)),
-      };
-    })
-    .filter(Boolean);
-}
+  for (let idx = 0; idx < menu.slice(1).length; idx++) {
+    const m = menu.slice(1)[idx];
 
-export function getArchivedMenu({ tracks = [], fellowshipTracks = [] } = {}) {
-  const menu = getHomeMenu({ tracks, fellowshipTracks });
-  // drop common menu
-  const archivedMenuData = menu.slice(1);
-  return archivedMenuData
-    .map((m) => {
-      if (m?.excludeToChains?.includes?.(CHAIN)) {
-        return null;
-      }
+    // next loop early
+    if (m?.excludeToChains?.includes?.(CHAIN)) {
+      continue;
+    }
 
-      if (m?.archivedToChains?.includes?.(CHAIN)) {
-        return m;
+    // single menu
+    if (!m?.items?.length) {
+      featuredMenu.push(m);
+      continue;
+    }
+
+    // root menu archived
+    if (m?.archivedToChains?.includes?.(CHAIN)) {
+      archivedMenu.push(m);
+    }
+    // child menu
+    else {
+      const [featuredItems, archivedItems] = partition(
+        m.items?.filter?.((item) => !item?.excludeToChains?.includes?.(CHAIN)),
+        (item) => !item?.archivedToChains?.includes?.(CHAIN),
+      );
+
+      if (archivedItems.length) {
+        archivedMenu.push({
+          ...m,
+          items: archivedItems,
+        });
       }
-    })
-    .filter(Boolean);
+      if (featuredItems.length) {
+        featuredMenu.push({
+          ...m,
+          items: featuredItems,
+        });
+      }
+    }
+  }
+
+  return { featuredMenu, archivedMenu };
 }
