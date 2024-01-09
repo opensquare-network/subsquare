@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setDemocracyDeposits } from "next-common/store/reducers/myOnChainData/deposits/myDemocracyDeposits";
 import { useChainSettings } from "next-common/context/chain";
 
-async function queryAddressDeposits(api, address) {
+export async function queryAddressDeposits(api, address) {
   const entries = await api.query.democracy.depositOf.entries();
   return entries.reduce((result, [storageKey, optionalStorage]) => {
     const proposalIndex = storageKey.args[0].toNumber();
@@ -49,7 +49,6 @@ export default function useFetchMyDemocracyDeposits() {
 
     queryAddressDeposits(api, realAddress).then((data) => {
       dispatch(setDemocracyDeposits(data));
-      // todo: populate democracy proposal context info
     });
   }, [api, realAddress, dispatch]);
 }

@@ -3,13 +3,15 @@ import { useChainSettings } from "next-common/context/chain";
 import DepositTemplate from "next-common/components/myDeposits/depositTemplate";
 import partition from "lodash.partition";
 import useProfileFellowshipDepositsData from "next-common/components/profile/deposits/fellowship";
+import useProfileDemocracyDepositsData from "next-common/components/profile/deposits/democracy";
 
 export default function ProfileDeposits() {
   const chainSettings = useChainSettings();
-  const { hasReferenda, hasFellowship } = chainSettings;
+  const { hasReferenda, hasFellowship, noDemocracyModule } = chainSettings;
 
   const referenda = useProfileReferendaDepositsData();
   const fellowship = useProfileFellowshipDepositsData();
+  const democracy = useProfileDemocracyDepositsData();
   const sections = [
     hasReferenda && {
       activeCount: referenda.activeCount,
@@ -18,6 +20,10 @@ export default function ProfileDeposits() {
     hasFellowship && {
       activeCount: fellowship.activeCount,
       content: <DepositTemplate key="fellowship" {...fellowship} />,
+    },
+    !noDemocracyModule && {
+      activeCount: democracy.activeCount,
+      content: <DepositTemplate key="democracy" {...democracy} />,
     },
   ].filter(Boolean);
 
