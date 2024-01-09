@@ -10,6 +10,17 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import isNil from "lodash.isnil";
 import TreasurySummaryAvailable from "./available";
 import TreasurySummarySpendPeriodCountDown from "./spendPeriodCountDown";
+import { gql } from "@apollo/client";
+import { useDoTreasuryEcoQuery } from "next-common/hooks/apollo";
+
+const GET_TREASURIES = gql`
+  query GetTreasuries {
+    treasuries {
+      chain
+      price
+    }
+  }
+`;
 
 export default function TreasurySummary() {
   const chain = useChain();
@@ -17,6 +28,9 @@ export default function TreasurySummary() {
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
+
+  const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
+  const treasury = data?.treasuries?.find((t) => t.chain === chain);
 
   const spendPeriodsItem = {
     title: "Spend Period",
@@ -31,9 +45,16 @@ export default function TreasurySummary() {
           title: "Available",
           content: (
             <LoadableContent isLoading={isNil(free)}>
-              <TreasurySummaryAvailable free={free} />
+              <TreasurySummaryAvailable
+                free={free}
+                fiatPrice={treasury?.price}
+              />
             </LoadableContent>
           ),
+        },
+        {
+          title: "To Be Awarded",
+          content: "TODO",
         },
         {
           title: "Next Burn",
