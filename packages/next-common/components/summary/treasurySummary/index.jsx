@@ -1,24 +1,19 @@
-import React from "react";
-import CountDown from "../countDown";
-import { abbreviateBigNumber, toPrecision } from "../../../utils";
 import useApi from "../../../utils/hooks/useApi";
 import useTreasuryFree from "../../../utils/hooks/useTreasuryFree";
-import { useChain, useChainSettings } from "../../../context/chain";
+import { useChain } from "../../../context/chain";
 import Summary from "../v2/base";
-import TreasuryBurn from "../treasurySummaryItems/burn";
+import TreasurySummaryNextBurn from "./nextBurn";
 import { isKintsugiChain } from "next-common/utils/chain";
 import SpendPeriod from "next-common/components/summary/treasurySummary/spendPeriod";
 import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
 import LoadableContent from "next-common/components/common/loadableContent";
 import isNil from "lodash.isnil";
+import TreasurySummaryAvailable from "./available";
+import TreasurySummarySpendPeriodCountDown from "./spendPeriodCountDown";
 
 export default function TreasurySummary() {
   const chain = useChain();
   const api = useApi();
-  const node = useChainSettings();
-
-  const decimals = node?.decimals;
-  const symbol = node?.symbol;
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
@@ -26,11 +21,7 @@ export default function TreasurySummary() {
   const spendPeriodsItem = {
     title: "Spend Period",
     content: <SpendPeriod summary={summary} />,
-    suffix: (
-      <div className="flex max-sm:hidden">
-        <CountDown percent={summary?.progress ?? 0} />
-      </div>
-    ),
+    suffix: <TreasurySummarySpendPeriodCountDown summary={summary} />,
   };
 
   return (
@@ -40,10 +31,7 @@ export default function TreasurySummary() {
           title: "Available",
           content: (
             <LoadableContent isLoading={isNil(free)}>
-              <span>
-                {abbreviateBigNumber(toPrecision(free || 0, decimals))}
-              </span>
-              <span className="unit upper">{symbol}</span>
+              <TreasurySummaryAvailable free={free} />
             </LoadableContent>
           ),
         },
@@ -51,7 +39,7 @@ export default function TreasurySummary() {
           title: "Next Burn",
           content: (
             <LoadableContent isLoading={isNil(free)}>
-              <TreasuryBurn free={free} />
+              <TreasurySummaryNextBurn free={free} />
             </LoadableContent>
           ),
         },
