@@ -16,6 +16,7 @@ import PrimaryButton from "../../../buttons/primaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
 import {
+  useApiNormalizedAddress,
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
@@ -37,6 +38,7 @@ function PopupContent({ onClose }) {
   const router = useRouter();
 
   const [beneficiary, setBeneficiary] = useState();
+  const normalizedBeneficiary = useApiNormalizedAddress(beneficiary);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -67,13 +69,17 @@ function PopupContent({ onClose }) {
         return showErrorToast(err.message);
       }
 
-      tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toString());
+      tx = api.tx.tips.tipNew(
+        reason,
+        normalizedBeneficiary,
+        bnValue.toString(),
+      );
     } else {
-      tx = api.tx.tips.reportAwesome(reason, beneficiary);
+      tx = api.tx.tips.reportAwesome(reason, normalizedBeneficiary);
     }
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    if (signerAccount?.normalizedProxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.normalizedProxyAddress);
     }
 
     const signerAddress = signerAccount.address;
