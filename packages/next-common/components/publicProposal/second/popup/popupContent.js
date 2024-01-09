@@ -34,12 +34,12 @@ export default function PopupContent({
   const api = useApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
     api,
-    signerAccount?.realAddress,
+    signerAccount?.normalizedRealAddress,
   );
   const isBalanceLoaded = useIsLoaded(loadingBalance);
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.address,
+    signerAccount?.normalizedAddress,
   );
   const {
     deposit,
