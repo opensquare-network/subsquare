@@ -18,6 +18,7 @@ import preImagesReducer from "./preImagesSlice";
 import myOnChainData from "./myOnChainData";
 import detailReducer from "./detailSlice";
 import multisigSlice from "./multisigSlice";
+import profile from "./profile";
 
 export default combineReducers({
   toast: toastReducer,
@@ -38,4 +39,5 @@ export default combineReducers({
   ...myOnChainData,
   detail: detailReducer,
   multisig: multisigSlice,
+  ...profile,
 });
