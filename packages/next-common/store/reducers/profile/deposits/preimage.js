@@ -5,19 +5,18 @@ const name = "profilePreimageDeposits";
 const profilePreimageDepositsSlice = createSlice({
   name,
   initialState: {
-    preimageStatuses: null,
+    deposits: null,
   },
   reducers: {
-    setPreimageStatuses(state, { payload }) {
-      state.preimageStatuses = payload;
+    setPreimageDeposits(state, { payload }) {
+      state.deposits = payload;
     },
   },
 });
 
-export const { setPreimageStatuses: setProfilePreimageStatuses } =
+export const { setPreimageDeposits: setProfilePreimageDeposits } =
   profilePreimageDepositsSlice.actions;
 
-export const profilePreimageDepositsSelector = (state) =>
-  state[name].preimageStatuses;
+export const profilePreimageDepositsSelector = (state) => state[name].deposits;
 
 export default profilePreimageDepositsSlice.reducer;
