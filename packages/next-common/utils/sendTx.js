@@ -12,6 +12,9 @@ import isEvmChain from "./isEvmChain";
 import isUseMetamask from "./isUseMetamask";
 import { sendEvmTx } from "./sendEvmTx";
 import isMixedChain from "./isMixedChain";
+import { substrateToEvmAddress } from "./hydradxUtil";
+import { isEthereumAddress } from "@polkadot/util-crypto";
+import Chains from "./consts/chains";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -42,6 +45,17 @@ export function getDispatchError(dispatchError) {
   return message;
 }
 
+function getRealSignerAddress(signerAddress) {
+  let realSignerAddress = signerAddress;
+  if (
+    process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx &&
+    !isEthereumAddress(signerAddress)
+  ) {
+    realSignerAddress = substrateToEvmAddress(signerAddress);
+  }
+  return realSignerAddress;
+}
+
 export async function sendTx({
   tx,
   dispatch,
@@ -54,6 +68,8 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
+  const realSignerAddress = getRealSignerAddress(signerAddress);
+
   if ((isEvmChain() || isMixedChain()) && isUseMetamask()) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
@@ -62,7 +78,7 @@ export async function sendTx({
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress,
+      signerAddress: realSignerAddress,
       section: sectionName,
       method: methodName,
     });
@@ -81,11 +97,11 @@ export async function sendTx({
     setLoading(true);
 
     const api = getLastApi();
-    const account = await api.query.system.account(signerAddress);
+    const account = await api.query.system.account(realSignerAddress);
 
     let blockHash = null;
     const unsub = await tx.signAndSend(
-      signerAddress,
+      realSignerAddress,
       { nonce: account.nonce },
       ({ events = [], status }) => {
         if (status.isFinalized) {
