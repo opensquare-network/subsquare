@@ -15,10 +15,7 @@ import {
 } from "next-common/store/reducers/profile/deposits/fellowship";
 import { profileDemocracyDepositsSelector } from "next-common/store/reducers/profile/deposits/democracy";
 import { profilePreimageDepositsSelector } from "next-common/store/reducers/profile/deposits/preimage";
-
-function getLength(items) {
-  return (items || []).length;
-}
+import isNil from "lodash.isnil";
 
 export default function useDepositsCount() {
   const proposalDeposits = useSelector(profileTreasuryProposalDepositsSelector);
@@ -57,7 +54,11 @@ export default function useDepositsCount() {
     fellowshipDecisionDeposits,
     democracyDeposits,
     preimageStatuses,
-  ].reduce((result, deposit) => {
-    return result + getLength(deposit);
-  }, 0);
+  ].reduce((result, deposits) => {
+    if (isNil(deposits)) {
+      return result;
+    }
+
+    return result || 0 + (deposits || []).length;
+  }, null);
 }
