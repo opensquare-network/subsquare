@@ -111,7 +111,6 @@ export default function AddressCombo({
   const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(address);
   const ref = useRef();
-  console.log(1);
 
   const selectedAccount = accounts.find(
     (item) => normalizeAddress(item.address) === address,
