@@ -12,7 +12,7 @@ export function useDemocracyReferendumHash() {
   const onchainData = post?.onchainData;
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
-  const proposalHash = referendumStatus?.proposalHash;
+  const proposalHash = referendumStatus?.proposalHash || onchainData?.hash;
   const preImage = onchainData?.preImage;
 
   const { hash: inlineHash } = useInlineCall(timeline, proposal);
