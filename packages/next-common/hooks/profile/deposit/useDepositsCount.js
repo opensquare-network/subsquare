@@ -16,6 +16,10 @@ import {
 import { profileDemocracyDepositsSelector } from "next-common/store/reducers/profile/deposits/democracy";
 import { profilePreimageDepositsSelector } from "next-common/store/reducers/profile/deposits/preimage";
 import isNil from "lodash.isnil";
+import {
+  profileIdentityDepositSelector,
+  profileIdentitySubsSelector,
+} from "next-common/store/reducers/profile/deposits/identity";
 
 export default function useDepositsCount() {
   const proposalDeposits = useSelector(profileTreasuryProposalDepositsSelector);
@@ -43,7 +47,10 @@ export default function useDepositsCount() {
 
   const democracyDeposits = useSelector(profileDemocracyDepositsSelector);
 
-  return [
+  const identityDeposit = useSelector(profileIdentityDepositSelector);
+  const identitySubs = useSelector(profileIdentitySubsSelector);
+
+  let depositCount = [
     proposalDeposits,
     bountyBonds,
     bountyCuratorDeposits,
@@ -54,11 +61,14 @@ export default function useDepositsCount() {
     fellowshipDecisionDeposits,
     democracyDeposits,
     preimageStatuses,
+    identitySubs,
   ].reduce((result, deposits) => {
     if (isNil(deposits)) {
       return result;
     }
 
-    return result || 0 + (deposits || []).length;
+    return (result || 0) + (deposits || []).length;
   }, null);
+
+  return identityDeposit ? depositCount + 1 : depositCount;
 }
