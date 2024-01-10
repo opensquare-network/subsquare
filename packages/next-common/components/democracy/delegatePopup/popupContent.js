@@ -22,7 +22,7 @@ import {
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
-import { useApiNormalizedAddress } from "next-common/hooks/useApiNormalizedAddress";
+import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 export default function PopupContent({
   onClose,
@@ -36,7 +36,7 @@ export default function PopupContent({
   const extensionAccounts = useExtensionAccounts();
 
   const [targetAddress, setTargetAddress] = useState("");
-  const normalizedTargetAddress = useApiNormalizedAddress(targetAddress);
+  const normalizedTargetAddress = getApiNormalizedAddress(targetAddress);
 
   const api = useApi();
   const node = useChainSettings();

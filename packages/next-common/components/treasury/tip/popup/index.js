@@ -21,7 +21,7 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
-import { useApiNormalizedAddress } from "next-common/hooks/useApiNormalizedAddress";
+import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 function PopupContent({ onClose }) {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ function PopupContent({ onClose }) {
   const router = useRouter();
 
   const [beneficiary, setBeneficiary] = useState();
-  const normalizedBeneficiary = useApiNormalizedAddress(beneficiary);
+  const normalizedBeneficiary = getApiNormalizedAddress(beneficiary);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
