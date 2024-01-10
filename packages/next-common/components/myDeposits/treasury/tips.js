@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { myTreasuryTipDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { getStatusTagColumn } from "next-common/components/overview/activeProposals/columns";
 import businessCategory from "next-common/utils/consts/business/category";
@@ -11,19 +9,15 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import isNil from "lodash.isnil";
 
-export function useDepositTreasuryTipsTab() {
+export function useDepositTreasuryTipsTab(deposits = []) {
   const chain = useChain();
   const { decimals, symbol } = useChainSettings();
-
-  const tipDeposits = useSelector(myTreasuryTipDepositsSelector);
-  const loading = isNil(tipDeposits);
-
-  const activeCount = tipDeposits?.length || 0;
+  const activeCount = deposits?.length || 0;
 
   return {
-    loading,
+    loading: isNil(deposits),
     name: "Tips",
-    activeCount: tipDeposits?.length || 0,
+    activeCount: deposits?.length || 0,
     formatter(item) {
       return normalizeTipListItem(chain, item);
     },
@@ -46,8 +40,8 @@ export function useDepositTreasuryTipsTab() {
     ],
     api: {
       async fetchData() {
-        if (tipDeposits?.length) {
-          const fetchers = tipDeposits.map((deposit) =>
+        if (deposits?.length) {
+          const fetchers = deposits.map((deposit) =>
             nextApi.fetch(`treasury/tips/${deposit.hash}`),
           );
 
@@ -57,7 +51,7 @@ export function useDepositTreasuryTipsTab() {
             const result = resp.result;
             return {
               ...result,
-              ...tipDeposits[idx],
+              ...deposits[idx],
               // NOTE: copied from backend
               state: {
                 state: result.onchainData?.state?.state,

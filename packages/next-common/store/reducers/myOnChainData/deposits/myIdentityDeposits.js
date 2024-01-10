@@ -38,7 +38,5 @@ export const myMainIdentityNameSelector = (state) =>
 export const myIdentityDepositSelector = (state) => state[name].identityDeposit;
 export const myIdentitySubsDepositSelector = (state) => state[name].subsDeposit;
 export const myIdentitySubsSelector = (state) => state[name].subs;
-export const myIdentitySubsCountSelector = (state) =>
-  state[name].subs?.length || 0;
 
 export default myIdentityDepositsSlice.reducer;
