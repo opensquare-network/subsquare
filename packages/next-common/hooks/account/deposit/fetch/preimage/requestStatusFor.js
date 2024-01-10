@@ -19,7 +19,7 @@ function extractInfoFromRequested(requested, hash) {
     return null;
   }
 
-  const ticket = requested.maybeTicket;
+  const ticket = requested.maybeTicket.unwrap();
   const depositor = ticket[0].toString();
   const deposit = ticket[1].toJSON();
   const len = requested.maybeLen.isSome
