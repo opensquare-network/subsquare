@@ -16,12 +16,12 @@ import PrimaryButton from "../../../buttons/primaryButton";
 import { useChainSettings } from "../../../../context/chain";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
 import {
-  useApiNormalizedAddress,
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
+import { useApiNormalizedAddress } from "next-common/hooks/useApiNormalizedAddress";
 
 function PopupContent({ onClose }) {
   const dispatch = useDispatch();
@@ -78,8 +78,8 @@ function PopupContent({ onClose }) {
       tx = api.tx.tips.reportAwesome(reason, normalizedBeneficiary);
     }
 
-    if (signerAccount?.normalizedProxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.normalizedProxyAddress);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
     const signerAddress = signerAccount.address;

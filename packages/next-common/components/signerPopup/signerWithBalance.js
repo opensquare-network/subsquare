@@ -10,12 +10,12 @@ export default function SignerWithBalance() {
 
   const [balance, loadingBalance] = useAddressBalance(
     api,
-    signerAccount?.normalizedRealAddress,
+    signerAccount?.realAddress,
   );
 
   const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
-    signerAccount?.normalizedAddress,
+    signerAccount?.address,
   );
 
   return (

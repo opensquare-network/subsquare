@@ -18,6 +18,7 @@ import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -41,7 +42,7 @@ export default function ProxyAddress() {
   const proxyAddress = user?.proxyAddress;
   const address = user?.address;
 
-  const [inputAddress, setInputAddres] = useState(proxyAddress || "");
+  const [inputAddress, setInputAddress] = useState(proxyAddress || "");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
   const [successMsg, setSuccessMsg] = useState();
@@ -50,7 +51,7 @@ export default function ProxyAddress() {
   const { ensureLogin } = useEnsureLogin();
 
   useEffect(() => {
-    setInputAddres(proxyAddress || "");
+    setInputAddress(proxyAddress || "");
     setErrorMsg();
     setSuccessMsg();
 
@@ -89,6 +90,8 @@ export default function ProxyAddress() {
 
     setIsLoading(true);
 
+    const normalizedInputAddress = getApiNormalizedAddress(inputAddress);
+
     try {
       if (!(await ensureLogin())) {
         return;
@@ -96,7 +99,7 @@ export default function ProxyAddress() {
 
       const { success, proxyTypes } = await checkProxy(
         api,
-        inputAddress,
+        normalizedInputAddress,
         address,
       );
       if (proxyTypes.length === 0) {
@@ -113,7 +116,7 @@ export default function ProxyAddress() {
       }
 
       const { result, error } = await nextApi.put("user/proxyaddress", {
-        address: inputAddress,
+        address: normalizedInputAddress,
       });
       if (result) {
         await fetchAndUpdateUser(userContext);
@@ -158,7 +161,7 @@ export default function ProxyAddress() {
         placeholder="Please fill address..."
         value={inputAddress}
         onChange={(e) => {
-          setInputAddres(e.target.value);
+          setInputAddress(e.target.value);
         }}
         disabled={isSet}
       />

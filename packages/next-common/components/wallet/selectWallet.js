@@ -19,6 +19,7 @@ import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
 import noop from "lodash.noop";
+import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 export default function SelectWallet({
   selectedWallet,
@@ -59,7 +60,12 @@ export default function SelectWallet({
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
           setWallet(wallet);
-          setAccounts(extensionAccounts);
+          setAccounts(
+            extensionAccounts.map((item) => ({
+              ...item,
+              address: getApiNormalizedAddress(item.address),
+            })),
+          );
         }
 
         onAccessGranted && onAccessGranted();

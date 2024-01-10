@@ -45,8 +45,8 @@ export function substrateToEvmAddress(address) {
   );
 }
 
-export function getApiNormalizedAddress(address, chain) {
-  if (chain === Chains.hydradx) {
+export function getApiNormalizedAddress(address) {
+  if (process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx) {
     if (isEthereumAddress(address)) {
       return evmToSubstrateAddress(address);
     }

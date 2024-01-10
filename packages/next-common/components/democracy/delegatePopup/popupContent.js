@@ -19,10 +19,10 @@ import Target from "./target";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import {
-  useApiNormalizedAddress,
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
+import { useApiNormalizedAddress } from "next-common/hooks/useApiNormalizedAddress";
 
 export default function PopupContent({
   onClose,
@@ -44,12 +44,12 @@ export default function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.normalizedRealAddress,
+    signerAccount?.realAddress,
   );
 
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.normalizedAddress,
+    signerAccount?.address,
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");

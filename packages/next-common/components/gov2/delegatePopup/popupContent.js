@@ -20,10 +20,10 @@ import PrimaryButton from "next-common/components/buttons/primaryButton";
 import MultiTrack from "next-common/components/popup/fields/multiTrackField";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import {
-  useApiNormalizedAddress,
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
+import { useApiNormalizedAddress } from "next-common/hooks/useApiNormalizedAddress";
 
 export default function PopupContent({
   tracks,
@@ -47,12 +47,12 @@ export default function PopupContent({
   const [isLoading, setIsLoading] = useState(false);
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.normalizedRealAddress,
+    signerAccount?.realAddress,
   );
 
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.normalizedAddress,
+    signerAccount?.address,
   );
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");

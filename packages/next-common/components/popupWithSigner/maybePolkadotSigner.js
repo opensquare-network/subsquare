@@ -7,6 +7,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
+import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 export default function MaybePolkadotSigner({
   onClose,
@@ -60,6 +61,7 @@ export default function MaybePolkadotSigner({
         setPolkadotAccounts(
           extensionAccounts.filter(filter).map((item) => ({
             ...item,
+            address: getApiNormalizedAddress(item.address),
             meta: {
               name: item.name,
               source: lastConnectedAccount?.wallet,

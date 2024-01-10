@@ -11,6 +11,8 @@ import {
 import { getEthereum, requestAccounts, switchNetwork } from "./metamask";
 import getChainSettings from "./consts/settings";
 import Chains from "./consts/chains";
+import { substrateToEvmAddress } from "./hydradxUtil";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -25,6 +27,14 @@ export async function sendEvmTx({
   onClose = emptyFunction,
   signerAddress,
 }) {
+  let realSignerAddress = signerAddress;
+  if (
+    process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx &&
+    !isEthereumAddress(signerAddress)
+  ) {
+    realSignerAddress = await substrateToEvmAddress(signerAddress);
+  }
+
   const ethereum = getEthereum();
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
@@ -52,10 +62,10 @@ export async function sendEvmTx({
   }
 
   const accounts = await requestAccounts();
-  if (accounts?.[0]?.toLowerCase() !== signerAddress.toLowerCase()) {
+  if (accounts?.[0]?.toLowerCase() !== realSignerAddress.toLowerCase()) {
     dispatch(
       newErrorToast(
-        `Please switch to correct account from MetaMask: ${signerAddress}`,
+        `Please switch to correct account from MetaMask: ${realSignerAddress}`,
       ),
     );
     return;
@@ -75,7 +85,7 @@ export async function sendEvmTx({
       to,
       provider,
       signer,
-      signerAddress,
+      signerAddress: realSignerAddress,
       data,
       onSubmitted: () => {
         dispatch(

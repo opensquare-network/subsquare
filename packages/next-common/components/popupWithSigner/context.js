@@ -11,7 +11,6 @@ import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
-import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 export const SignerContext = createContext();
 
@@ -79,14 +78,8 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       ...account,
       name: account.meta?.name,
       address,
-      normalizedAddress: getApiNormalizedAddress(address, chain),
       proxyAddress,
-      normalizedProxyAddress: getApiNormalizedAddress(proxyAddress, chain),
       realAddress: proxyAddress || userAddress,
-      normalizedRealAddress: getApiNormalizedAddress(
-        proxyAddress || userAddress,
-        chain,
-      ),
     });
   }, [extensionAccounts, userAddress, proxyAddress, setSigner, chain]);
 
@@ -110,9 +103,4 @@ export function useSignerAccount() {
 export function useExtensionAccounts() {
   const { extensionAccounts } = useContext(SignerContext);
   return extensionAccounts;
-}
-
-export function useApiNormalizedAddress(address) {
-  const chain = useChain();
-  return getApiNormalizedAddress(address, chain);
 }

@@ -11,7 +11,6 @@ import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
 import isUseMetamask from "./isUseMetamask";
 import { sendEvmTx } from "./sendEvmTx";
-import { getApiNormalizedAddress } from "./hydradxUtil";
 import isMixedChain from "./isMixedChain";
 
 export async function getSigner(signerAddress) {
@@ -82,11 +81,7 @@ export async function sendTx({
     setLoading(true);
 
     const api = getLastApi();
-    let normalizedSignerAddress = getApiNormalizedAddress(
-      signerAddress,
-      process.env.NEXT_PUBLIC_CHAIN,
-    );
-    const account = await api.query.system.account(normalizedSignerAddress);
+    const account = await api.query.system.account(signerAddress);
 
     let blockHash = null;
     const unsub = await tx.signAndSend(

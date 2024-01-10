@@ -187,34 +187,29 @@ export default function PopupContent({
   const api = useApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.normalizedRealAddress,
+    signerAccount?.realAddress,
   );
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
-    signerAccount?.normalizedAddress,
+    signerAccount?.address,
   );
   const {
     vote: addressVote,
     isLoading: addressVoteIsLoading,
     isLoaded: addressVoteIsLoaded,
-  } = useSubMyDemocracyVote(signerAccount?.normalizedRealAddress);
+  } = useSubMyDemocracyVote(signerAccount?.realAddress);
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
     const addressVote = await getDemocracyDirectVote(
       api,
-      signerAccount?.normalizedRealAddress,
+      signerAccount?.realAddress,
       referendumIndex,
     );
     if (!addressVote) {
       return;
     }
     showVoteSuccessful(addressVote);
-  }, [
-    api,
-    referendumIndex,
-    signerAccount?.normalizedRealAddress,
-    showVoteSuccessful,
-  ]);
+  }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
   let content = <LoadingPanel />;
 
