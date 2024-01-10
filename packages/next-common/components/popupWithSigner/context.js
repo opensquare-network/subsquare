@@ -10,7 +10,6 @@ import {
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
-import { useChain } from "next-common/context/chain";
 
 export const SignerContext = createContext();
 
@@ -54,7 +53,6 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
   const setSigner = useSetSigner();
-  const chain = useChain();
 
   useEffect(() => {
     if (!userAddress) {
@@ -72,16 +70,13 @@ export function SignerContextProvider({ children, extensionAccounts }) {
 
     setSigner(account);
 
-    const address = account?.address;
-
     setSignerAccount({
       ...account,
       name: account.meta?.name,
-      address,
       proxyAddress,
       realAddress: proxyAddress || userAddress,
     });
-  }, [extensionAccounts, userAddress, proxyAddress, setSigner, chain]);
+  }, [extensionAccounts, userAddress, proxyAddress, setSigner]);
 
   return (
     <SignerContext.Provider
