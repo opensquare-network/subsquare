@@ -3,9 +3,7 @@ import { stringToHex } from "@polkadot/util";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
-import { isEthereumAddress } from "@polkadot/util-crypto";
-import Chains from "next-common/utils/consts/chains";
-import { substrateToEvmAddress } from "next-common/utils/hydradxUtil";
+import { getEvmSignerAddress } from "next-common/utils/hydradxUtil";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
@@ -13,14 +11,8 @@ export function useSignMessage() {
   return useCallback(
     async (message, address, walletName) => {
       if (walletName === WalletTypes.METAMASK) {
-        let walletAddress = address;
-        if (
-          process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx &&
-          !isEthereumAddress(address)
-        ) {
-          walletAddress = substrateToEvmAddress(address);
-        }
-        return await personalSign(stringToHex(message), walletAddress);
+        const signerAddress = getEvmSignerAddress(address);
+        return await personalSign(stringToHex(message), signerAddress);
       }
 
       const extension = injectedWeb3?.[walletName];

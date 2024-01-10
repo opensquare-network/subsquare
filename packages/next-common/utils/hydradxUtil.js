@@ -53,3 +53,13 @@ export function getApiNormalizedAddress(address) {
   }
   return normalizeAddress(address);
 }
+
+export function getEvmSignerAddress(address) {
+  if (
+    process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx &&
+    !isEthereumAddress(address)
+  ) {
+    return substrateToEvmAddress(address);
+  }
+  return address;
+}
