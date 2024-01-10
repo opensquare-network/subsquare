@@ -59,8 +59,8 @@ const hydradxTestnet = {
   ethereumNetwork: {
     chainId: "0x3640e",
     chainName: "HydraDX",
-    rpcUrls: ["https://rpc.hydradx.cloud"],
-    blockExplorerUrls: ["https://explorer.evm.hydration.cloud"],
+    rpcUrls: ["https://rpc.nice.hydration.cloud"],
+    blockExplorerUrls: ["https://explorer.nice.hydration.cloud"],
     nativeCurrency: {
       symbol: "WETH",
       decimals: 18,
