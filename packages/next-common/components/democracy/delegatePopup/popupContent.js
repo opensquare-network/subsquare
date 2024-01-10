@@ -22,7 +22,6 @@ import {
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
-import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 export default function PopupContent({
   onClose,
@@ -36,7 +35,6 @@ export default function PopupContent({
   const extensionAccounts = useExtensionAccounts();
 
   const [targetAddress, setTargetAddress] = useState("");
-  const normalizedTargetAddress = getApiNormalizedAddress(targetAddress);
 
   const api = useApi();
   const node = useChainSettings();
@@ -99,7 +97,7 @@ export default function PopupContent({
       api,
       conviction,
       bnVoteBalance,
-      targetAddress: normalizedTargetAddress,
+      targetAddress,
       dispatch,
       setLoading: setIsLoading,
       onInBlock,

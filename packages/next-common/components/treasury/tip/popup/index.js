@@ -21,7 +21,6 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
-import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
 
 function PopupContent({ onClose }) {
   const dispatch = useDispatch();
@@ -38,7 +37,6 @@ function PopupContent({ onClose }) {
   const router = useRouter();
 
   const [beneficiary, setBeneficiary] = useState();
-  const normalizedBeneficiary = getApiNormalizedAddress(beneficiary);
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
@@ -69,13 +67,9 @@ function PopupContent({ onClose }) {
         return showErrorToast(err.message);
       }
 
-      tx = api.tx.tips.tipNew(
-        reason,
-        normalizedBeneficiary,
-        bnValue.toString(),
-      );
+      tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toString());
     } else {
-      tx = api.tx.tips.reportAwesome(reason, normalizedBeneficiary);
+      tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
     if (signerAccount?.proxyAddress) {

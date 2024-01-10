@@ -4,7 +4,6 @@ import { getAddress as getEvmAddress } from "ethers";
 import { isPolkadotAddress } from "./viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import Chains from "./consts/chains";
-import { normalizeAddress } from "./address";
 
 const HYDRA_ADDRESS_PREFIX = 63;
 const prefixBytes = Buffer.from("ETH\0");
@@ -43,15 +42,6 @@ export function substrateToEvmAddress(address) {
   return (
     safeConvertAddressH160(Buffer.from(addressBytes).toString("hex")) ?? ""
   );
-}
-
-export function getApiNormalizedAddress(address) {
-  if (process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx) {
-    if (isEthereumAddress(address)) {
-      return evmToSubstrateAddress(address);
-    }
-  }
-  return normalizeAddress(address);
 }
 
 export function getEvmSignerAddress(address) {

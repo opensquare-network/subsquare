@@ -111,6 +111,7 @@ export default function AddressCombo({
   const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(address);
   const ref = useRef();
+  console.log(1);
 
   const selectedAccount = accounts.find(
     (item) => normalizeAddress(item.address) === address,
@@ -147,19 +148,24 @@ export default function AddressCombo({
   }, [fetchAddressIdentity, address]);
 
   const onBlur = () => {
-    if (allowInvalidAddress) {
-      setAddress(inputAddress);
-      return;
-    }
-
     const isAddr = isAddress(inputAddress);
     if (!isAddr) {
+      if (allowInvalidAddress) {
+        setAddress(inputAddress);
+        return;
+      }
+
       setAddress();
       return;
     }
 
     const ss58Addr = normalizeAddress(inputAddress);
     if (!ss58Addr) {
+      if (allowInvalidAddress) {
+        setAddress(inputAddress);
+        return;
+      }
+
       setAddress();
       return;
     }

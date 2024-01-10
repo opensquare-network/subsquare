@@ -7,7 +7,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
-import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
+import { normalizeAddress } from "next-common/utils/address";
 
 export default function MaybePolkadotSigner({
   onClose,
@@ -50,18 +50,14 @@ export default function MaybePolkadotSigner({
         const wallet = await extension.enable("subsquare");
         const extensionAccounts = await wallet.accounts?.get();
 
-        let filter = () => true;
+        let filter = (item) => item.type !== "ethereum";
         if (chainType === ChainTypes.ETHEREUM) {
           filter = (item) => item.type === "ethereum";
-        } else if (chainType === ChainTypes.MIXED) {
-          filter = () => true;
-        } else {
-          filter = (item) => item.type !== "ethereum";
         }
         setPolkadotAccounts(
           extensionAccounts.filter(filter).map((item) => ({
             ...item,
-            address: getApiNormalizedAddress(item.address),
+            address: normalizeAddress(item.address),
             meta: {
               name: item.name,
               source: lastConnectedAccount?.wallet,

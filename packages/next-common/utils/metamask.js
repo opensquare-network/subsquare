@@ -3,7 +3,7 @@ import { addressEllipsis } from ".";
 import ChainTypes from "./consts/chainTypes";
 import WalletTypes from "./consts/walletTypes";
 import isUseTalisman from "./isTalisman";
-import { getApiNormalizedAddress } from "./hydradxUtil";
+import { normalizeAddress } from "./address";
 
 export function getMetaMaskEthereum() {
   if (
@@ -94,7 +94,7 @@ export async function switchNetwork(chainId) {
 export function normalizedMetaMaskAccounts(accounts) {
   return accounts.map((item) => ({
     name: addressEllipsis(item),
-    address: getApiNormalizedAddress(item),
+    address: normalizeAddress(item),
     type: ChainTypes.ETHEREUM,
     meta: {
       source: WalletTypes.METAMASK,

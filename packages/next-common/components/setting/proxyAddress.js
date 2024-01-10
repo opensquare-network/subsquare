@@ -18,7 +18,7 @@ import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { getApiNormalizedAddress } from "next-common/utils/hydradxUtil";
+import { normalizeAddress } from "next-common/utils/address";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -90,7 +90,7 @@ export default function ProxyAddress() {
 
     setIsLoading(true);
 
-    const normalizedInputAddress = getApiNormalizedAddress(inputAddress);
+    const normalizedInputAddress = normalizeAddress(inputAddress);
 
     try {
       if (!(await ensureLogin())) {
