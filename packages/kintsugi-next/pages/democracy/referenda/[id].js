@@ -99,7 +99,7 @@ function ReferendumContent() {
         }
         metadata={
           <ReferendumMetadata
-            proposer={post?.proposer}
+            proposer={post?.proposer || (post.authors || [])[0]}
             status={referendumStatus ?? {}}
             onchainData={post?.onchainData}
           />
