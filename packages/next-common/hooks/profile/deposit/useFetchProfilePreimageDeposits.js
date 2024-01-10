@@ -1,29 +1,28 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import { useDispatch } from "react-redux";
-import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setProfilePreimageStatuses } from "next-common/store/reducers/profile/deposits/preimage";
-import { isSameAddress } from "next-common/utils";
+import queryAddressPreimageDeposits from "next-common/hooks/account/deposit/fetch/preimage";
+import useApi from "next-common/utils/hooks/useApi";
+import { preImagesTriggerSelector } from "next-common/store/reducers/preImagesSlice";
 
 export default function useFetchProfilePreimageDeposits() {
   const address = useProfileAddress();
   const dispatch = useDispatch();
-  const preimageStatuses = useCombinedPreimageHashes();
+  const api = useApi();
+  const trigger = useSelector(preImagesTriggerSelector);
 
   useEffect(() => {
-    const myPreimageStatuses = (preimageStatuses || []).filter(
-      ({ data: preimageStatus }) => {
-        const [, status] = preimageStatus;
-        const statusValue = status.unrequested || status.requested;
-        const [depositor] = statusValue.ticket || statusValue.deposit || [];
-        return isSameAddress(depositor, address);
-      },
-    );
+    if (!api || !address || !api.query?.preimage) {
+      return;
+    }
 
-    dispatch(setProfilePreimageStatuses(myPreimageStatuses));
+    queryAddressPreimageDeposits(api, address).then((deposits) => {
+      dispatch(setProfilePreimageStatuses(deposits.slice(0, 10)));
+    });
 
     return () => {
       dispatch(setProfilePreimageStatuses(null));
     };
-  }, [address, preimageStatuses, dispatch]);
+  }, [api, address, dispatch, trigger]);
 }

@@ -28,7 +28,7 @@ export default function MyDeposits() {
   const treasury = useMyDepositTreasury();
   const identity = useMyIdentityDeposit();
 
-  const preimageStatuses = useSelector(myPreimageDepositsSelector);
+  const preimageDeposits = useSelector(myPreimageDepositsSelector);
 
   const sections = [
     hasReferenda && {
@@ -48,9 +48,9 @@ export default function MyDeposits() {
       content: <DepositTemplate key="treasury" {...treasury} />,
     },
     {
-      activeCount: preimageStatuses?.length || 0,
+      activeCount: preimageDeposits?.length || 0,
       content: (
-        <MyDepositPreimages key="preimages" statuses={preimageStatuses} />
+        <MyDepositPreimages key="preimages" deposits={preimageDeposits} />
       ),
     },
     !noIdentityModule && {

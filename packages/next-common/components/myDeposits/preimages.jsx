@@ -10,7 +10,7 @@ import { useChainSettings } from "next-common/context/chain";
 import usePreimage from "next-common/hooks/usePreimage";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import { toPrecision } from "next-common/utils";
+import { isSameAddress, toPrecision } from "next-common/utils";
 import preImages from "next-common/utils/consts/menu/preImages";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useState } from "react";
@@ -82,10 +82,10 @@ function createUsePreimageHook(hash, setShowArgumentsDetail, usePreimage) {
   };
 }
 
-export default function MyDepositPreimages({ statuses }) {
+export default function MyDepositPreimages({ deposits }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const activeCount = sum([statuses?.length || 0]);
-  const loading = isNil(statuses);
+  const activeCount = sum([deposits?.length || 0]);
+  const loading = isNil(deposits);
   const { sm, md } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
   const triggerSize = navCollapsed ? sm : md;
@@ -99,12 +99,12 @@ export default function MyDepositPreimages({ statuses }) {
       >
         {triggerSize ? (
           <MobileList
-            data={statuses}
+            data={deposits}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />
         ) : (
           <DesktopList
-            data={statuses}
+            data={deposits}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />
         )}
@@ -151,7 +151,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
     },
   ]);
 
-  const rows = data?.map(({ data: [hash], method }) => {
+  const rows = data?.map(({ hash, method }) => {
     return {
       useData: createUsePreimageHook(
         hash,
@@ -295,7 +295,7 @@ function UnnoteButton({ hash, count, deposit, status }) {
   const enabled =
     count === 0 &&
     status.toLowerCase() === "unrequested" &&
-    realAddress === who;
+    isSameAddress(realAddress, who);
 
   return (
     <>

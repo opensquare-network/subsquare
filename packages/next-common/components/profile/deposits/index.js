@@ -19,7 +19,7 @@ export default function ProfileDeposits() {
   const democracy = useProfileDemocracyDepositsData();
   const treasury = useProfileTreasuryDepositsData();
 
-  const preimageStatuses = useSelector(profilePreimageDepositsSelector);
+  const preimageDeposits = useSelector(profilePreimageDepositsSelector);
 
   const sections = [
     hasReferenda && {
@@ -39,9 +39,9 @@ export default function ProfileDeposits() {
       content: <DepositTemplate key="treasury" {...treasury} />,
     },
     {
-      activeCount: preimageStatuses?.length || 0,
+      activeCount: preimageDeposits?.length || 0,
       content: (
-        <MyDepositPreimages key="preimages" statuses={preimageStatuses} />
+        <MyDepositPreimages key="preimages" deposits={preimageDeposits} />
       ),
     },
   ].filter(Boolean);
