@@ -15,6 +15,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
 import ScanStatusComponent from "next-common/components/scanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
+// import "@osn/previewer/styles.css";
+import "next-common/styles/markdown.css";
 
 NProgress.configure({
   minimum: 0.3,

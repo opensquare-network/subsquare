@@ -1,0 +1,13 @@
+@import "github-markdown-css/github-markdown.css";
+
+.markdown-body {
+  color: var(--textPrimary);
+  background-color: transparent;
+
+  ul,
+  ol {
+    li {
+      list-style: disc;
+    }
+  }
+}

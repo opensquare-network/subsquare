@@ -2,7 +2,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import ArticleActions from "./actions/articleActions";
 import Poll from "./poll";
-import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 import Divider from "./styled/layout/divider";
 import NonEdited from "./detail/common/NonEdited";
 import PostContent from "./detail/common/PostContent";
@@ -34,9 +33,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     <>
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
-      <RichTextStyleWrapper>
-        <PostContent />
-      </RichTextStyleWrapper>
+      <PostContent />
 
       {isPostEdited(post) && (
         <span className="text12Medium text-textTertiary">Edited</span>
@@ -52,11 +49,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     post.contentSummary?.summary && {
       label: "AI Summary",
       tooltip: "Powered by OpenAI",
-      content: (
-        <RichTextStyleWrapper>
-          <ContentSummary />
-        </RichTextStyleWrapper>
-      ),
+      content: <ContentSummary />,
     },
   ].filter(Boolean);
   const [activeTab, setActiveTab] = useState(tabs[0].label);
