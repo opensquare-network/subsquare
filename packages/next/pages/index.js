@@ -14,6 +14,7 @@ import {
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
+import { fetchPolkadotForumLatestTopics } from "next-common/services/serverSide/polkadotForum";
 import Overview from "next-common/components/overview/overview";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
@@ -76,11 +77,14 @@ export const getServerSideProps = withCommonProps(async () => {
   );
   const activeProposals = await fetchActiveProposalsProps(overviewSummary);
 
+  const polkadotForumLatestTopics = await fetchPolkadotForumLatestTopics();
+
   return {
     props: {
       activeProposals,
       summary: tracksProps.summary,
       overviewSummary: overviewSummary || {},
+      polkadotForumLatestTopics,
       ...tracksProps,
     },
   };
