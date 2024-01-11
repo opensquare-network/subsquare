@@ -1,7 +1,7 @@
 import isNil from "lodash.isnil";
 import ReasonLink from "../reasonLink";
 import Link from "next/link";
-import { cn } from "next-common/utils";
+import { cn, isExternalLink } from "next-common/utils";
 
 export default function ListPostTitle({
   data = {},
@@ -26,6 +26,7 @@ export default function ListPostTitle({
 
       <Link
         href={href}
+        target={isExternalLink(href) ? "_blank" : null}
         className={cn(
           "cursor-pointer hover:underline",
           ellipsis && "!break-all line-clamp-1",
