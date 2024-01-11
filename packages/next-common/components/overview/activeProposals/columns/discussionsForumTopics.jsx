@@ -63,7 +63,7 @@ const categoryColumn = {
           style={{
             backgroundImage: `linear-gradient(to right, ${
               category.color[0]
-            } 50%, ${category.color[1] || category.color[0]} 0)`,
+            } 50%, ${category.color[1] || category.color[0]} 50%)`,
           }}
         />
         <div className="line-clamp-1">{category.name}</div>
