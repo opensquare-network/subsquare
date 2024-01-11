@@ -24,7 +24,8 @@ export default function ActiveProposals() {
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  const { overviewSummary, activeProposals } = usePageProps();
+  const { overviewSummary, activeProposals, polkadotForumLatestTopics } =
+    usePageProps();
   const summary = overviewSummary;
   const tracks = overviewSummary?.gov2ReferendaTracks;
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
@@ -32,6 +33,7 @@ export default function ActiveProposals() {
   const discussions = getActiveProposalDiscussions({
     summary,
     activeProposals,
+    polkadotForumLatestTopics,
   });
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
   const fellowship = getActiveProposalFellowship({
