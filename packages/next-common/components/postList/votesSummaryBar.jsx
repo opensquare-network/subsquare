@@ -54,8 +54,8 @@ function TypedValueDisplay({ value, type }) {
 
 export default function PostListCardVotesSummaryBar({ data, type }) {
   const tally = data.onchainData?.tally ?? data.onchainData?.info?.tally;
-  const ayes = tally?.ayes;
-  const nays = tally?.nays;
+  const ayes = tally?.ayes ?? 0;
+  const nays = tally?.nays ?? 0;
   const { ayesPercent, naysPercent } = getTallyVotesBarPercent(tally);
 
   return (
