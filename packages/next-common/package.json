@@ -37,6 +37,7 @@
     "deepmerge": "^4.3.1",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^6.3.0",
+    "github-markdown-css": "^5.5.0",
     "is-ipfs": "^8.0.1",
     "is-utf8": "^0.2.1",
     "lodash.capitalize": "^4.2.1",

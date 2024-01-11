@@ -6813,6 +6813,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"github-markdown-css@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "github-markdown-css@npm:5.5.0"
+  checksum: 58ba14ac87df700fd3a32a1999a6e9a4e36e808a4e1485f14aecb4230a690bfd3df508188c8a4874cae5556a87d23941b09036a22ee0f699fe844455952b1573
+  languageName: node
+  linkType: hard
+
 "glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
   version: 5.1.2
   resolution: "glob-parent@npm:5.1.2"
@@ -8639,6 +8646,7 @@ __metadata:
     eslint-plugin-react: ^7.31.11
     ethereum-blockies-base64: ^1.0.2
     ethers: ^6.3.0
+    github-markdown-css: ^5.5.0
     is-ipfs: ^8.0.1
     is-utf8: ^0.2.1
     lodash.capitalize: ^4.2.1
