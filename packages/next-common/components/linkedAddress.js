@@ -22,6 +22,7 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import PrimaryButton from "./buttons/primaryButton";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -149,6 +150,7 @@ export default function LinkedAddress() {
   const dispatch = useDispatch();
   const userContext = useUserContext();
   const signMsg = useSignMessage();
+  const { saveLastConnectedAccount } = useConnectedAccountContext();
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
@@ -195,9 +197,13 @@ export default function LinkedAddress() {
       { challengeAnswer: signature, signer: selectedWallet },
     );
 
-    await fetchAndUpdateUser(userContext);
     if (confirmResult) {
       dispatch(newSuccessToast("Link address successfully!"));
+      saveLastConnectedAccount({
+        address,
+        wallet: selectedWallet,
+      });
+      await fetchAndUpdateUser(userContext);
     }
 
     if (confirmError) {
