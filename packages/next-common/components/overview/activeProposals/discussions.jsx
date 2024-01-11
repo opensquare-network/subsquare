@@ -1,5 +1,6 @@
 import { discussionsMenu } from "next-common/utils/consts/menu/common";
 import {
+  getLastActivityColumn,
   getProposalPostTitleColumn,
   getStatusTagColumn,
   getVoteSummaryColumn,
@@ -7,45 +8,27 @@ import {
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { CHAIN } from "next-common/utils/constants";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
-import { timeDurationFromNow } from "next-common/utils";
 import getChainSettings from "next-common/utils/consts/settings";
 import { overviewApi } from "next-common/services/url";
-import { useEffect, useState } from "react";
+import normalizePolkadotForumTopicListItem from "next-common/utils/viewfuncs/discussion/normalizePolkadotForumTopicListItem";
+import { discussionsForumTopicsColumns } from "./columns/discussionsForumTopics";
 
-function Time({ time }) {
-  const [text, setText] = useState("");
-  useEffect(() => setText(time), []);
-  if (!text) {
-    return null;
-  }
+const discussionsColumns = [
+  getProposalPostTitleColumn(),
+  getLastActivityColumn(),
+  getVoteSummaryColumn(),
+  { ...getStatusTagColumn(), name: "" },
+];
 
-  return (
-    <span className="text14Medium text-textSecondary">
-      {timeDurationFromNow(text)}
-    </span>
-  );
-}
-
-const lastActivityColumn = {
-  name: "Last Activity",
-  className: "w-40 text-left",
-  cellRender(data) {
-    return data.time && <Time time={data.time} />;
-  },
-};
-
-export function getActiveProposalDiscussions({ summary, activeProposals }) {
+export function getActiveProposalDiscussions({
+  summary,
+  activeProposals,
+  polkadotForumLatestTopics,
+}) {
   const chainSettings = getChainSettings(CHAIN);
   const subsquare = activeProposals.discussions?.subsquare;
   const polkassembly = activeProposals.discussions?.polkassembly;
   const activeCount = (subsquare?.total || 0) + (polkassembly?.total || 0);
-
-  const columns = [
-    getProposalPostTitleColumn(),
-    lastActivityColumn,
-    getVoteSummaryColumn(),
-    { ...getStatusTagColumn(), name: "" },
-  ];
 
   const items = [
     {
@@ -59,7 +42,7 @@ export function getActiveProposalDiscussions({ summary, activeProposals }) {
       },
       activeCount: summary?.discussions?.active,
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
-      columns,
+      columns: discussionsColumns,
     },
     chainSettings.hasPolkassemblyDiscussions && {
       lazy: false,
@@ -72,7 +55,18 @@ export function getActiveProposalDiscussions({ summary, activeProposals }) {
       },
       activeCount: polkassembly?.total,
       formatter: (item) => normalizePolkassemblyDiscussionListItem(CHAIN, item),
-      columns,
+      columns: discussionsColumns,
+    },
+    chainSettings.hasDiscussionsForumTopics && {
+      lazy: false,
+      value: "forumTopics",
+      name: "Forum Topics",
+      api: {
+        initData: polkadotForumLatestTopics,
+      },
+      activeCount: polkadotForumLatestTopics.items?.length,
+      formatter: normalizePolkadotForumTopicListItem,
+      columns: discussionsForumTopicsColumns,
     },
   ].filter(Boolean);
 
