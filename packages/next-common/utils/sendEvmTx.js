@@ -24,8 +24,9 @@ export async function sendEvmTx({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  signerAddress,
+  signerAccount,
 }) {
+  const signerAddress = signerAccount?.address;
   const realSignerAddress = getEvmSignerAddress(signerAddress);
 
   const ethereum = getEthereum();

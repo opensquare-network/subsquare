@@ -34,7 +34,7 @@ export default function SubmissionDepositRefundPopup({
       dispatch,
       setLoading: setCalling,
       onClose,
-      signerAddress: signerAccount.address,
+      signerAccount,
       isMounted,
     });
   };

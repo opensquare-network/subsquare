@@ -77,8 +77,6 @@ function PopupContent({
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    const signerAddress = signerAccount.address;
-
     await sendTx({
       tx,
       dispatch,
@@ -94,7 +92,7 @@ function PopupContent({
         onInBlock();
       },
       onSubmitted,
-      signerAddress,
+      signerAccount,
       isMounted,
       onClose,
     });

@@ -32,8 +32,6 @@ export default function UnnotePopup({
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
       let tx = api.tx.preimage.unnotePreimage(hash);
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -45,7 +43,7 @@ export default function UnnotePopup({
         dispatch,
         onInBlock,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

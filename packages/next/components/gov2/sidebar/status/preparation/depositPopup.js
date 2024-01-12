@@ -42,7 +42,7 @@ function PopupContent() {
       tx,
       dispatch,
       setLoading: setCalling,
-      signerAddress: signerAccount.address,
+      signerAccount,
       isMounted,
     });
   };

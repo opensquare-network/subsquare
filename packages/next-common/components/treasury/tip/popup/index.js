@@ -76,8 +76,6 @@ function PopupContent({ onClose }) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    const signerAddress = signerAccount.address;
-
     await sendTx({
       tx,
       dispatch,
@@ -93,7 +91,7 @@ function PopupContent({ onClose }) {
         });
       },
       onClose,
-      signerAddress,
+      signerAccount,
       isMounted,
       section: "tips",
       method: "NewTip",

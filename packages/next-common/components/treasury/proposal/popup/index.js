@@ -88,8 +88,6 @@ function PopupContent({
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    const signerAddress = signerAccount.address;
-
     await sendTx({
       tx,
       dispatch,
@@ -97,11 +95,11 @@ function PopupContent({
       onFinalized,
       onInBlock: (eventData) => {
         const [proposalIndex] = eventData;
-        onInBlock(signerAddress, proposalIndex);
+        onInBlock(signerAccount?.address, proposalIndex);
       },
       onSubmitted,
       onClose,
-      signerAddress,
+      signerAccount,
       isMounted,
       section: "treasury",
       method: "Proposed",

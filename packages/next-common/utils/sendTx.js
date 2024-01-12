@@ -9,9 +9,9 @@ import {
 } from "../store/reducers/toastSlice";
 import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
-import isUseMetamask from "./isUseMetamask";
 import { sendEvmTx } from "./sendEvmTx";
 import isMixedChain from "./isMixedChain";
+import WalletTypes from "./consts/walletTypes";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -50,11 +50,16 @@ export async function sendTx({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  signerAddress,
+  signerAccount,
   section: sectionName,
   method: methodName,
 }) {
-  if ((isEvmChain() || isMixedChain()) && isUseMetamask()) {
+  const signerAddress = signerAccount?.address;
+
+  if (
+    (isEvmChain() || isMixedChain()) &&
+    signerAccount?.meta?.source === WalletTypes.METAMASK
+  ) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
       dispatch,
@@ -62,7 +67,7 @@ export async function sendTx({
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress,
+      signerAccount,
       section: sectionName,
       method: methodName,
     });

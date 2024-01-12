@@ -10,10 +10,7 @@ import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { usePostDispatch } from "next-common/context/post";
 import { useDetailType } from "next-common/context/page";
 
-export default function ClaimPopup({
-  childBounty,
-  onClose,
-}) {
+export default function ClaimPopup({ childBounty, onClose }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const postDispatch = usePostDispatch();
@@ -48,8 +45,6 @@ export default function ClaimPopup({
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
       let tx = api.tx.childBounties.claimChildBounty(
         childBounty.parentBountyId,
         childBounty.index,
@@ -65,7 +60,7 @@ export default function ClaimPopup({
         dispatch,
         onFinalized: onClaimFinalized,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

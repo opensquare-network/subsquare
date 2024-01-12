@@ -64,15 +64,13 @@ function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    const signerAddress = signerAccount.address;
-
     await sendTx({
       tx,
       dispatch,
       setLoading: setTipping,
       onInBlock,
       onClose,
-      signerAddress,
+      signerAccount,
       isMounted,
     });
   };

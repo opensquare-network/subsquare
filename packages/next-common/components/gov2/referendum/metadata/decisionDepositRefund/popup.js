@@ -34,7 +34,7 @@ export default function DecisionDepositRefundPopup({
       dispatch,
       setLoading: setCalling,
       onClose,
-      signerAddress: signerAccount.address,
+      signerAccount,
       isMounted,
     });
   };

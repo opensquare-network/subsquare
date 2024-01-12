@@ -90,10 +90,7 @@ export default function NewPreimagePopup({ onClose }) {
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
       let tx = notePreimageTx;
-
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
       }
@@ -103,7 +100,7 @@ export default function NewPreimagePopup({ onClose }) {
         setLoading: setIsSubmitting,
         dispatch,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
         onInBlock: () => dispatch(incPreImagesTrigger()),
         onFinalized: () => dispatch(incPreImagesTrigger()),
