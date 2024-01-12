@@ -1,18 +1,18 @@
 import {
   myIdentityDepositSelector,
-  myMainIdentityNameSelector,
-  myIdentitySubsCountSelector,
   myIdentitySubsDepositSelector,
   myIdentitySubsSelector,
+  myMainIdentityNameSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myIdentityDeposits";
 import { useSelector } from "react-redux";
 
-export default function useMyIdentityDeposit() {
-  const mainIdentityName = useSelector(myMainIdentityNameSelector);
-  const identityDeposit = useSelector(myIdentityDepositSelector);
-  const subsDeposit = useSelector(myIdentitySubsDepositSelector);
-  const subsCount = useSelector(myIdentitySubsCountSelector);
-  const subs = useSelector(myIdentitySubsSelector);
+export function getIdentityDepositData(
+  mainIdentityName,
+  identityDeposit,
+  subsDeposit,
+  subs,
+) {
+  const subsCount = subs?.length || 0;
 
   let totalDeposit = 0n;
   let depositsCount = 0;
@@ -40,4 +40,18 @@ export default function useMyIdentityDeposit() {
       ? (bnSubsDeposit / BigInt(subsCount)).toString()
       : "0",
   };
+}
+
+export default function useMyIdentityDeposit() {
+  const mainIdentityName = useSelector(myMainIdentityNameSelector);
+  const identityDeposit = useSelector(myIdentityDepositSelector);
+  const subsDeposit = useSelector(myIdentitySubsDepositSelector);
+  const subs = useSelector(myIdentitySubsSelector);
+
+  return getIdentityDepositData(
+    mainIdentityName,
+    identityDeposit,
+    subsDeposit,
+    subs,
+  );
 }

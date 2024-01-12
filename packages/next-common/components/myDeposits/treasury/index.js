@@ -4,11 +4,29 @@ import { useDepositTreasuryBountiesTab } from "./bounties";
 import { useDepositTreasuryProposalsTab } from "./proposals";
 import { useDepositTreasuryTipsTab } from "./tips";
 import { useChainSettings } from "next-common/context/chain";
+import { useSelector } from "react-redux";
+import {
+  myTreasuryBountyBondsSelector,
+  myTreasuryBountyCuratorDepositsSelector,
+  myTreasuryProposalDepositsSelector,
+  myTreasuryTipDepositsSelector,
+} from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 
 export function useMyDepositTreasury() {
-  const proposals = useDepositTreasuryProposalsTab();
-  const bounties = useDepositTreasuryBountiesTab();
-  const tips = useDepositTreasuryTipsTab();
+  const proposalDeposits = useSelector(myTreasuryProposalDepositsSelector);
+  const proposals = useDepositTreasuryProposalsTab(proposalDeposits);
+
+  const bountyBonds = useSelector(myTreasuryBountyBondsSelector);
+  const bountyCuratorDeposits = useSelector(
+    myTreasuryBountyCuratorDepositsSelector,
+  );
+  const bounties = useDepositTreasuryBountiesTab(
+    bountyBonds,
+    bountyCuratorDeposits,
+  );
+
+  const tipDeposits = useSelector(myTreasuryTipDepositsSelector);
+  const tips = useDepositTreasuryTipsTab(tipDeposits);
   const { hasTipsModule } = useChainSettings();
 
   let loading = proposals.loading || bounties.loading;

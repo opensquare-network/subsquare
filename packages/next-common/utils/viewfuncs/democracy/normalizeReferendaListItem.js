@@ -9,7 +9,7 @@ export default function normalizeReferendaListItem(chain, item) {
     time: getPostLastActivityAt(item),
     status: item.state ?? "Unknown",
     index: item.referendumIndex,
-    address: item.proposer,
+    address: item.proposer || (item.onchainData?.authors || [])[0],
     detailLink: `${democracyReferendumBaseUrl}/${item.referendumIndex}`,
   };
 }

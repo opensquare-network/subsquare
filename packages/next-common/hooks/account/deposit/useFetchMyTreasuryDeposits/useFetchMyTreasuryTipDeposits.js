@@ -9,7 +9,7 @@ import {
   useMenuHasTreasuryTips,
 } from "next-common/context/chain";
 
-async function queryAddressDeposits(api, address) {
+export async function queryAddressDeposits(api, address) {
   const entries = await api.query.tips.tips.entries();
   return entries.reduce((result, [storageKey, optionalStorage]) => {
     if (!optionalStorage.isSome) {

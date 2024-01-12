@@ -8,6 +8,7 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useUpdateEffect } from "usehooks-ts";
 import NavMenuItem from "./item";
 import NavMenuDivider from "../divider";
+import sumBy from "lodash.sumby";
 
 export default function NavMenuGroup({
   menu = {},
@@ -55,7 +56,9 @@ export default function NavMenuGroup({
               onClick={toggleChildMenu}
               icon={menu.icon}
               label={startCase(capitalize(menu.name))}
-              activeCount={menu.activeCount}
+              activeCount={
+                sumBy(menu?.items, "activeCount") ?? menu.activeCount
+              }
               collapsed={collapsed}
               active={firstPath === menu.pathname}
               extra={
@@ -78,7 +81,9 @@ export default function NavMenuGroup({
                 <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-scroll scrollbar-pretty border border-navigationBorder">
                   <NavMenuItem
                     label={startCase(capitalize(menu.name))}
-                    activeCount={menu.activeCount}
+                    activeCount={
+                      sumBy(menu?.items, "activeCount") ?? menu.activeCount
+                    }
                     className="pointer-events-none"
                   />
                   <NavMenuDivider />
