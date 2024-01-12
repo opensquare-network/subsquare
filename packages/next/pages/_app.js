@@ -6,7 +6,6 @@ import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
 import { store } from "next-common/store";
-// import "next-common/styles/richTextStyles.scss";
 import React from "react";
 import GlobalProvider from "next-common/context/global";
 import "next-common/styles/cmdk.css";
