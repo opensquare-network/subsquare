@@ -15,7 +15,7 @@
     "@interlay/monetary-js": "0.5.4",
     "@osn/icons": "^1.47.0",
     "@osn/polkadot-react-identicon": "^1.0.8",
-    "@osn/previewer": "^1.0.2",
+    "@osn/previewer": "^1.1.0",
     "@osn/provider-options": "1.1.0",
     "@osn/react-cmdk": "^1.1.2",
     "@osn/rich-text-editor": "^0.6.3",

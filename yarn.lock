@@ -2144,9 +2144,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@osn/previewer@npm:1.0.2"
+"@osn/previewer@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@osn/previewer@npm:1.1.0"
   dependencies:
     marked: ^4.0.17
     prismjs: ^1.28.0
@@ -2155,7 +2155,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     styled-components: ^5.3.5
-  checksum: 7de89dd93e20bdda5e33ec278953ec2acaa2e4d420893eea0dbc8fc89c29995d25197e4b361b55863da196330029834bb1b47ef4f5d3a1d4a8941923eeb445c7
+  checksum: f3c07557ea5626dccdaf971811011fdaf604f91ba5b9c881091dd3d0604d3e87d48d02e61fd0fff3baa2f9057e4aa33177a626e8680a9ae471f1b484b3bfc8f2
   languageName: node
   linkType: hard
 
@@ -8622,7 +8622,7 @@ __metadata:
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.47.0
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^1.0.2
+    "@osn/previewer": ^1.1.0
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.1.2
     "@osn/rich-text-editor": ^0.6.3
