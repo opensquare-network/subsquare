@@ -3,7 +3,6 @@ import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import { usePost } from "../../../context/post";
 import { cn } from "next-common/utils";
 import GhostButton from "next-common/components/buttons/ghostButton";
-import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
 
 const collapsedHeight = 640;
 const moreLessHeightThreshold = 2000;
@@ -24,7 +23,7 @@ export default function PostContent() {
     setShowToggleButton(shouldCollapse);
   }, [ref]);
 
-  const content = sanitizeHtml(post.content);
+  const content = post.content;
 
   return (
     <div
