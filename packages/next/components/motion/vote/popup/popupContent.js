@@ -17,6 +17,7 @@ import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsColl
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
+import Loading from "next-common/components/loading";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -43,7 +44,9 @@ export default function PopupContent({
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
 
-  const canVote = useIsCollectiveMember(toApiCouncil(chain, type));
+  const { isMember: canVote, loading: isMemberLoading } = useIsCollectiveMember(
+    toApiCouncil(chain, type),
+  );
   const currentVote = votes.find(
     (item) => item[0] === signerAccount?.realAddress,
   );
@@ -108,14 +111,24 @@ export default function PopupContent({
     <>
       <SignerWrapper>
         <SignerWithBalance />
-        {!canVote && (
+        {isMemberLoading ? (
+          <WarningMessage className="justify-center">
+            <div className="h-[19.6px]">
+              <Loading size={14} />
+            </div>
+          </WarningMessage>
+        ) : (
           <WarningMessage danger={!canVote}>
             Only council members can vote.
           </WarningMessage>
         )}
       </SignerWrapper>
       <CurrentVote currentVote={currentVote} isLoadingVotes={isLoadingVotes} />
-      <VoteButton doVote={doVote} loadingState={loadingState} />
+      <VoteButton
+        disabled={isMemberLoading || !canVote}
+        doVote={doVote}
+        loadingState={loadingState}
+      />
     </>
   );
 }
