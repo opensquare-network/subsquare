@@ -18,6 +18,7 @@ import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
 import altair from "./altair";
 import hydradx from "./hydradx";
+import hydradxTestnet from "./hydradxTestnet";
 import development from "./development";
 import rococo from "./rococo";
 import litentry from "./litentry";
@@ -44,6 +45,7 @@ const settingsMap = {
   crust,
   darwinia2,
   hydradx,
+  hydradxTestnet,
   interlay,
   karura,
   khala,

@@ -3,7 +3,7 @@ import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
 import { getAddress as getEvmAddress } from "ethers";
 import { isPolkadotAddress } from "./viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import Chains from "./consts/chains";
+import isHydradx from "./isHydradx";
 
 const HYDRA_ADDRESS_PREFIX = 63;
 const prefixBytes = Buffer.from("ETH\0");
@@ -45,10 +45,7 @@ export function substrateToEvmAddress(address) {
 }
 
 export function getEvmSignerAddress(address) {
-  if (
-    process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx &&
-    !isEthereumAddress(address)
-  ) {
+  if (isHydradx() && !isEthereumAddress(address)) {
     return substrateToEvmAddress(address);
   }
   return address;

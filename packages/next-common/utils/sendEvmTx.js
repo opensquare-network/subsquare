@@ -10,8 +10,8 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { getEthereum, requestAccounts, switchNetwork } from "./metamask";
 import getChainSettings from "./consts/settings";
-import Chains from "./consts/chains";
 import { getEvmSignerAddress } from "./hydradxUtil";
+import isHydradx from "./isHydradx";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -130,7 +130,7 @@ async function dispatchCall({
 
   let sentTx = null;
 
-  if (process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx) {
+  if (isHydradx()) {
     const [gas, feeData] = await Promise.all([
       provider.estimateGas(tx),
       provider.getFeeData(),

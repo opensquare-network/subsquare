@@ -10,6 +10,7 @@ const Chains = {
   substrate: "substrate",
   basilisk: "basilisk",
   hydradx: "hydradx",
+  hydradxTestnet: "hydradxTestnet",
   kabocha: "kabocha",
   bifrost: "bifrost",
   kintsugi: "kintsugi",

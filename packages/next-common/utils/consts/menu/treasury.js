@@ -45,7 +45,7 @@ export function getTreasuryMenu(summary) {
         excludeToChains: [
           Chains.basilisk,
           Chains.hydradx,
-          Chains.hydradx,
+          Chains.hydradxTestnet,
           Chains.kintsugi,
           Chains.interlay,
           Chains.zeitgeist,
