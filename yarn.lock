@@ -2144,10 +2144,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@osn/previewer@npm:1.1.0"
+"@osn/previewer@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@osn/previewer@npm:1.2.0"
   dependencies:
+    github-markdown-css: ^5.5.0
     marked: ^4.0.17
     prismjs: ^1.28.0
     sanitize-html: ^2.7.0
@@ -2155,7 +2156,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     styled-components: ^5.3.5
-  checksum: f3c07557ea5626dccdaf971811011fdaf604f91ba5b9c881091dd3d0604d3e87d48d02e61fd0fff3baa2f9057e4aa33177a626e8680a9ae471f1b484b3bfc8f2
+  checksum: 1d06e7635ee313ba098ded0a02992bb1ba132c171d08f01da44f68d9355aa460eb2f716ae7a60566d2d3f5ff3396d8e13000e6d1529b6074cd6765ec5eea1de3
   languageName: node
   linkType: hard
 
@@ -8622,7 +8623,7 @@ __metadata:
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.47.0
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^1.1.0
+    "@osn/previewer": ^1.2.0
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.1.2
     "@osn/rich-text-editor": ^0.6.3
@@ -8646,7 +8647,6 @@ __metadata:
     eslint-plugin-react: ^7.31.11
     ethereum-blockies-base64: ^1.0.2
     ethers: ^6.3.0
-    github-markdown-css: ^5.5.0
     is-ipfs: ^8.0.1
     is-utf8: ^0.2.1
     lodash.capitalize: ^4.2.1
