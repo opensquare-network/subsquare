@@ -14,7 +14,10 @@ import {
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
-import { fetchPolkadotForumLatestTopics } from "next-common/services/serverSide/polkadotForum";
+import {
+  fetchForumCategories,
+  fetchForumLatestTopics,
+} from "next-common/services/serverSide/forum";
 import Overview from "next-common/components/overview/overview";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
@@ -77,14 +80,18 @@ export const getServerSideProps = withCommonProps(async () => {
   );
   const activeProposals = await fetchActiveProposalsProps(overviewSummary);
 
-  const polkadotForumLatestTopics = await fetchPolkadotForumLatestTopics();
+  const forumLatestTopics = await fetchForumLatestTopics();
+  const forumCategories = await fetchForumCategories(
+    forumLatestTopics.items.map((item) => item.category_id),
+  );
 
   return {
     props: {
       activeProposals,
       summary: tracksProps.summary,
       overviewSummary: overviewSummary || {},
-      polkadotForumLatestTopics,
+      forumLatestTopics,
+      forumCategories,
       ...tracksProps,
     },
   };

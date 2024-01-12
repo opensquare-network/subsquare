@@ -23,7 +23,7 @@ const discussionsColumns = [
 export function getActiveProposalDiscussions({
   summary,
   activeProposals,
-  polkadotForumLatestTopics,
+  forumLatestTopics,
 }) {
   const chainSettings = getChainSettings(CHAIN);
   const subsquare = activeProposals.discussions?.subsquare;
@@ -62,9 +62,9 @@ export function getActiveProposalDiscussions({
       value: "forumTopics",
       name: "Forum Topics",
       api: {
-        initData: polkadotForumLatestTopics,
+        initData: forumLatestTopics,
       },
-      activeCount: polkadotForumLatestTopics.items?.length,
+      activeCount: forumLatestTopics?.items?.length,
       formatter: normalizePolkadotForumTopicListItem,
       columns: discussionsForumTopicsColumns,
     },
