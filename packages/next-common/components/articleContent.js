@@ -36,7 +36,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       <PostContent />
 
       {isPostEdited(post) && (
-        <span className="text12Medium text-textTertiary">Edited</span>
+        <div className="mt-4 text12Medium text-textTertiary">Edited</div>
       )}
     </>
   );
