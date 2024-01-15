@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function useToBeAwarded() {
   const api = useApi();
-  const [toBeAwarded, setToBeAwarded] = useState(0n);
+  const [toBeAwarded, setToBeAwarded] = useState();
 
   useEffect(() => {
     if (!api) {
