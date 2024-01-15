@@ -1,7 +1,8 @@
 import { useChainSettings } from "next-common/context/chain";
-import { abbreviateBigNumber, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import TreasurySummaryFiatPriceLabel from "./fiatPriceLabel";
 import isNil from "lodash.isnil";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 export default function TreasurySummaryAvailable({ free = 0, fiatPrice }) {
   const { decimals, symbol } = useChainSettings();
@@ -10,10 +11,11 @@ export default function TreasurySummaryAvailable({ free = 0, fiatPrice }) {
 
   return (
     <div>
-      <div className="flex gap-x-1">
-        <span>{abbreviateBigNumber(value)}</span>
-        <span className="unit upper">{symbol}</span>
-      </div>
+      <ValueDisplay
+        showApproximationSymbol={false}
+        value={value}
+        symbol={symbol}
+      />
 
       {!isNil(fiatPrice) && (
         <TreasurySummaryFiatPriceLabel value={value} fiatPrice={fiatPrice} />
