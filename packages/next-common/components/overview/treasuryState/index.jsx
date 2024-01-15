@@ -5,7 +5,7 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 export default function TreasuryState() {
   return (
     <div>
-      <TitleContainer className="mb-4">Treasury State</TitleContainer>
+      <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
 
       <SecondaryCard>
         <TreasurySummary />
