@@ -8,18 +8,10 @@ import { isPolkadotAddress } from "../utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import getChainSettings from "next-common/utils/consts/settings";
 
-const NameWrapper = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--sapphire500);
-  background: var(--sapphire100);
-`;
-
 const MentionBox = styled.a`
   display: flex;
   padding: 0 8px;
   gap: 2px;
-  line-height: 20px;
   border-radius: 4px;
 `;
 
@@ -30,9 +22,10 @@ function IdentityOrAddr({ address, network }) {
     setIdentity(null);
     if (address) {
       const settings = getChainSettings(network);
-      fetchIdentity(settings.identity, encodeAddressToChain(address, settings.identity)).then(
-        (identity) => setIdentity(identity),
-      );
+      fetchIdentity(
+        settings.identity,
+        encodeAddressToChain(address, settings.identity),
+      ).then((identity) => setIdentity(identity));
     }
   }, [address, network]);
 
@@ -54,7 +47,7 @@ function IdentityOrAddr({ address, network }) {
   }
 
   return (
-    <NameWrapper>
+    <div className="inline-block text14Medium text-sapphire500 bg-sapphire100">
       {identity && identity?.info?.status !== "NO_ID" ? (
         <MentionBox href={`/user/${address}`}>
           <span>@</span>
@@ -68,7 +61,7 @@ function IdentityOrAddr({ address, network }) {
           </MentionBox>
         </>
       )}
-    </NameWrapper>
+    </div>
   );
 }
 

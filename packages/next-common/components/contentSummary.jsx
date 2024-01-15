@@ -9,13 +9,13 @@ export default function ContentSummary() {
     <div>
       <MarkdownPreviewer content={post.contentSummary?.summary} />
 
-      <p className="text12Medium text-textTertiary flex items-center">
+      <div className="mt-4 text12Medium text-textTertiary flex items-center">
         Powered by
         <span className="ml-2">
           <LinkChatgpt className="mr-1 inline-flex w-4 h-4 [&_path]:fill-textTertiary" />
           OpenAI
         </span>
-      </p>
+      </div>
     </div>
   );
 }

@@ -17,7 +17,6 @@ import { useChain } from "../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
 import isMoonChain from "next-common/utils/isMoonChain";
 import isNil from "lodash.isnil";
-import RichTextStyleWrapper from "./content/richTextStyleWrapper";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -283,28 +282,26 @@ export default function CommentSimple({ data }) {
         <HeadWrapper>
           <TitleWrapper>
             <Anchor href={`${route}#${data.height}`} passHref>
-              <RichTextStyleWrapper>
-                {data.contentType === "markdown" && (
-                  <MarkdownPreviewer
-                    content={data.content || ""}
-                    plugins={[
-                      renderMentionIdentityUserPlugin(<IdentityOrAddr />),
-                    ]}
-                    maxLines={2}
-                  />
-                )}
-                {data.contentType === "html" && (
-                  <HtmlPreviewer
-                    content={prettyHTML(data.content)}
-                    plugins={[
-                      renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
-                        targetElement: { tag: "span" },
-                      }),
-                    ]}
-                    maxLines={2}
-                  />
-                )}
-              </RichTextStyleWrapper>
+              {data.contentType === "markdown" && (
+                <MarkdownPreviewer
+                  content={data.content || ""}
+                  plugins={[
+                    renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                  ]}
+                  maxLines={2}
+                />
+              )}
+              {data.contentType === "html" && (
+                <HtmlPreviewer
+                  content={prettyHTML(data.content)}
+                  plugins={[
+                    renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
+                      targetElement: { tag: "span" },
+                    }),
+                  ]}
+                  maxLines={2}
+                />
+              )}
             </Anchor>
           </TitleWrapper>
         </HeadWrapper>
