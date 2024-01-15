@@ -38,7 +38,7 @@ function VotingProposals({ host }) {
       .then(({ result: { items } }) => {
         setPosts(
           items.filter((item) =>
-            dayjs().subtract(1, "day").isBefore(item.createdAt),
+            dayjs().subtract(15, "day").isBefore(item.createdAt),
           ),
         );
       });
