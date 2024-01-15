@@ -91,6 +91,7 @@ export function getTreasuryMenu(summary) {
           Chains.turing,
           Chains.darwinia2,
         ],
+        archivedToChains: [Chains.kusama, Chains.polkadot],
         activeCount: activeTips,
       },
     ],

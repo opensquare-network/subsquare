@@ -7,6 +7,7 @@ import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useWindowSize } from "usehooks-ts";
 import isNil from "lodash.isnil";
+import { isSameAddress } from "next-common/utils";
 
 function parseStatus(status, method) {
   const statusName = Object.keys(status || {})[0];
@@ -44,7 +45,11 @@ export default function PreImagesList({ data }) {
 
         const { deposit, ticket } = parseStatus(status, method);
         const [who] = ticket || deposit || [];
-        return !isMyDepositOn || who === realAddress;
+        if (isMyDepositOn && realAddress) {
+          return isSameAddress(who, realAddress);
+        } else {
+          return true;
+        }
       }),
     [data, searchValue, isMyDepositOn, realAddress],
   );

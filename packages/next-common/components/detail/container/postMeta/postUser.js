@@ -31,13 +31,21 @@ export default function PostUser() {
         maxWidth={userMaxWidth}
       />
     );
+  } else if (post?.proposer || post?.finder) {
+    return (
+      <AddressUser
+        add={post?.proposer || post?.finder}
+        fontSize={userFontSize}
+        maxWidth={userMaxWidth}
+      />
+    );
+  } else if (Array.isArray(post?.authors)) {
+    return (
+      <AddressUser
+        add={post?.authors[0]}
+        fontSize={userFontSize}
+        maxWidth={userMaxWidth}
+      />
+    );
   }
-
-  return (
-    <AddressUser
-      add={post?.proposer || post?.finder}
-      fontSize={userFontSize}
-      maxWidth={userMaxWidth}
-    />
-  );
 }

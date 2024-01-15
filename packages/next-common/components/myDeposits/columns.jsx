@@ -56,7 +56,7 @@ function SubmissionDepositRefundButton({ pallet, referendumIndex }) {
   }
 
   let tooltip = disabled
-    ? "Can be refunded if approved or cancelled"
+    ? "Can only be refunded if approved or cancelled"
     : "Refund";
 
   return (

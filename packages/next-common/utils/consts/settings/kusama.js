@@ -100,6 +100,8 @@ const kusama = {
   useVoteCall: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
+  hasDiscussionsForumTopics: true,
+  discussionsForumUrl: "https://forum.polkadot.network",
   hasMultisig: true,
   hasTipsModule: false,
   multisigApiPrefix: "kusama",

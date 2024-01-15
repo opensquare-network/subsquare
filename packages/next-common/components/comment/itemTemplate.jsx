@@ -1,7 +1,6 @@
 import { forwardRef } from "react";
 import Divider from "../styled/layout/divider";
 import { cn } from "next-common/utils";
-import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 import noop from "lodash.noop";
 import Duration from "../duration";
 import { useComment } from "./context";
@@ -56,12 +55,12 @@ const CommentItemTemplate = forwardRef(function Comp(
         </div>
       </div>
 
-      <RichTextStyleWrapper className="!mt-2 !ml-7">
+      <div className="!mt-2 !ml-7">
         {content}
         {comment.createdAt !== comment.updatedAt && (
           <p className="mt-2 text12Medium text-textTertiary">Edited</p>
         )}
-      </RichTextStyleWrapper>
+      </div>
 
       {actions && <div className="mt-4 ml-7">{actions}</div>}
 

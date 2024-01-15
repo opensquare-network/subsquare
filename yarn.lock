@@ -2188,10 +2188,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@osn/previewer@npm:1.0.2"
+"@osn/previewer@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@osn/previewer@npm:1.2.0"
   dependencies:
+    github-markdown-css: ^5.5.0
     marked: ^4.0.17
     prismjs: ^1.28.0
     sanitize-html: ^2.7.0
@@ -2199,7 +2200,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     styled-components: ^5.3.5
-  checksum: 7de89dd93e20bdda5e33ec278953ec2acaa2e4d420893eea0dbc8fc89c29995d25197e4b361b55863da196330029834bb1b47ef4f5d3a1d4a8941923eeb445c7
+  checksum: 1d06e7635ee313ba098ded0a02992bb1ba132c171d08f01da44f68d9355aa460eb2f716ae7a60566d2d3f5ff3396d8e13000e6d1529b6074cd6765ec5eea1de3
   languageName: node
   linkType: hard
 
@@ -6719,12 +6720,12 @@ __metadata:
   linkType: hard
 
 "follow-redirects@npm:^1.0.0":
-  version: 1.15.2
-  resolution: "follow-redirects@npm:1.15.2"
+  version: 1.15.4
+  resolution: "follow-redirects@npm:1.15.4"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
+  checksum: e178d1deff8b23d5d24ec3f7a94cde6e47d74d0dc649c35fc9857041267c12ec5d44650a0c5597ef83056ada9ea6ca0c30e7c4f97dbf07d035086be9e6a5b7b6
   languageName: node
   linkType: hard
 
@@ -6899,6 +6900,13 @@ __metadata:
   version: 0.0.0
   resolution: "github-from-package@npm:0.0.0"
   checksum: 14e448192a35c1e42efee94c9d01a10f42fe790375891a24b25261246ce9336ab9df5d274585aedd4568f7922246c2a78b8a8cd2571bfe99c693a9718e7dd0e3
+  languageName: node
+  linkType: hard
+
+"github-markdown-css@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "github-markdown-css@npm:5.5.0"
+  checksum: 58ba14ac87df700fd3a32a1999a6e9a4e36e808a4e1485f14aecb4230a690bfd3df508188c8a4874cae5556a87d23941b09036a22ee0f699fe844455952b1573
   languageName: node
   linkType: hard
 
@@ -8723,7 +8731,7 @@ __metadata:
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.47.0
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^1.0.2
+    "@osn/previewer": ^1.2.0
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.1.2
     "@osn/rich-text-editor": ^0.6.3

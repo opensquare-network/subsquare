@@ -3,13 +3,13 @@ import { VoteLoadingEnum } from "../../utils/voteEnum";
 import { ButtonWrapper } from "./styled";
 import { NegativeButton, PositiveButton } from "../buttons/colorButton";
 
-export default function VoteButton({ loadingState, doVote }) {
+export default function VoteButton({ disabled, loadingState, doVote }) {
   return (
     <ButtonWrapper>
       <NegativeButton
         onClick={() => doVote(false)}
         isLoading={loadingState === VoteLoadingEnum.Nay}
-        disabled={loadingState === VoteLoadingEnum.Aye}
+        disabled={disabled || loadingState === VoteLoadingEnum.Aye}
       >
         Nay
       </NegativeButton>
@@ -17,7 +17,7 @@ export default function VoteButton({ loadingState, doVote }) {
       <PositiveButton
         onClick={() => doVote(true)}
         isLoading={loadingState === VoteLoadingEnum.Aye}
-        disabled={loadingState === VoteLoadingEnum.Nay}
+        disabled={disabled || loadingState === VoteLoadingEnum.Nay}
       >
         Aye
       </PositiveButton>
