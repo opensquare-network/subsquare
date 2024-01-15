@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/client": "^3.8.8",
     "@interlay/monetary-js": "0.5.4",
     "@osn/icons": "^1.47.0",
     "@osn/polkadot-react-identicon": "^1.0.8",
@@ -37,6 +38,7 @@
     "deepmerge": "^4.3.1",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^6.3.0",
+    "graphql": "^16.8.1",
     "is-ipfs": "^8.0.1",
     "is-utf8": "^0.2.1",
     "lodash.capitalize": "^4.2.1",

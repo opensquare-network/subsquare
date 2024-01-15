@@ -6,6 +6,7 @@ export default function ValueDisplay({
   value,
   symbol,
   showTooltip = true,
+  showApproximationSymbol = true,
   className,
 }) {
   const tooltipContent = `${value} ${symbol}`;
@@ -22,9 +23,10 @@ export default function ValueDisplay({
     const abbreviated = abbreviateBigNumber(value, 2);
     content = (
       <>
-        {getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value) && (
-          <span>≈</span>
-        )}
+        {showApproximationSymbol &&
+          getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value) && (
+            <span>≈</span>
+          )}
         {abbreviated}
         {symbolContent}
       </>
@@ -35,7 +37,7 @@ export default function ValueDisplay({
       const shortDecimal = decimal.substring(0, 5);
       content = (
         <>
-          <span>≈</span>
+          {showApproximationSymbol && <span>≈</span>}
           {int}.{shortDecimal}
           {symbolContent}
         </>
