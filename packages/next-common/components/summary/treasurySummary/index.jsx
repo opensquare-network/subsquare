@@ -12,6 +12,8 @@ import TreasurySummaryAvailable from "./available";
 import TreasurySummarySpendPeriodCountDown from "./spendPeriodCountDown";
 import { gql } from "@apollo/client";
 import { useDoTreasuryEcoQuery } from "next-common/hooks/apollo";
+import useToBeAwarded from "next-common/hooks/useToBeAwarded";
+import TreasurySummaryToBeAwarded from "./toBeAwarded";
 
 const GET_TREASURIES = gql`
   query GetTreasuries {
@@ -28,6 +30,7 @@ export default function TreasurySummary() {
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
+  const toBeAwarded = useToBeAwarded();
 
   const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
   const treasury = data?.treasuries?.find((t) => t.chain === chain);
@@ -54,7 +57,14 @@ export default function TreasurySummary() {
         },
         {
           title: "To Be Awarded",
-          content: "TODO",
+          content: (
+            <LoadableContent isLoading={isNil(toBeAwarded)}>
+              <TreasurySummaryToBeAwarded
+                toBeAwarded={toBeAwarded}
+                fiatPrice={treasury?.price}
+              />
+            </LoadableContent>
+          ),
         },
         {
           title: "Next Burn",
