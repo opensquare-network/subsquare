@@ -21,7 +21,7 @@ export function getDemocracyMenu(summary) {
     excludeToChains: [
       Chains.kabocha,
       Chains.development,
-      Chains["westend-collectives"],
+      Chains.westendCollectives,
       Chains.collectives,
       Chains.vara,
     ],

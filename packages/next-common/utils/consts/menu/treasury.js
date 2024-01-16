@@ -23,7 +23,7 @@ export function getTreasuryMenu(summary) {
     name: Names.treasury,
     excludeToChains: [
       Chains.kabocha,
-      Chains["westend-collectives"],
+      Chains.westendCollectives,
       Chains.collectives,
     ],
     icon: <MenuTreasury />,

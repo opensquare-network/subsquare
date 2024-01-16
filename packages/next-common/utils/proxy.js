@@ -20,7 +20,7 @@ export async function checkProxy(api, delegator, toCheckDelegate) {
     .map((item) => item.proxyType);
 
   const types = ["Any", "NonTransfer", "Governance"];
-  if ([chains.collectives, chains["westend-collectives"]].includes(chain)) {
+  if ([chains.collectives, chains.westendCollectives].includes(chain)) {
     types.push("Alliance", "Fellowship");
   }
 

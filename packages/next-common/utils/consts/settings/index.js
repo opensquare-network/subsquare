@@ -60,8 +60,8 @@ const settingsMap = {
   zeitgeist,
   rococo,
   westend,
-  "westend-collectives": westendCollectives,
-  "bifrost-polkadot": bifrostPolkadot,
+  [westendCollectives.value]: westendCollectives,
+  [bifrostPolkadot.value]: bifrostPolkadot,
   vara,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };

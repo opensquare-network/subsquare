@@ -23,7 +23,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
       Chains.moonbeam,
       Chains.polkadot,
       Chains.bifrost,
-      Chains["bifrost-polkadot"],
+      Chains.bifrostPolkadot,
       Chains.vara,
       Chains.rococo,
     ]),

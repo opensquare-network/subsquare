@@ -28,12 +28,12 @@ const Chains = {
   rococo: "rococo",
   litentry: "litentry",
   westend: "westend",
-  "westend-collectives": "westend-collectives",
+  westendCollectives: "westend-collectives",
   collectives: "collectives",
   darwinia2: "darwinia2",
   moonriver: "moonriver",
   moonbeam: "moonbeam",
-  "bifrost-polkadot": "bifrost-polkadot",
+  bifrostPolkadot: "bifrost-polkadot",
   vara,
 };
 
