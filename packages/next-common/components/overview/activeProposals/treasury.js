@@ -5,7 +5,7 @@ import {
   getProposalPostTitleColumn,
   getRequestColumn,
   getStatusTagColumn,
-  getVoteSummaryColumn,
+  getVoteSummaryColumnPlaceholder,
 } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
@@ -74,7 +74,7 @@ export function getActiveProposalTreasury({ summary, activeProposals }) {
           columns: [
             getProposalPostTitleColumn(),
             requestColumn,
-            getVoteSummaryColumn(),
+            getVoteSummaryColumnPlaceholder(),
             getStatusTagColumn({ category: options.category }),
           ],
         };

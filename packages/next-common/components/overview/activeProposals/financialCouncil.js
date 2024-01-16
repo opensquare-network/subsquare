@@ -5,7 +5,7 @@ import {
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
-  getVoteSummaryColumn,
+  getVoteSummaryColumnPlaceholder,
 } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
@@ -41,7 +41,7 @@ export function getActiveProposalFinancialCouncil({
           columns: [
             getProposalPostTitleColumn(),
             { className: "w-40" },
-            getVoteSummaryColumn(),
+            getVoteSummaryColumnPlaceholder(),
             getStatusTagColumn({ type: businessCategory.financialMotions }),
           ],
         };

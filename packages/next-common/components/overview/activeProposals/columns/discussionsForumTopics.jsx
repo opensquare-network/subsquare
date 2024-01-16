@@ -2,7 +2,7 @@ import { usePageProps } from "next-common/context/page";
 import {
   getLastActivityColumn,
   getReferendumPostTitleColumn,
-  getVoteSummaryColumn,
+  getVoteSummaryColumnPlaceholder,
 } from ".";
 import find from "lodash.find";
 
@@ -28,6 +28,6 @@ const categoryColumn = {
 export const discussionsForumTopicsColumns = [
   topicColumn,
   getLastActivityColumn(),
-  getVoteSummaryColumn(),
+  getVoteSummaryColumnPlaceholder(),
   categoryColumn,
 ];

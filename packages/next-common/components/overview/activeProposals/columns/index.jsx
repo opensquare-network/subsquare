@@ -40,7 +40,6 @@ export function getProposalPostTitleColumn() {
 export function getVoteSummaryColumn(props) {
   return {
     name: "Vote Summary",
-    // NOTE: also used as placeholder column
     headClassName: "sm:opacity-0 whitespace-nowrap",
     className: "w-6",
     cellRender(data) {
@@ -53,6 +52,13 @@ export function getVoteSummaryColumn(props) {
         )
       );
     },
+  };
+}
+export function getVoteSummaryColumnPlaceholder(props) {
+  const { className } = getVoteSummaryColumn(props);
+
+  return {
+    className,
   };
 }
 
