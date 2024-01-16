@@ -12,12 +12,16 @@ const DEFAULT_KUSAMA_NODES = [
     url: "wss://kusama-rpc.polkadot.io",
   },
   {
-    name: "OnFinality",
-    url: "wss://kusama.api.onfinality.io/public-ws",
-  },
-  {
     name: "Dwellir",
     url: "wss://kusama-rpc.dwellir.com",
+  },
+  {
+    name: "IBP-GeoDNS1",
+    url: "wss://rpc.ibp.network/kusama",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://kusama.api.onfinality.io/public-ws",
   },
   {
     name: "Dwellir Tunisia",
@@ -26,10 +30,6 @@ const DEFAULT_KUSAMA_NODES = [
   {
     name: "Automata 1RPC",
     url: "wss://1rpc.io/ksm",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://rpc.ibp.network/kusama",
   },
   {
     name: "IBP-GeoDNS2",
