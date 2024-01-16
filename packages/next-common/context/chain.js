@@ -37,6 +37,11 @@ export function useVoteSymbol() {
   return voteSymbol || symbol;
 }
 
+export function useMenuHasTreasury() {
+  const chain = useChain();
+  return !treasury.excludeToChains.includes(chain);
+}
+
 export function useMenuHasTreasuryBounties() {
   const chain = useChain();
   const bountiesConfig = treasury.items.find(
