@@ -8,6 +8,10 @@ export default function Descriptions({
   items = [],
   bordered = true,
 }) {
+  if (!items?.length) {
+    return null;
+  }
+
   return (
     <div className="w-full">
       {title && (
