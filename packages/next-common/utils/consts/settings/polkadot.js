@@ -104,8 +104,7 @@ const polkadot = {
   hasSubscan: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
-  hasDiscussionsForumTopics: true,
-  discussionsForumUrl: "https://forum.polkadot.network",
+  hasDiscussionsForumTopics: false,
   hasMultisig: true,
   multisigApiPrefix: "dot",
   // used to control whether to show votes delegation percentage on referendum detail page.
