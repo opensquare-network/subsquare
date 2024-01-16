@@ -1,4 +1,5 @@
 import List from "./list";
+import dayjs from "dayjs";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Api from "next-common/services/api";
@@ -35,7 +36,11 @@ function VotingProposals({ host }) {
     new Api(host)
       .fetch(`/api/${space}/proposals/active`)
       .then(({ result: { items } }) => {
-        setPosts(items);
+        setPosts(
+          items.filter((item) =>
+            dayjs().subtract(15, "day").isBefore(item.createdAt),
+          ),
+        );
       });
   }, [host]);
 
