@@ -45,7 +45,7 @@ const settingsMap = {
   crust,
   darwinia2,
   hydradx,
-  hydradxTestnet,
+  [hydradxTestnet.value]: hydradxTestnet,
   interlay,
   karura,
   khala,
