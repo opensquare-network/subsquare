@@ -3,7 +3,7 @@ import { getTechCommMenu, Names } from "next-common/utils/consts/menu/tc";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
-  getVoteSummaryColumn,
+  getVoteSummaryColumnPlaceholder,
 } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
@@ -37,7 +37,7 @@ export function getActiveProposalTechComm({ summary, activeProposals }) {
           columns: [
             getProposalPostTitleColumn(),
             { className: "w-40" },
-            getVoteSummaryColumn(),
+            getVoteSummaryColumnPlaceholder(),
             getStatusTagColumn({ category: options.category }),
           ],
         };

@@ -3,7 +3,7 @@ import {
   getLastActivityColumn,
   getProposalPostTitleColumn,
   getStatusTagColumn,
-  getVoteSummaryColumn,
+  getVoteSummaryColumnPlaceholder,
 } from "./columns";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { CHAIN } from "next-common/utils/constants";
@@ -16,7 +16,7 @@ import { discussionsForumTopicsColumns } from "./columns/discussionsForumTopics"
 const discussionsColumns = [
   getProposalPostTitleColumn(),
   getLastActivityColumn(),
-  getVoteSummaryColumn(),
+  getVoteSummaryColumnPlaceholder(),
   { ...getStatusTagColumn(), name: "" },
 ];
 
