@@ -15,6 +15,15 @@ export default async function getMetadata(provider) {
   const id = `${genesisHash}-${runtimeVersion.specVersion}`;
   let metadata = await localForage.getItem(id);
   if (!metadata) {
+    // We stored metadata to localstorage in the 1st version. This code branch can be removed after some time.
+    const metadataFromLocalStorage = localStorage.getItem(id);
+    if (metadataFromLocalStorage) {
+      metadata = metadataFromLocalStorage;
+      await localForage.setItem(id, metadataFromLocalStorage);
+    }
+  }
+
+  if (!metadata) {
     metadata = await provider.send("state_getMetadata", []);
     try {
       await localForage.setItem(id, metadata);
