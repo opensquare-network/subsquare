@@ -186,7 +186,7 @@ function MobileList({ data, setShowArgumentsDetail }) {
 
   return (
     <div>
-      {data.map(({ data: [hash], method }) => (
+      {data.map(({ hash, method }) => (
         <MobileListItem
           key={hash}
           hash={hash}
