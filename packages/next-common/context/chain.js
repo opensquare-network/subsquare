@@ -58,7 +58,11 @@ export function useMenuHasTreasuryChildBounties() {
 export function useMenuHasTreasuryTips() {
   const chain = useChain();
   const tipsConfig = treasury.items.find(({ value }) => value === "tips");
-  return tipsConfig && !tipsConfig.excludeToChains.includes(chain);
+  return (
+    tipsConfig &&
+    !tipsConfig.excludeToChains.includes(chain) &&
+    !tipsConfig.archivedToChains?.includes(chain)
+  );
 }
 
 export function useMenuHasDemocracyExternal() {
