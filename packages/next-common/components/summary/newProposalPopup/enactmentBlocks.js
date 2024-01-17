@@ -4,15 +4,17 @@ import Tab from "next-common/components/tab";
 import { useEffect, useState } from "react";
 
 export default function EnactmentBlocks({ setEnactment }) {
-  const [tabIndex, setTabIndex] = useState("After Delay");
+  const [tabIndex, setTabIndex] = useState("after");
   const [blocks, setBlocks] = useState();
 
   useEffect(() => {
-    if (!tabIndex || !blocks) return;
+    if (!tabIndex || !blocks) {
+      setEnactment();
+      return;
+    }
 
     setEnactment({
-      type: tabIndex,
-      blocks,
+      [tabIndex]: blocks,
     });
   }, [blocks, tabIndex]);
 
@@ -23,11 +25,11 @@ export default function EnactmentBlocks({ setEnactment }) {
         <Tab
           tabs={[
             {
-              tabId: "After Delay",
+              tabId: "after",
               tabTitle: "After Delay",
             },
             {
-              tabId: "At Block",
+              tabId: "at",
               tabTitle: "At Block",
             },
           ]}

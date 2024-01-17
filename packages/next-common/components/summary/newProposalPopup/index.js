@@ -4,8 +4,16 @@ import { useCallback, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
 import { usePageProps } from "next-common/context/page";
+import { sendTx } from "next-common/utils/sendTx";
+import { useDispatch } from "react-redux";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import isNil from "lodash.isnil";
+import { useRouter } from "next/router";
 
 export default function NewProposalPopup({ onClose }) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const isMounted = useIsMounted();
   const { tracks: trackList } = usePageProps();
 
   const [track, setTrack] = useState(trackList[0]?.id);
@@ -13,14 +21,57 @@ export default function NewProposalPopup({ onClose }) {
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
-  const onSubmit = useCallback(() => {
-    console.log({
+  const onSubmit = useCallback(
+    (api, signerAccount) => {
+      if (!api || !signerAccount) {
+        return;
+      }
+
+      if (
+        isNil(track) ||
+        isNil(enactment) ||
+        !preimageHash ||
+        !preimageLength
+      ) {
+        return;
+      }
+
+      const tx = api.tx.referenda.submit(
+        track,
+        {
+          Lookup: {
+            hash: preimageHash,
+            len: parseInt(preimageLength),
+          },
+        },
+        enactment,
+      );
+
+      sendTx({
+        tx,
+        api,
+        dispatch,
+        isMounted,
+        signerAddress: signerAccount.address,
+        onInBlock: (eventData) => {
+          const [referendumIndex] = eventData;
+          router.push(`/referenda/${referendumIndex}`);
+        },
+        section: "referenda",
+        method: "Submitted",
+        onClose,
+      });
+    },
+    [
+      dispatch,
+      router,
+      isMounted,
       track,
       enactment,
       preimageHash,
       preimageLength,
-    });
-  }, [track, enactment, preimageHash, preimageLength]);
+    ],
+  );
 
   return (
     <SignerPopup
