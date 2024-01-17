@@ -21,18 +21,12 @@ export default function NewProposalPopup({ onClose }) {
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
+  const disabled =
+    isNil(track) || isNil(enactment) || !preimageHash || !preimageLength;
+
   const onSubmit = useCallback(
     (api, signerAccount) => {
       if (!api || !signerAccount) {
-        return;
-      }
-
-      if (
-        isNil(track) ||
-        isNil(enactment) ||
-        !preimageHash ||
-        !preimageLength
-      ) {
         return;
       }
 
@@ -79,6 +73,7 @@ export default function NewProposalPopup({ onClose }) {
       title="New Proposal"
       onClose={onClose}
       actionCallback={onSubmit}
+      disabled={disabled}
     >
       <DetailedTrack track={track} setTrack={setTrack} />
       <PreimageField
