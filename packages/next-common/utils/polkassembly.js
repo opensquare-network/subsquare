@@ -5,6 +5,15 @@ import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
+import Chains from "./consts/chains";
+
+export const PolkassemblyChains = [
+  Chains.kusama,
+  Chains.polkadot,
+  Chains.moonriver,
+  Chains.collectives,
+  Chains.zeitgeist,
+];
 
 export function getPolkassemblyLink(type, post) {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
@@ -46,6 +55,9 @@ export function getPolkassemblyLink(type, post) {
     }
     case detailPageCategory.FELLOWSHIP_REFERENDUM: {
       return `https://${chain}.polkassembly.io/member-referenda/${post.referendumIndex}`;
+    }
+    case detailPageCategory.ADVISORY_MOTION: {
+      return `https://${chain}.polkassembly.io/advisory-committee/motions/${post.height}_${post.hash}`;
     }
     default: {
       return null;
