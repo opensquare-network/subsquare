@@ -10,18 +10,17 @@ export default function DetailedTrack({
   track,
   setTrack = noop,
   hasAll = false,
-  trackList,
 }) {
-  const { tracks: defaultTrackList } = usePageProps();
-  const options = (trackList || defaultTrackList)?.map((track) => {
+  const { tracks: trackList } = usePageProps();
+  const options = trackList?.map((track) => {
     return {
       label: (
-        <div>
+        <div className="overflow-hidden">
           <div className="text14Medium text-textPrimary">
             {`[${track.id}] ${startCase(track.name)}`}
           </div>
-          <div className="text12Medium text-textTertiary">
-            {"This is the track description"}
+          <div className="text12Medium text-textTertiary truncate">
+            {track.description}
           </div>
         </div>
       ),

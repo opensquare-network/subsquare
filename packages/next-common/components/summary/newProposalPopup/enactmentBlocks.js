@@ -1,10 +1,20 @@
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import Tab from "next-common/components/tab";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function EnactmentBlocks() {
+export default function EnactmentBlocks({ setEnactment }) {
   const [tabIndex, setTabIndex] = useState("After Delay");
+  const [blocks, setBlocks] = useState();
+
+  useEffect(() => {
+    if (!tabIndex || !blocks) return;
+
+    setEnactment({
+      type: tabIndex,
+      blocks,
+    });
+  }, [blocks, tabIndex]);
 
   return (
     <div>
@@ -24,7 +34,11 @@ export default function EnactmentBlocks() {
           selectedTabId={tabIndex}
           setSelectedTabId={setTabIndex}
         />
-        <Input placeholder="0" symbol="Blocks" />
+        <Input
+          placeholder="0"
+          symbol="Blocks"
+          onChange={(e) => setBlocks(e.target.value)}
+        />
       </div>
     </div>
   );

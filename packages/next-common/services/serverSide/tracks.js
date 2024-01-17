@@ -19,7 +19,9 @@ async function fetchAll() {
   };
 }
 
-export async function fetchOpenGovTracksProps() {
+export async function fetchOpenGovTracksProps({
+  includeTrackDesc = false,
+} = {}) {
   const summary = await fetchSummary();
 
   const { hasReferenda, hasFellowship } = getChainSettings(process.env.CHAIN);
@@ -29,7 +31,11 @@ export async function fetchOpenGovTracksProps() {
   }
 
   if (hasReferenda) {
-    const { result: tracks } = await ssrNextApi.fetch(gov2TracksApi);
+    const { result: tracks } = await ssrNextApi.fetch(
+      includeTrackDesc
+        ? gov2TracksApi + "?include_description=1"
+        : gov2TracksApi,
+    );
     return { tracks: tracks ?? [], fellowshipTracks: [], summary };
   }
 

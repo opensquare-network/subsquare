@@ -80,7 +80,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const [tracksProps, { result: posts }, { result: gov2ReferendaSummary }] =
     await Promise.all([
-      fetchOpenGovTracksProps(),
+      fetchOpenGovTracksProps({ includeTrackDesc: true }),
       ssrNextApi.fetch(gov2ReferendumsApi, {
         page,
         pageSize,
