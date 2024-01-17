@@ -6,6 +6,7 @@ const profileIdentityDepositsSlice = createSlice({
   name,
   initialState: {
     mainIdentityName: "",
+    address: null,
     identityDeposit: null,
     subsDeposit: null,
     subs: null,
@@ -13,6 +14,9 @@ const profileIdentityDepositsSlice = createSlice({
   reducers: {
     setIdentityDisplayName(state, { payload }) {
       state.mainIdentityName = payload;
+    },
+    setIdentityAddress(state, { payload }) {
+      state.address = payload;
     },
     setIdentityDeposit(state, { payload }) {
       state.identityDeposit = payload;
@@ -27,6 +31,7 @@ const profileIdentityDepositsSlice = createSlice({
 });
 
 export const {
+  setIdentityAddress: setProfileIdentityAddress,
   setIdentityDisplayName: setProfileIdentityDisplayName,
   setIdentityDeposit: setProfileIdentityDeposit,
   setSubsDeposits: setProfileSubsDeposits,
