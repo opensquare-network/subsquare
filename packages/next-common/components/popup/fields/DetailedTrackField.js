@@ -9,7 +9,6 @@ export default function DetailedTrack({
   title = "Track",
   track,
   setTrack = noop,
-  hasAll = false,
 }) {
   const { tracks: trackList } = usePageProps();
   const options = trackList?.map((track) => {
@@ -28,10 +27,6 @@ export default function DetailedTrack({
       value: track.id,
     };
   });
-
-  if (hasAll) {
-    options?.unshift?.({ label: "All", value: "all" });
-  }
 
   return (
     <div>
