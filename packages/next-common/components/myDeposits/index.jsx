@@ -57,7 +57,7 @@ export function useDepositSections(
       },
       !noIdentityModule && {
         activeCount: identity?.depositsCount || 0,
-        content: <IdentityDeposit key="identity" />,
+        content: <IdentityDeposit key="identity" deposits={identity} />,
       },
     ].filter(Boolean);
 

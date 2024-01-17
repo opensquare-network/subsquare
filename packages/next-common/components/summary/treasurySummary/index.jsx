@@ -55,7 +55,7 @@ export default function TreasurySummary() {
             </LoadableContent>
           ),
         },
-        {
+        !isKintsugiChain(chain) && {
           title: "To Be Awarded",
           content: (
             <LoadableContent isLoading={isNil(toBeAwarded)}>

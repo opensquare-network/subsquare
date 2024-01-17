@@ -3,17 +3,14 @@ import { DepositTitle } from "next-common/components/myDeposits/depositTemplate"
 import { MenuIdentity } from "@osn/icons/subsquare";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecisionNumber } from "next-common/utils";
-import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 import ValueDisplay from "../../valueDisplay";
 import AccordionCard from "../../styled/containers/accordionCard";
 import DataList from "next-common/components/dataList";
 import SubIdentityUser from "../../user/subIdentityUser";
 import { AddressUser } from "../../user";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-function DepositList() {
-  const address = useRealAddress();
-  const { identityDeposit, subs, averageSubDeposit } = useMyIdentityDeposit();
+function DepositList({ deposits = {} }) {
+  const { identityDeposit, subs, averageSubDeposit, address } = deposits;
   const { decimals, symbol } = useChainSettings();
 
   const columns = [
@@ -49,8 +46,8 @@ function DepositList() {
   return <DataList columns={columns} rows={rows} noDataText="No items" />;
 }
 
-export default function IdentityDeposit() {
-  const { depositsCount, totalDeposit } = useMyIdentityDeposit();
+export default function IdentityDeposit({ deposits = {} }) {
+  const { depositsCount, totalDeposit } = deposits;
   const { decimals, symbol } = useChainSettings();
 
   const title = (
@@ -79,7 +76,7 @@ export default function IdentityDeposit() {
 
   return (
     <AccordionCard title={title} extra={extra} defaultOpen>
-      <DepositList />
+      <DepositList deposits={deposits} />
     </AccordionCard>
   );
 }
