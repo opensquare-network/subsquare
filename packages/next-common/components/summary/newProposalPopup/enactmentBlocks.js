@@ -10,11 +10,17 @@ function isNumeric(value) {
   return /^\d+$/.test(value);
 }
 
-export default function EnactmentBlocks({ setEnactment }) {
+export default function EnactmentBlocks({ track, setEnactment }) {
   const [tabIndex, setTabIndex] = useState("after");
   const [afterBlocks, setAfterBlocks] = useState(defaultAfterBlock);
   const [initialAt, setInitialAt] = useState();
   const bestNumber = useBestNumber();
+
+  useEffect(() => {
+    if (track) {
+      setAfterBlocks(track.minEnactmentPeriod);
+    }
+  }, [track]);
 
   const isInvalid = useMemo(() => {
     if (tabIndex === "after") {
@@ -68,7 +74,7 @@ export default function EnactmentBlocks({ setEnactment }) {
         {tabIndex === "after" ? (
           <Input
             key="after-input"
-            defaultValue={afterBlocks}
+            value={afterBlocks}
             placeholder="0"
             symbol="Blocks"
             onChange={(e) => setAfterBlocks(e.target.value)}
@@ -76,7 +82,7 @@ export default function EnactmentBlocks({ setEnactment }) {
         ) : (
           <Input
             key="at-input"
-            defaultValue={initialAt}
+            value={initialAt}
             placeholder="0"
             symbol="Blocks"
             onChange={(e) => setInitialAt(e.target.value)}

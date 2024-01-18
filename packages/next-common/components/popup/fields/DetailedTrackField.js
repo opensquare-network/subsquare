@@ -7,10 +7,11 @@ import PopupLabel from "../label";
 
 export default function DetailedTrack({
   title = "Track",
-  track,
-  setTrack = noop,
+  trackId,
+  setTrackId = noop,
 }) {
-  const { tracks: trackList } = usePageProps();
+  const { tracks, tracksDetail } = usePageProps();
+  const trackList = tracksDetail || tracks;
   const options = trackList?.map((track) => {
     return {
       label: (
@@ -32,9 +33,9 @@ export default function DetailedTrack({
     <div>
       {title && <PopupLabel text={title} />}
       <Select
-        value={track}
+        value={trackId}
         options={options}
-        onChange={(item) => setTrack(item.value)}
+        onChange={(item) => setTrackId(item.value)}
         maxDisplayItem={7}
         itemHeight={56}
       />

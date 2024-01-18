@@ -32,8 +32,7 @@ function ChoiceButton({ icon, name, description, onClick }) {
 }
 
 export default function SubmitProposalPopup({ onClose }) {
-  const { track } = usePageProps();
-  console.log({ track });
+  const { period } = usePageProps();
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
@@ -54,7 +53,7 @@ export default function SubmitProposalPopup({ onClose }) {
   if (showNewProposalPopup) {
     return (
       <NewProposalPopup
-        trackId={track?.id}
+        track={period}
         onClose={onClose}
         preimageHash={preimageHash}
         preimageLength={preimageLength}

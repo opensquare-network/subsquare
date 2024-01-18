@@ -4,6 +4,7 @@ import { ssrNextApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsApi,
   gov2ReferendumsSummaryApi,
+  gov2TracksDetailApi,
 } from "next-common/services/url";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
@@ -82,19 +83,25 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const status = upperFirst(camelCase(statusQuery));
 
-  const [tracksProps, { result: posts }, { result: gov2ReferendaSummary }] =
-    await Promise.all([
-      fetchOpenGovTracksProps({ includeTrackDesc: true }),
-      ssrNextApi.fetch(gov2ReferendumsApi, {
-        page,
-        pageSize,
-        status,
-      }),
-      ssrNextApi.fetch(gov2ReferendumsSummaryApi),
-    ]);
+  const [
+    tracksProps,
+    { result: posts },
+    { result: gov2ReferendaSummary },
+    { result: tracksDetail },
+  ] = await Promise.all([
+    fetchOpenGovTracksProps(),
+    ssrNextApi.fetch(gov2ReferendumsApi, {
+      page,
+      pageSize,
+      status,
+    }),
+    ssrNextApi.fetch(gov2ReferendumsSummaryApi),
+    ssrNextApi.fetch(gov2TracksDetailApi),
+  ]);
 
   return {
     props: {
+      tracksDetail: tracksDetail ?? null,
       posts: posts ?? EmptyList,
       title: "OpenGov Referenda",
       gov2ReferendaSummary: gov2ReferendaSummary ?? {},
