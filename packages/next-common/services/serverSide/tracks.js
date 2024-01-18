@@ -1,5 +1,8 @@
 import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipTracksApi, gov2TracksApi } from "next-common/services/url";
+import {
+  fellowshipTracksSummaryApi,
+  gov2TracksSummaryApi,
+} from "next-common/services/url";
 import getChainSettings from "next-common/utils/consts/settings";
 
 export async function fetchSummary() {
@@ -9,8 +12,8 @@ export async function fetchSummary() {
 
 async function fetchAll() {
   const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    ssrNextApi.fetch(gov2TracksApi),
-    ssrNextApi.fetch(fellowshipTracksApi),
+    ssrNextApi.fetch(gov2TracksSummaryApi),
+    ssrNextApi.fetch(fellowshipTracksSummaryApi),
   ]);
 
   return {
@@ -29,13 +32,13 @@ export async function fetchOpenGovTracksProps() {
   }
 
   if (hasReferenda) {
-    const { result: tracks } = await ssrNextApi.fetch(gov2TracksApi);
+    const { result: tracks } = await ssrNextApi.fetch(gov2TracksSummaryApi);
     return { tracks: tracks ?? [], fellowshipTracks: [], summary };
   }
 
   if (hasFellowship) {
     const { result: fellowshipTracks } = await ssrNextApi.fetch(
-      fellowshipTracksApi,
+      fellowshipTracksSummaryApi,
     );
     return { tracks: [], fellowshipTracks: fellowshipTracks ?? [], summary };
   }

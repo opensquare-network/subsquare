@@ -2,7 +2,7 @@ import isMoonChain from "next-common/utils/isMoonChain";
 
 // gov2
 export const gov2TracksApi = "gov2/tracks";
-export const gov2TracksDetailApi = "gov2/tracks_detail";
+export const gov2TracksSummaryApi = gov2TracksApi + "/summary";
 export const gov2ReferendumsTrackApi = (trackId) =>
   gov2TracksApi + `/${trackId}/referendums`;
 export const gov2ReferendumsTracksSummaryApi = (trackId) =>
@@ -34,6 +34,7 @@ export const getFellowshipReferendumVoteCallsApi = (id) =>
 
 // fellowship tracks
 export const fellowshipTracksApi = "fellowship/tracks";
+export const fellowshipTracksSummaryApi = fellowshipTracksApi + "/summary";
 export const fellowshipReferendumsTrackApi = (trackId) =>
   fellowshipTracksApi + `/${trackId}/referenda`;
 export const fellowshipReferendumsTracksSummaryApi = (trackId) =>

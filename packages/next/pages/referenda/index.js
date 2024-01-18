@@ -4,7 +4,7 @@ import { ssrNextApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsApi,
   gov2ReferendumsSummaryApi,
-  gov2TracksDetailApi,
+  gov2TracksApi,
 } from "next-common/services/url";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
@@ -96,7 +96,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       status,
     }),
     ssrNextApi.fetch(gov2ReferendumsSummaryApi),
-    ssrNextApi.fetch(gov2TracksDetailApi),
+    ssrNextApi.fetch(gov2TracksApi),
   ]);
 
   return {
