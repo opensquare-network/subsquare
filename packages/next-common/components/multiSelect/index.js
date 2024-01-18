@@ -5,6 +5,7 @@ import noop from "lodash.noop";
 import DropDownList from "./dropDownList";
 import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
 import { OptionsWrapper } from "../select/styled";
+import { cn } from "next-common/utils";
 
 const Wrapper = styled.div`
   position: relative;
@@ -40,12 +41,21 @@ export default function MultiSelect({
       />
       {showDropDown && (
         <OptionsWrapper itemHeight={itemHeight} maxDisplayItem={maxDisplayItem}>
-          <DropDownList
-            itemName={itemName}
-            options={options}
-            selectedValues={selectedValues}
-            setSelectedValues={setSelectedValues}
-          />
+          <div
+            className={cn(
+              maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
+            )}
+            style={{
+              maxHeight: maxDisplayItem && itemHeight * maxDisplayItem,
+            }}
+          >
+            <DropDownList
+              itemName={itemName}
+              options={options}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
+            />
+          </div>
         </OptionsWrapper>
       )}
     </Wrapper>
