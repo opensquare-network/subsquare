@@ -1,22 +1,15 @@
 import { useChain } from "next-common/context/chain";
 import { usePost } from "next-common/context/post";
 import { useComments } from "next-common/context/post/comments";
-import Chains from "next-common/utils/consts/chains";
 import { useEffect, useState } from "react";
 import { usePolkassemblyPostData } from "./polkassembly/usePolkassemblyPostData";
 import dayjs from "dayjs";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-
-const readPolkassemblyCommentsChains = [
-  Chains.kusama,
-  Chains.polkadot,
-  Chains.moonriver,
-  Chains.collectives,
-];
+import { PolkassemblyChains } from "next-common/utils/polkassembly";
 
 function getShouldReadPolkassemblyComments(chain) {
-  return readPolkassemblyCommentsChains.includes(chain);
+  return PolkassemblyChains.includes(chain);
 }
 
 export function usePostCommentsData() {

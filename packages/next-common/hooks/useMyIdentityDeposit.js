@@ -5,8 +5,10 @@ import {
   myMainIdentityNameSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myIdentityDeposits";
 import { useSelector } from "react-redux";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export function getIdentityDepositData(
+  address,
   mainIdentityName,
   identityDeposit,
   subsDeposit,
@@ -31,6 +33,7 @@ export function getIdentityDepositData(
   }
 
   return {
+    address,
     mainIdentityName,
     identityDeposit,
     totalDeposit: totalDeposit.toString(),
@@ -43,12 +46,14 @@ export function getIdentityDepositData(
 }
 
 export default function useMyIdentityDeposit() {
+  const address = useRealAddress();
   const mainIdentityName = useSelector(myMainIdentityNameSelector);
   const identityDeposit = useSelector(myIdentityDepositSelector);
   const subsDeposit = useSelector(myIdentitySubsDepositSelector);
   const subs = useSelector(myIdentitySubsSelector);
 
   return getIdentityDepositData(
+    address,
     mainIdentityName,
     identityDeposit,
     subsDeposit,

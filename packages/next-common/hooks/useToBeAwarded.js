@@ -6,7 +6,11 @@ export default function useToBeAwarded() {
   const [toBeAwarded, setToBeAwarded] = useState();
 
   useEffect(() => {
-    if (!api) {
+    if (
+      !api ||
+      !api?.query?.treasury?.approvals ||
+      !api?.query?.treasury?.proposals
+    ) {
       return;
     }
 

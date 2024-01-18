@@ -104,14 +104,13 @@ const polkadot = {
   hasSubscan: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
-  hasDiscussionsForumTopics: true,
-  discussionsForumUrl: "https://forum.polkadot.network",
+  hasDiscussionsForumTopics: false,
   hasMultisig: true,
   multisigApiPrefix: "dot",
   // used to control whether to show votes delegation percentage on referendum detail page.
   showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
-  showAchainableLabels: true,
+  showAchainableLabels: false,
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   hideNewTreasuryProposalButton: true,

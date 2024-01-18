@@ -1,5 +1,8 @@
 import DataList from "next-common/components/dataList";
+import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
+import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { toPrecision } from "next-common/utils";
 
 const columns = [
   {
@@ -33,13 +36,23 @@ export default function FellowshipParamsList({ rank }) {
     minPromotionPeriod = [],
   } = fellowshipParams ?? {};
 
+  const { symbol, decimals } = useSalaryAsset();
+
   const rows = activeSalary?.map?.((_, idx) => {
     return [
       idx,
-      activeSalary[idx],
-      passiveSalary[idx],
-      demotionPeriod[idx],
-      minPromotionPeriod[idx],
+      <ValueDisplay
+        key={`active-salary-${idx}`}
+        value={toPrecision(activeSalary[idx], decimals)}
+        symbol={symbol}
+      />,
+      <ValueDisplay
+        key={`passive-salary-${idx}`}
+        value={toPrecision(passiveSalary[idx], decimals)}
+        symbol={symbol}
+      />,
+      demotionPeriod[idx]?.toLocaleString?.(),
+      minPromotionPeriod[idx]?.toLocaleString?.(),
     ];
   });
 

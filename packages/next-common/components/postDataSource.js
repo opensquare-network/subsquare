@@ -1,7 +1,9 @@
-import Chains from "../utils/consts/chains";
 import { usePost } from "../context/post";
 import { useChain, useChainSettings } from "../context/chain";
-import { getPolkassemblyLink } from "next-common/utils/polkassembly";
+import {
+  PolkassemblyChains,
+  getPolkassemblyLink,
+} from "next-common/utils/polkassembly";
 import { useDetailType } from "../context/page";
 import ExternalLink from "./externalLink";
 import { getSubscanLink } from "next-common/utils/subscan";
@@ -17,12 +19,7 @@ export default function PostDataSource() {
   const sources = [
     {
       label: <LinkPolkassembly />,
-      when: [
-        Chains.kusama,
-        Chains.polkadot,
-        Chains.moonriver,
-        Chains.collectives,
-      ].includes(chain),
+      when: PolkassemblyChains.includes(chain),
       link: getPolkassemblyLink(type, post),
     },
     {
