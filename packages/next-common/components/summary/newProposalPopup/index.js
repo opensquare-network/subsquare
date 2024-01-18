@@ -1,6 +1,6 @@
 import DetailedTrack from "next-common/components/popup/fields/DetailedTrackField";
 import SignerPopup from "next-common/components/signerPopup";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
 import { usePageProps } from "next-common/context/page";
@@ -9,8 +9,19 @@ import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import isNil from "lodash.isnil";
 import { useRouter } from "next/router";
+import { isHex } from "@polkadot/util";
+import useApi from "next-common/utils/hooks/useApi";
 
-export default function NewProposalPopup({ onClose }) {
+function isValidPreimageHash(hash) {
+  return isHex(hash, 32 * 8);
+}
+
+export default function NewProposalPopup({
+  onClose,
+  preimageHash: _preimageHash,
+  preimageLength: _preimageLength,
+}) {
+  const api = useApi();
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useIsMounted();
@@ -18,11 +29,35 @@ export default function NewProposalPopup({ onClose }) {
 
   const [track, setTrack] = useState(trackList[0]?.id);
   const [enactment, setEnactment] = useState();
-  const [preimageHash, setPreimageHash] = useState();
-  const [preimageLength, setPreimageLength] = useState();
+  const [preimageHash, setPreimageHash] = useState(_preimageHash);
+  const [preimageLength, setPreimageLength] = useState(_preimageLength);
 
   const disabled =
     isNil(track) || isNil(enactment) || !preimageHash || !preimageLength;
+
+  useEffect(() => {
+    if (!preimageHash) {
+      return;
+    }
+    if (!isValidPreimageHash(preimageHash)) {
+      return;
+    }
+    if (!api) {
+      return;
+    }
+
+    Promise.all([
+      api.query.preimage.statusFor(preimageHash),
+      api.query.preimage.requestStatusFor(preimageHash),
+    ]).then(([statusFor, requestStatusFor]) => {
+      const status =
+        statusFor?.unwrapOr(null) || requestStatusFor?.unwrapOr(null);
+      if (!status) {
+        return;
+      }
+      setPreimageLength(status.value?.len?.toString());
+    });
+  }, [api, preimageHash]);
 
   const onSubmit = useCallback(
     (api, signerAccount) => {
@@ -48,6 +83,9 @@ export default function NewProposalPopup({ onClose }) {
         isMounted,
         signerAddress: signerAccount.address,
         onInBlock: (eventData) => {
+          if (!eventData) {
+            return;
+          }
           const [referendumIndex] = eventData;
           router.push(`/referenda/${referendumIndex}`);
         },
@@ -77,6 +115,8 @@ export default function NewProposalPopup({ onClose }) {
     >
       <DetailedTrack track={track} setTrack={setTrack} />
       <PreimageField
+        preimageHash={preimageHash}
+        preimageLength={preimageLength}
         setPreimageHash={setPreimageHash}
         setPreimageLength={setPreimageLength}
       />
