@@ -51,8 +51,8 @@ export default function FellowshipParamsList({ rank }) {
         value={toPrecision(passiveSalary[idx], decimals)}
         symbol={symbol}
       />,
-      demotionPeriod[idx],
-      minPromotionPeriod[idx],
+      demotionPeriod[idx]?.toLocaleString?.(),
+      minPromotionPeriod[idx]?.toLocaleString?.(),
     ];
   });
 
