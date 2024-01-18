@@ -6,6 +6,7 @@ import { cn } from "next-common/utils";
 import { useCallback, useState } from "react";
 import NewPreimagePopup from "next-common/components/preImages/newPreimagePopup";
 import NewProposalPopup from "../newProposalPopup";
+import { usePageProps } from "next-common/context/page";
 
 function ChoiceButton({ icon, name, description, onClick }) {
   return (
@@ -31,6 +32,8 @@ function ChoiceButton({ icon, name, description, onClick }) {
 }
 
 export default function SubmitProposalPopup({ onClose }) {
+  const { track } = usePageProps();
+  console.log({ track });
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
@@ -45,12 +48,13 @@ export default function SubmitProposalPopup({ onClose }) {
   }, []);
 
   if (showNewPreimagePopup) {
-    return <NewPreimagePopup onCreated={onPreimageCreated} />;
+    return <NewPreimagePopup onClose={onClose} onCreated={onPreimageCreated} />;
   }
 
   if (showNewProposalPopup) {
     return (
       <NewProposalPopup
+        trackId={track?.id}
         onClose={onClose}
         preimageHash={preimageHash}
         preimageLength={preimageLength}

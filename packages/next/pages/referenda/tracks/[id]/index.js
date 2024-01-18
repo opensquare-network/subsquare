@@ -16,6 +16,7 @@ import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import NewProposalButton from "next-common/components/summary/newProposalButton";
 
 export default function TrackPage({
   posts,
@@ -57,10 +58,13 @@ export default function TrackPage({
         title="List"
         titleCount={posts.total}
         titleExtra={
-          <ReferendaStatusSelectField
-            value={status}
-            onChange={onStatusChange}
-          />
+          <div className="flex gap-[12px]">
+            <ReferendaStatusSelectField
+              value={status}
+              onChange={onStatusChange}
+            />
+            <NewProposalButton />
+          </div>
         }
         category={businessCategory.openGovReferenda}
         items={items}

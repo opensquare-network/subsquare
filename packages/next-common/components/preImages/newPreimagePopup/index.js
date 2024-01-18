@@ -104,7 +104,6 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
         tx,
         setLoading: setIsSubmitting,
         dispatch,
-        onClose,
         signerAddress,
         isMounted,
         onInBlock: () => {
@@ -117,14 +116,7 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
             : () => dispatch(incPreImagesTrigger()),
       });
     },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onClose,
-      setIsSubmitting,
-      notePreimageTx,
-    ],
+    [dispatch, isMounted, showErrorToast, setIsSubmitting, notePreimageTx],
   );
 
   return (

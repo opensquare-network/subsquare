@@ -16,6 +16,7 @@ function isValidPreimageHash(hash) {
 }
 
 export default function NewProposalPopup({
+  trackId,
   onClose,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
@@ -25,7 +26,7 @@ export default function NewProposalPopup({
   const router = useRouter();
   const isMounted = useIsMounted();
 
-  const [track, setTrack] = useState();
+  const [track, setTrack] = useState(trackId);
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash);
   const [preimageLength, setPreimageLength] = useState(_preimageLength);
@@ -105,7 +106,7 @@ export default function NewProposalPopup({
       actionCallback={onSubmit}
       disabled={disabled}
     >
-      <DetailedTrack track={track} setTrack={setTrack} />
+      {isNil(trackId) && <DetailedTrack track={track} setTrack={setTrack} />}
       <PreimageField
         preimageHash={preimageHash}
         preimageLength={preimageLength}
