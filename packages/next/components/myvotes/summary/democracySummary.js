@@ -42,7 +42,7 @@ export default function DemocracySummary() {
   const unLockable = BigNumber(totalLocked).minus(lockRequired).toString();
 
   let actionComponent = null;
-  if (democracyVoting && voteExpiredReferenda.length > 0) {
+  if (democracyVoting || voteExpiredReferenda.length > 0) {
     actionComponent = (
       <div
         className="cursor-pointer text-theme500 text-[12px]"
