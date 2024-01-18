@@ -34,13 +34,7 @@ export default function NewProposalPopup({
     isNil(track) || isNil(enactment) || !preimageHash || !preimageLength;
 
   useEffect(() => {
-    if (!preimageHash) {
-      return;
-    }
-    if (!isValidPreimageHash(preimageHash)) {
-      return;
-    }
-    if (!api) {
+    if (!preimageHash || !isValidPreimageHash(preimageHash) || !api) {
       return;
     }
 
