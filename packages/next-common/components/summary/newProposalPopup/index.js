@@ -3,7 +3,6 @@ import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
-import { usePageProps } from "next-common/context/page";
 import { sendTx } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -25,9 +24,8 @@ export default function NewProposalPopup({
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useIsMounted();
-  const { tracks: trackList } = usePageProps();
 
-  const [track, setTrack] = useState(trackList[0]?.id);
+  const [track, setTrack] = useState();
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash);
   const [preimageLength, setPreimageLength] = useState(_preimageLength);
