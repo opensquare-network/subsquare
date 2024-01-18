@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.1
+
+date: 2024-01-17
+
+- [Medium] Show deposits and multisigs on user profile page.
+- Implement params page for polkadot collectives.
+- Archive tips menu for polkadot/kusama.
+- Redirect user to detail page when a new tip is created.
+- Adopt github markdown style and bump osn/previewer.
+- Improve loading effect on council vote popup.
+- Add treasury state on home page.
+- Store metadata with IndexedDb.
+- Remove useless state syncing code after child bounty claimed.
+- Fix motion/tip columns.
+- Fix styles.
+
 ### 3.8.0
 
 date: 2024-01-06

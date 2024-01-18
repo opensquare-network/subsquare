@@ -2,7 +2,7 @@ import { getAllianceMenu, Names } from "next-common/utils/consts/menu/alliance";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
-  getVoteSummaryColumn,
+  getVoteSummaryColumnPlaceholder,
 } from "./columns";
 import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allianceMotion";
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
@@ -44,7 +44,7 @@ export function getActiveProposalAlliance({ summary, activeProposals }) {
           columns: [
             getProposalPostTitleColumn(),
             { className: "w-40" },
-            getVoteSummaryColumn(),
+            getVoteSummaryColumnPlaceholder(),
             getStatusTagColumn({ category: options?.category }),
           ],
         };
