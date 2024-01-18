@@ -37,7 +37,6 @@ export default function NewProposalPopup({
     () => _track || tracksDetail?.find((track) => track.id === trackId),
     [trackId, _track, tracksDetail],
   );
-  console.log(track);
 
   const disabled =
     isNil(trackId) || isNil(enactment) || !preimageHash || !preimageLength;
