@@ -18,16 +18,20 @@ const collectivesEndpoints = [
     url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
   },
   {
-    name: "OnFinality",
-    url: "wss://collectives.api.onfinality.io/public-ws",
-  },
-  {
     name: "IBP-GeoDNS1",
     url: "wss://sys.ibp.network/collectives-polkadot",
   },
   {
     name: "IBP-GeoDNS2",
     url: "wss://sys.dotters.network/collectives-polkadot",
+  },
+  {
+    name: "Parity",
+    url: "wss://polkadot-collectives-rpc.polkadot.io",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://collectives.api.onfinality.io/public-ws",
   },
   {
     name: "LuckyFriday",
