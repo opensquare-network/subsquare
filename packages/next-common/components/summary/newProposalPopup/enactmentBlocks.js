@@ -1,22 +1,51 @@
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import Tab from "next-common/components/tab";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import useBestNumber from "next-common/hooks/useBestNumber";
+
+const defaultAfterBlock = 100;
+
+function isNumeric(value) {
+  return /^\d+$/.test(value);
+}
 
 export default function EnactmentBlocks({ setEnactment }) {
   const [tabIndex, setTabIndex] = useState("after");
-  const [blocks, setBlocks] = useState();
+  const [afterBlocks, setAfterBlocks] = useState(defaultAfterBlock);
+  const [initialAt, setInitialAt] = useState();
+  const bestNumber = useBestNumber();
+
+  const isInvalid = useMemo(() => {
+    if (tabIndex === "after") {
+      return !afterBlocks || !isNumeric(afterBlocks) || Number(afterBlocks) < 1;
+    }
+    return (
+      !bestNumber || !isNumeric(initialAt) || Number(initialAt) < bestNumber
+    );
+  }, [afterBlocks, initialAt, bestNumber, tabIndex]);
 
   useEffect(() => {
-    if (!tabIndex || !blocks) {
+    bestNumber && setInitialAt((prev) => prev || bestNumber + 1000);
+  }, [bestNumber]);
+
+  useEffect(() => {
+    if (isInvalid) {
       setEnactment();
       return;
     }
 
+    if (tabIndex === "after") {
+      setEnactment({
+        after: parseInt(afterBlocks),
+      });
+      return;
+    }
+
     setEnactment({
-      [tabIndex]: blocks,
+      at: parseInt(initialAt),
     });
-  }, [blocks, tabIndex]);
+  }, [isInvalid, initialAt, afterBlocks, tabIndex]);
 
   return (
     <div>
@@ -36,11 +65,23 @@ export default function EnactmentBlocks({ setEnactment }) {
           selectedTabId={tabIndex}
           setSelectedTabId={setTabIndex}
         />
-        <Input
-          placeholder="0"
-          symbol="Blocks"
-          onChange={(e) => setBlocks(e.target.value)}
-        />
+        {tabIndex === "after" ? (
+          <Input
+            key="after-input"
+            defaultValue={afterBlocks}
+            placeholder="0"
+            symbol="Blocks"
+            onChange={(e) => setAfterBlocks(e.target.value)}
+          />
+        ) : (
+          <Input
+            key="at-input"
+            defaultValue={initialAt}
+            placeholder="0"
+            symbol="Blocks"
+            onChange={(e) => setInitialAt(e.target.value)}
+          />
+        )}
       </div>
     </div>
   );

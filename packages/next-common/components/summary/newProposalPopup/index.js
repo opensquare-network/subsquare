@@ -47,8 +47,8 @@ export default function NewProposalPopup({
     }
 
     Promise.all([
-      api.query.preimage.statusFor(preimageHash),
-      api.query.preimage.requestStatusFor(preimageHash),
+      api.query.preimage.statusFor?.(preimageHash),
+      api.query.preimage.requestStatusFor?.(preimageHash),
     ]).then(([statusFor, requestStatusFor]) => {
       const status =
         statusFor?.unwrapOr(null) || requestStatusFor?.unwrapOr(null);
