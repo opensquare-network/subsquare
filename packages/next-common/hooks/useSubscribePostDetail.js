@@ -4,6 +4,7 @@ import fetchAndUpdatePost from "next-common/context/post/update";
 import { useSocket } from "next-common/context/socket";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useDetailType } from "next-common/context/page";
+import useIsProposalFinished from "next-common/hooks/proposal/useIsProposalFinished";
 
 const postStatusRoom = "POST_STATUS_ROOM";
 
@@ -42,13 +43,15 @@ function detailTypeToPostType(detailType) {
 export default function useSubscribePostDetail(postId) {
   const type = useDetailType();
   const socket = useSocket();
+  const isFinished = useIsProposalFinished();
+
   const postDispatch = usePostDispatch();
   const onPostUpdated = useCallback(() => {
     fetchAndUpdatePost(postDispatch, type, postId);
   }, [postDispatch, type, postId]);
 
   useEffect(() => {
-    if (!socket) {
+    if (!socket || isFinished !== false) {
       return;
     }
 
