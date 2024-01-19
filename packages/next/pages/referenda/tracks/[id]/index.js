@@ -4,6 +4,7 @@ import {
   gov2ReferendumsTrackApi,
   gov2ReferendumsTracksApi,
   gov2ReferendumsTracksSummaryApi,
+  gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
@@ -101,6 +102,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: posts },
     { result: trackReferendaSummary },
     { result: period },
+    { result: tracksDetail },
   ] = await Promise.all([
     ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
       page,
@@ -109,11 +111,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     }),
     ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
     ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+    ssrNextApi.fetch(gov2TracksApi),
   ]);
 
   return {
     props: {
       track: track ?? null,
+      tracksDetail: tracksDetail ?? null,
       posts: posts ?? EmptyList,
       title: "Referenda " + startCase(track.name),
       tracks,

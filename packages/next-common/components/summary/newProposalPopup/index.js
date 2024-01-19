@@ -13,6 +13,7 @@ import useApi from "next-common/utils/hooks/useApi";
 import { usePageProps } from "next-common/context/page";
 import camelCase from "lodash.camelcase";
 import upperFirst from "lodash.upperfirst";
+import SubmissionDeposit from "./submissionDeposit";
 
 function isValidPreimageHash(hash) {
   return isHex(hash, 32 * 8);
@@ -36,12 +37,12 @@ export default function NewProposalPopup({
 
   const [trackId, setTrackId] = useState(_track?.id);
   const [enactment, setEnactment] = useState();
-  const [preimageHash, setPreimageHash] = useState(_preimageHash);
-  const [preimageLength, setPreimageLength] = useState(_preimageLength);
+  const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
+  const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
   const track = useMemo(
-    () => _track || tracksDetail?.find((track) => track.id === trackId),
-    [trackId, _track, tracksDetail],
+    () => tracksDetail?.find((track) => track.id === trackId),
+    [trackId, tracksDetail],
   );
 
   const disabled =
@@ -126,7 +127,7 @@ export default function NewProposalPopup({
       actionCallback={onSubmit}
       disabled={disabled}
     >
-      {!_track && <DetailedTrack trackId={trackId} setTrackId={setTrackId} />}
+      <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
         preimageLength={preimageLength}
@@ -134,6 +135,7 @@ export default function NewProposalPopup({
         setPreimageLength={setPreimageLength}
       />
       <EnactmentBlocks track={track} setEnactment={setEnactment} />
+      <SubmissionDeposit />
     </SignerPopup>
   );
 }
