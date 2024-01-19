@@ -66,6 +66,7 @@ export function getActiveProposalDiscussions({
       name: "Forum Topics",
       api: {
         initData: forumLatestTopics,
+        viewAllLink: chainSettings?.discourseForumLink,
       },
       activeCount: forumLatestTopics?.items?.length,
       formatter: normalizePolkadotForumTopicListItem,

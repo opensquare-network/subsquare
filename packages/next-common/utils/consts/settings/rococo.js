@@ -49,6 +49,7 @@ const rococo = {
   noDemocracyModule: true,
   hasSubscan: true,
   hasDiscussionsForumTopics: true,
+  discourseForumLink: "https://forum.polkadot.network",
   description: "Polkadot’s Parachain Testnet",
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",

@@ -16,6 +16,7 @@ export default function DataList({
   noDataText = "No current votes",
   bordered = false,
   highlightedIndexes = [],
+  showBottomDivider,
 }) {
   let content;
   const listRef = useRef();
@@ -82,6 +83,7 @@ export default function DataList({
             highlighted={highlightedIndexes.includes(idx)}
           />
         ))}
+        {showBottomDivider && <div />}
       </div>
     );
   }

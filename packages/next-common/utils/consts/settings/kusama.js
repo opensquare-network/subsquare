@@ -101,6 +101,7 @@ const kusama = {
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
   hasDiscussionsForumTopics: false,
+  discourseForumLink: "https://forum.polkadot.network",
   hasMultisig: true,
   hasTipsModule: false,
   multisigApiPrefix: "kusama",
