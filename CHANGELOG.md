@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.2
+
+date: 2024-01-19
+
+- [Medium] Support creating OpenGov referenda proposal.
+- Add salary status panel for polkadot collectives.
+- Show forum topics for polkadot/kusama/rococo.
+- Remove subscription for finished proposal detail page.
+- Render fellowship members with server side data.
+- Adjust RPCs for collectives chain.
+- Improve collectives params table value.
+- Sync polkassembly proposal data for zeitgeist.
+- Sanitize post html and improve styles.
+- Fix styles and update @osn/previewer.
+
 ### 3.8.1
 
 date: 2024-01-17

@@ -104,7 +104,7 @@ const polkadot = {
   hasSubscan: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
-  hasDiscussionsForumTopics: false,
+  hasDiscussionsForumTopics: true,
   discourseForumLink: "https://forum.polkadot.network",
   hasMultisig: true,
   multisigApiPrefix: "dot",
