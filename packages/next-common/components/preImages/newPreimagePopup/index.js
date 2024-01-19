@@ -12,6 +12,8 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
+import noop from "lodash.noop";
+import { emptyFunction } from "next-common/utils";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -51,7 +53,7 @@ function getState(api, proposal) {
   };
 }
 
-export default function NewPreimagePopup({ onClose }) {
+export default function NewPreimagePopup({ onClose, onCreated = noop }) {
   const api = useApi();
   const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
     useState(EMPTY_PROPOSAL);
@@ -102,21 +104,19 @@ export default function NewPreimagePopup({ onClose }) {
         tx,
         setLoading: setIsSubmitting,
         dispatch,
-        onClose,
         signerAddress,
         isMounted,
-        onInBlock: () => dispatch(incPreImagesTrigger()),
-        onFinalized: () => dispatch(incPreImagesTrigger()),
+        onInBlock: () => {
+          onCreated(encodedHash, encodedLength);
+          dispatch(incPreImagesTrigger());
+        },
+        onFinalized:
+          onCreated !== noop
+            ? emptyFunction
+            : () => dispatch(incPreImagesTrigger()),
       });
     },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onClose,
-      setIsSubmitting,
-      notePreimageTx,
-    ],
+    [dispatch, isMounted, showErrorToast, setIsSubmitting, notePreimageTx],
   );
 
   return (

@@ -3487,6 +3487,7 @@ __metadata:
     eslint-config-next: ^13.3.0
     http-proxy: ^1.18.1
     localforage: ^1.10.0
+    lodash.camelcase: ^4.3.0
     lodash.capitalize: ^4.2.1
     lodash.clonedeep: ^4.5.0
     lodash.debounce: ^4.0.8
@@ -3503,6 +3504,7 @@ __metadata:
     lodash.range: ^3.2.0
     lodash.sumby: ^4.6.0
     lodash.uniqby: ^4.7.0
+    lodash.upperfirst: ^4.3.1
     moment: ^2.29.4
     next: ^13.5.0
     next-common: "workspace:*"
@@ -8085,6 +8087,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.camelcase@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "lodash.camelcase@npm:4.3.0"
+  checksum: cb9227612f71b83e42de93eccf1232feeb25e705bdb19ba26c04f91e885bfd3dd5c517c4a97137658190581d3493ea3973072ca010aab7e301046d90740393d1
+  languageName: node
+  linkType: hard
+
 "lodash.capitalize@npm:^4.2.1":
   version: 4.2.1
   resolution: "lodash.capitalize@npm:4.2.1"
@@ -8292,6 +8301,13 @@ __metadata:
   version: 4.7.0
   resolution: "lodash.uniqby@npm:4.7.0"
   checksum: 659264545a95726d1493123345aad8cbf56e17810fa9a0b029852c6d42bc80517696af09d99b23bef1845d10d95e01b8b4a1da578f22aeba7a30d3e0022a4938
+  languageName: node
+  linkType: hard
+
+"lodash.upperfirst@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "lodash.upperfirst@npm:4.3.1"
+  checksum: cadec6955900afe1928cc60cdc4923a79c2ef991e42665419cc81630ed9b4f952a1093b222e0141ab31cbc4dba549f97ec28ff67929d71e01861c97188a5fa83
   languageName: node
   linkType: hard
 
