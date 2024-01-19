@@ -15,6 +15,7 @@ import FellowshipTotalPeriodCountdown from "./totalPeriodCountdown";
 import { useNavCollapsed } from "next-common/context/nav";
 import LoadableContent from "next-common/components/common/loadableContent";
 import RemainLabel from "./remainLabel";
+import Tooltip from "next-common/components/tooltip";
 
 export default function FellowshipSalaryStats() {
   const [navCollapsed] = useNavCollapsed();
@@ -65,105 +66,146 @@ export default function FellowshipSalaryStats() {
     ? Math.min(100, toPercentage(1 - payoutRemain / payoutPeriod, 2))
     : 0;
 
-  const items = [
-    {
-      title: "Cycle Index",
-      content: (
-        <LoadableContent isLoading={isNil(stats?.cycleIndex)}>
-          {stats?.cycleIndex}
-        </LoadableContent>
-      ),
-    },
-    {
-      title: "Budget",
-      content: (
-        <LoadableContent isLoading={isNil(budgetValue)}>
-          <ValueDisplay
-            value={toPrecision(budgetValue, decimals)}
-            symbol={symbol}
-          />
-        </LoadableContent>
-      ),
-    },
-    {
-      title: "Total Registrations",
-      content: (
-        <LoadableContent isLoading={isNil(totalRegistrationsValue)}>
-          <ValueDisplay
-            value={toPrecision(totalRegistrationsValue, decimals)}
-            symbol={symbol}
-          />
-        </LoadableContent>
-      ),
-    },
-    {
-      title: "Total Period",
-      content: (
-        <LoadableContent isLoading={isNil(totalCyclePeriod)}>
+  const mobilePlaceholderItem = {
+    className: cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden"),
+  };
+  const desktopPlaceholderItem = {
+    className: cn(navCollapsed ? "sm:hidden" : "md:hidden"),
+  };
+
+  const cycleIndexItem = {
+    title: "Cycle Index",
+    content: (
+      <LoadableContent isLoading={isNil(stats?.cycleIndex)}>
+        {stats?.cycleIndex}
+      </LoadableContent>
+    ),
+  };
+
+  const budgetItem = {
+    title: "Budget",
+    content: (
+      <LoadableContent isLoading={isNil(budgetValue)}>
+        <ValueDisplay
+          value={toPrecision(budgetValue, decimals)}
+          symbol={symbol}
+        />
+      </LoadableContent>
+    ),
+  };
+
+  const totalRegistrationsItem = {
+    title: "Total Registrations",
+    content: (
+      <LoadableContent isLoading={isNil(totalRegistrationsValue)}>
+        <ValueDisplay
+          value={toPrecision(totalRegistrationsValue, decimals)}
+          symbol={symbol}
+        />
+      </LoadableContent>
+    ),
+  };
+
+  const totalPeriodItem = {
+    title: "Total Period",
+    content: (
+      <LoadableContent isLoading={isNil(totalCyclePeriod)}>
+        <Tooltip
+          content={<span>{totalCyclePeriod?.toLocaleString?.()} blocks</span>}
+        >
           <div>
             {totalPeriodDay[0]}{" "}
             <span className="text-textTertiary">{totalPeriodDay[1]}</span>
           </div>
-        </LoadableContent>
-      ),
-      suffix: (
-        <FellowshipTotalPeriodCountdown
-          percentage={totalPercentage}
-          totalRemain={totalRemain}
+        </Tooltip>
+      </LoadableContent>
+    ),
+    suffix: (
+      <FellowshipTotalPeriodCountdown
+        percentage={totalPercentage}
+        totalRemain={totalRemain}
+      />
+    ),
+  };
+
+  const totalUnregisteredPaidItem = {
+    title: "Total Unregistered Paid",
+    content: (
+      <LoadableContent isLoading={isNil(totalUnregisteredPaidValue)}>
+        <ValueDisplay
+          value={toPrecision(totalUnregisteredPaidValue, decimals)}
+          symbol={symbol}
         />
-      ),
-    },
-    { className: cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden") },
-    {
-      title: "Total Unregistered Paid",
-      content: (
-        <LoadableContent isLoading={isNil(totalUnregisteredPaidValue)}>
-          <ValueDisplay
-            value={toPrecision(totalUnregisteredPaidValue, decimals)}
-            symbol={symbol}
+      </LoadableContent>
+    ),
+  };
+
+  const potItem = {
+    title: "Pot",
+    content: (
+      <LoadableContent isLoading={isNil(potValue)}>
+        <ValueDisplay value={toPrecision(potValue, decimals)} symbol={symbol} />
+      </LoadableContent>
+    ),
+  };
+
+  const timeItem = {
+    content: (
+      <LoadableContent isLoading={isNil(totalCyclePeriod)}>
+        <div className="space-y-1">
+          <RemainLabel
+            percentage={registrationPercentage}
+            label={"Registration"}
+            remain={registrationRemain}
+            time={registrationTime}
           />
-        </LoadableContent>
-      ),
-    },
-    {
-      title: "Pot",
-      content: (
-        <LoadableContent isLoading={isNil(potValue)}>
-          <ValueDisplay
-            value={toPrecision(potValue, decimals)}
-            symbol={symbol}
+          <RemainLabel
+            percentage={payoutPercentage}
+            label={"Payout"}
+            remain={payoutRemain}
+            time={payoutTime}
           />
-        </LoadableContent>
-      ),
-    },
-    { className: cn(navCollapsed ? "sm:hidden" : "md:hidden") },
-    {
-      content: (
-        <LoadableContent isLoading={isNil(totalCyclePeriod)}>
-          <div className="space-y-1">
-            <RemainLabel
-              percentage={registrationPercentage}
-              label={"Registration"}
-              remain={registrationRemain}
-              time={registrationTime}
-            />
-            <RemainLabel
-              percentage={payoutPercentage}
-              label={"Payout"}
-              remain={payoutRemain}
-              time={payoutTime}
-            />
-          </div>
-        </LoadableContent>
-      ),
-    },
+        </div>
+      </LoadableContent>
+    ),
+  };
+
+  const desktopSummaryItems = [
+    cycleIndexItem,
+    budgetItem,
+    potItem,
+    totalPeriodItem,
+    mobilePlaceholderItem,
+    totalRegistrationsItem,
+    totalUnregisteredPaidItem,
+    desktopPlaceholderItem,
+    timeItem,
+  ];
+
+  const mobileSummaryItems = [
+    cycleIndexItem,
+    desktopPlaceholderItem,
+    budgetItem,
+    potItem,
+    totalRegistrationsItem,
+    totalUnregisteredPaidItem,
+    totalPeriodItem,
+    mobilePlaceholderItem,
+    timeItem,
   ];
 
   return (
     <div>
       <TitleContainer className="mb-4">Fellowship Salary Stats</TitleContainer>
       <SecondaryCard>
-        <Summary items={items} />
+        <Summary
+          items={desktopSummaryItems}
+          className={mobilePlaceholderItem.className}
+        />
+        <Summary
+          items={mobileSummaryItems}
+          className={desktopPlaceholderItem.className}
+        />
       </SecondaryCard>
     </div>
   );
