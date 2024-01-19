@@ -47,6 +47,18 @@ export function getActiveProposalDiscussions({
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
       columns: discussionsColumns,
     },
+    chainSettings.hasDiscussionsForumTopics && {
+      lazy: false,
+      value: "forumTopics",
+      name: "Forum",
+      api: {
+        initData: forumLatestTopics,
+        viewAllLink: chainSettings?.discourseForumLink,
+      },
+      activeCount: forumLatestTopics?.items?.length,
+      formatter: normalizePolkadotForumTopicListItem,
+      columns: discussionsForumTopicsColumns,
+    },
     chainSettings.hasPolkassemblyDiscussions && {
       lazy: false,
       value: "polkassembly",
@@ -59,18 +71,6 @@ export function getActiveProposalDiscussions({
       activeCount: polkassembly?.total,
       formatter: (item) => normalizePolkassemblyDiscussionListItem(CHAIN, item),
       columns: discussionsColumns,
-    },
-    chainSettings.hasDiscussionsForumTopics && {
-      lazy: false,
-      value: "forumTopics",
-      name: "Forum Topics",
-      api: {
-        initData: forumLatestTopics,
-        viewAllLink: chainSettings?.discourseForumLink,
-      },
-      activeCount: forumLatestTopics?.items?.length,
-      formatter: normalizePolkadotForumTopicListItem,
-      columns: discussionsForumTopicsColumns,
     },
   ].filter(Boolean);
 
