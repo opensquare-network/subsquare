@@ -7,7 +7,7 @@ import {
 import useEnactmentPercentage from "./percentage";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
-import Remaining from "../remaining";
+import Remaining from "next-common/components/remaining";
 
 export default function EnactmentProgress() {
   const { percentage, period, remaining } = useEnactmentPercentage();

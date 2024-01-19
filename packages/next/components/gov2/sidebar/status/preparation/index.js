@@ -11,7 +11,7 @@ import {
 } from "../styled";
 import Progress from "next-common/components/progress";
 import { usePrepareRemaining } from "./remaining";
-import Remaining from "../remaining";
+import Remaining from "next-common/components/remaining";
 import TimeDuration from "next-common/components/TimeDuration";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
