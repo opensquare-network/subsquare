@@ -11,9 +11,15 @@ import { useRouter } from "next/router";
 import { isHex } from "@polkadot/util";
 import useApi from "next-common/utils/hooks/useApi";
 import { usePageProps } from "next-common/context/page";
+import camelCase from "lodash.camelcase";
+import upperFirst from "lodash.upperfirst";
 
 function isValidPreimageHash(hash) {
   return isHex(hash, 32 * 8);
+}
+
+function upperFirstCamelCase(str) {
+  return upperFirst(camelCase(str));
 }
 
 export default function NewProposalPopup({
@@ -65,8 +71,15 @@ export default function NewProposalPopup({
         return;
       }
 
+      let proposalOrigin = null;
+      if (track?.name === "root") {
+        proposalOrigin = { system: "Root" };
+      } else {
+        proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
+      }
+
       const tx = api.tx.referenda.submit(
-        trackId,
+        proposalOrigin,
         {
           Lookup: {
             hash: preimageHash,
@@ -98,7 +111,7 @@ export default function NewProposalPopup({
       dispatch,
       router,
       isMounted,
-      trackId,
+      track?.name,
       enactment,
       preimageHash,
       preimageLength,
