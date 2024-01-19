@@ -8,7 +8,7 @@ export async function fetchForumLatestTopics() {
   if (!hasDiscussionsForumTopics) {
     return { items: [] };
   }
-  const { result: items } = await ssrNextApi.fetch("/forum/posts");
+  const { result: items } = await ssrNextApi.fetch("forum/posts");
   return { items: items || [] };
 }
 
@@ -17,6 +17,6 @@ export async function fetchForumCategories() {
   if (!hasDiscussionsForumTopics) {
     return { items: [] };
   }
-  const { result: items } = await ssrNextApi.fetch("/forum/categories");
+  const { result: items } = await ssrNextApi.fetch("forum/categories");
   return { items: items || [] };
 }
