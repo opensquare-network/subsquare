@@ -66,10 +66,10 @@ export default function FellowshipSalaryStats() {
     ? Math.min(100, toPercentage(1 - payoutRemain / payoutPeriod, 2))
     : 0;
 
-  const mobilePlaceholderItem = {
+  const desktopPlaceholderVisibleItem = {
     className: cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden"),
   };
-  const desktopPlaceholderItem = {
+  const mobilePlaceholderVisibleItem = {
     className: cn(navCollapsed ? "sm:hidden" : "md:hidden"),
   };
 
@@ -175,22 +175,22 @@ export default function FellowshipSalaryStats() {
     budgetItem,
     potItem,
     totalPeriodItem,
-    mobilePlaceholderItem,
+    desktopPlaceholderVisibleItem,
     totalRegistrationsItem,
     totalUnregisteredPaidItem,
-    desktopPlaceholderItem,
+    mobilePlaceholderVisibleItem,
     timeItem,
   ];
 
   const mobileSummaryItems = [
     cycleIndexItem,
-    desktopPlaceholderItem,
+    mobilePlaceholderVisibleItem,
     budgetItem,
     potItem,
     totalRegistrationsItem,
     totalUnregisteredPaidItem,
     totalPeriodItem,
-    mobilePlaceholderItem,
+    desktopPlaceholderVisibleItem,
     timeItem,
   ];
 
@@ -200,11 +200,11 @@ export default function FellowshipSalaryStats() {
       <SecondaryCard>
         <Summary
           items={desktopSummaryItems}
-          className={mobilePlaceholderItem.className}
+          className={desktopPlaceholderVisibleItem.className}
         />
         <Summary
           items={mobileSummaryItems}
-          className={desktopPlaceholderItem.className}
+          className={mobilePlaceholderVisibleItem.className}
         />
       </SecondaryCard>
     </div>
