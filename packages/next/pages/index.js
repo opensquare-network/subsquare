@@ -17,6 +17,10 @@ import { fetchActiveProposalsProps } from "next-common/services/serverSide/activ
 import Overview from "next-common/components/overview/overview";
 import { ssrNextApi } from "next-common/services/nextApi";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
+import {
+  fetchForumCategories,
+  fetchForumLatestTopics,
+} from "next-common/services/serverSide/forum";
 
 export default function HomePage() {
   const chain = useChain();
@@ -76,11 +80,16 @@ export const getServerSideProps = withCommonProps(async () => {
   );
   const activeProposals = await fetchActiveProposalsProps(overviewSummary);
 
+  const forumLatestTopics = await fetchForumLatestTopics();
+  const forumCategories = await fetchForumCategories();
+
   return {
     props: {
       activeProposals,
       summary: tracksProps.summary,
       overviewSummary: overviewSummary || {},
+      forumLatestTopics,
+      forumCategories,
       ...tracksProps,
     },
   };
