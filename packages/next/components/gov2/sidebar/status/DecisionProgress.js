@@ -7,7 +7,7 @@ import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useMemo } from "react";
 import isNil from "lodash.isnil";
 import { useSelector } from "react-redux";
-import Remaining from "./remaining";
+import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
 import {

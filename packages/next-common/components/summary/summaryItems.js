@@ -14,7 +14,10 @@ export default function SummaryItems({ items, className }) {
       )}
     >
       {items.map((item, index) => (
-        <div key={index} className="flex-1 flex justify-between">
+        <div
+          key={index}
+          className={cn("flex-1 flex justify-between", item.className)}
+        >
           <div>
             {item.title && <SummaryTitle>{item.title}</SummaryTitle>}
             <div
