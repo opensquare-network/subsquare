@@ -20,6 +20,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -29,7 +30,7 @@ function PublicProposalContent() {
   const publicProposal = post?.onchainData;
   const proposalIndex = publicProposal?.proposalIndex;
   const state = publicProposal?.state?.state;
-  const isEnded = ["Tabled", "Canceled", "Cleared", "Removed"].includes(state);
+  const isEnded = useIsDemocracyProposalFinished();
   const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
   const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
