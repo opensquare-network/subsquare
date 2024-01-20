@@ -74,7 +74,7 @@ export default function ActiveProposals() {
     alliance,
     advisoryCommittee,
     isMoonChain() && openTechComm,
-    hasDiscussions && discussions,
+    (hasDiscussions || chainSettings.hasDiscussionsForumTopics) && discussions,
   ]
     .filter(Boolean)
     .filter((item) => !item.excludeToChains?.includes?.(chain))
