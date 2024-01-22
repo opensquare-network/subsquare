@@ -77,6 +77,8 @@ const acala = {
   navLogo: ProjectLogoAcalaLight,
   navLogoDark: ProjectLogoAcalaDark,
   links,
+  hasDiscussionsForumTopics: true,
+  discourseForumLink: "https://acala.discourse.group",
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
