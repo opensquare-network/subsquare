@@ -95,7 +95,7 @@ export default function NewProposalPopup({
         api,
         dispatch,
         isMounted,
-        signerAddress: signerAccount.address,
+        signerAccount,
         onInBlock: (eventData) => {
           if (!eventData) {
             return;
