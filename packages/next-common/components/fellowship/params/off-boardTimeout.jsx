@@ -7,7 +7,9 @@ export default function FellowshipParamsOffBoardTimeoutCard() {
   return (
     <SecondaryCard className="text-textPrimary flex justify-between">
       <div className="text14Bold">Off-board Timeout</div>
-      <div className="text14Medium">{fellowshipParams?.offboardTimeout}</div>
+      <div className="text14Medium">
+        {fellowshipParams?.offboardTimeout?.toLocaleString?.()}
+      </div>
     </SecondaryCard>
   );
 }

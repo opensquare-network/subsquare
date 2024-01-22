@@ -5,7 +5,7 @@ import {
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
-  getVoteSummaryColumn,
+  getVoteSummaryColumnPlaceholder,
 } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
@@ -36,12 +36,12 @@ export function getActiveProposalAdvisoryCommittee({
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.advisoryMotions]?.[item.value],
+            initData: activeProposals[Names.advisoryCommittee]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),
             { className: "w-40" },
-            getVoteSummaryColumn(),
+            getVoteSummaryColumnPlaceholder(),
             getStatusTagColumn({ category: businessCategory.advisoryMotions }),
           ],
         };

@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import RichTextStyleWrapper from "../content/richTextStyleWrapper";
 
-const EditorWrapper = styled(RichTextStyleWrapper)`
+const EditorWrapper = styled.div`
   /* plus padding */
   div.osn-previewer {
     padding: 6px 8px;

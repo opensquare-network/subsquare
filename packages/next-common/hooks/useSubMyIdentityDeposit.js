@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubscribeIdentityDeposit from "next-common/hooks/account/deposit/fetch/identity";
 import {
+  setIdentityAddress,
   setIdentityDeposit,
   setIdentityDisplayName,
   setSubs,
@@ -17,6 +18,7 @@ export default function useSubMyIdentityDeposit() {
     useSubscribeIdentityDeposit(address);
 
   useEffect(() => {
+    dispatch(setIdentityAddress(address));
     dispatch(setIdentityDisplayName(identityName));
     dispatch(setIdentityDeposit(identityDeposit));
     dispatch(setSubsDeposits(subsDeposit));

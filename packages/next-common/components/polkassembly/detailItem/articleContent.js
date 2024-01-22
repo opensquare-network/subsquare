@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import PolkassemblyActions from "next-common/components/polkassembly/actions";
 import { MarkdownPreviewer } from "@osn/previewer";
-import RichTextStyleWrapper from "next-common/components/content/richTextStyleWrapper";
 import NoData from "next-common/components/noData";
 import { usePost } from "next-common/context/post";
 import ContentSummary from "next-common/components/contentSummary";
@@ -23,9 +22,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
 
   const postContent = (
     <>
-      <RichTextStyleWrapper>
-        <MarkdownPreviewer content={post.content || ""} />
-      </RichTextStyleWrapper>
+      <MarkdownPreviewer content={post.content || ""} />
 
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
     </>
@@ -39,11 +36,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
     post.contentSummary?.summary && {
       label: "AI Summary",
       tooltip: "Powered by OpenAI",
-      content: (
-        <RichTextStyleWrapper>
-          <ContentSummary />
-        </RichTextStyleWrapper>
-      ),
+      content: <ContentSummary />,
     },
   ].filter(Boolean);
   const [activeTab, setActiveTab] = useState(tabs[0].label);

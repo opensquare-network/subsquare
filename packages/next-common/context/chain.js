@@ -37,6 +37,11 @@ export function useVoteSymbol() {
   return voteSymbol || symbol;
 }
 
+export function useMenuHasTreasury() {
+  const chain = useChain();
+  return !treasury.excludeToChains.includes(chain);
+}
+
 export function useMenuHasTreasuryBounties() {
   const chain = useChain();
   const bountiesConfig = treasury.items.find(
@@ -58,7 +63,11 @@ export function useMenuHasTreasuryChildBounties() {
 export function useMenuHasTreasuryTips() {
   const chain = useChain();
   const tipsConfig = treasury.items.find(({ value }) => value === "tips");
-  return tipsConfig && !tipsConfig.excludeToChains.includes(chain);
+  return (
+    tipsConfig &&
+    !tipsConfig.excludeToChains.includes(chain) &&
+    !tipsConfig.archivedToChains?.includes(chain)
+  );
 }
 
 export function useMenuHasDemocracyExternal() {

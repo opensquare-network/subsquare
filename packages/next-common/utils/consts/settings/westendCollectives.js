@@ -10,8 +10,12 @@ import {
 
 const westendCollectivesEndpoints = [
   {
-    name: "Parity",
-    url: "wss://westend-collectives-rpc.polkadot.io/",
+    name: "Dwellir",
+    url: "wss://westend-collectives-rpc.dwellir.com",
+  },
+  {
+    name: "Dwellir Tunisia",
+    url: "wss://westend-collectives-rpc-tn.dwellir.com",
   },
   {
     name: "IBP-GeoDNS1",
@@ -20,6 +24,10 @@ const westendCollectivesEndpoints = [
   {
     name: "IBP-GeoDNS2",
     url: "wss://sys.dotters.network/collectives-westend",
+  },
+  {
+    name: "Parity",
+    url: "wss://westend-collectives-rpc.polkadot.io/",
   },
 ];
 

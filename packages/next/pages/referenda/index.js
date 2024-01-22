@@ -4,6 +4,7 @@ import { ssrNextApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsApi,
   gov2ReferendumsSummaryApi,
+  gov2TracksApi,
 } from "next-common/services/url";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
@@ -13,6 +14,7 @@ import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import NewProposalButton from "next-common/components/summary/newProposalButton";
 
 export default function ReferendaPage({
   posts,
@@ -52,10 +54,13 @@ export default function ReferendaPage({
         title="List"
         titleCount={posts.total}
         titleExtra={
-          <ReferendaStatusSelectField
-            value={status}
-            onChange={onStatusChange}
-          />
+          <div className="flex gap-[12px]">
+            <ReferendaStatusSelectField
+              value={status}
+              onChange={onStatusChange}
+            />
+            <NewProposalButton />
+          </div>
         }
         category={businessCategory.openGovReferenda}
         items={items}
@@ -78,19 +83,25 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const status = upperFirst(camelCase(statusQuery));
 
-  const [tracksProps, { result: posts }, { result: gov2ReferendaSummary }] =
-    await Promise.all([
-      fetchOpenGovTracksProps(),
-      ssrNextApi.fetch(gov2ReferendumsApi, {
-        page,
-        pageSize,
-        status,
-      }),
-      ssrNextApi.fetch(gov2ReferendumsSummaryApi),
-    ]);
+  const [
+    tracksProps,
+    { result: posts },
+    { result: gov2ReferendaSummary },
+    { result: tracksDetail },
+  ] = await Promise.all([
+    fetchOpenGovTracksProps(),
+    ssrNextApi.fetch(gov2ReferendumsApi, {
+      page,
+      pageSize,
+      status,
+    }),
+    ssrNextApi.fetch(gov2ReferendumsSummaryApi),
+    ssrNextApi.fetch(gov2TracksApi),
+  ]);
 
   return {
     props: {
+      tracksDetail: tracksDetail ?? null,
       posts: posts ?? EmptyList,
       title: "OpenGov Referenda",
       gov2ReferendaSummary: gov2ReferendaSummary ?? {},

@@ -24,7 +24,8 @@ export default function ActiveProposals() {
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  const { overviewSummary, activeProposals } = usePageProps();
+  const { overviewSummary, activeProposals, forumLatestTopics } =
+    usePageProps();
   const summary = overviewSummary;
   const tracks = overviewSummary?.gov2ReferendaTracks;
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
@@ -32,6 +33,7 @@ export default function ActiveProposals() {
   const discussions = getActiveProposalDiscussions({
     summary,
     activeProposals,
+    forumLatestTopics,
   });
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
   const fellowship = getActiveProposalFellowship({
@@ -72,7 +74,7 @@ export default function ActiveProposals() {
     alliance,
     advisoryCommittee,
     isMoonChain() && openTechComm,
-    hasDiscussions && discussions,
+    (hasDiscussions || chainSettings.hasDiscussionsForumTopics) && discussions,
   ]
     .filter(Boolean)
     .filter((item) => !item.excludeToChains?.includes?.(chain))

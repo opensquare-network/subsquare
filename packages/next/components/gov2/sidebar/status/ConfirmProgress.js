@@ -11,7 +11,7 @@ import {
   useConfirmRemaining,
   useConfirmStartPercentage,
 } from "./useConfirmPercentage";
-import Remaining from "./remaining";
+import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
 import MultiProgress from "next-common/components/progress/multiProgress";
 import { useMemo } from "react";

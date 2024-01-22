@@ -6,11 +6,15 @@ const myIdentityDepositsSlice = createSlice({
   name,
   initialState: {
     mainIdentityName: "",
+    address: null,
     identityDeposit: null,
     subsDeposit: null,
     subs: null,
   },
   reducers: {
+    setIdentityAddress(state, { payload }) {
+      state.address = payload;
+    },
     setIdentityDisplayName(state, { payload }) {
       state.mainIdentityName = payload;
     },
@@ -27,6 +31,7 @@ const myIdentityDepositsSlice = createSlice({
 });
 
 export const {
+  setIdentityAddress,
   setIdentityDisplayName,
   setIdentityDeposit,
   setSubsDeposits,

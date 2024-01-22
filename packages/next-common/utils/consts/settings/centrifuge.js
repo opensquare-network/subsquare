@@ -63,6 +63,8 @@ const centrifuge = {
   navLogo: ProjectLogoCentrifugeLight,
   navLogoDark: ProjectLogoCentrifugeDark,
   links,
+  hasDiscussionsForumTopics: true,
+  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,

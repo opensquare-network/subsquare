@@ -65,7 +65,7 @@ const Page404 = function Custom404() {
           />
         </svg>
         <H2>Page Not Found</H2>
-        <P>You may have mistyped the address or the page may have moved.</P>
+        <P>You may mistyped the url or the page has been moved.</P>
         <PrimaryButton
           onClick={() => {
             router.push("/");

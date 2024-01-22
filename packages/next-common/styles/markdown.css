@@ -1,0 +1,38 @@
+.markdown-body,
+.html-body {
+  --color-border-default: var(--neutral300);
+  --color-border-muted: var(--neutral300);
+  --color-canvas-default: var(--neutral100);
+
+  /* block level */
+  h6 {
+    color: var(--textSecondary);
+  }
+
+  table {
+    thead tr {
+      background-color: var(--neutral100);
+    }
+    tbody {
+      tr {
+        background-color: var(--neutral100);
+        &:nth-child(2n) {
+          background-color: var(--neutral200);
+        }
+      }
+    }
+  }
+
+  pre {
+    background-color: var(--neutral200);
+  }
+
+  /* inline level */
+  a {
+    color: var(--sapphire500);
+  }
+
+  code {
+    background-color: var(--neutral300);
+  }
+}

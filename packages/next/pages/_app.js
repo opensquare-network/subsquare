@@ -6,7 +6,6 @@ import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
 import { store } from "next-common/store";
-// import "next-common/styles/richTextStyles.scss";
 import React from "react";
 import GlobalProvider from "next-common/context/global";
 import "next-common/styles/cmdk.css";
@@ -15,6 +14,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
 import ScanStatusComponent from "next-common/components/scanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
+import "@osn/previewer/styles.css";
+import "next-common/styles/markdown.css";
 
 NProgress.configure({
   minimum: 0.3,

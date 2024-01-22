@@ -4,6 +4,7 @@ import {
   gov2ReferendumsTrackApi,
   gov2ReferendumsTracksApi,
   gov2ReferendumsTracksSummaryApi,
+  gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import startCase from "lodash.startcase";
@@ -16,6 +17,7 @@ import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import NewProposalButton from "next-common/components/summary/newProposalButton";
 
 export default function TrackPage({
   posts,
@@ -57,10 +59,13 @@ export default function TrackPage({
         title="List"
         titleCount={posts.total}
         titleExtra={
-          <ReferendaStatusSelectField
-            value={status}
-            onChange={onStatusChange}
-          />
+          <div className="flex gap-[12px]">
+            <ReferendaStatusSelectField
+              value={status}
+              onChange={onStatusChange}
+            />
+            <NewProposalButton />
+          </div>
         }
         category={businessCategory.openGovReferenda}
         items={items}
@@ -97,6 +102,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: posts },
     { result: trackReferendaSummary },
     { result: period },
+    { result: tracksDetail },
   ] = await Promise.all([
     ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
       page,
@@ -105,11 +111,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     }),
     ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
     ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+    ssrNextApi.fetch(gov2TracksApi),
   ]);
 
   return {
     props: {
       track: track ?? null,
+      tracksDetail: tracksDetail ?? null,
       posts: posts ?? EmptyList,
       title: "Referenda " + startCase(track.name),
       tracks,

@@ -48,6 +48,8 @@ const altair = {
   navLogoDark: ProjectLogoAltairDark,
   navPreferDark: true,
   links,
+  hasDiscussionsForumTopics: true,
+  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,

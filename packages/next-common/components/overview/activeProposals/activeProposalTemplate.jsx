@@ -144,17 +144,33 @@ function TableTemplate({
         loading={loading}
         rows={rows}
         noDataText="No active proposals"
+        showBottomDivider
       />
 
-      <Pagination
-        page={page}
-        pageSize={activeProposalFetchParams.pageSize}
-        total={result?.total || 0}
-        onPageChange={(e, newPage) => {
-          e.preventDefault();
-          setPage(newPage);
-        }}
-      />
+      {!isNil(result?.page) && (
+        <Pagination
+          page={page}
+          pageSize={activeProposalFetchParams.pageSize}
+          total={result?.total || 0}
+          onPageChange={(e, newPage) => {
+            e.preventDefault();
+            setPage(newPage);
+          }}
+        />
+      )}
+
+      {api?.viewAllLink && (
+        <div className="flex grow justify-end mt-[24px]">
+          <a
+            className="text14Medium text-theme500 "
+            href={api?.viewAllLink}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View all
+          </a>
+        </div>
+      )}
     </div>
   );
 }

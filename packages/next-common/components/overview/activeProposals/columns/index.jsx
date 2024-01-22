@@ -5,13 +5,14 @@ import PostListCardVotesSummaryBar from "next-common/components/postList/votesSu
 import Flex from "next-common/components/styled/flex";
 import Tag from "next-common/components/tags/state/tag";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
+import { timeDurationFromNow, toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import Link from "next/link";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
+import { useEffect, useState } from "react";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -39,7 +40,6 @@ export function getProposalPostTitleColumn() {
 export function getVoteSummaryColumn(props) {
   return {
     name: "Vote Summary",
-    // NOTE: also used as placeholder column
     headClassName: "sm:opacity-0 whitespace-nowrap",
     className: "w-6",
     cellRender(data) {
@@ -52,6 +52,13 @@ export function getVoteSummaryColumn(props) {
         )
       );
     },
+  };
+}
+export function getVoteSummaryColumnPlaceholder(props) {
+  const { className } = getVoteSummaryColumn(props);
+
+  return {
+    className,
   };
 }
 
@@ -131,6 +138,29 @@ export function getRequestColumn() {
       ) : (
         "--"
       );
+    },
+  };
+}
+
+function Time({ time }) {
+  const [text, setText] = useState("");
+  useEffect(() => setText(time), []);
+  if (!text) {
+    return null;
+  }
+
+  return (
+    <span className="text14Medium text-textSecondary">
+      {timeDurationFromNow(text)}
+    </span>
+  );
+}
+export function getLastActivityColumn() {
+  return {
+    name: "Last Activity",
+    className: "w-40 text-left",
+    cellRender(data) {
+      return data.time && <Time time={data.time} />;
     },
   };
 }

@@ -1,3 +1,10 @@
+import localForage from "localforage";
+
+localForage.config({
+  name: "subsquare",
+  version: 1.0,
+});
+
 export default async function getMetadata(provider) {
   await provider.isReady;
   const [genesisHash, runtimeVersion] = await Promise.all([
@@ -6,14 +13,22 @@ export default async function getMetadata(provider) {
   ]);
 
   const id = `${genesisHash}-${runtimeVersion.specVersion}`;
-  let metadata = localStorage.getItem(id);
+  let metadata = await localForage.getItem(id);
+  if (!metadata) {
+    // We stored metadata to localstorage in the 1st version. This code branch can be removed after some time.
+    const metadataFromLocalStorage = localStorage.getItem(id);
+    if (metadataFromLocalStorage) {
+      metadata = metadataFromLocalStorage;
+      await localForage.setItem(id, metadataFromLocalStorage);
+    }
+  }
+
   if (!metadata) {
     metadata = await provider.send("state_getMetadata", []);
     try {
-      localStorage.setItem(id, metadata);
+      await localForage.setItem(id, metadata);
     } catch (e) {
-      // ignore and the metadata size may exceed localstorage quota
-      // todo: use indexeddb to store metadata
+      console.log(e);
     }
   }
 
