@@ -8,10 +8,10 @@ import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import isNil from "lodash.isnil";
 import { useRouter } from "next/router";
-import useApi from "next-common/utils/hooks/useApi";
 import { usePageProps } from "next-common/context/page";
 import SubmissionDeposit from "./submissionDeposit";
 import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
+import usePreimageLength from "next-common/hooks/usePreimageLength";
 
 export default function NewProposalPopup({
   track: _track,
@@ -20,7 +20,6 @@ export default function NewProposalPopup({
   preimageLength: _preimageLength,
 }) {
   const { tracksDetail } = usePageProps();
-  const api = useApi();
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useIsMounted();
@@ -42,23 +41,12 @@ export default function NewProposalPopup({
     !isValidPreimageHash(preimageHash) ||
     !preimageLength;
 
+  const length = usePreimageLength(preimageHash);
   useEffect(() => {
-    if (!preimageHash || !isValidPreimageHash(preimageHash) || !api) {
-      return;
+    if (length) {
+      setPreimageLength(length);
     }
-
-    Promise.all([
-      api.query.preimage.statusFor?.(preimageHash),
-      api.query.preimage.requestStatusFor?.(preimageHash),
-    ]).then(([statusFor, requestStatusFor]) => {
-      const status =
-        statusFor?.unwrapOr(null) || requestStatusFor?.unwrapOr(null);
-      if (!status) {
-        return;
-      }
-      setPreimageLength(status.value?.len?.toString());
-    });
-  }, [api, preimageHash]);
+  }, [length]);
 
   const onSubmit = useCallback(
     (api, signerAccount) => {

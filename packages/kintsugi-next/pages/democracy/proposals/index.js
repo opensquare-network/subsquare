@@ -8,6 +8,7 @@ import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStakin
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
 import businessCategory from "next-common/utils/consts/business/category";
+import NewProposalButton from "next-common/components/summary/newProposalButton";
 
 export default function DemocracyProposalsPage({ proposals, summary }) {
   const chain = useChain();
@@ -30,6 +31,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
         category={category}
         title="List"
         titleCount={proposals.total}
+        titleExtra={<NewProposalButton pallet="democracy" />}
         items={items}
         pagination={{
           page: proposals.page,

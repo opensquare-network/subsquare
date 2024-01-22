@@ -63,6 +63,7 @@ export default function SubmitProposalPopup({ onClose, pallet = "referenda" }) {
       <NewDemocracyProposalPopup
         onClose={onClose}
         preimageHash={preimageHash}
+        preimageLength={preimageLength}
       />
     );
   }

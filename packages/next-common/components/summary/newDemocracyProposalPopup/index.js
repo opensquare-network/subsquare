@@ -1,6 +1,5 @@
 import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useState } from "react";
-import PreimageField from "./preimageField";
 import { sendTx } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -11,10 +10,13 @@ import { useChainSettings } from "next-common/context/chain";
 import BigNumber from "bignumber.js";
 import useApi from "next-common/utils/hooks/useApi";
 import { isValidPreimageHash } from "next-common/utils";
+import usePreimageLength from "next-common/hooks/usePreimageLength";
+import PreimageField from "../newProposalPopup/preimageField";
 
 export default function NewDemocracyProposalPopup({
   onClose,
   preimageHash: _preimageHash,
+  preimageLength: _preimageLength,
 }) {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -24,6 +26,7 @@ export default function NewDemocracyProposalPopup({
   const [deposit, setDeposit] = useState("0");
   const [lockedBalance, setLockedBalance] = useState("0");
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
+  const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
   useEffect(() => {
     if (!api) {
@@ -37,7 +40,12 @@ export default function NewDemocracyProposalPopup({
     setLockedBalance(deposit);
   }, [api]);
 
-  const disabled = !preimageHash || !isValidPreimageHash(preimageHash);
+  const length = usePreimageLength(preimageHash);
+  useEffect(() => {
+    if (length) {
+      setPreimageLength(length);
+    }
+  }, [length]);
 
   const onSubmit = useCallback(
     (api, signerAccount) => {
@@ -51,8 +59,9 @@ export default function NewDemocracyProposalPopup({
 
       const tx = api.tx.democracy.propose(
         {
-          Legacy: {
+          Lookup: {
             hash: preimageHash,
+            len: parseInt(preimageLength),
           },
         },
         value,
@@ -76,8 +85,10 @@ export default function NewDemocracyProposalPopup({
         onClose,
       });
     },
-    [dispatch, router, isMounted, preimageHash, lockedBalance],
+    [dispatch, router, isMounted, preimageHash, preimageLength, lockedBalance],
   );
+
+  const disabled = !preimageHash || !isValidPreimageHash(preimageHash);
 
   return (
     <SignerPopup
@@ -90,6 +101,8 @@ export default function NewDemocracyProposalPopup({
       <PreimageField
         preimageHash={preimageHash}
         setPreimageHash={setPreimageHash}
+        preimageLength={preimageLength}
+        setPreimageLength={preimageLength}
       />
       <LockedBalance
         lockedBalance={lockedBalance}
