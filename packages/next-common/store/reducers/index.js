@@ -19,6 +19,7 @@ import myOnChainData from "./myOnChainData";
 import detailReducer from "./detailSlice";
 import multisigSlice from "./multisigSlice";
 import profile from "./profile";
+import editorReducer from "./editorSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -40,4 +41,5 @@ export default combineReducers({
   detail: detailReducer,
   multisig: multisigSlice,
   ...profile,
+  editor: editorReducer,
 });
