@@ -36,7 +36,7 @@ export function getActiveProposalAdvisoryCommittee({
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.advisoryMotions]?.[item.value],
+            initData: activeProposals[Names.advisoryCommittee]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),
