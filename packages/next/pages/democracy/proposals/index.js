@@ -8,10 +8,13 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
-export default function DemocracyProposalsPage({ proposals, chain, summary }) {
+export default function DemocracyProposalsPage({ proposals, summary }) {
   const { noDemocracyModule } = useChainSettings();
+  const chain = useChain();
+  const noProposeButton = [Chains.crust].includes(chain);
 
   const items = (proposals.items || []).map((item) =>
     normalizeProposalListItem(chain, item),
@@ -32,7 +35,8 @@ export default function DemocracyProposalsPage({ proposals, chain, summary }) {
         title="List"
         titleCount={proposals.total}
         titleExtra={
-          !noDemocracyModule && <NewProposalButton pallet="democracy" />
+          !noDemocracyModule &&
+          !noProposeButton && <NewProposalButton pallet="democracy" />
         }
         items={items}
         pagination={{
@@ -46,8 +50,6 @@ export default function DemocracyProposalsPage({ proposals, chain, summary }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const chain = process.env.CHAIN;
-
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: proposals }] = await Promise.all([
@@ -60,7 +62,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   return {
     props: {
-      chain,
       proposals: proposals ?? EmptyList,
       ...tracksProps,
     },
