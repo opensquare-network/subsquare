@@ -5,16 +5,12 @@ import { sendTx } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useRouter } from "next/router";
-import { isHex } from "@polkadot/util";
 import SubmissionDeposit from "./submissionDeposit";
 import LockedBalance from "./lockedBalance";
 import { useChainSettings } from "next-common/context/chain";
 import BigNumber from "bignumber.js";
 import useApi from "next-common/utils/hooks/useApi";
-
-function isValidPreimageHash(hash) {
-  return isHex(hash, 32 * 8);
-}
+import { isValidPreimageHash } from "next-common/utils";
 
 export default function NewDemocracyProposalPopup({
   onClose,
@@ -78,7 +74,7 @@ export default function NewDemocracyProposalPopup({
         onClose,
       });
     },
-    [dispatch, router, isMounted, disabled, preimageHash, lockedBalance],
+    [dispatch, router, isMounted, preimageHash, lockedBalance],
   );
 
   return (

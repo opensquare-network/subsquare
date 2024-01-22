@@ -8,20 +8,10 @@ import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import isNil from "lodash.isnil";
 import { useRouter } from "next/router";
-import { isHex } from "@polkadot/util";
 import useApi from "next-common/utils/hooks/useApi";
 import { usePageProps } from "next-common/context/page";
-import camelCase from "lodash.camelcase";
-import upperFirst from "lodash.upperfirst";
 import SubmissionDeposit from "./submissionDeposit";
-
-function isValidPreimageHash(hash) {
-  return isHex(hash, 32 * 8);
-}
-
-function upperFirstCamelCase(str) {
-  return upperFirst(camelCase(str));
-}
+import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 
 export default function NewProposalPopup({
   track: _track,
@@ -46,7 +36,11 @@ export default function NewProposalPopup({
   );
 
   const disabled =
-    isNil(trackId) || isNil(enactment) || !preimageHash || !preimageLength;
+    isNil(trackId) ||
+    isNil(enactment) ||
+    !preimageHash ||
+    !isValidPreimageHash(preimageHash) ||
+    !preimageLength;
 
   useEffect(() => {
     if (!preimageHash || !isValidPreimageHash(preimageHash) || !api) {
