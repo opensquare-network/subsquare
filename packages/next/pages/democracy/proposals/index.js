@@ -8,8 +8,11 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function DemocracyProposalsPage({ proposals, chain, summary }) {
+  const { noDemocracyModule } = useChainSettings();
+
   const items = (proposals.items || []).map((item) =>
     normalizeProposalListItem(chain, item),
   );
@@ -28,7 +31,9 @@ export default function DemocracyProposalsPage({ proposals, chain, summary }) {
         category={category}
         title="List"
         titleCount={proposals.total}
-        titleExtra={<NewProposalButton pallet="democracy" />}
+        titleExtra={
+          !noDemocracyModule && <NewProposalButton pallet="democracy" />
+        }
         items={items}
         pagination={{
           page: proposals.page,
