@@ -26,6 +26,7 @@ export default function SubmitProposalPopup({ onClose }) {
       setPreimageHash={setPreimageHash}
       setPreimageLength={setPreimageLength}
       setShowNewProposalPopup={setShowNewProposalPopup}
+      onClose={onClose}
     />
   );
 }

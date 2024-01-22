@@ -7,9 +7,9 @@ import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/nor
 import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import NewProposalButton from "next-common/components/summary/newProposalButton";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import NewDemocracyProposalButton from "next-common/components/summary/newDemocracyProposalButton";
 
 export default function DemocracyProposalsPage({ proposals, summary }) {
   const { noDemocracyModule } = useChainSettings();
@@ -36,7 +36,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
         titleCount={proposals.total}
         titleExtra={
           !noDemocracyModule &&
-          !noProposeButton && <NewProposalButton pallet="democracy" />
+          !noProposeButton && <NewDemocracyProposalButton />
         }
         items={items}
         pagination={{

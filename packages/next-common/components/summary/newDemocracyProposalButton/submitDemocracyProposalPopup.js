@@ -23,6 +23,7 @@ export default function SubmitDemocracyProposalPopup({ onClose }) {
       setPreimageHash={setPreimageHash}
       setPreimageLength={setPreimageLength}
       setShowNewProposalPopup={setShowNewProposalPopup}
+      onClose={onClose}
     />
   );
 }

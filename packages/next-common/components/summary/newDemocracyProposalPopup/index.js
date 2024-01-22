@@ -1,6 +1,6 @@
 import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useState } from "react";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useRouter } from "next/router";
@@ -57,7 +57,7 @@ export default function NewDemocracyProposalPopup({
         .times(Math.pow(10, decimals))
         .toString();
 
-      const tx = api.tx.democracy.propose(
+      let tx = api.tx.democracy.propose(
         {
           Lookup: {
             hash: preimageHash,
@@ -66,6 +66,10 @@ export default function NewDemocracyProposalPopup({
         },
         value,
       );
+
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
       sendTx({
         tx,

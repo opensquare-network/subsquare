@@ -3,7 +3,7 @@ import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
-import { sendTx } from "next-common/utils/sendTx";
+import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import isNil from "lodash.isnil";
@@ -61,7 +61,7 @@ export default function NewProposalPopup({
         proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
       }
 
-      const tx = api.tx.referenda.submit(
+      let tx = api.tx.referenda.submit(
         proposalOrigin,
         {
           Lookup: {
@@ -71,6 +71,10 @@ export default function NewProposalPopup({
         },
         enactment,
       );
+
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
       sendTx({
         tx,

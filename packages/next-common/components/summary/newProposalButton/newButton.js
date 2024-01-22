@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const AddButton = styled(Button)`
   display: flex;
+  height: 30px;
   background-color: var(--theme500);
   color: var(--textPrimaryContrast);
   border: none;

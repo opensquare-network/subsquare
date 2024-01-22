@@ -54,7 +54,7 @@ export default function ReferendaPage({
         title="List"
         titleCount={posts.total}
         titleExtra={
-          <div className="flex gap-[12px]">
+          <div className="flex gap-[12px] items-center">
             <ReferendaStatusSelectField
               value={status}
               onChange={onStatusChange}
