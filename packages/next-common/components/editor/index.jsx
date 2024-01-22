@@ -8,6 +8,8 @@ import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { cn } from "next-common/utils";
 import { SystemLoading } from "@osn/icons/subsquare";
 import { useEventListener } from "usehooks-ts";
+import { useDispatch } from "react-redux";
+import { setEditorUploading } from "next-common/store/reducers/editorSlice";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -26,6 +28,7 @@ function Editor(props, ref) {
   const [isPreview, setIsPreview] = useState(false);
   const textAreaRef = useRef(null);
   const [lastCaretPosition, setLastCursorPosition] = useState(0);
+  const dispatch = useDispatch();
 
   function saveLastCaretPosition(e) {
     const start = e.target.selectionStart;
@@ -49,6 +52,10 @@ function Editor(props, ref) {
       }
     }
   }, [uploading, textAreaRef]);
+
+  useEffect(() => {
+    dispatch(setEditorUploading(uploading));
+  }, [uploading]);
 
   function onDragOver(event) {
     event.preventDefault();
