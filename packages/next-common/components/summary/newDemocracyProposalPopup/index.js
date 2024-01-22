@@ -1,45 +1,44 @@
-import DetailedTrack from "next-common/components/popup/fields/DetailedTrackField";
 import SignerPopup from "next-common/components/signerPopup";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import PreimageField from "./preimageField";
-import EnactmentBlocks from "./enactmentBlocks";
+import { useCallback, useEffect, useState } from "react";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import isNil from "lodash.isnil";
 import { useRouter } from "next/router";
-import { usePageProps } from "next-common/context/page";
 import SubmissionDeposit from "./submissionDeposit";
-import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
+import LockedBalance from "./lockedBalance";
+import { useChainSettings } from "next-common/context/chain";
+import BigNumber from "bignumber.js";
+import useApi from "next-common/utils/hooks/useApi";
+import { isValidPreimageHash } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
+import PreimageField from "../newProposalPopup/preimageField";
 
-export default function NewProposalPopup({
-  track: _track,
+export default function NewDemocracyProposalPopup({
   onClose,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
 }) {
-  const { tracksDetail } = usePageProps();
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useIsMounted();
-
-  const [trackId, setTrackId] = useState(_track?.id);
-  const [enactment, setEnactment] = useState();
+  const api = useApi();
+  const { decimals } = useChainSettings();
+  const [deposit, setDeposit] = useState("0");
+  const [lockedBalance, setLockedBalance] = useState("0");
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
-  const track = useMemo(
-    () => tracksDetail?.find((track) => track.id === trackId),
-    [trackId, tracksDetail],
-  );
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+    const deposit = new BigNumber(api?.consts.democracy?.minimumDeposit || 0)
+      .div(Math.pow(10, decimals))
+      .toString();
 
-  const disabled =
-    isNil(trackId) ||
-    isNil(enactment) ||
-    !preimageHash ||
-    !isValidPreimageHash(preimageHash) ||
-    !preimageLength;
+    setDeposit(deposit);
+    setLockedBalance(deposit);
+  }, [api]);
 
   const length = usePreimageLength(preimageHash);
   useEffect(() => {
@@ -54,22 +53,18 @@ export default function NewProposalPopup({
         return;
       }
 
-      let proposalOrigin = null;
-      if (track?.name === "root") {
-        proposalOrigin = { system: "Root" };
-      } else {
-        proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
-      }
+      const value = new BigNumber(lockedBalance || 0)
+        .times(Math.pow(10, decimals))
+        .toString();
 
-      let tx = api.tx.referenda.submit(
-        proposalOrigin,
+      let tx = api.tx.democracy.propose(
         {
           Lookup: {
             hash: preimageHash,
             len: parseInt(preimageLength),
           },
         },
-        enactment,
+        value,
       );
 
       if (signerAccount?.proxyAddress) {
@@ -86,24 +81,18 @@ export default function NewProposalPopup({
           if (!eventData) {
             return;
           }
-          const [referendumIndex] = eventData;
-          router.push(`/referenda/${referendumIndex}`);
+          const [proposalIndex] = eventData;
+          router.push(`/democracy/proposals/${proposalIndex}`);
         },
-        section: "referenda",
-        method: "Submitted",
+        section: "democracy",
+        method: "Proposed",
         onClose,
       });
     },
-    [
-      dispatch,
-      router,
-      isMounted,
-      track?.name,
-      enactment,
-      preimageHash,
-      preimageLength,
-    ],
+    [dispatch, router, isMounted, preimageHash, preimageLength, lockedBalance],
   );
+
+  const disabled = !preimageHash || !isValidPreimageHash(preimageHash);
 
   return (
     <SignerPopup
@@ -113,15 +102,17 @@ export default function NewProposalPopup({
       actionCallback={onSubmit}
       disabled={disabled}
     >
-      <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
-        preimageLength={preimageLength}
         setPreimageHash={setPreimageHash}
-        setPreimageLength={setPreimageLength}
+        preimageLength={preimageLength}
+        setPreimageLength={preimageLength}
       />
-      <EnactmentBlocks track={track} setEnactment={setEnactment} />
-      <SubmissionDeposit />
+      <LockedBalance
+        lockedBalance={lockedBalance}
+        setLockedBalance={setLockedBalance}
+      />
+      <SubmissionDeposit deposit={deposit} />
     </SignerPopup>
   );
 }
