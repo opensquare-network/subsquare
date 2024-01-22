@@ -14,7 +14,7 @@ const AddButton = styled(Button)`
   }
 `;
 
-export default function NewProposalButton() {
+export default function NewProposalButton({ pallet }) {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -23,7 +23,12 @@ export default function NewProposalButton() {
         <AddSVG />
         New Proposal
       </AddButton>
-      {showPopup && <SubmitProposalPopup onClose={() => setShowPopup(false)} />}
+      {showPopup && (
+        <SubmitProposalPopup
+          pallet={pallet}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
     </>
   );
 }

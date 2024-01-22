@@ -7,6 +7,7 @@ import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/nor
 import ListLayout from "next-common/components/layout/ListLayout";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import NewProposalButton from "next-common/components/summary/newProposalButton";
 
 export default function DemocracyProposalsPage({ proposals, chain, summary }) {
   const items = (proposals.items || []).map((item) =>
@@ -27,6 +28,7 @@ export default function DemocracyProposalsPage({ proposals, chain, summary }) {
         category={category}
         title="List"
         titleCount={proposals.total}
+        titleExtra={<NewProposalButton pallet="democracy" />}
         items={items}
         pagination={{
           page: proposals.page,

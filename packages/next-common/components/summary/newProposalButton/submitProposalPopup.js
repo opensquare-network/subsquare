@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 import NewPreimagePopup from "next-common/components/preImages/newPreimagePopup";
 import NewProposalPopup from "../newProposalPopup";
 import { usePageProps } from "next-common/context/page";
+import NewDemocracyProposalPopup from "../newDemocracyProposalPopup";
 
 function ChoiceButton({ icon, name, description, onClick }) {
   return (
@@ -31,7 +32,7 @@ function ChoiceButton({ icon, name, description, onClick }) {
   );
 }
 
-export default function SubmitProposalPopup({ onClose }) {
+export default function SubmitProposalPopup({ onClose, pallet = "referenda" }) {
   const { period } = usePageProps();
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
@@ -51,12 +52,17 @@ export default function SubmitProposalPopup({ onClose }) {
   }
 
   if (showNewProposalPopup) {
-    return (
+    return pallet === "referenda" ? (
       <NewProposalPopup
         track={period}
         onClose={onClose}
         preimageHash={preimageHash}
         preimageLength={preimageLength}
+      />
+    ) : (
+      <NewDemocracyProposalPopup
+        onClose={onClose}
+        preimageHash={preimageHash}
       />
     );
   }
