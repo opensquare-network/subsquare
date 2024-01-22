@@ -45,15 +45,17 @@ export default function NewDemocracyProposalPopup({
         return;
       }
 
+      const value = new BigNumber(lockedBalance || 0)
+        .times(Math.pow(10, decimals))
+        .toString();
+
       const tx = api.tx.democracy.propose(
         {
           Legacy: {
             hash: preimageHash,
           },
         },
-        new BigNumber(lockedBalance || 0)
-          .times(Math.pow(10, decimals))
-          .toString(),
+        value,
       );
 
       sendTx({
