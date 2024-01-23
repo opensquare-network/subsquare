@@ -10,6 +10,7 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import { toAdvisoryMotionsListItem } from "next-common/utils/viewfuncs";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   advisoryMotions: {
@@ -20,10 +21,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalAdvisoryCommittee({
-  summary,
-  activeProposals,
-}) {
+export function useRecentProposalAdvisoryCommittee() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getAdvisoryCommitteeMenu(summary);
 
   const items = menu.items
@@ -36,7 +37,7 @@ export function getActiveProposalAdvisoryCommittee({
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.advisoryCommittee]?.[item.value],
+            initData: recentProposals[Names.advisoryCommittee]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),

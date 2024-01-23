@@ -1,20 +1,19 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ActiveProposalTemplate from "./activeProposalTemplate";
-import { usePageProps } from "next-common/context/page";
 import { useRecentProposalReferenda } from "./referenda";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { useRecentProposalFellowship } from "./fellowship";
 import { useRecentProposalDemocracy } from "./democracy";
 import { useRecentProposalTreasury } from "./treasury";
 import { useRecentProposalDiscussions } from "./discussions";
-import { getActiveProposalCouncil } from "./council";
-import { getActiveProposalTechComm } from "./tc";
-import { getActiveProposalFinancialCouncil } from "./financialCouncil";
-import { getActiveProposalAlliance } from "./alliance";
-import { getActiveProposalAdvisoryCommittee } from "./advisoryCommittee";
-import { getActiveProposalOpenTechComm } from "./openTechComm";
+import { useRecentProposalCouncil } from "./council";
+import { useRecentProposalTechComm } from "./tc";
+import { useRecentProposalFinancialCouncil } from "./financialCouncil";
+import { useRecentProposalAlliance } from "./alliance";
+import { useRecentProposalAdvisoryCommittee } from "./advisoryCommittee";
+import { useRecentProposalOpenTechComm } from "./openTechComm";
 import isMoonChain from "next-common/utils/isMoonChain";
-import { getActiveProposalTreasuryCouncil } from "./treasuryCouncil";
+import { useRecentProposalTreasuryCouncil } from "./treasuryCouncil";
 import Chains from "next-common/utils/consts/chains";
 import partition from "lodash.partition";
 import EmptyRecentProposals from "./empty";
@@ -24,33 +23,19 @@ export default function ActiveProposals() {
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  const { overviewSummary, recentProposals: activeProposals } = usePageProps();
-  const summary = overviewSummary;
 
   const discussions = useRecentProposalDiscussions();
   const referenda = useRecentProposalReferenda();
   const fellowship = useRecentProposalFellowship();
   const democracy = useRecentProposalDemocracy();
   const treasury = useRecentProposalTreasury();
-  const council = getActiveProposalCouncil({ summary, activeProposals });
-  const tc = getActiveProposalTechComm({ summary, activeProposals });
-  const financialCouncil = getActiveProposalFinancialCouncil({
-    summary,
-    activeProposals,
-  });
-  const alliance = getActiveProposalAlliance({ summary, activeProposals });
-  const advisoryCommittee = getActiveProposalAdvisoryCommittee({
-    summary,
-    activeProposals,
-  });
-  const treasuryCouncil = getActiveProposalTreasuryCouncil({
-    summary,
-    activeProposals,
-  });
-  const openTechComm = getActiveProposalOpenTechComm({
-    summary,
-    activeProposals,
-  });
+  const council = useRecentProposalCouncil();
+  const tc = useRecentProposalTechComm();
+  const financialCouncil = useRecentProposalFinancialCouncil();
+  const alliance = useRecentProposalAlliance();
+  const advisoryCommittee = useRecentProposalAdvisoryCommittee();
+  const treasuryCouncil = useRecentProposalTreasuryCouncil();
+  const openTechComm = useRecentProposalOpenTechComm();
 
   const sections = [
     chainSettings.hasReferenda && referenda,

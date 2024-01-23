@@ -8,6 +8,7 @@ import normalizeAllianceMotion from "next-common/utils/viewfuncs/alliance/allian
 import normalizeAllianceAnnouncement from "next-common/utils/viewfuncs/alliance/allianceAnnouncement";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   allianceMotions: {
@@ -26,7 +27,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalAlliance({ summary, activeProposals }) {
+export function useRecentProposalAlliance() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getAllianceMenu(summary);
 
   const items = menu.items
@@ -39,7 +43,7 @@ export function getActiveProposalAlliance({ summary, activeProposals }) {
           ...options,
           api: {
             ...options?.api,
-            initData: activeProposals[Names.alliance]?.[item.value],
+            initData: recentProposals[Names.alliance]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),

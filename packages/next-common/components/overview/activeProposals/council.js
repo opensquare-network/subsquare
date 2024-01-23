@@ -8,6 +8,7 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   motions: {
@@ -18,7 +19,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalCouncil({ summary, activeProposals }) {
+export function useRecentProposalCouncil() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getCouncilMenu(summary);
 
   const items = menu.items
@@ -31,7 +35,7 @@ export function getActiveProposalCouncil({ summary, activeProposals }) {
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.council]?.[item.value],
+            initData: recentProposals[Names.council]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),

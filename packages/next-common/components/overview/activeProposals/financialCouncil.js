@@ -10,6 +10,7 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import { toFinancialMotionsListItem } from "next-common/utils/viewfuncs";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   financialMotions: {
@@ -20,10 +21,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalFinancialCouncil({
-  summary,
-  activeProposals,
-}) {
+export function useRecentProposalFinancialCouncil() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getFinancialCouncilMenu(summary);
 
   const items = menu.items
@@ -36,7 +37,7 @@ export function getActiveProposalFinancialCouncil({
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.financialCouncil]?.[item.value],
+            initData: recentProposals[Names.financialCouncil]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),
