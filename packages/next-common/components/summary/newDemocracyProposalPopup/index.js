@@ -97,6 +97,7 @@ export default function NewDemocracyProposalPopup({
       preimageLength,
       lockedBalance,
       onClose,
+      decimals,
     ],
   );
 
