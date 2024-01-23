@@ -9,8 +9,12 @@ import {
   getVoteSummaryColumn,
 } from "./columns";
 import { overviewApi } from "next-common/services/url";
+import { usePageProps } from "next-common/context/page";
 
-export function getActiveProposalReferenda({ tracks, activeProposals }) {
+export function useRecentProposalReferenda() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const tracks = overviewSummary?.gov2ReferendaTracks;
+
   const menu = getReferendaMenu(tracks);
 
   const items = menu.items?.map((item) => {
@@ -27,7 +31,7 @@ export function getActiveProposalReferenda({ tracks, activeProposals }) {
       api.params.track = track;
     }
     if (track === "all") {
-      api.initData = activeProposals.referenda;
+      api.initData = recentProposals.referenda;
     }
 
     const trackColumn = getTrackColumn({ hrefPrefix: "/referenda/tracks" });

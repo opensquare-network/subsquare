@@ -1,7 +1,7 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ActiveProposalTemplate from "./activeProposalTemplate";
 import { usePageProps } from "next-common/context/page";
-import { getActiveProposalReferenda } from "./referenda";
+import { useRecentProposalReferenda } from "./referenda";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { getActiveProposalFellowship } from "./fellowship";
 import { getActiveProposalDemocracy } from "./democracy";
@@ -24,13 +24,12 @@ export default function ActiveProposals() {
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  const { overviewSummary, activeProposals } = usePageProps();
+  const { overviewSummary, recentProposals: activeProposals } = usePageProps();
   const summary = overviewSummary;
-  const tracks = overviewSummary?.gov2ReferendaTracks;
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
 
   const discussions = useRecentProposalDiscussions();
-  const referenda = getActiveProposalReferenda({ tracks, activeProposals });
+  const referenda = useRecentProposalReferenda();
   const fellowship = getActiveProposalFellowship({
     fellowshipTracks,
     activeProposals,
