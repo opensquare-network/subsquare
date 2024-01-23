@@ -76,7 +76,7 @@ export default function NewDemocracyProposalPopup({
         api,
         dispatch,
         isMounted,
-        signerAddress: signerAccount.address,
+        signerAccount,
         onInBlock: (eventData) => {
           if (!eventData) {
             return;
@@ -89,7 +89,15 @@ export default function NewDemocracyProposalPopup({
         onClose,
       });
     },
-    [dispatch, router, isMounted, preimageHash, preimageLength, lockedBalance],
+    [
+      dispatch,
+      router,
+      isMounted,
+      preimageHash,
+      preimageLength,
+      lockedBalance,
+      onClose,
+    ],
   );
 
   const disabled = !preimageHash || !isValidPreimageHash(preimageHash);
