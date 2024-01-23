@@ -2,7 +2,7 @@ import isNil from "lodash.isnil";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
-} from "next-common/components/overview/activeProposals/columns";
+} from "next-common/components/overview/recentProposals/columns";
 import { useChainSettings } from "next-common/context/chain";
 import {
   myReferendaDecisionDepositsSelector,

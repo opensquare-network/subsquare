@@ -11,6 +11,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import { overviewApi } from "next-common/services/url";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   proposals: {
@@ -51,7 +52,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalTreasury({ summary, activeProposals }) {
+export function useRecentProposalTreasury() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getTreasuryMenu(summary);
 
   const items = menu.items
@@ -69,7 +73,7 @@ export function getActiveProposalTreasury({ summary, activeProposals }) {
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals.treasury?.[item.value],
+            initData: recentProposals.treasury?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),

@@ -1,7 +1,7 @@
 import {
-  getAdvisoryCommitteeMenu,
+  getFinancialCouncilMenu,
   Names,
-} from "next-common/utils/consts/menu/advisoryCouncil";
+} from "next-common/utils/consts/menu/financialCouncil";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
@@ -9,22 +9,23 @@ import {
 } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
-import { toAdvisoryMotionsListItem } from "next-common/utils/viewfuncs";
+import { toFinancialMotionsListItem } from "next-common/utils/viewfuncs";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
-  advisoryMotions: {
+  financialMotions: {
     api: {
-      path: overviewApi.advisoryMotions,
+      path: overviewApi.financialMotions,
     },
-    formatter: toAdvisoryMotionsListItem,
+    formatter: toFinancialMotionsListItem,
   },
 };
 
-export function getActiveProposalAdvisoryCommittee({
-  summary,
-  activeProposals,
-}) {
-  const menu = getAdvisoryCommitteeMenu(summary);
+export function useRecentProposalFinancialCouncil() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
+  const menu = getFinancialCouncilMenu(summary);
 
   const items = menu.items
     .map((item) => {
@@ -36,13 +37,13 @@ export function getActiveProposalAdvisoryCommittee({
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.advisoryCommittee]?.[item.value],
+            initData: recentProposals[Names.financialCouncil]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),
             { className: "w-40" },
             getVoteSummaryColumnPlaceholder(),
-            getStatusTagColumn({ category: businessCategory.advisoryMotions }),
+            getStatusTagColumn({ type: businessCategory.financialMotions }),
           ],
         };
       }

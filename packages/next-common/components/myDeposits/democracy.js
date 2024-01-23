@@ -2,7 +2,7 @@ import isNil from "lodash.isnil";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
-} from "next-common/components/overview/activeProposals/columns";
+} from "next-common/components/overview/recentProposals/columns";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { myDemocracyDepositsSelector } from "next-common/store/reducers/myOnChainData/deposits/myDemocracyDeposits";
