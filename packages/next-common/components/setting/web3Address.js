@@ -4,6 +4,7 @@ import { addressEllipsis } from "../../utils";
 import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import Identity from "../Identity";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const AddressWrapper = styled.div`
   display: flex;
@@ -32,17 +33,22 @@ const Address = styled.span`
 
 export default function Web3Address({ address }) {
   const [identity, hasId] = useIdentityInfo(address);
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   return (
     <AddressWrapper>
       <Avatar address={address} size={40} />
       <div>
         <Address>
-          {hasId ? <Identity identity={identity} /> : addressEllipsis(address)}
+          {hasId ? (
+            <Identity identity={identity} />
+          ) : (
+            addressEllipsis(maybeEvmAddress)
+          )}
         </Address>
         <div>
-          <FullAddress>{address}</FullAddress>
-          <ShortAddress>{addressEllipsis(address)}</ShortAddress>
+          <FullAddress>{maybeEvmAddress}</FullAddress>
+          <ShortAddress>{addressEllipsis(maybeEvmAddress)}</ShortAddress>
         </div>
       </div>
     </AddressWrapper>

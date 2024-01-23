@@ -2,13 +2,18 @@ import { useChainSettings } from "next-common/context/chain";
 import { useSelector } from "react-redux";
 import { profileActiveMultisigsCountSelector } from "next-common/store/reducers/profile/multisig";
 import useDepositsCount from "next-common/hooks/profile/deposit/useDepositsCount";
+import { usePageProps } from "next-common/context/page";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
-export default function useProfileTabs(id) {
+export default function useProfileTabs() {
+  const { id } = usePageProps();
   const { hasReferenda, hasFellowship, noDemocracy, hasMultisig } =
     useChainSettings();
   const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
   const depositsCount = useDepositsCount();
-  const prefix = `/user/${id}/`;
+
+  const maybeEvmAddress = tryConvertToEvmAddress(id);
+  const prefix = `/user/${maybeEvmAddress}/`;
 
   const tabs = [
     {

@@ -7,6 +7,7 @@ import AddressDisplay from "./addressDisplay";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import DeletedAccount from "./deletedAccount";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 export function AddressUserImpl({
   address,
@@ -22,11 +23,13 @@ export function AddressUserImpl({
   ellipsis = true,
   externalLink,
 }) {
+  const displayAddress = tryConvertToEvmAddress(address);
+
   const userIdentity = hasIdentity ? (
     <Identity identity={identity} fontSize={fontSize} maxWidth={maxWidth} />
   ) : (
     <AddressDisplay
-      address={address}
+      address={displayAddress}
       fontSize={fontSize}
       color={color}
       maxWidth={maxWidth}
@@ -35,7 +38,7 @@ export function AddressUserImpl({
     />
   );
 
-  let linkUserPage = `/user/${address}`;
+  let linkUserPage = `/user/${displayAddress}`;
   if (linkToVotesPage) {
     linkUserPage = `${linkUserPage}/votes`;
   }
@@ -68,7 +71,7 @@ export function AddressUserImpl({
     <UserWrapper noEvent={noEvent} color={color}>
       {showAvatar && (
         <AvatarWrapper fontSize={fontSize}>
-          <Avatar address={address} size={avatarSize} />
+          <Avatar address={displayAddress} size={avatarSize} />
         </AvatarWrapper>
       )}
       {userIdentityLink}

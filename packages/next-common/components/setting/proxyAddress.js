@@ -19,6 +19,7 @@ import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { normalizeAddress } from "next-common/utils/address";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -51,7 +52,8 @@ export default function ProxyAddress() {
   const { ensureLogin } = useEnsureLogin();
 
   useEffect(() => {
-    setInputAddress(proxyAddress || "");
+    const maybeEvmAddress = tryConvertToEvmAddress(proxyAddress);
+    setInputAddress(maybeEvmAddress || "");
     setErrorMsg();
     setSuccessMsg();
 
