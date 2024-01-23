@@ -4,7 +4,7 @@ import Tabs from "next-common/components/tabs";
 import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { activeProposalFetchParams } from "next-common/services/serverSide/activeProposals";
+import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import isNil from "lodash.isnil";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
@@ -185,7 +185,7 @@ function TableTemplate({
 
       <Pagination
         page={page}
-        pageSize={activeProposalFetchParams.pageSize}
+        pageSize={recentProposalFetchParams.pageSize}
         total={result?.total || 0}
         onPageChange={(e, newPage) => {
           e.preventDefault();

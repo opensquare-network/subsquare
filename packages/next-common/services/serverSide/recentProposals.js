@@ -25,19 +25,19 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { overviewApi } from "../url";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 
-export const activeProposalFetchParams = {
+export const recentProposalFetchParams = {
   pageSize: 10,
 };
 
 async function fetcher(url) {
-  const resp = await nextApi.fetch(url, activeProposalFetchParams);
+  const resp = await nextApi.fetch(url, recentProposalFetchParams);
   if (resp?.result) {
     return resp.result;
   }
   return {};
 }
 
-export async function fetchActiveProposalsProps(summary = {}) {
+export async function fetchRecentProposalsProps(summary = {}) {
   const chainSettings = getChainSettings(CHAIN);
 
   const activeProposalsData = {};

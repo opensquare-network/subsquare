@@ -26,13 +26,13 @@ const discussionsColumns = [
 ];
 
 export function useRecentProposalDiscussions() {
-  const { overviewSummary, activeProposals, forumLatestTopics } =
+  const { overviewSummary, recentProposals, forumLatestTopics } =
     usePageProps();
   const chainSettings = useChainSettings();
   const rfcsData = useRFCsData();
 
-  const subsquare = activeProposals.discussions?.subsquare;
-  const polkassembly = activeProposals.discussions?.polkassembly;
+  const subsquare = recentProposals.discussions?.subsquare;
+  const polkassembly = recentProposals.discussions?.polkassembly;
 
   const activeCount =
     (subsquare?.total || 0) +
