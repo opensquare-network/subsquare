@@ -8,11 +8,12 @@ import {
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import { overviewApi } from "next-common/services/url";
+import { usePageProps } from "next-common/context/page";
 
-export function getActiveProposalFellowship({
-  fellowshipTracks,
-  activeProposals,
-}) {
+export function useRecentProposalFellowship() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
+
   const menu = getFellowshipMenu(fellowshipTracks);
 
   const items = menu.items?.map((item) => {
@@ -29,7 +30,7 @@ export function getActiveProposalFellowship({
       api.params.track = track;
     }
     if (track === "all") {
-      api.initData = activeProposals.fellowship;
+      api.initData = recentProposals.fellowship;
     }
 
     const trackColumn = getTrackColumn({ hrefPrefix: "/fellowship/tracks" });

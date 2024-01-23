@@ -3,7 +3,7 @@ import ActiveProposalTemplate from "./activeProposalTemplate";
 import { usePageProps } from "next-common/context/page";
 import { useRecentProposalReferenda } from "./referenda";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { getActiveProposalFellowship } from "./fellowship";
+import { useRecentProposalFellowship } from "./fellowship";
 import { getActiveProposalDemocracy } from "./democracy";
 import { getActiveProposalTreasury } from "./treasury";
 import { useRecentProposalDiscussions } from "./discussions";
@@ -26,14 +26,10 @@ export default function ActiveProposals() {
   const hasDiscussions = chainSettings.hasDiscussions !== false;
   const { overviewSummary, recentProposals: activeProposals } = usePageProps();
   const summary = overviewSummary;
-  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
 
   const discussions = useRecentProposalDiscussions();
   const referenda = useRecentProposalReferenda();
-  const fellowship = getActiveProposalFellowship({
-    fellowshipTracks,
-    activeProposals,
-  });
+  const fellowship = useRecentProposalFellowship();
   const democracy = getActiveProposalDemocracy({ summary, activeProposals });
   const treasury = getActiveProposalTreasury({ summary, activeProposals });
   const council = getActiveProposalCouncil({ summary, activeProposals });
