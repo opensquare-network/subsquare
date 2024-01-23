@@ -2,7 +2,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 
-export default function TreasuryState() {
+export default function TreasuryStats() {
   return (
     <div>
       <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
