@@ -5,7 +5,7 @@ import { useRecentProposalReferenda } from "./referenda";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { useRecentProposalFellowship } from "./fellowship";
 import { useRecentProposalDemocracy } from "./democracy";
-import { getActiveProposalTreasury } from "./treasury";
+import { useRecentProposalTreasury } from "./treasury";
 import { useRecentProposalDiscussions } from "./discussions";
 import { getActiveProposalCouncil } from "./council";
 import { getActiveProposalTechComm } from "./tc";
@@ -31,7 +31,7 @@ export default function ActiveProposals() {
   const referenda = useRecentProposalReferenda();
   const fellowship = useRecentProposalFellowship();
   const democracy = useRecentProposalDemocracy();
-  const treasury = getActiveProposalTreasury({ summary, activeProposals });
+  const treasury = useRecentProposalTreasury();
   const council = getActiveProposalCouncil({ summary, activeProposals });
   const tc = getActiveProposalTechComm({ summary, activeProposals });
   const financialCouncil = getActiveProposalFinancialCouncil({
