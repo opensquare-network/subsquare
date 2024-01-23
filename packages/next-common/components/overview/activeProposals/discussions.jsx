@@ -47,8 +47,7 @@ export function useRecentProposalDiscussions() {
       name: "RFCs",
       api: {
         initData: rfcsData,
-        viewAllLink:
-          "https://github.com/polkadot-fellows/RFCs/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc",
+        viewAllLink: "https://github.com/polkadot-fellows/RFCs/issues",
       },
       activeCount: rfcsData?.items?.length || 0,
       formatter: (item) => normalizeRFCsListItem(CHAIN, item),
