@@ -105,7 +105,9 @@ function useRFCsData() {
   const [data, setData] = useState();
 
   useEffect(() => {
-    fetchRFCs().then(setData);
+    if (hasDiscussionsRFCs) {
+      fetchRFCs().then(setData);
+    }
   }, [hasDiscussionsRFCs]);
 
   return data;
