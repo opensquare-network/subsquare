@@ -32,10 +32,11 @@ function ChoiceButton({ icon, name, description, onClick }) {
 export default function SubmitProposalPopupCommon({
   setPreimageHash,
   setPreimageLength,
-  setShowNewProposalPopup,
   onClose,
+  newProposalPopup,
 }) {
   const [showNewPreimagePopup, setShowNewPreimagePopup] = useState(false);
+  const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
 
   const onPreimageCreated = useCallback((preimageHash, preimageLength) => {
     setPreimageHash(preimageHash);
@@ -46,6 +47,10 @@ export default function SubmitProposalPopupCommon({
 
   if (showNewPreimagePopup) {
     return <NewPreimagePopup onClose={onClose} onCreated={onPreimageCreated} />;
+  }
+
+  if (showNewProposalPopup) {
+    return newProposalPopup;
   }
 
   return (

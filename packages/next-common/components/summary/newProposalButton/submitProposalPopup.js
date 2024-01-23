@@ -8,25 +8,19 @@ export default function SubmitProposalPopup({ onClose }) {
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
-  const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
-
-  if (showNewProposalPopup) {
-    return (
-      <NewProposalPopup
-        track={period}
-        onClose={onClose}
-        preimageHash={preimageHash}
-        preimageLength={preimageLength}
-      />
-    );
-  }
-
   return (
     <SubmitProposalPopupCommon
       setPreimageHash={setPreimageHash}
       setPreimageLength={setPreimageLength}
-      setShowNewProposalPopup={setShowNewProposalPopup}
       onClose={onClose}
+      newProposalPopup={
+        <NewProposalPopup
+          track={period}
+          onClose={onClose}
+          preimageHash={preimageHash}
+          preimageLength={preimageLength}
+        />
+      }
     />
   );
 }
