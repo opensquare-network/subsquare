@@ -19,6 +19,7 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { isKintsugiChain } from "next-common/utils/chain";
 import Link from "next/link";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -41,6 +42,7 @@ const DisplayUser = () => {
 
 function Account() {
   const user = useUser();
+  const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
 
   return (
     <div className="flex gap-[12px]">
@@ -48,13 +50,13 @@ function Account() {
       <div className="flex flex-col">
         <DisplayUser />
         <Copyable className="max-md:hidden text-textTertiary text14Medium">
-          {user?.address}
+          {maybeEvmAddress}
         </Copyable>
         <Copyable
           className="md:hidden text-textTertiary text14Medium"
-          copyText={user?.address}
+          copyText={maybeEvmAddress}
         >
-          {addressEllipsis(user?.address)}
+          {addressEllipsis(maybeEvmAddress)}
         </Copyable>
       </div>
     </div>

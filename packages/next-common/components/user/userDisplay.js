@@ -2,6 +2,7 @@ import React from "react";
 import { addressEllipsis, isKeyRegisteredUser } from "../../utils";
 import Tooltip from "../tooltip";
 import Username from "./username";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 export default function UserDisplay({
   user,
@@ -17,8 +18,10 @@ export default function UserDisplay({
   let tip = user?.username;
 
   if (isWeb3User) {
-    username = ellipsis ? addressEllipsis(user?.address) : user?.address;
-    tip = user?.address;
+    const address = user?.address;
+    const displayAddress = tryConvertToEvmAddress(address);
+    username = ellipsis ? addressEllipsis(displayAddress) : displayAddress;
+    tip = displayAddress;
   }
 
   const name = (

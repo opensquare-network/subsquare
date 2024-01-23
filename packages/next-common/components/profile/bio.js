@@ -13,6 +13,8 @@ import AssetInfo from "./assetInfo";
 import KintAssetInfo from "./assetInfo/kint";
 import Chains from "next-common/utils/consts/chains";
 import AddressUser from "../user/addressUser";
+import { usePageProps } from "next-common/context/page";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -68,20 +70,27 @@ const DisplayUserAddress = ({ address }) => {
   if (!address) {
     return null;
   }
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
   return (
     <AddressWrapper>
-      <Copyable copyText={address}>
-        <Tertiary>{address}</Tertiary>
+      <Copyable copyText={maybeEvmAddress}>
+        <Tertiary>{maybeEvmAddress}</Tertiary>
       </Copyable>
-      {!isEthereumAddress(address) && <AccountLinks address={address} />}
+      {!isEthereumAddress(maybeEvmAddress) && (
+        <AccountLinks address={maybeEvmAddress} />
+      )}
     </AddressWrapper>
   );
 };
 
-export default function Bio({ address, user, id }) {
+export default function Bio() {
+  const { user, id } = usePageProps();
   const { showAchainableLabels } = useChainSettings();
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
+
+  const address =
+    isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
 
   return (
     <Wrapper>
