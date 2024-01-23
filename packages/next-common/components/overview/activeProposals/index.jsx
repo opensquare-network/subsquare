@@ -6,7 +6,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import { getActiveProposalFellowship } from "./fellowship";
 import { getActiveProposalDemocracy } from "./democracy";
 import { getActiveProposalTreasury } from "./treasury";
-import { getActiveProposalDiscussions } from "./discussions";
+import { useRecentProposalDiscussions } from "./discussions";
 import { getActiveProposalCouncil } from "./council";
 import { getActiveProposalTechComm } from "./tc";
 import { getActiveProposalFinancialCouncil } from "./financialCouncil";
@@ -24,17 +24,12 @@ export default function ActiveProposals() {
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
   const hasDiscussions = chainSettings.hasDiscussions !== false;
-  const { overviewSummary, activeProposals, forumLatestTopics } =
-    usePageProps();
+  const { overviewSummary, activeProposals } = usePageProps();
   const summary = overviewSummary;
   const tracks = overviewSummary?.gov2ReferendaTracks;
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
 
-  const discussions = getActiveProposalDiscussions({
-    summary,
-    activeProposals,
-    forumLatestTopics,
-  });
+  const discussions = useRecentProposalDiscussions();
   const referenda = getActiveProposalReferenda({ tracks, activeProposals });
   const fellowship = getActiveProposalFellowship({
     fellowshipTracks,
