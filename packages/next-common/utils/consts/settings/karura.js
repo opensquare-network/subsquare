@@ -77,6 +77,8 @@ const karura = {
   navLogoDark: ProjectLogoKaruraDark,
   navPreferDark: true,
   links,
+  hasDiscussionsForumTopics: true,
+  discourseForumLink: "https://acala.discourse.group",
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,

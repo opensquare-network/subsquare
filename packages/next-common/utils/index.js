@@ -8,6 +8,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import capitalize from "lodash.capitalize";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
+import { isHex } from "@polkadot/util";
+import camelCase from "lodash.camelcase";
+import upperFirst from "lodash.upperfirst";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -303,6 +306,14 @@ export function toPercentage(value = 0, decimals = 0) {
 
 export function isHash(value) {
   return value && value.length === 66 && value.startsWith("0x");
+}
+
+export function isValidPreimageHash(hash) {
+  return isHex(hash, 32 * 8);
+}
+
+export function upperFirstCamelCase(str) {
+  return upperFirst(camelCase(str));
 }
 
 export function cn(...inputs) {
