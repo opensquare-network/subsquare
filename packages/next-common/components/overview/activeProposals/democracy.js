@@ -10,6 +10,7 @@ import {
 } from "./columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   referenda: {
@@ -41,7 +42,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalDemocracy({ summary, activeProposals }) {
+export function useRecentProposalDemocracy() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getDemocracyMenu(summary);
   const items = menu.items
     .map((item) => {
@@ -53,7 +57,7 @@ export function getActiveProposalDemocracy({ summary, activeProposals }) {
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals.democracy?.[item.value],
+            initData: recentProposals.democracy?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),
