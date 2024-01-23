@@ -89,7 +89,16 @@ export default function NewDemocracyProposalPopup({
         onClose,
       });
     },
-    [dispatch, router, isMounted, preimageHash, preimageLength, lockedBalance],
+    [
+      dispatch,
+      router,
+      isMounted,
+      preimageHash,
+      preimageLength,
+      lockedBalance,
+      onClose,
+      decimals,
+    ],
   );
 
   const disabled = !preimageHash || !isValidPreimageHash(preimageHash);

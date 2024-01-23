@@ -102,6 +102,7 @@ export default function NewProposalPopup({
       enactment,
       preimageHash,
       preimageLength,
+      onClose,
     ],
   );
 
