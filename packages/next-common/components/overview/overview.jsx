@@ -1,5 +1,5 @@
 import AccountInfo from "./accountInfo";
-import ActiveProposals from "./activeProposals";
+import RecentProposals from "./recentProposals";
 import { useChainSettings } from "next-common/context/chain";
 import TreasuryStats from "./treasuryStats";
 import WithPallet from "next-common/components/common/withPallet";
@@ -21,7 +21,7 @@ export default function Overview() {
       </WithPallet>
 
       <div>
-        <ActiveProposals />
+        <RecentProposals />
         {/* news */}
       </div>
     </div>

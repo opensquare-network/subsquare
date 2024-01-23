@@ -13,7 +13,7 @@ import { useChain } from "next-common/context/chain";
 import { first } from "lodash";
 import DataList from "next-common/components/dataList";
 
-export default function ActiveProposalTemplate({
+export default function RecentProposalTemplate({
   name = "",
   icon,
   pathname,

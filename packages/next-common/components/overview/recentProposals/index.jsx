@@ -1,5 +1,5 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import ActiveProposalTemplate from "./activeProposalTemplate";
+import RecentProposalTemplate from "./recentProposalTemplate";
 import { useRecentProposalReferenda } from "./referenda";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { useRecentProposalFellowship } from "./fellowship";
@@ -18,7 +18,7 @@ import Chains from "next-common/utils/consts/chains";
 import partition from "lodash.partition";
 import EmptyRecentProposals from "./empty";
 
-export default function ActiveProposals() {
+export default function RecentProposals() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const isPolkadotChain = chain === Chains.polkadot;
@@ -66,7 +66,7 @@ export default function ActiveProposals() {
       ) : (
         <div className="space-y-4">
           {activeItems.map((item) => (
-            <ActiveProposalTemplate key={item.name} {...item} />
+            <RecentProposalTemplate key={item.name} {...item} />
           ))}
         </div>
       )}

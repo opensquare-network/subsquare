@@ -1,5 +1,5 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { getStatusTagColumn } from "next-common/components/overview/activeProposals/columns";
+import { getStatusTagColumn } from "next-common/components/overview/recentProposals/columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
