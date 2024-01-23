@@ -6,7 +6,7 @@ import OverviewSummary from "next-common/components/summary/overviewSummary";
 import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
-import { fetchActiveProposalsProps } from "next-common/services/serverSide/activeProposals";
+import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
 import Overview from "next-common/components/overview/overview";
 import { useUser } from "next-common/context/user";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
@@ -59,12 +59,12 @@ export default function Home() {
 export const getServerSideProps = withCommonProps(async () => {
   const { result: summary } = await nextApi.fetch("summary");
   const { result: overviewSummary } = await nextApi.fetch("overview/summary");
-  const activeProposals = await fetchActiveProposalsProps(overviewSummary);
+  const recentProposals = await fetchRecentProposalsProps(overviewSummary);
 
   return {
     props: {
       summary: summary ?? {},
-      activeProposals,
+      recentProposals,
       overviewSummary: overviewSummary ?? {},
     },
   };
