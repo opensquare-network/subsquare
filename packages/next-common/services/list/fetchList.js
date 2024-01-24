@@ -6,6 +6,7 @@ export async function fetchList(url, context) {
   const { result } = await nextApi.fetch(url, {
     page: page ?? 1,
     pageSize: pageSize ?? defaultPageSize,
+    simple: true,
   });
 
   return result ?? EmptyList;

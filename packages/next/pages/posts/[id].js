@@ -36,9 +36,7 @@ export default function PostDetailPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`posts/${id}`),
-  ]);
+  const { result: detail } = await nextApi.fetch(`posts/${id}`);
 
   if (!detail) {
     return to404();
