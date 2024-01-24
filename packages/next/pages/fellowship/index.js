@@ -55,6 +55,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       ssrNextApi.fetch(fellowshipReferendumsApi, {
         page,
         pageSize,
+        simple: true,
       }),
       ssrNextApi.fetch(fellowshipReferendumsSummaryApi),
     ]);

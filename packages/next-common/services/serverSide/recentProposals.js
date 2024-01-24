@@ -27,6 +27,7 @@ import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 
 export const recentProposalFetchParams = {
   pageSize: 10,
+  simple: true,
 };
 
 async function fetcher(url) {

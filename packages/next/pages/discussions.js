@@ -36,7 +36,11 @@ export default function DiscussionsPage({ posts }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page, page_size: pageSize, label } = context.query;
 
-  let q = { page: page ?? 1, pageSize: pageSize ?? defaultPageSize };
+  let q = {
+    page: page ?? 1,
+    pageSize: pageSize ?? defaultPageSize,
+    simple: true,
+  };
   if (label) {
     q = { label, ...q };
   }

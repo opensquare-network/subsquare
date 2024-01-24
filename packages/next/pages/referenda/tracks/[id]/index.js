@@ -108,6 +108,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       page,
       pageSize,
       status,
+      simple: true,
     }),
     ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
     ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
