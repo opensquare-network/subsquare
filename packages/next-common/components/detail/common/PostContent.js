@@ -4,6 +4,7 @@ import { usePost } from "../../../context/post";
 import { cn } from "next-common/utils";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
+import { marked } from "marked";
 
 const collapsedHeight = 640;
 const moreLessHeightThreshold = 2000;
@@ -26,12 +27,18 @@ export default function PostContent() {
 
   let content;
   if (post.contentType === "markdown") {
-    // strip all inline attributes
-    const markdown = sanitizeHtml(post.content || "")
-      // fallback '&gt;' to '>' for markdown blockquote
-      .replaceAll("&gt;", ">");
+    let postContent = post.content;
 
-    content = <MarkdownPreviewer content={markdown} />;
+    if (post.dataSource === "polkassembly") {
+      postContent = marked(post.content || "", { breaks: true });
+
+      // strip all inline attributes
+      postContent = sanitizeHtml(postContent || "")
+        // fallback '&gt;' to '>' for markdown blockquote
+        .replaceAll("&gt;", ">");
+    }
+
+    content = <MarkdownPreviewer content={postContent} />;
   } else if (post.contentType === "html") {
     content = <HtmlPreviewer content={sanitizeHtml(post.content || "")} />;
   }
