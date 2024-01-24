@@ -4,6 +4,8 @@
   --color-border-muted: var(--neutral300);
   --color-canvas-default: var(--neutral100);
 
+  -webkit-font-smoothing: initial;
+
   /* block level */
   h6 {
     color: var(--textSecondary);
