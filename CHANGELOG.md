@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.3
+
+date: 2024-01-24
+
+- Support creating democracy public proposal.
+- Disable editor posting when uploading images.
+- Show discourse forum topics for acala/centrifuge.
+- Fix bifrost polkadot treasury fiat value.
+- Show polkadot collective RFCs on overview page.
+- Code refactor and fix styles.
+
 ### 3.8.2
 
 date: 2024-01-19
