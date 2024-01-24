@@ -2188,9 +2188,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "@osn/previewer@npm:1.3.1"
+"@osn/previewer@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@osn/previewer@npm:1.3.2"
   dependencies:
     github-markdown-css: ^5.5.0
     marked: ^4.0.17
@@ -2200,7 +2200,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     styled-components: ^5.3.5
-  checksum: 7971a8b04c81e0d8347a8f5bb2201506cd98c2a7d571d46caac20d1cbc1ad43c83a3e4f4a2e65f80820f518e17fc7087c83232d11f7807105575b1a1c79d106a
+  checksum: 740f2830186ab85e914b7ff41efcceb4c0b808a9178e469510beaee8eec22b67821eeb9c0d75ebda6e1777f302ba768b668590c3878cf799917cde18eda447e6
   languageName: node
   linkType: hard
 
@@ -3869,6 +3869,15 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/marked@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@types/marked@npm:6.0.0"
+  dependencies:
+    marked: "*"
+  checksum: ad4cd5a405604b27efb4d3979b05869f3069529d1f5b2a38039de7c96e57270f03e7580efe327ca1c136ec22a355d0a7d8578346bd2af8397fdd6bb76ca1b084
   languageName: node
   linkType: hard
 
@@ -8413,6 +8422,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"marked@npm:*, marked@npm:^11.1.1":
+  version: 11.1.1
+  resolution: "marked@npm:11.1.1"
+  bin:
+    marked: bin/marked.js
+  checksum: e30e16bf1d2c6627fff4369ffef73a1fbec629c5d18be76fc1f9c36f3df96499845bb7785f73313d06082b4562307e4f314f35eaa24ac737c176234b4bf24982
+  languageName: node
+  linkType: hard
+
 "marked@npm:^4.0.15, marked@npm:^4.0.17":
   version: 4.3.0
   resolution: "marked@npm:4.3.0"
@@ -8780,7 +8798,7 @@ __metadata:
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.47.0
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^1.3.1
+    "@osn/previewer": ^1.3.2
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.1.2
     "@osn/rich-text-editor": ^0.6.3
@@ -8790,6 +8808,7 @@ __metadata:
     "@radix-ui/react-hover-card": ^1.0.6
     "@radix-ui/react-tooltip": ^1.0.5
     "@reduxjs/toolkit": ^1.9.3
+    "@types/marked": ^6.0.0
     bignumber.js: ^9.0.2
     chart.js: ^4.1.1
     chartjs-plugin-annotation: ^2.1.0
@@ -8832,6 +8851,7 @@ __metadata:
     lodash.sumby: ^4.6.0
     lodash.uniq: ^4.5.0
     lodash.uniqby: ^4.7.0
+    marked: ^11.1.1
     md5: ^2.3.0
     moment: ^2.29.4
     quick-lru: ^7.0.0
