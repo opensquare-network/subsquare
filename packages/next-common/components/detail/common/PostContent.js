@@ -33,9 +33,7 @@ export default function PostContent() {
       postContent = marked(post.content || "", { breaks: true });
 
       // strip all inline attributes
-      postContent = sanitizeHtml(postContent || "")
-        // fallback '&gt;' to '>' for markdown blockquote
-        .replaceAll("&gt;", ">");
+      postContent = sanitizeHtml(postContent || "");
     }
 
     content = <MarkdownPreviewer content={postContent} />;
