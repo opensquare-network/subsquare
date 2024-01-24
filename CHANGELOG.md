@@ -11,6 +11,8 @@ date: 2024-01-24
 - Show discourse forum topics for acala/centrifuge.
 - Fix bifrost polkadot treasury fiat value.
 - Show polkadot collective RFCs on overview page.
+- Reduce fetched data size for list pages.
+- Fix post content font smoonthing.
 - Code refactor and fix styles.
 
 ### 3.8.2
