@@ -8,6 +8,7 @@ import uniqBy from "lodash.uniqby";
 import { useUser } from "../../context/user";
 import { useChain } from "../../context/chain";
 import { addressEllipsis, isKeyRegisteredUser } from "..";
+import { tryConvertToEvmAddress } from "../hydradxUtil";
 
 export default function useMentionList(post, comments) {
   const chain = useChain();
@@ -30,8 +31,9 @@ export default function useMentionList(post, comments) {
       if (existing) {
         continue;
       }
+      const maybeEvmAddress = tryConvertToEvmAddress(address);
       userAppearances.push({
-        username: addressEllipsis(address),
+        username: addressEllipsis(maybeEvmAddress),
         address,
         isKeyRegistered: true,
       });
