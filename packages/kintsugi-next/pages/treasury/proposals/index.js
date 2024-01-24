@@ -14,6 +14,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     nextApi.fetch("treasury/proposals", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
+      simple: true,
     }),
     nextApi.fetch("summary"),
   ]);

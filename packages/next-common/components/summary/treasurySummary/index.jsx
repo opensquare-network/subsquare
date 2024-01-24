@@ -14,6 +14,9 @@ import { gql } from "@apollo/client";
 import { useDoTreasuryEcoQuery } from "next-common/hooks/apollo";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import TreasurySummaryToBeAwarded from "./toBeAwarded";
+import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
+import bifrost from "next-common/utils/consts/settings/bifrost";
+import find from "lodash.find";
 
 const GET_TREASURIES = gql`
   query GetTreasuries {
@@ -24,6 +27,10 @@ const GET_TREASURIES = gql`
   }
 `;
 
+const CHAIN_VALUE_TREASURY_MAP = {
+  [bifrostPolkadot.value]: bifrost.value,
+};
+
 export default function TreasurySummary() {
   const chain = useChain();
   const api = useApi();
@@ -33,7 +40,9 @@ export default function TreasurySummary() {
   const toBeAwarded = useToBeAwarded();
 
   const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
-  const treasury = data?.treasuries?.find((t) => t.chain === chain);
+  const treasury = find(data?.treasuries, {
+    chain: CHAIN_VALUE_TREASURY_MAP[chain] || chain,
+  });
 
   const spendPeriodsItem = {
     title: "Spend Period",

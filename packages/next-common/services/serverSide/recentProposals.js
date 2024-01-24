@@ -25,32 +25,33 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { overviewApi } from "../url";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 
-export const activeProposalFetchParams = {
+export const recentProposalFetchParams = {
   pageSize: 10,
+  simple: true,
 };
 
 async function fetcher(url) {
-  const resp = await nextApi.fetch(url, activeProposalFetchParams);
+  const resp = await nextApi.fetch(url, recentProposalFetchParams);
   if (resp?.result) {
     return resp.result;
   }
   return {};
 }
 
-export async function fetchActiveProposalsProps(summary = {}) {
+export async function fetchRecentProposalsProps(summary = {}) {
   const chainSettings = getChainSettings(CHAIN);
 
-  const activeProposalsData = {};
+  const recentProposalsData = {};
 
   // discussions
   const hasDiscussions = chainSettings.hasDiscussions !== false;
   if (hasDiscussions) {
-    activeProposalsData.discussions = {};
-    activeProposalsData.discussions.subsquare = await fetcher(
+    recentProposalsData.discussions = {};
+    recentProposalsData.discussions.subsquare = await fetcher(
       overviewApi.discussions,
     );
     if (chainSettings.hasPolkassemblyDiscussions) {
-      activeProposalsData.discussions.polkassembly = await fetcher(
+      recentProposalsData.discussions.polkassembly = await fetcher(
         overviewApi.polkassemblyDiscussions,
       );
     }
@@ -58,12 +59,12 @@ export async function fetchActiveProposalsProps(summary = {}) {
 
   // referenda
   if (chainSettings.hasReferenda) {
-    activeProposalsData.referenda = await fetcher(overviewApi.referenda);
+    recentProposalsData.referenda = await fetcher(overviewApi.referenda);
   }
 
   // fellowship
   if (chainSettings.hasFellowship) {
-    activeProposalsData.fellowship = await fetcher(overviewApi.fellowship);
+    recentProposalsData.fellowship = await fetcher(overviewApi.fellowship);
   }
 
   // democracy
@@ -85,8 +86,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
       };
       const initDataApi = initDataApiMap[firstDemocracyMenuItem.value];
       if (initDataApi) {
-        activeProposalsData.democracy = {};
-        activeProposalsData.democracy[firstDemocracyMenuItem.value] =
+        recentProposalsData.democracy = {};
+        recentProposalsData.democracy[firstDemocracyMenuItem.value] =
           await fetcher(initDataApi);
       }
     }
@@ -109,8 +110,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
       };
       const initDataApi = initDataApiMap[firstTreasuryMenuItem.value];
       if (initDataApi) {
-        activeProposalsData.treasury = {};
-        activeProposalsData.treasury[firstTreasuryMenuItem.value] =
+        recentProposalsData.treasury = {};
+        recentProposalsData.treasury[firstTreasuryMenuItem.value] =
           await fetcher(initDataApi);
       }
     }
@@ -120,8 +121,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
   const councilMenu = getCouncilMenu();
   const hasCouncil = !councilMenu.excludeToChains.includes(CHAIN);
   if (hasCouncil) {
-    activeProposalsData[councilNames.council] = {};
-    activeProposalsData[councilNames.council].motions = await fetcher(
+    recentProposalsData[councilNames.council] = {};
+    recentProposalsData[councilNames.council].motions = await fetcher(
       overviewApi.councilMotions,
     );
   }
@@ -129,8 +130,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
   // technical committee
   const hasTechComm = chainSettings.hasTechComm !== false;
   if (hasTechComm) {
-    activeProposalsData[tcNames.techComm] = {};
-    activeProposalsData[tcNames.techComm].techCommProposals = await fetcher(
+    recentProposalsData[tcNames.techComm] = {};
+    recentProposalsData[tcNames.techComm].techCommProposals = await fetcher(
       overviewApi.tcMotions,
     );
   }
@@ -140,8 +141,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
   const hasFinancialCouncil =
     !financialCouncilMenu.excludeToChains.includes(CHAIN);
   if (hasFinancialCouncil) {
-    activeProposalsData[financialCouncilNames.financialCouncil] = {};
-    activeProposalsData[
+    recentProposalsData[financialCouncilNames.financialCouncil] = {};
+    recentProposalsData[
       financialCouncilNames.financialCouncil
     ].financialMotions = await fetcher(overviewApi.financialMotions);
   }
@@ -161,8 +162,8 @@ export async function fetchActiveProposalsProps(summary = {}) {
       };
       const initDataApi = initDataApiMap[firstAllianceMenuItem.value];
       if (initDataApi) {
-        activeProposalsData[allianceNames.alliance] = {};
-        activeProposalsData[allianceNames.alliance][
+        recentProposalsData[allianceNames.alliance] = {};
+        recentProposalsData[allianceNames.alliance][
           firstAllianceMenuItem.value
         ] = await fetcher(initDataApi);
       }
@@ -174,23 +175,23 @@ export async function fetchActiveProposalsProps(summary = {}) {
   const hasAdvisoryCommittee =
     !advisoryCommitteeMenu.excludeToChains.includes(CHAIN);
   if (hasAdvisoryCommittee) {
-    activeProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
-    activeProposalsData[
+    recentProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
+    recentProposalsData[
       asAdvisoryCommitteeNames.advisoryCommittee
     ].advisoryMotions = await fetcher(overviewApi.advisoryMotions);
   }
 
   // moonriver
   if (isMoonChain()) {
-    activeProposalsData[treasuryCouncilNames.treasuryCouncil] = {};
-    activeProposalsData[treasuryCouncilNames.treasuryCouncil].motions =
+    recentProposalsData[treasuryCouncilNames.treasuryCouncil] = {};
+    recentProposalsData[treasuryCouncilNames.treasuryCouncil].motions =
       await fetcher(overviewApi.treasuryCouncilMotions);
 
-    activeProposalsData[openTechCommNames.openTechCommittee] = {};
-    activeProposalsData[
+    recentProposalsData[openTechCommNames.openTechCommittee] = {};
+    recentProposalsData[
       openTechCommNames.openTechCommittee
     ].openTechCommitteeProposals = await fetcher(overviewApi.openTCMotions);
   }
 
-  return activeProposalsData;
+  return recentProposalsData;
 }

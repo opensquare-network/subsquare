@@ -6,14 +6,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Pagination from "next-common/components/pagination";
 import nextApi from "next-common/services/nextApi";
-import { activeProposalFetchParams } from "next-common/services/serverSide/activeProposals";
+import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import isNil from "lodash.isnil";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
 import { first } from "lodash";
 import DataList from "next-common/components/dataList";
 
-export default function ActiveProposalTemplate({
+export default function RecentProposalTemplate({
   name = "",
   icon,
   pathname,
@@ -104,7 +104,7 @@ function TableTemplate({
   function fetchData() {
     if (api?.path) {
       nextApi
-        .fetch(api?.path, { ...api.params, page, ...activeProposalFetchParams })
+        .fetch(api?.path, { ...api.params, page, ...recentProposalFetchParams })
         .then((resp) => {
           if (resp.result) {
             setResult(resp.result);
@@ -150,7 +150,7 @@ function TableTemplate({
       {!isNil(result?.page) && (
         <Pagination
           page={page}
-          pageSize={activeProposalFetchParams.pageSize}
+          pageSize={recentProposalFetchParams.pageSize}
           total={result?.total || 0}
           onPageChange={(e, newPage) => {
             e.preventDefault();

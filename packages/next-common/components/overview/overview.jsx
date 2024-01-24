@@ -1,7 +1,7 @@
 import AccountInfo from "./accountInfo";
-import ActiveProposals from "./activeProposals";
+import RecentProposals from "./recentProposals";
 import { useChainSettings } from "next-common/context/chain";
-import TreasuryState from "./treasuryState";
+import TreasuryStats from "./treasuryStats";
 import WithPallet from "next-common/components/common/withPallet";
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 
@@ -13,7 +13,7 @@ export default function Overview() {
       <AccountInfo hideManageAccountLink={showAccountManagementTab === false} />
 
       <WithPallet pallet="treasury">
-        <TreasuryState />
+        <TreasuryStats />
       </WithPallet>
 
       <WithPallet pallet="fellowshipSalary">
@@ -21,7 +21,7 @@ export default function Overview() {
       </WithPallet>
 
       <div>
-        <ActiveProposals />
+        <RecentProposals />
         {/* news */}
       </div>
     </div>

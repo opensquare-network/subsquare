@@ -11,6 +11,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import { CHAIN } from "next-common/utils/constants";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   motions: {
@@ -21,7 +22,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalTreasuryCouncil({ summary, activeProposals }) {
+export function useRecentProposalTreasuryCouncil() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getTreasuryCouncilMenu(summary);
 
   const items = menu.items
@@ -34,7 +38,7 @@ export function getActiveProposalTreasuryCouncil({ summary, activeProposals }) {
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.treasuryCouncil]?.[item.value],
+            initData: recentProposals[Names.treasuryCouncil]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),

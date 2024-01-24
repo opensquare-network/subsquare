@@ -8,6 +8,7 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import { overviewApi } from "next-common/services/url";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   techCommProposals: {
@@ -19,7 +20,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalTechComm({ summary, activeProposals }) {
+export function useRecentProposalTechComm() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getTechCommMenu(summary);
 
   const items = menu.items
@@ -32,7 +36,7 @@ export function getActiveProposalTechComm({ summary, activeProposals }) {
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.techComm]?.[item.value],
+            initData: recentProposals[Names.techComm]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),

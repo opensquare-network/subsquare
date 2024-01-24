@@ -11,6 +11,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeOpenTechCommProposalListItem from "next-common/utils/viewfuncs/collective/normalizeOpenTechCommProposalListItem";
 import { CHAIN } from "next-common/utils/constants";
+import { usePageProps } from "next-common/context/page";
 
 const itemOptions = {
   openTechCommitteeProposals: {
@@ -21,7 +22,10 @@ const itemOptions = {
   },
 };
 
-export function getActiveProposalOpenTechComm({ summary, activeProposals }) {
+export function useRecentProposalOpenTechComm() {
+  const { overviewSummary, recentProposals } = usePageProps();
+  const summary = overviewSummary;
+
   const menu = getOpenTechCommMenu(summary);
 
   const items = menu.items
@@ -34,7 +38,7 @@ export function getActiveProposalOpenTechComm({ summary, activeProposals }) {
           ...options,
           api: {
             ...options.api,
-            initData: activeProposals[Names.openTechCommittee]?.[item.value],
+            initData: recentProposals[Names.openTechCommittee]?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),

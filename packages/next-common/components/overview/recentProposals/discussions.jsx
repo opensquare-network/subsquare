@@ -8,10 +8,15 @@ import {
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { CHAIN } from "next-common/utils/constants";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
-import getChainSettings from "next-common/utils/consts/settings";
 import { overviewApi } from "next-common/services/url";
 import normalizePolkadotForumTopicListItem from "next-common/utils/viewfuncs/discussion/normalizePolkadotForumTopicListItem";
 import { discussionsForumTopicsColumns } from "./columns/discussionsForumTopics";
+import { discussionsRFCsColumns } from "./columns/discussionsRFCs";
+import normalizeRFCsListItem from "next-common/utils/viewfuncs/discussion/normalizeRFCsListItem";
+import { usePageProps } from "next-common/context/page";
+import { useChainSettings } from "next-common/context/chain";
+import { fetchRFCs } from "next-common/services/overview/RFCs";
+import { useEffect, useState } from "react";
 
 const discussionsColumns = [
   getProposalPostTitleColumn(),
@@ -20,20 +25,34 @@ const discussionsColumns = [
   { ...getStatusTagColumn(), name: "" },
 ];
 
-export function getActiveProposalDiscussions({
-  summary,
-  activeProposals,
-  forumLatestTopics,
-}) {
-  const chainSettings = getChainSettings(CHAIN);
-  const subsquare = activeProposals.discussions?.subsquare;
-  const polkassembly = activeProposals.discussions?.polkassembly;
+export function useRecentProposalDiscussions() {
+  const { overviewSummary, recentProposals, forumLatestTopics } =
+    usePageProps();
+  const chainSettings = useChainSettings();
+  const rfcsData = useRFCsData();
+
+  const subsquare = recentProposals.discussions?.subsquare;
+  const polkassembly = recentProposals.discussions?.polkassembly;
+
   const activeCount =
     (subsquare?.total || 0) +
     (polkassembly?.total || 0) +
-    (forumLatestTopics?.items?.length || 0);
+    (forumLatestTopics?.items?.length || 0) +
+    (rfcsData?.items?.length || 0);
 
   const items = [
+    chainSettings.hasDiscussionsRFCs && {
+      lazy: false,
+      value: "rfcs",
+      name: "RFCs",
+      api: {
+        initData: rfcsData,
+        viewAllLink: "https://github.com/polkadot-fellows/RFCs/issues",
+      },
+      activeCount: rfcsData?.items?.length || 0,
+      formatter: (item) => normalizeRFCsListItem(CHAIN, item),
+      columns: discussionsRFCsColumns,
+    },
     {
       lazy: false,
       value: "subsquare",
@@ -43,7 +62,7 @@ export function getActiveProposalDiscussions({
         path: overviewApi.discussions,
         initData: subsquare,
       },
-      activeCount: summary?.discussions?.active,
+      activeCount: overviewSummary?.discussions?.active,
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
       columns: discussionsColumns,
     },
@@ -79,4 +98,17 @@ export function getActiveProposalDiscussions({
     activeCount,
     items,
   };
+}
+
+function useRFCsData() {
+  const { hasDiscussionsRFCs } = useChainSettings();
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    if (hasDiscussionsRFCs) {
+      fetchRFCs().then(setData);
+    }
+  }, [hasDiscussionsRFCs]);
+
+  return data;
 }

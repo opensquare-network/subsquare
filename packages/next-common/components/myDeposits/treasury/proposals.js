@@ -3,7 +3,7 @@ import { useChain } from "next-common/context/chain";
 import {
   getProposalPostTitleColumn,
   getStatusTagColumn,
-} from "next-common/components/overview/activeProposals/columns";
+} from "next-common/components/overview/recentProposals/columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getBondBalanceColumn } from "../columns";
 import isNil from "lodash.isnil";
