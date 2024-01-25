@@ -8,6 +8,7 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { normalizeAddress } from "next-common/utils/address";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 export default function MaybePolkadotSigner({
   onClose,
@@ -53,7 +54,13 @@ export default function MaybePolkadotSigner({
         let filter = (item) => item.type !== "ethereum";
         if (chainType === ChainTypes.ETHEREUM) {
           filter = (item) => item.type === "ethereum";
+        } else if (
+          ChainTypes.MIXED === chainType &&
+          lastConnectedAccount?.wallet === WalletTypes.TALISMAN
+        ) {
+          filter = () => true;
         }
+
         setPolkadotAccounts(
           extensionAccounts.filter(filter).map((item) => ({
             ...item,
