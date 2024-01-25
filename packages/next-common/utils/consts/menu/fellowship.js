@@ -13,7 +13,7 @@ export const name = "FELLOWSHIP";
 export const Names = {
   fellowship: "FELLOWSHIP",
   members: "Members",
-  core: "core",
+  core: "Core",
   params: "Params",
   all: "All",
 };
