@@ -11,7 +11,7 @@ const endpoints = [
 
 const ethereumNetwork = {
   chainId: "0x3640e",
-  chainName: "HydraDX",
+  chainName: "HydraDX Testnet",
   rpcUrls: ["https://rpc.nice.hydration.cloud"],
   blockExplorerUrls: ["https://explorer.nice.hydration.cloud"],
   nativeCurrency: {

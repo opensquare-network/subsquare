@@ -34,10 +34,23 @@ export async function sendEvmTx({
     dispatch(newErrorToast("Please install MetaMask"));
     return;
   }
+  const walletName = ethereum?.isTalisman ? "Talisman" : "MetaMask";
 
   const toastId = newToastId();
 
   const { ethereumNetwork } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+
+  // TODO: There is an RPC error when calling to wallet_addEthereumChain in Talisman wallet.
+  // TODO: It should be able to add network configuration automatically instead of asking user to do manually.
+  // if (ethereum.chainId !== ethereumNetwork.chainId) {
+  //   try {
+  //     await addNetwork(ethereum, ethereumNetwork);
+  //   } catch (e) {
+  //     dispatch(newErrorToast(e.message));
+  //     return;
+  //   }
+  // }
+
   if (ethereum.chainId !== ethereumNetwork.chainId) {
     dispatch(
       newPendingToast(
@@ -48,18 +61,29 @@ export async function sendEvmTx({
     try {
       await switchNetwork(ethereumNetwork.chainId);
     } catch (e) {
-      dispatch(newErrorToast(e.message));
+      dispatch(
+        newErrorToast(
+          `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
+        ),
+      );
       return;
     } finally {
       dispatch(removeToast(toastId));
     }
   }
 
-  const accounts = await requestAccounts();
-  if (accounts?.[0]?.toLowerCase() !== realSignerAddress.toLowerCase()) {
+  let walletSelectedAddress = ethereum.selectedAddress;
+  if (!walletSelectedAddress) {
+    const accounts = await requestAccounts();
+    walletSelectedAddress = accounts?.[0];
+  }
+
+  if (
+    walletSelectedAddress?.toLowerCase() !== realSignerAddress.toLowerCase()
+  ) {
     dispatch(
       newErrorToast(
-        `Please switch to correct account from MetaMask: ${realSignerAddress}`,
+        `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
       ),
     );
     return;

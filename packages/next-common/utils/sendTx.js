@@ -12,6 +12,8 @@ import isEvmChain from "./isEvmChain";
 import { sendEvmTx } from "./sendEvmTx";
 import isMixedChain from "./isMixedChain";
 import WalletTypes from "./consts/walletTypes";
+import { isEthereumAddress } from "@polkadot/util-crypto";
+import { tryConvertToEvmAddress } from "./hydradxUtil";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -56,10 +58,17 @@ export async function sendTx({
 }) {
   const signerAddress = signerAccount?.address;
 
-  if (
+  let shouldSendEvmTx =
     (isEvmChain() || isMixedChain()) &&
-    signerAccount?.meta?.source === WalletTypes.METAMASK
-  ) {
+    signerAccount?.meta?.source === WalletTypes.METAMASK;
+
+  shouldSendEvmTx =
+    shouldSendEvmTx ||
+    (isMixedChain() &&
+      isEthereumAddress(tryConvertToEvmAddress(signerAccount?.address)) &&
+      signerAccount?.meta?.source === WalletTypes.TALISMAN);
+
+  if (shouldSendEvmTx) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
       dispatch,

@@ -5,6 +5,7 @@ import { useMetaMaskAccounts } from "../../utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useChainSettings } from "next-common/context/chain";
 import { normalizeAddress } from "next-common/utils/address";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 function usePolkadotAccounts() {
   const [accounts, setAccounts] = useState([]);
@@ -23,7 +24,11 @@ function usePolkadotAccounts() {
       let filter = (item) => item.type !== "ethereum";
       if (chainType === ChainTypes.ETHEREUM) {
         filter = (item) => item.type === "ethereum";
+      } else if (ChainTypes.MIXED === chainType) {
+        filter = (item) =>
+          item.type !== "ethereum" || item.meta.source === WalletTypes.TALISMAN;
       }
+
       setAccounts(
         injectedAccounts.filter(filter).map((item) => ({
           ...item,

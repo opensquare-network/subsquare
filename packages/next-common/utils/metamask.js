@@ -67,12 +67,7 @@ export async function requestAccounts() {
   });
 }
 
-export async function addNetwork(ethereumNetwork) {
-  const ethereum = getMetaMaskEthereum();
-  if (!ethereum) {
-    throw new Error("Please install MetaMask");
-  }
-
+export async function addNetwork(ethereum, ethereumNetwork) {
   return await ethereum.request({
     method: "wallet_addEthereumChain",
     params: [ethereumNetwork],
