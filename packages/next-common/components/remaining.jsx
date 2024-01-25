@@ -21,8 +21,10 @@ export default function Remaining({ blocks = 0, percentage }) {
     ].join(" ");
   }, [days, hours, minutes]);
 
-  if (percentage) {
+  if (percentage && blocks > 0) {
     return `${percentage}%, ${remaining}`;
+  } else if (percentage && blocks <= 0) {
+    return `${percentage}%`;
   }
   return remaining;
 }

@@ -3,6 +3,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import { InlineBlockTooltip } from "next-common/components/tooltip";
 
 const columns = [
   {
@@ -26,6 +28,21 @@ const columns = [
     className: "w-[200px] text-right",
   },
 ];
+
+function Period({ blocks = 0 }) {
+  const estimatedBlocksTime = useEstimateBlocksTime(blocks);
+
+  return (
+    <div>
+      <InlineBlockTooltip
+        side="top"
+        content={`${blocks?.toLocaleString?.()} blocks`}
+      >
+        <span>{estimatedBlocksTime}</span>
+      </InlineBlockTooltip>
+    </div>
+  );
+}
 
 export default function FellowshipParamsList({ rank }) {
   const { fellowshipParams } = usePageProps();
@@ -51,8 +68,11 @@ export default function FellowshipParamsList({ rank }) {
         value={toPrecision(passiveSalary[idx], decimals)}
         symbol={symbol}
       />,
-      demotionPeriod[idx]?.toLocaleString?.(),
-      minPromotionPeriod[idx]?.toLocaleString?.(),
+      <Period key={`demotion-period-${idx}`} blocks={demotionPeriod[idx]} />,
+      <Period
+        key={`min-promotion-period-${idx}`}
+        blocks={minPromotionPeriod[idx]}
+      />,
     ];
   });
 

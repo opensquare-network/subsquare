@@ -19,10 +19,10 @@ export default function useFetchFellowshipCoreMembers(collectiveMembers) {
 
     api.query.fellowshipCore.member.entries().then((entries) => {
       const members = entries.map(([storageKey, memberStatus]) => {
-        const member = storageKey.args[0].toString();
+        const address = storageKey.args[0].toString();
         return {
-          member,
-          rank: collectiveMembers.find((m) => isSameAddress(m.address, member))
+          address,
+          rank: collectiveMembers.find((m) => isSameAddress(m.address, address))
             ?.rank,
           status: memberStatus.toJSON(),
         };
