@@ -66,6 +66,7 @@ const collectives = {
   hasStatescan: true,
   hasFellowship: true,
   hasFellowshipParams: true,
+  hasFellowshipCore: true,
   hasPolkassemblyDiscussions: false,
   hasTechComm: false,
   hasDemocracy: false,
