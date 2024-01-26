@@ -1,5 +1,5 @@
 import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
-import FellowshipMembersPage from "next-common/components/pages/fellowship/members";
+import FellowshipCandidatesPage from "next-common/components/pages/fellowship/candidates";
 
-export default FellowshipMembersPage;
+export default FellowshipCandidatesPage;
 export const getServerSideProps = getFellowshipMembersServerSideProps;

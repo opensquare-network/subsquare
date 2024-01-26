@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { isExternalLink } from "next-common/utils";
 import TabsList from "../tabsList";
+import isNil from "lodash.isnil";
 
 function UrlTabs({ tabs = [], ...props }) {
   const router = useRouter();
@@ -28,7 +29,7 @@ function UrlTabs({ tabs = [], ...props }) {
                 target={isExternal ? "_blank" : "_self"}
               >
                 {tab.render ? tab.render({ active }) : tab.label}
-                {!!tab.activeCount && (
+                {!isNil(tab.activeCount) && (
                   <span className="ml-1 text-textTertiary text16Medium">
                     {tab.activeCount}
                   </span>
