@@ -31,8 +31,8 @@ export default function FellowshipMembersPage() {
   return (
     <FellowshipCoreCommon>
       <MyFellowshipMemberStatus member={mine} />
+      <FellowshipMemberTabs members={members} />
       <div className="flex flex-col gap-y-4">
-        <FellowshipMemberTabs members={members} />
         {(members || []).map((member) => {
           return (
             <FellowshipCoreMemberCard key={member.address} member={member} />
