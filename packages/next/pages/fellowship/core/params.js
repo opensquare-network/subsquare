@@ -1,11 +1,13 @@
-import { withCommonProps } from "next-common/lib";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipParamsApi } from "next-common/services/url";
 import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
 import FellowshipCoreParamsContainer from "next-common/components/fellowship/params/container";
+import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
+import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
+import { usePageProps } from "next-common/context/page";
 
 export default function FellowshipCoreParamsPage({ fellowshipParams }) {
+  const { fellowshipMembers } = usePageProps();
+  useFetchFellowshipCoreMembers(fellowshipMembers);
+
   return (
     <FellowshipCoreCommon>
       <FellowshipCoreParamsContainer params={fellowshipParams} />
@@ -13,16 +15,4 @@ export default function FellowshipCoreParamsPage({ fellowshipParams }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
-  const [tracksProps, { result: fellowshipParams = {} }] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    ssrNextApi.fetch(fellowshipParamsApi),
-  ]);
-
-  return {
-    props: {
-      ...tracksProps,
-      fellowshipParams,
-    },
-  };
-});
+export const getServerSideProps = getFellowshipMembersServerSideProps;

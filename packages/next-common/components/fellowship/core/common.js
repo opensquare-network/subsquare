@@ -1,4 +1,5 @@
 import ListLayout from "next-common/components/layout/ListLayout";
+import FellowshipCoreMembersSummary from "next-common/components/fellowship/core/members/summary";
 
 export default function FellowshipCoreCommon({ children, ...props }) {
   const title = "Fellowship Core";
@@ -13,6 +14,7 @@ export default function FellowshipCoreCommon({ children, ...props }) {
       seoInfo={seoInfo}
       title={title}
       description={seoInfo.desc}
+      summary={<FellowshipCoreMembersSummary />}
       tabs={[
         {
           label: "Members",
