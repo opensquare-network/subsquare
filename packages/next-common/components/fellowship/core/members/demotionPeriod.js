@@ -45,7 +45,9 @@ export default function FellowshipMemberDemotionPeriod({ lastProof, rank }) {
 
   return (
     <FellowshipMemberInfoWrapper>
-      <FellowshipMemberInfoTitle>Demotion Period</FellowshipMemberInfoTitle>
+      <FellowshipMemberInfoTitle>
+        {rank <= 0 ? "Offboard Timeout" : "Demotion Period"}
+      </FellowshipMemberInfoTitle>
       <Tooltip
         content={
           remainingBlocks > 0 && (
