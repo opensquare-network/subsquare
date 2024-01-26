@@ -17,9 +17,11 @@ export default function FellowshipMemberSalary({ rank, isActive }) {
 
   return (
     <div className="bg-neutral200 rounded px-3 py-1.5 mt-3">
-      <span className="text12Medium text-textTertiary mr-1">Salary</span>
+      <span className="text12Medium text-textTertiary mr-1 leading-4">
+        Salary
+      </span>
       <ValueDisplay
-        className="text12Medium text-textSecondary"
+        className="text12Medium text-textSecondary leading-4"
         value={toPrecision(salary, decimals)}
         symbol={symbol}
       />
