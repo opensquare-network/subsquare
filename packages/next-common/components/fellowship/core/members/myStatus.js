@@ -6,7 +6,7 @@ import FellowshipCoreMemberCardListContainer from "./listContainer";
 export default function MyFellowshipMemberStatus({ member }) {
   return (
     <NotNil value={member}>
-      <TitleContainer>
+      <TitleContainer className="mb-4">
         <span>My Status</span>
       </TitleContainer>
 
