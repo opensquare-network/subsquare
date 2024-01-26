@@ -10,6 +10,8 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
 import { useEffect } from "react";
 import ChainLogo from "./logo";
+import NavDesktopLayout from "./navDesktopLayout";
+import { ToggleMenuButton } from "./styled";
 
 export default function Nav() {
   return (
@@ -38,45 +40,17 @@ function BrandingHint() {
   );
 }
 
-const ToggleMenuButton = tw.button`
-w-6 h-6 bg-navigationActive rounded
-[&_svg_path]:stroke-navigationTextTertiary
-`;
-
 function NavDesktop() {
-  const [navCollapsed, setNavCollapsed] = useNavCollapsed();
+  const [navCollapsed] = useNavCollapsed();
+  const chainSettings = useChainSettings();
 
   return (
-    <nav
-      className={cn(
-        navCollapsed ? "w-[72px]" : "w-[300px]",
-        "border-r border-neutral300",
-        "max-w-[300px] max-sm:hidden h-full overflow-y-scroll",
-        "bg-navigationBg dark:bg-neutral100 text-navigationText",
-        "scrollbar-hidden",
-      )}
-    >
-      <div>
-        <ChainLogo className="p-4 flex" />
-        <div className="py-4 px-6 flex justify-between h-[84px]">
-          <Link href="/">
-            <div className={cn(navCollapsed && "hidden")}>
-              <ChainName />
-              <BrandingHint />
-            </div>
-          </Link>
-          <div>
-            <ToggleMenuButton onClick={() => setNavCollapsed(!navCollapsed)}>
-              <ArrowFold className={cn(navCollapsed && "rotate-180")} />
-            </ToggleMenuButton>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4">
-        <NavMenu collapsed={navCollapsed} />
-      </div>
-    </nav>
+    <NavDesktopLayout
+      logo={<ChainLogo className="p-4 flex" />}
+      menu={<NavMenu collapsed={navCollapsed} />}
+      name={chainSettings.name}
+      hint="Governance by Subsquare"
+    />
   );
 }
 
