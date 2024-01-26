@@ -11,6 +11,8 @@ import { usePageProps } from "next-common/context/page";
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
+import { SystemLoading } from "@osn/icons/subsquare";
+import isNil from "lodash.isnil";
 
 export default function FellowshipCorePage() {
   const { fellowshipMembers } = usePageProps();
@@ -19,7 +21,9 @@ export default function FellowshipCorePage() {
 
   return (
     <FellowshipCoreCommon>
-      {/* todo: 1. if no members, show loading */}
+      {isNil(members) && (
+        <SystemLoading className="[&_path]:stroke-textTertiary mx-auto" />
+      )}
       <div className="flex flex-col gap-y-4">
         {(members || []).map((member) => {
           return (
