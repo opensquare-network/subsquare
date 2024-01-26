@@ -7,6 +7,8 @@ import Divider from "next-common/components/styled/layout/divider";
 import FellowshipMemberDemotionPeriod from "next-common/components/fellowship/core/members/demotionPeriod";
 import FellowshipMemberPromotionPeriod from "next-common/components/fellowship/core/members/promotionPeriod";
 import FellowshipMemberInfoLine from "next-common/components/fellowship/core/members/line";
+import FellowshipMemberInfoWrapper from "next-common/components/fellowship/core/members/infoWrapper";
+import FellowshipMemberSalary from "next-common/components/fellowship/core/members/salary";
 
 function AvatarAndAddress({ address }) {
   return (
@@ -21,11 +23,7 @@ export default function FellowshipCoreMemberCard({ member = {} }) {
   const {
     address,
     rank,
-    status: {
-      // isActive, // todo: we should show active status to user
-      lastPromotion,
-      lastProof,
-    } = {},
+    status: { isActive, lastPromotion, lastProof } = {},
   } = member;
 
   return (
@@ -37,11 +35,18 @@ export default function FellowshipCoreMemberCard({ member = {} }) {
       <Divider className="mt-4" />
       <FellowshipMemberInfoLine>
         <FellowshipMemberDemotionPeriod lastProof={lastProof} rank={rank} />
-        <FellowshipMemberPromotionPeriod
-          lastPromotion={lastPromotion}
-          rank={rank}
-        />
+        {rank > 0 ? (
+          <FellowshipMemberPromotionPeriod
+            lastPromotion={lastPromotion}
+            rank={rank}
+          />
+        ) : (
+          <FellowshipMemberInfoWrapper /> // as a placeholder
+        )}
       </FellowshipMemberInfoLine>
+
+      <Divider className="mt-4" />
+      <FellowshipMemberSalary rank={rank} isActive={isActive} />
     </SecondaryCard>
   );
 }
