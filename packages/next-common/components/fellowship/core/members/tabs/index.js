@@ -42,5 +42,5 @@ export default function FellowshipMemberTabs({ members }) {
     },
   ];
 
-  return <UrlTabs tabs={tabs} className="px-6 mt-6 mb-4" />;
+  return <UrlTabs tabs={tabs} className="px-6 mb-4" />;
 }

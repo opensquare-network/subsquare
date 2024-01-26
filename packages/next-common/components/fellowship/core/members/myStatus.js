@@ -6,13 +6,15 @@ import FellowshipCoreMemberCardListContainer from "./listContainer";
 export default function MyFellowshipMemberStatus({ member }) {
   return (
     <NotNil value={member}>
-      <TitleContainer className="mb-4">
-        <span>My Status</span>
-      </TitleContainer>
+      <div className="mb-6">
+        <TitleContainer className="mb-4">
+          <span>My Status</span>
+        </TitleContainer>
 
-      <FellowshipCoreMemberCardListContainer>
-        <FellowshipCoreMemberCard member={member} />
-      </FellowshipCoreMemberCardListContainer>
+        <FellowshipCoreMemberCardListContainer>
+          <FellowshipCoreMemberCard member={member} />
+        </FellowshipCoreMemberCardListContainer>
+      </div>
     </NotNil>
   );
 }
