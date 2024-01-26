@@ -3,21 +3,21 @@ import HeaderAccount from "./headerAccount";
 import NetworkSwitch from "./networkSwitch";
 import NodeSwitch from "./nodeSwitch";
 import SearchInput from "./searchInput";
+import HeaderLayout from "./layout";
 
 export default function Header() {
   const chainSettings = useChainSettings();
 
   return (
-    <header className="py-4 px-6 flex gap-x-6 border-b border-neutral300 bg-neutral100">
-      <div className="flex-1">
-        <SearchInput />
-      </div>
-
-      <div className="flex gap-x-2 relative">
-        <HeaderAccount />
-        <NetworkSwitch activeNode={chainSettings} />
-        <NodeSwitch small />
-      </div>
-    </header>
+    <HeaderLayout
+      search={<SearchInput />}
+      account={
+        <>
+          <HeaderAccount />
+          <NetworkSwitch activeNode={chainSettings} />
+          <NodeSwitch small />
+        </>
+      }
+    />
   );
 }
