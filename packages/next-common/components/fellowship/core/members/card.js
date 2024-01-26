@@ -10,10 +10,10 @@ import FellowshipMemberInfoLine from "next-common/components/fellowship/core/mem
 import FellowshipMemberInfoWrapper from "next-common/components/fellowship/core/members/infoWrapper";
 import FellowshipMemberSalary from "next-common/components/fellowship/core/members/salary";
 
-function AvatarAndAddress({ address }) {
+function AvatarAndAddress({ address, isActive }) {
   return (
     <div className="flex flex-col gap-y-2">
-      <Avatar address={address} size={40} />
+      <Avatar address={address} size={40} active={isActive} />
       <AddressUser add={address} showAvatar={false} fontSize={14} />
     </div>
   );
@@ -29,7 +29,7 @@ export default function FellowshipCoreMemberCard({ member = {} }) {
   return (
     <SecondaryCard>
       <div className="flex justify-between">
-        <AvatarAndAddress address={address} />
+        <AvatarAndAddress address={address} isActive={isActive} />
         <FellowshipRank rank={rank} />
       </div>
       <Divider className="mt-4" />
