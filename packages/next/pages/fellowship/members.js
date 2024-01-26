@@ -28,7 +28,12 @@ export default function MembersPage() {
     <ListLayout seoInfo={seoInfo} title={category}>
       <div className="flex flex-col gap-y-4">
         <TitleContainer>
-          <span>List</span>
+          <span>
+            List
+            <span className="text-textTertiary text14Medium ml-1">
+              {filteredMembers.length}
+            </span>
+          </span>
           {component}
         </TitleContainer>
         <FellowshipCollectiveMembers members={filteredMembers} />
