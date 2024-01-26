@@ -1,5 +1,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
+import Period from "next-common/components/fellowship/params/period";
 
 export default function FellowshipParamsOffBoardTimeoutCard() {
   const { fellowshipParams } = usePageProps();
@@ -8,7 +9,7 @@ export default function FellowshipParamsOffBoardTimeoutCard() {
     <SecondaryCard className="text-textPrimary flex justify-between">
       <div className="text14Bold">Off-board Timeout</div>
       <div className="text14Medium">
-        {fellowshipParams?.offboardTimeout?.toLocaleString?.()}
+        <Period blocks={fellowshipParams?.offboardTimeout} />
       </div>
     </SecondaryCard>
   );

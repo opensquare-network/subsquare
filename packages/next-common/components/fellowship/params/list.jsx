@@ -3,6 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
+import Period from "next-common/components/fellowship/params/period";
 
 const columns = [
   {
@@ -51,8 +52,11 @@ export default function FellowshipParamsList({ rank }) {
         value={toPrecision(passiveSalary[idx], decimals)}
         symbol={symbol}
       />,
-      demotionPeriod[idx]?.toLocaleString?.(),
-      minPromotionPeriod[idx]?.toLocaleString?.(),
+      <Period key={`demotion-period-${idx}`} blocks={demotionPeriod[idx]} />,
+      <Period
+        key={`min-promotion-period-${idx}`}
+        blocks={minPromotionPeriod[idx]}
+      />,
     ];
   });
 
