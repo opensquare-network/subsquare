@@ -15,10 +15,8 @@ export default function FellowshipMemberPromotionPeriod({
 }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
-  const promotionPeriod = fellowshipParams.minPromotionPeriod[rank - 1];
-  if (isNil(promotionPeriod)) {
-    return null;
-  }
+  const index = rank > 0 ? rank - 1 : 0;
+  const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
 
   const gone = latestHeight - lastPromotion;
   const percentageValue = useMemo(() => {
@@ -40,6 +38,10 @@ export default function FellowshipMemberPromotionPeriod({
 
     return promotionPeriod - gone;
   }, [promotionPeriod, gone]);
+
+  if (isNil(promotionPeriod)) {
+    return null;
+  }
 
   return (
     <FellowshipMemberInfoWrapper>

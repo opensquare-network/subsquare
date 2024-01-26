@@ -12,10 +12,11 @@ import FellowshipMemberInfoTitle from "next-common/components/fellowship/core/me
 export default function FellowshipMemberDemotionPeriod({ lastProof, rank }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
-  const demotionPeriod = fellowshipParams.demotionPeriod[rank - 1];
-  if (isNil(demotionPeriod)) {
-    return null;
-  }
+  const demotionPeriod = useMemo(() => {
+    return rank <= 0
+      ? fellowshipParams.offboardTimeout
+      : fellowshipParams.demotionPeriod[rank - 1];
+  }, [rank, fellowshipParams]);
 
   const gone = latestHeight - lastProof;
   const percentageValue = useMemo(() => {
@@ -37,6 +38,10 @@ export default function FellowshipMemberDemotionPeriod({ lastProof, rank }) {
 
     return demotionPeriod - gone;
   }, [demotionPeriod, gone]);
+
+  if (isNil(demotionPeriod)) {
+    return null;
+  }
 
   return (
     <FellowshipMemberInfoWrapper>
