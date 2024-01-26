@@ -5,10 +5,12 @@ import FellowshipCoreMemberCard from "next-common/components/fellowship/core/mem
 export default function MyFellowshipMemberStatus({ member }) {
   return (
     <NotNil value={member}>
-      <TitleContainer>
-        <span>My Status</span>
-      </TitleContainer>
-      <FellowshipCoreMemberCard member={member} />
+      <div className="flex flex-col gap-y-4 mb-6">
+        <TitleContainer>
+          <span>My Status</span>
+        </TitleContainer>
+        <FellowshipCoreMemberCard member={member} />
+      </div>
     </NotNil>
   );
 }

@@ -37,9 +37,7 @@ export default function FellowshipCorePage() {
 
   return (
     <FellowshipCoreCommon>
-      <div className="flex flex-col gap-y-4 mb-6">
-        <MyFellowshipMemberStatus member={mine} />
-      </div>
+      <MyFellowshipMemberStatus member={mine} />
       <div className="flex flex-col gap-y-4">
         <TitleContainer>
           <span>Members</span>
