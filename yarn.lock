@@ -2159,10 +2159,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.47.0":
-  version: 1.47.0
-  resolution: "@osn/icons@npm:1.47.0"
-  checksum: ab28b130a4698c5ff11f9d11b1f129c261a5bcae2c1b47d595a6b251cbfdbaa0c71ab51d2310f0ef1f340e6dfaa49bc0f921664b449d68ba4ab96e8688174fba
+"@osn/icons@npm:^1.61.0":
+  version: 1.61.0
+  resolution: "@osn/icons@npm:1.61.0"
+  checksum: 4655ac5aff38bdc5b63f9c85bc81d7be79d029e7eb7b9b50189e48cef2dadf6eee419b79aeac18a9dee81a57c9ef6358fe637e8f35accb167e128204aebceab0
   languageName: node
   linkType: hard
 
@@ -3442,7 +3442,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.47.0
+    "@osn/icons": ^1.61.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3477,7 +3477,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.47.0
+    "@osn/icons": ^1.61.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -8796,7 +8796,7 @@ __metadata:
     "@apollo/client": ^3.8.8
     "@interlay/monetary-js": 0.5.4
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.47.0
+    "@osn/icons": ^1.61.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.2
     "@osn/provider-options": 1.1.0
