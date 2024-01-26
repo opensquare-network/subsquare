@@ -10,6 +10,7 @@ import {
 import { usePageProps } from "next-common/context/page";
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
+import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import { SystemLoading } from "@osn/icons/subsquare";
 import isNil from "lodash.isnil";
@@ -44,11 +45,14 @@ export default function FellowshipCorePage() {
         <TitleContainer>
           <span>Members</span>
         </TitleContainer>
-        {(members || []).map((member) => {
-          return (
-            <FellowshipCoreMemberCard key={member.address} member={member} />
-          );
-        })}
+
+        <FellowshipCoreMemberCardListContainer>
+          {(members || []).map((member) => {
+            return (
+              <FellowshipCoreMemberCard key={member.address} member={member} />
+            );
+          })}
+        </FellowshipCoreMemberCardListContainer>
       </div>
     </FellowshipCoreCommon>
   );
