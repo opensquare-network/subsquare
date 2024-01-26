@@ -1,4 +1,3 @@
-import MembersList from "components/fellowship/memberList";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { withCommonProps } from "next-common/lib";
@@ -9,17 +8,17 @@ import {
 } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
+import FellowshipCollectiveMembers from "next-common/components/fellowship/collective/list";
 
 export default function MembersPage() {
-  const { fellowshipMembers, fellowshipParams } = usePageProps();
+  const { fellowshipMembers } = usePageProps();
   const category = "Fellowship Members";
   const seoInfo = { title: category, desc: category };
   useFetchFellowshipCoreMembers(fellowshipMembers);
-  console.log("fellowshipParams", fellowshipParams);
 
   return (
     <ListLayout seoInfo={seoInfo} title={category}>
-      <MembersList items={fellowshipMembers} loading={false} />
+      <FellowshipCollectiveMembers members={fellowshipMembers} />
     </ListLayout>
   );
 }
