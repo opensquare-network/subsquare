@@ -130,10 +130,12 @@ function Tabs({ tabs = [] }) {
           if (tab.exactMatch === false) {
             active = routePath.startsWith(tab.url);
           } else {
-            active = [
+            const urls = [
               tab.url,
               ...(tab.extraMatchTabActivePathnames ?? []),
-            ].includes(routePath);
+              ...(tab.urls || []),
+            ];
+            active = urls.includes(routePath);
           }
         }
 
