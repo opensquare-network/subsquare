@@ -1,10 +1,17 @@
-import * as React from "react";
 import Identicon from "@osn/polkadot-react-identicon";
 import styled from "styled-components";
 import { useThemeSetting } from "../context/theme";
 import makeBlockie from "ethereum-blockies-base64";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
+import isNil from "lodash.isnil";
+import {
+  SystemSignalActiveDark,
+  SystemSignalActiveLight,
+  SystemSignalInactiveDark,
+  SystemSignalInactiveLight,
+} from "@osn/icons/subsquare";
+import Tooltip from "./tooltip";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
@@ -12,42 +19,26 @@ const StyledIdenticon = styled(Identicon)`
   }
 `;
 
-const Wrapper = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  border-radius: ${(props) => props.size / 2}px;
-  background: var(--neutral200);
-`;
+export default function Avatar({ address, size = 24, active }) {
+  const hasActiveIndicator = !isNil(active);
 
-const ImgWrapper = styled.img`
-  border-radius: ${(props) => props.size / 2}px;
-`;
-
-export default function Avatar({ address, size = 24 }) {
   const themeObj = useThemeSetting();
   const theme = "polkadot";
 
-  if (isEthereumAddress(address)) {
-    const imgSize = (size / 10) * 8;
+  let content;
 
-    return (
-      <Wrapper size={size}>
-        <ImgWrapper
-          size={imgSize}
-          src={makeBlockie(address)}
-          width={imgSize}
-          height={imgSize}
-          alt={address}
-        />
-      </Wrapper>
+  if (isEthereumAddress(address)) {
+    content = (
+      <img
+        className="w-4/5 h-4/5 rounded-[inherit]"
+        src={makeBlockie(address)}
+        alt={address}
+      />
     );
   }
 
   if (isPolkadotAddress(address)) {
-    return (
+    content = (
       <StyledIdenticon
         value={address}
         size={size}
@@ -57,5 +48,40 @@ export default function Avatar({ address, size = 24 }) {
     );
   }
 
-  return null;
+  if (!content) {
+    return null;
+  }
+
+  return (
+    <div
+      className="relative inline-flex items-center justify-center bg-neutral200 rounded-full"
+      style={{
+        width: size,
+        height: size,
+      }}
+    >
+      {content}
+
+      {hasActiveIndicator && (
+        <Tooltip
+          className="absolute right-0 bottom-0"
+          content={active ? "Active" : "Inactive"}
+        >
+          {active && (
+            <>
+              <SystemSignalActiveLight className="dark:hidden" />
+              <SystemSignalActiveDark className="hidden dark:block" />
+            </>
+          )}
+
+          {!active && (
+            <>
+              <SystemSignalInactiveLight className="dark:hidden" />
+              <SystemSignalInactiveDark className="hidden dark:block" />
+            </>
+          )}
+        </Tooltip>
+      )}
+    </div>
+  );
 }
