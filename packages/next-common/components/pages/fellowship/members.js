@@ -12,6 +12,7 @@ import FellowshipMemberTabs from "next-common/components/fellowship/core/members
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 
 export default function FellowshipMembersPage() {
   const { fellowshipMembers } = usePageProps();
@@ -43,13 +44,13 @@ export default function FellowshipMembersPage() {
     <FellowshipCoreCommon>
       <MyFellowshipMemberStatus member={mine} />
       <FellowshipMemberTabs members={members} />
-      <div className="flex flex-col gap-y-4">
+      <FellowshipCoreMemberCardListContainer>
         {filteredMembers.map((member) => {
           return (
             <FellowshipCoreMemberCard key={member.address} member={member} />
           );
         })}
-      </div>
+      </FellowshipCoreMemberCardListContainer>
     </FellowshipCoreCommon>
   );
 }
