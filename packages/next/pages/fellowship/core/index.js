@@ -40,7 +40,12 @@ export default function FellowshipCorePage() {
       <MyFellowshipMemberStatus member={mine} />
       <div className="flex flex-col gap-y-4">
         <TitleContainer>
-          <span>Members</span>
+          <span>
+            Members
+            {members.length > 0 && (
+              <span className="ml-2 text-textTertiary">{members.length}</span>
+            )}
+          </span>
         </TitleContainer>
         {(members || []).map((member) => {
           return (
