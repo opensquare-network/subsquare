@@ -10,6 +10,8 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import MyFellowshipMemberStatus from "next-common/components/fellowship/core/members/myStatus";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
 export default function FellowshipMembersPage() {
   const { fellowshipMembers } = usePageProps();
@@ -19,6 +21,15 @@ export default function FellowshipMembersPage() {
   const mine = (members || []).find((member) =>
     isSameAddress(member.address, myAddress),
   );
+
+  const pathname = usePathname();
+  const filteredMembers = useMemo(() => {
+    if (pathname.startsWith("/fellowship/core/candidates")) {
+      return (members || []).filter((member) => member.rank <= 0);
+    } else {
+      return (members || []).filter((member) => member.rank > 0);
+    }
+  }, [members, pathname]);
 
   if (isNil(members)) {
     return (
@@ -33,7 +44,7 @@ export default function FellowshipMembersPage() {
       <MyFellowshipMemberStatus member={mine} />
       <FellowshipMemberTabs members={members} />
       <div className="flex flex-col gap-y-4">
-        {(members || []).map((member) => {
+        {filteredMembers.map((member) => {
           return (
             <FellowshipCoreMemberCard key={member.address} member={member} />
           );

@@ -12,7 +12,11 @@ export default function FellowshipCoreCommon({ children, ...props }) {
       title={title}
       description={seoInfo.desc}
       tabs={[
-        { label: "Members", url: "/fellowship/core" },
+        {
+          label: "Members",
+          url: "/fellowship/core",
+          exactMatch: false,
+        },
         { label: "Params", url: "/fellowship/core/params" },
       ].filter(Boolean)}
       {...props}
