@@ -30,7 +30,7 @@ function UrlTabs({ tabs = [], ...props }) {
               >
                 {tab.render ? tab.render({ active }) : tab.label}
                 {!isNil(tab.activeCount) && (
-                  <span className="ml-1 text-textTertiary text16Medium">
+                  <span className="ml-1 text-textTertiary text14Medium">
                     {tab.activeCount}
                   </span>
                 )}
