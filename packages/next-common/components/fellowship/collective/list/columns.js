@@ -1,7 +1,7 @@
 const fellowshipCollectiveMemberColumns = [
   {
     name: "Rank",
-    className: "",
+    className: "w-[80px]",
   },
   {
     name: "Member",
