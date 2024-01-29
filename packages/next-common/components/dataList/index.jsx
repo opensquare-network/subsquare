@@ -6,6 +6,7 @@ import { useDeepCompareEffect, useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import isNil from "lodash.isnil";
 
 export default function DataList({
   columns = [],
@@ -58,11 +59,22 @@ export default function DataList({
         ?.split(" ")
         ?.some((className) => className.startsWith("w-")) &&
         !column?.style?.width &&
+        !column?.width &&
         "flex-1 w-full",
       column.className,
     ),
   );
-  const columnStyles = columns.map((column) => column.style);
+  const columnStyles = columns.map((column) => {
+    return {
+      ...column.style,
+      ...(!isNil(column.width)
+        ? {
+            width: column.width,
+            minWidth: column.width,
+          }
+        : {}),
+    };
+  });
 
   if (loading) {
     content = (
@@ -90,13 +102,9 @@ export default function DataList({
 
   return (
     <div
-      ref={listRef}
-      role="list"
       className={cn(
-        "datalist",
-        "w-full",
-        listOverflow && "min-w-min",
-        "scrollbar-pretty",
+        "scrollbar-hidden",
+        "overflow-auto",
         "text-textPrimary",
         "bg-neutral100",
         bordered &&
@@ -105,29 +113,35 @@ export default function DataList({
       )}
     >
       <div
-        className={cn(
-          "flex items-center pb-3",
-          "border-b border-neutral300",
-          "max-sm:hidden",
-        )}
+        ref={listRef}
+        role="list"
+        className={cn("datalist", "w-full", listOverflow && "min-w-min")}
       >
-        {columns.map((column, idx) => (
-          <div
-            key={idx}
-            className={cn(
-              "text-textTertiary",
-              column.headClassName,
-              columnClassNames[idx],
-            )}
-            style={columnStyles[idx]}
-          >
-            {column.name}
-          </div>
-        ))}
-      </div>
+        <div
+          className={cn(
+            "flex items-center pb-3",
+            "border-b border-neutral300",
+            "max-sm:hidden",
+          )}
+        >
+          {columns.map((column, idx) => (
+            <div
+              key={idx}
+              className={cn(
+                "text-textTertiary",
+                column.headClassName,
+                columnClassNames[idx],
+              )}
+              style={columnStyles[idx]}
+            >
+              {column.name}
+            </div>
+          ))}
+        </div>
 
-      <div ref={bodyRef} className={cn("datalist-body", "scrollbar-pretty")}>
-        {content}
+        <div ref={bodyRef} className={cn("datalist-body", "scrollbar-pretty")}>
+          {content}
+        </div>
       </div>
     </div>
   );

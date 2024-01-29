@@ -8,6 +8,7 @@ export default function DataListItem({
   columns,
   row,
   columnClassNames,
+  columnStyles,
   highlighted,
 }) {
   const { onClick, useData } = row ?? {};
@@ -36,8 +37,8 @@ export default function DataListItem({
       <DesktopContent
         data={data}
         row={row}
-        columns={columns}
         columnClassNames={columnClassNames}
+        columnStyles={columnStyles}
       />
 
       <MobileContent
@@ -50,14 +51,14 @@ export default function DataListItem({
   );
 }
 
-function DesktopContent({ data, row, columns, columnClassNames }) {
+function DesktopContent({ data, row, columnClassNames, columnStyles }) {
   return (
     <div className="max-sm:hidden w-full flex items-center">
       {(data ?? row)?.map((item, idx) => (
         <div
           key={idx}
-          style={columns[idx].style}
           className={columnClassNames[idx]}
+          style={columnStyles[idx]}
         >
           {item}
         </div>
