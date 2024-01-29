@@ -7,6 +7,7 @@ import NavProvider from "./nav";
 import { SocketProvider } from "./socket";
 import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
+import NavRouteProvider from "./nav/route";
 
 export default function GlobalProvider({
   user,
@@ -31,9 +32,11 @@ export default function GlobalProvider({
                   navCollapsed={navCollapsed}
                   navSubmenuVisible={navSubmenuVisible}
                 >
-                  <PageProvider pageProperties={pageProperties}>
-                    {children}
-                  </PageProvider>
+                  <NavRouteProvider>
+                    <PageProvider pageProperties={pageProperties}>
+                      {children}
+                    </PageProvider>
+                  </NavRouteProvider>
                 </NavProvider>
               </AdminProvider>
             </ConnectedAccountProvider>

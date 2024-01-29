@@ -55,12 +55,14 @@ function NavDesktop() {
 }
 
 const NavMobileToolbarItem = tw.div`
-w-[72px] flex items-center justify-center
+  w-[72px] flex items-center justify-center
 `;
+
 const NavMobileFloatContainer = tw.div`
-fixed bottom-0 top-16 left-0 right-0
-p-4 overflow-y-scroll
+  fixed bottom-0 top-16 left-0 right-0
+  p-4 overflow-y-scroll
 `;
+
 function NavMobile() {
   const [menuVisible, menuToggle] = useToggle(false);
   const [toolbarVisible, toolbarToggle] = useToggle(false);

@@ -1,12 +1,12 @@
 import { useNavSubmenuVisible } from "next-common/context/nav";
 import NavMenuGroup from "./group";
 import NavMenuItem from "./item";
-import { useRouter } from "next/router";
+import { usePageUrl } from "next-common/context/nav/route";
 
 export default function NavFeaturedMenu({ collapsed, menu = [] }) {
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
 
-  const router = useRouter();
+  const pageUrl = usePageUrl();
 
   return (
     <ul>
@@ -26,7 +26,7 @@ export default function NavFeaturedMenu({ collapsed, menu = [] }) {
                 link={menu.pathname}
                 icon={menu.icon}
                 activeCount={menu.activeCount}
-                active={router.asPath === menu.pathname}
+                active={pageUrl === menu.pathname}
                 collapsed={collapsed}
               />
             ))}

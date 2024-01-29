@@ -1,6 +1,5 @@
 import { cn } from "next-common/utils";
 import { startCase, capitalize } from "lodash";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
@@ -9,6 +8,7 @@ import { useUpdateEffect } from "usehooks-ts";
 import NavMenuItem from "./item";
 import NavMenuDivider from "../divider";
 import sumBy from "lodash.sumby";
+import { usePageUrl, usePathname } from "next-common/context/nav/route";
 
 export default function NavMenuGroup({
   menu = {},
@@ -17,8 +17,8 @@ export default function NavMenuGroup({
   setNavSubmenuVisible,
 }) {
   const { sm } = useScreenSize();
-  const router = useRouter();
-  const firstPath = "/" + router.asPath.split("/").filter(Boolean)[0];
+  const pageUrl = usePageUrl();
+  const firstPath = "/" + pageUrl.split("/").filter(Boolean)[0];
 
   const [submenuVisible, setSubmenuVisible] = useState(
     collapsed
@@ -105,8 +105,9 @@ export default function NavMenuGroup({
 }
 
 function SubMenuItems({ className = "", items = [] }) {
-  const router = useRouter();
-  const routePath = router.asPath.split("?")[0];
+  const pathname = usePathname();
+  const pageUrl = usePageUrl();
+  const routePath = pageUrl.split("?")[0];
 
   return (
     <ul className={className}>
@@ -117,7 +118,7 @@ function SubMenuItems({ className = "", items = [] }) {
         ];
 
         const active =
-          matchActivePathnames.includes(router.pathname) ||
+          matchActivePathnames.includes(pathname) ||
           matchActivePathnames.includes(routePath);
 
         return (

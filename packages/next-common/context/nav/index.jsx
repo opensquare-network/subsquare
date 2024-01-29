@@ -5,23 +5,6 @@ import { createContext, useContext } from "react";
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
 
-export default function NavProvider({
-  navCollapsed,
-  navSubmenuVisible = "{}",
-  children,
-}) {
-  return (
-    <NavCollapsedProvider value={navCollapsed}>
-      <NavSubmenuVisibleProvider value={navSubmenuVisible}>
-        {children}
-      </NavSubmenuVisibleProvider>
-    </NavCollapsedProvider>
-  );
-}
-
-export function useNavSubmenuVisible() {
-  return useContext(NavSubmenuVisibleContext);
-}
 function NavCollapsedProvider({ children, value }) {
   try {
     value = JSON.parse(value);
@@ -40,9 +23,6 @@ function NavCollapsedProvider({ children, value }) {
   );
 }
 
-export function useNavCollapsed() {
-  return useContext(NavCollapsedContext);
-}
 function NavSubmenuVisibleProvider({ children, value }) {
   try {
     value = JSON.parse(decodeURIComponent(value));
@@ -62,4 +42,26 @@ function NavSubmenuVisibleProvider({ children, value }) {
       {children}
     </NavSubmenuVisibleContext.Provider>
   );
+}
+
+export default function NavProvider({
+  navCollapsed,
+  navSubmenuVisible = "{}",
+  children,
+}) {
+  return (
+    <NavCollapsedProvider value={navCollapsed}>
+      <NavSubmenuVisibleProvider value={navSubmenuVisible}>
+        {children}
+      </NavSubmenuVisibleProvider>
+    </NavCollapsedProvider>
+  );
+}
+
+export function useNavSubmenuVisible() {
+  return useContext(NavSubmenuVisibleContext);
+}
+
+export function useNavCollapsed() {
+  return useContext(NavCollapsedContext);
 }
