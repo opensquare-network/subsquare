@@ -8,7 +8,7 @@ import {
 } from "@osn/icons/subsquare";
 
 const DEFAULT_KINTSUGI_NODES =
-  process.env.NEXT_PUBLIC_DEVELOPMENT === "true"
+  process.env.NEXT_PUBLIC_TEST === "true"
     ? [
         {
           name: "Kintsugi Test Endpoint",
