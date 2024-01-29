@@ -1,7 +1,7 @@
 const fellowshipCollectiveMemberColumns = [
   {
     name: "Rank",
-    className: "w-[80px]",
+    width: 80,
   },
   {
     name: "Member",
@@ -9,19 +9,23 @@ const fellowshipCollectiveMemberColumns = [
   },
   {
     name: "Active Salary",
-    className: "w-[200px] text-right",
+    width: 160,
+    className: "text-right",
   },
   {
     name: "Passive Salary",
-    className: "w-[200px] text-right",
+    width: 160,
+    className: "text-right",
   },
   {
     name: "Demotion Period",
-    className: "w-[200px] text-right",
+    width: 160,
+    className: "text-right",
   },
   {
     name: "Min Promotion Period",
-    className: "w-[200px] text-right",
+    width: 160,
+    className: "text-right",
   },
 ];
 
