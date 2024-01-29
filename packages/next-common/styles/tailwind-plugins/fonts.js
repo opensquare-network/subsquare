@@ -4,7 +4,7 @@ module.exports = plugin(({ addComponents }) => {
   addComponents({
     ".text20BoldLogo": {
       "font-size": "24px",
-      "font-family": "Montserrat",
+      "font-family": "var(--font-montserrat, Montserrat)",
       "font-weight": 700,
       "line-height": "32px",
     },
