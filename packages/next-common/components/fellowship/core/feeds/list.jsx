@@ -1,8 +1,9 @@
 import Pagination from "next-common/components/pagination";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { cn, timeDurationFromNow } from "next-common/utils";
+import { cn } from "next-common/utils";
 import FellowshipCoreFeedsListEvent from "./event";
 import tw from "tailwind-styled-components";
+import FellowshipCoreFeedsListTime from "./time";
 
 const Bar = tw.div`grow w-0.5 bg-theme300 mx-auto`;
 
@@ -14,9 +15,12 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
         className={cn("w-[640px] max-w-full", "max-sm:w-full")}
         feed={item}
       />,
-      <div key="time" className="w-40 text14Medium text-textTertiary">
-        {timeDurationFromNow(item?.indexer?.blockTime)}
-      </div>,
+      <FellowshipCoreFeedsListTime
+        key="time"
+        feed={item}
+        className="w-40 text14Medium text-textTertiary"
+      />,
+      <div key={"block"}></div>,
     ];
   });
 
