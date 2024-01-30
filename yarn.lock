@@ -2181,10 +2181,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.67.0":
-  version: 1.67.0
-  resolution: "@osn/icons@npm:1.67.0"
-  checksum: bb02dd1cad8a341d76a349bdeb0af7ddbfe51efc3fcfbe966887107bf05174dde63cdf70301710bdce8ec39c73027cca5256569c196a4640e451c52d68b78afb
+"@osn/icons@npm:^1.68.0":
+  version: 1.68.0
+  resolution: "@osn/icons@npm:1.68.0"
+  checksum: 0b8e83a61257a11c69f474a3ff9845b6b4af13eb90e5299cb58671e65105d60d05b564eb45a76a82a0bb5311ee049361fce576e2b7997cb7c5d6fec474c39b44
   languageName: node
   linkType: hard
 
@@ -3464,7 +3464,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.67.0
+    "@osn/icons": ^1.68.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3499,7 +3499,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.67.0
+    "@osn/icons": ^1.68.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -8817,7 +8817,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.67.0
+    "@osn/icons": ^1.68.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.2
     "@osn/provider-options": 1.1.0

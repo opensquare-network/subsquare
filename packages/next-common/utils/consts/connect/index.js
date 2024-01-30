@@ -2,7 +2,7 @@ import WalletTypes from "../walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
 import {
   WalletMetamask,
-  WalletMimirLight,
+  WalletMimir,
   WalletNova,
   WalletPolkadotjs,
   WalletPolkagate,
@@ -61,7 +61,7 @@ const mimir = {
   extensionName: WalletTypes.MIMIR,
   title: "Mimir",
   installUrl: "https://app.mimir.global/",
-  logo: WalletMimirLight,
+  logo: WalletMimir,
 };
 
 export function getWallets() {
