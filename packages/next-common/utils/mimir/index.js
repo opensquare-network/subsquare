@@ -10,7 +10,7 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 import { createSendTxEventHandler } from "../sendTx";
-// import { checkCall } from "@mimirdev/apps-sdk";
+import { checkCall } from "@mimirdev/apps-sdk";
 
 export async function tryInitMimir() {
   if (typeof window === "undefined") {
@@ -85,9 +85,9 @@ export async function maybeSendMimirTx({
     const method = api.registry.createType("Call", result.payload.method);
 
     // check the final call is the expect call
-    // if (!checkCall(method, tx.method)) {
-    //   throw new Error("not an safe method");
-    // }
+    if (!checkCall(api, method, tx.method)) {
+      throw new Error("not an safe method");
+    }
 
     // Reconstruct a new tx.
     const multisigTx = api.tx[method.section][method.method](...method.args);
