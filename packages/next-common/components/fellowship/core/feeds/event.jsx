@@ -96,7 +96,13 @@ export default function FellowshipCoreFeedsListEvent({
   const content = EVENT_CONTENTS[event];
 
   return (
-    <div className={cn("flex items-center gap-x-2", "text14Medium", className)}>
+    <div
+      className={cn(
+        "flex items-center flex-wrap gap-x-2",
+        "text14Medium",
+        className,
+      )}
+    >
       {content}
     </div>
   );
