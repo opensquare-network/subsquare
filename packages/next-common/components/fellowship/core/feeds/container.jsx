@@ -26,18 +26,21 @@ export default function FellowshipCoreFeedsContainer({ feeds = {} }) {
           )}
         </span>
 
-        <div className="text12Medium text-textPrimary flex items-center gap-x-2">
-          <div>Event</div>
-          <Select
-            className="w-20"
-            small
-            value={event}
-            options={options}
-            onChange={(option) => {
-              setEvent(option.value);
-            }}
-          />
-        </div>
+        {/* TODO: event filter */}
+        {false && (
+          <div className="text12Medium text-textPrimary flex items-center gap-x-2">
+            <div>Event</div>
+            <Select
+              className="w-20"
+              small
+              value={event}
+              options={options}
+              onChange={(option) => {
+                setEvent(option.value);
+              }}
+            />
+          </div>
+        )}
       </TitleContainer>
       <div className="space-y-4 mt-4">
         <FellowshipCoreFeedsList feeds={feeds} />
