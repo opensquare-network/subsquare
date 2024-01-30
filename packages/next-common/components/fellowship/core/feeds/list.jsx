@@ -24,15 +24,15 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
     <SecondaryCard>
       <div className="overflow-auto scrollbar-pretty max-sm:space-y-51">
         {rows.map((row, idx) => (
-          <div key={idx} className={cn("group", "flex gap-x-4")}>
+          <div key={idx} className={cn("group/feed-item", "flex gap-x-4")}>
             <div className="flex flex-col">
-              <Bar className="group-first:h-2.5 group-first:grow-0 max-sm:grow-0 max-sm:h-2.5" />
+              <Bar className="group-first/feed-item:h-2.5 group-first/feed-item:grow-0 max-sm:grow-0 max-sm:h-2.5" />
 
               <div className="w-3 h-5 flex items-center">
                 <div className="w-3 h-3 border-[3px] border-theme500 rounded-full" />
               </div>
 
-              <Bar className="group-last:bg-transparent" />
+              <Bar className="group-last/feed-item:bg-transparent" />
             </div>
 
             <div
