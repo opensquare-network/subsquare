@@ -54,7 +54,7 @@ export default function DataList({
   const columnClassNames = columns.map((column) =>
     cn(
       "text14Medium",
-      // if has no width specific, make it flex
+      // if there is no width specific, make it flex
       !column.className
         ?.split(" ")
         ?.some((className) => className.startsWith("w-")) &&
