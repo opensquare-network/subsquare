@@ -1,28 +1,25 @@
-import React, { useMemo } from "react";
-import useAddressInput from "next-common/components/fellowship/core/summary/induct/useAddressInput";
 import PopupWithSigner from "next-common/components/popupWithSigner";
+import React, { useMemo } from "react";
+import useSigner from "next-common/components/common/tx/useSigner";
 import useApi from "next-common/utils/hooks/useApi";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useSigner from "next-common/components/common/tx/useSigner";
 import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/summary/updateFunc";
 
 function Content({ onClose }) {
   const { component } = useSigner();
   const api = useApi();
-  const { address: whoAddress, component: whoInput } = useAddressInput("Who");
 
   const tx = useMemo(() => {
-    if (api && whoAddress) {
-      return api.tx.fellowshipCore.induct(whoAddress);
+    if (api) {
+      return api.tx.fellowshipCore.import();
     }
-  }, [api, whoAddress]);
+  }, [api]);
 
   const onInBlock = useFellowshipMembersUpdateFunc();
 
   return (
     <>
       {component}
-      {whoInput}
       <TxSubmissionButton
         tx={tx}
         onClose={onClose}
@@ -33,6 +30,6 @@ function Content({ onClose }) {
   );
 }
 
-export default function FellowshipCoreInductionPopup(props) {
-  return <PopupWithSigner title="Induct" Component={Content} {...props} />;
+export default function FellowshipCoreImportPopup(props) {
+  return <PopupWithSigner title="Import" Component={Content} {...props} />;
 }

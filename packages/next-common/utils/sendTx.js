@@ -41,6 +41,38 @@ export function getDispatchError(dispatchError) {
   return message;
 }
 
+function handleExtrinsicFailure(dispatch, status, events, toastId) {
+  if (!status.isInBlock && !status.isFinalized) {
+    return false;
+  }
+
+  const failedEvent = events.find(
+    (e) => e.event.section === "system" && e.event.method === "ExtrinsicFailed",
+  );
+  if (failedEvent) {
+    const [dispatchError] = failedEvent.event.data;
+    const message = getDispatchError(dispatchError);
+    dispatch(removeToast(toastId));
+    dispatch(newErrorToast(`Extrinsic failed: ${message}`));
+    return true;
+  }
+
+  const proxyExecutedEvent = events.find(
+    (e) => e.event.section === "proxy" && e.event.method === "ProxyExecuted",
+  );
+  if (proxyExecutedEvent) {
+    const [result] = proxyExecutedEvent.event.data;
+    if (result.isErr) {
+      const message = getDispatchError(result.asErr);
+      dispatch(removeToast(toastId));
+      dispatch(newErrorToast(`Extrinsic failed: ${message}`));
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export async function sendTx({
   tx,
   dispatch,
@@ -93,32 +125,13 @@ export async function sendTx({
           unsub();
         }
 
+        if (handleExtrinsicFailure(dispatch, status, events, toastId)) {
+          unsub();
+        }
+
         if (status.isInBlock) {
           setLoading(false);
           blockHash = status.asInBlock.toString();
-
-          for (const event of events) {
-            const { section, method, data } = event.event;
-            if (section === "proxy" && method === "ProxyExecuted") {
-              const [result] = data;
-              if (result.isErr) {
-                const message = getDispatchError(result.asErr);
-                dispatch(removeToast(toastId));
-                dispatch(newErrorToast(`Extrinsic failed: ${message}`));
-                unsub();
-                return;
-              }
-            }
-
-            if (section === "system" && method === "ExtrinsicFailed") {
-              const [dispatchError] = data;
-              const message = getDispatchError(dispatchError);
-              dispatch(removeToast(toastId));
-              dispatch(newErrorToast(`Extrinsic failed: ${message}`));
-              unsub();
-              return;
-            }
-          }
 
           if (noWaitForFinalized) {
             unsub();
