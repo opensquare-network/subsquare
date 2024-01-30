@@ -26,7 +26,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
 
   return (
     <SecondaryCard>
-      <div className="overflow-auto scrollbar-pretty max-sm:space-y-51">
+      <div className="overflow-auto scrollbar-pretty text-textPrimary">
         {rows.map((row, idx) => (
           <div key={idx} className={cn("group/feed-item", "flex gap-x-4")}>
             <div className="flex flex-col">
