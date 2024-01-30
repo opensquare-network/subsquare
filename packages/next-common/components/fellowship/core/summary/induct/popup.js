@@ -37,6 +37,11 @@ function Content({ onClose }) {
       return;
     }
 
+    if (!signerAccount) {
+      dispatch(newErrorToast("Signer account is not specified"));
+      return;
+    }
+
     if (!whoAddress) {
       dispatch(newErrorToast("Please input or select an address"));
       return;
