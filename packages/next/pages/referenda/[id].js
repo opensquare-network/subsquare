@@ -27,7 +27,6 @@ import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
-import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
@@ -56,7 +55,7 @@ function ReferendumContent() {
     };
   }, [dispatch]);
 
-  useSubscribePostDetail(post?.referendumIndex);
+  // useSubscribePostDetail(post?.referendumIndex);
 
   return (
     <ContentWithComment>
