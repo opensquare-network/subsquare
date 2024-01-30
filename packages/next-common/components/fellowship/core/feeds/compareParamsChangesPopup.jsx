@@ -1,7 +1,11 @@
-import JsonView from "next-common/components/jsonView";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { cn } from "next-common/utils";
 import Tab from "next-common/components/tab";
+import dynamic from "next/dynamic";
+
+const JsonView = dynamic(() => import("next-common/components/jsonView"), {
+  ssr: false,
+});
 
 export default function FellowshipCoreFeedsCompareParamsChangesPopup({
   feed = {},
