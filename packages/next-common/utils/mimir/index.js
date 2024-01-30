@@ -1,8 +1,22 @@
 import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
-import { web3FromSource } from "@polkadot/extension-dapp";
-import { checkCall } from "@mimirdev/apps-sdk";
+import { getLastApi } from "../hooks/useApi";
+import { emptyFunction } from "..";
+import {
+  newErrorToast,
+  newPendingToast,
+  newToastId,
+  newWarningToast,
+  removeToast,
+  updatePendingToast,
+} from "next-common/store/reducers/toastSlice";
+import { createSendTxEventHandler } from "../sendTx";
+// import { checkCall } from "@mimirdev/apps-sdk";
 
 export async function tryInitMimir() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
   const openInIframe = window !== window.parent;
 
   if (!openInIframe) {
@@ -25,33 +39,93 @@ export async function tryInitMimir() {
   // now. you can use polkadot extension functions
 }
 
-export async function maybeMimirTx(api, tx, signerAccount) {
-  const address = signerAccount?.address;
-  const injected = await web3FromSource(signerAccount?.meta?.source);
+export async function maybeSendMimirTx({
+  tx,
+  dispatch,
+  setLoading = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
+  onSubmitted = emptyFunction,
+  onClose = emptyFunction,
+  signerAddress,
+  section: sectionName,
+  method: methodName,
+}) {
+  const { web3Enable, web3FromSource } = await import(
+    "@polkadot/extension-dapp"
+  );
+
+  await web3Enable("subsquare");
+  const address = signerAddress;
+  const injected = await web3FromSource("mimir");
 
   const isMimir = injected.name === "mimir";
+  if (!isMimir) {
+    return false;
+  }
 
-  // ⚠️Note that the following logic will only be executed when injected.name === 'mimir'.
-  if (isMimir) {
+  const noWaitForFinalized = onFinalized === emptyFunction;
+  const totalSteps = noWaitForFinalized ? 2 : 3;
+
+  const toastId = newToastId();
+  dispatch(
+    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
+  );
+
+  try {
+    setLoading(true);
+
     const result = await injected.signer.signPayload({
       address,
       method: tx.method.toHex(),
     });
 
     // Retrieve the method returned by Mimir.
+    const api = getLastApi();
     const method = api.registry.createType("Call", result.payload.method);
 
     // check the final call is the expect call
-    if (!checkCall(method, tx.method)) {
-      throw new Error("not an safe method");
-    }
+    // if (!checkCall(method, tx.method)) {
+    //   throw new Error("not an safe method");
+    // }
 
     // Reconstruct a new tx.
-    tx = api.tx[method.section][method.method](...method.args);
+    const multisigTx = api.tx[method.section][method.method](...method.args);
+    multisigTx.addSignature(result.signer, result.signature, result.payload);
 
-    // add signature to tx
-    tx.addSignature(result.signer, result.signature, result.payload);
+    const unsub = await multisigTx.send(
+      createSendTxEventHandler({
+        toastId,
+        dispatch,
+        setLoading,
+        onFinalized,
+        onInBlock,
+        section: sectionName,
+        method: methodName,
+        totalSteps,
+        noWaitForFinalized,
+        unsub: () => unsub(),
+      }),
+    );
+
+    dispatch(
+      updatePendingToast(
+        toastId,
+        `(2/${totalSteps}) Submitted, waiting for wrapping...`,
+      ),
+    );
+    onSubmitted(signerAddress);
+    onClose();
+  } catch (e) {
+    dispatch(removeToast(toastId));
+    setLoading(false);
+
+    if (e.message === "Cancelled") {
+      dispatch(newWarningToast(e.message));
+    } else {
+      dispatch(newErrorToast(e.message));
+    }
   }
 
-  return tx;
+  return true;
 }

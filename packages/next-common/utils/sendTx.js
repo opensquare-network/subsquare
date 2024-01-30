@@ -13,7 +13,7 @@ import getStorageAddressInfo from "./getStorageAddressInfo";
 import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
 import isUseMetamask from "./isUseMetamask";
-import { maybeMimirTx } from "./mimir";
+import { maybeSendMimirTx } from "./mimir";
 import { sendEvmTx } from "./sendEvmTx";
 
 export async function getSigner(signerAddress) {
@@ -45,7 +45,84 @@ export function getDispatchError(dispatchError) {
   return message;
 }
 
-export async function sendTx({
+export function createSendTxEventHandler({
+  toastId,
+  dispatch,
+  setLoading = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
+  section: sectionName,
+  method: methodName,
+  totalSteps,
+  noWaitForFinalized,
+  unsub = emptyFunction,
+}) {
+  let blockHash = null;
+
+  return ({ events = [], status }) => {
+    if (status.isFinalized) {
+      dispatch(removeToast(toastId));
+      onFinalized(blockHash);
+      unsub();
+    }
+
+    if (status.isInBlock) {
+      setLoading(false);
+      blockHash = status.asInBlock.toString();
+
+      for (const event of events) {
+        const { section, method, data } = event.event;
+        if (section === "proxy" && method === "ProxyExecuted") {
+          const [result] = data;
+          if (result.isErr) {
+            const message = getDispatchError(result.asErr);
+            dispatch(removeToast(toastId));
+            dispatch(newErrorToast(`Extrinsic failed: ${message}`));
+            unsub();
+            return;
+          }
+        }
+
+        if (section === "system" && method === "ExtrinsicFailed") {
+          const [dispatchError] = data;
+          const message = getDispatchError(dispatchError);
+          dispatch(removeToast(toastId));
+          dispatch(newErrorToast(`Extrinsic failed: ${message}`));
+          unsub();
+          return;
+        }
+      }
+
+      if (noWaitForFinalized) {
+        unsub();
+        dispatch(removeToast(toastId));
+      } else {
+        dispatch(
+          updatePendingToast(
+            toastId,
+            `(3/${totalSteps}) Inblock, waiting for finalization...`,
+          ),
+        );
+      }
+
+      for (const event of events) {
+        const { section, method, data } = event.event;
+        if (section !== sectionName || method !== methodName) {
+          continue;
+        }
+        const eventData = data.toJSON();
+        onInBlock(eventData, blockHash);
+        break;
+      }
+
+      if (!sectionName || !methodName) {
+        onInBlock(undefined, blockHash);
+      }
+    }
+  };
+}
+
+export async function defaultSendTx({
   tx,
   dispatch,
   setLoading = emptyFunction,
@@ -54,32 +131,9 @@ export async function sendTx({
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
   signerAddress,
-  section: sectionName,
-  method: methodName,
+  sectionName,
+  methodName,
 }) {
-  const api = getLastApi();
-  const isMimirWallet =
-    getStorageAddressInfo(CACHE_KEY.lastConnectedAccount)?.wallet ===
-    WalletTypes.MIMIR;
-  if (isMimirWallet) {
-    tx = await maybeMimirTx(api, tx, signerAddress);
-  }
-
-  if (isEvmChain() && isUseMetamask()) {
-    await sendEvmTx({
-      data: tx.inner.toU8a(),
-      dispatch,
-      setLoading,
-      onInBlock,
-      onSubmitted,
-      onClose,
-      signerAddress,
-      section: sectionName,
-      method: methodName,
-    });
-    return;
-  }
-
   const noWaitForFinalized = onFinalized === emptyFunction;
   const totalSteps = noWaitForFinalized ? 2 : 3;
 
@@ -91,74 +145,24 @@ export async function sendTx({
   try {
     setLoading(true);
 
-    // const api = getLastApi();
+    const api = getLastApi();
     const account = await api.query.system.account(signerAddress);
 
-    let blockHash = null;
     const unsub = await tx.signAndSend(
       signerAddress,
       { nonce: account.nonce },
-      ({ events = [], status }) => {
-        if (status.isFinalized) {
-          dispatch(removeToast(toastId));
-          onFinalized(blockHash);
-          unsub();
-        }
-
-        if (status.isInBlock) {
-          setLoading(false);
-          blockHash = status.asInBlock.toString();
-
-          for (const event of events) {
-            const { section, method, data } = event.event;
-            if (section === "proxy" && method === "ProxyExecuted") {
-              const [result] = data;
-              if (result.isErr) {
-                const message = getDispatchError(result.asErr);
-                dispatch(removeToast(toastId));
-                dispatch(newErrorToast(`Extrinsic failed: ${message}`));
-                unsub();
-                return;
-              }
-            }
-
-            if (section === "system" && method === "ExtrinsicFailed") {
-              const [dispatchError] = data;
-              const message = getDispatchError(dispatchError);
-              dispatch(removeToast(toastId));
-              dispatch(newErrorToast(`Extrinsic failed: ${message}`));
-              unsub();
-              return;
-            }
-          }
-
-          if (noWaitForFinalized) {
-            unsub();
-            dispatch(removeToast(toastId));
-          } else {
-            dispatch(
-              updatePendingToast(
-                toastId,
-                `(3/${totalSteps}) Inblock, waiting for finalization...`,
-              ),
-            );
-          }
-
-          for (const event of events) {
-            const { section, method, data } = event.event;
-            if (section !== sectionName || method !== methodName) {
-              continue;
-            }
-            const eventData = data.toJSON();
-            onInBlock(eventData, blockHash);
-            break;
-          }
-
-          if (!sectionName || !methodName) {
-            onInBlock(undefined, blockHash);
-          }
-        }
-      },
+      createSendTxEventHandler({
+        toastId,
+        dispatch,
+        setLoading,
+        onFinalized,
+        onInBlock,
+        section: sectionName,
+        method: methodName,
+        totalSteps,
+        noWaitForFinalized,
+        unsub: () => unsub(),
+      }),
     );
 
     dispatch(
@@ -179,6 +183,68 @@ export async function sendTx({
       dispatch(newErrorToast(e.message));
     }
   }
+}
+
+export async function sendTx({
+  tx,
+  dispatch,
+  setLoading = emptyFunction,
+  onFinalized = emptyFunction,
+  onInBlock = emptyFunction,
+  onSubmitted = emptyFunction,
+  onClose = emptyFunction,
+  signerAddress,
+  section: sectionName,
+  method: methodName,
+}) {
+  const isMimirWallet =
+    getStorageAddressInfo(CACHE_KEY.lastConnectedAccount)?.wallet ===
+    WalletTypes.MIMIR;
+  if (isMimirWallet) {
+    const handled = await maybeSendMimirTx({
+      tx,
+      dispatch,
+      setLoading,
+      onInBlock,
+      onSubmitted,
+      onFinalized,
+      onClose,
+      signerAddress,
+      section: sectionName,
+      method: methodName,
+    });
+    if (handled) {
+      return;
+    }
+  }
+
+  if (isEvmChain() && isUseMetamask()) {
+    await sendEvmTx({
+      data: tx.inner.toU8a(),
+      dispatch,
+      setLoading,
+      onInBlock,
+      onSubmitted,
+      onClose,
+      signerAddress,
+      section: sectionName,
+      method: methodName,
+    });
+    return;
+  }
+
+  await defaultSendTx({
+    tx,
+    dispatch,
+    setLoading,
+    onInBlock,
+    onSubmitted,
+    onFinalized,
+    onClose,
+    signerAddress,
+    sectionName,
+    methodName,
+  });
 }
 
 export function wrapWithProxy(api, tx, proxyAddress) {
