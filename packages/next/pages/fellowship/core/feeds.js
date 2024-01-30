@@ -44,7 +44,7 @@ export const getServerSideProps = withCommonProps(async () => {
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
     ssrNextApi.fetch(fellowshipMembersApiUri),
-    ssrNextApi.fetch(fellowshipCoreFeedsApiUri, { page_size: 100 }),
+    ssrNextApi.fetch(fellowshipCoreFeedsApiUri),
   ]);
 
   return {
