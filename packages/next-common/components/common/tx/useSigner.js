@@ -5,7 +5,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import React from "react";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function useSigner() {
+export default function useSigner(title) {
   const node = useChainSettings();
   const signerAccount = useSignerAccount();
   const api = useApi();
@@ -26,6 +26,7 @@ export default function useSigner() {
       signerBalance={signerBalance}
       isSignerBalanceLoading={isSignerBalanceLoading}
       symbol={node.symbol}
+      title={title}
     />
   );
 

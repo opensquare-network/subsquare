@@ -10,6 +10,7 @@ import FellowshipMemberInfoLine from "next-common/components/fellowship/core/mem
 import FellowshipMemberInfoWrapper from "next-common/components/fellowship/core/members/infoWrapper";
 import FellowshipMemberSalary from "next-common/components/fellowship/core/members/salary";
 import SignalIndicator from "next-common/components/icons/signalIndicator";
+import Actions from "next-common/components/fellowship/core/members/actions";
 
 function AvatarAndAddress({ address, isActive }) {
   return (
@@ -55,6 +56,8 @@ export default function FellowshipCoreMemberCard({ member = {} }) {
 
       <Divider className="mt-4" />
       <FellowshipMemberSalary rank={rank} isActive={isActive} />
+
+      <Actions member={member} />
     </SecondaryCard>
   );
 }

@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import useSigner from "next-common/components/common/tx/useSigner";
 import useApi from "next-common/utils/hooks/useApi";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/summary/updateFunc";
+import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
 
 function Content({ onClose }) {
   const { component } = useSigner();
