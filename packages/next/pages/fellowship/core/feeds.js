@@ -9,6 +9,7 @@ import {
   fellowshipMembersApiUri,
 } from "next-common/services/url";
 import FellowshipCoreFeedsContainer from "next-common/components/fellowship/core/feeds/container";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export default function FellowshipCoreFeedsPage() {
   const { fellowshipMembers, fellowshipCoreFeeds } = usePageProps();
@@ -31,7 +32,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
     ssrNextApi.fetch(fellowshipMembersApiUri),
-    ssrNextApi.fetch(fellowshipCoreFeedsApiUri, { page }),
+    ssrNextApi.fetch(fellowshipCoreFeedsApiUri, {
+      page,
+      page_size: defaultPageSize,
+    }),
   ]);
 
   return {
