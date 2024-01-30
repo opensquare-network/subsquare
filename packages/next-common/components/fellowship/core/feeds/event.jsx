@@ -2,6 +2,10 @@ import AddressUser from "next-common/components/user/addressUser";
 import { cn } from "next-common/utils";
 import tw from "tailwind-styled-components";
 import FellowshipRank from "../../rank";
+import { InfoDocs } from "@osn/icons/subsquare";
+import Tooltip from "next-common/components/tooltip";
+import { useState } from "react";
+import FellowshipCoreFeedsCompareParamsChangesPopup from "./compareParamsChangesPopup";
 
 const EventLabel = tw.span`text-textSecondary`;
 const TertiaryLabel = tw.span`text-textTertiary`;
@@ -20,6 +24,8 @@ export default function FellowshipCoreFeedsListEvent({
   className = "",
 }) {
   const event = feed?.event;
+
+  const [comparePopupVisible, setComparePopupVisible] = useState(false);
 
   const eventContent = <EventLabel>{event}</EventLabel>;
 
@@ -89,6 +95,19 @@ export default function FellowshipCoreFeedsListEvent({
       <>
         <span>The Polkadot Collectives Fellowship</span>
         <EventLabel>Params Changed</EventLabel>
+        <Tooltip content="Compare Params Changes">
+          <InfoDocs
+            role="button"
+            className={cn(
+              "w-4 h-4 relative top-[0.5px]",
+              "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
+              "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",
+            )}
+            onClick={() => {
+              setComparePopupVisible(true);
+            }}
+          />
+        </Tooltip>
       </>
     ),
   };
@@ -104,6 +123,15 @@ export default function FellowshipCoreFeedsListEvent({
       )}
     >
       {content}
+
+      {comparePopupVisible && (
+        <FellowshipCoreFeedsCompareParamsChangesPopup
+          feed={feed}
+          onClose={() => {
+            setComparePopupVisible(false);
+          }}
+        />
+      )}
     </div>
   );
 }
