@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import InputOrigin from "../input";
-import { useChain } from "../../context/chain";
 import SearchInputShortcut from "./searchInputShortcut";
 import { SystemSearch } from "@osn/icons/subsquare";
 
@@ -24,16 +23,18 @@ const Input = styled(InputOrigin)`
 
 const googleq = "https://google.com/search?q=";
 
-export default function SearchInput({ shortcut = true, inputType }) {
-  const chain = useChain();
+export default function SearchInput({
+  shortcut = true,
+  inputType,
+  scope = "",
+  placeholder = "",
+}) {
   const [value, setValue] = useState("");
   const inputRef = useRef();
   const [focus, setFocus] = useState(false);
 
-  const website = `https://${chain}.subsquare.io`;
-
   function handleSearch() {
-    const params = encodeURIComponent(value + ` site:${website}`);
+    const params = encodeURIComponent(value + scope ? scope : "");
     const url = googleq + params;
     window.open(url, "_blank");
   }
@@ -44,7 +45,7 @@ export default function SearchInput({ shortcut = true, inputType }) {
         ref={inputRef}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Search on SubSquare"
+        placeholder={placeholder}
         onKeyDown={(event) => {
           if (event.code === "Enter" || event.keyCode === 13) {
             event.preventDefault();
