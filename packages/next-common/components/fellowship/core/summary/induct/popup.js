@@ -37,6 +37,11 @@ function Content({ onClose }) {
       return;
     }
 
+    if (!whoAddress) {
+      dispatch(newErrorToast("Please input or select an address"));
+      return;
+    }
+
     let tx = api.tx.fellowshipCore.induct(whoAddress);
     if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
