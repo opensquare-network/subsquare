@@ -1,3 +1,5 @@
+import isNil from "lodash.isnil";
+
 function getColor(rank) {
   if (6 === rank) {
     return "#52C463";
@@ -28,6 +30,9 @@ function hexToRGB(hex, alpha = "0.15") {
 
 export default function FellowshipRank({ rank }) {
   const color = getColor(rank);
+  if (isNil(rank)) {
+    return null;
+  }
 
   return (
     <span

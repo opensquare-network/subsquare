@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import useAddressInput from "next-common/components/fellowship/core/summary/induct/useAddressInput";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -7,6 +7,11 @@ import useApi from "next-common/utils/hooks/useApi";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { useDispatch } from "react-redux";
+import { incFellowshipCoreMembersTrigger } from "next-common/store/reducers/fellowship/core";
+import { sleep } from "next-common/utils";
+import getChainSettings from "next-common/utils/consts/settings";
+import { defaultBlockTime } from "next-common/utils/constants";
 
 function Content({ onClose }) {
   const node = useChainSettings();
@@ -20,16 +25,28 @@ function Content({ onClose }) {
     api,
     signerAccount?.address,
   );
+  const dispatch = useDispatch();
 
   const { address: whoAddress, component: whoInput } = useAddressInput("Who");
 
-  // todo: 1. pass error check
-  // todo: 2. refresh fellowship core members when in block
   const tx = useMemo(() => {
     if (api && whoAddress) {
       return api.tx.fellowshipCore.induct(whoAddress);
     }
   }, [api, whoAddress]);
+
+  const onInBlock = useCallback(async () => {
+    const blockTime =
+      getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+      defaultBlockTime;
+
+    const timers = [1, 2];
+    // eslint-disable-next-line no-unused-vars
+    for (const timer of timers) {
+      dispatch(incFellowshipCoreMembersTrigger());
+      await sleep(blockTime);
+    }
+  }, [dispatch]);
 
   return (
     <>
@@ -42,7 +59,12 @@ function Content({ onClose }) {
         symbol={node.symbol}
       />
       {whoInput}
-      <TxSubmissionButton tx={tx} onClose={onClose} />
+      <TxSubmissionButton
+        tx={tx}
+        onClose={onClose}
+        onInBlock={onInBlock}
+        onFinalized={onInBlock}
+      />
     </>
   );
 }
