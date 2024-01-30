@@ -36,7 +36,9 @@ export default function FellowshipCoreFeedsPage() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
+export const getServerSideProps = withCommonProps(async (context) => {
+  const { page = 0 } = context.query;
+
   const [
     tracksProps,
     { result: fellowshipMembers },
@@ -44,7 +46,7 @@ export const getServerSideProps = withCommonProps(async () => {
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
     ssrNextApi.fetch(fellowshipMembersApiUri),
-    ssrNextApi.fetch(fellowshipCoreFeedsApiUri),
+    ssrNextApi.fetch(fellowshipCoreFeedsApiUri, { page }),
   ]);
 
   return {
