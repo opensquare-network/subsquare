@@ -24,7 +24,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
       <FellowshipCoreFeedsListBlockLink
         key={"block-link"}
         className={cn(
-          "opacity-0 group-hover/feed-item:opacity-100",
+          "opacity-0 group-hover/feed-item:opacity-100 max-sm:opacity-100",
           "text-textTertiary",
         )}
         feed={item}
