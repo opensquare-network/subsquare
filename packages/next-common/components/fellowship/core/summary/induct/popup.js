@@ -1,24 +1,16 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import useAddressInput from "next-common/components/fellowship/core/summary/induct/useAddressInput";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useChainSettings } from "next-common/context/chain";
 import useApi from "next-common/utils/hooks/useApi";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
-import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
 function Content({ onClose }) {
   const node = useChainSettings();
-  const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
-  const [isCalling, setIsCalling] = useState(false);
-  const isMounted = useIsMounted();
   const api = useApi();
   const [balance, isBalanceLoading] = useAddressBalance(
     api,
@@ -31,36 +23,13 @@ function Content({ onClose }) {
 
   const { address: whoAddress, component: whoInput } = useAddressInput("Who");
 
-  const onConfirm = async () => {
-    if (!api) {
-      dispatch(newErrorToast("Chain network is not connected yet"));
-      return;
+  // todo: 1. pass error check
+  // todo: 2. refresh fellowship core members when in block
+  const tx = useMemo(() => {
+    if (api && whoAddress) {
+      return api.tx.fellowshipCore.induct(whoAddress);
     }
-
-    if (!signerAccount) {
-      dispatch(newErrorToast("Signer account is not specified"));
-      return;
-    }
-
-    if (!whoAddress) {
-      dispatch(newErrorToast("Please input or select an address"));
-      return;
-    }
-
-    let tx = api.tx.fellowshipCore.induct(whoAddress);
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setIsCalling,
-      signerAddress: signerAccount.address,
-      isMounted,
-      onClose,
-    });
-  };
+  }, [api, whoAddress]);
 
   return (
     <>
@@ -73,11 +42,7 @@ function Content({ onClose }) {
         symbol={node.symbol}
       />
       {whoInput}
-      <PopupButtonWrapper>
-        <PrimaryButton isLoading={isCalling} onClick={onConfirm}>
-          Confirm
-        </PrimaryButton>
-      </PopupButtonWrapper>
+      <TxSubmissionButton tx={tx} onClose={onClose} />
     </>
   );
 }
