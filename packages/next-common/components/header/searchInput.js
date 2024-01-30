@@ -34,7 +34,7 @@ export default function SearchInput({
   const [focus, setFocus] = useState(false);
 
   function handleSearch() {
-    const params = encodeURIComponent(value + scope ? scope : "");
+    const params = encodeURIComponent(value + scope ? ` ${scope}` : "");
     const url = googleq + params;
     window.open(url, "_blank");
   }
