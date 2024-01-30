@@ -56,10 +56,17 @@ const nova = {
   logo: WalletNova,
 };
 
+const mimir = {
+  extensionName: WalletTypes.MIMIR,
+  title: "Mimir",
+  installUrl: "https://app.mimir.global/",
+  logo: WalletNova,
+};
+
 export function getWallets() {
   if (isEvmChain()) {
     return [talisman, metamask, nova];
   }
 
-  return [polkadotJs, subWalletJs, talisman, polkagate, nova];
+  return [polkadotJs, subWalletJs, talisman, polkagate, nova, mimir];
 }

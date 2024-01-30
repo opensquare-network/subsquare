@@ -7,9 +7,13 @@ import {
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
+import { CACHE_KEY } from "./constants";
+import WalletTypes from "./consts/walletTypes";
+import getStorageAddressInfo from "./getStorageAddressInfo";
 import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
 import isUseMetamask from "./isUseMetamask";
+import { maybeMimirTx } from "./mimir";
 import { sendEvmTx } from "./sendEvmTx";
 
 export async function getSigner(signerAddress) {
@@ -53,6 +57,14 @@ export async function sendTx({
   section: sectionName,
   method: methodName,
 }) {
+  const api = getLastApi();
+  const isMimirWallet =
+    getStorageAddressInfo(CACHE_KEY.lastConnectedAccount)?.wallet ===
+    WalletTypes.MIMIR;
+  if (isMimirWallet) {
+    tx = await maybeMimirTx(api, tx, signerAddress);
+  }
+
   if (isEvmChain() && isUseMetamask()) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
@@ -79,7 +91,7 @@ export async function sendTx({
   try {
     setLoading(true);
 
-    const api = getLastApi();
+    // const api = getLastApi();
     const account = await api.query.system.account(signerAddress);
 
     let blockHash = null;

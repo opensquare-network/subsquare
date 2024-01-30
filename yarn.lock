@@ -1945,6 +1945,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mimirdev/apps-inject@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@mimirdev/apps-inject@npm:0.2.0"
+  dependencies:
+    "@mimirdev/apps-sdk": 0.1.0
+  checksum: bc6a25da839231fa0cc34670439db0d6ab502e463aa6fbfb2f97a417263f379933e68e3329d202dbeffd39446e6d754370b1792ff39ba0a44c59473445985f51
+  languageName: node
+  linkType: hard
+
+"@mimirdev/apps-sdk@npm:0.1.0, @mimirdev/apps-sdk@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@mimirdev/apps-sdk@npm:0.1.0"
+  dependencies:
+    "@polkadot/util": ^12.6.2
+    eventemitter3: ^5.0.1
+  peerDependencies:
+    "@polkadot/api": "*"
+    "@polkadot/types": "*"
+  checksum: c196e8c9433de7984d39554c3061720c23c5f44a0278aeca5ffe38d7b5ff3a8587eeffaa4c85036831e5a69f8084b16baacf1d1f1440ecd98032f310b17a433f
+  languageName: node
+  linkType: hard
+
 "@multiformats/mafmt@npm:^11.0.3":
   version: 11.1.2
   resolution: "@multiformats/mafmt@npm:11.1.2"
@@ -2546,6 +2568,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@polkadot/util@npm:^12.6.2":
+  version: 12.6.2
+  resolution: "@polkadot/util@npm:12.6.2"
+  dependencies:
+    "@polkadot/x-bigint": 12.6.2
+    "@polkadot/x-global": 12.6.2
+    "@polkadot/x-textdecoder": 12.6.2
+    "@polkadot/x-textencoder": 12.6.2
+    "@types/bn.js": ^5.1.5
+    bn.js: ^5.2.1
+    tslib: ^2.6.2
+  checksum: a42a226f3c299026458d82e48516abf59c1cd8638167edaa3fc1a17aec0ebab203e0ad68a096a4a4fa188afd55093535a98e5083d682a79242a3c5ad79342599
+  languageName: node
+  linkType: hard
+
 "@polkadot/wasm-bridge@npm:7.2.2":
   version: 7.2.2
   resolution: "@polkadot/wasm-bridge@npm:7.2.2"
@@ -2636,6 +2673,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@polkadot/x-bigint@npm:12.6.2":
+  version: 12.6.2
+  resolution: "@polkadot/x-bigint@npm:12.6.2"
+  dependencies:
+    "@polkadot/x-global": 12.6.2
+    tslib: ^2.6.2
+  checksum: 12b2d5c3a7b994f5bd4f7aeda9e268384b04bd080892400c65b88fb5aa4951df6c4abe3baf9820f3adf3da92e2add710858dd35dcd597d2527bbfd1cd0efe534
+  languageName: node
+  linkType: hard
+
 "@polkadot/x-fetch@npm:^12.3.1":
   version: 12.4.2
   resolution: "@polkadot/x-fetch@npm:12.4.2"
@@ -2653,6 +2700,15 @@ __metadata:
   dependencies:
     tslib: ^2.6.2
   checksum: 1489013e6ae3dce3c9f31f38f4ef8ca0956a18d35d12354c49cb7b256fef6dcbd3285a0c223509c8ed826b9d85fd8f59708312a010f1b69d5ee92963e38c48ac
+  languageName: node
+  linkType: hard
+
+"@polkadot/x-global@npm:12.6.2":
+  version: 12.6.2
+  resolution: "@polkadot/x-global@npm:12.6.2"
+  dependencies:
+    tslib: ^2.6.2
+  checksum: eb17e039cb1668743c84f5eafbf518cf6248e93090e4877f81f338b418b3e6b0173f2414c62bd9cbe7bf8911ec566527ca7c49c4354ba90d57e62e90195329d0
   languageName: node
   linkType: hard
 
@@ -2679,6 +2735,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@polkadot/x-textdecoder@npm:12.6.2":
+  version: 12.6.2
+  resolution: "@polkadot/x-textdecoder@npm:12.6.2"
+  dependencies:
+    "@polkadot/x-global": 12.6.2
+    tslib: ^2.6.2
+  checksum: c7e4b7f7ff943095a96bef3e3e56216d33d6ff38c965931356a06d01594b2c523ccbeada697a31b5457b134e578618f35425e0883f45187adffa98df99a45f27
+  languageName: node
+  linkType: hard
+
 "@polkadot/x-textencoder@npm:12.4.2":
   version: 12.4.2
   resolution: "@polkadot/x-textencoder@npm:12.4.2"
@@ -2686,6 +2752,16 @@ __metadata:
     "@polkadot/x-global": 12.4.2
     tslib: ^2.6.2
   checksum: c6599caa628ac78fd49f21618ad2863fdcae73d31cc98ebc67929f1c7083e6ba5188c48d3ea8604ef57e9f45ce46f4c4c63b1571ed0058f3d78aa30f31075498
+  languageName: node
+  linkType: hard
+
+"@polkadot/x-textencoder@npm:12.6.2":
+  version: 12.6.2
+  resolution: "@polkadot/x-textencoder@npm:12.6.2"
+  dependencies:
+    "@polkadot/x-global": 12.6.2
+    tslib: ^2.6.2
+  checksum: d3eacdc0eb2e1ef8b8132d52a1f1033be62bc64360753a117f2e6517ccf7c9cde628558bbd016a73836eacd91cb1e2ac382dce0ce9c8d32c2f7db3fcc8863911
   languageName: node
   linkType: hard
 
@@ -3801,6 +3877,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e50ed2dd3abe997e047caf90e0352c71e54fc388679735217978b4ceb7e336e51477791b715f49fd77195ac26dd296c7bad08a3be9750e235f9b2e1edb1b51c2
+  languageName: node
+  linkType: hard
+
+"@types/bn.js@npm:^5.1.5":
+  version: 5.1.5
+  resolution: "@types/bn.js@npm:5.1.5"
+  dependencies:
+    "@types/node": "*"
+  checksum: c87b28c4af74545624f8a3dae5294b16aa190c222626e8d4b2e327b33b1a3f1eeb43e7a24d914a9774bca43d8cd6e1cb0325c1f4b3a244af6693a024e1d918e6
   languageName: node
   linkType: hard
 
@@ -8793,6 +8878,8 @@ __metadata:
   dependencies:
     "@apollo/client": ^3.8.8
     "@interlay/monetary-js": 0.5.4
+    "@mimirdev/apps-inject": ^0.2.0
+    "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": "*"
     "@osn/icons": ^1.61.0
     "@osn/polkadot-react-identicon": ^1.0.8
