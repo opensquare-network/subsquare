@@ -4,6 +4,7 @@ import { cn } from "next-common/utils";
 import FellowshipCoreFeedsListEvent from "./event";
 import tw from "tailwind-styled-components";
 import FellowshipCoreFeedsListTime from "./time";
+import FellowshipCoreFeedsListBlockLink from "./blockLink";
 
 const Bar = tw.div`grow w-0.5 bg-theme300 mx-auto`;
 
@@ -18,15 +19,22 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
       <FellowshipCoreFeedsListTime
         key="time"
         feed={item}
-        className="w-40 text14Medium text-textTertiary"
+        className="w-40 text-textTertiary"
       />,
-      <div key={"block"}></div>,
+      <FellowshipCoreFeedsListBlockLink
+        key={"block-link"}
+        className={cn(
+          "opacity-0 group-hover/feed-item:opacity-100",
+          "text-textTertiary",
+        )}
+        feed={item}
+      />,
     ];
   });
 
   return (
     <SecondaryCard>
-      <div className="overflow-auto scrollbar-pretty text-textPrimary">
+      <div className="overflow-auto scrollbar-pretty text-textPrimary text14Medium">
         {rows.map((row, idx) => (
           <div key={idx} className={cn("group/feed-item", "flex gap-x-4")}>
             <div className="flex flex-col">
