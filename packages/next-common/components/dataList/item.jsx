@@ -55,7 +55,7 @@ export default function DataListItem({
 
 function DesktopContent({ data, row, columnClassNames, columnStyles }) {
   return (
-    <div className="max-sm:hidden w-full flex items-center">
+    <div className="datalist-desktop-item max-sm:hidden w-full flex items-center">
       {(data ?? row)?.map((item, idx) => (
         <div
           key={idx}
@@ -104,7 +104,7 @@ function MobileContent({ row = [], data, columns }) {
     .filter(Boolean);
 
   return (
-    <div className="sm:hidden sm:py-4 space-y-3">
+    <div className="datalist-mobile-item sm:hidden sm:py-4 space-y-3">
       <div className="flex">
         <div className="flex items-center justify-between">
           {first.value}
