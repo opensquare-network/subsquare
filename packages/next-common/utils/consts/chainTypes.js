@@ -1,4 +1,5 @@
 const ChainTypes = {
+  SUBSTRATE: "substrate",
   ETHEREUM: "ethereum",
 };
 
