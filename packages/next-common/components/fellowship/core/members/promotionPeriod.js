@@ -52,6 +52,7 @@ export default function FellowshipMemberPromotionPeriod({
         }
       >
         <Progress
+          className="h-1"
           percentage={percentageValue}
           bg="var(--theme100)"
           fg="var(--theme500)"
