@@ -48,6 +48,7 @@ export const fellowshipReferendumsSummaryApi =
 
 export const fellowshipParamsApi = "fellowship/params";
 export const fellowshipMembersApiUri = "fellowship/members";
+export const fellowshipCoreFeedsApiUri = "fellowship/core/feeds";
 
 // calender events
 /**
