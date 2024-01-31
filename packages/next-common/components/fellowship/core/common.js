@@ -29,6 +29,11 @@ export default function FellowshipCoreCommon({ children, ...props }) {
           url: "/fellowship/core/params",
           exactMatch: true,
         },
+        {
+          label: "Feeds",
+          url: "/fellowship/core/feeds",
+          exactMatch: true,
+        },
       ].filter(Boolean)}
       {...props}
     >

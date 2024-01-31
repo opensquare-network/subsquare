@@ -27,7 +27,6 @@ import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
-import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
@@ -38,6 +37,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent() {
   const post = usePost();
