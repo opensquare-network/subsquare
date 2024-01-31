@@ -6,13 +6,20 @@ import tw from "tailwind-styled-components";
 import FellowshipCoreFeedsListTime from "./time";
 import FellowshipCoreFeedsListBlockLink from "./blockLink";
 import DataList from "next-common/components/dataList";
+import orderBy from "lodash.orderby";
 
 const Bar = tw.div`grow w-0.5 bg-theme300 mx-auto`;
 
 export default function FellowshipCoreFeedsList({ feeds = {} }) {
   const columns = [{ name: "event" }, { name: "block", width: 250 }];
 
-  const rows = feeds?.items?.map?.((item) => {
+  const orderedItems = orderBy(
+    feeds?.items || [],
+    ["indexer.blockHeight", "indexer.eventIndex"],
+    ["desc", "desc"],
+  );
+
+  const rows = orderedItems?.map?.((item) => {
     return [
       <FellowshipCoreFeedsListEvent key="event" feed={item} className="pr-2" />,
       <div key="block-info" className="flex items-center max-sm:gap-x-2">
