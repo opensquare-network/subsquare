@@ -6,6 +6,7 @@ import { InfoDocs } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import FellowshipCoreFeedsCompareParamsChangesPopup from "./compareParamsChangesPopup";
+import ExternalLink from "next-common/components/externalLink";
 
 const EventLabel = tw.span`text-textSecondary`;
 const TertiaryLabel = tw.span`text-textTertiary`;
@@ -73,14 +74,40 @@ export default function FellowshipCoreFeedsListEvent({
         <Rank rank={feed?.args?.rank} />
       </>
     ),
+    // TODO: promotion, evidence link
     Promotion: (
       <>
         <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
+        <TertiaryLabel>
+          submitted{" "}
+          <ExternalLink
+            href=""
+            className="text-inherit hover:text-textSecondary !underline"
+            externalIcon={false}
+          >
+            evidence
+          </ExternalLink>
+          ↗ with wish
+        </TertiaryLabel>
+        {eventContent}
       </>
     ),
+    // TODO: rentenion, evidence link
     Rentention: (
       <>
         <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
+        <TertiaryLabel>
+          submitted{" "}
+          <ExternalLink
+            href=""
+            className="text-inherit hover:text-textSecondary !underline"
+            externalIcon={false}
+          >
+            evidence
+          </ExternalLink>
+          ↗ with wish
+        </TertiaryLabel>
+        {eventContent}
       </>
     ),
     Offboarded: (
@@ -88,9 +115,9 @@ export default function FellowshipCoreFeedsListEvent({
         <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
       </>
     ),
-    // active
-    // inactive
-    // retained
+    // TODO: active
+    // TODO: inactive
+    // TODO: retained
     ParamsChanged: (
       <>
         <span>The Polkadot Collectives Fellowship</span>
