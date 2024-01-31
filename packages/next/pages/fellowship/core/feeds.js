@@ -4,35 +4,45 @@ import FellowshipCoreCommon from "next-common/components/fellowship/core/common"
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { ssrNextApi } from "next-common/services/nextApi";
-import { fellowshipMembersApiUri } from "next-common/services/url";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import {
+  fellowshipCoreFeedsApiUri,
+  fellowshipMembersApiUri,
+} from "next-common/services/url";
+import FellowshipCoreFeedsContainer from "next-common/components/fellowship/core/feeds/container";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export default function FellowshipCoreFeedsPage() {
-  const { fellowshipMembers } = usePageProps();
+  const { fellowshipMembers, fellowshipCoreFeeds } = usePageProps();
   useFetchFellowshipCoreMembers(fellowshipMembers);
-  // todo: 1. add api to fetch core feeds
-  // todo: 2. implement feeds components
 
   return (
     <FellowshipCoreCommon>
-      <TitleContainer>
-        <span>Feeds</span>
-      </TitleContainer>
-      <div className="space-y-4 mt-4">feeds here</div>
+      <FellowshipCoreFeedsContainer feeds={fellowshipCoreFeeds} />
     </FellowshipCoreCommon>
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
-  const [tracksProps, { result: fellowshipMembers }] = await Promise.all([
+export const getServerSideProps = withCommonProps(async (context) => {
+  const { page = 0 } = context.query;
+
+  const [
+    tracksProps,
+    { result: fellowshipMembers },
+    { result: fellowshipCoreFeeds },
+  ] = await Promise.all([
     fetchOpenGovTracksProps(),
     ssrNextApi.fetch(fellowshipMembersApiUri),
+    ssrNextApi.fetch(fellowshipCoreFeedsApiUri, {
+      page,
+      page_size: defaultPageSize,
+    }),
   ]);
 
   return {
     props: {
       ...tracksProps,
       fellowshipMembers,
+      fellowshipCoreFeeds,
     },
   };
 });
