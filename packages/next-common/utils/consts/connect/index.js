@@ -56,10 +56,18 @@ const nova = {
   logo: WalletNova,
 };
 
+export const evmWallets = [talisman, metamask, nova];
+export const substrateWallets = [
+  polkadotJs,
+  subWalletJs,
+  talisman,
+  polkagate,
+  nova,
+];
+
 export function getWallets() {
   if (isEvmChain()) {
-    return [talisman, metamask, nova];
+    return evmWallets;
   }
-
-  return [polkadotJs, subWalletJs, talisman, polkagate, nova];
+  return substrateWallets;
 }
