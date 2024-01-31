@@ -1,15 +1,12 @@
 import AddressUser from "next-common/components/user/addressUser";
-import {
-  FellowshipCoreFeedEventLabel,
-  getRowKey,
-} from "next-common/components/fellowship/core/feeds/event/shared";
+import { FellowshipCoreFeedEventLabel } from "next-common/components/fellowship/core/feeds/event/shared";
 
 export default function FellowshipCoreFeedsOffboardedEvent({ feed }) {
-  const { indexer } = feed || {};
+  const { args: { who } = {} } = feed || {};
 
   return (
     <>
-      <AddressUser key={getRowKey(indexer)} add={feed?.args?.who} noTooltip />
+      <AddressUser key={who} add={who} noTooltip />
       <span>
         was{" "}
         <FellowshipCoreFeedEventLabel>Offboarded</FellowshipCoreFeedEventLabel>

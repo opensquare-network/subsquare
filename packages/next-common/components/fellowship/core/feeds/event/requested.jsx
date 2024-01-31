@@ -1,16 +1,13 @@
 import AddressUser from "next-common/components/user/addressUser";
 import ExternalLink from "next-common/components/externalLink";
-import {
-  FellowshipCoreFeedEventLabel,
-  getRowKey,
-} from "next-common/components/fellowship/core/feeds/event/shared";
+import { FellowshipCoreFeedEventLabel } from "next-common/components/fellowship/core/feeds/event/shared";
 
 export default function FellowshipCoreFeedsRequestedEvent({ feed }) {
-  const { args: { who, wish } = {}, indexer } = feed || {};
+  const { args: { who, wish } = {} } = feed || {};
 
   return (
     <>
-      <AddressUser key={getRowKey(indexer)} add={who} noTooltip />
+      <AddressUser key={who} add={who} noTooltip />
 
       <span>
         submitted{" "}

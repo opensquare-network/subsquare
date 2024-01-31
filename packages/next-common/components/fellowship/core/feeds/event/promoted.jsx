@@ -2,18 +2,18 @@ import AddressUser from "next-common/components/user/addressUser";
 import {
   FellowshipCoreFeedEventLabel,
   FellowshipCoreFeedRankLabel,
-  getRowKey,
 } from "./shared";
 
 export default function FellowshipCoreFeedsPromotedEvent({ feed }) {
-  const { indexer } = feed || {};
+  const { args: { who, toRank } = {} } = feed || {};
+
   return (
     <>
-      <AddressUser key={getRowKey(indexer)} add={feed?.args?.who} noTooltip />
+      <AddressUser key={who} add={who} noTooltip />
       <span>
         was{" "}
         <FellowshipCoreFeedEventLabel>Promoted</FellowshipCoreFeedEventLabel> to{" "}
-        <FellowshipCoreFeedRankLabel rank={feed?.args?.toRank} />
+        <FellowshipCoreFeedRankLabel rank={toRank} />
       </span>
     </>
   );
