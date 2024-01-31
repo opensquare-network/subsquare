@@ -33,11 +33,8 @@ export default function FellowshipCoreFeedsListEvent({
     // TODO: rentenion, evidence link
     Rentention: <FellowshipCoreFeedsRetentionEvent feed={feed} />,
     Offboarded: <FellowshipCoreFeedsOffboardedEvent feed={feed} />,
-    // TODO: active, complete component
     Active: <FellowshipCoreFeedsActiveEvent feed={feed} />,
-    // TODO: inactive, complete component
     Inactive: <FellowshipCoreFeedsInactiveEvent feed={feed} />,
-    // TODO: retained, complete component
     Retained: <FellowshipCoreFeedsRetainedEvent feed={feed} />,
     ParamsChanged: (
       <FellowshipCoreFeedsParamsChangedEvent
