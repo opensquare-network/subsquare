@@ -32,7 +32,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
   });
 
   return (
-    <SecondaryCard>
+    <SecondaryCard className="!px-0">
       <DataList
         className={cn(
           "text14Medium",
@@ -47,7 +47,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
           const isLast = idx === arr.length - 1;
 
           return (
-            <div className="flex gap-x-4">
+            <div className="flex gap-x-4 px-6 sm:hover:bg-neutral200">
               <div className="flex flex-col">
                 <Bar className="h-2.5 grow-0" />
 
