@@ -13,22 +13,24 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
     return [
       <FellowshipCoreFeedsListEvent
         key={"event"}
-        className={cn("w-[640px] max-w-full", "max-sm:w-full")}
+        className={cn("sm:min-w-[640px] max-w-full", "max-sm:w-full")}
         feed={item}
       />,
-      <FellowshipCoreFeedsListTime
-        key="time"
-        feed={item}
-        className="w-40 text-textTertiary"
-      />,
-      <FellowshipCoreFeedsListBlockLink
-        key={"block-link"}
-        className={cn(
-          "opacity-0 group-hover/feed-item:opacity-100 max-sm:opacity-100",
-          "text-textTertiary",
-        )}
-        feed={item}
-      />,
+      <div key="block" className="flex items-center max-sm:gap-x-2">
+        <FellowshipCoreFeedsListTime
+          key="time"
+          feed={item}
+          className="w-40 text-textTertiary max-sm:w-auto"
+        />
+        <FellowshipCoreFeedsListBlockLink
+          key={"block-link"}
+          className={cn(
+            "opacity-0 group-hover/feed-item:opacity-100 max-sm:opacity-100",
+            "text-textTertiary",
+          )}
+          feed={item}
+        />
+      </div>,
     ];
   });
 
@@ -50,6 +52,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
             <div
               className={cn(
                 "flex items-center",
+                "w-full",
                 "py-2.5 max-sm:pb-5",
                 "max-sm:flex-col max-sm:items-start max-sm:gap-y-2.5",
               )}
