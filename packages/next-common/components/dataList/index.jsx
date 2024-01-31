@@ -1,7 +1,7 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import NoData from "../noData";
-import DataListItem from "./item";
+import DataListBody from "./body";
 import { useDeepCompareEffect, useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -17,7 +17,6 @@ export default function DataList({
   noDataText = "No current votes",
   bordered = false,
   highlightedIndexes = [],
-  showBottomDivider,
   renderItem = (datalistItem) => datalistItem,
 }) {
   let content;
@@ -85,30 +84,14 @@ export default function DataList({
     content = <NoData showIcon={false} text={noDataText} />;
   } else {
     content = (
-      <div
-        ref={bodyRef}
-        className={cn(
-          "datalist-body group/datalist-body",
-          "scrollbar-pretty",
-          "divide-y divide-neutral300",
-        )}
-      >
-        {rows.map((row, idx) =>
-          renderItem(
-            <DataListItem
-              key={idx}
-              row={row}
-              columnClassNames={columnClassNames}
-              columnStyles={columnStyles}
-              columns={columns}
-              highlighted={highlightedIndexes.includes(idx)}
-            />,
-            idx,
-            rows,
-          ),
-        )}
-        {showBottomDivider && <div />}
-      </div>
+      <DataListBody
+        rows={rows}
+        renderItem={renderItem}
+        columnClassNames={columnClassNames}
+        columnStyles={columnStyles}
+        columns={columns}
+        highlightedIndexes={highlightedIndexes}
+      />
     );
   }
 
