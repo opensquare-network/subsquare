@@ -6,7 +6,7 @@ export function addressToPublicKey(address) {
   return Buffer.from(decodeAddress(address)).toString("hex");
 }
 
-export function normalizeAddress(address) {
+export function normalizeChainAddress(chain, address) {
   if (!address) {
     return address;
   }
@@ -15,5 +15,9 @@ export function normalizeAddress(address) {
     return address;
   }
 
-  return encodeAddressToChain(address, process.env.NEXT_PUBLIC_CHAIN);
+  return encodeAddressToChain(address, chain);
+}
+
+export function normalizeAddress(address) {
+  return normalizeChainAddress(process.env.NEXT_PUBLIC_CHAIN, address);
 }

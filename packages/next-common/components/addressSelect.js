@@ -11,8 +11,9 @@ import Identity from "./Identity";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
-import { useChainSettings } from "../context/chain";
-import { normalizeAddress } from "next-common/utils/address.js";
+import { useChain } from "../context/chain";
+import { normalizeChainAddress } from "next-common/utils/address.js";
+import getChainSettings from "next-common/utils/consts/settings/index.js";
 
 const Wrapper = Relative;
 
@@ -104,10 +105,31 @@ const Item = styled(Flex)`
     `}
 `;
 
-function Account({ account }) {
-  const settings = useChainSettings();
+function AccountDisplay({ name, address, identity }) {
+  return (
+    <>
+      <Avatar address={address} />
+      <NameWrapper>
+        {identity && identity?.info?.status !== "NO_ID" ? (
+          <>
+            <Identity identity={identity} />
+            <div>{addressEllipsis(address)}</div>
+          </>
+        ) : (
+          <>
+            <div>{name}</div>
+            <div>{addressEllipsis(address) ?? "--"}</div>
+          </>
+        )}
+      </NameWrapper>
+    </>
+  );
+}
+
+function ChainAccount({ chain, account }) {
+  const settings = getChainSettings(chain);
   const [identity, setIdentity] = useState(null);
-  const normalizedAddr = normalizeAddress(account?.address);
+  const normalizedAddr = normalizeChainAddress(chain, account?.address);
 
   useEffect(() => {
     setIdentity(null);
@@ -120,37 +142,33 @@ function Account({ account }) {
   }, [account?.address, settings]);
 
   return (
-    <>
-      <Avatar address={normalizedAddr} />
-      <NameWrapper>
-        {/*TODO: use <IdentityOrAddr> after PR merged*/}
-        {identity && identity?.info?.status !== "NO_ID" ? (
-          <>
-            <Identity identity={identity} />
-            <div>{addressEllipsis(normalizedAddr)}</div>
-          </>
-        ) : (
-          <>
-            <div>{account?.name}</div>
-            <div>{addressEllipsis(normalizedAddr) ?? "--"}</div>
-          </>
-        )}
-      </NameWrapper>
-    </>
+    <AccountDisplay
+      name={account?.name}
+      address={normalizedAddr}
+      identity={identity}
+    />
   );
+}
+
+function Account({ account }) {
+  const chain = useChain();
+  return <ChainAccount chain={chain} account={account} />;
 }
 
 function EmptyAccount() {
   return (
     <>
       <PseudoAvatar />
-      <Account
-        account={{
-          address: "--",
-          name: "--",
-        }}
-      />
+      <AccountDisplay address={"--"} name={"--"} />
     </>
+  );
+}
+
+export function ChainOption({ chain, onClick, item, selected }) {
+  return (
+    <Item onClick={onClick} selected={selected}>
+      <ChainAccount chain={chain} account={item} />
+    </Item>
   );
 }
 
@@ -162,7 +180,8 @@ export function Option({ onClick, item, selected }) {
   );
 }
 
-export default function AddressSelect({
+export function ChainAddressSelect({
+  chain,
   accounts,
   selectedAccount,
   onSelect,
@@ -180,7 +199,7 @@ export default function AddressSelect({
         disabled={disabled || accounts?.length === 0}
       >
         {selectedAccount ? (
-          <Account account={selectedAccount} />
+          <ChainAccount chain={chain} account={selectedAccount} />
         ) : (
           <EmptyAccount />
         )}
@@ -189,8 +208,9 @@ export default function AddressSelect({
       {show && (
         <Options className="scrollbar-pretty">
           {(accounts || []).map((item, index) => (
-            <Option
+            <ChainOption
               key={index}
+              chain={chain}
               onClick={() => {
                 onSelect(item);
                 setShow(false);
@@ -205,5 +225,23 @@ export default function AddressSelect({
         </Options>
       )}
     </Wrapper>
+  );
+}
+
+export default function AddressSelect({
+  accounts,
+  selectedAccount,
+  onSelect,
+  disabled,
+}) {
+  const chain = useChain();
+  return (
+    <ChainAddressSelect
+      chain={chain}
+      accounts={accounts}
+      selectedAccount={selectedAccount}
+      onSelect={onSelect}
+      disabled={disabled}
+    />
   );
 }
