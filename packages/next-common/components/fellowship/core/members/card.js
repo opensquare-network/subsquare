@@ -22,7 +22,12 @@ function AvatarAndAddress({ address, isActive }) {
         />
       </div>
 
-      <AddressUser add={address} showAvatar={false} fontSize={14} />
+      <AddressUser
+        add={address}
+        showAvatar={false}
+        fontSize={14}
+        className="[&_.identity]:!font-semibold"
+      />
     </div>
   );
 }
