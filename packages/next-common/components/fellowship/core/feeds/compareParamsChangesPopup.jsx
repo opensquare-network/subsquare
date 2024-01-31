@@ -2,6 +2,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import { cn } from "next-common/utils";
 import Tab from "next-common/components/tab";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,
@@ -18,9 +19,11 @@ export default function FellowshipCoreFeedsCompareParamsChangesPopup({
     },
   ];
 
+  const [tabId, setTabId] = useState(tabs[0].tabId);
+
   return (
     <Popup {...props} className="!w-[640px]" title={"Compare Params Changes"}>
-      <Tab selectedTabId={tabs[0].tabId} tabs={tabs} />
+      <Tab selectedTabId={tabId} tabs={tabs} setSelectedTabId={setTabId} />
 
       <div
         className={cn(
