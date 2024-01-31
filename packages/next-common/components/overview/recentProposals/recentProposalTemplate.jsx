@@ -144,7 +144,6 @@ function TableTemplate({
         loading={loading}
         rows={rows}
         noDataText="No active proposals"
-        showBottomDivider
       />
 
       {!isNil(result?.page) && (
