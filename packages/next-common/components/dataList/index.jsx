@@ -18,6 +18,7 @@ export default function DataList({
   bordered = false,
   highlightedIndexes = [],
   showBottomDivider,
+  renderItem = (datalistItem) => datalistItem,
 }) {
   let content;
   const listRef = useRef();
@@ -84,17 +85,28 @@ export default function DataList({
     content = <NoData showIcon={false} text={noDataText} />;
   } else {
     content = (
-      <div className="divide-y divide-neutral300">
-        {rows.map((row, idx) => (
-          <DataListItem
-            key={idx}
-            row={row}
-            columnClassNames={columnClassNames}
-            columnStyles={columnStyles}
-            columns={columns}
-            highlighted={highlightedIndexes.includes(idx)}
-          />
-        ))}
+      <div
+        ref={bodyRef}
+        className={cn(
+          "datalist-body group/datalist-body",
+          "scrollbar-pretty",
+          "divide-y divide-neutral300",
+        )}
+      >
+        {rows.map((row, idx) =>
+          renderItem(
+            <DataListItem
+              key={idx}
+              row={row}
+              columnClassNames={columnClassNames}
+              columnStyles={columnStyles}
+              columns={columns}
+              highlighted={highlightedIndexes.includes(idx)}
+            />,
+            idx,
+            rows,
+          ),
+        )}
         {showBottomDivider && <div />}
       </div>
     );
@@ -119,6 +131,7 @@ export default function DataList({
       >
         <div
           className={cn(
+            "datalist-head",
             "flex items-center pb-3",
             "border-b border-neutral300",
             "max-sm:hidden",
@@ -139,9 +152,7 @@ export default function DataList({
           ))}
         </div>
 
-        <div ref={bodyRef} className={cn("datalist-body", "scrollbar-pretty")}>
-          {content}
-        </div>
+        {content}
       </div>
     </div>
   );

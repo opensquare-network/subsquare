@@ -19,6 +19,8 @@ export default function DataListItem({
     <div
       role="listitem"
       className={cn(
+        "datalist-item group/datalist-item",
+        "w-full",
         "flex items-center py-4",
         "max-sm:block",
         onClick && "cursor-pointer",
@@ -103,7 +105,7 @@ function MobileContent({ row = [], data, columns }) {
 
   return (
     <div className="sm:hidden sm:py-4 space-y-3">
-      <div>
+      <div className="flex">
         <div className="flex items-center justify-between">
           {first.value}
           {action && items[actionIdx]?.value}
