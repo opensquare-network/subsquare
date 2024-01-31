@@ -12,7 +12,7 @@ const TertiaryLabel = tw.span`text-textTertiary`;
 
 function Rank({ rank }) {
   return (
-    <EventLabel className="inline-flex gap-x-1">
+    <EventLabel className="inline-flex items-center gap-x-1">
       Rank
       <FellowshipRank rank={rank} />
     </EventLabel>
