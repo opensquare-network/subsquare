@@ -1,24 +1,15 @@
-import AddressUser from "next-common/components/user/addressUser";
 import { cn } from "next-common/utils";
-import tw from "tailwind-styled-components";
-import FellowshipRank from "../../rank";
-import { InfoDocs } from "@osn/icons/subsquare";
-import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import FellowshipCoreFeedsCompareParamsChangesPopup from "./compareParamsChangesPopup";
-import ExternalLink from "next-common/components/externalLink";
-
-const EventLabel = tw.span`text-textSecondary`;
-const TertiaryLabel = tw.span`text-textTertiary`;
-
-function Rank({ rank }) {
-  return (
-    <EventLabel className="inline-flex items-center gap-x-1">
-      Rank
-      <FellowshipRank rank={rank} />
-    </EventLabel>
-  );
-}
+import FellowshipCoreFeedsParamsChangedEvent from "./event/paramsChanged";
+import FellowshipCoreFeedsOffboardedEvent from "./event/offboarded";
+import FellowshipCoreFeedsRetentionEvent from "./event/rentention";
+import FellowshipCoreFeedsPromotionEvent from "./event/promotion";
+import FellowshipCoreFeedsProvedEvent from "./event/proved";
+import FellowshipCoreFeedsDemotedEvent from "./event/demoted";
+import FellowshipCoreFeedsPromotedEvent from "./event/promoted";
+import FellowshipCoreFeedsImportedEvent from "./event/imported";
+import FellowshipCoreFeedsInductedEvent from "./event/inducted";
 
 export default function FellowshipCoreFeedsListEvent({
   feed = {},
@@ -28,121 +19,37 @@ export default function FellowshipCoreFeedsListEvent({
 
   const [comparePopupVisible, setComparePopupVisible] = useState(false);
 
-  const eventContent = <EventLabel>{event}</EventLabel>;
-
   const EVENT_CONTENTS = {
-    Inducted: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-        <TertiaryLabel>was</TertiaryLabel>
-        {eventContent}
-      </>
-    ),
-    Imported: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-        <TertiaryLabel>was</TertiaryLabel>
-        {eventContent}
-        <TertiaryLabel>with</TertiaryLabel>
-        <Rank rank={feed?.args?.rank} />
-      </>
-    ),
-    Promoted: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-        <TertiaryLabel>was</TertiaryLabel>
-        {eventContent}
-        <TertiaryLabel>to</TertiaryLabel>
-        <Rank rank={feed?.args?.toRank} />
-      </>
-    ),
-    Demoted: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-        <TertiaryLabel>was</TertiaryLabel>
-        {eventContent}
-        <TertiaryLabel>to</TertiaryLabel>
-        <Rank rank={feed?.args?.toRank} />
-      </>
-    ),
-    Proved: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-        <TertiaryLabel>was</TertiaryLabel>
-        {eventContent}
-        <TertiaryLabel>at</TertiaryLabel>
-        <Rank rank={feed?.args?.rank} />
-      </>
-    ),
+    Inducted: <FellowshipCoreFeedsInductedEvent feed={feed} />,
+    Imported: <FellowshipCoreFeedsImportedEvent feed={feed} />,
+    Promoted: <FellowshipCoreFeedsPromotedEvent feed={feed} />,
+    Demoted: <FellowshipCoreFeedsDemotedEvent feed={feed} />,
+    Proved: <FellowshipCoreFeedsProvedEvent feed={feed} />,
     // TODO: promotion, evidence link
-    Promotion: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-        <TertiaryLabel>
-          submitted{" "}
-          <ExternalLink
-            href=""
-            className="text-inherit hover:text-textSecondary !underline"
-            externalIcon={false}
-          >
-            evidence
-          </ExternalLink>
-          ↗ with wish
-        </TertiaryLabel>
-        {eventContent}
-      </>
-    ),
+    Promotion: <FellowshipCoreFeedsPromotionEvent feed={feed} />,
     // TODO: rentenion, evidence link
-    Rentention: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-        <TertiaryLabel>
-          submitted{" "}
-          <ExternalLink
-            href=""
-            className="text-inherit hover:text-textSecondary !underline"
-            externalIcon={false}
-          >
-            evidence
-          </ExternalLink>
-          ↗ with wish
-        </TertiaryLabel>
-        {eventContent}
-      </>
-    ),
-    Offboarded: (
-      <>
-        <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
-      </>
-    ),
+    Rentention: <FellowshipCoreFeedsRetentionEvent feed={feed} />,
+    Offboarded: <FellowshipCoreFeedsOffboardedEvent feed={feed} />,
     // TODO: active
     // TODO: inactive
     // TODO: retained
     ParamsChanged: (
-      <>
-        <span>The Polkadot Collectives Fellowship</span>
-        <EventLabel>Params Changed</EventLabel>
-        <Tooltip content="Compare Params Changes">
-          <InfoDocs
-            role="button"
-            className={cn(
-              "w-4 h-4 relative top-[0.5px]",
-              "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
-              "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",
-            )}
-            onClick={() => {
-              setComparePopupVisible(true);
-            }}
-          />
-        </Tooltip>
-      </>
+      <FellowshipCoreFeedsParamsChangedEvent
+        setComparePopupVisible={setComparePopupVisible}
+      />
     ),
   };
 
   const content = EVENT_CONTENTS[event];
 
   return (
-    <div className={cn("flex items-center flex-wrap gap-x-2", className)}>
+    <div
+      className={cn(
+        "flex items-center flex-wrap gap-x-2",
+        "text-textTertiary",
+        className,
+      )}
+    >
       {content}
 
       {comparePopupVisible && (
