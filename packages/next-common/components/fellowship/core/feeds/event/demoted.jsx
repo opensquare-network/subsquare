@@ -5,14 +5,16 @@ import {
 } from "./shared";
 
 export default function FellowshipCoreFeedsDemotedEvent({ feed }) {
+  const { args: { who, toRank } = {} } = feed || {};
+
   return (
     <>
-      <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
+      <AddressUser key={who} add={who} noTooltip />
       <span>
         was <FellowshipCoreFeedEventLabel>Demoted</FellowshipCoreFeedEventLabel>{" "}
         to
       </span>
-      <FellowshipCoreFeedRankLabel rank={feed?.args?.rank} />
+      <FellowshipCoreFeedRankLabel rank={toRank} />
     </>
   );
 }

@@ -4,15 +4,17 @@ import {
   FellowshipCoreFeedRankLabel,
 } from "./shared";
 
-export default function FellowshipCoreFeedsProvedEvent({ feed }) {
+export default function FellowshipCoreFeedsProvenEvent({ feed }) {
+  const { args: { who, atRank } = {} } = feed || {};
+
   return (
     <>
-      <AddressUser key={feed?.args?.who} add={feed?.args?.who} noTooltip />
+      <AddressUser key={who} add={who} noTooltip />
       <span>
         was <FellowshipCoreFeedEventLabel>Proved</FellowshipCoreFeedEventLabel>{" "}
         at
       </span>
-      <FellowshipCoreFeedRankLabel rank={feed?.args?.rank} />
+      <FellowshipCoreFeedRankLabel rank={atRank} />
     </>
   );
 }

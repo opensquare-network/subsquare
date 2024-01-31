@@ -3,16 +3,13 @@ import { useState } from "react";
 import FellowshipCoreFeedsCompareParamsChangesPopup from "./compareParamsChangesPopup";
 import FellowshipCoreFeedsParamsChangedEvent from "./event/paramsChanged";
 import FellowshipCoreFeedsOffboardedEvent from "./event/offboarded";
-import FellowshipCoreFeedsRetentionEvent from "./event/rentention";
-import FellowshipCoreFeedsPromotionEvent from "./event/promotion";
-import FellowshipCoreFeedsProvedEvent from "./event/proved";
+import FellowshipCoreFeedsProvenEvent from "./event/proven";
 import FellowshipCoreFeedsDemotedEvent from "./event/demoted";
 import FellowshipCoreFeedsPromotedEvent from "./event/promoted";
 import FellowshipCoreFeedsImportedEvent from "./event/imported";
 import FellowshipCoreFeedsInductedEvent from "./event/inducted";
 import FellowshipCoreFeedsActiveEvent from "./event/active";
-import FellowshipCoreFeedsInactiveEvent from "./event/inactive";
-import FellowshipCoreFeedsRetainedEvent from "./event/retained";
+import FellowshipCoreFeedsRequestedEvent from "next-common/components/fellowship/core/feeds/event/requested";
 
 export default function FellowshipCoreFeedsListEvent({
   feed = {},
@@ -23,24 +20,19 @@ export default function FellowshipCoreFeedsListEvent({
   const [comparePopupVisible, setComparePopupVisible] = useState(false);
 
   const EVENT_CONTENTS = {
-    Inducted: <FellowshipCoreFeedsInductedEvent feed={feed} />,
-    Imported: <FellowshipCoreFeedsImportedEvent feed={feed} />,
-    Promoted: <FellowshipCoreFeedsPromotedEvent feed={feed} />,
+    ActiveChanged: <FellowshipCoreFeedsActiveEvent feed={feed} />,
     Demoted: <FellowshipCoreFeedsDemotedEvent feed={feed} />,
-    Proved: <FellowshipCoreFeedsProvedEvent feed={feed} />,
-    // TODO: promotion, evidence link
-    Promotion: <FellowshipCoreFeedsPromotionEvent feed={feed} />,
-    // TODO: rentenion, evidence link
-    Rentention: <FellowshipCoreFeedsRetentionEvent feed={feed} />,
+    Imported: <FellowshipCoreFeedsImportedEvent feed={feed} />,
+    Inducted: <FellowshipCoreFeedsInductedEvent feed={feed} />,
     Offboarded: <FellowshipCoreFeedsOffboardedEvent feed={feed} />,
-    Active: <FellowshipCoreFeedsActiveEvent feed={feed} />,
-    Inactive: <FellowshipCoreFeedsInactiveEvent feed={feed} />,
-    Retained: <FellowshipCoreFeedsRetainedEvent feed={feed} />,
     ParamsChanged: (
       <FellowshipCoreFeedsParamsChangedEvent
         setComparePopupVisible={setComparePopupVisible}
       />
     ),
+    Promoted: <FellowshipCoreFeedsPromotedEvent feed={feed} />,
+    Proven: <FellowshipCoreFeedsProvenEvent feed={feed} />,
+    Requested: <FellowshipCoreFeedsRequestedEvent feed={feed} />,
   };
 
   const content = EVENT_CONTENTS[event];
