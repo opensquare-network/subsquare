@@ -54,7 +54,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
           const isLast = idx === arr.length - 1;
 
           return (
-            <div className="flex gap-x-4 px-6 sm:hover:bg-neutral200">
+            <div className="flex gap-x-4 px-6 sm:hover:bg-neutral200" key={idx}>
               <div className="flex flex-col">
                 <Bar className="h-2.5 grow-0" />
 
