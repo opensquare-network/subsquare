@@ -135,7 +135,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
     },
     {
       name: "Balance",
-      className: "text-right w-40 min-w-[128px]",
+      className: "text-right w-40 min-w-[160px]",
     },
     {
       name: "Length",
@@ -143,7 +143,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
     },
     {
       name: "Status",
-      className: "text-right w-40 min-w-[128px]",
+      className: "text-right w-40 min-w-[160px]",
     },
     {
       name: "", // unnote
@@ -164,6 +164,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
   return (
     <ScrollerX>
       <DataList
+        className="w-full"
         columns={columns}
         rows={rows}
         noDataText="No current preimages"
