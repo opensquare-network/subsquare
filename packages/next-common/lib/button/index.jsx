@@ -25,7 +25,7 @@ export default function _Button(props) {
       {...attrs}
       disabled={disabled || loading}
       className={cn(
-        "border",
+        "border border-transparent",
         "outline-none",
         "whitespace-nowrap",
         smallSize ? "text12Medium" : "text14Medium",

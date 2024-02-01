@@ -11,7 +11,6 @@ export default function DangerButton(props) {
       className={cn(
         "text-textPrimaryContrast",
         "bg-red500 disabled:bg-red300",
-        "border-transparent",
         props.className,
       )}
     />

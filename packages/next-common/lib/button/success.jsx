@@ -11,7 +11,6 @@ export default function SuccessButton(props) {
       className={cn(
         "text-textPrimaryContrast",
         "bg-green500 disabled:bg-green300",
-        "border-transparent",
         props.className,
       )}
     />

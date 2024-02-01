@@ -11,7 +11,6 @@ export default function WarningButton(props) {
       className={cn(
         "text-textPrimaryContrast",
         "bg-orange500 disabled:bg-orange300",
-        "border-transparent",
         props.className,
       )}
     />

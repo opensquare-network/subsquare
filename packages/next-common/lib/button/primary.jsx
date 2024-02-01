@@ -11,7 +11,6 @@ export default function PrimaryButton(props) {
       className={cn(
         "text-textPrimaryContrast",
         "bg-theme500 disabled:bg-theme300",
-        "border-transparent",
         props.className,
       )}
     />
