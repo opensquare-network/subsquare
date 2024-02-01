@@ -1,109 +1,16 @@
-import React, { useEffect } from "react";
-import styled, { css } from "styled-components";
-import { useState, useRef } from "react";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
-import Avatar from "./avatar";
-import Flex from "./styled/flex";
-import Relative from "./styled/relative";
-import { encodeAddressToChain } from "../services/address";
-import { fetchIdentity } from "../services/identity";
-import Identity from "./Identity";
-import Caret from "./icons/caret";
-import { addressEllipsis } from "../utils";
-import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
-import { useChain } from "../context/chain";
+import React, { useEffect, useState, useRef } from "react";
+import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside.js";
+import Avatar from "next-common/components/avatar";
+import { encodeAddressToChain } from "next-common/services/address";
+import { fetchIdentity } from "next-common/services/identity";
+import Identity from "next-common/components/Identity";
+import Caret from "next-common/components/icons/caret";
+import { addressEllipsis } from "next-common/utils";
+import PseudoAvatar from "next-common/assets/imgs/pesudoAvatar.svg";
+import { useChain } from "next-common/context/chain";
 import { normalizeChainAddress } from "next-common/utils/address.js";
 import getChainSettings from "next-common/utils/consts/settings/index.js";
-
-const Wrapper = Relative;
-
-const Select = styled(Flex)`
-  background: var(--neutral100);
-  border: 1px solid var(--neutral400);
-  border-radius: 8px;
-  height: 56px;
-  padding: 0 16px;
-  cursor: pointer;
-  > :not(:first-child) {
-    margin-left: 16px;
-  }
-  > img:first-child {
-    width: 32px;
-    height: 32px;
-    flex: 0 0 auto;
-  }
-  > img:last-child {
-    width: 14px;
-    height: 14px;
-    flex: 0 0 auto;
-    margin-left: auto;
-  }
-  ${(props) =>
-    props.disabled &&
-    css`
-      background: var(--neutral200);
-      pointer-events: none;
-    `};
-`;
-
-const NameWrapper = styled.div`
-  color: var(--textPrimary);
-  flex-grow: 1;
-  > :first-child {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  > :last-child {
-    margin-top: 4px;
-    font-size: 12px;
-    color: var(--textTertiary);
-  }
-`;
-
-const Options = styled.div`
-  position: absolute;
-  width: 100%;
-  margin-top: 4px;
-  padding: 8px 0;
-  background: var(--neutral100);
-  box-shadow: var(--shadow200);
-  border: 1px solid var(--neutral300);
-  border-radius: 8px;
-  max-height: 320px;
-  overflow-y: auto;
-  z-index: 1;
-`;
-
-const Item = styled(Flex)`
-  background: var(--neutral100);
-  height: 56px;
-  padding: 0 16px;
-  cursor: pointer;
-  > :not(:first-child) {
-    margin-left: 16px;
-  }
-  > img:first-child {
-    width: 32px;
-    height: 32px;
-    flex: 0 0 auto;
-  }
-  :hover {
-    background: var(--neutral200);
-  }
-  ${(props) =>
-    props?.theme.isDark &&
-    css`
-      :hover,
-      :hover div {
-        background: var(--neutral300);
-      }
-    `};
-  ${(p) =>
-    p.selected &&
-    css`
-      background: var(--neutral200);
-    `}
-`;
+import { Item, NameWrapper, Options, Select, Wrapper } from "./styled.js";
 
 function AccountDisplay({ name, address, identity }) {
   return (
