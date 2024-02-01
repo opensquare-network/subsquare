@@ -11,6 +11,8 @@ import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
 import { ssrNextApi } from "next-common/services/nextApi";
 import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
+import getNavSubMenuVisible from "next-common/services/serverSide/getNavSubMenuVisible";
+import getNavCollapsed from "next-common/services/serverSide/getNavCollapsed";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -26,8 +28,8 @@ export function withCommonProps(
 
     const cookies = new Cookies(context.req, context.res);
     const themeMode = cookies.get(CACHE_KEY.themeMode);
-    const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
-    const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
+    const navCollapsed = getNavCollapsed(cookies);
+    const navSubmenuVisible = getNavSubMenuVisible(cookies);
     const detailPageProperties = getDetailPageProperties(context);
     const connectedAccount = getConnectedAccount(cookies);
 

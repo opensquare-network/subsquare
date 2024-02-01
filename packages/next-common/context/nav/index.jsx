@@ -23,13 +23,7 @@ function NavCollapsedProvider({ children, value }) {
   );
 }
 
-function NavSubmenuVisibleProvider({ children, value }) {
-  try {
-    value = JSON.parse(decodeURIComponent(value));
-  } catch (error) {
-    console.error(error);
-  }
-
+function NavSubmenuVisibleProvider({ children, value = {} }) {
   const [navSubmenuVisible, setNavSubmenuVisible] = useCookieValue(
     CACHE_KEY.navSubmenuVisible,
     value,
@@ -46,7 +40,7 @@ function NavSubmenuVisibleProvider({ children, value }) {
 
 export default function NavProvider({
   navCollapsed,
-  navSubmenuVisible = "{}",
+  navSubmenuVisible,
   children,
 }) {
   return (
