@@ -18,9 +18,18 @@ const ThemeModeContext = createContext({});
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
   const [themeMode, setThemeMode] = useState(defaultThemeMode || "light");
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (themeMode === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [themeMode]);
+
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
-      <ThemeValueProvider>{children}</ThemeValueProvider>
+      {children}
     </ThemeModeContext.Provider>
   );
 }
@@ -48,19 +57,8 @@ export function useThemeMode() {
   return [mode, set, themeMode];
 }
 
-function ThemeValueProvider({ children }) {
-  const isDark = useIsDark();
+export function ThemeValueProvider({ children }) {
   const theme = useThemeSetting();
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }, [isDark]);
-
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 
