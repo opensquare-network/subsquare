@@ -1,16 +1,11 @@
 import { useMemo, useState } from "react";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
-import styled from "styled-components";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useSelector } from "react-redux";
 import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { isSameAddress } from "next-common/utils";
 import FellowshipCoreImportPopup from "next-common/components/fellowship/core/summary/import/popup";
-
-const StyledPrimaryButton = styled(PrimaryButton)`
-  height: 28px;
-`;
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
@@ -34,9 +29,9 @@ export default function Import() {
 
   return (
     <>
-      <StyledPrimaryButton onClick={() => setShowPopup(true)}>
-        <span className="text12Medium">Import me</span>
-      </StyledPrimaryButton>
+      <PrimaryButton size="small" onClick={() => setShowPopup(true)}>
+        Import me
+      </PrimaryButton>
       {showPopup && (
         <FellowshipCoreImportPopup onClose={() => setShowPopup(false)} />
       )}
