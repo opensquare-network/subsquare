@@ -3,7 +3,6 @@ import Button from ".";
 
 /**
  * @param {ButtonProps} props
- * @returns
  */
 export default function PrimaryButton(props) {
   return (
