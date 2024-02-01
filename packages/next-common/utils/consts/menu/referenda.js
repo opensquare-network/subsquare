@@ -26,6 +26,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
       Chains["bifrost-polkadot"],
       Chains.vara,
       Chains.rococo,
+      Chains.darwinia2,
     ]),
     activeCount: totalActiveCount,
     icon: <MenuReferenda />,
