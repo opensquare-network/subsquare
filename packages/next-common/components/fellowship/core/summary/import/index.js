@@ -6,6 +6,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { isSameAddress } from "next-common/utils";
 import FellowshipCoreImportPopup from "next-common/components/fellowship/core/summary/import/popup";
+import { SystemImportMember } from "@osn/icons/subsquare";
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
@@ -29,7 +30,13 @@ export default function Import() {
 
   return (
     <>
-      <PrimaryButton size="small" onClick={() => setShowPopup(true)}>
+      <PrimaryButton
+        size="small"
+        iconLeft={
+          <SystemImportMember className="inline-flex w-4 h-4 [&_path]:stroke-current [&_path]:stroke-2" />
+        }
+        onClick={() => setShowPopup(true)}
+      >
         Import me
       </PrimaryButton>
       {showPopup && (
