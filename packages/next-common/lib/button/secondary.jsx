@@ -12,7 +12,7 @@ export default function SecondaryButton(props) {
         "text-textPrimary disabled:text-textDisabled",
         "bg-neutral100",
         "border-neutral400 hover:border-neutral500",
-        "disabled:border-neutral200",
+        "disabled:border-neutral300",
         props.className,
       )}
     />
