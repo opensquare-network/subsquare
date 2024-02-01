@@ -25,7 +25,7 @@ export default function Import() {
   }, [collectiveMembers, coreMembers, realAddress]);
 
   if (!canImport) {
-    // return null;
+    return null;
   }
 
   return (
