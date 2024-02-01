@@ -6,8 +6,16 @@ import { cn } from "next-common/utils";
  * @private
  */
 export default function _Button(props) {
-  const { size, loading, className, children, iconLeft, iconRight, ...attrs } =
-    props ?? {};
+  const {
+    size,
+    loading,
+    className,
+    children,
+    disabled,
+    iconLeft,
+    iconRight,
+    ...attrs
+  } = props ?? {};
 
   const smallSize = size === "small";
   const iconSize = size === "icon" || loading;
@@ -15,6 +23,7 @@ export default function _Button(props) {
   return (
     <button
       {...attrs}
+      disabled={disabled || loading}
       className={cn(
         "border",
         "outline-none",
