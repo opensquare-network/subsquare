@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain } from "next-common/context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
 import { fetchIdentity } from "next-common/services/identity";
+import getChainSettings from "next-common/utils/consts/settings";
 
-export default function useIdentityInfo(address) {
-  const settings = useChainSettings();
+export function useChainIdentityInfo(chain, address) {
+  const settings = getChainSettings(chain);
   const [identity, setIdentity] = useState(null);
 
   useEffect(() => {
@@ -18,4 +19,9 @@ export default function useIdentityInfo(address) {
   }, [address, settings]);
 
   return [identity, identity && identity?.info?.status !== "NO_ID"];
+}
+
+export default function useIdentityInfo(address) {
+  const chain = useChain();
+  return useChainIdentityInfo(chain, address);
 }
