@@ -10,7 +10,7 @@ import {
 } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 
-export function FooterBase({ logo, contactLinks }) {
+export function FooterBase({ logo, copyright, contactLinks }) {
   return (
     <div
       className={cn(
@@ -24,7 +24,7 @@ export function FooterBase({ logo, contactLinks }) {
       <div className={cn("flex items-center gap-x-4", "max-sm:flex-col")}>
         {logo}
         <p className={cn("text14Medium text-textTertiary", "max-sm:mt-2")}>
-          @{new Date().getFullYear()} SubSquare. Powered by OpenSquare
+          {copyright}
         </p>
       </div>
 
@@ -63,6 +63,7 @@ export default function Footer() {
           <FooterLogoDark className="hidden dark:inline" />
         </div>
       }
+      copyright={`${new Date().getFullYear()} SubSquare. Powered by OpenSquare`}
       contactLinks={[
         {
           name: "Element",
