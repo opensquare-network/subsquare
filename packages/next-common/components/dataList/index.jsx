@@ -98,6 +98,7 @@ export default function DataList({
   return (
     <div
       className={cn(
+        "w-full",
         "scrollbar-hidden",
         "overflow-auto",
         "text-textPrimary",

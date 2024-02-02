@@ -5,6 +5,7 @@ const WalletTypes = {
   TALISMAN: "talisman",
   POLKAGATE: "polkagate",
   NOVA: "nova",
+  MIMIR: "mimir",
 };
 
 export default WalletTypes;
