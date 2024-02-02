@@ -9,6 +9,7 @@ import FellowshipMemberCommon from "next-common/components/pages/fellowship/comm
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
+import FellowshipMemberEmpty from "./empty";
 
 export default function FellowshipMembersPage() {
   useFetchFellowshipCoreMembers();
@@ -18,6 +19,7 @@ export default function FellowshipMembersPage() {
     () => (members || []).filter((member) => member.rank > 0),
     [members],
   );
+  const hasMembers = !!pageMembers.length;
 
   const ranks = [...new Set(pageMembers.map((m) => m.rank))];
   const { rank, component } = useRankFilter(ranks);
@@ -39,11 +41,15 @@ export default function FellowshipMembersPage() {
           {component}
         </div>
 
-        <FellowshipCoreMemberCardListContainer>
-          {filteredMembers.map((member) => (
-            <FellowshipCoreMemberCard key={member.address} member={member} />
-          ))}
-        </FellowshipCoreMemberCardListContainer>
+        {hasMembers ? (
+          <FellowshipCoreMemberCardListContainer>
+            {filteredMembers.map((member) => (
+              <FellowshipCoreMemberCard key={member.address} member={member} />
+            ))}
+          </FellowshipCoreMemberCardListContainer>
+        ) : (
+          <FellowshipMemberEmpty />
+        )}
       </FellowshipMemberCommon>
     </FellowshipMembersLoadable>
   );
