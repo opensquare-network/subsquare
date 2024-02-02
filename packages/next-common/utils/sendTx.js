@@ -240,8 +240,6 @@ export async function sendTx({
       onSubmitted,
       onClose,
       signerAddress,
-      section: sectionName,
-      method: methodName,
     });
     return;
   }
