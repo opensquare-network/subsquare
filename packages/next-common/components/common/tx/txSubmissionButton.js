@@ -6,7 +6,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 
 export default function TxSubmissionButton({
   tx,
@@ -61,7 +61,7 @@ export default function TxSubmissionButton({
 
   return (
     <div className="flex justify-end">
-      <PrimaryButton isLoading={isCalling} onClick={onSubmit} disabled={!tx}>
+      <PrimaryButton loading={isCalling} onClick={onSubmit} disabled={!tx}>
         {title}
       </PrimaryButton>
     </div>
