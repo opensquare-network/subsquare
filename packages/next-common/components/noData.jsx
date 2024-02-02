@@ -3,6 +3,7 @@ import { cn } from "next-common/utils";
 
 export default function NoData({
   showIcon = true,
+  icon,
   head = "",
   text = "No data",
   className = "",
@@ -10,8 +11,10 @@ export default function NoData({
 }) {
   return (
     <div {...props} className={cn("py-6 text-center", className)}>
-      {showIcon && (
-        <SystemEmptyBox className="[&_path]:stroke-textTertiary mx-auto mb-2" />
+      {(showIcon || icon) && (
+        <div className="flex justify-center mb-2">
+          {icon || <SystemEmptyBox className="[&_path]:stroke-textTertiary" />}
+        </div>
       )}
 
       {head && (
