@@ -144,19 +144,21 @@ function TableTemplate({
         loading={loading}
         rows={rows}
         noDataText="No active proposals"
-        showBottomDivider
       />
 
       {!isNil(result?.page) && (
-        <Pagination
-          page={page}
-          pageSize={recentProposalFetchParams.pageSize}
-          total={result?.total || 0}
-          onPageChange={(e, newPage) => {
-            e.preventDefault();
-            setPage(newPage);
-          }}
-        />
+        // pagination itself has `pt-2`(8px)
+        <div className="mt-2">
+          <Pagination
+            page={page}
+            pageSize={recentProposalFetchParams.pageSize}
+            total={result?.total || 0}
+            onPageChange={(e, newPage) => {
+              e.preventDefault();
+              setPage(newPage);
+            }}
+          />
+        </div>
       )}
 
       {api?.viewAllLink && (

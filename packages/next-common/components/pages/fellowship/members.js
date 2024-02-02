@@ -1,4 +1,3 @@
-import { usePageProps } from "next-common/context/page";
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import isNil from "lodash.isnil";
@@ -10,16 +9,17 @@ import FellowshipMemberCommon from "next-common/components/pages/fellowship/comm
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
+import FellowshipMembersEmpty from "./empty";
 
 export default function FellowshipMembersPage() {
-  const { fellowshipMembers } = usePageProps();
-  useFetchFellowshipCoreMembers(fellowshipMembers);
+  useFetchFellowshipCoreMembers();
   const members = useSelector(fellowshipCoreMembersSelector);
   const candidates = (members || []).filter((member) => member.rank <= 0);
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
     [members],
   );
+  const hasMembers = !!pageMembers.length;
 
   const ranks = [...new Set(pageMembers.map((m) => m.rank))];
   const { rank, component } = useRankFilter(ranks);
@@ -41,11 +41,15 @@ export default function FellowshipMembersPage() {
           {component}
         </div>
 
-        <FellowshipCoreMemberCardListContainer>
-          {filteredMembers.map((member) => (
-            <FellowshipCoreMemberCard key={member.address} member={member} />
-          ))}
-        </FellowshipCoreMemberCardListContainer>
+        {hasMembers ? (
+          <FellowshipCoreMemberCardListContainer>
+            {filteredMembers.map((member) => (
+              <FellowshipCoreMemberCard key={member.address} member={member} />
+            ))}
+          </FellowshipCoreMemberCardListContainer>
+        ) : (
+          <FellowshipMembersEmpty />
+        )}
       </FellowshipMemberCommon>
     </FellowshipMembersLoadable>
   );

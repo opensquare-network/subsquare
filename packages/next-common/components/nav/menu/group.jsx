@@ -57,7 +57,12 @@ export default function NavMenuGroup({
               icon={menu.icon}
               label={startCase(capitalize(menu.name))}
               activeCount={
-                sumBy(menu?.items, "activeCount") ?? menu.activeCount
+                sumBy(
+                  (menu?.items || []).filter(
+                    (item) => !item.excludeToSumActives,
+                  ),
+                  "activeCount",
+                ) ?? menu.activeCount
               }
               collapsed={collapsed}
               active={firstPath === menu.pathname}

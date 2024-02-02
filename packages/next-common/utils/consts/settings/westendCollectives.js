@@ -7,6 +7,7 @@ import {
   ProjectLogoWestendCollectivesDark,
   ProjectLogoWestendCollectivesLight,
 } from "@osn/icons/subsquare";
+import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
 
 const westendCollectivesEndpoints = [
   {
@@ -41,6 +42,7 @@ const westendCollectives = {
   ss58Format: 42,
   snsCoverCid: "bafybeibtr7oelilpotm26qrnnp34ztbnde7ouu5fdflcx6f6dj6foyb5eq",
   endpoints: westendCollectivesEndpoints,
+  links: collectiveLinks,
   avatar: ProjectIconWestendCollectivesLight,
   darkAvatar: ProjectIconWestendCollectivesDark,
   navLogo: ProjectLogoWestendCollectivesLight,

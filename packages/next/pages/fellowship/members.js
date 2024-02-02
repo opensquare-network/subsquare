@@ -12,7 +12,7 @@ export default function MembersPage() {
   const { fellowshipMembers } = usePageProps();
   const category = "Fellowship Members";
   const seoInfo = { title: category, desc: category };
-  useFetchFellowshipCoreMembers(fellowshipMembers);
+  useFetchFellowshipCoreMembers();
   const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
   const { rank, component } = useRankFilter(ranks);
 

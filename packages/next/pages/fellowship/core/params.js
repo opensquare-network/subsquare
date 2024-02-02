@@ -1,12 +1,10 @@
 import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
 import FellowshipCoreParamsContainer from "next-common/components/fellowship/params/container";
-import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
-import { usePageProps } from "next-common/context/page";
+import getFellowshipParamsServerSideProps from "next-common/services/serverSide/fellowship/params";
 
 export default function FellowshipCoreParamsPage({ fellowshipParams }) {
-  const { fellowshipMembers } = usePageProps();
-  useFetchFellowshipCoreMembers(fellowshipMembers);
+  useFetchFellowshipCoreMembers();
 
   return (
     <FellowshipCoreCommon>
@@ -15,4 +13,4 @@ export default function FellowshipCoreParamsPage({ fellowshipParams }) {
   );
 }
 
-export const getServerSideProps = getFellowshipMembersServerSideProps;
+export const getServerSideProps = getFellowshipParamsServerSideProps;

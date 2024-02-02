@@ -1,4 +1,3 @@
-import { usePageProps } from "next-common/context/page";
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
@@ -8,15 +7,16 @@ import FellowshipMemberCommon from "next-common/components/pages/fellowship/comm
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
+import FellowshipMembersEmpty from "./empty";
 
 export default function FellowshipCandidatesPage() {
-  const { fellowshipMembers } = usePageProps();
-  useFetchFellowshipCoreMembers(fellowshipMembers);
+  useFetchFellowshipCoreMembers();
   const members = useSelector(fellowshipCoreMembersSelector);
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank <= 0),
     [members],
   );
+  const hasMembers = !!pageMembers.length;
 
   return (
     <FellowshipMembersLoadable>
@@ -25,11 +25,15 @@ export default function FellowshipCandidatesPage() {
           <FellowshipMemberTabs members={members} />
         </div>
 
-        <FellowshipCoreMemberCardListContainer>
-          {pageMembers.map((member) => (
-            <FellowshipCoreMemberCard key={member.address} member={member} />
-          ))}
-        </FellowshipCoreMemberCardListContainer>
+        {hasMembers ? (
+          <FellowshipCoreMemberCardListContainer>
+            {pageMembers.map((member) => (
+              <FellowshipCoreMemberCard key={member.address} member={member} />
+            ))}
+          </FellowshipCoreMemberCardListContainer>
+        ) : (
+          <FellowshipMembersEmpty />
+        )}
       </FellowshipMemberCommon>
     </FellowshipMembersLoadable>
   );

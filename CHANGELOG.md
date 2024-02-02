@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.4
+
+date: 2024-01-31
+
+- Change detail page subscription to loop query.
+- Add fellowship core members page.
+- Fix tailwind fond plugin.
+- Fix styles.
+
 ### 3.8.3
 
 date: 2024-01-24

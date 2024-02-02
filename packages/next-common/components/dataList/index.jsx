@@ -1,7 +1,7 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import NoData from "../noData";
-import DataListItem from "./item";
+import DataListBody from "./body";
 import { useDeepCompareEffect, useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -17,7 +17,7 @@ export default function DataList({
   noDataText = "No current votes",
   bordered = false,
   highlightedIndexes = [],
-  showBottomDivider,
+  renderItem = (datalistItem) => datalistItem,
 }) {
   let content;
   const listRef = useRef();
@@ -54,7 +54,7 @@ export default function DataList({
   const columnClassNames = columns.map((column) =>
     cn(
       "text14Medium",
-      // if has no width specific, make it flex
+      // if there is no width specific, make it flex
       !column.className
         ?.split(" ")
         ?.some((className) => className.startsWith("w-")) &&
@@ -84,19 +84,14 @@ export default function DataList({
     content = <NoData showIcon={false} text={noDataText} />;
   } else {
     content = (
-      <div className="divide-y divide-neutral300">
-        {rows.map((row, idx) => (
-          <DataListItem
-            key={idx}
-            row={row}
-            columnClassNames={columnClassNames}
-            columnStyles={columnStyles}
-            columns={columns}
-            highlighted={highlightedIndexes.includes(idx)}
-          />
-        ))}
-        {showBottomDivider && <div />}
-      </div>
+      <DataListBody
+        rows={rows}
+        renderItem={renderItem}
+        columnClassNames={columnClassNames}
+        columnStyles={columnStyles}
+        columns={columns}
+        highlightedIndexes={highlightedIndexes}
+      />
     );
   }
 
@@ -119,6 +114,7 @@ export default function DataList({
       >
         <div
           className={cn(
+            "datalist-head",
             "flex items-center pb-3",
             "border-b border-neutral300",
             "max-sm:hidden",
@@ -139,9 +135,7 @@ export default function DataList({
           ))}
         </div>
 
-        <div ref={bodyRef} className={cn("datalist-body", "scrollbar-pretty")}>
-          {content}
-        </div>
+        {content}
       </div>
     </div>
   );

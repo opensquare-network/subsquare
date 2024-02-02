@@ -8,9 +8,16 @@ export default function Progress({
   fg = "var(--blue500)",
   bg = "var(--blue100)",
   rounded = true,
+  className = "",
 }) {
   return (
-    <div className={cn("relative overflow-hidden h-2", rounded && "rounded")}>
+    <div
+      className={cn(
+        "relative overflow-hidden h-2",
+        rounded && "rounded",
+        className,
+      )}
+    >
       <Bar className="bg-neutral200" />
       <Bar style={{ backgroundColor: bg }}>
         <Bar style={{ backgroundColor: fg, width: `${percentage}%` }} />

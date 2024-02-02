@@ -9,7 +9,7 @@ export default function FellowshipMembersLoadable({ children }) {
   if (isNil(members)) {
     return (
       <FellowshipCoreCommon>
-        <SystemLoading className="[&_path]:stroke-textTertiary mx-auto" />
+        <SystemLoading className="my-6 [&_path]:stroke-textTertiary mx-auto" />
       </FellowshipCoreCommon>
     );
   }
