@@ -10,6 +10,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 
 export default function TxSubmissionButton({
   tx,
+  disabled = false,
   errorCheck = emptyFunction,
   title = "Submit",
   onFinalized = emptyFunction,
@@ -24,10 +25,6 @@ export default function TxSubmissionButton({
   const isMounted = useIsMounted();
 
   const onSubmit = useCallback(async () => {
-    if (!tx) {
-      return;
-    }
-
     if (!api) {
       dispatch(newErrorToast("Chain network is not connected yet"));
       return;
@@ -38,7 +35,14 @@ export default function TxSubmissionButton({
       return;
     }
 
-    if (errorCheck()) {
+    try {
+      errorCheck();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+      return;
+    }
+
+    if (!tx) {
       return;
     }
 
@@ -61,7 +65,7 @@ export default function TxSubmissionButton({
 
   return (
     <div className="flex justify-end">
-      <PrimaryButton loading={isCalling} onClick={onSubmit} disabled={!tx}>
+      <PrimaryButton loading={isCalling} onClick={onSubmit} disabled={disabled}>
         {title}
       </PrimaryButton>
     </div>

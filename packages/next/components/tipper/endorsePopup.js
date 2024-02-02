@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useMemo, useState } from "react";
 
 import useApi from "next-common/utils/hooks/useApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import {
   checkInputValue,
@@ -12,70 +9,48 @@ import {
 } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { WarningMessage } from "next-common/components/popup/styled";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import BigNumber from "bignumber.js";
 
 function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
-  const dispatch = useDispatch();
-  const isMounted = useIsMounted();
   const api = useApi();
 
   const signerAccount = useSignerAccount();
 
   const [inputTipValue, setInputTipValue] = useState("");
-  const [tipping, setTipping] = useState(false);
   const { decimals } = useChainSettings();
   const councilTippers = useCouncilMembers();
   const isTipper = isAddressInGroup(
     signerAccount?.realAddress,
     councilTippers || [],
   );
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const doEndorse = async () => {
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
+  const errorCheck = useCallback(() => {
+    checkInputValue(inputTipValue, decimals, "tip value", true);
+  }, [inputTipValue, decimals]);
+
+  const tx = useMemo(() => {
+    if (!api || !api.tx.tips?.tip || !inputTipValue) {
+      return null;
     }
 
-    if (!tipHash) {
-      return;
+    const bnValue = new BigNumber(inputTipValue).times(Math.pow(10, decimals));
+    if (bnValue.isNaN()) {
+      return null;
     }
 
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
-
-    let bnTipValue;
     try {
-      bnTipValue = checkInputValue(inputTipValue, decimals, "tip value", true);
-    } catch (err) {
-      return showErrorToast(err.message);
+      return api.tx.tips.tip(tipHash, bnValue.toString());
+    } catch (e) {
+      // todo: maybe show error on a toast
+      return null;
     }
-
-    let tx = api.tx.tips.tip(tipHash, bnTipValue.toString());
-
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    const signerAddress = signerAccount.address;
-
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setTipping,
-      onInBlock,
-      onClose,
-      signerAddress,
-      isMounted,
-    });
-  };
+  }, [api, inputTipValue, decimals]);
 
   return (
     <>
@@ -85,15 +60,16 @@ function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
       <SignerWithBalance />
       <BalanceField
         title="Tip Value"
-        isLoading={tipping}
         inputBalance={inputTipValue}
         setInputBalance={setInputTipValue}
       />
-      <PopupButtonWrapper>
-        <PrimaryButton isLoading={tipping} onClick={doEndorse}>
-          Endorse
-        </PrimaryButton>
-      </PopupButtonWrapper>
+      <TxSubmissionButton
+        title="Endorse"
+        tx={tx}
+        onClose={onClose}
+        onInBlock={onInBlock}
+        errorCheck={errorCheck}
+      />
     </>
   );
 }
