@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import Summary from "next-common/components/summary/v2/base";
-import { usePageProps } from "next-common/context/page";
 import isNil from "lodash.isnil";
 import LoadableContent from "next-common/components/common/loadableContent";
+import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 
 export default function FellowshipCoreMembersSummary() {
-  const { fellowshipMembers } = usePageProps();
+  const fellowshipMembers = useSelector(fellowshipCollectiveMembersSelector);
   const coreMembers = useSelector(fellowshipCoreMembersSelector);
   const candidates = (coreMembers || []).filter((m) => m.rank <= 0);
   const total = (coreMembers || []).length;
@@ -38,7 +38,7 @@ export default function FellowshipCoreMembersSummary() {
       title: "Not Inducted",
       content: (
         <LoadableContent isLoading={isLoading}>
-          {fellowshipMembers.length - total}
+          {fellowshipMembers?.length - total}
         </LoadableContent>
       ),
     },

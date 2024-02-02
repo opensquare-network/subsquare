@@ -6,19 +6,44 @@ import {
   setFellowshipCoreMembers,
 } from "next-common/store/reducers/fellowship/core";
 import { isSameAddress } from "next-common/utils";
+import { setFellowshipCollectiveMembers } from "next-common/store/reducers/fellowship/collective";
 
-export default function useFetchFellowshipCoreMembers(collectiveMembers) {
+function normalizeCollectiveMembers(collectiveEntries = []) {
+  let members = [];
+  for (const [storageKey, record] of collectiveEntries) {
+    const address = storageKey.args[0].toString();
+    if (!record.isSome) {
+      continue;
+    }
+    const rank = record.unwrap().rank.toNumber();
+    members.push({ address, rank });
+  }
+
+  return members;
+}
+
+export default function useFetchFellowshipCoreMembers() {
   const api = useApi();
   const trigger = useSelector(fellowshipCoreMembersTriggerSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!api || !api.query.fellowshipCore) {
+    if (
+      !api ||
+      !api.query.fellowshipCore?.member ||
+      !api.query.fellowshipCollective?.members
+    ) {
       return;
     }
 
-    api.query.fellowshipCore.member.entries().then((entries) => {
-      const members = entries.map(([storageKey, memberStatus]) => {
+    Promise.all([
+      api.query.fellowshipCollective?.members.entries(),
+      api.query.fellowshipCore.member.entries(),
+    ]).then(([collectiveEntries, coreEntries]) => {
+      const collectiveMembers = normalizeCollectiveMembers(collectiveEntries);
+      dispatch(setFellowshipCollectiveMembers(collectiveMembers));
+
+      const members = coreEntries.map(([storageKey, memberStatus]) => {
         const address = storageKey.args[0].toString();
         return {
           address,
@@ -27,6 +52,7 @@ export default function useFetchFellowshipCoreMembers(collectiveMembers) {
           status: memberStatus.toJSON(),
         };
       });
+
       dispatch(setFellowshipCoreMembers(members));
     });
   }, [api, trigger]);

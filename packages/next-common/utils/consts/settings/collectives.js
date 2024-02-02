@@ -8,6 +8,13 @@ import {
   ProjectLogoPolkadotCollectivesLight,
 } from "@osn/icons/subsquare";
 
+const testEndpoints = [
+  {
+    name: "Subsquare",
+    url: "wss://tc.subsquare.io",
+  },
+];
+
 const collectivesEndpoints = [
   {
     name: "Dewllir",
@@ -56,7 +63,10 @@ const collectives = {
   blockTime: 12000,
   ss58Format: 0,
   snsCoverCid: "bafybeigyl3p7ikczpt4an4diyynbqsco6oqxza47vf3o2jeinkumm5pwby",
-  endpoints: collectivesEndpoints,
+  endpoints:
+    process.env.NEXT_PUBLIC_TEST === "true"
+      ? testEndpoints
+      : collectivesEndpoints,
   avatar: ProjectIconPolkadotCollectivesLight,
   darkAvatar: ProjectIconPolkadotCollectivesDark,
   navLogo: ProjectLogoPolkadotCollectivesLight,

@@ -13,7 +13,7 @@ export default function Descriptions({
   }
 
   return (
-    <div className="w-full">
+    <div className="descriptions w-full">
       {title && (
         <h3 className="m-0 mb-2 text14Bold text-textPrimary">{title}</h3>
       )}
@@ -24,14 +24,19 @@ export default function Descriptions({
             <div
               key={idx}
               className={cn(
+                "descriptions-item",
                 "h-11",
                 "flex justify-between items-center text-textPrimary",
                 bordered && "border-t border-neutral300 first:border-t-0",
                 item.className,
               )}
             >
-              <div className="text14Medium">{item.label}</div>
-              <div className="text14Medium">{item.value}</div>
+              <div className="descriptions-item-label text14Medium">
+                {item.label}
+              </div>
+              <div className="descriptions-items-value text14Medium">
+                {item.value}
+              </div>
             </div>
           ))}
         </div>
