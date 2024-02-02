@@ -7,7 +7,7 @@ import FellowshipMemberCommon from "next-common/components/pages/fellowship/comm
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
-import FellowshipMemberEmpty from "./empty";
+import FellowshipMembersEmpty from "./empty";
 
 export default function FellowshipCandidatesPage() {
   useFetchFellowshipCoreMembers();
@@ -32,7 +32,7 @@ export default function FellowshipCandidatesPage() {
             ))}
           </FellowshipCoreMemberCardListContainer>
         ) : (
-          <FellowshipMemberEmpty />
+          <FellowshipMembersEmpty />
         )}
       </FellowshipMemberCommon>
     </FellowshipMembersLoadable>

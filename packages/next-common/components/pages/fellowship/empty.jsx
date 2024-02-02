@@ -1,7 +1,7 @@
 import { SystemMember } from "@osn/icons/subsquare";
 import NoData from "next-common/components/noData";
 
-export default function FellowshipMemberEmpty() {
+export default function FellowshipMembersEmpty() {
   return (
     <NoData
       icon={<SystemMember className="[&_path]:stroke-textTertiary" />}
