@@ -27,6 +27,7 @@ export default function FellowshipCoreFeedsCompareParamsChangesPopup({
 
       <div
         className={cn(
+          "text-textPrimary",
           "grid grid-cols-2 gap-x-2 bg-neutral200 rounded-lg p-6",
           "max-sm:grid-cols-1 max-sm:gap-y-4",
         )}
