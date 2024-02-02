@@ -128,7 +128,8 @@ export default function SelectWallet({
         case WalletTypes.POLKADOT_JS:
         case WalletTypes.POLKAGATE:
         case WalletTypes.SUBWALLET_JS:
-        case WalletTypes.TALISMAN: {
+        case WalletTypes.TALISMAN:
+        case WalletTypes.MIMIR: {
           await loadPolkadotAccounts(wallet);
           break;
         }
