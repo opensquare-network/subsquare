@@ -78,6 +78,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         name: Names.all,
         pathname: "/fellowship",
         activeCount: totalActiveCount,
+        excludeToSumActives: true,
       },
     ].filter(Boolean),
   };
