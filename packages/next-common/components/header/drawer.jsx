@@ -14,9 +14,9 @@ import SystemUser from "../user/systemUser";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useAccountMenu } from "./useAccountMenu";
 
-const Wrapper = styled.div``;
+export const Wrapper = styled.div``;
 
-const Title = styled.div`
+export const Title = styled.div`
   font-weight: bold;
   font-size: 12px;
   letter-spacing: 0.16em;
@@ -28,7 +28,7 @@ const Title = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   > :not(:first-child) {
@@ -36,7 +36,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const Item = styled(Flex)`
+export const Item = styled(Flex)`
   color: var(--textSecondary);
   cursor: pointer;
   padding: 0 12px;
@@ -50,7 +50,7 @@ const Item = styled(Flex)`
   }
 `;
 
-const UserWrapper = styled(Flex)`
+export const UserWrapper = styled(Flex)`
   border: 1px solid var(--neutral400);
   border-radius: 8px;
   padding: 0 12px;
@@ -62,7 +62,7 @@ const UserWrapper = styled(Flex)`
   }
 `;
 
-function ProfileMenuItem({ onClick }) {
+export function ProfileMenuItem({ onClick }) {
   return (
     <Item onClick={onClick}>
       <Profile />
