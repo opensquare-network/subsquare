@@ -69,7 +69,7 @@ function toPolkassemblyApiPostType(postType) {
   }
 }
 
-export async function queryPostComments(postId, postType) {
+export async function queryPolkassemblyPostComments(postId, postType) {
   const type = toPolkassemblyApiPostType(postType);
 
   if (postType === "discussion") {

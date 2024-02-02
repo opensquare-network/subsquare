@@ -8,7 +8,7 @@ import { useChain } from "next-common/context/chain";
 import isNil from "lodash.isnil";
 import uniqBy from "lodash.uniqby";
 import QuickLRU from "quick-lru";
-import { queryPostComments } from "./polkassemblyQuery";
+import { queryPolkassemblyPostComments } from "./polkassemblyQuery";
 
 const dataCache = new QuickLRU({ maxSize: 100 });
 
@@ -38,7 +38,7 @@ export function usePolkassemblyPostData({
     }
 
     setLoadingComments(true);
-    queryPostComments(polkassemblyId, polkassemblyPostType)
+    queryPolkassemblyPostComments(polkassemblyId, polkassemblyPostType)
       .then((result) => {
         if (isMounted.current) {
           let comments = (result?.comments || [])
