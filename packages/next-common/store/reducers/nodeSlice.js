@@ -3,6 +3,25 @@ import getChainSettings from "../../utils/consts/settings";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
+function getEnvEndpoints() {
+  const envSetting = process.env.NEXT_PUBLIC_TEST_ENDPOINTS;
+  if (!envSetting) {
+    return null;
+  }
+
+  const items = envSetting.split("|");
+  if (items.length <= 0) {
+    return null;
+  }
+
+  return items.map((item) => {
+    const [name, url] = item.split(";");
+    return { name, url };
+  });
+}
+
+const endpointsFromEnv = getEnvEndpoints();
+
 function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
@@ -12,7 +31,7 @@ function getInitNodeUrl(chain) {
   }
 
   const settings = getChainSettings(chain);
-  const chainNodes = settings.endpoints;
+  const chainNodes = endpointsFromEnv || settings.endpoints;
   if (chainNodes.length <= 0) {
     throw new Error(`Can not find nodes for ${chain}`);
   }
@@ -20,6 +39,8 @@ function getInitNodeUrl(chain) {
   const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
   if (node) {
     return node.url;
+  } else {
+    return chainNodes[0].url;
   }
 }
 
@@ -27,7 +48,7 @@ const nodeSlice = createSlice({
   name: "node",
   initialState: {
     currentNode: getInitNodeUrl(chain),
-    nodes: getChainSettings(chain).endpoints,
+    nodes: endpointsFromEnv || getChainSettings(chain).endpoints,
     nodesHeight: null,
   },
   reducers: {

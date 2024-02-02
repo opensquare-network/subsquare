@@ -33,8 +33,14 @@ export function setCookie(key, value, options) {
     stringifiedOptions += `;expires=${expires.toUTCString()}`;
   }
 
-  return (document.cookie =
-    key + "=" + converter.write(value, key) + stringifiedOptions);
+  document.cookie =
+    key +
+    "=" +
+    converter.write(value, key) +
+    stringifiedOptions +
+    "; SameSite=None; Secure";
+
+  return document.cookie;
 }
 
 export function clearCookie(key) {

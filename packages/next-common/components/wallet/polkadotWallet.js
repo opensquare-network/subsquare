@@ -38,7 +38,9 @@ export default function PolkadotWallet({
         <span className="wallet-title">{wallet.title}</span>
       </Flex>
       {installed === false && (
-        <span className="wallet-not-installed">Not installed</span>
+        <span className="wallet-not-installed">
+          {wallet?.extensionName === "mimir" ? "Unavailable" : "Not installed"}
+        </span>
       )}
       {(loading || installed === null) && <Loading />}
     </WalletOption>
