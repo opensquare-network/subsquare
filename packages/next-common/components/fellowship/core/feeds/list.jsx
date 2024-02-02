@@ -43,7 +43,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
       <DataList
         className={cn(
           "text14Medium",
-          "[&_.datalist-head]:hidden [&_.datalist-body]:divide-y-0",
+          "[&_.datalist-head]:hidden [&_.datalist-body]:divide-y-0 [&_.datalist-body]:border-b-0",
           "[&_.datalist-item]:py-2.5",
           "[&_.datalist-desktop-item]:items-start",
           "[&_.datalist_.descriptions-item-label]:hidden",
