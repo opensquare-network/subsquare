@@ -144,8 +144,8 @@ export async function defaultSendTx({
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
   signerAddress,
-  sectionName,
-  methodName,
+  section: sectionName,
+  method: methodName,
 }) {
   const noWaitForFinalized = onFinalized === emptyFunction;
   const totalSteps = noWaitForFinalized ? 2 : 3;
@@ -253,8 +253,8 @@ export async function sendTx({
     onFinalized,
     onClose,
     signerAddress,
-    sectionName,
-    methodName,
+    section: sectionName,
+    method: methodName,
   });
 }
 
