@@ -51,9 +51,7 @@ export default function _Button(props) {
       )}
     >
       {loading ? (
-        <SystemLoading
-          className={cn("[&_path]:stroke-current", smallSize && "w-4 h-4")}
-        />
+        <SystemLoading className={cn(smallSize && "w-4 h-4")} />
       ) : (
         <>
           {iconLeft && <span className="mr-2">{iconLeft}</span>}
