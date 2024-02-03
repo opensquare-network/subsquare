@@ -2,6 +2,7 @@ import BaseLayout from "./baseLayout";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import ListLayoutFrame from "./listLayoutFrame";
 import ListLayoutHeader from "./listLayoutHeader";
+import Tabs from "./tabs";
 
 /**
  * @typedef {{
@@ -62,9 +63,14 @@ export default function ListLayout({
     />
   );
 
+  let listTabs = null;
+  if (tabs?.length > 0) {
+    listTabs = <Tabs tabs={tabs} />;
+  }
+
   return (
     <BaseLayout seoInfo={seoInfo}>
-      <ListLayoutFrame header={header || listHeader} tabs={tabs}>
+      <ListLayoutFrame header={header || listHeader} tabs={listTabs}>
         {children}
       </ListLayoutFrame>
     </BaseLayout>

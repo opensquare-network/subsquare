@@ -1,5 +1,4 @@
 import { cn } from "next-common/utils";
-import Tabs from "./tabs";
 
 export default function ListLayoutFrame({ header, tabs, children }) {
   return (
@@ -9,9 +8,9 @@ export default function ListLayoutFrame({ header, tabs, children }) {
           {header}
         </div>
 
-        {tabs?.length > 0 && (
+        {tabs && (
           <div className={cn("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
-            <Tabs tabs={tabs} />
+            {tabs}
           </div>
         )}
       </div>
