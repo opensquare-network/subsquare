@@ -10,7 +10,6 @@ import ChainTypes from "next-common/utils/consts/chainTypes";
 
 export default function MaybePolkadotSigner({
   onClose,
-  autoCloseAfterLogin,
   title,
   wide,
   maskClosable,
@@ -78,7 +77,6 @@ export default function MaybePolkadotSigner({
     <MaybeSignerConnected
       extensionAccounts={polkadotAccounts}
       onClose={onClose}
-      autoCloseAfterLogin={autoCloseAfterLogin}
     >
       <Popup
         wide={wide}

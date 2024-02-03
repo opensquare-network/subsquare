@@ -10,7 +10,6 @@ export default function PopupWithSigner({
   Component,
   title,
   onClose,
-  autoCloseAfterLogin,
   ...props
 }) {
   const user = useUser();
@@ -24,7 +23,6 @@ export default function PopupWithSigner({
     return (
       <MaybeMetamaskSigner
         onClose={onClose}
-        autoCloseAfterLogin={autoCloseAfterLogin}
         title={title}
         Component={Component}
         {...props}
@@ -35,12 +33,7 @@ export default function PopupWithSigner({
   }
 
   return (
-    <MaybePolkadotSigner
-      onClose={onClose}
-      autoCloseAfterLogin={autoCloseAfterLogin}
-      title={title}
-      {...props}
-    >
+    <MaybePolkadotSigner onClose={onClose} title={title} {...props}>
       <Component onClose={onClose} {...props} />
     </MaybePolkadotSigner>
   );

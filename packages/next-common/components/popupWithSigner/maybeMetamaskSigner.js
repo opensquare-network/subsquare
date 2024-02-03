@@ -5,7 +5,6 @@ import { useMetaMaskAccounts } from "../../utils/metamask";
 
 export default function MaybeMetamaskSigner({
   onClose,
-  autoCloseAfterLogin,
   title,
   wide,
   maskClosable,
@@ -22,7 +21,6 @@ export default function MaybeMetamaskSigner({
     <MaybeSignerConnected
       extensionAccounts={metamaskAccounts}
       onClose={onClose}
-      autoCloseAfterLogin={autoCloseAfterLogin}
     >
       <Popup
         wide={wide}
