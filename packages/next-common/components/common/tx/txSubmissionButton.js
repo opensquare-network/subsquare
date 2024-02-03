@@ -6,11 +6,11 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 
 export default function TxSubmissionButton({
-  tx,
-  errorCheck = emptyFunction,
+  disabled = false,
+  getTxFunc = emptyFunction,
   title = "Submit",
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
@@ -24,10 +24,6 @@ export default function TxSubmissionButton({
   const isMounted = useIsMounted();
 
   const onSubmit = useCallback(async () => {
-    if (!tx) {
-      return;
-    }
-
     if (!api) {
       dispatch(newErrorToast("Chain network is not connected yet"));
       return;
@@ -38,11 +34,10 @@ export default function TxSubmissionButton({
       return;
     }
 
-    if (errorCheck()) {
+    let tx = await getTxFunc();
+    if (!tx) {
       return;
-    }
-
-    if (signerAccount?.proxyAddress) {
+    } else if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
@@ -57,11 +52,11 @@ export default function TxSubmissionButton({
       onInBlock,
       onFinalized,
     });
-  }, [tx, api, dispatch, signerAccount]);
+  }, [api, dispatch, signerAccount, getTxFunc]);
 
   return (
     <div className="flex justify-end">
-      <PrimaryButton isLoading={isCalling} onClick={onSubmit} disabled={!tx}>
+      <PrimaryButton loading={isCalling} onClick={onSubmit} disabled={disabled}>
         {title}
       </PrimaryButton>
     </div>
