@@ -44,7 +44,7 @@ export function useRecentProposalDiscussions() {
     chainSettings.hasDiscussionsRFCs && {
       lazy: false,
       value: "rfcs",
-      name: "RFCs",
+      name: "RFC issues",
       api: {
         initData: rfcsData,
         viewAllLink: "https://github.com/polkadot-fellows/RFCs/issues",

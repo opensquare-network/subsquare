@@ -29,7 +29,7 @@ const Select = styled(Flex)`
   padding: 0 16px;
   cursor: pointer;
   > :not(:first-child) {
-    margin-left: 16px;
+    margin-left: 12px;
   }
 `;
 
@@ -114,7 +114,7 @@ export default function AddressCombo({
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(
-    tryConvertToEvmAddress(address),
+    tryConvertToEvmAddress(address) || "",
   );
   const ref = useRef();
 
@@ -279,16 +279,18 @@ export default function AddressCombo({
         }}
       >
         {selectContent}
-        <span
-          onClick={(e) => {
-            setShow(!show);
-            e.stopPropagation();
-          }}
-        >
-          <Caret down={!show} />
-        </span>
+        {(accounts || []).length > 0 && (
+          <span
+            onClick={(e) => {
+              setShow(!show);
+              e.stopPropagation();
+            }}
+          >
+            <Caret down={!show} />
+          </span>
+        )}
       </Select>
-      {show && listOptions}
+      {show && (accounts || []).length > 0 && listOptions}
     </Wrapper>
   );
 }

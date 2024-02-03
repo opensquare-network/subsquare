@@ -1,3 +1,4 @@
+import React from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -6,7 +7,6 @@ import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
 import { store } from "next-common/store";
-import React from "react";
 import GlobalProvider from "next-common/context/global";
 import "next-common/styles/cmdk.css";
 import "next-common/styles/react-datepicker.css";
@@ -16,6 +16,7 @@ import ScanStatusComponent from "next-common/components/scanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
+import useInitMimir from "next-common/hooks/useInitMimir";
 
 NProgress.configure({
   minimum: 0.3,
@@ -41,6 +42,8 @@ function MyApp({ Component, pageProps }) {
   if (!process.env.NEXT_PUBLIC_CHAIN) {
     throw new Error("NEXT_PUBLIC_CHAIN env not set");
   }
+
+  useInitMimir();
 
   const {
     connectedAccount,

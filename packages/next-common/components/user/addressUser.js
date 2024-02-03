@@ -10,6 +10,7 @@ import DeletedAccount from "./deletedAccount";
 import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 export function AddressUserImpl({
+  className = "",
   address,
   identity,
   hasIdentity,
@@ -68,7 +69,7 @@ export function AddressUserImpl({
   const avatarSize = fontSize * (20 / 14);
 
   return (
-    <UserWrapper noEvent={noEvent} color={color}>
+    <UserWrapper noEvent={noEvent} color={color} className={className}>
       {showAvatar && (
         <AvatarWrapper fontSize={fontSize}>
           <Avatar address={displayAddress} size={avatarSize} />
@@ -80,6 +81,7 @@ export function AddressUserImpl({
 }
 
 function AddressUser({
+  className = "",
   add,
   showAvatar = true,
   fontSize = 14,
@@ -102,6 +104,7 @@ function AddressUser({
 
   return (
     <AddressUserImpl
+      className={className}
       address={address}
       identity={identity}
       hasIdentity={hasIdentity}

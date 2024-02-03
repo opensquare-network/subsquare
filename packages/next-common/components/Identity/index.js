@@ -8,6 +8,7 @@ import { getIdentityDisplay } from "next-common/utils/identity";
 const Wrapper = styled(Flex)`
   display: flex;
   align-items: center;
+  font-weight: 500;
 
   svg {
     margin-right: 4px;
@@ -45,7 +46,7 @@ const Wrapper = styled(Flex)`
 
 const Display = styled.div`
   font-size: ${(props) => props.fontSize}px;
-  font-weight: 500;
+  /* font-weight: 500; */
   ${(p) =>
     p.maxWidth
       ? css`
@@ -65,23 +66,16 @@ export default function Identity({ identity, fontSize = 14, maxWidth }) {
   }
 
   const displayName = getIdentityDisplay(identity);
+  const display = (
+    <Display fontSize={fontSize} maxWidth={maxWidth}>
+      {displayName}
+    </Display>
+  );
 
   return (
-    <Wrapper>
+    <Wrapper className="identity">
       <IdentityIcon identity={identity} />
-      {maxWidth ? (
-        <Tooltip content={displayName}>
-          <div>
-            <Display fontSize={fontSize} maxWidth={maxWidth}>
-              {displayName}
-            </Display>
-          </div>
-        </Tooltip>
-      ) : (
-        <Display fontSize={fontSize} maxWidth={maxWidth}>
-          {displayName}
-        </Display>
-      )}
+      {maxWidth ? <Tooltip content={displayName}>{display}</Tooltip> : display}
     </Wrapper>
   );
 }

@@ -8,6 +8,7 @@ export default function DataListItem({
   columns,
   row,
   columnClassNames,
+  columnStyles,
   highlighted,
 }) {
   const { onClick, useData } = row ?? {};
@@ -18,6 +19,8 @@ export default function DataListItem({
     <div
       role="listitem"
       className={cn(
+        "datalist-item group/datalist-item",
+        "w-full",
         "flex items-center py-4",
         "max-sm:block",
         onClick && "cursor-pointer",
@@ -36,8 +39,8 @@ export default function DataListItem({
       <DesktopContent
         data={data}
         row={row}
-        columns={columns}
         columnClassNames={columnClassNames}
+        columnStyles={columnStyles}
       />
 
       <MobileContent
@@ -50,14 +53,14 @@ export default function DataListItem({
   );
 }
 
-function DesktopContent({ data, row, columns, columnClassNames }) {
+function DesktopContent({ data, row, columnClassNames, columnStyles }) {
   return (
-    <div className="max-sm:hidden w-full flex items-center">
+    <div className="datalist-desktop-item max-sm:hidden w-full flex items-center">
       {(data ?? row)?.map((item, idx) => (
         <div
           key={idx}
-          style={columns[idx].style}
           className={columnClassNames[idx]}
+          style={columnStyles[idx]}
         >
           {item}
         </div>
@@ -101,8 +104,8 @@ function MobileContent({ row = [], data, columns }) {
     .filter(Boolean);
 
   return (
-    <div className="sm:hidden sm:py-4 space-y-3">
-      <div>
+    <div className="datalist-mobile-item sm:hidden sm:py-4 space-y-3">
+      <div className="flex">
         <div className="flex items-center justify-between">
           {first.value}
           {action && items[actionIdx]?.value}
