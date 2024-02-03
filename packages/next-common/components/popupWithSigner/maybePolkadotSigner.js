@@ -12,11 +12,10 @@ export default function MaybePolkadotSigner({
   onClose,
   autoCloseAfterLogin,
   title,
-  Component,
   wide,
   maskClosable,
   className,
-  ...props
+  children,
 }) {
   const dispatch = useDispatch();
   const { injectedWeb3, loading } = useInjectedWeb3();
@@ -88,7 +87,7 @@ export default function MaybePolkadotSigner({
         maskClosable={maskClosable}
         className={className}
       >
-        <Component onClose={onClose} {...props} />
+        {children}
       </Popup>
     </MaybeSignerConnected>
   );

@@ -28,7 +28,9 @@ export default function PopupWithSigner({
         title={title}
         Component={Component}
         {...props}
-      />
+      >
+        <Component onClose={onClose} {...props} />
+      </MaybeMetamaskSigner>
     );
   }
 
@@ -37,8 +39,9 @@ export default function PopupWithSigner({
       onClose={onClose}
       autoCloseAfterLogin={autoCloseAfterLogin}
       title={title}
-      Component={Component}
       {...props}
-    />
+    >
+      <Component onClose={onClose} {...props} />
+    </MaybePolkadotSigner>
   );
 }
