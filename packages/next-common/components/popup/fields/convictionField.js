@@ -32,7 +32,7 @@ export default function ConvictionField({
     lockingPeriod = (
       <StatusWrapper className="flex-col gap-y-1">
         <div className="flex justify-between w-full">
-          <div className="value">
+          <div className="text-textSecondary">
             <span>Votes</span>
           </div>
           <div className="result">
@@ -40,10 +40,18 @@ export default function ConvictionField({
           </div>
         </div>
         <div className="flex justify-between w-full">
-          <div className="value">
+          <div className="text-textSecondary">
             <span>Locked For</span>
           </div>
           <div className="result">{time ? "≈ " + time : 0}</div>
+        </div>
+
+        <hr className="w-full my-2" />
+
+        <div className="text12Medium text-textTertiary">
+          Your voted {chainSettings.voteSymbol || chainSettings.symbol} will be
+          locked during the whole voting period of this referendum. The
+          conviction lock will start counting down when the voting period ends.
         </div>
       </StatusWrapper>
     );
