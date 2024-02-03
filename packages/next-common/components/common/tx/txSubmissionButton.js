@@ -9,9 +9,8 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PrimaryButton from "next-common/lib/button/primary";
 
 export default function TxSubmissionButton({
-  tx,
   disabled = false,
-  errorCheck = emptyFunction,
+  getTxFunc = emptyFunction,
   title = "Submit",
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
@@ -35,18 +34,10 @@ export default function TxSubmissionButton({
       return;
     }
 
-    try {
-      errorCheck();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
-
+    let tx = await getTxFunc();
     if (!tx) {
       return;
-    }
-
-    if (signerAccount?.proxyAddress) {
+    } else if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
@@ -61,7 +52,7 @@ export default function TxSubmissionButton({
       onInBlock,
       onFinalized,
     });
-  }, [tx, api, dispatch, signerAccount]);
+  }, [api, dispatch, signerAccount, getTxFunc]);
 
   return (
     <div className="flex justify-end">

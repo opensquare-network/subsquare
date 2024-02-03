@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import useApi from "next-common/utils/hooks/useApi";
 
@@ -15,7 +15,8 @@ import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import BigNumber from "bignumber.js";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
   const api = useApi();
@@ -29,26 +30,23 @@ function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
     signerAccount?.realAddress,
     councilTippers || [],
   );
+  const dispatch = useDispatch();
 
-  const errorCheck = useCallback(() => {
-    checkInputValue(inputTipValue, decimals, "tip value", true);
-  }, [inputTipValue, decimals]);
-
-  const tx = useMemo(() => {
-    if (!api || !api.tx.tips?.tip || !inputTipValue) {
-      return null;
-    }
-
-    const bnValue = new BigNumber(inputTipValue).times(Math.pow(10, decimals));
-    if (bnValue.isNaN()) {
-      return null;
+  const getTxFunc = useCallback(() => {
+    if (!api || !api.tx.tips?.tip) {
+      return;
     }
 
     try {
+      const bnValue = checkInputValue(
+        inputTipValue,
+        decimals,
+        "tip value",
+        true,
+      );
       return api.tx.tips.tip(tipHash, bnValue.toString());
     } catch (e) {
-      // todo: maybe show error on a toast
-      return null;
+      dispatch(newErrorToast(e.message));
     }
   }, [api, inputTipValue, decimals]);
 
@@ -65,10 +63,9 @@ function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
       />
       <TxSubmissionButton
         title="Endorse"
-        tx={tx}
+        getTxFunc={getTxFunc}
         onClose={onClose}
         onInBlock={onInBlock}
-        errorCheck={errorCheck}
       />
     </>
   );

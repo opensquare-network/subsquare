@@ -4,7 +4,7 @@ import { usePostOnChainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceInput from "next-common/components/balanceInput";
 import { toPrecision } from "next-common/utils";
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import PopupLabel from "next-common/components/popup/label";
 import Input from "next-common/components/input";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -15,7 +15,7 @@ function PopupContent({ onClose }) {
   const node = useChainSettings();
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
 
-  const tx = useMemo(() => {
+  const getTxFunc = useCallback(() => {
     if (api) {
       return api.tx.referenda.placeDecisionDeposit(referendumIndex);
     }
@@ -37,7 +37,7 @@ function PopupContent({ onClose }) {
         />
       </div>
 
-      <TxSubmissionButton tx={tx} onClose={onClose} />
+      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
     </>
   );
 }
