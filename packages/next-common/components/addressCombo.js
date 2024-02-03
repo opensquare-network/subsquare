@@ -14,7 +14,10 @@ import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil.js";
+import {
+  getAddressHint,
+  tryConvertToEvmAddress,
+} from "next-common/utils/hydradxUtil.js";
 
 const Wrapper = Relative;
 
@@ -110,14 +113,16 @@ export default function AddressCombo({
 }) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [inputAddress, setInputAddress] = useState(address);
+  const [inputAddress, setInputAddress] = useState(
+    tryConvertToEvmAddress(address),
+  );
   const ref = useRef();
 
   const selectedAccount = accounts.find(
     (item) => normalizeAddress(item.address) === address,
   );
   const maybeEvmAddress = tryConvertToEvmAddress(address);
-  const shortAddr = addressEllipsis(address);
+  const addressHint = getAddressHint(address);
   const shortEvmAddr = addressEllipsis(maybeEvmAddress);
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
@@ -211,7 +216,7 @@ export default function AddressCombo({
                 selectedAccount.name}
             </div>
           </IdentityName>
-          <div>{shortAddr}</div>
+          <div>{addressHint}</div>
         </NameWrapper>
       </>
     );
@@ -226,7 +231,7 @@ export default function AddressCombo({
             )}
             <div>{identities[address]?.displayName || shortEvmAddr}</div>
           </IdentityName>
-          <div>{shortAddr}</div>
+          <div>{addressHint}</div>
         </NameWrapper>
       </>
     );
@@ -256,7 +261,7 @@ export default function AddressCombo({
                 )}
                 <div>{identities[item.address]?.displayName || item.name}</div>
               </IdentityName>
-              <div>{addressEllipsis(ss58Address)}</div>
+              <div>{getAddressHint(ss58Address)}</div>
             </NameWrapper>
           </Item>
         );
