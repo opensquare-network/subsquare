@@ -13,6 +13,7 @@ import { addressEllipsis } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
 import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address.js";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil.js";
 
 const Wrapper = Relative;
 
@@ -108,6 +109,8 @@ function Account({ account }) {
   const settings = useChainSettings();
   const [identity, setIdentity] = useState(null);
   const normalizedAddr = normalizeAddress(account?.address);
+  const maybeEvmAddress = tryConvertToEvmAddress(normalizedAddr);
+  const shortAddr = addressEllipsis(maybeEvmAddress);
 
   useEffect(() => {
     setIdentity(null);
@@ -121,18 +124,18 @@ function Account({ account }) {
 
   return (
     <>
-      <Avatar address={normalizedAddr} />
+      <Avatar address={maybeEvmAddress} />
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
-            <div>{addressEllipsis(normalizedAddr)}</div>
+            <div>{shortAddr}</div>
           </>
         ) : (
           <>
             <div>{account?.name}</div>
-            <div>{addressEllipsis(normalizedAddr) ?? "--"}</div>
+            <div>{shortAddr ?? "--"}</div>
           </>
         )}
       </NameWrapper>

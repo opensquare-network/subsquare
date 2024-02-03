@@ -4,6 +4,7 @@ import { getAddress as getEvmAddress } from "ethers";
 import { isPolkadotAddress } from "./viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import isHydradx from "./isHydradx";
+import { addressEllipsis } from ".";
 
 const HYDRA_ADDRESS_PREFIX = 63;
 const prefixBytes = Buffer.from("ETH\0");
@@ -88,4 +89,19 @@ export function getEvmSignerAddress(address) {
     return substrateToEvmAddress(address);
   }
   return address;
+}
+
+export function getAddressHint(address) {
+  let addressHint = "--";
+
+  if (address) {
+    const maybeEvmAddress = tryConvertToEvmAddress(address);
+
+    addressHint = addressEllipsis(maybeEvmAddress);
+    if (maybeEvmAddress !== address) {
+      addressHint += ` (${addressEllipsis(address)})`;
+    }
+  }
+
+  return addressHint;
 }
