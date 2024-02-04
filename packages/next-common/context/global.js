@@ -1,7 +1,7 @@
 import React from "react";
 import ChainProvider from "./chain";
 import UserProvider from "./user";
-import ThemeModeProvider, { ThemeValueProvider } from "./theme";
+import ThemeModeProvider, { StyledThemeValueProvider } from "./theme";
 import PageProvider from "./page";
 import NavProvider from "./nav";
 import { SocketProvider } from "./socket";
@@ -24,7 +24,7 @@ export default function GlobalProvider({
   return (
     <SocketProvider>
       <ThemeModeProvider defaultThemeMode={themeMode}>
-        <ThemeValueProvider>
+        <StyledThemeValueProvider>
           <ChainProvider chain={chain}>
             <UserProvider user={user} userStatus={userStatus}>
               <ConnectedAccountProvider connectedAccount={connectedAccount}>
@@ -43,7 +43,7 @@ export default function GlobalProvider({
               </ConnectedAccountProvider>
             </UserProvider>
           </ChainProvider>
-        </ThemeValueProvider>
+        </StyledThemeValueProvider>
       </ThemeModeProvider>
     </SocketProvider>
   );

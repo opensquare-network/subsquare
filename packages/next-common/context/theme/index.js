@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import light from "../../styles/light";
 import dark from "../../styles/dark";
 import { CACHE_KEY } from "../../utils/constants";
@@ -18,18 +18,9 @@ const ThemeModeContext = createContext({});
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
   const [themeMode, setThemeMode] = useState(defaultThemeMode || "light");
 
-  useEffect(() => {
-    const root = document.documentElement;
-    if (themeMode === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }, [themeMode]);
-
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
-      {children}
+      <ThemeClassNameProvider>{children}</ThemeClassNameProvider>
     </ThemeModeContext.Provider>
   );
 }
@@ -57,9 +48,24 @@ export function useThemeMode() {
   return [mode, set, themeMode];
 }
 
-export function ThemeValueProvider({ children }) {
+function ThemeClassNameProvider({ children }) {
+  const isDark = useIsDark();
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [isDark]);
+
+  return children;
+}
+
+export function StyledThemeValueProvider({ children }) {
   const theme = useThemeSetting();
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>;
 }
 
 export function useIsDark() {
