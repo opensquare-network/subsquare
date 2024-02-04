@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Post from "next-common/components/post";
+import PostListItem from "next-common/components/postListItem";
 import Pagination from "next-common/components/pagination/index.js";
 import { EmptyList } from "./emptyList";
 import ListTitleBar from "./listTitleBar";
@@ -38,7 +38,7 @@ export default function PostList({
 
       {items?.length > 0 ? (
         items.map((item, index) => (
-          <Post
+          <PostListItem
             key={index}
             data={item}
             href={item.detailLink}
