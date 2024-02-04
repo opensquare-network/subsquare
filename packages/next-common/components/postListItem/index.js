@@ -1,13 +1,13 @@
 import React from "react";
 import { toPrecision } from "next-common/utils";
 import isNil from "lodash.isnil";
-import { getBannerUrl } from "next-common/utils/banner";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import ListPostTitle from "next-common/components/postList/postTitle";
 import PostListItemLayout from "./postListItemLayout";
 import { TitleExtra, TitleExtraValue } from "./styled";
 import ItemFooter from "./footer";
+import Banner from "./banner";
 
 function ItemTitleExtra({ data }) {
   const { decimals, symbol } = useChainSettings();
@@ -42,14 +42,12 @@ function ItemTitleExtra({ data }) {
 }
 
 export default function PostListItem({ data, href, type }) {
-  const bannerUrl = getBannerUrl(data.bannerCid);
-
   return (
     <PostListItemLayout
       title={<ListPostTitle data={data} href={href} />}
       titleExtra={<ItemTitleExtra data={data} />}
       footer={<ItemFooter data={data} type={type} />}
-      banner={bannerUrl && <img src={bannerUrl} alt="banner image" />}
+      banner={<Banner data={data} />}
     />
   );
 }
