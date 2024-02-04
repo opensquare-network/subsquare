@@ -48,7 +48,7 @@ function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
     } catch (e) {
       dispatch(newErrorToast(e.message));
     }
-  }, [api, inputTipValue, decimals]);
+  }, [dispatch, tipHash, api, inputTipValue, decimals]);
 
   return (
     <>
