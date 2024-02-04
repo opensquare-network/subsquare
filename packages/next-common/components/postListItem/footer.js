@@ -14,6 +14,8 @@ import TrackName from "./trackName";
 import ChildBountyParent from "./childBountyParent";
 import CommentCount from "./commentCount";
 import PostTime from "./postTime";
+import Flex from "../styled/flex";
+import ElapseIcon from "./elapseIcon";
 
 export default function ItemFooter({ data, type }) {
   return (
@@ -23,7 +25,14 @@ export default function ItemFooter({ data, type }) {
         <TrackName data={data} type={type} />
         {data.isTreasury && <TreasuryTag />}
         {data.isDemocracy && <DemocracyTag />}
-        <PostTime data={data} type={type} />
+        <PostTime
+          data={data}
+          extra={
+            <Flex className="elapseIcon">
+              <ElapseIcon data={data} type={type} />
+            </Flex>
+          }
+        />
         <CommentCount data={data} />
         <VoteSummaryBar data={data} type={type} />
         {businessCategory.allianceAnnouncements === type && (

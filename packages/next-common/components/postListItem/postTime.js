@@ -1,12 +1,10 @@
-import isNil from "lodash.isnil";
 import React from "react";
-import Flex from "next-common/components/styled/flex";
+import isNil from "lodash.isnil";
 import UpdateIcon from "next-common/assets/imgs/icons/line-chart.svg";
 import { Info } from "./styled";
 import useDuration from "next-common/utils/hooks/useDuration";
-import ElapseIcon from "./elapseIcon";
 
-export default function PostTime({ data, type }) {
+export default function PostTime({ data, extra }) {
   const duration = useDuration(data.time);
 
   if (!data) {
@@ -21,9 +19,7 @@ export default function PostTime({ data, type }) {
     <Info>
       <UpdateIcon />
       <span>{duration}</span>
-      <Flex className="elapseIcon">
-        <ElapseIcon data={data} type={type} />
-      </Flex>
+      {extra}
     </Info>
   );
 }
