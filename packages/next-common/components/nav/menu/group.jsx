@@ -92,7 +92,10 @@ export default function NavMenuGroup({
                     className="pointer-events-none"
                   />
                   <NavMenuDivider />
-                  <SubMenuItems items={menu.items} />
+                  <SubMenuItems
+                    className={menu.itemsClassName}
+                    items={menu.items}
+                  />
                 </div>
               </div>
             </HoverCard.Content>
@@ -101,7 +104,11 @@ export default function NavMenuGroup({
       </li>
       {!!menu.items?.length && (
         <SubMenuItems
-          className={cn(submenuVisible ? "block" : "hidden", "pl-9")}
+          className={cn(
+            submenuVisible ? "block" : "hidden",
+            "pl-9",
+            menu.itemsClassName,
+          )}
           items={menu.items}
         />
       )}
@@ -137,7 +144,7 @@ function SubMenuItems({ className = "", items = [] }) {
                 icon={item.icon}
                 activeCount={item.activeCount}
                 active={active}
-                className={active && "bg-transparent"}
+                className={cn(active && "bg-transparent", item.className)}
               />
             )}
           </li>
