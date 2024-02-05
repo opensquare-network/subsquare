@@ -5,13 +5,11 @@ import { useMetaMaskAccounts } from "../../utils/metamask";
 
 export default function MaybeMetamaskSigner({
   onClose,
-  autoCloseAfterLogin,
   title,
-  Component,
   wide,
   maskClosable,
   className,
-  ...props
+  children,
 }) {
   const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
 
@@ -23,7 +21,6 @@ export default function MaybeMetamaskSigner({
     <MaybeSignerConnected
       extensionAccounts={metamaskAccounts}
       onClose={onClose}
-      autoCloseAfterLogin={autoCloseAfterLogin}
     >
       <Popup
         wide={wide}
@@ -32,7 +29,7 @@ export default function MaybeMetamaskSigner({
         maskClosable={maskClosable}
         className={className}
       >
-        <Component onClose={onClose} {...props} />
+        {children}
       </Popup>
     </MaybeSignerConnected>
   );

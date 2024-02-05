@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import useAddressInput from "next-common/components/fellowship/core/summary/induct/useAddressInput";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useApi from "next-common/utils/hooks/useApi";
@@ -11,7 +11,7 @@ function Content({ onClose }) {
   const api = useApi();
   const { address: whoAddress, component: whoInput } = useAddressInput("Who");
 
-  const tx = useMemo(() => {
+  const getTxFunc = useCallback(() => {
     if (api && whoAddress) {
       return api.tx.fellowshipCore.induct(whoAddress);
     }
@@ -24,7 +24,7 @@ function Content({ onClose }) {
       {component}
       {whoInput}
       <TxSubmissionButton
-        tx={tx}
+        getTxFunc={getTxFunc}
         onClose={onClose}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
