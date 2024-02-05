@@ -131,6 +131,7 @@ function SubMenuItems({ className = "", items = [] }) {
 
         const active =
           matchActivePathnames.includes(pathname) ||
+          matchActivePathnames.includes(pageUrl) ||
           matchActivePathnames.includes(routePath);
 
         return (
