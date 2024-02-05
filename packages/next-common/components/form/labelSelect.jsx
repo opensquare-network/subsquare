@@ -1,9 +1,8 @@
-import React from "react";
 import noop from "lodash.noop";
 import { useCallback } from "react";
 import { cn } from "next-common/utils";
 
-function Choice({ selected, ...props }) {
+function Label({ selected, ...props }) {
   return (
     <div
       {...props}
@@ -45,13 +44,13 @@ export default function LabelSelect({
   return (
     <div className="flex flex-wrap gap-2">
       {allLabels.map((item) => (
-        <Choice
+        <Label
           key={item}
           selected={selected?.includes(item)}
           onClick={() => selectChoice(item)}
         >
           {item}
-        </Choice>
+        </Label>
       ))}
     </div>
   );
