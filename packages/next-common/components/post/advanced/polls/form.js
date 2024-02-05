@@ -9,7 +9,7 @@ import Input from "../../../input";
 import Select from "../../../select";
 import Toggle from "../../../toggle";
 import InputOptions from "./inputOptions";
-import FormItem from "../formItem";
+import FormItem from "next-common/components/form/item";
 import DatePicker from "../../../datePicker";
 import dayjs from "dayjs";
 import { cn } from "next-common/utils";
