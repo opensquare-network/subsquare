@@ -11,7 +11,7 @@ import { usePost, usePostTitle } from "../../context/post";
 import { useDetailType } from "../../context/page";
 import PostLabel from "./postLabel";
 import { detailPageCategory } from "../../utils/consts/business/category";
-import FormItem from "./advanced/formItem";
+import FormItem from "../form/item";
 
 const UploaderWrapper = styled.div`
   margin-top: 16px;
