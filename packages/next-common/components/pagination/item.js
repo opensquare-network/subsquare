@@ -1,8 +1,8 @@
 import React from "react";
 import encodeUriQuery from "./encodeUriQuery";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import styled, { css } from "styled-components";
+import { usePathname, useQuery } from "next-common/context/nav/route";
 
 const Item = styled.a`
   padding: 0 8px;
@@ -32,17 +32,19 @@ const Item = styled.a`
 `;
 
 export default function PageItem({ page, now, onPageChange = null }) {
-  const router = useRouter();
+  const pathname = usePathname();
+  const query = useQuery();
 
   return (
     <Link
       key={page}
-      href={`${router.pathname}?${encodeUriQuery({
-        ...router.query,
+      href={`${pathname}?${encodeUriQuery({
+        ...query,
         page: page + 1,
       })}`}
       passHref
-      legacyBehavior>
+      legacyBehavior
+    >
       <Item
         active={now === page + 1}
         onClick={(e) => {

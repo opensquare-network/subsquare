@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 export const RouteContext = React.createContext();
 
 export default function NavRouteProvider({ children }) {
-  const { pathname, asPath } = useRouter();
+  const { pathname, asPath, query } = useRouter();
   return (
-    <RouteContext.Provider value={{ pathname, url: asPath }}>
+    <RouteContext.Provider value={{ pathname, query, url: asPath }}>
       {children}
     </RouteContext.Provider>
   );
@@ -20,4 +20,9 @@ export function usePathname() {
 export function usePageUrl() {
   const { url } = React.useContext(RouteContext);
   return url;
+}
+
+export function useQuery() {
+  const { query } = React.useContext(RouteContext);
+  return query;
 }
