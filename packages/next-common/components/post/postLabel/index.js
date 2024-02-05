@@ -1,5 +1,5 @@
 import React from "react";
-import LabelSelect from "./labelSelect";
+import LabelSelect from "next-common/components/form/labelSelect";
 import { Label, LabelWrapper } from "../styled";
 import { useChainSettings } from "../../../context/chain";
 import uniq from "lodash.uniq";
