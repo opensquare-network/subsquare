@@ -105,7 +105,7 @@ export default function NavMenuGroup({
       {!!menu.items?.length && (
         <SubMenuItems
           className={cn(
-            submenuVisible ? "inline-flex" : "hidden",
+            submenuVisible ? "inline-flex flex-col" : "hidden",
             "pl-9",
             menu.itemsClassName,
           )}
