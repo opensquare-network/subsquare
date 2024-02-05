@@ -93,7 +93,7 @@ export default function NavMenuGroup({
                   />
                   <NavMenuDivider />
                   <SubMenuItems
-                    className={menu.itemsClassName}
+                    className={cn("inline-flex flex-col", menu.itemsClassName)}
                     items={menu.items}
                   />
                 </div>
