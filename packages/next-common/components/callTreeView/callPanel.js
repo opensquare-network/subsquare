@@ -24,7 +24,12 @@ export default function CallPanel({ call, callIndex }) {
       </div>
       {!folded && (
         <IndentPanel>
-          <CallArgsPanel argsEntries={argsEntries} args={args} />
+          <CallArgsPanel
+            section={section}
+            method={method}
+            argsEntries={argsEntries}
+            args={args}
+          />
         </IndentPanel>
       )}
     </div>

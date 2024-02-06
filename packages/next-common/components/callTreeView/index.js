@@ -15,7 +15,12 @@ export default function CallTreeView({ proposal }) {
         </span>
       </div>
       <IndentPanel>
-        <CallArgsPanel argsEntries={argsEntries} args={args} />
+        <CallArgsPanel
+          section={section}
+          method={method}
+          argsEntries={argsEntries}
+          args={args}
+        />
       </IndentPanel>
     </div>
   );

@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { balanceTypes } from "next-common/components/democracy/metadata/normalize";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { hexToString } from "@polkadot/util";
 import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
@@ -103,7 +103,40 @@ function HexValue({ hex }) {
   );
 }
 
-export function ValuePanel({ registry, name, type, typeName, value }) {
+const NoBalanceDisplay = [
+  // Disable balance display for these hydradx sections calls
+  ...[
+    "assetRegistry",
+    "bonds",
+    "circuitBreaker",
+    "currencies",
+    "lbp",
+    "otc",
+    "router",
+    "stableswap",
+    "tokens",
+    "xTokens",
+    "omnipool",
+    "omnipoolLiquidityMining",
+    "xyk",
+  ].map((section) => ({
+    chain: "hydradx",
+    section,
+  })),
+
+  // Add more filters below ...
+];
+
+export function ValuePanel({
+  section,
+  method,
+  registry,
+  name,
+  type,
+  typeName,
+  value,
+}) {
+  const chain = useChain();
   const { symbol, decimals } = useChainSettings();
 
   if (type === "Vec<Call>") {
@@ -121,7 +154,15 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
 
   if (accountTypes.includes(type)) {
     valueComponent = <AddressUser add={val.id || val} fontSize={12} />;
-  } else if (balanceTypes.includes(typeName)) {
+  } else if (
+    balanceTypes.includes(typeName) &&
+    !NoBalanceDisplay.some(
+      (item) =>
+        item.chain === chain &&
+        (!item.section || item.section === section) &&
+        (!item.method || item.method === method),
+    )
+  ) {
     valueComponent = (
       <ValueDisplay value={toPrecision(val, decimals)} symbol={symbol} />
     );

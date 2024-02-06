@@ -1,7 +1,15 @@
 import IndentPanel from "./indentPanel";
 import { ValuePanel } from "./valuePanel";
 
-export default function OptionPanel({ registry, name, type, value, sub }) {
+export default function OptionPanel({
+  section,
+  method,
+  registry,
+  name,
+  type,
+  value,
+  sub,
+}) {
   const { name: subName, type: subType } = sub;
   return (
     <div className="flex flex-col">
@@ -10,6 +18,8 @@ export default function OptionPanel({ registry, name, type, value, sub }) {
       </span>
       <IndentPanel className="gap-[8px]">
         <ValuePanel
+          section={section}
+          method={method}
           name={subName}
           value={value.value}
           type={subType}
