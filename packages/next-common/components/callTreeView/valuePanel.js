@@ -104,24 +104,19 @@ function HexValue({ hex }) {
   );
 }
 
-const NoBalanceDisplay = [
-  // Disable balance display for these hydradx sections calls
+// chain, section, method filters for displaying balances
+const BalanceDisplay = [
   ...[
-    "assetRegistry",
-    "bonds",
-    "circuitBreaker",
-    "currencies",
-    "lbp",
-    "otc",
-    "router",
-    "stableswap",
-    "tokens",
-    "xTokens",
-    "omnipool",
-    "omnipoolLiquidityMining",
-    "xyk",
+    "auctions",
+    "balances",
+    "bounties",
+    "childBounties",
+    "convictionVoting",
+    "crowdloan",
+    "slots",
+    "staking",
+    "treasury",
   ].map((section) => ({
-    chain: "hydradx",
     section,
   })),
 
@@ -150,9 +145,10 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
     valueComponent = <AddressUser add={val.id || val} fontSize={12} />;
   } else if (
     balanceTypes.includes(typeName) &&
-    !NoBalanceDisplay.some(
+    BalanceDisplay.some(
       (item) =>
-        item.chain === chain &&
+        (item.chain || item.section || item.method) &&
+        (!item.chain || item.chain === chain) &&
         (!item.section || item.section === section) &&
         (!item.method || item.method === method),
     )
