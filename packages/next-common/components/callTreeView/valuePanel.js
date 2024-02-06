@@ -14,6 +14,7 @@ import TuplePanel from "./tuplePanel";
 import OptionPanel from "./optionPanel";
 import StructPanel from "./structPanel";
 import AddressUser from "../user/addressUser";
+import { useCallContext } from "./callContext";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -127,17 +128,10 @@ const NoBalanceDisplay = [
   // Add more filters below ...
 ];
 
-export function ValuePanel({
-  section,
-  method,
-  registry,
-  name,
-  type,
-  typeName,
-  value,
-}) {
+export function ValuePanel({ registry, name, type, typeName, value }) {
   const chain = useChain();
   const { symbol, decimals } = useChainSettings();
+  const { section, method } = useCallContext();
 
   if (type === "Vec<Call>") {
     return (

@@ -1,15 +1,7 @@
 import IndentPanel from "./indentPanel";
 import { ValuePanel } from "./valuePanel";
 
-export default function TuplePanel({
-  section,
-  method,
-  registry,
-  name,
-  type,
-  values,
-  sub,
-}) {
+export default function TuplePanel({ registry, name, type, values, sub }) {
   return (
     <div className="flex flex-col">
       <span className="font-medium truncate">
@@ -19,8 +11,6 @@ export default function TuplePanel({
         {(sub || []).map((item) => (
           <ValuePanel
             key={item.name}
-            section={section}
-            method={method}
             name={item.name}
             value={values[item.name]}
             type={item.type}

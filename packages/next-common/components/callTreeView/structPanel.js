@@ -2,8 +2,6 @@ import IndentPanel from "./indentPanel";
 import { ValuePanel } from "./valuePanel";
 
 export default function StructPanel({
-  section,
-  method,
   registry,
   name,
   type,
@@ -19,14 +17,7 @@ export default function StructPanel({
     ));
   } else {
     return (
-      <ValuePanel
-        section={section}
-        method={method}
-        name={name}
-        type={type}
-        typeName={typeName}
-        value={value}
-      />
+      <ValuePanel name={name} type={type} typeName={typeName} value={value} />
     );
   }
 
@@ -41,8 +32,6 @@ export default function StructPanel({
       {!value.isNone && (
         <IndentPanel className="gap-[8px]">
           <ValuePanel
-            section={section}
-            method={method}
             registry={registry}
             name={subName}
             typeName={subType}

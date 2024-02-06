@@ -1,5 +1,6 @@
 import IndentPanel from "./indentPanel";
 import CallArgsPanel from "./callArgsPanel";
+import { CallContextProvider } from "./callContext";
 
 export default function CallTreeView({ proposal }) {
   const { section, method, meta, argsEntries } = proposal || {};
@@ -15,12 +16,9 @@ export default function CallTreeView({ proposal }) {
         </span>
       </div>
       <IndentPanel>
-        <CallArgsPanel
-          section={section}
-          method={method}
-          argsEntries={argsEntries}
-          args={args}
-        />
+        <CallContextProvider value={{ section, method }}>
+          <CallArgsPanel argsEntries={argsEntries} args={args} />
+        </CallContextProvider>
       </IndentPanel>
     </div>
   );
