@@ -15,6 +15,8 @@ import OptionPanel from "./optionPanel";
 import StructPanel from "./structPanel";
 import AddressUser from "../user/addressUser";
 import { useCallContext } from "./callContext";
+import interlay from "next-common/utils/consts/settings/interlay";
+import kintsugi from "next-common/utils/consts/settings/kintsugi";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -105,7 +107,7 @@ function HexValue({ hex }) {
 }
 
 // chain, section, method filters for displaying balances
-const BalanceDisplay = [
+const CanShowBalanceFilters = [
   ...[
     "auctions",
     "balances",
@@ -123,6 +125,43 @@ const BalanceDisplay = [
 
   // Add more filters below ...
 ];
+
+const ShouldNotShowBalanceFilters = [
+  ...[kintsugi.name, interlay.name].map((chain) => ({
+    chain,
+    section: "democracy",
+    method: "vote",
+  })),
+
+  // Add more filters below ...
+];
+
+function matchFilters(chain, section, method, filters) {
+  return filters.some(
+    (item) =>
+      (item.chain || item.section || item.method) &&
+      (!item.chain || item.chain === chain) &&
+      (!item.section || item.section === section) &&
+      (!item.method || item.method === method),
+  );
+}
+
+function shouldShowBalance(chain, section, method) {
+  const canShowBalance = matchFilters(
+    chain,
+    section,
+    method,
+    CanShowBalanceFilters,
+  );
+  const shouldNotShowBalance = matchFilters(
+    chain,
+    section,
+    method,
+    ShouldNotShowBalanceFilters,
+  );
+
+  return canShowBalance && !shouldNotShowBalance;
+}
 
 export function ValuePanel({ registry, name, type, typeName, value }) {
   const chain = useChain();
@@ -146,13 +185,7 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
     valueComponent = <AddressUser add={val.id || val} fontSize={12} />;
   } else if (
     balanceTypes.includes(typeName) &&
-    BalanceDisplay.some(
-      (item) =>
-        (item.chain || item.section || item.method) &&
-        (!item.chain || item.chain === chain) &&
-        (!item.section || item.section === section) &&
-        (!item.method || item.method === method),
-    )
+    shouldShowBalance(chain, section, method)
   ) {
     valueComponent = (
       <ValueDisplay value={toPrecision(val, decimals)} symbol={symbol} />
