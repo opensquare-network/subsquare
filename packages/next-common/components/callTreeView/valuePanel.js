@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { balanceTypes } from "next-common/components/democracy/metadata/normalize";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { hexToString } from "@polkadot/util";
 import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
@@ -14,6 +14,9 @@ import TuplePanel from "./tuplePanel";
 import OptionPanel from "./optionPanel";
 import StructPanel from "./structPanel";
 import AddressUser from "../user/addressUser";
+import { useCallContext } from "./callContext";
+import interlay from "next-common/utils/consts/settings/interlay";
+import kintsugi from "next-common/utils/consts/settings/kintsugi";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -103,8 +106,67 @@ function HexValue({ hex }) {
   );
 }
 
+// chain, section, method filters for displaying balances
+const CanShowBalanceFilters = [
+  ...[
+    "auctions",
+    "balances",
+    "bounties",
+    "childBounties",
+    "convictionVoting",
+    "crowdloan",
+    "democracy",
+    "slots",
+    "staking",
+    "treasury",
+  ].map((section) => ({
+    section,
+  })),
+
+  // Add more filters below ...
+];
+
+const ShouldNotShowBalanceFilters = [
+  ...[kintsugi.name, interlay.name].map((chain) => ({
+    chain,
+    section: "democracy",
+    method: "vote",
+  })),
+
+  // Add more filters below ...
+];
+
+function matchFilters(chain, section, method, filters) {
+  return filters.some(
+    (item) =>
+      (item.chain || item.section || item.method) &&
+      (!item.chain || item.chain === chain) &&
+      (!item.section || item.section === section) &&
+      (!item.method || item.method === method),
+  );
+}
+
+function shouldShowBalance(chain, section, method) {
+  const canShowBalance = matchFilters(
+    chain,
+    section,
+    method,
+    CanShowBalanceFilters,
+  );
+  const shouldNotShowBalance = matchFilters(
+    chain,
+    section,
+    method,
+    ShouldNotShowBalanceFilters,
+  );
+
+  return canShowBalance && !shouldNotShowBalance;
+}
+
 export function ValuePanel({ registry, name, type, typeName, value }) {
+  const chain = useChain();
   const { symbol, decimals } = useChainSettings();
+  const { section, method } = useCallContext();
 
   if (type === "Vec<Call>") {
     return (
@@ -121,7 +183,10 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
 
   if (accountTypes.includes(type)) {
     valueComponent = <AddressUser add={val.id || val} fontSize={12} />;
-  } else if (balanceTypes.includes(typeName)) {
+  } else if (
+    balanceTypes.includes(typeName) &&
+    shouldShowBalance(chain, section, method)
+  ) {
     valueComponent = (
       <ValueDisplay value={toPrecision(val, decimals)} symbol={symbol} />
     );
