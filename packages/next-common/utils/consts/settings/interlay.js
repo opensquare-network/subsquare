@@ -21,10 +21,6 @@ const DEFAULT_INTERLAY_NODES = [
     name: "LuckyFriday",
     url: "wss://rpc-interlay.luckyfriday.io/",
   },
-  {
-    name: "OnFinality",
-    url: "wss://interlay.api.onfinality.io/public-ws",
-  },
 ];
 
 const links = [

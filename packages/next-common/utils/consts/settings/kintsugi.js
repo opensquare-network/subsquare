@@ -25,10 +25,6 @@ const DEFAULT_KINTSUGI_NODES =
           url: "wss://api-kusama.interlay.io/parachain",
         },
         {
-          name: "LuckyFriday",
-          url: "wss://rpc-kintsugi.luckyfriday.io/",
-        },
-        {
           name: "OnFinality",
           url: "wss://kintsugi.api.onfinality.io/public-ws",
         },
