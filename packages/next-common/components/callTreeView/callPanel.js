@@ -26,12 +26,7 @@ export default function CallPanel({ call, callIndex }) {
       {!folded && (
         <IndentPanel>
           <CallContextProvider value={{ section, method }}>
-            <CallArgsPanel
-              section={section}
-              method={method}
-              argsEntries={argsEntries}
-              args={args}
-            />
+            <CallArgsPanel argsEntries={argsEntries} args={args} />
           </CallContextProvider>
         </IndentPanel>
       )}
