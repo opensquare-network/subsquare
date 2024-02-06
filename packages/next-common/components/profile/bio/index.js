@@ -1,7 +1,7 @@
 import React from "react";
-import Flex from "next-common/components/styled/flex";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import AccountLinks from "next-common/components/links/accountLinks";
 import AchainableProfile from "../achainableProfile";
 import AssetInfo from "../assetInfo";
 import KintAssetInfo from "../assetInfo/kint";
@@ -9,6 +9,7 @@ import { Wrapper } from "./styled";
 import DisplayUserAvatar from "./displayUserAvatar";
 import DisplayUser from "./displayUser";
 import DisplayUserAddress from "./displayUserAddress";
+import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 export default function Bio({ address, user, id }) {
   const { showAchainableLabels } = useChainSettings();
@@ -18,23 +19,20 @@ export default function Bio({ address, user, id }) {
   return (
     <Wrapper>
       <DisplayUserAvatar address={address} user={user} />
-      <Flex
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: 0,
-          flexWrap: "wrap",
-          width: "100%",
-        }}
-      >
+      <div className="flex flex-col items-center mt-0 flex-wrap w-full">
         <DisplayUser id={id} />
         <DisplayUserAddress address={address} />
+        {isPolkadotAddress(address) && (
+          <div className="mt-[8px]">
+            <AccountLinks address={address} />
+          </div>
+        )}
         {isKintsugi ? (
           <KintAssetInfo address={address} />
         ) : (
           <AssetInfo address={address} />
         )}
-      </Flex>
+      </div>
       {showAchainableLabels && <AchainableProfile id={id} />}
     </Wrapper>
   );

@@ -23,8 +23,16 @@ export default function ItemFooter({ data, type }) {
       <Footer>
         <PostUser data={data} type={type} />
         <TrackName data={data} type={type} />
-        {data.isTreasury && <TreasuryTag />}
-        {data.isDemocracy && <DemocracyTag />}
+        {data.isTreasury && (
+          <Flex>
+            <TreasuryTag />
+          </Flex>
+        )}
+        {data.isDemocracy && (
+          <Flex>
+            <DemocracyTag />
+          </Flex>
+        )}
         <PostTime
           data={data}
           extra={

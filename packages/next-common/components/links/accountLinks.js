@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
-import DotreasuryAccountLink from "./dotreasuryAccountLink";
-import StatescanAccountLink from "./statescanAccountLink";
-import SubScanAccountLink from "./subscanAccountLink";
+import { DotreasuryChainAccountLink } from "./dotreasuryAccountLink";
+import { StatescanChainAccountLink } from "./statescanAccountLink";
+import { SubScanChainAccountLink } from "./subscanAccountLink";
 import MailLink from "./mailLink";
 import WebLink from "./webLink";
 import ElementLink from "./elementLink";
 import TwitterLink from "./twitterLink";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { useChain } from "next-common/context/chain";
-import CouncilorLink from "./councilorLink";
+import { ChainCouncilorLink } from "./councilorLink";
 import Chains from "next-common/utils/consts/chains";
 
 const Wrapper = styled(Flex)`
@@ -20,26 +20,33 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function AccountLinks({ address }) {
-  const chain = useChain();
+export function ChainAccountLink({ chain, address }) {
   const identity = useIdentity(address, chain);
   const { email, riot, twitter, web } = identity?.info || {};
   const showCouncilorLink = [Chains.polkadot, Chains.kusama].includes(chain);
+
+  return (
+    <Wrapper>
+      <StatescanChainAccountLink chain={chain} address={address} />
+      <DotreasuryChainAccountLink chain={chain} address={address} />
+      <SubScanChainAccountLink chain={chain} address={address} />
+      {email && <MailLink email={email} />}
+      {web && <WebLink website={web} />}
+      {riot && <ElementLink riot={riot} />}
+      {twitter && <TwitterLink twitter={twitter} />}
+      {showCouncilorLink && (
+        <ChainCouncilorLink chain={chain} address={address} />
+      )}
+    </Wrapper>
+  );
+}
+
+export default function AccountLinks({ address }) {
+  const chain = useChain();
 
   if (!address) {
     throw new Error("No address provided");
   }
 
-  return (
-    <Wrapper>
-      <StatescanAccountLink address={address} />
-      <DotreasuryAccountLink address={address} />
-      <SubScanAccountLink address={address} />
-      {email && <MailLink email={email} />}
-      {web && <WebLink website={web} />}
-      {riot && <ElementLink riot={riot} />}
-      {twitter && <TwitterLink twitter={twitter} />}
-      {showCouncilorLink && <CouncilorLink address={address} />}
-    </Wrapper>
-  );
+  return <ChainAccountLink chain={chain} address={address} />;
 }
