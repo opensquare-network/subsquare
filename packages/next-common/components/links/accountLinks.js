@@ -20,7 +20,7 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export function ChainAccountLink({ chain, address }) {
+export function ChainAccountLinks({ chain, address }) {
   const identity = useIdentity(address, chain);
   const { email, riot, twitter, web } = identity?.info || {};
   const showCouncilorLink = [Chains.polkadot, Chains.kusama].includes(chain);
@@ -48,5 +48,5 @@ export default function AccountLinks({ address }) {
     throw new Error("No address provided");
   }
 
-  return <ChainAccountLink chain={chain} address={address} />;
+  return <ChainAccountLinks chain={chain} address={address} />;
 }
