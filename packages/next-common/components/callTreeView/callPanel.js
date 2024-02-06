@@ -3,6 +3,7 @@ import FoldButton from "./foldButton";
 import { useState } from "react";
 import IndentPanel from "./indentPanel";
 import CallArgsPanel from "./callArgsPanel";
+import { CallContextProvider } from "./callContext";
 
 export default function CallPanel({ call, callIndex }) {
   const [folded, setFolded] = useState(true);
@@ -24,7 +25,9 @@ export default function CallPanel({ call, callIndex }) {
       </div>
       {!folded && (
         <IndentPanel>
-          <CallArgsPanel argsEntries={argsEntries} args={args} />
+          <CallContextProvider value={{ section, method }}>
+            <CallArgsPanel argsEntries={argsEntries} args={args} />
+          </CallContextProvider>
         </IndentPanel>
       )}
     </div>
