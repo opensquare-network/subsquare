@@ -113,6 +113,7 @@ const BalanceDisplay = [
     "childBounties",
     "convictionVoting",
     "crowdloan",
+    "democracy",
     "slots",
     "staking",
     "treasury",
