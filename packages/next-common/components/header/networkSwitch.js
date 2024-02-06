@@ -2,12 +2,12 @@ import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../loading";
-import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import { ArrowDown } from "@osn/icons/subsquare";
 import NetworkOptions from "./networkOptions";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 const Wrapper = styled.div`
   position: relative;
@@ -59,7 +59,7 @@ export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const nodesHeight = useSelector(nodesHeightSelector);
+  const nodesHeight = useSelector(chainOrScanHeightSelector);
 
   useOnClickOutside(ref, () => setShow(false));
 
