@@ -34,7 +34,7 @@ export async function sendEvmTx({
   const signerAddress = signerAccount?.address;
   const realSignerAddress = getEvmSignerAddress(signerAddress);
 
-  const ethereum = getEthereum(signerAccount?.wallet);
+  const ethereum = getEthereum(signerAccount?.meta.source);
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
     return;
