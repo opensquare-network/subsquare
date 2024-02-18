@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
-import { usePost } from "../../../context/post";
 import { cn } from "next-common/utils";
 import GhostButton from "next-common/components/buttons/ghostButton";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
@@ -9,8 +8,7 @@ import { marked } from "marked";
 const collapsedHeight = 640;
 const moreLessHeightThreshold = 2000;
 
-export default function PostContent() {
-  const post = usePost();
+export default function PostContent({ post = {} }) {
   const ref = useRef(null);
   const [showToggleButton, setShowToggleButton] = useState(false);
   // assume is long content by default to AVOID flicker

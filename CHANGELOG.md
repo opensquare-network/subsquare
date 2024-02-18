@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.6
+
+date: 2024-02-08
+
+- Change scan height subscription to loop query.
+- Add lunar new year decoration on menu.
+- Refactor and improve styles.
+
+### 3.8.5
+
+date: 2024-02-04
+
+- [Big] Support fellowship core system business.
+  - Core members page.
+  - Core feeds page.
+  - More params page to core system.
+  - Support induct, import and bump actions.
+- Introduce and develop new set of button components.
+- Integrate Mimir multisig wallet.
+- Add conviction voting lock explanation.
+- Enable referenda for darwinia2.
+- Fix preimage deposits layout.
+- Query polkassembly comments from fronted.
+- Make RPC endpoints configurable.
+- Extract a transaction submission button and refactor some code for submitting txs.
+- Fix active referenda/fellowship count in menu.
+- Improve styles.
+
 ### 3.8.4
 
 date: 2024-01-31

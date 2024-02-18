@@ -90,7 +90,6 @@ export default function MoonDelegatePopup(props) {
     <PopupWithSigner
       title="Delegate"
       Component={PopupContent}
-      autoCloseAfterLogin={true}
       submitExtrinsic={submitExtrinsic}
       {...props}
     />

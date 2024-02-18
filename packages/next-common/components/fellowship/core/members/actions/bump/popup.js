@@ -1,6 +1,6 @@
 import useSigner from "next-common/components/common/tx/useSigner";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
 import useApi from "next-common/utils/hooks/useApi";
@@ -18,7 +18,7 @@ function Content({ onClose, who }) {
   const { component } = useSigner("Origin");
   const api = useApi();
 
-  const tx = useMemo(() => {
+  const getTxFunc = useCallback(() => {
     if (api && who) {
       return api.tx.fellowshipCore.bump(who);
     }
@@ -36,7 +36,7 @@ function Content({ onClose, who }) {
         </Wrapper>
       </div>
       <TxSubmissionButton
-        tx={tx}
+        getTxFunc={getTxFunc}
         onClose={onClose}
         onInBlock={onInBlock}
         onFinalized={onInBlock}

@@ -1,57 +1,38 @@
-import React, { useState } from "react";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
-import { emptyFunction } from "next-common/utils";
-import PopupLabel from "next-common/components/popup/label";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { Input } from "../styled";
-import SignerPopup from "next-common/components/signerPopup";
+import React, { useCallback } from "react";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import useApi from "next-common/utils/hooks/useApi";
+import isNil from "lodash.isnil";
+import PopupWithSigner from "next-common/components/popupWithSigner";
+import useSigner from "next-common/components/common/tx/useSigner";
+import ReferendumIndexRow from "next-common/components/gov2/referendum/metadata/refund/referendumIndexRow";
 
-export default function DecisionDepositRefundPopup({
-  pallet = "referenda",
-  referendumIndex,
-  onClose = emptyFunction,
-}) {
-  const isMounted = useIsMounted();
-  const dispatch = useDispatch();
-  const [calling, setCalling] = useState(false);
+function Content({ onClose, referendumIndex, pallet = "referenda" }) {
+  const { component } = useSigner("Origin");
+  const api = useApi();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  const doRefund = async (api, signerAccount) => {
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
+  const getTxFunc = useCallback(() => {
+    if (!api || isNil(referendumIndex)) {
+      return null;
     }
 
-    let tx = api.tx[pallet].refundDecisionDeposit(referendumIndex);
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setCalling,
-      onClose,
-      signerAccount,
-      isMounted,
-    });
-  };
+    return api.tx[pallet].refundDecisionDeposit(referendumIndex);
+  }, [api, referendumIndex]);
 
   return (
-    <SignerPopup
+    <>
+      {component}
+      <ReferendumIndexRow referendumIndex={referendumIndex} />
+      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
+    </>
+  );
+}
+
+export default function DecisionDepositRefundPopup(props) {
+  return (
+    <PopupWithSigner
       title="Refund decision deposit"
-      actionCallback={doRefund}
-      isLoading={calling}
-      onClose={onClose}
-    >
-      <div>
-        <PopupLabel text="Referendum Index" />
-        <div>
-          <Input disabled={true} value={referendumIndex} />
-        </div>
-      </div>
-    </SignerPopup>
+      Component={Content}
+      {...props}
+    />
   );
 }

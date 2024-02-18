@@ -42,7 +42,6 @@ export default function DelegatePopup(props) {
     <PopupWithSigner
       title="Delegate"
       Component={PopupContent}
-      autoCloseAfterLogin={true}
       submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     />

@@ -245,7 +245,7 @@ export function checkInputValue(
   allowZero = false,
 ) {
   if (!inputValue) {
-    throw new Error(`Please input a ${valueName}`);
+    throw new Error(`Please input a valid ${valueName}`);
   }
 
   const bnValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
@@ -298,6 +298,7 @@ export function isExternalLink(url = "") {
 
 /**
  * @param {number} value unit is 1
+ * @param decimals
  */
 export function toPercentage(value = 0, decimals = 0) {
   const length = Math.pow(10, decimals);

@@ -37,23 +37,15 @@ export default function PopupWithSigner({
 
   if (lastConnectedAccount?.wallet === WalletTypes.METAMASK) {
     return (
-      <MaybeMetamaskSigner
-        onClose={onClose}
-        autoCloseAfterLogin={autoCloseAfterLogin}
-        title={title}
-        Component={Component}
-        {...props}
-      />
+      <MaybeMetamaskSigner onClose={onClose} title={title} {...props}>
+        <Component onClose={onClose} {...props} />
+      </MaybeMetamaskSigner>
     );
   }
 
   return (
-    <MaybePolkadotSigner
-      onClose={onClose}
-      autoCloseAfterLogin={autoCloseAfterLogin}
-      title={title}
-      Component={Component}
-      {...props}
-    />
+    <MaybePolkadotSigner onClose={onClose} title={title} {...props}>
+      <Component onClose={onClose} {...props} />
+    </MaybePolkadotSigner>
   );
 }

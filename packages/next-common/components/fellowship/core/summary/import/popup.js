@@ -1,5 +1,5 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import useSigner from "next-common/components/common/tx/useSigner";
 import useApi from "next-common/utils/hooks/useApi";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -9,7 +9,7 @@ function Content({ onClose }) {
   const { component } = useSigner();
   const api = useApi();
 
-  const tx = useMemo(() => {
+  const getTxFunc = useCallback(() => {
     if (api) {
       return api.tx.fellowshipCore.import();
     }
@@ -21,7 +21,7 @@ function Content({ onClose }) {
     <>
       {component}
       <TxSubmissionButton
-        tx={tx}
+        getTxFunc={getTxFunc}
         onClose={onClose}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
