@@ -105,7 +105,7 @@ export default function NavMenuGroup({
       {!!menu.items?.length && (
         <SubMenuItems
           className={cn(
-            submenuVisible && "hidden",
+            !submenuVisible && "hidden",
             "pl-9",
             menu.itemsClassName,
           )}
