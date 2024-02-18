@@ -93,7 +93,7 @@ export default function NavMenuGroup({
                   />
                   <NavMenuDivider />
                   <SubMenuItems
-                    className={cn("inline-flex flex-col", menu.itemsClassName)}
+                    className={menu.itemsClassName}
                     items={menu.items}
                   />
                 </div>
@@ -105,7 +105,7 @@ export default function NavMenuGroup({
       {!!menu.items?.length && (
         <SubMenuItems
           className={cn(
-            submenuVisible ? "inline-flex flex-col" : "hidden",
+            submenuVisible && "hidden",
             "pl-9",
             menu.itemsClassName,
           )}
@@ -122,7 +122,7 @@ function SubMenuItems({ className = "", items = [] }) {
   const routePath = pageUrl.split("?")[0];
 
   return (
-    <ul className={className}>
+    <ul className={cn("flex flex-col", className)}>
       {items.map((item, idx) => {
         const matchActivePathnames = [
           ...(item?.extraMatchNavMenuActivePathnames ?? []),
