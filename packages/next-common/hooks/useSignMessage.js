@@ -3,7 +3,10 @@ import { stringToHex } from "@polkadot/util";
 import { personalSign } from "next-common/utils/metamask";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
-import { getEvmSignerAddress } from "next-common/utils/hydradxUtil";
+import {
+  getEvmSignerAddress,
+  tryConvertToEvmAddress,
+} from "next-common/utils/hydradxUtil";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
@@ -21,10 +24,11 @@ export function useSignMessage() {
       }
 
       const wallet = await extension.enable("subsquare");
+      const maybeEvmAddress = tryConvertToEvmAddress(address);
       const { signature } = await wallet.signer.signRaw({
         type: "bytes",
         data: stringToHex(message),
-        address,
+        address: maybeEvmAddress,
       });
 
       return signature;
