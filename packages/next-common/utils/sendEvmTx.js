@@ -72,21 +72,33 @@ export async function sendEvmTx({
     }
   }
 
-  let walletSelectedAddress = ethereum.selectedAddress;
-  if (!walletSelectedAddress) {
+  if (ethereum?.isTalisman) {
+    if (
+      ethereum.selectedAddress &&
+      ethereum.selectedAddress?.toLowerCase() !==
+        realSignerAddress.toLowerCase()
+    ) {
+      dispatch(
+        newErrorToast(
+          `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
+        ),
+      );
+      return;
+    }
+  } else {
     const accounts = await requestAccounts();
-    walletSelectedAddress = accounts?.[0];
-  }
+    const walletSelectedAddress = accounts?.[0];
 
-  if (
-    walletSelectedAddress?.toLowerCase() !== realSignerAddress.toLowerCase()
-  ) {
-    dispatch(
-      newErrorToast(
-        `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
-      ),
-    );
-    return;
+    if (
+      walletSelectedAddress?.toLowerCase() !== realSignerAddress.toLowerCase()
+    ) {
+      dispatch(
+        newErrorToast(
+          `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
+        ),
+      );
+      return;
+    }
   }
 
   const totalSteps = 2;
