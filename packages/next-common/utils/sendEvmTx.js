@@ -8,7 +8,12 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
-import { getEthereum, requestAccounts, switchNetwork } from "./metamask";
+import {
+  // addNetwork,
+  getEthereum,
+  requestAccounts,
+  switchNetwork,
+} from "./metamask";
 import getChainSettings from "./consts/settings";
 import { getEvmSignerAddress } from "./hydradxUtil";
 import isHydradx from "./isHydradx";
@@ -29,7 +34,7 @@ export async function sendEvmTx({
   const signerAddress = signerAccount?.address;
   const realSignerAddress = getEvmSignerAddress(signerAddress);
 
-  const ethereum = getEthereum();
+  const ethereum = getEthereum(signerAccount?.wallet);
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
     return;
@@ -59,7 +64,7 @@ export async function sendEvmTx({
       ),
     );
     try {
-      await switchNetwork(ethereumNetwork.chainId);
+      await switchNetwork(ethereum, ethereumNetwork.chainId);
     } catch (e) {
       dispatch(
         newErrorToast(
