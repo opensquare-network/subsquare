@@ -4,6 +4,7 @@ import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 export async function fetchList(url, context) {
   const { page, page_size: pageSize } = context.query;
   const { result } = await nextApi.fetch(url, {
+    ...context.query,
     page: page ?? 1,
     pageSize: pageSize ?? defaultPageSize,
     simple: true,
