@@ -28,8 +28,9 @@ export default function FellowshipSalaryStats() {
   const budgetValue = stats?.budget;
   const totalRegistrationsValue = stats?.totalRegistrations;
   const totalUnregisteredPaidValue = stats?.totalUnregisteredPaid;
-  const potValue =
+  let potValue =
     budgetValue - totalUnregisteredPaidValue - totalRegistrationsValue || null;
+  potValue = potValue < 0 ? 0 : potValue;
 
   const totalCyclePeriod = registrationPeriod + payoutPeriod || null;
   const cycleStartAt = stats?.cycleStart || null;
