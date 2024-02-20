@@ -10,7 +10,5 @@ export async function fetchList(url, context, params = {}) {
     simple: true,
   });
 
-  console.log("result", result);
-
   return result ?? EmptyList;
 }
