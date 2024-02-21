@@ -110,7 +110,7 @@ function Select({
       itemHeight={theItemHeight}
     >
       <SelectInner>
-        <div className="overflow-hidden">{displayValue}</div>
+        <div className="overflow-hidden grow">{displayValue}</div>
         <div>
           <ArrowDown
             className={cn(
