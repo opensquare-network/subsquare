@@ -25,6 +25,7 @@ export default function _Button(props) {
       {...attrs}
       disabled={disabled || loading}
       className={cn(
+        "inline-flex items-center",
         "border border-transparent",
         "outline-none",
         "whitespace-nowrap",
@@ -54,9 +55,9 @@ export default function _Button(props) {
         <SystemLoading className={cn(smallSize && "w-4 h-4")} />
       ) : (
         <>
-          {iconLeft && <span className="mr-2">{iconLeft}</span>}
+          {iconLeft && <span className="inline-flex mr-2">{iconLeft}</span>}
           {children}
-          {iconRight && <span className="ml-2">{iconRight}</span>}
+          {iconRight && <span className="inline-flex ml-2">{iconRight}</span>}
         </>
       )}
     </button>
