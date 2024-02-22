@@ -25,7 +25,7 @@ export default function _Button(props) {
       {...attrs}
       disabled={disabled || loading}
       className={cn(
-        "inline-flex items-center",
+        "inline-flex items-center justify-center",
         "border border-transparent",
         "outline-none",
         "whitespace-nowrap",
