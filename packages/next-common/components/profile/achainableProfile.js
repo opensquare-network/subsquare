@@ -61,7 +61,7 @@ function normalizeTagName(name, chain) {
   return name;
 }
 
-function AchainableLebels({ labels }) {
+function AchainableLabels({ labels }) {
   const chain = useChain();
   return (
     <TagsWrapper>
@@ -86,9 +86,7 @@ function AchainableLebels({ labels }) {
   );
 }
 
-export default function AchainableProfile({ id }) {
-  const data = useAchainableData(id);
-  const { labels } = data || {};
+export function AchainableDisplay({ labels = [] }) {
   const visibleLabels = labels?.filter(
     (label) => label.result && label.name !== "Is Polkadot Fellowship Member",
   );
@@ -99,7 +97,7 @@ export default function AchainableProfile({ id }) {
 
   return (
     <Wrapper>
-      <AchainableLebels labels={visibleLabels} />
+      <AchainableLabels labels={visibleLabels} />
       <Footer>
         <span>Labels Powered by</span>
         <a href="https://achainable.com" target="_blank" rel="noreferrer">
@@ -108,4 +106,10 @@ export default function AchainableProfile({ id }) {
       </Footer>
     </Wrapper>
   );
+}
+
+export default function AchainableProfile({ id }) {
+  const data = useAchainableData(id);
+  const { labels } = data || {};
+  return <AchainableDisplay labels={labels} />;
 }
