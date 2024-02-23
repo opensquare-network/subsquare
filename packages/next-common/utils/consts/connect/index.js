@@ -71,12 +71,11 @@ export const substrateWallets = [
   talisman,
   polkagate,
   nova,
-  mimir,
 ];
 
 export function getWallets() {
   if (isEvmChain()) {
     return evmWallets;
   }
-  return substrateWallets;
+  return [...substrateWallets, mimir];
 }
