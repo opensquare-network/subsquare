@@ -10,7 +10,7 @@ import {
   WalletTailsman,
 } from "@osn/icons/subsquare";
 
-const polkadotJs = {
+export const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
   title: "Polkadot.js",
   installUrl:
@@ -18,7 +18,7 @@ const polkadotJs = {
   logo: WalletPolkadotjs,
 };
 
-const subWalletJs = {
+export const subWalletJs = {
   extensionName: WalletTypes.SUBWALLET_JS,
   title: "SubWallet",
   installUrl:
@@ -26,7 +26,7 @@ const subWalletJs = {
   logo: WalletSubwallet,
 };
 
-const talisman = {
+export const talisman = {
   extensionName: WalletTypes.TALISMAN,
   title: "Talisman",
   installUrl:
@@ -34,7 +34,7 @@ const talisman = {
   logo: WalletTailsman,
 };
 
-const metamask = {
+export const metamask = {
   extensionName: WalletTypes.METAMASK,
   title: "MetaMask",
   installUrl:
@@ -42,7 +42,7 @@ const metamask = {
   logo: WalletMetamask,
 };
 
-const polkagate = {
+export const polkagate = {
   extensionName: WalletTypes.POLKAGATE,
   title: "PolkaGate",
   installUrl:
@@ -50,14 +50,14 @@ const polkagate = {
   logo: WalletPolkagate,
 };
 
-const nova = {
+export const nova = {
   extensionName: WalletTypes.NOVA,
   title: "Nova",
   installUrl: "https://novawallet.io/",
   logo: WalletNova,
 };
 
-const mimir = {
+export const mimir = {
   extensionName: WalletTypes.MIMIR,
   title: "Mimir",
   installUrl: "https://app.mimir.global/",
