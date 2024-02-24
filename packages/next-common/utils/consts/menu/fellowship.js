@@ -14,6 +14,7 @@ export const Names = {
   fellowship: "FELLOWSHIP",
   members: "Members",
   core: "Core",
+  salary: "Salary",
   params: "Params",
   all: "All",
 };
@@ -28,6 +29,19 @@ function getFellowshipCoreMenu() {
     value: "fellowship-core",
     name: Names.core,
     pathname: "/fellowship/core",
+  };
+}
+
+function getFellowshipSalaryMenu() {
+  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!chainSettings.hasFellowshipCore) {
+    return null;
+  }
+
+  return {
+    value: "fellowship-salary",
+    name: Names.salary,
+    pathname: "/fellowship/salary",
   };
 }
 
@@ -59,6 +73,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         pathname: "/fellowship/members",
       },
       getFellowshipCoreMenu(),
+      getFellowshipSalaryMenu(),
       chainSettings.hasFellowshipParams && {
         value: "fellowship-params",
         name: Names.params,
