@@ -1,16 +1,7 @@
-import AddressUser from "next-common/components/user/addressUser";
-import { FellowshipCoreFeedEventLabel } from "./shared";
+import FellowshipInductedFeed from "next-common/components/fellowship/feeds/events/inducted";
 
 export default function FellowshipCoreFeedsInductedEvent({ feed }) {
   const { args: { who } = {} } = feed || {};
 
-  return (
-    <>
-      <AddressUser key={who} add={who} noTooltip />
-      <span>
-        was{" "}
-        <FellowshipCoreFeedEventLabel>Inducted</FellowshipCoreFeedEventLabel>
-      </span>
-    </>
-  );
+  return <FellowshipInductedFeed who={who} />;
 }

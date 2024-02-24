@@ -1,9 +1,9 @@
-import FellowshipCoreFeedsListEvent from "./event";
 import orderBy from "lodash.orderby";
 import FellowshipFeedSuffix from "next-common/components/fellowship/feeds/suffix";
+import FellowshipSalaryFeed from "next-common/components/fellowship/salary/feeds/events";
 import FellowshipFeedsPanel from "next-common/components/fellowship/feeds/list";
 
-export default function FellowshipCoreFeedsList({ feeds = {} }) {
+export default function FellowshipSalaryFeedsList({ feeds = {} }) {
   const orderedItems = orderBy(
     feeds?.items || [],
     ["indexer.blockHeight", "indexer.eventIndex"],
@@ -12,7 +12,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
 
   const rows = orderedItems?.map?.((item) => {
     return [
-      <FellowshipCoreFeedsListEvent key="event" feed={item} className="pr-2" />,
+      <FellowshipSalaryFeed key="feed" feed={item} className="pr-2" />,
       <FellowshipFeedSuffix key="block-info" indexer={item?.indexer} />,
     ];
   });

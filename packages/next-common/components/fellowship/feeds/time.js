@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import { timeDurationFromNow } from "next-common/utils";
 
-export default function FellowshipCoreFeedsListTime({ feed, className = "" }) {
-  const blockTime = feed?.indexer?.blockTime;
+export default function FellowshipFeedTime({ indexer, className = "" }) {
+  const blockTime = indexer?.blockTime;
   const day = dayjs(blockTime);
 
   let content;
