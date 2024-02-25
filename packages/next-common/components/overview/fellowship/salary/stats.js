@@ -4,10 +4,8 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Summary from "next-common/components/summary/v2/base";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { cn, toPrecision } from "next-common/utils";
+import { cn, toPercentage } from "next-common/utils";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import { toPercentage } from "next-common/utils";
 import isNil from "lodash.isnil";
 import chunk from "lodash.chunk";
 import { useSelector } from "react-redux";
@@ -17,6 +15,11 @@ import { useNavCollapsed } from "next-common/context/nav";
 import LoadableContent from "next-common/components/common/loadableContent";
 import RemainLabel from "./remainLabel";
 import Tooltip from "next-common/components/tooltip";
+import getCycleIndexSummaryItem from "next-common/components/fellowship/salary/cycles/summary";
+import getCycleBudgetSummaryItem from "next-common/components/fellowship/salary/cycles/summary/budget";
+import getCycleRegistrationSummaryItem from "next-common/components/fellowship/salary/cycles/summary/registration";
+import getCycleUnregisteredPaidSummaryItem from "next-common/components/fellowship/salary/cycles/summary/unregisteredPaid";
+import getCyclePotSummaryItem from "next-common/components/fellowship/salary/cycles/summary/pot";
 
 export default function FellowshipSalaryStats() {
   const [navCollapsed] = useNavCollapsed();
@@ -75,38 +78,13 @@ export default function FellowshipSalaryStats() {
     className: cn(navCollapsed ? "sm:hidden" : "md:hidden"),
   };
 
-  const cycleIndexItem = {
-    title: "Cycle Index",
-    content: (
-      <LoadableContent isLoading={isNil(stats?.cycleIndex)}>
-        {stats?.cycleIndex}
-      </LoadableContent>
-    ),
-  };
-
-  const budgetItem = {
-    title: "Budget",
-    content: (
-      <LoadableContent isLoading={isNil(budgetValue)}>
-        <ValueDisplay
-          value={toPrecision(budgetValue, decimals)}
-          symbol={symbol}
-        />
-      </LoadableContent>
-    ),
-  };
-
-  const totalRegistrationsItem = {
-    title: "Total Registrations",
-    content: (
-      <LoadableContent isLoading={isNil(totalRegistrationsValue)}>
-        <ValueDisplay
-          value={toPrecision(totalRegistrationsValue, decimals)}
-          symbol={symbol}
-        />
-      </LoadableContent>
-    ),
-  };
+  const cycleIndexItem = getCycleIndexSummaryItem(stats?.cycleIndex);
+  const budgetItem = getCycleBudgetSummaryItem(budgetValue, decimals, symbol);
+  const totalRegistrationsItem = getCycleRegistrationSummaryItem(
+    totalRegistrationsValue,
+    decimals,
+    symbol,
+  );
 
   const totalPeriodItem = {
     title: "Total Period",
@@ -130,26 +108,12 @@ export default function FellowshipSalaryStats() {
     ),
   };
 
-  const totalUnregisteredPaidItem = {
-    title: "Total Unregistered Paid",
-    content: (
-      <LoadableContent isLoading={isNil(totalUnregisteredPaidValue)}>
-        <ValueDisplay
-          value={toPrecision(totalUnregisteredPaidValue, decimals)}
-          symbol={symbol}
-        />
-      </LoadableContent>
-    ),
-  };
-
-  const potItem = {
-    title: "Pot",
-    content: (
-      <LoadableContent isLoading={isNil(potValue)}>
-        <ValueDisplay value={toPrecision(potValue, decimals)} symbol={symbol} />
-      </LoadableContent>
-    ),
-  };
+  const totalUnregisteredPaidItem = getCycleUnregisteredPaidSummaryItem(
+    totalUnregisteredPaidValue,
+    decimals,
+    symbol,
+  );
+  const potItem = getCyclePotSummaryItem(potValue, decimals, symbol);
 
   const timeItem = {
     content: (
