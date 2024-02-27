@@ -15,18 +15,15 @@ export default function FellowshipSalaryPage() {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const [tracksProps, { result: historyCycles = {} }, { result: activeCycle }] =
-    await Promise.all([
-      fetchOpenGovTracksProps(),
-      ssrNextApi.fetch("fellowship/salary/history_cycles"),
-      ssrNextApi.fetch("fellowship/salary/active_cycle"),
-    ]);
+  const [tracksProps, { result: historyCycles = {} }] = await Promise.all([
+    fetchOpenGovTracksProps(),
+    ssrNextApi.fetch("fellowship/salary/history_cycles"),
+  ]);
 
   return {
     props: {
       ...tracksProps,
       historyCycles,
-      activeCycle,
     },
   };
 });

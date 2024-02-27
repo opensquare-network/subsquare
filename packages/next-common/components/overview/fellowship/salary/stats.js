@@ -1,6 +1,5 @@
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Summary from "next-common/components/summary/v2/base";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
@@ -161,18 +160,15 @@ export default function FellowshipSalaryStats() {
   ];
 
   return (
-    <div>
-      <TitleContainer className="mb-4">Fellowship Salary Stats</TitleContainer>
-      <SecondaryCard>
-        <Summary
-          items={desktopSummaryItems}
-          className={desktopPlaceholderVisibleItem.className}
-        />
-        <Summary
-          items={mobileSummaryItems}
-          className={mobilePlaceholderVisibleItem.className}
-        />
-      </SecondaryCard>
-    </div>
+    <SecondaryCard>
+      <Summary
+        items={desktopSummaryItems}
+        className={desktopPlaceholderVisibleItem.className}
+      />
+      <Summary
+        items={mobileSummaryItems}
+        className={mobilePlaceholderVisibleItem.className}
+      />
+    </SecondaryCard>
   );
 }
