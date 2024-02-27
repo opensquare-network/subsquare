@@ -7,7 +7,7 @@ export async function getBlockHeightFromHash(api, blockHash) {
 }
 
 export function isCollectivesChain(chain) {
-  return [Chains.collectives, "westend-collectives"].includes(chain);
+  return [Chains.collectives, Chains.westendCollectives].includes(chain);
 }
 
 export function isKintsugiChain(chain) {

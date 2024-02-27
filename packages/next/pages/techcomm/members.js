@@ -9,7 +9,7 @@ import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default function MembersPage() {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const type = detailPageCategory.OPEN_TECH_COMM_PROPOSAL;
+  const type = detailPageCategory.TECH_COMM_MOTION;
   const api = useApi();
   const councilName = toApiCouncil(chain, type);
   const [members, loadingMembers] = useCall(

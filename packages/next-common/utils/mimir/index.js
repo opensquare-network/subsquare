@@ -47,7 +47,7 @@ export async function maybeSendMimirTx({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  signerAddress,
+  signerAccount,
   section: sectionName,
   method: methodName,
 }) {
@@ -55,8 +55,9 @@ export async function maybeSendMimirTx({
     "@polkadot/extension-dapp"
   );
 
+  const signerAddress = signerAccount?.address;
+
   await web3Enable("subsquare");
-  const address = signerAddress;
   const injected = await web3FromSource("mimir");
 
   const isMimir = injected.name === "mimir";
@@ -76,7 +77,7 @@ export async function maybeSendMimirTx({
     setLoading(true);
 
     const result = await injected.signer.signPayload({
-      address,
+      address: signerAddress,
       method: tx.method.toHex(),
     });
 

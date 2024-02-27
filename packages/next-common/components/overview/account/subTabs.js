@@ -13,7 +13,7 @@ export default function AccountSubTabs({ className = "" }) {
   const tabs = [];
   if (
     !isKintsugiChain(chain) &&
-    ![Chains.collectives, Chains["westend-collectives"]].includes(chain)
+    ![Chains.collectives, Chains.westendCollectives].includes(chain)
   ) {
     tabs.push({
       label: "Votes",

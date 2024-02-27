@@ -7,10 +7,12 @@ import { useSignerAccount } from "../popupWithSigner/context";
 export default function SignerWithBalance() {
   const api = useApi();
   const signerAccount = useSignerAccount();
+
   const [balance, loadingBalance] = useAddressBalance(
     api,
     signerAccount?.realAddress,
   );
+
   const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
     api,
     signerAccount?.address,

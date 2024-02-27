@@ -19,6 +19,7 @@ import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
 import noop from "lodash.noop";
+import { normalizeAddress } from "next-common/utils/address";
 
 export default function SelectWallet({
   selectedWallet,
@@ -50,7 +51,12 @@ export default function SelectWallet({
           extensionAccounts = extensionAccounts.filter(
             (acc) => acc.type === ChainTypes.ETHEREUM,
           );
-        } else {
+        } else if (
+          !(
+            ChainTypes.MIXED === chainType &&
+            selectedWallet === WalletTypes.TALISMAN
+          )
+        ) {
           extensionAccounts = extensionAccounts.filter(
             (acc) => acc.type !== ChainTypes.ETHEREUM,
           );
@@ -59,7 +65,12 @@ export default function SelectWallet({
         if (isMounted.current) {
           setSelectWallet(selectedWallet);
           setWallet(wallet);
-          setAccounts(extensionAccounts);
+          setAccounts(
+            extensionAccounts.map((item) => ({
+              ...item,
+              address: normalizeAddress(item.address),
+            })),
+          );
         }
 
         onAccessGranted && onAccessGranted();
@@ -93,7 +104,7 @@ export default function SelectWallet({
       try {
         const chainId = await getChainId();
         if (chainId !== ethereumNetwork.chainId) {
-          await addNetwork(ethereumNetwork);
+          await addNetwork(ethereum, ethereumNetwork);
         }
 
         const accounts = await requestAccounts();

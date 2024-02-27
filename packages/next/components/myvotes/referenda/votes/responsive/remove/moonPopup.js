@@ -50,7 +50,7 @@ export default function ReferendumRemovalPopup({
         setLoading: setIsLoading,
         onInBlock,
         onClose,
-        signerAddress: signerAccount?.address,
+        signerAccount,
         isMounted,
       });
     },

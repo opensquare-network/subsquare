@@ -5,17 +5,17 @@ import { formatBalance } from "../../utils/viewfuncs";
 import Loading from "../loading";
 import Tooltip from "../tooltip";
 import { GreyPanel } from "../styled/containers/greyPanel";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 export default function ProxyInfo({ address, balance, isLoading, symbol }) {
   const noBalance = isNil(balance) && isNil(isLoading);
-  const shortAddr = addressEllipsis(address);
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
+  const shortAddr = addressEllipsis(maybeEvmAddress);
   return (
     <GreyPanel className="mt-2 py-2.5 px-4 justify-between text14Medium text-textSecondary">
       <div>
         As proxy of{" "}
-        <span className="proxyaddr text-textPrimary font-medium">
-          {shortAddr}
-        </span>{" "}
+        <span className="text-textPrimary font-medium">{shortAddr}</span>{" "}
         <Tooltip content={"Extrinsic will be wrapped in a proxy call"} />
       </div>
       {!noBalance && (

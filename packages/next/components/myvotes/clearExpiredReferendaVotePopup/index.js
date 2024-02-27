@@ -61,8 +61,7 @@ export default function ClearExpiredReferendaVotePopup({
         return showErrorToast("No unLockable balance");
       }
 
-      const signerAddress = signerAccount.address;
-      const realAddress = signerAccount.proxyAddress || signerAddress;
+      const realAddress = signerAccount.proxyAddress || signerAccount.address;
 
       let tx;
       const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
@@ -89,7 +88,7 @@ export default function ClearExpiredReferendaVotePopup({
         dispatch,
         onInBlock,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

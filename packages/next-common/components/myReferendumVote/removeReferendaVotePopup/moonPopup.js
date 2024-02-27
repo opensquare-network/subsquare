@@ -55,7 +55,7 @@ export default function MoonRemoveReferendaVotePopup({
         setLoading: setIsLoading,
         onInBlock,
         onClose,
-        signerAddress: signerAccount?.address,
+        signerAccount,
         isMounted,
       });
     },

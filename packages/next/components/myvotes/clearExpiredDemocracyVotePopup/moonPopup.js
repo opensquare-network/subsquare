@@ -80,7 +80,7 @@ export default function MoonClearExpiredDemocracyVotePopup({ votes, onClose }) {
         dispatch,
         setLoading: setIsLoading,
         onClose,
-        signerAddress: signerAccount?.address,
+        signerAccount,
         isMounted,
       });
     },

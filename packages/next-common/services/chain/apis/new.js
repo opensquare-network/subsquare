@@ -53,7 +53,7 @@ async function newApiPromise(chain, endpoint) {
 }
 
 export default async function newApi(chain, endpoint) {
-  if (!Object.keys(Chains).includes(chain)) {
+  if (!Object.values(Chains).includes(chain)) {
     throw new Error(`Invalid chain: ${chain} to construct api`);
   }
 

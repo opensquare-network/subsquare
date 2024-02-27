@@ -48,7 +48,7 @@ export function getAllianceMenu(summary) {
   return {
     name: Names.alliance,
     excludeToChains: getExcludeChains([
-      Chains["westend-collectives"],
+      Chains.westendCollectives,
       Chains.collectives,
     ]),
     icon: <MenuAlliance />,

@@ -37,8 +37,6 @@ export default function CloseMotionPopup({
       return showErrorToast("Please login first");
     }
 
-    const signerAddress = signerAccount.address;
-
     let tx;
     if (closeMethod.meta?.args?.length !== 4) {
       tx = closeMethod(hash, motionIndex);
@@ -57,7 +55,7 @@ export default function CloseMotionPopup({
       setLoading: setIsLoading,
       dispatch,
       onClose,
-      signerAddress,
+      signerAccount,
       isMounted,
     });
   };
