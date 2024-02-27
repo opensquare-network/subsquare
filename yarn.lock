@@ -2181,10 +2181,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@osn/icons@npm:^1.71.0":
-  version: 1.71.0
-  resolution: "@osn/icons@npm:1.71.0"
-  checksum: b2dd025b85c4fab9a614ca2d68330569677fc053cd749d877d005b844c456d80802c427b05777ff4fb4da23f1106522021c2be088d36415063f6c2c2f5ca5aa9
+"@osn/icons@npm:^1.72.0":
+  version: 1.72.0
+  resolution: "@osn/icons@npm:1.72.0"
+  checksum: 08fc7a8c4df2a26889ab5c2bf8db35b61fb5794bcd6f8c5113a5120eda919da7ec97e889a7e03796d0d426029683a48ea91d2fb722f6870f786a067d0fb97806
   languageName: node
   linkType: hard
 
@@ -2246,9 +2246,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/rich-text-editor@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "@osn/rich-text-editor@npm:0.6.3"
+"@osn/rich-text-editor@npm:^0.6.7":
+  version: 0.6.7
+  resolution: "@osn/rich-text-editor@npm:0.6.7"
   dependencies:
     lodash: ^4.17.21
     marked: ^4.0.15
@@ -2257,9 +2257,8 @@ __metadata:
     sanitize-html: ^2.7.0
   peerDependencies:
     "@osn/previewer": ^0.10.3
-    react: ^17.0.2
-    styled-components: ^5.3.1
-  checksum: 39a9eaa02c4e2fec5608a22a90fd3ffd6ce6c84070640ae05d4d5ec018e0ea433a55ce8659135be899ce634407861179e06e048c8bc5fac136d60fc2d9718786
+    react: ^18.2.0
+  checksum: 1c194d72a691b13126794c2e1319c1f2fb17f93fe05bd946de5e396e752fb86e469953d923c7bca0ac22d6af9a1f520f032cac895f375574e340b95c8c0c1e99
   languageName: node
   linkType: hard
 
@@ -3456,7 +3455,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.71.0
+    "@osn/icons": ^1.72.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -3491,7 +3490,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.71.0
+    "@osn/icons": ^1.72.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
@@ -7412,9 +7411,9 @@ __metadata:
   linkType: hard
 
 "ip@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "ip@npm:2.0.0"
-  checksum: cfcfac6b873b701996d71ec82a7dd27ba92450afdb421e356f44044ed688df04567344c36cbacea7d01b1c39a4c732dc012570ebe9bebfb06f27314bca625349
+  version: 2.0.1
+  resolution: "ip@npm:2.0.1"
+  checksum: d765c9fd212b8a99023a4cde6a558a054c298d640fec1020567494d257afd78ca77e37126b1a3ef0e053646ced79a816bf50621d38d5e768cdde0431fa3b0d35
   languageName: node
   linkType: hard
 
@@ -8789,12 +8788,12 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": "*"
-    "@osn/icons": ^1.71.0
+    "@osn/icons": ^1.72.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.1.2
-    "@osn/rich-text-editor": ^0.6.3
+    "@osn/rich-text-editor": ^0.6.7
     "@polkadot/api": ^10.11.2
     "@polkadot/extension-dapp": ^0.46.6
     "@radix-ui/react-dialog": ^1.0.4
@@ -11562,11 +11561,11 @@ __metadata:
   linkType: hard
 
 "undici@npm:^5.12.0":
-  version: 5.26.3
-  resolution: "undici@npm:5.26.3"
+  version: 5.28.3
+  resolution: "undici@npm:5.28.3"
   dependencies:
     "@fastify/busboy": ^2.0.0
-  checksum: aaa9aadb712cf80e1a9cea2377e4842670105e00abbc184a21770ea5a8b77e4e2eadc200eac62442e74a1cd3b16a840c6f73b112b9e886bd3c1a125eb22e4f21
+  checksum: fa1e65aff896c5e2ee23637b632e306f9e3a2b32a3dc0b23ea71e5555ad350bcc25713aea894b3dccc0b7dc2c5e92a5a58435ebc2033b731a5524506f573dfd2
   languageName: node
   linkType: hard
 

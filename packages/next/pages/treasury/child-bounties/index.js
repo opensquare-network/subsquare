@@ -7,6 +7,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
+import isNil from "lodash.isnil";
 
 export default function ChildBountiesPage({ bounties }) {
   const chainSettings = useChainSettings();
@@ -51,7 +52,9 @@ export default function ChildBountiesPage({ bounties }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const bounties = await fetchList("treasury/child-bounties", context);
+  const { parentBountyId } = context.query;
+  const params = isNil(parentBountyId) ? null : { parent: parentBountyId };
+  const bounties = await fetchList("treasury/child-bounties", context, params);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
