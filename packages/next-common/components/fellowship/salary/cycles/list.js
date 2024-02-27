@@ -3,6 +3,10 @@ import noop from "lodash.noop";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import SecondaryButton from "next-common/lib/button/secondary";
+import {
+  FellowshipSalaryRegisteredPaid,
+  FellowshipSalaryUnregisteredPaid,
+} from "./history/registerPaid";
 import FellowshipSalaryTimeRange from "./history/timeRange";
 
 const columns = [
@@ -16,7 +20,6 @@ const columns = [
   },
   {
     name: "Expenditure",
-    className: "",
   },
   {
     name: "Registered Paid",
@@ -41,8 +44,12 @@ export default function FellowshipSalaryCycles({ historyCycles }) {
       index,
       <FellowshipSalaryTimeRange key="time-range" cycle={item} />,
       <div key="expenditure">expend</div>,
-      <div key="registered-paid">registered</div>,
-      <div key="unregistered-paid">unregistered</div>,
+      <div key="registered-paid">
+        <FellowshipSalaryRegisteredPaid cycle={item} />
+      </div>,
+      <div key="unregistered-paid">
+        <FellowshipSalaryUnregisteredPaid cycle={item} />
+      </div>,
       <div key="action">
         <SecondaryButton
           disabled
