@@ -45,6 +45,17 @@ const links = [
   },
 ];
 
+const ethereumNetwork = {
+  chainId: "0x3640e",
+  chainName: "HydraDX",
+  rpcUrls: ["https://rpc.hydradx.cloud"],
+  blockExplorerUrls: ["https://explorer.evm.hydration.cloud"],
+  nativeCurrency: {
+    symbol: "WETH",
+    decimals: 18,
+  },
+};
+
 const hydradx = {
   value: Chains.hydradx,
   name: "HydraDX",
@@ -89,6 +100,7 @@ const hydradx = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  ethereumNetwork,
 };
 
 export default hydradx;
