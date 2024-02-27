@@ -6,6 +6,7 @@ import {
   ProjectIconHydradxLight,
   ProjectLogoHydradxDark,
 } from "@osn/icons/subsquare";
+import ChainTypes from "../chainTypes";
 
 const endpoints = [
   {
@@ -100,6 +101,7 @@ const hydradx = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  chainType: ChainTypes.MIXED,
   ethereumNetwork,
 };
 
