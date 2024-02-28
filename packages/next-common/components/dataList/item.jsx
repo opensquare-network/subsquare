@@ -78,13 +78,15 @@ function MobileContent({ row = [], data, columns }) {
   });
 
   const hasAction = last(items).name === "";
-
   const actionIdx = hasAction ? items.length - 1 : -1;
+  const action = items[actionIdx];
+
   const statusIdx = findLastIndex(
     items,
     (item) => item.name?.toLowerCase?.() === "status",
   );
-  const action = items[actionIdx];
+  const hasStatus = statusIdx > -1;
+
   const restItems = items.filter(
     (_, idx) => ![actionIdx, statusIdx].includes(idx),
   );
@@ -105,12 +107,12 @@ function MobileContent({ row = [], data, columns }) {
 
   return (
     <div className="datalist-mobile-item sm:hidden sm:py-4 space-y-3">
-      <div className="flex">
+      <div>
         <div className="flex items-center justify-between">
           {first.value}
           {action && items[actionIdx]?.value}
         </div>
-        {statusIdx && (
+        {hasStatus && (
           <div className="flex justify-end pt-3">{items[statusIdx]?.value}</div>
         )}
       </div>
