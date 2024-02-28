@@ -4,14 +4,14 @@ import { useChainSettings } from "next-common/context/chain";
 import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 import { useSelector } from "react-redux";
-import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import Track from "next-common/components/referenda/track/trackTag";
 import DataList from "next-common/components/dataList";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { referendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/referendaDelegations";
 
 function DelegationList() {
   const { decimals, symbol } = useChainSettings();
-  const delegations = useSelector(myReferendaDelegationsSelector);
+  const delegations = useSelector(referendaDelegationsSelector);
 
   const colWidths = {
     track: 160,
@@ -89,7 +89,7 @@ function DelegationList() {
 }
 
 export default function MyTracksDelegation() {
-  const delegations = useSelector(myReferendaDelegationsSelector);
+  const delegations = useSelector(referendaDelegationsSelector);
 
   return (
     <>

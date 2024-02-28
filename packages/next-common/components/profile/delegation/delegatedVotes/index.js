@@ -1,15 +1,16 @@
-import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
 import TracksSummary from "./tracksSummary";
 import MyTracksDelegation from "./myTracksDelegation";
 import { Referenda, useModuleTab } from "../../votingHistory/common";
 import useApi from "next-common/utils/hooks/useApi";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useDemocracyDelegating from "next-common/utils/hooks/referenda/useDemocracyDelegating";
 import DemocracyDelegatedVotes from "./democracyDelegatedVotes";
 import MyDemocracyDelegation from "./myDemocracyDelegation";
+import useFetchReferendaDelegations from "next-common/utils/hooks/referenda/useFetchReferendaDelegations";
+import useProfileAddress from "../../useProfileAddress";
 
 function OpenGovDelegated() {
-  useFetchMyReferendaDelegations();
+  const address = useProfileAddress();
+  useFetchReferendaDelegations(address);
 
   return (
     <div className="flex flex-col gap-[18px]">
@@ -21,8 +22,8 @@ function OpenGovDelegated() {
 
 function DemocracyDelegated() {
   const api = useApi();
-  const realAddress = useRealAddress();
-  const { delegating } = useDemocracyDelegating(api, realAddress);
+  const address = useProfileAddress();
+  const { delegating } = useDemocracyDelegating(api, address);
 
   return (
     <div className="flex flex-col gap-[18px]">
