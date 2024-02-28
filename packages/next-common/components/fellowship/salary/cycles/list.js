@@ -10,6 +10,7 @@ import {
   FellowshipSalaryUnregisteredPaid,
 } from "./history/registerPaid";
 import FellowshipSalaryTimeRange from "./history/timeRange";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
 const columns = [
   {
@@ -68,15 +69,17 @@ export default function FellowshipSalaryCycles({ historyCycles }) {
   });
 
   return (
-    <>
+    <SecondaryCard>
       <DataList
         className="text14Medium"
-        bordered
         columns={columns}
         noDataText="No Cycles"
         rows={rows}
       />
-      <Pagination {...historyCycles} />
-    </>
+
+      <div className="mt-4">
+        <Pagination {...historyCycles} />
+      </div>
+    </SecondaryCard>
   );
 }
