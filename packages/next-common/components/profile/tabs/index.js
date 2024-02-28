@@ -44,5 +44,12 @@ export default function useProfileTabs() {
     });
   }
 
+  if (hasReferenda || hasFellowship || !noDemocracy) {
+    tabs.push({
+      label: "Delegation",
+      url: `${prefix}delegation`,
+    });
+  }
+
   return tabs;
 }
