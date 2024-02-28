@@ -63,7 +63,7 @@ export async function submitMoonMetamaskExtrinsic({
     onInBlock,
     onSubmitted,
     onClose,
-    signerAddress: signerAccount?.address,
+    signerAccount,
     isMounted,
   });
 }

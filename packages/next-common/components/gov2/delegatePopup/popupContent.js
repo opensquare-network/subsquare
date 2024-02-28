@@ -47,6 +47,7 @@ export default function PopupContent({
     api,
     signerAccount?.realAddress,
   );
+
   const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
     api,
     signerAccount?.address,

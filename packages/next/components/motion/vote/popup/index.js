@@ -34,7 +34,7 @@ export async function submitSubstrateExtrinsic({
     setLoading,
     onInBlock,
     onClose,
-    signerAddress: signerAccount?.address,
+    signerAccount,
     isMounted,
   });
 }

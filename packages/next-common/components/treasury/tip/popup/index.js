@@ -76,13 +76,14 @@ function PopupContent({ onClose }) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    const signerAddress = signerAccount.address;
-
     await sendTx({
       tx,
       dispatch,
       setLoading,
       onInBlock: (eventData, blockHash) => {
+        if (!eventData || !blockHash) {
+          return;
+        }
         api?.rpc.chain.getHeader(blockHash).then((header) => {
           const blockNumber = header.number.toNumber();
           const [tipHash] = eventData;
@@ -90,7 +91,7 @@ function PopupContent({ onClose }) {
         });
       },
       onClose,
-      signerAddress,
+      signerAccount,
       isMounted,
       section: "tips",
       method: "NewTip",

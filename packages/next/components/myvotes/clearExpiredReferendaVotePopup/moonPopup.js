@@ -116,7 +116,7 @@ export default function MoonClearExpiredReferendaVotePopup({
         dispatch,
         setLoading: setIsLoading,
         onClose,
-        signerAddress: signerAccount?.address,
+        signerAccount,
         isMounted,
       });
     },

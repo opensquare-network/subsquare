@@ -50,12 +50,8 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
       <Item>
         <span>Capital</span>
         <ValueDisplay
-          value={
-            <TextSecondary>
-              {toPrecision(delegating.balance, node.decimals)}
-            </TextSecondary>
-          }
-          symbol={<TextSecondary>{node.symbol}</TextSecondary>}
+          value={toPrecision(delegating.balance, node.decimals)}
+          symbol={node.symbol}
         />
       </Item>
     </GreyInfoPanel>

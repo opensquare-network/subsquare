@@ -18,6 +18,7 @@ import zeitgeist from "./consts/settings/zeitgeist";
 import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
+import hydradxTestnet from "./consts/settings/hydradxTestnet";
 import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
 import westendCollectives from "./consts/settings/westendCollectives";
@@ -47,6 +48,7 @@ export const nodes = [
   crust,
   darwinia2,
   hydradx,
+  hydradxTestnet,
   interlay,
   // kabocha,
   karura,

@@ -6,6 +6,7 @@ import List from "./list";
 import Categories from "./categories";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const getCategoryByRoute = (route, categories = []) => {
   let category;
@@ -24,6 +25,7 @@ const getCategoryByRoute = (route, categories = []) => {
 
 export default function Posted() {
   const { route, userSummary: summary, id } = usePageProps();
+  const maybeEvmAddress = tryConvertToEvmAddress(id);
   const postedRoute = route.replace(/^posted\//, "");
 
   const overview = {
@@ -60,12 +62,12 @@ export default function Posted() {
   useEffect(() => {
     router.push(
       {
-        pathname: `/user/${id}/posted/${secondCategory.routePath}`,
+        pathname: `/user/${maybeEvmAddress}/posted/${secondCategory.routePath}`,
       },
       undefined,
       { shallow: true },
     );
-  }, [id, secondCategory]);
+  }, [maybeEvmAddress, secondCategory]);
 
   useEffect(() => {
     const [, postedRoute] = router.asPath.split("/posted/");
@@ -75,7 +77,7 @@ export default function Posted() {
   }, [router]);
 
   useEffect(() => {
-    if (router.asPath !== `/user/${id}`) {
+    if (router.asPath !== `/user/${maybeEvmAddress}`) {
       return;
     }
 

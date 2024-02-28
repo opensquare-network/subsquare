@@ -24,7 +24,7 @@ export function getCouncilMenu(summary) {
       Chains.kintsugi,
       Chains.interlay,
       Chains.development,
-      Chains["westend-collectives"],
+      Chains.westendCollectives,
       Chains.collectives,
       Chains.vara,
     ],

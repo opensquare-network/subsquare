@@ -14,6 +14,10 @@ import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
+import {
+  getAddressHint,
+  tryConvertToEvmAddress,
+} from "next-common/utils/hydradxUtil.js";
 
 const Wrapper = Relative;
 
@@ -109,13 +113,17 @@ export default function AddressCombo({
 }) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [inputAddress, setInputAddress] = useState(address || "");
+  const [inputAddress, setInputAddress] = useState(
+    tryConvertToEvmAddress(address) || "",
+  );
   const ref = useRef();
 
   const selectedAccount = accounts.find(
     (item) => normalizeAddress(item.address) === address,
   );
-  const shortAddr = addressEllipsis(address);
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
+  const addressHint = getAddressHint(address);
+  const shortEvmAddr = addressEllipsis(maybeEvmAddress);
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
 
@@ -147,25 +155,31 @@ export default function AddressCombo({
   }, [fetchAddressIdentity, address]);
 
   const onBlur = () => {
-    if (allowInvalidAddress) {
-      setAddress(inputAddress);
-      return;
-    }
-
     const isAddr = isAddress(inputAddress);
     if (!isAddr) {
+      if (allowInvalidAddress) {
+        setAddress(inputAddress);
+        return;
+      }
+
       setAddress();
       return;
     }
 
     const ss58Addr = normalizeAddress(inputAddress);
     if (!ss58Addr) {
+      if (allowInvalidAddress) {
+        setAddress(inputAddress);
+        return;
+      }
+
       setAddress();
       return;
     }
 
     setAddress(ss58Addr);
-    setInputAddress(ss58Addr);
+    const maybeEvmAddress = tryConvertToEvmAddress(inputAddress);
+    setInputAddress(maybeEvmAddress);
     setEdit(false);
   };
 
@@ -202,7 +216,7 @@ export default function AddressCombo({
                 selectedAccount.name}
             </div>
           </IdentityName>
-          <div>{shortAddr}</div>
+          <div>{addressHint}</div>
         </NameWrapper>
       </>
     );
@@ -215,9 +229,9 @@ export default function AddressCombo({
             {identities[address] && (
               <IdentityIcon identity={identities[address].identity} />
             )}
-            <div>{identities[address]?.displayName || shortAddr}</div>
+            <div>{identities[address]?.displayName || shortEvmAddr}</div>
           </IdentityName>
-          <div>{shortAddr}</div>
+          <div>{addressHint}</div>
         </NameWrapper>
       </>
     );
@@ -227,12 +241,13 @@ export default function AddressCombo({
     <Options className="scrollbar-pretty">
       {(accounts || []).map((item, index) => {
         const ss58Address = normalizeAddress(item.address);
+        const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
         return (
           <Item
             key={index}
             onClick={() => {
               setAddress(ss58Address);
-              setInputAddress(ss58Address);
+              setInputAddress(maybeEvmAddress);
               setEdit(false);
               setShow(false);
             }}
@@ -246,7 +261,7 @@ export default function AddressCombo({
                 )}
                 <div>{identities[item.address]?.displayName || item.name}</div>
               </IdentityName>
-              <div>{addressEllipsis(ss58Address)}</div>
+              <div>{getAddressHint(ss58Address)}</div>
             </NameWrapper>
           </Item>
         );

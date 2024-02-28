@@ -17,6 +17,7 @@ import {
   WalletNova,
 } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const WalletIcon = ({ wallet }) => {
   return (
@@ -66,6 +67,7 @@ export default function Account({ account }) {
   const [identity, setIdentity] = useState(null);
 
   const address = normalizeAddress(account?.address);
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
   const wallet = account?.meta?.source;
 
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function Account({ account }) {
   return (
     <>
       <AvatarWrapper>
-        <Avatar address={address} size={40} />
+        <Avatar address={maybeEvmAddress} size={40} />
         <WalletIcon wallet={wallet} />
       </AvatarWrapper>
       <NameWrapper>
@@ -89,12 +91,12 @@ export default function Account({ account }) {
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
-            <div>{addressEllipsis(address)}</div>
+            <div>{addressEllipsis(maybeEvmAddress)}</div>
           </>
         ) : (
           <>
             <div className="text-textPrimary">{account?.name}</div>
-            <div>{addressEllipsis(address) ?? "--"}</div>
+            <div>{addressEllipsis(maybeEvmAddress) ?? "--"}</div>
           </>
         )}
       </NameWrapper>

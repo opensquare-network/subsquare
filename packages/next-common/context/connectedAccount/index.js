@@ -29,6 +29,19 @@ export function ConnectedAccountProvider({
     }
   }, []);
 
+  const saveConnectedAccount = useCallback((account) => {
+    setConnectedAccount(account);
+    setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
+  }, []);
+
+  const saveLastConnectedAccount = useCallback((account) => {
+    setLastConnectedAccount(account);
+    localStorage.setItem(
+      CACHE_KEY.lastConnectedAccount,
+      JSON.stringify(account),
+    );
+  }, []);
+
   const disconnect = useCallback(async () => {
     await logoutUser(userContext);
     setConnectedAccount(null);
@@ -38,17 +51,11 @@ export function ConnectedAccountProvider({
   const connect = useCallback(
     async (account) => {
       await disconnect();
-      setConnectedAccount(account);
-      const connectedAccountJsonStr = JSON.stringify(account);
-      setCookie(CACHE_KEY.connectedAccount, connectedAccountJsonStr, 365);
-      setLastConnectedAccount(account);
-      localStorage.setItem(
-        CACHE_KEY.lastConnectedAccount,
-        connectedAccountJsonStr,
-      );
+      saveConnectedAccount(account);
+      saveLastConnectedAccount(account);
       await fetchAndUpdateUser(userContext);
     },
-    [disconnect, userContext],
+    [disconnect, saveLastConnectedAccount, saveConnectedAccount, userContext],
   );
 
   return (
@@ -58,6 +65,8 @@ export function ConnectedAccountProvider({
         lastConnectedAccount,
         connect,
         disconnect,
+        saveConnectedAccount,
+        saveLastConnectedAccount,
       }}
     >
       {children}

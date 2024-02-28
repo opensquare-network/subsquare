@@ -10,6 +10,7 @@ import { encodeAddressToChain } from "../services/address";
 import uniqBy from "lodash.uniqby";
 import getChainSettings from "./consts/settings";
 import { getIdentityDisplay } from "./identity";
+import { tryConvertToEvmAddress } from "./hydradxUtil";
 
 export function getTitle(item) {
   return `${item?.title ?? "--"}`;
@@ -56,7 +57,8 @@ export async function getMentionName(user, chain) {
     mentionName = addressEllipsis(address);
   } else if (isPolkadotKeyRegisteredUser(user)) {
     address = encodeAddressToChain(Buffer.from(user.publicKey, "hex"), chain);
-    mentionName = addressEllipsis(address);
+    const maybeEvmAddress = tryConvertToEvmAddress(address);
+    mentionName = addressEllipsis(maybeEvmAddress);
   } else {
     address = user.address;
     mentionName = user.username;

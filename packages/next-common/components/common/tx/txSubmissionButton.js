@@ -45,7 +45,7 @@ export default function TxSubmissionButton({
       tx,
       dispatch,
       setLoading: setIsCalling,
-      signerAddress: signerAccount.address,
+      signerAccount,
       isMounted,
       onClose,
       onSubmitted,

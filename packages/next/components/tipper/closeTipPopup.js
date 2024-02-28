@@ -26,8 +26,6 @@ export default function CloseTipPopup({ tipHash, onClose }) {
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
       let tx = api.tx.tips.closeTip(tipHash);
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -38,7 +36,7 @@ export default function CloseTipPopup({ tipHash, onClose }) {
         setLoading: setIsLoading,
         dispatch,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

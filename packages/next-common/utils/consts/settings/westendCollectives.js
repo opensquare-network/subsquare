@@ -33,9 +33,9 @@ const westendCollectivesEndpoints = [
 ];
 
 const westendCollectives = {
-  value: Chains["westend-collectives"],
+  value: Chains.westendCollectives,
   name: "Collectives",
-  identity: "westend",
+  identity: Chains.westend,
   symbol: "WND",
   decimals: 12,
   blockTime: 12000,

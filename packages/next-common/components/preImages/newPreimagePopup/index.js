@@ -13,7 +13,6 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import noop from "lodash.noop";
-import { emptyFunction } from "next-common/utils";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -92,10 +91,7 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
       let tx = notePreimageTx;
-
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
       }
@@ -104,19 +100,24 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
         tx,
         setLoading: setIsSubmitting,
         dispatch,
-        signerAddress,
+        signerAccount,
         isMounted,
         onInBlock: () => {
           onCreated(encodedHash, encodedLength);
           dispatch(incPreImagesTrigger());
         },
-        onFinalized:
-          onCreated !== noop
-            ? emptyFunction
-            : () => dispatch(incPreImagesTrigger()),
+        onFinalized: () => dispatch(incPreImagesTrigger()),
+        onClose: onCreated === noop ? onClose : undefined,
       });
     },
-    [dispatch, isMounted, showErrorToast, setIsSubmitting, notePreimageTx],
+    [
+      dispatch,
+      isMounted,
+      showErrorToast,
+      setIsSubmitting,
+      notePreimageTx,
+      onClose,
+    ],
   );
 
   return (

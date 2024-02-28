@@ -76,7 +76,7 @@ export default function NewDemocracyProposalPopup({
         api,
         dispatch,
         isMounted,
-        signerAddress: signerAccount.address,
+        signerAccount,
         onInBlock: (eventData) => {
           if (!eventData) {
             return;

@@ -97,8 +97,6 @@ function PopupContent({ referendumIndex, onClose }) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    const signerAddress = signerAccount.address;
-
     await sendTx({
       tx,
       dispatch,
@@ -112,7 +110,7 @@ function PopupContent({ referendumIndex, onClose }) {
       onInBlock: () => {
         getMyVoteAndShowSuccessful();
       },
-      signerAddress,
+      signerAccount,
       isMounted,
       onClose,
     });
