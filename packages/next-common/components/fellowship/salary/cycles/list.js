@@ -1,9 +1,5 @@
-import { ArrowRight } from "@osn/icons/subsquare";
-import noop from "lodash.noop";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
-import Tooltip from "next-common/components/tooltip";
-import SecondaryButton from "next-common/lib/button/secondary";
 import FellowshipSalaryExpenditure from "./history/expenditure";
 import {
   FellowshipSalaryRegisteredPaid,
@@ -57,33 +53,12 @@ const unregisteredPaidColumn = {
   },
 };
 
-const actionColumn = {
-  name: "",
-  width: 80,
-  className: "text-right",
-  cellRender() {
-    return (
-      <Tooltip content="View Detail">
-        <SecondaryButton
-          disabled
-          className="w-7 p-0"
-          size="small"
-          onClick={noop}
-        >
-          <ArrowRight className="w-4 h-4" />
-        </SecondaryButton>
-      </Tooltip>
-    );
-  },
-};
-
 const desktopColumns = [
   indexColumn,
   timeRangeColumn,
   expenditureColumn,
   registeredPaidColumn,
   unregisteredPaidColumn,
-  actionColumn,
 ];
 
 const mobileColumns = [
@@ -107,7 +82,6 @@ const mobileColumns = [
   expenditureColumn,
   registeredPaidColumn,
   unregisteredPaidColumn,
-  actionColumn,
 ];
 
 export default function FellowshipSalaryCycles({ historyCycles }) {
