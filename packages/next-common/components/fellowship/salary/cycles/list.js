@@ -15,26 +15,30 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 const columns = [
   {
     name: "Index",
-    className: "w-20",
+    width: 80,
   },
   {
     name: "Time Range",
-    className: "w-[240px]",
+    width: 240,
   },
   {
     name: "Expenditure",
+    className: "min-w-[140px]",
   },
   {
     name: "Registered Paid",
-    className: "w-40 text-right",
+    width: 160,
+    className: "text-right",
   },
   {
     name: "Unregistered Paid",
-    className: "w-40 text-right",
+    width: 160,
+    className: "text-right",
   },
   {
     name: "",
-    className: "w-20 text-right",
+    width: 80,
+    className: "text-right",
   },
 ];
 
