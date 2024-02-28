@@ -7,12 +7,17 @@ import { cn } from "next-common/utils";
 export default function FellowshipTotalPeriodCountdown({
   percentage,
   totalRemain,
+  className = "",
 }) {
   const [navCollapsed] = useNavCollapsed();
 
   return (
     <div
-      className={cn("flex", navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
+      className={cn(
+        "flex",
+        navCollapsed ? "max-sm:hidden" : "max-md:hidden",
+        className,
+      )}
     >
       <Tooltip content={!!totalRemain && <Remaining blocks={totalRemain} />}>
         <CountDown percent={percentage} />

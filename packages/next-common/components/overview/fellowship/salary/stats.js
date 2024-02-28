@@ -110,6 +110,7 @@ export default function FellowshipSalaryStats() {
 
   const totalPeriodItem = {
     title: "Total Period",
+    className: "relative",
     content: (
       <LoadableContent isLoading={isNil(totalCyclePeriod)}>
         <Tooltip
@@ -124,6 +125,7 @@ export default function FellowshipSalaryStats() {
     ),
     suffix: (
       <FellowshipTotalPeriodCountdown
+        className="absolute top-0 right-0"
         percentage={totalPercentage}
         totalRemain={totalRemain}
       />
