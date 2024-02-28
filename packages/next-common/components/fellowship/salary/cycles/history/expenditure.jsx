@@ -15,7 +15,7 @@ export default function FellowshipSalaryExpenditure({ cycle = {} }) {
   const percentage = toPercentage(paid / budget);
 
   return (
-    <div>
+    <div className="max-sm:text-right">
       <div>
         <ValueDisplay
           className="[&_.value-display-symbol]:hidden"
@@ -30,12 +30,16 @@ export default function FellowshipSalaryExpenditure({ cycle = {} }) {
 
       <Tooltip className="block" content={`${percentage}%`}>
         <Progress
-          className="h-1 my-1.5"
+          className="h-1 my-1.5 max-sm:w-32"
           percentage={percentage}
           fg="var(--theme500)"
           bg="var(--theme100)"
         />
       </Tooltip>
+
+      <div className="text12Medium text-textSecondary hidden max-sm:block">
+        {percentage}%
+      </div>
     </div>
   );
 }

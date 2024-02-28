@@ -7,7 +7,7 @@ function RegisterPaid({ count, paid, type = "" }) {
   const { symbol, decimals } = useSalaryAsset();
 
   return (
-    <div>
+    <div className="max-sm:text-right">
       <ValueDisplay value={toPrecision(paid, decimals)} symbol={symbol} />
       <div>
         <Tooltip

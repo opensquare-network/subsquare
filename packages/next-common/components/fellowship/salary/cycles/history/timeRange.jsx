@@ -1,11 +1,19 @@
 import dayjs from "dayjs";
 import Tooltip from "next-common/components/tooltip";
 
+function formatDateTime(time) {
+  return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
+}
+
+function formatDate(time) {
+  return dayjs(time).format("YYYY-MM-DD");
+}
+
 function formatBlockHeight(height) {
   return "#" + height.toLocaleString();
 }
 
-export default function FellowshipSalaryTimeRange({ cycle = {} }) {
+export function FellowshipSalaryTimeRange({ cycle = {} }) {
   const { indexer = {}, endIndexer = {} } = cycle || {};
 
   return (
@@ -19,18 +27,27 @@ export default function FellowshipSalaryTimeRange({ cycle = {} }) {
           </div>
 
           <div className="text12Medium">
-            Start Time: {dayjs(indexer.blockTime).format("YYYY-MM-DD HH:mm:ss")}
+            Start Time: {formatDateTime(indexer.blockTime)}
           </div>
 
           <div className="text12Medium">
-            End Time:{" "}
-            {dayjs(endIndexer.blockTime).format("YYYY-MM-DD HH:mm:ss")}
+            End Time: {formatDateTime(endIndexer.blockTime)}
           </div>
         </div>
       }
     >
-      {dayjs(indexer.blockTime).format("YYYY-MM-DD")} -{" "}
-      {dayjs(endIndexer.blockTime).format("YYYY-MM-DD")}
+      {formatDate(indexer.blockTime)} - {formatDate(endIndexer.blockTime)}
     </Tooltip>
+  );
+}
+
+export function FellowshipSalaryTimeBlock({ indexer = {} }) {
+  return (
+    <div className="max-sm:text-right">
+      <div>{formatDateTime(indexer.blockTime)}</div>
+      <div className="text12Medium text-textSecondary">
+        {formatBlockHeight(indexer.blockHeight)}
+      </div>
+    </div>
   );
 }
