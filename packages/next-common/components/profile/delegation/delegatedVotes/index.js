@@ -1,29 +1,43 @@
 import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
-import TracksSummary from "../common/tracksSummary";
-import MyDelegation from "./myDelegation";
+import TracksSummary from "./tracksSummary";
+import MyTracksDelegation from "./myTracksDelegation";
 import { Referenda, useModuleTab } from "../../votingHistory/common";
+import useApi from "next-common/utils/hooks/useApi";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useDemocracyDelegating from "next-common/utils/hooks/referenda/useDemocracyDelegating";
+import DemocracyDelegatedVotes from "./democracyDelegatedVotes";
+import MyDemocracyDelegation from "./myDemocracyDelegation";
 
-function OpenGovDelegatedVotes() {
+function OpenGovDelegated() {
   useFetchMyReferendaDelegations();
 
   return (
     <div className="flex flex-col gap-[18px]">
       <TracksSummary />
-      <MyDelegation />
+      <MyTracksDelegation />
     </div>
   );
 }
 
-function DemocracyDelegatedVotes() {
-  return null;
+function DemocracyDelegated() {
+  const api = useApi();
+  const realAddress = useRealAddress();
+  const { delegating } = useDemocracyDelegating(api, realAddress);
+
+  return (
+    <div className="flex flex-col gap-[18px]">
+      <DemocracyDelegatedVotes delegating={delegating} />
+      <MyDemocracyDelegation delegating={delegating} />
+    </div>
+  );
 }
 
 export default function DelegatedVotes() {
   const moduleTab = useModuleTab();
 
   if (moduleTab === Referenda) {
-    return <OpenGovDelegatedVotes />;
+    return <OpenGovDelegated />;
   }
 
-  return <DemocracyDelegatedVotes />;
+  return <DemocracyDelegated />;
 }

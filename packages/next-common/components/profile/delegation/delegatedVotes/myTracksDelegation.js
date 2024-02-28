@@ -88,7 +88,7 @@ function DelegationList() {
   );
 }
 
-export default function MyDelegation() {
+export default function MyTracksDelegation() {
   const delegations = useSelector(myReferendaDelegationsSelector);
 
   return (

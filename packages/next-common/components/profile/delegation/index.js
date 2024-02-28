@@ -7,20 +7,17 @@ import {
 import ListTabs from "./listTabs";
 
 export default function Delegation() {
-  const { hasReferenda, noDemocracy } = useChainSettings();
+  const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const availableTabs = [];
   if (hasReferenda) {
     availableTabs.push({ tabId: Referenda, tabTitle: "OpenGov" });
   }
-  if (!noDemocracy) {
+  if (!noDemocracyModule) {
     availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
   }
 
-  let defaultTab = Democracy;
-  if (hasReferenda) {
-    defaultTab = Referenda;
-  }
+  const defaultTab = availableTabs[0]?.tabId;
 
   return (
     <ModuleTabProvider availableTabs={availableTabs} defaultTab={defaultTab}>
