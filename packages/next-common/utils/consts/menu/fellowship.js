@@ -6,7 +6,6 @@ import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
-import { CHAIN } from "next-common/utils/constants";
 
 export const name = "FELLOWSHIP";
 
@@ -15,7 +14,6 @@ export const Names = {
   members: "Members",
   core: "Core",
   salary: "Salary",
-  params: "Params",
   all: "All",
 };
 
@@ -47,7 +45,6 @@ function getFellowshipSalaryMenu() {
 
 export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
-  const chainSettings = getChainSettings(CHAIN);
 
   const menu = {
     name: Names.fellowship,
@@ -74,11 +71,6 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       },
       getFellowshipCoreMenu(),
       getFellowshipSalaryMenu(),
-      chainSettings.hasFellowshipParams && {
-        value: "fellowship-params",
-        name: Names.params,
-        pathname: "/fellowship/params",
-      },
       {
         component: (
           <Divider
