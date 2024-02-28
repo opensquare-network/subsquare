@@ -17,7 +17,12 @@ export default function StatescanLink({ indexer, children }) {
   }
 
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
-  if (isNil(extrinsicIndex) && isNil(index) && isNil(eventIndex)) {
+  if (
+    isNil(extrinsicIndex) &&
+    isNil(index) &&
+    isNil(eventIndex) &&
+    isNil(blockHeight)
+  ) {
     return null;
   }
 

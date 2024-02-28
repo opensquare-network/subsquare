@@ -6,7 +6,6 @@ import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
-import { CHAIN } from "next-common/utils/constants";
 
 export const name = "FELLOWSHIP";
 
@@ -14,7 +13,7 @@ export const Names = {
   fellowship: "FELLOWSHIP",
   members: "Members",
   core: "Core",
-  params: "Params",
+  salary: "Salary",
   all: "All",
 };
 
@@ -31,9 +30,21 @@ function getFellowshipCoreMenu() {
   };
 }
 
+function getFellowshipSalaryMenu() {
+  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!chainSettings.hasFellowshipCore) {
+    return null;
+  }
+
+  return {
+    value: "fellowship-salary",
+    name: Names.salary,
+    pathname: "/fellowship/salary",
+  };
+}
+
 export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
-  const chainSettings = getChainSettings(CHAIN);
 
   const menu = {
     name: Names.fellowship,
@@ -59,11 +70,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         pathname: "/fellowship/members",
       },
       getFellowshipCoreMenu(),
-      chainSettings.hasFellowshipParams && {
-        value: "fellowship-params",
-        name: Names.params,
-        pathname: "/fellowship/params",
-      },
+      getFellowshipSalaryMenu(),
       {
         component: (
           <Divider
