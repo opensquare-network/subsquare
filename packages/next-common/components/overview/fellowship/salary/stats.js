@@ -1,6 +1,5 @@
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Summary from "next-common/components/summary/v2/base";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { cn, toPercentage } from "next-common/utils";
@@ -160,7 +159,7 @@ export default function FellowshipSalaryStats() {
   ];
 
   return (
-    <SecondaryCard>
+    <>
       <Summary
         items={desktopSummaryItems}
         className={desktopPlaceholderVisibleItem.className}
@@ -169,6 +168,6 @@ export default function FellowshipSalaryStats() {
         items={mobileSummaryItems}
         className={mobilePlaceholderVisibleItem.className}
       />
-    </SecondaryCard>
+    </>
   );
 }
