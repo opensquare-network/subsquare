@@ -7,10 +7,10 @@ import Tooltip from "next-common/components/tooltip";
 export default function FellowshipSalaryExpenditure({ cycle = {} }) {
   const { symbol, decimals } = useSalaryAsset();
 
-  const { status = {} } = cycle || {};
-  const { budget, totalRegistrations, totalUnregistrationsPaid } = status;
+  const { status = {}, registeredPaid, unRegisteredPaid } = cycle || {};
+  const { budget } = status;
 
-  const paid = totalRegistrations + totalUnregistrationsPaid || 0;
+  const paid = registeredPaid + unRegisteredPaid || 0;
 
   const percentage = toPercentage(paid / budget);
 
