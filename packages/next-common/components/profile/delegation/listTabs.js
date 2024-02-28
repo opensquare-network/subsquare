@@ -5,7 +5,7 @@ import BeenDelegated from "./beenDelegated";
 
 export default function ListTabs() {
   return (
-    <div className="md:ml-[24px]">
+    <div className="sm:ml-[24px]">
       <PageTabs
         tabs={[
           {

@@ -11,7 +11,7 @@ export default function Delegation() {
 
   const availableTabs = [];
   if (hasReferenda) {
-    availableTabs.push({ tabId: Referenda, tabTitle: Referenda });
+    availableTabs.push({ tabId: Referenda, tabTitle: "OpenGov" });
   }
   if (!noDemocracy) {
     availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
