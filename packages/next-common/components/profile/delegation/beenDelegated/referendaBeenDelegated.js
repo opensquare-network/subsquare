@@ -11,7 +11,7 @@ import BeenDelegatedPopup from "./beenDelegatedPopup";
 function BeenDelegatedList({ list }) {
   const { decimals, symbol } = useChainSettings();
   const [popupTrack, setPopupTrack] = useState(null);
-  const [showTrackBeenDelegated, setShowTrackBeenDelegated] = useState(false);
+  const [showTrackPopup, setShowTrackPopup] = useState(false);
 
   const colWidths = {
     track: 160,
@@ -66,7 +66,7 @@ function BeenDelegatedList({ list }) {
       <DetailButton
         onClick={() => {
           setPopupTrack(item.track.id);
-          setShowTrackBeenDelegated(true);
+          setShowTrackPopup(true);
         }}
       />
     </div>,
@@ -79,11 +79,11 @@ function BeenDelegatedList({ list }) {
         rows={rows}
         noDataText="No current delegations"
       />
-      {showTrackBeenDelegated && (
+      {showTrackPopup && (
         <BeenDelegatedPopup
           track={popupTrack}
           beenDelegatedList={list}
-          setShow={setShowTrackBeenDelegated}
+          setShow={setShowTrackPopup}
         />
       )}
     </>
