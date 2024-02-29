@@ -45,7 +45,7 @@ function DelegatorList({ list, isLoading }) {
     <AddressUser
       key="user"
       add={item?.delegator}
-      maxWidth={colWidths.delegatingTo}
+      maxWidth={colWidths.delegator}
     />,
     <CapitalListItem
       key="capital"
