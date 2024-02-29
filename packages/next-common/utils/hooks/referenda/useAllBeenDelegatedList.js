@@ -54,6 +54,9 @@ export function useAllBeenDelegatedList(address) {
         const totalVotes = sumBy(beenDelegated, (i) =>
           BigNumber(i.votes).toNumber(),
         );
+        /**
+         * @description track total balance
+         */
         const totalBalance = sumBy(beenDelegated, (i) =>
           BigNumber(i.balance).toNumber(),
         );
