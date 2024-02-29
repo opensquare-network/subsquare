@@ -220,6 +220,18 @@ export default function useBreadcrumbs() {
         content: getAnnouncementBreadcrumbName(id, post),
       },
     ];
+  } else if (detailPageCategory.FELLOWSHIP_SALARY_CYCLES === type) {
+    return [
+      {
+        content: "Fellowship",
+      },
+      {
+        content: "Salary Cycles",
+      },
+      {
+        content: `#${id}`,
+      },
+    ];
   }
 
   return null;

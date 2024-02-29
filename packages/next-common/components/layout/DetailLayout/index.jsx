@@ -14,6 +14,7 @@ export default function DetailLayout({
   seoInfo,
   breadcrumbs,
   children,
+  wrapChildrenWithPanel = true,
   hasSidebar,
 }) {
   const dispatch = useDispatch();
@@ -25,6 +26,21 @@ export default function DetailLayout({
   }, []);
 
   const [navCollapsed] = useNavCollapsed();
+
+  let content = children;
+  if (wrapChildrenWithPanel) {
+    content = (
+      <NeutralPanel
+        className={cn(
+          "w-full flex flex-col gap-y-12 p-12 max-sm:gap-y-4",
+          "max-sm:!rounded-none",
+          navCollapsed ? "max-md:p-6" : "max-lg:p-6",
+        )}
+      >
+        {children}
+      </NeutralPanel>
+    );
+  }
 
   return (
     <BaseLayout seoInfo={seoInfo}>
@@ -53,15 +69,7 @@ export default function DetailLayout({
               )}
               style={{ minHeight: `${sidebarHeight}px` }}
             >
-              <NeutralPanel
-                className={cn(
-                  "w-full flex flex-col gap-y-12 p-12 max-sm:gap-y-4",
-                  "max-sm:!rounded-none",
-                  navCollapsed ? "max-md:p-6" : "max-lg:p-6",
-                )}
-              >
-                {children}
-              </NeutralPanel>
+              {content}
             </div>
           </div>
         </div>
