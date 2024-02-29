@@ -1,26 +1,7 @@
 import React from "react";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import TabHeaders from "./tabHeaders";
-import styled, { css } from "styled-components";
 import { useRouter } from "next/router";
-
-const Wrapper = styled.div``;
-
-const ListWrapper = styled.div`
-  margin: 16px 0;
-`;
-
-const TabTitle = styled(TitleContainer)`
-  padding: 0;
-  ${(p) =>
-    p.active
-      ? css`
-          color: var(--textPrimary);
-        `
-      : css`
-          color: var(--textTertiary);
-        `}
-`;
+import { ListWrapper, TabTitle, Wrapper } from "./styled";
 
 export default function PageUrlTabs({ tabs }) {
   const router = useRouter();
