@@ -1,6 +1,6 @@
 import DetailLayout from "next-common/components/layout/DetailLayout";
 
-export default function FellowshipSalaryCyclesLayout({ children, ...props }) {
+export default function FellowshipSalaryCycleLayout({ children, ...props }) {
   const title = "Fellowship Salary Cycle";
   const desc =
     "The salary pallet controls the periodic process of salary payments and members registration.";

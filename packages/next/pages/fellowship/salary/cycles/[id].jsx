@@ -1,12 +1,12 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import FellowshipSalaryCyclesLayout from "next-common/components/fellowship/salary/cycles/layout";
+import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 
 export default function FellowshipSalaryCyclePage() {
   return (
-    <FellowshipSalaryCyclesLayout>
+    <FellowshipSalaryCycleLayout>
       <div>Salary Cycle detail</div>
-    </FellowshipSalaryCyclesLayout>
+    </FellowshipSalaryCycleLayout>
   );
 }
 
