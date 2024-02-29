@@ -17,7 +17,7 @@ export default function ListTabs() {
     if (tab === "" || tab === "/") {
       router.push(
         {
-          pathname: `/user/${address}/delegation/delegated`,
+          pathname: `/user/${address}/delegation`,
         },
         undefined,
         { shallow: true },
@@ -30,15 +30,15 @@ export default function ListTabs() {
       <PageUrlTabs
         tabs={[
           {
-            url: `/user/${address}/delegation/delegated`,
-            name: "Delegated Votes",
-            content: <DelegatedVotes />,
+            url: `/user/${address}/delegation/received`,
+            name: "Received",
+            content: <BeenDelegated />,
             extra: <ModuleTab />,
           },
           {
-            url: `/user/${address}/delegation/been-delegated`,
-            name: "Been Delegated",
-            content: <BeenDelegated />,
+            url: `/user/${address}/delegation/delegated`,
+            name: "Delegations",
+            content: <DelegatedVotes />,
             extra: <ModuleTab />,
           },
         ]}
