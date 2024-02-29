@@ -7,16 +7,17 @@ import DemocracyDelegatedVotes from "./democracyDelegatedVotes";
 import DemocracyDelegation from "./democracyDelegation";
 import useFetchReferendaDelegations from "next-common/utils/hooks/referenda/useFetchReferendaDelegations";
 import useProfileAddress from "../../useProfileAddress";
+import { TabContentWrapper } from "../common/styled";
 
 function OpenGovDelegated() {
   const address = useProfileAddress();
   useFetchReferendaDelegations(address);
 
   return (
-    <div className="flex flex-col gap-[18px]">
+    <TabContentWrapper>
       <TracksSummary />
       <TracksDelegation />
-    </div>
+    </TabContentWrapper>
   );
 }
 
@@ -26,10 +27,10 @@ function DemocracyDelegated() {
   const { delegating, isLoading } = useDemocracyDelegating(api, address);
 
   return (
-    <div className="flex flex-col gap-[18px]">
+    <TabContentWrapper>
       <DemocracyDelegatedVotes delegating={delegating} isLoading={isLoading} />
       <DemocracyDelegation delegating={delegating} isLoading={isLoading} />
-    </div>
+    </TabContentWrapper>
   );
 }
 

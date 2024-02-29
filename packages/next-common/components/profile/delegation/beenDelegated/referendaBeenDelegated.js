@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useChainSettings } from "next-common/context/chain";
 import Track from "next-common/components/referenda/track/trackTag";
@@ -5,7 +6,6 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import DataList from "next-common/components/dataList";
 import { toPrecision } from "next-common/utils";
 import DetailButton from "next-common/components/detailButton";
-import { useState } from "react";
 import BeenDelegatedPopup from "./beenDelegatedPopup";
 
 function BeenDelegatedList({ list, isLoading }) {

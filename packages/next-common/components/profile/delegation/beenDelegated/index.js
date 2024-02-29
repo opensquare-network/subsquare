@@ -6,21 +6,23 @@ import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAl
 import ReferendaBeenDelegatedSummary from "./referendaBeenDelegatedSummary";
 import useProfileAddress from "../../useProfileAddress";
 import ReferendaBeenDelegated from "./referendaBeenDelegated";
+import { TabContentWrapper } from "../common/styled";
 
 function OpenGovBeenDelegated() {
   const address = useProfileAddress();
   const { beenDelegatedList, isLoading } = useAllBeenDelegatedList(address);
 
   return (
-    <div className="flex flex-col gap-[18px]">
+    <TabContentWrapper>
       <ReferendaBeenDelegatedSummary
         tracksCount={beenDelegatedList?.length || 0}
+        isLoading={isLoading}
       />
       <ReferendaBeenDelegated
         beenDelegatedList={beenDelegatedList}
         isLoading={isLoading}
       />
-    </div>
+    </TabContentWrapper>
   );
 }
 
@@ -30,16 +32,17 @@ function DemocracyBeenDelegated() {
     useBeenDelegated(address);
 
   return (
-    <div className="flex flex-col gap-[18px]">
+    <TabContentWrapper>
       <DemocracyBeenDelegatedSummary
         delegations={delegations}
         addressesCount={beenDelegatedList?.length}
+        isLoading={isLoading}
       />
       <DemocracyDelegators
         delegatorsList={beenDelegatedList}
         isLoading={isLoading}
       />
-    </div>
+    </TabContentWrapper>
   );
 }
 

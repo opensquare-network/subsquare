@@ -26,7 +26,7 @@ export default function ListTabs() {
   }, [address, tab]);
 
   return (
-    <div className="sm:ml-[24px]">
+    <div className="ml-[24px]">
       <PageUrlTabs
         tabs={[
           {
