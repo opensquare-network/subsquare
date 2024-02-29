@@ -10,7 +10,7 @@ function DelegatorList({ list, isLoading }) {
   const { decimals, symbol } = useChainSettings();
 
   const colWidths = {
-    delegatingTo: 240,
+    delegator: 240,
     capital: 240,
     votes: 160,
   };
@@ -20,7 +20,7 @@ function DelegatorList({ list, isLoading }) {
       name: "Delegator",
       style: {
         textAlign: "left",
-        minWidth: colWidths.delegatingTo,
+        minWidth: colWidths.delegator,
       },
     },
     {
