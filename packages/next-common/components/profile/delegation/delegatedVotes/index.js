@@ -1,6 +1,6 @@
 import TracksSummary from "./tracksSummary";
 import TracksDelegation from "./tracksDelegation";
-import { Referenda, useModuleTab } from "../../votingHistory/common";
+import { Democracy, Referenda, useModuleTab } from "../../votingHistory/common";
 import useApi from "next-common/utils/hooks/useApi";
 import useDemocracyDelegating from "next-common/utils/hooks/referenda/useDemocracyDelegating";
 import DemocracyDelegatedVotes from "./democracyDelegatedVotes";
@@ -39,7 +39,9 @@ export default function DelegatedVotes() {
 
   if (moduleTab === Referenda) {
     return <OpenGovDelegated />;
+  } else if (moduleTab === Democracy) {
+    return <DemocracyDelegated />;
+  } else {
+    return null;
   }
-
-  return <DemocracyDelegated />;
 }
