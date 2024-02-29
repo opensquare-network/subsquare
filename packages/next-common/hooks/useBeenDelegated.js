@@ -7,6 +7,7 @@ export default function useBeenDelegated(address) {
   const api = useApi();
   const [delegations, setDelegations] = useState();
   const [beenDelegatedList, setBeenDelegatedList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setDelegations();
@@ -15,13 +16,19 @@ export default function useBeenDelegated(address) {
     if (!api || !address) {
       return;
     }
-    getDemocracyBeenDelegatedByAddress(api, address).then((result) => {
-      setDelegations(result);
-    });
-    getDemocracyBeenDelegatedListByAddress(api, address).then((result) => {
-      setBeenDelegatedList(result);
+
+    setIsLoading(true);
+    Promise.all([
+      getDemocracyBeenDelegatedByAddress(api, address).then((result) => {
+        setDelegations(result);
+      }),
+      getDemocracyBeenDelegatedListByAddress(api, address).then((result) => {
+        setBeenDelegatedList(result);
+      }),
+    ]).finally(() => {
+      setIsLoading(false);
     });
   }, [api, address]);
 
-  return { delegations, beenDelegatedList };
+  return { delegations, beenDelegatedList, isLoading };
 }

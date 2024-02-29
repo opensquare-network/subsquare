@@ -9,21 +9,25 @@ import ReferendaBeenDelegated from "./referendaBeenDelegated";
 
 function OpenGovBeenDelegated() {
   const address = useProfileAddress();
-  const { beenDelegatedList } = useAllBeenDelegatedList(address);
+  const { beenDelegatedList, isLoading } = useAllBeenDelegatedList(address);
 
   return (
     <div className="flex flex-col gap-[18px]">
       <ReferendaBeenDelegatedSummary
         tracksCount={beenDelegatedList?.length || 0}
       />
-      <ReferendaBeenDelegated beenDelegatedList={beenDelegatedList} />
+      <ReferendaBeenDelegated
+        beenDelegatedList={beenDelegatedList}
+        isLoading={isLoading}
+      />
     </div>
   );
 }
 
 function DemocracyBeenDelegated() {
   const address = useProfileAddress();
-  const { delegations, beenDelegatedList } = useBeenDelegated(address);
+  const { delegations, beenDelegatedList, isLoading } =
+    useBeenDelegated(address);
 
   return (
     <div className="flex flex-col gap-[18px]">
@@ -31,7 +35,10 @@ function DemocracyBeenDelegated() {
         delegations={delegations}
         addressesCount={beenDelegatedList?.length}
       />
-      <DemocracyDelegators delegatorsList={beenDelegatedList} />
+      <DemocracyDelegators
+        delegatorsList={beenDelegatedList}
+        isLoading={isLoading}
+      />
     </div>
   );
 }

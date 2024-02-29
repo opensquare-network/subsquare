@@ -8,7 +8,7 @@ import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
 import BeenDelegatedPopup from "./beenDelegatedPopup";
 
-function BeenDelegatedList({ list }) {
+function BeenDelegatedList({ list, isLoading }) {
   const { decimals, symbol } = useChainSettings();
   const [popupTrack, setPopupTrack] = useState(null);
   const [showTrackPopup, setShowTrackPopup] = useState(false);
@@ -89,6 +89,7 @@ function BeenDelegatedList({ list }) {
   return (
     <>
       <DataList
+        loading={isLoading}
         columns={columns}
         rows={rows}
         noDataText="No current delegations"
@@ -104,7 +105,10 @@ function BeenDelegatedList({ list }) {
   );
 }
 
-export default function ReferendaBeenDelegated({ beenDelegatedList }) {
+export default function ReferendaBeenDelegated({
+  beenDelegatedList,
+  isLoading,
+}) {
   return (
     <>
       <div className="flex mx-[24px] text16Bold gap-[4px]">
@@ -112,7 +116,7 @@ export default function ReferendaBeenDelegated({ beenDelegatedList }) {
         <span className="text-textTertiary">{beenDelegatedList?.length}</span>
       </div>
       <SecondaryCard>
-        <BeenDelegatedList list={beenDelegatedList} />
+        <BeenDelegatedList list={beenDelegatedList} isLoading={isLoading} />
       </SecondaryCard>
     </>
   );

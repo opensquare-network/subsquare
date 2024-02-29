@@ -6,7 +6,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 
-function DelegatorList({ list }) {
+function DelegatorList({ list, isLoading }) {
   const { decimals, symbol } = useChainSettings();
 
   const colWidths = {
@@ -61,6 +61,7 @@ function DelegatorList({ list }) {
 
   return (
     <DataList
+      loading={isLoading}
       columns={columns}
       rows={rows}
       noDataText="No current delegations"
@@ -68,7 +69,7 @@ function DelegatorList({ list }) {
   );
 }
 
-export default function DemocracyDelegators({ delegatorsList }) {
+export default function DemocracyDelegators({ delegatorsList, isLoading }) {
   return (
     <>
       <div className="flex mx-[24px] text16Bold gap-[4px]">
@@ -76,7 +77,7 @@ export default function DemocracyDelegators({ delegatorsList }) {
         <span className="text-textTertiary">{delegatorsList?.length}</span>
       </div>
       <SecondaryCard>
-        <DelegatorList list={delegatorsList} />
+        <DelegatorList list={delegatorsList} isLoading={isLoading} />
       </SecondaryCard>
     </>
   );
