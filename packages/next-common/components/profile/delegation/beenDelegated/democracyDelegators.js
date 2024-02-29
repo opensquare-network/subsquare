@@ -17,7 +17,7 @@ function DelegatorList({ list, isLoading }) {
 
   const columns = [
     {
-      name: "Address",
+      name: "Delegator",
       style: {
         textAlign: "left",
         minWidth: colWidths.delegatingTo,
@@ -44,7 +44,7 @@ function DelegatorList({ list, isLoading }) {
   const rows = (list || []).map((item) => [
     <AddressUser
       key="user"
-      add={item?.target}
+      add={item?.delegator}
       maxWidth={colWidths.delegatingTo}
     />,
     <CapitalListItem
