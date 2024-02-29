@@ -22,7 +22,7 @@ function DelegationList({ delegating, isLoading }) {
 
   const columns = [
     {
-      name: "Target to",
+      name: "Target",
       style: {
         textAlign: "left",
         minWidth: colWidths.delegatingTo,
