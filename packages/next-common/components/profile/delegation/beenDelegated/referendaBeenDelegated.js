@@ -6,9 +6,11 @@ import DataList from "next-common/components/dataList";
 import { toPrecision } from "next-common/utils";
 import DetailButton from "next-common/components/detailButton";
 import { useState } from "react";
+import BeenDelegatedPopup from "./beenDelegatedPopup";
 
 function BeenDelegatedList({ list }) {
   const { decimals, symbol } = useChainSettings();
+  const [popupTrack, setPopupTrack] = useState(null);
   const [showTrackBeenDelegated, setShowTrackBeenDelegated] = useState(false);
 
   const colWidths = {
@@ -61,7 +63,12 @@ function BeenDelegatedList({ list }) {
       symbol={symbol}
     />,
     <div key="detail">
-      <DetailButton onClick={() => setShowTrackBeenDelegated(true)} />
+      <DetailButton
+        onClick={() => {
+          setPopupTrack(item.track.id);
+          setShowTrackBeenDelegated(true);
+        }}
+      />
     </div>,
   ]);
 
@@ -72,7 +79,13 @@ function BeenDelegatedList({ list }) {
         rows={rows}
         noDataText="No current delegations"
       />
-      {showTrackBeenDelegated && <div />}
+      {showTrackBeenDelegated && (
+        <BeenDelegatedPopup
+          track={popupTrack}
+          beenDelegatedList={list}
+          setShow={setShowTrackBeenDelegated}
+        />
+      )}
     </>
   );
 }
