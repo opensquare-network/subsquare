@@ -54,10 +54,13 @@ export function useAllBeenDelegatedList(address) {
         const totalVotes = sumBy(beenDelegated, (i) =>
           BigNumber(i.votes).toNumber(),
         );
+        const totalBalance = sumBy(beenDelegated, (i) =>
+          BigNumber(i.balance).toNumber(),
+        );
         if (!track) {
           return null;
         }
-        return { track, beenDelegated, totalVotes };
+        return { track, beenDelegated, totalVotes, totalBalance };
       })
       .filter((v) => v);
 

@@ -16,6 +16,7 @@ function BeenDelegatedList({ list }) {
   const colWidths = {
     track: 160,
     delegators: 240,
+    capital: 160,
     votes: 160,
     detail: 80,
   };
@@ -34,6 +35,14 @@ function BeenDelegatedList({ list }) {
         textAlign: "right",
         width: colWidths.delegators,
         minWidth: colWidths.delegators,
+      },
+    },
+    {
+      name: "Capital",
+      style: {
+        textAlign: "right",
+        width: colWidths.capital,
+        minWidth: colWidths.capital,
       },
     },
     {
@@ -57,6 +66,11 @@ function BeenDelegatedList({ list }) {
   const rows = (list || []).map((item) => [
     <Track key="track" id={item.track.id} />,
     <span key="delegators">{item.beenDelegated?.length}</span>,
+    <ValueDisplay
+      key="capital"
+      value={toPrecision(item?.totalBalance, decimals)}
+      symbol={symbol}
+    />,
     <ValueDisplay
       key="votes"
       value={toPrecision(item?.totalVotes, decimals)}
