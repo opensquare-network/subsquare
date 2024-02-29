@@ -15,7 +15,7 @@ function OpenGovBeenDelegated() {
   return (
     <TabContentWrapper>
       <ReferendaBeenDelegatedSummary
-        tracksCount={beenDelegatedList?.length || 0}
+        beenDelegatedList={beenDelegatedList}
         isLoading={isLoading}
       />
       <ReferendaBeenDelegated
