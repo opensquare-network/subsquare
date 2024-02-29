@@ -14,9 +14,8 @@ import useRealAddress from "../useRealAddress";
 /**
  * @description returns all been delegated
  */
-export function useAllBeenDelegatedList() {
+export function useAllBeenDelegatedList(address) {
   const api = useApi();
-  const realAddress = useRealAddress();
   const isMounted = useIsMounted();
   const { tracks = [] } = usePageProps();
   const [beenDelegatedList, setBeenDelegatedList] = useState(null);
@@ -26,12 +25,13 @@ export function useAllBeenDelegatedList() {
   );
 
   const getAllBeenDelegated = useCallback(async () => {
-    if (!api || !realAddress) {
+    if (!api || !address) {
       return;
     }
 
     const beenDelegatedList =
-      (await getGov2BeenDelegatedListByAddress(api, realAddress)) ?? [];
+      (await getGov2BeenDelegatedListByAddress(api, address)) ?? [];
+
     const list = beenDelegatedList.map((item) => {
       const conviction = Conviction[item.conviction];
       const votes = calcVotes(item.balance, conviction);
@@ -64,7 +64,7 @@ export function useAllBeenDelegatedList() {
     if (isMounted.current) {
       setBeenDelegatedList(result);
     }
-  }, [api, isMounted, realAddress, tracks]);
+  }, [api, isMounted, address, tracks]);
 
   useEffect(() => {
     setBeenDelegatedList(null);
@@ -76,4 +76,12 @@ export function useAllBeenDelegatedList() {
     isLoading,
     refresh: getAllBeenDelegated,
   };
+}
+
+/**
+ * @description returns all my been delegated
+ */
+export function useAllMyBeenDelegatedList() {
+  const realAddress = useRealAddress();
+  return useAllBeenDelegatedList(realAddress);
 }
