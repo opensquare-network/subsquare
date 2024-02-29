@@ -1,4 +1,4 @@
-import { Referenda, useModuleTab } from "../../votingHistory/common";
+import { Democracy, Referenda, useModuleTab } from "../../votingHistory/common";
 import useBeenDelegated from "next-common/hooks/useBeenDelegated";
 import DemocracyBeenDelegatedSummary from "./democracyBeenDelegatedSummary";
 import DemocracyDelegators from "./democracyDelegators";
@@ -51,7 +51,9 @@ export default function BeenDelegated() {
 
   if (moduleTab === Referenda) {
     return <OpenGovBeenDelegated />;
+  } else if (moduleTab === Democracy) {
+    return <DemocracyBeenDelegated />;
+  } else {
+    return null;
   }
-
-  return <DemocracyBeenDelegated />;
 }
