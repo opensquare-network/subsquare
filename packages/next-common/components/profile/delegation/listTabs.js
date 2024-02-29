@@ -36,7 +36,7 @@ export default function ListTabs() {
             extra: <ModuleTab />,
           },
           {
-            url: `/user/${address}/delegation/delegated`,
+            url: `/user/${address}/delegation`,
             name: "Delegations",
             content: <DelegatedVotes />,
             extra: <ModuleTab />,
