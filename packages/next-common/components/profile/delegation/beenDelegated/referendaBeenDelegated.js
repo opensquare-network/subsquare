@@ -4,14 +4,18 @@ import Track from "next-common/components/referenda/track/trackTag";
 import ValueDisplay from "next-common/components/valueDisplay";
 import DataList from "next-common/components/dataList";
 import { toPrecision } from "next-common/utils";
+import DetailButton from "next-common/components/detailButton";
+import { useState } from "react";
 
 function BeenDelegatedList({ list }) {
   const { decimals, symbol } = useChainSettings();
+  const [showTrackBeenDelegated, setShowTrackBeenDelegated] = useState(false);
 
   const colWidths = {
     track: 160,
     delegators: 240,
     votes: 160,
+    detail: 80,
   };
 
   const columns = [
@@ -38,6 +42,14 @@ function BeenDelegatedList({ list }) {
         minWidth: colWidths.votes,
       },
     },
+    {
+      name: "",
+      style: {
+        textAlign: "right",
+        width: colWidths.detail,
+        minWidth: colWidths.detail,
+      },
+    },
   ];
 
   const rows = (list || []).map((item) => [
@@ -48,14 +60,20 @@ function BeenDelegatedList({ list }) {
       value={toPrecision(item?.totalVotes, decimals)}
       symbol={symbol}
     />,
+    <div key="detail">
+      <DetailButton onClick={() => setShowTrackBeenDelegated(true)} />
+    </div>,
   ]);
 
   return (
-    <DataList
-      columns={columns}
-      rows={rows}
-      noDataText="No current delegations"
-    />
+    <>
+      <DataList
+        columns={columns}
+        rows={rows}
+        noDataText="No current delegations"
+      />
+      {showTrackBeenDelegated && <div />}
+    </>
   );
 }
 
