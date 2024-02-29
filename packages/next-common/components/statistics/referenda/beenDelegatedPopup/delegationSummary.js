@@ -75,7 +75,7 @@ export default function DelegationSummary({
         <Item>
           <Title>
             <AddressesSVG />
-            Delegators
+            Count
           </Title>
           <Value>{delegatorsCount}</Value>
         </Item>

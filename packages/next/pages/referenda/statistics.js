@@ -66,7 +66,7 @@ export default function ReferendaStatisticsPage({
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
+export const getServerSideProps = withCommonProps(async () => {
   const [
     { result: tracksStats },
     { result: delegatee },
