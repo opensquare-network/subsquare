@@ -78,8 +78,11 @@ export function tryConvertToSubstrateAddress(address) {
   if (!address) {
     return address;
   }
-  if (isHydradx() && isEthereumAddress(address)) {
-    return evmToSubstrateAddress(address);
+  if (isEthereumAddress(address)) {
+    if (isHydradx()) {
+      return evmToSubstrateAddress(address);
+    }
+    return getEvmAddress(address);
   }
   return address;
 }
