@@ -24,7 +24,7 @@ const TabTitle = styled(TitleContainer)`
 
 export default function PageUrlTabs({ tabs }) {
   const router = useRouter();
-  const url = router.asPath;
+  const url = router.asPath.split("?")[0];
   const activeTab = tabs.find((item) => item.url === url);
   const tabHeaders = (tabs || []).map((tab) => ({
     value: tab.name,
