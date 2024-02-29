@@ -8,7 +8,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { ConvictionSupport } from "next-common/utils/referendumCommon";
 
-function DelegationList({ delegating }) {
+function DelegationList({ delegating, isLoading }) {
   const { decimals, symbol } = useChainSettings();
   const votes = new BigNumber(delegating?.balance || 0)
     .times(ConvictionSupport[delegating?.conviction] || 0)
@@ -69,6 +69,7 @@ function DelegationList({ delegating }) {
 
   return (
     <DataList
+      loading={isLoading}
       columns={columns}
       rows={rows}
       noDataText="No current delegations"
@@ -76,12 +77,12 @@ function DelegationList({ delegating }) {
   );
 }
 
-export default function MyDemocracyDelegation({ delegating }) {
+export default function MyDemocracyDelegation({ delegating, isLoading }) {
   return (
     <>
       <span className="mx-[24px] text16Bold text-textPrimary">List</span>
       <SecondaryCard>
-        <DelegationList delegating={delegating} />
+        <DelegationList delegating={delegating} isLoading={isLoading} />
       </SecondaryCard>
     </>
   );

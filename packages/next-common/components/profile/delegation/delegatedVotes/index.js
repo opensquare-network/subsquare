@@ -23,12 +23,12 @@ function OpenGovDelegated() {
 function DemocracyDelegated() {
   const api = useApi();
   const address = useProfileAddress();
-  const { delegating } = useDemocracyDelegating(api, address);
+  const { delegating, isLoading } = useDemocracyDelegating(api, address);
 
   return (
     <div className="flex flex-col gap-[18px]">
-      <DemocracyDelegatedVotes delegating={delegating} />
-      <DemocracyDelegation delegating={delegating} />
+      <DemocracyDelegatedVotes delegating={delegating} isLoading={isLoading} />
+      <DemocracyDelegation delegating={delegating} isLoading={isLoading} />
     </div>
   );
 }

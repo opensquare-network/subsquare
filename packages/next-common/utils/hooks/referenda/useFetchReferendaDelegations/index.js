@@ -2,7 +2,10 @@ import useApi from "next-common/utils/hooks/useApi";
 import { useEffect } from "react";
 import getAddressTrackDelegations from "./addressDelegations";
 import { useDispatch } from "react-redux";
-import { setReferendaDelegations } from "next-common/store/reducers/myOnChainData/referenda/referendaDelegations";
+import {
+  setIsReferendaDelegationsLoading,
+  setReferendaDelegations,
+} from "next-common/store/reducers/myOnChainData/referenda/referendaDelegations";
 
 export default function useFetchReferendaDelegations(address) {
   const api = useApi();
@@ -14,8 +17,13 @@ export default function useFetchReferendaDelegations(address) {
       return;
     }
 
-    getAddressTrackDelegations(api, address).then((delegations) => {
-      dispatch(setReferendaDelegations(delegations));
-    });
+    dispatch(setIsReferendaDelegationsLoading(true));
+    getAddressTrackDelegations(api, address)
+      .then((delegations) => {
+        dispatch(setReferendaDelegations(delegations));
+      })
+      .finally(() => {
+        dispatch(setIsReferendaDelegationsLoading(false));
+      });
   }, [api, address, dispatch]);
 }

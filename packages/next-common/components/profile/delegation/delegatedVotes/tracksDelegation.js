@@ -7,11 +7,15 @@ import { useSelector } from "react-redux";
 import Track from "next-common/components/referenda/track/trackTag";
 import DataList from "next-common/components/dataList";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { referendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/referendaDelegations";
+import {
+  isReferendaDelegationsLoadingSelector,
+  referendaDelegationsSelector,
+} from "next-common/store/reducers/myOnChainData/referenda/referendaDelegations";
 
 function DelegationList() {
   const { decimals, symbol } = useChainSettings();
   const delegations = useSelector(referendaDelegationsSelector);
+  const isLoading = useSelector(isReferendaDelegationsLoadingSelector);
 
   const colWidths = {
     track: 160,
@@ -81,6 +85,7 @@ function DelegationList() {
 
   return (
     <DataList
+      loading={isLoading}
       columns={columns}
       rows={rows}
       noDataText="No current delegations"
