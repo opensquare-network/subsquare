@@ -6,9 +6,9 @@ import {
 } from "next-common/utils/polkassembly";
 import { useChain } from "next-common/context/chain";
 import isNil from "lodash.isnil";
+import nextApi from "next-common/services/nextApi";
 import uniqBy from "lodash.uniqby";
 import QuickLRU from "quick-lru";
-import { queryPolkassemblyPostComments } from "./polkassemblyQuery";
 
 const dataCache = new QuickLRU({ maxSize: 100 });
 
@@ -38,8 +38,12 @@ export function usePolkassemblyPostData({
     }
 
     setLoadingComments(true);
-    queryPolkassemblyPostComments(polkassemblyId, polkassemblyPostType)
-      .then((result) => {
+    nextApi
+      .fetch("polkassembly-comments", {
+        postId: polkassemblyId,
+        postType: polkassemblyPostType,
+      })
+      .then(({ result }) => {
         if (isMounted.current) {
           let comments = (result?.comments || [])
             .filter((item) => item.comment_source !== "subsquare")
@@ -64,7 +68,6 @@ export function usePolkassemblyPostData({
           setCommentsCount(commentsCount);
         }
       })
-      .catch(console.error)
       .finally(() => {
         if (isMounted.current) {
           setLoadingComments(false);
