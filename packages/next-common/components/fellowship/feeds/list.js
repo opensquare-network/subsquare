@@ -5,30 +5,36 @@ import fellowshipFeedColumns from "next-common/components/fellowship/feeds/colum
 import FellowshipFeedLeadingBar from "next-common/components/fellowship/feeds/leading";
 import Pagination from "next-common/components/pagination";
 
+export function FellowshipFeedItems({ rows = [] }) {
+  return (
+    <DataList
+      className={cn(
+        "text14Medium",
+        "[&_.datalist-head]:hidden [&_.datalist-body]:divide-y-0 [&_.datalist-body]:border-b-0",
+        "[&_.datalist-item]:py-2.5",
+        "[&_.datalist-desktop-item]:items-start",
+        "[&_.datalist_.descriptions-item-label]:hidden",
+      )}
+      columns={fellowshipFeedColumns}
+      rows={rows}
+      renderItem={(DataListItem, idx, rows) => {
+        const isLast = idx === rows.length - 1;
+
+        return (
+          <div className="flex gap-x-4 px-6 sm:hover:bg-neutral200" key={idx}>
+            <FellowshipFeedLeadingBar isLast={isLast} />
+            <DataListItem row={rows[idx]} />
+          </div>
+        );
+      }}
+    />
+  );
+}
+
 export default function FellowshipFeedsPanel({ feeds = {}, rows }) {
   return (
     <SecondaryCard className="!px-0">
-      <DataList
-        className={cn(
-          "text14Medium",
-          "[&_.datalist-head]:hidden [&_.datalist-body]:divide-y-0 [&_.datalist-body]:border-b-0",
-          "[&_.datalist-item]:py-2.5",
-          "[&_.datalist-desktop-item]:items-start",
-          "[&_.datalist_.descriptions-item-label]:hidden",
-        )}
-        columns={fellowshipFeedColumns}
-        rows={rows}
-        renderItem={(DataListItem, idx, rows) => {
-          const isLast = idx === rows.length - 1;
-
-          return (
-            <div className="flex gap-x-4 px-6 sm:hover:bg-neutral200" key={idx}>
-              <FellowshipFeedLeadingBar isLast={isLast} />
-              <DataListItem row={rows[idx]} />
-            </div>
-          );
-        }}
-      />
+      <FellowshipFeedItems rows={rows} />
 
       <Pagination
         page={feeds.page}

@@ -1,4 +1,4 @@
-import { useDetailType, usePageProperties } from "next-common/context/page";
+import { useDetailType, usePageProps } from "next-common/context/page";
 import { usePost } from "next-common/context/post";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { hashEllipsis } from "next-common/utils";
@@ -39,7 +39,7 @@ function getMotionField(detail, pageId) {
 export default function useBreadcrumbs() {
   const type = useDetailType();
   const post = usePost();
-  const { id } = usePageProperties();
+  const { id } = usePageProps();
 
   if (detailPageCategory.POST === type) {
     return [
