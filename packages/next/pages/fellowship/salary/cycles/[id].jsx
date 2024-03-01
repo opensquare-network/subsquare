@@ -24,7 +24,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   return {
     props: {
       ...tracksProps,
-      registrations,
+      registrations: registrations ?? {},
     },
   };
 });

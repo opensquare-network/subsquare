@@ -1,0 +1,72 @@
+import dayjs from "dayjs";
+import Descriptions from "next-common/components/Descriptions";
+import AddressUser from "next-common/components/user/addressUser";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+import { cn, toPrecision } from "next-common/utils";
+
+function FellowshipSalaryCycleTabRegistrationPaymentCellBeneficiary({ data }) {
+  return <AddressUser add={data?.beneficiary} showAvatar={false} />;
+}
+
+function FellowshipSalaryCycleTabRegistrationPaymentCellAmount({ data }) {
+  const { decimals, symbol } = useChainSettings();
+  return (
+    <ValueDisplay value={toPrecision(data?.amount, decimals)} symbol={symbol} />
+  );
+}
+
+function FellowshipSalaryCycleTabRegistrationPaymentCellIndexer({ data }) {
+  return (
+    <span className="text-textTertiary">
+      {dayjs(data?.paidIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
+    </span>
+  );
+}
+
+export default function FellowshipSalaryCycleTabRegistrationPaymentCell({
+  data,
+  className = "",
+}) {
+  if (!data?.isPaid) {
+    return "-";
+  }
+
+  const items = [
+    {
+      label: "beneficiary",
+      value: (
+        <FellowshipSalaryCycleTabRegistrationPaymentCellBeneficiary
+          data={data}
+        />
+      ),
+    },
+    {
+      label: "amount",
+      value: (
+        <FellowshipSalaryCycleTabRegistrationPaymentCellAmount data={data} />
+      ),
+    },
+    {
+      label: "indexer",
+      value: (
+        <FellowshipSalaryCycleTabRegistrationPaymentCellIndexer data={data} />
+      ),
+    },
+  ];
+
+  return (
+    <div
+      className={cn(
+        // "max-sm:hidden",
+        "[&_.descriptions-item]:h-auto",
+        "[&_.descriptions-item]:justify-start [&_.descriptions-item]:max-sm:justify-between",
+        "[&_.descriptions-item-label]:w-[132px] [&_.descriptions-item-label]:text-textTertiary",
+        // "[&_.descriptions-item-value]:max-sm:hidden",
+        className,
+      )}
+    >
+      <Descriptions bordered={false} items={items} />
+    </div>
+  );
+}
