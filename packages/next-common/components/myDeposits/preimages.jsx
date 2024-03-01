@@ -85,7 +85,7 @@ function createPreimageRow(
   return row;
 }
 
-function PreimageRow({ defaultRenderItem, hash, setShowArgumentsDetail }) {
+function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   const row = createPreimageRow(
     hash,
@@ -94,10 +94,10 @@ function PreimageRow({ defaultRenderItem, hash, setShowArgumentsDetail }) {
     isBytesLoaded,
     setShowArgumentsDetail,
   );
-  return defaultRenderItem(row);
+  return <DataListItem row={row} />;
 }
 
-function OldPreimageRow({ defaultRenderItem, hash, setShowArgumentsDetail }) {
+function OldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
   const row = createPreimageRow(
     hash,
@@ -106,7 +106,7 @@ function OldPreimageRow({ defaultRenderItem, hash, setShowArgumentsDetail }) {
     isBytesLoaded,
     setShowArgumentsDetail,
   );
-  return defaultRenderItem(row);
+  return <DataListItem row={row} />;
 }
 
 export default function MyDepositPreimages({ deposits }) {
@@ -185,14 +185,14 @@ function DesktopList({ data, setShowArgumentsDetail }) {
         rows={data}
         noDataText="No current preimages"
         loading={loading}
-        renderItem={(defaultRenderItem, idx, rows) => {
+        renderItem={(DataListItem, idx, rows) => {
           const { hash, method } = rows[idx];
 
           if (method === "requestStatusFor") {
             return (
               <PreimageRow
                 key={hash}
-                defaultRenderItem={defaultRenderItem}
+                DataListItem={DataListItem}
                 hash={hash}
                 setShowArgumentsDetail={setShowArgumentsDetail}
               />
@@ -202,7 +202,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
           return (
             <OldPreimageRow
               key={hash}
-              defaultRenderItem={defaultRenderItem}
+              DataListItem={DataListItem}
               hash={hash}
               setShowArgumentsDetail={setShowArgumentsDetail}
             />

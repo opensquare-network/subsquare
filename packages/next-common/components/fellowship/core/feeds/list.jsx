@@ -50,7 +50,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
         )}
         columns={columns}
         rows={rows}
-        renderItem={(defaultRenderItem, idx, rows) => {
+        renderItem={(DataListItem, idx, rows) => {
           const isLast = idx === rows.length - 1;
 
           return (
@@ -65,7 +65,7 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
                 <Bar className={cn(isLast && "bg-transparent")} />
               </div>
 
-              {defaultRenderItem(rows[idx])}
+              <DataListItem row={rows[idx]} />
             </div>
           );
         }}
