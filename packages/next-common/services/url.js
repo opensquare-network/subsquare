@@ -50,6 +50,10 @@ export const fellowshipParamsApi = "fellowship/params";
 export const fellowshipMembersApiUri = "fellowship/members";
 export const fellowshipCoreFeedsApiUri = "fellowship/core/feeds";
 
+// fellowship salary
+export const fellowshipSalaryCycleRegistrationsApi = (index) =>
+  `fellowship/salary/cycles/${index}/registrations`;
+
 // calender events
 /**
  * param `begin_time`, `end_time`
