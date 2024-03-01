@@ -25,7 +25,6 @@ export default function Descriptions({
               key={idx}
               className={cn(
                 "descriptions-item",
-                !!item.key && `descriptions-item-${item.key}`,
                 "h-11",
                 "flex justify-between items-center text-textPrimary",
                 bordered && "border-t border-neutral300 first:border-t-0",
@@ -35,7 +34,7 @@ export default function Descriptions({
               <div className="descriptions-item-label text14Medium">
                 {item.label}
               </div>
-              <div className="descriptions-item-value text14Medium">
+              <div className="descriptions-items-value text14Medium">
                 {item.value}
               </div>
             </div>
