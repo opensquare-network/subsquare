@@ -7,7 +7,7 @@ export default forwardRef(DataListBody);
 function DataListBody(
   {
     rows = [],
-    renderItem = (datalistItem) => datalistItem,
+    renderItem = (defaultRenderItem, idx, rows) => defaultRenderItem(rows[idx]),
     columnClassNames = [],
     columnStyles = [],
     columns = [],
@@ -26,14 +26,16 @@ function DataListBody(
     >
       {rows.map((row, idx) =>
         renderItem(
-          <DataListItem
-            key={idx}
-            row={row}
-            columnClassNames={columnClassNames}
-            columnStyles={columnStyles}
-            columns={columns}
-            highlighted={highlightedIndexes.includes(idx)}
-          />,
+          (row) => (
+            <DataListItem
+              key={idx}
+              row={row}
+              columnClassNames={columnClassNames}
+              columnStyles={columnStyles}
+              columns={columns}
+              highlighted={highlightedIndexes.includes(idx)}
+            />
+          ),
           idx,
           rows,
         ),

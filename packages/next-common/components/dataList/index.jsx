@@ -17,7 +17,7 @@ export default function DataList({
   noDataText = "No current votes",
   bordered = false,
   highlightedIndexes = [],
-  renderItem = (datalistItem) => datalistItem,
+  renderItem = (defaultRenderItem, idx, rows) => defaultRenderItem(rows[idx]),
 }) {
   let content;
   const listRef = useRef();

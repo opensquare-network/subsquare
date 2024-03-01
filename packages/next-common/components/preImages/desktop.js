@@ -14,68 +14,95 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 
-function createPreimageRowDataHook(usePreimage, hash, setShowArgumentsDetail) {
-  return () => {
-    const dispatch = useDispatch();
-    const triggerUpdate = useSelector(preImagesTriggerSelector);
-    const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
-    const deposit = preimage?.ticket || preimage?.deposit;
+function createPreimageRow(
+  hash,
+  preimage,
+  isStatusLoaded,
+  isBytesLoaded,
+  setShowArgumentsDetail,
+) {
+  const dispatch = useDispatch();
+  const triggerUpdate = useSelector(preImagesTriggerSelector);
+  const deposit = preimage?.ticket || preimage?.deposit;
 
-    const row = [
-      <Hash
-        key="hash"
-        hash={hash}
+  const row = [
+    <Hash
+      key="hash"
+      hash={hash}
+      proposal={preimage.proposal}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />,
+    isBytesLoaded ? (
+      <Proposal
+        key="proposal"
         proposal={preimage.proposal}
+        proposalError={preimage.proposalError}
+        proposalWarning={preimage.proposalWarning}
         setShowArgumentsDetail={setShowArgumentsDetail}
-      />,
-      isBytesLoaded ? (
-        <Proposal
-          key="proposal"
-          proposal={preimage.proposal}
-          proposalError={preimage.proposalError}
-          proposalWarning={preimage.proposalWarning}
-          setShowArgumentsDetail={setShowArgumentsDetail}
+      />
+    ) : (
+      <FieldLoading />
+    ),
+    isStatusLoaded ? (
+      deposit && (
+        <Deposit
+          key="deposit"
+          deposit={deposit}
+          hash={hash}
+          count={preimage.count}
+          status={preimage.statusName}
+          onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
+          triggerUpdate={triggerUpdate}
         />
-      ) : (
-        <FieldLoading />
-      ),
-      isStatusLoaded ? (
-        deposit && (
-          <Deposit
-            key="deposit"
-            deposit={deposit}
-            hash={hash}
-            count={preimage.count}
-            status={preimage.statusName}
-            onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
-            triggerUpdate={triggerUpdate}
-          />
-        )
-      ) : (
-        <FieldLoading />
-      ),
-      isStatusLoaded ? (
-        preimage.proposalLength?.toJSON()?.toLocaleString()
-      ) : (
-        <FieldLoading />
-      ),
-      isStatusLoaded ? (
-        preimage.statusName && (
-          <Status
-            key="status"
-            statusName={preimage.statusName}
-            count={preimage.count}
-          />
-        )
-      ) : (
-        <FieldLoading />
-      ),
-    ];
+      )
+    ) : (
+      <FieldLoading />
+    ),
+    isStatusLoaded ? (
+      preimage.proposalLength?.toJSON()?.toLocaleString()
+    ) : (
+      <FieldLoading />
+    ),
+    isStatusLoaded ? (
+      preimage.statusName && (
+        <Status
+          key="status"
+          statusName={preimage.statusName}
+          count={preimage.count}
+        />
+      )
+    ) : (
+      <FieldLoading />
+    ),
+  ];
 
-    row.key = hash;
+  row.key = hash;
 
-    return row;
-  };
+  return row;
+}
+
+function PreimageRow({ defaultRenderItem, hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
+  const row = createPreimageRow(
+    hash,
+    preimage,
+    isStatusLoaded,
+    isBytesLoaded,
+    setShowArgumentsDetail,
+  );
+  return defaultRenderItem(row);
+}
+
+function OldPreimageRow({ defaultRenderItem, hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
+  const row = createPreimageRow(
+    hash,
+    preimage,
+    isStatusLoaded,
+    isBytesLoaded,
+    setShowArgumentsDetail,
+  );
+  return defaultRenderItem(row);
 }
 
 export default function DesktopList({ data }) {
@@ -103,24 +130,40 @@ export default function DesktopList({ data }) {
     },
   ]);
 
-  const rows = (data || []).map(({ data: [hash], method }) => {
-    return {
-      useData: createPreimageRowDataHook(
-        method === "requestStatusFor" ? usePreimage : useOldPreimage,
-        hash,
-        setShowArgumentsDetail,
-      ),
-    };
-  });
-
   return (
     <SecondaryCard>
       <ScrollerX>
         <DataList
           columns={columns}
-          rows={rows}
+          rows={data}
           noDataText="No current preimages"
           loading={!data}
+          renderItem={(defaultRenderItem, idx, rows) => {
+            const {
+              data: [hash],
+              method,
+            } = rows[idx];
+
+            if (method === "requestStatusFor") {
+              return (
+                <PreimageRow
+                  key={hash}
+                  defaultRenderItem={defaultRenderItem}
+                  hash={hash}
+                  setShowArgumentsDetail={setShowArgumentsDetail}
+                />
+              );
+            }
+
+            return (
+              <OldPreimageRow
+                key={hash}
+                defaultRenderItem={defaultRenderItem}
+                hash={hash}
+                setShowArgumentsDetail={setShowArgumentsDetail}
+              />
+            );
+          }}
         />
       </ScrollerX>
       {showArgumentsDetail && (
