@@ -5,7 +5,6 @@ import DefaultTabsList from "../tabsList";
 import UrlTabsList from "../urlTabs";
 import { useEffect, useRef, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
-import omit from "lodash.omit";
 
 const SPACE = 1;
 
@@ -62,7 +61,7 @@ export default function TabsList({
           const active = tab.active ?? activeTabLabel === tab.label;
 
           return {
-            ...omit(tab, ["labelExtra"]),
+            ...tab,
             render() {
               return (
                 <Tooltip content={tab.tooltip}>
