@@ -16,29 +16,27 @@ export default function DesktopList() {
   const myDelegatedVotes = useSelector(myDemocracyDelegatedVotesSelector);
   const { columns } = useColumns(commonVoteColumnsDefinition);
 
-  const rows = (myDelegatedVotes || []).map((vote) => ({
-    useData: () => {
-      const row = [
-        <PostTitle
-          key="proposal"
-          referendumIndex={vote.referendumIndex}
-          title={getPostTitle(vote)}
-        />,
-        <DelegatedVoteForItem
-          key="vote"
-          targetVote={vote.vote}
-          referendumInfo={vote.referendumInfo}
-        />,
-        <DemocracyTag
-          key="tag"
-          post={vote.post}
-          onchainInfo={vote.referendumInfo}
-        />,
-      ];
-      row.key = vote.referendumIndex;
-      return row;
-    },
-  }));
+  const rows = (myDelegatedVotes || []).map((vote) => {
+    const row = [
+      <PostTitle
+        key="proposal"
+        referendumIndex={vote.referendumIndex}
+        title={getPostTitle(vote)}
+      />,
+      <DelegatedVoteForItem
+        key="vote"
+        targetVote={vote.vote}
+        referendumInfo={vote.referendumInfo}
+      />,
+      <DemocracyTag
+        key="tag"
+        post={vote.post}
+        onchainInfo={vote.referendumInfo}
+      />,
+    ];
+    row.key = vote.referendumIndex;
+    return row;
+  });
 
   return (
     <ListCard>

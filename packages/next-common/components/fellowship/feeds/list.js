@@ -18,13 +18,13 @@ export default function FellowshipFeedsPanel({ feeds = {}, rows }) {
         )}
         columns={fellowshipFeedColumns}
         rows={rows}
-        renderItem={(datalistItem, idx, arr) => {
-          const isLast = idx === arr.length - 1;
+        renderItem={(DataListItem, idx, rows) => {
+          const isLast = idx === rows.length - 1;
 
           return (
             <div className="flex gap-x-4 px-6 sm:hover:bg-neutral200" key={idx}>
               <FellowshipFeedLeadingBar isLast={isLast} />
-              {datalistItem}
+              <DataListItem row={rows[idx]} />
             </div>
           );
         }}

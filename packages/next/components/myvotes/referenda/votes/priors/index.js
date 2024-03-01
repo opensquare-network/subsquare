@@ -18,22 +18,18 @@ export default function PriorLocks() {
   const { symbol, decimals } = useChainSettings();
 
   const rows = filteredLocks.map((item, index) => {
-    return {
-      useData: () => {
-        const row = [
-          <Track key="track" id={item.trackId} />,
-          <ValueDisplay
-            key="balance"
-            value={toPrecision(item.balance, decimals)}
-            symbol={symbol}
-          />,
-          <Expiration key="expiration" unlockAt={item.unlockAt} />,
-        ];
+    const row = [
+      <Track key="track" id={item.trackId} />,
+      <ValueDisplay
+        key="balance"
+        value={toPrecision(item.balance, decimals)}
+        symbol={symbol}
+      />,
+      <Expiration key="expiration" unlockAt={item.unlockAt} />,
+    ];
 
-        row.key = index;
-        return row;
-      },
-    };
+    row.key = index;
+    return row;
   });
 
   return (
