@@ -29,7 +29,7 @@ export default function FellowshipSalaryCycleTabRegistrationPaymentCell({
   className = "",
 }) {
   if (!data?.isPaid) {
-    return "-";
+    return <span className="text-textTertiary text14Medium">-</span>;
   }
 
   const items = [
@@ -58,11 +58,9 @@ export default function FellowshipSalaryCycleTabRegistrationPaymentCell({
   return (
     <div
       className={cn(
-        // "max-sm:hidden",
         "[&_.descriptions-item]:h-auto",
         "[&_.descriptions-item]:justify-start [&_.descriptions-item]:max-sm:justify-between",
         "[&_.descriptions-item-label]:w-[132px] [&_.descriptions-item-label]:text-textTertiary",
-        // "[&_.descriptions-item-value]:max-sm:hidden",
         className,
       )}
     >
