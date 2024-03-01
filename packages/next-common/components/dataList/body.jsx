@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 export default forwardRef(DataListBody);
 
 export const defaultRenderItem = (DataListItem, idx, rows) => (
-  <DataListItem row={rows[idx]} />
+  <DataListItem key={idx} row={rows[idx]} />
 );
 
 function DataListBody(
@@ -32,7 +32,6 @@ function DataListBody(
         renderItem(
           ({ row }) => (
             <DataListItem
-              key={idx}
               row={row}
               columnClassNames={columnClassNames}
               columnStyles={columnStyles}
