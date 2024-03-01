@@ -72,6 +72,7 @@ function DesktopContent({ data, row, columnClassNames, columnStyles }) {
 function MobileContent({ row = [], data, columns }) {
   const items = columns.map((col, idx) => {
     return {
+      key: col.key,
       name: col.name,
       value: data?.[idx] || row?.[idx],
     };
@@ -97,6 +98,7 @@ function MobileContent({ row = [], data, columns }) {
     .map((item) => {
       return (
         !isNil(item?.value) && {
+          key: item.key,
           label: <span className="text-textTertiary">{item.name}</span>,
           value: item.value,
           className: "h-auto mt-2 items-start",
