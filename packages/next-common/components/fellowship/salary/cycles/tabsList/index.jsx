@@ -3,10 +3,10 @@ import FellowshipSalaryCycleDetailListTemplate from "./template";
 import { useFellowshipSalaryCycleRegistrationsTabItem } from "./registrations";
 
 export default function FellowshipSalaryCycleDetailTabsList() {
-  const registrationsItem = useFellowshipSalaryCycleRegistrationsTabItem();
+  const registrationsTabItem = useFellowshipSalaryCycleRegistrationsTabItem();
 
   // TODO: sort
-  const items = [registrationsItem];
+  const items = [registrationsTabItem];
 
   return (
     <PrimaryCard>
