@@ -1,18 +1,18 @@
 import FellowshipRank from "next-common/components/fellowship/rank";
 import { AddressUser } from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
 import { fellowshipSalaryCycleRegistrationsApi } from "next-common/services/url";
 import { toPrecision } from "next-common/utils";
 import { useRouter } from "next/router";
 import FellowshipSalaryCycleTabRegistrationPaymentCell from "./registrationsPaymentCell";
+import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 
 export function useFellowshipSalaryCycleRegistrationsTabItem() {
   const { registrations } = usePageProps();
   const { query } = useRouter();
   const { id } = query;
-  const { decimals, symbol } = useChainSettings();
+  const { decimals, symbol } = useSalaryAsset();
 
   return {
     name: "Registrations",
