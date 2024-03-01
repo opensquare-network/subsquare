@@ -2,6 +2,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Link from "next/link";
+import FellowshipSalaryStatsDetailLink from "./detailLink";
 
 export default function FellowshipSalaryOverview() {
   return (
@@ -11,13 +12,15 @@ export default function FellowshipSalaryOverview() {
       <SecondaryCard>
         <FellowshipSalaryStats />
 
-        <div className="mt-2 flex justify-end">
+        <div className="mt-2 flex justify-end gap-x-4">
           <Link
             href="/fellowship/salary"
             className="text14Medium text-theme500"
           >
             All Cycles
           </Link>
+
+          <FellowshipSalaryStatsDetailLink />
         </div>
       </SecondaryCard>
     </>
