@@ -62,7 +62,12 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
 
   return (
     <div>
-      <DataList loading={loading} columns={columns} rows={rows} />
+      <DataList
+        loading={loading}
+        columns={columns}
+        rows={rows}
+        noDataText="No cycles"
+      />
 
       {!isNil(result?.page) && (
         <div className="mt-2">
