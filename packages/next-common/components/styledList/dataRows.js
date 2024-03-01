@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import { StyledTd } from "./styled";
 import RowSplitter from "./rowSplitter";
 import styled, { css } from "styled-components";
-import noop from "lodash.noop";
 
 const StyledTr = styled.tr`
   ${({ clickable }) =>
@@ -13,12 +12,11 @@ const StyledTr = styled.tr`
 `;
 
 function DataRow({ row, columns }) {
-  const { onClick, useData = noop } = row;
-  const data = useData();
+  const { onClick } = row;
 
   return (
     <StyledTr clickable={!!onClick} onClick={onClick}>
-      {(data || row)?.map((val, i) => (
+      {row?.map((val, i) => (
         <StyledTd
           key={i}
           style={columns[i].style}

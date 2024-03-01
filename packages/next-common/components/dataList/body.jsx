@@ -4,10 +4,14 @@ import { forwardRef } from "react";
 
 export default forwardRef(DataListBody);
 
+export const defaultRenderItem = (DataListItem, idx, rows) => (
+  <DataListItem key={idx} row={rows[idx]} />
+);
+
 function DataListBody(
   {
     rows = [],
-    renderItem = (datalistItem) => datalistItem,
+    renderItem = defaultRenderItem,
     columnClassNames = [],
     columnStyles = [],
     columns = [],
@@ -26,14 +30,15 @@ function DataListBody(
     >
       {rows.map((row, idx) =>
         renderItem(
-          <DataListItem
-            key={idx}
-            row={row}
-            columnClassNames={columnClassNames}
-            columnStyles={columnStyles}
-            columns={columns}
-            highlighted={highlightedIndexes.includes(idx)}
-          />,
+          ({ row }) => (
+            <DataListItem
+              row={row}
+              columnClassNames={columnClassNames}
+              columnStyles={columnStyles}
+              columns={columns}
+              highlighted={highlightedIndexes.includes(idx)}
+            />
+          ),
           idx,
           rows,
         ),

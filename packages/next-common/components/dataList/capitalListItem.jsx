@@ -12,7 +12,7 @@ export default function CapitalListItem({ capital, item, tab, conviction }) {
   const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
 
   if (isNil(conviction)) {
-    conviction = item.conviction;
+    conviction = item?.conviction;
   }
 
   return (

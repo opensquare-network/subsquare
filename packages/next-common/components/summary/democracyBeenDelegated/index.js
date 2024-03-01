@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
+import React from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import styled from "styled-components";
-import { getDemocracyBeenDelegatedByAddress } from "../../../utils/democracy/getDemocracyBeenDelegatedByAddress";
-import { getDemocracyBeenDelegatedListByAddress } from "../../../utils/democracy/getDemocracyBeenDelegatedListByAddress";
 import BeenDelegatedInfo from "./beenDelegatedInfo";
 import BeenDelegatedListButton from "./beenDelegatedListButton";
+import useBeenDelegated from "next-common/hooks/useBeenDelegated";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,25 +13,8 @@ const Wrapper = styled.div`
 `;
 
 export default function DemocracyBeenDelegated() {
-  const api = useApi();
   const realAddress = useRealAddress();
-  const [delegations, setDelegations] = useState();
-  const [beenDelegatedList, setBeenDelegatedList] = useState([]);
-
-  useEffect(() => {
-    setDelegations();
-    setBeenDelegatedList([]);
-
-    if (!api || !realAddress) {
-      return;
-    }
-    getDemocracyBeenDelegatedByAddress(api, realAddress).then((result) => {
-      setDelegations(result);
-    });
-    getDemocracyBeenDelegatedListByAddress(api, realAddress).then((result) => {
-      setBeenDelegatedList(result);
-    });
-  }, [api, realAddress]);
+  const { delegations, beenDelegatedList } = useBeenDelegated(realAddress);
 
   if (!delegations || beenDelegatedList?.length === 0) {
     return null;

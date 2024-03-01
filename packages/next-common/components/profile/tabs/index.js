@@ -7,8 +7,13 @@ import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 export default function useProfileTabs() {
   const { id } = usePageProps();
-  const { hasReferenda, hasFellowship, noDemocracy, hasMultisig } =
-    useChainSettings();
+  const {
+    hasReferenda,
+    hasFellowship,
+    noDemocracy,
+    noDemocracyModule,
+    hasMultisig,
+  } = useChainSettings();
   const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
   const depositsCount = useDepositsCount();
 
@@ -41,6 +46,14 @@ export default function useProfileTabs() {
       label: "Multisigs",
       url: `${prefix}multisigs`,
       count: activeMultisigsCount,
+    });
+  }
+
+  if (hasReferenda || !noDemocracyModule) {
+    tabs.push({
+      label: "Delegation",
+      url: `${prefix}delegation/received`,
+      exactMatch: false,
     });
   }
 

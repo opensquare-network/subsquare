@@ -11,9 +11,7 @@ export default function DataListItem({
   columnStyles,
   highlighted,
 }) {
-  const { onClick, useData } = row ?? {};
-
-  const data = useData?.();
+  const { onClick } = row ?? {};
 
   return (
     <div
@@ -37,14 +35,12 @@ export default function DataListItem({
       onClick={onClick}
     >
       <DesktopContent
-        data={data}
         row={row}
         columnClassNames={columnClassNames}
         columnStyles={columnStyles}
       />
 
       <MobileContent
-        data={data}
         row={row}
         columns={columns}
         columnClassNames={columnClassNames}
@@ -53,10 +49,10 @@ export default function DataListItem({
   );
 }
 
-function DesktopContent({ data, row, columnClassNames, columnStyles }) {
+function DesktopContent({ row, columnClassNames, columnStyles }) {
   return (
     <div className="datalist-desktop-item max-sm:hidden w-full flex items-center">
-      {(data ?? row)?.map((item, idx) => (
+      {row?.map((item, idx) => (
         <div
           key={idx}
           className={columnClassNames[idx]}
@@ -69,11 +65,11 @@ function DesktopContent({ data, row, columnClassNames, columnStyles }) {
   );
 }
 
-function MobileContent({ row = [], data, columns }) {
+function MobileContent({ row = [], columns }) {
   const items = columns.map((col, idx) => {
     return {
       name: col.name,
-      value: data?.[idx] || row?.[idx],
+      value: row?.[idx],
     };
   });
 
@@ -108,7 +104,7 @@ function MobileContent({ row = [], data, columns }) {
   return (
     <div className="datalist-mobile-item sm:hidden sm:py-4 space-y-3">
       <div>
-        <div className="flex items-center justify-between">
+        <div className="flex grow items-center justify-between">
           {first.value}
           {action && items[actionIdx]?.value}
         </div>
