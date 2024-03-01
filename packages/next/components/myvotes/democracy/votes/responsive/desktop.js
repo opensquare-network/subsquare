@@ -20,30 +20,23 @@ export default function DesktopList() {
   const { columns } = useColumns(commonVoteColumnsDefinition);
 
   const rows = (myDemocracyVotes || []).map((vote) => {
-    return {
-      useData: () => {
-        const row = [
-          <PostTitle
-            key="proposal"
-            referendumIndex={vote.referendumIndex}
-            title={getPostTitle(vote)}
-          />,
-          <DemocracyVoteForItem key="vote" vote={vote} />,
-          <DemocracyTag
-            key="tag"
-            post={vote.post}
-            onchainInfo={vote.referendumInfo}
-          />,
-          <RemoveVoteButton
-            key="action"
-            referendumIndex={vote.referendumIndex}
-          />,
-        ];
+    const row = [
+      <PostTitle
+        key="proposal"
+        referendumIndex={vote.referendumIndex}
+        title={getPostTitle(vote)}
+      />,
+      <DemocracyVoteForItem key="vote" vote={vote} />,
+      <DemocracyTag
+        key="tag"
+        post={vote.post}
+        onchainInfo={vote.referendumInfo}
+      />,
+      <RemoveVoteButton key="action" referendumIndex={vote.referendumIndex} />,
+    ];
 
-        row.key = vote.referendumIndex;
-        return row;
-      },
-    };
+    row.key = vote.referendumIndex;
+    return row;
   });
 
   return (

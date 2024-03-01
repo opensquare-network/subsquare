@@ -15,10 +15,33 @@ import DetailButton from "../detailButton";
 
 const FieldName = tw.span`text-textTertiary`;
 
-function Item({ hash, usePreimage }) {
+function PreimageItem({ hash }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
+  return (
+    <Item
+      hash={hash}
+      preimage={preimage}
+      isStatusLoaded={isStatusLoaded}
+      isBytesLoaded={isBytesLoaded}
+    />
+  );
+}
+
+function OldPreimageItem({ hash }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
+  return (
+    <Item
+      hash={hash}
+      preimage={preimage}
+      isStatusLoaded={isStatusLoaded}
+      isBytesLoaded={isBytesLoaded}
+    />
+  );
+}
+
+function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
   const dispatch = useDispatch();
   const triggerUpdate = useSelector(preImagesTriggerSelector);
-  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const deposit = preimage?.ticket || preimage?.deposit;
 
@@ -107,15 +130,12 @@ function Item({ hash, usePreimage }) {
 export default function MobileList({ data }) {
   return (
     <SecondaryCard>
-      {data.map(({ data: [hash], method }) => (
-        <Item
-          key={hash}
-          hash={hash}
-          usePreimage={
-            method === "requestStatusFor" ? usePreimage : useOldPreimage
-          }
-        />
-      ))}
+      {data.map(({ data: [hash], method }) => {
+        if (method === "requestStatusFor") {
+          return <PreimageItem key={hash} hash={hash} />;
+        }
+        return <OldPreimageItem key={hash} hash={hash} />;
+      })}
     </SecondaryCard>
   );
 }
