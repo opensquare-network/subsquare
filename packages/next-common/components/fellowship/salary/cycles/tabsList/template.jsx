@@ -11,9 +11,10 @@ export default function FellowshipSalaryCycleDetailListTemplate({
 }) {
   const tabs = items.map((m) => {
     return {
+      url: m.url,
       label: m.name,
       activeCount: m.activeCount,
-      content: <TableTemplate {...m} />,
+      content: m.content || <TableTemplate {...m} />,
     };
   });
   const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
@@ -24,6 +25,7 @@ export default function FellowshipSalaryCycleDetailListTemplate({
         tabs={tabs}
         activeTabLabel={activeTabLabel}
         onTabClick={(tab) => setActiveTabLabel(tab.label)}
+        isUrlTabs={true}
       />
     </div>
   );

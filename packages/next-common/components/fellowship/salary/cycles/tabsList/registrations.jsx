@@ -4,18 +4,17 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import { fellowshipSalaryCycleRegistrationsApi } from "next-common/services/url";
 import { toPrecision } from "next-common/utils";
-import { useRouter } from "next/router";
 import FellowshipSalaryCycleTabRegistrationPaymentCell from "./registrationsPaymentCell";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 
 export function useFellowshipSalaryCycleRegistrationsTabItem() {
   const { registrations } = usePageProps();
-  const { query } = useRouter();
-  const { id } = query;
+  const { id } = usePageProps();
   const { decimals, symbol } = useSalaryAsset();
 
   return {
     name: "Registrations",
+    url: `/fellowship/salary/cycles/${id}`,
     activeCount: registrations?.total ?? 0,
     columns: [
       {

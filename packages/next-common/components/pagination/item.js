@@ -1,5 +1,4 @@
 import React from "react";
-import encodeUriQuery from "./encodeUriQuery";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled, { css } from "styled-components";
@@ -33,16 +32,12 @@ const Item = styled.a`
 
 export default function PageItem({ page, now, onPageChange = null }) {
   const router = useRouter();
+  const [url, query] = router.asPath.split("?");
+  const urlParams = new URLSearchParams(query);
+  urlParams.set("page", page + 1);
 
   return (
-    <Link
-      key={page}
-      href={`${router.pathname}?${encodeUriQuery({
-        ...router.query,
-        page: page + 1,
-      })}`}
-      passHref
-      legacyBehavior>
+    <Link key={page} href={`${url}?${urlParams}`} passHref legacyBehavior>
       <Item
         active={now === page + 1}
         onClick={(e) => {
