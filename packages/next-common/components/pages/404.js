@@ -10,12 +10,14 @@ const Page404 = function Custom404() {
   const theme = useThemeSetting();
   return (
     <ThemeProvider theme={theme}>
-      <NextHead title={"Not Found"} desc={""} />
-      <PageNotFound
-        onBack={() => {
-          router.push("/");
-        }}
-      />
+      <NextHead title="Not Found" desc="" />
+      <div className="h-[100vh]">
+        <PageNotFound
+          onBack={() => {
+            router.push("/");
+          }}
+        />
+      </div>
     </ThemeProvider>
   );
 };
