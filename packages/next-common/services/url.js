@@ -51,6 +51,9 @@ export const fellowshipMembersApiUri = "fellowship/members";
 export const fellowshipCoreFeedsApiUri = "fellowship/core/feeds";
 
 // fellowship salary
+export const fellowshipSalaryCycleApi = (index) =>
+  `fellowship/salary/cycles/${index}`;
+
 export const fellowshipSalaryCycleRegistrationsApi = (index) =>
   `fellowship/salary/cycles/${index}/registrations`;
 

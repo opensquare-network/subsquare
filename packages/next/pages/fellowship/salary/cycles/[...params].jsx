@@ -2,16 +2,22 @@ import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
+import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
+  fellowshipSalaryCycleApi,
   fellowshipSalaryCycleFeedsApi,
   fellowshipSalaryCycleRegistrationsApi,
 } from "next-common/services/url";
 
-export default function FellowshipSalaryCyclePage() {
+export default function FellowshipSalaryCyclePage({ cycle }) {
   return (
     <FellowshipSalaryCycleLayout>
-      <FellowshipSalaryCycleDetailTabsList />
+      {cycle ? (
+        <FellowshipSalaryCycleDetailTabsList />
+      ) : (
+        <FellowshipSalaryCycleDetailNotFound />
+      )}
     </FellowshipSalaryCycleLayout>
   );
 }
@@ -22,19 +28,32 @@ export const getServerSideProps = withCommonProps(async (context) => {
     page,
   } = context.query;
 
-  const [tracksProps, { result: registrations }, { result: feeds }] =
-    await Promise.all([
-      fetchOpenGovTracksProps(),
-      ssrNextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id)),
-      ssrNextApi.fetch(fellowshipSalaryCycleFeedsApi(id), { page }),
-    ]);
+  const [tracksProps, { result: cycle }] = await Promise.all([
+    fetchOpenGovTracksProps(),
+    ssrNextApi.fetch(fellowshipSalaryCycleApi(id)),
+  ]);
+
+  let registrations;
+  let feeds;
+
+  if (cycle) {
+    const [{ result: registrationsResult }, { result: feedsResult }] =
+      await Promise.all([
+        ssrNextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id)),
+        ssrNextApi.fetch(fellowshipSalaryCycleFeedsApi(id), { page }),
+      ]);
+
+    registrations = registrationsResult;
+    feeds = feedsResult;
+  }
 
   return {
     props: {
       ...tracksProps,
       id,
-      registrations: registrations ?? {},
-      feeds: feeds ?? {},
+      cycle,
+      registrations: registrations || {},
+      feeds: feeds || {},
     },
   };
 });
