@@ -7,6 +7,7 @@ export default function getCycleRegistrationSummaryItem(
   totalRegistrationsValue,
   decimals,
   symbol,
+  memberCount,
 ) {
   return {
     title: "Total Registrations",
@@ -16,6 +17,11 @@ export default function getCycleRegistrationSummaryItem(
           value={toPrecision(totalRegistrationsValue, decimals)}
           symbol={symbol}
         />
+        {!isNil(memberCount) && (
+          <div className="text12Medium text-textSecondary !ml-0">
+            {memberCount} Members
+          </div>
+        )}
       </LoadableContent>
     ),
   };
