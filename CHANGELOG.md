@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.8
+
+date: 2024-03-04
+
+- Add fellowship salary cycles page.
+- Show delegation status on profile page.
+- Correct referenda delegators on statistics page.
+- Query polkassembly comments from backend API.
+- Upgrade dependencies and fix styles.
+
 ### 3.8.7
 
 date: 2024-02-27

@@ -187,7 +187,7 @@ export default function LinkedAddress() {
     try {
       signature = await signMsg(result?.challenge, address, selectedWallet);
     } catch (e) {
-      console.log("Sign request is cancelled", e);
+      console.error("Sign request is cancelled", e);
       return;
     }
 
