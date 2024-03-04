@@ -25,7 +25,7 @@ const nextHandler = app.getRequestHandler();
 
 const PORT = process.env.PORT;
 if (!PORT) {
-  console.log("PORT is not defined");
+  console.info("PORT is not defined");
   process.exit();
 }
 
@@ -55,6 +55,6 @@ app.prepare().then(() => {
 
   httpServer.listen(PORT, (err) => {
     if (err) throw err;
-    console.log(`> Ready on http://127.0.0.1:${PORT}`);
+    console.info(`> Ready on http://127.0.0.1:${PORT}`);
   });
 });
