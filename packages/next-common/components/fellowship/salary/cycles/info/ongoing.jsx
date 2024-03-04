@@ -14,7 +14,7 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
             },
           ]}
         />
-        <div className="flex">
+        <div className="flex items-start">
           <ActiveTag>Ongoing</ActiveTag>
         </div>
       </div>

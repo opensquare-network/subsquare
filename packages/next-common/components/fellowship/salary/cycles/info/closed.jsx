@@ -14,7 +14,7 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
             },
           ]}
         />
-        <div className="flex">
+        <div className="flex items-start">
           <ClosedTag>Closed</ClosedTag>
         </div>
       </div>
