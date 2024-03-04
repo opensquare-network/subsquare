@@ -28,7 +28,7 @@ export default async function getMetadata(provider) {
     try {
       await localForage.setItem(id, metadata);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 

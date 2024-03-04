@@ -35,7 +35,6 @@ function getSortParams(sortedColumn) {
       colName = "account";
   }
 
-  console.log("sort", JSON.stringify([colName, "desc"]));
   return { sort: JSON.stringify([colName, "desc"]) };
 }
 

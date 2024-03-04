@@ -6,7 +6,6 @@ export default function FellowshipFeedExplorerLink({
   indexer,
   className = "",
 }) {
-  console.log("indexer", indexer, indexer?.blockHeight?.toLocaleString?.());
   return (
     <div className={cn("flex items-center", "[&_a]:underline", className)}>
       <InfoBlock className="w-4 h-4 mr-1 [&_path]:stroke-textTertiary" />
