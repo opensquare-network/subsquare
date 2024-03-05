@@ -3,10 +3,8 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { addressEllipsis } from "next-common/utils";
 import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
-import { usePageProps } from "next-common/context/page";
 
-export default function ProfileBreadcrumbs() {
-  const { id } = usePageProps();
+export default function ProfileBreadcrumbs({ id }) {
   const maybeEvmAddress = tryConvertToEvmAddress(id);
   const breadcrumbItems = [
     {
