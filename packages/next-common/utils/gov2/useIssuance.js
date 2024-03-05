@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import useApi from "../hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchIssuanceForGov2,
@@ -7,9 +6,10 @@ import {
 } from "../../store/reducers/gov2ReferendumSlice";
 import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useContextApi } from "next-common/context/api";
 
 export default function useIssuance() {
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const votingFinishHeight = useReferendumVotingFinishHeight();

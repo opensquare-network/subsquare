@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import useApi from "../useApi";
 import useIsMounted from "../useIsMounted";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFellowshipRank(address) {
-  const api = useApi();
+  const api = useContextApi();
   const [rank, setRank] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useIsMounted();

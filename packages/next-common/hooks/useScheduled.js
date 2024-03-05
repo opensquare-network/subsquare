@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { BN_ONE, BN_ZERO, bnToBn } from "@polkadot/util";
 import startCase from "lodash.startcase";
-import useApi from "../utils/hooks/useApi";
 import useCall from "../utils/hooks/useCall";
 import Chains from "../utils/consts/chains";
 import { useLeaseRangeMax } from "./useLeaseRanges";
 import { useChain } from "../context/chain";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { useContextApi } from "next-common/context/api";
 
 function newDate(blocks, blockTime) {
   const date = new Date(
@@ -318,7 +318,7 @@ function useReferendums(api) {
 }
 
 function useScheduled() {
-  const api = useApi();
+  const api = useContextApi();
   const blockTime = useSelector(blockTimeSelector);
   const leaseRangeMax = useLeaseRangeMax();
   const [bestNumber] = useCall(api?.derive.chain.bestNumber);

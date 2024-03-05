@@ -11,7 +11,7 @@ import {
   u8aToHex,
 } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 /**
  * @internal Determine if we are working with current generation (H256,u32)
@@ -187,7 +187,7 @@ function getBytesParams(interimResult, optStatus) {
 }
 
 export default function useOldPreimage(hashOrBounded) {
-  const api = useApi();
+  const api = useContextApi();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(

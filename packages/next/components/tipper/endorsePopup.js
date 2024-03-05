@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from "react";
 
-import useApi from "next-common/utils/hooks/useApi";
-
 import {
   checkInputValue,
   emptyFunction,
@@ -17,9 +15,10 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
-  const api = useApi();
+  const api = useContextApi();
 
   const signerAccount = useSignerAccount();
 

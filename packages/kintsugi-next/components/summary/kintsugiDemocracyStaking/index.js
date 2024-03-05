@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import useApi from "next-common/utils/hooks/useApi";
 import DemocracySummaryStakeInfo from "./democracySummaryStackInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useLatestAddressVotingBalance } from "utils/hooks";
 import DemocracySummaryStakeButton from "./democracySummaryStakeButton";
 import useSubLockedBalance from "../../../hooks/democracy/useSubLockedBalance";
+import { useContextApi } from "next-common/context/api";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 `;
 
 export default function KintsugiDemocracyStaking() {
-  const api = useApi();
+  const api = useContextApi();
   const realAddress = useRealAddress();
   const [votingBalance] = useLatestAddressVotingBalance(api, realAddress);
   const balance = useSubLockedBalance(realAddress);

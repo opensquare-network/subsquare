@@ -1,5 +1,4 @@
 import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
-import { getLastApi } from "../hooks/useApi";
 import { emptyFunction } from "..";
 import {
   newErrorToast,
@@ -11,6 +10,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { createSendTxEventHandler } from "../sendTx";
 import { checkCall } from "@mimirdev/apps-sdk";
+import { getLatestApi } from "next-common/context/api";
 
 export async function tryInitMimir() {
   if (typeof window === "undefined") {
@@ -82,7 +82,7 @@ export async function maybeSendMimirTx({
     });
 
     // Retrieve the method returned by Mimir.
-    const api = getLastApi();
+    const api = getLatestApi();
     const method = api.registry.createType("Call", result.payload.method);
 
     // check the final call is the expect call

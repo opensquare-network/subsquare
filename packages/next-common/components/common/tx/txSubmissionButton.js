@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -7,6 +6,7 @@ import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PrimaryButton from "next-common/lib/button/primary";
+import { useContextApi } from "next-common/context/api";
 
 export default function TxSubmissionButton({
   disabled = false,
@@ -18,7 +18,7 @@ export default function TxSubmissionButton({
   onClose = emptyFunction,
 }) {
   const [isCalling, setIsCalling] = useState(false);
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const isMounted = useIsMounted();

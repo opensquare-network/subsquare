@@ -1,17 +1,17 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import queryAddressReferendaDeposits from "next-common/hooks/account/deposit/referenda/deposits";
 import {
-  setProfileReferendaSubmissionDeposits,
   setProfileReferendaDecisionDeposits,
+  setProfileReferendaSubmissionDeposits,
 } from "next-common/store/reducers/profile/deposits/referenda";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFetchProfileReferendaDeposits() {
   const address = useProfileAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

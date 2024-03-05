@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
-import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import {
@@ -23,6 +22,7 @@ import {
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
+import { useContextApi } from "next-common/context/api";
 
 export default function PopupContent({
   tracks,
@@ -39,7 +39,7 @@ export default function PopupContent({
 
   const [targetAddress, setTargetAddress] = useState("");
 
-  const api = useApi();
+  const api = useContextApi();
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);

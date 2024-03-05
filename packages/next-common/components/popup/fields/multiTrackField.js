@@ -4,9 +4,9 @@ import startCase from "lodash.startcase";
 import PopupLabel from "../label";
 import MultiSelect from "next-common/components/multiSelect";
 import useCall from "next-common/utils/hooks/useCall";
-import useApi from "next-common/utils/hooks/useApi";
 import Loading from "next-common/components/loading";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import { useContextApi } from "next-common/context/api";
 
 export default function MultiTrack({
   title = "Track",
@@ -20,7 +20,7 @@ export default function MultiTrack({
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
 
-  const api = useApi();
+  const api = useContextApi();
   let [myVotingTuple, isLoading] = useCall(
     api?.query?.convictionVoting?.votingFor.entries,
     [address],

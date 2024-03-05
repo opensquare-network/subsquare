@@ -1,4 +1,3 @@
-import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,9 +6,10 @@ import {
   setMyReferendaDelegations,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import getAddressTrackDelegations from "../useFetchReferendaDelegations/addressDelegations";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFetchMyReferendaDelegations() {
-  const api = useApi();
+  const api = useContextApi();
   const realAddress = useRealAddress();
   const dispatch = useDispatch();
   const trigger = useSelector(myReferendaDelegationsTrigger);

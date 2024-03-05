@@ -1,10 +1,13 @@
 import { useEffect } from "react";
-import useApi from "../../utils/hooks/useApi";
 import { useDispatch } from "react-redux";
-import { setReferendaInActive, setReferendaIssuance } from "../../store/reducers/referenda/issuance";
+import {
+  setReferendaInActive,
+  setReferendaIssuance,
+} from "../../store/reducers/referenda/issuance";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubActiveIssuance() {
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -12,11 +15,11 @@ export default function useSubActiveIssuance() {
       return;
     }
 
-    api.query.balances.totalIssuance(issuance => {
+    api.query.balances.totalIssuance((issuance) => {
       dispatch(setReferendaIssuance(issuance.toString()));
     });
 
-    api.query.balances.inactiveIssuance(inactive => {
+    api.query.balances.inactiveIssuance((inactive) => {
       dispatch(setReferendaInActive(inactive.toString()));
     });
   }, [api]);

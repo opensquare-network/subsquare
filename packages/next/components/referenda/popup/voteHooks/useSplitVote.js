@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import SplitVote from "../splitVote";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSplitVote({
   module = "convictionVoting",
@@ -16,7 +16,7 @@ export default function useSplitVote({
   const [ayeInputVoteBalance, setAyeInputVoteBalance] = useState("0");
   const [nayInputVoteBalance, setNayInputVoteBalance] = useState("0");
   const node = useChainSettings();
-  const api = useApi();
+  const api = useContextApi();
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 

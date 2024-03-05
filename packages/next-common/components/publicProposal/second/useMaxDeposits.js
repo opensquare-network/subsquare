@@ -1,7 +1,7 @@
-import useApi from "../../../utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function useMaxDeposits() {
-  const api = useApi();
+  const api = useContextApi();
 
   if (api?.consts?.democracy?.maxDeposits) {
     return api.consts.democracy.maxDeposits.toNumber();

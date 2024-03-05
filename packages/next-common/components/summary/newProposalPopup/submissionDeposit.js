@@ -2,10 +2,10 @@ import BigNumber from "bignumber.js";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import { useChainSettings } from "next-common/context/chain";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function SubmissionDeposit() {
-  const api = useApi();
+  const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
   const deposit = new BigNumber(api?.consts.referenda?.submissionDeposit || 0)
     .div(Math.pow(10, decimals))

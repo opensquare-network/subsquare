@@ -1,14 +1,14 @@
 import MembersList from "components/membersList/councilMembersList";
-import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import usePrime from "next-common/utils/hooks/usePrime";
 import { useChainSettings } from "next-common/context/chain";
+import { useContextApi } from "next-common/context/api";
 
 export default function Members({ category }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const api = useApi();
+  const api = useContextApi();
   const { hasElections } = useChainSettings();
   const [electionsInfo, loadingElectionsInfo] = useCall(
     api?.derive?.elections?.info,

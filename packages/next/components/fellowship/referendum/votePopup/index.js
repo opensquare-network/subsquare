@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-
-import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -19,6 +17,7 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent({
   referendumIndex,
@@ -33,7 +32,7 @@ function PopupContent({
 
   const signerAccount = useSignerAccount();
 
-  const api = useApi();
+  const api = useContextApi();
   const node = useChainSettings();
 
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);

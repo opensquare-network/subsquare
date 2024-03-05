@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Conviction, isAye } from "../../utils/referendumCommon";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 export async function getReferendaDirectVote(
   api,
@@ -30,7 +30,7 @@ export default function useSubMyReferendaVote(
   referendumIndex,
   address,
 ) {
-  const api = useApi();
+  const api = useContextApi();
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);

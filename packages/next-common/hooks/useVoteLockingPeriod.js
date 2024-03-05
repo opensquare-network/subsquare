@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function useVoteLockingPeriod(pallet) {
-  const api = useApi();
+  const api = useContextApi();
   const [period, setPeriod] = useState();
 
   useEffect(() => {

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import useApi from "./useApi";
 import { blockTimeSelector } from "../../store/reducers/chainSlice";
 import { estimateBlocksTime } from "..";
+import { useContextApi } from "next-common/context/api";
 
 export default function useVoteLockTime(
   conviction,
   module = "convictionVoting",
 ) {
-  const api = useApi();
+  const api = useContextApi();
   const [time, setTime] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const blockTime = useSelector(blockTimeSelector);
