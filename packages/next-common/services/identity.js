@@ -103,3 +103,5 @@ export function getCachedIdentity(chain, address) {
   const idName = `${chain}/${address}`;
   return cachedIdentities.get(idName) || null;
 }
+
+export const getIdentity = getCachedIdentity;
