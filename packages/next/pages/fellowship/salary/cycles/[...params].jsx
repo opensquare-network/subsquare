@@ -55,7 +55,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       ...tracksProps,
       id,
-      cycle,
+      cycle: cycle || null,
       registrations: registrations || {},
       feeds: feeds || {},
     },
