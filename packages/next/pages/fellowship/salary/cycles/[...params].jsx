@@ -2,6 +2,7 @@ import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
+import FellowshipSalaryCycleDetailInfo from "next-common/components/fellowship/salary/cycles/info";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
 import { ssrNextApi } from "next-common/services/nextApi";
 import {
@@ -14,7 +15,10 @@ export default function FellowshipSalaryCyclePage({ cycle }) {
   return (
     <FellowshipSalaryCycleLayout>
       {cycle ? (
-        <FellowshipSalaryCycleDetailTabsList />
+        <div className="space-y-6">
+          <FellowshipSalaryCycleDetailInfo />
+          <FellowshipSalaryCycleDetailTabsList />
+        </div>
       ) : (
         <FellowshipSalaryCycleDetailNotFound />
       )}

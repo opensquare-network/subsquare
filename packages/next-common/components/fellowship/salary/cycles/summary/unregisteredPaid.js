@@ -7,6 +7,7 @@ export default function getCycleUnregisteredPaidSummaryItem(
   totalUnregisteredPaidValue,
   decimals,
   symbol,
+  memberCount,
 ) {
   return {
     title: "Total Unregistered Paid",
@@ -16,6 +17,11 @@ export default function getCycleUnregisteredPaidSummaryItem(
           value={toPrecision(totalUnregisteredPaidValue, decimals)}
           symbol={symbol}
         />
+        {!isNil(memberCount) && (
+          <div className="text12Medium text-textSecondary !ml-0">
+            {memberCount} Members
+          </div>
+        )}
       </LoadableContent>
     ),
   };
