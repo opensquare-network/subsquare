@@ -6,7 +6,6 @@ import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
 import Footer from "./footer";
-import useApi from "next-common/utils/hooks/useApi";
 import { useBlockTime, useSubscribeChainHead } from "next-common/utils/hooks";
 import useUpdateNodesDelay from "next-common/utils/hooks/useUpdateNodesDelay";
 import { cn } from "next-common/utils";
@@ -15,6 +14,7 @@ import LoginGlobalPopup from "../login/globalPopup";
 import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
 import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
 import useConnectApis from "next-common/services/chain/apis/useConnectApis";
+import { useContextApi } from "next-common/context/api";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -25,7 +25,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
   useConnectApis();
   useUpdateNodesDelay();
 
-  const api = useApi();
+  const api = useContextApi();
   useBlockTime(api);
   useSubscribeChainHead(api);
 

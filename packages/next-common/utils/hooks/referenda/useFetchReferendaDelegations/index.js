@@ -1,11 +1,11 @@
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect } from "react";
 import getAddressTrackDelegations from "./addressDelegations";
 import { useDispatch } from "react-redux";
 import { setProfileReferendaDelegations } from "next-common/store/reducers/profile/referendaDelegations";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFetchReferendaDelegations(address) {
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

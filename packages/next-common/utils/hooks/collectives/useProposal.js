@@ -1,9 +1,9 @@
-import useApi from "../useApi";
 import { useEffect, useRef, useState } from "react";
 import useIsMounted from "../useIsMounted";
+import { useContextApi } from "next-common/context/api";
 
 export default function useCollectiveProposal(moduleName = "council", hash) {
-  const api = useApi();
+  const api = useContextApi();
   const cache = useRef({});
   const isMounted = useIsMounted();
   const [proposal, setProposal] = useState(null);
@@ -18,23 +18,30 @@ export default function useCollectiveProposal(moduleName = "council", hash) {
       cache.current[moduleName] = {};
     }
 
-    if (cache.current[moduleName] && cache.current[moduleName][hash] && isMounted.current) {
+    if (
+      cache.current[moduleName] &&
+      cache.current[moduleName][hash] &&
+      isMounted.current
+    ) {
       setProposal(cache.current[moduleName][hash]);
       return;
     }
 
     setLoading(true);
-    api.query[moduleName].proposalOf(hash).then((wrappedProposal) => {
-      if (wrappedProposal?.isSome && isMounted.current) {
-        const proposal = wrappedProposal.unwrap();
-        setProposal(proposal);
-        cache.current[moduleName][hash] = proposal;
-      }
-    }).finally(() => {
-      if (isMounted.current) {
-        setLoading(false);
-      }
-    });
+    api.query[moduleName]
+      .proposalOf(hash)
+      .then((wrappedProposal) => {
+        if (wrappedProposal?.isSome && isMounted.current) {
+          const proposal = wrappedProposal.unwrap();
+          setProposal(proposal);
+          cache.current[moduleName][hash] = proposal;
+        }
+      })
+      .finally(() => {
+        if (isMounted.current) {
+          setLoading(false);
+        }
+      });
   }, [api, isMounted, hash]);
 
   return {

@@ -1,9 +1,6 @@
-import { useRef } from "react";
-import { useEffect } from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sleep } from "..";
-import useApi from "./useApi";
 import { getBlockHeightFromHash } from "../chain";
 import { nodesHeightSelector } from "../../store/reducers/nodeSlice";
 import {
@@ -13,12 +10,12 @@ import {
   newToastId,
   removeToast,
 } from "../../store/reducers/toastSlice";
+import { useContextApi } from "next-common/context/api";
 
 export default function useWaitSyncBlock(toastMessage, callback) {
   const scanHeight = useSelector(nodesHeightSelector);
   const dispatch = useDispatch();
-  const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const api = useApi(chain);
+  const api = useContextApi();
 
   const refScanHeight = useRef();
   useEffect(() => {

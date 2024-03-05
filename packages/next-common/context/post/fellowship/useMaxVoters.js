@@ -1,13 +1,16 @@
 import { useDetailType } from "../../page";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { useEffect, useState } from "react";
-import useApi from "../../../utils/hooks/useApi";
 import { useTrack } from "../gov2/track";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
 import isNil from "lodash.isnil";
 import { useOnchainData } from "../index";
 import { useDispatch } from "react-redux";
-import { clearFellowshipMaxVoters, setFellowshipMaxVoters } from "../../../store/reducers/fellowship/maxVoters";
+import {
+  clearFellowshipMaxVoters,
+  setFellowshipMaxVoters,
+} from "../../../store/reducers/fellowship/maxVoters";
+import { useContextApi } from "next-common/context/api";
 
 async function queryMaxVoters(api, trackId, votingFinishHeight) {
   let blockApi = api;
@@ -27,7 +30,7 @@ export default function useFetchMaxVoters() {
   const tally = onchain.tally || onchain?.info?.tally;
   const [maxVoters, setMaxVoters] = useState(tally.electorate || 0);
   const votingFinishHeight = useReferendumVotingFinishHeight();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

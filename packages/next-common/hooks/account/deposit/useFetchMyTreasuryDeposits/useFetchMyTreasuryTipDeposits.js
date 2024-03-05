@@ -1,5 +1,4 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import BigNumber from "bignumber.js";
@@ -8,6 +7,7 @@ import {
   useChainSettings,
   useMenuHasTreasuryTips,
 } from "next-common/context/chain";
+import { useContextApi } from "next-common/context/api";
 
 export async function queryAddressDeposits(api, address) {
   const entries = await api.query.tips.tips.entries();
@@ -36,7 +36,7 @@ export async function queryAddressDeposits(api, address) {
 
 export default function useFetchMyTreasuryTipDeposits() {
   const realAddress = useRealAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const hasTreasuryTips = useMenuHasTreasuryTips();
   const { hasTipsModule } = useChainSettings();

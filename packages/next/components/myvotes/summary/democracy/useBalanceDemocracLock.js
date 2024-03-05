@@ -1,9 +1,9 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function useBalanceDemocracLock() {
-  const api = useApi();
+  const api = useContextApi();
   const realAddress = useRealAddress();
   const [democracyLock, setDemocracLock] = useState(0);
 

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getTypeDef } from "@polkadot/types";
 import Select from "next-common/components/select";
-import useApi from "next-common/utils/hooks/useApi";
 import Param from "./param";
+import { useContextApi } from "next-common/context/api";
 
 function getSubTypes(registry, type) {
   return getTypeDef(registry.createType(type.type).toRawType()).sub;
@@ -23,7 +23,7 @@ function getOptions(registry, type) {
 }
 
 export default function EnumParam({ title, def, value, setValue }) {
-  const api = useApi();
+  const api = useContextApi();
 
   const { options, subTypes } = useMemo(() => {
     if (!api?.registry) {

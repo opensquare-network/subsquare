@@ -1,9 +1,9 @@
 import Toggle from "next-common/components/toggle";
 import { useEffect, useState } from "react";
 import FileParam from "./fileParam";
-import useApi from "next-common/utils/hooks/useApi";
 import { u8aToHex } from "@polkadot/util";
 import TextParam from "./textParam";
+import { useContextApi } from "next-common/context/api";
 
 function FileHashOption({ isFileHash, setIsFileHash }) {
   return (
@@ -18,7 +18,7 @@ function FileHashOption({ isFileHash, setIsFileHash }) {
 
 export default function Hash256Param({ title, value, setValue }) {
   const { data } = value || {};
-  const api = useApi();
+  const api = useContextApi();
   const [isFileHash, setIsFileHash] = useState(false);
   const [file, setFile] = useState();
 

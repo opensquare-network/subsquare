@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect } from "react";
 import { setConvictionVotingLockPeriod } from "next-common/store/reducers/chainSlice";
 import { useChainSettings } from "next-common/context/chain";
+import { useContextApi } from "next-common/context/api";
 
 export default function useStoreConvictionVotingLockPeriod() {
   const dispatch = useDispatch();
-  const api = useApi();
+  const api = useContextApi();
   const { hasReferenda } = useChainSettings();
 
   useEffect(() => {

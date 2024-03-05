@@ -1,10 +1,10 @@
 import { getDemocracyBeenDelegatedByAddress } from "next-common/utils/democracy/getDemocracyBeenDelegatedByAddress";
 import { getDemocracyBeenDelegatedListByAddress } from "next-common/utils/democracy/getDemocracyBeenDelegatedListByAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function useBeenDelegated(address) {
-  const api = useApi();
+  const api = useContextApi();
   const [delegations, setDelegations] = useState();
   const [beenDelegatedList, setBeenDelegatedList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

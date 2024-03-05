@@ -1,11 +1,11 @@
 import React from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { useSignerAccount } from "../popupWithSigner/context";
+import { useContextApi } from "next-common/context/api";
 
 export default function SignerWithBalance() {
-  const api = useApi();
+  const api = useContextApi();
   const signerAccount = useSignerAccount();
 
   const [balance, loadingBalance] = useAddressBalance(

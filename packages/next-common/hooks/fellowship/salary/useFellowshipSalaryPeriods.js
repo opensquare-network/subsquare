@@ -1,8 +1,8 @@
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFellowshipSalaryPeriods() {
-  const api = useApi();
+  const api = useContextApi();
   const [registrationPeriod, setRegistrationPeriod] = useState();
   const [payoutPeriod, setPayoutPeriod] = useState();
 

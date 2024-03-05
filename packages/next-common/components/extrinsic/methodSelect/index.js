@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import Select from "next-common/components/select";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 function getMethodOptions(api, sectionName) {
   if (!api) return [];
@@ -49,7 +49,7 @@ export default function MethodSelect({
   methodName,
   setMethodName,
 }) {
-  const api = useApi();
+  const api = useContextApi();
   const options = useMemo(
     () => getMethodOptions(api, sectionName),
     [sectionName, api],

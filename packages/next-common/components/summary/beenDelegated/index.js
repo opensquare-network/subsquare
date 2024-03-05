@@ -2,7 +2,6 @@ import {
   getGov2BeenDelegatedByAddress,
   getGov2BeenDelegatedListByAddress,
 } from "next-common/utils/gov2/gov2ReferendumVote";
-import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -10,6 +9,7 @@ import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDeleg
 import BeenDelegatedListButton from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListButton";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import isNil from "lodash.isnil";
+import { useContextApi } from "next-common/context/api";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 `;
 
 export default function BeenDelegated({ trackId }) {
-  const api = useApi();
+  const api = useContextApi();
   const realAddress = useRealAddress();
   const [delegations, setDelegations] = useState();
   const [beenDelegatedList, setBeenDelegatedList] = useState([]);

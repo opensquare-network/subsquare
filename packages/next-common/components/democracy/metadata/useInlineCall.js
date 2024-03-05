@@ -1,6 +1,6 @@
-import useApi from "../../../utils/hooks/useApi";
 import { useEffect, useState } from "react";
 import normalizeCall from "./normalize";
+import { useContextApi } from "next-common/context/api";
 
 export async function decodeCall(bytes = [], blockHash, api) {
   let blockApi = api;
@@ -20,7 +20,7 @@ export async function decodeCall(bytes = [], blockHash, api) {
 }
 
 export default function useInlineCall(timeline, proposal) {
-  const api = useApi();
+  const api = useContextApi();
 
   const [inline, setInline] = useState({
     hash: null,

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { BN } from "@polkadot/util";
-import useApi from "../utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 const RANGES_DEFAULT = [
   [0, 0],
@@ -20,7 +20,7 @@ function isU32(leasePeriodsPerSlot) {
 }
 
 export function useLeaseRanges() {
-  const api = useApi();
+  const api = useContextApi();
 
   return useMemo(() => {
     if (isU32(api?.consts.auctions?.leasePeriodsPerSlot)) {

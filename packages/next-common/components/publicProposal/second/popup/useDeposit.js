@@ -1,13 +1,13 @@
 import BigNumber from "bignumber.js";
-import useApi from "../../../../utils/hooks/useApi";
 import isNil from "lodash.isnil";
+import { useContextApi } from "next-common/context/api";
 
 export default function useDeposit(
   depositRequired,
   signerBalance,
   isBalanceLoaded,
 ) {
-  const api = useApi();
+  const api = useContextApi();
 
   const deposit =
     depositRequired || api?.consts?.democracy?.minimumDeposit?.toString();

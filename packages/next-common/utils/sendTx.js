@@ -2,19 +2,19 @@ import { emptyFunction } from ".";
 import {
   newErrorToast,
   newPendingToast,
-  newWarningToast,
   newToastId,
+  newWarningToast,
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
 import WalletTypes from "./consts/walletTypes";
-import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
 import { maybeSendMimirTx } from "./mimir";
 import { sendEvmTx } from "./sendEvmTx";
 import isMixedChain from "./isMixedChain";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { tryConvertToEvmAddress } from "./hydradxUtil";
+import { getLatestApi } from "next-common/context/api";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -160,7 +160,7 @@ export async function defaultSendTx({
   try {
     setLoading(true);
 
-    const api = getLastApi();
+    const api = getLatestApi();
     const account = await api.query.system.account(signerAddress);
 
     const unsub = await tx.signAndSend(

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 export async function getKintDemocracyDirectVote(
   api,
@@ -17,7 +17,7 @@ export async function getKintDemocracyDirectVote(
 }
 
 export default function useSubMyDemocracyVote(referendumIndex, address) {
-  const api = useApi();
+  const api = useContextApi();
 
   const [isLoading, setIsLoading] = useState(false);
   const [vote, setVote] = useState(null);

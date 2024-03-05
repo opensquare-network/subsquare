@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-
-import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
@@ -21,6 +19,7 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
+import { useContextApi } from "next-common/context/api";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { WarningMessage } from "next-common/components/popup/styled";
 
@@ -101,7 +100,7 @@ function PopupContent({ onClose }) {
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
   const [inputValue, setInputValue] = useState("0");
   const { decimals } = useChainSettings();
-  const api = useApi();
+  const api = useContextApi();
   const router = useRouter();
 
   const [beneficiary, setBeneficiary] = useState();

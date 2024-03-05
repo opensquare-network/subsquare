@@ -3,7 +3,6 @@ import { withCommonProps } from "next-common/lib";
 import { ssrNextApi as nextApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Vote from "components/referenda/vote";
-import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Timeline from "components/referenda/timeline";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
@@ -30,6 +29,7 @@ import { usePageProps } from "next-common/context/page";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
+import { useContextApi } from "next-common/context/api";
 
 function ReferendumContent() {
   const post = usePost();
@@ -43,7 +43,7 @@ function ReferendumContent() {
   useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
-  const api = useApi();
+  const api = useContextApi();
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 

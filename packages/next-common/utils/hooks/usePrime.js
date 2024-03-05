@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "./useIsMounted";
-import useApi from "./useApi";
 import useCouncilName from "next-common/hooks/useCouncilName";
+import { useContextApi } from "next-common/context/api";
 
 export default function usePrime(blockHash) {
   const [prime, setPrime] = useState();
   const councilName = useCouncilName();
   const isMounted = useIsMounted();
-  const api = useApi();
+  const api = useContextApi();
 
   useEffect(() => {
     if (!api) return;

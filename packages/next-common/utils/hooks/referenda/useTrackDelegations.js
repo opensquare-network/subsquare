@@ -1,12 +1,12 @@
 import isNil from "lodash.isnil";
 import { useEffect, useState } from "react";
 import { getGov2BeenDelegatedByAddress } from "../../gov2/gov2ReferendumVote";
-import useApi from "../useApi";
 import useIsMounted from "../useIsMounted";
 import useRealAddress from "../useRealAddress";
+import { useContextApi } from "next-common/context/api";
 
 export function useTrackDelegations(track, address) {
-  const api = useApi();
+  const api = useContextApi();
   const isMounted = useIsMounted();
   const [delegations, setDelegations] = useState(null);
 

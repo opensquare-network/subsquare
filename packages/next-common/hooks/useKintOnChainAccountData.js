@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
+import { useContextApi } from "next-common/context/api";
 
 export default function useKintOnChainAccountData(address) {
   const chain = useChain();
-  const api = useApi();
+  const api = useContextApi();
   const [accountData, setAccountData] = useState();
 
   const fetchAccountData = useCallback(async () => {

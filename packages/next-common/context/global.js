@@ -6,6 +6,7 @@ import PageProvider from "./page";
 import NavProvider from "./nav";
 import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
+import ApiProvider from "next-common/context/api";
 
 export default function GlobalProvider({
   user,
@@ -30,7 +31,7 @@ export default function GlobalProvider({
                 navSubmenuVisible={navSubmenuVisible}
               >
                 <PageProvider pageProperties={pageProperties}>
-                  {children}
+                  <ApiProvider>{children}</ApiProvider>
                 </PageProvider>
               </NavProvider>
             </AdminProvider>

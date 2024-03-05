@@ -1,4 +1,3 @@
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,6 +6,7 @@ import {
 } from "next-common/store/reducers/fellowship/core";
 import { isSameAddress } from "next-common/utils";
 import { setFellowshipCollectiveMembers } from "next-common/store/reducers/fellowship/collective";
+import { useContextApi } from "next-common/context/api";
 
 function normalizeCollectiveMembers(collectiveEntries = []) {
   let members = [];
@@ -23,7 +23,7 @@ function normalizeCollectiveMembers(collectiveEntries = []) {
 }
 
 export default function useFetchFellowshipCoreMembers() {
-  const api = useApi();
+  const api = useContextApi();
   const trigger = useSelector(fellowshipCoreMembersTriggerSelector);
   const dispatch = useDispatch();
 

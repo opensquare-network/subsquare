@@ -1,5 +1,4 @@
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import useApi from "next-common/utils/hooks/useApi";
 import {
   createContext,
   useCallback,
@@ -10,13 +9,14 @@ import {
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
+import { useContextApi } from "next-common/context/api";
 
 export const SignerContext = createContext();
 
 export default SignerContext;
 
 function useSetSigner() {
-  const api = useApi();
+  const api = useContextApi();
   const { injectedWeb3 } = useInjectedWeb3();
 
   return useCallback(

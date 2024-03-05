@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Signer from "next-common/components/popup/fields/signerField";
-
-import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import DepositRequired from "./depositRequired";
@@ -14,6 +12,7 @@ import SecondPopupInputTimes from "./inputTimes";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
 import { useChainSettings } from "next-common/context/chain";
+import { useContextApi } from "next-common/context/api";
 
 export default function PopupContent({
   proposalIndex,
@@ -31,7 +30,7 @@ export default function PopupContent({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const api = useApi();
+  const api = useContextApi();
   const [balance, loadingBalance] = useAddressVotingBalance(
     api,
     signerAccount?.realAddress,

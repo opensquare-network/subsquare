@@ -37,7 +37,6 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
-import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 function ReferendumContent() {
   const post = usePost();
@@ -55,8 +54,6 @@ function ReferendumContent() {
       dispatch(clearVotes());
     };
   }, [dispatch]);
-
-  useSubscribePostDetail(post?.referendumIndex);
 
   return (
     <ContentWithComment>

@@ -1,11 +1,11 @@
-import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export function useAllianceMembers() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const api = useApi();
+  const api = useContextApi();
   const [members] = useCall(api?.query?.alliance?.members.entries, []);
   useEffect(() => {
     if (!members) {
