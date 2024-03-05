@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
-import { fetchIdentity } from "next-common/services/identity";
+import {
+  fetchIdentity,
+  getCachedIdentity,
+} from "next-common/services/identity";
 
 export default function useIdentityInfo(address) {
   const settings = useChainSettings();
-  const [identity, setIdentity] = useState(null);
+  // Render the identity immediately if it's already in cache
+  const encodedAddress = encodeAddressToChain(address, settings.identity);
+  const cachedIdentity = getCachedIdentity(settings.identity, encodedAddress);
+  const [identity, setIdentity] = useState(cachedIdentity);
 
   useEffect(() => {
     setIdentity(null);
