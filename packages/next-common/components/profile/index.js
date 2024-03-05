@@ -5,8 +5,10 @@ import useProfileTabs from "next-common/components/profile/tabs";
 import ProfileBreadcrumbs from "next-common/components/profile/breadcrumbs";
 import useProfileTabContent from "next-common/components/profile/tabs/content";
 import useFetchProfileData from "next-common/components/profile/useFetchProfileData";
+import { usePageProps } from "next-common/context/page";
 
 export default function ProfilePage() {
+  const { id } = usePageProps();
   const tabs = useProfileTabs();
   const tabContent = useProfileTabContent();
   useFetchProfileData();
@@ -15,7 +17,7 @@ export default function ProfilePage() {
     <ListLayout
       header={
         <>
-          <ProfileBreadcrumbs />
+          <ProfileBreadcrumbs id={id} />
           <Bio />
         </>
       }

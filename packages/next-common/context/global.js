@@ -1,11 +1,12 @@
 import React from "react";
 import ChainProvider from "./chain";
 import UserProvider from "./user";
-import ThemeModeProvider from "./theme";
+import ThemeModeProvider, { StyledThemeValueProvider } from "./theme";
 import PageProvider from "./page";
 import NavProvider from "./nav";
 import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
+import NavRouteProvider from "./nav/route";
 
 export default function GlobalProvider({
   user,
@@ -21,22 +22,26 @@ export default function GlobalProvider({
 }) {
   return (
     <ThemeModeProvider defaultThemeMode={themeMode}>
-      <ChainProvider chain={chain}>
-        <UserProvider user={user} userStatus={userStatus}>
-          <ConnectedAccountProvider connectedAccount={connectedAccount}>
-            <AdminProvider admins={admins}>
-              <NavProvider
-                navCollapsed={navCollapsed}
-                navSubmenuVisible={navSubmenuVisible}
-              >
-                <PageProvider pageProperties={pageProperties}>
-                  {children}
-                </PageProvider>
-              </NavProvider>
-            </AdminProvider>
-          </ConnectedAccountProvider>
-        </UserProvider>
-      </ChainProvider>
+      <StyledThemeValueProvider>
+        <ChainProvider chain={chain}>
+          <UserProvider user={user} userStatus={userStatus}>
+            <ConnectedAccountProvider connectedAccount={connectedAccount}>
+              <AdminProvider admins={admins}>
+                <NavProvider
+                  navCollapsed={navCollapsed}
+                  navSubmenuVisible={navSubmenuVisible}
+                >
+                  <NavRouteProvider>
+                    <PageProvider pageProperties={pageProperties}>
+                      {children}
+                    </PageProvider>
+                  </NavRouteProvider>
+                </NavProvider>
+              </AdminProvider>
+            </ConnectedAccountProvider>
+          </UserProvider>
+        </ChainProvider>
+      </StyledThemeValueProvider>
     </ThemeModeProvider>
   );
 }

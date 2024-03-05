@@ -15,8 +15,7 @@ const Link = styled.a`
   gap: 4px;
 `;
 
-export default function CouncilorLink({ address }) {
-  const chain = useChain();
+export function ChainCouncilorLink({ chain, address }) {
   const [isCouncilor, setIsCouncilor] = useState(false);
   useEffect(() => {
     fetch(`https://${chain}-api.dotreasury.com/participants/${address}`)
@@ -48,4 +47,9 @@ export default function CouncilorLink({ address }) {
       </Link>
     </>
   );
+}
+
+export default function CouncilorLink({ address }) {
+  const chain = useChain();
+  return <ChainCouncilorLink chain={chain} address={address} />;
 }

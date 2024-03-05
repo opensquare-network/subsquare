@@ -1,10 +1,7 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
 import { useRouter } from "next/router";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
-import Relative from "../styled/relative";
-import Flex from "../styled/flex";
 import { useIsLoggedIn, useUser } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import PrimaryButton from "../buttons/primaryButton.js";
@@ -14,41 +11,7 @@ import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { SystemUser, AddressUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
-
-const Wrapper = Relative;
-
-const Menu = styled.div`
-  border-radius: 8px;
-  position: absolute;
-  right: 0;
-  margin-top: 4px;
-  padding: 8px;
-  z-index: 999999;
-  background: var(--neutral100);
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--neutral300);
-  color: var(--textPrimary);
-  box-shadow: var(--shadow200);
-`;
-
-const Item = styled(Flex)`
-  min-width: 160px;
-  cursor: pointer;
-  padding: 0 12px;
-  height: 36px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  :hover {
-    background: var(--neutral200);
-  }
-  color: var(--textPrimary);
-
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-`;
+import { Item, Menu, Wrapper } from "./headerAccountStyled.js";
 
 function ProfileMenuItem({ onClick }) {
   return (

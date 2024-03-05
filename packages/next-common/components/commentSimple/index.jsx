@@ -1,120 +1,22 @@
 import React from "react";
-import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
 import Anchor from "next-common/components/styled/anchor";
-import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
-import Divider from "./styled/layout/divider";
-import {
-  MarkdownPreviewer,
-  HtmlPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
-import { getMotionId } from "../utils/motion";
-import IdentityOrAddr from "./IdentityOrAddr";
-import { prettyHTML } from "../utils/viewfuncs";
-import useDuration from "../utils/hooks/useDuration";
-import { useChain } from "../context/chain";
+import Divider from "../styled/layout/divider";
+import { getMotionId } from "../../utils/motion";
+import { useChain } from "../../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
 import isMoonChain from "next-common/utils/isMoonChain";
 import isNil from "lodash.isnil";
-
-const Wrapper = styled(HoverSecondaryCard)`
-  display: flex;
-  align-items: flex-start;
-`;
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: nowrap;
-  min-height: 20px;
-
-  > span {
-    display: inline-block;
-    height: 12px;
-  }
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: var(--textTertiary);
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Footer = styled(DividerWrapper)`
-  > div:first-child {
-    color: var(--textSecondary);
-  }
-  @media screen and (max-width: 768px) {
-    > :nth-child(3) {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 375px) {
-    > :nth-child(2) {
-      display: none;
-    }
-  }
-`;
-
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: var(--textSecondary);
-  svg {
-    margin-right: 4px;
-    path {
-      stroke: var(--textTertiary);
-    }
-  }
-  .elapseIcon > * {
-    margin-left: 8px;
-  }
-`;
-
-const AutHideInfo = styled(Info)`
-  a {
-    display: block;
-    max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`;
-
-const FooterWrapper = styled(Flex)`
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
-
-const TitleWrapper = styled.div`
-  overflow: hidden;
-  color: var(--textPrimary);
-  div.markdown-body,
-  div.html-body {
-    color: var(--textPrimary);
-  }
-`;
-
-const HeadWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  .symbol {
-    color: var(--textTertiary);
-  }
-
-  @media screen and (max-width: 768px) {
-    flex-wrap: wrap;
-    > span {
-      line-height: 21px;
-      flex-basis: 100%;
-    }
-  }
-`;
+import {
+  MaxWidthInfo,
+  Footer,
+  FooterWrapper,
+  HeadWrapper,
+  Info,
+  ContentWrapper,
+  Wrapper,
+} from "./styled";
+import CommentContent from "./content";
+import Duration from "../duration";
 
 const getCommentSource = (comment, chain) => {
   if (comment?.financialMotion) {
@@ -275,47 +177,31 @@ const getCommentSource = (comment, chain) => {
 export default function CommentSimple({ data }) {
   const chain = useChain();
   const [type, title, route] = getCommentSource(data, chain);
-  const duration = useDuration(data.updatedAt);
   return (
     <Wrapper>
       <div className="flex-1 overflow-x-scroll overflow-y-hidden scrollbar-pretty">
         <HeadWrapper>
-          <TitleWrapper>
+          <ContentWrapper>
             <Anchor href={`${route}#${data.height}`} passHref>
-              {data.contentType === "markdown" && (
-                <MarkdownPreviewer
-                  content={data.content || ""}
-                  plugins={[
-                    renderMentionIdentityUserPlugin(<IdentityOrAddr />),
-                  ]}
-                  maxLines={2}
-                />
-              )}
-              {data.contentType === "html" && (
-                <HtmlPreviewer
-                  content={prettyHTML(data.content)}
-                  plugins={[
-                    renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
-                      targetElement: { tag: "span" },
-                    }),
-                  ]}
-                  maxLines={2}
-                />
-              )}
+              <CommentContent data={data} />
             </Anchor>
-          </TitleWrapper>
+          </ContentWrapper>
         </HeadWrapper>
 
         <Divider margin={12} />
         <FooterWrapper>
           <Footer>
             <Info>{type}</Info>
-            <AutHideInfo>
+            <MaxWidthInfo>
               <Anchor href={route} passHref>
                 {title || "Untitled"}
               </Anchor>
-            </AutHideInfo>
-            {data.updatedAt && <Info>{duration}</Info>}
+            </MaxWidthInfo>
+            {data.updatedAt && (
+              <Info>
+                <Duration time={data.updatedAt} />
+              </Info>
+            )}
           </Footer>
         </FooterWrapper>
       </div>

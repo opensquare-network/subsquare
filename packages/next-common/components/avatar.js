@@ -1,7 +1,6 @@
 import * as React from "react";
 import Identicon from "@osn/polkadot-react-identicon";
 import styled from "styled-components";
-import { useThemeSetting } from "../context/theme";
 import makeBlockie from "ethereum-blockies-base64";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
@@ -28,7 +27,6 @@ const ImgWrapper = styled.img`
 `;
 
 export default function Avatar({ address, size = 24 }) {
-  const themeObj = useThemeSetting();
   const theme = "polkadot";
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
@@ -50,14 +48,7 @@ export default function Avatar({ address, size = 24 }) {
   }
 
   if (isPolkadotAddress(address)) {
-    return (
-      <StyledIdenticon
-        value={address}
-        size={size}
-        theme={theme}
-        themeObj={themeObj}
-      />
-    );
+    return <StyledIdenticon value={address} size={size} theme={theme} />;
   }
 
   return null;

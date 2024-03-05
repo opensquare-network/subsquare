@@ -4,10 +4,8 @@ import getChainSettings from "next-common/utils/consts/settings";
 import IconLink from "./iconLink";
 import DotreasurySVG from "@osn/icons/subsquare/LinkDotreasury";
 
-function DotreasuryAccountLink({ address }) {
+export function DotreasuryChainAccountLink({ chain, address }) {
   const dotreasuryChains = ["kusama", "polkadot"];
-  const chain = useChain();
-
   if (!address || !dotreasuryChains.includes(chain)) {
     return null;
   }
@@ -16,6 +14,11 @@ function DotreasuryAccountLink({ address }) {
   const dotreasuryHref = `https://dotreasury.com/${chainSetting.symbol}/users/${address}`;
 
   return <IconLink href={dotreasuryHref} icon={<DotreasurySVG />} />;
+}
+
+function DotreasuryAccountLink({ address }) {
+  const chain = useChain();
+  return <DotreasuryChainAccountLink chain={chain} address={address} />;
 }
 
 export default DotreasuryAccountLink;

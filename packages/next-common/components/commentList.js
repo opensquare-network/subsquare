@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Pagination from "next-common/components/pagination/index.js";
 import { TitleContainer } from "./styled/containers/titleContainer";
-import CommentSimple from "./commentSimple.js";
+import CommentSimple from "./commentSimple";
 import MaybeEmpty from "./emptyList";
 
 const Wrapper = styled.div`

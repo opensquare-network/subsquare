@@ -10,22 +10,7 @@ import {
 } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 
-export default function Footer() {
-  const contactLinks = [
-    {
-      name: "Element",
-      link: "https://app.element.io/#/room/#opensquare:matrix.org",
-    },
-    {
-      name: "GitHub",
-      link: "https://github.com/opensquare-network/subsquare/issues",
-    },
-    {
-      name: "Email",
-      link: "mailto:yongfeng@opensquare.network",
-    },
-  ];
-
+export function FooterBase({ logo, copyright, contactLinks }) {
   return (
     <div
       className={cn(
@@ -37,12 +22,9 @@ export default function Footer() {
       )}
     >
       <div className={cn("flex items-center gap-x-4", "max-sm:flex-col")}>
-        <div>
-          <FooterLogoLight className="dark:hidden" />
-          <FooterLogoDark className="hidden dark:inline" />
-        </div>
+        {logo}
         <p className={cn("text14Medium text-textTertiary", "max-sm:mt-2")}>
-          @{new Date().getFullYear()} SubSquare. Powered by OpenSquare
+          {copyright}
         </p>
       </div>
 
@@ -69,6 +51,34 @@ export default function Footer() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Footer() {
+  return (
+    <FooterBase
+      logo={
+        <div>
+          <FooterLogoLight className="dark:hidden" />
+          <FooterLogoDark className="hidden dark:inline" />
+        </div>
+      }
+      copyright={`${new Date().getFullYear()} SubSquare. Powered by OpenSquare`}
+      contactLinks={[
+        {
+          name: "Element",
+          link: "https://app.element.io/#/room/#opensquare:matrix.org",
+        },
+        {
+          name: "GitHub",
+          link: "https://github.com/opensquare-network/subsquare/issues",
+        },
+        {
+          name: "Email",
+          link: "mailto:yongfeng@opensquare.network",
+        },
+      ]}
+    />
   );
 }
 
