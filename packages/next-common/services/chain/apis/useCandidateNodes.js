@@ -1,16 +1,16 @@
 import { useChain } from "next-common/context/chain";
 import getEndpointFromLocalStorage from "next-common/services/chain/apis/endpointLocalStorage";
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
-import { nodesSelector } from "next-common/store/reducers/nodeSlice";
+import { getEnvEndpoints } from "next-common/store/reducers/nodeSlice";
+import getChainSettings from "next-common/utils/consts/settings";
 
 export default function useCandidateNodes() {
   const chain = useChain();
-  const nodes = useSelector(nodesSelector);
+  const nodes = getEnvEndpoints() || getChainSettings(chain).endpoints;
   const savedEndpoint = getEndpointFromLocalStorage(chain);
-  const chainNodes = nodes.map((item) => item.url);
 
   return useMemo(() => {
+    const chainNodes = nodes.map((item) => item.url);
     const first3Nodes = chainNodes.slice(0, 3);
     const candidates = new Set(first3Nodes);
     if (savedEndpoint && chainNodes.includes(savedEndpoint)) {
@@ -18,5 +18,5 @@ export default function useCandidateNodes() {
     }
 
     return [...candidates];
-  }, [savedEndpoint, chainNodes]);
+  }, [savedEndpoint, nodes]);
 }

@@ -3,7 +3,7 @@ import getChainSettings from "../../utils/consts/settings";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
-function getEnvEndpoints() {
+export function getEnvEndpoints() {
   const envSetting = process.env.NEXT_PUBLIC_TEST_ENDPOINTS;
   if (!envSetting) {
     return null;
