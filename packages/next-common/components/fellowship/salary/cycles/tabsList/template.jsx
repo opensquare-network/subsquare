@@ -31,7 +31,7 @@ export default function FellowshipSalaryCycleDetailListTemplate({
   );
 }
 
-function TableTemplate({ columns, api, formatter = (i) => i }) {
+function TableTemplate({ columns, api, formatter = (i) => i, noDataText }) {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(!api?.initData ?? true);
@@ -66,7 +66,7 @@ function TableTemplate({ columns, api, formatter = (i) => i }) {
         loading={loading}
         columns={columns}
         rows={rows}
-        noDataText="No cycles"
+        noDataText={noDataText}
       />
 
       {!isNil(result?.page) && (
