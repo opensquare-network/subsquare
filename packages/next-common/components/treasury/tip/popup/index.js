@@ -5,7 +5,7 @@ import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue } from "../../../../utils";
+import { checkInputValue, isAddressInGroup } from "../../../../utils";
 import PopupWithSigner from "../../../popupWithSigner";
 import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
@@ -21,12 +21,19 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
+import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import { WarningMessage } from "next-common/components/popup/styled";
 
 function PopupContent({ onClose }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
+  const councilTippers = useCouncilMembers();
+  const isTipper = isAddressInGroup(
+    signerAccount?.realAddress,
+    councilTippers || [],
+  );
 
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
@@ -98,11 +105,18 @@ function PopupContent({ onClose }) {
     });
   };
 
+  const disabled = tabIndex === NewTip && !isTipper;
+
   return (
     <>
       <div style={{ marginTop: "16px", marginBottom: "16px" }}>
         <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </div>
+      {tabIndex === NewTip && (
+        <WarningMessage danger={!isTipper}>
+          Only council members can create new tip.
+        </WarningMessage>
+      )}
       <SignerWithBalance />
       <Beneficiary
         extensionAccounts={extensionAccounts}
@@ -111,7 +125,7 @@ function PopupContent({ onClose }) {
       <TipReason setValue={setReason} />
       {tabIndex === NewTip && <TipValue setValue={setInputValue} />}
       <PopupButtonWrapper>
-        <PrimaryButton isLoading={loading} onClick={submit}>
+        <PrimaryButton disabled={disabled} isLoading={loading} onClick={submit}>
           Submit
         </PrimaryButton>
       </PopupButtonWrapper>
