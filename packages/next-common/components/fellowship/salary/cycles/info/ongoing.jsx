@@ -10,9 +10,12 @@ import chunk from "lodash.chunk";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import getCycleBlockTimeSummaryItem from "../summary/blockTime";
 import getCycleRemainSummaryItem from "../summary/remain";
+import { cn } from "next-common/utils";
+import { useNavCollapsed } from "next-common/context/nav";
 
 export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
   const { decimals, symbol } = useSalaryAsset();
+  const [navCollapsed] = useNavCollapsed();
 
   const {
     registeredCount,
@@ -66,11 +69,6 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
     startIndexer?.blockHeight,
   );
 
-  const endTimeItem = {
-    title: "End Time",
-    content: "-",
-  };
-
   const timeItem = getCycleRemainSummaryItem(
     registrationPeriodData.gonePercentage,
     registrationPeriodData.remainBlocks,
@@ -80,14 +78,23 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
     payoutPeriodData.totalPeriodTime.split(" "),
   );
 
-  const summaryItems = [
+  const desktopSummaryItems = [
     budgetItem,
     totalRegistrationsItem,
     totalUnregisteredPaidItem,
     totalPeriodItem,
     startTimeItem,
-    endTimeItem,
-    {},
+    {}, // placeholder
+    {}, // placeholder
+    timeItem,
+  ];
+
+  const mobileSummaryItems = [
+    budgetItem,
+    totalRegistrationsItem,
+    totalUnregisteredPaidItem,
+    startTimeItem,
+    totalPeriodItem,
     timeItem,
   ];
 
@@ -109,7 +116,14 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
 
       <hr className="my-4" />
 
-      <SummaryItems items={summaryItems} />
+      <SummaryItems
+        items={desktopSummaryItems}
+        className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
+      />
+      <SummaryItems
+        items={mobileSummaryItems}
+        className={cn(navCollapsed ? "sm:hidden" : "md:hidden")}
+      />
     </PrimaryCard>
   );
 }
