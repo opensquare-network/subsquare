@@ -84,8 +84,8 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
     totalUnregisteredPaidItem,
     totalPeriodItem,
     startTimeItem,
-    {}, // placeholder
-    {}, // placeholder
+    {},
+    {},
     timeItem,
   ];
 
