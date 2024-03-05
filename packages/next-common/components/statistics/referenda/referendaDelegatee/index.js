@@ -22,8 +22,8 @@ function getSortParams(sortedColumn) {
 
   let colName;
   switch (sortedColumn) {
-    case "COUNT":
-      colName = "count";
+    case "DELEGATORS":
+      colName = "delegatorsCount";
       break;
     case "CAPITAL":
       colName = "capital";
@@ -66,15 +66,15 @@ export default function ReferendaDelegatee({ delegatee }) {
     [
       {
         name: "ADDRESS",
-        style: { textAlign: "left", minWidth: "268px" },
+        style: { textAlign: "left", minWidth: "248px" },
       },
       {
         name: "TRACKS",
         style: { textAlign: "right", maxWidth: "96px", minWidth: "96px" },
       },
       {
-        name: "COUNT",
-        style: { textAlign: "right", maxWidth: "96px", minWidth: "96px" },
+        name: "DELEGATORS",
+        style: { textAlign: "right", maxWidth: "116px", minWidth: "96px" },
         sortable: true,
       },
       {
@@ -137,7 +137,7 @@ export default function ReferendaDelegatee({ delegatee }) {
           <span>{item.trackIdCount}</span>
         </Tooltip>
       </div>,
-      item.count,
+      item.delegatorsCount,
       <ValueDisplay
         key="capital"
         value={toPrecision(item.capital || 0, decimals)}
@@ -180,7 +180,7 @@ export default function ReferendaDelegatee({ delegatee }) {
           delegatee={delegateeData?.account}
           delegatedCapital={delegateeData?.capital}
           delegatedVotes={delegateeData?.votes}
-          delegatorsCount={delegateeData?.count}
+          delegatorsCount={delegateeData?.delegatorsCount}
           tracksCount={delegateeData?.trackIdCount}
         />
       )}

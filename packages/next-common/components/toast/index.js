@@ -39,7 +39,7 @@ export default function Toast() {
   return (
     <Toaster
       toastOptions={{
-        className: "w-full !h-[68px]",
+        className: "w-full !min-h-[68px]",
       }}
       className="!w-[400px] !top-24 !right-6 max-sm:!w-full pointer-events-auto"
       position="top-right"

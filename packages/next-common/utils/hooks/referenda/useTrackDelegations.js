@@ -5,30 +5,34 @@ import useApi from "../useApi";
 import useIsMounted from "../useIsMounted";
 import useRealAddress from "../useRealAddress";
 
-/**
- * @param {number} track track id
- * @returns delegations
- * @description getGov2BeenDelegatedByAddress hook
- */
-export function useTrackDelegations(track) {
+export function useTrackDelegations(track, address) {
   const api = useApi();
-  const realAddress = useRealAddress();
   const isMounted = useIsMounted();
   const [delegations, setDelegations] = useState(null);
 
   useEffect(() => {
     setDelegations(null);
 
-    if (!api || !realAddress || isNil(track)) {
+    if (!api || !address || isNil(track)) {
       return;
     }
 
-    getGov2BeenDelegatedByAddress(api, realAddress, track).then((result) => {
+    getGov2BeenDelegatedByAddress(api, address, track).then((result) => {
       if (isMounted.current) {
         setDelegations(result);
       }
     });
-  }, [track, api, realAddress, isMounted]);
+  }, [track, api, address, isMounted]);
 
   return delegations;
+}
+
+/**
+ * @param {number} track track id
+ * @returns delegations
+ * @description getGov2BeenDelegatedByAddress hook
+ */
+export function useMyTrackDelegations(track) {
+  const realAddress = useRealAddress();
+  return useTrackDelegations(track, realAddress);
 }

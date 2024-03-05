@@ -30,12 +30,7 @@ export default function RemoveReferendaVotePopup({
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
-      let tx;
-
-      tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
-
+      let tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
       }
@@ -45,7 +40,7 @@ export default function RemoveReferendaVotePopup({
         setLoading: setIsLoading,
         dispatch,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

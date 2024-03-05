@@ -8,8 +8,15 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
-import { getEthereum, requestAccounts, switchNetwork } from "./metamask";
+import {
+  // addNetwork,
+  getEthereum,
+  requestAccounts,
+  switchNetwork,
+} from "./metamask";
 import getChainSettings from "./consts/settings";
+import { getEvmSignerAddress } from "./hydradxUtil";
+import isHydradx from "./isHydradx";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -22,17 +29,33 @@ export async function sendEvmTx({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  signerAddress,
+  signerAccount,
 }) {
-  const ethereum = getEthereum();
+  const signerAddress = signerAccount?.address;
+  const realSignerAddress = getEvmSignerAddress(signerAddress);
+
+  const ethereum = getEthereum(signerAccount?.meta.source);
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
     return;
   }
+  const walletName = ethereum?.isTalisman ? "Talisman" : "MetaMask";
 
   const toastId = newToastId();
 
   const { ethereumNetwork } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+
+  // TODO: There is an RPC error when calling to wallet_addEthereumChain in Talisman wallet.
+  // TODO: It should be able to add network configuration automatically instead of asking user to do manually.
+  // if (ethereum.chainId !== ethereumNetwork.chainId) {
+  //   try {
+  //     await addNetwork(ethereum, ethereumNetwork);
+  //   } catch (e) {
+  //     dispatch(newErrorToast(e.message));
+  //     return;
+  //   }
+  // }
+
   if (ethereum.chainId !== ethereumNetwork.chainId) {
     dispatch(
       newPendingToast(
@@ -41,23 +64,46 @@ export async function sendEvmTx({
       ),
     );
     try {
-      await switchNetwork(ethereumNetwork.chainId);
+      await switchNetwork(ethereum, ethereumNetwork.chainId);
     } catch (e) {
-      dispatch(newErrorToast(e.message));
+      dispatch(
+        newErrorToast(
+          `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
+        ),
+      );
       return;
     } finally {
       dispatch(removeToast(toastId));
     }
   }
 
-  const accounts = await requestAccounts();
-  if (accounts?.[0]?.toLowerCase() !== signerAddress.toLowerCase()) {
-    dispatch(
-      newErrorToast(
-        `Please switch to correct account from MetaMask: ${signerAddress}`,
-      ),
-    );
-    return;
+  if (ethereum?.isTalisman) {
+    if (
+      ethereum.selectedAddress &&
+      ethereum.selectedAddress?.toLowerCase() !==
+        realSignerAddress.toLowerCase()
+    ) {
+      dispatch(
+        newErrorToast(
+          `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
+        ),
+      );
+      return;
+    }
+  } else {
+    const accounts = await requestAccounts();
+    const walletSelectedAddress = accounts?.[0];
+
+    if (
+      walletSelectedAddress?.toLowerCase() !== realSignerAddress.toLowerCase()
+    ) {
+      dispatch(
+        newErrorToast(
+          `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
+        ),
+      );
+      return;
+    }
   }
 
   const totalSteps = 2;
@@ -74,7 +120,7 @@ export async function sendEvmTx({
       to,
       provider,
       signer,
-      signerAddress,
+      signerAddress: realSignerAddress,
       data,
       onSubmitted: () => {
         dispatch(
@@ -86,10 +132,10 @@ export async function sendEvmTx({
         onSubmitted(signerAddress);
         onClose();
       },
-      onInBlock: (receipt) => {
+      onInBlock: () => {
         setLoading(false);
         dispatch(removeToast(toastId));
-        onInBlock(receipt);
+        onInBlock();
       },
     });
   } catch (e) {
@@ -123,8 +169,26 @@ async function dispatchCall({
     data: data,
   };
   await dryRun(provider, tx);
-  tx.gasLimit = await provider.estimateGas(tx);
-  const sentTx = await signer.sendTransaction(tx);
+
+  let sentTx = null;
+
+  if (isHydradx()) {
+    const [gas, feeData] = await Promise.all([
+      provider.estimateGas(tx),
+      provider.getFeeData(),
+    ]);
+
+    sentTx = await signer.sendTransaction({
+      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+      maxFeePerGas: feeData.maxFeePerGas,
+      gasLimit: (gas * 11n) / 10n, // add 10%
+      ...tx,
+    });
+  } else {
+    tx.gasLimit = await provider.estimateGas(tx);
+    sentTx = await signer.sendTransaction(tx);
+  }
+
   onSubmitted();
   let receipt = await sentTx.wait();
   onInBlock(receipt);

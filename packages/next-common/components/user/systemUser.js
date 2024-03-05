@@ -8,6 +8,7 @@ import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 function SystemUser({
   user,
@@ -21,6 +22,8 @@ function SystemUser({
   ellipsis = true,
 }) {
   const address = user?.address;
+  const displayAddress = tryConvertToEvmAddress(address);
+
   const [identity, hasIdentity] = useIdentityInfo(address);
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
@@ -41,14 +44,14 @@ function SystemUser({
     />
   );
 
-  let linkUserPage = `/user/${address ?? user?.username}`;
+  let linkUserPage = `/user/${displayAddress ?? user?.username}`;
   if (linkToVotesPage) {
     linkUserPage = `${linkUserPage}/votes`;
   }
 
   const avatarSize = fontSize * (20 / 14);
   const avatar = address ? (
-    <Avatar address={address} size={avatarSize} />
+    <Avatar address={displayAddress} size={avatarSize} />
   ) : (
     <Gravatar email={user?.email} emailMd5={user?.emailMd5} size={avatarSize} />
   );

@@ -9,6 +9,7 @@ import {
   WalletSubwallet,
   WalletTailsman,
 } from "@osn/icons/subsquare";
+import isMixedChain from "next-common/utils/isMixedChain";
 
 export const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
@@ -76,6 +77,9 @@ export const substrateWallets = [
 export function getWallets() {
   if (isEvmChain()) {
     return evmWallets;
+  } else if (isMixedChain()) {
+    return [metamask, ...substrateWallets, mimir];
+  } else {
+    return [...substrateWallets, mimir];
   }
-  return [...substrateWallets, mimir];
 }

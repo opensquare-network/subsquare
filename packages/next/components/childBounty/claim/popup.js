@@ -26,8 +26,6 @@ export default function ClaimPopup({ childBounty, onClose }) {
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
       let tx = api.tx.childBounties.claimChildBounty(
         childBounty.parentBountyId,
         childBounty.index,
@@ -42,7 +40,7 @@ export default function ClaimPopup({ childBounty, onClose }) {
         setLoading: setIsLoading,
         dispatch,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

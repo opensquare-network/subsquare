@@ -7,14 +7,14 @@ import {
   removeToast,
   updatePendingToast,
 } from "../store/reducers/toastSlice";
-import { CACHE_KEY } from "./constants";
 import WalletTypes from "./consts/walletTypes";
-import getStorageAddressInfo from "./getStorageAddressInfo";
 import { getLastApi } from "./hooks/useApi";
 import isEvmChain from "./isEvmChain";
-import isUseMetamask from "./isUseMetamask";
 import { maybeSendMimirTx } from "./mimir";
 import { sendEvmTx } from "./sendEvmTx";
+import isMixedChain from "./isMixedChain";
+import { isEthereumAddress } from "@polkadot/util-crypto";
+import { tryConvertToEvmAddress } from "./hydradxUtil";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -143,10 +143,12 @@ export async function defaultSendTx({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  signerAddress,
+  signerAccount,
   section: sectionName,
   method: methodName,
 }) {
+  const signerAddress = signerAccount?.address;
+
   const noWaitForFinalized = onFinalized === emptyFunction;
   const totalSteps = noWaitForFinalized ? 2 : 3;
 
@@ -206,13 +208,11 @@ export async function sendTx({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  signerAddress,
+  signerAccount,
   section: sectionName,
   method: methodName,
 }) {
-  const isMimirWallet =
-    getStorageAddressInfo(CACHE_KEY.lastConnectedAccount)?.wallet ===
-    WalletTypes.MIMIR;
+  const isMimirWallet = signerAccount?.meta?.source === WalletTypes.MIMIR;
   if (isMimirWallet) {
     const handled = await maybeSendMimirTx({
       tx,
@@ -222,7 +222,7 @@ export async function sendTx({
       onSubmitted,
       onFinalized,
       onClose,
-      signerAddress,
+      signerAccount,
       section: sectionName,
       method: methodName,
     });
@@ -231,7 +231,17 @@ export async function sendTx({
     }
   }
 
-  if (isEvmChain() && isUseMetamask()) {
+  let shouldSendEvmTx =
+    (isEvmChain() || isMixedChain()) &&
+    signerAccount?.meta?.source === WalletTypes.METAMASK;
+
+  shouldSendEvmTx =
+    shouldSendEvmTx ||
+    (isMixedChain() &&
+      isEthereumAddress(tryConvertToEvmAddress(signerAccount?.address)) &&
+      signerAccount?.meta?.source === WalletTypes.TALISMAN);
+
+  if (shouldSendEvmTx) {
     await sendEvmTx({
       data: tx.inner.toU8a(),
       dispatch,
@@ -239,7 +249,7 @@ export async function sendTx({
       onInBlock,
       onSubmitted,
       onClose,
-      signerAddress,
+      signerAccount,
     });
     return;
   }
@@ -252,7 +262,7 @@ export async function sendTx({
     onSubmitted,
     onFinalized,
     onClose,
-    signerAddress,
+    signerAccount,
     section: sectionName,
     method: methodName,
   });

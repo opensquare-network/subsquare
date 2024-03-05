@@ -17,6 +17,7 @@ import AddressUser from "../user/addressUser";
 import { useCallContext } from "./callContext";
 import interlay from "next-common/utils/consts/settings/interlay";
 import kintsugi from "next-common/utils/consts/settings/kintsugi";
+import isNil from "lodash.isnil";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
@@ -207,7 +208,7 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
       );
     }
 
-    valueComponent = value.isNone ? "None" : <TextValue val={val} />;
+    valueComponent = isNil(val) ? "None" : <TextValue val={val} />;
   }
 
   return (

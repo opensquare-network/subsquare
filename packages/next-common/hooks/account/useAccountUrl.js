@@ -9,7 +9,7 @@ export default function useAccountUrl() {
   let uri = "votes";
   if (
     isKintsugi ||
-    [Chains.collectives, Chains["westend-collectives"]].includes(chain)
+    [Chains.collectives, Chains.westendCollectives].includes(chain)
   ) {
     uri = "deposits";
   }

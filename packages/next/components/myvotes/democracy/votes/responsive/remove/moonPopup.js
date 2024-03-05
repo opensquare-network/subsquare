@@ -45,7 +45,7 @@ export default function ReferendumRemovalPopup({
         dispatch,
         setLoading: setIsLoading,
         onClose,
-        signerAddress: signerAccount?.address,
+        signerAccount,
         isMounted,
       });
     },

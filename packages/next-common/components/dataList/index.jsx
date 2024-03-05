@@ -1,7 +1,7 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import NoData from "../noData";
-import DataListBody from "./body";
+import DataListBody, { defaultRenderItem } from "./body";
 import { useDeepCompareEffect, useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -17,7 +17,7 @@ export default function DataList({
   noDataText = "No current votes",
   bordered = false,
   highlightedIndexes = [],
-  renderItem = (datalistItem) => datalistItem,
+  renderItem = defaultRenderItem,
 }) {
   let content;
   const listRef = useRef();

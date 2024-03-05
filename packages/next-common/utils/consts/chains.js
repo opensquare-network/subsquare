@@ -10,6 +10,7 @@ const Chains = {
   substrate: "substrate",
   basilisk: "basilisk",
   hydradx: "hydradx",
+  hydradxTestnet: "hydradx-testnet",
   kabocha: "kabocha",
   bifrost: "bifrost",
   kintsugi: "kintsugi",
@@ -27,12 +28,12 @@ const Chains = {
   rococo: "rococo",
   litentry: "litentry",
   westend: "westend",
-  "westend-collectives": "westend-collectives",
+  westendCollectives: "westend-collectives",
   collectives: "collectives",
   darwinia2: "darwinia2",
   moonriver: "moonriver",
   moonbeam: "moonbeam",
-  "bifrost-polkadot": "bifrost-polkadot",
+  bifrostPolkadot: "bifrost-polkadot",
   vara,
 };
 

@@ -52,7 +52,7 @@ export default function MoonRemoveDemocracyVotePopup({
         dispatch,
         setLoading: setIsLoading,
         onClose,
-        signerAddress: signerAccount?.address,
+        signerAccount,
         isMounted,
       });
     },

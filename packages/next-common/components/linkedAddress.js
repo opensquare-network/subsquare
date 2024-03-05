@@ -22,6 +22,7 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import PrimaryButton from "./buttons/primaryButton";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -186,7 +187,7 @@ export default function LinkedAddress() {
     try {
       signature = await signMsg(result?.challenge, address, selectedWallet);
     } catch (e) {
-      console.log("Sign request is cancelled");
+      console.error("Sign request is cancelled", e);
       return;
     }
 
@@ -195,9 +196,9 @@ export default function LinkedAddress() {
       { challengeAnswer: signature, signer: selectedWallet },
     );
 
-    await fetchAndUpdateUser(userContext);
     if (confirmResult) {
       dispatch(newSuccessToast("Link address successfully!"));
+      await fetchAndUpdateUser(userContext);
     }
 
     if (confirmError) {
@@ -261,16 +262,18 @@ export default function LinkedAddress() {
                   activeChain,
                 );
               }
+              const maybeEvmAddress =
+                tryConvertToEvmAddress(activeChainAddress);
 
               return (
                 <AddressItem
                   key={index}
                   linked={isSameAddress(user?.address, activeChainAddress)}
                 >
-                  <Avatar address={activeChainAddress} size={32} />
+                  <Avatar address={maybeEvmAddress} size={32} />
                   <NameWrapper>
                     <div>{item.name}</div>
-                    <div>{addressEllipsis(activeChainAddress)}</div>
+                    <div>{addressEllipsis(maybeEvmAddress)}</div>
                   </NameWrapper>
                   {isSameAddress(user?.address, activeChainAddress) ? (
                     <LinkWrapper

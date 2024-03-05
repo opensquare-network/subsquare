@@ -4,6 +4,7 @@ import styled from "styled-components";
 import makeBlockie from "ethereum-blockies-base64";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
@@ -28,17 +29,19 @@ const ImgWrapper = styled.img`
 export default function Avatar({ address, size = 24 }) {
   const theme = "polkadot";
 
-  if (isEthereumAddress(address)) {
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
+
+  if (isEthereumAddress(maybeEvmAddress)) {
     const imgSize = (size / 10) * 8;
 
     return (
       <Wrapper size={size}>
         <ImgWrapper
           size={imgSize}
-          src={makeBlockie(address)}
+          src={makeBlockie(maybeEvmAddress)}
           width={imgSize}
           height={imgSize}
-          alt={address}
+          alt={maybeEvmAddress}
         />
       </Wrapper>
     );

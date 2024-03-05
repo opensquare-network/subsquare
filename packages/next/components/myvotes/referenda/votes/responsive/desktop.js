@@ -21,29 +21,25 @@ export default function DesktopList() {
   const { tracks } = usePageProps();
 
   const rows = (referendaVotes || []).map((item) => {
-    return {
-      useData: () => {
-        const row = [
-          <PostTitle
-            key="proposal"
-            referendumIndex={item.referendumIndex}
-            title={getPostTitle(item, tracks)}
-          />,
-          <ReferendaVoteForItem key="vote" vote={item} />,
-          <MyReferendaVoteTag
-            key="tag"
-            post={item.post}
-            onchainInfo={item.referendumInfo}
-          />,
-          item.vote?.isDelegating ? null : (
-            <RemoveVoteButton key="action" vote={item} />
-          ),
-        ].filter(Boolean);
+    const row = [
+      <PostTitle
+        key="proposal"
+        referendumIndex={item.referendumIndex}
+        title={getPostTitle(item, tracks)}
+      />,
+      <ReferendaVoteForItem key="vote" vote={item} />,
+      <MyReferendaVoteTag
+        key="tag"
+        post={item.post}
+        onchainInfo={item.referendumInfo}
+      />,
+      item.vote?.isDelegating ? null : (
+        <RemoveVoteButton key="action" vote={item} />
+      ),
+    ];
 
-        row.key = item.referendumIndex;
-        return row;
-      },
-    };
+    row.key = item.referendumIndex;
+    return row;
   });
 
   return (

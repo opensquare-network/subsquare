@@ -6,6 +6,7 @@ import {
   ProjectLogoBifrostPolkadotDark,
 } from "@osn/icons/subsquare";
 import bifrost from "./bifrost";
+import Chains from "../chains";
 
 const DEFAULT_NODES = [
   {
@@ -25,10 +26,10 @@ const DEFAULT_NODES = [
 const links = bifrost.links;
 
 const bifrostPolkadot = {
-  value: "bifrost-polkadot",
+  value: Chains.bifrostPolkadot,
   name: "Bifrost Polkadot",
   hideHeight: false,
-  identity: "bifrost-polkadot",
+  identity: Chains.bifrostPolkadot,
   symbol: "BNC",
   decimals: 12,
   blockTime: 12000,

@@ -33,8 +33,7 @@ export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-      const realAddress = signerAccount.proxyAddress || signerAddress;
+      const realAddress = signerAccount.proxyAddress || signerAccount.address;
 
       let tx;
 
@@ -58,7 +57,7 @@ export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
         setLoading: setIsLoading,
         dispatch,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

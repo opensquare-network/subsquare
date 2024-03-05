@@ -11,8 +11,10 @@ import { useChain } from "next-common/context/chain";
 import { normalizeChainAddress } from "next-common/utils/address.js";
 import getChainSettings from "next-common/utils/consts/settings/index.js";
 import { Item, NameWrapper, Options, Select, Wrapper } from "./styled.js";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil.js";
 
 function AccountDisplay({ name, address, identity }) {
+  const shortAddr = addressEllipsis(address);
   return (
     <>
       <Avatar address={address} />
@@ -20,12 +22,12 @@ function AccountDisplay({ name, address, identity }) {
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
-            <div>{addressEllipsis(address)}</div>
+            <div>{shortAddr}</div>
           </>
         ) : (
           <>
             <div>{name}</div>
-            <div>{addressEllipsis(address) ?? "--"}</div>
+            <div>{shortAddr ?? "--"}</div>
           </>
         )}
       </NameWrapper>
@@ -37,6 +39,7 @@ function ChainAccount({ chain, account }) {
   const settings = getChainSettings(chain);
   const [identity, setIdentity] = useState(null);
   const normalizedAddr = normalizeChainAddress(chain, account?.address);
+  const maybeEvmAddress = tryConvertToEvmAddress(normalizedAddr);
 
   useEffect(() => {
     setIdentity(null);
@@ -51,7 +54,7 @@ function ChainAccount({ chain, account }) {
   return (
     <AccountDisplay
       name={account?.name}
-      address={normalizedAddr}
+      address={maybeEvmAddress}
       identity={identity}
     />
   );

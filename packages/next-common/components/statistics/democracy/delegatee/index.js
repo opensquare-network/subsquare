@@ -23,7 +23,7 @@ function getSortParams(sortedColumn) {
 
   let colName;
   switch (sortedColumn) {
-    case "COUNT":
+    case "DELEGATORS":
       colName = "delegatorsCount";
       break;
     case "CAPITAL":
@@ -52,7 +52,7 @@ export default function DemocracyDelegatee({
     [
       { name: "ADDRESS", style: { textAlign: "left", minWidth: "230px" } },
       {
-        name: "COUNT",
+        name: "DELEGATORS",
         style: { textAlign: "right", width: "128px", minWidth: "128px" },
         sortable: true,
       },

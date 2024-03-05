@@ -9,23 +9,29 @@ import { Wrapper } from "./styled";
 import DisplayUserAvatar from "./displayUserAvatar";
 import DisplayUser from "./displayUser";
 import DisplayUserAddress from "./displayUserAddress";
+import { usePageProps } from "next-common/context/page";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
-export default function Bio({ address, user, id }) {
+export default function Bio() {
+  const { user, id } = usePageProps();
   const { showAchainableLabels } = useChainSettings();
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
+
+  const address =
+    isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   return (
     <Wrapper>
       <DisplayUserAvatar address={address} user={user} />
       <div className="flex flex-col items-center mt-0 flex-wrap w-full">
         <DisplayUser id={id} />
-        <DisplayUserAddress address={address} />
-        {isPolkadotAddress(address) && (
-          <div className="mt-[8px]">
-            <AccountLinks address={address} />
-          </div>
+        <DisplayUserAddress address={maybeEvmAddress} />
+        {!isEthereumAddress(maybeEvmAddress) && (
+          <AccountLinks address={maybeEvmAddress} />
         )}
         {isKintsugi ? (
           <KintAssetInfo address={address} />

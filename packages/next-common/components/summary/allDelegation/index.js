@@ -1,6 +1,6 @@
 import flexBetweenCenter from "next-common/components/styled/flexBetweenCenter";
 import styled from "styled-components";
-import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
+import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import VStackOrigin from "next-common/components/styled/vStack";
 import Flex from "next-common/components/styled/flex";
 import { useSelector } from "react-redux";
@@ -27,7 +27,7 @@ const ButtonWrapper = styled(Flex)`
 export default function AllDelegation() {
   useFetchMyReferendaDelegations();
   const delegations = useSelector(myReferendaDelegationsSelector);
-  const { beenDelegatedList } = useAllBeenDelegatedList();
+  const { beenDelegatedList } = useAllMyBeenDelegatedList();
   const { hideActionButtons } = useChainSettings();
 
   return (

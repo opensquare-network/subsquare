@@ -32,8 +32,6 @@ export default function RemoveDemocracyVotePopup({
         return showErrorToast("Please login first");
       }
 
-      const signerAddress = signerAccount.address;
-
       let tx = api.tx.democracy.removeVote(referendumIndex);
       if (signerAccount?.proxyAddress) {
         tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
@@ -45,7 +43,7 @@ export default function RemoveDemocracyVotePopup({
         dispatch,
         onInBlock,
         onClose,
-        signerAddress,
+        signerAccount,
         isMounted,
       });
     },

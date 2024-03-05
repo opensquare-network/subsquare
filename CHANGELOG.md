@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.8
+
+date: 2024-03-04
+
+- Add fellowship salary cycles page.
+- Show delegation status on profile page.
+- Correct referenda delegators on statistics page.
+- Query polkassembly comments from backend API.
+- Upgrade dependencies and fix styles.
+
+### 3.8.7
+
+date: 2024-02-27
+
+- [Medium] Support EVM account for hydraDX.
+- Bump rich text editor.
+- Fix call tree view none value.
+- Fix styles.
+
 ### 3.8.6
 
 date: 2024-02-08
@@ -15,10 +34,10 @@ date: 2024-02-08
 date: 2024-02-04
 
 - [Big] Support fellowship core system business.
-  - Core members page.
-  - Core feeds page.
-  - More params page to core system.
-  - Support induct, import and bump actions.
+    - Core members page.
+    - Core feeds page.
+    - More params page to core system.
+    - Support induct, import and bump actions.
 - Introduce and develop new set of button components.
 - Integrate Mimir multisig wallet.
 - Add conviction voting lock explanation.

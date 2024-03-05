@@ -18,7 +18,7 @@ export function getTechCommMenu(summary) {
       Chains.centrifuge,
       Chains.altair,
       Chains.development,
-      Chains["westend-collectives"],
+      Chains.westendCollectives,
       Chains.collectives,
       Chains.vara,
     ],

@@ -2175,11 +2175,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/eslint-config@*, @osn/eslint-config@workspace:packages/eslint-config":
-  version: 0.0.0-use.local
-  resolution: "@osn/eslint-config@workspace:packages/eslint-config"
-  languageName: unknown
-  linkType: soft
+"@osn/eslint-config@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@osn/eslint-config@npm:1.0.2"
+  peerDependencies:
+    eslint: ">=7.4.0"
+  checksum: 94cb9a8b51f6ff8de52fc701f9a44dd466c5414705f8af7c890fc757339fbc85ce1b592c51b0444e83832f11c3f433aceea39abd14d4119d789144eec8172c69
+  languageName: node
+  linkType: hard
 
 "@osn/icons@npm:^1.72.0":
   version: 1.72.0
@@ -3454,7 +3457,7 @@ __metadata:
   dependencies:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
-    "@osn/eslint-config": "*"
+    "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.72.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
@@ -3489,7 +3492,7 @@ __metadata:
   resolution: "@subsquare/next@workspace:packages/next"
   dependencies:
     "@next/env": ^13.3.0
-    "@osn/eslint-config": "*"
+    "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.72.0
     "@svgr/webpack": ^7.0.0
     bignumber.js: ^9.0.2
@@ -7411,9 +7414,9 @@ __metadata:
   linkType: hard
 
 "ip@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "ip@npm:2.0.0"
-  checksum: cfcfac6b873b701996d71ec82a7dd27ba92450afdb421e356f44044ed688df04567344c36cbacea7d01b1c39a4c732dc012570ebe9bebfb06f27314bca625349
+  version: 2.0.1
+  resolution: "ip@npm:2.0.1"
+  checksum: d765c9fd212b8a99023a4cde6a558a054c298d640fec1020567494d257afd78ca77e37126b1a3ef0e053646ced79a816bf50621d38d5e768cdde0431fa3b0d35
   languageName: node
   linkType: hard
 
@@ -8787,7 +8790,7 @@ __metadata:
     "@interlay/monetary-js": 0.5.4
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
-    "@osn/eslint-config": "*"
+    "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.72.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
@@ -10463,8 +10466,8 @@ __metadata:
   linkType: hard
 
 "sanitize-html@npm:^2.7.0":
-  version: 2.10.0
-  resolution: "sanitize-html@npm:2.10.0"
+  version: 2.12.1
+  resolution: "sanitize-html@npm:2.12.1"
   dependencies:
     deepmerge: ^4.2.2
     escape-string-regexp: ^4.0.0
@@ -10472,7 +10475,7 @@ __metadata:
     is-plain-object: ^5.0.0
     parse-srcset: ^1.0.2
     postcss: ^8.3.11
-  checksum: 0cb2bb330ed966a4d667b1890322dd868a67f527f87c04d7e3be1688fcfda20f7452a9a7744870751f51e255742e7264a287d9bcfcd64d4cd74a3c99f99c73d2
+  checksum: fb96ea7170d51b5af2607f5cfd84464c78fc6f47e339407f55783e781c6a0288a8d40bbf97ea6a8758924ba9b2d33dcc4846bb94caacacd90d7f2de10ed8541a
   languageName: node
   linkType: hard
 
