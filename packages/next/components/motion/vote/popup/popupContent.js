@@ -18,6 +18,7 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import Loading from "next-common/components/loading";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -25,17 +26,18 @@ const SignerWrapper = styled.div`
   }
 `;
 
-export default function PopupContent({
-  votes,
-  refVotes,
-  isLoadingVotes,
-  motionHash,
-  motionIndex,
-  onClose,
-  onInBlock = emptyFunction,
-  type,
-  submitExtrinsic = emptyFunction,
-}) {
+export default function PopupContent() {
+  const {
+    votes,
+    refVotes,
+    isLoadingVotes,
+    motionHash,
+    motionIndex,
+    onClose,
+    onInBlock = emptyFunction,
+    type,
+    submitExtrinsic = emptyFunction,
+  } = usePopupParams();
   const chain = useChain();
   const dispatch = useDispatch();
   const api = useApi();

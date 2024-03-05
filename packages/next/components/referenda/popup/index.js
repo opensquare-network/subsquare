@@ -41,12 +41,13 @@ export default function Popup(props) {
   return (
     <PopupWithSigner
       title="Referendum vote"
-      Component={PopupContent}
       useStandardVote={useStandardVote}
       useSplitVote={useSplitVote}
       VoteTypeTab={AyeNaySplitTab}
       submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
-    />
+    >
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

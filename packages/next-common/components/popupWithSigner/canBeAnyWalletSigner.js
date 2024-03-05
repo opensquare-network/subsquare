@@ -42,16 +42,7 @@ function usePolkadotAccounts() {
   return [accounts, isLoading];
 }
 
-export default function CanBeAnyWalletSigner({
-  onClose,
-  autoCloseAfterLogin,
-  title,
-  Component,
-  wide,
-  maskClosable,
-  className,
-  ...props
-}) {
+export default function CanBeAnyWalletSigner({ children }) {
   const [metamaskAccounts, isLoadingMetamask] = useMetaMaskAccounts(true);
   const [polkadotAccounts, isLoadingPolkadot] = usePolkadotAccounts(true);
 
@@ -65,20 +56,8 @@ export default function CanBeAnyWalletSigner({
   }
 
   return (
-    <MaybeSignerConnected
-      extensionAccounts={combinedAccounts}
-      onClose={onClose}
-      autoCloseAfterLogin={autoCloseAfterLogin}
-    >
-      <Popup
-        wide={wide}
-        onClose={onClose}
-        title={title}
-        maskClosable={maskClosable}
-        className={className}
-      >
-        <Component onClose={onClose} {...props} />
-      </Popup>
+    <MaybeSignerConnected extensionAccounts={combinedAccounts}>
+      <Popup>{children}</Popup>
     </MaybeSignerConnected>
   );
 }

@@ -19,13 +19,15 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
-function PopupContent({
-  referendumIndex,
-  onClose,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
-}) {
+function PopupContent() {
+  const {
+    referendumIndex,
+    onClose,
+    onSubmitted = emptyFunction,
+    onInBlock = emptyFunction,
+  } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
@@ -112,10 +114,8 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithSigner
-      title="Fellowship vote"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithSigner title="Fellowship vote" {...props}>
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

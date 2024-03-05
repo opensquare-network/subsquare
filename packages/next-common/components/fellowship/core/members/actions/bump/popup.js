@@ -8,13 +8,15 @@ import PopupLabel from "next-common/components/popup/label";
 import styled from "styled-components";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { AddressUser } from "next-common/components/user";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
   gap: 16px;
 `;
 
-function Content({ onClose, who }) {
+function Content() {
+  const { onClose, who } = usePopupParams();
   const { component } = useSigner("Origin");
   const api = useApi();
 
@@ -46,5 +48,9 @@ function Content({ onClose, who }) {
 }
 
 export default function Popup(props) {
-  return <PopupWithSigner title="Bump" Component={Content} {...props} />;
+  return (
+    <PopupWithSigner title="Bump" {...props}>
+      <Content />
+    </PopupWithSigner>
+  );
 }

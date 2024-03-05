@@ -23,14 +23,16 @@ import {
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
-export default function PopupContent({
-  tracks,
-  onClose,
-  showTrackSelect = true,
-  onInBlock = emptyFunction,
-  submitExtrinsic = emptyFunction,
-}) {
+export default function PopupContent() {
+  const {
+    tracks,
+    onClose,
+    showTrackSelect = true,
+    onInBlock = emptyFunction,
+    submitExtrinsic = emptyFunction,
+  } = usePopupParams();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 

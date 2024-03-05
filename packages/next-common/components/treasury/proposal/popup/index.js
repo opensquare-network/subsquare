@@ -23,13 +23,15 @@ import {
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
-function PopupContent({
-  onClose,
-  onInBlock = emptyFunction,
-  onFinalized = emptyFunction,
-  onSubmitted = emptyFunction,
-}) {
+function PopupContent() {
+  const {
+    onClose,
+    onInBlock = emptyFunction,
+    onFinalized = emptyFunction,
+    onSubmitted = emptyFunction,
+  } = usePopupParams();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();
@@ -137,10 +139,8 @@ function PopupContent({
 
 export default function Popup(props) {
   return (
-    <PopupWithSigner
-      title="New Treasury Proposal"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithSigner title="New Treasury Proposal" {...props}>
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

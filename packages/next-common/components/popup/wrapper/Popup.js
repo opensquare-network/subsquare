@@ -4,17 +4,21 @@ import * as Dialog from "@radix-ui/react-dialog";
 import noop from "lodash.noop";
 import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
+import { usePopupParams } from "./context";
 
 let z = 999;
-export default function Popup({
-  children,
-  onClose = noop,
-  title,
-  className = "",
-  wide,
-  extra,
-  maskClosable = true,
-}) {
+
+export default function Popup({ children, ...props }) {
+  const params = usePopupParams();
+  const {
+    onClose = noop,
+    title,
+    className = "",
+    wide,
+    extra,
+    maskClosable = true,
+  } = Object.assign({}, params, props);
+
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
   useEffect(() => {

@@ -56,9 +56,10 @@ export default function DelegatePopup(props) {
   return (
     <PopupWithSigner
       title="Delegate"
-      Component={PopupContent}
       submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
-    />
+    >
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

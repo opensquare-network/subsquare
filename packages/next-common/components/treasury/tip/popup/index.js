@@ -23,6 +23,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import { useRouter } from "next/router";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { WarningMessage } from "next-common/components/popup/styled";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
 function TipCommon({ setBeneficiary, setReason }) {
   const extensionAccounts = useExtensionAccounts();
@@ -92,7 +93,8 @@ function NewTipContent({
   );
 }
 
-function PopupContent({ onClose }) {
+function PopupContent() {
+  const { onClose } = usePopupParams();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();
@@ -193,6 +195,8 @@ function PopupContent({ onClose }) {
 
 export default function Popup(props) {
   return (
-    <PopupWithSigner title="New Tip" Component={PopupContent} {...props} />
+    <PopupWithSigner title="New Tip" {...props}>
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

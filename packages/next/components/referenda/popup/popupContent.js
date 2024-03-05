@@ -25,6 +25,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useShowVoteSuccessful } from "next-common/components/vote";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
 export function LoadingPanel() {
   return (
@@ -171,16 +172,17 @@ function VotePanel({
   );
 }
 
-export default function PopupContent({
-  referendumIndex,
-  onClose,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
-  useStandardVote,
-  useSplitVote,
-  VoteTypeTab,
-  submitExtrinsic = emptyFunction,
-}) {
+export default function PopupContent() {
+  const {
+    referendumIndex,
+    onClose,
+    onSubmitted = emptyFunction,
+    onInBlock = emptyFunction,
+    useStandardVote,
+    useSplitVote,
+    VoteTypeTab,
+    submitExtrinsic = emptyFunction,
+  } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
 

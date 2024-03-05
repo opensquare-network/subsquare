@@ -3,14 +3,7 @@ import MaybeSignerConnected from "./maybeSignerConnected";
 import Popup from "../popup/wrapper/Popup";
 import { useMetaMaskAccounts } from "../../utils/metamask";
 
-export default function MaybeMetamaskSigner({
-  onClose,
-  title,
-  wide,
-  maskClosable,
-  className,
-  children,
-}) {
+export default function MaybeMetamaskSigner({ children }) {
   const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
 
   if (isLoading) {
@@ -18,19 +11,8 @@ export default function MaybeMetamaskSigner({
   }
 
   return (
-    <MaybeSignerConnected
-      extensionAccounts={metamaskAccounts}
-      onClose={onClose}
-    >
-      <Popup
-        wide={wide}
-        onClose={onClose}
-        title={title}
-        maskClosable={maskClosable}
-        className={className}
-      >
-        {children}
-      </Popup>
+    <MaybeSignerConnected extensionAccounts={metamaskAccounts}>
+      <Popup>{children}</Popup>
     </MaybeSignerConnected>
   );
 }

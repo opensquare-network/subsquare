@@ -9,21 +9,16 @@ import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { usePopupParams } from "../popup/wrapper/context";
 
-export default function MaybePolkadotSigner({
-  onClose,
-  title,
-  wide,
-  maskClosable,
-  className,
-  children,
-}) {
+export default function MaybePolkadotSigner({ children }) {
   const dispatch = useDispatch();
   const { injectedWeb3, loading } = useInjectedWeb3();
   const [polkadotAccounts, setPolkadotAccounts] = useState([]);
   const [detecting, setDetecting] = useState(true);
   const { lastConnectedAccount } = useConnectedAccountContext();
   const { chainType } = useChainSettings();
+  const { onClose } = usePopupParams();
 
   useEffect(() => {
     (async () => {
@@ -83,19 +78,8 @@ export default function MaybePolkadotSigner({
   }
 
   return (
-    <MaybeSignerConnected
-      extensionAccounts={polkadotAccounts}
-      onClose={onClose}
-    >
-      <Popup
-        wide={wide}
-        onClose={onClose}
-        title={title}
-        maskClosable={maskClosable}
-        className={className}
-      >
-        {children}
-      </Popup>
+    <MaybeSignerConnected extensionAccounts={polkadotAccounts}>
+      <Popup>{children}</Popup>
     </MaybeSignerConnected>
   );
 }

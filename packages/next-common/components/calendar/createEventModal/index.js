@@ -17,8 +17,10 @@ import noop from "lodash.noop";
 import { calendarUserEventsApi } from "../../../services/url";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { usePopupParams } from "next-common/components/popup/wrapper/context";
 
-function PopupContent({ onClose, refresh = noop }) {
+function PopupContent() {
+  const { onClose, refresh = noop } = usePopupParams();
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
@@ -158,6 +160,8 @@ function PopupContent({ onClose, refresh = noop }) {
 
 export default function CreateEventModal(props) {
   return (
-    <PopupWithSigner title="Create Event" Component={PopupContent} {...props} />
+    <PopupWithSigner title="Create Event" {...props}>
+      <PopupContent />
+    </PopupWithSigner>
   );
 }
