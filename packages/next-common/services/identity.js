@@ -95,7 +95,7 @@ export function fetchIdentity(chain, address) {
 /**
  * @description sync, get identity from cache
  */
-export function getIdentity(chain, address) {
+export function getCachedIdentity(chain, address) {
   if (!chain || !address) {
     return null;
   }
@@ -103,3 +103,5 @@ export function getIdentity(chain, address) {
   const idName = `${chain}/${address}`;
   return cachedIdentities.get(idName) || null;
 }
+
+export const getIdentity = getCachedIdentity;

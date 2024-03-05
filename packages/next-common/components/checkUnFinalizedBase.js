@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import noop from "lodash.noop";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
 import Loading from "../assets/imgs/icons/block-loading.svg";
-import useApi from "../utils/hooks/useApi";
-import { Wrapper, H2, P } from "./styled/notFound";
+import { H2, P, Wrapper } from "./styled/notFound";
 import NotFound from "./notFound";
+import { useContextApi } from "next-common/context/api";
 
 export default function CheckUnFinalizedBase({
   onChainDataFetcher = noop,
   serverPostFetcher = noop,
 }) {
-  const api = useApi();
+  const api = useContextApi();
   const router = useRouter();
   const [isUnFinalized, setIsUnFinalized] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);

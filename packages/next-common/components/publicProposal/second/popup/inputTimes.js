@@ -1,9 +1,9 @@
 import noop from "lodash.noop";
 import React, { useEffect, useMemo } from "react";
-import useApi from "../../../../utils/hooks/useApi";
 import InputNumber from "../../../inputNumber";
 import { Label, WarningMessage } from "../../../popup/styled";
 import useMaxDeposits from "../useMaxDeposits";
+import { useContextApi } from "next-common/context/api";
 
 export default function SecondPopupInputTimes({
   times,
@@ -11,7 +11,7 @@ export default function SecondPopupInputTimes({
   currentTimes = 0,
   setSubmitDisabled = noop,
 }) {
-  const api = useApi();
+  const api = useContextApi();
   const maxDeposits = useMaxDeposits();
 
   const batchCallsLimit = useMemo(
@@ -19,7 +19,8 @@ export default function SecondPopupInputTimes({
     [api],
   );
 
-  const isOverLimit = times > batchCallsLimit || times + currentTimes >= maxDeposits;
+  const isOverLimit =
+    times > batchCallsLimit || times + currentTimes >= maxDeposits;
   useEffect(() => setSubmitDisabled(isOverLimit), [isOverLimit]);
 
   return (
@@ -31,7 +32,9 @@ export default function SecondPopupInputTimes({
 
       {isOverLimit && (
         <WarningMessage danger>
-          { times > batchCallsLimit ? "Over batch calls limit" : "Over proposal max deposits" }
+          {times > batchCallsLimit
+            ? "Over batch calls limit"
+            : "Over proposal max deposits"}
         </WarningMessage>
       )}
     </>

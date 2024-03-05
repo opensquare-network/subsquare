@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubReferendumInfo(pallet, referendumIndex) {
-  const api = useApi();
+  const api = useContextApi();
   const isMounted = useIsMounted();
   const [info, setInfo] = useState();
 

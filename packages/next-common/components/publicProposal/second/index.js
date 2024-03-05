@@ -5,7 +5,6 @@ import countBy from "lodash.countby";
 import BigNumber from "bignumber.js";
 import Loading from "../../loading";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
-import useApi from "../../../utils/hooks/useApi";
 import Tooltip from "../../tooltip";
 import PrimaryButton from "../../buttons/primaryButton";
 import { TitleContainer } from "../../styled/containers/titleContainer";
@@ -17,6 +16,7 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import AddressUser from "next-common/components/user/addressUser";
+import { useContextApi } from "next-common/context/api";
 
 const SecondPopup = dynamic(() => import("./popup"), {
   ssr: false,
@@ -106,7 +106,7 @@ export default function Second({
     Popup = MoonSecondPopup;
   }
 
-  const api = useApi();
+  const api = useContextApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
     api,

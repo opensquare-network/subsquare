@@ -1,13 +1,13 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { setMyAccountInfo } from "next-common/store/reducers/myOnChainData/account";
 import BigNumber from "bignumber.js";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubscribeAccount() {
   const realAddress = useRealAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

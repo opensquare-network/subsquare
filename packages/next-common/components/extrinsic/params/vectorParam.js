@@ -3,10 +3,10 @@ import PlusIcon from "next-common/components/callTreeView/plus";
 import SubtractIcon from "next-common/components/callTreeView/subtract";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import useParamDefs from "./useParamDefs";
-import useApi from "next-common/utils/hooks/useApi";
 import IconButton from "next-common/components/iconButton";
 import ItemParam from "./itemParam";
 import noop from "lodash.noop";
+import { useContextApi } from "next-common/context/api";
 
 function getParam([{ name, type }], index) {
   return {
@@ -30,7 +30,7 @@ export function getParams(inputParams, prev, max) {
 }
 
 export default function VectorParam({ title, def, value, setValue = noop }) {
-  const api = useApi();
+  const api = useContextApi();
   const registry = api?.registry;
   const inputParams = useParamDefs(registry, def);
 

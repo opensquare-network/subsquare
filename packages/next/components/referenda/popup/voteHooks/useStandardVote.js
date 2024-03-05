@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import DirectVote from "../directVote";
+import { useContextApi } from "next-common/context/api";
 
 export default function useStandardVote({
   module = "convictionVoting",
@@ -18,7 +18,7 @@ export default function useStandardVote({
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [voteLock, setVoteLock] = useState(0);
   const node = useChainSettings();
-  const api = useApi();
+  const api = useContextApi();
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 

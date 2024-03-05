@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { Option } from "@polkadot/types";
 import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
-import useApi from "next-common/utils/hooks/useApi";
 import { createResult, getPreimageHash } from "./useOldPreimage";
+import { useContextApi } from "next-common/context/api";
 
 /** @internal Helper to unwrap a ticket tuple into a structure */
 function convertTicket(ticket) {
@@ -68,7 +68,7 @@ function getBytesParams(interimResult, optStatus) {
 }
 
 export default function usePreimage(hashOrBounded) {
-  const api = useApi();
+  const api = useContextApi();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(

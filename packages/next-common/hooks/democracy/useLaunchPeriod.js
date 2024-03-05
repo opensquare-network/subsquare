@@ -1,8 +1,8 @@
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function useLaunchPeriod() {
-  const api = useApi();
+  const api = useContextApi();
   const [period, setPeriod] = useState();
 
   useEffect(() => {

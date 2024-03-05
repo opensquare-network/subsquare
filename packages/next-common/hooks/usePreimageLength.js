@@ -1,9 +1,9 @@
 import { isValidPreimageHash } from "next-common/utils";
-import useApi from "next-common/utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function usePreimageLength(preimageHash) {
-  const api = useApi();
+  const api = useContextApi();
   const [preimageLength, setPreimageLength] = useState();
 
   useEffect(() => {

@@ -1,8 +1,8 @@
-import useApi from "../utils/hooks/useApi";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function useTipCountDown() {
-  const api = useApi();
+  const api = useContextApi();
   const [countDown, setCountDown] = useState();
   useEffect(() => {
     if (api && api.consts.tips) {

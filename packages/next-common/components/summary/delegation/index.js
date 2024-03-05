@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTrackDelegating } from "next-common/utils/hooks/referenda/useTrackDelegating";
-import useApi from "next-common/utils/hooks/useApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DelegationInfo from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
@@ -10,6 +9,7 @@ import DelegationButton from "./delegationButton";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { useChainSettings } from "next-common/context/chain";
 import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import { useContextApi } from "next-common/context/api";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
 export default function Delegation({ trackId }) {
   const dispatch = useDispatch();
-  const api = useApi();
+  const api = useContextApi();
   const realAddress = useRealAddress();
   const { delegating, refresh } = useTrackDelegating(api, trackId, realAddress);
   const { hideActionButtons } = useChainSettings();

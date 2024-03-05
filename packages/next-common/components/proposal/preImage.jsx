@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import { hexToU8a } from "@polkadot/util";
 import nextApi from "next-common/services/nextApi";
+import { useContextApi } from "next-common/context/api";
 
 export function usePreImage(preImageHash) {
   const [preImage, setPreImage] = useState();
@@ -68,7 +68,7 @@ const getBlockApi = async (api, blockHash) => {
 };
 
 export function usePreImageCall(preImage, isLoadingPreImage) {
-  const api = useApi();
+  const api = useContextApi();
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
 

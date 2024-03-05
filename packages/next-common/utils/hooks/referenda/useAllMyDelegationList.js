@@ -1,10 +1,10 @@
 import isNil from "lodash.isnil";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
-import useApi from "../useApi";
 import useIsMounted from "../useIsMounted";
 import useRealAddress from "../useRealAddress";
 import { extractAddressAndTrackId } from "../../gov2/utils";
+import { useContextApi } from "next-common/context/api";
 
 export async function getAddressTrackDelegations(api, address) {
   const voting = await api.query.convictionVoting.votingFor.entries(address);
@@ -22,7 +22,7 @@ export async function getAddressTrackDelegations(api, address) {
  * @description returns all my delegations/delegatings
  */
 export function useAllMyDelegationList() {
-  const api = useApi();
+  const api = useContextApi();
   const realAddress = useRealAddress();
   const isMounted = useIsMounted();
   const { tracks = [] } = usePageProps();

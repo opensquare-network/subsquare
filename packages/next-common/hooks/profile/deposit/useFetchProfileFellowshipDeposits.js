@@ -1,5 +1,4 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
@@ -8,10 +7,11 @@ import {
   setProfileFellowshipDecisionDeposits,
   setProfileFellowshipSubmissionDeposits,
 } from "next-common/store/reducers/profile/deposits/fellowship";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFetchProfileFellowshipDeposits() {
   const address = useProfileAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

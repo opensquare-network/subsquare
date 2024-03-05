@@ -1,9 +1,9 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import BigNumber from "bignumber.js";
 import { setTreasuryProposalDeposits } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
+import { useContextApi } from "next-common/context/api";
 
 export async function queryAddressDeposits(api, address) {
   const entries = await api.query.treasury.proposals.entries();
@@ -33,7 +33,7 @@ export async function queryAddressDeposits(api, address) {
 
 export default function useFetchMyTreasuryProposalDeposits() {
   const realAddress = useRealAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useMenuHasTreasuryBounties } from "next-common/context/chain";
@@ -8,10 +7,11 @@ import {
   setProfileBountyCuratorDeposits,
 } from "next-common/store/reducers/profile/deposits/treasury";
 import { queryAddressDeposits as queryAddressBountyDeposits } from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits/useFetchMyTreasuryBountyDeposits";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFetchProfileTreasuryBountyDeposits() {
   const address = useProfileAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const hasTreasuryBounties = useMenuHasTreasuryBounties();
 

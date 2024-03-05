@@ -1,13 +1,13 @@
 import { preImagesTriggerSelector } from "next-common/store/reducers/preImagesSlice";
-import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import { useContextApi } from "next-common/context/api";
 
 function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
 
-  const api = useApi();
+  const api = useContextApi();
   const preimageStatus = useCall(api?.query.preimage?.[method]?.entries, [], {
     trigger,
   });

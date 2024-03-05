@@ -1,14 +1,17 @@
-import useApi from "next-common/utils/hooks/useApi";
 import { useOnchainData } from "next-common/context/post";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { clearReferendaReferendumInfo, setReferendaReferendumInfo } from "../../store/reducers/referenda/info";
+import {
+  clearReferendaReferendumInfo,
+  setReferendaReferendumInfo,
+} from "../../store/reducers/referenda/info";
 import { triggerFetchVotes } from "next-common/store/reducers/referenda/votes";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubReferendumInfo() {
-  const api = useApi();
+  const api = useContextApi();
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
 
@@ -23,21 +26,23 @@ export default function useSubReferendumInfo() {
     }
 
     let unsub;
-    api.query.referenda.referendumInfoFor(referendumIndex, optionalInfo => {
-      if (!isMounted.current || !optionalInfo.isSome) {
-        return;
-      }
+    api.query.referenda
+      .referendumInfoFor(referendumIndex, (optionalInfo) => {
+        if (!isMounted.current || !optionalInfo.isSome) {
+          return;
+        }
 
-      const info = optionalInfo.unwrap();
-      if (!info.isOngoing) {
-        return;
-      }
+        const info = optionalInfo.unwrap();
+        if (!info.isOngoing) {
+          return;
+        }
 
-      dispatch(setReferendaReferendumInfo(info.asOngoing.toJSON()));
-      dispatch(triggerFetchVotes());
-    }).then(result => {
-      unsub = result;
-    });
+        dispatch(setReferendaReferendumInfo(info.asOngoing.toJSON()));
+        dispatch(triggerFetchVotes());
+      })
+      .then((result) => {
+        unsub = result;
+      });
 
     return () => {
       if (unsub) {

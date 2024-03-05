@@ -1,10 +1,10 @@
 import VoteBar from "next-common/components/referenda/voteBar";
 import useMaybeFetchReferendumStatus from "./useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "./useMaybeFetchElectorate";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function TimelineReferendumVote({ referendum }) {
-  const api = useApi();
+  const api = useContextApi();
   const referendumStatus = useMaybeFetchReferendumStatus(referendum, api);
   const electorate = useMaybeFetchElectorate(referendum, referendumStatus, api);
 

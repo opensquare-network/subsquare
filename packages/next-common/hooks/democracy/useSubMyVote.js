@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useOnchainData } from "../../context/post";
 import { Conviction, isAye } from "../../utils/referendumCommon";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 async function queryVotingByDelegation(api, referendumIndex, delegating = {}) {
   const { target, conviction } = delegating;
@@ -48,7 +48,7 @@ export async function getDemocracyDirectVote(api, address, referendumIndex) {
 }
 
 export default function useSubMyDemocracyVote(address) {
-  const api = useApi();
+  const api = useContextApi();
   const { referendumIndex } = useOnchainData();
 
   const [vote, setVote] = useState(null);

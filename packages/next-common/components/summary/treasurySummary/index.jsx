@@ -1,4 +1,3 @@
-import useApi from "../../../utils/hooks/useApi";
 import useTreasuryFree from "../../../utils/hooks/useTreasuryFree";
 import { useChain } from "../../../context/chain";
 import Summary from "../v2/base";
@@ -17,6 +16,7 @@ import TreasurySummaryToBeAwarded from "./toBeAwarded";
 import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
 import find from "lodash.find";
+import { useContextApi } from "next-common/context/api";
 
 const GET_TREASURIES = gql`
   query GetTreasuries {
@@ -33,7 +33,7 @@ const CHAIN_VALUE_TREASURY_MAP = {
 
 export default function TreasurySummary() {
   const chain = useChain();
-  const api = useApi();
+  const api = useContextApi();
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();

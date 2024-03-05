@@ -1,8 +1,8 @@
-import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
+import { useContextApi } from "next-common/context/api";
 
 export default function useBestNumber() {
-  const api = useApi();
+  const api = useContextApi();
   const [bestNumber] = useCall(api?.derive?.chain?.bestNumber, []);
   return bestNumber?.toNumber();
 }

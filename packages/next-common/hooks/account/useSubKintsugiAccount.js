@@ -1,13 +1,13 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSymbol } from "next-common/context/chain";
 import { setMyAccountInfo } from "next-common/store/reducers/myOnChainData/account";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubKintsugiAccount() {
   const realAddress = useRealAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const symbol = useSymbol();
 
