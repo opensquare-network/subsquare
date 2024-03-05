@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
-import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { emptyFunction } from "next-common/utils";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
@@ -27,6 +26,7 @@ import { LoadingPanel } from "components/referenda/popup/popupContent";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { useContextApi } from "next-common/context/api";
 
 function VotePanel({
   referendumIndex,
@@ -46,7 +46,7 @@ function VotePanel({
 
   const signerAccount = useSignerAccount();
 
-  const api = useApi();
+  const api = useContextApi();
   const node = useChainSettings();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -182,7 +182,7 @@ export default function PopupContent() {
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
 
-  const api = useApi();
+  const api = useContextApi();
 
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,

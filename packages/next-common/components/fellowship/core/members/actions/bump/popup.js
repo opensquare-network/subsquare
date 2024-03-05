@@ -3,12 +3,12 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import React, { useCallback } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
-import useApi from "next-common/utils/hooks/useApi";
 import PopupLabel from "next-common/components/popup/label";
 import styled from "styled-components";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { AddressUser } from "next-common/components/user";
 import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { useContextApi } from "next-common/context/api";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -18,7 +18,7 @@ const Wrapper = styled(GreyPanel)`
 function Content() {
   const { onClose, who } = usePopupParams();
   const { component } = useSigner("Origin");
-  const api = useApi();
+  const api = useContextApi();
 
   const getTxFunc = useCallback(() => {
     if (api && who) {

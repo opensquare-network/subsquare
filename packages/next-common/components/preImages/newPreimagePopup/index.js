@@ -5,7 +5,6 @@ import Extrinsic from "next-common/components/extrinsic";
 import PopupLabel from "next-common/components/popup/label";
 import SignerPopup from "next-common/components/signerPopup";
 import ExtrinsicInfo from "./info";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
@@ -13,6 +12,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import noop from "lodash.noop";
+import { useContextApi } from "next-common/context/api";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -53,7 +53,7 @@ function getState(api, proposal) {
 }
 
 export default function NewPreimagePopup({ onClose, onCreated = noop }) {
-  const api = useApi();
+  const api = useContextApi();
   const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
     useState(EMPTY_PROPOSAL);
   const disabled = !api || !notePreimageTx;

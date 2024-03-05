@@ -1,13 +1,13 @@
 import TracksSummary from "./tracksSummary";
 import TracksDelegation from "./tracksDelegation";
 import { Democracy, Referenda, useModuleTab } from "../../votingHistory/common";
-import useApi from "next-common/utils/hooks/useApi";
 import useDemocracyDelegating from "next-common/utils/hooks/referenda/useDemocracyDelegating";
 import DemocracyDelegatedVotes from "./democracyDelegatedVotes";
 import DemocracyDelegation from "./democracyDelegation";
 import useFetchReferendaDelegations from "next-common/utils/hooks/referenda/useFetchReferendaDelegations";
 import useProfileAddress from "../../useProfileAddress";
 import { TabContentWrapper } from "../common/styled";
+import { useContextApi } from "next-common/context/api";
 
 function OpenGovDelegated() {
   const address = useProfileAddress();
@@ -22,7 +22,7 @@ function OpenGovDelegated() {
 }
 
 function DemocracyDelegated() {
-  const api = useApi();
+  const api = useContextApi();
   const address = useProfileAddress();
   const { delegating, isLoading } = useDemocracyDelegating(api, address);
 

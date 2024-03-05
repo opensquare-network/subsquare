@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubIdentityDisplay(address) {
-  const api = useApi();
+  const api = useContextApi();
   const [_super, setSuper] = useState();
   const [parentIdentity, setParentIdentity] = useState();
   const [parentAccount, data] = _super?.unwrap() || [];

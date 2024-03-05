@@ -14,10 +14,10 @@ import useLaunchPeriod from "next-common/hooks/democracy/useLaunchPeriod";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { estimateBlocksTime } from "next-common/utils";
-import useApi from "next-common/utils/hooks/useApi";
 import useLaunchProgress from "next-common/hooks/democracy/useLaunchProgress";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import LoadableContent from "next-common/components/common/loadableContent";
+import { useContextApi } from "next-common/context/api";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -27,7 +27,7 @@ export default function DemocracySummary({ summary = {} }) {
 
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
   const progress = useLaunchProgress();
-  const api = useApi();
+  const api = useContextApi();
   const showLaunchPeriod = !isKintsugi && hasDemocracy && api;
 
   return (

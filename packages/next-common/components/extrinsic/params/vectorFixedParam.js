@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import useParamDefs from "./useParamDefs";
-import useApi from "next-common/utils/hooks/useApi";
 import ItemParam from "./itemParam";
+import { useContextApi } from "next-common/context/api";
 
 function getParam([{ name, type }], index) {
   return {
@@ -26,7 +26,7 @@ export function getParams(inputParams, prev, max) {
 }
 
 export default function VectorFixedParam({ title, def, value, setValue }) {
-  const api = useApi();
+  const api = useContextApi();
   const registry = api?.registry;
   const inputParams = useParamDefs(registry, def);
   const [params] = useState(

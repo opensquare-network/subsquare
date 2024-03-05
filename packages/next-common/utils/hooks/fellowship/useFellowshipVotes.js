@@ -1,4 +1,3 @@
-import useApi from "../useApi";
 import { useEffect } from "react";
 import isNil from "lodash.isnil";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +9,7 @@ import {
   setIsLoadingFellowshipVotes,
 } from "next-common/store/reducers/fellowship/votes";
 import partition from "lodash.partition";
+import { useContextApi } from "next-common/context/api";
 
 /**
  * // Fellowship voting storage: (pollIndex, address, VoteRecord)
@@ -75,7 +75,7 @@ async function query(api, targetPollIndex, blockHeight) {
 }
 
 export default function useFellowshipVotes(pollIndex, blockHeight) {
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const votesTrigger = useSelector(fellowshipVotesTriggerSelector);
 

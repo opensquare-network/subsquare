@@ -1,4 +1,3 @@
-import useApi from "next-common/utils/hooks/useApi";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import BigNumber from "bignumber.js";
@@ -9,9 +8,10 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useOnchainData } from "next-common/context/post";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useContextApi } from "next-common/context/api";
 
 export default function TreasuryAwardCountDown() {
-  const api = useApi();
+  const api = useContextApi();
   const blockHeight = useSelector(chainOrScanHeightSelector);
   const [period, setPeriod] = useState(null);
   const [gone, setGone] = useState(null);

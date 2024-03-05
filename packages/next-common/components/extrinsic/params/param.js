@@ -1,8 +1,6 @@
 import { getTypeDef } from "@polkadot/types";
 import { TypeDefInfo } from "@polkadot/types/types";
 import { isBn } from "@polkadot/util";
-
-import useApi from "next-common/utils/hooks/useApi";
 import AccountParam from "./accountParam";
 import BalanceParam from "./balanceParam";
 import TextParam from "./textParam";
@@ -29,6 +27,7 @@ import TupleParam from "./tupleParam";
 import RawParam from "./rawParam";
 import CidParam from "./cidParam";
 import KeyValueParam from "./keyValueParam";
+import { useContextApi } from "next-common/context/api";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -190,7 +189,7 @@ function findComponent({ registry, def }) {
 }
 
 export default function Param({ name, def, indent = false, value, setValue }) {
-  const api = useApi();
+  const api = useContextApi();
   const registry = api?.registry;
   const { Component, def: _def } = findComponent({ registry, def });
 

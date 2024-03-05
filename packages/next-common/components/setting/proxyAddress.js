@@ -13,13 +13,13 @@ import {
   useUserContext,
 } from "../../context/user";
 import ErrorMessage from "../styled/errorMessage";
-import useApi from "../../utils/hooks/useApi";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
 import PrimaryButton from "../buttons/primaryButton";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { normalizeAddress } from "next-common/utils/address";
 import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { useContextApi } from "next-common/context/api";
 
 const CustomErrorMessage = styled(ErrorMessage)`
   margin-top: 9px;
@@ -37,7 +37,7 @@ const SuccessMessage = styled.div`
 `;
 
 export default function ProxyAddress() {
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const user = useUser();
   const proxyAddress = user?.proxyAddress;

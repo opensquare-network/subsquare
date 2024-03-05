@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 
 import isNil from "lodash.isnil";
 import { useAddressVotingBalance } from "utils/hooks";
-import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
@@ -21,6 +20,7 @@ import useSubMyDemocracyVote, {
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
@@ -30,7 +30,7 @@ function PopupContent() {
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
-  const api = useApi();
+  const api = useContextApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
     signerAccount?.realAddress,

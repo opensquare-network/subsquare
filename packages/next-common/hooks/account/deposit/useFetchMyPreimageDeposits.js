@@ -2,14 +2,14 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setMyPreimageDeposits } from "next-common/store/reducers/myOnChainData/deposits/myPreimageDeposits";
-import useApi from "next-common/utils/hooks/useApi";
 import queryAddressPreimageDeposits from "next-common/hooks/account/deposit/fetch/preimage";
 import { preImagesTriggerSelector } from "next-common/store/reducers/preImagesSlice";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFetchMyPreimageDeposits() {
   const realAddress = useRealAddress();
   const dispatch = useDispatch();
-  const api = useApi();
+  const api = useContextApi();
   const trigger = useSelector(preImagesTriggerSelector);
 
   useEffect(() => {

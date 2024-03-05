@@ -1,6 +1,5 @@
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import { useEffect } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import isNil from "lodash.isnil";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useDispatch } from "react-redux";
@@ -12,6 +11,7 @@ import {
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
+import { useContextApi } from "next-common/context/api";
 
 async function fetchDemocracyVotes10Times(api, dispatch, referendumIndex) {
   const blockTime =
@@ -28,7 +28,7 @@ async function fetchDemocracyVotes10Times(api, dispatch, referendumIndex) {
 export default function useSubDemocracyReferendumStatus(referendumIndex) {
   const isVoteFinished = useIsDemocracyVoteFinished();
   const isMounted = useIsMounted();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -8,10 +8,10 @@ import SubmissionDeposit from "./submissionDeposit";
 import LockedBalance from "./lockedBalance";
 import { useChainSettings } from "next-common/context/chain";
 import BigNumber from "bignumber.js";
-import useApi from "next-common/utils/hooks/useApi";
 import { isValidPreimageHash } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import PreimageField from "../newProposalPopup/preimageField";
+import { useContextApi } from "next-common/context/api";
 
 export default function NewDemocracyProposalPopup({
   onClose,
@@ -21,7 +21,7 @@ export default function NewDemocracyProposalPopup({
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useIsMounted();
-  const api = useApi();
+  const api = useContextApi();
   const { decimals } = useChainSettings();
   const [deposit, setDeposit] = useState("0");
   const [lockedBalance, setLockedBalance] = useState("0");

@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from "react";
 
-import useApi from "next-common/utils/hooks/useApi";
-
 import {
   checkInputValue,
   emptyFunction,
@@ -18,11 +16,11 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const { tipHash, onClose, onInBlock = emptyFunction } = usePopupParams();
-  const api = useApi();
-
+  const api = useContextApi();
   const signerAccount = useSignerAccount();
 
   const [inputTipValue, setInputTipValue] = useState("");

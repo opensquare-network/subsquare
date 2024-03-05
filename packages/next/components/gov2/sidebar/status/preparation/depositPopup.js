@@ -1,4 +1,3 @@
-import useApi from "next-common/utils/hooks/useApi";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePostOnChainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
@@ -10,10 +9,11 @@ import Input from "next-common/components/input";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
-  const api = useApi();
+  const api = useContextApi();
   const node = useChainSettings();
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
 

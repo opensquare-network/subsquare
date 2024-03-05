@@ -1,9 +1,9 @@
-import useApi from "next-common/utils/hooks/useApi";
 import useParamDefs from "./useParamDefs";
 import Params from ".";
+import { useContextApi } from "next-common/context/api";
 
 export default function TupleParam({ title, def, value, setValue }) {
-  const api = useApi();
+  const api = useContextApi();
   const params = useParamDefs(api?.registry, def);
 
   return (

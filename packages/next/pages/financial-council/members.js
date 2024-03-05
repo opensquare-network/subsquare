@@ -1,15 +1,15 @@
 import MembersList from "next-common/components/membersList/simpleMembersList";
-import useApi from "next-common/utils/hooks/useApi";
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import usePrime from "next-common/utils/hooks/usePrime";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { useContextApi } from "next-common/context/api";
 
 export default function MembersPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const api = useApi();
+  const api = useContextApi();
   const [members] = useCall(api?.query?.financialCouncil?.members, []);
   const prime = usePrime();
   useEffect(() => {

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import useApi from "./useApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function useCurrentBlockHeightAndTime() {
   const [data, setData] = useState([]);
-  const api = useApi();
+  const api = useContextApi();
 
   useEffect(() => {
     if (!api) {

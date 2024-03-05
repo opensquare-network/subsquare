@@ -7,7 +7,6 @@ import Business from "./business";
 import Metadata from "./metadata";
 import Timeline from "./timeline";
 import { isMotionEnded } from "next-common/utils";
-import useApi from "next-common/utils/hooks/useApi";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import Chains from "next-common/utils/consts/chains";
@@ -25,12 +24,13 @@ import MotionHead from "./head";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
 import CollectiveCall from "next-common/components/collective/call";
+import { useContextApi } from "next-common/context/api";
 
 export default function MotionDetail() {
   const type = useDetailType();
   const chain = useChain();
   const postDispatch = usePostDispatch();
-  const api = useApi();
+  const api = useContextApi();
   const isMounted = useIsMounted();
   const post = usePost();
   const motionBusinessData = useCouncilMotionBusinessData();

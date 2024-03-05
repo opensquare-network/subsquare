@@ -1,10 +1,10 @@
-import useApi from "next-common/utils/hooks/useApi";
 import useParamDefs from "./useParamDefs";
 import Params from ".";
 import { useCallback } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function StructParam({ title, def, value, setValue }) {
-  const api = useApi();
+  const api = useContextApi();
   const params = useParamDefs(api?.registry, def);
   const structValues = {
     isValid: !!value?.isValid,

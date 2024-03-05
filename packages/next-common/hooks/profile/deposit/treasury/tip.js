@@ -1,5 +1,4 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import {
@@ -8,10 +7,11 @@ import {
 } from "next-common/context/chain";
 import { setProfileTipDeposits } from "next-common/store/reducers/profile/deposits/treasury";
 import { queryAddressDeposits as queryAddressTipDeposits } from "next-common/hooks/account/deposit/useFetchMyTreasuryDeposits/useFetchMyTreasuryTipDeposits";
+import { useContextApi } from "next-common/context/api";
 
 export default function useFetchProfileTreasuryTipDeposits() {
   const address = useProfileAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const hasTreasuryTips = useMenuHasTreasuryTips();
   const { hasTipsModule } = useChainSettings();

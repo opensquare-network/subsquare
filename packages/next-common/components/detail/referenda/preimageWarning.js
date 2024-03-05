@@ -1,12 +1,12 @@
 import { useOnchainData, usePostState } from "next-common/context/post";
 import useCall from "next-common/utils/hooks/useCall";
-import useApi from "next-common/utils/hooks/useApi";
 import Malicious from "next-common/components/detail/malicious";
 import { gov2State } from "next-common/utils/consts/state";
+import { useContextApi } from "next-common/context/api";
 
 function Warning() {
   const { proposalHash } = useOnchainData();
-  const api = useApi();
+  const api = useContextApi();
   const [status] = useCall(api?.query?.preimage?.statusFor, [proposalHash]);
   const [requestStatus] = useCall(api?.query?.preimage?.requestStatusFor, [
     proposalHash,

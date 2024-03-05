@@ -1,11 +1,11 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect } from "react";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { setMyDemocracyVoting } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import normalizePrior from "../../utils/normalizePrior";
 import getDelegatingVotesInfo from "./delegatingVotes";
 import getDemocracyRichVotes from "./getRichVotes";
+import { useContextApi } from "next-common/context/api";
 
 async function getDirectVotesInfo(voting, api) {
   const direct = voting.asDirect;
@@ -20,7 +20,7 @@ async function getDirectVotesInfo(voting, api) {
 
 export default function useSubMyDemocracyVoting() {
   const address = useRealAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

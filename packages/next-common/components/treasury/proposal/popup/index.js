@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
-
-import useApi from "../../../../utils/hooks/useApi";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
@@ -24,6 +22,7 @@ import {
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const {
@@ -41,7 +40,7 @@ function PopupContent() {
   const [loading, setLoading] = useState(false);
 
   const node = useChainSettings();
-  const api = useApi();
+  const api = useContextApi();
 
   const proposalValue = new BigNumber(inputValue).times(
     Math.pow(10, node.decimals),

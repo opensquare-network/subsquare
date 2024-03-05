@@ -1,9 +1,9 @@
-import useApi from "next-common/utils/hooks/useApi";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubLockedBalance(address) {
-  const api = useApi();
+  const api = useContextApi();
   const isMounted = useIsMounted();
   const [balance, setBalance] = useState(0);
 

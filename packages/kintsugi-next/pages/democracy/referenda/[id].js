@@ -6,7 +6,6 @@ import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
 import Timeline from "next-common/components/timeline";
 import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
-import useApi from "next-common/utils/hooks/useApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -33,6 +32,7 @@ import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
+import { useContextApi } from "next-common/context/api";
 
 function ReferendumContent() {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ function ReferendumContent() {
   useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
-  const api = useApi();
+  const api = useContextApi();
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 

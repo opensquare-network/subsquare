@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import useApi from "./useApi";
 import usePostTipMeta from "../../context/post/treasury/tip/tipMeta";
 import useTipIsFinished from "../../context/post/treasury/tip/isFinished";
 import { tipTriggerSelector } from "next-common/store/reducers/treasury/tip";
 import { useSelector } from "react-redux";
+import { useContextApi } from "next-common/context/api";
 
 export default function useTipMeta(tipHash) {
   const [isLoading, setIsLoading] = useState(true);
   const postTipMeta = usePostTipMeta();
   const [tipMeta, setTipMeta] = useState(postTipMeta);
-  const api = useApi();
+  const api = useContextApi();
   const isFinished = useTipIsFinished();
   const tipTrigger = useSelector(tipTriggerSelector);
 

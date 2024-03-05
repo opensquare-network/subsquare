@@ -1,5 +1,4 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useApi from "next-common/utils/hooks/useApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import normalizePrior from "../../utils/normalizePrior";
@@ -13,6 +12,7 @@ import {
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import getOpenGovReferendaPosts from "./posts";
 import getDelegatedVoting from "./delegation";
+import { useContextApi } from "next-common/context/api";
 
 async function normalizeCastingVoting(api, trackId, votingOf) {
   const casting = votingOf.asCasting;
@@ -83,7 +83,7 @@ async function queryVotesAndReferendaInfo(api, address) {
 
 export default function useFetchMyReferendaVoting() {
   const address = useRealAddress();
-  const api = useApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const trigger = useSelector(myReferendaVotesTriggerSelector);
 

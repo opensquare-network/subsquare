@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-
-import useApi from "next-common/utils/hooks/useApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import toApiCouncil from "next-common/utils/toApiCouncil";
@@ -19,6 +17,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import Loading from "next-common/components/loading";
 import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { useContextApi } from "next-common/context/api";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -40,7 +39,7 @@ export default function PopupContent() {
   } = usePopupParams();
   const chain = useChain();
   const dispatch = useDispatch();
-  const api = useApi();
+  const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
 

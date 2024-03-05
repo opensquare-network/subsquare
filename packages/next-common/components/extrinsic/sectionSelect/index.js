@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import Select from "next-common/components/select";
-import useApi from "next-common/utils/hooks/useApi";
+import { useContextApi } from "next-common/context/api";
 
 function getSectionOptions(api) {
   if (!api) return [];
@@ -16,7 +16,7 @@ function getSectionOptions(api) {
 }
 
 export default function SectionSelect({ sectionName, setSectionName }) {
-  const api = useApi();
+  const api = useContextApi();
   const options = useMemo(() => getSectionOptions(api), [api]);
 
   return (

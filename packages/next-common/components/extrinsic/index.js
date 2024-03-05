@@ -3,8 +3,8 @@ import { getTypeDef } from "@polkadot/types/create";
 import MethodSelect from "./methodSelect";
 import Params from "./params";
 import SectionSelect from "./sectionSelect";
-import useApi from "next-common/utils/hooks/useApi";
 import { useObjectItemState } from "next-common/hooks/useItemState";
+import { useContextApi } from "next-common/context/api";
 
 function getParams({ meta }) {
   return meta.args.map(({ name, type, typeName }) => ({
@@ -68,7 +68,7 @@ export default function Extrinsic({
   // value,
   setValue,
 }) {
-  const api = useApi();
+  const api = useContextApi();
   const [sectionName, setSectionName] = useState(defaultSectionName);
   const [methodName, setMethodName] = useState(defaultMethodName);
   const [callState, setCallState] = useState();
