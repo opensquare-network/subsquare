@@ -8,6 +8,8 @@ import getCycleUnregisteredPaidSummaryItem from "../summary/unregisteredPaid";
 import getCycleTotalPeriodSummaryItem from "../summary/totalPeriod";
 import chunk from "lodash.chunk";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
+import getCycleBlockTimeSummaryItem from "../summary/blockTime";
+import getCycleRemainSummaryItem from "../summary/remain";
 
 export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
   const { decimals, symbol } = useSalaryAsset();
@@ -17,6 +19,7 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
     unRegisteredPaidCount,
     registrationPeriod,
     payoutPeriod,
+    startIndexer,
   } = cycle;
 
   const { budget, totalRegistrations, totalUnregisteredPaid, cycleStart } =
@@ -24,9 +27,16 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
 
   const totalCyclePeriod = registrationPeriod + payoutPeriod || null;
   const cycleStartAt = cycleStart || null;
+  const payoutStartAt = cycleStartAt + registrationPeriod || null;
 
-  const periodData = useCalcPeriodBlocks(totalCyclePeriod, cycleStartAt);
-  const [totalPeriodDay] = chunk(periodData.totalPeriodTime.split(" "), 2);
+  const cyclePeriodData = useCalcPeriodBlocks(totalCyclePeriod, cycleStartAt);
+  const [totalPeriodDay] = chunk(cyclePeriodData.totalPeriodTime.split(" "), 2);
+
+  const registrationPeriodData = useCalcPeriodBlocks(
+    registrationPeriod,
+    cycleStartAt,
+  );
+  const payoutPeriodData = useCalcPeriodBlocks(payoutPeriod, payoutStartAt);
 
   const budgetItem = getCycleBudgetSummaryItem(budget, decimals, symbol);
   const totalRegistrationsItem = getCycleRegistrationSummaryItem(
@@ -46,8 +56,28 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
   const totalPeriodItem = getCycleTotalPeriodSummaryItem(
     totalCyclePeriod,
     totalPeriodDay,
-    periodData.gonePercentage,
-    periodData.remainBlocks,
+    cyclePeriodData.gonePercentage,
+    cyclePeriodData.remainBlocks,
+  );
+
+  const startTimeItem = getCycleBlockTimeSummaryItem(
+    "Start Time",
+    startIndexer?.blockTime,
+    startIndexer?.blockHeight,
+  );
+
+  const endTimeItem = {
+    title: "End Time",
+    content: "-",
+  };
+
+  const timeItem = getCycleRemainSummaryItem(
+    registrationPeriodData.gonePercentage,
+    registrationPeriodData.remainBlocks,
+    registrationPeriodData.totalPeriodTime.split(" "),
+    payoutPeriodData.gonePercentage,
+    payoutPeriodData.remainBlocks,
+    payoutPeriodData.totalPeriodTime.split(" "),
   );
 
   const summaryItems = [
@@ -55,6 +85,10 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
     totalRegistrationsItem,
     totalUnregisteredPaidItem,
     totalPeriodItem,
+    startTimeItem,
+    endTimeItem,
+    {},
+    timeItem,
   ];
 
   return (
