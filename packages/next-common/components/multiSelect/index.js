@@ -40,7 +40,7 @@ export default function MultiSelect({
         setShowDropDown={setShowDropDown}
       />
       {showDropDown && (
-        <OptionsWrapper itemHeight={itemHeight} maxDisplayItem={maxDisplayItem}>
+        <OptionsWrapper>
           <div
             className={cn(
               maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
