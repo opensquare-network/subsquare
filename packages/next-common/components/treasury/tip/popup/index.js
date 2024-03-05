@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import useIsMounted from "../../../../utils/hooks/useIsMounted";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
-import { checkInputValue } from "../../../../utils";
+import { checkInputValue, isAddressInGroup } from "../../../../utils";
 import PopupWithSigner from "../../../popupWithSigner";
 import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
@@ -20,13 +20,81 @@ import {
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
 import { useContextApi } from "next-common/context/api";
+import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import { WarningMessage } from "next-common/components/popup/styled";
+
+function TipCommon({ setBeneficiary, setReason }) {
+  const extensionAccounts = useExtensionAccounts();
+
+  return (
+    <>
+      <SignerWithBalance />
+      <Beneficiary
+        extensionAccounts={extensionAccounts}
+        setAddress={setBeneficiary}
+      />
+      <TipReason setValue={setReason} />
+    </>
+  );
+}
+
+function SubmitButton({ disabled, loading, onSubmit }) {
+  return (
+    <PopupButtonWrapper>
+      <PrimaryButton disabled={disabled} isLoading={loading} onClick={onSubmit}>
+        Submit
+      </PrimaryButton>
+    </PopupButtonWrapper>
+  );
+}
+
+function ReportAwesomeContent({
+  setBeneficiary,
+  setReason,
+  loading,
+  onSubmit,
+}) {
+  return (
+    <>
+      <TipCommon setBeneficiary={setBeneficiary} setReason={setReason} />
+      <SubmitButton loading={loading} onSubmit={onSubmit} />
+    </>
+  );
+}
+
+function NewTipContent({
+  setBeneficiary,
+  setReason,
+  setInputValue,
+  loading,
+  onSubmit,
+}) {
+  const signerAccount = useSignerAccount();
+  const councilTippers = useCouncilMembers();
+  const isTipper = isAddressInGroup(
+    signerAccount?.realAddress,
+    councilTippers || [],
+  );
+  return (
+    <>
+      <WarningMessage danger={!isTipper}>
+        Only council members can create new tip.
+      </WarningMessage>
+      <TipCommon setBeneficiary={setBeneficiary} setReason={setReason} />
+      <TipValue setValue={setInputValue} />
+      <SubmitButton
+        disabled={!isTipper}
+        loading={loading}
+        onSubmit={onSubmit}
+      />
+    </>
+  );
+}
 
 function PopupContent({ onClose }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();
-  const extensionAccounts = useExtensionAccounts();
-
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
@@ -102,18 +170,22 @@ function PopupContent({ onClose }) {
       <div style={{ marginTop: "16px", marginBottom: "16px" }}>
         <Tab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </div>
-      <SignerWithBalance />
-      <Beneficiary
-        extensionAccounts={extensionAccounts}
-        setAddress={setBeneficiary}
-      />
-      <TipReason setValue={setReason} />
-      {tabIndex === NewTip && <TipValue setValue={setInputValue} />}
-      <PopupButtonWrapper>
-        <PrimaryButton isLoading={loading} onClick={submit}>
-          Submit
-        </PrimaryButton>
-      </PopupButtonWrapper>
+      {tabIndex === NewTip ? (
+        <NewTipContent
+          onSubmit={submit}
+          setBeneficiary={setBeneficiary}
+          setReason={setReason}
+          setInputValue={setInputValue}
+          loading={loading}
+        />
+      ) : (
+        <ReportAwesomeContent
+          onSubmit={submit}
+          setBeneficiary={setBeneficiary}
+          setReason={setReason}
+          loading={loading}
+        />
+      )}
     </>
   );
 }
