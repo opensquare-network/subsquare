@@ -15,11 +15,12 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
+function PopupContent() {
+  const { tipHash, onClose, onInBlock = emptyFunction } = usePopupParams();
   const api = useContextApi();
-
   const signerAccount = useSignerAccount();
 
   const [inputTipValue, setInputTipValue] = useState("");
@@ -71,5 +72,9 @@ function PopupContent({ tipHash, onClose, onInBlock = emptyFunction }) {
 }
 
 export default function EndorsePopup(props) {
-  return <PopupWithSigner title="Tip" Component={PopupContent} {...props} />;
+  return (
+    <PopupWithSigner title="Tip" {...props}>
+      <PopupContent />
+    </PopupWithSigner>
+  );
 }

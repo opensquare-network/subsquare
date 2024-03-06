@@ -4,9 +4,11 @@ import isNil from "lodash.isnil";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useSigner from "next-common/components/common/tx/useSigner";
 import ReferendumIndexRow from "next-common/components/gov2/referendum/metadata/refund/referendumIndexRow";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-function Content({ onClose, referendumIndex, pallet = "referenda" }) {
+function Content() {
+  const { onClose, referendumIndex, pallet = "referenda" } = usePopupParams();
   const { component } = useSigner("Origin");
   const api = useContextApi();
 
@@ -29,10 +31,8 @@ function Content({ onClose, referendumIndex, pallet = "referenda" }) {
 
 export default function DecisionDepositRefundPopup(props) {
   return (
-    <PopupWithSigner
-      title="Refund decision deposit"
-      Component={Content}
-      {...props}
-    />
+    <PopupWithSigner title="Refund decision deposit" {...props}>
+      <Content />
+    </PopupWithSigner>
   );
 }

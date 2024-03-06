@@ -19,9 +19,11 @@ import useSubMyDemocracyVote, {
 } from "../../../hooks/democracy/useSubMyDemocracyVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useShowVoteSuccessful } from "next-common/components/vote";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-function PopupContent({ referendumIndex, onClose }) {
+function PopupContent() {
+  const { referendumIndex, onClose } = usePopupParams();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
@@ -142,10 +144,8 @@ function PopupContent({ referendumIndex, onClose }) {
 
 export default function Popup(props) {
   return (
-    <PopupWithSigner
-      title="Referenda vote"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithSigner title="Referenda vote" {...props}>
+      <PopupContent />
+    </PopupWithSigner>
   );
 }
