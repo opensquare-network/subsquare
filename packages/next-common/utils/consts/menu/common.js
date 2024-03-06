@@ -3,6 +3,7 @@ import {
   MenuDiscussions,
   MenuCalendar,
   MenuOffChainVoting,
+  MenuDelegation,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
@@ -34,6 +35,15 @@ const commonMenus = {
 
 if (chainSettings.hasDiscussions !== false) {
   commonMenus.items.push(discussionsMenu);
+}
+
+if (chainSettings.hasReferenda || !chainSettings.noDemocracy) {
+  commonMenus.items.push({
+    value: "delegation",
+    name: "Delegation",
+    pathname: "/delegation",
+    icon: <MenuDelegation />,
+  });
 }
 
 commonMenus.items.push({
