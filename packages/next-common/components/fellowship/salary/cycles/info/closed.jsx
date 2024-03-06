@@ -9,6 +9,7 @@ import getCycleBlockTimeSummaryItem from "../summary/blockTime";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import chunk from "lodash.chunk";
 import getCycleTotalDurationSummaryItem from "../summary/totalDuration";
+import FellowshipCycleProgress from "./progress";
 
 export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
   const { decimals, symbol } = useSalaryAsset();
@@ -92,6 +93,10 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
       <hr className="my-4" />
 
       <SummaryItems items={items} />
+
+      <div className="mt-4">
+        <FellowshipCycleProgress cycle={cycle} />
+      </div>
     </PrimaryCard>
   );
 }
