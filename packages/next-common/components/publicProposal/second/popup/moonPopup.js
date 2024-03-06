@@ -110,9 +110,10 @@ export default function MoonSecondPopup(props) {
   return (
     <PopupWithSigner
       title="Delegate"
-      Component={PopupContent}
       submitExtrinsic={submitExtrinsic}
       {...props}
-    />
+    >
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

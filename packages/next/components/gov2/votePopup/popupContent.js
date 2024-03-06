@@ -25,6 +25,7 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import { LoadingPanel } from "components/referenda/popup/popupContent";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useShowVoteSuccessful } from "next-common/components/vote";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 function VotePanel({
@@ -168,15 +169,16 @@ function VotePanel({
   );
 }
 
-export default function PopupContent({
-  referendumIndex,
-  trackId,
-  onClose,
-  useStandardVote,
-  useSplitVote,
-  useSplitAbstainVote,
-  submitExtrinsic = emptyFunction,
-}) {
+export default function PopupContent() {
+  const {
+    referendumIndex,
+    trackId,
+    onClose,
+    useStandardVote,
+    useSplitVote,
+    useSplitAbstainVote,
+    submitExtrinsic = emptyFunction,
+  } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
 

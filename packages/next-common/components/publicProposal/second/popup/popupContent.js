@@ -12,17 +12,19 @@ import SecondPopupInputTimes from "./inputTimes";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
 import { useChainSettings } from "next-common/context/chain";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-export default function PopupContent({
-  proposalIndex,
-  depositorUpperBound,
-  depositRequired,
-  onClose,
-  onInBlock = emptyFunction,
-  useAddressVotingBalance,
-  submitExtrinsic = emptyFunction,
-}) {
+export default function PopupContent() {
+  const {
+    proposalIndex,
+    depositorUpperBound,
+    depositRequired,
+    onClose,
+    onInBlock = emptyFunction,
+    useAddressVotingBalance,
+    submitExtrinsic = emptyFunction,
+  } = usePopupParams();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const signerAccount = useSignerAccount();

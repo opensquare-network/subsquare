@@ -8,9 +8,11 @@ import PopupLabel from "next-common/components/popup/label";
 import Input from "next-common/components/input";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-function PopupContent({ onClose }) {
+function PopupContent() {
+  const { onClose } = usePopupParams();
   const api = useContextApi();
   const node = useChainSettings();
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
@@ -44,10 +46,8 @@ function PopupContent({ onClose }) {
 
 export default function DepositPopup(props) {
   return (
-    <PopupWithSigner
-      title="Place decision deposit"
-      Component={PopupContent}
-      {...props}
-    />
+    <PopupWithSigner title="Place decision deposit" {...props}>
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

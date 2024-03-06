@@ -3,9 +3,11 @@ import React, { useCallback } from "react";
 import useSigner from "next-common/components/common/tx/useSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-function Content({ onClose }) {
+function Content() {
+  const { onClose } = usePopupParams();
   const { component } = useSigner();
   const api = useContextApi();
 
@@ -31,5 +33,9 @@ function Content({ onClose }) {
 }
 
 export default function FellowshipCoreImportPopup(props) {
-  return <PopupWithSigner title="Import" Component={Content} {...props} />;
+  return (
+    <PopupWithSigner title="Import" {...props}>
+      <Content />
+    </PopupWithSigner>
+  );
 }

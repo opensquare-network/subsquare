@@ -4,9 +4,11 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useSigner from "next-common/components/common/tx/useSigner";
 import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-function Content({ onClose }) {
+function Content() {
+  const { onClose } = usePopupParams();
   const { component } = useSigner("Origin");
   const api = useContextApi();
   const { address: whoAddress, component: whoInput } = useAddressInput("Who");
@@ -34,5 +36,9 @@ function Content({ onClose }) {
 }
 
 export default function FellowshipCoreInductionPopup(props) {
-  return <PopupWithSigner title="Induct" Component={Content} {...props} />;
+  return (
+    <PopupWithSigner title="Induct" {...props}>
+      <Content />
+    </PopupWithSigner>
+  );
 }

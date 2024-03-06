@@ -85,12 +85,13 @@ export default function MoonPopup(props) {
   return (
     <PopupWithSigner
       title="Referendum vote"
-      Component={PopupContent}
       useStandardVote={useMoonStandardVote}
       useSplitVote={useMoonSplitVote}
       VoteTypeTab={AyeNayTab}
       submitExtrinsic={submitExtrinsic}
       {...props}
-    />
+    >
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

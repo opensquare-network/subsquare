@@ -3,17 +3,17 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { emptyFunction } from "../../utils";
 import { PopupButtonWrapper } from "../popup/wrapper";
-import { useSignerAccount } from "../popupWithSigner/context";
+import { useSignerAccount, usePopupParams } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 
-function PopupContent({
-  actionCallback = emptyFunction,
-  isLoading = false,
-  confirmText = "Confirm",
-  disabled = false,
-  children,
-}) {
+function PopupContent({ children }) {
+  const {
+    actionCallback = emptyFunction,
+    isLoading = false,
+    confirmText = "Confirm",
+    disabled = false,
+  } = usePopupParams();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
 
@@ -34,6 +34,10 @@ function PopupContent({
   );
 }
 
-export default function SignerPopup({ title, ...props }) {
-  return <PopupWithSigner title={title} Component={PopupContent} {...props} />;
+export default function SignerPopup({ children, ...props }) {
+  return (
+    <PopupWithSigner {...props}>
+      <PopupContent>{children}</PopupContent>
+    </PopupWithSigner>
+  );
 }

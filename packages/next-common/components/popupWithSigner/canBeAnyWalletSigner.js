@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import Popup from "../popup/wrapper/Popup";
 import { useMetaMaskAccounts } from "../../utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useChainSettings } from "next-common/context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import ContextPopup from "./contextPopup";
 
 function usePolkadotAccounts() {
   const [accounts, setAccounts] = useState([]);
@@ -42,16 +42,7 @@ function usePolkadotAccounts() {
   return [accounts, isLoading];
 }
 
-export default function CanBeAnyWalletSigner({
-  onClose,
-  autoCloseAfterLogin,
-  title,
-  Component,
-  wide,
-  maskClosable,
-  className,
-  ...props
-}) {
+export default function CanBeAnyWalletSigner({ children }) {
   const [metamaskAccounts, isLoadingMetamask] = useMetaMaskAccounts(true);
   const [polkadotAccounts, isLoadingPolkadot] = usePolkadotAccounts(true);
 
@@ -65,20 +56,8 @@ export default function CanBeAnyWalletSigner({
   }
 
   return (
-    <MaybeSignerConnected
-      extensionAccounts={combinedAccounts}
-      onClose={onClose}
-      autoCloseAfterLogin={autoCloseAfterLogin}
-    >
-      <Popup
-        wide={wide}
-        onClose={onClose}
-        title={title}
-        maskClosable={maskClosable}
-        className={className}
-      >
-        <Component onClose={onClose} {...props} />
-      </Popup>
+    <MaybeSignerConnected extensionAccounts={combinedAccounts}>
+      <ContextPopup>{children}</ContextPopup>
     </MaybeSignerConnected>
   );
 }
