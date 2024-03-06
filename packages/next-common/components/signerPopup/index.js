@@ -7,13 +7,12 @@ import { useSignerAccount, usePopupParams } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 
-function PopupContent() {
+function PopupContent({ children }) {
   const {
     actionCallback = emptyFunction,
     isLoading = false,
     confirmText = "Confirm",
     disabled = false,
-    children,
   } = usePopupParams();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
@@ -35,10 +34,10 @@ function PopupContent() {
   );
 }
 
-export default function SignerPopup({ title, ...props }) {
+export default function SignerPopup({ children, ...props }) {
   return (
-    <PopupWithSigner title={title} {...props}>
-      <PopupContent />
+    <PopupWithSigner {...props}>
+      <PopupContent>{children}</PopupContent>
     </PopupWithSigner>
   );
 }

@@ -27,6 +27,7 @@ export default function NewDemocracyProposalPopup({
   const [lockedBalance, setLockedBalance] = useState("0");
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!api) {
@@ -77,6 +78,7 @@ export default function NewDemocracyProposalPopup({
         dispatch,
         isMounted,
         signerAccount,
+        setLoading: setIsLoading,
         onInBlock: (eventData) => {
           if (!eventData) {
             return;
@@ -110,6 +112,7 @@ export default function NewDemocracyProposalPopup({
       onClose={onClose}
       actionCallback={onSubmit}
       disabled={disabled}
+      isLoading={isLoading}
     >
       <PreimageField
         preimageHash={preimageHash}
