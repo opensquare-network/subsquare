@@ -65,7 +65,7 @@ function PaidLabel({ value, label = "", color = "" }) {
   const { decimals, symbol } = useSalaryAsset();
 
   return (
-    <div className="inline-flex items-center gap-x-2 text12Medium">
+    <div className="flex items-center gap-x-2 text12Medium">
       <div
         className="w-[11px] h-[11px] rounded-sm"
         style={{ backgroundColor: color }}
