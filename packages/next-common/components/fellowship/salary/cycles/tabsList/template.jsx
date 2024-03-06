@@ -25,7 +25,6 @@ export default function FellowshipSalaryCycleDetailListTemplate({
         tabs={tabs}
         activeTabLabel={activeTabLabel}
         onTabClick={(tab) => setActiveTabLabel(tab.label)}
-        isUrlTabs={true}
       />
     </div>
   );

@@ -14,7 +14,6 @@ export function useFellowshipSalaryCycleRegistrationsTabItem() {
 
   return {
     name: "Registrations",
-    url: `/fellowship/salary/cycles/${id}`,
     activeCount: registrations?.total ?? 0,
     noDataText: "No registrations",
     columns: [
