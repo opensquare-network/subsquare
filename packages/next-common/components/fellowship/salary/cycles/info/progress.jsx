@@ -47,7 +47,7 @@ export default function FellowshipCycleProgress({ cycle }) {
         )}
       >
         <PaidLabel
-          color={registeredPaid}
+          color={registreredPaidColor}
           label="Registered Paid"
           value={registeredPaid}
         />
