@@ -1,4 +1,5 @@
 import isNil from "lodash.isnil";
+import noop from "lodash.noop";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import Tabs from "next-common/components/tabs";
@@ -8,6 +9,8 @@ import { useUpdateEffect } from "usehooks-ts";
 
 export default function FellowshipSalaryCycleDetailListTemplate({
   items = [],
+  defaultTab,
+  onTabClick = noop,
 }) {
   const tabs = items.map((m) => {
     return {
@@ -17,14 +20,19 @@ export default function FellowshipSalaryCycleDetailListTemplate({
       content: m.content || <TableTemplate {...m} />,
     };
   });
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
+  const [activeTabLabel, setActiveTabLabel] = useState(
+    defaultTab ?? tabs[0]?.label,
+  );
 
   return (
     <div>
       <Tabs
         tabs={tabs}
         activeTabLabel={activeTabLabel}
-        onTabClick={(tab) => setActiveTabLabel(tab.label)}
+        onTabClick={(tab) => {
+          setActiveTabLabel(tab.label);
+          onTabClick(tab);
+        }}
       />
     </div>
   );
