@@ -227,6 +227,7 @@ export default function useBreadcrumbs() {
       },
       {
         content: "Salary Cycles",
+        path: "/fellowship/salary",
       },
       {
         content: `#${id}`,
