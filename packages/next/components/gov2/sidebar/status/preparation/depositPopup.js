@@ -8,7 +8,7 @@ import PopupLabel from "next-common/components/popup/label";
 import Input from "next-common/components/input";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {

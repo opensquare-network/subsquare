@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { useContextApi } from "next-common/context/api";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { WarningMessage } from "next-common/components/popup/styled";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 function TipCommon({ setBeneficiary, setReason }) {
   const extensionAccounts = useExtensionAccounts();

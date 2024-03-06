@@ -16,7 +16,7 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import Loading from "next-common/components/loading";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 const SignerWrapper = styled.div`

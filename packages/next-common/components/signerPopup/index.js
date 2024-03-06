@@ -3,9 +3,8 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { emptyFunction } from "../../utils";
 import { PopupButtonWrapper } from "../popup/wrapper";
-import { useSignerAccount } from "../popupWithSigner/context";
+import { useSignerAccount, usePopupParams } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
-import { usePopupParams } from "../popup/wrapper/context";
 import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {

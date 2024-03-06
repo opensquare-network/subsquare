@@ -7,15 +7,16 @@ import SelectWalletPopup from "../selectWallet";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import CanBeAnyWalletSigner from "./canBeAnyWalletSigner";
 import { isKeyRegisteredUser } from "next-common/utils";
-import { PopupContextProvider } from "../popup/wrapper/context";
+import { PopupParamsProvider, usePopupParams } from "./context";
 
 function PopupImpl({ children }) {
   const user = useUser();
   const { connectedAccount, lastConnectedAccount } =
     useConnectedAccountContext();
+  const { onClose } = usePopupParams();
 
   if (!user) {
-    return <SelectWalletPopup title="" />;
+    return <SelectWalletPopup onClose={onClose} />;
   }
 
   if (!isKeyRegisteredUser(user) && !connectedAccount) {
@@ -31,8 +32,8 @@ function PopupImpl({ children }) {
 
 export default function PopupWithSigner({ children, ...props }) {
   return (
-    <PopupContextProvider params={props}>
+    <PopupParamsProvider {...props}>
       <PopupImpl>{children}</PopupImpl>
-    </PopupContextProvider>
+    </PopupParamsProvider>
   );
 }

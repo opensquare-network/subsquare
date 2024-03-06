@@ -12,7 +12,7 @@ import SecondPopupInputTimes from "./inputTimes";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
 import { useChainSettings } from "next-common/context/chain";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 export default function PopupContent() {

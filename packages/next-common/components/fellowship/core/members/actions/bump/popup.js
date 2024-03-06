@@ -7,7 +7,7 @@ import PopupLabel from "next-common/components/popup/label";
 import styled from "styled-components";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { AddressUser } from "next-common/components/user";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 const Wrapper = styled(GreyPanel)`

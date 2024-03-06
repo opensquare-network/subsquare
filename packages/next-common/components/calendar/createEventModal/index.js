@@ -17,7 +17,7 @@ import noop from "lodash.noop";
 import { calendarUserEventsApi } from "../../../services/url";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 function PopupContent() {
   const { onClose, refresh = noop } = usePopupParams();

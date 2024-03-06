@@ -24,7 +24,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import Loading from "next-common/components/loading";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useShowVoteSuccessful } from "next-common/components/vote";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 export function LoadingPanel() {

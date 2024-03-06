@@ -19,7 +19,7 @@ import useSubMyDemocracyVote, {
 } from "../../../hooks/democracy/useSubMyDemocracyVote";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useShowVoteSuccessful } from "next-common/components/vote";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {

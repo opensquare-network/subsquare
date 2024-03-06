@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
-import Popup from "../popup/wrapper/Popup";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
@@ -9,7 +8,8 @@ import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import { usePopupParams } from "../popup/wrapper/context";
+import { usePopupParams } from "./context";
+import ContextPopup from "./contextPopup";
 
 export default function MaybePolkadotSigner({ children }) {
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ export default function MaybePolkadotSigner({ children }) {
 
   return (
     <MaybeSignerConnected extensionAccounts={polkadotAccounts}>
-      <Popup>{children}</Popup>
+      <ContextPopup>{children}</ContextPopup>
     </MaybeSignerConnected>
   );
 }

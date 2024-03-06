@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import Popup from "../popup/wrapper/Popup";
 import { useMetaMaskAccounts } from "../../utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useChainSettings } from "next-common/context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import ContextPopup from "./contextPopup";
 
 function usePolkadotAccounts() {
   const [accounts, setAccounts] = useState([]);
@@ -57,7 +57,7 @@ export default function CanBeAnyWalletSigner({ children }) {
 
   return (
     <MaybeSignerConnected extensionAccounts={combinedAccounts}>
-      <Popup>{children}</Popup>
+      <ContextPopup>{children}</ContextPopup>
     </MaybeSignerConnected>
   );
 }

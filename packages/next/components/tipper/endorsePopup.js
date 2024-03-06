@@ -15,7 +15,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import { usePopupParams } from "next-common/components/popup/wrapper/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
