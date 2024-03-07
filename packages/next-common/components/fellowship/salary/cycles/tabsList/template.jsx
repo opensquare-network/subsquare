@@ -46,7 +46,7 @@ function TableTemplate({ columns, api, formatter = (i) => i, noDataText }) {
   function fetchData() {
     if (api?.path) {
       nextApi
-        .fetch(api?.path, { ...api.params, page })
+        .fetch(api?.path, { ...api.params, page, pageSize: result?.pageSize })
         .then((resp) => {
           if (resp.result) {
             setResult(resp.result);
@@ -80,6 +80,7 @@ function TableTemplate({ columns, api, formatter = (i) => i, noDataText }) {
         <div className="mt-2">
           <Pagination
             page={page}
+            pageSize={result?.pageSize}
             total={result?.total || 0}
             onPageChange={(e, newPage) => {
               e.preventDefault();
