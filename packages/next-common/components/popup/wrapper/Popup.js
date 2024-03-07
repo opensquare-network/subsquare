@@ -6,14 +6,15 @@ import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
 
 let z = 999;
+
 export default function Popup({
-  children,
   onClose = noop,
   title,
   className = "",
   wide,
   extra,
   maskClosable = true,
+  children,
 }) {
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);

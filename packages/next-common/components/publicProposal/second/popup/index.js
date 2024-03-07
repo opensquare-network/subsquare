@@ -53,9 +53,10 @@ export default function Popup(props) {
   return (
     <PopupWithSigner
       title="Second"
-      Component={PopupContent}
       submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
-    />
+    >
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

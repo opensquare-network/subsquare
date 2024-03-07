@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
 import useInjectedWeb3 from "../wallet/useInjectedWeb3";
-import Popup from "../popup/wrapper/Popup";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
@@ -9,21 +8,17 @@ import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { usePopupParams } from "./context";
+import ContextPopup from "./contextPopup";
 
-export default function MaybePolkadotSigner({
-  onClose,
-  title,
-  wide,
-  maskClosable,
-  className,
-  children,
-}) {
+export default function MaybePolkadotSigner({ children }) {
   const dispatch = useDispatch();
   const { injectedWeb3, loading } = useInjectedWeb3();
   const [polkadotAccounts, setPolkadotAccounts] = useState([]);
   const [detecting, setDetecting] = useState(true);
   const { lastConnectedAccount } = useConnectedAccountContext();
   const { chainType } = useChainSettings();
+  const { onClose } = usePopupParams();
 
   useEffect(() => {
     (async () => {
@@ -83,19 +78,8 @@ export default function MaybePolkadotSigner({
   }
 
   return (
-    <MaybeSignerConnected
-      extensionAccounts={polkadotAccounts}
-      onClose={onClose}
-    >
-      <Popup
-        wide={wide}
-        onClose={onClose}
-        title={title}
-        maskClosable={maskClosable}
-        className={className}
-      >
-        {children}
-      </Popup>
+    <MaybeSignerConnected extensionAccounts={polkadotAccounts}>
+      <ContextPopup>{children}</ContextPopup>
     </MaybeSignerConnected>
   );
 }

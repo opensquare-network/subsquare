@@ -116,11 +116,8 @@ async function submitExtrinsic({
 
 export default function Popup(props) {
   return (
-    <PopupWithSigner
-      title="Vote"
-      Component={PopupContent}
-      submitExtrinsic={submitExtrinsic}
-      {...props}
-    />
+    <PopupWithSigner title="Vote" submitExtrinsic={submitExtrinsic} {...props}>
+      <PopupContent />
+    </PopupWithSigner>
   );
 }

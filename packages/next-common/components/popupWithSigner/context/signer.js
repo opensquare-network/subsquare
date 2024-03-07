@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import useInjectedWeb3 from "../wallet/useInjectedWeb3";
+import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";

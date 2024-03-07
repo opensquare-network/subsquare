@@ -23,6 +23,7 @@ export default function NewProposalPopup({
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useIsMounted();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [trackId, setTrackId] = useState(_track?.id);
   const [enactment, setEnactment] = useState();
@@ -82,6 +83,7 @@ export default function NewProposalPopup({
         dispatch,
         isMounted,
         signerAccount,
+        setLoading: setIsLoading,
         onInBlock: (eventData) => {
           if (!eventData) {
             return;
@@ -113,6 +115,7 @@ export default function NewProposalPopup({
       onClose={onClose}
       actionCallback={onSubmit}
       disabled={disabled}
+      isLoading={isLoading}
     >
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField

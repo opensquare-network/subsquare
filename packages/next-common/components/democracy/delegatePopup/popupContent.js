@@ -21,13 +21,15 @@ import {
   useExtensionAccounts,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-export default function PopupContent({
-  onClose,
-  onInBlock = emptyFunction,
-  submitExtrinsic = emptyFunction,
-}) {
+export default function PopupContent() {
+  const {
+    onClose,
+    onInBlock = emptyFunction,
+    submitExtrinsic = emptyFunction,
+  } = usePopupParams();
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 
