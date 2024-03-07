@@ -13,6 +13,7 @@ import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
+import AccountLinks from "next-common/components/links/accountLinks";
 
 const TitleExtraValue = styled(Flex)`
   color: var(--textPrimary);
@@ -85,6 +86,8 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
       </InfoLine>
 
       <Divider className="my-4" />
+
+      <AccountLinks address={address} />
     </SecondaryCard>
   );
 }
