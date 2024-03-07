@@ -69,6 +69,9 @@ const crust = {
   showAccountManagementTab: false,
   description:
     "CRUST implements the incentive layer protocol for decentralized storage. It is adaptable to multiple storage layer protocols such as IPFS, and provides support for the application layer. ",
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(250,140,22,0.10)",
     theme300: "rgba(250,140,22,0.40)",

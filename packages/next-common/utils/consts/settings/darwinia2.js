@@ -95,6 +95,10 @@ const darwinia2 = {
   description:
     "Darwinia Provides Cross-Chain Smart Contract Platform And Message Port Network.",
   useVoteCall: true,
+  modules: {
+    referenda: true,
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(219,55,138,0.10)",
     theme300: "rgba(219,55,138,0.40)",

@@ -82,6 +82,9 @@ const hydradx = {
   multisigApiPrefix: "hydradx",
   description:
     "HydraDX is a next-gen DeFi protocol which is designed to bring an ocean of liquidity to Polkadot. Our tool for the job the HydraDX Omnipool - an innovative Automated Market Maker (AMM) which unlocks unparalleled efficiencies by combining all assets in a single trading pool.",
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(246,41,124,0.10)",
     theme300: "rgba(246,41,124,0.40)",
