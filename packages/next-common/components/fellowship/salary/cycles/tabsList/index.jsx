@@ -34,7 +34,7 @@ export default function FellowshipSalaryCycleDetailTabsList() {
             {
               pathname: `/fellowship/salary/cycles/${id}`,
               query: {
-                tab: tab.label,
+                tab: tab.label?.toLowerCase?.(),
               },
             },
             undefined,
