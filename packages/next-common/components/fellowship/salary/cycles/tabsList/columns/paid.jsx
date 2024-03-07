@@ -12,8 +12,7 @@ export function useFellowshipSalaryCyclePaidColumn() {
     cellRender(data) {
       return (
         <ValueDisplay
-          // FIXME: cycle, value
-          value={toPrecision(data.paid, decimals)}
+          value={toPrecision(data?.amount, decimals)}
           symbol={symbol}
         />
       );
