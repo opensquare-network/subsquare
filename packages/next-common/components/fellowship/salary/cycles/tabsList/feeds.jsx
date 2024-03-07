@@ -18,10 +18,9 @@ export function FellowshipSalaryFeedsList({ feeds }) {
 }
 
 export function useFellowshipSalaryCycleFeedsTabItem() {
-  const { id, feeds } = usePageProps();
+  const { feeds } = usePageProps();
   return {
     name: "Feeds",
-    url: `/fellowship/salary/cycles/${id}/feeds`,
     activeCount: feeds?.total ?? 0,
     content: <FellowshipSalaryFeedsList feeds={feeds} />,
   };
