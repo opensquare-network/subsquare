@@ -1,9 +1,7 @@
 import BigNumber from "bignumber.js";
 import LoadableContent from "next-common/components/common/loadableContent";
-import {
-  SummaryCard,
-  getTracksItem,
-} from "next-common/components/profile/delegation/delegatedVotes/openGovDelegationSummary";
+import { getTracksItem } from "next-common/components/profile/delegation/delegatedVotes/openGovDelegationSummary";
+import SummaryCard from "next-common/components/profile/delegation/common/summaryCard";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";

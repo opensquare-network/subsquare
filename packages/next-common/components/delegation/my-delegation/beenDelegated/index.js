@@ -9,8 +9,8 @@ import DemocracyDelegators from "./democracyDelegators";
 import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import ReferendaBeenDelegatedSummary from "./referendaBeenDelegatedSummary";
 import ReferendaBeenDelegated from "./referendaBeenDelegated";
-import { TabContentWrapper } from "../common/styled";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { TabContentWrapper } from "next-common/components/profile/delegation/common/styled";
 
 function OpenGovBeenDelegated() {
   const { beenDelegatedList, isLoading } = useAllMyBeenDelegatedList();

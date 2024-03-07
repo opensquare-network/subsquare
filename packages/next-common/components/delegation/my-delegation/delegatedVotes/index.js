@@ -6,12 +6,12 @@ import {
   useModuleTab,
 } from "next-common/components/profile/votingHistory/common";
 import useDemocracyDelegating from "next-common/utils/hooks/referenda/useDemocracyDelegating";
-import DemocracyDelegatedVotes from "./democracyDelegatedVotes";
 import DemocracyDelegation from "./democracyDelegation";
-import { TabContentWrapper } from "../common/styled";
 import { useContextApi } from "next-common/context/api";
 import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import DemocracyDelegatedVotes from "next-common/components/profile/delegation/delegatedVotes/democracyDelegatedVotes";
+import { TabContentWrapper } from "next-common/components/profile/delegation/common/styled";
 
 function OpenGovDelegated() {
   useFetchMyReferendaDelegations();
