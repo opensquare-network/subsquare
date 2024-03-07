@@ -10,14 +10,14 @@ export default function ListTabs() {
   const address = useRealAddress();
 
   const router = useRouter();
-  const prefix = "/delegation/my-delegation";
+  const prefix = "/delegation/mine";
   const tab = router.asPath.replace(prefix, "");
 
   useEffect(() => {
     if (tab === "" || tab === "/") {
       router.push(
         {
-          pathname: "/delegation/my-delegation/received",
+          pathname: "/delegation/mine/received",
         },
         undefined,
         { shallow: true },
@@ -30,13 +30,13 @@ export default function ListTabs() {
       <PageUrlTabs
         tabs={[
           {
-            url: "/delegation/my-delegation/received",
+            url: "/delegation/mine/received",
             name: "Received",
             content: <BeenDelegated />,
             extra: <ModuleTab />,
           },
           {
-            url: "/delegation/my-delegation/delegations",
+            url: "/delegation/mine/delegations",
             name: "Delegations",
             content: <DelegatedVotes />,
             extra: <ModuleTab />,

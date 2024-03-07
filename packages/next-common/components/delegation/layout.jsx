@@ -18,7 +18,7 @@ export default function DelegationLayout({ children }) {
   if (realAddress) {
     tabs.push({
       label: "My Delegation",
-      url: "/delegation/my-delegation",
+      url: "/delegation/mine",
       exactMatch: false,
     });
   }
