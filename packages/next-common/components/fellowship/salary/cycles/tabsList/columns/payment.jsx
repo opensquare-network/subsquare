@@ -8,7 +8,6 @@ import { cn, toPrecision } from "next-common/utils";
 export function useFellowshipSalaryCyclePaymentColumn() {
   return {
     name: "Payment",
-    minWidth: 240,
     className: "min-w-[320px]",
     cellRender(data) {
       return <FellowshipSalaryCycleTabRegistrationPaymentCell data={data} />;

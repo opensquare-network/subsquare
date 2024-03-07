@@ -9,6 +9,8 @@ import {
   fellowshipSalaryCycleApi,
   fellowshipSalaryCycleFeedsApi,
   fellowshipSalaryCycleRegistrationsApi,
+  fellowshipSalaryCycleRegisteredPaymentsApi,
+  fellowshipSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
 
 export default function FellowshipSalaryCyclePage({ cycle }) {
@@ -38,16 +40,26 @@ export const getServerSideProps = withCommonProps(async (context) => {
   ]);
 
   let registrations;
+  let registeredPayments;
+  let unRegisteredPayments;
   let feeds;
 
   if (cycle) {
-    const [{ result: registrationsResult }, { result: feedsResult }] =
-      await Promise.all([
-        ssrNextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id)),
-        ssrNextApi.fetch(fellowshipSalaryCycleFeedsApi(id), { page }),
-      ]);
+    const [
+      { result: registrationsResult },
+      { result: registeredPaymentsResult },
+      { result: unRegisteredPaymentsResult },
+      { result: feedsResult },
+    ] = await Promise.all([
+      ssrNextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id)),
+      ssrNextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id)),
+      ssrNextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id)),
+      ssrNextApi.fetch(fellowshipSalaryCycleFeedsApi(id), { page }),
+    ]);
 
     registrations = registrationsResult;
+    registeredPayments = registeredPaymentsResult;
+    unRegisteredPayments = unRegisteredPaymentsResult;
     feeds = feedsResult;
   }
 
@@ -57,6 +69,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
       id,
       cycle: cycle || null,
       registrations: registrations || {},
+      registeredPayments: registeredPayments || {},
+      unRegisteredPayments: unRegisteredPayments || {},
       feeds: feeds || {},
     },
   };
