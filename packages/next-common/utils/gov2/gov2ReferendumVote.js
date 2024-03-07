@@ -1,6 +1,7 @@
 import isNil from "lodash.isnil";
 import { extractAddressAndTrackId } from "./utils";
 import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
+import { isSameAddress } from "..";
 
 export async function getGov2TrackDelegation(api, trackId, address) {
   const voting = await api.query.convictionVoting.votingFor(address, trackId);
@@ -32,7 +33,7 @@ export async function getGov2BeenDelegatedListByAddress(api, address, trackId) {
       continue;
     }
     const voting = votingFor.asDelegating.toJSON();
-    if (voting.target !== address) {
+    if (!isSameAddress(voting.target, address)) {
       continue;
     }
     const votes = calcVotes(

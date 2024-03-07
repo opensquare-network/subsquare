@@ -2,16 +2,18 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { useSelector } from "react-redux";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import {
-  getColumns,
+  useColumnsDef,
   Title,
-  List,
 } from "next-common/components/profile/delegation/delegatedVotes/openGovDelegationList";
+import DelegationList from "next-common/components/profile/delegation/common/delegationList";
 import RemoveDelegation from "next-common/components/summary/democracyAllMyDelegationPopup/remove";
 
 export default function OpenGovDelegationList() {
   const delegations = useSelector(myReferendaDelegationsSelector);
+  const sharedColumnsDef = useColumnsDef();
+
   const columnsDef = [
-    ...getColumns(),
+    ...sharedColumnsDef,
     [
       {
         name: "",
@@ -29,7 +31,11 @@ export default function OpenGovDelegationList() {
     <>
       <Title delegations={delegations} />
       <SecondaryCard>
-        <List delegations={delegations} columnsDef={columnsDef} />
+        <DelegationList
+          isLoading={!delegations}
+          delegations={delegations}
+          columnsDef={columnsDef}
+        />
       </SecondaryCard>
     </>
   );

@@ -1,106 +1,40 @@
-import BigNumber from "bignumber.js";
-import DataList from "next-common/components/dataList";
-import CapitalListItem from "next-common/components/dataList/capitalListItem";
+import DelegationList from "next-common/components/profile/delegation/common/delegationList";
+import {
+  useColumnsDef,
+  Title,
+} from "next-common/components/profile/delegation/delegatedVotes/democracyDelegation";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import DemocracyRemoveDelegation from "next-common/components/summary/democracySummaryDelegation/removeDelegation";
-import AddressUser from "next-common/components/user/addressUser";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
-import { ConvictionSupport } from "next-common/utils/referendumCommon";
-
-function DelegationList({ delegating, refresh, isLoading }) {
-  const { decimals, symbol } = useChainSettings();
-  const votes = new BigNumber(delegating?.balance || 0)
-    .times(ConvictionSupport[delegating?.conviction] || 0)
-    .toString();
-
-  const colWidths = {
-    delegatingTo: 240,
-    capital: 240,
-    votes: 160,
-    detail: 80,
-  };
-
-  const columns = [
-    {
-      name: "Target",
-      style: {
-        textAlign: "left",
-        minWidth: colWidths.delegatingTo,
-      },
-    },
-    {
-      name: "Capital",
-      style: {
-        textAlign: "right",
-        width: colWidths.capital,
-        minWidth: colWidths.capital,
-      },
-    },
-    {
-      name: "Votes",
-      style: {
-        textAlign: "right",
-        width: colWidths.votes,
-        minWidth: colWidths.votes,
-      },
-    },
-    {
-      name: "",
-      style: {
-        textAlign: "right",
-        width: colWidths.detail,
-        minWidth: colWidths.detail,
-      },
-    },
-  ];
-
-  let rows = [];
-  if (delegating) {
-    rows.push([
-      <AddressUser
-        key="user"
-        add={delegating?.target}
-        maxWidth={colWidths.delegatingTo}
-      />,
-      <CapitalListItem
-        key="capital"
-        item={delegating}
-        capital={toPrecision(delegating?.balance || 0, decimals)}
-      />,
-      <ValueDisplay
-        key="votes"
-        value={toPrecision(votes, decimals)}
-        symbol={symbol}
-      />,
-      <DemocracyRemoveDelegation key="action" refresh={refresh} />,
-    ]);
-  }
-
-  return (
-    <DataList
-      loading={isLoading}
-      columns={columns}
-      rows={rows}
-      noDataText="No current delegations"
-    />
-  );
-}
 
 export default function MyDemocracyDelegation({
   delegating,
   isLoading,
   refresh,
 }) {
+  const sharedColumnsDef = useColumnsDef();
+  const columnsDef = [
+    ...sharedColumnsDef,
+    [
+      {
+        name: "",
+        style: {
+          textAlign: "right",
+          width: 80,
+          minWidth: 80,
+        },
+      },
+      () => <DemocracyRemoveDelegation key="action" refresh={refresh} />,
+    ],
+  ];
+
   return (
     <>
-      <span className="mx-[24px] text16Bold text-textPrimary">List</span>
+      <Title />
       <SecondaryCard>
         <DelegationList
-          delegating={delegating}
           isLoading={isLoading}
-          refresh={refresh}
+          delegations={delegating && [delegating]}
+          columnsDef={columnsDef}
         />
       </SecondaryCard>
     </>
