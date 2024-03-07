@@ -17,6 +17,7 @@ export function getTracksItem({ isLoading, delegations }) {
     ),
   };
 }
+
 export default function OpenGovDelegationSummary() {
   const delegations = useSelector(profileReferendaDelegationsSelector);
   const isLoading = !delegations;
