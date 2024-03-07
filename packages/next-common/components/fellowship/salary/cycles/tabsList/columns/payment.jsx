@@ -5,6 +5,17 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { cn, toPrecision } from "next-common/utils";
 
+export function useFellowshipSalaryCyclePaymentColumn() {
+  return {
+    name: "Payment",
+    minWidth: 240,
+    className: "min-w-[320px]",
+    cellRender(data) {
+      return <FellowshipSalaryCycleTabRegistrationPaymentCell data={data} />;
+    },
+  };
+}
+
 function FellowshipSalaryCycleTabRegistrationPaymentCellBeneficiary({ data }) {
   return <AddressUser add={data?.beneficiary} showAvatar={false} />;
 }
@@ -24,7 +35,7 @@ function FellowshipSalaryCycleTabRegistrationPaymentCellIndexer({ data }) {
   );
 }
 
-export default function FellowshipSalaryCycleTabRegistrationPaymentCell({
+function FellowshipSalaryCycleTabRegistrationPaymentCell({
   data,
   className = "",
 }) {
