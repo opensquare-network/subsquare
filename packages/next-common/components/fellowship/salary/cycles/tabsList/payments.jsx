@@ -10,17 +10,6 @@ import { useFellowshipSalaryCycleTimeAgeColumn } from "./columns/timeAge";
 export function useFellowshipSalaryCyclePaymentsTabItem() {
   const { registeredPayments, unRegisteredPayments, id } = usePageProps();
 
-  registeredPayments.items = [
-    {
-      memberInfo: { rank: 2 },
-      time: 1689796218805,
-    },
-    {
-      memberInfo: { rank: 3 },
-      time: 1689796218805,
-    },
-  ];
-
   const activeCount =
     registeredPayments?.total + unRegisteredPayments?.total || 0;
 
