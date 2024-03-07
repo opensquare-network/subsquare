@@ -1,16 +1,19 @@
-import { Democracy, Referenda, useModuleTab } from "../../votingHistory/common";
+import {
+  Democracy,
+  Referenda,
+  useModuleTab,
+} from "next-common/components/profile/votingHistory/common";
 import useBeenDelegated from "next-common/hooks/useBeenDelegated";
 import DemocracyBeenDelegatedSummary from "./democracyBeenDelegatedSummary";
 import DemocracyDelegators from "./democracyDelegators";
-import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
+import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import ReferendaBeenDelegatedSummary from "./referendaBeenDelegatedSummary";
 import ReferendaBeenDelegated from "./referendaBeenDelegated";
 import { TabContentWrapper } from "../common/styled";
-import useProfileAddress from "../../useProfileAddress";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function OpenGovBeenDelegated() {
-  const address = useProfileAddress();
-  const { beenDelegatedList, isLoading } = useAllBeenDelegatedList(address);
+  const { beenDelegatedList, isLoading } = useAllMyBeenDelegatedList();
 
   return (
     <TabContentWrapper>
@@ -27,7 +30,7 @@ function OpenGovBeenDelegated() {
 }
 
 function DemocracyBeenDelegated() {
-  const address = useProfileAddress();
+  const address = useRealAddress();
   const { delegations, beenDelegatedList, isLoading } =
     useBeenDelegated(address);
 
