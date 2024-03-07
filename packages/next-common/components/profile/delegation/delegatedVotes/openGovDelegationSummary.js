@@ -8,7 +8,7 @@ function CountSummaryContent({ count }) {
   return <span>{(count || 0).toLocaleString()}</span>;
 }
 
-export default function TracksSummary() {
+export default function OpenGovDelegationSummary() {
   const delegations = useSelector(profileReferendaDelegationsSelector);
   const isLoading = !delegations;
 

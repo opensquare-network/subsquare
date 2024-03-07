@@ -7,11 +7,12 @@ import { useSelector } from "react-redux";
 import Track from "next-common/components/referenda/track/trackTag";
 import DataList from "next-common/components/dataList";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { profileReferendaDelegationsSelector } from "next-common/store/reducers/profile/referendaDelegations";
+import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import RemoveDelegation from "next-common/components/summary/democracyAllMyDelegationPopup/remove";
 
 function DelegationList() {
   const { decimals, symbol } = useChainSettings();
-  const delegations = useSelector(profileReferendaDelegationsSelector);
+  const delegations = useSelector(myReferendaDelegationsSelector);
   const isLoading = !delegations;
 
   const colWidths = {
@@ -19,6 +20,7 @@ function DelegationList() {
     delegatingTo: 240,
     capital: 240,
     votes: 160,
+    detail: 80,
   };
 
   const columns = [
@@ -53,6 +55,14 @@ function DelegationList() {
         minWidth: colWidths.votes,
       },
     },
+    {
+      name: "",
+      style: {
+        textAlign: "right",
+        width: colWidths.detail,
+        minWidth: colWidths.detail,
+      },
+    },
   ];
 
   const rows = (delegations || []).map((item) => {
@@ -74,6 +84,7 @@ function DelegationList() {
         value={toPrecision(item.votes, decimals)}
         symbol={symbol}
       />,
+      <RemoveDelegation key="action" trackId={item.trackId} />,
     ];
 
     row.key = item.trackId;
@@ -90,8 +101,8 @@ function DelegationList() {
   );
 }
 
-export default function MyTracksDelegation() {
-  const delegations = useSelector(profileReferendaDelegationsSelector);
+export default function OpenGovDelegationList() {
+  const delegations = useSelector(myReferendaDelegationsSelector);
 
   return (
     <>
