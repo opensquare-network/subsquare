@@ -1,16 +1,19 @@
-import { Democracy, Referenda, useModuleTab } from "../../votingHistory/common";
+import {
+  Democracy,
+  Referenda,
+  useModuleTab,
+} from "next-common/components/profile/votingHistory/common";
 import useBeenDelegated from "next-common/hooks/useBeenDelegated";
-import DemocracyBeenDelegatedSummary from "./democracyBeenDelegatedSummary";
-import DemocracyDelegators from "./democracyDelegators";
-import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
-import ReferendaBeenDelegatedSummary from "./referendaBeenDelegatedSummary";
-import ReferendaBeenDelegated from "./referendaBeenDelegated";
-import { TabContentWrapper } from "../common/styled";
-import useProfileAddress from "../../useProfileAddress";
+import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { TabContentWrapper } from "next-common/components/profile/delegation/common/styled";
+import ReferendaBeenDelegatedSummary from "next-common/components/profile/delegation/beenDelegated/referendaBeenDelegatedSummary";
+import ReferendaBeenDelegated from "next-common/components/profile/delegation/beenDelegated/referendaBeenDelegated";
+import DemocracyBeenDelegatedSummary from "next-common/components/profile/delegation/beenDelegated/democracyBeenDelegatedSummary";
+import DemocracyDelegators from "next-common/components/profile/delegation/beenDelegated/democracyDelegators";
 
 function OpenGovBeenDelegated() {
-  const address = useProfileAddress();
-  const { beenDelegatedList, isLoading } = useAllBeenDelegatedList(address);
+  const { beenDelegatedList, isLoading } = useAllMyBeenDelegatedList();
 
   return (
     <TabContentWrapper>
@@ -27,7 +30,7 @@ function OpenGovBeenDelegated() {
 }
 
 function DemocracyBeenDelegated() {
-  const address = useProfileAddress();
+  const address = useRealAddress();
   const { delegations, beenDelegatedList, isLoading } =
     useBeenDelegated(address);
 
