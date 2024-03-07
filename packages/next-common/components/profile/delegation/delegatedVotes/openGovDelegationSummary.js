@@ -8,24 +8,37 @@ function CountSummaryContent({ count }) {
   return <span>{(count || 0).toLocaleString()}</span>;
 }
 
+export function getTracksItem({ isLoading, delegations }) {
+  return {
+    title: "Tracks",
+    content: (
+      <LoadableContent isLoading={isLoading}>
+        <CountSummaryContent count={delegations?.length || 0} />
+      </LoadableContent>
+    ),
+  };
+}
+
+export function SummaryCard({ items }) {
+  return (
+    <SecondaryCard>
+      <SummaryItems items={items} />
+    </SecondaryCard>
+  );
+}
+
 export default function OpenGovDelegationSummary() {
   const delegations = useSelector(profileReferendaDelegationsSelector);
   const isLoading = !delegations;
 
   return (
-    <SecondaryCard>
-      <SummaryItems
-        items={[
-          {
-            title: "Tracks",
-            content: (
-              <LoadableContent isLoading={isLoading}>
-                <CountSummaryContent count={delegations?.length || 0} />
-              </LoadableContent>
-            ),
-          },
-        ]}
-      />
-    </SecondaryCard>
+    <SummaryCard
+      items={[
+        getTracksItem({
+          isLoading,
+          delegations,
+        }),
+      ]}
+    />
   );
 }
