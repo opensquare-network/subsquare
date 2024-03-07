@@ -3,7 +3,7 @@ import FellowshipSalaryCycleDetailListTemplate from "./template";
 import { useFellowshipSalaryCycleRegistrationsTabItem } from "./registrations";
 import { useFellowshipSalaryCycleFeedsTabItem } from "./feeds";
 import { useRouter } from "next/router";
-import upperFirst from "lodash.upperfirst";
+import find from "lodash.find";
 
 export default function FellowshipSalaryCycleDetailTabsList() {
   const router = useRouter();
@@ -12,12 +12,17 @@ export default function FellowshipSalaryCycleDetailTabsList() {
   const feedTabItem = useFellowshipSalaryCycleFeedsTabItem();
 
   const [id] = router.query.params;
-  const { tab } = router.query;
+  const { tab = "" } = router.query;
 
   // TODO: sort ongoing or closed
   const items = [registrationsTabItem, feedTabItem];
 
-  const defaultTab = tab ? upperFirst(tab) : items[0]?.label;
+  const matchedTabItem = find(
+    items,
+    (i) => i.name.toLowerCase() === tab?.toLowerCase?.(),
+  );
+
+  const defaultTab = matchedTabItem?.name || items[0]?.name;
 
   return (
     <PrimaryCard>
