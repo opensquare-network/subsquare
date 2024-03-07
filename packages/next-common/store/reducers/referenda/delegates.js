@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import nextApi from "next-common/services/nextApi";
-import { defaultPageSize } from "next-common/utils/constants";
 
 const name = "referendaDelegates";
 
@@ -26,7 +25,7 @@ export const {
 } = referendaDelegatesSlice.actions;
 
 export const fetchReferendaDelegates =
-  (page = 1, pageSize = defaultPageSize) =>
+  (page = 1, pageSize = 18) =>
   async (dispatch) => {
     try {
       dispatch(setReferendaDelegatesLoading(true));

@@ -3,8 +3,8 @@ import {
   ModuleTab,
   ModuleTabProvider,
 } from "next-common/components/profile/votingHistory/common";
-import DelegateList from "next-common/components/delegation/delegate/list";
 import useDelegationModuleTabs from "next-common/components/delegation/delegate/useModuleTabs";
+import DelegatesSection from "next-common/components/delegation/delegate/delegatesSection";
 
 export default function DelegateContainer() {
   const { moduleTabs, defaultModuleTab } = useDelegationModuleTabs();
@@ -15,7 +15,7 @@ export default function DelegateContainer() {
         <span>Delegates</span>
         <ModuleTab />
       </TitleContainer>
-      <DelegateList />
+      <DelegatesSection />
     </ModuleTabProvider>
   );
 }
