@@ -5,7 +5,7 @@ import {
   myReferendaDelegationsTrigger,
   setMyReferendaDelegations,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
-import getAddressTrackDelegations from "../useFetchReferendaDelegations/addressDelegations";
+import getAddressTrackDelegations from "../useFetchProfileReferendaDelegations/addressDelegations";
 import { useContextApi } from "next-common/context/api";
 
 export default function useFetchMyReferendaDelegations() {

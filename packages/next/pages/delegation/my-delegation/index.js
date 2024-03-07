@@ -1,12 +1,12 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import DelegateContainer from "next-common/components/delegation/delegate/container";
+import MyDelegation from "next-common/components/delegation/my-delegation";
 import DelegationLayout from "next-common/components/delegation/layout";
 
-export default function ReferendaPage() {
+export default function MyDelegationPage() {
   return (
     <DelegationLayout>
-      <DelegateContainer />
+      <MyDelegation />
     </DelegationLayout>
   );
 }
