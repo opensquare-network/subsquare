@@ -16,7 +16,10 @@ const RemoveButton = styled(Button)`
   padding: 7px;
 `;
 
-export default function DemocracyRemoveDelegation({ refresh }) {
+export default function DemocracyRemoveDelegation({
+  ButtonComponent,
+  refresh,
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [showUndelegatePopup, setShowUndelegatePopup] = useState(false);
   const isUseMetamask = useIsUseMetamask();
@@ -32,17 +35,24 @@ export default function DemocracyRemoveDelegation({ refresh }) {
     TheUndelegatePopup = MoonUndelegatePopup;
   }
 
+  const button = ButtonComponent ? (
+    <ButtonComponent
+      disabled={isLoading}
+      onClick={() => setShowUndelegatePopup(true)}
+    />
+  ) : (
+    <RemoveButton
+      disabled={isLoading}
+      onClick={() => setShowUndelegatePopup(true)}
+    >
+      <RemoveSVG />
+    </RemoveButton>
+  );
+
   return (
     <>
       <Tooltip content="Remove">
-        <div>
-          <RemoveButton
-            disabled={isLoading}
-            onClick={() => setShowUndelegatePopup(true)}
-          >
-            <RemoveSVG />
-          </RemoveButton>
-        </div>
+        <div>{button}</div>
       </Tooltip>
       {showUndelegatePopup && (
         <TheUndelegatePopup
