@@ -1,5 +1,4 @@
 import BigNumber from "bignumber.js";
-import DataList from "next-common/components/dataList";
 import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
@@ -7,12 +6,10 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { ConvictionSupport } from "next-common/utils/referendumCommon";
+import DelegationList from "../common/delegationList";
 
-function DelegationList({ delegating, isLoading }) {
+export function useColumnsDef() {
   const { decimals, symbol } = useChainSettings();
-  const votes = new BigNumber(delegating?.balance || 0)
-    .times(ConvictionSupport[delegating?.conviction] || 0)
-    .toString();
 
   const colWidths = {
     delegatingTo: 240,
@@ -20,69 +17,80 @@ function DelegationList({ delegating, isLoading }) {
     votes: 160,
   };
 
-  const columns = [
-    {
-      name: "Target",
-      style: {
-        textAlign: "left",
-        minWidth: colWidths.delegatingTo,
+  return [
+    [
+      {
+        name: "Target",
+        style: {
+          textAlign: "left",
+          minWidth: colWidths.delegatingTo,
+        },
       },
-    },
-    {
-      name: "Capital",
-      style: {
-        textAlign: "right",
-        width: colWidths.capital,
-        minWidth: colWidths.capital,
+      (item) => (
+        <AddressUser
+          key="user"
+          add={item?.target}
+          maxWidth={colWidths.delegatingTo}
+        />
+      ),
+    ],
+    [
+      {
+        name: "Capital",
+        style: {
+          textAlign: "right",
+          width: colWidths.capital,
+          minWidth: colWidths.capital,
+        },
       },
-    },
-    {
-      name: "Votes",
-      style: {
-        textAlign: "right",
-        width: colWidths.votes,
-        minWidth: colWidths.votes,
+      (item) => (
+        <CapitalListItem
+          key="capital"
+          item={item}
+          capital={toPrecision(item?.balance || 0, decimals)}
+        />
+      ),
+    ],
+    [
+      {
+        name: "Votes",
+        style: {
+          textAlign: "right",
+          width: colWidths.votes,
+          minWidth: colWidths.votes,
+        },
       },
-    },
+      (item) => (
+        <ValueDisplay
+          key="votes"
+          value={toPrecision(
+            new BigNumber(item?.balance || 0)
+              .times(ConvictionSupport[item?.conviction] || 0)
+              .toString(),
+            decimals,
+          )}
+          symbol={symbol}
+        />
+      ),
+    ],
   ];
+}
 
-  let rows = [];
-  if (delegating) {
-    rows.push([
-      <AddressUser
-        key="user"
-        add={delegating?.target}
-        maxWidth={colWidths.delegatingTo}
-      />,
-      <CapitalListItem
-        key="capital"
-        item={delegating}
-        capital={toPrecision(delegating?.balance || 0, decimals)}
-      />,
-      <ValueDisplay
-        key="votes"
-        value={toPrecision(votes, decimals)}
-        symbol={symbol}
-      />,
-    ]);
-  }
-
-  return (
-    <DataList
-      loading={isLoading}
-      columns={columns}
-      rows={rows}
-      noDataText="No current delegations"
-    />
-  );
+export function Title() {
+  return <span className="mx-[24px] text16Bold text-textPrimary">List</span>;
 }
 
 export default function MyDemocracyDelegation({ delegating, isLoading }) {
+  const columnsDef = useColumnsDef();
   return (
     <>
-      <span className="mx-[24px] text16Bold text-textPrimary">List</span>
+      <Title />
       <SecondaryCard>
-        <DelegationList delegating={delegating} isLoading={isLoading} />
+        <DelegationList
+          isLoading={isLoading}
+          delegations={delegating && [delegating]}
+          columnsDef={columnsDef}
+        />
       </SecondaryCard>
     </>
   );

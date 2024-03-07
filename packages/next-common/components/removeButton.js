@@ -1,4 +1,5 @@
 import { SystemClose } from "@osn/icons/subsquare";
+import noop from "lodash.noop";
 import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
@@ -24,7 +25,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function RemoveButton({ disabled, onClick }) {
+export default function RemoveButton({ disabled, onClick = noop }) {
   return (
     <Wrapper disabled={disabled} onClick={onClick}>
       <SystemClose width={16} height={16} />

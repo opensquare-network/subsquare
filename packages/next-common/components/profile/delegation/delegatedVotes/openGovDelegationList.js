@@ -5,11 +5,11 @@ import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 import { useSelector } from "react-redux";
 import Track from "next-common/components/referenda/track/trackTag";
-import DataList from "next-common/components/dataList";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { profileReferendaDelegationsSelector } from "next-common/store/reducers/profile/referendaDelegations";
+import DelegationList from "../common/delegationList";
 
-export function getColumns() {
+export function useColumnsDef() {
   const { decimals, symbol } = useChainSettings();
 
   const colWidths = {
@@ -85,26 +85,6 @@ export function getColumns() {
   ];
 }
 
-export function List({ delegations, columnsDef }) {
-  const isLoading = !delegations;
-
-  const columns = columnsDef.map(([def]) => def);
-  const rows = (delegations || []).map((item) => {
-    const row = columnsDef.map(([, render]) => render(item));
-    row.key = item.trackId;
-    return row;
-  });
-
-  return (
-    <DataList
-      loading={isLoading}
-      columns={columns}
-      rows={rows}
-      noDataText="No current delegations"
-    />
-  );
-}
-
 export function Title({ delegations }) {
   return (
     <div className="flex mx-[24px] text16Bold gap-[4px]">
@@ -116,13 +96,16 @@ export function Title({ delegations }) {
 
 export default function OpenGovDelegationList() {
   const delegations = useSelector(profileReferendaDelegationsSelector);
-  const columnsDef = getColumns();
-
+  const columnsDef = useColumnsDef();
   return (
     <>
       <Title delegations={delegations} />
       <SecondaryCard>
-        <List delegations={delegations} columnsDef={columnsDef} />
+        <DelegationList
+          isLoading={!delegations}
+          delegations={delegations}
+          columnsDef={columnsDef}
+        />
       </SecondaryCard>
     </>
   );
