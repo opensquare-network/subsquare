@@ -18,8 +18,7 @@ export function useFellowshipSalaryCycleTimeAgeColumn() {
     ),
     className: "min-w-[160px]",
     cellRender(data) {
-      // FIXME: cycle, time
-      const time = data.time;
+      const time = data?.paidIndexer?.blockTime;
 
       return (
         <div className="text-textTertiary">
