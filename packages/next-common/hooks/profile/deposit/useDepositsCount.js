@@ -15,7 +15,7 @@ import {
 } from "next-common/store/reducers/profile/deposits/fellowship";
 import { profileDemocracyDepositsSelector } from "next-common/store/reducers/profile/deposits/democracy";
 import { profilePreimageDepositsSelector } from "next-common/store/reducers/profile/deposits/preimage";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import {
   profileIdentityDepositSelector,
   profileIdentitySubsSelector,

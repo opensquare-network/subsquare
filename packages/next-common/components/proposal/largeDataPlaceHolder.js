@@ -1,5 +1,5 @@
 import { useChain, useChainSettings } from "../../context/chain";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import ExternalLink from "../externalLink";
 
 export default function LargeDataPlaceHolder({

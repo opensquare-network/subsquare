@@ -4,7 +4,7 @@ import SubLink from "next-common/components/styled/subLink";
 import dynamic from "next/dynamic";
 import useSubReferendumInfo from "next-common/components/myDeposits/referenda/useSubReferendumInfo";
 import { RefundWrapper } from "../styled";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
 
 const RefundPopup = dynamic(() => import("./popup"), { ssr: false });

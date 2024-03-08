@@ -5,7 +5,7 @@ import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
 import { first } from "lodash";

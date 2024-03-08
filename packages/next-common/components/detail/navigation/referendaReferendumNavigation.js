@@ -1,5 +1,5 @@
 import { useOnchainData } from "../../../context/post";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { NavigationWrapper } from "./navigators";
 import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 import React from "react";

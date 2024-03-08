@@ -1,5 +1,5 @@
 import LoadableContent from "next-common/components/common/loadableContent";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import FellowshipTotalPeriodCountdown from "./totalPeriodCountdown";
 import Tooltip from "next-common/components/tooltip";
 

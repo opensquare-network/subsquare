@@ -16,7 +16,7 @@ import useDuration from "../utils/hooks/useDuration";
 import { useChain } from "../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
 import isMoonChain from "next-common/utils/isMoonChain";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;

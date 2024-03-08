@@ -7,7 +7,7 @@ import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
 import MobileVotesList from "./mobile/votesList";
 import MobileFellowshipVotesList from "./mobile/fellowshipVotesList";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useIsFellowship, useModuleName } from "./common";
 import FellowshipVotesList from "./fellowshipVotesList";
 

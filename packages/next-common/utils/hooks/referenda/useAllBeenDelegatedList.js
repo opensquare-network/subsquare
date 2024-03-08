@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import groupBy from "lodash.groupby";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import sumBy from "lodash.sumby";
 import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 import { Conviction } from "next-common/utils/referendumCommon";

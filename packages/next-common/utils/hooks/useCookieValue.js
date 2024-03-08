@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useState } from "react";
 import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
 

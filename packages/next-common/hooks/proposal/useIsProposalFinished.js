@@ -3,7 +3,7 @@ import { useOnchainData, useTimelineData } from "next-common/context/post";
 import { useEffect, useState } from "react";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import { isMotionEnded } from "next-common/utils";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";

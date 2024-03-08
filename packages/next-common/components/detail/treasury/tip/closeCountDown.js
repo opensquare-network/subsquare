@@ -1,7 +1,7 @@
 import React from "react";
 import useTipMeta from "../../../../utils/hooks/useTipMeta";
 import { useOnchainData, usePostState } from "../../../../context/post";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { TipStateMap } from "../../../../utils/viewfuncs/treasury/normalizeTipListItem";
 import useTipCountDown from "../../../../hooks/useTipCountDown";
 import { NoticeWrapper } from "../../../styled/containers/titleContainer";

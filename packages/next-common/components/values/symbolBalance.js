@@ -1,6 +1,6 @@
 import { useChainSettings } from "../../context/chain";
 import { toPrecision } from "../../utils";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
 
 export default function SymbolBalance({ value = 0, fixed, isVote = false }) {

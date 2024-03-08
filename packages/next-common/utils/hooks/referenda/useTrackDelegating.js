@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import useIsMounted from "../useIsMounted";
 import { getGov2TrackDelegation } from "../../gov2/gov2ReferendumVote";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export function useTrackDelegating(api, trackId, address) {
   const [delegating, setDelegating] = useState(null);

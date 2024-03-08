@@ -1,7 +1,7 @@
 import { toPrecision } from "next-common/utils";
 import React from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import Link from "next/link";
 import AddressUser from "next-common/components/user/addressUser";
 

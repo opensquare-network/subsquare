@@ -4,7 +4,7 @@ import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import WalletOption from "./walletOption";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export function NovaWallet({
   wallet,

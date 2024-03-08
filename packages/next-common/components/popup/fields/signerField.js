@@ -1,5 +1,5 @@
 import React from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";

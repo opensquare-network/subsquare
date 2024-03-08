@@ -1,6 +1,6 @@
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import { useEffect } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useDispatch } from "react-redux";
 import { setReferendumStatus } from "next-common/store/reducers/referendumSlice";

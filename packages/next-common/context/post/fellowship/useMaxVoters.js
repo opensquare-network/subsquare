@@ -3,7 +3,7 @@ import { detailPageCategory } from "../../../utils/consts/business/category";
 import { useEffect, useState } from "react";
 import { useTrack } from "../gov2/track";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useOnchainData } from "../index";
 import { useDispatch } from "react-redux";
 import {

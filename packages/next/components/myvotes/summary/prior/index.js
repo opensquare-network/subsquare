@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import BigNumber from "bignumber.js";

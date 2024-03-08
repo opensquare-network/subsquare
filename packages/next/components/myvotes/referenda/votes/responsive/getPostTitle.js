@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import startCase from "lodash.startcase";
 
 export default function getPostTitle(myReferendaVote, tracks = []) {

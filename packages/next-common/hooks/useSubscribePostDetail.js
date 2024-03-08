@@ -5,7 +5,7 @@ import { useDetailType } from "next-common/context/page";
 import useIsProposalFinished from "next-common/hooks/proposal/useIsProposalFinished";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export default function useSubscribePostDetail(postId) {
   const type = useDetailType();

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { democracyLockPeriodSelector } from "next-common/store/reducers/chainSlice";
 import { useEffect, useState } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import calcDemocracyVoteLock from "../calcDemocracyVoteLock";
 import { VoteForItemWrapper } from "../../../styled";
 import { VoteItem } from "next-common/components/profile/votingHistory/common";

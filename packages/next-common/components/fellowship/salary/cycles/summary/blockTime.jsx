@@ -2,7 +2,7 @@
 // end time
 
 import dayjs from "dayjs";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function getCycleBlockTimeSummaryItem(

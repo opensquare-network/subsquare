@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useAddressVotingBalance } from "utils/hooks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";

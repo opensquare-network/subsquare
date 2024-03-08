@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import noop from "lodash.noop";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";

@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import FoldButton from "./foldButton";
 import { useState } from "react";
 import IndentPanel from "./indentPanel";

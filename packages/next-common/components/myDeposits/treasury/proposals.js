@@ -6,7 +6,7 @@ import {
 } from "next-common/components/overview/recentProposals/columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getBondBalanceColumn } from "../columns";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { fetchAndPopulateDetail } from "next-common/components/myDeposits/referenda/fetchAndPopulateDetail";
 
 export function useDepositTreasuryProposalsTab(deposits = []) {

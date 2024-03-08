@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import { fellowshipSalaryCycleApi } from "next-common/services/url";
 import { useEffect, useState } from "react";

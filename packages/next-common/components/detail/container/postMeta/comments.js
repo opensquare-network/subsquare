@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { usePost } from "../../../../context/post";
 import Info from "../../../styled/info";
 import React from "react";

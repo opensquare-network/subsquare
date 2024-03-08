@@ -5,7 +5,7 @@ import {
   toPolkassemblyCommentListItem,
 } from "next-common/utils/polkassembly";
 import { useChain } from "next-common/context/chain";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import uniqBy from "lodash.uniqby";
 import QuickLRU from "quick-lru";

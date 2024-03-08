@@ -6,7 +6,7 @@ import EnactmentBlocks from "./enactmentBlocks";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import { usePageProps } from "next-common/context/page";
 import SubmissionDeposit from "./submissionDeposit";

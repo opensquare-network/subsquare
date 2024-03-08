@@ -2,7 +2,7 @@ import { useDecision } from "./track";
 import { useDecidingSince } from "./referendum";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 

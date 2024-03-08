@@ -5,7 +5,7 @@ import {
   ReferendumNavigationItem,
   TechCommMotionNavigator,
 } from "./navigators";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { usePost } from "next-common/context/post";
 
 export default function DemocracyProposalNavigation() {

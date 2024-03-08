@@ -1,6 +1,6 @@
 import { useOnchainData, useTimelineData } from "../index";
 import findLast from "lodash.findlast";
-import findLastIndex from "lodash.findlastindex";
+import { findLastIndex } from "lodash-es";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();

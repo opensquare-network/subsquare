@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearFellowshipVotes,

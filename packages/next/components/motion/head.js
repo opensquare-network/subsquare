@@ -14,7 +14,7 @@ import {
   isTreasuryMotion,
 } from "next-common/utils/viewfuncs/motion";
 import Info from "next-common/components/styled/info";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import AnnouncementNavigate from "./announcementNavigate";
 import MaliciousHead from "next-common/components/detail/maliciousHead";

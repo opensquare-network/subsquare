@@ -17,7 +17,7 @@ import {
   myTreasuryTipDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import sumBy from "lodash.sumby";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 
 export default function DepositsTitle({ active }) {

@@ -2,7 +2,7 @@ import { useSubmittedAt } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { usePreparation } from "next-common/context/post/gov2/track";
 import { useEffect, useState } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import {
   ProgressBarWrapper,
   ProgressGroup,

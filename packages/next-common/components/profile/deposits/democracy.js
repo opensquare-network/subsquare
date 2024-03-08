@@ -1,6 +1,6 @@
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 import { useSelector } from "react-redux";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { profileDemocracyDepositsSelector } from "next-common/store/reducers/profile/deposits/democracy";
 import { useDemocracyTableItems } from "next-common/components/myDeposits/democracy";
 

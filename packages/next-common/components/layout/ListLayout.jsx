@@ -6,7 +6,7 @@ import { isExternalLink } from "next-common/utils";
 import noop from "lodash.noop";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import Divider from "../styled/layout/divider";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 /**
  * @typedef {{

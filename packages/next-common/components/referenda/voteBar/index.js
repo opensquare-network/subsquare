@@ -7,7 +7,7 @@ import {
   getThresholdOfSuperMajorityApprove,
 } from "utils/referendumUtil";
 import Threshold from "../threshold";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import VoteBarBarProgress from "./barProgress";
 import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
 import tw from "tailwind-styled-components";

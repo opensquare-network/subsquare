@@ -1,6 +1,6 @@
 import KVList from "../../../listInfo/kvList";
 import React from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { GreyText, ValueWrapper } from "./styled";
 import BlockPeriod from "./blockPeriod";
 import { DecisionUserBond, SubmissionUserBond } from "./userBond";
