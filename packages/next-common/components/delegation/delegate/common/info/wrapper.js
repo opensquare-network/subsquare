@@ -1,3 +1,3 @@
 export default function InfoWrapper({ children }) {
-  return <div className="grow leading-none">{children}</div>;
+  return <div className="flex-1 grow leading-none">{children}</div>;
 }

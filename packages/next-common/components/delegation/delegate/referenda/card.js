@@ -8,7 +8,7 @@ import InfoWrapper from "next-common/components/delegation/delegate/common/info/
 import InfoTitle from "next-common/components/delegation/delegate/common/info/title";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
+import { toPercentage, toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import tw from "tailwind-styled-components";
@@ -46,7 +46,8 @@ function DelegateAvatar({ address, image }) {
 }
 
 export default function ReferendaDelegateCard({ delegate = {} }) {
-  const { address, delegatorsCount, trackAverageVotes } = delegate;
+  const { address, delegatorsCount, trackAverageVotes, participationRate } =
+    delegate;
   const { decimals, symbol } = useChainSettings();
 
   return (
@@ -83,6 +84,14 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
           <InfoTitle>Delegators</InfoTitle>
           <p className="text14Bold">{delegatorsCount}</p>
         </InfoWrapper>
+      </InfoLine>
+
+      <InfoLine>
+        <InfoWrapper>
+          <InfoTitle>Participation Rate</InfoTitle>
+          <p className="text14Bold">{toPercentage(participationRate, 1)}%</p>
+        </InfoWrapper>
+        <InfoWrapper />
       </InfoLine>
 
       <Divider className="my-4" />
