@@ -43,6 +43,7 @@
     "graphql": "^16.8.1",
     "is-ipfs": "^8.0.1",
     "is-utf8": "^0.2.1",
+    "lodash-es": "^4.17.21",
     "lodash.camelcase": "^4.3.0",
     "lodash.capitalize": "^4.2.1",
     "lodash.chunk": "^4.2.0",
