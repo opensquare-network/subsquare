@@ -10,9 +10,8 @@ import { useFellowshipSalaryCyclePaidColumn } from "./columns/paid";
 import { useFellowshipSalaryCycleBeneficiaryColumn } from "./columns/beneficiary";
 import { useFellowshipSalaryCycleTimeAgeColumn } from "./columns/timeAge";
 import { useState } from "react";
-import { cn } from "next-common/utils";
-import { BaseTag } from "next-common/components/tags/state/styled";
 import { FellowshipSalaryCycleDetailListTemplateTable } from "./template";
+import CheckableTag from "next-common/components/tags/checkable";
 
 export function useFellowshipSalaryCyclePaymentsTabItem() {
   const { registeredPayments, unRegisteredPayments, id } = usePageProps();
@@ -89,15 +88,16 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
       <>
         <div className="flex items-center gap-x-2 mb-4">
           {subTabs.map((subTab) => (
-            <SwitchTag
-              active={subTabActiveLabel === subTab.label}
+            <CheckableTag
+              checked={subTabActiveLabel === subTab.label}
               key={subTab.label}
-              label={subTab.label}
               count={subTab.count}
               onClick={() => {
                 setSubTabActiveLabel(subTab.label);
               }}
-            />
+            >
+              {subTab.label}
+            </CheckableTag>
           ))}
         </div>
 
@@ -107,26 +107,4 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
       </>
     ),
   };
-}
-
-function SwitchTag({ active, count, label, className, ...props }) {
-  return (
-    <BaseTag
-      {...props}
-      className={cn(
-        active
-          ? "bg-theme100 !text-theme500"
-          : "bg-neutral200 !text-textPrimary",
-        "cursor-pointer",
-        className,
-      )}
-    >
-      {label}
-      <span
-        className={cn("ml-1", active ? "text-theme300" : "text-textTertiary")}
-      >
-        {count}
-      </span>
-    </BaseTag>
-  );
 }
