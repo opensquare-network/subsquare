@@ -12,17 +12,17 @@ export default function Summary({ delegator, delegatee, capital }) {
         items={[
           {
             title: "DELEGATOR ADDRESS",
-            content: delegator,
+            content: delegator || 0,
           },
           {
             title: "DELEGATED ADDRESS",
-            content: delegatee,
+            content: delegatee || 0,
           },
           {
             title: "CAPITAL",
             content: (
               <ValueDisplay
-                value={toPrecision(capital, decimals)}
+                value={toPrecision(capital || 0, decimals)}
                 symbol={symbol}
               />
             ),
