@@ -34,17 +34,17 @@ export default function PageItem({ page, now, onPageChange = null }) {
   const router = useRouter();
   const [url, query] = router.asPath.split("?");
   const urlParams = new URLSearchParams(query);
-  urlParams.set("page", page + 1);
+  urlParams.set("page", page);
 
   return (
     <Link key={page} href={`${url}?${urlParams}`} passHref legacyBehavior>
       <Item
-        active={now === page + 1}
+        active={now === page}
         onClick={(e) => {
-          onPageChange && onPageChange(e, page + 1);
+          onPageChange && onPageChange(e, page);
         }}
       >
-        {page + 1}
+        {page}
       </Item>
     </Link>
   );
