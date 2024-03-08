@@ -13,10 +13,12 @@ import getCyclePotSummaryItem from "next-common/components/fellowship/salary/cyc
 import getCycleTotalPeriodSummaryItem from "next-common/components/fellowship/salary/cycles/summary/totalPeriod";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import getCycleRemainSummaryItem from "next-common/components/fellowship/salary/cycles/summary/remain";
+import { useFellowshipSalaryCycleData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryCycleData";
 
 export default function FellowshipSalaryStats() {
   const [navCollapsed] = useNavCollapsed();
   const stats = useSubFellowshipSalaryStats();
+  const cycleData = useFellowshipSalaryCycleData(stats?.cycleIndex);
   const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
   const { decimals, symbol } = useSalaryAsset();
 
@@ -53,6 +55,7 @@ export default function FellowshipSalaryStats() {
     totalRegistrationsValue,
     decimals,
     symbol,
+    cycleData?.registeredCount,
   );
 
   const totalPeriodItem = getCycleTotalPeriodSummaryItem(
@@ -66,6 +69,7 @@ export default function FellowshipSalaryStats() {
     totalUnregisteredPaidValue,
     decimals,
     symbol,
+    cycleData?.unRegisteredPaidCount,
   );
   const potItem = getCyclePotSummaryItem(potValue, decimals, symbol);
   const timeItem = getCycleRemainSummaryItem(
