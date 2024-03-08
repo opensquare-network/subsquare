@@ -51,10 +51,16 @@ export const getServerSideProps = withCommonProps(async (context) => {
       { result: unRegisteredPaymentsResult },
       { result: feedsResult },
     ] = await Promise.all([
-      ssrNextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id)),
-      ssrNextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id)),
-      ssrNextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id)),
-      ssrNextApi.fetch(fellowshipSalaryCycleFeedsApi(id), { page }),
+      ssrNextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id, { page })),
+      ssrNextApi.fetch(
+        fellowshipSalaryCycleRegisteredPaymentsApi(id, { page }),
+      ),
+      ssrNextApi.fetch(
+        fellowshipSalaryCycleUnregisteredPaymentsApi(id, { page }),
+      ),
+      ssrNextApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
+        page,
+      }),
     ]);
 
     registrations = registrationsResult;
