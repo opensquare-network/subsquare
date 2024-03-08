@@ -1,7 +1,7 @@
 import isNil from "lodash.isnil";
-import { extractAddressAndTrackId } from "./utils";
 import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 import { isSameAddress } from "..";
+import { u8aToHex } from "@polkadot/util";
 
 export async function getGov2TrackDelegation(api, trackId, address) {
   const voting = await api.query.convictionVoting.votingFor(address, trackId);
@@ -15,23 +15,62 @@ export async function getGov2TrackDelegation(api, trackId, address) {
 
 let votingForEntries = null;
 
+async function queryEntries(api, startKey, num = 1000) {
+  return api.query.convictionVoting.votingFor.entriesPaged({
+    args: [],
+    pageSize: num,
+    startKey,
+  });
+}
+
+function normalizeVotingForEntry([storageKey, voting]) {
+  const account = storageKey.args[0].toString();
+  const trackId = storageKey.args[1].toNumber();
+
+  return {
+    account,
+    trackId,
+    voting,
+  };
+}
+
+async function queryAllDelegatingEntries(api) {
+  let startKey = null;
+  let result = [];
+  let entries = await queryEntries(api, startKey, 1000);
+  while (entries.length > 0) {
+    const normalizedVotes = entries.map((item) =>
+      normalizeVotingForEntry(item),
+    );
+    const delegatingVotes = normalizedVotes.filter(
+      ({ voting }) => voting.isDelegating,
+    );
+    result.push(...delegatingVotes);
+
+    startKey = u8aToHex(entries[entries.length - 1][0]);
+    entries = await queryEntries(api, startKey, 1000);
+  }
+
+  return result;
+}
+
 export async function getGov2BeenDelegatedListByAddress(api, address, trackId) {
   if (!votingForEntries) {
-    votingForEntries = await api.query.convictionVoting.votingFor.entries();
+    votingForEntries = await queryAllDelegatingEntries(api);
   }
 
   const beenDelegated = [];
-  for (const [storageKey, votingFor] of votingForEntries) {
-    const { address: delegator, trackId: _trackId } =
-      extractAddressAndTrackId(storageKey);
+  for (const {
+    account: delegator,
+    trackId: _trackId,
+    voting: votingFor,
+  } of votingForEntries) {
     if (!isNil(trackId)) {
       if (_trackId !== trackId) {
         continue;
       }
     }
-    if (!votingFor.isDelegating) {
-      continue;
-    }
+
     const voting = votingFor.asDelegating.toJSON();
     if (!isSameAddress(voting.target, address)) {
       continue;
