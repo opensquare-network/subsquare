@@ -14,11 +14,10 @@ export const OriginWrapper = styled.div`
     0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),
     0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786);
   border-radius: 8px;
-
-  margin-top: 16px;
 `;
+
 export const Wrapper = tw(OriginWrapper)`
-max-sm:!rounded-none
+  max-sm:!rounded-none
 `;
 
 export const Header = styled.div`

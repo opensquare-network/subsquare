@@ -54,7 +54,7 @@ export default function DemocracyStatisticsPage({
         {hasDemocracy !== false && (
           <div>
             <Header className="px-6 mb-4">Delegation</Header>
-            <div>
+            <div className="mt-4">
               <DemocracyStatistics
                 delegatee={delegatee}
                 delegators={delegators}

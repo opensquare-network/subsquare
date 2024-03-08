@@ -13,6 +13,11 @@ export default function DelegationLayout({ children }) {
       url: "/delegation",
       exactMatch: true,
     },
+    {
+      label: "Delegation Statistics",
+      url: "/delegation/statistics",
+      exactMatch: true,
+    },
   ];
 
   if (realAddress) {
