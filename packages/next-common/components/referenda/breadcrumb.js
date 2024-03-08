@@ -1,7 +1,7 @@
 import React from "react";
 import Breadcrumb from "../_Breadcrumb";
 import BreadcrumbWrapper from "../detail/common/BreadcrumbWrapper";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import { useTrack } from "../../context/post/gov2/track";
 import { usePost } from "../../context/post";
 

@@ -1,5 +1,5 @@
 import { usePageProps } from "next-common/context/page";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import tw from "tailwind-styled-components";
 
 const Background = tw.span`

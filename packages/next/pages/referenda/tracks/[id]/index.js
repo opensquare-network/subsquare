@@ -7,7 +7,7 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";

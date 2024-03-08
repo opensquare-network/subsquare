@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 
 const Tag = styled.span`
   padding: 2px 8px;

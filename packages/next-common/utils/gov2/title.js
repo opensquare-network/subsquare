@@ -1,4 +1,4 @@
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 
 export function getGov2ReferendumTitle(detail) {
   const title = detail?.title?.trim();
