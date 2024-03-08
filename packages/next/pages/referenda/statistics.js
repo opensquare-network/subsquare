@@ -42,10 +42,17 @@ export default function ReferendaStatisticsPage({
           </div>
         </div>
 
-        <ReferendaDelegationStats
-          tracksStats={tracksStats}
-          delegatee={delegatee}
-        />
+        <div>
+          <Header className="px-6 mb-4">Delegation</Header>
+
+          <div className="space-y-4">
+            <ReferendaDelegationStats
+              tracksStats={tracksStats}
+              delegatee={delegatee}
+              delegationSummary={tracksReferendaSummary?.delegation}
+            />
+          </div>
+        </div>
       </div>
     </ReferendaLayout>
   );
