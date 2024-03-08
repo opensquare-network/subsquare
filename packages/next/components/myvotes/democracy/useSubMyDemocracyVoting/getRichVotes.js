@@ -1,7 +1,7 @@
 import normalizeDemocracyVote from "../normalize";
 import getReferendaInfo from "./referendaInfo";
 import getReferendaPosts from "./posts";
-import omit from "lodash.omit";
+import { omit } from "lodash-es";
 
 export default async function getDemocracyRichVotes(api, voting) {
   if (!voting.isDirect) {

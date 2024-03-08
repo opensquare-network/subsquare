@@ -1,7 +1,7 @@
 import normalizePrior from "../../utils/normalizePrior";
 import getDemocracyRichVotes from "./getRichVotes";
 import getReferendaPosts from "./posts";
-import omit from "lodash.omit";
+import { omit } from "lodash-es";
 
 export default async function getDelegatingVotesInfo(voting, api) {
   const delegating = voting.asDelegating;

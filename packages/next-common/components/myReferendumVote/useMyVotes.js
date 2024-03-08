@@ -1,5 +1,5 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import omit from "lodash.omit";
+import { omit } from "lodash-es";
 
 function completeSplitVotes(votes) {
   const splitVotes = [...votes];
