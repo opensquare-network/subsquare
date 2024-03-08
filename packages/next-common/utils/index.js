@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isHex } from "@polkadot/util";
 import { camelCase } from "lodash-es";
-import upperFirst from "lodash.upperfirst";
+import { upperFirst } from "lodash-es";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
