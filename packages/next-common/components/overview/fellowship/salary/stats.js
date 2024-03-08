@@ -3,7 +3,7 @@ import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useF
 import Summary from "next-common/components/summary/v2/base";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { cn } from "next-common/utils";
-import chunk from "lodash.chunk";
+import { chunk } from "lodash-es";
 import { useNavCollapsed } from "next-common/context/nav";
 import getCycleIndexSummaryItem from "next-common/components/fellowship/salary/cycles/summary";
 import getCycleBudgetSummaryItem from "next-common/components/fellowship/salary/cycles/summary/budget";

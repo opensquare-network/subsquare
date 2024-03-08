@@ -6,7 +6,7 @@ import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import getCycleRegistrationSummaryItem from "../summary/registration";
 import getCycleUnregisteredPaidSummaryItem from "../summary/unregisteredPaid";
 import getCycleTotalPeriodSummaryItem from "../summary/totalPeriod";
-import chunk from "lodash.chunk";
+import { chunk } from "lodash-es";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import getCycleBlockTimeSummaryItem from "../summary/blockTime";
 import getCycleRemainSummaryItem from "../summary/remain";

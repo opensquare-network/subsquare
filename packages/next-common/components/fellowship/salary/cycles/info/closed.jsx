@@ -7,7 +7,7 @@ import getCycleRegistrationSummaryItem from "../summary/registration";
 import getCycleUnregisteredPaidSummaryItem from "../summary/unregisteredPaid";
 import getCycleBlockTimeSummaryItem from "../summary/blockTime";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
-import chunk from "lodash.chunk";
+import { chunk } from "lodash-es";
 import getCycleTotalDurationSummaryItem from "../summary/totalDuration";
 import FellowshipCycleProgress from "./progress";
 
