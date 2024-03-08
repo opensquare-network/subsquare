@@ -8,7 +8,7 @@ import {
   setFellowshipVotes,
   setIsLoadingFellowshipVotes,
 } from "next-common/store/reducers/fellowship/votes";
-import partition from "lodash.partition";
+import { partition } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 /**
