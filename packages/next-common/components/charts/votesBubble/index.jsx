@@ -1,6 +1,6 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import flatten from "lodash.flatten";
+import { flatten } from "lodash-es";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useLayoutEffect, useRef, useState } from "react";

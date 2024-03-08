@@ -1,5 +1,5 @@
 import { detailPageCategory } from "./consts/business/category";
-import flatten from "lodash.flatten";
+import { flatten } from "lodash-es";
 import { encodeAddressToChain } from "next-common/services/address";
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";

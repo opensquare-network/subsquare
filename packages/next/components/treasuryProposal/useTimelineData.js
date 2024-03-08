@@ -1,6 +1,6 @@
 import isMoonChain from "next-common/utils/isMoonChain";
 import { useEffect, useState } from "react";
-import flatten from "lodash.flatten";
+import { flatten } from "lodash-es";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { getTimelineStatus } from "../../utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
