@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import DemocracySummaryDelegationInfo from "./democracySummaryDelegationInfo";
-import useDemocracyDelegating from "../../../utils/hooks/referenda/useDemocracyDelegating";
 import useRealAddress from "../../../utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
-import { useContextApi } from "next-common/context/api";
 import RemoveDelegation from "./removeDelegation";
 import NewDelegation from "./newDelegation";
+import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,20 +15,15 @@ const Wrapper = styled.div`
 `;
 
 export default function DemocracySummaryDelegation() {
-  const api = useContextApi();
   const realAddress = useRealAddress();
-  const { delegating, refresh } = useDemocracyDelegating(api, realAddress);
+  const { delegating } = useSubDemocracyDelegating(realAddress);
   const { hideActionButtons } = useChainSettings();
 
   return (
     <Wrapper>
       <DemocracySummaryDelegationInfo delegating={delegating} />
       {!hideActionButtons &&
-        (delegating ? (
-          <RemoveDelegation refresh={refresh} />
-        ) : (
-          <NewDelegation refresh={refresh} />
-        ))}
+        (delegating ? <RemoveDelegation /> : <NewDelegation />)}
     </Wrapper>
   );
 }

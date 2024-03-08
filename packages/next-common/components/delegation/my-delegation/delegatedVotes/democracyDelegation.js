@@ -7,11 +7,7 @@ import RemoveButton from "next-common/components/removeButton";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import DemocracyRemoveDelegation from "next-common/components/summary/democracySummaryDelegation/removeDelegation";
 
-export default function MyDemocracyDelegation({
-  delegating,
-  isLoading,
-  refresh,
-}) {
+export default function MyDemocracyDelegation({ delegating, isLoading }) {
   const sharedColumnsDef = useColumnsDef();
   const columnsDef = [
     ...sharedColumnsDef,
@@ -28,7 +24,6 @@ export default function MyDemocracyDelegation({
         <DemocracyRemoveDelegation
           key="action"
           ButtonComponent={RemoveButton}
-          refresh={refresh}
         />
       ),
     ],
