@@ -17,7 +17,9 @@ export default function FellowshipSalaryCycleDetailListTemplate({
       url: m.url,
       label: m.name,
       activeCount: m.activeCount,
-      content: m.content || <TableTemplate {...m} />,
+      content: m.content || (
+        <FellowshipSalaryCycleDetailListTemplateTable {...m} />
+      ),
     };
   });
   const [activeTabLabel, setActiveTabLabel] = useState(
@@ -38,7 +40,12 @@ export default function FellowshipSalaryCycleDetailListTemplate({
   );
 }
 
-function TableTemplate({ columns, api, formatter = (i) => i, noDataText }) {
+export function FellowshipSalaryCycleDetailListTemplateTable({
+  columns,
+  api,
+  formatter = (i) => i,
+  noDataText,
+}) {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
   const [loading, setLoading] = useState(!api?.initData ?? true);

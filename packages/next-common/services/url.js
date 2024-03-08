@@ -57,6 +57,12 @@ export const fellowshipSalaryCycleApi = (index) =>
 export const fellowshipSalaryCycleRegistrationsApi = (index) =>
   `fellowship/salary/cycles/${index}/registrations`;
 
+export const fellowshipSalaryCycleRegisteredPaymentsApi = (index) =>
+  `fellowship/salary/cycles/${index}/registered_payments`;
+
+export const fellowshipSalaryCycleUnregisteredPaymentsApi = (index) =>
+  `fellowship/salary/cycles/${index}/unregistered_payments`;
+
 export const fellowshipSalaryCycleFeedsApi = (index) =>
   `fellowship/salary/cycles/${index}/feeds`;
 

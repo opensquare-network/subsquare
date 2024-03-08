@@ -5,7 +5,7 @@ export function useFellowshipSalaryCycleRankColumn() {
     name: "Rank",
     width: 80,
     cellRender(data) {
-      return <FellowshipRank rank={data.memberInfo.rank} />;
+      return <FellowshipRank rank={data?.memberInfo?.rank} />;
     },
   };
 }
