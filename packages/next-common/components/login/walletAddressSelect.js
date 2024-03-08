@@ -6,7 +6,7 @@ import SelectWallet from "../wallet/selectWallet";
 import { getWallets } from "../../utils/consts/connect";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 
 const Label = styled.div`
   font-weight: bold;

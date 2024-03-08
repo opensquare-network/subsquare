@@ -1,5 +1,5 @@
 import LoadableContent from "next-common/components/common/loadableContent";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 

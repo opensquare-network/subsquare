@@ -4,7 +4,7 @@ import { Headers } from "./headers";
 import DataRows from "./dataRows";
 import { EmptyTd, StyledTable } from "next-common/components/styled/table";
 import { SystemLoading } from "@osn/icons/subsquare";
-import isEqual from "lodash.isequal";
+import { isEqual } from "lodash-es";
 
 function EmptyOrLoading({ loading, noDataText = "" }) {
   return (

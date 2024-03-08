@@ -7,7 +7,7 @@ import { useUser } from "../../../context/user";
 import { addToast } from "../../../store/reducers/toastSlice";
 import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useRouter } from "next/router";
 import PrimaryButton from "../../buttons/primaryButton";
 import Loading from "../../loading";

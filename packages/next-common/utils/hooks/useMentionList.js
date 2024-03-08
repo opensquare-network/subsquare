@@ -4,7 +4,7 @@ import {
   getMentionList,
   getMentionName,
 } from "next-common/utils/post";
-import uniqBy from "lodash.uniqby";
+import { uniqBy } from "lodash-es";
 import { useUser } from "../../context/user";
 import { useChain } from "../../context/chain";
 import { addressEllipsis, isKeyRegisteredUser } from "..";

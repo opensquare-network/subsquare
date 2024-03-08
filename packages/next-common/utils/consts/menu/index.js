@@ -13,7 +13,7 @@ import { getOpenTechCommMenu } from "./openTechCommittee";
 import { CHAIN } from "next-common/utils/constants";
 import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
-import partition from "lodash.partition";
+import { partition } from "lodash-es";
 
 export function getHomeMenu({
   summary = {},

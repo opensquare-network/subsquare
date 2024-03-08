@@ -11,7 +11,7 @@ import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 const EMPTY_HASH = blake2AsHex("");

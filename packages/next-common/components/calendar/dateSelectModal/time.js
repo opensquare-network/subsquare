@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Labeled from "../../../components/Labeled";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import LineInput from "../../lineInput";
 import Flex from "../../styled/flex";
 

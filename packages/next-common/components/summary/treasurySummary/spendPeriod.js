@@ -1,5 +1,5 @@
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import isEmpty from "lodash.isempty";
+import { isEmpty } from "lodash-es";
 
 export default function SpendPeriod({ summary }) {
   if (isEmpty(summary)) {

@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export default function Percentage({ perbill = 0 }) {
   if (isNil(perbill) || perbill <= 0) {

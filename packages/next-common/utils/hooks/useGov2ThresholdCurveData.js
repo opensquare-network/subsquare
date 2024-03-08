@@ -1,4 +1,4 @@
-import _range from "lodash.range";
+import { range } from "lodash-es";
 import { useSelector } from "react-redux";
 import {
   getTrackApprovalCurve,
@@ -13,7 +13,7 @@ export default function useGov2ThresholdCurveData(track) {
   const oneHour = 3600 * 1000;
   const blockStep = oneHour / blockTime; // it means the blocks between 2 dots.
   const hours = decisionPeriod / blockStep;
-  const labels = _range(hours + 1);
+  const labels = range(hours + 1);
 
   const supportCalculator = getTrackSupportCurve(track);
   const supportData = labels.map((i) =>

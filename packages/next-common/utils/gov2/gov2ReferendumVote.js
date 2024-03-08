@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { extractAddressAndTrackId } from "./utils";
 import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 

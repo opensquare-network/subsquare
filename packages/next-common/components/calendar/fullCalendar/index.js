@@ -6,7 +6,7 @@ import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import timezone from "dayjs/plugin/timezone";
 import FullCalendarToolbar from "./toolbar";
 import FullCalendarMonthDateCell from "./monthDateCell";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useCalendarEventsSummary } from "../../../hooks/calendar";
 import FullCalendarFooter from "./footer";
 import FullCalendarMonthHeader from "./monthHeader";

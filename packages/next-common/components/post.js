@@ -10,7 +10,7 @@ import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
 import { DemocracyTag, TreasuryTag } from "./tags/business";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { getBannerUrl } from "../utils/banner";
 import businessCategory from "../utils/consts/business/category";
 import useDuration from "../utils/hooks/useDuration";

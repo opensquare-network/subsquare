@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useSigner from "next-common/components/common/tx/useSigner";

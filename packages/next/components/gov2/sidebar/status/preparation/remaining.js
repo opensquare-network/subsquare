@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useSubmittedAt } from "next-common/context/post/gov2/referendum";
 import { usePreparation } from "next-common/context/post/gov2/track";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export function usePrepareRemaining() {

@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
 import {
   Abstain,

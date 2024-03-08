@@ -2,7 +2,7 @@ import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { TrackColors } from "./colors";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import { cn } from "next-common/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);

@@ -13,7 +13,7 @@ import RemoveVoteButton from "./remove";
 import ListWrapper from "../../../mobile/listWrapper";
 import { convictionVotingLockPeriodSelector } from "next-common/store/reducers/chainSlice";
 import { useEffect, useState } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import calcReferendaVoteLock from "../calcReferendaVoteLock";
 import VoteLock from "../../../vote/lock";
 import { EmptyList } from "next-common/components/emptyList";

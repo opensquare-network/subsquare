@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Flex from "../styled/flex";
 import SubScanLink from "./subscanLink";
-import isEmpty from "lodash.isempty";
+import { isEmpty } from "lodash-es";
 import StatescanLink from "./statescanLink";
 
 const Wrapper = styled(Flex)`

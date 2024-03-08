@@ -8,7 +8,7 @@ import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
 import React from "react";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
-import set from "lodash.set";
+import { set } from "lodash-es";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import {
   useApprovalPercentage,

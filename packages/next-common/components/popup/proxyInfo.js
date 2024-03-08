@@ -1,5 +1,5 @@
 import React from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { addressEllipsis } from "../../utils";
 import { formatBalance } from "../../utils/viewfuncs";
 import Loading from "../loading";

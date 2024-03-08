@@ -7,7 +7,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import Period from "next-common/components/fellowship/params/period";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export default function FellowshipCollectiveMembers({ members }) {
   const { fellowshipParams } = usePageProps();

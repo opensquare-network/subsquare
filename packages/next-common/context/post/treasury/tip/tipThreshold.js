@@ -2,7 +2,7 @@ import useTipIsFinished from "./isFinished";
 import { useOnchainData } from "../../index";
 import { useEffect, useState } from "react";
 import useCouncilMembers from "../../../../utils/hooks/useCouncilMembers";
-import floor from "lodash.floor";
+import { floor } from "lodash-es";
 
 function calcTipThreshold(length = 0) {
   return floor((length + 1) / 2);

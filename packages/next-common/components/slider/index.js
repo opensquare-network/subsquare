@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import ReactSlider from "react-slider";
 import styled from "styled-components";
 import ThumbSVG from "./thumb.svg";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 
 const StyledSlider = styled(ReactSlider)`
   display: flex;

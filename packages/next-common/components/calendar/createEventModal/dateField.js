@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import React from "react";
 import Labeled from "../../../components/Labeled";
 import Flex from "../../styled/flex";

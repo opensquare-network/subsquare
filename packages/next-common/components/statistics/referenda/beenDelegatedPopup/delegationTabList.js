@@ -11,7 +11,7 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import AddressUser from "next-common/components/user/addressUser";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import tw from "tailwind-styled-components";
 import DataList from "next-common/components/dataList";

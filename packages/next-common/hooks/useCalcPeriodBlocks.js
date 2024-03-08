@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { toPercentage } from "next-common/utils";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";

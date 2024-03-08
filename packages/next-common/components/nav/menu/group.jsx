@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { startCase, capitalize } from "lodash";
+import { startCase, capitalize } from "lodash-es";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
@@ -8,7 +8,7 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useUpdateEffect } from "usehooks-ts";
 import NavMenuItem from "./item";
 import NavMenuDivider from "../divider";
-import sumBy from "lodash.sumby";
+import { sumBy } from "lodash-es";
 
 export default function NavMenuGroup({
   menu = {},

@@ -21,7 +21,7 @@ import {
   useDecidingSince,
   userConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import TimeDuration from "next-common/components/TimeDuration";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useZoomMode, zoomModes } from "./context/zoomContext";

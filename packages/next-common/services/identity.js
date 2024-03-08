@@ -1,4 +1,4 @@
-import debounce from "lodash.debounce";
+import { debounce } from "lodash-es";
 import QuickLRU from "quick-lru";
 
 class Deferred {

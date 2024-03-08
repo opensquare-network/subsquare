@@ -3,7 +3,7 @@ import Progress from "next-common/components/progress";
 import { useSupportThreshold } from "next-common/context/post/gov2/threshold";
 import { useEffect, useMemo, useState } from "react";
 import ThresholdComponent from "next-common/components/referenda/threshold";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import TooltipOrigin from "next-common/components/tooltip";
 import BigNumber from "bignumber.js";
 import Percentage from "next-common/components/referenda/tally/support/percentage";

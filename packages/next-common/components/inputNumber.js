@@ -1,7 +1,7 @@
 import React from "react";
 import InputOrigin from "./input";
 import styled from "styled-components";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import DividerOrigin from "./styled/layout/divider";
 import Caret from "./icons/caret";
 import tw from "tailwind-styled-components";

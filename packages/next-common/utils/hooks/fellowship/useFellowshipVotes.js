@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearFellowshipVotes,
@@ -8,7 +8,7 @@ import {
   setFellowshipVotes,
   setIsLoadingFellowshipVotes,
 } from "next-common/store/reducers/fellowship/votes";
-import partition from "lodash.partition";
+import { partition } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 /**

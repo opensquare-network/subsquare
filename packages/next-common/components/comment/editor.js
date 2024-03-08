@@ -11,7 +11,7 @@ import PrimaryButton from "../buttons/primaryButton";
 import GhostButton from "../buttons/ghostButton";
 import { useChain } from "../../context/chain";
 import { useDetailType } from "../../context/page";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import Editor from "../editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 

@@ -2,12 +2,12 @@ import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
 import { useChainSettings } from "next-common/context/chain";
-import { lowerCase } from "lodash";
+import { lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export default function ChildBountiesPage({ bounties }) {
   const chainSettings = useChainSettings();

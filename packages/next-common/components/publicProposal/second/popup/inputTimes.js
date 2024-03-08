@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import InputNumber from "../../../inputNumber";
 import { Label, WarningMessage } from "../../../popup/styled";

@@ -4,7 +4,7 @@ import {
   profileFellowshipDecisionDepositsSelector,
   profileFellowshipSubmissionDepositsSelector,
 } from "next-common/store/reducers/profile/deposits/fellowship";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useFellowshipTableItems } from "next-common/components/myDeposits/fellowship";
 
 export default function useProfileFellowshipDepositsData() {

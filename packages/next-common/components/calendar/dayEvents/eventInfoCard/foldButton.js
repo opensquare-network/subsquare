@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import FoldedIcon from "./up.svg";
 import UnFoldedIcon from "./down.svg";
 

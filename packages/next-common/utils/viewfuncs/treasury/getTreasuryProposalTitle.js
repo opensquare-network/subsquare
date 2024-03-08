@@ -1,4 +1,4 @@
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 
 export default function getTreasuryProposalTitle(item) {
   let title = item.title?.trim();

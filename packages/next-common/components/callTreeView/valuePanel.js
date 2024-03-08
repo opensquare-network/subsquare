@@ -17,7 +17,7 @@ import AddressUser from "../user/addressUser";
 import { useCallContext } from "./callContext";
 import interlay from "next-common/utils/consts/settings/interlay";
 import kintsugi from "next-common/utils/consts/settings/kintsugi";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,

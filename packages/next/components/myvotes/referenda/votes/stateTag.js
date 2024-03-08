@@ -1,6 +1,6 @@
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
-import capitalize from "lodash.capitalize";
+import { capitalize } from "lodash-es";
 
 export default function MyReferendaVoteTag({ post, onchainInfo }) {
   if (post) {

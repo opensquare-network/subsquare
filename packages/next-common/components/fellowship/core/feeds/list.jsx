@@ -1,5 +1,5 @@
 import FellowshipCoreFeedsListEvent from "./event";
-import orderBy from "lodash.orderby";
+import { orderBy } from "lodash-es";
 import FellowshipFeedSuffix from "next-common/components/fellowship/feeds/suffix";
 import FellowshipFeedsPanel from "next-common/components/fellowship/feeds/list";
 

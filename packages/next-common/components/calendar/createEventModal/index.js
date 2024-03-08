@@ -13,7 +13,7 @@ import {
 } from "../../../store/reducers/toastSlice";
 import DateField from "./dateField";
 import DateSelectModal from "../dateSelectModal";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { calendarUserEventsApi } from "../../../services/url";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";

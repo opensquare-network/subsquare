@@ -2,7 +2,7 @@ import React from "react";
 import LabelSelect from "next-common/components/form/labelSelect";
 import { Label, LabelWrapper } from "../styled";
 import { useChainSettings } from "../../../context/chain";
-import uniq from "lodash.uniq";
+import { uniq } from "lodash-es";
 
 export default function PostLabel({ selectedLabels, setSelectedLabels }) {
   const setting = useChainSettings();

@@ -3,7 +3,7 @@
 
 import { cn } from "next-common/utils";
 import { BaseTag, ThemedTag } from "./state/styled";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 
 export default function CheckableTag({
   checked,

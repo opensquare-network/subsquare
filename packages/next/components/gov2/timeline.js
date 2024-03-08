@@ -1,5 +1,5 @@
 import Timeline from "next-common/components/timeline";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";

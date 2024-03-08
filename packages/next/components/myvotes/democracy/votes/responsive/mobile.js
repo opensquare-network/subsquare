@@ -5,7 +5,7 @@ import ListWrapper from "../../../mobile/listWrapper";
 import ProxyHint from "../../../proxyHint";
 import { democracyLockPeriodSelector } from "next-common/store/reducers/chainSlice";
 import { useEffect, useState } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import calcDemocracyVoteLock from "../calcDemocracyVoteLock";
 import { ListCard } from "../../../styled";
 import {

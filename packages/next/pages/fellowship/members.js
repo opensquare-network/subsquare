@@ -5,7 +5,7 @@ import FellowshipCollectiveMembers from "next-common/components/fellowship/colle
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useMemo } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
 
 export default function MembersPage() {

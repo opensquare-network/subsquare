@@ -1,5 +1,5 @@
 import { detailPageCategory } from "../../utils/consts/business/category";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 function getTypeProperties(context) {
   const url = context.resolvedUrl;

@@ -1,6 +1,6 @@
 import React from "react";
 import BarChart from "../barChart";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 
 export default function DelegatedAddressChart({ tracks }) {
   const height = (tracks.length + 1) * 30;

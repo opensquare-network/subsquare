@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "next-common/utils";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 
 export default function InputText({
   disabled = false,

@@ -1,5 +1,5 @@
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
-import sum from "lodash.sum";
+import { sum } from "lodash-es";
 import { useDepositTreasuryBountiesTab } from "./bounties";
 import { useDepositTreasuryProposalsTab } from "./proposals";
 import { useDepositTreasuryTipsTab } from "./tips";

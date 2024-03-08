@@ -1,4 +1,4 @@
-import flatten from "lodash.flatten";
+import { flatten } from "lodash-es";
 import { fetchIdentity } from "../services/identity";
 import {
   addressEllipsis,
@@ -7,7 +7,7 @@ import {
   isPolkadotKeyRegisteredUser,
 } from ".";
 import { encodeAddressToChain } from "../services/address";
-import uniqBy from "lodash.uniqby";
+import { uniqBy } from "lodash-es";
 import getChainSettings from "./consts/settings";
 import { getIdentityDisplay } from "./identity";
 import { tryConvertToEvmAddress } from "./hydradxUtil";

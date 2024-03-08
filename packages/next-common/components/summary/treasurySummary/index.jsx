@@ -6,7 +6,7 @@ import { isKintsugiChain } from "next-common/utils/chain";
 import SpendPeriod from "next-common/components/summary/treasurySummary/spendPeriod";
 import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
 import LoadableContent from "next-common/components/common/loadableContent";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import TreasurySummaryAvailable from "./available";
 import TreasurySummarySpendPeriodCountDown from "./spendPeriodCountDown";
 import { gql } from "@apollo/client";
@@ -15,7 +15,7 @@ import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import TreasurySummaryToBeAwarded from "./toBeAwarded";
 import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
-import find from "lodash.find";
+import { find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 const GET_TREASURIES = gql`

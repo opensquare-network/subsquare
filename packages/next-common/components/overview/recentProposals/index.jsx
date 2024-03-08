@@ -15,7 +15,7 @@ import { useRecentProposalOpenTechComm } from "./openTechComm";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { useRecentProposalTreasuryCouncil } from "./treasuryCouncil";
 import Chains from "next-common/utils/consts/chains";
-import partition from "lodash.partition";
+import { partition } from "lodash-es";
 import EmptyRecentProposals from "./empty";
 
 export default function RecentProposals() {

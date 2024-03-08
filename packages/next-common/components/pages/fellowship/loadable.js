@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
 import { SystemLoading } from "@osn/icons/subsquare";
 

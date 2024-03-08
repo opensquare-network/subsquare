@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export function getMotionId(motion) {
   let id = isNil(motion.motionIndex) ? motion.index : motion.motionIndex;

@@ -1,13 +1,13 @@
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import last from "lodash.last";
+import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
 import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
-import isEmpty from "lodash.isempty";
+import { isEmpty } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 function calcFromOneTallyData(tally) {

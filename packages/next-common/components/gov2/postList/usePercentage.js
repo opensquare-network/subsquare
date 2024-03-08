@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useMemo } from "react";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 

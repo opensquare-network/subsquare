@@ -3,7 +3,7 @@ import FellowshipSalaryCycleDetailListTemplate from "./template";
 import { useFellowshipSalaryCycleRegistrationsTabItem } from "./registrations";
 import { useFellowshipSalaryCycleFeedsTabItem } from "./feeds";
 import { useRouter } from "next/router";
-import find from "lodash.find";
+import { find } from "lodash-es";
 import { useFellowshipSalaryCyclePaymentsTabItem } from "./payments";
 import { usePageProps } from "next-common/context/page";
 

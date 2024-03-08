@@ -1,6 +1,6 @@
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import ItemParam from "./itemParam";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useCallback } from "react";
 
 export default function Params({ params, value, setValue = noop }) {

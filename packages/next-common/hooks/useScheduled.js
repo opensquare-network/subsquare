@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BN_ONE, BN_ZERO, bnToBn } from "@polkadot/util";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import useCall from "../utils/hooks/useCall";
 import Chains from "../utils/consts/chains";
 import { useLeaseRangeMax } from "./useLeaseRanges";

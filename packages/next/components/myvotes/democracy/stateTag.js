@@ -1,6 +1,6 @@
 import { DemocracyReferendumTag } from "next-common/components/tags/state/democracy";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
-import capitalize from "lodash.capitalize";
+import { capitalize } from "lodash-es";
 
 export default function DemocracyTag({ post, onchainInfo }) {
   if (post) {

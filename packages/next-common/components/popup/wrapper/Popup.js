@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import * as Dialog from "@radix-ui/react-dialog";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
 

@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 export default function useDeposit(

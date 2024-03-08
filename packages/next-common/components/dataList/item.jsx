@@ -1,8 +1,8 @@
-import findLastIndex from "lodash.findlastindex";
+import { findLastIndex } from "lodash-es";
 import { cn } from "next-common/utils";
 import Descriptions from "../Descriptions";
-import last from "lodash.last";
-import isNil from "lodash.isnil";
+import { last } from "lodash-es";
+import { isNil } from "lodash-es";
 
 export default function DataListItem({
   columns,

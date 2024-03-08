@@ -25,7 +25,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import MyVote from "./myVote";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import useLatestDemocracyTally from "next-common/hooks/democracy/tally";
-import capitalize from "lodash.capitalize";
+import { capitalize } from "lodash-es";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import VotesInfo from "./votesInfo";
 import ExternalLink from "next-common/components/externalLink";

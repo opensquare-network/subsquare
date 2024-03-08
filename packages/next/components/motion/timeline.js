@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import findLastIndex from "lodash.findlastindex";
+import { findLastIndex } from "lodash-es";
 import { createMotionTimelineData } from "../../utils/timeline/motion";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";

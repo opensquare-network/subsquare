@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import findLastIndex from "lodash.findlastindex";
+import { findLastIndex } from "lodash-es";
 import { getTimelineStatus } from "utils";
 import Timeline from "next-common/components/timeline";
 import { detailPageCategory } from "next-common/utils/consts/business/category";

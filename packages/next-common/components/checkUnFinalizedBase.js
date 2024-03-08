@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useRouter } from "next/router";
 import Loading from "../assets/imgs/icons/block-loading.svg";
 import { H2, P, Wrapper } from "./styled/notFound";

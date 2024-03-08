@@ -1,6 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import isToday from "dayjs/plugin/isToday";
 import { cn } from "next-common/utils";
 

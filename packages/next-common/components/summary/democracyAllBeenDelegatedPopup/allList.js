@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import styled from "styled-components";
 import PopupListWrapper from "../../styled/popupListWrapper";
 import ValueDisplay from "../../valueDisplay";

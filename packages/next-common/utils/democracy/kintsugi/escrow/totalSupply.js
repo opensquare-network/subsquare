@@ -1,5 +1,5 @@
 import { getFinalizedBlockNumber } from "./utils";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export async function getTotalSupply(api, blockNumber) {
   let height = blockNumber;

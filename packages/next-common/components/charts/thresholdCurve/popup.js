@@ -14,7 +14,7 @@ import {
   StyledTr,
 } from "../../styled/table";
 import Loading from "../../loading";
-import _range from "lodash.range";
+import { range } from "lodash-es";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
@@ -60,7 +60,7 @@ export default function ThresholdCurvesPopup({
   const { width } = useWindowSize();
   const theme = useTheme();
 
-  const list = _range(labels.length).map((n) => {
+  const list = range(labels.length).map((n) => {
     const support = Number(supportData[n]).toFixed(2);
     const approval = Number(approvalData[n]).toFixed(2);
 

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { usePageProps } from "next-common/context/page";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { Tooltip } from "@subsquare/next/components/gov2/sidebar/status/styled";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";

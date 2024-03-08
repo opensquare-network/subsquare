@@ -1,5 +1,5 @@
 import React from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { usePost, usePostTitle } from "../../../context/post";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";

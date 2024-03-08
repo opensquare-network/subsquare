@@ -3,7 +3,7 @@ import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import { useIsFellowship, useIsReferenda } from "./moduleTab";
-import capitalize from "lodash.capitalize";
+import { capitalize } from "lodash-es";
 
 function OpenGovReferendaTag({ proposal, vote }) {
   if (proposal?.state?.name) {

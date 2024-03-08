@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import RadioOption from "./radioOption";
 
 export default function RadioOptionGroup({

@@ -6,7 +6,7 @@ import { useDeepCompareEffect, useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export default function DataList({
   columns = [],

@@ -7,7 +7,7 @@ import {
   useApprovalThresholdDatasetConfig,
   useSupportThresholdDatasetConfig,
 } from "next-common/components/charts/thresholdCurve/utils/dataset";
-import set from "lodash.set";
+import { set } from "lodash-es";
 
 export default function ThresholdCurvesChart({
   width,

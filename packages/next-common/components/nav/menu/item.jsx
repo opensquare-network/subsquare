@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
