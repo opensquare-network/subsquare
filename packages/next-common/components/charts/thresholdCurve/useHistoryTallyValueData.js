@@ -1,7 +1,7 @@
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import last from "lodash.last";
+import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
 import { useMemo } from "react";

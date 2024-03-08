@@ -5,7 +5,7 @@ import {
   convictionToLockX,
   Conviction,
 } from "next-common/utils/referendumCommon";
-import last from "lodash.last";
+import { last } from "lodash-es";
 
 const DEFAULT_OPTIONS = [
   {
