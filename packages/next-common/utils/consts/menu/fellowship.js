@@ -1,5 +1,5 @@
 import React from "react";
-import sumBy from "lodash.sumby";
+import { sumBy } from "lodash-es";
 import Divider from "../../../components/styled/layout/divider";
 import { startCase } from "lodash-es";
 import { getExcludeChains } from "../../viewfuncs";

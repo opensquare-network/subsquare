@@ -1,6 +1,6 @@
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
-import sumBy from "lodash.sumby";
+import { sumBy } from "lodash-es";
 import { startCase } from "lodash-es";
 import { MenuReferenda } from "@osn/icons/subsquare";
 

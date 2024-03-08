@@ -16,7 +16,7 @@ import {
   myTreasuryProposalDepositsSelector,
   myTreasuryTipDepositsSelector,
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
-import sumBy from "lodash.sumby";
+import { sumBy } from "lodash-es";
 import { isNil } from "lodash-es";
 import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 

@@ -8,7 +8,7 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useUpdateEffect } from "usehooks-ts";
 import NavMenuItem from "./item";
 import NavMenuDivider from "../divider";
-import sumBy from "lodash.sumby";
+import { sumBy } from "lodash-es";
 
 export default function NavMenuGroup({
   menu = {},
