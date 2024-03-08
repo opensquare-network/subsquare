@@ -11,12 +11,12 @@ export default function Summary({ delegator, delegatee, capital }) {
       <SummaryItems
         items={[
           {
-            title: "DELEGATOR ADDRESS",
-            content: delegator || 0,
+            title: "DELEGATE",
+            content: delegatee || 0,
           },
           {
-            title: "DELEGATED ADDRESS",
-            content: delegatee || 0,
+            title: "DELEGATOR",
+            content: delegator || 0,
           },
           {
             title: "CAPITAL",

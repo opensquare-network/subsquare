@@ -14,7 +14,7 @@ export default function DelegationLayout({ children }) {
       exactMatch: true,
     },
     {
-      label: "Delegation Statistics",
+      label: "Statistics",
       url: "/delegation/statistics",
       exactMatch: true,
     },
