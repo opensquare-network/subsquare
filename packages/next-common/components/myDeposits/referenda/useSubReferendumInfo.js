@@ -13,13 +13,17 @@ export default function useSubReferendumInfo(pallet, referendumIndex) {
     }
 
     let unsub;
-    api.query[pallet].referendumInfoFor(referendumIndex, (optionalInfo) => {
-      if (!isMounted.current || !optionalInfo.isSome) {
-        return;
-      }
+    api.query[pallet]
+      .referendumInfoFor(referendumIndex, (optionalInfo) => {
+        if (!isMounted.current || !optionalInfo.isSome) {
+          return;
+        }
 
-      setInfo(optionalInfo.unwrap().toJSON());
-    });
+        setInfo(optionalInfo.unwrap().toJSON());
+      })
+      .then((result) => {
+        unsub = result;
+      });
 
     return () => {
       if (unsub) {
