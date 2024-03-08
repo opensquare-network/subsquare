@@ -10,7 +10,7 @@ import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
 import React from "react";
 import useDetailPageOptions from "next-common/components/charts/thresholdCurve/utils/options";
-import set from "lodash.set";
+import { set } from "lodash-es";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
