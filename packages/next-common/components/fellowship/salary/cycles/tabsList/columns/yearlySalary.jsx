@@ -2,11 +2,11 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
 
-export function useFellowshipSalaryCycleSalaryColumn() {
+export function useFellowshipSalaryCycleYearlySalaryColumn() {
   const { decimals, symbol } = useSalaryAsset();
 
   return {
-    name: "Salary",
+    name: "Yearly Salary",
     width: 160,
     cellRender(data) {
       return (

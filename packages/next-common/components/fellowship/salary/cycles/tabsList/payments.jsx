@@ -4,8 +4,8 @@ import {
   fellowshipSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
 import { useFellowshipSalaryCycleRankColumn } from "./columns/rank";
-import { useFellowshipSalaryCycleMemberColumn } from "./columns/member";
-import { useFellowshipSalaryCycleSalaryColumn } from "./columns/salary";
+import { useFellowshipSalaryCycleAccountColumn } from "./columns/account";
+import { useFellowshipSalaryCycleYearlySalaryColumn } from "./columns/yearlySalary";
 import { useFellowshipSalaryCyclePaidColumn } from "./columns/paid";
 import { useFellowshipSalaryCycleBeneficiaryColumn } from "./columns/beneficiary";
 import { useFellowshipSalaryCycleTimeAgeColumn } from "./columns/timeAge";
@@ -21,26 +21,24 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
 
   const rankColumn = useFellowshipSalaryCycleRankColumn();
 
-  const memberColumn = useFellowshipSalaryCycleMemberColumn();
-  memberColumn.name = "Account";
-  memberColumn.width = 212;
+  const accountColumn = useFellowshipSalaryCycleAccountColumn();
+  accountColumn.width = 212;
 
   const beneficiaryColumn = useFellowshipSalaryCycleBeneficiaryColumn();
 
   const timeAgeColumn = useFellowshipSalaryCycleTimeAgeColumn();
 
-  const salaryColumn = useFellowshipSalaryCycleSalaryColumn();
-  salaryColumn.name = "Yearly Salary";
-  salaryColumn.className = "text-right";
+  const yearlySalaryColumn = useFellowshipSalaryCycleYearlySalaryColumn();
+  yearlySalaryColumn.className = "text-right";
 
   const paidColumn = useFellowshipSalaryCyclePaidColumn();
 
   const columns = [
     rankColumn,
-    memberColumn,
+    accountColumn,
     beneficiaryColumn,
     timeAgeColumn,
-    salaryColumn,
+    yearlySalaryColumn,
     paidColumn,
   ];
 

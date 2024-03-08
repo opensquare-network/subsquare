@@ -1,8 +1,8 @@
 import { AddressUser } from "next-common/components/user";
 
-export function useFellowshipSalaryCycleMemberColumn() {
+export function useFellowshipSalaryCycleAccountColumn() {
   return {
-    name: "Member",
+    name: "Account",
     width: 240,
     cellRender(data) {
       return <AddressUser add={data.who} />;
