@@ -10,7 +10,7 @@ import { recentProposalFetchParams } from "next-common/services/serverSide/recen
 import { isNil } from "lodash-es";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
-import { first } from "lodash";
+import { first } from "lodash-es";
 import DataList from "next-common/components/dataList";
 
 export default function RecentProposalTemplate({

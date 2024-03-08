@@ -4,7 +4,7 @@ import { withCommonProps } from "next-common/lib";
 import dynamic from "next/dynamic";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
-import { lowerCase } from "lodash";
+import { lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { SystemPlus } from "@osn/icons/subsquare";

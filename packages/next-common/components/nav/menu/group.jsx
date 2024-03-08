@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { startCase, capitalize } from "lodash";
+import { startCase, capitalize } from "lodash-es";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";

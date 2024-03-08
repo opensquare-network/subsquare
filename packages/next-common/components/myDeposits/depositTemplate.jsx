@@ -8,7 +8,7 @@ import { recentProposalFetchParams } from "next-common/services/serverSide/recen
 import { isNil } from "lodash-es";
 import { useUpdateEffect } from "usehooks-ts";
 import { useChain } from "next-common/context/chain";
-import { first } from "lodash";
+import { first } from "lodash-es";
 import Pagination from "next-common/components/pagination";
 import Loading from "next-common/components/loading";
 import DataList from "../dataList";

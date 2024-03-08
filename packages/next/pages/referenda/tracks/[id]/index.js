@@ -11,7 +11,7 @@ import { startCase } from "lodash-es";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
-import { camelCase, snakeCase, upperFirst } from "lodash";
+import { camelCase, snakeCase, upperFirst } from "lodash-es";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
