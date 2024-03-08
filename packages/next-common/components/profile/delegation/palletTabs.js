@@ -5,7 +5,7 @@ import {
   Referenda,
 } from "../votingHistory/common";
 
-export default function PalletTabs({ children }) {
+export default function PalletTabs({ shallow, children }) {
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const availableTabs = [];
@@ -19,7 +19,11 @@ export default function PalletTabs({ children }) {
   const defaultTab = availableTabs[0]?.tabId;
 
   return (
-    <ModuleTabProvider availableTabs={availableTabs} defaultTab={defaultTab}>
+    <ModuleTabProvider
+      shallow={shallow}
+      availableTabs={availableTabs}
+      defaultTab={defaultTab}
+    >
       <div className="flex flex-col gap-[18px]">{children}</div>
     </ModuleTabProvider>
   );

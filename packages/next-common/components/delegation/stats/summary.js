@@ -11,15 +11,15 @@ export default function Summary({ delegator, delegatee, capital }) {
       <SummaryItems
         items={[
           {
-            title: "Delegator Address",
+            title: "DELEGATOR ADDRESS",
             content: delegator,
           },
           {
-            title: "Delegated Address",
+            title: "DELEGATED ADDRESS",
             content: delegatee,
           },
           {
-            title: "Capital",
+            title: "CAPITAL",
             content: (
               <ValueDisplay
                 value={toPrecision(capital, decimals)}
