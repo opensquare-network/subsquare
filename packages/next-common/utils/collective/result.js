@@ -1,5 +1,5 @@
 // used for collective timeline executed item
-import capitalize from "lodash.capitalize";
+import { capitalize } from "lodash-es";
 
 export default function getMotionExecutedResult(dispatchResult) {
   if (typeof dispatchResult === "boolean") {
