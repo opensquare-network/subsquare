@@ -6,7 +6,7 @@ import Loading from "../../loading";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { useChain } from "next-common/context/chain";
-import pick from "lodash.pick";
+import { pick } from "lodash-es";
 
 export default function List({ id, secondCategory }) {
   const [page, setPage] = useState(1);
