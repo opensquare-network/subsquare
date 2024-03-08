@@ -11,7 +11,7 @@ import { EmptyList } from "next-common/utils/constants";
 import nextApi from "next-common/services/nextApi";
 import { useShallowCompareEffect } from "react-use";
 import { isNil } from "lodash-es";
-import sum from "lodash.sum";
+import { sum } from "lodash-es";
 import CheckableTag from "next-common/components/tags/checkable";
 
 export function useDepositTreasuryBountiesTab(
