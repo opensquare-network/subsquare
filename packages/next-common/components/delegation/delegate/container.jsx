@@ -11,11 +11,13 @@ export default function DelegateContainer() {
 
   return (
     <ModuleTabProvider availableTabs={moduleTabs} defaultTab={defaultModuleTab}>
-      <TitleContainer>
-        <span>Delegates</span>
-        <ModuleTab />
-      </TitleContainer>
-      <DelegatesSection />
+      <div className="flex flex-col gap-y-4">
+        <TitleContainer>
+          <span>Delegates</span>
+          <ModuleTab />
+        </TitleContainer>
+        <DelegatesSection />
+      </div>
     </ModuleTabProvider>
   );
 }

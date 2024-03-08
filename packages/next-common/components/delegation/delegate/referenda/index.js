@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import DelegatesLoadable from "next-common/components/delegation/delegate/common/loadable";
 import DelegateEmpty from "next-common/components/delegation/delegate/common/empty";
 import Delegates from "next-common/components/delegation/delegate/referenda/members";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 export default function ReferendaDelegates() {
   const dispatch = useDispatch();
@@ -27,7 +28,16 @@ export default function ReferendaDelegates() {
   }, [page, pageSize]);
 
   return (
-    <div className="mt-4">
+    <>
+      <TitleContainer>
+        <span>
+          List
+          {!!total && (
+            <span className="text-textTertiary text14Medium ml-1">{total}</span>
+          )}
+        </span>
+      </TitleContainer>
+
       <DelegatesLoadable delegates={referendaDelegatesPageData}>
         {delegates <= 0 ? (
           <DelegateEmpty />
@@ -37,6 +47,6 @@ export default function ReferendaDelegates() {
 
         <div className="mt-2">{pageComponent}</div>
       </DelegatesLoadable>
-    </div>
+    </>
   );
 }
