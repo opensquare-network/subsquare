@@ -1,4 +1,4 @@
-import isEmpty from "lodash.isempty";
+import { isEmpty } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import omit from "lodash.omit";
 

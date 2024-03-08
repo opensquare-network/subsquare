@@ -7,7 +7,7 @@ import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/use
 import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
-import isEmpty from "lodash.isempty";
+import { isEmpty } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 function calcFromOneTallyData(tally) {
