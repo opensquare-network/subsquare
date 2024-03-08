@@ -1,6 +1,6 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import difference from "lodash.difference";
+import { difference } from "lodash-es";
 import {
   ProjectIconInterlayDark,
   ProjectIconInterlayLight,

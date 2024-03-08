@@ -2,7 +2,7 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import difference from "lodash.difference";
+import { difference } from "lodash-es";
 import {
   ProjectIconCentrifugeDark,
   ProjectIconCentrifugeLight,
