@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import orderBy from "lodash.orderby";
+import { orderBy } from "lodash-es";
 import { isNil } from "lodash-es";
 
 const name = "fellowshipCore";

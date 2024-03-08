@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { myReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { flatten } from "lodash-es";
-import orderBy from "lodash.orderby";
+import { orderBy } from "lodash-es";
 
 const myReferendaVotesSelector = createSelector(
   myReferendaVotingSelector,

@@ -6,7 +6,7 @@ import {
 import { referendaLockingPeriodSelector } from "next-common/store/reducers/referenda/meta";
 import getTrackRequiredLock from "./utils/getTrackRequiredLock";
 import BigNumber from "bignumber.js";
-import orderBy from "lodash.orderby";
+import { orderBy } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 function shouldUnlockTrack(trackData, latestHeight, lockingPeriod) {

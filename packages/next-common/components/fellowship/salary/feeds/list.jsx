@@ -1,4 +1,4 @@
-import orderBy from "lodash.orderby";
+import { orderBy } from "lodash-es";
 import FellowshipFeedSuffix from "next-common/components/fellowship/feeds/suffix";
 import FellowshipSalaryFeed from "next-common/components/fellowship/salary/feeds/events";
 import FellowshipFeedsPanel from "next-common/components/fellowship/feeds/list";
