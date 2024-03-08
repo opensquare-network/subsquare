@@ -5,15 +5,14 @@ import {
 } from "next-common/components/overview/recentProposals/columns";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getBondBalanceColumn } from "../columns";
-import { cn } from "next-common/utils";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
-import { BaseTag } from "next-common/components/tags/state/styled";
 import { useEffect, useState } from "react";
 import { EmptyList } from "next-common/utils/constants";
 import nextApi from "next-common/services/nextApi";
 import { useShallowCompareEffect } from "react-use";
 import isNil from "lodash.isnil";
 import sum from "lodash.sum";
+import CheckableTag from "next-common/components/tags/checkable";
 
 export function useDepositTreasuryBountiesTab(
   bountyBonds = [],
@@ -123,37 +122,16 @@ export function useDepositTreasuryBountiesTab(
     tableHead: (
       <div className="flex items-center gap-x-2 mb-4">
         {subTabs.map((subTab) => (
-          <SwitchTag
-            active={subTabActiveLabel === subTab.label}
+          <CheckableTag
+            checked={subTabActiveLabel === subTab.label}
             key={subTab.label}
-            label={subTab.label}
             count={subTab.count}
             onClick={() => setSubTabActiveLabel(subTab.label)}
-          />
+          >
+            {subTab.label}
+          </CheckableTag>
         ))}
       </div>
     ),
   };
-}
-
-function SwitchTag({ active, count, label, className, ...props }) {
-  return (
-    <BaseTag
-      {...props}
-      className={cn(
-        active
-          ? "bg-theme100 !text-theme500"
-          : "bg-neutral200 !text-textPrimary",
-        "cursor-pointer",
-        className,
-      )}
-    >
-      {label}
-      <span
-        className={cn("ml-1", active ? "text-theme300" : "text-textTertiary")}
-      >
-        {count}
-      </span>
-    </BaseTag>
-  );
 }

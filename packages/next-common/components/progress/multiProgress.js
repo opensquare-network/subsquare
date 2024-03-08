@@ -4,7 +4,10 @@ import Progress from ".";
 
 const ensureMax100 = (n) => (Number(n) > 100 ? 100 : Number(n));
 
-export default function MultiProgress({ progressItems = [] }) {
+export default function MultiProgress({
+  progressItems = [],
+  bg = "var(--neutral200)",
+}) {
   const items = useMemo(() => {
     return progressItems.map((item) => {
       return {
@@ -18,7 +21,7 @@ export default function MultiProgress({ progressItems = [] }) {
 
   return (
     <div className="relative rounded h-2 overflow-hidden">
-      <Progress bg="var(--neutral200)" />
+      <Progress bg={bg} />
 
       <div className="absolute inset-0 h-full w-full">
         {items.map((item, idx) => (
@@ -27,7 +30,7 @@ export default function MultiProgress({ progressItems = [] }) {
             content={item.tooltipContent}
             className="absolute inset-0"
             style={{
-              width: Math.abs(Number(item.end) || 100) + "%",
+              width: Math.abs(Number(item.end) || 0) + "%",
               left: (Number(item.start) || 0) + "%",
             }}
           >

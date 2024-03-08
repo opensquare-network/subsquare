@@ -4,7 +4,6 @@ import CaretLeft from "../../assets/imgs/icons/pager-caret-left.svg";
 import CaretRight from "../../assets/imgs/icons/pager-caret-right.svg";
 import Link from "next/link";
 import styled from "styled-components";
-import encodeUriQuery from "./encodeUriQuery";
 
 const LinkInnerWrapper = styled.a`
   display: inline-flex;
@@ -13,15 +12,12 @@ const LinkInnerWrapper = styled.a`
 
 export default function PageCaret({ isPre = true, page, onPageChange = null }) {
   const router = useRouter();
+  const [url, query] = router.asPath.split("?");
+  const urlParams = new URLSearchParams(query);
+  urlParams.set("page", page);
 
   return (
-    <Link
-      href={`${router.pathname}?${encodeUriQuery({
-        ...router.query,
-        page,
-      })}`}
-      passHref
-      legacyBehavior>
+    <Link href={`${url}?${urlParams}`} passHref legacyBehavior>
       <LinkInnerWrapper
         onClick={(e) => {
           onPageChange && onPageChange(e, page);

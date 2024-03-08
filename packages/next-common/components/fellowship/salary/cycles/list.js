@@ -10,6 +10,10 @@ import {
   FellowshipSalaryTimeBlock,
 } from "./history/timeRange";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import SecondaryButton from "next-common/lib/button/secondary";
+import { ArrowRight } from "@osn/icons/subsquare";
+import Tooltip from "next-common/components/tooltip";
+import Link from "next/link";
 
 const indexColumn = {
   name: "Index",
@@ -53,12 +57,30 @@ const unregisteredPaidColumn = {
   },
 };
 
+const actionColumn = {
+  name: "",
+  width: 80,
+  className: "text-right",
+  cellRender(data) {
+    return (
+      <Tooltip content="View Detail">
+        <Link href={`/fellowship/salary/cycles/${data.index}`}>
+          <SecondaryButton size="small" className="w-7 p-0">
+            <ArrowRight className="w-4 h-4" />
+          </SecondaryButton>
+        </Link>
+      </Tooltip>
+    );
+  },
+};
+
 const desktopColumns = [
   indexColumn,
   timeRangeColumn,
   expenditureColumn,
   registeredPaidColumn,
   unregisteredPaidColumn,
+  actionColumn,
 ];
 
 const mobileColumns = [
@@ -82,6 +104,7 @@ const mobileColumns = [
   expenditureColumn,
   registeredPaidColumn,
   unregisteredPaidColumn,
+  actionColumn,
 ];
 
 export default function FellowshipSalaryCycles({ historyCycles }) {

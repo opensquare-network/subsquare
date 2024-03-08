@@ -1,3 +1,4 @@
+import isNil from "lodash.isnil";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { toPercentage } from "next-common/utils";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
@@ -7,7 +8,8 @@ export function useCalcPeriodBlocks(period, startAt) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
 
   const endAt = startAt + period || null;
-  const isStarted = latestHeight >= startAt;
+  const isStarted =
+    !isNil(latestHeight) && !isNil(startAt) && latestHeight >= startAt;
   const gone = latestHeight - startAt;
   const totalPeriodTime = useEstimateBlocksTime(period);
 

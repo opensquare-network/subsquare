@@ -3,11 +3,8 @@ import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useF
 import Summary from "next-common/components/summary/v2/base";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { cn } from "next-common/utils";
-import isNil from "lodash.isnil";
 import chunk from "lodash.chunk";
 import { useNavCollapsed } from "next-common/context/nav";
-import LoadableContent from "next-common/components/common/loadableContent";
-import RemainLabel from "./remainLabel";
 import getCycleIndexSummaryItem from "next-common/components/fellowship/salary/cycles/summary";
 import getCycleBudgetSummaryItem from "next-common/components/fellowship/salary/cycles/summary/budget";
 import getCycleRegistrationSummaryItem from "next-common/components/fellowship/salary/cycles/summary/registration";
@@ -15,10 +12,13 @@ import getCycleUnregisteredPaidSummaryItem from "next-common/components/fellowsh
 import getCyclePotSummaryItem from "next-common/components/fellowship/salary/cycles/summary/pot";
 import getCycleTotalPeriodSummaryItem from "next-common/components/fellowship/salary/cycles/summary/totalPeriod";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
+import getCycleRemainSummaryItem from "next-common/components/fellowship/salary/cycles/summary/remain";
+import { useFellowshipSalaryCycleData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryCycleData";
 
 export default function FellowshipSalaryStats() {
   const [navCollapsed] = useNavCollapsed();
   const stats = useSubFellowshipSalaryStats();
+  const cycleData = useFellowshipSalaryCycleData(stats?.cycleIndex);
   const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
   const { decimals, symbol } = useSalaryAsset();
 
@@ -55,6 +55,7 @@ export default function FellowshipSalaryStats() {
     totalRegistrationsValue,
     decimals,
     symbol,
+    cycleData?.registeredCount,
   );
 
   const totalPeriodItem = getCycleTotalPeriodSummaryItem(
@@ -68,29 +69,17 @@ export default function FellowshipSalaryStats() {
     totalUnregisteredPaidValue,
     decimals,
     symbol,
+    cycleData?.unRegisteredPaidCount,
   );
   const potItem = getCyclePotSummaryItem(potValue, decimals, symbol);
-
-  const timeItem = {
-    content: (
-      <LoadableContent isLoading={isNil(totalCyclePeriod)}>
-        <div className="space-y-1">
-          <RemainLabel
-            percentage={registrationPeriodData.gonePercentage}
-            label={"Registration"}
-            remain={registrationPeriodData.remainBlocks}
-            time={registrationPeriodData.totalPeriodTime.split(" ")}
-          />
-          <RemainLabel
-            percentage={payoutPeriodData.gonePercentage}
-            label={"Payout"}
-            remain={payoutPeriodData.remainBlocks}
-            time={payoutPeriodData.totalPeriodTime.split(" ")}
-          />
-        </div>
-      </LoadableContent>
-    ),
-  };
+  const timeItem = getCycleRemainSummaryItem(
+    registrationPeriodData.gonePercentage,
+    registrationPeriodData.remainBlocks,
+    registrationPeriodData.totalPeriodTime.split(" "),
+    payoutPeriodData.gonePercentage,
+    payoutPeriodData.remainBlocks,
+    payoutPeriodData.totalPeriodTime.split(" "),
+  );
 
   const desktopSummaryItems = [
     cycleIndexItem,

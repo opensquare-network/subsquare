@@ -1,7 +1,8 @@
 import { cn } from "next-common/utils";
 import noop from "lodash.noop";
 import Tooltip from "../tooltip";
-import List from "../tabsList";
+import DefaultTabsList from "../tabsList";
+import UrlTabsList from "../urlTabs";
 import { useEffect, useRef, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
 
@@ -11,6 +12,7 @@ export default function TabsList({
   tabs = [],
   activeTabLabel,
   onTabClick = noop,
+  isUrlTabs = false,
   ...props
 }) {
   const [showLeft, setShowLeft] = useState(false);
@@ -36,6 +38,8 @@ export default function TabsList({
       handleGradientBlanketVisible(ref.current);
     }
   }, [ref, width]);
+
+  const List = isUrlTabs ? UrlTabsList : DefaultTabsList;
 
   return (
     <div className="relative">

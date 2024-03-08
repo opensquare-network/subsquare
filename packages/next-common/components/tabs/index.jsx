@@ -8,6 +8,7 @@ export default function Tabs({
   tabs = [],
   activeTabLabel = "",
   onTabClick = noop,
+  isUrlTabs = false,
 }) {
   const [lazyRendered, setLazyRendered] = useState({});
 
@@ -34,6 +35,7 @@ export default function Tabs({
         tabs={tabs}
         activeTabLabel={activeTabLabel}
         onTabClick={onTabClick}
+        isUrlTabs={isUrlTabs}
       />
 
       <Divider />
