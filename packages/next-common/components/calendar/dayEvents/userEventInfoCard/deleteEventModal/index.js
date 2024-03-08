@@ -9,7 +9,7 @@ import {
 import { calendarUserEventsApi } from "../../../../../services/url";
 import ErrorMessage from "../../../../styled/errorMessage";
 import DangerButton from "../../../../buttons/dangerButton";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { PopupButtonWrapper } from "../../../../popup/wrapper";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 

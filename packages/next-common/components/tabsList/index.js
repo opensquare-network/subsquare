@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { cn } from "next-common/utils";
 import { forwardRef } from "react";
 

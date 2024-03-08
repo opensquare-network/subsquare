@@ -1,6 +1,6 @@
 import SignerPopup from "next-common/components/signerPopup";
 import React, { useCallback, useState } from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import RelatedReferenda from "../../../../popupCommon/relatedReferenda";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";

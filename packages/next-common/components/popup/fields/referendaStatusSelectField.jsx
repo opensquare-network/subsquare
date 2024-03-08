@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import Select from "next-common/components/select";
 import { gov2State } from "next-common/utils/consts/state";
 import styled from "styled-components";

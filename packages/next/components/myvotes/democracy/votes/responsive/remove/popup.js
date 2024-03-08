@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useDispatch } from "react-redux";
 import React, { useCallback, useState } from "react";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";

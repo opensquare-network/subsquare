@@ -1,5 +1,5 @@
 import React from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import styled from "styled-components";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 

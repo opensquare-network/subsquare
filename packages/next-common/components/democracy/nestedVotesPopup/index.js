@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import Pagination from "next-common/components/pagination";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";

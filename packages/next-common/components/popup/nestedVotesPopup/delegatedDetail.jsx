@@ -2,7 +2,7 @@
 
 import React from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import VotesInfoGroup from "./votesInfoGroup";
 import DelegationsList from "./delegationsList";
 

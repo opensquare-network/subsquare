@@ -5,7 +5,7 @@ import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import useParamDefs from "./useParamDefs";
 import IconButton from "next-common/components/iconButton";
 import ItemParam from "./itemParam";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 function getParam([{ name, type }], index) {

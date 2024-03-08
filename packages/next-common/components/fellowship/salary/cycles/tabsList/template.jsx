@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import Tabs from "next-common/components/tabs";

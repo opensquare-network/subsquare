@@ -5,7 +5,7 @@
 // https://react-graph-gallery.com/circular-packing
 
 import * as d3 from "d3";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { Fragment, useEffect, useMemo, useState } from "react";
 
 export default function CirclePacking({

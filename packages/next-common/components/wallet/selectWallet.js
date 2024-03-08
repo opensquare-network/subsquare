@@ -18,7 +18,7 @@ import {
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
 
 export default function SelectWallet({

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import Popup from "../../../components/popup/wrapper/Popup";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import Day from "./day";
 import Time from "./time";
 import { PopupButtonWrapper } from "../../popup/wrapper";

@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import RadioButton from "./radioButton";
 
 export default function RadioOption({ checked, label, onClick = noop }) {

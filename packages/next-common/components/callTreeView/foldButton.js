@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import PlusIcon from "./plus";
 import SubtractIcon from "./subtract";
 

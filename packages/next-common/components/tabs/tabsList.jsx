@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import Tooltip from "../tooltip";
 import DefaultTabsList from "../tabsList";
 import UrlTabsList from "../urlTabs";

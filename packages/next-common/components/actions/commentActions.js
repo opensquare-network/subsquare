@@ -11,7 +11,7 @@ import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";

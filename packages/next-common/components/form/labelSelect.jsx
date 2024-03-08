@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useCallback } from "react";
 import { cn } from "next-common/utils";
 
