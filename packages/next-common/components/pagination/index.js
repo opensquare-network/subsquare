@@ -50,8 +50,6 @@ const Nav = styled.div`
     `}
 `;
 
-const PAGE_OFFSET = 1;
-
 export default function Pagination({
   page = 1,
   pageSize = 10,
@@ -62,15 +60,15 @@ export default function Pagination({
     ? Math.ceil(total / pageSize)
     : 1;
 
-  const prevPage = Math.max(1, page + 1 - 1 - PAGE_OFFSET);
-  const nextPage = Math.min(totalPages, page + 1 + 1 - PAGE_OFFSET);
+  const prevPage = Math.max(1, page - 1);
+  const nextPage = Math.min(totalPages, page + 1);
 
   return (
     <Wrapper>
       <Nav disabled={page === 1}>
         <PageCaret isPre={true} page={prevPage} onPageChange={onPageChange} />
       </Nav>
-      <Items page={page} total={totalPages - 1} onPageChange={onPageChange} />
+      <Items page={page} total={totalPages} onPageChange={onPageChange} />
       <Nav disabled={page === totalPages}>
         <PageCaret isPre={false} page={nextPage} onPageChange={onPageChange} />
       </Nav>

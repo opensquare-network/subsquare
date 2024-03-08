@@ -1,6 +1,6 @@
 export default function constructGroups(total = 0, page = 0) {
   let arr = [page - 1, page, page + 1];
-  const zeroIndex = arr.findIndex(item => item === 0);
+  const zeroIndex = arr.findIndex((item) => item === 0);
   if (zeroIndex > 0) {
     arr = arr.slice(zeroIndex);
   }
@@ -10,12 +10,12 @@ export default function constructGroups(total = 0, page = 0) {
     }
   }
 
-  const totalIndex = arr.findIndex(item => item === total);
+  const totalIndex = arr.findIndex((item) => item === total);
   if (totalIndex >= 0) {
     arr = arr.slice(0, totalIndex + 1);
   }
   if (arr[arr.length - 1] > total - 3) {
-    while(arr[arr.length - 1] < total) {
+    while (arr[arr.length - 1] < total) {
       arr.push(arr[arr.length - 1] + 1);
     }
   }
