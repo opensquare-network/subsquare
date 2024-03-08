@@ -1,4 +1,4 @@
-import uniq from "lodash.uniq";
+import { uniq } from "lodash-es";
 import React, { useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
 import Track from "../../popup/fields/trackField";
