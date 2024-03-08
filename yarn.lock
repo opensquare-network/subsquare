@@ -3460,6 +3460,7 @@ __metadata:
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.74.0
     "@svgr/webpack": ^7.0.0
+    "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
     cookies: ^0.8.0
@@ -3493,6 +3494,7 @@ __metadata:
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.74.0
     "@svgr/webpack": ^7.0.0
+    "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
     clsx: ^1.2.1
     cookies: ^0.8.0
@@ -3865,6 +3867,22 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/lodash-es@npm:^4.17.12":
+  version: 4.17.12
+  resolution: "@types/lodash-es@npm:4.17.12"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 990a99e2243bebe9505cb5ad19fbc172beb4a8e00f9075c99fc06c46c2801ffdb40bc2867271cf580d5f48994fc9fb076ec92cd60a20e621603bf22114e5b077
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.14.202
+  resolution: "@types/lodash@npm:4.14.202"
+  checksum: a91acf3564a568c6f199912f3eb2c76c99c5a0d7e219394294213b3f2d54f672619f0fde4da22b29dc5d4c31457cd799acc2e5cb6bd90f9af04a1578483b6ff7
   languageName: node
   linkType: hard
 
@@ -8583,6 +8601,7 @@ __metadata:
     "@radix-ui/react-hover-card": ^1.0.6
     "@radix-ui/react-tooltip": ^1.0.5
     "@reduxjs/toolkit": ^1.9.3
+    "@types/lodash-es": ^4.17.12
     "@types/marked": ^6.0.0
     bignumber.js: ^9.0.2
     chart.js: ^4.1.1
