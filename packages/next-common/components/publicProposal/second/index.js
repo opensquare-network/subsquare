@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
-import countBy from "lodash.countby";
+import { countBy } from "lodash-es";
 import BigNumber from "bignumber.js";
 import Loading from "../../loading";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
