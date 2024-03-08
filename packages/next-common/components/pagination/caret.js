@@ -14,7 +14,7 @@ export default function PageCaret({ isPre = true, page, onPageChange = null }) {
   const router = useRouter();
   const [url, query] = router.asPath.split("?");
   const urlParams = new URLSearchParams(query);
-  urlParams.set("page", page + 1);
+  urlParams.set("page", page);
 
   return (
     <Link href={`${url}?${urlParams}`} passHref legacyBehavior>

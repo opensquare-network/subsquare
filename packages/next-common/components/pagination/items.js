@@ -9,17 +9,17 @@ const Ellipsis = styled.div`
   color: var(--textSecondary);
 `;
 
-export default function Items({ total = 0, page, onPageChange = null }) {
+export default function Items({ total = 1, page, onPageChange = null }) {
   let key = 0;
   const items = [];
-  const groups = constructGroups(total, page - 1);
+  const groups = constructGroups(total - 1, page - 1);
   for (let i = 0; i < groups.length; i++) {
     const group = groups[i];
     for (let j = 0; j < group.length; j++) {
       items.push(
         <PageItem
           now={page}
-          page={group[j]}
+          page={group[j] + 1}
           key={key++}
           onPageChange={onPageChange}
         />,
