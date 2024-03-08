@@ -3,16 +3,6 @@ import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 import { isSameAddress } from "..";
 import { u8aToHex } from "@polkadot/util";
 
-export async function getGov2TrackDelegation(api, trackId, address) {
-  const voting = await api.query.convictionVoting.votingFor(address, trackId);
-  const jsonVoting = voting?.toJSON();
-  if (!jsonVoting) {
-    return null;
-  }
-
-  return jsonVoting?.delegating;
-}
-
 let votingForEntries = null;
 
 async function queryEntries(api, startKey, num = 1000) {
