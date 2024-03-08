@@ -7,7 +7,7 @@ import {
 import { useChain } from "next-common/context/chain";
 import { isNil } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
-import uniqBy from "lodash.uniqby";
+import { uniqBy } from "lodash-es";
 import QuickLRU from "quick-lru";
 
 const dataCache = new QuickLRU({ maxSize: 100 });
