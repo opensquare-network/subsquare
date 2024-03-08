@@ -15,7 +15,7 @@ import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import TreasurySummaryToBeAwarded from "./toBeAwarded";
 import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
-import find from "lodash.find";
+import { find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 const GET_TREASURIES = gql`
