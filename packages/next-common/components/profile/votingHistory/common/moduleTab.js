@@ -46,7 +46,6 @@ export function ModuleTabProvider({
   shallow = true,
 }) {
   const router = useRouter();
-  const [urlPath, urlQuery] = router.asPath.split("?");
 
   const qTab = availableTabs.find(
     (tab) => tab.tabId === router.query?.[queryName],
@@ -55,6 +54,7 @@ export function ModuleTabProvider({
 
   const getTabUrl = useCallback(
     (tabId) => {
+      const [urlPath, urlQuery] = router.asPath.split("?");
       const isFirstTab = availableTabs[0]?.tabId === tabId;
       const noAvailableTabs = availableTabs.length === 0;
 
@@ -73,12 +73,11 @@ export function ModuleTabProvider({
         urlSearch.set(queryName, tabId);
       }
 
-      const updatedUrlQuery =
-        urlSearch.size > 0 ? `?${urlSearch.toString()}` : "";
+      const newQuery = urlSearch.size > 0 ? `?${urlSearch.toString()}` : "";
 
-      return urlPath + updatedUrlQuery;
+      return urlPath + newQuery;
     },
-    [urlPath, urlQuery, queryName, availableTabs],
+    [router, queryName, availableTabs],
   );
 
   const navigateToTab = useCallback(
