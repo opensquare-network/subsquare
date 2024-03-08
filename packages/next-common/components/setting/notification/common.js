@@ -1,4 +1,4 @@
-import debounce from "lodash.debounce";
+import { debounce } from "lodash-es";
 import { useUser } from "next-common/context/user";
 import nextApi from "next-common/services/nextApi";
 import {
