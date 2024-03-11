@@ -4,6 +4,9 @@ import DelegatedAddressSummary from "next-common/components/statistics/referenda
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import Summary from "./delegationSummary";
+import TrackSelect from "./trackSelect";
+import { useState } from "react";
+import TrackDelegationList from "./trackDelegationList";
 
 export default function ReferendaDelegationStats({
   tracksStats,
@@ -11,6 +14,7 @@ export default function ReferendaDelegationStats({
   delegationSummary,
 }) {
   const [navCollapsed] = useNavCollapsed();
+  const [selectedTrackId, setSelectedTrackId] = useState("");
 
   return (
     <>
@@ -25,11 +29,29 @@ export default function ReferendaDelegationStats({
         <DelegatedAddressSummary tracks={tracksStats} />
       </div>
 
-      <Summary {...delegationSummary} />
-
-      <div>
-        <DelegateeSummary delegatee={delegatee} />
+      <div className="flex justify-between mx-6 max-sm:flex-col max-sm:gap-[14px]">
+        <div className="flex items-center text16Bold text-textPrimary">
+          Delegation
+        </div>
+        <div className="flex gap-[8px] items-center">
+          <span className="text12Medium text-textPrimary">Event</span>
+          <TrackSelect
+            selectedTrackId={selectedTrackId}
+            setSelectedTrackId={setSelectedTrackId}
+          />
+        </div>
       </div>
+
+      {selectedTrackId ? (
+        <TrackDelegationList trackId={selectedTrackId} />
+      ) : (
+        <>
+          <Summary {...delegationSummary} />
+          <div>
+            <DelegateeSummary delegatee={delegatee} />
+          </div>
+        </>
+      )}
     </>
   );
 }
