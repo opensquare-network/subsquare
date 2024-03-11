@@ -29,14 +29,17 @@ export default function ReferendaDelegationStats({
         <DelegatedAddressSummary tracks={tracksStats} />
       </div>
 
-      <div className="flex justify-between mx-6">
+      <div className="flex justify-between mx-6 max-sm:flex-col max-sm:gap-[14px]">
         <div className="flex items-center text16Bold text-textPrimary">
           Delegation
         </div>
-        <TrackSelect
-          selectedTrackId={selectedTrackId}
-          setSelectedTrackId={setSelectedTrackId}
-        />
+        <div className="flex gap-[8px] items-center">
+          <span className="text12Medium text-textPrimary">Event</span>
+          <TrackSelect
+            selectedTrackId={selectedTrackId}
+            setSelectedTrackId={setSelectedTrackId}
+          />
+        </div>
       </div>
 
       {selectedTrackId ? (
