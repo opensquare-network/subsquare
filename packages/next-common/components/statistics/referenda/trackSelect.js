@@ -1,7 +1,7 @@
 import Select from "next-common/components/select";
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 
 export default function TrackSelect({ selectedTrackId, setSelectedTrackId }) {
   const { tracks } = usePageProps();
