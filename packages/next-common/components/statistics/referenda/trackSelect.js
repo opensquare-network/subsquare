@@ -9,6 +9,7 @@ export default function TrackSelect({ selectedTrackId, setSelectedTrackId }) {
   const options = useMemo(
     () => [
       { label: "All Tracks", value: "" },
+      { divider: true },
       ...tracks.map((track) => ({
         label: (
           <span className="whitespace-nowrap">
