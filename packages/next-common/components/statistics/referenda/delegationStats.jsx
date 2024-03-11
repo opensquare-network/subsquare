@@ -31,7 +31,7 @@ export default function ReferendaDelegationStats({
 
       <div className="flex justify-between mx-6">
         <div className="flex items-center text16Bold text-textPrimary">
-          List
+          Delegation
         </div>
         <TrackSelect
           selectedTrackId={selectedTrackId}

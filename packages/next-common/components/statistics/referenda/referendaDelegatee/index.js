@@ -3,7 +3,6 @@ import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
-import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
 import BeenDelegatedListPopup from "../beenDelegatedPopup";
 import { useChainSettings } from "next-common/context/chain";
@@ -14,6 +13,7 @@ import startCase from "lodash.startcase";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import DetailButton from "next-common/components/detailButton";
 
 function getSortParams(sortedColumn) {
   if (!sortedColumn) {
@@ -89,7 +89,7 @@ export default function ReferendaDelegatee({ delegatee }) {
       },
       {
         name: "",
-        style: { textAlign: "right", maxWidth: "40px", minWidth: "40px" },
+        style: { textAlign: "right", maxWidth: "80px", minWidth: "80px" },
       },
     ],
     "VOTES",
@@ -148,9 +148,14 @@ export default function ReferendaDelegatee({ delegatee }) {
         value={toPrecision(item.votes || 0, decimals)}
         symbol={voteSymbol || symbol}
       />,
-      <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
-        <EnterSVG />
-      </Flex>,
+      <div key="detail">
+        <DetailButton
+          onClick={() => {
+            setDelegateeData(item);
+            setShowPopup(true);
+          }}
+        />
+      </div>,
     ];
 
     row.onClick = () => {
