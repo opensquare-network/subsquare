@@ -48,19 +48,26 @@ export default function AccountSubTabs({ className = "" }) {
     });
   }
 
-  tabs.push({
-    label: "Delegated Votes",
-    render: ({ active }) => (
-      <TabTitle active={active}>Delegated Votes</TabTitle>
-    ),
-    url: "/account/delegations",
-  });
+  if (
+    !isKintsugiChain(chain) &&
+    ![Chains.collectives, Chains.westendCollectives].includes(chain)
+  ) {
+    tabs.push({
+      label: "Delegated Votes",
+      render: ({ active }) => (
+        <TabTitle active={active}>Delegated Votes</TabTitle>
+      ),
+      url: "/account/delegations",
+    });
 
-  tabs.push({
-    label: "Been Delegated",
-    render: ({ active }) => <TabTitle active={active}>Been Delegated</TabTitle>,
-    url: "/account/been-delegated",
-  });
+    tabs.push({
+      label: "Been Delegated",
+      render: ({ active }) => (
+        <TabTitle active={active}>Been Delegated</TabTitle>
+      ),
+      url: "/account/been-delegated",
+    });
+  }
 
   return <UrlTabs tabs={tabs} className={className} />;
 }
