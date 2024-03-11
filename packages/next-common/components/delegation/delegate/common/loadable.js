@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash";
 import { SystemLoading } from "@osn/icons/subsquare";
 
 export default function DelegatesLoadable({ delegates, children }) {
