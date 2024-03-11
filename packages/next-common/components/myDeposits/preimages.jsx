@@ -1,4 +1,4 @@
-import { isNil, sum } from "lodash";
+import { isNil, sum } from "lodash-es";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import PreimageDetailPopup from "next-common/components/preImages/preImageDetailPopup";
 import UnnotePopup from "next-common/components/preImages/unnotePopup";

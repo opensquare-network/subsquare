@@ -1,6 +1,6 @@
-const isNil = require("lodash.isnil");
-const { usePostState } = require("next-common/context/post");
-const { gov2State } = require("next-common/utils/consts/state");
+import { isNil } from "lodash-es";
+import { usePostState } from "next-common/context/post";
+import { gov2State } from "next-common/utils/consts/state";
 
 export default function ConfirmationEstimationGuard({
   approvePercentage,

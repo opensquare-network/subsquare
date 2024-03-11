@@ -36,6 +36,7 @@ export const detailPageCategory = {
   TREASURY_TIP: "treasury/tips",
   GOV2_REFERENDUM: "referenda",
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
+  FELLOWSHIP_SALARY_CYCLES: "fellowship/salary/cycles",
   ADVISORY_MOTION: "advisory-committee/motions",
   ALLIANCE_MOTION: "alliance/motions",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcements",

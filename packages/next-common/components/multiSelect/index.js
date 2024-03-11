@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SelectedValueBox from "./selectedValueBox";
 import { useRef, useState } from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import DropDownList from "./dropDownList";
 import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
 import { OptionsWrapper } from "../select/styled";

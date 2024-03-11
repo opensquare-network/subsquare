@@ -9,7 +9,7 @@ import {
 } from "next-common/store/reducers/profile/deposits/treasury";
 import { useDepositTreasuryTipsTab } from "next-common/components/myDeposits/treasury/tips";
 import { useChainSettings } from "next-common/context/chain";
-import sum from "lodash.sum";
+import { sum } from "lodash-es";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 
 export default function useProfileTreasuryDepositsData() {

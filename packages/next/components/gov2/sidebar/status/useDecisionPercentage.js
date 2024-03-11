@@ -4,7 +4,7 @@ import {
   useDecidingSince,
 } from "next-common/context/post/gov2/referendum";
 import { useDecision } from "next-common/context/post/gov2/track";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useOnchainData, usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";

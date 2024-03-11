@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import dayjs from "dayjs";
 import styled, { css } from "styled-components";
 import EventTag from "../eventInfoCard/eventTag";

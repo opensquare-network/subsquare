@@ -1,6 +1,6 @@
 import SelectedValueItem from "./selectedValueItem";
 import DownSVG from "./down.svg";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import pluralize from "pluralize";
 import { cn } from "next-common/utils";
 

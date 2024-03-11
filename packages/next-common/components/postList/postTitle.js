@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import ReasonLink from "../reasonLink";
 import Link from "next/link";
 import { cn, isExternalLink } from "next-common/utils";

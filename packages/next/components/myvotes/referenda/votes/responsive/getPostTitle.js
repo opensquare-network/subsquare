@@ -1,5 +1,5 @@
-import isNil from "lodash.isnil";
-import startCase from "lodash.startcase";
+import { isNil } from "lodash-es";
+import { startCase } from "lodash-es";
 
 export default function getPostTitle(myReferendaVote, tracks = []) {
   const { post, trackId, referendumIndex } = myReferendaVote;

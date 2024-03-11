@@ -3,7 +3,7 @@
 // - dark:  project-menu-bg-{event.name}-dark.png
 
 import dayjs from "dayjs";
-import find from "lodash.find";
+import { find } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import solarlunar from "solarlunar";
 

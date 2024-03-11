@@ -6,7 +6,7 @@ import {
   fellowshipReferendumsTracksSummaryApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ListLayout from "next-common/components/layout/ListLayout";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";

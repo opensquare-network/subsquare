@@ -1,5 +1,5 @@
 import { usePageProps } from "next-common/context/page";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import FellowshipMemberInfoWrapper from "next-common/components/fellowship/core/members/infoWrapper";

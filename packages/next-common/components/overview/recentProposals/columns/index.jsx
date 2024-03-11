@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
 import ListPostTitle from "next-common/components/postList/postTitle";
 import PostListCardVotesSummaryBar from "next-common/components/postList/votesSummaryBar";

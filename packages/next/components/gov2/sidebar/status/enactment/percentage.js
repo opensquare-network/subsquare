@@ -1,7 +1,7 @@
 import { useOnchainData, usePostStateInfo } from "next-common/context/post";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useTrack } from "next-common/context/post/gov2/track";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday";
-import groupBy from "lodash.groupby";
+import { groupBy } from "lodash-es";
 import Tooltip from "../../tooltip";
 import FullCalendarCategory from "./category";
 import {

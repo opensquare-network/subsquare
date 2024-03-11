@@ -9,7 +9,7 @@ import { useState } from "react";
 import RemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup";
 import MoonRemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup/moonPopup";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Referenda } from "next-common/components/profile/votingHistory/common";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";

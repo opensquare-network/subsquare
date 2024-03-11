@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 import { getMotionId, shortMotionId } from "../../../utils/motion";
 import styled from "styled-components";

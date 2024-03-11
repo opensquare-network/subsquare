@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Timeline from "next-common/components/timeline";
 import { isMotionEnded } from "next-common/utils";
-import findLastIndex from "lodash.findlastindex";
+import { findLastIndex } from "lodash-es";
 import ArticleContent from "next-common/components/articleContent";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import MultiKVList from "next-common/components/listInfo/multiKVList";

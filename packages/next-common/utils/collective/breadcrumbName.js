@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { hashEllipsis } from "../index";
 
 export default function getMotionBreadcrumbName(id, motion = {}) {

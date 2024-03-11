@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useMemo } from "react";
 import { useApprovalCurve, useSupportCurve } from "./curve";
 import { useDecidingEndPercentage } from "./decidingPercentage";

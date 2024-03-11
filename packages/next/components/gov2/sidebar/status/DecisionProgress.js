@@ -5,7 +5,7 @@ import {
 } from "./useDecisionPercentage";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useMemo } from "react";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";

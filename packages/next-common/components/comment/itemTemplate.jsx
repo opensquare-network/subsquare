@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import Divider from "../styled/layout/divider";
 import { cn } from "next-common/utils";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import Duration from "../duration";
 import { useComment } from "./context";
 import VoteTag from "./voteTag";

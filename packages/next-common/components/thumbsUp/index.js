@@ -1,5 +1,5 @@
 import Loading from "../loading";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { Item } from "../actions/styled";
 import { ArrowDown, SystemThumbUp } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";

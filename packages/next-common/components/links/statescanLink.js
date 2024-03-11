@@ -1,6 +1,6 @@
 import React from "react";
 import { useChain, useChainSettings } from "../../context/chain";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import Chains from "../../utils/consts/chains";
 import IconLink from "./iconLink";
 import { LinkStatescan } from "@osn/icons/subsquare";

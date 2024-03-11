@@ -8,7 +8,7 @@ import DemocracyPublicProposalCall from "next-common/components/publicProposal/c
 import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";

@@ -5,7 +5,7 @@ import EyeIcon from "../assets/imgs/icons/eye.svg";
 import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
 import { emptyFunction } from "../utils";
 import FlexBetweenCenter from "./styled/flexBetweenCenter";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 
 const Wrapper = styled.div`
   position: relative;

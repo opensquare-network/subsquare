@@ -3,7 +3,7 @@ import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/vote
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export default function CapitalListItem({ capital, item, tab, conviction }) {
   const chainSettings = useChainSettings();

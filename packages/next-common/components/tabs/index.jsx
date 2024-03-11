@@ -1,13 +1,14 @@
 import { cn } from "next-common/utils";
 import Divider from "../styled/layout/divider";
 import TabsList from "./tabsList";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useEffect, useState } from "react";
 
 export default function Tabs({
   tabs = [],
   activeTabLabel = "",
   onTabClick = noop,
+  isUrlTabs = false,
 }) {
   const [lazyRendered, setLazyRendered] = useState({});
 
@@ -34,6 +35,7 @@ export default function Tabs({
         tabs={tabs}
         activeTabLabel={activeTabLabel}
         onTabClick={onTabClick}
+        isUrlTabs={isUrlTabs}
       />
 
       <Divider />

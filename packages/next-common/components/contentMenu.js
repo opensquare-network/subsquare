@@ -18,7 +18,7 @@ import PostLinkPopup from "./linkPost/postLinkPopup";
 import PostUnlinkPopup from "./linkPost/postUnlinkPopup";
 import ReportPopup from "./reportPopup";
 import copy from "copy-to-clipboard";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useComment } from "./comment/context";
 import DeletePopup from "./deletePopup";
 import nextApi from "next-common/services/nextApi";

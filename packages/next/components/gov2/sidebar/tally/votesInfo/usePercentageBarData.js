@@ -1,4 +1,4 @@
-import isEmpty from "lodash.isempty";
+import { isEmpty } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";

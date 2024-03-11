@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export default function getRemaining(latestHeight, startHeight, period) {
   if (isNil(latestHeight)) {

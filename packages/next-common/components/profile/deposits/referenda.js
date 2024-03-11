@@ -4,7 +4,7 @@ import {
   profileReferendaDecisionDepositsSelector,
   profileReferendaSubmissionDepositsSelector,
 } from "next-common/store/reducers/profile/deposits/referenda";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useReferendaTableItems } from "next-common/components/myDeposits/referenda";
 
 export default function useProfileReferendaDepositsData() {

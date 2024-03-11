@@ -7,7 +7,7 @@ import VoteCallsList from "./voteCallsList";
 import FellowshipVoteCallsList from "./fellowshipVoteCallsList";
 import MobileVoteCallsList from "./mobile/voteCallsList";
 import MobileFellowshipVoteCallsList from "./mobile/fellowshipVoteCallsList";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useIsFellowship, useModuleName } from "./common";
 
 export default function ResponsiveCalls() {

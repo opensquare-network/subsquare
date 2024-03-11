@@ -1,7 +1,7 @@
 import React from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { usePageProps } from "../../../context/page";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import Select from "../../select";
 import PopupLabel from "../label";
 

@@ -1,5 +1,5 @@
 import { InfoDocs } from "@osn/icons/subsquare";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
 import { FellowshipCoreFeedEventLabel } from "./shared";

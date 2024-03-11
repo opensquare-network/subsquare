@@ -4,7 +4,7 @@ import React from "react";
 import BarChart from "../barChart";
 import { useChainSettings } from "next-common/context/chain";
 import { abbreviateBigNumber, toPrecisionNumber } from "next-common/utils";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 
 export default function TrackDelegationChart({ tracks }) {
   const { decimals, symbol } = useChainSettings();

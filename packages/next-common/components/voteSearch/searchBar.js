@@ -1,5 +1,5 @@
 import { SystemSearch } from "@osn/icons/subsquare";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import styled from "styled-components";
 
 const Wrapper = styled.div`

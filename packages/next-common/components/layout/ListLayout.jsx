@@ -3,10 +3,10 @@ import BaseLayout from "./baseLayout";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isExternalLink } from "next-common/utils";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import Divider from "../styled/layout/divider";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 /**
  * @typedef {{

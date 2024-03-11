@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import ExternalLink from "../../externalLink";
 import InnerDataTable from "../../table/innerDataTable";
 import WarningIcon from "../../../assets/imgs/icons/warning.svg";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import tw from "tailwind-styled-components";
 
 const JsonView = dynamic(() => import("../../jsonView"), { ssr: false });

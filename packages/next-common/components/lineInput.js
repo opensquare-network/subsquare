@@ -1,4 +1,4 @@
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import React from "react";
 import styled from "styled-components";
 import Input from "./input";

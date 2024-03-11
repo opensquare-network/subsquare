@@ -1,5 +1,5 @@
 import React from "react";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import Tooltip from "next-common/components/tooltip";
 import { SystemPlus } from "@osn/icons/subsquare";

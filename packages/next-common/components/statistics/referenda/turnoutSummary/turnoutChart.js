@@ -1,5 +1,5 @@
 import React from "react";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import BarChart from "../barChart";
 
 export default function TurnoutChart({ turnouts }) {

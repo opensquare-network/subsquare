@@ -5,7 +5,7 @@ import {
   userConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import { useConfirm } from "next-common/context/post/gov2/track";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useMemo } from "react";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";

@@ -10,7 +10,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Tooltip from "next-common/components/tooltip";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";

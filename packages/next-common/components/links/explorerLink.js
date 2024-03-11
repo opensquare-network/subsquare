@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
-import isEmpty from "lodash.isempty";
+import { isEmpty } from "lodash-es";
 import SubScanLink from "./subscanLink";
 import StatescanLink from "./statescanLink";
 import Flex from "../styled/flex";

@@ -5,12 +5,12 @@ import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
-import capitalize from "lodash.capitalize";
+import { capitalize } from "lodash-es";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isHex } from "@polkadot/util";
-import camelCase from "lodash.camelcase";
-import upperFirst from "lodash.upperfirst";
+import { camelCase } from "lodash-es";
+import { upperFirst } from "lodash-es";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);

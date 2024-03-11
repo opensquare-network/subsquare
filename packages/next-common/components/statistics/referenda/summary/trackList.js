@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { TrackColors } from "./colors";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 

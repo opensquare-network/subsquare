@@ -3,7 +3,7 @@ import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import _range from "lodash.range";
+import { range } from "lodash-es";
 import {
   getTrackApprovalCurve,
   getTrackSupportCurve,
@@ -24,7 +24,7 @@ export default function useReferendumCurveData() {
   const oneHour = 3600 * 1000;
   const blockStep = oneHour / blockTime; // it means the blocks between 2 dots.
   const hours = decisionBlocks / blockStep;
-  const labels = _range(hours + 1);
+  const labels = range(hours + 1);
 
   const supportCalculator = getTrackSupportCurve(track);
   const supportData = labels.map((i) =>

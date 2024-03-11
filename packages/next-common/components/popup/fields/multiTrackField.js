@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { usePageProps } from "../../../context/page";
-import startCase from "lodash.startcase";
+import { startCase } from "lodash-es";
 import PopupLabel from "../label";
 import MultiSelect from "next-common/components/multiSelect";
 import useCall from "next-common/utils/hooks/useCall";

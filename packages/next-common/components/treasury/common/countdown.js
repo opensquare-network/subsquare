@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "../../../utils/hooks";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import Loading from "../../loading";
 import Flex from "../../styled/flex";
 import CountDown from "../../_CountDown";

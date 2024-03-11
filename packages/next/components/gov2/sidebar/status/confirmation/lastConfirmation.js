@@ -1,6 +1,6 @@
 import { useConfirmingStarted } from "next-common/context/post/gov2/referendum";
 import { useTimelineData } from "next-common/context/post";
-import findLast from "lodash.findlast";
+import { findLast } from "lodash-es";
 import { gov2State } from "next-common/utils/consts/state";
 import { useConfirm } from "next-common/context/post/gov2/track";
 import { ProgressBarWrapper, ProgressGroup, Tooltip } from "../styled";

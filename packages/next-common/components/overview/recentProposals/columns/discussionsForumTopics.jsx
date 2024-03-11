@@ -4,7 +4,7 @@ import {
   getReferendumPostTitleColumn,
   getVoteSummaryColumnPlaceholder,
 } from ".";
-import find from "lodash.find";
+import { find } from "lodash-es";
 
 const topicColumn = {
   ...getReferendumPostTitleColumn(),

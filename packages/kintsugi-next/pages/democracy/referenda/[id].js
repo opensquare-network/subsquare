@@ -14,7 +14,7 @@ import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import { useDispatch, useSelector } from "react-redux";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";

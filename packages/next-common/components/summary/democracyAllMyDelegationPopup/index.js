@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VStack from "next-common/components/styled/vStack";
 import AllMyDelegationPopupList from "next-common/components/summary/democracyAllMyDelegationPopup/list";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import HStack from "next-common/components/styled/hStack";
 import GreyInfoPanel from "../styled/greyInfoPanel";
 import Tooltip from "next-common/components/tooltip";

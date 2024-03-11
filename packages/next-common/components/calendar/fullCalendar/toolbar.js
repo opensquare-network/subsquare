@@ -6,7 +6,7 @@ import CaretLeft from "../../icons/caretLeft";
 import CaretRight from "../../icons/caretRight";
 import Flex from "../../styled/flex";
 import CreateEventButton from "./createEventButton";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { useUser } from "../../../context/user";
 import { OnlyDesktop } from "../../styled/responsive";
 import useIsAdmin from "next-common/hooks/useIsAdmin";

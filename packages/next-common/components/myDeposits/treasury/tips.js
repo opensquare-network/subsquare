@@ -7,7 +7,7 @@ import { getReasonPostTitleColumn } from "../columns";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 
 export function useDepositTreasuryTipsTab(deposits = []) {
   const chain = useChain();

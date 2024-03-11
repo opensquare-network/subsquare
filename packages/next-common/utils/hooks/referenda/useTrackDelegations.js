@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useEffect, useState } from "react";
 import { getGov2BeenDelegatedByAddress } from "../../gov2/gov2ReferendumVote";
 import useIsMounted from "../useIsMounted";

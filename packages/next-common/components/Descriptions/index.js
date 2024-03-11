@@ -34,7 +34,7 @@ export default function Descriptions({
               <div className="descriptions-item-label text14Medium">
                 {item.label}
               </div>
-              <div className="descriptions-items-value text14Medium">
+              <div className="descriptions-item-value text14Medium">
                 {item.value}
               </div>
             </div>

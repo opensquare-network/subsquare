@@ -1,4 +1,4 @@
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 import { isSameAddress } from "..";
 import { u8aToHex } from "@polkadot/util";

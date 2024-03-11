@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import { useMemo } from "react";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";

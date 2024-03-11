@@ -8,7 +8,7 @@ import styled from "styled-components";
 import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDelegated/beenDelegatedInfo";
 import BeenDelegatedListButton from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListButton";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import isNil from "lodash.isnil";
+import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
 const Wrapper = styled.div`

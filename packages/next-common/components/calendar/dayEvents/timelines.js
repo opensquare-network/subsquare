@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import groupBy from "lodash.groupby";
+import { groupBy } from "lodash-es";
 import React from "react";
 import EventInfoCard from "./eventInfoCard";
 import FutureEventInfoCard from "./futureEventInfoCard";
