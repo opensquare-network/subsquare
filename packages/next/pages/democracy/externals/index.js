@@ -19,7 +19,7 @@ export default function DemocracyExternalsPage({ externals, chain, summary }) {
     <ListLayout
       seoInfo={seoInfo}
       title={category}
-      description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
+      description="Democracy uses public proposal, external proposal and referenda to manage the governance process."
       summary={<DemocracySummary summary={summary} />}
     >
       <PostList
