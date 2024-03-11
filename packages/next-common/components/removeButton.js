@@ -1,5 +1,5 @@
 import { SystemClose } from "@osn/icons/subsquare";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
