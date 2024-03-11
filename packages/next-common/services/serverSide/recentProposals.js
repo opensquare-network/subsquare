@@ -1,4 +1,4 @@
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
 import {
   getAdvisoryCommitteeMenu,

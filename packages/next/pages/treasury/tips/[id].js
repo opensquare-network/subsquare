@@ -1,7 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import Timeline from "components/tip/timeline";
 import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";

@@ -1,4 +1,4 @@
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 
 export async function fetchList(url, context, params = {}) {

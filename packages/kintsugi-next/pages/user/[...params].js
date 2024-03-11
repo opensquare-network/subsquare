@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
 
 export default Profile;
@@ -11,9 +11,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const [{ result: userSummary }, { result: user }, { result: summary }] =
     await Promise.all([
-      ssrNextApi.fetch(`users/${id}/counts`),
-      ssrNextApi.fetch(`users/${id}`),
-      ssrNextApi.fetch("summary"),
+      nextApi.fetch(`users/${id}/counts`),
+      nextApi.fetch(`users/${id}`),
+      nextApi.fetch("summary"),
     ]);
 
   return {

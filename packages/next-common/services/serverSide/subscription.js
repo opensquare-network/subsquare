@@ -1,5 +1,5 @@
 import { CACHE_KEY } from "next-common/utils/constants";
-import { ssrNextApi } from "../nextApi";
+import nextApi from "../nextApi";
 import Cookies from "cookies";
 
 export async function fetchUserSubscription(context) {
@@ -14,7 +14,7 @@ export async function fetchUserSubscription(context) {
     };
   }
 
-  const { result: subscription } = await ssrNextApi.fetch(
+  const { result: subscription } = await nextApi.fetch(
     "user/subscription",
     {},
     options,
