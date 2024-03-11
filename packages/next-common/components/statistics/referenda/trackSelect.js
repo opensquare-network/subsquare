@@ -1,0 +1,34 @@
+import Select from "next-common/components/select";
+import { usePageProps } from "next-common/context/page";
+import { useMemo } from "react";
+import startCase from "lodash.startcase";
+
+export default function TrackSelect({ selectedTrackId, setSelectedTrackId }) {
+  const { tracks } = usePageProps();
+
+  const options = useMemo(
+    () => [
+      { label: "All", value: "" },
+      ...tracks.map((track) => ({
+        label: (
+          <span className="whitespace-nowrap">
+            [{track.id}] {startCase(track.name)}
+          </span>
+        ),
+        value: track.id.toString(),
+      })),
+    ],
+    [tracks],
+  );
+
+  return (
+    <Select
+      className="w-[180px]"
+      maxDisplayItem={6}
+      options={options}
+      value={selectedTrackId}
+      onChange={({ value }) => setSelectedTrackId(value)}
+      small
+    />
+  );
+}
