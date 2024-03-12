@@ -86,7 +86,7 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
         <AccountLinks address={address} />
       </div>
 
-      <Divider className="my-4" />
+      <Divider className="mt-4" />
 
       <InfoLine>
         <InfoWrapper>
