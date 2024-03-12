@@ -12,10 +12,16 @@ import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/us
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import { cn } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
+import useBeenDelegated from "next-common/hooks/useBeenDelegated";
+import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDelegated/beenDelegatedInfo";
+import DemocracySummaryDelegationInfo from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
 
 export default function AllDelegationCard() {
   useFetchMyReferendaDelegations();
   const allReferendaDelegationsContent = useAllReferendaDelegationsContent();
+  const allDemocracyDelegationsContent = useAllDemocracyDelegationsContent();
 
   const moduleTab = useModuleTab();
 
@@ -23,7 +29,7 @@ export default function AllDelegationCard() {
   if (moduleTab === Referenda) {
     content = allReferendaDelegationsContent;
   } else if (moduleTab === Democracy) {
-    // eslint-disable-next-line no-empty-static-block
+    content = allDemocracyDelegationsContent;
   }
 
   if (!content) {
@@ -58,6 +64,32 @@ function useAllReferendaDelegationsContent() {
 
         {!!beenDelegatedList?.length && (
           <AllBeenDelegatedInfo beenDelegatedList={beenDelegatedList} />
+        )}
+      </>
+    )
+  );
+}
+
+function useAllDemocracyDelegationsContent() {
+  const realAddress = useRealAddress();
+  const { delegating } = useSubDemocracyDelegating(realAddress);
+  const { delegations, beenDelegatedList } = useBeenDelegated(realAddress);
+
+  const showDelegating = !!delegating;
+  const showBeenDelegated = !!beenDelegatedList?.length;
+
+  return (
+    (showDelegating || showBeenDelegated) && (
+      <>
+        {showDelegating && (
+          <DemocracySummaryDelegationInfo delegating={delegating} />
+        )}
+
+        {showBeenDelegated && (
+          <BeenDelegatedInfo
+            delegations={delegations}
+            addressesCount={beenDelegatedList?.length}
+          />
         )}
       </>
     )
