@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import {
   gov2ReferendumsTrackApi,
   gov2ReferendumsTracksApi,
@@ -104,15 +104,15 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: period },
     { result: tracksDetail },
   ] = await Promise.all([
-    ssrNextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
+    nextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
       page,
       pageSize,
       status,
       simple: true,
     }),
-    ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-    ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
-    ssrNextApi.fetch(gov2TracksApi),
+    nextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
+    nextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+    nextApi.fetch(gov2TracksApi),
   ]);
 
   return {

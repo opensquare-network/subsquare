@@ -9,7 +9,7 @@ import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
 import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
 
 async function defaultGetServerSideProps() {
@@ -40,7 +40,7 @@ export function withCommonProps(
       getServerSideProps(context),
       fetchProfile(context),
       fetchUserStatus(context),
-      ssrNextApi.fetch(adminsApi),
+      nextApi.fetch(adminsApi),
     ]);
 
     if (context.resolvedUrl?.startsWith("/settings/") && !user) {

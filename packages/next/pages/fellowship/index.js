@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import {
   fellowshipReferendumsApi,
   fellowshipReferendumsSummaryApi,
@@ -52,12 +52,12 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const [tracksProps, { result: posts }, { result: fellowshipSummary }] =
     await Promise.all([
       fetchOpenGovTracksProps(),
-      ssrNextApi.fetch(fellowshipReferendumsApi, {
+      nextApi.fetch(fellowshipReferendumsApi, {
         page,
         pageSize,
         simple: true,
       }),
-      ssrNextApi.fetch(fellowshipReferendumsSummaryApi),
+      nextApi.fetch(fellowshipReferendumsSummaryApi),
     ]);
 
   return {

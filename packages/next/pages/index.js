@@ -15,7 +15,7 @@ import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
 import Overview from "next-common/components/overview/overview";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import {
   fetchForumCategories,
@@ -75,9 +75,7 @@ export default function HomePage() {
 
 export const getServerSideProps = withCommonProps(async () => {
   const tracksProps = await fetchOpenGovTracksProps();
-  const { result: overviewSummary } = await ssrNextApi.fetch(
-    "overview/summary",
-  );
+  const { result: overviewSummary } = await nextApi.fetch("overview/summary");
   const recentProposals = await fetchRecentProposalsProps(overviewSummary);
 
   const forumLatestTopics = await fetchForumLatestTopics();

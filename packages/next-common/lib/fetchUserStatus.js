@@ -1,4 +1,4 @@
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 
 export default async function fetchUserStatus(context) {
   let options = {
@@ -7,5 +7,5 @@ export default async function fetchUserStatus(context) {
     },
   };
 
-  return ssrNextApi.fetch("user/status", {}, options);
+  return nextApi.fetch("user/status", {}, options);
 }

@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";

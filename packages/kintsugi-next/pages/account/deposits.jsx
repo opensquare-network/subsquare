@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import MyDeposits from "next-common/components/myDeposits";
 import AccountLayout from "next-common/components/layout/AccountLayout";
 

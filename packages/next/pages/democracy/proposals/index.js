@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -27,7 +27,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
     <ListLayout
       seoInfo={seoInfo}
       title={category}
-      description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
+      description="Democracy uses public proposal, external proposal and referenda to manage the governance process."
       summary={<DemocracySummary summary={summary} />}
     >
       <PostList

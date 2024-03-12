@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import TurnoutStatistics from "components/statistics/democracy/turnoutStatistics";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";

@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import DemocracySummary from "next-common/components/summary/v2/democracySummary";
 import { useChain } from "next-common/context/chain";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
