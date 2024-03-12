@@ -5,6 +5,7 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 import useDelegationModuleTabs from "next-common/components/delegation/delegate/useModuleTabs";
 import DelegatesSection from "next-common/components/delegation/delegate/delegatesSection";
+import MyDelegationSection from "./myDelegationSection";
 
 export default function DelegateContainer() {
   const { moduleTabs, defaultModuleTab } = useDelegationModuleTabs();
@@ -16,6 +17,9 @@ export default function DelegateContainer() {
           <span>Delegates</span>
           <ModuleTab />
         </TitleContainer>
+
+        <MyDelegationSection />
+
         <DelegatesSection />
       </div>
     </ModuleTabProvider>
