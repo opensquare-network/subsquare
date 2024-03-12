@@ -55,7 +55,7 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
   const { decimals, symbol } = useChainSettings();
 
   return (
-    <SecondaryCard className="flex flex-col">
+    <SecondaryCard className="flex flex-col text-textPrimary">
       <div className="flex justify-between">
         <DelegateAvatar address={address} image={delegate.manifesto?.image} />
       </div>
