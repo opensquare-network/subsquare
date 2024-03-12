@@ -6,24 +6,29 @@ import { useState } from "react";
 import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegatedPopup";
 import { Count, ListButton } from "./styled";
 
-export default function AllBeenDelegated({ beenDelegatedList }) {
+export default function AllBeenDelegated({
+  beenDelegatedList,
+  showDetailButton = true,
+}) {
   const [showAllBeenDelegatedPopup, setShowAllBeenDelegatedPopup] =
     useState(false);
 
   return (
     <>
       <HStack space={8}>
-        <GreyInfoPanel>
+        <GreyInfoPanel className="!rounded">
           Been delegated <Count>{beenDelegatedList.length}</Count>
         </GreyInfoPanel>
 
-        <Tooltip content="Delegated detail">
-          <div>
-            <ListButton onClick={() => setShowAllBeenDelegatedPopup(true)}>
-              <ListSVG />
-            </ListButton>
-          </div>
-        </Tooltip>
+        {showDetailButton && (
+          <Tooltip content="Delegated detail">
+            <div>
+              <ListButton onClick={() => setShowAllBeenDelegatedPopup(true)}>
+                <ListSVG />
+              </ListButton>
+            </div>
+          </Tooltip>
+        )}
       </HStack>
 
       {showAllBeenDelegatedPopup && (

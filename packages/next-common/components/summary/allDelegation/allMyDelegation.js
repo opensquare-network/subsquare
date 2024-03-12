@@ -6,24 +6,29 @@ import { useState } from "react";
 import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyDelegationPopup";
 import { Count, ListButton } from "./styled";
 
-export default function AllMyDelegation({ delegations }) {
+export default function AllMyDelegation({
+  delegations,
+  showDetailButton = true,
+}) {
   const [showAllMyDelegationPopup, setShowAllMyDelegationPopup] =
     useState(false);
 
   return (
     <>
       <HStack space={8}>
-        <GreyInfoPanel>
+        <GreyInfoPanel className="!rounded">
           My delegation <Count>{delegations.length}</Count>
         </GreyInfoPanel>
 
-        <Tooltip content="My delegation detail">
-          <div>
-            <ListButton onClick={() => setShowAllMyDelegationPopup(true)}>
-              <ListSVG />
-            </ListButton>
-          </div>
-        </Tooltip>
+        {showDetailButton && (
+          <Tooltip content="My delegation detail">
+            <div>
+              <ListButton onClick={() => setShowAllMyDelegationPopup(true)}>
+                <ListSVG />
+              </ListButton>
+            </div>
+          </Tooltip>
+        )}
       </HStack>
 
       {showAllMyDelegationPopup && (
