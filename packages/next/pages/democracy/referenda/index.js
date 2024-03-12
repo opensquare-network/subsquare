@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";

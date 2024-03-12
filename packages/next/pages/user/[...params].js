@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { tryConvertToSubstrateAddress } from "next-common/utils/hydradxUtil";
@@ -14,8 +14,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const maybeAddress = tryConvertToSubstrateAddress(id);
 
   const [{ result: userSummary }, { result: user }] = await Promise.all([
-    ssrNextApi.fetch(`users/${maybeAddress}/counts`),
-    ssrNextApi.fetch(`users/${maybeAddress}`),
+    nextApi.fetch(`users/${maybeAddress}/counts`),
+    nextApi.fetch(`users/${maybeAddress}`),
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
 

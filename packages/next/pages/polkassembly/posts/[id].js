@@ -2,7 +2,7 @@ import DetailItem from "next-common/components/polkassembly/detailItem";
 import PolkassemblyComments from "next-common/components/polkassembly/comment";
 import { usePolkassemblyPostData } from "next-common/hooks/polkassembly/usePolkassemblyPostData";
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";

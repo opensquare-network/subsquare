@@ -3,7 +3,7 @@ import {
   gov2ReferendumsTracksApi,
   gov2ReferendumsTracksSummaryApi,
 } from "next-common/services/url";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
@@ -91,18 +91,18 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: trackReferendaSummary },
     { result: period },
   ] = await Promise.all([
-    ssrNextApi.fetch(`referenda/tracks/${id}/turnout`),
-    ssrNextApi.fetch(`referenda/tracks/${id}/delegatee`, {
+    nextApi.fetch(`referenda/tracks/${id}/turnout`),
+    nextApi.fetch(`referenda/tracks/${id}/delegatee`, {
       sort: JSON.stringify(["delegatedVotes", "desc"]),
       pageSize: 25,
     }),
-    ssrNextApi.fetch(`referenda/tracks/${id}/delegators`, {
+    nextApi.fetch(`referenda/tracks/${id}/delegators`, {
       sort: JSON.stringify(["votes", "desc"]),
       pageSize: 25,
     }),
-    ssrNextApi.fetch(`referenda/tracks/${id}/summary`),
-    ssrNextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-    ssrNextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+    nextApi.fetch(`referenda/tracks/${id}/summary`),
+    nextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
+    nextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
   ]);
 
   return {

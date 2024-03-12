@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChainSettings } from "next-common/context/chain";
 import OverviewSummary from "next-common/components/summary/overviewSummary";

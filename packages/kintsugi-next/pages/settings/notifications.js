@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import Notification from "next-common/components/setting/pages/notification";
 import OnChainEventsSubscription from "components/settings/onchainEventsSubscription";
 import { usePageProps } from "next-common/context/page";
@@ -19,7 +19,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { unsubscribe } = context.query;
 
   const subscription = await fetchUserSubscription(context);
-  const { result: summary } = await ssrNextApi.fetch("summary");
+  const { result: summary } = await nextApi.fetch("summary");
 
   return {
     props: {

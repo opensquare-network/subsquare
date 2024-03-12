@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { defaultPageSize } from "next-common/utils/constants";
 import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 import FellowshipSalaryFeedsContainer from "next-common/components/fellowship/salary/feeds/container";
@@ -18,7 +18,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const [tracksProps, { result: fellowshipSalaryFeeds }] = await Promise.all([
     fetchOpenGovTracksProps(),
-    ssrNextApi.fetch("fellowship/salary/feeds", {
+    nextApi.fetch("fellowship/salary/feeds", {
       page,
       page_size: defaultPageSize,
     }),

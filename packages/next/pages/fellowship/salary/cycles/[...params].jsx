@@ -4,7 +4,7 @@ import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salar
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
 import FellowshipSalaryCycleDetailInfo from "next-common/components/fellowship/salary/cycles/info";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import {
   fellowshipSalaryCycleApi,
   fellowshipSalaryCycleFeedsApi,
@@ -36,7 +36,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const [tracksProps, { result: cycle }] = await Promise.all([
     fetchOpenGovTracksProps(),
-    ssrNextApi.fetch(fellowshipSalaryCycleApi(id)),
+    nextApi.fetch(fellowshipSalaryCycleApi(id)),
   ]);
 
   let registrations;
@@ -51,14 +51,14 @@ export const getServerSideProps = withCommonProps(async (context) => {
       { result: unRegisteredPaymentsResult },
       { result: feedsResult },
     ] = await Promise.all([
-      ssrNextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), { page }),
-      ssrNextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id), {
+      nextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), { page }),
+      nextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id), {
         page,
       }),
-      ssrNextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id), {
+      nextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id), {
         page,
       }),
-      ssrNextApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
+      nextApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
         page,
       }),
     ]);

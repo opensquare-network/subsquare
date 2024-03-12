@@ -1,6 +1,6 @@
 import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";

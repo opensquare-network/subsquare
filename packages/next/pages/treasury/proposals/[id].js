@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import { ssrNextApi as nextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";

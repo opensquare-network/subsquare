@@ -108,3 +108,5 @@ export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
  * @deprecated use `CHAIN`
  */
 export const chain = CHAIN;
+
+export const IS_SERVER = typeof window === "undefined";
