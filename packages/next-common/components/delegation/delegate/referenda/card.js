@@ -8,7 +8,7 @@ import InfoWrapper from "next-common/components/delegation/delegate/common/info/
 import InfoTitle from "next-common/components/delegation/delegate/common/info/title";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { toPercentage, toPrecision } from "next-common/utils";
+import { cn, toPercentage, toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import Flex from "next-common/components/styled/flex";
 import tw from "tailwind-styled-components";
@@ -22,7 +22,6 @@ const TitleExtra = tw.div`
   text14Bold
   flex items-start
   text-textTertiary
-  max-sm:mt-2 max-sm:ml-0
 `;
 
 function DelegateAvatar({ address, image }) {
@@ -46,12 +45,17 @@ function DelegateAvatar({ address, image }) {
 }
 
 export default function ReferendaDelegateCard({ delegate = {} }) {
-  const { address, delegatorsCount, trackAverageVotes, participationRate } =
-    delegate;
+  const {
+    address,
+    delegatorsCount,
+    trackAverageVotes,
+    participationRate,
+    manifesto,
+  } = delegate;
   const { decimals, symbol } = useChainSettings();
 
   return (
-    <SecondaryCard>
+    <SecondaryCard className="flex flex-col">
       <div className="flex justify-between">
         <DelegateAvatar address={address} image={delegate.manifesto?.image} />
       </div>
@@ -64,7 +68,25 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
         />
       </div>
 
-      <Divider className="my-4" />
+      <div className="mt-3 space-y-3 h-full flex flex-col">
+        <Tooltip
+          className="block h-full"
+          delayDuration={700}
+          content={
+            manifesto?.longDescription && (
+              <div className="max-w-xs">{manifesto?.shortDescription}</div>
+            )
+          }
+        >
+          <div className={cn("text-textTertiary text14Medium", "line-clamp-2")}>
+            {manifesto?.shortDescription || "-"}
+          </div>
+        </Tooltip>
+
+        <AccountLinks address={address} />
+      </div>
+
+      <Divider className="mt-4" />
 
       <InfoLine>
         <InfoWrapper>
@@ -93,10 +115,6 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
         </InfoWrapper>
         <InfoWrapper />
       </InfoLine>
-
-      <Divider className="my-4" />
-
-      <AccountLinks address={address} />
     </SecondaryCard>
   );
 }

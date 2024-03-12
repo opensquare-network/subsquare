@@ -24,6 +24,7 @@ export default function Tooltip({
   sideOffset = 2,
   keepTooltipOpenAfterClick,
   icon,
+  delayDuration = 0,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -52,7 +53,7 @@ export default function Tooltip({
     </RadixTooltip.Portal>
   );
 
-  const rootProps = { delayDuration: 0 };
+  const rootProps = { delayDuration };
   if (keepTooltipOpenAfterClick) {
     rootProps.open = open;
   }
