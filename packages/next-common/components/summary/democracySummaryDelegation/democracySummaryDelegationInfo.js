@@ -27,7 +27,7 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
   const conviction = Conviction[delegating.conviction];
 
   return (
-    <GreyInfoPanel className="overflow-x-auto !flex-nowrap whitespace-nowrap scrollbar-hidden">
+    <GreyInfoPanel className="overflow-x-auto !flex-nowrap whitespace-nowrap scrollbar-hidden !rounded">
       <Item>
         <span>Delegating to</span>
         <AddressUser add={delegating.target} />
