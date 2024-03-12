@@ -4,8 +4,8 @@ import {
   useModuleTab,
 } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import AllBeenDelegated from "next-common/components/summary/allDelegation/allBeenDelegated";
-import AllMyDelegation from "next-common/components/summary/allDelegation/allMyDelegation";
+import AllBeenDelegatedInfo from "next-common/components/summary/allDelegation/allBeenDelegatedInfo";
+import AllMyDelegationInfo from "next-common/components/summary/allDelegation/allMyDelegationInfo";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
@@ -53,14 +53,11 @@ function useAllReferendaDelegationsContent() {
     (!!delegations?.length || !!beenDelegatedList?.length) && (
       <>
         {!!delegations?.length && (
-          <AllMyDelegation delegations={delegations} showDetailButton={false} />
+          <AllMyDelegationInfo delegations={delegations} />
         )}
 
         {!!beenDelegatedList?.length && (
-          <AllBeenDelegated
-            beenDelegatedList={beenDelegatedList}
-            showDetailButton={false}
-          />
+          <AllBeenDelegatedInfo beenDelegatedList={beenDelegatedList} />
         )}
       </>
     )
