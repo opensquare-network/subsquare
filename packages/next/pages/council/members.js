@@ -1,5 +1,4 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import Members from "components/council/members";
 import MembersNoElections from "components/council/membersNoElections";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -9,7 +8,7 @@ export default function MembersPage() {
   const category = "Council Members";
   const seoInfo = { title: category, desc: category };
 
-  let members = <Members />;
+  let members = <MembersNoElections />;
   if (isMoonChain()) {
     members = <MembersNoElections type={detailPageCategory.COUNCIL_MOTION} />;
   }
