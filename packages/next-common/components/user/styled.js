@@ -12,6 +12,7 @@ export const AvatarWrapper = styled(Flex)`
 `;
 
 export const UserWrapper = styled(Flex)`
+  max-width: 100%;
   a {
     &:hover {
       text-decoration: underline;

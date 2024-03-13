@@ -43,7 +43,7 @@ const Left = styled.div`
   margin-right: 20px;
 `;
 
-const Cirtcle = styled.div`
+const Circle = styled.div`
   height: 12px;
   width: 12px;
   border: 3px solid var(--theme500);
@@ -145,7 +145,7 @@ export default function Item({
       className={cn("group/timeline-item", className)}
     >
       <Left>
-        <Cirtcle />
+        <Circle />
         <Bar className="bar" />
       </Left>
       <Right className="timeline-item-right pb-4 group-last/timeline-item:pb-0">

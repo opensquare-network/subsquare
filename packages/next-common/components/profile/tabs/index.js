@@ -13,6 +13,7 @@ export default function useProfileTabs() {
     noDemocracy,
     noDemocracyModule,
     hasMultisig,
+    hasStatescan,
   } = useChainSettings();
   const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
   const depositsCount = useDepositsCount();
@@ -53,6 +54,20 @@ export default function useProfileTabs() {
     tabs.push({
       label: "Delegation",
       url: `${prefix}delegation/received`,
+      exactMatch: false,
+    });
+  }
+
+  if (hasStatescan) {
+    tabs.push({
+      label: "Transfers",
+      url: `${prefix}transfers`,
+      exactMatch: false,
+    });
+
+    tabs.push({
+      label: "Identity timeline",
+      url: `${prefix}identity-timeline`,
       exactMatch: false,
     });
   }
