@@ -93,6 +93,7 @@ const kusama = {
   hasReferenda: true,
   hasFellowship: true,
   hasStatescan: true,
+  hasIdentityTimeline: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
   hasDemocracy: false,
