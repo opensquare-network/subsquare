@@ -1,16 +1,19 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button } from "next-common/components/summary/styled";
+import SecondaryButton from "next-common/lib/button/secondary";
 import DelegatePopup from "next-common/components/gov2/delegatePopup";
 import MoonDelegatePopup from "next-common/components/gov2/delegatePopup/moonPopup";
-import AddSVG from "next-common/assets/imgs/icons/add.svg";
+import { SystemPlus } from "@osn/icons/subsquare";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
-export default function NewDelegateButton() {
+export default function NewDelegateButton({
+  defaultTargetAddress,
+  targetDisabled,
+}) {
   const dispatch = useDispatch();
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
   const isUseMetamask = useIsUseMetamask();
@@ -28,12 +31,19 @@ export default function NewDelegateButton() {
 
   return (
     <>
-      <Button onClick={() => setShowDelegatePopup(true)}>
-        <AddSVG />
-        New Delegate
-      </Button>
+      <SecondaryButton
+        size="small"
+        iconLeft={<SystemPlus className="w-4 h-4" />}
+        onClick={() => {
+          setShowDelegatePopup(true);
+        }}
+      >
+        Delegate
+      </SecondaryButton>
       {showDelegatePopup && (
         <Popup
+          defaultTargetAddress={defaultTargetAddress}
+          targetDisabled={targetDisabled}
           onInBlock={onDelegateInBlock}
           onClose={() => setShowDelegatePopup(false)}
         />
