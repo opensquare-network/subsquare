@@ -1,61 +1,21 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import Avatar from "next-common/components/avatar";
 import AddressUser from "next-common/components/user/addressUser";
-import React from "react";
+import { useState } from "react";
 import Divider from "next-common/components/styled/layout/divider";
-import InfoLine from "next-common/components/delegation/delegate/common/info/line";
-import InfoWrapper from "next-common/components/delegation/delegate/common/info/wrapper";
-import InfoTitle from "next-common/components/delegation/delegate/common/info/title";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
-import { cn, toPercentage, toPrecision } from "next-common/utils";
-import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
-import tw from "tailwind-styled-components";
+import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import AccountLinks from "next-common/components/links/accountLinks";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemMenu } from "@osn/icons/subsquare";
 import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
-
-const TitleExtraValue = styled(Flex)`
-  color: var(--textPrimary);
-`;
-const TitleExtra = tw.div`
-  text14Bold
-  flex items-start
-  text-textTertiary
-`;
-
-function DelegateAvatar({ address, image }) {
-  return (
-    <div className="flex flex-col">
-      <div className="relative w-10 h-10">
-        {image ? (
-          <img
-            className="rounded-full"
-            src={image}
-            width={40}
-            height={40}
-            alt="avatar image"
-          />
-        ) : (
-          <Avatar address={address} size={40} />
-        )}
-      </div>
-    </div>
-  );
-}
+import ReferendaDelegateeDetailPopup from "./detailPopup";
+import ReferendaDelegationCardSummary from "./summary";
+import { DelegateAvatar } from "./avatar";
 
 export default function ReferendaDelegateCard({ delegate = {} }) {
-  const {
-    address,
-    delegatorsCount,
-    trackAverageVotes,
-    participationRate,
-    manifesto,
-  } = delegate;
-  const { decimals, symbol } = useChainSettings();
+  const { address, manifesto } = delegate;
+
+  const [detailOpen, setDetailOpen] = useState(false);
 
   return (
     <SecondaryCard className="flex flex-col text-textPrimary">
@@ -64,7 +24,13 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
 
         <div className="space-x-2">
           <NewDelegateButton defaultTargetAddress={address} targetDisabled />
-          <SecondaryButton className="w-7 h-7 p-0" size="small">
+          <SecondaryButton
+            className="w-7 h-7 p-0"
+            size="small"
+            onClick={() => {
+              setDetailOpen(true);
+            }}
+          >
             <SystemMenu className="w-4 h-4" />
           </SecondaryButton>
         </div>
@@ -96,35 +62,19 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
         <AccountLinks address={address} />
       </div>
 
-      <Divider className="mt-4" />
+      <Divider className="my-4" />
 
-      <InfoLine>
-        <InfoWrapper>
-          <Tooltip content="Average received delegations each track">
-            <InfoTitle>Average Delegated</InfoTitle>
-          </Tooltip>
-          <TitleExtra>
-            <TitleExtraValue>
-              <ValueDisplay
-                value={toPrecision(trackAverageVotes, decimals)}
-                symbol={symbol}
-              />
-            </TitleExtraValue>
-          </TitleExtra>
-        </InfoWrapper>
-        <InfoWrapper>
-          <InfoTitle>Delegators</InfoTitle>
-          <p className="text14Bold">{delegatorsCount}</p>
-        </InfoWrapper>
-      </InfoLine>
+      <ReferendaDelegationCardSummary
+        className="grid-cols-2"
+        delegate={delegate}
+      />
 
-      <InfoLine>
-        <InfoWrapper>
-          <InfoTitle>Participation Rate</InfoTitle>
-          <p className="text14Bold">{toPercentage(participationRate, 1)}%</p>
-        </InfoWrapper>
-        <InfoWrapper />
-      </InfoLine>
+      {detailOpen && (
+        <ReferendaDelegateeDetailPopup
+          delegate={delegate}
+          setDetailOpen={setDetailOpen}
+        />
+      )}
     </SecondaryCard>
   );
 }
