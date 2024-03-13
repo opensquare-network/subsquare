@@ -9,7 +9,7 @@ import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
 import Copyable from "../copyable";
 
-export default function CollectiveCall({ call, wrappedPreimage }) {
+export default function CollectiveCall({ call, externalProposals }) {
   const motion = usePostOnChainData();
   const chain = useChain();
   const detailType = useDetailType();
@@ -19,16 +19,16 @@ export default function CollectiveCall({ call, wrappedPreimage }) {
     [<Proposal key={"call"} call={call} />],
   ];
 
-  if (wrappedPreimage) {
+  (externalProposals || []).forEach((item) => {
     data.push([
       <Proposal
-        key={"preimage"}
-        title="Preimage"
-        call={wrappedPreimage?.call}
-        preImageHash={wrappedPreimage?.hash}
+        key={"external-call"}
+        title="External Call"
+        call={item?.preImage?.call}
+        preImageHash={item?.preImage?.hash}
       />,
     ]);
-  }
+  });
 
   if (
     Chains.zeitgeist === chain &&

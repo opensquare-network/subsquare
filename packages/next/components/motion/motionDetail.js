@@ -153,9 +153,7 @@ export default function MotionDetail() {
           post?.onchainData?.proposal && (
             <CollectiveCall
               call={post.onchainData.proposal}
-              wrappedPreimage={
-                post.onchainData?.externalProposals?.[0]?.preImage
-              }
+              externalProposals={post.onchainData?.externalProposals}
             />
           )
         }
