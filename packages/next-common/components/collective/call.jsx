@@ -1,15 +1,15 @@
+import React from "react";
 import KvList from "next-common/components/listInfo/kvList";
 import Proposal from "next-common/components/proposal";
 import { usePostOnChainData } from "next-common/context/post";
 import Chains from "next-common/utils/consts/chains";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import MarketMetadata from "next-common/components/collective/metadata/marketMetadata";
-import React from "react";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
 import Copyable from "../copyable";
 
-export default function CollectiveCall({ call }) {
+export default function CollectiveCall({ call, wrappedPreimage }) {
   const motion = usePostOnChainData();
   const chain = useChain();
   const detailType = useDetailType();
@@ -18,6 +18,17 @@ export default function CollectiveCall({ call }) {
     ["Hash", <Copyable key="hash">{motion.hash}</Copyable>],
     [<Proposal key={"call"} call={call} />],
   ];
+
+  if (wrappedPreimage) {
+    data.push([
+      <Proposal
+        key={"preimage"}
+        title="Preimage"
+        call={wrappedPreimage?.call}
+        preImageHash={wrappedPreimage?.hash}
+      />,
+    ]);
+  }
 
   if (
     Chains.zeitgeist === chain &&

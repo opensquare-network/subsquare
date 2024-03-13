@@ -219,6 +219,7 @@ export function convertProposalForJsonView(proposal, chain) {
 }
 
 export default function Proposal({
+  title = "Call",
   call = {},
   preImageHash,
   shorten,
@@ -254,7 +255,7 @@ export default function Proposal({
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Header className="text-textPrimary">Call</Header>
+        <Header className="text-textPrimary">{title}</Header>
         <TagWrapper>
           <span className="inline-flex gap-x-1">
             <ThemedTag>{call?.section}</ThemedTag>
