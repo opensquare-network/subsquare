@@ -9,12 +9,14 @@ import {
   setProfileIdentityTimeline,
 } from "next-common/store/reducers/profile/identityTimeline";
 import { useSelector } from "react-redux";
+import useIsMounted from "next-common/utils/hooks/useIsMounted";
 
 function useIdentityTimeline() {
   const dispatch = useDispatch();
   const address = useProfileAddress();
   const chain = useChain();
   const timeline = useSelector(profileIdentityTimelineSelector);
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     fetch(`https://${chain}-identity-api.statescan.io/graphql`, {
@@ -51,10 +53,12 @@ function useIdentityTimeline() {
         return response.json();
       })
       .then((result) => {
-        dispatch(setProfileIdentityTimeline(result.data?.identityTimeline));
+        if (isMounted.current) {
+          dispatch(setProfileIdentityTimeline(result.data?.identityTimeline));
+        }
       })
       .catch((error) => console.error(error));
-  }, [address, chain]);
+  }, [address, chain, isMounted]);
 
   return timeline;
 }
