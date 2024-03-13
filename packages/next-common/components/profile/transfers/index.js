@@ -4,14 +4,20 @@ import { useEffect, useState } from "react";
 import TransferList from "./list";
 import Pagination from "next-common/components/pagination";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import {
+  profileTransfersSelector,
+  setProfileTransfers,
+} from "next-common/store/reducers/profile/transfer";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const DEFAULT_PAGE_SIZE = 25;
 
 export default function ProfileTransfers() {
+  const dispatch = useDispatch();
   const chain = useChain();
   const address = useProfileAddress();
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const transfers = useSelector(profileTransfersSelector);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -19,7 +25,6 @@ export default function ProfileTransfers() {
       return;
     }
 
-    setIsLoading(true);
     fetch(`https://${chain}-api.statescan.io/accounts/${address}/transfers`, {
       page,
       pageSize: DEFAULT_PAGE_SIZE,
@@ -30,14 +35,13 @@ export default function ProfileTransfers() {
         }
         return response.json();
       })
-      .then((result) => setData(result))
-      .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
+      .then((result) => dispatch(setProfileTransfers(result)))
+      .catch((error) => console.error(error));
   }, [address, chain, page]);
 
   return (
     <SecondaryCard>
-      <TransferList isLoading={isLoading} items={data?.items} />
+      <TransferList isLoading={!transfers} items={transfers?.items} />
       <Pagination
         page={page}
         pageSize={DEFAULT_PAGE_SIZE}
@@ -46,7 +50,7 @@ export default function ProfileTransfers() {
           e.preventDefault();
           setPage(page);
         }}
-        total={data?.total || 0}
+        total={transfers?.total || 0}
       />
     </SecondaryCard>
   );

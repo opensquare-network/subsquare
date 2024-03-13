@@ -1,17 +1,22 @@
 import { useChain } from "next-common/context/chain";
 import useProfileAddress from "../useProfileAddress";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import IdentityTimeline from "next-common/components/identityTimeline";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { useDispatch } from "react-redux";
+import {
+  profileIdentityTimelineSelector,
+  setProfileIdentityTimeline,
+} from "next-common/store/reducers/profile/identityTimeline";
+import { useSelector } from "react-redux";
 
 function useIdentityTimeline() {
+  const dispatch = useDispatch();
   const address = useProfileAddress();
   const chain = useChain();
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const timeline = useSelector(profileIdentityTimelineSelector);
 
   useEffect(() => {
-    setIsLoading(true);
     fetch(`https://${chain}-identity-api.statescan.io/graphql`, {
       method: "POST",
       headers: {
@@ -46,24 +51,20 @@ function useIdentityTimeline() {
         return response.json();
       })
       .then((result) => {
-        setData(result.data.identityTimeline);
+        dispatch(setProfileIdentityTimeline(result.data?.identityTimeline));
       })
-      .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
+      .catch((error) => console.error(error));
   }, [address, chain]);
 
-  return {
-    isLoading,
-    data,
-  };
+  return timeline;
 }
 
 export default function ProfileIdentityTimeline() {
-  const { isLoading, data } = useIdentityTimeline();
+  const timeline = useIdentityTimeline();
 
   return (
     <SecondaryCard>
-      <IdentityTimeline timelineData={data} isLoading={isLoading} />
+      <IdentityTimeline timelineData={timeline} />
     </SecondaryCard>
   );
 }
