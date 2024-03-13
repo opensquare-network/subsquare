@@ -14,6 +14,7 @@ export default function useProfileTabs() {
     noDemocracyModule,
     hasMultisig,
     hasStatescan,
+    hasIdentityTimeline,
   } = useChainSettings();
   const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
   const depositsCount = useDepositsCount();
@@ -65,11 +66,13 @@ export default function useProfileTabs() {
       exactMatch: false,
     });
 
-    tabs.push({
-      label: "Identity timeline",
-      url: `${prefix}identity-timeline`,
-      exactMatch: false,
-    });
+    if (hasIdentityTimeline) {
+      tabs.push({
+        label: "Identity timeline",
+        url: `${prefix}identity-timeline`,
+        exactMatch: false,
+      });
+    }
   }
 
   return tabs;

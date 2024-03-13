@@ -64,6 +64,7 @@ export default function TimelineItem({
           item={item}
           FieldsComponent={FieldsComponent}
         />
+        {!isLast && <div className="h-[16px]" />}
       </InfoPanel>
     </div>
   );
