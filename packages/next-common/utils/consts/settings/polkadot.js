@@ -102,6 +102,7 @@ const polkadot = {
   postLabels: defaultPostLabels,
   hasReferenda: true,
   hasStatescan: true,
+  hasIdentityTimeline: true,
   hasSubscan: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,

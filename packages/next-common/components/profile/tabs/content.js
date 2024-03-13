@@ -1,10 +1,12 @@
 import React from "react";
-import Posted from "next-common/components/profile/posted";
-import VotingHistory from "next-common/components/profile/votingHistory";
+import Posted from "../posted";
+import VotingHistory from "../votingHistory";
 import ProfileMultisigs from "../multisigs";
 import ProfileDelegation from "../delegation";
+import ProfileDeposits from "../deposits";
+import ProfileTransfers from "../transfers";
+import ProfileIdentityTimeline from "../identityTimeline";
 import { usePathname } from "next/navigation";
-import ProfileDeposits from "next-common/components/profile/deposits";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
@@ -22,6 +24,12 @@ export default function useProfileTabContent() {
     return <ProfileMultisigs />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/delegation`)) {
     return <ProfileDelegation />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/transfers`)) {
+    return <ProfileTransfers />;
+  } else if (
+    pathname.startsWith(`/user/${maybeEvmAddress}/identity-timeline`)
+  ) {
+    return <ProfileIdentityTimeline />;
   }
 
   return <Posted />;
