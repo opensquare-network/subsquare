@@ -20,12 +20,15 @@ export default function CollectiveCall({ call, externalProposals }) {
   ];
 
   (externalProposals || []).forEach((item) => {
+    if (!item?.preImage) {
+      return;
+    }
     data.push([
       <Proposal
         key={"external-call"}
         title="External Call"
-        call={item?.preImage?.call}
-        preImageHash={item?.preImage?.hash}
+        call={item.preImage.call}
+        preImageHash={item.preImage.hash}
       />,
     ]);
   });
