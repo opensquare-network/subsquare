@@ -25,7 +25,7 @@ import {
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-export default function PopupContent() {
+export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const {
     tracks,
     onClose,
@@ -39,7 +39,9 @@ export default function PopupContent() {
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
 
-  const [targetAddress, setTargetAddress] = useState("");
+  const [targetAddress, setTargetAddress] = useState(
+    defaultTargetAddress || "",
+  );
 
   const api = useContextApi();
   const node = useChainSettings();
@@ -130,6 +132,13 @@ export default function PopupContent() {
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
 
+      <Target
+        disabled={targetDisabled}
+        extensionAccounts={extensionAccounts}
+        address={targetAddress}
+        setAddress={setTargetAddress}
+      />
+
       {showTrackSelect && (
         <MultiTrack
           selectedTracks={selectedTracks}
@@ -137,10 +146,6 @@ export default function PopupContent() {
         />
       )}
 
-      <Target
-        extensionAccounts={extensionAccounts}
-        setAddress={setTargetAddress}
-      />
       <VoteValue
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}

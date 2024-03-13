@@ -14,6 +14,9 @@ import Flex from "next-common/components/styled/flex";
 import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import AccountLinks from "next-common/components/links/accountLinks";
+import SecondaryButton from "next-common/lib/button/secondary";
+import { SystemMenu } from "@osn/icons/subsquare";
+import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
 
 const TitleExtraValue = styled(Flex)`
   color: var(--textPrimary);
@@ -58,6 +61,13 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
     <SecondaryCard className="flex flex-col text-textPrimary">
       <div className="flex justify-between">
         <DelegateAvatar address={address} image={delegate.manifesto?.image} />
+
+        <div className="space-x-2">
+          <NewDelegateButton defaultTargetAddress={address} targetDisabled />
+          <SecondaryButton className="w-7 h-7 p-0" size="small">
+            <SystemMenu className="w-4 h-4" />
+          </SecondaryButton>
+        </div>
       </div>
       <div className="flex justify-between mt-3">
         <AddressUser
