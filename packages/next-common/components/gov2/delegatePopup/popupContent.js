@@ -130,6 +130,11 @@ export default function PopupContent() {
         isSignerBalanceLoading={isSignerBalanceLoading}
       />
 
+      <Target
+        extensionAccounts={extensionAccounts}
+        setAddress={setTargetAddress}
+      />
+
       {showTrackSelect && (
         <MultiTrack
           selectedTracks={selectedTracks}
@@ -137,10 +142,6 @@ export default function PopupContent() {
         />
       )}
 
-      <Target
-        extensionAccounts={extensionAccounts}
-        setAddress={setTargetAddress}
-      />
       <VoteValue
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
