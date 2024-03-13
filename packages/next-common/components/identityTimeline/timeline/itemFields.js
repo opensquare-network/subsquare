@@ -20,7 +20,7 @@ const Body = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 0 8px 24px;
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 768px) {
     padding-left: 0px;
   }
 `;

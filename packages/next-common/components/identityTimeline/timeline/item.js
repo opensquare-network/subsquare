@@ -1,11 +1,6 @@
 import styled, { css } from "styled-components";
 import TimelineItemInfo from "./itemInfo";
 
-const Wrapper = styled.div`
-  display: flex;
-  padding: 0 24px;
-`;
-
 const NavigationLine = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,7 +10,7 @@ const NavigationLine = styled.div`
 
 const TopLine = styled.div`
   width: 2px;
-  height: 20px;
+  height: 4px;
   margin-bottom: 4px;
   ${(p) =>
     !p.isFirst &&
@@ -41,10 +36,6 @@ const InfoPanel = styled.div`
   max-width: 100%;
 `;
 
-const TopSpace = styled.div`
-  height: 18px;
-`;
-
 const Circle = styled.div`
   height: 12px;
   width: 12px;
@@ -61,20 +52,19 @@ export default function TimelineItem({
   FieldsComponent,
 }) {
   return (
-    <Wrapper>
+    <div className="flex">
       <NavigationLine>
         <TopLine isFirst={isFirst} />
         <Circle />
         <BottomLine isLast={isLast} />
       </NavigationLine>
       <InfoPanel>
-        <TopSpace />
         <TimelineItemInfo
           data={data}
           item={item}
           FieldsComponent={FieldsComponent}
         />
       </InfoPanel>
-    </Wrapper>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ClockSVG from "./clock.svg";
+import InfoTime from "@osn/icons/subsquare/InfoTime";
 import dayjs from "dayjs";
 import Duration from "next-common/components/duration";
 
@@ -15,9 +15,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const ClockIcon = styled(ClockSVG)`
+const ClockIcon = styled(InfoTime)`
+  width: 16px;
+  height: 16px;
   path {
-    fill: ${(p) => p.theme.textPrimary};
+    fill: ${(p) => p.theme.textTertiary};
   }
 `;
 

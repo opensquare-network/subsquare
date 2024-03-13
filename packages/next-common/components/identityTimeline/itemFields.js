@@ -3,15 +3,21 @@ import { stringUpperFirst } from "@polkadot/util";
 import TimelineItemFields from "./timeline/itemFields";
 import { omit } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
-import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import Copyable from "next-common/components/copyable";
+import Link from "next/link";
 
-const Text = tw.span``;
+const Text = tw.span`text-textPrimary`;
 
 function CopyableAddress({ address }) {
-  return <Copyable>{address}</Copyable>;
+  return (
+    <Copyable>
+      <Link href={`/user/${address}`} className="text-theme500">
+        {address}
+      </Link>
+    </Copyable>
+  );
 }
 
 function getFields(timelineItem, chainSetting) {
@@ -33,10 +39,7 @@ function getFields(timelineItem, chainSetting) {
       return {
         RegistrarIndex: <Text>{timelineItem.args.registrar?.index}</Text>,
         RegistrarAddress: (
-          <AddressUser
-            ellipsis={false}
-            add={timelineItem.args.registrar?.account}
-          />
+          <CopyableAddress address={timelineItem.args.registrar?.account} />
         ),
       };
     }
@@ -44,10 +47,7 @@ function getFields(timelineItem, chainSetting) {
       return {
         RegistrarIndex: <Text>{timelineItem.args.registrarIndex}</Text>,
         RegistrarAddress: (
-          <AddressUser
-            ellipsis={false}
-            add={timelineItem.args.registrarAddress}
-          />
+          <CopyableAddress address={timelineItem.args.registrarAddress} />
         ),
         Judgement: <Text>{timelineItem.args.judgement}</Text>,
         Fee: (
@@ -67,7 +67,7 @@ function getFields(timelineItem, chainSetting) {
             <div className="flex flex-col gap-[24px]">
               {timelineItem.args.subs?.map(({ account, data }) => (
                 <div key={account} className="flex flex-col gap-[4px]">
-                  <CopyableAddress ellipsis={false} address={account} />
+                  <CopyableAddress address={account} />
                   <Text>{data}</Text>
                 </div>
               ))}
@@ -78,12 +78,7 @@ function getFields(timelineItem, chainSetting) {
 
       if (timelineItem.args.parent) {
         return {
-          Parent: (
-            <CopyableAddress
-              ellipsis={false}
-              address={timelineItem.args.parent}
-            />
-          ),
+          Parent: <CopyableAddress address={timelineItem.args.parent} />,
           Name: <Text>{timelineItem.args.data}</Text>,
         };
       }
@@ -93,16 +88,14 @@ function getFields(timelineItem, chainSetting) {
     case "renameSub": {
       if (timelineItem.args.sub) {
         return {
-          Sub: <AddressUser ellipsis={false} add={timelineItem.args.sub} />,
+          Sub: <CopyableAddress address={timelineItem.args.sub} />,
           Name: <Text>{timelineItem.args.data}</Text>,
         };
       }
 
       if (timelineItem.args.parent) {
         return {
-          Parent: (
-            <AddressUser ellipsis={false} add={timelineItem.args.parent} />
-          ),
+          Parent: <CopyableAddress address={timelineItem.args.parent} />,
           Name: <Text>{timelineItem.args.data}</Text>,
         };
       }
@@ -143,16 +136,14 @@ function getFields(timelineItem, chainSetting) {
 
       if (timelineItem.args.sub) {
         return {
-          Sub: <AddressUser ellipsis={false} add={timelineItem.args.sub} />,
+          Sub: <CopyableAddress address={timelineItem.args.sub} />,
           ...args,
         };
       }
 
       if (timelineItem.args.parent) {
         return {
-          Parent: (
-            <AddressUser ellipsis={false} add={timelineItem.args.parent} />
-          ),
+          Parent: <CopyableAddress address={timelineItem.args.parent} />,
           ...args,
         };
       }

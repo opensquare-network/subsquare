@@ -40,7 +40,7 @@ function ExtrinsicID({ blockHeight, extrinsicIndex }) {
   );
 }
 
-export default function TransferList({ items }) {
+export default function TransferList({ isLoading, items }) {
   const { symbol, decimals } = useChainSettings();
   const [timeType, setTimeType] = useState("time");
 
@@ -105,5 +105,12 @@ export default function TransferList({ items }) {
     return row;
   });
 
-  return <DataList rows={rows} columns={columns} noDataText="No transfers" />;
+  return (
+    <DataList
+      loading={isLoading}
+      rows={rows}
+      columns={columns}
+      noDataText="No transfers"
+    />
+  );
 }

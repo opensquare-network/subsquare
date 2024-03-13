@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BlockSVG from "./block.svg";
+import InfoBlock from "@osn/icons/subsquare/InfoBlock";
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,9 +10,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const BlockIcon = styled(BlockSVG)`
+const BlockIcon = styled(InfoBlock)`
+  width: 16px;
+  height: 16px;
   path {
-    stroke: ${(p) => p.theme.textPrimary};
+    stroke: ${(p) => p.theme.textTertiary};
   }
 `;
 
