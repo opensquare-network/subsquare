@@ -47,11 +47,11 @@ export default function TransferList({ isLoading, items }) {
   const columns = [
     {
       name: "Event ID",
-      style: { width: 130, textAlign: "left" },
+      style: { width: 120, textAlign: "left" },
     },
     {
       name: "Extrinsic ID",
-      style: { width: 130, textAlign: "left" },
+      style: { width: 120, textAlign: "left" },
     },
     {
       name: (
@@ -64,19 +64,19 @@ export default function TransferList({ isLoading, items }) {
           {timeType}
         </span>
       ),
-      style: { width: 230, textAlign: "left" },
+      style: { width: 200, textAlign: "left" },
     },
     {
       name: "From",
-      style: { width: 176, textAlign: "left" },
+      style: { width: 276, textAlign: "left" },
     },
     {
       name: "To",
-      style: { width: 176, textAlign: "left" },
+      style: { width: 276, textAlign: "left" },
     },
     {
       name: "Value",
-      style: { width: 176, textAlign: "right" },
+      style: { textAlign: "right" },
     },
   ];
 
@@ -91,8 +91,8 @@ export default function TransferList({ isLoading, items }) {
       ) : (
         <Duration key="time" time={item.indexer.blockTime} />
       ),
-      <AddressUser key="from" add={item.from} noTooltip maxWidth={120} />,
-      <AddressUser key="to" add={item.to} noTooltip maxWidth={120} />,
+      <AddressUser key="from" add={item.from} />,
+      <AddressUser key="to" add={item.to} />,
       <ValueDisplay
         key="value"
         value={toPrecision(item.balance, decimals)}
