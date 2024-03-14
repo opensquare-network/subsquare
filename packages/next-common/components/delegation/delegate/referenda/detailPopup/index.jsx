@@ -1,8 +1,9 @@
 import AccountLinks from "next-common/components/links/accountLinks";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import ReferendaDelegationCardSummary from "./summary";
+import ReferendaDelegationCardSummary from "../summary";
 import AddressUser from "next-common/components/user/addressUser";
-import { DelegateAvatar } from "./avatar";
+import { DelegateAvatar } from "../avatar";
+import ReferendaDelegateeDetailPopupTabsContent from "./tabsContent";
 
 export default function ReferendaDelegateeDetailPopup({
   delegate,
@@ -45,6 +46,8 @@ export default function ReferendaDelegateeDetailPopup({
       <hr />
 
       <ReferendaDelegationCardSummary delegate={delegate} />
+
+      <ReferendaDelegateeDetailPopupTabsContent delegate={delegate} />
     </Popup>
   );
 }
