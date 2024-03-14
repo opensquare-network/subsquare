@@ -4,5 +4,17 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
   delegate,
 }) {
   const { manifesto } = delegate;
-  return <MarkdownPreviewer content={manifesto?.longDescription || ""} />;
+
+  let content = "";
+
+  switch (manifesto?.source) {
+    case "nova":
+      content = manifesto?.longDescription || "";
+      break;
+    case "parity":
+      content = manifesto?.manifesto || "";
+      break;
+  }
+
+  return <MarkdownPreviewer content={content} />;
 }
