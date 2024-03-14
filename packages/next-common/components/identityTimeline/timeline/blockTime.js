@@ -1,38 +1,25 @@
-import styled from "styled-components";
-import InfoTime from "@osn/icons/subsquare/InfoTime";
 import dayjs from "dayjs";
+import tw from "tailwind-styled-components";
+import InfoTime from "@osn/icons/subsquare/InfoTime";
 import Duration from "next-common/components/duration";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  > :nth-child(1) {
-    margin-right: 4px;
-  }
-  > :nth-child(2) {
-    margin-right: 8px;
-  }
-`;
-
-const ClockIcon = styled(InfoTime)`
-  width: 16px;
-  height: 16px;
-  path {
-    fill: ${(p) => p.theme.textTertiary};
-  }
+const ClockIcon = tw(InfoTime)`
+  mr-[4px]
+  w-[16px]
+  h-[16px]
+  [&_path]:fill-textTertiary
 `;
 
 export default function BlockTime({ ts }) {
   return (
-    <Wrapper className="text12Medium whitespace-nowrap">
-      <ClockIcon />
-      <div className="text-textTertiary">
+    <div className="flex items-center text12Medium whitespace-nowrap">
+      <ClockIcon className="mr-[4px]" />
+      <div className="mr-[4px] text-textTertiary">
         {dayjs(ts).format("YYYY-MM-DD HH:mm:ss")}
       </div>
       <div className="text-textDisabled">
         <Duration time={ts} />
       </div>
-    </Wrapper>
+    </div>
   );
 }

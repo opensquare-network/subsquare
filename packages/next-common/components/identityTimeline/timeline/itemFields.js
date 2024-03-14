@@ -1,25 +1,24 @@
-import styled from "styled-components";
+import tw from "tailwind-styled-components";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  flex-grow: 1;
-  padding-top: 4px;
+const Wrapper = tw.div`
+  flex
+  flex-col
+  justify-start
+  grow
+  pt-[4px]
 `;
 
-const Title = styled.div`
-  min-width: 176px;
-  flex: 0 0 auto;
+const Title = tw.div`
+  min-w-[176px]
+  grow-0
+  shrink-0
+  basis-auto
 `;
 
-const Body = styled.div`
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  @media screen and (max-width: 768px) {
-    padding-left: 0px;
-  }
+const Body = tw.div`
+  flex
+  items-center
+  grow
 `;
 
 export default function TimelineItemFields({ fields, className = "" }) {
