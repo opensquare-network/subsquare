@@ -20,11 +20,16 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function AccountLinks({ address }) {
+export default function AccountLinks({
+  address,
+  showCouncilorLink: showCouncilorLinkProp = true,
+}) {
   const chain = useChain();
   const identity = useIdentity(address, chain);
   const { email, riot, twitter, web } = identity?.info || {};
-  const showCouncilorLink = [Chains.polkadot, Chains.kusama].includes(chain);
+
+  const showCouncilorLink =
+    showCouncilorLinkProp && [Chains.polkadot, Chains.kusama].includes(chain);
 
   if (!address) {
     throw new Error("No address provided");
