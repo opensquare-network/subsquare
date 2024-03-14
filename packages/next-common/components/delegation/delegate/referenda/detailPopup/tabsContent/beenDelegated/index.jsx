@@ -1,11 +1,15 @@
 import { SystemMenu } from "@osn/icons/subsquare";
 import DataList from "next-common/components/dataList";
+import Popup from "next-common/components/popup/wrapper/Popup";
 import Track from "next-common/components/referenda/track/trackTag";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { toPrecision } from "next-common/utils";
 import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
+import { useState } from "react";
+import ReferendaDelegateeDetailPopupBeenDelegatedInfo from "./info";
+import DelegatorList from "./delegatorList";
 
 export default function ReferendaDelegateeDetailPopupBeenDelegated({
   delegate,
@@ -14,6 +18,9 @@ export default function ReferendaDelegateeDetailPopupBeenDelegated({
   const { isLoading, beenDelegatedList } = useAllBeenDelegatedList(
     delegate.address,
   );
+
+  const [beenDelegatedPopup, setBeenDelegatedPopup] = useState(false);
+  const [beenDelegatedPopupData, setBeenDelegatedPopupData] = useState([]);
 
   const columns = [
     {
@@ -56,19 +63,45 @@ export default function ReferendaDelegateeDetailPopupBeenDelegated({
         symbol={symbol}
         value={toPrecision(item?.totalVotes, decimals)}
       />,
-      // TODO: delegation, been delegated detail
-      <SecondaryButton key={"detail"} size="small" className="w-7 p-0">
+      <SecondaryButton
+        key={"detail"}
+        size="small"
+        className="w-7 p-0"
+        onClick={() => {
+          setBeenDelegatedPopup(true);
+          setBeenDelegatedPopupData(item);
+        }}
+      >
         <SystemMenu className="w-4 h-4" />
       </SecondaryButton>,
     ];
   });
 
   return (
-    <DataList
-      loading={isLoading}
-      columns={columns}
-      rows={rows}
-      noDataText="No been delegated"
-    />
+    <>
+      <DataList
+        loading={isLoading}
+        columns={columns}
+        rows={rows}
+        noDataText="No been delegated"
+      />
+
+      {beenDelegatedPopup && (
+        <Popup
+          title="Been Delegated"
+          className="w-[640px] max-w-full"
+          onClose={() => {
+            setBeenDelegatedPopup(false);
+            setBeenDelegatedPopupData([]);
+          }}
+        >
+          <ReferendaDelegateeDetailPopupBeenDelegatedInfo
+            delegate={beenDelegatedPopupData}
+          />
+
+          <DelegatorList delegators={beenDelegatedPopupData.beenDelegated} />
+        </Popup>
+      )}
+    </>
   );
 }

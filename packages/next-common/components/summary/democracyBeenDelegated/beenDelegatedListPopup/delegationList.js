@@ -22,7 +22,6 @@ function DelegationList({ items, loading = false }) {
       name: "ADDRESS",
       style: {
         textAlign: "left",
-        width: colWidths.address,
         minWidth: colWidths.address,
       },
     },
@@ -50,6 +49,7 @@ function DelegationList({ items, loading = false }) {
         key="user"
         add={item.delegator}
         maxWidth={colWidths.address}
+        linkToVotesPage
       />,
       <CapitalListItem
         key="capital"
