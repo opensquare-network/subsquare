@@ -4,15 +4,16 @@ import DataList from "next-common/components/dataList";
 import nextApi from "next-common/services/nextApi";
 import {
   PostTitle,
+  Referenda,
   VoteItem,
+  useModuleTab,
 } from "next-common/components/profile/votingHistory/common";
 
-export default function ReferendaDelegateeDetailPopupRecentVotes({
-  delegate,
-  module = "referenda",
-}) {
+export default function ReferendaDelegateeDetailPopupRecentVotes({ delegate }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const tab = useModuleTab();
+  const module = tab === Referenda ? "referenda" : "democracy";
 
   useEffect(() => {
     setIsLoading(true);
@@ -68,7 +69,7 @@ export default function ReferendaDelegateeDetailPopupRecentVotes({
         <Link
           className="text14Medium text-theme500"
           href={`/user/${delegate.address}/votes${
-            module === "democracy" ? "?type=Democracy" : ""
+            tab === Referenda ? "?type=Referenda" : "?type=Democracy"
           }`}
         >
           View All
