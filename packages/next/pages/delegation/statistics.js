@@ -3,7 +3,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import DelegationLayout from "next-common/components/delegation/layout";
 import ReferendaStats from "next-common/components/delegation/stats/referendaStats";
 import DemocracyStats from "next-common/components/delegation/stats/democracyStats";
-import { ssrNextApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import {
   Democracy,
@@ -57,15 +57,15 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
       { result: delegators },
       { result: democracySummary },
     ] = await Promise.all([
-      ssrNextApi.fetch("democracy/delegatee", {
+      nextApi.fetch("democracy/delegatee", {
         sort: JSON.stringify(["delegatedVotes", "desc"]),
         pageSize: 25,
       }),
-      ssrNextApi.fetch("democracy/delegators", {
+      nextApi.fetch("democracy/delegators", {
         sort: JSON.stringify(["votes", "desc"]),
         pageSize: 25,
       }),
-      ssrNextApi.fetch("democracy/summary"),
+      nextApi.fetch("democracy/summary"),
     ]);
 
     return {
@@ -82,12 +82,12 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
       { result: delegatee },
       { result: tracksReferendaSummary },
     ] = await Promise.all([
-      ssrNextApi.fetch("referenda/tracks"),
-      ssrNextApi.fetch("referenda/delegatee", {
+      nextApi.fetch("referenda/tracks"),
+      nextApi.fetch("referenda/delegatee", {
         sort: JSON.stringify(["votes", "desc"]),
         pageSize: 25,
       }),
-      ssrNextApi.fetch("referenda/summary"),
+      nextApi.fetch("referenda/summary"),
     ]);
 
     return {
