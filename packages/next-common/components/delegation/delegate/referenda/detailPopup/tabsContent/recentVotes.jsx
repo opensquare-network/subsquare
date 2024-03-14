@@ -3,7 +3,6 @@ import Link from "next/link";
 import DataList from "next-common/components/dataList";
 import nextApi from "next-common/services/nextApi";
 import {
-  Democracy,
   PostTitle,
   VoteItem,
 } from "next-common/components/profile/votingHistory/common";
@@ -69,7 +68,7 @@ export default function ReferendaDelegateeDetailPopupRecentVotes({
         <Link
           className="text14Medium text-theme500"
           href={`/user/${delegate.address}/votes${
-            module === Democracy ? "?type=Democracy" : ""
+            module === "democracy" ? "?type=Democracy" : ""
           }`}
         >
           View All
