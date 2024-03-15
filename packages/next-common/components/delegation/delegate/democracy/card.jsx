@@ -11,9 +11,14 @@ import DemocracyNewDelegation from "next-common/components/summary/democracySumm
 import ReferendaDelegateeDetailPopup from "./detailPopup";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "../referenda/avatar";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
 
 export default function DemocracyDelegateCard({ delegate = {} }) {
   const { address, manifesto } = delegate;
+
+  const realAddress = useRealAddress();
+  const { delegating } = useSubDemocracyDelegating(realAddress);
 
   const [detailOpen, setDetailOpen] = useState(false);
 
@@ -24,6 +29,7 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
 
         <div className="space-x-2">
           <DemocracyNewDelegation
+            disabled={!!delegating}
             defaultTargetAddress={address}
             targetDisabled
           />
