@@ -1,9 +1,9 @@
 import AccountLinks from "next-common/components/links/accountLinks";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import ReferendaDelegationCardSummary from "../../referenda/summary";
+import DemocracyDelegationCardSummary from "../summary";
 import AddressUser from "next-common/components/user/addressUser";
 import { DelegateAvatar } from "../../referenda/avatar";
-import ReferendaDelegateeDetailPopupTabsContent from "./tabsContent";
+import DemocracyDelegateeDetailPopupTabsContent from "./tabsContent";
 
 export default function DemocracyDelegateeDetailPopup({
   delegate,
@@ -45,9 +45,9 @@ export default function DemocracyDelegateeDetailPopup({
 
       <hr />
 
-      <ReferendaDelegationCardSummary delegate={delegate} />
+      <DemocracyDelegationCardSummary delegate={delegate} />
 
-      <ReferendaDelegateeDetailPopupTabsContent delegate={delegate} />
+      <DemocracyDelegateeDetailPopupTabsContent delegate={delegate} />
     </Popup>
   );
 }
