@@ -4,6 +4,30 @@ import ReferendaDelegationCardSummary from "../summary";
 import AddressUser from "next-common/components/user/addressUser";
 import { DelegateAvatar } from "../avatar";
 import ReferendaDelegateeDetailPopupTabsContent from "./tabsContent";
+import SecondaryButton from "next-common/lib/button/secondary";
+import { SystemEdit2, SystemSubtract } from "@osn/icons/subsquare";
+
+function EditButton() {
+  return (
+    <SecondaryButton size="small">
+      <div className="flex gap-[6px]">
+        <SystemEdit2 className="w-4 h-4" />
+        <span>Edit</span>
+      </div>
+    </SecondaryButton>
+  );
+}
+
+function RevokeButton() {
+  return (
+    <SecondaryButton size="small">
+      <div className="flex gap-[6px]">
+        <SystemSubtract className="w-4 h-4" />
+        <span>Revoke</span>
+      </div>
+    </SecondaryButton>
+  );
+}
 
 export default function ReferendaDelegateeDetailPopup({
   delegate,
@@ -20,9 +44,12 @@ export default function ReferendaDelegateeDetailPopup({
       }}
     >
       <div>
-        <div>
+        <div className="flex justify-between">
           <DelegateAvatar address={address} image={manifesto?.image} />
-          {/* TODO: delegation edit, revoke */}
+          <div className="flex gap-[8px]">
+            <EditButton />
+            <RevokeButton />
+          </div>
         </div>
         <div className="mt-3">
           <AddressUser
