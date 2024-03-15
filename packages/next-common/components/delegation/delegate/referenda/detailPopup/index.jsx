@@ -13,11 +13,12 @@ function EditButton() {
   const [showEdit, setShowEdit] = useState(false);
   return (
     <>
-      <SecondaryButton size="small" onClick={() => setShowEdit(true)}>
-        <div className="flex gap-[6px]">
-          <SystemEdit2 className="w-4 h-4" />
-          <span>Edit</span>
-        </div>
+      <SecondaryButton
+        size="small"
+        iconLeft={<SystemEdit2 className="w-4 h-4" />}
+        onClick={() => setShowEdit(true)}
+      >
+        Edit
       </SecondaryButton>
       {showEdit && (
         <AnnouncementEditPopup
@@ -31,11 +32,11 @@ function EditButton() {
 
 function RevokeButton() {
   return (
-    <SecondaryButton size="small">
-      <div className="flex gap-[6px]">
-        <SystemSubtract className="w-4 h-4" />
-        <span>Revoke</span>
-      </div>
+    <SecondaryButton
+      size="small"
+      iconLeft={<SystemSubtract className="w-4 h-4" />}
+    >
+      Revoke
     </SecondaryButton>
   );
 }
