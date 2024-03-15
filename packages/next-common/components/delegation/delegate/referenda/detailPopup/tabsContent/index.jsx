@@ -2,9 +2,16 @@ import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import ReferendaDelegateeDetailPopupBeenDelegated from "./beenDelegated";
 import ReferendaDelegateeDetailPopupRecentVotes from "./recentVotes";
+import ReferendaDelegateeDetailPopupAnnouncement from "./announcement";
 
 export default function ReferendaDelegateeDetailPopupTabsContent({ delegate }) {
   const tabs = [
+    {
+      label: "Announcement",
+      content: (
+        <ReferendaDelegateeDetailPopupAnnouncement delegate={delegate} />
+      ),
+    },
     {
       label: "Recent Votes",
       content: <ReferendaDelegateeDetailPopupRecentVotes delegate={delegate} />,

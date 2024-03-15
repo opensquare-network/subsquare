@@ -59,7 +59,7 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
           </div>
         </Tooltip>
 
-        <AccountLinks address={address} />
+        <AccountLinks address={address} showCouncilorLink={false} />
       </div>
 
       <Divider className="my-4" />
