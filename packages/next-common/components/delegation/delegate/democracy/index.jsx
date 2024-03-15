@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchDemocracyDelegates,
   democracyDelegatesSelector,
+  democracyDelegatesTriggerUpdateSelector,
 } from "next-common/store/reducers/democracy/delegates";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { useEffect } from "react";
@@ -22,10 +23,11 @@ export default function DemocracyDelegates() {
     total,
     pageSize,
   );
+  const triggerUpdate = useSelector(democracyDelegatesTriggerUpdateSelector);
 
   useEffect(() => {
     dispatch(fetchDemocracyDelegates(page, pageSize));
-  }, [page, pageSize]);
+  }, [page, pageSize, triggerUpdate]);
 
   return (
     <>

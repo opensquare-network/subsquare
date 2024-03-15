@@ -8,6 +8,7 @@ const referendaDelegatesSlice = createSlice({
   initialState: {
     delegates: null,
     isLoading: false,
+    trigger: 0,
   },
   reducers: {
     setDelegates(state, { payload }) {
@@ -16,12 +17,16 @@ const referendaDelegatesSlice = createSlice({
     setLoading(state, { payload }) {
       state.isLoading = payload;
     },
+    setTriggerUpdate(state) {
+      state.trigger = state.trigger + 1;
+    },
   },
 });
 
 export const {
   setDelegates: setReferendaDelegates,
   setLoading: setReferendaDelegatesLoading,
+  setTriggerUpdate: setReferendaDelegatesTriggerUpdate,
 } = referendaDelegatesSlice.actions;
 
 export const fetchReferendaDelegates =
@@ -40,5 +45,7 @@ export const fetchReferendaDelegates =
   };
 
 export const referendaDelegatesSelector = (state) => state[name].delegates;
+export const referendaDelegatesTriggerUpdateSelector = (state) =>
+  state[name].trigger;
 
 export default referendaDelegatesSlice.reducer;

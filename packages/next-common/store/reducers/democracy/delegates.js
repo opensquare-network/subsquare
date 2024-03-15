@@ -8,6 +8,7 @@ const democracyDelegatesSlice = createSlice({
   initialState: {
     delegates: null,
     isLoading: false,
+    trigger: 0,
   },
   reducers: {
     setDelegates(state, { payload }) {
@@ -16,12 +17,16 @@ const democracyDelegatesSlice = createSlice({
     setLoading(state, { payload }) {
       state.isLoading = payload;
     },
+    triggerUpdate(state) {
+      state.trigger = state.trigger + 1;
+    },
   },
 });
 
 export const {
   setDelegates: setDemocracyDelegates,
   setLoading: setDemocracyDelegatesLoading,
+  triggerUpdate: setDemocracyDelegatesTriggerUpdate,
 } = democracyDelegatesSlice.actions;
 
 export const fetchDemocracyDelegates =
@@ -40,5 +45,7 @@ export const fetchDemocracyDelegates =
   };
 
 export const democracyDelegatesSelector = (state) => state[name].delegates;
+export const democracyDelegatesTriggerUpdateSelector = (state) =>
+  state[name].trigger;
 
 export default democracyDelegatesSlice.reducer;

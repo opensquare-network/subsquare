@@ -4,36 +4,14 @@ import ReferendaDelegationCardSummary from "../summary";
 import AddressUser from "next-common/components/user/addressUser";
 import { DelegateAvatar } from "../avatar";
 import ReferendaDelegateeDetailPopupTabsContent from "./tabsContent";
-import SecondaryButton from "next-common/lib/button/secondary";
-import { SystemEdit2, SystemSubtract } from "@osn/icons/subsquare";
-
-function EditButton() {
-  return (
-    <SecondaryButton
-      size="small"
-      iconLeft={<SystemEdit2 className="w-4 h-4" />}
-    >
-      Edit
-    </SecondaryButton>
-  );
-}
-
-function RevokeButton() {
-  return (
-    <SecondaryButton
-      size="small"
-      iconLeft={<SystemSubtract className="w-4 h-4" />}
-    >
-      Revoke
-    </SecondaryButton>
-  );
-}
+import DetailButtons from "../../common/detailButtons";
 
 export default function ReferendaDelegateeDetailPopup({
   delegate,
   setDetailOpen,
 }) {
-  const { address, manifesto } = delegate;
+  const { address, manifesto, shortBio } = delegate;
+  const shortDescription = shortBio || manifesto?.shortDescription;
 
   return (
     <Popup
@@ -46,10 +24,7 @@ export default function ReferendaDelegateeDetailPopup({
       <div>
         <div className="flex justify-between">
           <DelegateAvatar address={address} image={manifesto?.image} />
-          <div className="flex gap-[8px]">
-            <EditButton />
-            <RevokeButton />
-          </div>
+          <DetailButtons address={address} />
         </div>
         <div className="mt-3">
           <AddressUser
@@ -60,10 +35,8 @@ export default function ReferendaDelegateeDetailPopup({
         </div>
       </div>
 
-      {manifesto?.shortDescription && (
-        <div className="text-textTertiary text14Medium">
-          {manifesto.shortDescription}
-        </div>
+      {shortDescription && (
+        <div className="text-textTertiary text14Medium">{shortDescription}</div>
       )}
 
       <div>

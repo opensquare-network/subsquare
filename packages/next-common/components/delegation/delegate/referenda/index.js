@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchReferendaDelegates,
   referendaDelegatesSelector,
+  referendaDelegatesTriggerUpdateSelector,
 } from "next-common/store/reducers/referenda/delegates";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { useEffect } from "react";
@@ -22,10 +23,11 @@ export default function ReferendaDelegates() {
     total,
     pageSize,
   );
+  const triggerUpdate = useSelector(referendaDelegatesTriggerUpdateSelector);
 
   useEffect(() => {
     dispatch(fetchReferendaDelegates(page, pageSize));
-  }, [page, pageSize]);
+  }, [page, pageSize, triggerUpdate]);
 
   return (
     <>
