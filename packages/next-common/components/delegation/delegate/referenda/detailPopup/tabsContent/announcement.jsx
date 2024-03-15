@@ -16,5 +16,15 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
       break;
   }
 
+  if (!content) {
+    return (
+      <div className="text-center w-full py-[16px]">
+        <span className="text-textTertiary text14Medium">
+          There is no announcement
+        </span>
+      </div>
+    );
+  }
+
   return <MarkdownPreviewer content={content} />;
 }
