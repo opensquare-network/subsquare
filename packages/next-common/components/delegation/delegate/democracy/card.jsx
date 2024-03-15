@@ -20,6 +20,8 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
   const realAddress = useRealAddress();
   const { delegating } = useSubDemocracyDelegating(realAddress);
 
+  const isDelegatee = realAddress === address;
+
   const [detailOpen, setDetailOpen] = useState(false);
 
   return (
@@ -28,11 +30,13 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
         <DelegateAvatar address={address} image={delegate.manifesto?.image} />
 
         <div className="space-x-2">
-          <DemocracyNewDelegation
-            disabled={!!delegating}
-            defaultTargetAddress={address}
-            targetDisabled
-          />
+          {!isDelegatee && (
+            <DemocracyNewDelegation
+              disabled={!!delegating}
+              defaultTargetAddress={address}
+              targetDisabled
+            />
+          )}
 
           <SecondaryButton
             className="w-7 h-7 p-0"
