@@ -63,7 +63,7 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
           className="block h-full"
           delayDuration={700}
           content={
-            manifesto?.longDescription && (
+            manifesto?.shortDescription && (
               <div className="max-w-xs">{manifesto?.shortDescription}</div>
             )
           }
