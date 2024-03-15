@@ -4,7 +4,7 @@ import DemocracyDelegationCardSummary from "../summary";
 import AddressUser from "next-common/components/user/addressUser";
 import { DelegateAvatar } from "../../referenda/avatar";
 import DemocracyDelegateeDetailPopupTabsContent from "./tabsContent";
-import DemocracyDelegateeDetailPopupActions from "./actions";
+import DetailButtons from "../../common/detailButtons";
 
 export default function DemocracyDelegateeDetailPopup({
   delegate,
@@ -23,7 +23,7 @@ export default function DemocracyDelegateeDetailPopup({
       <div>
         <div className="flex justify-between">
           <DelegateAvatar address={address} image={manifesto?.image} />
-          <DemocracyDelegateeDetailPopupActions delegate={delegate} />
+          <DetailButtons address={address} />
         </div>
         <div className="mt-3">
           <AddressUser
