@@ -1,18 +1,42 @@
 import Editor from "next-common/components/editor";
 import InputText from "next-common/components/inputText";
+import {
+  Referenda,
+  useModuleTab,
+} from "next-common/components/profile/votingHistory/common";
 import SignerPopup from "next-common/components/signerPopup";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import nextApi from "next-common/services/nextApi";
+import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
+import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function AnnouncementEditPopup({ title = "Publish", onClose }) {
+export default function AnnouncementEditPopup({
+  title = "Publish",
+  onClose,
+  address,
+}) {
   const [announcement, setAnnouncement] = useState("");
   const [announcementContentType, setAnnouncementContentType] =
     useState("markdown");
   const [shortBio, setShortBio] = useState("");
   const signMessage = useSignMessage();
   const dispatch = useDispatch();
+  const tab = useModuleTab();
+  const module = tab === Referenda ? "referenda" : "democracy";
+
+  const triggerUpdate = useCallback(() => {
+    if (module === "referenda") {
+      dispatch(setReferendaDelegatesTriggerUpdate());
+    } else if (module === "democracy") {
+      dispatch(setDemocracyDelegatesTriggerUpdate());
+    }
+  }, [module]);
 
   const handleSubmit = useCallback(
     async (api, signerAccount) => {
@@ -24,11 +48,21 @@ export default function AnnouncementEditPopup({ title = "Publish", onClose }) {
         };
         data.signature = await signMessage(
           JSON.stringify(data),
-          signerAccount.address,
+          signerAccount.realAddress,
           signerAccount.meta.source,
         );
+        data.signerWallet = signerAccount.meta.source;
 
-        //TODO: call server api
+        const { error } = await nextApi.post(
+          `delegation/${module}/delegates/${address}/announcement`,
+          data,
+        );
+        if (error) {
+          dispatch(newErrorToast(error.message));
+          return;
+        }
+        dispatch(newSuccessToast("Announcement published successfully"));
+        triggerUpdate();
         onClose();
       } catch (e) {
         if (e.message === "Cancelled") {
@@ -37,7 +71,16 @@ export default function AnnouncementEditPopup({ title = "Publish", onClose }) {
         dispatch(newErrorToast(e.message));
       }
     },
-    [shortBio, announcement, announcementContentType, signMessage, onClose],
+    [
+      module,
+      address,
+      shortBio,
+      announcement,
+      announcementContentType,
+      signMessage,
+      onClose,
+      triggerUpdate,
+    ],
   );
 
   return (

@@ -13,7 +13,9 @@ import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "./avatar";
 
 export default function ReferendaDelegateCard({ delegate = {} }) {
-  const { address, manifesto } = delegate;
+  const { address, manifesto, shortBio } = delegate;
+
+  const shortDescription = shortBio || manifesto?.shortDescription;
 
   const [detailOpen, setDetailOpen] = useState(false);
 
@@ -49,13 +51,13 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
           className="block h-full"
           delayDuration={700}
           content={
-            manifesto?.longDescription && (
-              <div className="max-w-xs">{manifesto?.shortDescription}</div>
+            shortDescription && (
+              <div className="max-w-xs">{shortDescription}</div>
             )
           }
         >
           <div className={cn("text-textTertiary text14Medium", "line-clamp-2")}>
-            {manifesto?.shortDescription || "-"}
+            {shortDescription || "-"}
           </div>
         </Tooltip>
 

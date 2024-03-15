@@ -1,19 +1,25 @@
-import { MarkdownPreviewer } from "@osn/previewer";
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 
 export default function ReferendaDelegateeDetailPopupAnnouncement({
   delegate,
 }) {
-  const { manifesto } = delegate;
+  const { manifesto, announcement, announcementContentType } = delegate;
 
   let content = "";
+  let contentType = "markdown";
 
-  switch (manifesto?.source) {
-    case "nova":
-      content = manifesto?.longDescription || "";
-      break;
-    case "parity":
-      content = manifesto?.manifesto || "";
-      break;
+  if (announcement) {
+    content = announcement;
+    contentType = announcementContentType;
+  } else {
+    switch (manifesto?.source) {
+      case "nova":
+        content = manifesto?.longDescription || "";
+        break;
+      case "parity":
+        content = manifesto?.manifesto || "";
+        break;
+    }
   }
 
   if (!content) {
@@ -26,5 +32,9 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
     );
   }
 
-  return <MarkdownPreviewer content={content} />;
+  return contentType === "markdown" ? (
+    <MarkdownPreviewer content={content} />
+  ) : (
+    <HtmlPreviewer content={content} />
+  );
 }
