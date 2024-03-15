@@ -20,7 +20,7 @@ export function useSignMessage() {
 
       const extension = injectedWeb3?.[walletName];
       if (!extension) {
-        throw new Error("Wallet not found");
+        throw new Error("Wallet not found: " + walletName);
       }
 
       const wallet = await extension.enable("subsquare");

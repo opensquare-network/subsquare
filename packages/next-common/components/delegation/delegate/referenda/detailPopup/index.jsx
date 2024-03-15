@@ -6,15 +6,26 @@ import { DelegateAvatar } from "../avatar";
 import ReferendaDelegateeDetailPopupTabsContent from "./tabsContent";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemEdit2, SystemSubtract } from "@osn/icons/subsquare";
+import { useState } from "react";
+import AnnouncementEditPopup from "../../AnnouncementEditPopup";
 
 function EditButton() {
+  const [showEdit, setShowEdit] = useState(false);
   return (
-    <SecondaryButton size="small">
-      <div className="flex gap-[6px]">
-        <SystemEdit2 className="w-4 h-4" />
-        <span>Edit</span>
-      </div>
-    </SecondaryButton>
+    <>
+      <SecondaryButton size="small" onClick={() => setShowEdit(true)}>
+        <div className="flex gap-[6px]">
+          <SystemEdit2 className="w-4 h-4" />
+          <span>Edit</span>
+        </div>
+      </SecondaryButton>
+      {showEdit && (
+        <AnnouncementEditPopup
+          title="Edit"
+          onClose={() => setShowEdit(false)}
+        />
+      )}
+    </>
   );
 }
 
