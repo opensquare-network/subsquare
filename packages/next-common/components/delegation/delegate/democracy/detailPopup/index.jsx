@@ -40,7 +40,7 @@ export default function DemocracyDelegateeDetailPopup({
       )}
 
       <div>
-        <AccountLinks address={address} />
+        <AccountLinks address={address} showCouncilorLink={false} />
       </div>
 
       <hr />
