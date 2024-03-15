@@ -7,7 +7,7 @@ import Tooltip from "next-common/components/tooltip";
 import AccountLinks from "next-common/components/links/accountLinks";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemMenu } from "@osn/icons/subsquare";
-import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
+import DemocracyNewDelegation from "next-common/components/summary/democracySummaryDelegation/newDelegation";
 import ReferendaDelegateeDetailPopup from "./detailPopup";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "../referenda/avatar";
@@ -23,7 +23,11 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
         <DelegateAvatar address={address} image={delegate.manifesto?.image} />
 
         <div className="space-x-2">
-          <NewDelegateButton defaultTargetAddress={address} targetDisabled />
+          <DemocracyNewDelegation
+            defaultTargetAddress={address}
+            targetDisabled
+          />
+
           <SecondaryButton
             className="w-7 h-7 p-0"
             size="small"

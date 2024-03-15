@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Button } from "../styled";
+import SecondaryButton from "next-common/lib/button/secondary";
 import DelegatePopup from "next-common/components/democracy/delegatePopup";
 import MoonDelegatePopup from "next-common/components/democracy/delegatePopup/moonPopup";
-import AddSVG from "next-common/assets/imgs/icons/add.svg";
+import { SystemPlus } from "@osn/icons/subsquare";
 import isMoonChain from "next-common/utils/isMoonChain";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 
-export default function DemocracyNewDelegation() {
+export default function DemocracyNewDelegation({
+  defaultTargetAddress,
+  targetDisabled,
+}) {
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
   const isUseMetamask = useIsUseMetamask();
 
@@ -17,12 +20,21 @@ export default function DemocracyNewDelegation() {
 
   return (
     <>
-      <Button onClick={() => setShowDelegatePopup(true)}>
-        <AddSVG />
-        New Delegate
-      </Button>
+      <SecondaryButton
+        size="small"
+        iconLeft={<SystemPlus className="w-4 h-4" />}
+        onClick={() => {
+          setShowDelegatePopup(true);
+        }}
+      >
+        Delegate
+      </SecondaryButton>
       {showDelegatePopup && (
-        <TheDelegatePopup onClose={() => setShowDelegatePopup(false)} />
+        <TheDelegatePopup
+          defaultTargetAddress={defaultTargetAddress}
+          targetDisabled={targetDisabled}
+          onClose={() => setShowDelegatePopup(false)}
+        />
       )}
     </>
   );
