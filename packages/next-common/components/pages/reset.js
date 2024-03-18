@@ -82,7 +82,7 @@ const Reset = () => {
                   <ErrorText>{errors?.message}</ErrorText>
                 )}
               </FormInputsWrapper>
-              <PrimaryButton isFill type="submit" isLoading={loading}>
+              <PrimaryButton isFill type="submit" loading={loading}>
                 Confirm
               </PrimaryButton>
             </FormWrapper>

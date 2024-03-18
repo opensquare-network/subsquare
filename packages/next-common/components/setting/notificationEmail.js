@@ -148,7 +148,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
       <div className="flex items-center max-sm:hidden">
         <PrimaryButton
           onClick={onVerify}
-          isLoading={resendLoading}
+          loading={resendLoading}
           style={{ width: 72, height: 40 }}
         >
           Verify
@@ -164,7 +164,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
     (!verified || inputEmail !== email) && (
       <SecondaryButton
         onClick={onVerify}
-        isLoading={resendLoading}
+        loading={resendLoading}
         style={{ width: 72, height: 40 }}
       >
         Verify

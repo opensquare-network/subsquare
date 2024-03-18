@@ -24,7 +24,7 @@ function PopupContent({ children }) {
       <PopupButtonWrapper>
         <PrimaryButton
           disabled={disabled}
-          isLoading={isLoading}
+          loading={isLoading}
           onClick={() => actionCallback(api, signerAccount)}
         >
           {confirmText}

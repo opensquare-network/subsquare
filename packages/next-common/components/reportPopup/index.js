@@ -94,7 +94,7 @@ export default function ReportPopup({ setShow = noop }) {
         />
       </div>
       <PopupButtonWrapper>
-        <PrimaryButton isLoading={isLoading} onClick={doReport}>
+        <PrimaryButton loading={isLoading} onClick={doReport}>
           Submit
         </PrimaryButton>
       </PopupButtonWrapper>

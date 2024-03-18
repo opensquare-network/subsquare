@@ -128,7 +128,7 @@ function PopupContent() {
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
       <PopupButtonWrapper>
-        <PrimaryButton disabled={disabled} isLoading={loading} onClick={submit}>
+        <PrimaryButton disabled={disabled} loading={loading} onClick={submit}>
           Submit
         </PrimaryButton>
       </PopupButtonWrapper>

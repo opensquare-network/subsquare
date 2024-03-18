@@ -171,7 +171,7 @@ export default function ProxyAddress() {
         style={{ width: 55, height: 40 }}
         onClick={isSet ? onUnset : onSet}
         disabled={disabled}
-        isLoading={isLoading}
+        loading={isLoading}
       >
         {isSet ? "Unset" : "Set"}
       </PrimaryButton>

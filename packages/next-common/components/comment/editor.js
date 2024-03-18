@@ -173,7 +173,7 @@ function CommentEditor(
           </SecondaryButton>
         )}
         <PrimaryButton
-          isLoading={loading}
+          loading={loading}
           onClick={isEdit ? updateComment : createComment}
           disabled={isEmpty}
           title={isEmpty ? "cannot submit empty content" : ""}

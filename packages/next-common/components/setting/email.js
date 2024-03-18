@@ -48,7 +48,7 @@ export default function Email({ email, verified }) {
           }
         />
         {!verified && (
-          <PrimaryButton onClick={onResend} isLoading={resendLoading}>
+          <PrimaryButton onClick={onResend} loading={resendLoading}>
             Resend
           </PrimaryButton>
         )}

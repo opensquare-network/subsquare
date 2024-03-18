@@ -72,7 +72,7 @@ export default function AddressLogin({ setView }) {
         {selectedWallet && (
           <PrimaryButton
             isFill
-            isLoading={isLoading}
+            loading={isLoading}
             onClick={doWeb3Login}
             disabled={!selectedAccount}
           >

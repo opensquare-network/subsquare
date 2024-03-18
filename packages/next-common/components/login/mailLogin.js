@@ -80,7 +80,7 @@ export default function MailLogin({ setView }) {
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>
-        <PrimaryButton isFill isLoading={loading} type="submit">
+        <PrimaryButton isFill loading={loading} type="submit">
           Login
         </PrimaryButton>
         <SecondaryButton

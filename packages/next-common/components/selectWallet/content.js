@@ -60,7 +60,7 @@ export default function SelectWalletContent() {
           {selectedWallet && (
             <PrimaryButton
               isFill
-              isLoading={isLoading}
+              loading={isLoading}
               onClick={doConnectAddress}
               disabled={!selectedAccount}
             >

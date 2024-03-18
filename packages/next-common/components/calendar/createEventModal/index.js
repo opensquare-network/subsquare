@@ -136,7 +136,7 @@ function PopupContent() {
       />
       <Link setValue={setLink} />
       <PopupButtonWrapper>
-        <PrimaryButton isLoading={isLoading} onClick={submit}>
+        <PrimaryButton loading={isLoading} onClick={submit}>
           Submit
         </PrimaryButton>
       </PopupButtonWrapper>

@@ -196,7 +196,7 @@ export default function PostCreate() {
 
       <ButtonWrapper>
         <PrimaryButton
-          isLoading={creating}
+          loading={creating}
           onClick={createPost}
           disabled={isDisableCreate}
         >

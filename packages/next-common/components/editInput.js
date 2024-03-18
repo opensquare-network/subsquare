@@ -75,11 +75,7 @@ export default function EditInput({
             Cancel
           </SecondaryButton>
         )}
-        <PrimaryButton
-          isLoading={loading}
-          onClick={onUpdate}
-          disabled={isEmpty}
-        >
+        <PrimaryButton loading={loading} onClick={onUpdate} disabled={isEmpty}>
           Update
         </PrimaryButton>
       </ButtonWrapper>

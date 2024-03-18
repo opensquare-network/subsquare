@@ -135,7 +135,7 @@ export default function PopupContent() {
         setConviction={setConviction}
       />
       <PopupButtonWrapper>
-        <PrimaryButton isLoading={isLoading} onClick={doDelegate}>
+        <PrimaryButton loading={isLoading} onClick={doDelegate}>
           Confirm
         </PrimaryButton>
       </PopupButtonWrapper>

@@ -9,7 +9,7 @@ export default function VoteButton({ onClick, disabled, isSubmitting }) {
         <PrimaryButton disabled>Vote</PrimaryButton>
       ) : (
         <PrimaryButton
-          isLoading={isSubmitting}
+          loading={isSubmitting}
           onClick={onClick}
           disabled={disabled}
         >

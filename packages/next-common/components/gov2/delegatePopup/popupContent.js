@@ -154,7 +154,7 @@ export default function PopupContent() {
       />
       <PopupButtonWrapper>
         <PrimaryButton
-          isLoading={isLoading}
+          loading={isLoading}
           disabled={disabled}
           onClick={doDelegate}
         >

@@ -73,7 +73,7 @@ export default function Password() {
       <PrimaryButton
         style={{ width: 72, height: 40 }}
         type="submit"
-        isLoading={changeLoading}
+        loading={changeLoading}
       >
         Change
       </PrimaryButton>

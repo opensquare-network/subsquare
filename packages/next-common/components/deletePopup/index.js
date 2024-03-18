@@ -39,7 +39,7 @@ export default function DeletePopup({
         <SecondaryButton onClick={() => setShow(false)}>Cancel</SecondaryButton>
         <PrimaryButton
           className="!bg-red-500"
-          isLoading={isLoading}
+          loading={isLoading}
           onClick={doDelete}
         >
           Delete

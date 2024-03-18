@@ -62,7 +62,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
         post.
       </Info>
       <PopupButtonWrapper>
-        <PrimaryButton isLoading={isLoading} onClick={unbindDiscussion}>
+        <PrimaryButton loading={isLoading} onClick={unbindDiscussion}>
           Confirm
         </PrimaryButton>
       </PopupButtonWrapper>

@@ -72,7 +72,7 @@ const Forget = () => {
               {errors?.message && !errors?.data && (
                 <ErrorText>{errors?.message}</ErrorText>
               )}
-              <PrimaryButton isFill type="submit" isLoading={loading}>
+              <PrimaryButton isFill type="submit" loading={loading}>
                 Confirm
               </PrimaryButton>
             </FormWrapper>

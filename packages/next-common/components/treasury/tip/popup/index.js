@@ -42,7 +42,7 @@ function TipCommon({ setBeneficiary, setReason }) {
 function SubmitButton({ disabled, loading, onSubmit }) {
   return (
     <PopupButtonWrapper>
-      <PrimaryButton disabled={disabled} isLoading={loading} onClick={onSubmit}>
+      <PrimaryButton disabled={disabled} loading={loading} onClick={onSubmit}>
         Submit
       </PrimaryButton>
     </PopupButtonWrapper>

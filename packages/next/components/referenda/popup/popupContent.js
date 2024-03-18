@@ -163,7 +163,7 @@ function VotePanel({
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
-          <PrimaryButton isLoading={isLoading} onClick={doVote}>
+          <PrimaryButton loading={isLoading} onClick={doVote}>
             Confirm
           </PrimaryButton>
         </div>

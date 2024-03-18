@@ -42,7 +42,7 @@ function DeletePopup({ onClose }) {
       <div className="flex gap-[8px] justify-end">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
         <PrimaryButton
-          isLoading={isLoading}
+          loading={isLoading}
           className="!bg-red500"
           onClick={doDelete}
         >

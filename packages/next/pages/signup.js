@@ -205,7 +205,7 @@ export default function Signup() {
                 setAgreeError={setAgreeError}
               />
               <ButtonWrapper>
-                <PrimaryButton isFill type="submit" isLoading={loading}>
+                <PrimaryButton isFill type="submit" loading={loading}>
                   Sign up
                 </PrimaryButton>
               </ButtonWrapper>

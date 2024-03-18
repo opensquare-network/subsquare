@@ -188,7 +188,7 @@ export default function PostLinkPopup({ setShow = noop }) {
       </Section>
       <PopupButtonWrapper>
         <PrimaryButton
-          isLoading={isLoading}
+          loading={isLoading}
           disabled={isLoadingList || !selectedDiscussion}
           onClick={bindDiscussion}
         >
