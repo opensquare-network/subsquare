@@ -1,6 +1,6 @@
 import { useChainSettings } from "next-common/context/chain";
 import ListLayout from "./ListLayout";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 

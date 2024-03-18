@@ -15,7 +15,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Conviction from "next-common/components/popup/fields/convictionField";
 import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
 import Target from "next-common/components/democracy/delegatePopup/target";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import MultiTrack from "next-common/components/popup/fields/multiTrackField";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import {

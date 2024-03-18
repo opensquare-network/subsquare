@@ -7,7 +7,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 export default function ConfirmEmail({ pin, email, identity, setErrors }) {

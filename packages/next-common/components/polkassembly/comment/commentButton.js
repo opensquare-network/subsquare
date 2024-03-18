@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useChain } from "next-common/context/chain";
 import { getPolkassemblyLink } from "next-common/utils/polkassembly";

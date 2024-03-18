@@ -16,7 +16,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSubMyReferendaVote, {
   getReferendaDirectVote,

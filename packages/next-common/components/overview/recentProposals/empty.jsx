@@ -1,5 +1,5 @@
 import { SystemPlus } from "@osn/icons/subsquare";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import NoData from "next-common/components/noData";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { useChainSettings } from "next-common/context/chain";

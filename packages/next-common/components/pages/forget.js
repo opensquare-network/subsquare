@@ -13,7 +13,7 @@ import {
   Label,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { LoginCard } from "../styled/containers/loginCard";
 

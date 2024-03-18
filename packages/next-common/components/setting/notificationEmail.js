@@ -14,7 +14,7 @@ import {
   useUser,
   useUserContext,
 } from "../../context/user";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import EmailJunkWarning from "./emailJunkWarning";
 import { LinkEmail } from "@osn/icons/subsquare";
 import Switch from "./switch";

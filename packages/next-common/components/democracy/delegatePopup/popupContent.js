@@ -15,7 +15,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Conviction from "./conviction";
 import VoteValue from "./voteValue";
 import Target from "./target";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import {
   useExtensionAccounts,

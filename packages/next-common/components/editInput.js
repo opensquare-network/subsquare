@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "./buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import Editor from "./editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 

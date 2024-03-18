@@ -14,7 +14,7 @@ import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
 import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
-import PrimaryButton from "../../../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useChainSettings } from "../../../../context/chain";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
 import {

@@ -10,7 +10,7 @@ import TipReason from "./tipReason";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
 import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
-import PrimaryButton from "../../../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useChainSettings } from "../../../../context/chain";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
 import {

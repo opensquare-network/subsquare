@@ -1,5 +1,5 @@
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { ContentWrapper, InfoMessage } from "./styled";
 
 export default function RequireSignature({ name }) {

@@ -9,7 +9,7 @@ import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
 import { noop } from "lodash-es";
 import { useRouter } from "next/router";
-import PrimaryButton from "../../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import Loading from "../../loading";
 import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";

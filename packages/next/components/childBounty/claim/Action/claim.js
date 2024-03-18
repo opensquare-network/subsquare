@@ -1,6 +1,6 @@
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import ClaimedInfo from "./ClaimedInfo";

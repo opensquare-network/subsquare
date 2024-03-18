@@ -3,7 +3,7 @@ import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useUser } from "../../context/user";
 import { cn } from "next-common/utils";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import Loading from "../loading";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";

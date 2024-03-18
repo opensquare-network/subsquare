@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import Popup from "../../../components/popup/wrapper/Popup";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { noop } from "lodash-es";
 import Day from "./day";
 import Time from "./time";

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { isSameAddress } from "next-common/utils";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { useDispatch, useSelector } from "react-redux";

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { newErrorToast } from "../../store/reducers/toastSlice";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import WalletAddressSelect from "../login/walletAddressSelect";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 

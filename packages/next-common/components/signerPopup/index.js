@@ -1,6 +1,6 @@
 import React from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { emptyFunction } from "../../utils";
 import { PopupButtonWrapper } from "../popup/wrapper";
 import { useSignerAccount, usePopupParams } from "../popupWithSigner/context";

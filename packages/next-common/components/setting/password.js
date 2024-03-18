@@ -5,7 +5,7 @@ import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
 import { InputWrapper } from "./styled";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import useForm from "../../utils/hooks/useForm";
 import styled from "styled-components";
 

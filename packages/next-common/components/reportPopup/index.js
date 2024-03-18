@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import Popup from "../popup/wrapper/Popup";
 import { noop } from "lodash-es";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "../popup/wrapper";
 import RadioOptionGroup from "next-common/components/radioOptionGroup";
 import nextApi from "next-common/services/nextApi";

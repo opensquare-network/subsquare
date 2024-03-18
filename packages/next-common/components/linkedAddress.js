@@ -19,7 +19,7 @@ import SelectWallet from "./wallet/selectWallet";
 import { fetchAndUpdateUser, useUser, useUserContext } from "../context/user";
 import { useChain } from "../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
-import PrimaryButton from "./buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";

@@ -3,7 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { useRouter } from "next/router";
 import NextHead from "next-common/components/nextHead";
 import { useThemeSetting } from "../../context/theme";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 
 const Wrapper = styled.div`
   height: 100vh;

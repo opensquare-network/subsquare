@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import Popup from "../popup/wrapper/Popup";
 import { noop } from "lodash-es";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "../popup/wrapper";
 import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";

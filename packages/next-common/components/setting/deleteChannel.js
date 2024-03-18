@@ -5,7 +5,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import Popup from "../popup/wrapper/Popup";
 import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { fetchAndUpdateUser, useUserContext } from "next-common/context/user";
 import Tooltip from "../tooltip";
 

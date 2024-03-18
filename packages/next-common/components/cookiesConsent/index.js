@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 import { isNil } from "lodash-es";
 import { cn } from "next-common/utils";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useNavCollapsed } from "next-common/context/nav";
 import SecondaryButton from "next-common/lib/button/secondary";
 
