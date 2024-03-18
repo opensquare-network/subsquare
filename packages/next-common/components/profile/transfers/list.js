@@ -47,11 +47,11 @@ export default function TransferList({ isLoading, items }) {
   const columns = [
     {
       name: "Event ID",
-      style: { width: 120, textAlign: "left" },
+      style: { width: 120, maxWidth: 120, textAlign: "left" },
     },
     {
       name: "Extrinsic ID",
-      style: { width: 120, textAlign: "left" },
+      style: { width: 120, maxWidth: 120, textAlign: "left" },
     },
     {
       name: (
@@ -64,15 +64,15 @@ export default function TransferList({ isLoading, items }) {
           {timeType}
         </span>
       ),
-      style: { width: 200, textAlign: "left" },
+      style: { width: 200, minWidth: 200, textAlign: "left" },
     },
     {
       name: "From",
-      style: { width: 276, textAlign: "left" },
+      style: { width: 276, minWidth: 276, textAlign: "left" },
     },
     {
       name: "To",
-      style: { width: 276, textAlign: "left" },
+      style: { width: 276, minWidth: 276, textAlign: "left" },
     },
     {
       name: "Value",

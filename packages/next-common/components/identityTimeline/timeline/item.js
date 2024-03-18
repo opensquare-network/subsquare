@@ -1,47 +1,39 @@
-import styled, { css } from "styled-components";
+import tw from "tailwind-styled-components";
 import TimelineItemInfo from "./itemInfo";
 
-const NavigationLine = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 16px;
+const NavigationLine = tw.div`
+  flex
+  flex-col
+  items-center
+  mr-[16px]
 `;
 
-const TopLine = styled.div`
-  width: 2px;
-  height: 4px;
-  margin-bottom: 4px;
-  ${(p) =>
-    !p.isFirst &&
-    css`
-      background-color: var(--theme300);
-    `}
+const TopLine = tw.div`
+  w-[2px]
+  ${(p) => p.isFirst && "mt-[4px] h-[4px]"}
+  ${(p) => !p.isFirst && "h-[8px] bg-theme300"}
 `;
 
-const BottomLine = styled.div`
-  width: 2px;
-  margin-top: 4px;
-  flex-grow: 1;
-  ${(p) =>
-    !p.isLast &&
-    css`
-      background-color: var(--theme300);
-    `}
+const BottomLine = tw.div`
+  w-[2px]
+  grow
+  ${(p) => !p.isLast && "bg-theme300"}
 `;
 
-const InfoPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
+const InfoPanel = tw.div`
+  flex
+  flex-col
+  m-full
 `;
 
-const Circle = styled.div`
-  height: 12px;
-  width: 12px;
-  border: 3px solid var(--theme500);
-  border-radius: 50%;
-  margin: 4px 0;
+const Circle = tw.div`
+  h-[12px]
+  w-[12px]
+  border-[3px]
+  border-solid
+  border-theme500
+  rounded-full
+  my-[4px]
 `;
 
 export default function TimelineItem({
