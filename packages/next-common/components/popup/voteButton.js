@@ -1,26 +1,27 @@
 import React from "react";
 import { VoteLoadingEnum } from "../../utils/voteEnum";
 import { ButtonWrapper } from "./styled";
-import { NegativeButton, PositiveButton } from "../buttons/colorButton";
+import SuccessButton from "next-common/lib/button/success";
+import DangerButton from "next-common/lib/button/danger";
 
 export default function VoteButton({ disabled, loadingState, doVote }) {
   return (
     <ButtonWrapper>
-      <NegativeButton
+      <DangerButton
         onClick={() => doVote(false)}
-        isLoading={loadingState === VoteLoadingEnum.Nay}
+        loading={loadingState === VoteLoadingEnum.Nay}
         disabled={disabled || loadingState === VoteLoadingEnum.Aye}
       >
         Nay
-      </NegativeButton>
+      </DangerButton>
 
-      <PositiveButton
+      <SuccessButton
         onClick={() => doVote(true)}
-        isLoading={loadingState === VoteLoadingEnum.Aye}
+        loading={loadingState === VoteLoadingEnum.Aye}
         disabled={disabled || loadingState === VoteLoadingEnum.Nay}
       >
         Aye
-      </PositiveButton>
+      </SuccessButton>
     </ButtonWrapper>
   );
 }
