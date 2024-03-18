@@ -41,7 +41,7 @@ function AllDelegationContainer({ children }) {
           "text14Medium text-theme500",
         )}
       >
-        <Link href="/delegation/mine/received">Manage Delegation</Link>
+        <Link href="/delegation/mine/received">Detail</Link>
       </div>
     </SecondaryCard>
   );
