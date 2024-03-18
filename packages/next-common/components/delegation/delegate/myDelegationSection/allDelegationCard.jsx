@@ -31,7 +31,7 @@ export default function AllDelegationCard() {
   return content;
 }
 
-function AllDelegationContainer({ children }) {
+function AllDelegationContainer({ children, linkToMyDelegations }) {
   return (
     <SecondaryCard className="space-y-2">
       {children}
@@ -41,7 +41,15 @@ function AllDelegationContainer({ children }) {
           "text14Medium text-theme500",
         )}
       >
-        <Link href="/delegation/mine/received">Detail</Link>
+        <Link
+          href={
+            linkToMyDelegations
+              ? "/delegation/mine/delegations"
+              : "/delegation/mine/received"
+          }
+        >
+          Detail
+        </Link>
       </div>
     </SecondaryCard>
   );
@@ -52,17 +60,18 @@ function AllReferendaDelegationsContent() {
   const delegations = useSelector(myReferendaDelegationsSelector);
   const { beenDelegatedList } = useAllMyBeenDelegatedList();
 
-  if (!delegations?.length && !beenDelegatedList?.length) {
+  const hasDelegations = !!delegations?.length;
+  const hasBeenDelegated = !!beenDelegatedList?.length;
+
+  if (!hasDelegations && !hasBeenDelegated) {
     return null;
   }
 
   return (
-    <AllDelegationContainer>
-      {!!delegations?.length && (
-        <AllMyDelegationInfo delegations={delegations} />
-      )}
+    <AllDelegationContainer linkToMyDelegations={hasDelegations}>
+      {hasDelegations && <AllMyDelegationInfo delegations={delegations} />}
 
-      {!!beenDelegatedList?.length && (
+      {hasBeenDelegated && (
         <AllBeenDelegatedInfo beenDelegatedList={beenDelegatedList} />
       )}
     </AllDelegationContainer>
@@ -74,20 +83,20 @@ function AllDemocracyDelegationsContent() {
   const { delegating } = useSubDemocracyDelegating(realAddress);
   const { delegations, beenDelegatedList } = useBeenDelegated(realAddress);
 
-  const showDelegating = !!delegating;
-  const showBeenDelegated = !!beenDelegatedList?.length;
+  const hasDelegating = !!delegating;
+  const hasBeenDelegated = !!beenDelegatedList?.length;
 
-  if (!showDelegating && !showBeenDelegated) {
+  if (!hasDelegating && !hasBeenDelegated) {
     return null;
   }
 
   return (
-    <AllDelegationContainer>
-      {showDelegating && (
+    <AllDelegationContainer linkToMyDelegations={hasDelegating}>
+      {hasDelegating && (
         <DemocracySummaryDelegationInfo delegating={delegating} />
       )}
 
-      {showBeenDelegated && (
+      {hasBeenDelegated && (
         <BeenDelegatedInfo
           delegations={delegations}
           addressesCount={beenDelegatedList?.length}
