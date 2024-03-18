@@ -7,6 +7,7 @@ import {
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
+import { isKintsugiChain } from "next-common/utils/chain";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -37,7 +38,10 @@ if (chainSettings.hasDiscussions !== false) {
   commonMenus.items.push(discussionsMenu);
 }
 
-if (chainSettings.hasReferenda || !chainSettings.noDemocracy) {
+if (
+  (chainSettings.hasReferenda || !chainSettings.noDemocracy) &&
+  !isKintsugiChain(CHAIN)
+) {
   commonMenus.items.push({
     value: "delegation",
     name: "Delegation",

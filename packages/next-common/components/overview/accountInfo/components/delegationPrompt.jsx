@@ -1,11 +1,16 @@
 import { SystemClose } from "@osn/icons/subsquare";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import { isKintsugiChain } from "next-common/utils/chain";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function AccountDelegationPrompt() {
+  const chain = useChain();
+  const chainSettings = useChainSettings();
+
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useCookieValue(
     CACHE_KEY.delegationPromptVisible,
@@ -18,6 +23,14 @@ export default function AccountDelegationPrompt() {
 
   function close() {
     setValue(false, { expires: 15 });
+  }
+
+  const hasDelegation =
+    (chainSettings.hasReferenda || !chainSettings.noDemocracy) &&
+    !isKintsugiChain(chain);
+
+  if (!hasDelegation) {
+    return null;
   }
 
   return (
