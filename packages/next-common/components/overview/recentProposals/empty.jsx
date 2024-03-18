@@ -32,7 +32,7 @@ export default function EmptyRecentProposals() {
           <div className="mt-4 text-center">
             <PrimaryButton
               onClick={handleNewDiscussion}
-              icon={
+              iconLeft={
                 <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
               }
             >

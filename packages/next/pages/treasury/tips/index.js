@@ -45,8 +45,8 @@ export default function TipsPage({ tips: ssrTips }) {
         hasTips && (
           <div className="flex justify-end">
             <PrimaryButton
-              small
-              icon={
+              size="small"
+              iconLeft={
                 <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
               }
               onClick={() => setShowPopup(true)}

@@ -28,8 +28,8 @@ export default function DiscussionsLayout(props) {
       summaryFooter={
         <div className="flex justify-end">
           <PrimaryButton
-            small
-            icon={
+            size="small"
+            iconLeft={
               <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
             }
             onClick={() => router.push("/posts/create")}
