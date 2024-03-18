@@ -13,12 +13,16 @@ const Title = tw.div`
   grow-0
   shrink-0
   basis-auto
+  text14Medium
+  text-textTertiary
 `;
 
 const Body = tw.div`
   flex
   items-center
   grow
+  text14Medium
+  text-textPrimary
 `;
 
 export default function TimelineItemFields({ fields, className = "" }) {
@@ -26,8 +30,8 @@ export default function TimelineItemFields({ fields, className = "" }) {
     <Wrapper className={className}>
       {fields.map((field, index) => (
         <div key={index} className="flex max-sm:flex-col gap-[4px] my-[4px]">
-          <Title className="text14Medium text-textTertiary">{field[0]}</Title>
-          <Body className="text14Medium text-textPrimary">{field[1]}</Body>
+          <Title>{field[0]}</Title>
+          <Body>{field[1]}</Body>
         </div>
       ))}
     </Wrapper>

@@ -10,6 +10,7 @@ import {
 } from "next-common/store/reducers/profile/identityTimeline";
 import { useSelector } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import ExternalLink from "next-common/components/externalLink";
 
 function useIdentityTimeline() {
   const dispatch = useDispatch();
@@ -64,11 +65,21 @@ function useIdentityTimeline() {
 }
 
 export default function ProfileIdentityTimeline() {
+  const chain = useChain();
+  const address = useProfileAddress();
   const timeline = useIdentityTimeline();
 
   return (
     <SecondaryCard>
       <IdentityTimeline timelineData={timeline} />
+      <div className="flex w-full justify-end mt-[24px]">
+        <ExternalLink
+          className="text14Medium text-theme500"
+          href={`https://${chain}.statescan.io/#/accounts/${address}?sub=identity_timeline&tab=identity`}
+        >
+          View More
+        </ExternalLink>
+      </div>
     </SecondaryCard>
   );
 }

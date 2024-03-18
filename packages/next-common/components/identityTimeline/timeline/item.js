@@ -10,14 +10,14 @@ const NavigationLine = tw.div`
 
 const TopLine = tw.div`
   w-[2px]
-  ${(p) => p.isFirst && "mt-[4px] h-[4px]"}
-  ${(p) => !p.isFirst && "h-[8px] bg-theme300"}
+  ${(p) => p.$isFirst && "mt-[4px] h-[4px]"}
+  ${(p) => !p.$isFirst && "h-[8px] bg-theme300"}
 `;
 
 const BottomLine = tw.div`
   w-[2px]
   grow
-  ${(p) => !p.isLast && "bg-theme300"}
+  ${(p) => !p.$isLast && "bg-theme300"}
 `;
 
 const InfoPanel = tw.div`
@@ -46,9 +46,9 @@ export default function TimelineItem({
   return (
     <div className="flex">
       <NavigationLine>
-        <TopLine isFirst={isFirst} />
+        <TopLine $isFirst={isFirst} />
         <Circle />
-        <BottomLine isLast={isLast} />
+        <BottomLine $isLast={isLast} />
       </NavigationLine>
       <InfoPanel>
         <TimelineItemInfo
