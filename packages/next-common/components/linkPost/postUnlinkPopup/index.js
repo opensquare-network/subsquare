@@ -7,7 +7,7 @@ import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
 import { noop } from "lodash-es";
 import { useRouter } from "next/router";
-import PrimaryButton from "../../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
 import { PopupButtonWrapper } from "../../popup/wrapper";
@@ -62,7 +62,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
         post.
       </Info>
       <PopupButtonWrapper>
-        <PrimaryButton isLoading={isLoading} onClick={unbindDiscussion}>
+        <PrimaryButton loading={isLoading} onClick={unbindDiscussion}>
           Confirm
         </PrimaryButton>
       </PopupButtonWrapper>

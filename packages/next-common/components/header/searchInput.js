@@ -8,7 +8,7 @@ import { SystemSearch } from "@osn/icons/subsquare";
 const Wrapper = styled.div``;
 
 const Input = styled(InputOrigin)`
-  height: 38px;
+  height: 40px;
   background-color: var(--neutral200);
   border-color: var(--neutral200) !important;
 

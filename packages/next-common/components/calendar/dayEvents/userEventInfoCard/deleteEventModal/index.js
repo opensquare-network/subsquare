@@ -8,7 +8,7 @@ import {
 } from "../../../../../store/reducers/toastSlice";
 import { calendarUserEventsApi } from "../../../../../services/url";
 import ErrorMessage from "../../../../styled/errorMessage";
-import DangerButton from "../../../../buttons/dangerButton";
+import DangerButton from "next-common/lib/button/danger";
 import { noop } from "lodash-es";
 import { PopupButtonWrapper } from "../../../../popup/wrapper";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
@@ -52,7 +52,7 @@ export default function DeleteEventModal({ event, onClose, refresh = noop }) {
         Are you sure you would like to delete this user event from the calendar?
       </ErrorMessage>
       <PopupButtonWrapper>
-        <DangerButton onClick={deleteEvent} isLoading={isLoading}>
+        <DangerButton onClick={deleteEvent} loading={isLoading}>
           Delete
         </DangerButton>
       </PopupButtonWrapper>

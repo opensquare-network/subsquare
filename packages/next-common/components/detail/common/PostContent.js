@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import { cn } from "next-common/utils";
-import GhostButton from "next-common/components/buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
 import { marked } from "marked";
 
@@ -61,14 +61,14 @@ export default function PostContent({ post = {} }) {
               : "mt-4",
           )}
         >
-          <GhostButton
+          <SecondaryButton
             small
             onClick={() => {
               setPostContentCollapsed(!postContentCollapsed);
             }}
           >
             Show {postContentCollapsed ? "More" : "Less"}
-          </GhostButton>
+          </SecondaryButton>
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import PopupWithSigner from "../../../components/popupWithSigner";
 import Title from "./title";
 import Link from "./link";
 import Description from "./description";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
 import {
@@ -136,7 +136,7 @@ function PopupContent() {
       />
       <Link setValue={setLink} />
       <PopupButtonWrapper>
-        <PrimaryButton isLoading={isLoading} onClick={submit}>
+        <PrimaryButton loading={isLoading} onClick={submit}>
           Submit
         </PrimaryButton>
       </PopupButtonWrapper>

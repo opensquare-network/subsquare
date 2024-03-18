@@ -13,7 +13,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 
 import { useChainSettings } from "next-common/context/chain";
 import { Aye, Nay, Split } from "./ayeNaySplitTab";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import useSubMyDemocracyVote, {
   getDemocracyDirectVote,
 } from "next-common/hooks/democracy/useSubMyVote";
@@ -163,7 +163,7 @@ function VotePanel({
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
-          <PrimaryButton isLoading={isLoading} onClick={doVote}>
+          <PrimaryButton loading={isLoading} onClick={doVote}>
             Confirm
           </PrimaryButton>
         </div>

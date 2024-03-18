@@ -7,7 +7,7 @@ import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
 import Input from "./input";
-import PrimaryButton from "./buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import Popup from "./popup/wrapper/Popup";
 const CaretWrapper = styled.div`
   cursor: pointer;

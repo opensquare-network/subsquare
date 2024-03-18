@@ -1,5 +1,5 @@
 import React from "react";
-import PrimaryButton from "../../../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
 
 export default function SubmitButton({
@@ -13,7 +13,7 @@ export default function SubmitButton({
       {balanceInsufficient || disabled ? (
         <PrimaryButton disabled>Submit</PrimaryButton>
       ) : (
-        <PrimaryButton isLoading={isSubmitting} onClick={onClick}>
+        <PrimaryButton loading={isSubmitting} onClick={onClick}>
           Submit
         </PrimaryButton>
       )}

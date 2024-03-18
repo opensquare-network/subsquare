@@ -12,7 +12,7 @@ import {
 } from "utils/referendumUtil";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSelector } from "react-redux";
@@ -217,7 +217,7 @@ function Vote({ referendumInfo, referendumIndex }) {
 
       {!referendumInfo?.finished && (
         <PrimaryButton
-          isFill
+          className="w-full"
           onClick={() => {
             setShowVote(true);
           }}

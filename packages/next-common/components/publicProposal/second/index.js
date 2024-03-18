@@ -6,7 +6,7 @@ import BigNumber from "bignumber.js";
 import Loading from "../../loading";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
 import Tooltip from "../../tooltip";
-import PrimaryButton from "../../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
@@ -171,7 +171,7 @@ export default function Second({
     action = <Description>This proposal has been canceled.</Description>;
   } else {
     action = (
-      <PrimaryButton isFill onClick={() => setShowPopup(true)}>
+      <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
         Second
       </PrimaryButton>
     );

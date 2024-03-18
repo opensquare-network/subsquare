@@ -19,7 +19,7 @@ const Select = styled.div`
   border-color: var(--neutral400);
   background-color: var(--neutral100);
   border-radius: 8px;
-  height: 38px;
+  height: 40px;
   display: flex;
   align-items: center;
   padding: 0 12px;
