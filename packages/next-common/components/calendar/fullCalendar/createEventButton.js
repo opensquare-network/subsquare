@@ -8,7 +8,7 @@ export default function CreateEventButton({ disabled, onClick = noop }) {
   return (
     <Tooltip content={disabled ? "Only admins can create events" : ""}>
       <PrimaryButton
-        small
+        size="small"
         disabled={disabled}
         onClick={onClick}
         icon={
