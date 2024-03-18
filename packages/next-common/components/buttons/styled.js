@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 const CommonButtonWrapper = styled.button`
   padding: 0 16px;
-  height: 38px;
+  height: 40px;
   border-radius: 8px;
   cursor: pointer;
   text-align: center;

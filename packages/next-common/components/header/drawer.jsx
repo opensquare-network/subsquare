@@ -54,7 +54,7 @@ const UserWrapper = styled(Flex)`
   border: 1px solid var(--neutral400);
   border-radius: 8px;
   padding: 0 12px;
-  height: 38px;
+  height: 40px;
   font-weight: 500;
   margin-bottom: 8px;
   > :first-child {
