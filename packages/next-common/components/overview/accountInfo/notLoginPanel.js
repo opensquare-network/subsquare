@@ -2,12 +2,13 @@ import { SystemDisconnect } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
+import AccountDelegationPrompt from "./components/delegationPrompt";
 
 export default function NotLoginPanel() {
   const { openLoginPopup } = useLoginPopup();
 
   return (
-    <NeutralPanel className="p-6">
+    <NeutralPanel className="p-6 space-y-4">
       <div className="flex justify-between gap-[16px] grow max-md:flex-col">
         <div className="flex gap-[12px] grow max-md:flex-col">
           <SystemDisconnect
@@ -28,6 +29,8 @@ export default function NotLoginPanel() {
           </PrimaryButton>
         </div>
       </div>
+
+      <AccountDelegationPrompt />
     </NeutralPanel>
   );
 }
