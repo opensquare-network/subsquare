@@ -12,7 +12,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
 import PrimaryButton from "next-common/components/buttons/primaryButton";
-import GhostButton from "next-common/components/buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
 import { useSetUser, useUser } from "next-common/context/user";
@@ -234,9 +234,9 @@ export default function Signup() {
               >
                 Got it
               </PrimaryButton>
-              <GhostButton isFill onClick={sendVerifyEmail}>
+              <SecondaryButton isFill onClick={sendVerifyEmail}>
                 Resend
-              </GhostButton>
+              </SecondaryButton>
               {emailSent && (
                 <Redirect>
                   The page will be re-directed in

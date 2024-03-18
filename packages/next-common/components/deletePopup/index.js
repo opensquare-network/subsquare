@@ -4,7 +4,7 @@ import { noop } from "lodash-es";
 import PrimaryButton from "../buttons/primaryButton";
 import { PopupButtonWrapper } from "../popup/wrapper";
 import { useDispatch } from "react-redux";
-import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export default function DeletePopup({
@@ -36,7 +36,7 @@ export default function DeletePopup({
         recover it.
       </div>
       <PopupButtonWrapper className="gap-[8px]">
-        <GhostButton onClick={() => setShow(false)}>Cancel</GhostButton>
+        <SecondaryButton onClick={() => setShow(false)}>Cancel</SecondaryButton>
         <PrimaryButton
           className="!bg-red-500"
           isLoading={isLoading}

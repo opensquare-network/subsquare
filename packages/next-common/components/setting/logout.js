@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { ButtonWrapper } from "./styled";
-import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useIsWeb3User, useIsLoggedIn } from "next-common/context/user";
 
@@ -13,7 +13,7 @@ export default function Logout() {
 
   return (
     <ButtonWrapper>
-      <GhostButton
+      <SecondaryButton
         className="!border-theme500 !text-theme500"
         onClick={async () => {
           await disconnectAccount();
@@ -21,7 +21,7 @@ export default function Logout() {
         }}
       >
         {isWeb3User || !isLoggedIn ? "Disconnect wallet" : "Logout my account"}
-      </GhostButton>
+      </SecondaryButton>
     </ButtonWrapper>
   );
 }

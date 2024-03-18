@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { SystemDisconnect } from "@osn/icons/subsquare";
-import GhostButton from "next-common/components/buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 
 export default function NoLinkAddress() {
@@ -28,7 +28,9 @@ export default function NoLinkAddress() {
           </div>
         </div>
         <div className="flex justify-end items-center grow">
-          <GhostButton onClick={goLinkAddress}>Link Address</GhostButton>
+          <SecondaryButton onClick={goLinkAddress}>
+            Link Address
+          </SecondaryButton>
         </div>
       </div>
     </NeutralPanel>

@@ -1,6 +1,6 @@
 import tw from "tailwind-styled-components";
 import { SystemCopied } from "@osn/icons/subsquare";
-import GhostButton from "next-common/components/buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 export function VoteSuccessfulWrapper({ children, onClose }) {
   return (
@@ -11,7 +11,7 @@ export function VoteSuccessfulWrapper({ children, onClose }) {
       </div>
       {children}
       <div className="flex justify-end mt-[24px]">
-        <GhostButton onClick={onClose}>Close</GhostButton>
+        <SecondaryButton onClick={onClose}>Close</SecondaryButton>
       </div>
     </div>
   );

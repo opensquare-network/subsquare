@@ -8,7 +8,7 @@ import { prettyHTML, toApiType } from "../../utils/viewfuncs";
 import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
 import IdentityOrAddr from "../IdentityOrAddr";
 import PrimaryButton from "../buttons/primaryButton";
-import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "../../context/chain";
 import { useDetailType } from "../../context/page";
 import { noop } from "lodash-es";
@@ -163,14 +163,14 @@ function CommentEditor(
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {(isEdit || isReply) && (
-          <GhostButton
+          <SecondaryButton
             onClick={() => {
               setContent("");
               onFinishedEdit(false);
             }}
           >
             Cancel
-          </GhostButton>
+          </SecondaryButton>
         )}
         <PrimaryButton
           isLoading={loading}

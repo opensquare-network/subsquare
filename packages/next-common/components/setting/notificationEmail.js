@@ -19,7 +19,7 @@ import EmailJunkWarning from "./emailJunkWarning";
 import { LinkEmail } from "@osn/icons/subsquare";
 import Switch from "./switch";
 import { isKeyRegisteredUser } from "next-common/utils";
-import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 const IconWrapper = styled.div`
   display: flex;
@@ -162,13 +162,13 @@ export default function NotificationEmail({ isOn, setIsOn }) {
   ) : (
     inputEmail &&
     (!verified || inputEmail !== email) && (
-      <GhostButton
+      <SecondaryButton
         onClick={onVerify}
         isLoading={resendLoading}
         style={{ width: 72, height: 40 }}
       >
         Verify
-      </GhostButton>
+      </SecondaryButton>
     )
   );
 

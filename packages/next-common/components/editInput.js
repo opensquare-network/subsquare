@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
-import GhostButton from "./buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import PrimaryButton from "./buttons/primaryButton";
 import Editor from "./editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
@@ -71,9 +71,9 @@ export default function EditInput({
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
         {!loading && (
-          <GhostButton onClick={() => onFinishedEdit(false)}>
+          <SecondaryButton onClick={() => onFinishedEdit(false)}>
             Cancel
-          </GhostButton>
+          </SecondaryButton>
         )}
         <PrimaryButton
           isLoading={loading}

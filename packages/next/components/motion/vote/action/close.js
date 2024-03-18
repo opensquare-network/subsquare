@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { usePost, usePostOnChainData } from "next-common/context/post";
 import { useEffect, useState } from "react";
-import GhostButton from "next-common/components/buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import { useChain } from "next-common/context/chain";
 import { useDetailType } from "next-common/context/page";
@@ -49,13 +49,13 @@ export default function Close() {
 
   return (
     <>
-      <GhostButton
+      <SecondaryButton
         isFill
         disabled={!proposal || !canClose}
         onClick={() => setShowClosePopup(true)}
       >
         Close
-      </GhostButton>
+      </SecondaryButton>
       {showClosePopup && (
         <CloseMotionPopup
           chain={chain}
