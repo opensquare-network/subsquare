@@ -101,7 +101,7 @@ export const CACHE_KEY = {
   navCollapsed: "nav-collapsed",
   navSubmenuVisible: "nav-submenu-visible",
   connectedAccount: "connected-account",
-  delegationPrompt: "delegation-prompt",
+  delegationPromptVisible: "delegation-prompt-visible",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

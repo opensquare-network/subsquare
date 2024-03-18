@@ -6,11 +6,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function AccountDelegationPrompt() {
-  const [show, setShow] = useState(false);
-  const [value, setValue] = useCookieValue(CACHE_KEY.delegationPrompt, true);
+  const [visible, setVisible] = useState(false);
+  const [value, setValue] = useCookieValue(
+    CACHE_KEY.delegationPromptVisible,
+    true,
+  );
 
   useEffect(() => {
-    setShow(value);
+    setVisible(value);
   }, [value]);
 
   function close() {
@@ -18,7 +21,7 @@ export default function AccountDelegationPrompt() {
   }
 
   return (
-    show && (
+    visible && (
       <GreyPanel className="!bg-theme100 text-theme500 text14Medium py-2.5 px-4 justify-between">
         <div>
           No time to vote? Delegate your votes to an expert{" "}
