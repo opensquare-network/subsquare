@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import DataList from "next-common/components/dataList";
 import nextApi from "next-common/services/nextApi";
 import {
@@ -20,7 +19,7 @@ export default function ReferendaDelegateeDetailPopupRecentVotes({ delegate }) {
     nextApi
       .fetch(`users/${delegate.address}/${module}/votes`, {
         page: 0,
-        pageSize: 3,
+        pageSize: 10,
         includesTitle: 1,
       })
       .then(({ result }) => {
@@ -66,14 +65,16 @@ export default function ReferendaDelegateeDetailPopupRecentVotes({ delegate }) {
         noDataText="No recent votes"
       />
       <div className="flex grow justify-end mt-[24px]">
-        <Link
+        <a
           className="text14Medium text-theme500"
           href={`/user/${delegate.address}/votes${
             tab === Referenda ? "?type=Referenda" : "?type=Democracy"
           }`}
+          target="_blank"
+          rel="noreferrer"
         >
           View All
-        </Link>
+        </a>
       </div>
     </div>
   );
