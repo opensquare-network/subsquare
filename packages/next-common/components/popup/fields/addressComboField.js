@@ -5,6 +5,7 @@ import PopupLabel from "../label";
 import { normalizeAddress } from "next-common/utils/address";
 
 export default function AddressComboField({
+  defaultAddress,
   extensionAccounts,
   setAddress,
   title = "Address",
@@ -14,7 +15,7 @@ export default function AddressComboField({
     name: acc.meta.name,
   }));
 
-  const address = normalizeAddress(accounts?.[0]?.address);
+  const address = normalizeAddress(defaultAddress || accounts?.[0]?.address);
 
   const [targetAddress, setTargetAddress] = useState(address);
 
