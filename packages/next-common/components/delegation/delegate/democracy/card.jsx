@@ -27,7 +27,7 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
   return (
     <SecondaryCard className="flex flex-col text-textPrimary">
       <div className="flex justify-between">
-        <DelegateAvatar address={address} image={delegate.manifesto?.image} />
+        <DelegateAvatar address={address} />
 
         <div className="space-x-2">
           {!isDelegatee && (
