@@ -19,26 +19,22 @@ import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDeleg
 import DemocracySummaryDelegationInfo from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
 
 export default function AllDelegationCard() {
-  useFetchMyReferendaDelegations();
-  const allReferendaDelegationsContent = useAllReferendaDelegationsContent();
-  const allDemocracyDelegationsContent = useAllDemocracyDelegationsContent();
-
   const moduleTab = useModuleTab();
 
   let content;
   if (moduleTab === Referenda) {
-    content = allReferendaDelegationsContent;
+    content = <AllReferendaDelegationsContent />;
   } else if (moduleTab === Democracy) {
-    content = allDemocracyDelegationsContent;
+    content = <AllDemocracyDelegationsContent />;
   }
 
-  if (!content) {
-    return null;
-  }
+  return content;
+}
 
+function AllDelegationContainer({ children }) {
   return (
     <SecondaryCard className="space-y-2">
-      {content}
+      {children}
       <div
         className={cn(
           "flex justify-end pt-2 mt-4",
@@ -51,26 +47,29 @@ export default function AllDelegationCard() {
   );
 }
 
-function useAllReferendaDelegationsContent() {
+function AllReferendaDelegationsContent() {
+  useFetchMyReferendaDelegations();
   const delegations = useSelector(myReferendaDelegationsSelector);
   const { beenDelegatedList } = useAllMyBeenDelegatedList();
 
-  return (
-    (!!delegations?.length || !!beenDelegatedList?.length) && (
-      <>
-        {!!delegations?.length && (
-          <AllMyDelegationInfo delegations={delegations} />
-        )}
+  if (!delegations?.length && !beenDelegatedList?.length) {
+    return null;
+  }
 
-        {!!beenDelegatedList?.length && (
-          <AllBeenDelegatedInfo beenDelegatedList={beenDelegatedList} />
-        )}
-      </>
-    )
+  return (
+    <AllDelegationContainer>
+      {!!delegations?.length && (
+        <AllMyDelegationInfo delegations={delegations} />
+      )}
+
+      {!!beenDelegatedList?.length && (
+        <AllBeenDelegatedInfo beenDelegatedList={beenDelegatedList} />
+      )}
+    </AllDelegationContainer>
   );
 }
 
-function useAllDemocracyDelegationsContent() {
+function AllDemocracyDelegationsContent() {
   const realAddress = useRealAddress();
   const { delegating } = useSubDemocracyDelegating(realAddress);
   const { delegations, beenDelegatedList } = useBeenDelegated(realAddress);
@@ -78,20 +77,22 @@ function useAllDemocracyDelegationsContent() {
   const showDelegating = !!delegating;
   const showBeenDelegated = !!beenDelegatedList?.length;
 
-  return (
-    (showDelegating || showBeenDelegated) && (
-      <>
-        {showDelegating && (
-          <DemocracySummaryDelegationInfo delegating={delegating} />
-        )}
+  if (!showDelegating && !showBeenDelegated) {
+    return null;
+  }
 
-        {showBeenDelegated && (
-          <BeenDelegatedInfo
-            delegations={delegations}
-            addressesCount={beenDelegatedList?.length}
-          />
-        )}
-      </>
-    )
+  return (
+    <AllDelegationContainer>
+      {showDelegating && (
+        <DemocracySummaryDelegationInfo delegating={delegating} />
+      )}
+
+      {showBeenDelegated && (
+        <BeenDelegatedInfo
+          delegations={delegations}
+          addressesCount={beenDelegatedList?.length}
+        />
+      )}
+    </AllDelegationContainer>
   );
 }
