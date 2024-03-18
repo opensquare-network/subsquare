@@ -1,40 +1,18 @@
-import React from "react";
-import styled from "styled-components";
-import CommonButton, { DisabledButton } from "./styled";
-import { DarkLoading } from "./loading";
-
-const RawButton = styled(CommonButton)`
-  background-color: var(--neutral100);
-  color: var(--textPrimary);
-  border-color: var(--neutral400);
-`;
-
-const Disabled = styled(DisabledButton)`
-  background-color: var(--neutral500);
-  color: var(--textTertiary);
-  border-color: var(--neutral500);
-`;
+import SecondaryButton from "next-common/lib/button/secondary";
 
 export default function GhostButton({
   children,
   isLoading = false,
-  disabled = false,
+  isFill,
   ...props
 }) {
-  let TargetButton = RawButton;
-  if (disabled) {
-    TargetButton = Disabled;
-  }
-
-  const allProps = {
-    isLoading,
-    disabled,
-    ...props,
-  };
-
   return (
-    <TargetButton {...allProps}>
-      {isLoading ? <DarkLoading /> : children}
-    </TargetButton>
+    <SecondaryButton
+      loading={isLoading}
+      {...props}
+      className={isFill && "w-full"}
+    >
+      {children}
+    </SecondaryButton>
   );
 }
