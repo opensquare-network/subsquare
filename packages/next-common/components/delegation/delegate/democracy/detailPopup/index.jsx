@@ -22,7 +22,7 @@ export default function DemocracyDelegateeDetailPopup({
     >
       <div>
         <div className="flex justify-between">
-          <DelegateAvatar address={address} image={manifesto?.image} />
+          <DelegateAvatar address={address} />
           {/* <DetailButtons address={address} /> */}
         </div>
         <div className="mt-3">
