@@ -34,7 +34,6 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
             <DemocracyNewDelegation
               disabled={!!delegating}
               defaultTargetAddress={address}
-              targetDisabled
             />
           )}
 

@@ -25,7 +25,7 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
         <DelegateAvatar address={address} image={delegate.manifesto?.image} />
 
         <div className="space-x-2">
-          <NewDelegateButton defaultTargetAddress={address} targetDisabled />
+          <NewDelegateButton defaultTargetAddress={address} />
           <SecondaryButton
             className="w-7 h-7 p-0"
             size="small"

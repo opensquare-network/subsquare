@@ -12,7 +12,7 @@ export default function Target(props) {
       <div>
         <PopupLabel text={label} />
         <GreyPanel className="py-3 px-4 gap-4">
-          <Account account={{ address: props.address }} />
+          <Account account={{ address: props.defaultAddress }} />
         </GreyPanel>
       </div>
     );

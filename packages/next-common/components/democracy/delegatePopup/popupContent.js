@@ -124,7 +124,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
       <Target
         disabled={targetDisabled}
         extensionAccounts={extensionAccounts}
-        address={targetAddress}
+        defaultAddress={targetAddress}
         setAddress={setTargetAddress}
       />
       <VoteValue
