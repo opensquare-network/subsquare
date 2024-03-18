@@ -29,8 +29,8 @@ const SignalDefaultIcon = styled(SignalDefault)`
 const Wrapper = styled.div``;
 
 const SmallSelect = styled.div`
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   background-color: var(--neutral100);
   border-width: 1px;
   border-style: solid;
