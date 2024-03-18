@@ -17,7 +17,7 @@ export default function ReferendaDelegateeDetailPopupTabsContent({ delegate }) {
       content: <ReferendaDelegateeDetailPopupRecentVotes delegate={delegate} />,
     },
     {
-      label: "Been Delegated",
+      label: "Received Delegations",
       content: (
         <ReferendaDelegateeDetailPopupBeenDelegated delegate={delegate} />
       ),
