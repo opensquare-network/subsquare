@@ -28,7 +28,9 @@ export default function ProfileTransfers() {
     }
 
     fetch(
-      `https://${chain}-api.statescan.io/accounts/${address}/transfers?page=${page}&page_size=${DEFAULT_PAGE_SIZE}`,
+      `https://${chain}-api.statescan.io/accounts/${address}/transfers?page=${
+        page - 1
+      }&page_size=${DEFAULT_PAGE_SIZE}`,
     )
       .then((response) => {
         if (!response.ok) {
