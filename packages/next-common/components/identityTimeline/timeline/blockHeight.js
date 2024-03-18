@@ -11,7 +11,7 @@ const BlockIcon = tw(InfoBlock)`
 export default function BlockHeight({ number }) {
   return (
     <div className="flex items-center text12Medium">
-      <BlockIcon className="mr-[4px]" />
+      <BlockIcon />
       <div className="text-textTertiary">{number}</div>
     </div>
   );

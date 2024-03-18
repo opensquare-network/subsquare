@@ -13,7 +13,7 @@ const ClockIcon = tw(InfoTime)`
 export default function BlockTime({ ts }) {
   return (
     <div className="flex items-center text12Medium whitespace-nowrap">
-      <ClockIcon className="mr-[4px]" />
+      <ClockIcon />
       <div className="mr-[4px] text-textTertiary">
         {dayjs(ts).format("YYYY-MM-DD HH:mm:ss")}
       </div>
