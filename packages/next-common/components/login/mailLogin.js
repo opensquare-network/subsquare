@@ -80,11 +80,11 @@ export default function MailLogin({ setView }) {
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>
-        <PrimaryButton isFill loading={loading} type="submit">
+        <PrimaryButton className="w-full" loading={loading} type="submit">
           Login
         </PrimaryButton>
         <SecondaryButton
-          isFill
+          className="w-full"
           onClick={(event) => {
             event.preventDefault();
             setView("web3");

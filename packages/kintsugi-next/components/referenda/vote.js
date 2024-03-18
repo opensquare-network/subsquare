@@ -217,7 +217,7 @@ function Vote({ referendumInfo, referendumIndex }) {
 
       {!referendumInfo?.finished && (
         <PrimaryButton
-          isFill
+          className="w-full"
           onClick={() => {
             setShowVote(true);
           }}

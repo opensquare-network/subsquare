@@ -34,7 +34,7 @@ export default function Action({ setShowPopup }) {
   let action;
   if (userCanVote) {
     action = (
-      <PrimaryButton isFill onClick={() => setShowPopup(true)}>
+      <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
         Vote
       </PrimaryButton>
     );

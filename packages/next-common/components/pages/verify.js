@@ -78,7 +78,10 @@ export default function Verify() {
           <>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your email has been verified.</InfoWrapper>
-            <SecondaryButton isFill onClick={() => router.replace("/")}>
+            <SecondaryButton
+              className="w-full"
+              onClick={() => router.replace("/")}
+            >
               Back to Overview
             </SecondaryButton>
             <Redirect>

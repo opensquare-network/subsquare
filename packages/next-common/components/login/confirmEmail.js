@@ -49,7 +49,7 @@ export default function ConfirmEmail({ pin, email, identity, setErrors }) {
   };
 
   return (
-    <PrimaryButton isFill loading={loading} onClick={submit}>
+    <PrimaryButton className="w-full" loading={loading} onClick={submit}>
       Confirm
     </PrimaryButton>
   );

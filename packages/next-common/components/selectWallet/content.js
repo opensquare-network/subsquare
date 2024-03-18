@@ -59,7 +59,7 @@ export default function SelectWalletContent() {
         <ButtonWrapper>
           {selectedWallet && (
             <PrimaryButton
-              isFill
+              className="w-full"
               loading={isLoading}
               onClick={doConnectAddress}
               disabled={!selectedAccount}

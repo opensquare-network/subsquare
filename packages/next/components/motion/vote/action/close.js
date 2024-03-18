@@ -50,7 +50,7 @@ export default function Close() {
   return (
     <>
       <SecondaryButton
-        isFill
+        className="w-full"
         disabled={!proposal || !canClose}
         onClick={() => setShowClosePopup(true)}
       >

@@ -72,7 +72,7 @@ const Forget = () => {
               {errors?.message && !errors?.data && (
                 <ErrorText>{errors?.message}</ErrorText>
               )}
-              <PrimaryButton isFill type="submit" loading={loading}>
+              <PrimaryButton className="w-full" type="submit" loading={loading}>
                 Confirm
               </PrimaryButton>
             </FormWrapper>
@@ -85,7 +85,10 @@ const Forget = () => {
               The reset password link was sent to this email, if it exists in
               our database.
             </InfoWrapper>
-            <PrimaryButton isFill onClick={() => router.replace("/")}>
+            <PrimaryButton
+              className="w-full"
+              onClick={() => router.replace("/")}
+            >
               Confirm
             </PrimaryButton>
           </>

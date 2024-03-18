@@ -205,7 +205,11 @@ export default function Signup() {
                 setAgreeError={setAgreeError}
               />
               <ButtonWrapper>
-                <PrimaryButton isFill type="submit" loading={loading}>
+                <PrimaryButton
+                  className="w-full"
+                  type="submit"
+                  loading={loading}
+                >
                   Sign up
                 </PrimaryButton>
               </ButtonWrapper>
@@ -228,13 +232,13 @@ export default function Signup() {
             </InfoWrapper>
             <div className="space-y-2">
               <PrimaryButton
-                isFill
+                className="w-full"
                 secondary
                 onClick={() => router.replace("/")}
               >
                 Got it
               </PrimaryButton>
-              <SecondaryButton isFill onClick={sendVerifyEmail}>
+              <SecondaryButton className="w-full" onClick={sendVerifyEmail}>
                 Resend
               </SecondaryButton>
               {emailSent && (

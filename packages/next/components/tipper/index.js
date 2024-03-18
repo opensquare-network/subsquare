@@ -53,7 +53,10 @@ export default function Tipper() {
   let closeTipAction = null;
   if (tipCanClose) {
     closeTipAction = (
-      <PrimaryButton isFill onClick={() => setShowCloseTipPopup(true)}>
+      <PrimaryButton
+        className="w-full"
+        onClick={() => setShowCloseTipPopup(true)}
+      >
         Close tip
       </PrimaryButton>
     );
@@ -78,7 +81,10 @@ export default function Tipper() {
     action = (
       <>
         {closeTipAction}
-        <PrimaryButton isFill onClick={() => setShowEndorsePopup(true)}>
+        <PrimaryButton
+          className="w-full"
+          onClick={() => setShowEndorsePopup(true)}
+        >
           Endorse
         </PrimaryButton>
         <Description>{retractTipAction}</Description>

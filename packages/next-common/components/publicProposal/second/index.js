@@ -171,7 +171,7 @@ export default function Second({
     action = <Description>This proposal has been canceled.</Description>;
   } else {
     action = (
-      <PrimaryButton isFill onClick={() => setShowPopup(true)}>
+      <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
         Second
       </PrimaryButton>
     );

@@ -26,7 +26,7 @@ export default function Claim() {
   return (
     <>
       <PrimaryButton
-        isFill
+        className="w-full"
         disabled={chainHeight < unlockAt}
         onClick={() => setShowPopup(true)}
       >
