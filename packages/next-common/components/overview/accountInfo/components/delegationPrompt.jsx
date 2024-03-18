@@ -29,22 +29,20 @@ export default function AccountDelegationPrompt() {
     (chainSettings.hasReferenda || !chainSettings.noDemocracy) &&
     !isKintsugiChain(chain);
 
-  if (!hasDelegation) {
+  if (!hasDelegation || !visible) {
     return null;
   }
 
   return (
-    visible && (
-      <GreyPanel className="!bg-theme100 text-theme500 text14Medium py-2.5 px-4 justify-between">
-        <div>
-          No time to vote? Delegate your votes to an expert{" "}
-          <Link className="underline" href={"/delegation"}>
-            here
-          </Link>
-        </div>
+    <GreyPanel className="!bg-theme100 text-theme500 text14Medium py-2.5 px-4 justify-between">
+      <div>
+        No time to vote? Delegate your votes to an expert{" "}
+        <Link className="underline" href={"/delegation"}>
+          here
+        </Link>
+      </div>
 
-        <SystemClose className="w-5 h-5" role="button" onClick={close} />
-      </GreyPanel>
-    )
+      <SystemClose className="w-5 h-5" role="button" onClick={close} />
+    </GreyPanel>
   );
 }
