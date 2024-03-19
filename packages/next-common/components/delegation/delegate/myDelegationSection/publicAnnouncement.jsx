@@ -6,7 +6,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 export default function PublicAnnouncement() {
   return (
     <SecondaryCard className="flex flex-row gap-[16px] max-sm:flex-col">
-      <div className="flex grow gap-[16px] max-sm:gap-[12px] max-sm:flex-col">
+      <div className="flex grow gap-[16px] sm:items-center max-sm:gap-[12px] max-sm:flex-col">
         <div className="w-[40px] h-[40px] p-[8px] rounded-[8px] bg-theme100">
           <MenuAnnouncement className="w-[24px] h-[24px] [&_path]:fill-theme500" />
         </div>
