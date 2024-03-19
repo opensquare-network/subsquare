@@ -29,12 +29,16 @@ export const {
   triggerUpdate: setDemocracyDelegatesTriggerUpdate,
 } = democracyDelegatesSlice.actions;
 
-export const fetchDemocracyDelegates =
-  (page = 1, pageSize = 18) =>
-  async (dispatch) => {
+export const fetchDemocracyDelegates = (sort, page = 1, pageSize = 18) => {
+  if (sort === "participation") {
+    sort = "participation_rate";
+  }
+
+  return async (dispatch) => {
     try {
       dispatch(setDemocracyDelegatesLoading(true));
       const { result } = await nextApi.fetch("delegation/democracy/delegates", {
+        sort,
         page,
         pageSize,
       });
@@ -43,6 +47,7 @@ export const fetchDemocracyDelegates =
       dispatch(setDemocracyDelegatesLoading(false));
     }
   };
+};
 
 export const democracyDelegatesSelector = (state) => state[name].delegates;
 export const democracyDelegatesTriggerUpdateSelector = (state) =>

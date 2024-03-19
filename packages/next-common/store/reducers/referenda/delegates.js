@@ -29,12 +29,16 @@ export const {
   setTriggerUpdate: setReferendaDelegatesTriggerUpdate,
 } = referendaDelegatesSlice.actions;
 
-export const fetchReferendaDelegates =
-  (page = 1, pageSize = 18) =>
-  async (dispatch) => {
+export const fetchReferendaDelegates = (sort, page = 1, pageSize = 18) => {
+  if (sort === "participation") {
+    sort = "participation_rate";
+  }
+
+  return async (dispatch) => {
     try {
       dispatch(setReferendaDelegatesLoading(true));
       const { result } = await nextApi.fetch("delegation/referenda/delegates", {
+        sort,
         page,
         pageSize,
       });
@@ -43,6 +47,7 @@ export const fetchReferendaDelegates =
       dispatch(setReferendaDelegatesLoading(false));
     }
   };
+};
 
 export const referendaDelegatesSelector = (state) => state[name].delegates;
 export const referendaDelegatesTriggerUpdateSelector = (state) =>
