@@ -1,0 +1,19 @@
+import React from "react";
+import Link from "next/link";
+import { useChainSettings } from "next-common/context/chain";
+
+export default function DemocracyDelegationLink() {
+  const {
+    modules: { referenda: hasReferenda, democracy: hasDemocracy },
+  } = useChainSettings();
+  let delegationLink = "/delegation";
+  if (hasReferenda && hasDemocracy) {
+    delegationLink = delegationLink + "?type=Democracy";
+  }
+
+  return (
+    <Link className="text14Medium text-theme500" href={delegationLink}>
+      Manage Delegation
+    </Link>
+  );
+}
