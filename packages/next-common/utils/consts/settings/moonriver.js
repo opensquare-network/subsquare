@@ -67,6 +67,7 @@ const moonriver = {
   useVoteCall: true,
   modules: {
     referenda: true,
+    democracy: true,
   },
   cssVarsLight: {
     theme100: "rgba(79,204,198,0.10)",

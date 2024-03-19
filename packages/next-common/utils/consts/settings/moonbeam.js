@@ -59,6 +59,7 @@ const moonbeam = {
     "Solidity Smart Contracts on Polkadot. Moonbeam is a Polkadot parachain designed for developers that combines full Ethereum compatibility with the power of Polkadot.",
   modules: {
     referenda: true,
+    democracy: true,
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",
