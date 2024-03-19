@@ -7,8 +7,8 @@ import ErrorText from "next-common/components/ErrorText";
 import { FormButtonsWrapper, FormInputsWrapper, FormWrapper } from "./styled";
 import Username from "./username";
 import Password from "./password";
-import GhostButton from "next-common/components/buttons/ghostButton";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import SecondaryButton from "next-common/lib/button/secondary";
+import PrimaryButton from "next-common/lib/button/primary";
 import useForm from "next-common/utils/hooks/useForm";
 import {
   fetchAndUpdateUserStatus,
@@ -80,18 +80,18 @@ export default function MailLogin({ setView }) {
         </ForgetPassword>
       </FormInputsWrapper>
       <FormButtonsWrapper>
-        <PrimaryButton isFill isLoading={loading} type="submit">
+        <PrimaryButton className="w-full" loading={loading} type="submit">
           Login
         </PrimaryButton>
-        <GhostButton
-          isFill
+        <SecondaryButton
+          className="w-full"
           onClick={(event) => {
             event.preventDefault();
             setView("web3");
           }}
         >
           Connect with web3 address
-        </GhostButton>
+        </SecondaryButton>
       </FormButtonsWrapper>
 
       <div className="text-center text14Medium text-textSecondary">

@@ -6,7 +6,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import { lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import useHasTips from "next-common/hooks/treasury/useHasTips";
@@ -45,8 +45,8 @@ export default function TipsPage({ tips: ssrTips }) {
         hasTips && (
           <div className="flex justify-end">
             <PrimaryButton
-              small
-              icon={
+              size="small"
+              iconLeft={
                 <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
               }
               onClick={() => setShowPopup(true)}

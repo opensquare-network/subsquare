@@ -26,9 +26,7 @@ export default function useProfileTabContent() {
     return <ProfileDelegation />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/transfers`)) {
     return <ProfileTransfers />;
-  } else if (
-    pathname.startsWith(`/user/${maybeEvmAddress}/identity-timeline`)
-  ) {
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
     return <ProfileIdentityTimeline />;
   }
 

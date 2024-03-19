@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useChain } from "../../context/chain";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import WalletAddressSelect from "./walletAddressSelect";
@@ -71,8 +71,8 @@ export default function AddressLogin({ setView }) {
       <ButtonWrapper>
         {selectedWallet && (
           <PrimaryButton
-            isFill
-            isLoading={isLoading}
+            className="w-full"
+            loading={isLoading}
             onClick={doWeb3Login}
             disabled={!selectedAccount}
           >

@@ -64,7 +64,7 @@ export default function Popup({
                   <div className="flex items-center gap-[12px]">
                     {extra}
                     <SystemClose
-                      className="w-[20px] h-[20px] [&_path]:stroke-textTertiary"
+                      className="w-[20px] h-[20px]"
                       role="button"
                       onClick={onClose}
                     />

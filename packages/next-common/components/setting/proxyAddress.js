@@ -15,7 +15,7 @@ import {
 import ErrorMessage from "../styled/errorMessage";
 import { checkProxy } from "../../utils/proxy";
 import styled from "styled-components";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { normalizeAddress } from "next-common/utils/address";
 import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
@@ -171,7 +171,7 @@ export default function ProxyAddress() {
         style={{ width: 55, height: 40 }}
         onClick={isSet ? onUnset : onSet}
         disabled={disabled}
-        isLoading={isLoading}
+        loading={isLoading}
       >
         {isSet ? "Unset" : "Set"}
       </PrimaryButton>

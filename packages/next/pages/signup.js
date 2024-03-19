@@ -11,8 +11,8 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import NextHead from "next-common/components/nextHead";
 import UserPolicy from "next-common/components/userPolicy";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
-import GhostButton from "next-common/components/buttons/ghostButton";
+import PrimaryButton from "next-common/lib/button/primary";
+import SecondaryButton from "next-common/lib/button/secondary";
 import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
 import { useSetUser, useUser } from "next-common/context/user";
@@ -205,7 +205,11 @@ export default function Signup() {
                 setAgreeError={setAgreeError}
               />
               <ButtonWrapper>
-                <PrimaryButton isFill type="submit" isLoading={loading}>
+                <PrimaryButton
+                  className="w-full"
+                  type="submit"
+                  loading={loading}
+                >
                   Sign up
                 </PrimaryButton>
               </ButtonWrapper>
@@ -228,15 +232,15 @@ export default function Signup() {
             </InfoWrapper>
             <div className="space-y-2">
               <PrimaryButton
-                isFill
+                className="w-full"
                 secondary
                 onClick={() => router.replace("/")}
               >
                 Got it
               </PrimaryButton>
-              <GhostButton isFill onClick={sendVerifyEmail}>
+              <SecondaryButton className="w-full" onClick={sendVerifyEmail}>
                 Resend
-              </GhostButton>
+              </SecondaryButton>
               {emailSent && (
                 <Redirect>
                   The page will be re-directed in

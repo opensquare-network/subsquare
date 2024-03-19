@@ -68,8 +68,8 @@ export default function useProfileTabs() {
 
     if (hasIdentityTimeline) {
       tabs.push({
-        label: "Identity timeline",
-        url: `${prefix}identity-timeline`,
+        label: "Identity",
+        url: `${prefix}identity`,
         exactMatch: false,
       });
     }

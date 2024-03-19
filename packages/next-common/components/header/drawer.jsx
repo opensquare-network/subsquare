@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
 import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useUser } from "../../context/user";
 import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
@@ -54,7 +54,7 @@ const UserWrapper = styled(Flex)`
   border: 1px solid var(--neutral400);
   border-radius: 8px;
   padding: 0 12px;
-  height: 38px;
+  height: 40px;
   font-weight: 500;
   margin-bottom: 8px;
   > :first-child {

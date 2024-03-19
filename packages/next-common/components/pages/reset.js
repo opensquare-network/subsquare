@@ -14,7 +14,7 @@ import {
   Redirect,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { LoginCard } from "../styled/containers/loginCard";
 
@@ -82,7 +82,7 @@ const Reset = () => {
                   <ErrorText>{errors?.message}</ErrorText>
                 )}
               </FormInputsWrapper>
-              <PrimaryButton isFill type="submit" isLoading={loading}>
+              <PrimaryButton className="w-full" type="submit" loading={loading}>
                 Confirm
               </PrimaryButton>
             </FormWrapper>
@@ -92,7 +92,11 @@ const Reset = () => {
           <>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your password has been reset.</InfoWrapper>
-            <PrimaryButton isFill secondary onClick={() => router.replace("/")}>
+            <PrimaryButton
+              className="w-full"
+              secondary
+              onClick={() => router.replace("/")}
+            >
               Back to Overview
             </PrimaryButton>
             <Redirect>

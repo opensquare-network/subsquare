@@ -7,7 +7,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 
 export default function ConfirmEmail({ pin, email, identity, setErrors }) {
@@ -49,7 +49,7 @@ export default function ConfirmEmail({ pin, email, identity, setErrors }) {
   };
 
   return (
-    <PrimaryButton isFill isLoading={loading} onClick={submit}>
+    <PrimaryButton className="w-full" loading={loading} onClick={submit}>
       Confirm
     </PrimaryButton>
   );

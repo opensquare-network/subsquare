@@ -7,7 +7,7 @@ import ErrorText from "next-common/components/ErrorText";
 import NextHead from "next-common/components/nextHead";
 import { InfoWrapper, Redirect } from "next-common/components/login/styled";
 import { PageTitleContainer } from "../styled/containers/titleContainer";
-import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { LoginCard } from "../styled/containers/loginCard";
 import {
   fetchAndUpdateUserStatus,
@@ -78,9 +78,12 @@ export default function Verify() {
           <>
             <PageTitleContainer>Congrats</PageTitleContainer>
             <InfoWrapper>Your email has been verified.</InfoWrapper>
-            <GhostButton isFill onClick={() => router.replace("/")}>
+            <SecondaryButton
+              className="w-full"
+              onClick={() => router.replace("/")}
+            >
               Back to Overview
-            </GhostButton>
+            </SecondaryButton>
             <Redirect>
               The page will be re-directed in
               <span className="sec">{countdown}s</span>

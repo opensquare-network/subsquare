@@ -16,7 +16,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSubMyReferendaVote, {
   getReferendaDirectVote,
@@ -160,7 +160,7 @@ function VotePanel({
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
-          <PrimaryButton isLoading={isLoading} onClick={doVote}>
+          <PrimaryButton loading={isLoading} onClick={doVote}>
             Confirm
           </PrimaryButton>
         </div>

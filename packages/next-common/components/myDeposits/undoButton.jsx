@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { noop } from "lodash-es";
 import { SystemClose } from "@osn/icons/subsquare";
 
@@ -10,7 +10,7 @@ export default function MyDepositUndoButton({
   ...restProps
 }) {
   return (
-    <GhostButton
+    <SecondaryButton
       disabled={disabled}
       className={cn(
         "group",
@@ -27,6 +27,6 @@ export default function MyDepositUndoButton({
           "group-disabled:[&_path]:stroke-textDisabled group-disabled:[&_path]:fill-textDisabled",
         )}
       />
-    </GhostButton>
+    </SecondaryButton>
   );
 }

@@ -1,5 +1,5 @@
 import { SystemDisconnect } from "@osn/icons/subsquare";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import AccountDelegationPrompt from "./components/delegationPrompt";

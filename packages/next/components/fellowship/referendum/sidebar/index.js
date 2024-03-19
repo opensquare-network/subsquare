@@ -6,7 +6,7 @@ import { usePost } from "next-common/context/post";
 import { gov2VotingState } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
-import PrimaryButton from "next-common/components/buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useChainSettings } from "next-common/context/chain";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import { VoteSuccessfulProvider } from "next-common/components/vote";

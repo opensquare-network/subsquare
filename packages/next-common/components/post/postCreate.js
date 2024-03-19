@@ -10,7 +10,7 @@ import { Label, LabelWrapper } from "./styled";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { useChain } from "../../context/chain";
 import { useUser } from "../../context/user";
@@ -196,7 +196,7 @@ export default function PostCreate() {
 
       <ButtonWrapper>
         <PrimaryButton
-          isLoading={creating}
+          loading={creating}
           onClick={createPost}
           disabled={isDisableCreate}
         >

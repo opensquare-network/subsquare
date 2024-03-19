@@ -15,14 +15,16 @@ export default function TimelineItemInfoHeader({ item }) {
       </div>
       <div className="flex gap-[8px]">
         <Link
-          name="Extrinsic"
           href={`https://${chain}.statescan.io/#/extrinsics/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}
-        />
+        >
+          Extrinsic
+        </Link>
         {!isNil(item.indexer.eventIndex) && (
           <Link
-            name="Event"
             href={`https://${chain}.statescan.io/#/events/${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
-          />
+          >
+            Event
+          </Link>
         )}
       </div>
     </div>

@@ -7,9 +7,9 @@ import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { useIsLoggedIn, useUser } from "../../context/user";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import PrimaryButton from "../buttons/primaryButton.js";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
-import GhostButton from "../buttons/ghostButton.js";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { SystemUser, AddressUser } from "../user";
@@ -101,15 +101,15 @@ export default function HeaderAccount() {
   if (user) {
     if (isLoggedIn) {
       connectBtn = (
-        <GhostButton onClick={() => setShow(!show)}>
+        <SecondaryButton onClick={() => setShow(!show)}>
           <SystemUser user={user} noEvent />
-        </GhostButton>
+        </SecondaryButton>
       );
     } else {
       connectBtn = (
-        <GhostButton onClick={() => setShow(!show)}>
+        <SecondaryButton onClick={() => setShow(!show)}>
           <AddressUser add={user?.address} noEvent />
-        </GhostButton>
+        </SecondaryButton>
       );
     }
   }

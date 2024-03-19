@@ -4,8 +4,8 @@ import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import Popup from "../popup/wrapper/Popup";
-import GhostButton from "../buttons/ghostButton";
-import PrimaryButton from "../buttons/primaryButton";
+import SecondaryButton from "next-common/lib/button/secondary";
+import PrimaryButton from "next-common/lib/button/primary";
 import { fetchAndUpdateUser, useUserContext } from "next-common/context/user";
 import Tooltip from "../tooltip";
 
@@ -40,9 +40,9 @@ function DeletePopup({ onClose }) {
         </span>
       </div>
       <div className="flex gap-[8px] justify-end">
-        <GhostButton onClick={onClose}>Cancel</GhostButton>
+        <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
         <PrimaryButton
-          isLoading={isLoading}
+          loading={isLoading}
           className="!bg-red500"
           onClick={doDelete}
         >

@@ -27,10 +27,11 @@ export default function ProfileTransfers() {
       return;
     }
 
-    fetch(`https://${chain}-api.statescan.io/accounts/${address}/transfers`, {
-      page,
-      pageSize: DEFAULT_PAGE_SIZE,
-    })
+    fetch(
+      `https://${chain}-api.statescan.io/accounts/${address}/transfers?page=${
+        page - 1
+      }&page_size=${DEFAULT_PAGE_SIZE}`,
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -50,7 +51,7 @@ export default function ProfileTransfers() {
       <TransferList isLoading={!transfers} items={transfers?.items} />
       <Pagination
         page={page}
-        pageSize={DEFAULT_PAGE_SIZE}
+        pageSize={transfers?.pageSize}
         onPageChange={(e, page) => {
           e.stopPropagation();
           e.preventDefault();

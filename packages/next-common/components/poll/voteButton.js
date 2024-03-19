@@ -1,5 +1,5 @@
 import React from "react";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "../popup/wrapper";
 
 export default function VoteButton({ onClick, disabled, isSubmitting }) {
@@ -9,7 +9,7 @@ export default function VoteButton({ onClick, disabled, isSubmitting }) {
         <PrimaryButton disabled>Vote</PrimaryButton>
       ) : (
         <PrimaryButton
-          isLoading={isSubmitting}
+          loading={isSubmitting}
           onClick={onClick}
           disabled={disabled}
         >

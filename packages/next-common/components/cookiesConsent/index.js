@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useAcceptCookies } from "../../utils/hooks/useAcceptCookies";
 import { isNil } from "lodash-es";
 import { cn } from "next-common/utils";
-import PrimaryButton from "../buttons/primaryButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import { useNavCollapsed } from "next-common/context/nav";
-import GhostButton from "../buttons/ghostButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 export default function CookiesConsent() {
   const [show, setShow] = useState(false);
@@ -53,7 +53,7 @@ export default function CookiesConsent() {
         </div>
 
         <div className="flex items-center grow justify-end gap-[8px]">
-          <GhostButton onClick={handleIgnore}>Dismiss</GhostButton>
+          <SecondaryButton onClick={handleIgnore}>Dismiss</SecondaryButton>
           <PrimaryButton onClick={handleAccept}>Accept</PrimaryButton>
         </div>
       </div>
