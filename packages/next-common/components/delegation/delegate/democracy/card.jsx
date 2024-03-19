@@ -12,11 +12,13 @@ import ReferendaDelegateeDetailPopup from "./detailPopup";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "../referenda/avatar";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
 
 export default function DemocracyDelegateCard({ delegate = {} }) {
   const { address, manifesto } = delegate;
 
   const realAddress = useRealAddress();
+  const { delegating } = useSubDemocracyDelegating(realAddress);
 
   const isDelegatee = realAddress === address;
 
@@ -29,7 +31,10 @@ export default function DemocracyDelegateCard({ delegate = {} }) {
 
         <div className="space-x-2">
           {!isDelegatee && (
-            <DemocracyNewDelegation defaultTargetAddress={address} />
+            <DemocracyNewDelegation
+              disabled={!!delegating}
+              defaultTargetAddress={address}
+            />
           )}
 
           <SecondaryButton
