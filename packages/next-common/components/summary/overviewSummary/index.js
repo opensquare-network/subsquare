@@ -11,7 +11,7 @@ import {
   useMenuHasTreasuryChildBounties,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
-import Summary from "../v2/base";
+import Summary from "..";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
 

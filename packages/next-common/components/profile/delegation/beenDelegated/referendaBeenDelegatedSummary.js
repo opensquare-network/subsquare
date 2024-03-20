@@ -1,6 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 
 export default function ReferendaBeenDelegatedSummary({
   beenDelegatedList,
@@ -15,7 +15,7 @@ export default function ReferendaBeenDelegatedSummary({
 
   return (
     <SecondaryCard>
-      <SummaryItems
+      <Summary
         items={[
           {
             title: "Tracks",

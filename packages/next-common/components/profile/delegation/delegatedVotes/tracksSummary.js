@@ -1,6 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 import { profileReferendaDelegationsSelector } from "next-common/store/reducers/profile/referendaDelegations";
 import { useSelector } from "react-redux";
 
@@ -14,7 +14,7 @@ export default function TracksSummary() {
 
   return (
     <SecondaryCard>
-      <SummaryItems
+      <Summary
         items={[
           {
             title: "Tracks",

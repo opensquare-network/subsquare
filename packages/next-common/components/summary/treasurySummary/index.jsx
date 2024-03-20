@@ -1,6 +1,6 @@
 import useTreasuryFree from "../../../utils/hooks/useTreasuryFree";
 import { useChain } from "../../../context/chain";
-import Summary from "../v2/base";
+import Summary from "..";
 import TreasurySummaryNextBurn from "./nextBurn";
 import { isKintsugiChain } from "next-common/utils/chain";
 import SpendPeriod from "next-common/components/summary/treasurySummary/spendPeriod";

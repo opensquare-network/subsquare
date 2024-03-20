@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";

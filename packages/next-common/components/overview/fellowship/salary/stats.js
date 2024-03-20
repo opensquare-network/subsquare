@@ -1,6 +1,6 @@
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { cn } from "next-common/utils";
 import { chunk } from "lodash-es";
