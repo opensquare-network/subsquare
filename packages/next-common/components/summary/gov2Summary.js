@@ -1,4 +1,4 @@
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 import { SummaryGreyText } from "next-common/components/summary/styled";
 
 export default function Gov2Summary({ summary }) {

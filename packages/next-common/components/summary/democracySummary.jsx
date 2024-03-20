@@ -2,7 +2,7 @@ import { extractTime } from "@polkadot/util";
 import dayjs from "dayjs";
 import CountDown from "next-common/components/summary/countDown";
 import { SummaryGreyText } from "next-common/components/summary/styled";
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 import Tooltip from "next-common/components/tooltip";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { useDemocracySummaryData } from "next-common/hooks/useDemoracySummaryData";

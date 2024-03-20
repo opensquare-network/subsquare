@@ -1,5 +1,5 @@
 import React from "react";
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 
 export default function UnscrupulousSummary({ accounts, websites }) {
   return (

@@ -1,4 +1,4 @@
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 import { usePageProps } from "next-common/context/page";
 import ActiveValue from "../overviewSummary/activeValue";
 

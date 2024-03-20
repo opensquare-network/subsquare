@@ -1,6 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -14,7 +14,7 @@ export default function DemocracyBeenDelegatedSummary({
 
   return (
     <SecondaryCard>
-      <SummaryItems
+      <Summary
         items={[
           {
             title: "Been Delegated Votes",

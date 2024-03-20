@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "./styled";
 import { ModuleTab, useAvailableModuleTabs, useModuleName } from "./common";
@@ -60,7 +60,7 @@ export default function VotingHistorySummary() {
         </div>
       )}
       <SecondaryCard>
-        <SummaryItems items={items} />
+        <Summary items={items} />
       </SecondaryCard>
     </>
   );

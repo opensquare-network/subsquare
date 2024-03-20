@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { estimateBlocksTime, toPrecision } from "next-common/utils";
 import { SummaryGreyText } from "next-common/components/summary/styled";
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import Gov2TrackSummaryThresholdCurves from "./gov2TrackSummaryThresholdCurves";
