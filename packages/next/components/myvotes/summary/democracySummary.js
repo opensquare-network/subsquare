@@ -47,7 +47,7 @@ export default function DemocracySummary() {
   if (democracyVoting || voteExpiredReferenda.length > 0) {
     if (isHydradx() && voteExpiredReferenda.length > 10) {
       actionComponent = (
-        <Tooltip content="HydraDX supports batch deletion of up to 10 votes. Please remove votes ony by one first.">
+        <Tooltip content="HydraDX supports batch deletion up to 10 votes. Please remove votes one by one first.">
           <div className="cursor-pointer text-textDisabled text-[12px]">
             Clear expired votes
           </div>
