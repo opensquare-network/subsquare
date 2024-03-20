@@ -12,7 +12,7 @@ export default function ReferendaDelegationLink() {
 
   return (
     <Link className="text14Medium text-theme500" href={delegationLink}>
-      Manage Delegation
+      Delegate
     </Link>
   );
 }

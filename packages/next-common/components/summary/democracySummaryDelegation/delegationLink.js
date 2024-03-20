@@ -13,7 +13,7 @@ export default function DemocracyDelegationLink() {
 
   return (
     <Link className="text14Medium text-theme500" href={delegationLink}>
-      Manage Delegation
+      Delegate
     </Link>
   );
 }
