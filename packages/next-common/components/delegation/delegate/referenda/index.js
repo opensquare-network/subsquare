@@ -18,7 +18,7 @@ export default function ReferendaDelegates() {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState(router.query.sort || "");
   const [searchAddress, setSearchAddress] = useState("");
-  const { referendaDelegatesPageData } = useReferendaDelegatesData();
+  const referendaDelegatesPageData = useReferendaDelegatesData({ page, sort });
   const {
     items: delegates = [],
     total = 0,
