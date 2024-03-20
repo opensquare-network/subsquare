@@ -7,6 +7,7 @@ import {
 } from "next-common/components/profile/delegation/delegatedVotes/openGovDelegationList";
 import DelegationList from "next-common/components/profile/delegation/common/delegationList";
 import RemoveDelegation from "next-common/components/summary/democracyAllMyDelegationPopup/remove";
+import AllDelegationsBar from "next-common/components/summary/democracyAllMyDelegationPopup/allDelegationBar";
 
 export default function OpenGovDelegationList() {
   const delegations = useSelector(myReferendaDelegationsSelector);
@@ -31,11 +32,14 @@ export default function OpenGovDelegationList() {
     <>
       <Title delegations={delegations} />
       <SecondaryCard>
-        <DelegationList
-          isLoading={!delegations}
-          delegations={delegations}
-          columnsDef={columnsDef}
-        />
+        <div className="flex flex-col gap-[16px]">
+          {delegations?.length > 0 && <AllDelegationsBar />}
+          <DelegationList
+            isLoading={!delegations}
+            delegations={delegations}
+            columnsDef={columnsDef}
+          />
+        </div>
       </SecondaryCard>
     </>
   );
