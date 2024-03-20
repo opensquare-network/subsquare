@@ -8,7 +8,7 @@ export default function DemocracyDelegationLink() {
   } = useChainSettings();
   let delegationLink = "/delegation";
   if (hasReferenda && hasDemocracy) {
-    delegationLink = delegationLink + "?type=Democracy";
+    delegationLink = delegationLink + "?type=democracy";
   }
 
   return (

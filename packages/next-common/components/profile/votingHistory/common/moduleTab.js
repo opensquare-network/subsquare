@@ -48,29 +48,32 @@ export function ModuleTabProvider({
   const router = useRouter();
 
   const qTab = availableTabs.find(
-    (tab) => tab.tabId === router.query?.[queryName],
+    (tab) =>
+      tab.tabId.toLowerCase() === router.query?.[queryName]?.toLowerCase(),
   )?.tabId;
   const selectedTabId = qTab || defaultTab || availableTabs[0]?.tabId;
 
   const getTabUrl = useCallback(
     (tabId) => {
+      const lowerTabId = tabId?.toLowerCase();
+
       const [urlPath, urlQuery] = router.asPath.split("?");
-      const isFirstTab = availableTabs[0]?.tabId === tabId;
+      const isFirstTab = availableTabs[0]?.tabId?.toLowerCase() === lowerTabId;
       const noAvailableTabs = availableTabs.length === 0;
 
       const urlSearch = new URLSearchParams(urlQuery);
       if (
         isFirstTab &&
         urlSearch.has(queryName) &&
-        urlSearch.get(queryName) !== tabId
+        urlSearch.get(queryName)?.toLowerCase() !== lowerTabId
       ) {
         urlSearch.delete(queryName);
       } else if (
         !isFirstTab &&
         !noAvailableTabs &&
-        urlSearch.get(queryName) !== tabId
+        urlSearch.get(queryName)?.toLowerCase() !== lowerTabId
       ) {
-        urlSearch.set(queryName, tabId);
+        urlSearch.set(queryName, lowerTabId);
       }
 
       const newQuery = urlSearch.size > 0 ? `?${urlSearch.toString()}` : "";
