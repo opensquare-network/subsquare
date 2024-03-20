@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -7,35 +7,20 @@ import {
   referendaDelegatesSelector,
   referendaDelegatesTriggerUpdateSelector,
 } from "next-common/store/reducers/referenda/delegates";
-import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { omit } from "lodash-es";
 
-export function useReferendaDelegatesContext() {
+export function useReferendaDelegatesData({ page, sort, pageSize = 18 }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   const referendaDelegatesPageData = useSelector(referendaDelegatesSelector);
-  const { pageSize = 18, total = 0 } = referendaDelegatesPageData || {};
-  const {
-    page,
-    setPage,
-    component: pageComponent,
-  } = usePaginationComponent(total, pageSize);
+
   const triggerUpdate = useSelector(referendaDelegatesTriggerUpdateSelector);
-  const [sort, setSort] = useState(router.query.sort || "");
 
   useEffect(() => {
     const q = router.query;
     dispatch(fetchReferendaDelegates(q.sort || "", q.page || 1, pageSize));
   }, [router.asPath, triggerUpdate]);
-
-  useEffect(() => {
-    setSort(router.query.sort || "");
-  }, [router.query.sort]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [sort]);
 
   useEffect(() => {
     const q = omit(router.query, ["sort", "page"]);
@@ -49,8 +34,5 @@ export function useReferendaDelegatesContext() {
     router.push({ query: q }, null, { shallow: true });
   }, [sort, page, pageSize]);
 
-  return {
-    referendaDelegatesPageData,
-    pageComponent,
-  };
+  return referendaDelegatesPageData;
 }

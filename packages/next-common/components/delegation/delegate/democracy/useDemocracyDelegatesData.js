@@ -4,37 +4,22 @@ import {
   democracyDelegatesSelector,
   democracyDelegatesTriggerUpdateSelector,
 } from "next-common/store/reducers/democracy/delegates";
-import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { omit } from "lodash-es";
 
-export function useDemocracyDelegatesContext() {
+export function useDemocracyDelegatesData({ page, sort, pageSize = 18 }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   const democracyDelegatesPageData = useSelector(democracyDelegatesSelector);
-  const { pageSize = 18, total = 0 } = democracyDelegatesPageData || {};
-  const {
-    page,
-    setPage,
-    component: pageComponent,
-  } = usePaginationComponent(total, pageSize);
+
   const triggerUpdate = useSelector(democracyDelegatesTriggerUpdateSelector);
-  const [sort, setSort] = useState(router.query.sort || "");
 
   useEffect(() => {
     const q = router.query;
     dispatch(fetchDemocracyDelegates(q.sort || "", q.page || 1, pageSize));
   }, [router.asPath, triggerUpdate]);
-
-  useEffect(() => {
-    setSort(router.query.sort || "");
-  }, [router.query.sort]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [sort]);
 
   useEffect(() => {
     const q = omit(router.query, ["sort", "page"]);
@@ -48,8 +33,5 @@ export function useDemocracyDelegatesContext() {
     router.push({ query: q }, null, { shallow: true });
   }, [sort, page, pageSize]);
 
-  return {
-    democracyDelegatesPageData,
-    pageComponent,
-  };
+  return democracyDelegatesPageData;
 }

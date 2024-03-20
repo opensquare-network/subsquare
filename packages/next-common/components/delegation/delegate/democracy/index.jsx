@@ -1,24 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DelegatesLoadable from "next-common/components/delegation/delegate/common/loadable";
 import DelegateEmpty from "next-common/components/delegation/delegate/common/empty";
 import Delegates from "./members";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import DelegationSortSelect from "../common/sortSelect";
 import { useRouter } from "next/router";
-import { useDemocracyDelegatesContext } from "./useDemocracyDelegatesContext";
+import { useDemocracyDelegatesData } from "./useDemocracyDelegatesData";
 import DelegationSearchInput from "../common/searchInput";
 import DemocracyNewDelegation from "next-common/components/summary/democracySummaryDelegation/newDelegation";
 import { SystemPlus } from "@osn/icons/subsquare";
 import DemocracyDelegationSearchResult from "./searchResult";
+import Pagination from "next-common/components/pagination";
 
 export default function DemocracyDelegates() {
   const router = useRouter();
 
-  const { democracyDelegatesPageData, pageComponent } =
-    useDemocracyDelegatesContext();
-  const { items: delegates = [], total = 0 } = democracyDelegatesPageData || {};
+  const [page, setPage] = useState(1);
   const [sort, setSort] = useState(router.query.sort || "");
   const [searchAddress, setSearchAddress] = useState("");
+  const democracyDelegatesPageData = useDemocracyDelegatesData({ page, sort });
+  const {
+    items: delegates = [],
+    total = 0,
+    pageSize,
+  } = democracyDelegatesPageData || {};
+
+  useEffect(() => {
+    setSort(router.query.sort || "");
+  }, [router.query.sort]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [sort]);
 
   return (
     <>
@@ -57,7 +70,19 @@ export default function DemocracyDelegates() {
             <Delegates delegates={delegates} />
           )}
 
-          <div className="mt-2">{pageComponent}</div>
+          <div className="mt-2">
+            <Pagination
+              page={page}
+              setPage={setPage}
+              total={total}
+              pageSize={pageSize}
+              onPageChange={(event, page) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setPage(page);
+              }}
+            />
+          </div>
         </DelegatesLoadable>
       )}
     </>
