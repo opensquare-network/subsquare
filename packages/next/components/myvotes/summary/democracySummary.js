@@ -16,6 +16,8 @@ import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainD
 import myDemocracyPriorLockSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/prior";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
+import Tooltip from "next-common/components/tooltip";
+import isHydradx from "next-common/utils/isHydradx";
 
 export default function DemocracySummary() {
   const [showClearExpired, setShowClearExpired] = useState(false);
@@ -43,14 +45,24 @@ export default function DemocracySummary() {
 
   let actionComponent = null;
   if (democracyVoting || voteExpiredReferenda.length > 0) {
-    actionComponent = (
-      <div
-        className="cursor-pointer text-theme500 text-[12px]"
-        onClick={() => setShowClearExpired(true)}
-      >
-        {voteExpiredReferenda.length <= 0 ? "Unlock" : "Clear expired votes"}
-      </div>
-    );
+    if (isHydradx() && voteExpiredReferenda.length > 10) {
+      actionComponent = (
+        <Tooltip content="HydraDX supports batch deletion up to 10 votes. Please remove votes one by one first.">
+          <div className="cursor-pointer text-textDisabled text-[12px]">
+            Clear expired votes
+          </div>
+        </Tooltip>
+      );
+    } else {
+      actionComponent = (
+        <div
+          className="cursor-pointer text-theme500 text-[12px]"
+          onClick={() => setShowClearExpired(true)}
+        >
+          {voteExpiredReferenda.length <= 0 ? "Unlock" : "Clear expired votes"}
+        </div>
+      );
+    }
   }
 
   let Popup = ClearExpiredDemocracyVotePopup;
