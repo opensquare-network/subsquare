@@ -5,7 +5,7 @@ import nextApi from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
-import DemocracySummary from "next-common/components/summary/v2/democracySummary";
+import DemocracySummary from "next-common/components/summary/democracySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";

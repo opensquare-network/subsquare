@@ -1,6 +1,6 @@
 import DemocracySummaryFooter from "next-common/components/summary/democracySummaryFooter";
 import ListLayout from "../ListLayout";
-import DemocracySummary from "next-common/components/summary/v2/democracySummary";
+import DemocracySummary from "next-common/components/summary/democracySummary";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useUser } from "next-common/context/user";

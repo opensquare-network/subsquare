@@ -5,7 +5,7 @@ import nextApi from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeExternalListItem from "next-common/utils/viewfuncs/democracy/normliazeExternalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
-import DemocracySummary from "next-common/components/summary/v2/democracySummary";
+import DemocracySummary from "next-common/components/summary/democracySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default function DemocracyExternalsPage({ externals, chain, summary }) {
