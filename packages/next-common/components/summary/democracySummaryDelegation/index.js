@@ -4,8 +4,8 @@ import DemocracySummaryDelegationInfo from "./democracySummaryDelegationInfo";
 import useRealAddress from "../../../utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
 import RemoveDelegation from "./removeDelegation";
-import NewDelegation from "./newDelegation";
 import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
+import DemocracyDelegationLink from "./delegationLink";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ export default function DemocracySummaryDelegation() {
     <Wrapper>
       <DemocracySummaryDelegationInfo delegating={delegating} />
       {!hideActionButtons &&
-        (delegating ? <RemoveDelegation /> : <NewDelegation />)}
+        (delegating ? <RemoveDelegation /> : <DemocracyDelegationLink />)}
     </Wrapper>
   );
 }

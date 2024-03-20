@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 import { useChainSettings } from "next-common/context/chain";
 import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
-import NewDelegateButton from "./newDelegateButton";
 import AllMyDelegation from "./allMyDelegation";
 import AllBeenDelegated from "./allBeenDelegated";
+import ReferendaDelegationLink from "./delegationLink";
 
 const Wrapper = styled(flexBetweenCenter)`
   gap: 8px;
@@ -41,7 +41,7 @@ export default function AllDelegation() {
 
         {!hideActionButtons && (
           <ButtonWrapper className="gap-[8px]">
-            <NewDelegateButton />
+            <ReferendaDelegationLink />
           </ButtonWrapper>
         )}
       </VStack>
