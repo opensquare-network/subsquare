@@ -10,9 +10,17 @@ import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote
 import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
+/**
+ * @param {{
+ * defaultTargetAddress?: string
+ * targetDisabled?: boolean
+ * } & ButtonProps} props
+ */
 export default function NewDelegateButton({
   defaultTargetAddress,
   targetDisabled,
+  size = "small",
+  ...props
 }) {
   const dispatch = useDispatch();
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
@@ -32,13 +40,14 @@ export default function NewDelegateButton({
   return (
     <>
       <SecondaryButton
-        size="small"
+        size={size}
         iconLeft={<SystemPlus className="w-4 h-4" />}
+        {...props}
         onClick={() => {
           setShowDelegatePopup(true);
         }}
       >
-        Delegate
+        {props.children || "Delegate"}
       </SecondaryButton>
       {showDelegatePopup && (
         <Popup
