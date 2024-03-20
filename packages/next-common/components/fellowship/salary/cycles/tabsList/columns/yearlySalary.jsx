@@ -6,7 +6,7 @@ export function useFellowshipSalaryCycleYearlySalaryColumn() {
   const { decimals, symbol } = useSalaryAsset();
 
   return {
-    name: "Yearly Salary",
+    name: "Salary",
     width: 160,
     cellRender(data) {
       return (
