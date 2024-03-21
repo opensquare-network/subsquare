@@ -24,7 +24,7 @@ export default function TrackSelect({ selectedTrackId, setSelectedTrackId }) {
 
   return (
     <Select
-      className="w-[180px] !px-[12px] !py-[6px]"
+      className="w-[200px] !px-[12px] !py-[6px]"
       maxDisplayItem={6}
       options={options}
       value={selectedTrackId}
