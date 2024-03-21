@@ -23,7 +23,7 @@ export default function DemocracyStatistics({
   ];
 
   return (
-    <div>
+    <div className="space-y-4">
       <Wrapper>
         <DemocracySummary summary={summary} />
       </Wrapper>

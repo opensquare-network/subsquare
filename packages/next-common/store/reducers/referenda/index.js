@@ -3,6 +3,7 @@ import referendaReferendumInfo from "./info";
 import referendaVotes from "./votes";
 import referendaMeta from "./meta";
 import referendaTallyHistory from "./tallyHistory";
+import referendaDelegates from "./delegates";
 
 export default {
   referendaIssuance,
@@ -10,4 +11,5 @@ export default {
   referendaVotes,
   referendaMeta,
   referendaTallyHistory,
+  referendaDelegates,
 };

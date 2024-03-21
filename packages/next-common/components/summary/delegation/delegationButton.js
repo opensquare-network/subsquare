@@ -16,12 +16,7 @@ const RemoveButton = styled(Button)`
   padding: 7px;
 `;
 
-export default function DelegationButton({
-  delegating,
-  trackId,
-  onUndelegateInBlock,
-  onDelegateInBlock,
-}) {
+export default function DelegationButton({ delegating, trackId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
   const [showUndelegatePopup, setShowUndelegatePopup] = useState(false);
@@ -60,14 +55,12 @@ export default function DelegationButton({
       {showDelegatePopup && (
         <TheDelegatePopup
           tracks={[trackId]}
-          onInBlock={onDelegateInBlock}
           onClose={() => setShowDelegatePopup(false)}
         />
       )}
       {showUndelegatePopup && (
         <TheUndelegatePopup
           trackId={trackId}
-          onInBlock={onUndelegateInBlock}
           onClose={() => setShowUndelegatePopup(false)}
           isLoading={isLoading}
           setIsLoading={setIsLoading}

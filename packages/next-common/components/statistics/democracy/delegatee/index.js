@@ -4,7 +4,6 @@ import useColumns from "next-common/components/styledList/useColumns";
 import nextApi from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
-import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
 import BeenDelegatedListPopup from "../beenDelegatedPopup";
 import { useChainSettings } from "next-common/context/chain";
@@ -13,6 +12,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
+import DetailButton from "next-common/components/detailButton";
 
 const Wrapper = styled.div``;
 
@@ -68,7 +68,7 @@ export default function DemocracyDelegatee({
       },
       {
         name: "",
-        style: { textAlign: "right", width: "40px", minWidth: "40px" },
+        style: { textAlign: "right", width: "80px", minWidth: "80px" },
       },
     ],
     "VOTES",
@@ -122,9 +122,14 @@ export default function DemocracyDelegatee({
         value={toPrecision(item.delegatedVotes || 0, decimals)}
         symbol={voteSymbol || symbol}
       />,
-      <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
-        <EnterSVG />
-      </Flex>,
+      <div key="detail">
+        <DetailButton
+          onClick={() => {
+            setDelegateeData(item);
+            setShowPopup(true);
+          }}
+        />
+      </div>,
     ];
 
     row.onClick = () => {

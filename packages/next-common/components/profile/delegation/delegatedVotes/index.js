@@ -1,30 +1,28 @@
-import TracksSummary from "./tracksSummary";
-import TracksDelegation from "./tracksDelegation";
+import OpenGovDelegationSummary from "./openGovDelegationSummary";
+import OpenGovDelegationList from "./openGovDelegationList";
 import { Democracy, Referenda, useModuleTab } from "../../votingHistory/common";
-import useDemocracyDelegating from "next-common/utils/hooks/referenda/useDemocracyDelegating";
 import DemocracyDelegatedVotes from "./democracyDelegatedVotes";
 import DemocracyDelegation from "./democracyDelegation";
-import useFetchReferendaDelegations from "next-common/utils/hooks/referenda/useFetchReferendaDelegations";
-import useProfileAddress from "../../useProfileAddress";
+import useFetchProfileReferendaDelegations from "next-common/utils/hooks/referenda/useFetchProfileReferendaDelegations";
 import { TabContentWrapper } from "../common/styled";
-import { useContextApi } from "next-common/context/api";
+import useProfileAddress from "../../useProfileAddress";
+import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
 
 function OpenGovDelegated() {
   const address = useProfileAddress();
-  useFetchReferendaDelegations(address);
+  useFetchProfileReferendaDelegations(address);
 
   return (
     <TabContentWrapper>
-      <TracksSummary />
-      <TracksDelegation />
+      <OpenGovDelegationSummary />
+      <OpenGovDelegationList />
     </TabContentWrapper>
   );
 }
 
 function DemocracyDelegated() {
-  const api = useContextApi();
   const address = useProfileAddress();
-  const { delegating, isLoading } = useDemocracyDelegating(api, address);
+  const { delegating, isLoading } = useSubDemocracyDelegating(address);
 
   return (
     <TabContentWrapper>

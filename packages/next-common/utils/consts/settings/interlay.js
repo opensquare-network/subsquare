@@ -77,6 +77,9 @@ const interlay = {
   multisigApiPrefix: "interlay",
   hasTreasuryModule: false,
   hasTipsModule: false,
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(7,90,188,0.10)",
     theme300: "rgba(7,90,188,0.40)",

@@ -92,6 +92,9 @@ const collectives = {
   showAchainableLabels: true,
   description:
     "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
+  modules: {
+    fellowship: true,
+  },
   ...polkadotThemeVars,
 };
 

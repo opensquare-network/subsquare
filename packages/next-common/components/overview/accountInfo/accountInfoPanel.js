@@ -20,6 +20,7 @@ import { isKintsugiChain } from "next-common/utils/chain";
 import Link from "next/link";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import AccountDelegationPrompt from "./components/delegationPrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -132,19 +133,21 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
   const link = useAccountUrl();
 
   return (
-    <NeutralPanel className="p-6">
+    <NeutralPanel className="p-6 space-y-4">
       <AccountHead />
-      <Divider margin={16} />
+      <Divider />
 
       {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
 
       {!hideManageAccountLink && (
-        <div className="flex items-end justify-end mt-2">
+        <div className="flex items-end justify-end !mt-2">
           <Link href={link} className="text14Medium text-theme500">
             Manage Account
           </Link>
         </div>
       )}
+
+      <AccountDelegationPrompt />
     </NeutralPanel>
   );
 }

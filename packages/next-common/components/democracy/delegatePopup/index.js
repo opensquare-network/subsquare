@@ -37,14 +37,21 @@ export async function submitSubstrateExtrinsic({
   });
 }
 
-export default function DelegatePopup(props) {
+export default function DelegatePopup({
+  defaultTargetAddress,
+  targetDisabled,
+  ...props
+}) {
   return (
     <PopupWithSigner
       title="Delegate"
       submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     >
-      <PopupContent />
+      <PopupContent
+        defaultTargetAddress={defaultTargetAddress}
+        targetDisabled={targetDisabled}
+      />
     </PopupWithSigner>
   );
 }

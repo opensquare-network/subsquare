@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import EyeIcon from "../assets/imgs/icons/eye.svg";
 import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
-import { emptyFunction } from "../utils";
+import { cn, emptyFunction } from "../utils";
 import FlexBetweenCenter from "./styled/flexBetweenCenter";
 import { noop } from "lodash-es";
 
@@ -24,8 +24,9 @@ const Wrapper = styled.div`
     -moz-appearance: textfield;
   }
   border: 1px solid var(--neutral400);
-  width: 100%;
-  border-radius: 8px;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
   :hover {
     border-color: var(--neutral500);
   }
@@ -111,7 +112,6 @@ const SymbolWrapper = styled.div`
   border-left: 1px solid var(--neutral400);
   color: var(--textPrimary);
 `;
-const OuterWrapper = styled.div``;
 
 const Prefix = styled(FlexBetweenCenter)`
   margin-left: 8px;
@@ -135,6 +135,7 @@ function Input(
     onKeyDown = noop,
     onFocus = noop,
     onBlur = noop,
+    className,
     ...props
   },
   ref,
@@ -153,7 +154,7 @@ function Input(
   }
 
   return (
-    <OuterWrapper>
+    <div className={cn("overflow-hidden", "rounded-lg", className)}>
       <Wrapper
         focus={focus}
         data-focus={focus}
@@ -197,7 +198,7 @@ function Input(
         {props.symbol && <SymbolWrapper>{props.symbol}</SymbolWrapper>}
       </Wrapper>
       {props.error && <ErrorText>{props.error}</ErrorText>}
-    </OuterWrapper>
+    </div>
   );
 }
 

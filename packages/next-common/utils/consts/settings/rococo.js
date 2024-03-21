@@ -53,6 +53,10 @@ const rococo = {
   discourseForumLink: "https://forum.polkadot.network",
   description: "Polkadot’s Parachain Testnet",
   ...polkadotThemeVars,
+  modules: {
+    referenda: true,
+    fellowship: true,
+  },
 };
 
 export default rococo;

@@ -6,6 +6,14 @@ import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
 import Chains from "next-common/utils/consts/chains";
 
+function TabTitle({ active, children }) {
+  return (
+    <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
+      {children}
+    </Title>
+  );
+}
+
 export default function AccountSubTabs({ className = "" }) {
   const { hasMultisig } = useChainSettings();
   const chain = useChain();
@@ -17,13 +25,7 @@ export default function AccountSubTabs({ className = "" }) {
   ) {
     tabs.push({
       label: "Votes",
-      render({ active }) {
-        return (
-          <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
-            Votes
-          </Title>
-        );
-      },
+      render: ({ active }) => <TabTitle active={active}>Votes</TabTitle>,
       url: "/account/votes",
     });
   }
@@ -43,6 +45,27 @@ export default function AccountSubTabs({ className = "" }) {
         return <MultisigsTitle active={active} />;
       },
       url: "/account/multisigs",
+    });
+  }
+
+  if (
+    !isKintsugiChain(chain) &&
+    ![Chains.collectives, Chains.westendCollectives].includes(chain)
+  ) {
+    tabs.push({
+      label: "Delegated Votes",
+      render: ({ active }) => (
+        <TabTitle active={active}>Delegated Votes</TabTitle>
+      ),
+      url: "/account/delegations",
+    });
+
+    tabs.push({
+      label: "Been Delegated",
+      render: ({ active }) => (
+        <TabTitle active={active}>Been Delegated</TabTitle>
+      ),
+      url: "/account/been-delegated",
     });
   }
 

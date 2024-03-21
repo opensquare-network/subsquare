@@ -73,6 +73,9 @@ const phala = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "phala",
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(192,236,69,0.10)",
     theme300: "rgba(192,236,69,0.40)",

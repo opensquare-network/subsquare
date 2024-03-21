@@ -49,6 +49,9 @@ const khala = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "khala",
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(5,227,227,0.10)",
     theme300: "rgba(5,227,227,0.40)",

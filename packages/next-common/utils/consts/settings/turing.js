@@ -72,6 +72,9 @@ const turing = {
   hasSubscan: true,
   useVoteCall: true,
   description: "The Web 3.0 Hub for Automated DeFi and Payments",
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(168,44,190,0.10)",
     theme300: "rgba(168,44,190,0.40)",
