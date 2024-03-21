@@ -18,6 +18,7 @@ import {
   getAddressHint,
   tryConvertToEvmAddress,
 } from "next-common/utils/hydradxUtil.js";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const Wrapper = Relative;
 
@@ -126,9 +127,19 @@ export default function AddressCombo({
   const shortEvmAddr = addressEllipsis(maybeEvmAddress);
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
+  const [isValidAddress, setIsValidAddress] = useState(!allowInvalidAddress);
 
-  const isValidAddress =
-    !allowInvalidAddress && (isAddress(address) || normalizeAddress(address));
+  useEffect(() => {
+    if (allowInvalidAddress) {
+      setIsValidAddress(true);
+    } else if (isAddress(address) || normalizeAddress(address)) {
+      setIsValidAddress(true);
+    } else if (isEthereumAddress(address)) {
+      setIsValidAddress(true);
+    } else {
+      setIsValidAddress(false);
+    }
+  }, [address, allowInvalidAddress]);
 
   const fetchAddressIdentity = useCallback(
     (address) => {
