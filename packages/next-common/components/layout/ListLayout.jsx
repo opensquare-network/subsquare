@@ -12,6 +12,7 @@ import { isNil } from "lodash-es";
  * @typedef {{
  *  label: string
  *  url?: string
+ *  root?: string
  *  active?: boolean
  *  onClick?(): void
  *  urls?: string[]
