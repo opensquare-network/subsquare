@@ -54,7 +54,7 @@ export default function useProfileTabs() {
   if (hasReferenda || !noDemocracyModule) {
     tabs.push({
       label: "Delegation",
-      url: `${prefix}delegation/received`,
+      url: `${prefix}delegation`,
       exactMatch: false,
     });
   }
