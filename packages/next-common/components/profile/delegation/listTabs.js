@@ -5,7 +5,7 @@ import useProfileAddress from "../useProfileAddress";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import PageUrlTabs from "next-common/components/pageTabs/pageUrlTabs";
-import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
 
 export default function ListTabs() {
   const address = useProfileAddress();
