@@ -142,7 +142,8 @@ function Select({
           ) : (
             <div
               className={cn(
-                maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
+                maxDisplayItem &&
+                  "scrollbar-hidden overflow-x-hidden overflow-y-scroll",
               )}
               style={{
                 maxHeight: maxDisplayItem && theItemHeight * maxDisplayItem,

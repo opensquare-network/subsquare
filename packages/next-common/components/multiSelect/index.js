@@ -43,7 +43,8 @@ export default function MultiSelect({
         <OptionsWrapper>
           <div
             className={cn(
-              maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
+              maxDisplayItem &&
+                "scrollbar-hidden overflow-x-hidden overflow-y-scroll",
             )}
             style={{
               maxHeight: maxDisplayItem && itemHeight * maxDisplayItem,
