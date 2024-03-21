@@ -3,7 +3,7 @@ import { cn, toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 import BigNumber from "bignumber.js";
 import PriorInfo from "./prior";
 import LoadableContent from "next-common/components/common/loadableContent";
@@ -95,7 +95,7 @@ export default function ReferendaVoteSummary({
         <ModuleTab />
       </div>
       <SecondaryCard>
-        <SummaryItems items={items} />
+        <Summary items={items} />
       </SecondaryCard>
     </>
   );

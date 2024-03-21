@@ -7,7 +7,7 @@ import {
   isLoadingAccountInfoSelector,
 } from "next-common/store/reducers/myOnChainData/account";
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
-import Summary from "next-common/components/summary/v2/base";
+import Summary from "next-common/components/summary";
 
 export default function AccountBalances() {
   const accountInfo = useSelector(accountInfoSelector);

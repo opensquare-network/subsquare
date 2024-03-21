@@ -1,5 +1,5 @@
 import { PrimaryCard } from "next-common/components/styled/containers/primaryCard";
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import getCycleBudgetSummaryItem from "../summary/budget";
@@ -77,7 +77,7 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
   return (
     <PrimaryCard>
       <div className="flex justify-between gap-x-4">
-        <SummaryItems
+        <Summary
           items={[
             {
               title: "Cycle",
@@ -92,7 +92,7 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
 
       <hr className="my-4" />
 
-      <SummaryItems items={items} />
+      <Summary items={items} />
 
       <div className="mt-4">
         <FellowshipCycleProgress cycle={cycle} />

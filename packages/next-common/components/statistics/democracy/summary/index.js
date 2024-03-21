@@ -1,4 +1,4 @@
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -47,5 +47,5 @@ export default function DemocracySummary({ summary }) {
     },
   ];
 
-  return <SummaryItems items={items} />;
+  return <Summary items={items} />;
 }

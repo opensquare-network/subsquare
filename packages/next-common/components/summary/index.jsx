@@ -2,7 +2,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { SummaryTitle } from "./styled";
 import { cn } from "next-common/utils";
 
-export default function SummaryItems({ items, className }) {
+export default function Summary({ items, className }) {
   const [navCollapsed] = useNavCollapsed();
 
   return (
