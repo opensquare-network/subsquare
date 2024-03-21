@@ -10,6 +10,7 @@ import {
   childBountyBaseUrl,
 } from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
+import { isAddress } from "@polkadot/util-crypto";
 
 export function toApiType(type) {
   // Open Gov
@@ -153,7 +154,11 @@ export const prettyHTML = (html) => {
 const isBase58 = (value) => /^[A-HJ-NP-Za-km-z1-9]*$/.test(value);
 
 export const isPolkadotAddress = (address) => {
-  return [46, 47, 48, 49].includes(address?.length) && isBase58(address);
+  return (
+    isAddress(address) &&
+    [46, 47, 48, 49].includes(address?.length) &&
+    isBase58(address)
+  );
 };
 
 export const toFinancialMotionsListItem = (item) => {
