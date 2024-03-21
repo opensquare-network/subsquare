@@ -5,38 +5,40 @@ import useProfileAddress from "../useProfileAddress";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import PageUrlTabs from "next-common/components/pageTabs/pageUrlTabs";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 export default function ListTabs() {
   const address = useProfileAddress();
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   const router = useRouter();
-  const prefix = `/user/${address}/delegation`;
+  const prefix = `/user/${maybeEvmAddress}/delegation`;
   const tab = router.asPath.replace(prefix, "");
 
   useEffect(() => {
     if (tab === "" || tab === "/") {
       router.push(
         {
-          pathname: `/user/${address}/delegation`,
+          pathname: `/user/${maybeEvmAddress}/delegation`,
         },
         undefined,
         { shallow: true },
       );
     }
-  }, [address, tab]);
+  }, [maybeEvmAddress, tab]);
 
   return (
     <div className="ml-[24px]">
       <PageUrlTabs
         tabs={[
           {
-            url: `/user/${address}/delegation/received`,
+            url: `/user/${maybeEvmAddress}/delegation/received`,
             name: "Received",
             content: <BeenDelegated />,
             extra: <ModuleTab />,
           },
           {
-            url: `/user/${address}/delegation`,
+            url: `/user/${maybeEvmAddress}/delegation`,
             name: "Delegations",
             content: <DelegatedVotes />,
             extra: <ModuleTab />,
