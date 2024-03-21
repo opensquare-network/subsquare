@@ -5,7 +5,7 @@ import { formatBalance } from "../../utils/viewfuncs";
 import Loading from "../loading";
 import Tooltip from "../tooltip";
 import { GreyPanel } from "../styled/containers/greyPanel";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 export default function ProxyInfo({ address, balance, isLoading, symbol }) {
   const noBalance = isNil(balance) && isNil(isLoading);

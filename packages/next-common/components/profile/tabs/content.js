@@ -8,7 +8,7 @@ import ProfileTransfers from "../transfers";
 import ProfileIdentityTimeline from "../identityTimeline";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();

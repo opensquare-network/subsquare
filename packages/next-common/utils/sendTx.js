@@ -13,7 +13,7 @@ import { maybeSendMimirTx } from "./mimir";
 import { sendEvmTx } from "./sendEvmTx";
 import isMixedChain from "./isMixedChain";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import { tryConvertToEvmAddress } from "./hydradxUtil";
+import { tryConvertToEvmAddress } from "./mixedChainUtil";
 import { getLatestApi } from "next-common/context/api";
 
 export async function getSigner(signerAddress) {

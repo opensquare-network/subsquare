@@ -22,7 +22,7 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import PrimaryButton from "next-common/lib/button/primary";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);

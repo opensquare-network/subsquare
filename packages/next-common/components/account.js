@@ -17,7 +17,7 @@ import {
   WalletNova,
 } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 const WalletIcon = ({ wallet }) => {
   return (

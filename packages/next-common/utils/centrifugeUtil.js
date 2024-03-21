@@ -3,11 +3,13 @@ import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
 import { getAddress as getEvmAddress } from "ethers";
 import { isPolkadotAddress } from "./viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import isHydradx from "./isHydradx";
+import isCentrifuge from "./isCentrifuge";
 
-const HYDRA_ADDRESS_PREFIX = 63;
-const prefixBytes = Buffer.from("ETH\0");
-const suffixBytes = Buffer.alloc(8);
+const CENTRIFUGE_ADDRESS_PREFIX = 36;
+const zeroBytes = Buffer.alloc(6);
+const chainId = Buffer.from("07ef", "hex");
+const evmTagBytes = Buffer.from("EVM\0");
+const suffixBytes = Buffer.concat([zeroBytes, chainId, evmTagBytes]);
 
 export function safeConvertAddressH160(value) {
   try {
@@ -25,10 +27,8 @@ export function evmToSubstrateAddress(address) {
     return address;
   }
   const addressBytes = Buffer.from(address.slice(2), "hex");
-  return encodeAddress(
-    new Uint8Array(Buffer.concat([prefixBytes, addressBytes, suffixBytes])),
-    HYDRA_ADDRESS_PREFIX,
-  );
+  const publicKey = Buffer.concat([addressBytes, suffixBytes]);
+  return encodeAddress(new Uint8Array(publicKey), CENTRIFUGE_ADDRESS_PREFIX);
 }
 
 export function substrateToEvmAddress(address) {
@@ -39,25 +39,19 @@ export function substrateToEvmAddress(address) {
     return address;
   }
   const decodedBytes = decodeAddress(address);
-  const addressBytes = decodedBytes.slice(
-    prefixBytes.length,
-    -suffixBytes.length,
-  );
+  const addressBytes = decodedBytes.slice(0, -suffixBytes.length);
   return (
     safeConvertAddressH160(Buffer.from(addressBytes).toString("hex")) ?? ""
   );
 }
 
 export function checkIfShouldConvertToEvmAddress(address) {
-  if (!isHydradx() || !isPolkadotAddress(address)) {
+  if (!isCentrifuge() || !isPolkadotAddress(address)) {
     return false;
   }
   const decodedBytes = decodeAddress(address);
   const addressHex = Buffer.from(decodedBytes).toString("hex");
-  if (
-    addressHex.startsWith(prefixBytes.toString("hex")) &&
-    addressHex.endsWith(suffixBytes.toString("hex"))
-  ) {
+  if (addressHex.endsWith(suffixBytes.toString("hex"))) {
     return true;
   }
   return false;

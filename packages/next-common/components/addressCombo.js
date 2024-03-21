@@ -17,7 +17,7 @@ import IdentityIcon from "./Identity/identityIcon.js";
 import {
   getAddressHint,
   tryConvertToEvmAddress,
-} from "next-common/utils/hydradxUtil.js";
+} from "next-common/utils/mixedChainUtil";
 
 const Wrapper = Relative;
 

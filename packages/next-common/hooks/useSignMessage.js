@@ -6,7 +6,7 @@ import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import {
   getEvmSignerAddress,
   tryConvertToEvmAddress,
-} from "next-common/utils/hydradxUtil";
+} from "next-common/utils/mixedChainUtil";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();

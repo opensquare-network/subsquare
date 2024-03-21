@@ -2,7 +2,7 @@ import React from "react";
 import { addressEllipsis, isKeyRegisteredUser } from "../../utils";
 import Tooltip from "../tooltip";
 import Username from "./username";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 export default function UserDisplay({
   user,

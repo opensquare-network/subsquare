@@ -18,7 +18,7 @@ import styled from "styled-components";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { normalizeAddress } from "next-common/utils/address";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useContextApi } from "next-common/context/api";
 
 const CustomErrorMessage = styled(ErrorMessage)`

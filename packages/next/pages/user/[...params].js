@@ -2,7 +2,7 @@ import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { tryConvertToSubstrateAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
 
 export default Profile;
 

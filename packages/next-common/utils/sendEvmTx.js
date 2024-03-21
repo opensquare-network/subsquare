@@ -15,7 +15,7 @@ import {
   switchNetwork,
 } from "./metamask";
 import getChainSettings from "./consts/settings";
-import { getEvmSignerAddress } from "./hydradxUtil";
+import { getEvmSignerAddress } from "./mixedChainUtil";
 import isHydradx from "./isHydradx";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =

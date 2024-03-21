@@ -5,7 +5,7 @@ import { useThemeSetting } from "../context/theme";
 import makeBlockie from "ethereum-blockies-base64";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {

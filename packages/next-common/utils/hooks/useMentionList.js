@@ -8,7 +8,7 @@ import { uniqBy } from "lodash-es";
 import { useUser } from "../../context/user";
 import { useChain } from "../../context/chain";
 import { addressEllipsis, isKeyRegisteredUser } from "..";
-import { tryConvertToEvmAddress } from "../hydradxUtil";
+import { tryConvertToEvmAddress } from "../mixedChainUtil";
 
 export default function useMentionList(post, comments) {
   const chain = useChain();

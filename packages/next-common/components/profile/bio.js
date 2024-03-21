@@ -14,7 +14,7 @@ import KintAssetInfo from "./assetInfo/kint";
 import Chains from "next-common/utils/consts/chains";
 import AddressUser from "../user/addressUser";
 import { usePageProps } from "next-common/context/page";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 const Wrapper = styled.div`
   padding: 24px 0;
