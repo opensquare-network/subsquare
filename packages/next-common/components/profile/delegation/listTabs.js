@@ -19,7 +19,7 @@ export default function ListTabs() {
     if (tab === "" || tab === "/") {
       router.push(
         {
-          pathname: `/user/${maybeEvmAddress}/delegation`,
+          pathname: `/user/${maybeEvmAddress}/delegation/received`,
         },
         undefined,
         { shallow: true },
@@ -38,7 +38,7 @@ export default function ListTabs() {
             extra: <ModuleTab />,
           },
           {
-            url: `/user/${maybeEvmAddress}/delegation`,
+            url: `/user/${maybeEvmAddress}/delegation/delegated`,
             name: "Delegations",
             content: <DelegatedVotes />,
             extra: <ModuleTab />,
